@@ -1,5 +1,13 @@
 const {test,expect}=require('@playwright/test');
 const fs=require('node:fs');fs.mkdirSync('artifacts',{recursive:true});
+const qaHistory=JSON.parse(fs.readFileSync('data/history/superintendencia_signals.json','utf8')).signals;
+const qaWindowReference=qaHistory.map(s=>s.event_date).filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(d||'')).sort().at(-1);
+function eligibleInSnapshotWindow(sourceUrl){
+ const original=qaHistory.find(s=>s.source_url===sourceUrl);
+ expect(original,'Original history evidence '+sourceUrl).toBeTruthy();
+ const age=(Date.parse(qaWindowReference+'T00:00:00Z')-Date.parse(original.event_date+'T00:00:00Z'))/86400000;
+ return age>=0&&age<=90;
+}
 test('Home V2 loads, filters persist and compact triage remains stable',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
@@ -590,6 +598,12 @@ test('Normative V2.1 puts document, subject and action in each current headline'
  ];
  for(const [number,subject,action] of expected){
   const signal=radar.signals.find(x=>x.source_url?.includes('n'+number)&&x.signal_types?.includes('Normativa'));
+  const original=qaHistory.find(x=>x.source_url?.endsWith('/if-n'+number+'/')||x.source_url?.endsWith('-if-n'+number+'/'));
+  expect(original,'Verified normative input '+number).toBeTruthy();
+  if(!eligibleInSnapshotWindow(original.source_url)){
+   expect(signal,'Expired act must remain outside current feed: '+number).toBeUndefined();
+   continue;
+  }
   expect(signal,number).toBeTruthy();
   const title=signal.display_title;
   expect(title).toContain(signal.normative_document_label||signal.legal_identity);

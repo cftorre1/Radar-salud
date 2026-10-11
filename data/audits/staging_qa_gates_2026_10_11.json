@@ -10,7 +10,7 @@
     "browser": "SKIPPED",
     "reviewer": "SKIPPED"
   },
-  "local_python": "265passed/1failed/1skip, live beta file excluded by restricted network",
+  "local_python": "267passed/0failed/1skip; full suite, no ignored test files",
   "normative": {
     "observed": 11,
     "obsolete_minimum": 12,
@@ -18,7 +18,19 @@
     "official_date": "2026-07-10",
     "age_at_2026_10_11": 93,
     "primary_evidence": "Original SIS detail page explicitly says10July2026; no new publisher date invented",
-    "provisional_cause": "D:rolling90day expectation obsolete; source/history retain the act, exported feed correctly excludes93day-old Circular529"
+    "provisional_cause": "D:rolling90day expectation obsolete; source/history retain the act, exported feed correctly excludes93day-old Circular529",
+    "status": "RESOLVED_OBSOLETE_EXPECTATION",
+    "curation_reference_date": "2026-10-09",
+    "original_date_unchanged": true,
+    "fix": "Replace fixed current-feed minimum with exact eligibility of reviewed primary acts, unique identities, actual snapshot contracts and preserved history; test day90/day91 explicitly.",
+    "tests": {
+      "focused_python_passed": 26,
+      "full_python_passed": 267,
+      "full_python_skipped": 1,
+      "skip_reason": "OPENAI_API_KEY absent in independent beta live runtime test; no LIVE execution claimed",
+      "browser_normative_desktop_mobile_passed": 2
+    },
+    "source_pr15_overlap": "No fiscalization code/data imported. PR15 adds other normative rows and can mask the obsolete minimum; its browser still expects expired529."
   },
   "statistics_findings": [
     {
@@ -79,5 +91,6 @@
     }
   ],
   "missing_analysis_file": "data/statistical_analysis_overrides_v1.json is not versioned/present on staging; investigation of CI export overwrite follows",
-  "next_action": "Fix rolling-window tests against verifiable eligible inputs and inspect why CI export drops bulletin analysis; validate original4PDF metrics before persisting analysis."
+  "next_action": "Persist primary-PDF-verified bulletin analysis as versioned export input; fix expired statistical inventory assertions while retaining present-release schema and reviewer gates.",
+  "last_progress_at": "2026-10-11T13:00:41.935439+00:00"
 }

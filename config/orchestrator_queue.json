@@ -4440,15 +4440,18 @@
       "depends_on": [],
       "approved_at": "2026-10-11T12:52:18.984015+00:00",
       "started_at": "2026-10-11T12:52:18.984015+00:00",
-      "last_progress_at": "2026-10-11T12:52:18.984015+00:00",
-      "current_subfront": "reproduce_and_trace_primary_inputs",
+      "last_progress_at": "2026-10-11T13:00:41.935439+00:00",
+      "current_subfront": "statistical_export_root_cause",
       "branch": "codex/staging-qa-gates-20261011",
       "base_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
-      "next_action": "Fix rolling-window tests against verifiable eligible inputs and inspect why CI export drops bulletin analysis; validate original4PDF metrics before persisting analysis.",
+      "next_action": "Persist primary-PDF-verified bulletin analysis as versioned export input; fix expired statistical inventory assertions while retaining present-release schema and reviewer gates.",
       "evidence": [
         "data/audits/staging_qa_gates_2026_10_11.json"
       ],
-      "human_decision_required": false
+      "human_decision_required": false,
+      "completed": [
+        "Normative rolling-window gate fixed with primary date evidence;267PythonPASS/1explicitSKIP;2browser normativePASS"
+      ]
     }
   ],
   "execution_policy": {

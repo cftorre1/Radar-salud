@@ -285,11 +285,33 @@ def test_material_statistical_releases_use_value_ladder_instead_of_disappearing(
 
 def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():
     payload=json.loads(Path("web/data/radar_today.json").read_text())
-    rows=[m._normative_contract(s) for s in payload["signals"] if "Normativa" in (s.get("signal_types") or [])]
-    assert len(rows)>=12
+    rows=[s for s in payload["signals"] if "Normativa" in (s.get("signal_types") or [])]
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    cfg=json.loads(Path("config/normative_editorial_v2.json").read_text())
+    anchor=max(m._d(s.get("event_date")) for s in history if m._d(s.get("event_date")))
+    reviewed=[s for s in history if __import__("re").search(r"/(?:circular|resolucion-exenta)-if-n(\d+)/$",s.get("source_url", ""))]
+    reviewed=[s for s in reviewed if s["source_url"].split("if-n")[-1].rstrip("/") in cfg["records"]]
+    assert {s["source_url"].split("if-n")[-1].rstrip("/") for s in reviewed}==set(cfg["records"]), "Reviewed primary acts must remain in history"
+    eligible={s["source_url"] for s in reviewed if 0 <= (anchor-m._d(s["event_date"])).days <= 90}
+    expired={s["source_url"] for s in reviewed if (anchor-m._d(s["event_date"])).days > 90}
+    actual={s["source_url"] for s in rows}
+    assert eligible and eligible <= actual, "An eligible reviewed act was lost from the snapshot"
+    assert actual.isdisjoint(expired), "An expired act was resurrected to satisfy a quota"
+    assert len(actual)==len(rows), "Duplicate normative URLs must not inflate coverage"
     assert all(x["normative_editorial"]["plain_language_title"]==x["display_title"] for x in rows)
     assert all(x["normative_editorial"]["legal_identity"]==x["normative_document_label"] for x in rows)
     assert all(x["legal_subtitle"] for x in rows)
     assert any(x["source_url"].endswith("n9994/") and "Afiliación electrónica" in x["display_title"] and "rechaza" in x["display_title"] and "Circular IF/N°532" in x["display_title"] for x in rows)
     unknown={"event_type":"REGULATION","title":"Circular IF/N°123456","source_title_full":"Circular IF/N°123456","source_url":"https://x/n123456","signal_types":["Normativa"]}
     assert m._normative_contract(unknown)["normative_title_review_required"] is True
+
+
+def test_normative_window_keeps_day90_and_expires_day91_without_losing_history():
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    act=next(s for s in history if s.get("source_url", "").endswith("circular-if-n529/"))
+    assert act["event_date"]=="2026-07-10"  # Verified original SIS date, not a modified/crawl date.
+    for anchor,expected in [("2026-10-08", True),("2026-10-09", False)]:
+        clock=sig("Synthetic window reference",event=anchor,url="https://fixture.example/window-reference")
+        curated=m.curate([act,clock],resolve_external=False)
+        assert any(s["source_url"]==act["source_url"] for s in curated) is expected
+        assert act["event_date"]=="2026-07-10"
