@@ -232,6 +232,7 @@ class DeisDocumentScout:
                 self.diagnostics['catalog_summary'] = {
                     'catalogs': len(self.catalog['catalogs']),
                     'resources': sum(c['rows'] for c in self.catalog['catalogs']),
+                    'national_datasets': len(self.catalog.get('national_catalog', {}).get('datasets', [])),
                     'partial_failure': self.catalog['partial_failure'],
                     'errors': self.catalog['errors'],
                     'feed_eligible': False,
@@ -253,6 +254,7 @@ class DeisCatalogScout:
     merely because a catalog or file was reachable.
     """
     PAGE = "https://deis.minsal.cl/"
+    NATIONAL_CATALOG_URL = "https://datos.gob.cl/api/3/action/package_search?q=DEIS&rows=100"
     PURPOSES = {"Estadísticas": "indicator", "Datos Abiertos": "trend_benchmark_dataset",
                 "Publicaciones e Infografías": "report_reference", "Estándares y normativas": "normative_reference",
                 "Tableros DEIS": "indicator_dashboard"}
@@ -312,6 +314,41 @@ class DeisCatalogScout:
             raise RuntimeError("DEIS catalog has no usable resource rows")
         return resources
 
+    @staticmethod
+    def national_catalog_from_json(payload):
+        if not isinstance(payload, dict) or payload.get('success') is not True:
+            raise ValueError('National catalog API did not return success')
+        result = payload.get('result', {})
+        rows = result.get('results')
+        if not isinstance(rows, list) or result.get('count') != len(rows):
+            raise ValueError('National catalog search is incomplete; pagination required')
+        datasets = []
+        excluded = []
+        for row in rows:
+            if (row.get('organization', {}).get('name') != 'ministerio_de_salud'
+                    or not any(t.get('name', '').casefold() == 'deis' for t in row.get('tags', []))):
+                excluded.append({'id': row.get('id'), 'reason': 'publisher_or_DEIS_tag_not_verified'})
+                continue
+            resources = []
+            for resource in row.get('resources', []):
+                url = resource.get('url', '')
+                parsed = urlsplit(url)
+                if (parsed.scheme != 'https' or parsed.hostname not in {'datos.gob.cl', *DEIS_OFFICIAL_HOSTS}
+                        or parsed.username or parsed.password or parsed.port not in (None, 443)):
+                    continue
+                resources.append({'id': resource.get('id'), 'url': url, 'format': resource.get('format'),
+                                  'resource_updated_at': resource.get('last_modified'),
+                                  'publication_date': None, 'feed_eligible': False,
+                                  'reason': 'dataset_update_timestamp_is_not_editorial_publication'})
+            datasets.append({'id': row['id'], 'title': row['title'], 'publisher': 'Ministerio de Salud',
+                             'url': 'https://datos.gob.cl/dataset/' + row['id'],
+                             'purpose': 'trend_benchmark_dataset', 'resources': resources,
+                             'metadata_updated_at': row.get('metadata_modified'),
+                             'publication_date': None, 'feed_eligible': False})
+        if not datasets:
+            raise RuntimeError('National catalog has no publisher-verified DEIS datasets')
+        return {'datasets': datasets, 'excluded': excluded}
+
     def discover(self):
         import json
         from .public_source_transport import download_official
@@ -330,4 +367,13 @@ class DeisCatalogScout:
                 from .public_source_evidence import failure_details
                 result['partial_failure'] = True
                 result['errors'].append({**surface, **failure_details(exc)})
+        try:
+            capture = {}
+            body, _ = download_official(self.NATIONAL_CATALOG_URL, 'deis', capture_metadata=capture)
+            result['national_catalog'] = {**self.national_catalog_from_json(json.loads(body)),
+                                          'url': self.NATIONAL_CATALOG_URL, 'capture': capture}
+        except Exception as exc:
+            from .public_source_evidence import failure_details
+            result['partial_failure'] = True
+            result['errors'].append({'url': self.NATIONAL_CATALOG_URL, **failure_details(exc)})
         return result

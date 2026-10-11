@@ -17,7 +17,7 @@ HOSTS = {
     "fonasa_datos_abiertos": {"datosabiertos.fonasa.cl", "www.datosabiertos.fonasa.cl"},
     "isp_anamed": {"www.ispch.gob.cl", "ispch.gob.cl", "www.ispch.cl", "ispch.cl"},
     "isp_surveillance": {"www.ispch.gob.cl", "ispch.gob.cl", "www.ispch.cl", "ispch.cl"},
-    "deis": {"deis.minsal.cl", "repositoriodeis.minsal.cl"},
+    "deis": {"deis.minsal.cl", "repositoriodeis.minsal.cl", "datos.gob.cl"},
 }
 DATE_SOURCES = {
     "article:published_time", "datePublished", "jsonld.datePublished",

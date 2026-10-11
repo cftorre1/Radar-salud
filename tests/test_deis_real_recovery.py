@@ -98,6 +98,9 @@ def test_one_catalog_transport_failure_preserves_other_catalogs(monkeypatch):
     from radar_salud import deis_sources, public_source_transport
     monkeypatch.setattr(deis_sources, '_fetch_deis_html', lambda _: captured('https://deis.minsal.cl/'))
     def download(url, slug, **kwargs):
+        if url == DeisCatalogScout.NATIONAL_CATALOG_URL:
+            body = Path('data/audits/public_sources_c_20261011/recovery/runs/38116401423/captures/972013294a6609f0d50d91985809e91e6ba6634c51db4ffd930868a1c54fc392.html').read_bytes()
+            return body, {}
         if 'table_id=2889' in url:
             raise TimeoutError('one catalog timed out')
         return json.dumps([{'value': {'nombre': 'Statistical series', 'ver': 'https://deis.minsal.cl/data.xlsx'}}]).encode(), {}
@@ -106,3 +109,20 @@ def test_one_catalog_transport_failure_preserves_other_catalogs(monkeypatch):
     assert len(catalog['catalogs']) == 4
     assert catalog['partial_failure'] is True
     assert catalog['errors'][0]['title'] == 'Datos Abiertos'
+
+
+def test_real_national_catalog_keeps_resource_updates_out_of_editorial_dates():
+    p = Path('data/audits/public_sources_c_20261011/recovery/runs/38116401423/captures/972013294a6609f0d50d91985809e91e6ba6634c51db4ffd930868a1c54fc392.html')
+    body = p.read_bytes()
+    assert hashlib.sha256(body).hexdigest() == p.stem
+    catalog = DeisCatalogScout.national_catalog_from_json(json.loads(body))
+    assert len(catalog['datasets']) == 4
+    assert len(catalog['excluded']) == 3
+    hospital = next(x for x in catalog['datasets'] if 'hospitalización' in x['title'])
+    assert hospital['resources'][0]['resource_updated_at'].startswith('2026-09-25')
+    assert all(x['publication_date'] is None and not x['feed_eligible'] for x in catalog['datasets'])
+
+
+def test_national_catalog_refuses_truncated_search_results():
+    with pytest.raises(ValueError, match='incomplete'):
+        DeisCatalogScout.national_catalog_from_json({'success': True, 'result': {'count': 17, 'results': []}})
