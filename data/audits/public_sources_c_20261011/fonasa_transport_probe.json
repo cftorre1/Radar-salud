@@ -1,0 +1,233 @@
+{
+  "captured_at_utc": "2026-10-11T04:24:04.796310+00:00",
+  "channel": "shell_curl_with_additional_network_permissions",
+  "tls_verification_disabled": false,
+  "proxy_bypassed": false,
+  "interpretation": "CONNECT 403 comes from environment egress proxy envoy; no origin status, UA evaluation, HTML, TLS handshake or redirect chain can be concluded.",
+  "records": [
+    {
+      "id": "newsroom_bot",
+      "started_at_utc": "2026-10-11T04:24:04.690669+00:00",
+      "url": "https://www.fonasa.gob.cl/noticias/",
+      "requested_user_agent": "RadarSaludBot/0.1 (+public-source-monitor)",
+      "command": [
+        "curl",
+        "--head",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.1 (+public-source-monitor)",
+        "https://www.fonasa.gob.cl/noticias/"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:24:04 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "id": "newsroom_browser",
+      "started_at_utc": "2026-10-11T04:24:04.703620+00:00",
+      "url": "https://www.fonasa.gob.cl/noticias/",
+      "requested_user_agent": "Mozilla/5.0",
+      "command": [
+        "curl",
+        "--head",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "Mozilla/5.0",
+        "https://www.fonasa.gob.cl/noticias/"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:24:04 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "id": "newsroom_tls12",
+      "started_at_utc": "2026-10-11T04:24:04.714203+00:00",
+      "url": "https://www.fonasa.gob.cl/noticias/",
+      "requested_user_agent": "RadarSaludBot/0.1 (+public-source-monitor)",
+      "command": [
+        "curl",
+        "--head",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.1 (+public-source-monitor)",
+        "--tlsv1.2",
+        "--tls-max",
+        "1.2",
+        "https://www.fonasa.gob.cl/noticias/"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:24:04 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "id": "newsroom_tls13",
+      "started_at_utc": "2026-10-11T04:24:04.724583+00:00",
+      "url": "https://www.fonasa.gob.cl/noticias/",
+      "requested_user_agent": "RadarSaludBot/0.1 (+public-source-monitor)",
+      "command": [
+        "curl",
+        "--head",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.1 (+public-source-monitor)",
+        "--tlsv1.3",
+        "https://www.fonasa.gob.cl/noticias/"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:24:04 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "id": "newsroom_http",
+      "started_at_utc": "2026-10-11T04:24:04.734937+00:00",
+      "url": "http://www.fonasa.gob.cl/noticias/",
+      "requested_user_agent": "RadarSaludBot/0.1 (+public-source-monitor)",
+      "command": [
+        "curl",
+        "--head",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.1 (+public-source-monitor)",
+        "http://www.fonasa.gob.cl/noticias/"
+      ],
+      "exit_code": 0,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:24:04 GMT\nserver: envoy\n\n",
+      "stderr": "",
+      "origin_reached": null
+    },
+    {
+      "id": "data_noticias_bot",
+      "started_at_utc": "2026-10-11T04:24:04.746421+00:00",
+      "url": "https://datosabiertos.fonasa.cl/noticias/",
+      "requested_user_agent": "RadarSaludBot/0.1 (+public-source-monitor)",
+      "command": [
+        "curl",
+        "--head",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.1 (+public-source-monitor)",
+        "https://datosabiertos.fonasa.cl/noticias/"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:24:04 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "id": "data_noticias_browser",
+      "started_at_utc": "2026-10-11T04:24:04.756569+00:00",
+      "url": "https://datosabiertos.fonasa.cl/noticias/",
+      "requested_user_agent": "Mozilla/5.0",
+      "command": [
+        "curl",
+        "--head",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "Mozilla/5.0",
+        "https://datosabiertos.fonasa.cl/noticias/"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:24:04 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "id": "data_biblioteca",
+      "started_at_utc": "2026-10-11T04:24:04.766957+00:00",
+      "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+      "requested_user_agent": "RadarSaludBot/0.1 (+public-source-monitor)",
+      "command": [
+        "curl",
+        "--head",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.1 (+public-source-monitor)",
+        "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:24:04 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "id": "data_boletines",
+      "started_at_utc": "2026-10-11T04:24:04.777094+00:00",
+      "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+      "requested_user_agent": "RadarSaludBot/0.1 (+public-source-monitor)",
+      "command": [
+        "curl",
+        "--head",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.1 (+public-source-monitor)",
+        "https://datosabiertos.fonasa.cl/boletines-estadisticos/"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:24:04 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "id": "data_analysis",
+      "started_at_utc": "2026-10-11T04:24:04.786734+00:00",
+      "url": "https://datosabiertos.fonasa.cl/analysis/",
+      "requested_user_agent": "RadarSaludBot/0.1 (+public-source-monitor)",
+      "command": [
+        "curl",
+        "--head",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.1 (+public-source-monitor)",
+        "https://datosabiertos.fonasa.cl/analysis/"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:24:04 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    }
+  ]
+}

@@ -34,6 +34,15 @@ def test_df_all_undated_is_partial_not_healthy_or_fresh(tmp_path):
     assert row["counts_scope"]["rejected"]=="cumulative_queue"
 
 
+def test_df_cumulative_rejections_do_not_claim_rejection_in_an_empty_poll(tmp_path):
+    record(tmp_path,"diario_financiero",name="Diario Financiero",discovered=41,new=0,published=0,rejected=176,
+           discovery_evidence={"dated":41,"undated":0,"detail_errors":0,"insufficient_evidence":5})
+    row=json.loads((tmp_path/"data/source_health.json").read_text())["sources"]["diario_financiero"]
+    assert row["editorial_outcome"]=="no_new_signals"
+    assert row["coverage_status"]=="format_gap" and row["coverage_complete"] is False
+    assert row["counts_scope"]["rejected"]=="cumulative_queue"
+
+
 def test_fiscalization_counts_do_not_certify_coverage_and_history_repairs_last_signal(tmp_path):
     record(tmp_path,'superintendencia_fiscalizacion',name='SIS',discovered=2696,new=0,published=0,
         rows=[],published_history=[{'event_date':'2026-09-08'}],archived=2516)
@@ -65,6 +74,14 @@ def test_fiscalization_windows_use_office_identity_and_never_suspension_dates(tm
     assert row['zero_published_reason']=='evaluated_rejections_or_existing_published_history'
 
 
+def test_current_rejections_and_cumulative_stock_have_distinct_outcomes(tmp_path):
+    record(tmp_path,'source',name='Source',discovered=3,new=0,published=0,rejected=200)
+    path=tmp_path/'data/source_health.json'
+    assert json.loads(path.read_text())['sources']['source']['editorial_outcome']=='no_new_signals'
+    record(tmp_path,'source',name='Source',discovered=3,new=1,published=0,rejected=201,processed_rejections=1)
+    assert json.loads(path.read_text())['sources']['source']['editorial_outcome']=='rejected'
+
+
 def test_fiscalization_partial_receipt_and_observation_are_separate_from_publication(tmp_path):
     record(tmp_path,'suseso_fiscalizacion',name='SUSESO',discovered=38,new=2,published=0,
         observed_rows=[{'event_date':'2026-09-29','metadata':{'publication_date':'2026-09-29'}}],
@@ -91,3 +108,20 @@ def test_parsed_dated_historical_tables_do_not_mark_fiscalization_operational(tm
     assert row['technical_status']=='ok' and row['coverage_status']=='listed_surface_parsed'
     assert row['status']=='warning' and row['coverage_complete'] is False
     assert row['last_signal_at'] is None and row['last_observed_publication_at']=='2024-12-31'
+
+
+def test_history_cannot_mask_current_unverified_publications(tmp_path):
+    record(tmp_path,"deis",name="DEIS",discovered=1,new=1,published=1,
+           rows=[{"event_date":"2026-06-25"}])
+    record(tmp_path,"deis",name="DEIS",discovered=0,new=0,published=0,
+           diagnostics={"coverage_status":"no_verifiable_documents","verified_publications":0})
+    row=json.loads((tmp_path/"data/source_health.json").read_text())["sources"]["deis"]
+    assert row["status"]=="warning" and row["coverage_status"]=="gap"
+    assert row["last_signal_at"]=="2026-06-25"
+
+
+def test_partial_document_capture_is_degraded_not_healthy(tmp_path):
+    record(tmp_path,"isp_surveillance",name="ISP",discovered=1,new=1,published=0,pending=1,
+           diagnostics={"partial_failure":True,"evidence_status":"capture_pending"})
+    row=json.loads((tmp_path/"data/source_health.json").read_text())["sources"]["isp_surveillance"]
+    assert (row["status"],row["technical_status"],row["coverage_status"])==("warning","degraded","partial")

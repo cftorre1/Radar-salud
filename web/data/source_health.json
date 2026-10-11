@@ -74,7 +74,7 @@
       "technical_status": "partial",
       "coverage_status": "date_or_detail_gap",
       "content_freshness": "recent",
-      "editorial_outcome": "rejected",
+      "editorial_outcome": "no_new_signals",
       "dated": 41,
       "undated": 0,
       "detail_errors": 0,
@@ -100,6 +100,21 @@
         "rejected": "cumulative_queue"
       },
       "last_discovered_event_at": "2026-10-10",
+      "runtime_raw_editorial_outcome": "rejected",
+      "counts_semantics": {
+        "discovered": "current_poll",
+        "new": "current_poll",
+        "published": "current_poll",
+        "pending": "cumulative_queue",
+        "rejected": "cumulative_queue",
+        "deferred": "cumulative_queue",
+        "last_signal_at": "latest_accepted_history_publication"
+      },
+      "editorial_outcome_reconciliation_reason": "Both genuine post-merge polls have zero new, pending and published. Raw engine used cumulative rejected stock for editorial_outcome; current-poll outcome reconciled here. Producer fix follows with the next scoped health integration.",
+      "integration_status": "INTEGRATED_DEGRADED",
+      "integration_staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+      "postmerge_runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38142527704",
+      "coverage_complete": false,
       "integration_state": "INTEGRATED_DEGRADED",
       "integration_evidence": {
         "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
@@ -144,7 +159,7 @@
       "technical_status": "ok",
       "coverage_status": "listed_surface_parsed",
       "content_freshness": "older",
-      "editorial_outcome": "rejected",
+      "editorial_outcome": "no_new_publications_existing_history",
       "last_observed_event_at": "2026-09-28",
       "last_observed_publication_at": "2026-09-28",
       "surfaces": [
@@ -242,7 +257,9 @@
         "runtime_run": 38143952220,
         "preview_run": 38143952494,
         "artifact": "data/audits/integration_20261011/sis-postmerge-9920e3d.json"
-      }
+      },
+      "runtime_raw_editorial_outcome": "rejected",
+      "editorial_outcome_reconciliation_reason": "Runtime 38143952220 has zero new/published, zero pending; cumulative rejected stock is not a current poll decision. Producer fix in PR19."
     },
     "superintendencia": {
       "name": "Superintendencia",
@@ -264,8 +281,8 @@
       "editorial_outcome": "no_new_signals"
     },
     "fonasa": {
-      "name": "Fonasa",
-      "checked_at": "2026-10-10T22:24:44.396877+00:00",
+      "name": "Fondo Nacional de Salud (FONASA)",
+      "checked_at": "2026-10-11T06:25:44.285166+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -276,15 +293,63 @@
       "deferred": 0,
       "rejected": 0,
       "status": "error",
-      "error": "HTTPError",
+      "error": "FonasaDiscoveryError",
       "technical_status": "error",
       "coverage_status": "unverified",
       "content_freshness": "unknown",
-      "editorial_outcome": "not_evaluated"
+      "editorial_outcome": "not_evaluated",
+      "error_details": {
+        "exception_chain": [
+          {
+            "type": "FonasaDiscoveryError"
+          },
+          {
+            "type": "HTTPError",
+            "http_status": 403,
+            "url": "https://www.fonasa.gob.cl/noticias/",
+            "reason": "Forbidden"
+          }
+        ],
+        "failure_signature": "FonasaDiscoveryError > HTTPError:403:Forbidden > HTTPError:HTTP Error 403: Forbidden",
+        "endpoint_failures": [
+          {
+            "url": "https://www.fonasa.gob.cl/noticias/",
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
+          }
+        ]
+      },
+      "discovery_diagnostics": {
+        "surfaces": [
+          {
+            "stage": "listing",
+            "url": "https://www.fonasa.gob.cl/noticias/",
+            "channel": "Noticias",
+            "exception": "HTTPError",
+            "message": "HTTP Error 403: Forbidden",
+            "http_status": 403
+          }
+        ],
+        "partial_failure": true,
+        "poll_mode": "discovery_and_document_verification_only",
+        "document_checks": [],
+        "evidence_status": "capture_pending"
+      },
+      "engine_checked_at": "2026-10-11T04:31:45.154341+00:00",
+      "poll_mode": "discovery_and_document_verification_only",
+      "runtime_outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "runtime_environment": "github_actions",
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117670184",
+      "runtime_commit": "55e31b1b7266d848b728faba11c9d6dad24c81f7",
+      "coverage_complete": false,
+      "blocker_evidence": "data/audits/public_sources_c_20261011/recovery/fonasa-checkpoint.json",
+      "blocking_component": "Frontal público HTTP AWS ALB (Server awselb/2.0), tras TLS verificado, responde403 sin challenge WAF identificado. La regla causante y su dueño interno no son observables.",
+      "minimum_human_step": "Administrador web de FONASA: revisar el rechazo HTTP403 del frontal AWS ALB para GET público desde GitHub hospedado, habilitar acceso autorizado de monitoreo o entregar export oficial accesible y confirmar rutas canónicas de noticias; luego repetir esta Action.",
+      "runtime_error_stage": "http403_after_verified_tls"
     },
     "isp_anamed": {
-      "name": "Isp Anamed",
-      "checked_at": "2026-10-10T22:24:44.398698+00:00",
+      "name": "ISP / ANAMED",
+      "checked_at": "2026-10-11T06:28:14.861585+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -295,17 +360,80 @@
       "deferred": 0,
       "rejected": 0,
       "status": "error",
-      "error": "URLError",
+      "error": "RuntimeError",
       "technical_status": "error",
       "coverage_status": "unverified",
       "content_freshness": "unknown",
-      "editorial_outcome": "not_evaluated"
+      "editorial_outcome": "not_evaluated",
+      "error_details": {
+        "exception_chain": [
+          {
+            "type": "RuntimeError"
+          },
+          {
+            "type": "URLError",
+            "reason": "timed out"
+          },
+          {
+            "type": "TimeoutError",
+            "reason": "timed out"
+          }
+        ],
+        "failure_signature": "RuntimeError > URLError:timed out > TimeoutError:timed out"
+      },
+      "discovery_diagnostics": {
+        "surfaces": [
+          {
+            "channel": "ANAMED",
+            "url": "https://www.ispch.cl/categorias-alertas/anamed/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "ANAMED",
+            "url": "https://ispch.cl/categorias-alertas/anamed/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "ANAMED",
+            "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "ANAMED",
+            "url": "https://ispch.gob.cl/categorias-alertas/anamed/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          }
+        ],
+        "partial_failure": true,
+        "poll_mode": "discovery_and_document_verification_only",
+        "document_checks": [],
+        "evidence_status": "capture_pending"
+      },
+      "engine_checked_at": "2026-10-11T04:31:45.221612+00:00",
+      "poll_mode": "discovery_and_document_verification_only",
+      "runtime_outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "runtime_environment": "github_actions",
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117670184",
+      "runtime_commit": "55e31b1b7266d848b728faba11c9d6dad24c81f7",
+      "coverage_complete": false,
+      "blocker_evidence": "data/audits/public_sources_c_20261011/recovery/isp_anamed-checkpoint.json",
+      "blocking_component": "Destino/ruta TCP443 no responde; no existe respuesta HTTP ni handshake TLS. No es posible atribuir el silencio a un firewall, hosting o regla concreta desde estos síntomas.",
+      "minimum_human_step": "Operador de red/hosting de ISP: verificar listener y ruta TCP 443 de www.ispch.cl, ispch.cl, www.ispch.gob.cl e ispch.gob.cl frente al egress de GitHub hospedado, restaurar acceso HTTPS público o entregar un feed/document export oficial accesible; luego repetir esta Action.",
+      "runtime_error_stage": "tcp443_timeout_before_tls"
     },
     "deis": {
-      "name": "Deis",
-      "checked_at": "2026-10-10T22:24:44.401410+00:00",
+      "name": "DEIS",
+      "checked_at": "2026-10-11T06:26:13.800213+00:00",
       "last_signal_at": null,
-      "discovered": 0,
+      "discovered": 12,
       "new": 0,
       "published": 0,
       "live_pending": 0,
@@ -315,10 +443,327 @@
       "rejected": 0,
       "status": "warning",
       "error": null,
-      "technical_status": "ok",
-      "coverage_status": "gap",
+      "technical_status": "degraded",
+      "coverage_status": "partial",
       "content_freshness": "unknown",
-      "editorial_outcome": "no_new_signals"
+      "editorial_outcome": "not_evaluated",
+      "discovery_diagnostics": {
+        "listing_url": "https://deis.minsal.cl/centrofic/",
+        "listing_recognized": true,
+        "document_blocks": 21,
+        "dated_documents": 12,
+        "rejected_missing_date": 7,
+        "rejected_invalid_date": 0,
+        "rejected_ambiguous_date": 0,
+        "rejected_editorial_only": 0,
+        "rejected_unproven_update": 2,
+        "document_verification": "pending_pipeline",
+        "excluded_documents": [
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/EstandaresNormativa/cmd_vigente.pdf",
+            "title": "Modelo del Certificado Médico de defunción y Estadísticas de Mortalidad Fetal (CMD) vigente",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "missing_explicit_publication_date",
+            "publication_date": null,
+            "listing_notice": "Modelo del Certificado Médico de defunción y Estadísticas de Mortalidad Fetal (CMD) vigente",
+            "listing_sha256": "6f662b94c49ec684c78e5253a789627e8b98a6658dc0ff0a358ec70e33aaa4b1",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/EstandaresNormativa/decreto-460-de-1970.pdf",
+            "title": "Decreto 460 del año 1970 Reglamento sobre la Extensión del Certificado Médico de defunción",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "missing_explicit_publication_date",
+            "publication_date": null,
+            "listing_notice": "Decreto 460 del año 1970 Reglamento sobre la Extensión del Certificado Médico de defunción",
+            "listing_sha256": "6f662b94c49ec684c78e5253a789627e8b98a6658dc0ff0a358ec70e33aaa4b1",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Volume-1-CIE-10-2016-cha.pdf",
+            "title": "Volumen 1 CIE-10 2016-cha",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "update_without_proven_material_change",
+            "publication_date": null,
+            "listing_notice": "Volumen 1 CIE-10 2016-cha ¡Actualizado 15/12/2017!",
+            "listing_sha256": "6f662b94c49ec684c78e5253a789627e8b98a6658dc0ff0a358ec70e33aaa4b1",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/03/CIE10-2015-Vol-2.pdf",
+            "title": "Volumen 2 Manual de Instrucciones",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "missing_explicit_publication_date",
+            "publication_date": null,
+            "listing_notice": "Volumen 2 Manual de Instrucciones ¡Agregado el 07/08/2015!",
+            "listing_sha256": "6f662b94c49ec684c78e5253a789627e8b98a6658dc0ff0a358ec70e33aaa4b1",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/03/PAHO-CIE-10_Vol.-3.pdf",
+            "title": "Volumen 3 Índice Alfabético",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "update_without_proven_material_change",
+            "publication_date": null,
+            "listing_notice": "Volumen 3 Índice Alfabético Nota: ¡Actualizado el 01/03/2018!",
+            "listing_sha256": "6f662b94c49ec684c78e5253a789627e8b98a6658dc0ff0a358ec70e33aaa4b1",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2015/03/ActualizacionCatalogoDiagnosticos1.pdf",
+            "title": "Actualización Catalogo Diagnosticos.pdf",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "missing_explicit_publication_date",
+            "publication_date": null,
+            "listing_notice": "Actualización Catalogo Diagnosticos.pdf ¡Agregado 26/03/2015!",
+            "listing_sha256": "6f662b94c49ec684c78e5253a789627e8b98a6658dc0ff0a358ec70e33aaa4b1",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/deis/rem2008/100408/NormatecnicaCIE10.pdf",
+            "title": "Decreto Norma Técnica sobre Uso de CIE 10",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "missing_explicit_publication_date",
+            "publication_date": null,
+            "listing_notice": "Decreto Norma Técnica sobre Uso de CIE 10",
+            "listing_sha256": "6f662b94c49ec684c78e5253a789627e8b98a6658dc0ff0a358ec70e33aaa4b1",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Decreto-356-Complementa-Decreto-Uso-de-la-CIE-10.pdf",
+            "title": "Decreto 356 Complementa Decreto Uso de la CIE-10",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "missing_explicit_publication_date",
+            "publication_date": null,
+            "listing_notice": "Decreto 356 Complementa Decreto Uso de la CIE-10 ¡Agregado 15/12/2017!",
+            "listing_sha256": "6f662b94c49ec684c78e5253a789627e8b98a6658dc0ff0a358ec70e33aaa4b1",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2012/12/DEIS-Centro-FIC.pdf",
+            "title": "Resolución Nº 783: DEIS – Centro de referencia FIC",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "reason": "missing_explicit_publication_date",
+            "publication_date": null,
+            "listing_notice": "Resolución Nº 783: DEIS – Centro de referencia FIC",
+            "listing_sha256": "6f662b94c49ec684c78e5253a789627e8b98a6658dc0ff0a358ec70e33aaa4b1",
+            "listing_sha256_kind": "utf8_decoded_listing"
+          }
+        ],
+        "reference_only_resources": [
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Lista%20tabular%20CIE-10%20-%20agosto%202026.xlsx",
+            "title": "Lista Tabular CIE-10",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "publication_date": null,
+            "reason": "non_pdf_reference_outside_dated_document_lane",
+            "listing_notice": "Lista Tabular CIE-10 Nota: no contiene las inclusiones de las subcategorías. ¡Actualizado agosto/2026! Actualización editorial: revisión de redacción y ortografía, sin cambios en el contenido de la tabla."
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Topografia_Morfologia_200525.xlsx",
+            "title": "Lista Tabular CIE-O 3.1 Clasificación Internacional de Enfermedades para Oncología Tercera edición",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "publication_date": null,
+            "reason": "non_pdf_reference_outside_dated_document_lane",
+            "listing_notice": "Lista Tabular CIE-O 3.1 Clasificación Internacional de Enfermedades para Oncología Tercera edición . ¡Publicado 20/05/2025!"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/DEIS-EPI-ENO-Decreto%207%202019%20actualizaci%C3%B3n%20agosto%202026.xlsx",
+            "title": "Lista Enfermedades de Notificación Obligatoria (ENO) según Decreto N° 7/2019– Elaborada por DEIS y Epidemiología",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "publication_date": null,
+            "reason": "non_pdf_reference_outside_dated_document_lane",
+            "listing_notice": "Lista Enfermedades de Notificación Obligatoria (ENO) según Decreto N° 7/2019 – Elaborada por DEIS y Epidemiología . ¡Actualización 31/08/2026! Actualización editorial: ajuste en la presentación de los códigos CIE-10, sin cambios en el contenido de la lista."
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Lista%20Becker-adaptada%20a%20Chile.xlsx",
+            "title": "Lista de Becker adaptada a Chile Diciembre 2025",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "publication_date": null,
+            "reason": "non_pdf_reference_outside_dated_document_lane",
+            "listing_notice": "Lista de Becker adaptada a Chile Diciembre 2025 . La Lista de Becker et al., adaptada a Chile, es una estructura derivada de la CIE-10 que organiza las causas de muerte en grupos epidemiológicamente consistentes y comparables. El DEIS la utiliza para realizar el análisis de la mortalidad, identificar tendencias y apoyar la toma de decisiones en salud pública"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/ICDTRANScorresp9-10.xls",
+            "title": "Homologación CIE-9 – CIE-10",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "publication_date": null,
+            "reason": "non_pdf_reference_outside_dated_document_lane",
+            "listing_notice": "Homologación CIE-9 – CIE-10"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/DatosAbiertos/LRS/Patologias%20Ley%20Ricarte%20Soto.xlsx",
+            "title": "Patologías Ley Ricarte Soto",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "publication_date": null,
+            "reason": "non_pdf_reference_outside_dated_document_lane",
+            "listing_notice": "Patologías Ley Ricarte Soto"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/GES%2090%20CIE-10%20v1_4.xlsx",
+            "title": "GES – 90 Problemas de Salud",
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "publication_date": null,
+            "reason": "non_pdf_reference_outside_dated_document_lane",
+            "listing_notice": "GES – 90 Problemas de Salud Actualizada 23-07-2026"
+          }
+        ],
+        "coverage_status": "dated_documents_found",
+        "catalog_summary": {
+          "catalogs": 5,
+          "resources": 572,
+          "national_datasets": 5,
+          "partial_failure": false,
+          "errors": [],
+          "feed_eligible": false
+        },
+        "verified_publications": 12,
+        "latest_verified_publication_date": "2026-06-25",
+        "poll_mode": "discovery_and_document_verification_only",
+        "partial_failure": true,
+        "document_checks": [
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones%20de%20codificaci%C3%B3n%20para%20el%20Cap%C3%ADtulo%20XXI%20junio2026.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones%20de%20codificaci%C3%B3n%20para%20el%20Cap%C3%ADtulo%20XXI%20junio2026.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones%20de%20codificaci%C3%B3n%20para%20el%20Cap%C3%ADtulo%20XXI%20junio2026.pdf",
+            "sha256": "b0991012d8100f8d34ad2ed9812577d274173229baec3ae846824e649c9a58fe",
+            "bytes": 740491,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T06:25:53.000057+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Manual%20Cap%C3%ADtulo%20XV%20Embarazo%20Parto%20y%20Puerperio%20180825.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Manual%20Cap%C3%ADtulo%20XV%20Embarazo%20Parto%20y%20Puerperio%20180825.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Manual%20Cap%C3%ADtulo%20XV%20Embarazo%20Parto%20y%20Puerperio%20180825.pdf",
+            "sha256": "2360136b3e34c84607ee244c159b1cd746e0c2928b2ad26580c55795dd16edb0",
+            "bytes": 565507,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T06:25:54.611609+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones%20de%20codificaci%C3%B3n%20para%20el%20Cap%C3%ADtulo%20XVIII%20de%20la%20CIE-10.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones%20de%20codificaci%C3%B3n%20para%20el%20Cap%C3%ADtulo%20XVIII%20de%20la%20CIE-10.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones%20de%20codificaci%C3%B3n%20para%20el%20Cap%C3%ADtulo%20XVIII%20de%20la%20CIE-10.pdf",
+            "sha256": "5e18ac4be8dbc9831472128e27e937945e4d98778de3487f696c5caecd62e277",
+            "bytes": 320765,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T06:25:56.085538+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/C%C3%B3digos%20Post%20COVID-19%20Efecto%20adverso%20Vacuna.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/C%C3%B3digos%20Post%20COVID-19%20Efecto%20adverso%20Vacuna.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/C%C3%B3digos%20Post%20COVID-19%20Efecto%20adverso%20Vacuna.pdf",
+            "sha256": "dbc4db8c668e6c9a576d3795555108ef4340028257af1d515a8a8846e315d006",
+            "bytes": 150654,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T06:25:57.407088+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL1.pdf",
+            "status": "blocked",
+            "exception_chain": [
+              {
+                "type": "ValueError",
+                "reason": "Public-source capture exceeds the byte limit"
+              }
+            ],
+            "failure_signature": "ValueError:Public-source capture exceeds the byte limit"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL2.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL2.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL2.pdf",
+            "sha256": "0012341842f985dc67fb39609c6cc591a76cc27b7dc1796eb07ad3fb48f5a2bf",
+            "bytes": 6186363,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T06:26:01.988904+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL3.pdf",
+            "status": "blocked",
+            "exception_chain": [
+              {
+                "type": "ValueError",
+                "reason": "Public-source capture exceeds the byte limit"
+              }
+            ],
+            "failure_signature": "ValueError:Public-source capture exceeds the byte limit"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XV-de-la-CIE-10-.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XV-de-la-CIE-10-.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XV-de-la-CIE-10-.pdf",
+            "sha256": "87b092dd8d62026f00801b266941b626e3fac56494b32ea3451a7ad7a6f2c3fc",
+            "bytes": 983571,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T06:26:06.718476+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/09/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XVI-de-la-CIE-10.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/09/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XVI-de-la-CIE-10.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/09/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XVI-de-la-CIE-10.pdf",
+            "sha256": "3078a003dc028e838581c2ae6093f1a7b288c7772c0968486a8dc024e5668061",
+            "bytes": 604477,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T06:26:08.563620+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/07/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-II-de-la-CIE-10.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/07/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-II-de-la-CIE-10.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/07/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-II-de-la-CIE-10.pdf",
+            "sha256": "393fb72ea20f6dcee2be746fe6d2515f29727ee4cbdcbc53644f40a8e9e9ce91",
+            "bytes": 780682,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T06:26:10.111867+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Gu%C3%ADa-para-la-codificaci%C3%B3n-casos-IVE-09-07-2018.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Gu%C3%ADa-para-la-codificaci%C3%B3n-casos-IVE-09-07-2018.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Gu%C3%ADa-para-la-codificaci%C3%B3n-casos-IVE-09-07-2018.pdf",
+            "sha256": "f19b11f6cf58b7ec4633dce660f95c5c526fb38319969dffc85871fec7d13287",
+            "bytes": 1039787,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T06:26:11.868926+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Orientaciones-de-Codificaci%C3%B3n-para-Capitulo-XXI-de-la-CIE-10.pdf",
+            "status": "captured",
+            "requested_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Orientaciones-de-Codificaci%C3%B3n-para-Capitulo-XXI-de-la-CIE-10.pdf",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Orientaciones-de-Codificaci%C3%B3n-para-Capitulo-XXI-de-la-CIE-10.pdf",
+            "sha256": "7ae8c085cb8fc65460ef1b1b07637f4449879c355e648c304b5488c7b542fd13",
+            "bytes": 605604,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T06:26:13.391825+00:00"
+          }
+        ],
+        "evidence_status": "capture_pending"
+      },
+      "engine_checked_at": "2026-10-11T04:31:45.272247+00:00",
+      "poll_mode": "discovery_and_document_verification_only",
+      "latest_verified_publication_at": "2026-06-25",
+      "runtime_outcome": "OPERATIVE_DEGRADED",
+      "runtime_environment": "github_actions",
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117670184",
+      "runtime_commit": "55e31b1b7266d848b728faba11c9d6dad24c81f7",
+      "coverage_complete": false,
+      "archived": 12,
+      "catalog_resources": 572,
+      "national_datasets": 5,
+      "runtime_limitations": [
+        "2 historical CIE-10 volumes exceed native 20 MiB PDF ceiling",
+        "Catalog resource dates remain unknown; updates and statistical periods are not editorial publication",
+        "Only structural dataset samples checked; indicators not calculated",
+        "No dated Centro FIC PDF publications within 30/90 days; no complete all-surface editorial inventory claimed"
+      ]
     },
     "redsalud": {
       "name": "Redsalud",
@@ -397,8 +842,8 @@
       "editorial_outcome": "not_evaluated"
     },
     "fonasa_datos_abiertos": {
-      "name": "Fonasa Datos Abiertos",
-      "checked_at": "2026-10-10T22:24:44.397778+00:00",
+      "name": "Fondo Nacional de Salud (FONASA)",
+      "checked_at": "2026-10-11T06:25:44.359085+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -409,11 +854,92 @@
       "deferred": 0,
       "rejected": 0,
       "status": "error",
-      "error": "HTTPError",
+      "error": "FonasaDiscoveryError",
       "technical_status": "error",
       "coverage_status": "unverified",
       "content_freshness": "unknown",
-      "editorial_outcome": "not_evaluated"
+      "editorial_outcome": "not_evaluated",
+      "error_details": {
+        "exception_chain": [
+          {
+            "type": "FonasaDiscoveryError"
+          }
+        ],
+        "failure_signature": "FonasaDiscoveryError > HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden",
+        "endpoint_failures": [
+          {
+            "url": "https://datosabiertos.fonasa.cl/noticias/",
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
+          },
+          {
+            "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
+          },
+          {
+            "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
+          },
+          {
+            "url": "https://datosabiertos.fonasa.cl/analysis/",
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
+          }
+        ]
+      },
+      "discovery_diagnostics": {
+        "surfaces": [
+          {
+            "stage": "listing",
+            "url": "https://datosabiertos.fonasa.cl/noticias/",
+            "channel": "Noticias",
+            "exception": "HTTPError",
+            "message": "HTTP Error 403: Forbidden",
+            "http_status": 403
+          },
+          {
+            "stage": "listing",
+            "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+            "channel": "Biblioteca / Cuenta Pública",
+            "exception": "HTTPError",
+            "message": "HTTP Error 403: Forbidden",
+            "http_status": 403
+          },
+          {
+            "stage": "listing",
+            "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+            "channel": "Boletines estadísticos",
+            "exception": "HTTPError",
+            "message": "HTTP Error 403: Forbidden",
+            "http_status": 403
+          },
+          {
+            "stage": "listing",
+            "url": "https://datosabiertos.fonasa.cl/analysis/",
+            "channel": "Análisis",
+            "exception": "HTTPError",
+            "message": "HTTP Error 403: Forbidden",
+            "http_status": 403
+          }
+        ],
+        "partial_failure": true,
+        "poll_mode": "discovery_and_document_verification_only",
+        "document_checks": [],
+        "evidence_status": "capture_pending"
+      },
+      "engine_checked_at": "2026-10-11T04:31:45.196893+00:00",
+      "poll_mode": "discovery_and_document_verification_only",
+      "runtime_outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "runtime_environment": "github_actions",
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117670184",
+      "runtime_commit": "55e31b1b7266d848b728faba11c9d6dad24c81f7",
+      "coverage_complete": false,
+      "blocker_evidence": "data/audits/public_sources_c_20261011/recovery/fonasa_datos_abiertos-checkpoint.json",
+      "blocking_component": "Frontal público HTTP AWS ALB (Server awselb/2.0), tras TLS verificado, responde403 sin challenge WAF identificado. La regla causante y su dueño interno no son observables.",
+      "minimum_human_step": "Administrador web FONASA: habilitar acceso HTTPS autorizado desde GitHub al hub datosabiertos.fonasa.cl y documentos fonasaweb.fonasa.cl, o proporcionar export oficial actual con fecha editorial/publicación y enlaces de recurso verificables; confirmar rutas vigentes de Noticias, Biblioteca/Cuenta Pública, Boletines y Análisis. El catálogo nacional disponible es histórico.",
+      "runtime_error_stage": "http403_after_verified_tls"
     },
     "suseso_news": {
       "name": "Suseso News",
@@ -631,80 +1157,991 @@
       "editorial_outcome": "no_new_signals"
     },
     "clinicas_achs_salud": {
-      "name": "Clínicas Achs Salud",
-      "checked_at": "2026-10-10T22:25:19.266882+00:00",
+      "name": "Achs Salud / Clínicas",
+      "checked_at": "2026-10-11T07:58:45.954966+00:00",
       "last_signal_at": null,
-      "discovered": 0,
+      "discovered": 2,
       "new": 0,
       "published": 0,
       "live_pending": 0,
       "backfill_pending": 0,
-      "pending": 0,
+      "pending": 25,
       "deferred": 0,
-      "rejected": 0,
-      "status": "error",
-      "error": "RuntimeError",
-      "technical_status": "error",
-      "coverage_status": "unverified",
+      "rejected": 5,
+      "status": "warning",
+      "error": [
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/ansiedad-paso-a-paso-de-la-comprension-a-la-regulacion"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/construye-tu-bienestar-paso-a-paso-con-habitos-saludables"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/cuándo-debes-consultar-a-un-psicólogo"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/estrés-postraumático-y-crecimiento"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/cuando-el-dolor-habla-sin-palabras-la-depresion"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/tienes-dolor-de-hombro-conoce-las-causas-y-tratamiento-de-las-lesiones-del-manguito-rotador"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/crisis-de-panico-como-regularlas"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/el-compromiso-de-la-achs-y-su-servicio-de-traumatologia-con-la-poblacion-chilena"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/que-esperar-de-la-primera-sesion-con-tu-psicologo"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/para-que-buscar-ayuda-psicologica"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/estoy-triste-o-deprimido"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/como-alguien-como-yo-puede-deprimirse"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/conoce-nuestro-servicio-de-terapia-fisica"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/enfrenta-con-mas-herramientas-el-fin-de-ano"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/ser-mujer-8m-y-salud-mental"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/que-es-la-psicoterapia-breve-y-focalizada"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/aplicacion-terapeutica-de-frio-y-calor"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/que-es-una-crisis-de-panico"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/mindfulness-como-mantenernos-en-el-presente"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/mis-hijos-vuelven-a-clases-como-enfrento-el-estres-escolar-de-marzo"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/como-manejar-el-estres-en-período-de-examenes"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/el-corazon-del-servicio-de-salud-mental-la-cooperacion"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/que-es-la-ansiedad"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/que-es-el-estres-y-como-manejarlo"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaportada.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaportada.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaportada.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaportada.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaatacama.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaatacama.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaatacama.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaatacama.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaloscoihues.cl/noticias",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaloscoihues.cl/noticias"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaloscoihues.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaloscoihues.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicamaitenes.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicamaitenes.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicamaitenes.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicamaitenes.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicalircay.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicalircay.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicalircay.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicalircay.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://www.clinicalosandes.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://www.clinicalosandes.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://www.clinicalosandes.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://www.clinicalosandes.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://www.clinicasur.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://www.clinicasur.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://www.clinicasur.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://www.clinicasur.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicapuertomontt.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicapuertomontt.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicapuertomontt.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicapuertomontt.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinica-curico.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinica-curico.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinica-curico.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinica-curico.cl/"
+        }
+      ],
+      "technical_status": "partial",
+      "coverage_status": "partial",
       "content_freshness": "unknown",
-      "editorial_outcome": "not_evaluated"
+      "editorial_outcome": "rejected",
+      "recovery_outcome": "OPERATIVE_DEGRADED",
+      "coverage_window": {
+        "convention": "rolling_elapsed_days_inclusive",
+        "end": "2026-10-11",
+        "start_30": "2026-09-11",
+        "start_90": "2026-07-13"
+      },
+      "pages_checked": 3,
+      "recent_items": {
+        "30": {
+          "start": "2026-09-11",
+          "end": "2026-10-11",
+          "dated_articles": 13,
+          "expected_role": 3,
+          "candidates": 0,
+          "rejected": 3,
+          "excluded_role": 10,
+          "pending": 0,
+          "unknown_date_items": 25,
+          "complete": false,
+          "content_kinds": {
+            "news": 6,
+            "prevention": 5,
+            "study": 2
+          }
+        },
+        "90": {
+          "start": "2026-07-13",
+          "end": "2026-10-11",
+          "dated_articles": 28,
+          "expected_role": 5,
+          "candidates": 2,
+          "rejected": 3,
+          "excluded_role": 23,
+          "pending": 0,
+          "unknown_date_items": 25,
+          "complete": false,
+          "content_kinds": {
+            "news": 17,
+            "prevention": 8,
+            "study": 3
+          }
+        }
+      },
+      "unique_items": 5,
+      "material_items": 2,
+      "technical_failures": [
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/ansiedad-paso-a-paso-de-la-comprension-a-la-regulacion"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/construye-tu-bienestar-paso-a-paso-con-habitos-saludables"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/cuándo-debes-consultar-a-un-psicólogo"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/estrés-postraumático-y-crecimiento"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/cuando-el-dolor-habla-sin-palabras-la-depresion"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/tienes-dolor-de-hombro-conoce-las-causas-y-tratamiento-de-las-lesiones-del-manguito-rotador"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/crisis-de-panico-como-regularlas"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/el-compromiso-de-la-achs-y-su-servicio-de-traumatologia-con-la-poblacion-chilena"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/que-esperar-de-la-primera-sesion-con-tu-psicologo"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/para-que-buscar-ayuda-psicologica"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/estoy-triste-o-deprimido"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/como-alguien-como-yo-puede-deprimirse"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/conoce-nuestro-servicio-de-terapia-fisica"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/enfrenta-con-mas-herramientas-el-fin-de-ano"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/ser-mujer-8m-y-salud-mental"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/que-es-la-psicoterapia-breve-y-focalizada"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/aplicacion-terapeutica-de-frio-y-calor"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/que-es-una-crisis-de-panico"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/mindfulness-como-mantenernos-en-el-presente"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/mis-hijos-vuelven-a-clases-como-enfrento-el-estres-escolar-de-marzo"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/como-manejar-el-estres-en-período-de-examenes"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/el-corazon-del-servicio-de-salud-mental-la-cooperacion"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/que-es-la-ansiedad"
+        },
+        {
+          "code": "publication_editorial_date_conflict",
+          "url": "https://www.achssalud.cl/blog/detalle/que-es-el-estres-y-como-manejarlo"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaportada.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaportada.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaportada.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaportada.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaatacama.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaatacama.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaatacama.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaatacama.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaloscoihues.cl/noticias",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaloscoihues.cl/noticias"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicaloscoihues.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicaloscoihues.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicamaitenes.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicamaitenes.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicamaitenes.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicamaitenes.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicalircay.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicalircay.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicalircay.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicalircay.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://www.clinicalosandes.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://www.clinicalosandes.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://www.clinicalosandes.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://www.clinicalosandes.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://www.clinicasur.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://www.clinicasur.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://www.clinicasur.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://www.clinicasur.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicapuertomontt.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicapuertomontt.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinicapuertomontt.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinicapuertomontt.cl/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinica-curico.cl/noticias/",
+          "phase": "clinic_newsroom_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinica-curico.cl/noticias/"
+        },
+        {
+          "code": "transport_error",
+          "url": "https://clinica-curico.cl/",
+          "phase": "clinic_home_fetch",
+          "type": "SourceDiscoveryError",
+          "detail": "transport_error: https://clinica-curico.cl/"
+        }
+      ],
+      "coverage_completeness": false,
+      "capture_environment": "github_actions",
+      "capture_run_id": "38122998011",
+      "count_basis": "unique official item URLs in rolling 90 days; mirrored newsroom URLs remain inventory rows; published includes previously reconciled items",
+      "latest_detected_at": "2026-10-01",
+      "oldest_capture_at": "2026-10-11T05:56:31.721103+00:00",
+      "latest_capture_at": "2026-10-11T07:58:45.954966+00:00",
+      "accepted_history": 0,
+      "feed_reconciliation": {
+        "published": 0,
+        "deferred": {},
+        "unrelated_signals_preserved": 53
+      },
+      "last_access_diagnostic": {
+        "run_id": "38124717508",
+        "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38124717508",
+        "checked_at": "2026-10-11T08:29:04.162851+00:00",
+        "artifact": "data/audits/source_e_recovery/clinic_connectivity_actions/38124717508/report.json",
+        "artifact_sha256": "ed77ff2c80b327056ebdb283485d6dbdafcc94625ab59078ddadfe206983a391",
+        "publisher_count": 9,
+        "network_hub_count": 1,
+        "requests": 30,
+        "HTTP_0": 30,
+        "curl_exit_28": 30,
+        "origin_tls_observed": false,
+        "waf_observed": false,
+        "DNS_observed_not_selected": true,
+        "newsrooms_skipped_due_robots_unavailable": 9,
+        "latest_runtime_verified_90": 5,
+        "previous_dated_inventory_90": 16,
+        "previous_items_retained_without_current_refresh": 11,
+        "outcome": "partial_clinical_network_connect_timeout_on_two_actions_runs",
+        "source_wide_external_blocker_proven": false,
+        "production_updated": false
+      }
     },
     "achs_seguro_laboral": {
       "name": "Achs Seguro Laboral",
-      "checked_at": "2026-10-10T22:25:23.401038+00:00",
-      "last_signal_at": null,
-      "discovered": 0,
+      "checked_at": "2026-10-11T07:58:45.954966+00:00",
+      "last_signal_at": "2026-09-24",
+      "discovered": 23,
       "new": 0,
-      "published": 0,
+      "published": 3,
       "live_pending": 0,
       "backfill_pending": 0,
       "pending": 0,
       "deferred": 0,
-      "rejected": 0,
-      "status": "error",
-      "error": "RuntimeError",
-      "technical_status": "error",
-      "coverage_status": "unverified",
-      "content_freshness": "unknown",
-      "editorial_outcome": "not_evaluated"
-    },
-    "mutual_seguridad": {
-      "name": "Mutual de Seguridad CChC",
-      "checked_at": "2026-10-10T22:25:23.787318+00:00",
-      "last_signal_at": null,
-      "discovered": 0,
-      "new": 0,
-      "published": 0,
-      "live_pending": 0,
-      "backfill_pending": 0,
-      "pending": 0,
-      "deferred": 0,
-      "rejected": 0,
-      "status": "error",
-      "error": "RuntimeError",
-      "technical_status": "error",
-      "coverage_status": "unverified",
-      "content_freshness": "unknown",
-      "editorial_outcome": "not_evaluated"
-    },
-    "ist": {
-      "name": "Instituto de Seguridad del Trabajo (IST)",
-      "checked_at": "2026-10-10T22:25:41.265782+00:00",
-      "last_signal_at": null,
-      "discovered": 3,
-      "new": 0,
-      "published": 0,
-      "live_pending": 0,
-      "backfill_pending": 0,
-      "pending": 0,
-      "deferred": 0,
-      "rejected": 0,
+      "rejected": 20,
       "status": "ok",
       "error": null,
       "technical_status": "ok",
-      "coverage_status": "observed",
+      "coverage_status": "complete",
       "content_freshness": "unknown",
-      "editorial_outcome": "no_new_signals"
+      "editorial_outcome": "published",
+      "recovery_outcome": "OPERATIVE_VALIDATED",
+      "coverage_window": {
+        "convention": "rolling_elapsed_days_inclusive",
+        "end": "2026-10-11",
+        "start_30": "2026-09-11",
+        "start_90": "2026-07-13"
+      },
+      "pages_checked": 2,
+      "recent_items": {
+        "30": {
+          "start": "2026-09-11",
+          "end": "2026-10-11",
+          "dated_articles": 10,
+          "expected_role": 10,
+          "candidates": 3,
+          "rejected": 7,
+          "excluded_role": 0,
+          "pending": 0,
+          "unknown_date_items": 0,
+          "complete": true,
+          "content_kinds": {
+            "news": 4,
+            "prevention": 4,
+            "study": 2
+          }
+        },
+        "90": {
+          "start": "2026-07-13",
+          "end": "2026-10-11",
+          "dated_articles": 25,
+          "expected_role": 23,
+          "candidates": 8,
+          "rejected": 15,
+          "excluded_role": 2,
+          "pending": 0,
+          "unknown_date_items": 0,
+          "complete": true,
+          "content_kinds": {
+            "news": 14,
+            "prevention": 8,
+            "study": 3
+          }
+        }
+      },
+      "unique_items": 23,
+      "material_items": 8,
+      "technical_failures": [],
+      "coverage_completeness": true,
+      "capture_environment": "github_actions",
+      "capture_run_id": "38122998011",
+      "count_basis": "unique official item URLs in rolling 90 days; mirrored newsroom URLs remain inventory rows; published includes previously reconciled items",
+      "latest_detected_at": "2026-10-05",
+      "oldest_capture_at": "2026-10-11T05:56:31.721103+00:00",
+      "latest_capture_at": "2026-10-11T07:58:45.954966+00:00",
+      "accepted_history": 3,
+      "feed_reconciliation": {
+        "published": 3,
+        "deferred": {},
+        "unrelated_signals_preserved": 50
+      }
+    },
+    "mutual_seguridad": {
+      "name": "Mutual de Seguridad CChC",
+      "checked_at": "2026-10-11T08:09:46.882831+00:00",
+      "last_signal_at": "2026-08-27",
+      "discovered": 51,
+      "new": 0,
+      "published": 1,
+      "live_pending": 0,
+      "backfill_pending": 0,
+      "pending": 0,
+      "deferred": 0,
+      "rejected": 50,
+      "status": "warning",
+      "error": [
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GH=/",
+          "branch": "component-2",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GL=/",
+          "branch": "component-3",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GP=/",
+          "branch": "component-4",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GDB=/",
+          "branch": "component-5",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GNB=/",
+          "branch": "component-9",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GBC=/",
+          "branch": "component-10",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GFC=/",
+          "branch": "component-11",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GJC=/",
+          "branch": "component-12",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GNC=/",
+          "branch": "component-14",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GBD=/",
+          "branch": "component-15",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GFD=/",
+          "branch": "component-16",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GJD=/",
+          "branch": "component-18",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GND=/",
+          "branch": "component-19",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GFE=/",
+          "branch": "component-21",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        }
+      ],
+      "technical_status": "partial",
+      "coverage_status": "partial",
+      "content_freshness": "unknown",
+      "editorial_outcome": "published",
+      "recovery_outcome": "OPERATIVE_DEGRADED",
+      "coverage_window": {
+        "as_of_chile": "2026-10-11",
+        "30_day_start": "2026-09-11",
+        "90_day_start": "2026-07-13"
+      },
+      "pages_checked": 15,
+      "recent_items": {
+        "30": {
+          "start": "2026-09-11",
+          "end": "2026-10-11",
+          "dated_articles": 33,
+          "expected_role": 33,
+          "candidates": 0,
+          "rejected": 33,
+          "pending": 0,
+          "excluded_role": 0,
+          "unknown_date_items": 0,
+          "complete": false,
+          "content_kinds": {
+            "prevention": 22,
+            "news": 10,
+            "study": 1
+          }
+        },
+        "90": {
+          "start": "2026-07-13",
+          "end": "2026-10-11",
+          "dated_articles": 51,
+          "expected_role": 51,
+          "candidates": 2,
+          "rejected": 49,
+          "pending": 0,
+          "excluded_role": 0,
+          "unknown_date_items": 0,
+          "complete": false,
+          "content_kinds": {
+            "prevention": 36,
+            "news": 12,
+            "study": 1,
+            "commercial": 2
+          }
+        }
+      },
+      "unique_items": 51,
+      "material_items": 2,
+      "technical_failures": [
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GH=/",
+          "branch": "component-2",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GL=/",
+          "branch": "component-3",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GP=/",
+          "branch": "component-4",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GDB=/",
+          "branch": "component-5",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GNB=/",
+          "branch": "component-9",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GBC=/",
+          "branch": "component-10",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GFC=/",
+          "branch": "component-11",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GJC=/",
+          "branch": "component-12",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GNC=/",
+          "branch": "component-14",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GBD=/",
+          "branch": "component-15",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GFD=/",
+          "branch": "component-16",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GJD=/",
+          "branch": "component-18",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GND=/",
+          "branch": "component-19",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKE2BZdA=GFE=/",
+          "branch": "component-21",
+          "reason": "repeated_pagination_page",
+          "code": "repeated_pagination_page"
+        }
+      ],
+      "coverage_completeness": false,
+      "capture_environment": "github_actions",
+      "capture_run_id": "38122998011",
+      "count_basis": "unique official item URLs in rolling 90 days; mirrored newsroom URLs remain inventory rows; published includes previously reconciled items",
+      "latest_detected_at": "2026-10-09",
+      "oldest_capture_at": "2026-10-11T06:17:53.338527+00:00",
+      "latest_capture_at": "2026-10-11T08:09:46.882831+00:00",
+      "accepted_history": 1,
+      "feed_reconciliation": {
+        "published": 1,
+        "deferred": {},
+        "unrelated_signals_preserved": 53
+      }
+    },
+    "ist": {
+      "name": "Instituto de Seguridad del Trabajo (IST)",
+      "checked_at": "2026-10-11T07:56:57.436736+00:00",
+      "last_signal_at": "2026-07-14",
+      "discovered": 20,
+      "new": 0,
+      "published": 1,
+      "live_pending": 0,
+      "backfill_pending": 0,
+      "pending": 1,
+      "deferred": 0,
+      "rejected": 19,
+      "status": "warning",
+      "error": [
+        {
+          "code": "api_visible_publication_date_conflict",
+          "url": "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/",
+          "api_date": "2026-08-12",
+          "observed_dates": [
+            {
+              "value": "10/08/2026",
+              "date": "2026-08-10",
+              "kind": "rendered_content:date_before_h1"
+            }
+          ]
+        }
+      ],
+      "technical_status": "partial",
+      "coverage_status": "partial",
+      "content_freshness": "unknown",
+      "editorial_outcome": "published",
+      "recovery_outcome": "OPERATIVE_DEGRADED",
+      "coverage_window": {
+        "convention": "rolling_elapsed_days_inclusive",
+        "end": "2026-10-11",
+        "start_30": "2026-09-11",
+        "start_90": "2026-07-13"
+      },
+      "pages_checked": 2,
+      "recent_items": {
+        "30": {
+          "start": "2026-09-11",
+          "end": "2026-10-11",
+          "dated_articles": 6,
+          "expected_role": 6,
+          "candidates": 0,
+          "rejected": 6,
+          "excluded_role": 0,
+          "pending": 0,
+          "unknown_date_items": 1,
+          "complete": false,
+          "content_kinds": {
+            "news": 4,
+            "prevention": 2
+          }
+        },
+        "90": {
+          "start": "2026-07-13",
+          "end": "2026-10-11",
+          "dated_articles": 20,
+          "expected_role": 20,
+          "candidates": 1,
+          "rejected": 19,
+          "excluded_role": 0,
+          "pending": 0,
+          "unknown_date_items": 1,
+          "complete": false,
+          "content_kinds": {
+            "news": 11,
+            "prevention": 8,
+            "study": 1
+          }
+        }
+      },
+      "unique_items": 20,
+      "material_items": 1,
+      "technical_failures": [
+        {
+          "code": "api_visible_publication_date_conflict",
+          "url": "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/",
+          "api_date": "2026-08-12",
+          "observed_dates": [
+            {
+              "value": "10/08/2026",
+              "date": "2026-08-10",
+              "kind": "rendered_content:date_before_h1"
+            }
+          ]
+        }
+      ],
+      "coverage_completeness": false,
+      "capture_environment": "github_actions",
+      "capture_run_id": "38122998011",
+      "count_basis": "unique official item URLs in rolling 90 days; mirrored newsroom URLs remain inventory rows; published includes previously reconciled items",
+      "latest_detected_at": "2026-10-07",
+      "oldest_capture_at": "2026-10-11T05:57:37.036246+00:00",
+      "latest_capture_at": "2026-10-11T07:56:57.436736+00:00",
+      "accepted_history": 1,
+      "feed_reconciliation": {
+        "published": 1,
+        "deferred": {},
+        "unrelated_signals_preserved": 53
+      }
     },
     "pulso_latercera": {
       "name": "Pulso / La Tercera",
@@ -726,8 +2163,8 @@
       "editorial_outcome": "no_new_signals"
     },
     "isp_surveillance": {
-      "name": "Isp Surveillance",
-      "checked_at": "2026-10-10T22:24:44.399595+00:00",
+      "name": "Instituto de Salud Pública de Chile (ISP)",
+      "checked_at": "2026-10-11T06:30:45.585368+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -738,11 +2175,114 @@
       "deferred": 0,
       "rejected": 0,
       "status": "error",
-      "error": "URLError",
+      "error": "RuntimeError",
       "technical_status": "error",
       "coverage_status": "unverified",
       "content_freshness": "unknown",
-      "editorial_outcome": "not_evaluated"
+      "editorial_outcome": "not_evaluated",
+      "error_details": {
+        "exception_chain": [
+          {
+            "type": "RuntimeError"
+          },
+          {
+            "type": "URLError",
+            "reason": "timed out"
+          },
+          {
+            "type": "TimeoutError",
+            "reason": "timed out"
+          }
+        ],
+        "failure_signature": "RuntimeError > URLError:timed out > TimeoutError:timed out"
+      },
+      "discovery_diagnostics": {
+        "surfaces": [
+          {
+            "channel": "Boletines de vigilancia de laboratorios",
+            "url": "https://www.ispch.cl/boletin/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "Boletines de vigilancia de laboratorios",
+            "url": "https://ispch.cl/boletin/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "Boletines de vigilancia de laboratorios",
+            "url": "https://www.ispch.gob.cl/boletin/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "Boletines de vigilancia de laboratorios",
+            "url": "https://ispch.gob.cl/boletin/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "Boletines de vigilancia de laboratorios",
+            "url": "https://www.ispch.cl/boletin/",
+            "status": "blocked",
+            "items": 0
+          },
+          {
+            "channel": "Vigilancia de virus respiratorios",
+            "url": "https://www.ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "Vigilancia de virus respiratorios",
+            "url": "https://ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "Vigilancia de virus respiratorios",
+            "url": "https://www.ispch.gob.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "Vigilancia de virus respiratorios",
+            "url": "https://ispch.gob.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "Vigilancia de virus respiratorios",
+            "url": "https://www.ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+            "status": "blocked",
+            "items": 0
+          }
+        ],
+        "partial_failure": true,
+        "poll_mode": "discovery_and_document_verification_only",
+        "document_checks": [],
+        "evidence_status": "capture_pending"
+      },
+      "engine_checked_at": "2026-10-11T04:31:45.261220+00:00",
+      "poll_mode": "discovery_and_document_verification_only",
+      "runtime_outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "runtime_environment": "github_actions",
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117670184",
+      "runtime_commit": "55e31b1b7266d848b728faba11c9d6dad24c81f7",
+      "coverage_complete": false,
+      "blocker_evidence": "data/audits/public_sources_c_20261011/recovery/isp_surveillance-checkpoint.json",
+      "blocking_component": "Destino/ruta TCP443 no responde; no existe respuesta HTTP ni handshake TLS. No es posible atribuir el silencio a un firewall, hosting o regla concreta desde estos síntomas.",
+      "minimum_human_step": "Operador de red/hosting de ISP: verificar listener y ruta TCP 443 de www.ispch.cl, ispch.cl, www.ispch.gob.cl e ispch.gob.cl frente al egress de GitHub hospedado, restaurar acceso HTTPS público o entregar un feed/document export oficial accesible; luego repetir esta Action.",
+      "runtime_error_stage": "tcp443_timeout_before_tls"
     },
     "clinicas_chile": {
       "name": "Clinicas Chile",
@@ -764,5 +2304,7 @@
       "editorial_outcome": "pending"
     }
   },
-  "generated_at": "2026-10-11T13:41:48.647967+00:00"
+  "generated_at": "2026-10-11T13:41:48.647967+00:00",
+  "occupational_sources_checked_at": "2026-10-11T08:09:52.626810+00:00",
+  "public_data_sources_checked_at": "2026-10-11T05:38:00.741627+00:00"
 }

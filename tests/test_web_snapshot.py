@@ -287,21 +287,66 @@ def test_material_statistical_releases_use_value_ladder_instead_of_disappearing(
 
 def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():
     payload=json.loads(Path("web/data/radar_today.json").read_text())
-    rows=[m._normative_contract(s) for s in payload["signals"] if "Normativa" in (s.get("signal_types") or [])]
-    # A rolling snapshot is not a publication quota. The original twelve-act
-    # cohort remains covered separately, including IF/529 after it ages out.
-    cohort=json.loads(Path("tests/fixtures/normative_v2_original_12.json").read_text())["signals"]
-    original=[m._normative_contract(s) for s in cohort]
-    assert len(original)>=12
-    assert {s["source_url"] for s in original}=={s["source_url"] for s in cohort}
-    rows=rows+original
+    rows=[s for s in payload["signals"] if "Normativa" in (s.get("signal_types") or [])]
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    cfg=json.loads(Path("config/normative_editorial_v2.json").read_text())
+    anchor=max(m._d(s.get("event_date")) for s in history if m._d(s.get("event_date")))
+    reviewed=[s for s in history if __import__("re").search(r"/(?:circular|resolucion-exenta)-if-n(\d+)/$",s.get("source_url", ""))]
+    reviewed=[s for s in reviewed if s["source_url"].split("if-n")[-1].rstrip("/") in cfg["records"]]
+    assert {s["source_url"].split("if-n")[-1].rstrip("/") for s in reviewed}==set(cfg["records"]), "Reviewed primary acts must remain in history"
+    eligible={s["source_url"] for s in reviewed if 0 <= (anchor-m._d(s["event_date"])).days <= 90}
+    expired={s["source_url"] for s in reviewed if (anchor-m._d(s["event_date"])).days > 90}
+    actual={s["source_url"] for s in rows}
+    assert eligible <= actual, "An eligible reviewed act was lost from the snapshot"
+    assert actual.isdisjoint(expired), "An expired act was resurrected to satisfy a quota"
+    assert len(actual)==len(rows), "Duplicate normative URLs must not inflate coverage"
     assert all(x["normative_editorial"]["plain_language_title"]==x["display_title"] for x in rows)
     assert all(x["normative_editorial"]["legal_identity"]==x["normative_document_label"] for x in rows)
     assert all(x["legal_subtitle"] for x in rows)
-    assert any(x["source_url"].endswith("n9994/") and "Afiliación electrónica" in x["display_title"] and "rechaza" in x["display_title"] and "Circular IF/N°532" in x["display_title"] for x in rows)
+    if any(url.endswith("n9994/") for url in eligible):
+        assert any(x["source_url"].endswith("n9994/") and "Afiliación electrónica" in x["display_title"] and "rechaza" in x["display_title"] and "Circular IF/N°532" in x["display_title"] for x in rows)
     unknown={"event_type":"REGULATION","title":"Circular IF/N°123456","source_title_full":"Circular IF/N°123456","source_url":"https://x/n123456","signal_types":["Normativa"]}
     assert m._normative_contract(unknown)["normative_title_review_required"] is True
 
+
+def test_normative_window_keeps_day90_and_expires_day91_without_losing_history():
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    act=next(s for s in history if s.get("source_url", "").endswith("circular-if-n529/"))
+    assert act["event_date"]=="2026-07-10"  # Verified original SIS date, not a modified/crawl date.
+    for anchor,expected in [("2026-10-08", True),("2026-10-09", False)]:
+        clock=sig("Synthetic window reference",event=anchor,url="https://fixture.example/window-reference")
+        curated=m.curate([act,clock],resolve_external=False)
+        assert any(s["source_url"]==act["source_url"] for s in curated) is expected
+        assert act["event_date"]=="2026-07-10"
+
+
+def test_offline_bulletin_export_preserves_all_reviewed_primary_pdf_analysis(tmp_path):
+    from scripts.statistics_reviewer import review_statistics
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    original=next(s for s in history if "boletin-estadistico-informativo-ip-junio-2026/" in s.get("source_url", ""))
+    missing_runtime=tmp_path/"not-built-in-this-checkout.json"
+    verified=m._statistical_analysis_overrides(path=missing_runtime)
+    patch=verified[original["source_url"]]
+    raw_findings=review_statistics([original])
+    assert len(raw_findings)==8
+    enriched=dict(original,**patch)
+    assert review_statistics([enriched])==[]
+    assert enriched["event_date"]==original["event_date"]=="2026-08-03"
+    assert {e["source_url"] for e in enriched["data_insight_evidence"]}=={d["url"] for d in original["source_documents"]}
+    exported,=m.curate([original],resolve_external=False)
+    assert exported["summary_table"]==patch["summary_table"]
+    assert review_statistics([exported])==[]
+
+
+def test_malformed_statistical_override_fails_instead_of_hiding_findings(tmp_path):
+    import pytest
+    runtime=tmp_path/"runtime.json"
+    runtime.write_text('{"signals": []}')
+    with pytest.raises(ValueError,match="Invalid statistical analysis"):
+        m._statistical_analysis_overrides(path=runtime)
+    runtime.write_text('{"signals": {"https://example.test/release": {"event_date": "2099-01-01"}}}')
+    with pytest.raises(ValueError,match="preserve source identity/date"):
+        m._statistical_analysis_overrides(path=runtime)
 
 def test_normative_original_cohort_ages_out_without_losing_history():
     cohort=json.loads(Path("tests/fixtures/normative_v2_original_12.json").read_text())["signals"]

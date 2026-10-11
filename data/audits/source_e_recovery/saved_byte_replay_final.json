@@ -1,0 +1,342 @@
+{
+  "run_id": 38122998011,
+  "candidate_sha": "f8c40481183a281422a016416e767110c766d781",
+  "as_of": "2026-10-11",
+  "mode": "read_only_replay",
+  "paid_api_calls": 0,
+  "canonical_pre_post_equal": true,
+  "canonical_hashes_before": {
+    "data/state/pending_queue.json": "adbb9a1b024911f466016f160d59082667e9b90e41ef6046a0b668291e374e7d",
+    "data/state/occupational_source_discovery.json": "6857cd373d68be87d8ab6502e0c92c32f2bd7650bd76da7469a1830d3366e6ec",
+    "data/history/superintendencia_signals.json": "54f1d9d2f3f5021c142bbf7a28540b7eea44635b1561729220ddf64e37b21fc0",
+    "data/source_health.json": "d5f65e9383a4882d74da8619c9e4cfe9876714a860bbfe94c68559867f8dbf5d",
+    "web/data/source_health.json": "d5640a72e3c17e0dfb64520de70dcdde13a179df6eb79e628bbd558a75e4dcf8",
+    "web/data/product.json": "b40de90d4c482cb0ee4f47c181fafa4c1f308deff676665225ad82c10f7f301d",
+    "web/data/radar_today.json": "d73ecca3af2b5cfe57046a08325e7af8df467e1360f3b845a5a10eb0d47d9f94",
+    "data/ai_usage/2026-10.json": "e94cca10c44d4dedf949d342dfd31939fe891f64796b135ec30dcd7862d3810f",
+    "data/ai_usage/occupational_recovery_2026_10.json": "90c56d1b430ab52aa66023f4378360aabaea5803274b4fc23232bc338d5fd7a8"
+  },
+  "canonical_hashes_after": {
+    "data/state/pending_queue.json": "adbb9a1b024911f466016f160d59082667e9b90e41ef6046a0b668291e374e7d",
+    "data/state/occupational_source_discovery.json": "6857cd373d68be87d8ab6502e0c92c32f2bd7650bd76da7469a1830d3366e6ec",
+    "data/history/superintendencia_signals.json": "54f1d9d2f3f5021c142bbf7a28540b7eea44635b1561729220ddf64e37b21fc0",
+    "data/source_health.json": "d5f65e9383a4882d74da8619c9e4cfe9876714a860bbfe94c68559867f8dbf5d",
+    "web/data/source_health.json": "d5640a72e3c17e0dfb64520de70dcdde13a179df6eb79e628bbd558a75e4dcf8",
+    "web/data/product.json": "b40de90d4c482cb0ee4f47c181fafa4c1f308deff676665225ad82c10f7f301d",
+    "web/data/radar_today.json": "d73ecca3af2b5cfe57046a08325e7af8df467e1360f3b845a5a10eb0d47d9f94",
+    "data/ai_usage/2026-10.json": "e94cca10c44d4dedf949d342dfd31939fe891f64796b135ec30dcd7862d3810f",
+    "data/ai_usage/occupational_recovery_2026_10.json": "90c56d1b430ab52aa66023f4378360aabaea5803274b4fc23232bc338d5fd7a8"
+  },
+  "editorial_runtime": {
+    "credentials_available": false,
+    "model": "gpt-5.6-luna",
+    "budget_before": {
+      "run": {
+        "deep": {
+          "attempted": 0,
+          "successful": 0,
+          "failed": 0
+        },
+        "fast": {
+          "attempted": 0,
+          "successful": 0,
+          "failed": 0
+        }
+      },
+      "month": {
+        "deep": {
+          "attempted": 14,
+          "successful": 14,
+          "failed": 0
+        },
+        "fast": {
+          "attempted": 47,
+          "successful": 47,
+          "failed": 0
+        }
+      }
+    },
+    "budget_after": {
+      "run": {
+        "deep": {
+          "attempted": 0,
+          "successful": 0,
+          "failed": 0
+        },
+        "fast": {
+          "attempted": 0,
+          "successful": 0,
+          "failed": 0
+        }
+      },
+      "month": {
+        "deep": {
+          "attempted": 14,
+          "successful": 14,
+          "failed": 0
+        },
+        "fast": {
+          "attempted": 47,
+          "successful": 47,
+          "failed": 0
+        }
+      }
+    },
+    "same_failure_limit": 3
+  },
+  "source_reports": {
+    "achs_seguro_laboral": {
+      "coverage_complete": true,
+      "metrics": {
+        "30": {
+          "start": "2026-09-11",
+          "end": "2026-10-11",
+          "dated_articles": 10,
+          "expected_role": 10,
+          "candidates": 3,
+          "rejected": 7,
+          "excluded_role": 0,
+          "pending": 0,
+          "unknown_date_items": 0,
+          "complete": true,
+          "content_kinds": {
+            "news": 4,
+            "prevention": 4,
+            "study": 2
+          }
+        },
+        "90": {
+          "start": "2026-07-13",
+          "end": "2026-10-11",
+          "dated_articles": 25,
+          "expected_role": 23,
+          "candidates": 8,
+          "rejected": 15,
+          "excluded_role": 2,
+          "pending": 0,
+          "unknown_date_items": 0,
+          "complete": true,
+          "content_kinds": {
+            "news": 14,
+            "prevention": 8,
+            "study": 3
+          }
+        }
+      },
+      "reconciliation": {
+        "omitted_before": 0,
+        "material_omitted_before": 0,
+        "states": {
+          "rejected": 20,
+          "published": 3,
+          "excluded": 2,
+          "outside_window": 15
+        },
+        "detected_before": 23
+      },
+      "capture_checked_at": "2026-10-11T07:58:45.954966+00:00",
+      "oldest_capture_at": "2026-10-11T05:56:31.721103+00:00"
+    },
+    "clinicas_achs_salud": {
+      "coverage_complete": false,
+      "metrics": {
+        "30": {
+          "start": "2026-09-11",
+          "end": "2026-10-11",
+          "dated_articles": 13,
+          "expected_role": 3,
+          "candidates": 0,
+          "rejected": 3,
+          "excluded_role": 10,
+          "pending": 0,
+          "unknown_date_items": 25,
+          "complete": false,
+          "content_kinds": {
+            "news": 6,
+            "prevention": 5,
+            "study": 2
+          }
+        },
+        "90": {
+          "start": "2026-07-13",
+          "end": "2026-10-11",
+          "dated_articles": 28,
+          "expected_role": 5,
+          "candidates": 2,
+          "rejected": 3,
+          "excluded_role": 23,
+          "pending": 0,
+          "unknown_date_items": 25,
+          "complete": false,
+          "content_kinds": {
+            "news": 17,
+            "prevention": 8,
+            "study": 3
+          }
+        }
+      },
+      "reconciliation": {
+        "omitted_before": 3,
+        "material_omitted_before": 0,
+        "states": {
+          "excluded": 23,
+          "rejected": 5,
+          "outside_window": 30,
+          "pending": 25
+        },
+        "detected_before": 2
+      },
+      "capture_checked_at": "2026-10-11T07:58:45.954966+00:00",
+      "oldest_capture_at": "2026-10-11T05:56:31.721103+00:00"
+    },
+    "ist": {
+      "coverage_complete": false,
+      "metrics": {
+        "30": {
+          "start": "2026-09-11",
+          "end": "2026-10-11",
+          "dated_articles": 6,
+          "expected_role": 6,
+          "candidates": 0,
+          "rejected": 6,
+          "excluded_role": 0,
+          "pending": 0,
+          "unknown_date_items": 1,
+          "complete": false,
+          "content_kinds": {
+            "news": 4,
+            "prevention": 2
+          }
+        },
+        "90": {
+          "start": "2026-07-13",
+          "end": "2026-10-11",
+          "dated_articles": 20,
+          "expected_role": 20,
+          "candidates": 1,
+          "rejected": 19,
+          "excluded_role": 0,
+          "pending": 0,
+          "unknown_date_items": 1,
+          "complete": false,
+          "content_kinds": {
+            "news": 11,
+            "prevention": 8,
+            "study": 1
+          }
+        }
+      },
+      "reconciliation": {
+        "omitted_before": 0,
+        "material_omitted_before": 0,
+        "states": {
+          "rejected": 19,
+          "pending": 1,
+          "outside_window": 16,
+          "published": 1
+        },
+        "detected_before": 20
+      },
+      "capture_checked_at": "2026-10-11T07:56:57.436736+00:00",
+      "oldest_capture_at": "2026-10-11T05:57:37.036246+00:00"
+    },
+    "mutual_seguridad": {
+      "coverage_complete": false,
+      "metrics": {
+        "30": {
+          "start": "2026-09-11",
+          "end": "2026-10-11",
+          "dated_articles": 33,
+          "expected_role": 33,
+          "candidates": 0,
+          "rejected": 33,
+          "pending": 0,
+          "excluded_role": 0,
+          "unknown_date_items": 0,
+          "complete": false,
+          "content_kinds": {
+            "prevention": 22,
+            "news": 10,
+            "study": 1
+          }
+        },
+        "90": {
+          "start": "2026-07-13",
+          "end": "2026-10-11",
+          "dated_articles": 51,
+          "expected_role": 51,
+          "candidates": 2,
+          "rejected": 49,
+          "pending": 0,
+          "excluded_role": 0,
+          "unknown_date_items": 0,
+          "complete": false,
+          "content_kinds": {
+            "prevention": 36,
+            "news": 12,
+            "study": 1,
+            "commercial": 2
+          }
+        }
+      },
+      "reconciliation": {
+        "omitted_before": 0,
+        "material_omitted_before": 0,
+        "states": {
+          "rejected": 50,
+          "published": 1,
+          "outside_window": 33
+        },
+        "detected_before": 51
+      },
+      "capture_checked_at": "2026-10-11T08:09:46.882831+00:00",
+      "oldest_capture_at": "2026-10-11T06:17:53.338527+00:00"
+    }
+  },
+  "export_first": {
+    "published": 5,
+    "deferred": {},
+    "snapshot_changed": false
+  },
+  "export_second": {
+    "published": 5,
+    "deferred": {},
+    "snapshot_changed": false
+  },
+  "publications_verified": 5,
+  "baseline_preservation": {
+    "data/state/pending_queue.json": {
+      "before": 2913,
+      "after": 3020,
+      "all_original_rows_exact": true
+    },
+    "data/history/superintendencia_signals.json": {
+      "before": 733,
+      "after": 738,
+      "all_original_rows_exact": true
+    },
+    "web/data/radar_today.json": {
+      "before": 49,
+      "after": 54,
+      "all_original_rows_exact": true
+    },
+    "data/source_health.json": {
+      "unrelated_source_rows": 23,
+      "all_unrelated_rows_exact": true
+    },
+    "web/data/source_health.json": {
+      "unrelated_source_rows": 23,
+      "all_unrelated_rows_exact": true
+    },
+    "web/data/product.json": {
+      "unrelated_source_rows": 7,
+      "all_unrelated_rows_exact": true
+    }
+  },
+  "reviewer_artifact": "data/audits/source_e_recovery/reviewer_final.json",
+  "reviewer_artifact_sha256": "36a5e2ccca38d598f49a74e4baf8c28fb5c67dc443c0d042535ead48e5d1bfb8",
+  "clinical_connectivity_diagnostic_pending": false,
+  "clinic_diagnostic_run": 38124717508,
+  "network_calls": 0,
+  "production_updated": false
+}

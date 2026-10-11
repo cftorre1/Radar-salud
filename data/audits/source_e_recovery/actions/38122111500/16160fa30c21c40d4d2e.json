@@ -1,0 +1,68 @@
+{
+  "url": "https://clinicalosandes.cl/",
+  "user_agent": "identified",
+  "captured_at": "2026-10-11T07:42:39.344590+00:00",
+  "hops": [
+    {
+      "url": "https://clinicalosandes.cl/",
+      "http_status": 301,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 301 ",
+          "content-type": "text/html; charset=UTF-8",
+          "location": "https://www.clinicalosandes.cl/",
+          "cache-control": "public, max-age=0",
+          "content-length": "0",
+          "date": "Sun, 11 Oct 2026 07:42:41 GMT",
+          "server": "LiteSpeed",
+          "strict-transport-security": "max-age=31536000; includeSubDomains; preload"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "waf": null,
+      "error": null,
+      "body_file": "16160fa30c21c40d4d2e-0.body"
+    },
+    {
+      "url": "https://www.clinicalosandes.cl/",
+      "http_status": 200,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 200 ",
+          "last-modified": "Fri, 09 Oct 2026 20:03:02 GMT",
+          "content-type": "text/html; charset=UTF-8",
+          "cache-control": "public, max-age=0",
+          "date": "Sun, 11 Oct 2026 07:42:42 GMT",
+          "server": "LiteSpeed",
+          "strict-transport-security": "max-age=31536000; includeSubDomains; preload"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 574130,
+      "sha256": "a168b301f433cc0689373c501eecca150f209114ff631d5b565ff73f59c021d9",
+      "waf": null,
+      "error": null,
+      "body_file": "16160fa30c21c40d4d2e-1.body"
+    }
+  ],
+  "stop_reason": "response_captured",
+  "final_url": "https://www.clinicalosandes.cl/",
+  "http_status": 200,
+  "waf": null
+}

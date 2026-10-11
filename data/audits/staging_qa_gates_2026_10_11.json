@@ -1,0 +1,403 @@
+{
+  "at": "2026-10-11T12:52:18.984015+00:00",
+  "base_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
+  "branch": "codex/staging-qa-gates-20261011",
+  "status": "READY_FOR_INTEGRATION",
+  "preview": {
+    "run_id": 38128983053,
+    "job_id": 114439217514,
+    "python": "265passed/1failed/1skip",
+    "browser": "SKIPPED",
+    "reviewer": "SKIPPED"
+  },
+  "local_python": "312 passed / 0 failed / 1 justified skip on reconciled staging",
+  "normative": {
+    "observed": 11,
+    "obsolete_minimum": 12,
+    "twelfth_act": "https://www.superdesalud.gob.cl/normativa/circular-if-n529/",
+    "official_date": "2026-07-10",
+    "age_at_2026_10_11": 93,
+    "primary_evidence": "Original SIS detail page explicitly says10July2026; no new publisher date invented",
+    "provisional_cause": "D:rolling90day expectation obsolete; source/history retain the act, exported feed correctly excludes93day-old Circular529",
+    "status": "RESOLVED_OBSOLETE_EXPECTATION",
+    "curation_reference_date": "2026-10-09",
+    "original_date_unchanged": true,
+    "fix": "Replace fixed current-feed minimum with exact eligibility of reviewed primary acts, unique identities, actual snapshot contracts and preserved history; test day90/day91 explicitly.",
+    "tests": {
+      "focused_python_passed": 26,
+      "full_python_passed": 267,
+      "full_python_skipped": 1,
+      "skip_reason": "OPENAI_API_KEY absent in independent beta live runtime test; no LIVE execution claimed",
+      "browser_normative_desktop_mobile_passed": 2
+    },
+    "source_pr15_overlap": "No fiscalization code/data imported. PR15 adds other normative rows and can mask the obsolete minimum; its browser still expects expired529."
+  },
+  "statistics_findings": [
+    {
+      "category": "statistics",
+      "code": "invalid_statistical_table",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Every visible statistical row must map to the declared columns",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "methodology_not_collapsed",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Technical traceability must be available in a collapsed layer",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "missing_incremental_value_gate",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Visible blocks need an explicit incremental value decision",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "generic_why_required",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Statistical cards must allow omission of generic impact copy",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "untraceable_statistical_evidence",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Data evidence must link to an official source",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "bulletin_coverage",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "June 2026 audit must include accreditation, mediation, complaints and RNPI",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "bulletin_missing_pdf",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "All four official June 2026 bulletin PDFs must be traceable",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "bulletin_stock_flow_confusion",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Stock, cumulative flow and monthly flow must be labelled separately",
+      "severity": "critical"
+    }
+  ],
+  "missing_analysis_file": "Root cause confirmed and repaired: verified analysis versioned as clean-checkout export input; runtime output stays optional.",
+  "next_action": "Integration Commander: merge complete PR17 into current staging; run canonical QA after merge; revalidate remaining source PRs against that staging. No main/production promotion and no source issue closure.",
+  "last_progress_at": "2026-10-11T13:31:36.889931+00:00",
+  "statistics_resolution": [
+    {
+      "code": "invalid_statistical_table",
+      "classification": "export defect",
+      "correction": "Six rows with six named columns restored from original PDFs",
+      "status": "RESOLVED",
+      "original_path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+    },
+    {
+      "code": "methodology_not_collapsed",
+      "classification": "presentation/export defect",
+      "correction": "Collapsed methodology retained in durable analysis",
+      "status": "RESOLVED",
+      "original_path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+    },
+    {
+      "code": "missing_incremental_value_gate",
+      "classification": "export defect",
+      "correction": "Distinct table value stated; redundant conclusion omitted",
+      "status": "RESOLVED",
+      "original_path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+    },
+    {
+      "code": "generic_why_required",
+      "classification": "presentation/export defect",
+      "correction": "card_why_optional true; no forced generic impact copy",
+      "status": "RESOLVED",
+      "original_path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+    },
+    {
+      "code": "untraceable_statistical_evidence",
+      "classification": "export defect",
+      "correction": "All4primaryPDF URLs referenced in data_insight_evidence",
+      "status": "RESOLVED",
+      "original_path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+    },
+    {
+      "code": "bulletin_coverage",
+      "classification": "export defect",
+      "correction": "Acreditación/Mediación/Reclamos/RNPI all retained",
+      "status": "RESOLVED",
+      "original_path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+    },
+    {
+      "code": "bulletin_missing_pdf",
+      "classification": "export projection defect",
+      "correction": "Source_documents already had4URLs; missing derived evidence restored",
+      "status": "RESOLVED",
+      "original_path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+    },
+    {
+      "code": "bulletin_stock_flow_confusion",
+      "classification": "presentation/export defect",
+      "correction": "Stock, cumulative2019–2026 flow and monthly average labeled separately",
+      "status": "RESOLVED",
+      "original_path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/"
+    }
+  ],
+  "statistical_primary_evidence": "config/statistical_analysis_verified_v1.json:4PDFs, page references and source-declared metrics; publication date stays3Aug2026",
+  "statistical_browser_expiry": [
+    {
+      "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-a-marzo-2026/",
+      "publisher_date": "2026-07-10",
+      "classification": "obsolete fixed current inventory assertion; release outside90day window"
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/biblioteca-digital/series-estadisticas-del-sistema-isapre-1990-2025/",
+      "publisher_date": "2026-07-10",
+      "classification": "obsolete fixed current inventory assertion; release outside90day window"
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadisticas-financieras-del-sistema-isapre-a-marzo-2026/",
+      "publisher_date": "2026-07-07",
+      "classification": "obsolete fixed current inventory assertion; release outside90day window"
+    }
+  ],
+  "statistical_checkpoint": {
+    "focused_tests_passed": 36,
+    "python_passed": 270,
+    "python_skipped": 1,
+    "reviewer": {
+      "reviewer": "deterministic-reviewer",
+      "candidate_sha": "b6f5e03",
+      "reviewed_at": "2026-10-11T13:04:25.732123+00:00",
+      "findings": [],
+      "checks": {
+        "data": true,
+        "editorial": true,
+        "statistics": true,
+        "ux": true
+      },
+      "limitations": [
+        "Semantic/legal accuracy is not certified by deterministic checks.",
+        "Browser evidence is required separately for desktop/mobile.",
+        "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+      ]
+    },
+    "feed_other_rows_preserved": 48,
+    "source_history_queue_health_unchanged": true,
+    "browser_before_canonical_build": "38PASS/8FAIL unrelated Global/product prerequisite outputs; rebuilding exact QA pipeline, not accepting this as PASS"
+  },
+  "pr": 17,
+  "final_local_checks": {
+    "at": "2026-10-11T13:18:43.383122+00:00",
+    "python": {
+      "passed": 270,
+      "failed": 0,
+      "skipped": 1,
+      "skip_reason": "Beta live test requires OPENAI_API_KEY, unavailable; no source LIVE claim"
+    },
+    "node": {
+      "passed": 41,
+      "failed": 0
+    },
+    "browser": {
+      "passed": 48,
+      "failed": 0,
+      "skipped": 0,
+      "projects": [
+        "desktop",
+        "mobile"
+      ],
+      "chromium": "154.0.8037.57",
+      "canonical_build": true,
+      "raw_report_sha256": "be20f38b57a2f8fbf972df72977fde9efdb135e477a263d727b0caccb4bf1b85",
+      "historical_fixture_preserves_future_render_coverage": true
+    },
+    "reviewer": {
+      "reviewer": "deterministic-reviewer",
+      "candidate_sha": "94d8a7e",
+      "reviewed_at": "2026-10-11T13:14:41.606327+00:00",
+      "findings": [],
+      "checks": {
+        "data": true,
+        "editorial": true,
+        "statistics": true,
+        "ux": true
+      },
+      "limitations": [
+        "Semantic/legal accuracy is not certified by deterministic checks.",
+        "Browser evidence is required separately for desktop/mobile.",
+        "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+      ]
+    },
+    "strict_review_scripts_changed": false,
+    "paid_ai_calls": 0
+  },
+  "initial_ci": {
+    "run_id": 38141940100,
+    "head_sha": "94d8a7e6e8bb400da461a604ed835daf1bf9918e",
+    "merge_sha": "c97aecaaa88585351048acecb2d4ed84d5edc705",
+    "tests": "PASS",
+    "staging": "PASS",
+    "reviewer": "PASS",
+    "browser_passed": 46,
+    "post_ci_change": "Two additional desktop/mobile executions of historical verified bulletin fixture; all48localPASS",
+    "staging_artifact": {
+      "id": 11702774296,
+      "digest": "sha256:38a2317892e19510aed318a240ff397ca9b9690823fd41898f9fdbc33769b983"
+    },
+    "reviewer_artifact": {
+      "id": 11702682961,
+      "digest": "sha256:620429cdcf5588694a7ae994ef47fe1f735155a7ffdeb8566fa9e74dff8e5aca"
+    }
+  },
+  "scope_preservation": {
+    "history_pending_seen_discovery_source_health": "Unchanged",
+    "committed_feed": "Only reviewed bulletin presentation differs from current staging;72otherrows identical.",
+    "canonical_build": "Existing epidemiology freshness rule can retire an expired pulse, Global/product outputs regenerated as required; these temporary outputs not committed",
+    "no_source_repairs_imported": true,
+    "issues_closed": false,
+    "merged_to_staging": false,
+    "main_production_written": false,
+    "comparison_base_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0"
+  },
+  "staging_reconciliation": {
+    "base_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+    "at": "2026-10-11T13:27:49.549750+00:00",
+    "reason": "Staging advanced and PR became unmergeable; automatic synchronize CI suppressed by conflicts.",
+    "strict_reviewer": "Current staging added inventory bypass. Restored statistics_reviewer byte-identical to original4ff51cf; negative regression reproduces all8findings even when labeled publication_inventory. Real primary PDF analysis, not exemption, resolves them.",
+    "python_passed": 312,
+    "python_skipped": 1,
+    "node_passed": 41,
+    "focused_tests_passed": 38,
+    "concurrent_governance_preserved": true,
+    "source_state_health_unchanged_against_current_staging": true,
+    "unrelated_feed_rows_preserved": 72,
+    "source_changes": "None authored by QA; DF integration already on staging inherited unchanged.",
+    "status": "VERIFIED_FULL_LOCAL_AND_NATIVE_CI_PASS"
+  },
+  "ready_for_integration": true,
+  "validated_implementation_sha": "8339640f43309f908f69edae43b1b34bbbf23d24",
+  "validated_staging_base_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+  "final_ci": {
+    "run_id": 38143298390,
+    "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38143298390",
+    "head_sha": "8339640f43309f908f69edae43b1b34bbbf23d24",
+    "base_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+    "merge_sha": "97322d083a4f4327d7a3d549cd55e24f843caf91",
+    "conclusion": "PASS",
+    "jobs": [
+      {
+        "id": 114481384863,
+        "name": "tests",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 114481461462,
+        "name": "staging",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 114481760915,
+        "name": "reviewer",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "python": {
+      "passed": 312,
+      "failed": 0,
+      "skipped": 1,
+      "skip_reason": "Independent beta LIVE runtime test requires absent OPENAI_API_KEY; no LIVE claim"
+    },
+    "node": {
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0
+    },
+    "browser": {
+      "passed": 48,
+      "failed": 0,
+      "skipped": 0,
+      "projects": [
+        "desktop",
+        "mobile"
+      ]
+    },
+    "reviewer": {
+      "findings": [],
+      "checks": {
+        "data": true,
+        "editorial": true,
+        "statistics": true,
+        "ux": true
+      },
+      "original_strict_gate": true
+    },
+    "artifacts": [
+      {
+        "id": 11703856685,
+        "name": "staging-evidence-97322d083a4f4327d7a3d549cd55e24f843caf91",
+        "digest": "sha256:36e3235d2c6eec097d570e3dca29dac23d73f3ab9c1606767534621d3ddea4ae",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38143298390/artifacts/11703856685",
+        "expires_at": "2027-01-09T13:28:20Z"
+      },
+      {
+        "id": 11703079172,
+        "name": "reviewer-97322d083a4f4327d7a3d549cd55e24f843caf91",
+        "digest": "sha256:b468bd3bf29f853e9889291910f5e7e1b4afe65acb7855803f93c96b5cf969a3",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38143298390/artifacts/11703079172",
+        "expires_at": "2027-01-09T13:28:20Z"
+      }
+    ]
+  },
+  "final_source_preservation": {
+    "current_staging": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+    "preserved_sha256": {
+      "data/history/superintendencia_signals.json": "e4f6579902955d7426a7b2746f5cd05aa8773869b3cc7831702923909607ce38",
+      "data/state/pending_queue.json": "833b7eb468f910e5a1e14cccc41439972aab82f701dc6f420a3e7bab9a5001bd",
+      "data/state/discovery_run.json": "ca986a25a570b1704737976beb37c819f9993d9e8261d2432f746678961fd98c",
+      "data/state/diario_financiero_seen.json": "b3abf68e6ffd0e5e76f215c07cea5f7757f43aed83d7053911b3efbb306358d9",
+      "data/state/discovery_watermarks.json": "8c8aef90881268340d2b1e6923ed8ae6e7931d6871930bf26e9d80cc14436ffa",
+      "data/source_health.json": "99596d93dbdc048975b3f00fe423faffc5c63c68f16838f7ab8bfb43938289a8",
+      "web/data/source_health.json": "99596d93dbdc048975b3f00fe423faffc5c63c68f16838f7ab8bfb43938289a8"
+    },
+    "original_strict_reviewer_sha256": "73adcc6a0f0b9820b601f7f0a1e9644583361351f82084da213b2d75654e00aa",
+    "browser_report_sha256": "bf6538fd017466b13542914c65aaa6586b8029f0b6ff1e6a04d6ae70f2815861",
+    "local_reviewer": {
+      "reviewer": "deterministic-reviewer",
+      "candidate_sha": "8339640",
+      "reviewed_at": "2026-10-11T13:28:31.555281+00:00",
+      "findings": [],
+      "checks": {
+        "data": true,
+        "editorial": true,
+        "statistics": true,
+        "ux": true
+      },
+      "limitations": [
+        "Semantic/legal accuracy is not certified by deterministic checks.",
+        "Browser evidence is required separately for desktop/mobile.",
+        "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+      ]
+    },
+    "browser_stats": {
+      "startTime": "2026-10-11T13:28:46.522Z",
+      "duration": 38260.206,
+      "expected": 48,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "remaining_findings": []
+}

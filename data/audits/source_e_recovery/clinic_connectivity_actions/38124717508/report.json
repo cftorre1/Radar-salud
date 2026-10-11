@@ -1,0 +1,2188 @@
+{
+  "environment": "github_actions",
+  "run_id": "38124717508",
+  "candidate_sha": "94b75125383707cdf692fb82717457168a1905f5",
+  "captured_at": "2026-10-11T08:29:04.162851+00:00",
+  "elapsed_seconds": 219.172,
+  "diagnostic_only": true,
+  "state_mutation": false,
+  "ai_calls": 0,
+  "public_requests_only": true,
+  "challenge_execution": false,
+  "cookies_sent": false,
+  "headers_allowlisted_no_cookies_or_authorization": true,
+  "normal_dns_no_ip_selection": true,
+  "concurrency_limit": 2,
+  "connect_timeout_seconds": 12,
+  "request_timeout_seconds": 35,
+  "phase": "completed",
+  "publishers_completed": 10,
+  "publishers_expected": 10,
+  "summary": {
+    "stop_reasons": {
+      "transport_error": 30
+    },
+    "http_statuses": {
+      "0": 30
+    },
+    "successful_identified_newsrooms": 0
+  },
+  "publishers": [
+    {
+      "publisher_id": "maitenes",
+      "name": "Clínica Maitenes",
+      "home": "https://clinicamaitenes.cl/",
+      "newsroom": "https://clinicamaitenes.cl/noticias/",
+      "dns": {
+        "host": "clinicamaitenes.cl",
+        "resolver": "normal_os_resolver",
+        "elapsed_seconds": 0.448,
+        "addresses_observed_only": [
+          [
+            "AF_INET",
+            "190.110.124.44"
+          ]
+        ],
+        "exit_code": 0,
+        "error": null
+      },
+      "records": [
+        {
+          "url": "https://clinicamaitenes.cl/",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:25:25.439562+00:00",
+          "hops": [
+            {
+              "url": "https://clinicamaitenes.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicamaitenes.cl port 443 after 12001 ms: Timeout was reached",
+              "body_file": "c095b7e685abe92a9dc5-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicamaitenes.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "maitenes",
+          "surface": "home"
+        },
+        {
+          "url": "https://clinicamaitenes.cl/",
+          "user_agent": "browser_comparison",
+          "captured_at": "2026-10-11T08:25:37.454017+00:00",
+          "hops": [
+            {
+              "url": "https://clinicamaitenes.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicamaitenes.cl port 443 after 12001 ms: Timeout was reached",
+              "body_file": "3b8081d66e0f68126509-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicamaitenes.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "maitenes",
+          "surface": "home"
+        },
+        {
+          "url": "https://clinicamaitenes.cl/robots.txt",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:25:49.463856+00:00",
+          "hops": [
+            {
+              "url": "https://clinicamaitenes.cl/robots.txt",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicamaitenes.cl port 443 after 12000 ms: Timeout was reached",
+              "body_file": "68d2330073a16d14097b-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicamaitenes.cl/robots.txt",
+          "http_status": 0,
+          "waf": null,
+          "source": "maitenes",
+          "surface": "robots"
+        }
+      ],
+      "skipped_surfaces": [
+        {
+          "url": "https://clinicamaitenes.cl/noticias/",
+          "reason": "robots_policy_unavailable",
+          "robots_stop_reason": "transport_error"
+        }
+      ],
+      "elapsed_seconds": 36.481,
+      "phase": "representatives"
+    },
+    {
+      "publisher_id": "portada",
+      "name": "Clínica Portada",
+      "home": "https://clinicaportada.cl/",
+      "newsroom": "https://clinicaportada.cl/noticias/",
+      "dns": {
+        "host": "clinicaportada.cl",
+        "resolver": "normal_os_resolver",
+        "elapsed_seconds": 0.685,
+        "addresses_observed_only": [
+          [
+            "AF_INET",
+            "190.110.124.44"
+          ]
+        ],
+        "exit_code": 0,
+        "error": null
+      },
+      "records": [
+        {
+          "url": "https://clinicaportada.cl/",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:25:25.676584+00:00",
+          "hops": [
+            {
+              "url": "https://clinicaportada.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicaportada.cl port 443 after 12001 ms: Timeout was reached",
+              "body_file": "b7321b8ab427c4c258d2-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicaportada.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "portada",
+          "surface": "home"
+        },
+        {
+          "url": "https://clinicaportada.cl/",
+          "user_agent": "browser_comparison",
+          "captured_at": "2026-10-11T08:25:37.686193+00:00",
+          "hops": [
+            {
+              "url": "https://clinicaportada.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicaportada.cl port 443 after 12000 ms: Timeout was reached",
+              "body_file": "5054838fc0b693edfa5a-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicaportada.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "portada",
+          "surface": "home"
+        },
+        {
+          "url": "https://clinicaportada.cl/robots.txt",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:25:49.695534+00:00",
+          "hops": [
+            {
+              "url": "https://clinicaportada.cl/robots.txt",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicaportada.cl port 443 after 12001 ms: Timeout was reached",
+              "body_file": "71db2f7c6b3fa65cafd8-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicaportada.cl/robots.txt",
+          "http_status": 0,
+          "waf": null,
+          "source": "portada",
+          "surface": "robots"
+        }
+      ],
+      "skipped_surfaces": [
+        {
+          "url": "https://clinicaportada.cl/noticias/",
+          "reason": "robots_policy_unavailable",
+          "robots_stop_reason": "transport_error"
+        }
+      ],
+      "elapsed_seconds": 36.714,
+      "phase": "representatives"
+    },
+    {
+      "publisher_id": "puerto_montt",
+      "name": "Clínica Puerto Montt",
+      "home": "https://clinicapuertomontt.cl/",
+      "newsroom": "https://clinicapuertomontt.cl/noticias/",
+      "dns": {
+        "host": "clinicapuertomontt.cl",
+        "resolver": "normal_os_resolver",
+        "elapsed_seconds": 0.428,
+        "addresses_observed_only": [
+          [
+            "AF_INET",
+            "190.110.124.44"
+          ]
+        ],
+        "exit_code": 0,
+        "error": null
+      },
+      "records": [
+        {
+          "url": "https://clinicapuertomontt.cl/",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:26:01.900817+00:00",
+          "hops": [
+            {
+              "url": "https://clinicapuertomontt.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicapuertomontt.cl port 443 after 12002 ms: Timeout was reached",
+              "body_file": "552bd0ac22bcc34d5f53-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicapuertomontt.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "puerto_montt",
+          "surface": "home"
+        },
+        {
+          "url": "https://clinicapuertomontt.cl/",
+          "user_agent": "browser_comparison",
+          "captured_at": "2026-10-11T08:26:13.911337+00:00",
+          "hops": [
+            {
+              "url": "https://clinicapuertomontt.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicapuertomontt.cl port 443 after 12002 ms: Timeout was reached",
+              "body_file": "c227b6280a597e41258a-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicapuertomontt.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "puerto_montt",
+          "surface": "home"
+        },
+        {
+          "url": "https://clinicapuertomontt.cl/robots.txt",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:26:25.921462+00:00",
+          "hops": [
+            {
+              "url": "https://clinicapuertomontt.cl/robots.txt",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicapuertomontt.cl port 443 after 12001 ms: Timeout was reached",
+              "body_file": "e4b26256f38108e2e6e4-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicapuertomontt.cl/robots.txt",
+          "http_status": 0,
+          "waf": null,
+          "source": "puerto_montt",
+          "surface": "robots"
+        }
+      ],
+      "skipped_surfaces": [
+        {
+          "url": "https://clinicapuertomontt.cl/noticias/",
+          "reason": "robots_policy_unavailable",
+          "robots_stop_reason": "transport_error"
+        }
+      ],
+      "elapsed_seconds": 36.459,
+      "phase": "representatives"
+    },
+    {
+      "publisher_id": "los_coihues",
+      "name": "Clínica Los Coihues",
+      "home": "https://clinicaloscoihues.cl/",
+      "newsroom": "https://clinicaloscoihues.cl/noticias",
+      "dns": {
+        "host": "clinicaloscoihues.cl",
+        "resolver": "normal_os_resolver",
+        "elapsed_seconds": 0.293,
+        "addresses_observed_only": [
+          [
+            "AF_INET",
+            "190.110.123.249"
+          ]
+        ],
+        "exit_code": 0,
+        "error": null
+      },
+      "records": [
+        {
+          "url": "https://clinicaloscoihues.cl/",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:26:38.225919+00:00",
+          "hops": [
+            {
+              "url": "https://clinicaloscoihues.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicaloscoihues.cl port 443 after 12002 ms: Timeout was reached",
+              "body_file": "41a93e077a4ed61fbf08-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicaloscoihues.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "los_coihues",
+          "surface": "home"
+        },
+        {
+          "url": "https://clinicaloscoihues.cl/",
+          "user_agent": "browser_comparison",
+          "captured_at": "2026-10-11T08:26:50.236804+00:00",
+          "hops": [
+            {
+              "url": "https://clinicaloscoihues.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicaloscoihues.cl port 443 after 12002 ms: Timeout was reached",
+              "body_file": "8c6c82676d9f9ddff89c-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicaloscoihues.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "los_coihues",
+          "surface": "home"
+        },
+        {
+          "url": "https://clinicaloscoihues.cl/robots.txt",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:27:02.247274+00:00",
+          "hops": [
+            {
+              "url": "https://clinicaloscoihues.cl/robots.txt",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicaloscoihues.cl port 443 after 12002 ms: Timeout was reached",
+              "body_file": "4cab7b89ba5156ee25ce-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicaloscoihues.cl/robots.txt",
+          "http_status": 0,
+          "waf": null,
+          "source": "los_coihues",
+          "surface": "robots"
+        }
+      ],
+      "skipped_surfaces": [
+        {
+          "url": "https://clinicaloscoihues.cl/noticias",
+          "reason": "robots_policy_unavailable",
+          "robots_stop_reason": "transport_error"
+        }
+      ],
+      "elapsed_seconds": 36.325,
+      "phase": "remaining_publishers_and_hub"
+    },
+    {
+      "publisher_id": "atacama",
+      "name": "Clínica Atacama",
+      "home": "https://clinicaatacama.cl/",
+      "newsroom": "https://clinicaatacama.cl/noticias/",
+      "dns": {
+        "host": "clinicaatacama.cl",
+        "resolver": "normal_os_resolver",
+        "elapsed_seconds": 0.854,
+        "addresses_observed_only": [
+          [
+            "AF_INET",
+            "190.110.124.44"
+          ]
+        ],
+        "exit_code": 0,
+        "error": null
+      },
+      "records": [
+        {
+          "url": "https://clinicaatacama.cl/",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:26:38.786871+00:00",
+          "hops": [
+            {
+              "url": "https://clinicaatacama.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicaatacama.cl port 443 after 12001 ms: Timeout was reached",
+              "body_file": "b81bb8335a01194b6247-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicaatacama.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "atacama",
+          "surface": "home"
+        },
+        {
+          "url": "https://clinicaatacama.cl/",
+          "user_agent": "browser_comparison",
+          "captured_at": "2026-10-11T08:26:50.796223+00:00",
+          "hops": [
+            {
+              "url": "https://clinicaatacama.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicaatacama.cl port 443 after 12001 ms: Timeout was reached",
+              "body_file": "5e8414f2d8472a8b1e28-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicaatacama.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "atacama",
+          "surface": "home"
+        },
+        {
+          "url": "https://clinicaatacama.cl/robots.txt",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:27:02.805744+00:00",
+          "hops": [
+            {
+              "url": "https://clinicaatacama.cl/robots.txt",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicaatacama.cl port 443 after 12000 ms: Timeout was reached",
+              "body_file": "372429aba65ba3db970c-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicaatacama.cl/robots.txt",
+          "http_status": 0,
+          "waf": null,
+          "source": "atacama",
+          "surface": "robots"
+        }
+      ],
+      "skipped_surfaces": [
+        {
+          "url": "https://clinicaatacama.cl/noticias/",
+          "reason": "robots_policy_unavailable",
+          "robots_stop_reason": "transport_error"
+        }
+      ],
+      "elapsed_seconds": 36.882,
+      "phase": "remaining_publishers_and_hub"
+    },
+    {
+      "publisher_id": "lircay",
+      "name": "Clínica Lircay",
+      "home": "https://clinicalircay.cl/",
+      "newsroom": "https://clinicalircay.cl/noticias/",
+      "dns": {
+        "host": "clinicalircay.cl",
+        "resolver": "normal_os_resolver",
+        "elapsed_seconds": 0.683,
+        "addresses_observed_only": [
+          [
+            "AF_INET",
+            "190.110.124.44"
+          ]
+        ],
+        "exit_code": 0,
+        "error": null
+      },
+      "records": [
+        {
+          "url": "https://clinicalircay.cl/",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:27:14.941418+00:00",
+          "hops": [
+            {
+              "url": "https://clinicalircay.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicalircay.cl port 443 after 12001 ms: Timeout was reached",
+              "body_file": "29c7582bef7cf82c60bb-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicalircay.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "lircay",
+          "surface": "home"
+        },
+        {
+          "url": "https://clinicalircay.cl/",
+          "user_agent": "browser_comparison",
+          "captured_at": "2026-10-11T08:27:26.951547+00:00",
+          "hops": [
+            {
+              "url": "https://clinicalircay.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicalircay.cl port 443 after 12002 ms: Timeout was reached",
+              "body_file": "bf3101f7de16fac8267f-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicalircay.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "lircay",
+          "surface": "home"
+        },
+        {
+          "url": "https://clinicalircay.cl/robots.txt",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:27:38.962036+00:00",
+          "hops": [
+            {
+              "url": "https://clinicalircay.cl/robots.txt",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinicalircay.cl port 443 after 12002 ms: Timeout was reached",
+              "body_file": "d0a072d36dee8f641b2b-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinicalircay.cl/robots.txt",
+          "http_status": 0,
+          "waf": null,
+          "source": "lircay",
+          "surface": "robots"
+        }
+      ],
+      "skipped_surfaces": [
+        {
+          "url": "https://clinicalircay.cl/noticias/",
+          "reason": "robots_policy_unavailable",
+          "robots_stop_reason": "transport_error"
+        }
+      ],
+      "elapsed_seconds": 36.714,
+      "phase": "remaining_publishers_and_hub"
+    },
+    {
+      "publisher_id": "los_andes",
+      "name": "Clínica Los Andes",
+      "home": "https://www.clinicalosandes.cl/",
+      "newsroom": "https://www.clinicalosandes.cl/noticias/",
+      "dns": {
+        "host": "www.clinicalosandes.cl",
+        "resolver": "normal_os_resolver",
+        "elapsed_seconds": 0.881,
+        "addresses_observed_only": [
+          [
+            "AF_INET",
+            "190.110.124.44"
+          ]
+        ],
+        "exit_code": 0,
+        "error": null
+      },
+      "records": [
+        {
+          "url": "https://www.clinicalosandes.cl/",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:27:15.695035+00:00",
+          "hops": [
+            {
+              "url": "https://www.clinicalosandes.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to www.clinicalosandes.cl port 443 after 12000 ms: Timeout was reached",
+              "body_file": "80571e4b4055a1f88f13-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://www.clinicalosandes.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "los_andes",
+          "surface": "home"
+        },
+        {
+          "url": "https://www.clinicalosandes.cl/",
+          "user_agent": "browser_comparison",
+          "captured_at": "2026-10-11T08:27:27.704269+00:00",
+          "hops": [
+            {
+              "url": "https://www.clinicalosandes.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to www.clinicalosandes.cl port 443 after 12001 ms: Timeout was reached",
+              "body_file": "4b6979ee1948efd286a7-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://www.clinicalosandes.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "los_andes",
+          "surface": "home"
+        },
+        {
+          "url": "https://www.clinicalosandes.cl/robots.txt",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:27:39.713795+00:00",
+          "hops": [
+            {
+              "url": "https://www.clinicalosandes.cl/robots.txt",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to www.clinicalosandes.cl port 443 after 12001 ms: Timeout was reached",
+              "body_file": "6d3455e216bb7afa5cb4-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://www.clinicalosandes.cl/robots.txt",
+          "http_status": 0,
+          "waf": null,
+          "source": "los_andes",
+          "surface": "robots"
+        }
+      ],
+      "skipped_surfaces": [
+        {
+          "url": "https://www.clinicalosandes.cl/noticias/",
+          "reason": "robots_policy_unavailable",
+          "robots_stop_reason": "transport_error"
+        }
+      ],
+      "elapsed_seconds": 36.909,
+      "phase": "remaining_publishers_and_hub"
+    },
+    {
+      "publisher_id": "del_sur",
+      "name": "Clínica Del Sur",
+      "home": "https://www.clinicasur.cl/",
+      "newsroom": "https://www.clinicasur.cl/noticias/",
+      "dns": {
+        "host": "www.clinicasur.cl",
+        "resolver": "normal_os_resolver",
+        "elapsed_seconds": 0.463,
+        "addresses_observed_only": [
+          [
+            "AF_INET",
+            "190.110.124.44"
+          ]
+        ],
+        "exit_code": 0,
+        "error": null
+      },
+      "records": [
+        {
+          "url": "https://www.clinicasur.cl/",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:27:51.435163+00:00",
+          "hops": [
+            {
+              "url": "https://www.clinicasur.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to www.clinicasur.cl port 443 after 12001 ms: Timeout was reached",
+              "body_file": "b35f4eecf46ce3491e18-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://www.clinicasur.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "del_sur",
+          "surface": "home"
+        },
+        {
+          "url": "https://www.clinicasur.cl/",
+          "user_agent": "browser_comparison",
+          "captured_at": "2026-10-11T08:28:03.445306+00:00",
+          "hops": [
+            {
+              "url": "https://www.clinicasur.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to www.clinicasur.cl port 443 after 12002 ms: Timeout was reached",
+              "body_file": "037a00e131f77285ae32-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://www.clinicasur.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "del_sur",
+          "surface": "home"
+        },
+        {
+          "url": "https://www.clinicasur.cl/robots.txt",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:28:15.455788+00:00",
+          "hops": [
+            {
+              "url": "https://www.clinicasur.cl/robots.txt",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to www.clinicasur.cl port 443 after 12002 ms: Timeout was reached",
+              "body_file": "988e6d8716a8467a565b-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://www.clinicasur.cl/robots.txt",
+          "http_status": 0,
+          "waf": null,
+          "source": "del_sur",
+          "surface": "robots"
+        }
+      ],
+      "skipped_surfaces": [
+        {
+          "url": "https://www.clinicasur.cl/noticias/",
+          "reason": "robots_policy_unavailable",
+          "robots_stop_reason": "transport_error"
+        }
+      ],
+      "elapsed_seconds": 36.494,
+      "phase": "remaining_publishers_and_hub"
+    },
+    {
+      "publisher_id": "curico",
+      "name": "Clínica Curicó",
+      "home": "https://clinica-curico.cl/",
+      "newsroom": "https://clinica-curico.cl/noticias/",
+      "dns": {
+        "host": "clinica-curico.cl",
+        "resolver": "normal_os_resolver",
+        "elapsed_seconds": 0.238,
+        "addresses_observed_only": [
+          [
+            "AF_INET",
+            "190.110.124.44"
+          ]
+        ],
+        "exit_code": 0,
+        "error": null
+      },
+      "records": [
+        {
+          "url": "https://clinica-curico.cl/",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:27:51.960879+00:00",
+          "hops": [
+            {
+              "url": "https://clinica-curico.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12002 ms: Timeout was reached",
+              "body_file": "c204042afb77af6ed0b3-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinica-curico.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "curico",
+          "surface": "home"
+        },
+        {
+          "url": "https://clinica-curico.cl/",
+          "user_agent": "browser_comparison",
+          "captured_at": "2026-10-11T08:28:03.971980+00:00",
+          "hops": [
+            {
+              "url": "https://clinica-curico.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12001 ms: Timeout was reached",
+              "body_file": "c520e8482d639bdbdc64-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinica-curico.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "curico",
+          "surface": "home"
+        },
+        {
+          "url": "https://clinica-curico.cl/robots.txt",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:28:15.981892+00:00",
+          "hops": [
+            {
+              "url": "https://clinica-curico.cl/robots.txt",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12002 ms: Timeout was reached",
+              "body_file": "0b74c680c139b72fd0af-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://clinica-curico.cl/robots.txt",
+          "http_status": 0,
+          "waf": null,
+          "source": "curico",
+          "surface": "robots"
+        }
+      ],
+      "skipped_surfaces": [
+        {
+          "url": "https://clinica-curico.cl/noticias/",
+          "reason": "robots_policy_unavailable",
+          "robots_stop_reason": "transport_error"
+        }
+      ],
+      "elapsed_seconds": 36.269,
+      "phase": "remaining_publishers_and_hub"
+    },
+    {
+      "publisher_id": "clinical_network",
+      "name": "Clínicas Achs Salud",
+      "home": "https://www.clinicasachssalud.cl/",
+      "newsroom": null,
+      "dns": {
+        "host": "www.clinicasachssalud.cl",
+        "resolver": "normal_os_resolver",
+        "elapsed_seconds": 0.662,
+        "addresses_observed_only": [
+          [
+            "AF_INET",
+            "190.110.124.44"
+          ]
+        ],
+        "exit_code": 0,
+        "error": null
+      },
+      "records": [
+        {
+          "url": "https://www.clinicasachssalud.cl/",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:28:28.128255+00:00",
+          "hops": [
+            {
+              "url": "https://www.clinicasachssalud.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+              "body_file": "6429d8a14cd86b0ba2f9-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://www.clinicasachssalud.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "clinical_network",
+          "surface": "home"
+        },
+        {
+          "url": "https://www.clinicasachssalud.cl/",
+          "user_agent": "browser_comparison",
+          "captured_at": "2026-10-11T08:28:40.139476+00:00",
+          "hops": [
+            {
+              "url": "https://www.clinicasachssalud.cl/",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+              "body_file": "6d3bac37d4df3ddf6282-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://www.clinicasachssalud.cl/",
+          "http_status": 0,
+          "waf": null,
+          "source": "clinical_network",
+          "surface": "home"
+        },
+        {
+          "url": "https://www.clinicasachssalud.cl/robots.txt",
+          "user_agent": "identified",
+          "captured_at": "2026-10-11T08:28:52.149665+00:00",
+          "hops": [
+            {
+              "url": "https://www.clinicasachssalud.cl/robots.txt",
+              "http_status": 0,
+              "proxy_connect_status": 0,
+              "curl_exit": 28,
+              "headers": [],
+              "tls": {
+                "origin_handshake_observed": false,
+                "certificate_verification_result": null,
+                "verified": false
+              },
+              "content_type": null,
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "waf": null,
+              "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+              "body_file": "55dd1de4c3cd0ec02a58-0.body"
+            }
+          ],
+          "stop_reason": "transport_error",
+          "final_url": "https://www.clinicasachssalud.cl/robots.txt",
+          "http_status": 0,
+          "waf": null,
+          "source": "clinical_network",
+          "surface": "robots"
+        }
+      ],
+      "skipped_surfaces": [],
+      "elapsed_seconds": 36.694,
+      "phase": "remaining_publishers_and_hub"
+    }
+  ],
+  "records": [
+    {
+      "url": "https://clinicamaitenes.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:25:25.439562+00:00",
+      "hops": [
+        {
+          "url": "https://clinicamaitenes.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicamaitenes.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "c095b7e685abe92a9dc5-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicamaitenes.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "maitenes",
+      "surface": "home"
+    },
+    {
+      "url": "https://clinicamaitenes.cl/",
+      "user_agent": "browser_comparison",
+      "captured_at": "2026-10-11T08:25:37.454017+00:00",
+      "hops": [
+        {
+          "url": "https://clinicamaitenes.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicamaitenes.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "3b8081d66e0f68126509-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicamaitenes.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "maitenes",
+      "surface": "home"
+    },
+    {
+      "url": "https://clinicamaitenes.cl/robots.txt",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:25:49.463856+00:00",
+      "hops": [
+        {
+          "url": "https://clinicamaitenes.cl/robots.txt",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicamaitenes.cl port 443 after 12000 ms: Timeout was reached",
+          "body_file": "68d2330073a16d14097b-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicamaitenes.cl/robots.txt",
+      "http_status": 0,
+      "waf": null,
+      "source": "maitenes",
+      "surface": "robots"
+    },
+    {
+      "url": "https://clinicaportada.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:25:25.676584+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaportada.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaportada.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "b7321b8ab427c4c258d2-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaportada.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "portada",
+      "surface": "home"
+    },
+    {
+      "url": "https://clinicaportada.cl/",
+      "user_agent": "browser_comparison",
+      "captured_at": "2026-10-11T08:25:37.686193+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaportada.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaportada.cl port 443 after 12000 ms: Timeout was reached",
+          "body_file": "5054838fc0b693edfa5a-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaportada.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "portada",
+      "surface": "home"
+    },
+    {
+      "url": "https://clinicaportada.cl/robots.txt",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:25:49.695534+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaportada.cl/robots.txt",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaportada.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "71db2f7c6b3fa65cafd8-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaportada.cl/robots.txt",
+      "http_status": 0,
+      "waf": null,
+      "source": "portada",
+      "surface": "robots"
+    },
+    {
+      "url": "https://clinicapuertomontt.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:26:01.900817+00:00",
+      "hops": [
+        {
+          "url": "https://clinicapuertomontt.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicapuertomontt.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "552bd0ac22bcc34d5f53-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicapuertomontt.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "puerto_montt",
+      "surface": "home"
+    },
+    {
+      "url": "https://clinicapuertomontt.cl/",
+      "user_agent": "browser_comparison",
+      "captured_at": "2026-10-11T08:26:13.911337+00:00",
+      "hops": [
+        {
+          "url": "https://clinicapuertomontt.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicapuertomontt.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "c227b6280a597e41258a-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicapuertomontt.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "puerto_montt",
+      "surface": "home"
+    },
+    {
+      "url": "https://clinicapuertomontt.cl/robots.txt",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:26:25.921462+00:00",
+      "hops": [
+        {
+          "url": "https://clinicapuertomontt.cl/robots.txt",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicapuertomontt.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "e4b26256f38108e2e6e4-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicapuertomontt.cl/robots.txt",
+      "http_status": 0,
+      "waf": null,
+      "source": "puerto_montt",
+      "surface": "robots"
+    },
+    {
+      "url": "https://clinicaloscoihues.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:26:38.225919+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaloscoihues.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaloscoihues.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "41a93e077a4ed61fbf08-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaloscoihues.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "los_coihues",
+      "surface": "home"
+    },
+    {
+      "url": "https://clinicaloscoihues.cl/",
+      "user_agent": "browser_comparison",
+      "captured_at": "2026-10-11T08:26:50.236804+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaloscoihues.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaloscoihues.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "8c6c82676d9f9ddff89c-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaloscoihues.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "los_coihues",
+      "surface": "home"
+    },
+    {
+      "url": "https://clinicaloscoihues.cl/robots.txt",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:27:02.247274+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaloscoihues.cl/robots.txt",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaloscoihues.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "4cab7b89ba5156ee25ce-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaloscoihues.cl/robots.txt",
+      "http_status": 0,
+      "waf": null,
+      "source": "los_coihues",
+      "surface": "robots"
+    },
+    {
+      "url": "https://clinicaatacama.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:26:38.786871+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaatacama.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaatacama.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "b81bb8335a01194b6247-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaatacama.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "atacama",
+      "surface": "home"
+    },
+    {
+      "url": "https://clinicaatacama.cl/",
+      "user_agent": "browser_comparison",
+      "captured_at": "2026-10-11T08:26:50.796223+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaatacama.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaatacama.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "5e8414f2d8472a8b1e28-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaatacama.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "atacama",
+      "surface": "home"
+    },
+    {
+      "url": "https://clinicaatacama.cl/robots.txt",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:27:02.805744+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaatacama.cl/robots.txt",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaatacama.cl port 443 after 12000 ms: Timeout was reached",
+          "body_file": "372429aba65ba3db970c-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaatacama.cl/robots.txt",
+      "http_status": 0,
+      "waf": null,
+      "source": "atacama",
+      "surface": "robots"
+    },
+    {
+      "url": "https://clinicalircay.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:27:14.941418+00:00",
+      "hops": [
+        {
+          "url": "https://clinicalircay.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicalircay.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "29c7582bef7cf82c60bb-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicalircay.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "lircay",
+      "surface": "home"
+    },
+    {
+      "url": "https://clinicalircay.cl/",
+      "user_agent": "browser_comparison",
+      "captured_at": "2026-10-11T08:27:26.951547+00:00",
+      "hops": [
+        {
+          "url": "https://clinicalircay.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicalircay.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "bf3101f7de16fac8267f-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicalircay.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "lircay",
+      "surface": "home"
+    },
+    {
+      "url": "https://clinicalircay.cl/robots.txt",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:27:38.962036+00:00",
+      "hops": [
+        {
+          "url": "https://clinicalircay.cl/robots.txt",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicalircay.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "d0a072d36dee8f641b2b-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicalircay.cl/robots.txt",
+      "http_status": 0,
+      "waf": null,
+      "source": "lircay",
+      "surface": "robots"
+    },
+    {
+      "url": "https://www.clinicalosandes.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:27:15.695035+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicalosandes.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicalosandes.cl port 443 after 12000 ms: Timeout was reached",
+          "body_file": "80571e4b4055a1f88f13-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicalosandes.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "los_andes",
+      "surface": "home"
+    },
+    {
+      "url": "https://www.clinicalosandes.cl/",
+      "user_agent": "browser_comparison",
+      "captured_at": "2026-10-11T08:27:27.704269+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicalosandes.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicalosandes.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "4b6979ee1948efd286a7-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicalosandes.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "los_andes",
+      "surface": "home"
+    },
+    {
+      "url": "https://www.clinicalosandes.cl/robots.txt",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:27:39.713795+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicalosandes.cl/robots.txt",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicalosandes.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "6d3455e216bb7afa5cb4-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicalosandes.cl/robots.txt",
+      "http_status": 0,
+      "waf": null,
+      "source": "los_andes",
+      "surface": "robots"
+    },
+    {
+      "url": "https://www.clinicasur.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:27:51.435163+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicasur.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicasur.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "b35f4eecf46ce3491e18-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasur.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "del_sur",
+      "surface": "home"
+    },
+    {
+      "url": "https://www.clinicasur.cl/",
+      "user_agent": "browser_comparison",
+      "captured_at": "2026-10-11T08:28:03.445306+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicasur.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicasur.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "037a00e131f77285ae32-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasur.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "del_sur",
+      "surface": "home"
+    },
+    {
+      "url": "https://www.clinicasur.cl/robots.txt",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:28:15.455788+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicasur.cl/robots.txt",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicasur.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "988e6d8716a8467a565b-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasur.cl/robots.txt",
+      "http_status": 0,
+      "waf": null,
+      "source": "del_sur",
+      "surface": "robots"
+    },
+    {
+      "url": "https://clinica-curico.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:27:51.960879+00:00",
+      "hops": [
+        {
+          "url": "https://clinica-curico.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "c204042afb77af6ed0b3-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinica-curico.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "curico",
+      "surface": "home"
+    },
+    {
+      "url": "https://clinica-curico.cl/",
+      "user_agent": "browser_comparison",
+      "captured_at": "2026-10-11T08:28:03.971980+00:00",
+      "hops": [
+        {
+          "url": "https://clinica-curico.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "c520e8482d639bdbdc64-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinica-curico.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "curico",
+      "surface": "home"
+    },
+    {
+      "url": "https://clinica-curico.cl/robots.txt",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:28:15.981892+00:00",
+      "hops": [
+        {
+          "url": "https://clinica-curico.cl/robots.txt",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "0b74c680c139b72fd0af-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinica-curico.cl/robots.txt",
+      "http_status": 0,
+      "waf": null,
+      "source": "curico",
+      "surface": "robots"
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:28:28.128255+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicasachssalud.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "6429d8a14cd86b0ba2f9-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "clinical_network",
+      "surface": "home"
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/",
+      "user_agent": "browser_comparison",
+      "captured_at": "2026-10-11T08:28:40.139476+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicasachssalud.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "6d3bac37d4df3ddf6282-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "clinical_network",
+      "surface": "home"
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/robots.txt",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:28:52.149665+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicasachssalud.cl/robots.txt",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "55dd1de4c3cd0ec02a58-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/robots.txt",
+      "http_status": 0,
+      "waf": null,
+      "source": "clinical_network",
+      "surface": "robots"
+    }
+  ]
+}

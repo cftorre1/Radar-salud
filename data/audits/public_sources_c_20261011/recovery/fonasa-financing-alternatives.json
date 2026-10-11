@@ -1,0 +1,51 @@
+{
+  "scope": "Backlog GRD/financing official indirect references; source identity stays DIPRES or MINSAL, never FONASA direct",
+  "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117181340",
+  "runtime_commit": "3d3a272218fd49a67c585fc901fb1950fb14d4b5",
+  "records": [
+    {
+      "url": "https://www.dipres.gob.cl/597/articles-387786_doc_pdf.pdf",
+      "http_status": 200,
+      "status": "captured",
+      "publication_date": null,
+      "feed_eligible": false,
+      "reason": "official_financing_reference_no_explicit_verified_publication_date",
+      "sha256": "d9a1fc365bc409406922f7a09d406f9019c5eac93dd3f2c9fd3945953cd2eda2",
+      "bytes": 250646,
+      "pages": 2,
+      "readable_characters": 6616,
+      "contains_GRD": true,
+      "contains_fonasa": true,
+      "reference_kind": "budget_bill_2026_not_enacted_law",
+      "date_policy": "Budget year, upload month, HTTP Last-Modified and PDF creation time do not prove publication"
+    },
+    {
+      "url": "https://www.dipres.gob.cl/597/articles-390193_doc_pdf.pdf",
+      "http_status": 200,
+      "status": "transport_or_parser",
+      "publication_date": null,
+      "feed_eligible": false,
+      "reason": "official_financing_reference_no_explicit_verified_publication_date",
+      "limitation": "Capture exceeded 8 MiB"
+    },
+    {
+      "url": "https://www.minsal.cl/wp-content/uploads/2026/07/Cuenta_Publica_2026_lista_publicacion.pdf",
+      "http_status": 200,
+      "status": "captured",
+      "publication_date": null,
+      "feed_eligible": false,
+      "reason": "official_financing_reference_no_explicit_verified_publication_date",
+      "sha256": "3d8219e57cf37776f0f36258b196727ed5aed13826feaae0f70734afbd1b565d",
+      "bytes": 475865,
+      "pages": 42,
+      "readable_characters": 143253,
+      "contains_GRD": true,
+      "contains_fonasa": true,
+      "reference_kind": "annual_sector_account_2026_not_recurring_newsroom",
+      "date_policy": "Budget year, upload month, HTTP Last-Modified and PDF creation time do not prove publication"
+    }
+  ],
+  "codex_evidence": "codex-financing-reference.json",
+  "news_published": 0,
+  "minimum_next_action": "Use accessible annual references for financing context with original publisher attribution; recurring DIPRES connector is a separate approved lane. Do not fabricate a publication date or treat a budget proposal as enacted law."
+}

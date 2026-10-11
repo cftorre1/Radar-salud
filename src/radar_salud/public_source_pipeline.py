@@ -7,6 +7,8 @@ from .scouts import fetch_html
 from .document_intelligence import extract_pdf_text
 from .llm_analysis import analyze_official_news, analyze_news
 from .processing import DeferredProcessing
+from .public_source_evidence import verified_publication, official_url
+from .public_source_transport import extract_public_source_pdf, fetch_official_html
 
 MONTHS={"enero":"01","febrero":"02","marzo":"03","abril":"04","mayo":"05","junio":"06","julio":"07","agosto":"08","septiembre":"09","octubre":"10","noviembre":"11","diciembre":"12"}
 MONTHS.update({"ene":"01","feb":"02","mar":"03","abr":"04","may":"05","jun":"06","jul":"07","ago":"08","sep":"09","sept":"09","oct":"10","nov":"11","dic":"12"})
@@ -58,6 +60,33 @@ def enrich(raw):
         raw.metadata["fetch_error"]=type(e).__name__
         print("enrich:",e)
     return raw
+
+def enrich_public_source(raw):
+    """Capture scoped official content without changing its verified date."""
+    raw.metadata.pop("fetch_error",None)
+    try:
+        parser=_Meta();parser.feed(fetch_official_html(raw.url,raw.source_slug))
+        body=" ".join(parser.text)
+        raw.raw_text=parser.description or body[:1400]
+        raw.metadata["page_text"]=body[:18000]
+    except Exception as exc:
+        raw.metadata["fetch_error"]=type(exc).__name__
+        raise DeferredProcessing("Official detail capture unavailable") from exc
+    return raw
+
+def with_publication_provenance(row,raw):
+    row["publication_date_source"]=raw.metadata["publication_date_source"]
+    row["publication_date_evidence"]=dict(raw.metadata["publication_date_evidence"])
+    for key in ("publication_document_link_evidence","document_verification","listing_sha256","capture_evidence"):
+        if key in raw.metadata:row[key]=raw.metadata[key]
+    return row
+
+def capture_public_source_pdf(raw,max_pages):
+    capture={}
+    text=extract_public_source_pdf(raw.url,raw.source_slug,max_pages=max_pages,capture_metadata=capture)
+    raw.metadata["capture_evidence"]=capture
+    if len(text)>=350:raw.metadata["document_verification"]="readable_pdf"
+    return text
 
 def _noise(title):
     t=(title or "").lower()
@@ -304,21 +333,22 @@ def process_diario_oficial(raw,cfg):
 
 def process_fonasa_data_hub(raw,cfg):
     """Official FONASA Datos Abiertos content with channel-aware fail-closed handling."""
+    if raw.source_slug != "fonasa_datos_abiertos" or cfg.get("slug") != raw.source_slug:
+        return None
+    if not verified_publication(raw):
+        raise DeferredProcessing("FONASA Datos Abiertos sin evidencia de fecha de publicación")
     channel=raw.metadata.get("fonasa_channel") or "Datos Abiertos"
     parsed_url=raw.url.lower()
     text=raw.metadata.get("page_text") or raw.raw_text or ""
     if parsed_url.endswith(".pdf"):
-        try:text=extract_pdf_text(raw.url,max_pages=8)
+        try:text=capture_public_source_pdf(raw,max_pages=8)
         except Exception as exc:raise DeferredProcessing("FONASA documento no legible") from exc
     elif not text:
-        raw=enrich(raw);text=raw.metadata.get("page_text") or raw.raw_text or ""
-    if not raw.event_date:
-        raw.event_date=_date(text[:6000]) or _date(raw.title)
-    if not raw.event_date:
-        raise DeferredProcessing("FONASA Datos Abiertos sin fecha verificable")
-    if len(text)<120 and not parsed_url.endswith((".xlsx",".xls",".csv")):
+        raw=enrich_public_source(raw);text=raw.metadata.get("page_text") or raw.raw_text or ""
+    if len(text)<120:
         raise DeferredProcessing("FONASA Datos Abiertos sin contenido suficiente")
     ai=analyze_official_news(title=raw.title,text=text[:9000],source_name="Fondo Nacional de Salud (FONASA)")
+    if not ai:raise DeferredProcessing("FONASA Datos Abiertos pendiente de evaluación")
     score=int(ai.get("relevance_score")) if ai else 72
     if score<65:return None
     combined=f"{raw.title} {text}".lower()
@@ -335,11 +365,16 @@ def process_fonasa_data_hub(raw,cfg):
     row=build_signal(raw,cfg).to_dict()
     row["signal_types"]=[signal_type];row["scopes"]=list(dict.fromkeys(scopes));row["editorial_relevance"]=score
     row["source_channel"]=channel
-    return row
+    return with_publication_provenance(row,raw)
 
 def process_fonasa(raw,cfg):
     """Only dated, substantive official evidence may reach the feed."""
-    raw=enrich(raw)
+    if raw.source_slug != "fonasa" or cfg.get("slug") != raw.source_slug:
+        return None
+    if not raw.event_date:return None
+    if not verified_publication(raw):
+        raise DeferredProcessing("FONASA sin evidencia de fecha de publicación")
+    raw=enrich_public_source(raw)
     if raw.metadata.get("fetch_error"):raise DeferredProcessing("FONASA detalle temporalmente inaccesible")
     if not raw.event_date:return None
     body=raw.metadata.get("page_text") or raw.raw_text
@@ -355,27 +390,28 @@ def process_fonasa(raw,cfg):
       "scores":{"economic":55,"regulatory":50,"scope":score,"novelty":score,"actionability":65}})
     row=build_signal(raw,cfg).to_dict()
     row.update(signal_types=["Noticias"],scopes=["Fonasa"],editorial_relevance=score)
-    return row
+    return with_publication_provenance(row,raw)
 
 
 
 def process_isp_surveillance(raw,cfg):
     """Official ISP surveillance evidence; promote only dated, substantive material."""
+    if raw.source_slug != "isp_surveillance" or cfg.get("slug") != raw.source_slug:
+        return None
+    if not verified_publication(raw):
+        raise DeferredProcessing("ISP surveillance without verified publication evidence")
     channel=raw.metadata.get("isp_channel") or "Vigilancia"
     parsed=raw.url.lower()
     text=raw.metadata.get("page_text") or raw.raw_text or ""
     if parsed.endswith(".pdf"):
-        try:text=extract_pdf_text(raw.url,max_pages=8)
+        try:text=capture_public_source_pdf(raw,max_pages=8)
         except Exception as exc:raise DeferredProcessing("ISP surveillance PDF unreadable") from exc
     elif not text:
-        raw=enrich(raw);text=raw.metadata.get("page_text") or raw.raw_text or ""
-    if not raw.event_date:
-        raw.event_date=_date(text[:6000]) or _date(raw.title)
-    if not raw.event_date:
-        raise DeferredProcessing("ISP surveillance without verified date")
+        raw=enrich_public_source(raw);text=raw.metadata.get("page_text") or raw.raw_text or ""
     if len(text)<180:
         raise DeferredProcessing("ISP surveillance without sufficient readable content")
     ai=analyze_official_news(title=raw.title,text=text[:9000],source_name="Instituto de Salud Pública de Chile (ISP)")
+    if not ai:raise DeferredProcessing("ISP surveillance pending assessment")
     score=int(ai.get("relevance_score")) if ai else 72
     if score<65:return None
     what=(ai.get("what_happened") if ai else raw.title) or raw.title
@@ -393,13 +429,18 @@ def process_isp_surveillance(raw,cfg):
     })
     row=build_signal(raw,cfg).to_dict()
     row["signal_types"]=["Datos"];row["scopes"]=list(dict.fromkeys(scopes));row["source_channel"]=channel;row["editorial_relevance"]=score
-    return row
+    return with_publication_provenance(row,raw)
 
 def process_isp_anamed(raw,cfg):
     """Publish an official alert only with dated, readable PDF and assessed implications."""
     if not raw.event_date or not raw.url.lower().endswith(".pdf"):
         return None
-    text=extract_pdf_text(raw.url,max_pages=5)
+    if raw.source_slug != "isp_anamed" or cfg.get("slug") != raw.source_slug:
+        return None
+    if not verified_publication(raw):
+        raise DeferredProcessing("ANAMED sin evidencia de fecha de publicación")
+    try:text=capture_public_source_pdf(raw,max_pages=5)
+    except Exception as exc:raise DeferredProcessing("ANAMED official PDF unavailable") from exc
     if not text or len(text)<350 or text.startswith("%PDF"):
         raise DeferredProcessing("ANAMED documento no legible; pendiente de revisión")
     ai=analyze_official_news(title=raw.title,text=text[:9000],source_name="ISP / ANAMED")
@@ -408,13 +449,14 @@ def process_isp_anamed(raw,cfg):
     what=(ai.get("what_happened") or "").strip();why=(ai.get("why_it_matters") or "").strip()
     if score<65 or len(what)<45 or len(why)<35:return None
     raw.raw_text=text[:9000]
+    raw.metadata["document_verification"]="readable_pdf"
     raw.metadata.update({"what_happened":what,"why_it_matters":why,
         "signal_types":["Noticias"],"scopes":["Farma / medicamentos"],
         "watch_tags":["isp","anamed","medicamentos"],
         "scores":{"economic":45,"regulatory":90,"scope":score,"novelty":score,"actionability":85}})
     row=build_signal(raw,cfg).to_dict()
     row.update(signal_types=["Noticias"],scopes=["Farma / medicamentos"],editorial_relevance=score)
-    return row
+    return with_publication_provenance(row,raw)
 
 
 
@@ -668,17 +710,23 @@ def process_deis(raw,cfg):
     parsed=urlparse(raw.url)
     if (raw.source_slug!="deis" or raw.source_name!="DEIS" or raw.source_type!="official"
             or cfg.get("slug")!="deis" or cfg.get("source_type")!="official"
-            or parsed.scheme!="https" or parsed.netloc!="deis.minsal.cl"
+            or not official_url(raw.url,"deis")
             or raw.metadata.get("resource_kind")!="dated_data_release"
-            or raw.metadata.get("publication_date_source")!="article:published_time" or not raw.event_date):
+            or not raw.event_date):
         return None
-    try:
-        if date.fromisoformat(raw.event_date)>date.today():return None
-    except ValueError:return None
-    raw=enrich(raw)
-    if raw.metadata.get("fetch_error"):
-        raise DeferredProcessing("DEIS detail temporarily unavailable")
-    body=raw.metadata.get("page_text") or raw.raw_text
+    if not verified_publication(raw):return None
+    if parsed.path.lower().endswith(".pdf"):
+        try:body=capture_public_source_pdf(raw,max_pages=12)
+        except Exception as exc:raise DeferredProcessing("DEIS official PDF unavailable") from exc
+        if not body or len(body)<350 or body.startswith("%PDF"):
+            raise DeferredProcessing("DEIS official PDF unreadable; publication remains pending")
+        raw.raw_text=body[:9000]
+        raw.metadata["document_verification"]="readable_pdf"
+    else:
+        raw=enrich_public_source(raw)
+        if raw.metadata.get("fetch_error"):
+            raise DeferredProcessing("DEIS detail temporarily unavailable")
+        body=raw.metadata.get("page_text") or raw.raw_text
     if len(body)<350:return None
     ai=analyze_official_news(title=raw.title,text=body[:9000],source_name="DEIS")
     if not ai:raise DeferredProcessing("DEIS release pending assessment")
@@ -689,4 +737,4 @@ def process_deis(raw,cfg):
         "scores":{"economic":40,"regulatory":35,"scope":score,"novelty":score,"actionability":65}})
     row=build_signal(raw,cfg).to_dict()
     row.update(signal_types=["Datos"],scopes=["Salud pública"],editorial_relevance=score)
-    return row
+    return with_publication_provenance(row,raw)

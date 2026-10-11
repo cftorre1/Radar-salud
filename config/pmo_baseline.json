@@ -803,6 +803,381 @@
       "runtime_run": 38143952220,
       "qa_run": 38143952494,
       "scope": "staging; no autonomy acceptance or production promotion"
+    },
+    "occupational_origin_inventory_recovery_2026_10_11": {
+      "kind": "isolated_branch_live_capture_and_complete_known_inventory_reconciliation",
+      "status": "blocked",
+      "branch": "codex/e-salud-laboral-20261011",
+      "pull_request": "https://github.com/cftorre1/Radar-salud/pull/12",
+      "candidate_sha": "d162cdb52712cf68fe932bbddbf09cecd97c6a03",
+      "latest_live_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38122998011",
+      "updated_at": "2026-10-11T08:44:04.852434+00:00",
+      "source_outcomes": {
+        "achs_seguro_laboral": {
+          "outcome": "OPERATIVE_VALIDATED",
+          "count_30_verified": 10,
+          "count_90_verified": 23,
+          "latest_runtime_count_30_verified": 10,
+          "latest_runtime_count_90_verified": 23,
+          "previous_dated_items_retained_without_refresh": 0,
+          "current_detected_durable_inventory_90": 23,
+          "current_queue_items": 23,
+          "published_in_branch_feed": 3,
+          "material_items": 8,
+          "coverage_complete": true
+        },
+        "clinicas_achs_salud": {
+          "outcome": "OPERATIVE_DEGRADED",
+          "count_30_verified": 3,
+          "count_90_verified": 16,
+          "latest_runtime_count_30_verified": 3,
+          "latest_runtime_count_90_verified": 5,
+          "previous_dated_items_retained_without_refresh": 11,
+          "current_detected_durable_inventory_90": 16,
+          "current_queue_items": 13,
+          "published_in_branch_feed": 0,
+          "material_items": 2,
+          "coverage_complete": false
+        },
+        "ist": {
+          "outcome": "OPERATIVE_DEGRADED",
+          "count_30_verified": 6,
+          "count_90_verified": 20,
+          "latest_runtime_count_30_verified": 6,
+          "latest_runtime_count_90_verified": 20,
+          "previous_dated_items_retained_without_refresh": 0,
+          "current_detected_durable_inventory_90": 20,
+          "current_queue_items": 20,
+          "published_in_branch_feed": 1,
+          "material_items": 1,
+          "coverage_complete": false
+        },
+        "mutual_seguridad": {
+          "outcome": "OPERATIVE_DEGRADED",
+          "count_30_verified": 33,
+          "count_90_verified": 51,
+          "latest_runtime_count_30_verified": 33,
+          "latest_runtime_count_90_verified": 51,
+          "previous_dated_items_retained_without_refresh": 0,
+          "current_detected_durable_inventory_90": 51,
+          "current_queue_items": 51,
+          "published_in_branch_feed": 1,
+          "material_items": 2,
+          "coverage_complete": false
+        }
+      },
+      "qa_current": {
+        "python": {
+          "passed": 731,
+          "failed": 1,
+          "skipped": 1,
+          "new_regressions": 0,
+          "inherited_failure": "tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review:11 visible versus>=12",
+          "log": "data/audits/source_e_recovery/python_full_current.txt"
+        },
+        "node": {
+          "passed": 41,
+          "log": "data/audits/source_e_recovery/node_no_isolation_tests.txt"
+        },
+        "desktop_mobile": {
+          "passed": 4,
+          "log": "data/audits/source_e_recovery/browser_final_current.txt"
+        },
+        "source_runtime": {
+          "run_id": "38122998011",
+          "actual_conclusion": "success"
+        },
+        "github_python_baseline_confirmation": {
+          "run_id": 38125347447,
+          "head": "02ff4f79428a256d78b94256fd83b469ea92edf1",
+          "workflow_conclusion": "failure",
+          "python": {
+            "passed": 731,
+            "failed": 1,
+            "skipped": 1
+          },
+          "failure": "tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review",
+          "assertion": "assert 11 >= 12",
+          "classification": "inherited baseline failure; unchanged non-occupational Normativa feed",
+          "source_runtime_run": 38122998011,
+          "clinic_transport_run": 38124717508,
+          "staging_deployment_job": "skipped",
+          "automated_reviewer_job": "skipped_due_preceding_inherited_test_failure",
+          "independent_source_reviewer": "separate_required_artifact"
+        },
+        "read_only_replay": {
+          "AI_calls": 0,
+          "canonical_hashes_unchanged": 9,
+          "verified_publications": 5,
+          "idempotent_export": true,
+          "evidence": "data/audits/source_e_recovery/saved_byte_replay_final.json"
+        },
+        "independent_reviewer": {
+          "verdict": "PASS_ENGINEERING_WITH_OPERATIVE_DEGRADED_SOURCES",
+          "evidence": "data/audits/source_e_recovery/reviewer_final.json"
+        }
+      },
+      "evidence": [
+        "data/audits/source_e_recovery/reconciliation_final.json",
+        "data/audits/source_e_recovery/verified_inventory_30_90.csv",
+        "data/audits/source_e_recovery/reviewer_final.json",
+        "data/audits/source_e_recovery/saved_byte_replay_final.json",
+        "data/audits/source_e_recovery/mutual_run13_worker_closure.json",
+        "data/audits/source_e_recovery/clinic_connectivity_diagnostic_result.json",
+        "data/audits/source_e_recovery/clinical_source_health_access_checkpoint.json",
+        "data/audits/source_e_recovery/ist_full_pdf_review.json",
+        "data/audits/source_e_recovery/ist_financial_context.json",
+        "data/audits/source_e_recovery/python_full_current.txt",
+        "data/audits/source_e_recovery/node_no_isolation_tests.txt",
+        "data/audits/source_e_recovery/browser_final_current.txt"
+      ],
+      "findings": [
+        "Official ACHS Seguro, central ACHS Salud, Mutual and IST surfaces reached with verified TLS from Actions; clinic subpublisher transport failures recorded separately. Codex CONNECT403 does not prove an external source blocker.",
+        "Publisher evidence gaps: ACHS blog dates conflict (one possible 90-day item); IST TPS API/meta12Aug versus visible10Aug; Mutual archive continuations repeat listings or redirect to institutional pages. Public source access is available; no source-wide external blocker is proven. Run14 also records connection443 timeouts for all9 native clinic publishers;11 previously dated items remain historical verified inventory, not current source-health revalidation.",
+        "All 21 observed Mutual Worker archives have every redirect and raw final response inspected; HTTP 200 institutional pages contain zero news IDs. The 14 Employer continuations repeat first listings.",
+        "IST: all 113 PDF pages reviewed offline; financial table periods 2025/2024 and publication 14 July 2026 preserved; ordinary revenues minus expenses never treated as independently verified net result.",
+        "Strict clinical/provider-center/insurance/mutuality roles; nine clinic publishers checked; duplicated award story explicitly grouped.",
+        "Original 2913 queue rows, 733 history rows and 49 feed signals unchanged. Only scoped source health updated; inherited global collection metadata stays unchanged."
+      ],
+      "next_action": "Retain degraded discovery for known surfaces. Complete 90-day acceptance only after an authoritative publisher date resolves Duelo/TPS and a functioning official Mutual archive or equivalent dated official listing establishes the missing boundary. Never infer dates, total coverage or source-wide WAF blockage. Preserve these11 records and their original captures; retry only ordinary permitted official endpoints when connectivity becomes available. The independent connectivity diagnostic and source health retain actual HTTP0/no TLS/timeout evidence.",
+      "technical_recovery_status": "validated_with_declared_source_coverage_gaps",
+      "public_origin_blocker_proven": false,
+      "global_90_day_acceptance": false,
+      "production_updated": false,
+      "pr_closed": false
+    },
+    "public_sources_c_2026_10_11": {
+      "branch": "codex/c-public-sources-20261011",
+      "baseline_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+      "verdict": "branch_runtime_proven_1_degraded_4_external_blockers",
+      "artifacts": [
+        "data/audits/public_sources_c_20261011/recovery/qa/manifest.json",
+        "data/audits/public_sources_c_20261011/recovery/stock-reconciliation.json",
+        "data/audits/public_sources_c_20261011/recovery/fonasa-national-catalog.json",
+        "data/audits/public_sources_c_20261011/recovery/fonasa-financing-alternatives.json",
+        "data/audits/public_sources_c_20261011/recovery/fonasa-checkpoint.json",
+        "data/audits/public_sources_c_20261011/recovery/fonasa_datos_abiertos-checkpoint.json",
+        "data/audits/public_sources_c_20261011/recovery/isp_anamed-checkpoint.json",
+        "data/audits/public_sources_c_20261011/recovery/isp_surveillance-checkpoint.json",
+        "data/audits/public_sources_c_20261011/recovery/deis-checkpoint.json",
+        "docs/PUBLIC_SOURCES_C_2026_10_11.md"
+      ],
+      "source_outcomes": {
+        "fonasa": "EXTERNAL_BLOCKER_PROVEN",
+        "fonasa_datos_abiertos": "EXTERNAL_BLOCKER_PROVEN",
+        "isp_anamed": "EXTERNAL_BLOCKER_PROVEN",
+        "isp_surveillance": "EXTERNAL_BLOCKER_PROVEN",
+        "deis": "OPERATIVE_DEGRADED"
+      },
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117670184",
+      "validated_code_sha": "55e31b1b7266d848b728faba11c9d6dad24c81f7",
+      "staging_merge_sha": null,
+      "postmerge_runtime_verified": false,
+      "global_release_pass": false,
+      "primary_bundle": "data/audits/public_sources_c_20261011/recovery/runs/38117670184/full-primary-evidence.zip"
+    },
+    "integration_commander_df_20261011": {
+      "issue": [
+        5,
+        6
+      ],
+      "task": "source_repair_media_lane_2026_10_11",
+      "pr": 11,
+      "source": "diario_financiero",
+      "origin_head_sha": "50cef26c4d829f18b3619d41710fffdf50534e91",
+      "integrated_commit": "7fc33c9f6bfae2d65a29e0c733f56b5edfe163ba",
+      "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+      "qa": {
+        "run_id": 38142344995,
+        "sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+        "python_passed": 309,
+        "python_skipped": 1,
+        "node_passed": 41,
+        "browser_passed": 46,
+        "failed": 0,
+        "reviewer": "PASS, zero findings"
+      },
+      "postmerge_runtime": {
+        "run_id": 38142527704,
+        "artifact_id": 11703507513,
+        "artifact_sha256": "27c88b9b8db5aa0452d76fce37dfc370ee97b460b0e9ccdead4328838e3f7dc9",
+        "two_actual_engine_polls": true,
+        "discovered_each": 41,
+        "dated_each": 41,
+        "detail_errors": 0,
+        "new_each": 0,
+        "published_each": 0,
+        "idempotence": true,
+        "unrelated_stock_preserved": true,
+        "history_rows": 771,
+        "feed_rows": 73,
+        "reviewer": "PASS"
+      },
+      "editorial_outcome": {
+        "published_stock": 26,
+        "deferred_multimedia": 19,
+        "current_poll": "no_new_signals",
+        "LIVE_recent_stock_preserved": true,
+        "new_paid_calls": 0,
+        "queue_history_feed_seen_dedupe": "PASS",
+        "materiality_threshold": 72
+      },
+      "final_outcome": "INTEGRATED_DEGRADED",
+      "reason": "Repaired text discovery, publisher dates and stock integration validated; 19 multimedia items and partial site coverage retain warning. No full multimedia/absolute site coverage claim.",
+      "next_action": "Fix cumulative rejection interpretation in the shared health producer, then integrate PR15; retain the 19 publisher text/OCR holds. Pulso remains NOT_READY."
+    },
+    "integration_commander_sis_suseso_20261011": [
+      {
+        "issue": [
+          5,
+          8
+        ],
+        "task": "source_repair_fiscalization_lane_2026_10_11",
+        "pr": 15,
+        "integration_pr": 18,
+        "source": "superintendencia_fiscalizacion",
+        "integrated_commit": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+        "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+        "status": "INTEGRATED_DEGRADED",
+        "qa": "https://github.com/cftorre1/Radar-salud/actions/runs/38143763798",
+        "preview": "https://github.com/cftorre1/Radar-salud/actions/runs/38143952494",
+        "reviewer": {
+          "runtime": {
+            "reviewer": "deterministic-reviewer",
+            "candidate_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+            "reviewed_at": "2026-10-11T13:39:18.720261+00:00",
+            "findings": [],
+            "checks": {
+              "data": true,
+              "editorial": true,
+              "statistics": true,
+              "ux": true
+            },
+            "limitations": [
+              "Semantic/legal accuracy is not certified by deterministic checks.",
+              "Browser evidence is required separately for desktop/mobile.",
+              "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+            ]
+          },
+          "bounded_native": "data/audits/fiscalizacion/coverage_reviewer_native_2026_10_11.json"
+        },
+        "runtime": {
+          "run_id": 38143952220,
+          "artifact_id": 11703837683,
+          "sha256": "41952fdd8f6a1456d830c8465fbf9d85305b23e60afd82cd0f62a90cc6ca0586",
+          "polls": 2,
+          "discovery": [
+            {
+              "discovered": 3343,
+              "new": 0,
+              "technical_status": "ok",
+              "error_type": null,
+              "checked_at": "2026-10-11T13:38:47.288295+00:00"
+            },
+            {
+              "discovered": 3343,
+              "new": 0,
+              "technical_status": "ok",
+              "error_type": null,
+              "checked_at": "2026-10-11T13:39:13.180788+00:00"
+            }
+          ],
+          "idempotent": true,
+          "unrelated_stock_preserved": true
+        },
+        "editorial_outcome": "no_new_publications_existing_history",
+        "raw_runtime_editorial_outcome": "rejected",
+        "poll_outcome_producer_fix": "54491a9 candidate awaiting staging combined QA",
+        "exact_calendar_window_material": {
+          "30": 14,
+          "90": 28
+        },
+        "window_evidence": "native reviewed original dated surfaces; runtime inclusive window counts separately preserved",
+        "coverage_complete": false,
+        "next_action": "Keep source degraded; resolve undated reports / remaining legal-act identity limits without date fabrication",
+        "production_changes": false
+      },
+      {
+        "issue": [
+          5,
+          8
+        ],
+        "task": "source_repair_fiscalization_lane_2026_10_11",
+        "pr": 15,
+        "integration_pr": 18,
+        "source": "suseso_fiscalizacion",
+        "integrated_commit": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+        "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+        "status": "INTEGRATED_DEGRADED",
+        "qa": "https://github.com/cftorre1/Radar-salud/actions/runs/38143763798",
+        "preview": "https://github.com/cftorre1/Radar-salud/actions/runs/38143952494",
+        "reviewer": {
+          "runtime": {
+            "reviewer": "deterministic-reviewer",
+            "candidate_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+            "reviewed_at": "2026-10-11T13:39:18.720261+00:00",
+            "findings": [],
+            "checks": {
+              "data": true,
+              "editorial": true,
+              "statistics": true,
+              "ux": true
+            },
+            "limitations": [
+              "Semantic/legal accuracy is not certified by deterministic checks.",
+              "Browser evidence is required separately for desktop/mobile.",
+              "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+            ]
+          },
+          "bounded_native": "data/audits/fiscalizacion/coverage_reviewer_native_2026_10_11.json"
+        },
+        "runtime": {
+          "run_id": 38143952220,
+          "artifact_id": 11703837683,
+          "sha256": "41952fdd8f6a1456d830c8465fbf9d85305b23e60afd82cd0f62a90cc6ca0586",
+          "polls": 2,
+          "discovery": [
+            {
+              "discovered": 1273,
+              "new": 0,
+              "technical_status": "ok",
+              "error_type": null,
+              "checked_at": "2026-10-11T13:38:47.288308+00:00"
+            },
+            {
+              "discovered": 1273,
+              "new": 0,
+              "technical_status": "ok",
+              "error_type": null,
+              "checked_at": "2026-10-11T13:39:13.180801+00:00"
+            }
+          ],
+          "idempotent": true,
+          "unrelated_stock_preserved": true
+        },
+        "editorial_outcome": "pending_10_undated_medical_reports_no_new_publication",
+        "raw_runtime_editorial_outcome": "pending",
+        "poll_outcome_producer_fix": "54491a9 candidate awaiting staging combined QA",
+        "exact_calendar_window_material": {
+          "30": 20,
+          "90": 74
+        },
+        "window_evidence": "native reviewed original dated surfaces; runtime inclusive window counts separately preserved",
+        "coverage_complete": false,
+        "next_action": "Keep source degraded; resolve undated reports / remaining legal-act identity limits without date fabrication",
+        "production_changes": false
+      }
+    ],
+    "integration_PR20_2026_10_11": {
+      "kind": "staging_integration",
+      "origin_pr": 12,
+      "integration_pr": 20,
+      "sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "qa_run": 38145313219,
+      "runtime_run": 38145632535,
+      "result": "MERGED_RUNTIME_PENDING",
+      "matrix": "data/pmo/integration_release_2026_10_11.json",
+      "scope": "staging only; no source closure or autonomy acceptance inferred"
     }
   },
   "blocks": [
@@ -1267,6 +1642,24 @@
       "required_data": "hosting aprobado, volumen durable, remitente, destinatario interno y credenciales seguras",
       "estimated_time": "según decisión y aprovisionamiento del proveedor",
       "beta_impact": "No bloquea Beta cerrada; el CTA permanece fail-closed hasta activar backend autorizado."
+    },
+    {
+      "id": "public_source_official_access_fonasa",
+      "action": "Administrador web de FONASA: revisar el rechazo HTTP403 del frontal AWS ALB para GET público desde GitHub hospedado, habilitar acceso autorizado de monitoreo o entregar export oficial accesible y confirmar rutas canónicas de noticias; luego repetir esta Action.",
+      "provider": "FONASA web/infraestructura",
+      "required_data": "Acceso HTTPS autorizado verificable o export/feed oficial actual con fechas y enlaces de recursos",
+      "estimated_time": "No verificable; depende del propietario oficial",
+      "beta_impact": "Limita cobertura de las fuentes indicadas; no detiene captura DEIS ni certifica release",
+      "evidence": "data/audits/public_sources_c_20261011/recovery/fonasa-checkpoint.json"
+    },
+    {
+      "id": "public_source_official_access_isp_anamed",
+      "action": "Operador de red/hosting de ISP: verificar listener y ruta TCP 443 de www.ispch.cl, ispch.cl, www.ispch.gob.cl e ispch.gob.cl frente al egress de GitHub hospedado, restaurar acceso HTTPS público o entregar un feed/document export oficial accesible; luego repetir esta Action.",
+      "provider": "ISP redes/hosting/web",
+      "required_data": "Acceso HTTPS autorizado verificable o export/feed oficial actual con fechas y enlaces de recursos",
+      "estimated_time": "No verificable; depende del propietario oficial",
+      "beta_impact": "Limita cobertura de las fuentes indicadas; no detiene captura DEIS ni certifica release",
+      "evidence": "data/audits/public_sources_c_20261011/recovery/isp_anamed-checkpoint.json"
     }
   ],
   "changelog": [
@@ -1788,6 +2181,21 @@
       "evidence": [
         "data/audits/work3_adversarial_2026_10_11T072159Z.json"
       ]
+    },
+    {
+      "date": "2026-10-11",
+      "change": "Public-source C isolated lane: explicit publication provenance, official HTTPS redirects, dated DEIS classification documents and ISP publication-column coverage; current health stays error/unverified for exact external proxy403. No staging/main/production promotion.",
+      "evidence": [
+        "public_sources_c_2026_10_11"
+      ]
+    },
+    {
+      "date": "2026-10-11",
+      "change": "Public data C recovery: real GitHub native discovery/PDF/catalógos and official national datasets; DEIS degraded operational, four blockers demonstrated across runtimes with official alternatives and exact owner steps. Stock preserved; no staging/main/production promotion or global QA closure.",
+      "evidence": [
+        "public_sources_c_2026_10_11",
+        "data/audits/public_sources_c_20261011/recovery/stock-reconciliation.json"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -1795,8 +2203,9 @@
     {
       "id": "fonasa_unavailable",
       "severity": "warning",
-      "description": "FONASA oficial discovery 0, technical_status error HTTPError en piloto #23; no validada como fuente activa.",
-      "source": "Daily Radar pilot #21; data/state/discovery_run.json y data/source_health.json"
+      "description": "FONASA direct current coverage EXTERNAL_BLOCKER_PROVEN: GitHub verified TLS followed by awselb/2.0 HTTP403; current listings inaccessible. National publisher catalog complete but historical; official GRD references captured under DIPRES/MINSAL attribution.",
+      "source": "data/audits/public_sources_c_20261011/recovery/fonasa-checkpoint.json",
+      "next_action": "Administrador web de FONASA: revisar el rechazo HTTP403 del frontal AWS ALB para GET público desde GitHub hospedado, habilitar acceso autorizado de monitoreo o entregar export oficial accesible y confirmar rutas canónicas de noticias; luego repetir esta Action."
     },
     {
       "id": "beta_contract_not_gated",
@@ -1813,8 +2222,9 @@
     {
       "id": "isp_anamed_unavailable",
       "severity": "warning",
-      "description": "ISP/ANAMED responde URLError desde GitHub Actions piloto #23: 0 descubierto, 0 publicado, sin evaluación editorial. Conector técnico fail-closed y QA #74 no equivalen a fuente validada.",
-      "source": "data/state/discovery_run.json; data/source_health.json; piloto #23"
+      "description": "ISP/ANAMED EXTERNAL_BLOCKER_PROVEN: DNS resolves four official .cl/.gob.cl aliases but TCP443 times out before TLS from GitHub; Codex independently rejects CONNECT. Recent indexed alert remains primary-capture omission, no publication claimed.",
+      "source": "data/audits/public_sources_c_20261011/recovery/isp_anamed-checkpoint.json",
+      "next_action": "Operador de red/hosting de ISP: verificar listener y ruta TCP 443 de www.ispch.cl, ispch.cl, www.ispch.gob.cl e ispch.gob.cl frente al egress de GitHub hospedado, restaurar acceso HTTPS público o entregar un feed/document export oficial accesible; luego repetir esta Action."
     },
     {
       "id": "pfizer_newsroom_misroute",
@@ -2051,6 +2461,20 @@
         "historical_active_stock": 17,
         "closure_status": "OPEN: isolated candidate repair; staging merge, post-merge core and global gates outstanding",
         "artifact": "data/audits/fiscalizacion/native_reconciliation_2026_10_11.json"
+      }
+    },
+    {
+      "id": "public_data_lane_2026_10_11_proxy_connect",
+      "severity": "warning",
+      "description": "Codex proxy rejection remains environmental, superseded as sole closure cause. Real GitHub captures recover DEIS with exact degradation; FONASA current news/hub/docs are ALB HTTP403 after TLS, ISP four aliases time out on TCP443 before TLS. Official alternatives evaluated; current first-party coverage remains blocked for four sources.",
+      "source": "data/audits/public_sources_c_20261011/recovery/recovery-matrix.json",
+      "next_action": "Integración/Reviewer: revisar PR #13, hacer merge seguro a staging cuando sus gates lo permitan y repetir runtime real de DEIS después del merge. Mantener independientes los blockers FONASA ALB403 e ISP TCP443; sus propietarios oficiales deben habilitar acceso o export actual. No cerrar issue #5 con evidencia sólo de rama.",
+      "source_outcomes": {
+        "fonasa": "EXTERNAL_BLOCKER_PROVEN",
+        "fonasa_datos_abiertos": "EXTERNAL_BLOCKER_PROVEN",
+        "isp_anamed": "EXTERNAL_BLOCKER_PROVEN",
+        "isp_surveillance": "EXTERNAL_BLOCKER_PROVEN",
+        "deis": "OPERATIVE_DEGRADED"
       }
     }
   ],
@@ -2328,6 +2752,29 @@
       "last_progress_at": "2026-10-11T07:11:23.063060+00:00",
       "integration_base_sha": "c4819844e413d31ede792521a2c137392c4ae104",
       "staging_reconciliation_merge_sha": "99b65b392cb12e144ca93c545bfd9fe328f59cb2"
+    },
+    {
+      "id": "staging_qa_gatekeeper_2026_10_11",
+      "status": "READY_FOR_INTEGRATION",
+      "at": "2026-10-11T13:14:40.424737+00:00",
+      "pr": 17,
+      "branch": "codex/staging-qa-gates-20261011",
+      "base_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
+      "normative": "Obsolete fixed live count; all reviewed identities retained, eligible ones checked, no lowered minimum",
+      "statistics": "Eight real export/presentation defects fixed against4primaryPDFs; original strict Reviewer retained and inventory bypass rejected.",
+      "evidence": "data/audits/staging_qa_gates_2026_10_11.json",
+      "initial_ci": "https://github.com/cftorre1/Radar-salud/actions/runs/38141940100",
+      "next_action": "Integration Commander: merge complete PR17 into current staging; run canonical QA after merge; revalidate remaining source PRs against that staging. No main/production promotion and no source issue closure.",
+      "last_progress_at": "2026-10-11T13:31:36.889931+00:00",
+      "validated_implementation_sha": "8339640f43309f908f69edae43b1b34bbbf23d24",
+      "integration_base_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+      "ci": "https://github.com/cftorre1/Radar-salud/actions/runs/38143298390",
+      "checks": {
+        "python": "312PASS/1justifiedSKIP",
+        "node": "41PASS",
+        "browser": "48PASS desktop/mobile",
+        "reviewer": "0findings/PASS"
+      }
     }
   ],
   "approved_infrastructure_changes": [
@@ -3365,7 +3812,7 @@
       ]
     }
   ],
-  "updated_at": "2026-10-11T13:41:48.647967+00:00",
+  "updated_at": "2026-10-11T14:05:53.481344+00:00",
   "closed_beta": {
     "status": "pending_validation",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",

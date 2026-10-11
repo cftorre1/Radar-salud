@@ -30,9 +30,10 @@ def record_data_adapter(root: Path, slug: str, evidence: dict) -> None:
     atomic_json(_path(root), d)
 
 def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,rows:list[dict]|None=None,
-           pending:int=0,deferred:int=0,rejected:int=0,error:str|None=None,live_pending:int|None=None,backfill_pending:int|None=None, observed_rows:list[dict]|None=None,
+           pending:int=0,deferred:int=0,rejected:int=0,error:str|None=None,live_pending:int|None=None,backfill_pending:int|None=None,
+           discovery_evidence:dict|None=None, observed_rows:list[dict]|None=None,
            surfaces:list[dict]|None=None, published_history:list[dict]|None=None,
-           archived:int=0, rejection_reasons:dict|None=None, source_queue:list[dict]|None=None, discovery_evidence:dict|None=None)->None:
+           archived:int=0, rejection_reasons:dict|None=None, source_queue:list[dict]|None=None, error_detail:dict|None=None,inventory:dict|None=None,error_details:dict|None=None,diagnostics:dict|None=None,processed_rejections:int=0)->None:
     d=_load(root);src=d.setdefault("sources",{});rows=rows or []
     dates=[x.get("event_date") for x in rows if x.get("event_date")]
     prev=src.get(slug) or (src.get("superintendencia_stats",{}) if slug=="superintendencia" else {})
@@ -56,28 +57,38 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
     else:
         coverage = technical = None
     coverage_gap=error is None and discovered==0 and not last_signal
+    if diagnostics and (diagnostics.get("coverage_status")=="no_verifiable_documents"
+                        or diagnostics.get("verified_publications")==0):
+        coverage_gap=True
     status="error" if error else ("warning" if (coverage_gap or (new>0 and published==0 and pending==0)) else "ok")
     # Parsed tables prove an observation, not reconciled 30/90-day coverage.
     # Keep the public health warning until independent reconciliation exists.
     if fiscal:
         status = "error" if error else "warning"
+    partial=bool(diagnostics and diagnostics.get("partial_failure"))
+    if partial and not error:status="warning"
     try:
         age=(datetime.now(timezone.utc).date()-date.fromisoformat(str(last_signal)[:10])).days
         freshness="future" if age<0 else ("recent" if age<=7 else "older")
     except (ValueError,TypeError):
         freshness="unknown"
     editorial="not_evaluated" if error else ("published" if published else
-        "pending" if pending else "rejected" if rejected else "no_new_signals")
+        "rejected" if processed_rejections else "pending" if pending else "no_new_signals")
+    if diagnostics and diagnostics.get("poll_mode")=="discovery_and_document_verification_only":
+        editorial="not_evaluated"
     src[slug]={
         "name":name,"checked_at":datetime.now(timezone.utc).isoformat(),
         "last_signal_at":last_signal,
         "discovered":discovered,"new":new,"published":published,
         "live_pending":live_pending,"backfill_pending":backfill_pending,"pending":pending,"deferred":deferred,"rejected":rejected,
         "status":status,"error":error,
-        "technical_status":technical or ("error" if error else "ok"),
-        "coverage_status":coverage or ("unverified" if error else ("gap" if coverage_gap else "observed")),
+        "technical_status":technical or ("error" if error else "degraded" if partial else "ok"),
+        "coverage_status":coverage or ("unverified" if error else ("partial" if partial else "gap" if coverage_gap else "observed")),
         "content_freshness":freshness,
         "editorial_outcome":editorial,
+        "processed_rejections":processed_rejections,
+        "counts_scope":{"discovered":"this_run","new":"this_run","published":"this_run",
+                        "processed_rejections":"this_run","rejected":"cumulative_queue"},
     }
     if discovery_evidence is not None:
         row=src[slug]
@@ -86,9 +97,10 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
                              "pending":"cumulative_queue","deferred":"cumulative_queue","rejected":"cumulative_queue"}
         row["coverage_status"]="unverified" if error else "partial_inventory"
         # An all-undated inventory cannot be healthy merely because HTTP worked.
-        if not error and (discovery_evidence.get("undated",0) or discovery_evidence.get("detail_errors",0)
-                          or discovery_evidence.get("insufficient_evidence",0)):
+        if not error and (discovery_evidence.get("undated",0) or discovery_evidence.get("detail_errors",0)):
             row.update(status="warning",technical_status="partial",coverage_status="date_or_detail_gap")
+        elif not error and discovery_evidence.get("insufficient_evidence",0):
+            row.update(status="warning",technical_status="partial",coverage_status="format_gap")
         row["last_signal_at"]=discovery_evidence.get("last_published_event_at")
         row["last_discovered_event_at"]=discovery_evidence.get("newest_event_date")
         try:
@@ -96,7 +108,8 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
             age=(datetime.now(timezone.utc).date()-published_day).days
             row["content_freshness"]="future" if age<0 else "recent" if age<=7 else "older"
         except (TypeError,ValueError):row["content_freshness"]="unknown"
-        if error:row["editorial_outcome"]="not_evaluated"
+        row["editorial_outcome"]=editorial
+        row["coverage_complete"]=False
     if fiscal:
         from .superintendencia_fiscalizacion import canonical_url
         def identity(row):
@@ -150,7 +163,28 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
             src[slug]['zero_published_reason'] = ('pending_or_deferred_candidates' if pending else
                 'evaluated_rejections_or_existing_published_history' if rejected or published_history else
                 'no_recent_material_signal_verified; coverage_not_certified')
-        if not error and not published and not pending and not rejected and published_history:
+        if not error and not published and not pending and not processed_rejections and published_history:
             src[slug]['editorial_outcome']='no_new_publications_existing_history'
+    if error_detail:
+        src[slug]["error_detail"]=error_detail
+    if inventory is not None:
+        complete = inventory.get("coverage_complete", False)
+        row = src[slug]
+        outcome = "OPERATIVE_VALIDATED" if complete and not error and not pending else "OPERATIVE_DEGRADED"
+        row.update(coverage_window=inventory.get("window"), pages_checked=len(inventory.get("pages", [])),
+            recent_items=inventory.get("metrics", {}), unique_items=inventory.get("metrics", {}).get("90", {}).get("expected_role", 0),
+            material_items=sum(r.get("status") == "candidate" for r in inventory.get("rows", [])),
+            technical_status="partial" if error and discovered else "error" if error else "ok",
+            technical_failures=inventory.get("errors", []) or ([error_detail] if error_detail else []),
+            coverage_status="complete" if complete else "partial", coverage_completeness=complete,
+            recovery_outcome=outcome, status="ok" if outcome == "OPERATIVE_VALIDATED" else "warning" if discovered or not error else "error")
+    if error_details:src[slug]["error_details"]=error_details
+    if diagnostics:src[slug]["discovery_diagnostics"]=diagnostics
+    if diagnostics and diagnostics.get("poll_mode"):
+        src[slug]["engine_checked_at"]=(src[slug]["checked_at"] if diagnostics["poll_mode"]=="daily_engine"
+                                        else prev.get("engine_checked_at",prev.get("checked_at")))
+        src[slug]["poll_mode"]=diagnostics["poll_mode"]
+    if diagnostics and "latest_verified_publication_date" in diagnostics:
+        src[slug]["latest_verified_publication_at"]=diagnostics["latest_verified_publication_date"]
     d["generated_at"]=datetime.now(timezone.utc).isoformat()
     atomic_json(_path(root),d)

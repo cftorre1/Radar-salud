@@ -1,0 +1,157 @@
+{
+  "audited_at": "2026-10-11T07:04:09.982501+00:00",
+  "capture_run": "38119024441",
+  "tests": "91 passed: document integration/documents/scoped sources/reconcile/merge/evidence",
+  "ai_calls": 0,
+  "editorial_threshold": 75,
+  "no_canonical_state_mutation": true,
+  "limitations": [
+    "PDF extraction bounded to first40 pages and30000 characters; truncated is explicit, no whole report claim.",
+    "Only novel numeric operational excerpts enter additional context; ambiguous or fragmented numbers are excluded.",
+    "Primary article publication and dataset period remain separate.",
+    "Missing required IST report document remains pending, not a generic materiality rejection.",
+    "Historic call deadlines must be assessed against Chile review date; no inference of current availability from BACKFILL."
+  ],
+  "documents": [
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+      "date": "2026-09-24",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+        "value": "24/09/2026",
+        "date": "2026-09-24",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "document_url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-437334/guia-tratamiento-psicologico.pdf?sfvrsn=fbec0931_1",
+      "document_publication_date": null,
+      "parent_body_unchanged": true,
+      "capture_evidence": {
+        "url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-437334/guia-tratamiento-psicologico.pdf?sfvrsn=fbec0931_1",
+        "final_url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-437334/guia-tratamiento-psicologico.pdf?sfvrsn=fbec0931_1",
+        "captured_at": "2026-10-11T06:48:48.173723+00:00",
+        "sha256": "2d68fdc8f3441e374397541d1511dfb1b38ef45c8fa56bf185bb84709af5262c",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38119024441/f60e7e752e833a4ed8e8-0.body",
+        "environment": "github_actions"
+      },
+      "text_sha256": "e1b41d54ecbd6bf73f1ac8a4e4c20628a59cfe7a161f4dc0053489d88f6fdc24",
+      "page_count": 32,
+      "extracted_pages": 32,
+      "extracted_characters": 30000,
+      "truncated": true,
+      "additional_facts": "(SUSESO) muestran un aumento sustantivo en el período\n2019–2024. La tasa de casos reconocidos de enfermeda -\ndes profesionales de salud mental aumentó de 42,7 por\ncada 100.000 personas trabajadoras protegidas en 2019\na 98,1 en 2024, lo que representa un incremento de apro-\nximadamente 130%. Asimismo, entre 2023 y 2024, la tasa\naumentó de 92,1 a 98,1 casos por cada 100.000 personas\nprotegidas, equivalente a un incremento adicional de 6,5%.\nEstos resultados muestran un aumento sostenido en la\nfrecuencia de reconocimiento de estas enfermedades,\nEdad\nLos informes SUSESO muestran que la mayor concentración de enferme -\ndades profesionales de salud mental se ubica en las edades centrales de la\nvida laboral. En 2023, el 65,6% de los casos se concentró en los tramos\nde 25 a 34 años y de 35 a 44 años, con patrones similares entre mujeres y\nhombres. En 2024, considerando el conjunto de enfermedades profesiona-\nles, el 80% se concentra entre los 25 y los 54 años . Esto confirma que la\nafectación no se limita a personas próximas a la jubilación, sino que impacta\na población en plena etapa productiva y de crianza o cuidado, aunque la\nvolumen absoluto de casos, estrechamente relacionado con el tamaño\npoblacional y la estructura del empleo regional.\nSECTOR N° CASOS % DEL TOTAL DE CASOS\nAdministración pública y defensa 2.387 26,4%\nServicios sociales y de salud 1.788 19,8%\nEnseñanza 1.221 13,5%\nLos datos del Observatorio de la Superintendencia de Seguridad Social\n(SUSESO) indican que el 55% de las sospechas de denuncias calificadas\nde salud mental en 2024 proviene de empresas de 1.000 o más traba-\njadores, y un 28% adicional de empresas de entre 200 y 999 trabajadores.\nEn cualquier caso, tiene una implicancia clínica directa: la intervención\ndebe anticipar contextos institucionales con jerarquías formales,\nprocedimientos internos establecidos y potencial de judicialización\ndel proceso",
+      "additional_fact_sha256": "dbf7e16bdfe169e416439a63e53334d32b5b654bfd41b4d311035dc52ed2a8ef",
+      "materiality": [
+        true,
+        "new_operational_tool_or_protocol"
+      ],
+      "ai_input_characters": 4714
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+      "date": "2026-09-15",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+        "value": "15/09/2026",
+        "date": "2026-09-15",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "document_url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-435774/achs-infografia-scooter.pdf?sfvrsn=fe766532_1",
+      "document_publication_date": null,
+      "parent_body_unchanged": true,
+      "capture_evidence": {
+        "url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-435774/achs-infografia-scooter.pdf?sfvrsn=fe766532_1",
+        "final_url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-435774/achs-infografia-scooter.pdf?sfvrsn=fe766532_1",
+        "captured_at": "2026-10-11T06:48:50.200249+00:00",
+        "sha256": "70ba81cdf10385962882d0a3d37a3f1b7f9244fb05982a4a621149e24933a098",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38119024441/38b98681e9187c185e5c-0.body",
+        "environment": "github_actions"
+      },
+      "text_sha256": "e5e96cbf8dfdd186647ba8bb6cf31e58c06629c3fec75ab1638610afcbe583f7",
+      "page_count": 2,
+      "extracted_pages": 2,
+      "extracted_characters": 1474,
+      "truncated": false,
+      "additional_facts": "",
+      "additional_fact_sha256": null,
+      "materiality": [
+        true,
+        "quantified_occupational_data"
+      ],
+      "ai_input_characters": 5500
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+      "date": "2026-07-15",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+        "value": "15/07/2026",
+        "date": "2026-07-15",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "document_url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-422711/ppt-lgf.pptx?sfvrsn=7908d12d_1",
+      "document_publication_date": null,
+      "parent_body_unchanged": true,
+      "capture_evidence": {
+        "url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-422711/ppt-lgf.pptx?sfvrsn=7908d12d_1",
+        "final_url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-422711/ppt-lgf.pptx?sfvrsn=7908d12d_1",
+        "captured_at": "2026-10-11T06:48:52.151601+00:00",
+        "sha256": "fa678a8fe32430d1d3de7336bbfa604c34f613bef94c9e756295f7e397ba3c38",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38119024441/6f5efbe4504ffc3a038a-0.body",
+        "environment": "github_actions"
+      },
+      "text_sha256": "72c7827fb5021af2881d0efb94f3f36dd6665a59895a9eb1cffe62c728d100f6",
+      "page_count": 8,
+      "extracted_pages": 8,
+      "extracted_characters": 3752,
+      "truncated": false,
+      "additional_facts": "1 Te presentamos el módulo de   Lesiones Graves y/o Fatales (LGF)  disponible en  Achs  Virtual ,  modelo predictivo basado en AI  para conocer accidentes de trabajo que podrían causar LGF. Beneficios Modelo predictivo basado en IA  para predecir accidentes que pueden ser graves o fatales Índice de exposición LGF , incluye potenciales del modelo IA y  casos consumados Acceso multidispositivo Gráficas mensuales, últimos 12 meses y desglose mensual  Guía para capacitarte , aplicar autoevaluaciones de clima y liderazgo para afrontar LGF y planes de acción destinados a disminuir potenciales Descargables con más detalle de los motivos por los que un accidente podría ser fatales, revisa precursores y lugares de trabajo\n2 Índice de exposición LGF: potenciales LGF con IA y casos consumados Conoce el índice de exposición a LGF, de casos potenciales basado en un modelo  IA para predecir accidentes con potencial de ser graves y/o fatales y se incluyen los casos consumados graves o fatales Acceso multidispositivo Revisa la información desde cualquier tipo de dispositivo y navegadores Revisa gráficas y conoce potenciales Revisa mensualmente tu índice de exposición, compara otros periodos para guiar tus planes acción Descarga más información Permite tener un mayor detalle de los motivos por los que un accidente podría ser fatales, revisa precursores y lugares de trabajo Guía para tomar acción Desde LGF encontrarás una guía de capacitaciones, autoevaluaciones y planes de acción por precursores presentes en tu empresa Resumen de beneficios  de Lesiones Graves y/o Fatales (LGF)\nPasos para acceder a  LGF en  Achs  Virtual ,  revisa tus indicadores y conoce la  Guía de lesiones graves y fatales ¿Quiénes pueden acceder?   Todos los usuarios de  Achs  Virtual con  perfil empresa  ( admin  y  coadmin ) 3 1 2 3 Con tu perfil de  Achs  Virtual  empresa accede a la  Gestión preventiva” (ícono",
+      "additional_fact_sha256": "c04a250d0c76c3b154a650d9302eb7f1608f4b2da81e88b2863a940997c55229",
+      "materiality": [
+        true,
+        "new_operational_tool_or_protocol"
+      ],
+      "ai_input_characters": 3763
+    },
+    {
+      "url": "https://ist.cl/reporte-sostenibilidad-2025/",
+      "date": "2026-07-14",
+      "publication_evidence": {
+        "url": "https://ist.cl/reporte-sostenibilidad-2025/",
+        "value": "2026-07-14T17:52:49+00:00",
+        "date": "2026-07-14",
+        "kind": "article:published_time"
+      },
+      "document_url": "https://ist.cl/wp-content/uploads/2026/07/Reporte-de-sostenibilidad-2025.pdf",
+      "document_publication_date": null,
+      "parent_body_unchanged": true,
+      "capture_evidence": {
+        "url": "https://ist.cl/wp-content/uploads/2026/07/Reporte-de-sostenibilidad-2025.pdf",
+        "final_url": "https://ist.cl/wp-content/uploads/2026/07/Reporte-de-sostenibilidad-2025.pdf",
+        "captured_at": "2026-10-11T06:48:54.065638+00:00",
+        "sha256": "acc895136dcfabe0ed8fd7ec2af599f5c0018b0e8288581ecc625e5ac12f53f7",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38119024441/1ab8f6434b9953521e51-0.body",
+        "environment": "github_actions"
+      },
+      "text_sha256": "1972ea33b134c96a56c84d6e13f19aa9c9090f9651a8fd7ae5c854455affa743",
+      "page_count": 113,
+      "extracted_pages": 40,
+      "extracted_characters": 30000,
+      "truncated": true,
+      "additional_facts": "exigieron avanzar con responsabilidad, eficiencia y visión de largo plazo, manteniendo siempre el\nfoco en la calidad de nuestras prestaciones y en el acompañamiento cercano a nuestras entidades\nadherentes y trabajadores protegidos.\nEn 2025, protegimos mensualmente a más de 496 mil trabajadores promedio, atendimos más de 45\nmil pacientes por accidentes del trabajo, trayecto y enfermedades profesionales, y realizamos más\nde 447 mil evaluaciones laborales preventivas. Asimismo, capacitamos a más de 559 mil\ntrabajadores a lo largo del país, fortaleciendo la cultura preventiva y promoviendo ambientes\nlaborales más seguros y saludables.\ncapacitados\n2.029\nTrabajadores IST\n85,7%\nTrabajadores internos\nsindicalizados\n493.655\nTrabajadores protegidos\na diciembre\n496.323\nTrabajadores\nprotegidos\npromedio mensual\n45.157\nTrabajadores Atendidos\nCobertura Ley\ntrabajadores en capacitación\n23.075\nProgramas de vigilancia\n447.512\nEvaluaciones\nlaborales realizadas\ncontamos con una política de Gestión Integral. Puedes consultar el documento\ncompleto en el siguiente enlace: Política Integrada de Gestión IST\nPrestaciones médicas\nDurante el año 2025, un total de 45.157 trabajadores protegidos recibió atención en IST por\naccidentes del trabajo, accidentes de trayecto o enfermedades profesionales. Cada uno de estos\ncasos pudo requerir múltiples prestaciones médicas, diagnósticas, terapéuticas o de rehabilitación",
+      "additional_fact_sha256": "fb830c0ea2f779e3bf977a3e7b1c991f41210955b5d54dce3193afb5b74f1054",
+      "materiality": [
+        true,
+        "published_operational_study"
+      ],
+      "ai_input_characters": 3153
+    }
+  ]
+}

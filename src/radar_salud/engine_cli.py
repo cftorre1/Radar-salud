@@ -1,6 +1,7 @@
 from __future__ import annotations
 import argparse,hashlib,json
 from dataclasses import asdict
+from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 from .scouts import SeenStore,SuperintendenciaStatsScout,fetch_html,save_raw_items,MinsalNewsScout
@@ -11,7 +12,10 @@ from .history import load_history,merge_history,save_history
 from .df_recovery import published_history_urls
 from .regulatory import SuperintendenciaNormativaScout
 from .regulatory_pipeline import process_superintendencia_normativa
-from .source_scouts import SusesoNormativeScout,SusesoNewsScout,SusesoFiscalizacionScout,DfHealthScout,FonasaDataHubScout,FonasaNewsScout,IspSurveillanceScout,IspAnamedAlertScout,ClinicasChileScout,CorporateNewsroomScout,DeisResourceScout
+from .source_scouts import SusesoNormativeScout,SusesoNewsScout,SusesoFiscalizacionScout,DfHealthScout,ClinicasChileScout,CorporateNewsroomScout
+from .fonasa_sources import FonasaDataHubScout,FonasaNewsScout
+from .isp_sources import IspSurveillanceScout,IspAnamedAlertScout
+from .deis_sources import DeisDocumentScout
 from .diario_oficial import DiarioOficialHealthScout
 from .public_source_pipeline import process_suseso,process_suseso_news,process_suseso_fiscalizacion,process_minsal,process_df,process_diario_oficial,process_fonasa_data_hub,process_fonasa,process_isp_surveillance,process_isp_anamed,process_clinicas_chile,process_corporate_news,process_deis
 from .analysis_cache import seed_from_history
@@ -19,7 +23,9 @@ from .ai_budget import status as ai_budget_status, has_capacity
 from .source_health import record as health_record
 from .superintendencia_fiscalizacion import SuperintendenciaFiscalizacionScout, process_fiscalizacion
 from .processing import DeferredProcessing, RejectedProcessing
+from .public_source_evidence import failure_details, discovery_diagnostics, HOSTS as PUBLIC_DATA_SOURCES
 from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
+from .occupational_sources import SOURCES as OCCUPATIONAL_SOURCES
 
 def main():
     from .models import RawItem
@@ -27,11 +33,9 @@ def main():
     from .paths import project_root
     ap=argparse.ArgumentParser()
     ap.add_argument("--limit",type=int,default=0,help="Global processing cap; 0 uses AI guardrails only")
-    ap.add_argument("--source",action="append",help="Process only the named source(s); default is all core sources")
+    ap.add_argument("--source","--only-source",dest="source",action="append",help="Process only the named source(s); default is all core sources")
     ap.add_argument("--reset-state",action="store_true")
-    ap.add_argument('--only-source',action='append',default=[],help='Run only named source lanes; preserve all other queue/history state')
     args=ap.parse_args()
-    args.source=list(dict.fromkeys((args.source or []) + args.only_source))
     if args.reset_state:
         ap.error("Reset disabled: backfill must preserve paid analyses and queue state")
     root=project_root()
@@ -61,7 +65,7 @@ def main():
       ("isp_anamed","isp_anamed",IspAnamedAlertScout().discover,process_isp_anamed),
       ("isp_surveillance","isp_surveillance",IspSurveillanceScout().discover,process_isp_surveillance),
       ("pfizer_chile","pfizer_chile",CorporateNewsroomScout("pfizer_chile").discover,process_corporate_news),
-      ("deis","deis",DeisResourceScout().discover,process_deis),
+      ("deis","deis",DeisDocumentScout().discover,process_deis),
       ("redsalud","redsalud",CorporateNewsroomScout("redsalud").discover,process_corporate_news),
       ("bupa_chile","bupa_chile",CorporateNewsroomScout("bupa_chile").discover,process_corporate_news),
       ("indisa","indisa",CorporateNewsroomScout("indisa").discover,process_corporate_news),
@@ -72,6 +76,8 @@ def main():
       ("diario_financiero","diario_financiero",DfHealthScout().discover,process_df),
       ("pulso_latercera","pulso_latercera",CuratedBetaSourceScout("pulso_latercera").discover,process_curated_beta_source),
       ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial)]
+    specs += [(slug,slug,CuratedBetaSourceScout(slug).discover,process_curated_beta_source)
+              for slug in sorted(OCCUPATIONAL_SOURCES)]
     if args.source:
         unknown=set(args.source)-{name for name,_,_,_ in specs}
         if unknown:ap.error("Unknown source(s): "+", ".join(sorted(unknown)))
@@ -83,12 +89,21 @@ def main():
     discovery_evidence={}
     observed={}
     surfaces={}
+    occupational_audit={}
+    discovery_details={}
     # Complete discovery for every source before any budget-consuming processing.
     for name,_,discover,_ in specs:
+        owner=getattr(discover,"__self__",None)
         try:
             items=discover()
             observed[name]=[dict(url=raw.url,event_date=raw.event_date,metadata=raw.metadata) for raw in items]
             surfaces[name]=getattr(getattr(discover,"__self__",None),"surface_results",None)
+            scout=getattr(discover,"__self__",None)
+            if name == "deis" and getattr(scout, "catalog", None) is not None:
+                atomic_json(root/"data/state/deis_catalog.json", scout.catalog)
+            if name in PUBLIC_DATA_SOURCES:
+                discovery_details[name]={"diagnostics":discovery_diagnostics(scout,items)}
+                discovery_details[name]["diagnostics"]["poll_mode"]="daily_engine"
             store=SeenStore(root/"data/state"/f"{name}_seen.json")
             from .superintendencia_fiscalizacion import canonical_url
             published_urls={canonical_url(row.get("source_url", "")) for row in history
@@ -121,14 +136,41 @@ def main():
                     "textual_capture_status":"partial" if any(raw.metadata.get('fetch_error') or (len(raw.metadata.get('page_text',''))>=160 and not raw.event_date) for raw in items) else "verified",
                     "format_capability":{"text":"runtime_verified","images":"requires_ocr","audio_video":"requires_official_text"},
                     "newest_event_date":max([raw.event_date for raw in items if raw.event_date],default=None)}
+            if name in OCCUPATIONAL_SOURCES:
+                inventory = getattr(owner, "inventory", {})
+                occupational_audit[name]={"technical_status":"ok","checked_at":checked_at,
+                    "decisions":getattr(owner,"decisions",[]),"discovered":len(items),
+                    "inventory_complete":inventory.get("coverage_complete", False),
+                    "inventory":{k:v for k,v in inventory.items() if k != "raw_items"}}
         except Exception as exc:
-            surfaces[name]=getattr(getattr(discover,"__self__",None),"surface_results",None)
-            discoveries[name]=(0,0,type(exc).__name__)
+            surfaces[name]=getattr(owner,"surface_results",None)
+            partial = getattr(exc, "partial_items", []) if name in OCCUPATIONAL_SOURCES else []
+            added = queue.discover(name, partial, last_discovered_at=watermarks.get(name)) if partial else 0
+            discoveries[name]=(len(partial),added,type(exc).__name__)
+            if name in OCCUPATIONAL_SOURCES:
+                inventory = getattr(owner, "inventory", {})
+                occupational_audit[name]={"technical_status":"partial" if partial else "error","checked_at":datetime.now(timezone.utc).isoformat(),
+                    "error":{"code":getattr(exc,"code",type(exc).__name__),"url":getattr(exc,"url",None),"message":str(exc)},
+                    "decisions":getattr(owner,"decisions",[]),"inventory_complete":False,
+                    "diagnostics":getattr(exc,"diagnostics", []), "discovered":len(partial),
+                    "inventory":{k:v for k,v in inventory.items() if k != "raw_items"}}
+            if name in PUBLIC_DATA_SOURCES:
+                scout=getattr(discover,"__self__",None)
+                if name == "deis" and getattr(scout, "catalog", None) is not None:
+                    atomic_json(root/"data/state/deis_catalog.json", scout.catalog)
+                discovery_details[name]={"error_details":failure_details(exc),
+                    "diagnostics":discovery_diagnostics(scout)}
+                discovery_details[name]["diagnostics"]["poll_mode"]="daily_engine"
+    if occupational_audit:
+        audit_path=root/'data/state/occupational_source_discovery.json'
+        previous_audit=json.loads(audit_path.read_text()) if audit_path.exists() else {}
+        previous_audit.update(occupational_audit)
+        atomic_json(audit_path,previous_audit)
     run_path=root/"data/state/discovery_run.json"
     previous_run=json.loads(run_path.read_text()) if args.source and run_path.exists() else {}
     run_sources=previous_run.get("sources",{})
-    run_sources.update({name:{"discovered":found,"new":added,"technical_status":"error" if error else "ok","error_type":error,
-                             "checked_at":datetime.now(timezone.utc).isoformat(),**discovery_evidence.get(name,{})}
+    run_sources.update({name:{"discovered":found,"new":added,"technical_status":"error" if error else "degraded" if (discovery_details.get(name,{}).get("diagnostics") or {}).get("partial_failure") else "ok","error_type":error,
+                             "checked_at":datetime.now(timezone.utc).isoformat(),**discovery_evidence.get(name,{}),**discovery_details.get(name,{})}
                         for name,(found,added,error) in discoveries.items()})
     atomic_json(run_path,{
         "at":datetime.now(timezone.utc).isoformat(),
@@ -138,15 +180,16 @@ def main():
         "failed_sources":sum(row.get("technical_status")=="error" for row in run_sources.values()),
     })
     produced={name:[] for name in processors}
+    processed_rejections={name:0 for name in processors}
     queue.enforce_backfill_horizon(sources=set(args.source) if args.source else None)
-    ready=[(key,item) for key,item in queue.ready() if item['source'] in processors and (not args.source or
-        item['source'] in args.source or ('suseso_fiscalizacion' in args.source and item['raw'].get('metadata',{}).get('routed_from')=='suseso_fiscalizacion'))]
+    ready=[(key,item) for key,item in queue.ready() if item['source'] in processors and
+        (not args.source or item['source'] in args.source or
+         ('suseso_fiscalizacion' in args.source and item['raw'].get('metadata',{}).get('routed_from')=='suseso_fiscalizacion'))]
     for index,(key,item) in enumerate(ready):
         if args.limit and index>=args.limit:break
         deterministic = item["source"] in FISCALIZATION_SOURCES or item["raw"].get("metadata",{}).get("reviewed_normative")
         if not deterministic and not has_capacity("fast") and not has_capacity("deep"):continue
         queue.start(key)
-        from copy import deepcopy
         processing_raw=RawItem(**deepcopy(item["raw"]))
         try:
             cfg,processor=processors[item["source"]]
@@ -171,10 +214,12 @@ def main():
                                     df_body_reaudit_latest_assessment=processing_raw.metadata.get('editorial_assessment'),
                                     editorial_decision='reject',feed_visibility=False)
                     save_history(history_path,history)
-            queue.finish(key,"published" if row else "rejected",None if row else processing_raw.metadata.get("rejection_reason","processor_rejected"))
+            queue.finish(key,"published" if row else "rejected",None if row else processing_raw.metadata.get("rejection_reason") or processing_raw.metadata.get("publication_rejection_reason") or "processor_rejected")
+            if not row:processed_rejections[item['source']]+=1
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
         except RejectedProcessing as exc:
             queue.finish(key,"rejected",str(exc))
+            processed_rejections[item['source']]+=1
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
         except DeferredProcessing as exc:
             item["raw"]=asdict(processing_raw)
@@ -185,7 +230,16 @@ def main():
                                     df_body_reaudit_reason=exc.reason,editorial_decision='reject',feed_visibility=False)
                     save_history(history_path,history)
             from .df_resolution import defer_format
-            if item['source']=='diario_financiero' and defer_format(item, exc.reason, datetime.now(timezone.utc)):
+            source=item["source"]
+            if source in PUBLIC_DATA_SOURCES:
+                reason=str(exc)[:250]
+                diagnostics=discovery_details.setdefault(source,{}).setdefault("diagnostics",{})
+                diagnostics.setdefault("processing_deferred",[]).append({"reason":reason,**failure_details(exc)})
+                if exc.__cause__ is not None or any(term in reason.lower() for term in ("pdf","capture","contenido","readable","documento")):
+                    diagnostics["partial_failure"]=True
+                    diagnostics["evidence_status"]="capture_pending"
+                queue.finish(key,"retry",reason)
+            elif item['source']=='diario_financiero' and defer_format(item, exc.reason, datetime.now(timezone.utc)):
                 queue.save()
             else:
                 queue.finish(key,"retry",exc.reason or str(exc) or "budget_or_analysis_deferred")
@@ -208,13 +262,16 @@ def main():
         source_items=[item for item in queue.items.values() if item.get("source")==name]
         health_record(root,name,name="Diario Financiero" if name=="diario_financiero" else name.replace("_"," ").title(),discovered=discovered,new=new,
             published=len(produced[name]),pending=counts["live_pending"]+counts["backfill_pending"],
+            processed_rejections=processed_rejections[name],
             deferred=sum(i.get('source')==name and i['status']=='deferred' for i in queue.items.values()) if name=='diario_financiero' else 0,
             rejected=counts["rejected"],rows=produced[name],error=error,
-            live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"], observed_rows=observed.get(name),surfaces=surfaces.get(name), discovery_evidence=df_evidence,
+            live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"], discovery_evidence=df_evidence, observed_rows=observed.get(name),surfaces=surfaces.get(name),
             published_history=fiscal_history if name in FISCALIZATION_SOURCES else None,
             source_queue=source_items if name in FISCALIZATION_SOURCES else None,
             archived=sum(item.get("status")=="archived" for item in source_items),
-            rejection_reasons=dict(Counter(item.get("reason") for item in source_items if item.get("status")=="rejected")))
+            rejection_reasons=dict(Counter(item.get("reason") for item in source_items if item.get("status")=="rejected")),
+            **({"error_detail":occupational_audit[name].get("error"), "inventory":occupational_audit[name].get("inventory", {})} if name in OCCUPATIONAL_SOURCES else {}),
+            **{k:v for k,v in discovery_details.get(name,{}).items() if v})
     print({"queue":queue.counts(),"budget":ai_budget_status()})
 
 if __name__=="__main__":main()

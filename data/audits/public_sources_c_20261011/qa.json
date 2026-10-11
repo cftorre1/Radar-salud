@@ -1,0 +1,44 @@
+{
+  "checked_at": "2026-10-11T04:39:32.480855+00:00",
+  "baseline_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+  "scope": [
+    "fonasa",
+    "fonasa_datos_abiertos",
+    "isp_anamed",
+    "isp_surveillance",
+    "deis"
+  ],
+  "scoped": {
+    "passed": 112,
+    "failed": 0,
+    "log": "qa_scoped.txt"
+  },
+  "full": {
+    "passed": 364,
+    "skipped": 1,
+    "failed": 1,
+    "log": "qa_full.txt",
+    "verdict": "pre_existing_failure_reproduced_on_exact_baseline"
+  },
+  "baseline_failure": {
+    "test": "tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review",
+    "expected": "len(normative_rows)>=12",
+    "actual": 11,
+    "log": "qa_baseline.txt",
+    "in_scope": false
+  },
+  "node": {
+    "command": "npm test",
+    "passed": 1,
+    "failed": 0,
+    "log": "qa_node.txt"
+  },
+  "live_replay": {
+    "operational_sources": 0,
+    "source_count": 5,
+    "artifact": "runtime_capture.json",
+    "blocker": "enforced proxy CONNECT403 before origin TLS"
+  },
+  "independent_review": "reviewer.json",
+  "promotion_authorized": false
+}

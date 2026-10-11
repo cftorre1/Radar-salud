@@ -1,10 +1,31 @@
 {
   "sources": [
-    "superintendencia_fiscalizacion",
-    "suseso_fiscalizacion"
+    "deis",
+    "fonasa",
+    "fonasa_datos_abiertos",
+    "isp_anamed",
+    "isp_surveillance"
   ],
   "origin_prs": [
-    15
+    13
   ],
-  "purpose": "Actual post-integration discovery and processing on a copied staging stock; no automatic state publication"
+  "purpose": "Actual post-integration discovery and processing on a copied staging stock; no automatic state publication",
+  "expectations": {
+    "fonasa": {
+      "allow_external_blocker": true,
+      "minimum_discovered": 0
+    },
+    "fonasa_datos_abiertos": {
+      "allow_external_blocker": true,
+      "minimum_discovered": 0
+    },
+    "isp_anamed": {
+      "allow_external_blocker": true,
+      "minimum_discovered": 0
+    },
+    "isp_surveillance": {
+      "allow_external_blocker": true,
+      "minimum_discovered": 0
+    }
+  }
 }

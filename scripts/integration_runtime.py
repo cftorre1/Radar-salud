@@ -23,6 +23,9 @@ def validate_discovery(targets, discovery, started_at):
         row=discovery.get('sources', {}).get(source)
         assert row and row.get('checked_at', '') >= started_at, f'{source}: missing fresh execution receipt'
         if row.get('error_type') or row.get('technical_status')=='error':
+            if expectations.get(source, {}).get('allow_partial_capture') and row.get('discovered',0) >= expectations[source].get('minimum_discovered',1):
+                results[source]='EXECUTED_WITH_PARTIAL_CAPTURE'
+                continue
             assert expectations.get(source, {}).get('allow_external_blocker'), f'{source}: unexpected runtime error {row}'
             results[source]='EXTERNAL_BLOCKER_OBSERVED'
         else:
@@ -35,6 +38,11 @@ def main():
     repo=Path(__file__).resolve().parents[1]
     targets=read(repo/'config/integration_runtime_targets.json')
     selected=set(targets['sources'])
+    requested=os.environ.get('INTEGRATION_SOURCE')
+    if requested:
+        assert requested in selected, 'Requested source is outside the authorized integration targets'
+        targets={**targets,'sources':[requested]}
+        selected={requested}
     root=repo/'work/integration-runtime'
     if root.exists():raise RuntimeError('Runtime output must start empty; do not overwrite an earlier checkpoint')
     root.mkdir(parents=True)
@@ -66,13 +74,13 @@ def main():
         health=read(root/'data/source_health.json',{}).get('sources',{})
         assert all(health.get(k)==v for k,v in health_before.items() if k not in selected),'Unrelated source health changed'
         published={k:v for k,v in queue.items() if v.get('source') in selected and v.get('status')=='published'}
-        from radar_salud.history import _key as history_identity
-        urls=[history_identity(v) for v in history if v.get('source_name') in source_names]
-        assert len(urls)==len(set(urls)),'Duplicate selected-source history identities (URL plus official record ID)'
+        from radar_salud.history import _key
+        identities=[_key(v) for v in history if v.get('source_name') in source_names]
+        assert len(identities)==len(set(identities)),'Duplicate selected-source legal-record identities'
         polls.append({'poll':number,'started_at':start,'finished_at':datetime.now(timezone.utc).isoformat(),
             'exit_code':result.returncode,'execution_results':execution_results,'discovery':{k:v for k,v in discovery.get('sources',{}).items() if k in selected},
             'queue_identity_sha256':digest(sorted(queue)),'published_queue_keys':sorted(published),
-            'history_sha256':digest(history),'history_count':len(history),'history_selected_unique':len(urls),
+            'history_sha256':digest(history),'history_count':len(history),'history_selected_unique':len(identities),
             'source_health':{k:v for k,v in health.items() if k in selected},'unrelated_stock_preserved':True})
         (root/'summary.json').write_text(json.dumps({'staging_sha':os.environ.get('GITHUB_SHA'),'targets':targets,
             'actual_engine':True,'isolated_state':True,'polls':polls,'post_merge':os.environ.get('GITHUB_REF')=='refs/heads/staging',

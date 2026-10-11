@@ -1,0 +1,197 @@
+{
+  "captured_at_utc": "2026-10-11T04:27:35.203420+00:00",
+  "channel": "shell_curl_with_additional_network_permissions",
+  "tls_verification_disabled": false,
+  "proxy_bypassed": false,
+  "records": [
+    {
+      "started_at_utc": "2026-10-11T04:27:35.120855+00:00",
+      "url": "https://datosabiertos.fonasa.cl/noticias/",
+      "method": "GET",
+      "command": [
+        "curl",
+        "--include",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.1 (+public-source-monitor)",
+        "https://datosabiertos.fonasa.cl/noticias/"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:27:34 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "started_at_utc": "2026-10-11T04:27:35.131296+00:00",
+      "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+      "method": "GET",
+      "command": [
+        "curl",
+        "--include",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.1 (+public-source-monitor)",
+        "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:27:34 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "started_at_utc": "2026-10-11T04:27:35.141810+00:00",
+      "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+      "method": "GET",
+      "command": [
+        "curl",
+        "--include",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.1 (+public-source-monitor)",
+        "https://datosabiertos.fonasa.cl/boletines-estadisticos/"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:27:34 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "started_at_utc": "2026-10-11T04:27:35.152578+00:00",
+      "url": "https://datosabiertos.fonasa.cl/analysis/",
+      "method": "GET",
+      "command": [
+        "curl",
+        "--include",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.1 (+public-source-monitor)",
+        "https://datosabiertos.fonasa.cl/analysis/"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:27:34 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "started_at_utc": "2026-10-11T04:27:35.162416+00:00",
+      "url": "https://datosabiertos.fonasa.cl/feed/",
+      "method": "GET",
+      "command": [
+        "curl",
+        "--include",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.1 (+public-source-monitor)",
+        "https://datosabiertos.fonasa.cl/feed/"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:27:34 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "started_at_utc": "2026-10-11T04:27:35.172686+00:00",
+      "url": "https://datosabiertos.fonasa.cl/wp-json/wp/v2/posts?per_page=1",
+      "method": "GET",
+      "command": [
+        "curl",
+        "--include",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.1 (+public-source-monitor)",
+        "https://datosabiertos.fonasa.cl/wp-json/wp/v2/posts?per_page=1"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:27:34 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "started_at_utc": "2026-10-11T04:27:35.182884+00:00",
+      "url": "https://nuevo.fonasa.gob.cl/wp-content/uploads/2025/09/Cuenta-Puiblica-Fonasa-20225-IXrev.pdf",
+      "method": "GET",
+      "command": [
+        "curl",
+        "--include",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.1 (+public-source-monitor)",
+        "https://nuevo.fonasa.gob.cl/wp-content/uploads/2025/09/Cuenta-Puiblica-Fonasa-20225-IXrev.pdf"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:27:34 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "started_at_utc": "2026-10-11T04:27:35.193450+00:00",
+      "url": "https://fonasacl.cloud-qa.fonasa.cl/wp-content/uploads/2024/11/Analysis3.pdf",
+      "method": "GET",
+      "command": [
+        "curl",
+        "--include",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.1 (+public-source-monitor)",
+        "https://fonasacl.cloud-qa.fonasa.cl/wp-content/uploads/2024/11/Analysis3.pdf"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:27:34 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "started_at_utc": "2026-10-11T04:27:35.203395+00:00",
+      "url": "https://fonasaweb.fonasa.cl/Trans_Docs/2022/03/Otros/Cuenta%20Publica/2015.pdf",
+      "method": "GET",
+      "command": [
+        "curl",
+        "--include",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.1 (+public-source-monitor)",
+        "https://fonasaweb.fonasa.cl/Trans_Docs/2022/03/Otros/Cuenta%20Publica/2015.pdf"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 04:27:34 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    }
+  ]
+}

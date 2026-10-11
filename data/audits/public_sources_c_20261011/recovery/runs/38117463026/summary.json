@@ -1,0 +1,49 @@
+{
+  "runtime": "github_actions",
+  "commit": "f8f47db73cbd35e54a43899b8c3767b12a036d3a",
+  "transport_outcomes": {
+    "fonasa_financing_official_reference": [
+      {
+        "url": "https://www.dipres.gob.cl/597/articles-387786_doc_pdf.pdf",
+        "outcome": "captured",
+        "http_status": 200
+      },
+      {
+        "url": "https://www.dipres.gob.cl/597/articles-390193_doc_pdf.pdf",
+        "outcome": "transport_or_parser",
+        "http_status": 200
+      },
+      {
+        "url": "https://www.minsal.cl/wp-content/uploads/2026/07/Cuenta_Publica_2026_lista_publicacion.pdf",
+        "outcome": "captured",
+        "http_status": 200
+      }
+    ],
+    "fonasa_datos_abiertos_official_alternative": [
+      {
+        "url": "https://datos.gob.cl/api/3/action/package_search?q=fonasa&rows=100",
+        "outcome": "captured",
+        "http_status": 200
+      }
+    ],
+    "deis_recent_dataset_samples": [
+      {
+        "url": "https://datos.gob.cl/api/3/action/package_search?q=DEIS&rows=100",
+        "outcome": "captured",
+        "http_status": 200
+      },
+      {
+        "url": "https://datos.gob.cl/dataset/3bf4cf7c-f638-4735-9a01-f65faae4beca/resource/2c44d782-3365-44e3-aefb-2c8b8363a1bc/download/establecimientos_20261006.csv",
+        "outcome": "captured",
+        "http_status": 200
+      },
+      {
+        "url": "https://datos.gob.cl/dataset/a756323f-85ba-4759-87dc-f5d5e63868cc/resource/657cc933-eac8-4bfc-b004-c4d6dcd988a8/download/indicadores_rem20_20260925.csv",
+        "outcome": "transport_or_parser",
+        "http_status": 200
+      }
+    ]
+  },
+  "native_operational_sources": null,
+  "diagnostic_only": true
+}

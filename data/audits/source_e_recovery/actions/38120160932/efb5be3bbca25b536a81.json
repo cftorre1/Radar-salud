@@ -1,0 +1,66 @@
+{
+  "url": "https://www.clinicapuertomontt.cl/",
+  "user_agent": "identified",
+  "captured_at": "2026-10-11T07:14:18.346918+00:00",
+  "hops": [
+    {
+      "url": "https://www.clinicapuertomontt.cl/",
+      "http_status": 301,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 301 ",
+          "content-type": "text/html; charset=UTF-8",
+          "location": "https://clinicapuertomontt.cl/",
+          "cache-control": "public, max-age=0",
+          "content-length": "0",
+          "date": "Sun, 11 Oct 2026 07:14:20 GMT",
+          "server": "LiteSpeed"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "waf": null,
+      "error": null,
+      "body_file": "efb5be3bbca25b536a81-0.body"
+    },
+    {
+      "url": "https://clinicapuertomontt.cl/",
+      "http_status": 200,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 200 ",
+          "last-modified": "Fri, 09 Oct 2026 20:00:49 GMT",
+          "content-type": "text/html; charset=UTF-8",
+          "cache-control": "public, max-age=0",
+          "date": "Sun, 11 Oct 2026 07:14:21 GMT",
+          "server": "LiteSpeed"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 880112,
+      "sha256": "2aad465ef17079bb66ef3ed16fb7d7b0fd855fd551343fc3fb9d293c4bab7967",
+      "waf": null,
+      "error": null,
+      "body_file": "efb5be3bbca25b536a81-1.body"
+    }
+  ],
+  "stop_reason": "response_captured",
+  "final_url": "https://clinicapuertomontt.cl/",
+  "http_status": 200,
+  "waf": null
+}
