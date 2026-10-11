@@ -245,6 +245,16 @@ def process_df(raw,cfg):
     if int(ai.get("relevance_score",0))<threshold:
         raw.metadata["rejection_reason"]=f"media_score_below_{threshold}"
         return None
+    return df_signal_from_assessment(raw,cfg,ai)
+
+def df_signal_from_assessment(raw,cfg,ai):
+    """Build from an already-paid assessment; usable for crash checkpoint recovery."""
+    from .editorial_gate import publication_ready
+    from .df_media_gate import policy
+    if not raw.event_date or not raw.metadata.get("publication_date_source") or raw.metadata.get("publication_date_conflict"):
+        raise ValueError("DF assessment recovery requires verified publisher date")
+    if int(ai.get("relevance_score",0))<int(policy()["minimum_relevance_score"]):
+        raise ValueError("DF assessment recovery failed Media Early Signal Gate")
     score=int(ai.get("relevance_score",0));sc=_scopes(f"{raw.title} {raw.raw_text}")
     raw.metadata.update({"what_happened":ai.get("what_happened") or raw.title,"why_it_matters":ai.get("why_it_matters") or "",
       "signal_types":["Noticias"],"scopes":sc,"watch_tags":["df","noticias"]+[x.lower() for x in sc],

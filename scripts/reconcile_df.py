@@ -33,6 +33,7 @@ def main():
     ap.add_argument("--max-details", type=int, default=260)
     ap.add_argument("--max-pages", type=int, default=12)
     ap.add_argument("--minutes", type=int, default=12)
+    ap.add_argument("--reuse-originals", action="store_true",help="Replay previously captured originals; retain their original capture timestamps")
     args = ap.parse_args()
     root = Path(__file__).resolve().parents[1]
     branch = subprocess.check_output(["git", "branch", "--show-current"], cwd=root, text=True).strip()
@@ -42,11 +43,12 @@ def main():
     now = datetime.now(timezone.utc)
     today = now.astimezone(ZoneInfo("America/Santiago")).date()
     out = root / f"data/audits/df_reconciliation_{today.isoformat().replace('-', '_')}.json"
+    prior=json.loads(out.read_text()) if args.reuse_originals and out.exists() else {}
     artifacts = root / "work/df-originals"
     artifacts.mkdir(parents=True, exist_ok=True)
     report = {"at": now.isoformat(), "branch": branch,
               "code_sha": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip(),
-              "mode": "fresh_originals" if args.live else "stored_state_only",
+              "mode": "captured_originals_replay_plus_new_fetches" if args.reuse_originals else "fresh_originals" if args.live else "stored_state_only",
               "status": "in_progress", "originals": {}, "listing_pages": [], "processing": {},
               "coverage": {"complete_30_days": False, "complete_90_days": False,
                            "limitation": "Bounded DF health/tag/Señal DF inventory plus all retained DF queue/history URLs; unenumerated originals remain unverified."}}
@@ -56,6 +58,16 @@ def main():
     titles = {item["raw"]["url"]: item["raw"]["title"] for item in queue.items.values() if item["source"] == "diario_financiero"}
     titles.update({row["source_url"]: row["title"] for row in history if "df.cl/" in row.get("source_url", "")})
     cache = {}
+    for url,original in prior.get("originals",{}).items():
+        digest=original.get("sha256");path=artifacts/(str(digest)+".html")
+        if original.get("fetch")=="ok" and path.exists():
+            html=path.read_text()
+            if hashlib.sha256(html.encode()).hexdigest()!=digest:raise ValueError("Captured DF HTML hash mismatch")
+            cache[url]=html
+            # Re-evaluate date/body with current code, preserve capture provenance.
+            parsed=parse_df_article(html,url)
+            report["originals"][url]={**original,"event_date":parsed["event_date"],
+                "evidence":{k:v for k,v in parsed["metadata"].items() if k!="page_text"},"replayed_by_sha":report["code_sha"]}
     deadline = time.monotonic() + args.minutes * 60
 
     def capture(url):
