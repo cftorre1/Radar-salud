@@ -1,6 +1,6 @@
 {
   "version": "0.9.0",
-  "generated_at": "2026-10-11T14:30:42.197468+00:00",
+  "generated_at": "2026-10-11T14:34:58.995350+00:00",
   "snapshot_at": "2026-10-11T14:02:49.390348+00:00",
   "published": 93,
   "queue": {
@@ -11,7 +11,7 @@
   },
   "queue_status": "measured",
   "discovery": {
-    "at": "2026-10-11T14:27:55.041369+00:00",
+    "at": "2026-10-11T14:32:51.901502+00:00",
     "sources": {
       "superintendencia": {
         "discovered": 740,
@@ -216,7 +216,98 @@
         "discovered": 0,
         "new": 0,
         "technical_status": "error",
-        "error_type": "URLError"
+        "error_type": "RuntimeError",
+        "checked_at": "2026-10-11T14:32:51.901502+00:00",
+        "error_details": {
+          "exception_chain": [
+            {
+              "type": "RuntimeError"
+            },
+            {
+              "type": "URLError",
+              "reason": "timed out"
+            },
+            {
+              "type": "TimeoutError",
+              "reason": "timed out"
+            }
+          ],
+          "failure_signature": "RuntimeError > URLError:timed out > TimeoutError:timed out"
+        },
+        "diagnostics": {
+          "surfaces": [
+            {
+              "channel": "Boletines de vigilancia de laboratorios",
+              "url": "https://www.ispch.cl/boletin/",
+              "status": "blocked",
+              "error_type": "URLError",
+              "error": "<urlopen error timed out>"
+            },
+            {
+              "channel": "Boletines de vigilancia de laboratorios",
+              "url": "https://ispch.cl/boletin/",
+              "status": "blocked",
+              "error_type": "URLError",
+              "error": "<urlopen error timed out>"
+            },
+            {
+              "channel": "Boletines de vigilancia de laboratorios",
+              "url": "https://www.ispch.gob.cl/boletin/",
+              "status": "blocked",
+              "error_type": "URLError",
+              "error": "<urlopen error timed out>"
+            },
+            {
+              "channel": "Boletines de vigilancia de laboratorios",
+              "url": "https://ispch.gob.cl/boletin/",
+              "status": "blocked",
+              "error_type": "URLError",
+              "error": "<urlopen error timed out>"
+            },
+            {
+              "channel": "Boletines de vigilancia de laboratorios",
+              "url": "https://www.ispch.cl/boletin/",
+              "status": "blocked",
+              "items": 0
+            },
+            {
+              "channel": "Vigilancia de virus respiratorios",
+              "url": "https://www.ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+              "status": "blocked",
+              "error_type": "URLError",
+              "error": "<urlopen error timed out>"
+            },
+            {
+              "channel": "Vigilancia de virus respiratorios",
+              "url": "https://ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+              "status": "blocked",
+              "error_type": "URLError",
+              "error": "<urlopen error timed out>"
+            },
+            {
+              "channel": "Vigilancia de virus respiratorios",
+              "url": "https://www.ispch.gob.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+              "status": "blocked",
+              "error_type": "URLError",
+              "error": "<urlopen error timed out>"
+            },
+            {
+              "channel": "Vigilancia de virus respiratorios",
+              "url": "https://ispch.gob.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+              "status": "blocked",
+              "error_type": "URLError",
+              "error": "<urlopen error timed out>"
+            },
+            {
+              "channel": "Vigilancia de virus respiratorios",
+              "url": "https://www.ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+              "status": "blocked",
+              "items": 0
+            }
+          ],
+          "partial_failure": true,
+          "poll_mode": "daily_engine"
+        }
       },
       "pfizer_chile": {
         "discovered": 3,
@@ -2607,7 +2698,7 @@
     },
     "isp_surveillance": {
       "name": "Instituto de Salud Pública de Chile (ISP)",
-      "checked_at": "2026-10-11T06:30:45.585368+00:00",
+      "checked_at": "2026-10-11T14:32:51.906567+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -2623,6 +2714,14 @@
       "coverage_status": "unverified",
       "content_freshness": "unknown",
       "editorial_outcome": "not_evaluated",
+      "processed_rejections": 0,
+      "counts_scope": {
+        "discovered": "this_run",
+        "new": "this_run",
+        "published": "this_run",
+        "processed_rejections": "this_run",
+        "rejected": "cumulative_queue"
+      },
       "error_details": {
         "exception_chain": [
           {
@@ -2711,21 +2810,17 @@
           }
         ],
         "partial_failure": true,
-        "poll_mode": "discovery_and_document_verification_only",
-        "document_checks": [],
-        "evidence_status": "capture_pending"
+        "poll_mode": "daily_engine"
       },
-      "engine_checked_at": "2026-10-11T04:31:45.261220+00:00",
-      "poll_mode": "discovery_and_document_verification_only",
-      "runtime_outcome": "EXTERNAL_BLOCKER_PROVEN",
-      "runtime_environment": "github_actions",
-      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117670184",
-      "runtime_commit": "55e31b1b7266d848b728faba11c9d6dad24c81f7",
-      "coverage_complete": false,
-      "blocker_evidence": "data/audits/public_sources_c_20261011/recovery/isp_surveillance-checkpoint.json",
-      "blocking_component": "Destino/ruta TCP443 no responde; no existe respuesta HTTP ni handshake TLS. No es posible atribuir el silencio a un firewall, hosting o regla concreta desde estos síntomas.",
-      "minimum_human_step": "Operador de red/hosting de ISP: verificar listener y ruta TCP 443 de www.ispch.cl, ispch.cl, www.ispch.gob.cl e ispch.gob.cl frente al egress de GitHub hospedado, restaurar acceso HTTPS público o entregar un feed/document export oficial accesible; luego repetir esta Action.",
-      "runtime_error_stage": "tcp443_timeout_before_tls"
+      "engine_checked_at": "2026-10-11T14:32:51.906567+00:00",
+      "poll_mode": "daily_engine",
+      "integration_state": "EXTERNAL_BLOCKER_PROVEN",
+      "integration_evidence": {
+        "staging_sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+        "runtime_run": 38146249940,
+        "preview_run": 38146250319,
+        "artifact": "data/audits/integration_20261011/postmerge-isp_surveillance/summary.json"
+      }
     },
     "clinicas_chile": {
       "name": "Clínicas de Chile A.G.",
@@ -4655,8 +4750,8 @@
     }
   },
   "read_model": {
-    "generated_at": "2026-10-11T14:30:42.201007+00:00",
-    "queue_updated_at": "2026-10-11T14:30:08.169918+00:00",
+    "generated_at": "2026-10-11T14:34:58.998619+00:00",
+    "queue_updated_at": "2026-10-11T14:34:56.693908+00:00",
     "queue_task_count": 86,
     "active_task_count": 34,
     "blocked_task_count": 10,
