@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source": "pulso_latercera",
-  "reviewed_code_sha": "a7fc0246133a390beaaff78bf9cf01747e6611e3",
+  "reviewed_code_sha": "e94eeea476e8e76d317386bf2a13dbfbe592c404",
   "phase": "discovery_only",
   "requested_phase": "discovery",
   "discovery_qa": "FAIL",
@@ -397,6 +397,43 @@
     },
     {
       "domain": "discovery",
+      "code": "complete_public_api_page_chain_missing",
+      "feed": "section:politica"
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "section:politica",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "section:politica",
+        "coverage_complete": false,
+        "pages_attempted": 140,
+        "unique_urls": 3336,
+        "publisher_count": 10000,
+        "errors": 570,
+        "termination": "public_feed_error",
+        "verified_publication_day_min": "2026-04-27"
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "section:paula",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "section:paula",
+        "coverage_complete": false,
+        "pages_attempted": 18,
+        "unique_urls": 431,
+        "publisher_count": 13284,
+        "errors": 24,
+        "termination": "three_publication_ordered_detail_verified_old_pages",
+        "verified_publication_day_min": "2025-08-22"
+      }
+    },
+    {
+      "domain": "discovery",
       "code": "feed_incomplete_or_errors",
       "feed": "section:servicios",
       "summary": {
@@ -434,23 +471,50 @@
     },
     {
       "domain": "discovery",
-      "code": "complete_public_api_page_chain_missing",
-      "feed": "section:sustentabilidad"
+      "code": "feed_incomplete_or_errors",
+      "feed": "tag:clinicas",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "tag:clinicas",
+        "coverage_complete": false,
+        "pages_attempted": 9,
+        "unique_urls": 195,
+        "publisher_count": 247,
+        "errors": 41,
+        "termination": "nonadvancing_public_feed_cursor",
+        "verified_publication_day_min": "2020-03-24"
+      }
     },
     {
       "domain": "discovery",
       "code": "feed_incomplete_or_errors",
-      "feed": "section:sustentabilidad",
+      "feed": "tag:listas-de-espera",
       "summary": {
         "status": "public_feed_coverage",
-        "feed": "section:sustentabilidad",
+        "feed": "tag:listas-de-espera",
         "coverage_complete": false,
-        "pages_attempted": 5,
-        "unique_urls": 96,
-        "publisher_count": 506,
-        "errors": 4,
-        "termination": "public_feed_error",
-        "verified_publication_day_min": "2026-05-30"
+        "pages_attempted": 12,
+        "unique_urls": 184,
+        "publisher_count": 285,
+        "errors": 33,
+        "termination": "all_feed_count_delimited_articles",
+        "verified_publication_day_min": "2021-12-20"
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "tag:hospitales",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "tag:hospitales",
+        "coverage_complete": false,
+        "pages_attempted": 10,
+        "unique_urls": 119,
+        "publisher_count": 333,
+        "errors": 26,
+        "termination": "three_publication_ordered_detail_verified_old_pages",
+        "verified_publication_day_min": "2020-02-28"
       }
     },
     {
@@ -497,86 +561,6 @@
     },
     {
       "domain": "discovery",
-      "code": "feed_incomplete_or_errors",
-      "feed": "tag:fonasa",
-      "summary": {
-        "status": "public_feed_coverage",
-        "feed": "tag:fonasa",
-        "coverage_complete": false,
-        "pages_attempted": 20,
-        "unique_urls": 347,
-        "publisher_count": 755,
-        "errors": 78,
-        "termination": "three_publication_ordered_detail_verified_old_pages",
-        "verified_publication_day_min": "2020-04-30"
-      }
-    },
-    {
-      "domain": "discovery",
-      "code": "feed_incomplete_or_errors",
-      "feed": "tag:banmedica",
-      "summary": {
-        "status": "public_feed_coverage",
-        "feed": "tag:banmedica",
-        "coverage_complete": false,
-        "pages_attempted": 6,
-        "unique_urls": 86,
-        "publisher_count": 154,
-        "errors": 18,
-        "termination": "nonadvancing_public_feed_cursor",
-        "verified_publication_day_min": "2020-08-22"
-      }
-    },
-    {
-      "domain": "discovery",
-      "code": "feed_incomplete_or_errors",
-      "feed": "tag:clinicas",
-      "summary": {
-        "status": "public_feed_coverage",
-        "feed": "tag:clinicas",
-        "coverage_complete": false,
-        "pages_attempted": 9,
-        "unique_urls": 195,
-        "publisher_count": 247,
-        "errors": 41,
-        "termination": "nonadvancing_public_feed_cursor",
-        "verified_publication_day_min": "2020-03-24"
-      }
-    },
-    {
-      "domain": "discovery",
-      "code": "feed_incomplete_or_errors",
-      "feed": "tag:listas-de-espera",
-      "summary": {
-        "status": "public_feed_coverage",
-        "feed": "tag:listas-de-espera",
-        "coverage_complete": false,
-        "pages_attempted": 12,
-        "unique_urls": 184,
-        "publisher_count": 285,
-        "errors": 33,
-        "termination": "all_feed_count_delimited_articles",
-        "verified_publication_day_min": "2021-12-20"
-      }
-    },
-    {
-      "domain": "discovery",
-      "code": "feed_incomplete_or_errors",
-      "feed": "section:paula",
-      "summary": {
-        "status": "public_feed_coverage",
-        "feed": "section:paula",
-        "coverage_complete": false,
-        "pages_attempted": 18,
-        "unique_urls": 431,
-        "publisher_count": 13284,
-        "errors": 24,
-        "termination": "three_publication_ordered_detail_verified_old_pages",
-        "verified_publication_day_min": "2025-08-22"
-      }
-    },
-    {
-      "domain": "discovery",
       "code": "complete_public_api_page_chain_missing",
       "feed": "section:nacional"
     },
@@ -598,55 +582,76 @@
     },
     {
       "domain": "discovery",
-      "code": "complete_public_api_page_chain_missing",
-      "feed": "section:politica"
-    },
-    {
-      "domain": "discovery",
       "code": "feed_incomplete_or_errors",
-      "feed": "section:politica",
+      "feed": "tag:banmedica",
       "summary": {
         "status": "public_feed_coverage",
-        "feed": "section:politica",
+        "feed": "tag:banmedica",
         "coverage_complete": false,
-        "pages_attempted": 140,
-        "unique_urls": 3336,
-        "publisher_count": 10000,
-        "errors": 570,
-        "termination": "public_feed_error",
-        "verified_publication_day_min": "2026-04-27"
+        "pages_attempted": 6,
+        "unique_urls": 86,
+        "publisher_count": 154,
+        "errors": 18,
+        "termination": "nonadvancing_public_feed_cursor",
+        "verified_publication_day_min": "2020-08-22"
       }
     },
     {
       "domain": "discovery",
       "code": "feed_incomplete_or_errors",
-      "feed": "section:tecnologia",
+      "feed": "tag:fonasa",
       "summary": {
         "status": "public_feed_coverage",
-        "feed": "section:tecnologia",
+        "feed": "tag:fonasa",
         "coverage_complete": false,
-        "pages_attempted": 17,
-        "unique_urls": 389,
-        "publisher_count": 389,
-        "errors": 23,
-        "termination": "all_feed_count_delimited_articles",
-        "verified_publication_day_min": "2026-02-04"
-      }
-    },
-    {
-      "domain": "discovery",
-      "code": "feed_incomplete_or_errors",
-      "feed": "tag:hospitales",
-      "summary": {
-        "status": "public_feed_coverage",
-        "feed": "tag:hospitales",
-        "coverage_complete": false,
-        "pages_attempted": 10,
-        "unique_urls": 119,
-        "publisher_count": 333,
-        "errors": 26,
+        "pages_attempted": 20,
+        "unique_urls": 347,
+        "publisher_count": 755,
+        "errors": 78,
         "termination": "three_publication_ordered_detail_verified_old_pages",
-        "verified_publication_day_min": "2020-02-28"
+        "verified_publication_day_min": "2020-04-30"
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "complete_public_api_page_chain_missing",
+      "feed": "section:que-pasa"
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "section:que-pasa",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "section:que-pasa",
+        "coverage_complete": false,
+        "pages_attempted": 1,
+        "unique_urls": 0,
+        "publisher_count": null,
+        "errors": 1,
+        "termination": "public_feed_error",
+        "verified_publication_day_min": null
+      }
+    },
+    {
+      "domain": "discovery",
+      "code": "complete_public_api_page_chain_missing",
+      "feed": "section:sustentabilidad"
+    },
+    {
+      "domain": "discovery",
+      "code": "feed_incomplete_or_errors",
+      "feed": "section:sustentabilidad",
+      "summary": {
+        "status": "public_feed_coverage",
+        "feed": "section:sustentabilidad",
+        "coverage_complete": false,
+        "pages_attempted": 5,
+        "unique_urls": 96,
+        "publisher_count": 506,
+        "errors": 4,
+        "termination": "public_feed_error",
+        "verified_publication_day_min": "2026-05-30"
       }
     },
     {
@@ -672,23 +677,18 @@
     },
     {
       "domain": "discovery",
-      "code": "complete_public_api_page_chain_missing",
-      "feed": "section:que-pasa"
-    },
-    {
-      "domain": "discovery",
       "code": "feed_incomplete_or_errors",
-      "feed": "section:que-pasa",
+      "feed": "section:tecnologia",
       "summary": {
         "status": "public_feed_coverage",
-        "feed": "section:que-pasa",
+        "feed": "section:tecnologia",
         "coverage_complete": false,
-        "pages_attempted": 1,
-        "unique_urls": 0,
-        "publisher_count": null,
-        "errors": 1,
-        "termination": "public_feed_error",
-        "verified_publication_day_min": null
+        "pages_attempted": 17,
+        "unique_urls": 389,
+        "publisher_count": 389,
+        "errors": 23,
+        "termination": "all_feed_count_delimited_articles",
+        "verified_publication_day_min": "2026-02-04"
       }
     },
     {
@@ -784,7 +784,1394 @@
         "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/",
         "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/"
       ]
-    }
+    },
+    "external_topic_comparison": [
+      {
+        "url": "https://www.latercera.com/tendencias/noticia/cientificos-identifican-una-red-neuronal-clave-para-el-tratamiento-de-la-enfermedad-de-parkinson/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "providers"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/corte-suprema-revoca-decreto-del-minsal-que-obligaba-a-exhibir-evita-su-consumo-en-publicidad-de-alimentos-con-sellos/",
+        "independent_topic": "regulation_compliance",
+        "publisher_topics": [
+          "financing",
+          "regulation",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/centro-medico-de-atacama-tramitaba-bonos-falsos-de-fonasa-fraude-supero-los-260-millones/",
+        "independent_topic": "regulation_compliance",
+        "publisher_topics": [
+          "insurance",
+          "providers",
+          "financing",
+          "regulation",
+          "competition"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/minsal-prohibe-temporalmente-funcionamiento-de-planta-procesadora-de-lacteos-matthei-tras-reiteradas-muestras-positivas-con-listeria/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "providers",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/colmed-santiago-y-expertos-ponen-panos-frios-al-optimismo-del-minsal-por-avances-en-listas-de-espera/",
+        "independent_topic": "waiting_lists_oncology_capacity",
+        "publisher_topics": [
+          "investment_ma",
+          "regulation",
+          "waiting_lists",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/presupuesto-salud-2027-rebajas-al-ajuar-del-recien-nacido-y-a-la-ley-ricarte-soto-y-foco-en-atencion-primaria/",
+        "independent_topic": "health_financing",
+        "publisher_topics": [
+          "insurance",
+          "providers",
+          "investment_ma",
+          "financing",
+          "regulation",
+          "competition",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/servicios/noticia/presidente-kast-anuncia-despliegue-de-autoridades-por-aluvion-en-las-condes-y-advierte-grave-afectacion-a-vehiculos-y-viviendas/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "providers"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/politica/noticia/vanessa-kaiser-si-este-gobierno-quiere-tener-exito-su-piso-minimo-es-su-30-y-tiene-que-trabajar-por-mantenerlo/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "providers",
+          "regulation",
+          "competition"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/isapres-ofrecen-los-planes-mas-baratos-en-cinco-anos-gracias-a-la-ley-corta-y-menor-gasto-en-licencias/",
+        "independent_topic": "insurance_competition",
+        "publisher_topics": [
+          "insurance",
+          "providers",
+          "financing",
+          "regulation",
+          "competition"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+        "independent_topic": "public_health_network_impact",
+        "publisher_topics": [
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+        "independent_topic": "waiting_lists_oncology_capacity",
+        "publisher_topics": [
+          "providers",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/que-se-sabe-del-tripulante-vietnamita-internado-en-el-hospital-de-talcahuano-con-fiebre-hemorragica/",
+        "independent_topic": "providers_capacity",
+        "publisher_topics": [
+          "providers",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/sernac-fiscaliza-centros-de-estetica-en-14-regiones-y-pone-foco-en-seguridad-publicidad-y-precios/",
+        "independent_topic": "regulation_compliance",
+        "publisher_topics": [
+          "providers",
+          "competition",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-aterriza-en-washington-para-asumir-la-presidencia-del-consejo-directivo-de-la-ops/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "investment_ma",
+          "financing",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/anuncio-para-hospitales-y-un-plan-maestro-de-listas-de-espera-los-pasos-del-minsal-tras-el-fin-de-la-alerta-oncologica/",
+        "independent_topic": "waiting_lists_oncology_capacity",
+        "publisher_topics": [
+          "providers",
+          "investment_ma",
+          "financing",
+          "regulation",
+          "waiting_lists",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/minsal-entrega-balance-final-del-plan-de-alerta-oncologica-y-adelanta-medidas-para-evitar-el-incumplimiento-de-garantias/",
+        "independent_topic": "waiting_lists_oncology_capacity",
+        "publisher_topics": [
+          "insurance",
+          "providers",
+          "financing",
+          "regulation",
+          "waiting_lists",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/virus-respiratorios-positividad-asciende-al-579-la-mas-alta-en-los-ultimos-tres-anos/",
+        "independent_topic": "public_health_network_impact",
+        "publisher_topics": [
+          "providers",
+          "competition",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/chomali-por-listas-de-espera-yo-no-esperaba-que-disminuyeran-lo-que-yo-espero-es-que-disminuyan-los-tiempos/",
+        "independent_topic": "waiting_lists_oncology_capacity",
+        "publisher_topics": [
+          "insurance",
+          "providers",
+          "financing",
+          "waiting_lists",
+          "competition"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/el-ultimo-misterio-de-la-compra-de-azul-azul-en-2021/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "insurance",
+          "investment_ma",
+          "financing",
+          "competition",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/politica/noticia/bancada-udi-anuncia-agenda-pro-consumidor-con-14-medidas-en-seguros-salud-transporte-y-otras-areas/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "insurance",
+          "providers",
+          "investment_ma",
+          "financing",
+          "regulation",
+          "competition",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+        "independent_topic": "insurance_competition",
+        "publisher_topics": [
+          "insurance",
+          "providers",
+          "investment_ma"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/horizontes/noticia/pablo-gonzalez-de-ilc-chile-envejece-mas-rapido-y-con-menos-recursos-que-otros-paises/",
+        "independent_topic": "health_financing",
+        "publisher_topics": [
+          "providers",
+          "financing",
+          "competition"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/politica/noticia/macarena-santelices-rep-matthei-llora-por-la-herida-si-tiene-criticas-que-las-converse-a-puertas-cerradas/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "providers",
+          "financing",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+        "independent_topic": "providers_capacity",
+        "publisher_topics": [
+          "providers"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/contraloria-investigara-alcances-de-la-alerta-oncologica-del-minsal-por-solicitud-de-diputada-radical/",
+        "independent_topic": "waiting_lists_oncology_capacity",
+        "publisher_topics": [
+          "waiting_lists",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/porcel-tv-suma-socios-laurence-golborne-juan-antonio-guzman-la-familia-arrigoni-y-ex-asesor-de-kaiser/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "providers",
+          "investment_ma",
+          "financing",
+          "competition"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/clinica-las-condes-finaliza-aumento-de-capital-y-recauda-80-mil-millones/",
+        "independent_topic": "health_financing",
+        "publisher_topics": [
+          "providers",
+          "investment_ma"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/paula/noticia/es-la-menopausia-lo-que-realmente-hay-detras-de-la-perdida-del-deseo-sexual-de-las-mujeres/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "providers",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+        "independent_topic": "public_health_network_impact",
+        "publisher_topics": [
+          "providers",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/grupo-estatal-chino-es-el-gran-concesionario-de-los-hospitales-publicos-chilenos/",
+        "independent_topic": "providers_capacity",
+        "publisher_topics": [
+          "providers",
+          "investment_ma",
+          "regulation",
+          "competition",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+        "independent_topic": "waiting_lists_oncology_capacity",
+        "publisher_topics": [
+          "providers",
+          "waiting_lists",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/banmedica-y-vida-tres-demandan-al-fisco-por-desfase-en-el-cobro-del-ges-y-exigen-casi-9000-millones/",
+        "independent_topic": "insurance_competition",
+        "publisher_topics": [
+          "insurance",
+          "investment_ma",
+          "financing",
+          "regulation",
+          "competition"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/ante-baja-vacunacion-en-grupos-de-riesgo-minsal-advierte-aumento-de-consultas-en-urgencias-por-virus-respiratorios/",
+        "independent_topic": "public_health_network_impact",
+        "publisher_topics": [
+          "providers",
+          "competition",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/sustentabilidad/noticia/el-costo-de-no-anticiparse-a-los-riesgos-climaticos-en-el-sistema-de-salud/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "providers",
+          "financing",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/politica/noticia/test-de-drogas-el-molesto-bumeran-republicano/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "providers",
+          "investment_ma",
+          "regulation"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/minsal-informa-de-afectaciones-leves-en-recintos-de-salud-por-el-sistema-frontal-pero-afirma-que-red-esta-completamente-operativa/",
+        "independent_topic": "providers_capacity",
+        "publisher_topics": [
+          "providers",
+          "regulation",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+        "independent_topic": "health_financing",
+        "publisher_topics": [
+          "insurance",
+          "providers",
+          "financing",
+          "waiting_lists",
+          "competition",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/la-agenda-legislativa-del-minsal-desde-cambios-a-cenabast-a-nuevas-condiciones-para-la-devolucion-de-becas-formativas/",
+        "independent_topic": "regulation_compliance",
+        "publisher_topics": [
+          "insurance",
+          "providers",
+          "investment_ma",
+          "financing",
+          "regulation",
+          "waiting_lists",
+          "competition",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/gobierno-anuncia-plan-laboral-que-movilizara-recursos-por-unos-us1350-millones-que-apunta-a-crear-mas-de-100-mil-empleos/",
+        "independent_topic": "health_financing",
+        "publisher_topics": [
+          "investment_ma",
+          "financing",
+          "regulation",
+          "competition",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/sociales/noticia/excelencia-clinica-e-innovacion-redsalud-lanzo-nueva-unidad-de-trasplante-de-medula-osea-y-terapia-celular/",
+        "independent_topic": "providers_capacity",
+        "publisher_topics": [
+          "providers",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/horizontes/noticia/kaigo-hoken-el-seguro-con-que-japon-convirtio-el-cuidado-de-las-personas-mayores-en-una-responsabilidad-social/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "insurance",
+          "providers",
+          "financing",
+          "regulation",
+          "competition",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-bupa-chile-invita-a-caminar-6-mil-pasos-diarios-por-la-salud-y-el-planeta/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "health_general"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/la-opaca-receta-de-junaeb-como-se-cocina-el-multimillonario-negocio-de-la-alimentacion-escolar/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "investment_ma",
+          "financing",
+          "regulation",
+          "competition"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/paula/noticia/isidora-salazar-hermana-de-un-nino-adoptado-ilegalmente-en-dictadura-descubrir-que-el-causante-era-mi-abuelo-fue-todavia-mas-doloroso/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "providers",
+          "investment_ma",
+          "financing",
+          "regulation",
+          "competition"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/inauguran-el-primer-centro-de-salud-de-alta-resolutividad-sar-para-vina-del-mar-recinto-podra-realizar-65-mil-atenciones-anuales/",
+        "independent_topic": "providers_capacity",
+        "publisher_topics": [
+          "providers",
+          "investment_ma",
+          "financing",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+        "independent_topic": "health_financing",
+        "publisher_topics": [
+          "providers",
+          "investment_ma",
+          "financing",
+          "regulation",
+          "waiting_lists",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/agencia-de-ciberseguridad-refuta-a-uc-christus-y-defiende-incorporarla-a-listado-un-ransomware-puede-tener-alcances-catastroficos/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "providers",
+          "investment_ma",
+          "regulation",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/comite-social-salud-y-mideso-destacan-avances-en-certificacion-de-discapacidad-y-ampliacion-de-la-red-de-apoyos-y-cuidados/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "investment_ma",
+          "regulation",
+          "competition",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+        "independent_topic": "health_financing",
+        "publisher_topics": [
+          "insurance",
+          "providers",
+          "financing",
+          "regulation",
+          "waiting_lists",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/diez-servicios-de-salud-concentran-el-62-de-la-oferta-publica-para-resolver-el-cancer/",
+        "independent_topic": "waiting_lists_oncology_capacity",
+        "publisher_topics": [
+          "providers",
+          "financing",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "insurance",
+          "providers",
+          "investment_ma",
+          "regulation",
+          "competition",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/salud-garantiza-seguridad-de-agua-potable-en-la-rm-y-anuncia-vacunacion-contra-la-hepatitis-y-tetanos-en-las-condes/",
+        "independent_topic": "public_health_network_impact",
+        "publisher_topics": [
+          "providers",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/prision-preventiva-para-hombre-de-73-anos-acusado-de-emitir-1482-licencias-medicas-falsas/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "insurance",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/los-otros-detalles-de-la-minuta-que-el-gobierno-entrego-a-los-parlamentarios-del-oficialismo/",
+        "independent_topic": "health_financing",
+        "publisher_topics": [
+          "insurance",
+          "providers",
+          "investment_ma",
+          "financing",
+          "regulation",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-el-plan-de-inversiones-oncologicas-2026-2030-estrategia-enfocada-en-fortalecer-la-atencion-en-todo-el-territorio-nacional/",
+        "independent_topic": "waiting_lists_oncology_capacity",
+        "publisher_topics": [
+          "providers",
+          "investment_ma",
+          "financing",
+          "waiting_lists",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/siete-de-cada-10-hogares-gastan-mas-de-30-mil-al-mes-en-medicamentos/",
+        "independent_topic": "providers_capacity",
+        "publisher_topics": [
+          "insurance",
+          "providers",
+          "investment_ma",
+          "financing",
+          "regulation",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+        "independent_topic": "health_financing",
+        "publisher_topics": [
+          "insurance",
+          "providers",
+          "investment_ma",
+          "financing",
+          "competition"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/may-chomali-toma-el-microfono-y-llega-a-spotify-ministra-debuta-como-conductora-de-un-podcast-de-salud/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "investment_ma",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "financing",
+          "regulation",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      },
+      {
+        "url": "https://www.latercera.com/tendencias/noticia/primavera-gris-como-cuidarte-y-apoyar-a-tus-cercanos-durante-esta-temporada-critica-para-la-salud-mental/",
+        "independent_topic": "health_system_other",
+        "publisher_topics": [
+          "providers",
+          "investment_ma",
+          "regulation",
+          "waiting_lists",
+          "public_health"
+        ],
+        "policy": "Independent topic and publisher taxonomy may be aliases; semantic comparison requires reviewer, not literal equality."
+      }
+    ],
+    "original_publication_date_validation": [
+      {
+        "publication_date": "2026-08-13",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-08-13T17:52:54.926Z",
+            "text": "13 AGOSTO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-08-13T17:52:54.926Z",
+          "2026-08-13T17:52:54.926Z"
+        ],
+        "url": "https://www.latercera.com/pulso/noticia/corte-suprema-revoca-decreto-del-minsal-que-obligaba-a-exhibir-evita-su-consumo-en-publicidad-de-alimentos-con-sellos/",
+        "original_html_sha256": "d17314215b18eb96f609c2c553e303522ae51246da67f6a96dfc47cb8e586b06"
+      },
+      {
+        "publication_date": "2026-07-13",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-07-13T18:06:19.014Z",
+            "text": "13 JULIO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-07-13T18:06:19.014Z",
+          "2026-07-13T18:06:19.014Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/centro-medico-de-atacama-tramitaba-bonos-falsos-de-fonasa-fraude-supero-los-260-millones/",
+        "original_html_sha256": "cf6a3df7f981f30aae08820cd96c95bb2a8b8402d029db2f2d111c58eeb3b0a5"
+      },
+      {
+        "publication_date": "2026-10-02",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-10-02T12:35:35.639Z",
+            "text": "2 OCTUBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-10-02T12:35:35.639Z",
+          "2026-10-02T12:35:35.639Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/minsal-prohibe-temporalmente-funcionamiento-de-planta-procesadora-de-lacteos-matthei-tras-reiteradas-muestras-positivas-con-listeria/",
+        "original_html_sha256": "5f11b4281817d3a4910abb766c0bde60bbf2f21f677a84b912e4ecbbdd4db678"
+      },
+      {
+        "publication_date": "2026-09-22",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-09-22T16:31:00Z",
+            "text": "22 SEPTIEMBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-09-22T16:31:00Z",
+          "2026-09-22T16:31:00Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/colmed-santiago-y-expertos-ponen-panos-frios-al-optimismo-del-minsal-por-avances-en-listas-de-espera/",
+        "original_html_sha256": "4bf5142862e72ea70644ddd2338727b06ac22e666c0c4229a3f2b07fa4fcfc69"
+      },
+      {
+        "publication_date": "2026-10-07",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-10-07T16:30:00Z",
+            "text": "7 OCTUBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-10-07T16:30:00Z",
+          "2026-10-07T16:30:00Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/presupuesto-salud-2027-rebajas-al-ajuar-del-recien-nacido-y-a-la-ley-ricarte-soto-y-foco-en-atencion-primaria/",
+        "original_html_sha256": "1ec18445a04b084d7774b829b8873b4cf90209431f54e39a6160b6bd633de294"
+      },
+      {
+        "publication_date": "2026-08-30",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-08-30T11:00:00Z",
+            "text": "30 AGOSTO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-08-30T11:00:00Z",
+          "2026-08-30T11:00:00Z"
+        ],
+        "url": "https://www.latercera.com/pulso/noticia/isapres-ofrecen-los-planes-mas-baratos-en-cinco-anos-gracias-a-la-ley-corta-y-menor-gasto-en-licencias/",
+        "original_html_sha256": "c4117f17b19f8612d513fae87271a54b074331674b96211400ce02a51646d205"
+      },
+      {
+        "publication_date": "2026-09-01",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-09-01T16:44:25.115Z",
+            "text": "1 SEPTIEMBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-09-01T16:44:25.115Z",
+          "2026-09-01T16:44:25.115Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+        "original_html_sha256": "8005d3bd4577194f26fbe104d039968189ee4140695fd0f34f5b4a556d457505"
+      },
+      {
+        "publication_date": "2026-10-05",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-10-05T19:47:24.883Z",
+            "text": "5 OCTUBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-10-05T19:47:24.883Z",
+          "2026-10-05T19:47:24.883Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+        "original_html_sha256": "12dd0d1641d196ac0ec694da1852736d77f93e914a5036cf4a74f247ed120b64"
+      },
+      {
+        "publication_date": "2026-07-29",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-07-29T13:26:30.193Z",
+            "text": "29 JULIO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-07-29T13:26:30.193Z",
+          "2026-07-29T13:26:30.193Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/que-se-sabe-del-tripulante-vietnamita-internado-en-el-hospital-de-talcahuano-con-fiebre-hemorragica/",
+        "original_html_sha256": "f186172beaf2e07cf37a207e96b10dd87788f7bbd76980c1534e53598752c0b7"
+      },
+      {
+        "publication_date": "2026-08-08",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-08-08T15:50:24.858Z",
+            "text": "8 AGOSTO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-08-08T15:50:24.858Z",
+          "2026-08-08T15:50:24.858Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/sernac-fiscaliza-centros-de-estetica-en-14-regiones-y-pone-foco-en-seguridad-publicidad-y-precios/",
+        "original_html_sha256": "6b3e517705c044967c6c32610019168e762802635ee34ae7fbbbbdbd81443a8c"
+      },
+      {
+        "publication_date": "2026-09-28",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-09-28T12:04:18.135Z",
+            "text": "28 SEPTIEMBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-09-28T12:04:18.135Z",
+          "2026-09-28T12:04:18.135Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-aterriza-en-washington-para-asumir-la-presidencia-del-consejo-directivo-de-la-ops/",
+        "original_html_sha256": "f795ae0bd120a19fd183ca8f133e46213bfaf9a2e80cd6de2b287d1eb159115e"
+      },
+      {
+        "publication_date": "2026-07-15",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-07-15T17:30:00Z",
+            "text": "15 JULIO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-07-15T17:30:00Z",
+          "2026-07-15T17:30:00Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/anuncio-para-hospitales-y-un-plan-maestro-de-listas-de-espera-los-pasos-del-minsal-tras-el-fin-de-la-alerta-oncologica/",
+        "original_html_sha256": "70156981a0ff3981f5af248c2ac5b34031a607e23ec4285c7dcb886ecf777787"
+      },
+      {
+        "publication_date": "2026-07-14",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-07-14T19:01:08.475Z",
+            "text": "14 JULIO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-07-14T19:01:08.475Z",
+          "2026-07-14T19:01:08.475Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/minsal-entrega-balance-final-del-plan-de-alerta-oncologica-y-adelanta-medidas-para-evitar-el-incumplimiento-de-garantias/",
+        "original_html_sha256": "c0af90d5c5a003fd5f0fb53e59f57263b26a3b4a740e1c82a55acce12c13ab98"
+      },
+      {
+        "publication_date": "2026-09-03",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-09-03T20:32:38.786Z",
+            "text": "3 SEPTIEMBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-09-03T20:32:38.786Z",
+          "2026-09-03T20:32:38.786Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/virus-respiratorios-positividad-asciende-al-579-la-mas-alta-en-los-ultimos-tres-anos/",
+        "original_html_sha256": "a01a63581a75a63ebc829a5ce7c2eadf555af155bc1f47fad2893bf229a3f073"
+      },
+      {
+        "publication_date": "2026-09-23",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-09-23T17:13:17.198Z",
+            "text": "23 SEPTIEMBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-09-23T17:13:17.198Z",
+          "2026-09-23T17:13:17.198Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/chomali-por-listas-de-espera-yo-no-esperaba-que-disminuyeran-lo-que-yo-espero-es-que-disminuyan-los-tiempos/",
+        "original_html_sha256": "f2a058862e76ee3404f9c7474478cd17033c8624f744c1b4cad3530ea6936632"
+      },
+      {
+        "publication_date": "2026-09-06",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-09-06T16:29:16.756Z",
+            "text": "6 SEPTIEMBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-09-06T16:29:16.756Z",
+          "2026-09-06T16:29:16.756Z"
+        ],
+        "url": "https://www.latercera.com/politica/noticia/bancada-udi-anuncia-agenda-pro-consumidor-con-14-medidas-en-seguros-salud-transporte-y-otras-areas/",
+        "original_html_sha256": "8114b82c0921962f1bbeb844b2418a439d825ef55e79e57f32d74c077b45cdb5"
+      },
+      {
+        "publication_date": "2026-09-29",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-09-29T14:45:04.192Z",
+            "text": "29 SEPTIEMBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-09-29T14:45:04.192Z",
+          "2026-09-29T14:45:04.192Z"
+        ],
+        "url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+        "original_html_sha256": "0e7d9c3cebdd35c591c55174ef85a26b76b3a92f33fcde90a2da43b73b441fd5"
+      },
+      {
+        "publication_date": "2026-09-16",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-09-16T16:01:35.422Z",
+            "text": "16 SEPTIEMBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-09-16T16:01:35.422Z",
+          "2026-09-16T16:01:35.422Z"
+        ],
+        "url": "https://www.latercera.com/horizontes/noticia/pablo-gonzalez-de-ilc-chile-envejece-mas-rapido-y-con-menos-recursos-que-otros-paises/",
+        "original_html_sha256": "3c2be0848cc14b8185762c68bd3f34da07a46d14513380f351c6e0bfe6e860d6"
+      },
+      {
+        "publication_date": "2026-10-10",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-10-10T16:38:08.831Z",
+            "text": "10 OCTUBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-10-10T16:38:08.831Z",
+          "2026-10-10T16:38:08.831Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+        "original_html_sha256": "e7d3de316f5d8afa1d4be08e75b639e64a6d43a293a2b18e5e4542400a02e4a3"
+      },
+      {
+        "publication_date": "2026-09-02",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-09-02T20:00:00Z",
+            "text": "2 SEPTIEMBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-09-02T20:00:00Z",
+          "2026-09-02T20:00:00Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/contraloria-investigara-alcances-de-la-alerta-oncologica-del-minsal-por-solicitud-de-diputada-radical/",
+        "original_html_sha256": "7cade3f27e6e39d5702fd9e69072f4a1f6e2485de0d9051f2fabf2f15df3e4fd"
+      },
+      {
+        "publication_date": "2026-08-05",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-08-05T23:40:48.316Z",
+            "text": "5 AGOSTO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-08-05T23:40:48.316Z",
+          "2026-08-05T23:40:48.316Z"
+        ],
+        "url": "https://www.latercera.com/pulso/noticia/clinica-las-condes-finaliza-aumento-de-capital-y-recauda-80-mil-millones/",
+        "original_html_sha256": "8cf078c439450784dcc2bdb79079497d2707a7c8ec104c063d683cb1cc395d96"
+      },
+      {
+        "publication_date": "2026-07-29",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-07-29T20:00:00Z",
+            "text": "29 JULIO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-07-29T20:00:00Z",
+          "2026-07-29T20:00:00Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+        "original_html_sha256": "4d68fc88d91acb5b3eeee0a1f98f7b2e4210689c1c5897be6a99426fb92313a4"
+      },
+      {
+        "publication_date": "2026-07-28",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-07-28T16:26:12.975Z",
+            "text": "28 JULIO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-07-28T16:26:12.975Z",
+          "2026-07-28T16:26:12.975Z"
+        ],
+        "url": "https://www.latercera.com/pulso/noticia/grupo-estatal-chino-es-el-gran-concesionario-de-los-hospitales-publicos-chilenos/",
+        "original_html_sha256": "d799d0f6e1250d48b19f22e0bc93ce5da04bfc2027b20aa108cdfef2f9881deb"
+      },
+      {
+        "publication_date": "2026-08-25",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-08-25T20:33:51.181Z",
+            "text": "25 AGOSTO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-08-25T20:33:51.181Z",
+          "2026-08-25T20:33:51.181Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+        "original_html_sha256": "3b87eb8c93c3c03cb7bdea74960c60280ac15ef7648b4493e0571e65204efeee"
+      },
+      {
+        "publication_date": "2026-08-10",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-08-10T15:50:00Z",
+            "text": "10 AGOSTO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-08-10T15:50:00Z",
+          "2026-08-10T15:50:00Z"
+        ],
+        "url": "https://www.latercera.com/pulso/noticia/banmedica-y-vida-tres-demandan-al-fisco-por-desfase-en-el-cobro-del-ges-y-exigen-casi-9000-millones/",
+        "original_html_sha256": "96e52472f54764b2c9cfc0da36b7e7f458a16a655f336f4c621b6ee908b9c549"
+      },
+      {
+        "publication_date": "2026-08-24",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-08-24T14:04:09.278Z",
+            "text": "24 AGOSTO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-08-24T14:04:09.278Z",
+          "2026-08-24T14:04:09.278Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/ante-baja-vacunacion-en-grupos-de-riesgo-minsal-advierte-aumento-de-consultas-en-urgencias-por-virus-respiratorios/",
+        "original_html_sha256": "f23cbb3d5a932986b3877d2afafa16f9d916096f392433f2349c0433b996a03c"
+      },
+      {
+        "publication_date": "2026-10-10",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-10-10T09:00:01Z",
+            "text": "10 OCTUBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-10-10T09:00:01Z",
+          "2026-10-10T09:00:01Z"
+        ],
+        "url": "https://www.latercera.com/sustentabilidad/noticia/el-costo-de-no-anticiparse-a-los-riesgos-climaticos-en-el-sistema-de-salud/",
+        "original_html_sha256": "41add88cc3363d11e98a5faf1fbf11d5c0aa85edf8aed4084827d4a4dc540fb6"
+      },
+      {
+        "publication_date": "2026-07-17",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-07-17T18:33:25.67Z",
+            "text": "17 JULIO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-07-17T18:33:25.67Z",
+          "2026-07-17T18:33:25.67Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/minsal-informa-de-afectaciones-leves-en-recintos-de-salud-por-el-sistema-frontal-pero-afirma-que-red-esta-completamente-operativa/",
+        "original_html_sha256": "38af8bb3cb56f8f9a7096287d7df681be2024f7259c9497a8a67b0476ab230a7"
+      },
+      {
+        "publication_date": "2026-08-14",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-08-14T13:20:09.123Z",
+            "text": "14 AGOSTO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-08-14T13:20:09.123Z",
+          "2026-08-14T13:20:09.123Z"
+        ],
+        "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+        "original_html_sha256": "9ede30844feb15968e61f5535dd7835b13a2f53e5f9ef34a126155bf3dbcfbef"
+      },
+      {
+        "publication_date": "2026-09-01",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-09-01T20:00:00Z",
+            "text": "1 SEPTIEMBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-09-01T20:00:00Z",
+          "2026-09-01T20:00:00Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/la-agenda-legislativa-del-minsal-desde-cambios-a-cenabast-a-nuevas-condiciones-para-la-devolucion-de-becas-formativas/",
+        "original_html_sha256": "ada69b91a936c871ac9bd59aca1177ae15b3db09e3ea38fb340a99a1f0d9367a"
+      },
+      {
+        "publication_date": "2026-09-28",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-09-28T23:40:00Z",
+            "text": "28 SEPTIEMBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-09-28T23:40:00Z",
+          "2026-09-28T23:40:00Z"
+        ],
+        "url": "https://www.latercera.com/pulso/noticia/gobierno-anuncia-plan-laboral-que-movilizara-recursos-por-unos-us1350-millones-que-apunta-a-crear-mas-de-100-mil-empleos/",
+        "original_html_sha256": "e53440de05b88243894ec504f8eff187655b0184e3b1f88839a1cf28e05a69da"
+      },
+      {
+        "publication_date": "2026-08-19",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-08-19T20:14:35.267Z",
+            "text": "19 AGOSTO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-08-19T20:14:35.267Z",
+          "2026-08-19T20:14:35.267Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/inauguran-el-primer-centro-de-salud-de-alta-resolutividad-sar-para-vina-del-mar-recinto-podra-realizar-65-mil-atenciones-anuales/",
+        "original_html_sha256": "db4b65a84cbf489c97a53567e0c6e2b8f6a2ac29461d8415ef7c6e6198d0ba34"
+      },
+      {
+        "publication_date": "2026-10-05",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-10-05T13:00:49.546Z",
+            "text": "5 OCTUBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-10-05T13:00:49.546Z",
+          "2026-10-05T13:00:49.546Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+        "original_html_sha256": "60dd84e90cfdca2702312a13a90f669dbae10ed5de7dc2c71f76461d6115e807"
+      },
+      {
+        "publication_date": "2026-09-08",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-09-08T14:50:00Z",
+            "text": "8 SEPTIEMBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-09-08T14:50:00Z",
+          "2026-09-08T14:50:00Z"
+        ],
+        "url": "https://www.latercera.com/pulso/noticia/agencia-de-ciberseguridad-refuta-a-uc-christus-y-defiende-incorporarla-a-listado-un-ransomware-puede-tener-alcances-catastroficos/",
+        "original_html_sha256": "c4e1df1107ec75873e9f1179e9fb64989d0532faaf070b9663c9429f11a17f5d"
+      },
+      {
+        "publication_date": "2026-10-08",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-10-08T19:49:55.864Z",
+            "text": "8 OCTUBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-10-08T19:49:55.864Z",
+          "2026-10-08T19:49:55.864Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/comite-social-salud-y-mideso-destacan-avances-en-certificacion-de-discapacidad-y-ampliacion-de-la-red-de-apoyos-y-cuidados/",
+        "original_html_sha256": "79a8252714e8d0bbdd393c83d5ca9839204cb70115efe82f045e211826e81269"
+      },
+      {
+        "publication_date": "2026-09-19",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-09-19T09:00:00Z",
+            "text": "19 SEPTIEMBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-09-19T09:00:00Z",
+          "2026-09-19T09:00:00Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+        "original_html_sha256": "cec07abbcb7408c897db1130a202176c7351139affaa7b36d6b2f22b6ccf156b"
+      },
+      {
+        "publication_date": "2026-10-01",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-10-01T23:51:16.324Z",
+            "text": "1 OCTUBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-10-01T23:51:16.324Z",
+          "2026-10-01T23:51:16.324Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/diez-servicios-de-salud-concentran-el-62-de-la-oferta-publica-para-resolver-el-cancer/",
+        "original_html_sha256": "4ba41ef9e7ca5567a5710b051bcb59e2519731935cbff1dbe5d457f9a274eedb"
+      },
+      {
+        "publication_date": "2026-10-10",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-10-10T10:00:00Z",
+            "text": "10 OCTUBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-10-10T10:00:00Z",
+          "2026-10-10T10:00:00Z"
+        ],
+        "url": "https://www.latercera.com/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
+        "original_html_sha256": "2cb53f344d07638271631bbf2a72d1281cca96b50400563c5959335e6166ac6e"
+      },
+      {
+        "publication_date": "2026-10-09",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-10-09T19:35:22.387Z",
+            "text": "9 OCTUBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-10-09T19:35:22.387Z",
+          "2026-10-09T19:35:22.387Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/salud-garantiza-seguridad-de-agua-potable-en-la-rm-y-anuncia-vacunacion-contra-la-hepatitis-y-tetanos-en-las-condes/",
+        "original_html_sha256": "8aefb2232d2bf67d750c10b69c95e78d8d96be12b8c52bd87c7db3e413f060bc"
+      },
+      {
+        "publication_date": "2026-09-05",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-09-05T11:40:47.414Z",
+            "text": "5 SEPTIEMBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-09-05T11:40:47.414Z",
+          "2026-09-05T11:40:47.414Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/prision-preventiva-para-hombre-de-73-anos-acusado-de-emitir-1482-licencias-medicas-falsas/",
+        "original_html_sha256": "3242877e882ffa4f16a74abc772f32730509e25b0e8cbe6f2ebf8990eb6a0dde"
+      },
+      {
+        "publication_date": "2026-10-06",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-10-06T15:16:02.526Z",
+            "text": "6 OCTUBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-10-06T15:16:02.526Z",
+          "2026-10-06T15:16:02.526Z"
+        ],
+        "url": "https://www.latercera.com/pulso/noticia/los-otros-detalles-de-la-minuta-que-el-gobierno-entrego-a-los-parlamentarios-del-oficialismo/",
+        "original_html_sha256": "c6f21fa1420002e2a7626c02cbd8bf7bb51a47b1fc4e3656dd12e06cda9ba52a"
+      },
+      {
+        "publication_date": "2026-08-31",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-08-31T21:01:52.778Z",
+            "text": "31 AGOSTO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-08-31T21:01:52.778Z",
+          "2026-08-31T21:01:52.778Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-el-plan-de-inversiones-oncologicas-2026-2030-estrategia-enfocada-en-fortalecer-la-atencion-en-todo-el-territorio-nacional/",
+        "original_html_sha256": "b0711824ac5715f4f8c1eb2a7eb7d5aa6f8485a18cee0ebd2015d3a91c4491bc"
+      },
+      {
+        "publication_date": "2026-08-24",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-08-24T10:00:01Z",
+            "text": "24 AGOSTO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-08-24T10:00:01Z",
+          "2026-08-24T10:00:01Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/siete-de-cada-10-hogares-gastan-mas-de-30-mil-al-mes-en-medicamentos/",
+        "original_html_sha256": "7253f5710b63fe99cf1b583195fd56487359958273150186b1caa315779aa503"
+      },
+      {
+        "publication_date": "2026-09-01",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-09-01T15:28:08.452Z",
+            "text": "1 SEPTIEMBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-09-01T15:28:08.452Z",
+          "2026-09-01T15:28:08.452Z"
+        ],
+        "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+        "original_html_sha256": "979d36ea3330af47a5de9870b7becd6808b26d8a9a14b14c0fb6805f5c8358fb"
+      },
+      {
+        "publication_date": "2026-08-28",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-08-28T17:30:00Z",
+            "text": "28 AGOSTO 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-08-28T17:30:00Z",
+          "2026-08-28T17:30:00Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/may-chomali-toma-el-microfono-y-llega-a-spotify-ministra-debuta-como-conductora-de-un-podcast-de-salud/",
+        "original_html_sha256": "5b5627316c003308eb403100f45855f8a16126abf94a72dd7fb69a35c2131748"
+      },
+      {
+        "publication_date": "2026-09-09",
+        "publisher_date_convention": "calendar_agreement",
+        "visible_bylines": [
+          {
+            "timestamp": "2026-09-09T23:47:08.765Z",
+            "text": "9 SEPTIEMBRE 2026"
+          }
+        ],
+        "primary_timestamps": [
+          "2026-09-09T23:47:08.765Z",
+          "2026-09-09T23:47:08.765Z"
+        ],
+        "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+        "original_html_sha256": "23c7be351965b662811ff6bc4939cae25a22d461bb9fcd3bb93e30bb22abf49f"
+      }
+    ]
   },
   "limitations": [
     "Frozen 29/79 controls benchmark recall; they are not a publication quota or proof of every publisher article.",
