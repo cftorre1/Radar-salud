@@ -3255,7 +3255,7 @@
     }
   },
   "provider_recovery_current": {
-    "status": "in_progress_not_ready",
+    "status": "EXTERNAL_BLOCKER_PROVEN",
     "owner": "Codex F / Provider Intelligence + Source Engineering",
     "pr": "https://github.com/cftorre1/Radar-salud/pull/14",
     "scope": "Eight existing provider/gremio/pharma sources; source count is not coverage",
@@ -3267,13 +3267,30 @@
       "data/audits/provider_inventory_2026_10_11",
       "data/audits/provider_inventory_capture_2026_10_11",
       "data/audits/provider_recurrent_checkpoint_2026_10_11.json",
-      "data/audits/provider_followup_checkpoint_2026_10_11.json"
+      "data/audits/provider_followup_checkpoint_2026_10_11.json",
+      "data/audits/provider_piece_reconciliation_2026_10_11.json",
+      "data/audits/provider_editorial_decisions_2026_10_11.json",
+      "data/audits/provider_recovered_outputs_2026_10_11.json",
+      "data/audits/provider_davila_cached_originals_2026_10_11.json",
+      "docs/PROVIDER_RECONCILIATION_HANDOFF_2026_10_11.md"
     ],
-    "current_subfront": "complete_official_inventory_reconciliation_and_original_header_diagnostics",
-    "progress": "Original inventories v2 captured for eight sources via isolated Actions38116192052, noAI. Actual engine_cli repeated with persistent state: secondpoll0new, seven existing provider publications/history/AI ledger preserved. CMS Andes26pieces(11/30d), including Frutillar; Frutillar70/75 and Enlace joint official evidence74/75 correctly rejected with specific reasons. TMO deferred beforeAI pending original header markup diagnostic. Original five outputs retained.",
-    "next_action": "Complete per-piece reconciliation and materiality; inspect official public metadata for TMO/Bupa/Pfizer/library and Dávila archive; process remaining justified candidates under unchanged gates; refresh truthful coverage facets, QA/Reviewer, PR14/issue5/PMO.",
+    "current_subfront": "closed_internal_recovery_external_dependencies_proven",
+    "progress": "1066URLrecords reconciled piece-by-piece;6actualoutputs verified;738priorhistory/59publishedqueue preserved. Dávila639datednews/13recent90 reconciled after640HTTP+228ordinaryChrome+191cachedoriginalheaders; current191archive403 explicitly degraded. Andes26CMScomplete. Bupa/INDISA external publication-date/maintenance dependencies proven.12newfastcalls,deep0;fast51. Real persisted runtime38120086028 bothpolls0new,history/AI/unrelatedqueue unchanged.75focalPASS1skip; providerbrowser4/4, global inherited QA remainsfailed.",
+    "next_action": "IntegrationCommander review PR14draft with exactpublisherdependencies and unchanged sharedgates; normative/dataowners fix inheritedQA before DailyRadar integration. SourceEngineering recheck only materially changed/dated official evidence; never replay unchanged paidterminals.",
     "gates_relaxed": false,
     "staging_promoted": false,
-    "issue5_closed": false
+    "issue5_closed": false,
+    "ready_for_integration": false,
+    "merged_staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+    "source_outcomes": {
+      "redsalud": "OPERATIVE_DEGRADED",
+      "bupa_chile": "EXTERNAL_BLOCKER_PROVEN",
+      "indisa": "EXTERNAL_BLOCKER_PROVEN",
+      "red_davila": "OPERATIVE_DEGRADED",
+      "andes_salud": "OPERATIVE_VALIDATED",
+      "clinicas_chile": "OPERATIVE_DEGRADED",
+      "pfizer_chile": "OPERATIVE_DEGRADED",
+      "clinicas_achs_salud": "OPERATIVE_DEGRADED"
+    }
   }
 }
