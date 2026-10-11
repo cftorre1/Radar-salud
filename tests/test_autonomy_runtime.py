@@ -27,6 +27,35 @@ PUBLIC = "source_repair_public_data_lane_2026_10_11"
 
 
 class RuntimeTests(unittest.TestCase):
+    def test_encode_preserves_valid_utf8_bytes_and_distinguishes_literal_escapes(self):
+        payload = {"objective": "Señales de salud — revisión", "nested": ["正常", "\\ud800"]}
+        expected = json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+        self.assertEqual(runtime.encode(payload).encode("utf-8"), expected.encode("utf-8"))
+        for value in ("\ud800", "\udfff", "señal\ud800"):
+            encoded = runtime.encode({"value": value})
+            self.assertEqual(json.loads(encoded.encode("utf-8")), {"value": value})
+            self.assertNotEqual(encoded, runtime.encode({"value": value.encode("utf-8", errors="backslashreplace").decode("utf-8")}))
+
+    def test_malformed_declared_unicode_remains_git_writable_without_material_credit(self):
+        queue = json.loads(json.dumps(self.queue))
+        queue["tasks"][0]["repair_patch"] = {
+            "schema_version": 1, "replacements": [{"path": "src/radar_salud/press_pipeline.py",
+                "sha256": "a" * 64, "old": "source_value", "new": "broken\ud800"}]}
+        before_refs = self.product_refs()
+        store = runtime.GitStateStore(repository=self.workspace, initial_backoff=0)
+        def reconcile(snapshot):
+            state = runtime.engine.reconcile(snapshot.read_json(runtime.STATE, {}), queue, runtime.now())
+            return runtime.Mutation(runtime.state_write(state))
+        result = store.transact(reconcile, message="fixture: retain malformed declared input evidence")
+        stored = self.state()
+        self.assertTrue(result.changed)
+        self.assertEqual(stored["tasks"][MEDIA]["declared_repair_inputs"]["repair_patch"], queue["tasks"][0]["repair_patch"])
+        self.assertEqual(stored["material_events"], [])
+        self.assertEqual(self.product_refs(), before_refs)
+        replay = store.transact(lambda snapshot: runtime.Mutation(runtime.state_write(snapshot.read_json(runtime.STATE))))
+        self.assertFalse(replay.changed)
+        self.assertEqual(self.state(), stored)
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory(prefix="autonomy-runtime-test-")
         self.addCleanup(self.temporary.cleanup)

@@ -50,7 +50,10 @@ def now():
 
 
 def encode(value):
-    return json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+    # Preserve existing UTF-8 wire bytes, but keep malformed JSON string values
+    # writable as escaped evidence instead of crashing the entire state CAS.
+    serialized = json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+    return serialized.encode("utf-8", errors="backslashreplace").decode("utf-8")
 
 
 def command(args, cwd, check=True):
