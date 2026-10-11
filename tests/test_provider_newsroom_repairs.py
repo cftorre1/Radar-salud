@@ -160,6 +160,10 @@ def test_redsalud_canonical_header_resolves_old_teaser_without_using_update(monk
     import pytest
     from radar_salud.processing import DeferredProcessing
     with pytest.raises(DeferredProcessing,match='dates disagree'):pipeline.process_corporate_news(raw,cfg)
+    # A matching navigation/card date is not the dedicated publication field.
+    fake_header=html.replace('class="coh-inline-element coh-ce-9ca7c0c5"','class="unrelated-card"').replace('<span>Comparte</span>','')
+    monkeypatch.setattr(pipeline,'fetch_html',lambda _:fake_header)
+    with pytest.raises(DeferredProcessing,match='dates disagree'):pipeline.process_corporate_news(raw,cfg)
 
 
 def test_davila_official_chain_preserves_threshold_and_rejects_unverified_support(monkeypatch):

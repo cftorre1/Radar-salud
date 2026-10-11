@@ -21,7 +21,7 @@ test('audited providers retain one visible institution and truthful freshness',a
  const health=await (await page.request.get('/data/source_health.json')).json();
  expect(health.sources.pfizer_chile.content_freshness).toBe('stale_external_surface');
  expect(health.sources.indisa.coverage_status).toBe('unverified');
- expect(health.sources.indisa.editorial_outcome).toBe('pending');
+ expect(health.sources.indisa.editorial_outcome).toBe('not_evaluated');
  expect(health.sources.indisa.evaluation_performed).toBe(false);
  expect(health.sources.andes_salud.audited_assessment.published).toBe(3);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();

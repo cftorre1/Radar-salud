@@ -594,9 +594,8 @@ class _RedSaludArticle(HTMLParser):
         if lower=="script" and attrs.get("type")=="application/ld+json":self._script=True;self._json=[]
         elif lower=="h1":
             self._field="h1";self._parts=[]
-            stamp=re.search(r'(\d{1,2}\s+[A-Za-zÁÉÍÓÚáéíóúñÑ]+\s+20\d{2})\s*$', ' '.join(self._before)[-120:])
             dates={x for x in self._visible_date_stamps if x}
-            self.header_date=next(iter(dates)) if len(dates)==1 else _date(stamp.group(1)) if stamp and not dates else None
+            self.header_date=next(iter(dates)) if len(dates)==1 else None
         elif self._after_h1 and lower in ("h2","h3","p","li"):self._field="body";self._parts=[]
     def handle_data(self,data):
         if self._script:self._json.append(data)

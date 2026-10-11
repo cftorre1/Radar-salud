@@ -44,6 +44,7 @@ def main():
     root=Path('.');read=lambda p:json.loads((root/p).read_text())
     decisions=read('data/audits/provider_editorial_decisions_2026_10_11.json')
     queue=read('data/state/pending_queue.json');history=read('data/history/superintendencia_signals.json')
+    if isinstance(history,dict):history=history['signals']
     feed=read('web/data/radar_today.json')['signals'];health=read('data/source_health.json')
     result={'as_of':'2026-10-11','captured_at':datetime.now(timezone.utc).isoformat(),'sources':{},'promotion':'none'}
     for slug in SLUGS:
@@ -59,13 +60,15 @@ def main():
         candidates=[x for x in inv['items'] if x['materiality']=='candidate']
         policy=decisions['sources'][slug]
         facets={**policy,'pages_checked':len(inv['requests']),'archive_depth':policy['archive_depth'],
-            'latest_original_publication':inv.get('latest_original_at'),'discovered':inv['discovered'],'unique':inv['unique'],
+            'latest_original_publication':inv.get('latest_original_at'),'discovered':inv['discovered'],
+            'unique':sum(x['materiality'] not in ('navigation','duplicate_alias') for x in inv['items']),
             'recent_30d':sum(x.get('in_30_days') is True for x in inv['items']),
             'recent_90d':sum(x.get('in_90_days') is True for x in inv['items']),
             'publication_date_unknown':sum(not x.get('publication_date') and x['materiality']!='navigation' for x in inv['items']),
             'material_30d':sum(x.get('in_30_days') is True for x in candidates),
             'material_90d':sum(x.get('in_90_days') is True for x in candidates),
             'material_date_unknown':sum(not x.get('publication_date') for x in candidates),
+            'material':len(candidates),'material_unknown':sum(x['materiality'] in ('unverified_content','document_unverified_release') for x in inv['items']),
             'published':sum(x['alicanto']['feed_count']>0 for x in candidates),
             'rejected':sum(x['alicanto']['alicanto_status']=='rejected' for x in candidates),
             'deferred':sum(x['alicanto']['alicanto_status'] in ('retry','pending') for x in candidates),
@@ -74,6 +77,9 @@ def main():
             'parse_errors':sum(x.get('reason')=='listing_parse_error' for x in inv['notes']),
             'access_errors':sum(bool(x.get('error')) for x in inv['requests']),
             'inventory':inv_path,'count_semantics':'verified original lower bounds where date/access blockers exist; unknown is never zero'}
+        facets.update(relevant_30d_total=facets['material_30d'] if policy['coverage_complete'] else None,
+                      relevant_90d_total=facets['material_90d'] if policy['coverage_complete'] else None,
+                      publicable_confirmed=facets['published'],publicable_total=facets['published'] if policy['coverage_complete'] else None)
         inv.update(coverage_complete=policy['coverage_complete'],coverage_reason=policy['coverage_reason'],outcome=policy['outcome'])
         atomic_json(inv_path,inv);result['sources'][slug]=facets
         h=health['sources'][slug];h['provider_coverage']=facets
