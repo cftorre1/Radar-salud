@@ -27,7 +27,8 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
     coverage_gap=error is None and discovered==0 and not last_signal
     audited_coverage=prev.get('provider_coverage')
     incomplete=bool(audited_coverage and audited_coverage.get('coverage_complete') is not True)
-    status="error" if error else ("warning" if (incomplete or provider_stale or not evaluation_performed or coverage_gap or (new>0 and published==0 and pending==0)) else "ok")
+    degraded=bool(audited_coverage and audited_coverage.get('outcome')=='OPERATIVE_DEGRADED')
+    status="error" if error else ("warning" if (incomplete or degraded or provider_stale or not evaluation_performed or coverage_gap or (new>0 and published==0 and pending==0)) else "ok")
     try:
         age=(datetime.now(timezone.utc).date()-date.fromisoformat(str(last_signal)[:10])).days
         freshness="future" if age<0 else ("recent" if age<=7 else "older")

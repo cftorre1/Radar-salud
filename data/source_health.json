@@ -596,7 +596,7 @@
       "status": "warning",
       "error": null,
       "technical_status": "ok",
-      "coverage_status": "unverified",
+      "coverage_status": "observed",
       "content_freshness": "unknown",
       "latest_original_at": "2026-10-05",
       "editorial_outcome": "not_evaluated",
@@ -621,30 +621,31 @@
         "scope": "two repaired original URLs; preceding assessment preserved in history"
       },
       "provider_coverage": {
-        "outcome": "EXTERNAL_BLOCKER_PROVEN",
-        "coverage_complete": false,
-        "coverage_reason": "Every640 official sitemap news URL visited;448dated originals,13verified90 and3verified30 after all228HTTP-denied originals were navigated with ordinary native Chrome:37dated200,191still403. Archive aliases/feed/CMS are HTMLfallbacks. Six visible material candidates reconciled, all evaluated executions/additions below75; related announcement excluded; no gate reduction.",
+        "outcome": "OPERATIVE_DEGRADED",
+        "coverage_complete": true,
+        "coverage_reason": "All640sitemapURLs reconciled:639datednews and1navigation;13verified90/3verified30,6materialcandidates all specifically rejected.411datesHTTP+37ordinaryChrome+191isolatedoriginalreaderheaders. All191reader originals are before90cutoff(latestJun29); cached freshness recorded separately from current191HTTP/Chrome403, so access remains degraded.",
         "archive_depth": {
           "sitemap_news_urls_visited": 640,
-          "dated_originals": 448,
-          "denied_originals": 191,
+          "dated_originals": 639,
           "ordinary_browser_targets": 228,
-          "browser_recovered_dates": 37
+          "browser_recovered_dates": 37,
+          "public_reader_originals": 191,
+          "current_denied_originals": 191
         },
         "owner": "Publisher Red Dávila / Source Engineering",
-        "next_action": "Publisher restore access/date evidence for191originals still403 after every640sitemapURL and all228HTTP-denied ordinary browser navigations. Six visible operational candidates are reconciled, with explicit below75/currentrelated reasons; no unchanged paid retry.",
+        "next_action": "Maintain13-piece90day reconciliation and below75 decisions. Publisher/SourceEngineering repair191current archive403 routes; all are verified historical beforeJun30 via cached original headers, so they are not current90-day omissions. Recheck changed/new original metadata through normal gates.",
         "pages_checked": 879,
         "latest_original_publication": "2026-10-05",
         "discovered": 640,
         "unique": 639,
         "recent_30d": 3,
         "recent_90d": 13,
-        "publication_date_unknown": 191,
+        "publication_date_unknown": 0,
         "material_30d": 1,
         "material_90d": 6,
         "material_date_unknown": 0,
         "material": 6,
-        "material_unknown": 191,
+        "material_unknown": 0,
         "published": 0,
         "rejected": 6,
         "deferred": 0,
@@ -654,10 +655,10 @@
         "access_errors": 228,
         "inventory": "data/audits/provider_inventory_2026_10_11/red_davila.json",
         "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
-        "relevant_30d_total": null,
-        "relevant_90d_total": null,
+        "relevant_30d_total": 1,
+        "relevant_90d_total": 6,
         "publicable_confirmed": 0,
-        "publicable_total": null
+        "publicable_total": 0
       }
     },
     "andes_salud": {
