@@ -1,0 +1,174 @@
+{
+  "schema": "work3_adversarial_cut.v1",
+  "reviewer": "Work 3 · Reviewer Adversarial Independiente",
+  "recorded_at": "2026-10-11T09:12:05Z",
+  "monitoring_window": "FINAL_CUT_WINDOW_ENDED",
+  "scope": {
+    "repository": "cftorre1/Radar-salud",
+    "branch": "staging",
+    "production_touched": false,
+    "workflows_dispatched": false,
+    "product_code_changed": false
+  },
+  "compared_with": {
+    "previous_cut": "data/audits/work3_adversarial_2026_10_11T072159Z.json",
+    "previous_staging_head": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
+    "current_staging_head": "e87e844aa9c5615381291ae925a6c6d2200f6012",
+    "commits_added": 1,
+    "changed_paths": [
+      "config/orchestrator_queue.json",
+      "config/pmo_baseline.json",
+      "data/autopilot/learning_ledger.json",
+      "data/pmo/autonomy_acceptance_2026_10_11_final.json"
+    ],
+    "source_or_product_artifacts_changed": false,
+    "conclusion": "Only governance/autonomy evidence changed; no source, discovery, history, feed, weekly Insight or product repair was integrated into staging."
+  },
+  "partial_revalidations": [
+    {
+      "id": "autonomy_progress_accounting_final_artifact",
+      "verdict": "PARTIAL",
+      "evidence": [
+        "data/pmo/autonomy_acceptance_2026_10_11_final.json",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38123500601"
+      ],
+      "verified": [
+        "The final artifact keeps acceptance NOT_PROVEN.",
+        "candidate_mutations=0 and verified_source_closures=0.",
+        "Workflow success, internal corrections and unchanged audits are explicitly excluded from material progress.",
+        "All six repair families remain BLOCKED and candidate_review/repair were skipped in run 38123500601."
+      ],
+      "not_verified": [
+        "Four useful hours",
+        "A durable product/source mutation",
+        "A repaired real failure",
+        "A verified source closure",
+        "Owner-intervention completeness",
+        "Autonomous pickup causality"
+      ]
+    }
+  ],
+  "new_material_findings": [
+    {
+      "id": "work3_scheduled_controller_cadence_not_observed",
+      "severity": "critical",
+      "priority": "P0",
+      "issue": 7,
+      "cause": "The autonomy controller is configured with cron */10, but the evidence artifact reports zero new schedule-triggered controller runs after runtime publication. The latest controller evidence is a push run; alternate push/completion dispatches do not prove scheduled delivery.",
+      "evidence": {
+        "artifact": "data/pmo/autonomy_acceptance_2026_10_11_final.json",
+        "last_scheduled_controller_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38102304371",
+        "last_scheduled_controller_created_at": "2026-10-11T01:34:45Z",
+        "latest_examined_controller_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38123500601",
+        "latest_event": "push",
+        "configured_cron": "*/10 * * * *",
+        "new_scheduled_runs_observed": 0,
+        "cause_status": "UNDETERMINED"
+      },
+      "closure_criteria": [
+        "Observe genuine event=schedule controller deliveries at the configured cadence over the acceptance window.",
+        "Bind each scheduled run to a durable pickup/lease and resulting state transition with immutable run/job identifiers.",
+        "Diagnose any missed cadence from repository/workflow metadata; do not infer approval or disabled-state causes without evidence.",
+        "Do not count push/completion dispatches, repeated audits or metadata reclassification as proof of the scheduled loop."
+      ]
+    }
+  ],
+  "staging_gate": {
+    "run": "https://github.com/cftorre1/Radar-salud/actions/runs/38123952091",
+    "head_sha": "e87e844aa9c5615381291ae925a6c6d2200f6012",
+    "conclusion": "failure",
+    "tests": "1 failed, 265 passed, 1 skipped, 1 warning",
+    "failure": "tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review — assert 11 >= 12",
+    "downstream": {
+      "staging": "skipped",
+      "reviewer": "skipped",
+      "preview": "skipped",
+      "rollback": "skipped"
+    },
+    "verdict": "No staging candidate approval."
+  },
+  "repairs_not_revalidated": [
+    {
+      "front": "media",
+      "issues": [
+        5,
+        6
+      ],
+      "reason": "DF and Pulso/La Tercera repairs remain outside staging in open PRs #11 and #10; exact URL capture/date/queue/history/feed outcomes are therefore not staging evidence."
+    },
+    {
+      "front": "coverage_and_fiscalization",
+      "issues": [
+        5,
+        8
+      ],
+      "reason": "SUSESO fiscalization repair remains in draft PR #15; the omitted medical-certificate issuer sanctions register is not integrated. Prior exact-window gap remains 20 acts in 30 exact dates and 72 in 90 exact dates."
+    },
+    {
+      "front": "providers_public_data_mutualities",
+      "issues": [
+        5,
+        8
+      ],
+      "reason": "PRs #12-#14 remain open drafts. No corresponding staging artifacts changed, so no 30/90-day closure is approved."
+    },
+    {
+      "front": "editorial_and_telemetry",
+      "issues": [
+        5,
+        9
+      ],
+      "reason": "No weekly Insight, feed, history or telemetry artifact changed in this cut. The provenance-mixing and stale/inconsistent telemetry findings remain open."
+    }
+  ],
+  "open_gaps_at_window_end": [
+    {
+      "issue": 6,
+      "title": "Media",
+      "status": "OPEN",
+      "gaps": [
+        "DF real-page date extraction and queue recovery not revalidated on staging",
+        "Pulso/Nacional scope and real runtime outcomes not revalidated",
+        "PR #11 open; PR #10 draft"
+      ]
+    },
+    {
+      "issue": 7,
+      "title": "Autonomy",
+      "status": "OPEN",
+      "gaps": [
+        "Acceptance NOT_PROVEN",
+        "0 durable product mutations",
+        "0 verified source closures",
+        "four useful hours not observed",
+        "scheduled */10 delivery not observed",
+        "owner-event completeness unverified",
+        "current staging QA fails",
+        "historical canary artifact still omits producer run 38116123889/job 114401329218"
+      ]
+    },
+    {
+      "issue": 8,
+      "title": "Coverage",
+      "status": "OPEN",
+      "gaps": [
+        "SUSESO sanctions surface absent from staging outcome",
+        "Andes Salud/MetLife omission unresolved on staging",
+        "SUSESO 24-item probe cannot prove a 370-item inventory",
+        "PRs #12-#15 not integrated"
+      ]
+    },
+    {
+      "issue": 9,
+      "title": "Editorial/telemetry",
+      "status": "OPEN",
+      "gaps": [
+        "Weekly regeneration provenance can mix candidate/model evidence",
+        "Diversity and official-source concentration not independently closed",
+        "Public telemetry/source exports remain unproven consistent"
+      ]
+    }
+  ],
+  "final_verdict": "WINDOW_ENDED_OPEN_CRITICAL_GAPS_NO_GLOBAL_APPROVAL",
+  "final_note": "This monitoring window has ended. Absence of a newly integrated staging repair is not evidence of absence of publisher updates. Open PR results were not promoted to staging evidence, and production/main were not modified by Work 3."
+}

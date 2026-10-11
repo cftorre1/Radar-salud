@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T08:11:43.423338+00:00",
+  "updated_at": "2026-10-11T09:12:05Z",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -2955,9 +2955,9 @@
       ],
       "approved_at": "2026-10-10",
       "started_at": "2026-10-10",
-      "last_progress_at": "2026-10-10",
-      "current_subfront": "iteration_1_critical_source_recovery",
-      "next_action": "Ejecutar source_audit_issue5_iteration1_recovery_2026_10_09 y autonomía en paralelo.",
+      "last_progress_at": "2026-10-11T09:12:05Z",
+      "current_subfront": "work3_monitoring_window_ended_open_backlog_5_6_7_8_9",
+      "next_action": "Continuar reparación en staging y solicitar nueva revisión independiente sólo tras integración efectiva; conservar #6-#9 abiertos y criterios del corte final.",
       "independent_review": {
         "reviewer": "Work 3",
         "reviewed_at": "2026-10-11T04:00:00Z",
@@ -3033,6 +3033,27 @@
             5,
             7
           ]
+        },
+        {
+          "reviewer": "Work 3",
+          "recorded_at": "2026-10-11T09:12:05Z",
+          "reviewed_sha": "e87e844aa9c5615381291ae925a6c6d2200f6012",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T091205Z.json",
+          "verdict": "FINAL_WINDOW_ENDED_SCHEDULED_CONTROLLER_UNPROVEN_NO_SOURCE_REPAIRS_IN_STAGING",
+          "new_finding_ids": [
+            "work3_scheduled_controller_cadence_not_observed"
+          ],
+          "partial_revalidations": [
+            "autonomy_progress_accounting_final_artifact"
+          ],
+          "backlog_issues": [
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "monitoring_window_ended": true
         }
       ]
     },
@@ -3303,9 +3324,9 @@
       ],
       "approved_at": "2026-10-10",
       "started_at": "2026-10-10",
-      "last_progress_at": "2026-10-11T08:11:43.423338+00:00",
-      "current_subfront": "final_infrastructure_implemented_acceptance_not_proven",
-      "next_action": "Completar cuatro horas útiles con mutación/closure real; conservar NOT_PROVEN con cero mutaciones/cierres. Añadir run/job productor del canary al artefacto y resolver QA staging. Ver último independent_review_cuts.\nContinuación de arquitectura: Existing approved reversible source tasks need no additional repair-plan approval. Use the nonpaid deterministic ACHS URI strategy automatically only for its exact recognized failure and approved scope; unsupported repairs remain executor_capability_missing, an internal executor limitation, with human_required=false. The SUSESO 24-item probe cap is an internal coverage limit, not a publisher failure or complete coverage. Relevant committed strategy/input changes resume affected families independently; identical audits or internal reclassifications earn no progress. Retain full QA/Reviewer/editorial/security gates, the actual 11 >= 12 failure and 14 concrete QA failure cases, NOT_PROVEN four-hour acceptance and unverified owner-event coverage. Scheduled controller delivery every ten minutes has not been observed; use only evidenced push/completion pickups and diagnose delivery from actual metadata without inferring a disabled workflow or missing approval.",
+      "last_progress_at": "2026-10-11T09:12:05Z",
+      "current_subfront": "monitoring_window_ended_acceptance_not_proven",
+      "next_action": "Ventana Work 3 finalizada. Mantener #7 abierto: probar entregas event=schedule al cadence configurado, cuatro horas útiles, mutación/cierre real, causalidad de pickup, completitud de owner-events y QA/Reviewer PASS. No contar push/completion, auditorías repetidas ni reclasificaciones internas como progreso.",
       "independent_review": {
         "reviewer": "Work 3",
         "reviewed_at": "2026-10-11T04:00:00Z",
@@ -3380,6 +3401,27 @@
             5,
             7
           ]
+        },
+        {
+          "reviewer": "Work 3",
+          "recorded_at": "2026-10-11T09:12:05Z",
+          "reviewed_sha": "e87e844aa9c5615381291ae925a6c6d2200f6012",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T091205Z.json",
+          "verdict": "FINAL_WINDOW_ENDED_SCHEDULED_CONTROLLER_UNPROVEN_NO_SOURCE_REPAIRS_IN_STAGING",
+          "new_finding_ids": [
+            "work3_scheduled_controller_cadence_not_observed"
+          ],
+          "partial_revalidations": [
+            "autonomy_progress_accounting_final_artifact"
+          ],
+          "backlog_issues": [
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "monitoring_window_ended": true
         }
       ],
       "progress": "Infraestructura publicada y corregida en main; seis familias y 12 pickups reales, heartbeats, seis transiciones independientes, CAS y canary STALLED observados. Recovery de transporte SUSESO reparado y verificado hosted. Acceptance 4h NOT_PROVEN; no cierre editorial/fuente ni promoción de producto.\nInfraestructura 15416d1: 338 tests locales PASS; 1.7.7 PASS, five workflows; estrategia determinística URI ACHS sin pago implementada. Acceptance NOT_PROVEN; resultados hosted finales VERIFIED; sin mutation durable de producto, cierre fuente, Stage A ni 4h probadas.",

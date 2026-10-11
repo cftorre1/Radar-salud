@@ -745,6 +745,28 @@
         5,
         7
       ]
+    },
+    "work3_final_20261011T091205Z": {
+      "reviewer": "Work 3",
+      "recorded_at": "2026-10-11T09:12:05Z",
+      "reviewed_sha": "e87e844aa9c5615381291ae925a6c6d2200f6012",
+      "artifact": "data/audits/work3_adversarial_2026_10_11T091205Z.json",
+      "result": "window_ended_open_critical_gaps_no_global_approval",
+      "new_finding_ids": [
+        "work3_scheduled_controller_cadence_not_observed"
+      ],
+      "partial_revalidations": [
+        "autonomy_progress_accounting_final_artifact"
+      ],
+      "backlog_issues": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "staging_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38123952091",
+      "production_touched": false
     }
   },
   "blocks": [
@@ -2218,6 +2240,22 @@
       "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
       "artifact": "data/audits/work3_adversarial_2026_10_11.json",
       "next_check": "Reconcile current candidate after real collector run and cause-specific closure; keep production untouched."
+    },
+    {
+      "id": "work3_adversarial_final_2026_10_11T091205Z",
+      "status": "Monitoring window ended; current staging not validated",
+      "description": "Governance-only staging delta revalidated progress accounting as partial. Scheduled */10 controller delivery remains unobserved; autonomy has zero durable product mutations and zero verified source closures. Source repairs remain in open PRs, and staging QA fails 11 >= 12.",
+      "reviewed_at": "2026-10-11T09:12:05Z",
+      "reviewed_sha": "e87e844aa9c5615381291ae925a6c6d2200f6012",
+      "artifact": "data/audits/work3_adversarial_2026_10_11T091205Z.json",
+      "open_issues": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "next_check": "Re-audit only after repairs are integrated into staging and run through real source/queue/history/feed plus QA and Reviewer."
     }
   ],
   "approved_infrastructure_changes": [
@@ -3254,7 +3292,7 @@
       ]
     }
   ],
-  "updated_at": "2026-10-11T08:11:43.423338+00:00",
+  "updated_at": "2026-10-11T09:12:05Z",
   "closed_beta": {
     "status": "ready",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",
