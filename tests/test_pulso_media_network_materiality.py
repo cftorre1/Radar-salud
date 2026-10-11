@@ -14,6 +14,8 @@ import pytest
 
 from radar_salud import beta_sources, llm_analysis
 from radar_salud.models import RawItem
+from radar_salud.processing import DeferredProcessing
+from radar_salud import pulso_followup_paid_revalidation
 from radar_salud.pulso_source import complete_article_body, extract_article
 from pulso_editorial_test_support import valid_assessment
 from pulso_editorial_real_test_witnesses import real_witness
@@ -40,7 +42,7 @@ def test_mask_obligation_projection_matches_independently_recaptured_original_ht
 
 
 @pytest.mark.parametrize('entry', REAL, ids=lambda entry: entry['name'])
-def test_original_network_report_reaches_analysis_with_full_primary_evidence_and_unchanged_gate(entry, monkeypatch):
+def test_original_network_report_preserves_full_primary_materiality_and_required_paid_authority(entry, monkeypatch):
     body, metadata = entry['body'], deepcopy(entry['metadata'])
     assert hashlib.sha256(body.encode()).hexdigest() == metadata['article_body_sha256']
     assert metadata['canonical_url'] == entry['url']
@@ -65,6 +67,27 @@ def test_original_network_report_reaches_analysis_with_full_primary_evidence_and
     monkeypatch.setattr(llm_analysis, 'analyze_news', assess)
     raw = RawItem('pulso_latercera', entry['title'], entry['url'], 'Pulso / La Tercera',
                   'press_high_trust', entry['publication_date'], body[:1800], metadata)
+    if entry['name'] == 'care_obligation':
+        # This exact report now has three immutable paid generations. A raw
+        # HTML-only projection cannot bypass their required followup admission.
+        # The actual three-reuse tests separately prove its legitimate route.
+        document, _ = pulso_followup_paid_revalidation.load_manifest()
+        pin = next(row for row in document['rows'] if row['url'] == entry['url'])
+        assert pin['disposition'] == 'reuse_code_fn'
+        assert pin['publication_date'] == entry['publication_date']
+        assert pin['body_sha256'] == metadata['article_body_sha256']
+        assert pin['original_html_sha256'] == metadata['html_sha256']
+        assert not pulso_followup_paid_revalidation.has_claim(raw.metadata)
+        with pytest.raises(DeferredProcessing, match='pulso_paid_revalidation_evidence_unverified'):
+            beta_sources.process_curated_beta_source(raw, {})
+        assert calls == []
+        assert raw.metadata['analysis_input_format'] == 'full_primary_article_body'
+        assert raw.metadata['analysis_input_body_sha256'] == pin['body_sha256']
+        assert raw.metadata['analysis_input_complete'] is True
+        assert raw.metadata['editorial_assessment']['threshold'] == 72
+        assert raw.metadata['editorial_assessment']['decision'] == 'pending'
+        assert raw.metadata['editorial_assessment']['reason'] == 'pulso_paid_revalidation_evidence_unverified'
+        return
     assert beta_sources.process_curated_beta_source(raw, {}) is None
     assert len(calls) == 1 and calls[0]['text'] == body and calls[0]['full_text']
     assert 'no convertir reporte de prensa en hecho oficial' in calls[0]['kind']
