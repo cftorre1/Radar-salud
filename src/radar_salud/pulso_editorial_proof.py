@@ -82,6 +82,8 @@ HISTORICAL_FUTURE_COPY = re.compile(
     r"[^.;!?]{0,80}\bpara absorber)\b", re.I)
 NEGATED_ACHIEVEMENT_PREFIX = re.compile(
     r"\bno\s*$|\bno como (?:resultados|acciones|medidas|logros)\s*$|"
+    r"\bno como capacidad\s*$|"
+    r"\bno acredita capacidad(?: nacional)?\s*$|"
     r"\bno (?:deben?|pueden?) (?:entenderse|considerarse|presentarse|tratarse) como\s*$",
     re.I)
 NON_HUMAN_HEALTH = re.compile(
@@ -107,6 +109,15 @@ HUMAN_CLINICAL_SCOPE = re.compile(
     r"\balerta alimentaria\b[^.;!?]{0,120}\blisteria monocytogenes\b|"
     r"\bpersona presenta s[ií]ntomas\b[^.;!?]{0,180}\bsospechar y testear\b", re.I)
 
+# Exact primary quotes from the second genuine model batch. These are direct
+# clinical services/procedures, not a generic mortality or demographic anchor.
+HUMAN_CLINICAL_BATCH_TWO = re.compile(
+    r"\bmamograf[ií]a\b[^.;!?]{0,80}\bmujeres\b[^.;!?]{0,80}\borden m[eé]dica\b|"
+    r"\bpacientes contactados iniciaron su proceso de atenci[oó]n\b|"
+    r"\bmascarillas?\b[^.;!?]{0,80}\bservicios de urgencia\b"
+    r"[^.;!?]{0,80}\bunidades de di[aá]lisis\b[^.;!?]{0,80}\boncohematolog[ií]a\b|"
+    r"\binterrupci[oó]n del embarazo por las tres causales\b", re.I)
+
 
 def human_health_scope_anchor(quote):
     from .pulso_source import health_anchor
@@ -114,7 +125,8 @@ def human_health_scope_anchor(quote):
     # must establish care/clinical relevance beyond the property-sector label.
     clinical_quote = re.sub(r"\bsenior housing\b|\bresidencias? (?:para|de) adultos mayores\b",
                             "", quote, flags=re.I)
-    return health_anchor(clinical_quote) or bool(HUMAN_CLINICAL_SCOPE.search(quote))
+    return (health_anchor(clinical_quote) or bool(HUMAN_CLINICAL_SCOPE.search(quote))
+            or bool(HUMAN_CLINICAL_BATCH_TWO.search(quote)))
 
 PROOF_SCHEMA = {
     "type": "object", "properties": {
