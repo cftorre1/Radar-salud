@@ -16,6 +16,9 @@ def assessment_exclusion(assessment):
     if ('contexto' in reason and 'secundario' in reason and
             re.search(r'no\s+(?:como\s+)?(?:una\s+)?señal\s+material',reason)):
         return 'media_assessment_no_material_event'
+    if ('resultados preliminares' in reason and 'muestra pequeña' in reason
+            and 'no hay aún un cambio regulatorio, de cobertura o de capacidad asistencial' in reason):
+        return 'media_research_without_material_business_event'
     return None
 
 

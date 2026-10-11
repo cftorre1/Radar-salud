@@ -57,6 +57,21 @@ def test_reviewed_df_corroboration_yields_only_when_official_event_is_in_feed():
     assert exporter.curate([df],resolve_external=False)[0]['source_url']==df['source_url']
 
 
+def test_cesfam_investment_title_reaches_gate_without_macro_health_contamination():
+    from radar_salud.df_media_gate import material
+    from radar_salud.public_source_pipeline import _health_relevance
+    title='Iquique vuelve a licitar su quinto Cesfam con más del doble de inversión'
+    assert _health_relevance(title,'') and material(title,'')
+    assert not material('Aumenta la inversión minera','El Cesfam local presta atención.')
+
+
+def test_numeric_72_does_not_override_explicit_preliminary_nonmaterial_research():
+    from radar_salud.df_media_gate import assessment_exclusion
+    verdict={'score':72,'reason':'Muestra pequeña, resultados preliminares. No hay aún un cambio regulatorio, de cobertura o de capacidad asistencial.'}
+    assert assessment_exclusion(verdict)=='media_research_without_material_business_event'
+    assert assessment_exclusion({'score':72,'reason':'Ensayo preliminar, con licencia comercial aprobada y financiación comprometida.'}) is None
+
+
 def test_recorded_real_publisher_metadata_samples():
     # Recorded Work3 metadata, NOT freshly fetched full original HTML.
     from pathlib import Path

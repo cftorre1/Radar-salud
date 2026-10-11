@@ -212,7 +212,7 @@ def _health_relevance(title,text):
     t=f"{title} {text}".lower()
     health_terms=("salud","clínica","clinica","hospital","isapre","fonasa","médic","medic","farmac","laboratorio",
                   "healthtech","biotech","telemedicina","prestador","bupa","redsalud","banmédica","banmedica",
-                  "colmena","consalud","cruz blanca","nueva masvida","esencial")
+                  "colmena","consalud","cruz blanca","nueva masvida","esencial","cesfam","cescosf")
     return any(x in t for x in health_terms)
 
 def process_df(raw,cfg):
