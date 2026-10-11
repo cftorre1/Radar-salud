@@ -84230,16 +84230,17 @@
     },
     "source": "redsalud",
     "lane": "BACKFILL",
-    "status": "pending",
+    "status": "retry",
     "detected_at": "2026-09-24T17:51:49.535310+00:00",
-    "attempts": 4,
-    "reason": "audited_recovery_pending_assessment",
-    "updated_at": "2026-09-30T19:09:38.324477+00:00",
-    "retry_at": null,
+    "attempts": 5,
+    "reason": "budget_or_analysis_deferred",
+    "updated_at": "2026-10-11T04:49:06.195089+00:00",
+    "retry_at": "2026-10-12T04:49:06.195104+00:00",
     "audit_prior_state": {
       "status": "retry",
       "reason": "budget_or_analysis_deferred"
-    }
+    },
+    "deferred_detail": "RedSalud listing and article dates disagree"
   },
   "decf12cac54c8934b979229db11cfc158f4349c43c4db10e052a96d13c01f7dc": {
     "raw": {
@@ -90290,16 +90291,36 @@
         "clinicas_channel": "Noticias",
         "publication_date_source": "dated_news_listing",
         "recovery_audit": "data/audits/providers_2026_10_11/clinicas_chile.json",
-        "source_quality_gate": "passed"
+        "source_quality_gate": "passed",
+        "what_happened": "Clínicas de Chile y CENS realizaron una jornada para analizar tres marcos regulatorios que afectarán la operación digital de los prestadores privados: el reglamento pendiente de interoperabilidad de fichas clínicas de la Ley N.º 21.668, la entrada en vigencia de la Ley N.º 21.719 de Protección de Datos Personales el 1 de diciembre y la implementación final de la Ley Marco de Ciberseguridad N.º 21.663. Esta última califica a la salud como servicio esencial y designó a cerca de un centenar de prestadores como Operadores de Importancia Vital.",
+        "why_it_matters": "Los prestadores privados deberán revisar sistemas, gobernanza, procesos y contratos para responder a exigencias de interoperabilidad, protección de datos y ciberseguridad. El tema merece atención ahora por la proximidad de la entrada en vigencia de la ley de datos personales y la etapa final de implementación del marco de ciberseguridad, aunque la actividad no anuncia nuevas medidas regulatorias.",
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Prestadores"
+        ],
+        "watch_tags": [
+          "clínicas de chile",
+          "prestadores",
+          "noticias"
+        ],
+        "scores": {
+          "economic": 65,
+          "regulatory": 55,
+          "scope": 70,
+          "novelty": 70,
+          "actionability": 72
+        }
       }
     },
     "source": "clinicas_chile",
     "lane": "BACKFILL",
-    "status": "pending",
+    "status": "published",
     "detected_at": "2026-10-08T08:38:36.800329+00:00",
-    "attempts": 1,
-    "reason": "audited_recovery_pending_assessment",
-    "updated_at": "2026-10-08T16:48:22.351698+00:00",
+    "attempts": 2,
+    "reason": null,
+    "updated_at": "2026-10-11T04:48:53.052644+00:00",
     "retry_at": null,
     "audit_prior_state": {
       "status": "rejected",
@@ -94153,15 +94174,18 @@
     },
     "source": "bupa_chile",
     "lane": "BACKFILL",
-    "status": "pending",
+    "status": "retry",
     "detected_at": "2026-10-11T04:41:20.504095+00:00",
-    "attempts": 0,
-    "reason": "unverified_publication_date"
+    "attempts": 1,
+    "reason": "budget_or_analysis_deferred",
+    "deferred_detail": "Bupa article publication date unavailable",
+    "updated_at": "2026-10-11T04:48:37.185354+00:00",
+    "retry_at": "2026-10-11T06:48:37.185369+00:00"
   },
   "5d99210f4b741e1df2f7fe398b867f5739922e33c15e6c56fa622a50effed353": {
     "raw": {
       "source_slug": "bupa_chile",
-      "title": "Chile tendrá su primera base genómica de referencia: Bupa lanza 1000 genomas",
+      "title": "Chile tendrá su primera base genómica de referencia: Bupa lanza “1000 Genomas para Chile”",
       "url": "https://www.bupa.cl/chile-tendra-su-primera-base-genomica-de-referencia-bupa-lanza-1000",
       "source_name": "Bupa Chile",
       "source_type": "corporate",
@@ -94171,15 +94195,20 @@
         "discovered_from": "https://www.bupa.cl/somos-bupa/sala-de-prensa",
         "publication_date_source": "verified_article_header",
         "recovery_audit": "data/audits/providers_2026_10_11/bupa_chile.json",
-        "source_quality_gate": "passed"
+        "source_quality_gate": "passed",
+        "title_before_provider_audit_correction": "Chile tendrá su primera base genómica de referencia: Bupa lanza 1000 genomas"
       }
     },
     "source": "bupa_chile",
     "lane": "BACKFILL",
-    "status": "pending",
+    "status": "retry",
     "detected_at": "2026-10-11T04:41:20.504095+00:00",
-    "attempts": 0,
-    "reason": "audited_recovery_pending_assessment"
+    "attempts": 1,
+    "reason": "budget_or_analysis_deferred",
+    "deferred_detail": "Bupa headline mismatch between listing and article",
+    "updated_at": "2026-10-11T04:48:37.940704+00:00",
+    "retry_at": "2026-10-11T06:48:37.940720+00:00",
+    "repair_checkpoint": "corrected_original_headline_and_publication_header; reassess only this deferred URL"
   },
   "bec250b2d5f59d9c77da0c22fe6265d4c72f69c5d814f25c64a08f0be985a4b1": {
     "raw": {
@@ -94199,10 +94228,13 @@
     },
     "source": "bupa_chile",
     "lane": "BACKFILL",
-    "status": "pending",
+    "status": "retry",
     "detected_at": "2026-10-11T04:41:20.504095+00:00",
-    "attempts": 0,
-    "reason": "unverified_publication_date"
+    "attempts": 1,
+    "reason": "budget_or_analysis_deferred",
+    "deferred_detail": "Bupa article publication date unavailable",
+    "updated_at": "2026-10-11T04:48:38.942827+00:00",
+    "retry_at": "2026-10-11T06:48:38.942843+00:00"
   },
   "7d441f50ec7e88f725f7bb7501c0c9949c49fbf7206dc2dfbd16a7ba6ee8f8bd": {
     "raw": {
@@ -94222,10 +94254,13 @@
     },
     "source": "indisa",
     "lane": "BACKFILL",
-    "status": "pending",
+    "status": "retry",
     "detected_at": "2026-10-11T04:41:21.616310+00:00",
-    "attempts": 0,
-    "reason": "audited_recovery_pending_assessment"
+    "attempts": 1,
+    "reason": "budget_or_analysis_deferred",
+    "deferred_detail": "INDISA article temporarily unavailable",
+    "updated_at": "2026-10-11T04:48:53.552166+00:00",
+    "retry_at": "2026-10-11T06:48:53.552189+00:00"
   },
   "ba09f70fb16cf82e05c956be5ae9b181f1f77a5fc1c1fd5d11dd36f5ebdf068b": {
     "raw": {
@@ -94246,15 +94281,17 @@
     },
     "source": "red_davila",
     "lane": "BACKFILL",
-    "status": "pending",
+    "status": "rejected",
     "detected_at": "2026-10-11T04:41:22.718201+00:00",
-    "attempts": 0,
-    "reason": "audited_recovery_pending_assessment"
+    "attempts": 1,
+    "reason": "processor_rejected",
+    "updated_at": "2026-10-11T04:49:01.832300+00:00",
+    "retry_at": null
   },
   "c37af1410f6e19197c0f9b67dd2769765a1e3b35c0d71e9076b9059bcbf8a6a4": {
     "raw": {
       "source_slug": "red_davila",
-      "title": "Operativo médico Sótero del Río",
+      "title": "Red Dávila realiza su primer operativo del Programa Enlace y contribuye a reducir listas de espera odontológicas",
       "url": "https://www.davila.cl/novedades/operativo-medico-sotero",
       "source_name": "Red Dávila",
       "source_type": "corporate",
@@ -94265,15 +94302,20 @@
         "publication_date_source": "verified_article_header",
         "recovery_audit": "data/audits/providers_2026_10_11/red_davila.json",
         "source_quality_gate": "passed",
-        "market_role": "provider"
+        "market_role": "provider",
+        "title_before_provider_audit_correction": "Operativo médico Sótero del Río"
       }
     },
     "source": "red_davila",
     "lane": "BACKFILL",
-    "status": "pending",
+    "status": "retry",
     "detected_at": "2026-10-11T04:41:22.718201+00:00",
-    "attempts": 0,
-    "reason": "audited_recovery_pending_assessment"
+    "attempts": 1,
+    "reason": "budget_or_analysis_deferred",
+    "deferred_detail": "Provider listing/detail publication date mismatch: https://www.davila.cl/novedades/operativo-medico-sotero",
+    "updated_at": "2026-10-11T04:49:02.576169+00:00",
+    "retry_at": "2026-10-11T06:49:02.576184+00:00",
+    "repair_checkpoint": "corrected_original_headline_and_publication_header; reassess only this deferred URL"
   },
   "59f04ea940925b9686889ee4a2451021859b2b0342c910c0c0842747bab9045f": {
     "raw": {
@@ -94289,15 +94331,39 @@
         "publication_date_source": "verified_article_header",
         "recovery_audit": "data/audits/providers_2026_10_11/andes_salud.json",
         "source_quality_gate": "passed",
-        "market_role": "provider"
+        "market_role": "provider",
+        "what_happened": "Andes Salud inició oficialmente las operaciones de Clínica Andes Salud Talca, un recinto de 10.576 m² desarrollado con una inversión de US$45 millones. La clínica incorpora 94 camas de hospitalización —18 de ellas en la Unidad de Pacientes Críticos—, urgencia 24/7 para adultos y niños, pabellones quirúrgicos, hemodinamia, imágenes, laboratorio, farmacia y un PET-CT con inteligencia artificial. El recinto ya realizó sus primeras cirugías y proyecta más de 1.000 empleos directos e indirectos.",
+        "why_it_matters": "La apertura agrega capacidad hospitalaria, crítica, quirúrgica, diagnóstica y de urgencia de alta complejidad para los habitantes del Maule, una región de más de 1,2 millones de personas según la fuente. Para Andes Salud, consolida su presencia regional y su estrategia de descentralizar prestaciones; para otros prestadores y actores sanitarios, introduce nueva infraestructura y oferta competitiva en Talca, con potencial para reducir derivaciones fuera de la región en servicios como cirugía, cuidados críticos y diagnóstico avanzado.",
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Prestadores",
+          "Farma / medicamentos"
+        ],
+        "watch_tags": [
+          "andes_salud",
+          "provider",
+          "prestadores",
+          "farma / medicamentos"
+        ],
+        "scores": {
+          "economic": 86,
+          "regulatory": 30,
+          "scope": 86,
+          "novelty": 86,
+          "actionability": 76
+        }
       }
     },
     "source": "andes_salud",
     "lane": "BACKFILL",
-    "status": "pending",
+    "status": "published",
     "detected_at": "2026-10-11T04:41:23.879240+00:00",
-    "attempts": 0,
-    "reason": "audited_recovery_pending_assessment"
+    "attempts": 1,
+    "reason": null,
+    "updated_at": "2026-10-11T04:48:21.357284+00:00",
+    "retry_at": null
   },
   "cf0ce7de00232f65af676f81e641a435151ae5f9560f5a12b73249b7fcf2204c": {
     "raw": {
@@ -94313,15 +94379,37 @@
         "publication_date_source": "verified_article_header",
         "recovery_audit": "data/audits/providers_2026_10_11/andes_salud.json",
         "source_quality_gate": "passed",
-        "market_role": "provider"
+        "market_role": "provider",
+        "what_happened": "Andes Salud y MetLife renovaron por cinco años su alianza para ofrecer seguros de salud y protección financiera a través de toda la red de clínicas y centros médicos de Andes Salud en regiones. El acuerdo contempla nuevos canales digitales, coberturas para cáncer, hospitalizaciones, accidentes, urgencias y atenciones ambulatorias, y una meta de 150.000 asegurados vigentes al 2031. También se vincula con la expansión de capacidades clínicas, incluidos nuevos Centros de Radioterapia en Concepción y Puerto Montt.",
+        "why_it_matters": "La alianza refuerza la integración entre prestación asistencial y seguros fuera de la Región Metropolitana, con impacto potencial en la captación de pacientes y asegurados de Andes Salud y en la distribución regional de MetLife. Para los pacientes del centro-sur, los proyectos de radioterapia podrían ampliar el acceso local a tratamientos oncológicos y reducir traslados, aunque el anuncio no entrega fechas de apertura ni capacidad operativa.",
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Prestadores"
+        ],
+        "watch_tags": [
+          "andes_salud",
+          "provider",
+          "prestadores"
+        ],
+        "scores": {
+          "economic": 82,
+          "regulatory": 30,
+          "scope": 82,
+          "novelty": 82,
+          "actionability": 76
+        }
       }
     },
     "source": "andes_salud",
     "lane": "BACKFILL",
-    "status": "pending",
+    "status": "published",
     "detected_at": "2026-10-11T04:41:23.879240+00:00",
-    "attempts": 0,
-    "reason": "audited_recovery_pending_assessment"
+    "attempts": 1,
+    "reason": null,
+    "updated_at": "2026-10-11T04:48:28.991078+00:00",
+    "retry_at": null
   },
   "b3556fb8caf5acaa4ffde98d1466207d5a45a161bc306d7251efc69e1992c54f": {
     "raw": {
@@ -94337,15 +94425,41 @@
         "publication_date_source": "verified_article_header",
         "recovery_audit": "data/audits/providers_2026_10_11/andes_salud.json",
         "source_quality_gate": "passed",
-        "market_role": "provider"
+        "market_role": "provider",
+        "what_happened": "Andes Salud anunció la próxima apertura del Centro Médico Andes Salud Puerto Varas, su séptimo recinto ambulatorio en la Región de Los Lagos. El proyecto contempla más de 1.000 m², 17 box de consultas, 5 box de toma de muestras y, posteriormente, servicios de kinesiología e imagenología, incluida resonancia magnética, rayos X, ecografía y mamografía. La iniciativa se integra a la primera etapa del Plan de Desarrollo Andes Salud 2030, que considera una inversión de $10.000 millones en la región y proyecta más de 64.000 consultas, 77.000 exámenes y 22.000 imágenes anuales al 2030.",
+        "why_it_matters": "Afecta a los prestadores privados, pacientes Fonasa e Isapre y a la oferta ambulatoria de la Región de Los Lagos. La expansión aumenta la capacidad de atención de Andes Salud en Puerto Varas, incorpora prestaciones diagnósticas y especialidades, y busca reducir traslados hacia otros centros. Merece atención ahora porque forma parte de un plan regional de inversión que también incluye nuevos puntos ambulatorios y un futuro Centro de Radioterapia en Puerto Montt.",
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Prestadores",
+          "Isapres",
+          "Fonasa"
+        ],
+        "watch_tags": [
+          "andes_salud",
+          "provider",
+          "prestadores",
+          "isapres",
+          "fonasa"
+        ],
+        "scores": {
+          "economic": 82,
+          "regulatory": 30,
+          "scope": 82,
+          "novelty": 82,
+          "actionability": 76
+        }
       }
     },
     "source": "andes_salud",
     "lane": "BACKFILL",
-    "status": "pending",
+    "status": "published",
     "detected_at": "2026-10-11T04:41:23.879240+00:00",
-    "attempts": 0,
-    "reason": "audited_recovery_pending_assessment"
+    "attempts": 1,
+    "reason": null,
+    "updated_at": "2026-10-11T04:48:36.306660+00:00",
+    "retry_at": null
   },
   "8b518dbe40b2741bf3ed1454464f0a9072b99f8bb681e4132ca9e24f462a83f0": {
     "raw": {
@@ -94366,9 +94480,11 @@
     },
     "source": "clinicas_achs_salud",
     "lane": "BACKFILL",
-    "status": "pending",
+    "status": "rejected",
     "detected_at": "2026-10-11T04:41:26.880224+00:00",
-    "attempts": 0,
-    "reason": "audited_recovery_pending_assessment"
+    "attempts": 1,
+    "reason": "processor_rejected",
+    "updated_at": "2026-10-11T04:48:45.089189+00:00",
+    "retry_at": null
   }
 }

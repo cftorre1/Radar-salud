@@ -58,6 +58,8 @@ class PendingQueue:
         added = 0
         for raw in items:
             key = fingerprint(raw)
+            if key not in self.items and raw.source_slug in ('redsalud','bupa_chile','indisa','red_davila','andes_salud','clinicas_chile','pfizer_chile','clinicas_achs_salud'):
+                key=next((k for k,v in self.items.items() if v['source']==source and v['raw']['url'].rstrip('/')==raw.url.rstrip('/')),key)
             if key in self.items:
                 item=self.items[key]
                 # A failed detail fetch may have enqueued an undated news card.

@@ -191,7 +191,7 @@ class _ProviderPublication(HTMLParser):
             self.meta=attrs.get('content')
         elif tag=='h1' and not self._seen_title:
             from .public_source_pipeline import _date
-            match=re.search(r'Novedades\s+(\d{1,2}/\d{1,2}/20\d{2})\s*$', ' '.join(self._before)[-180:])
+            match=re.search(r'(?:Novedades|Operativos Médicos)\s+(\d{1,2}/\d{1,2}/20\d{2})\s*$', ' '.join(self._before)[-180:])
             if match:self.header=_date(match.group(1))
             self._h1=True;self._seen_title=True
         elif self._after and tag in ('p','h2','h3','nav','footer','aside'):

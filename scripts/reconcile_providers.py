@@ -92,7 +92,7 @@ def reconcile(audit, queue, history, visible):
             'queue_counts':queue.counts(audit['slug']),'items':out}
 
 
-def run(root, slug=None, apply=False, live=False, limit=12):
+def run(root, slug=None, apply=False, live=False, limit=12, urls=None):
     from radar_salud.history import load_history, merge_history, save_history
     from radar_salud.processing import DeferredProcessing, OutsideBackfillHorizon
     from radar_salud.public_source_pipeline import process_corporate_news, process_clinicas_chile
@@ -130,6 +130,7 @@ def run(root, slug=None, apply=False, live=False, limit=12):
                 processor=process_clinicas_chile if name=='clinicas_chile' else process_curated_beta_source if audit.get('market_role') else process_corporate_news
                 for key,item in list(queue.items.items()):
                     if item['source']!=name or item['raw'].get('metadata',{}).get('recovery_audit')!=audit['audit_path'] or item['status'] not in ('pending','retry'):continue
+                    if urls and canonical_url(item['raw']['url']) not in {canonical_url(url) for url in urls}:continue
                     if attempted>=limit or not (has_capacity('fast') or has_capacity('deep')):
                         live_results.append({'source':name,'url':item['raw']['url'],'outcome':'not_evaluated','blocker':'processing_limit_or_existing_ai_budget'});continue
                     attempted+=1;queue.start(key);raw=RawItem(**item['raw'])
@@ -152,12 +153,14 @@ def run(root, slug=None, apply=False, live=False, limit=12):
             h.update(name=cfgs[name]['name'],live_pending=counts['live_pending'],backfill_pending=counts['backfill_pending'],
                      pending=counts['live_pending']+counts['backfill_pending'],rejected=counts['rejected'],
                      coverage_status='unverified' if audit['blockers'] else 'observed',status='error' if h.get('technical_status')=='error' else 'warning')
-            if name=='clinicas_chile':h.update(last_signal_at=None,content_freshness='unknown')
-            if name in ('red_davila','andes_salud'):
+            if name=='clinicas_chile':
+                legitimate=[v['event_date'] for v in history if v.get('source_name')==cfgs[name]['name'] and v.get('event_date') and v.get('feed_visibility') is not False]
+                h.update(last_signal_at=max(legitimate) if legitimate else None,content_freshness='older' if legitimate else 'unknown')
+            if name in ('red_davila','andes_salud') and not h.get('audited_assessment'):
                 h.update(evaluation_performed=False,editorial_outcome='not_evaluated',collection_mode='discovery_only')
             assessed=[v for v in live_results if v['source']==name and v['outcome'] in ('published','rejected')]
             published=[v['signal'] for v in assessed if v['outcome']=='published']
-            if live:
+            if live and any(v['source']==name for v in live_results):
                 h['audited_assessment']={'at':now.isoformat(),'evaluated':len(assessed),'published':len(published),
                     'last_signal_at':max([v.get('event_date') for v in published if v.get('event_date')] or ['']) or None,
                     'outcome':'published' if published else 'rejected' if assessed else 'not_evaluated'}
@@ -178,7 +181,7 @@ def run(root, slug=None, apply=False, live=False, limit=12):
 
 
 if __name__=='__main__':
-    ap=argparse.ArgumentParser();ap.add_argument('--root',type=Path,default=Path('.'));ap.add_argument('--source');ap.add_argument('--apply',action='store_true');ap.add_argument('--live',action='store_true');ap.add_argument('--limit',type=int,default=12)
+    ap=argparse.ArgumentParser();ap.add_argument('--root',type=Path,default=Path('.'));ap.add_argument('--source');ap.add_argument('--apply',action='store_true');ap.add_argument('--live',action='store_true');ap.add_argument('--limit',type=int,default=12);ap.add_argument('--url',action='append')
     args=ap.parse_args()
     if args.live and not args.apply:ap.error('--live requires --apply')
-    run(args.root,args.source,args.apply,args.live,args.limit)
+    run(args.root,args.source,args.apply,args.live,args.limit,args.url)

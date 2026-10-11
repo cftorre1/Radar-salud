@@ -66,6 +66,7 @@ def test_corporate_date_learned_in_detail_obeys_backfill_horizon(monkeypatch):
 def test_provider_header_date_does_not_borrow_from_body_or_related_cards():
     from radar_salud.beta_sources import _ProviderPublication
     cases=[('<div>Novedades 20/08/2026</div><h1>Plan Enlace</h1><p>Julio 2025.</p>','2026-08-20'),
+           ('<div>Operativos Médicos 24/08/2026</div><h1>Plan Enlace ejecutado</h1><p>Treinta cirugías.</p>','2026-08-24'),
            ('<h1>Centro Puerto Varas</h1><ul><li>agosto 24, 2026</li></ul><p>2030.</p>','2026-08-24'),
            ('<h1>SAFED</h1><div>28/08/2026</div><p>19 agosto.</p>','2026-08-28'),
            ('<nav>19/08/2026</nav><h1>Undated</h1><p>Evento 24/08/2026</p><h2>Relacionadas</h2><div>28/09/2026</div>',None)]

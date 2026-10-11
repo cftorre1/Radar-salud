@@ -6,6 +6,7 @@ on:
       - 'src/radar_salud/**'
       - 'scripts/reconcile_providers.py'
       - 'scripts/provider_live_checkpoint.py'
+      - 'scripts/provider_repair_checkpoint.py'
       - 'data/audits/providers_2026_10_11/**'
       - '.github/workflows/provider-audit-checkpoint.yml'
 permissions:
@@ -51,6 +52,11 @@ jobs:
       - name: Export compact durable checkpoint into job log
         if: hashFiles('data/audits/provider_ci_receipt_2026_10_11.json') != ''
         run: python scripts/export_provider_checkpoint.py
+      - name: Verify two repaired intake records without reassessing previous outcomes
+        if: hashFiles('data/audits/provider_ci_receipt_2026_10_11.json') != '' && hashFiles('data/audits/provider_repair_receipt_2026_10_11.json') == ''
+        env:
+          RADAR_FAST_PER_RUN: 2
+        run: timeout --signal=TERM 5m python scripts/provider_repair_checkpoint.py
       - name: Preserve resumable isolated checkpoint
         if: always() && hashFiles('data/audits/provider_ci_receipt_2026_10_11.json') == ''
         uses: actions/upload-artifact@v4

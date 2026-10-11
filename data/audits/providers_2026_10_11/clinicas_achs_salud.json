@@ -62,8 +62,8 @@
     "publication_date_unknown": 0,
     "queue_counts": {
       "live_pending": 0,
-      "backfill_pending": 1,
-      "rejected": 0,
+      "backfill_pending": 0,
+      "rejected": 1,
       "published": 0
     },
     "items": [
@@ -76,8 +76,8 @@
         "queue": [
           {
             "key": "8b518dbe40b2741bf3ed1454464f0a9072b99f8bb681e4132ca9e24f462a83f0",
-            "status": "pending",
-            "reason": "audited_recovery_pending_assessment",
+            "status": "rejected",
+            "reason": "processor_rejected",
             "lane": "BACKFILL"
           }
         ],

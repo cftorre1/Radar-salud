@@ -32,7 +32,7 @@
       "evidence": "Convenio Minsal/Sótero del Río: objetivo 500 pacientes, diez jornadas en diez meses, primer operativo planificado de 50 cirugías. Es compromiso anunciado."
     },
     {
-      "title": "Operativo médico Sótero del Río",
+      "title": "Red Dávila realiza su primer operativo del Programa Enlace y contribuye a reducir listas de espera odontológicas",
       "url": "https://www.davila.cl/novedades/operativo-medico-sotero",
       "publication_date": "2026-08-24",
       "date_evidence": "verified_article_header",
@@ -67,8 +67,8 @@
     "publication_date_unknown": 0,
     "queue_counts": {
       "live_pending": 0,
-      "backfill_pending": 2,
-      "rejected": 0,
+      "backfill_pending": 1,
+      "rejected": 1,
       "published": 0
     },
     "items": [
@@ -81,8 +81,8 @@
         "queue": [
           {
             "key": "ba09f70fb16cf82e05c956be5ae9b181f1f77a5fc1c1fd5d11dd36f5ebdf068b",
-            "status": "pending",
-            "reason": "audited_recovery_pending_assessment",
+            "status": "rejected",
+            "reason": "processor_rejected",
             "lane": "BACKFILL"
           }
         ],
@@ -98,8 +98,8 @@
         "queue": [
           {
             "key": "c37af1410f6e19197c0f9b67dd2769765a1e3b35c0d71e9076b9059bcbf8a6a4",
-            "status": "pending",
-            "reason": "audited_recovery_pending_assessment",
+            "status": "retry",
+            "reason": "budget_or_analysis_deferred",
             "lane": "BACKFILL"
           }
         ],
