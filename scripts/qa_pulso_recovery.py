@@ -30,6 +30,7 @@ REQUIRED_FEEDS = {"section:" + name for name in (
 PRIMARY_DATE_SOURCES = {"visible_article_byline", "json_ld_datePublished", "article_published_time", "article_time"}
 VIDEO_HOLD = "publisher_video_text_unavailable"
 DATE_HOLD = "publisher_conflicting_publication_dates"
+SPONSORED_HOLD = "publisher_sponsored_content_review_required"
 SHA = re.compile(r"[0-9a-f]{64}")
 
 
@@ -333,6 +334,21 @@ def retained_exception_provenance_matches(record, root):
     return False
 
 
+def original_taxonomy(article, url):
+    """Exact publisher labels on one URL-bound article, not incidental prose."""
+    keywords = article.get("keywords", [])
+    labels = keywords.split(",") if isinstance(keywords, str) else keywords
+    labels = [value.strip() for value in labels if isinstance(value, str)] if isinstance(labels, list) else []
+    opinion_labels = {"opinión", "opinion", "columna", "columna de opinión", "columna de opinion", "editorial"}
+    matched = [value for value in labels if value.casefold() in opinion_labels]
+    section = article.get("articleSection")
+    section_key = str(section).strip().casefold()
+    classification = ("opinion" if matched or section_key in opinion_labels else "sponsored"
+                      if section_key in {"branded", "publirreportajes"} and urlsplit(url).path.split("/")[1] == section_key else "factual")
+    return dict(source="url_bound_json_ld", canonical_url=url, article_type=article.get("@type"), section=section,
+                labels=labels, matched_opinion_labels=matched, classification=classification)
+
+
 def verify_primary_capture(row, root, date_evidence=None):
     """Require original bytes matching the primary detail hash and URL/date."""
     url, expected = row["url"], row.get("primary_detail_sha256")
@@ -382,15 +398,16 @@ def verify_publisher_exception(row, metadata, traces, root):
     url, expected = row.get("url"), row.get("primary_detail_sha256")
     reason = metadata.get("publisher_exception_reason") or metadata.get("source_content_unavailable_reason")
     errors = []
-    if reason not in {VIDEO_HOLD, DATE_HOLD}:
+    if reason not in {VIDEO_HOLD, DATE_HOLD, SPONSORED_HOLD}:
         return None, ["unsupported_publisher_exception"]
-    if (metadata.get("primary_identity_verified") is not True or metadata.get("article_verified") is not False
+    article_verified = reason == SPONSORED_HOLD
+    if (metadata.get("primary_identity_verified") is not True or metadata.get("article_verified") is not article_verified
             or normalized_url(metadata.get("canonical_url")) != url or metadata.get("html_sha256") != expected
             or not SHA.fullmatch(str(expected or ""))):
         return None, ["exception_queue_identity_or_original_hash_unverified"]
     if not traces or any(trace.get("status") != "discovered_metadata_only" or trace.get("reason") != reason
                           or trace.get("primary_identity_verified") is not True
-                          or trace.get("article_verified") is not False
+                          or trace.get("article_verified") is not article_verified
                           or trace.get("html_sha256") != expected for trace in traces):
         return None, ["exception_not_bound_to_actual_core_traces"]
     for record in row.get("original_http_captures", []):
@@ -422,6 +439,11 @@ def verify_publisher_exception(row, metadata, traces, root):
                     or metadata.get("article_body_sha256") != digest(body.encode())):
                 raise ValueError("exception_primary_body_hash_or_text_disagrees")
             convention = date_convention(values + [entry["timestamp"] for entry in parser.bylines], visible)
+            taxonomy = original_taxonomy(projection["article"], url)
+            if metadata.get("publisher_taxonomy") is not None and (
+                    metadata.get("publisher_taxonomy") != taxonomy
+                    or metadata.get("publisher_content_classification") != taxonomy["classification"]):
+                raise ValueError("exception_publisher_taxonomy_disagrees_with_original")
             if reason == VIDEO_HOLD:
                 videos = parser.bound_nodes(url, "VideoObject")
                 if (urlsplit(url).path.split("/")[1] != "videos" or len(videos) != 1
@@ -439,7 +461,7 @@ def verify_publisher_exception(row, metadata, traces, root):
                                or trace.get("article_body_complete") is not False or trace.get("video_evidence") != expected_video for trace in traces)):
                     raise ValueError("exception_video_claims_do_not_match_original")
                 publication_verified, content_verified = True, False
-            else:
+            elif reason == DATE_HOLD:
                 possible = sorted({visible} | {timestamp_calendar_day(value) for value in values}
                                   | {publisher_day(value) for value in values})
                 if convention is not None or len(body.strip()) < 160:
@@ -455,6 +477,19 @@ def verify_publisher_exception(row, metadata, traces, root):
                                or trace.get("possible_publication_days") != possible for trace in traces)):
                     raise ValueError("exception_conflict_adopted_date_or_lost_original_days")
                 publication_verified, content_verified = False, True
+            else:
+                if (taxonomy["classification"] != "sponsored" or metadata.get("publisher_taxonomy") != taxonomy
+                        or metadata.get("publisher_content_classification") != "sponsored" or convention is None
+                        or len(body.strip()) < 160 or metadata.get("article_body_complete") is not True
+                        or metadata.get("publication_date_verified") is not True or metadata.get("publication_date") != visible
+                        or row.get("publication_date") != visible or row.get("publication_date_verified") is not True
+                        or metadata.get("source_quality_gate") != "deferred_sponsored_content_review"
+                        or metadata.get("editorial_hold") != SPONSORED_HOLD
+                        or any(trace.get("publication_date") != visible or trace.get("publication_date_verified") is not True
+                               or trace.get("article_body_complete") is not True or trace.get("publisher_taxonomy") != taxonomy
+                               or trace.get("publisher_content_classification") != "sponsored" for trace in traces)):
+                    raise ValueError("exception_sponsored_hold_not_bound_to_original_commercial_section")
+                publication_verified, content_verified = True, True
             return dict(url=url, reason=reason, original_html_sha256=expected,
                         publication_date_verified=publication_verified, article_content_verified=content_verified,
                         publication_date=visible if publication_verified else None,
@@ -831,7 +866,7 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
             fail("discovery", "publisher_exception_capture_freshness_unproven", url=url)
         if row.get("primary_detail_cache_hit") and not row.get("publisher_lastmod"):
             fail("discovery", "publisher_exception_cached_original_lastmod_missing", url=url)
-        if reason == VIDEO_HOLD and row.get("publication_date_evidence") != (
+        if reason in {VIDEO_HOLD, SPONSORED_HOLD} and row.get("publication_date_evidence") != (
                 "reused_verified_primary_byline_unchanged_publisher_lastmod" if row.get("primary_detail_cache_hit") else "current_verified_detail"):
             fail("discovery", "publisher_video_date_falsely_labeled_fresh_or_unverified", url=url)
         if reason == DATE_HOLD and row.get("publication_date_evidence") != "unverified":

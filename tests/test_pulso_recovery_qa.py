@@ -492,14 +492,18 @@ def test_deferred_exact_reason_and_feed_freshness_cannot_be_generic(evidence):
 def append_publisher_exception(data, kind):
     """Synthetic original bytes exercise reader rules, not publisher coverage."""
     video = kind == "video"
-    url = "https://www.latercera.com/" + ("videos" if video else "paula") + "/noticia/verified-exception/"
-    day, timestamp = ("2026-10-07", "2026-10-07T17:55:00Z") if video else (None, "2026-08-06T15:00:00Z")
-    visible, byline = ("2026-10-07", "7 OCTUBRE 2026") if video else ("2026-07-30", "30 JULIO 2026")
-    byline_timestamp = timestamp if video else "2026-07-30T15:00:00Z"
-    reason = qa.VIDEO_HOLD if video else qa.DATE_HOLD
+    sponsored = kind == "sponsored"
+    dated = video or sponsored
+    url = "https://www.latercera.com/" + ("videos" if video else "branded" if sponsored else "paula") + "/noticia/verified-exception/"
+    day, timestamp = ("2026-10-07", "2026-10-07T17:55:00Z") if dated else (None, "2026-08-06T15:00:00Z")
+    visible, byline = ("2026-10-07", "7 OCTUBRE 2026") if dated else ("2026-07-30", "30 JULIO 2026")
+    byline_timestamp = timestamp if dated else "2026-07-30T15:00:00Z"
+    reason = qa.VIDEO_HOLD if video else qa.SPONSORED_HOLD if sponsored else qa.DATE_HOLD
     body = "" if video else ("El trabajo puede afectar la salud y la atención sanitaria. " * 5).strip()
     article = {"@type": "NewsArticle", "url": url, "datePublished": timestamp,
                "headline": "Un reporte del publisher con identidad primaria", "articleBody": body}
+    if sponsored:
+        article.update(articleSection="Branded", keywords=["salud", "Publicidad"])
     nodes = [article]
     video_evidence = dict(type="VideoObject", url=url, id=url + "#video", embed_url="https://mdstrm.com/embed/original", upload_date=timestamp)
     if video:
@@ -515,27 +519,30 @@ def append_publisher_exception(data, kind):
     (data["root"] / relative).write_bytes(compressed)
     capture = dict(url=url, status=200, sha256=sha, returned_text_utf8_sha256=sha,
                    gzip_file=relative, gzip_sha256=qa.digest(compressed), captured_at="2026-10-11T10:30:00Z")
-    metadata = dict(primary_identity_verified=True, article_verified=False, article_body_complete=not video,
-                    publication_date_verified=video, publication_date=day, publication_timestamp=timestamp if video else None,
-                    publication_date_source="visible_article_byline" if video else "unresolved_primary_publisher_date_conflict",
+    metadata = dict(primary_identity_verified=True, article_verified=sponsored, article_body_complete=not video,
+                    publication_date_verified=dated, publication_date=day, publication_timestamp=timestamp if dated else None,
+                    publication_date_source="visible_article_byline" if dated else "unresolved_primary_publisher_date_conflict",
                     visible_publication_date=visible, canonical_url=url, html_sha256=sha, page_text=body,
                     article_body_characters=len(body), article_body_sha256=qa.digest(body.encode()),
-                    source_quality_gate="deferred_video_text" if video else "deferred_publication_date",
+                    source_quality_gate="deferred_video_text" if video else "deferred_sponsored_content_review" if sponsored else "deferred_publication_date",
                     publication_evidence=[dict(source="json_ld_datePublished", timestamp=timestamp),
                                           dict(source="article_published_time", timestamp=timestamp)],
                     editorial_assessment=dict(decision="pending", reason=reason))
     if video:
         metadata.update(publisher_document_type="video", video_identity_verified=True,
                         source_content_unavailable_reason=reason, video_evidence=video_evidence)
+    elif sponsored:
+        metadata.update(publisher_exception_reason=reason, editorial_hold=reason,
+                        publisher_taxonomy=qa.original_taxonomy(article, url), publisher_content_classification="sponsored")
     else:
         metadata.update(publisher_exception_reason=reason, editorial_hold=reason,
                         possible_publication_days=["2026-07-30", "2026-08-06"])
     feed = data["report"]["coverage"][0]["feed"]
     trace = dict(metadata, url=url, status="discovered_metadata_only", reason=reason, feed=feed)
-    row = dict(url=url, publication_date=day, publication_date_verified=video,
+    row = dict(url=url, publication_date=day, publication_date_verified=dated,
                current_core_detected=True, current_core_verified_health=False, metadata_only_candidate=True,
                primary_detail_sha256=sha, primary_detail_captured_at="2026-10-11T10:30:00Z", primary_detail_cache_hit=False,
-               original_http_captures=[capture], publication_date_evidence="current_verified_detail" if video else "unverified",
+               original_http_captures=[capture], publication_date_evidence="current_verified_detail" if dated else "unverified",
                exact_reason=reason, passed_gate=None, editorial_outcome="pending", history_present=False, feed_present=False)
     data["report"]["matrix"].append(row)
     data["report"]["publisher_editorial_exceptions"] = [row]
@@ -544,25 +551,25 @@ def append_publisher_exception(data, kind):
                                       raw=dict(url=url, event_date=day, metadata=metadata))
     data["discovery"]["source_details"][qa.SOURCE].append(trace)
     data["discovery"]["sources"][qa.SOURCE]["discovered"] = 80
-    data["report"]["primary_coverage"].update(article_content_coverage_complete=False,
-        publication_date_coverage_complete=video, publisher_exceptions=0 if video else 1, enumerated_with_editorial_exceptions=not video)
-    data["report"]["coverage"][0].update(article_content_coverage_complete=False,
-        publication_date_coverage_complete=video, publisher_exceptions=0 if video else 1, enumerated_with_editorial_exceptions=not video)
+    data["report"]["primary_coverage"].update(article_content_coverage_complete=sponsored,
+        publication_date_coverage_complete=dated, publisher_exceptions=0 if dated else 1, enumerated_with_editorial_exceptions=not dated)
+    data["report"]["coverage"][0].update(article_content_coverage_complete=sponsored,
+        publication_date_coverage_complete=dated, publisher_exceptions=0 if dated else 1, enumerated_with_editorial_exceptions=not dated)
     return row, metadata, trace
 
 
-@pytest.mark.parametrize("kind", ["video", "date_conflict"])
+@pytest.mark.parametrize("kind", ["video", "date_conflict", "sponsored"])
 def test_proven_publisher_exceptions_pass_only_enumeration_with_explicit_incomplete_dimensions(evidence, kind):
     append_publisher_exception(evidence, kind)
     result = qa.evaluate(**evidence)
     assert result["findings"] == []
     assert result["discovery_qa"] == "PASS"
     assert result["acceptance"] == "NOT_ACCEPTED"
-    assert result["checks"]["coverage_dimensions"]["article_content_complete"] is False
-    assert result["checks"]["coverage_dimensions"]["publication_dates_complete"] is (kind == "video")
+    assert result["checks"]["coverage_dimensions"]["article_content_complete"] is (kind == "sponsored")
+    assert result["checks"]["coverage_dimensions"]["publication_dates_complete"] is (kind != "date_conflict")
     assert result["checks"]["window_90"]["detected"] == 79
     proof = result["checks"]["original_publisher_exception_validation"][0]
-    assert proof["publication_date_verified"] is (kind == "video")
+    assert proof["publication_date_verified"] is (kind != "date_conflict")
     assert proof["article_content_verified"] is (kind != "video")
 
 
@@ -654,7 +661,7 @@ def test_verified_metadata_video_date_can_corroborate_temporal_boundary(evidence
 
 def original_exception_evidence(record, root):
     """Source emits a candidate; the independent reader checks the raw bytes."""
-    from radar_salud.pulso_source import ConflictingPublicationArticle, TextUnavailableArticle, extract_article
+    from radar_salud.pulso_source import ConflictingPublicationArticle, SponsoredArticle, TextUnavailableArticle, extract_article
     folder = root / "tests/fixtures/pulso_editorial_exception_real"
     compressed = (folder / record["gzip_file"]).read_bytes()
     raw = gzip.decompress(compressed)
@@ -663,14 +670,14 @@ def original_exception_evidence(record, root):
     text = raw.decode(record.get("charset") or "utf-8")
     try:
         extract_article(text, record["url"])
-    except (ConflictingPublicationArticle, TextUnavailableArticle) as exception:
+    except (ConflictingPublicationArticle, SponsoredArticle, TextUnavailableArticle) as exception:
         metadata, body = dict(exception.metadata), exception.body
-        reason = qa.DATE_HOLD if isinstance(exception, ConflictingPublicationArticle) else qa.VIDEO_HOLD
+        reason = qa.DATE_HOLD if isinstance(exception, ConflictingPublicationArticle) else qa.SPONSORED_HOLD if isinstance(exception, SponsoredArticle) else qa.VIDEO_HOLD
     else:
         raise AssertionError("Expected a genuine retained publisher exception")
     sha = qa.digest(text.encode())
     metadata.update(page_text=body, article_body_characters=len(body), article_body_sha256=qa.digest(body.encode()),
-                    html_sha256=sha, source_quality_gate="deferred_publication_date" if reason == qa.DATE_HOLD else "deferred_video_text")
+                    html_sha256=sha, source_quality_gate="deferred_publication_date" if reason == qa.DATE_HOLD else "deferred_sponsored_content_review" if reason == qa.SPONSORED_HOLD else "deferred_video_text")
     capture = dict(record, gzip_file=str(Path("tests/fixtures/pulso_editorial_exception_real") / record["gzip_file"]))
     row = dict(url=record["url"], publication_date=metadata["publication_date"],
                publication_date_verified=metadata["publication_date_verified"], primary_detail_sha256=sha,
@@ -774,3 +781,48 @@ def test_named_retention_provenance_cannot_be_invented_without_bound_real_manife
     record.update(capture_provenance="preserved_original_cold_core_editorial_or_video_exception",
                   original_capture_manifest_sha256="a" * 64)
     assert qa.verify_publisher_exception(row, metadata, [trace], evidence["root"])[1]
+
+
+@pytest.mark.parametrize("slug", ["cardenal-chomali-", "revive-el-primer-capitulo-", "fundacion-coanil-"])
+def test_all_three_dated_original_sponsored_articles_keep_a_distinct_commercial_editorial_hold(slug):
+    root = Path(__file__).parents[1]
+    manifest = json.loads((root / "tests/fixtures/pulso_editorial_exception_real/manifest.json").read_text())
+    record = next(row for row in manifest["requests"] if slug in row["url"])
+    row, metadata, trace = original_exception_evidence(record, root)
+    proof, error = qa.verify_publisher_exception(row, metadata, [trace], root)
+    assert error is None, (record["url"], error)
+    assert proof["reason"] == qa.SPONSORED_HOLD
+    assert proof["publication_date_verified"] is True
+    assert proof["article_content_verified"] is True
+    assert metadata["publisher_taxonomy"]["classification"] == "sponsored"
+    assert metadata["article_verified"] is True
+    assert metadata["editorial_assessment"] == dict(decision="pending", reason=qa.SPONSORED_HOLD)
+
+
+@pytest.mark.parametrize("tamper", ["fake_commercial_section", "borrowed_keywords", "classification", "dropped_hold", "gate_pass", "published"])
+def test_sponsor_exception_requires_exact_original_taxonomy_and_cannot_claim_editorial_approval(evidence, tamper):
+    row, metadata, trace = append_publisher_exception(evidence, "sponsored")
+    if tamper == "fake_commercial_section":
+        metadata["publisher_taxonomy"]["section"] = "Publirreportajes"
+    elif tamper == "borrowed_keywords":
+        metadata["publisher_taxonomy"]["labels"].append("Opinión")
+    elif tamper == "classification":
+        metadata["publisher_content_classification"] = "factual"
+    elif tamper == "dropped_hold":
+        metadata["editorial_hold"] = ""
+    elif tamper == "gate_pass":
+        metadata["editorial_assessment"].update(decision="published", relevance_score=90, threshold=72)
+        row["passed_gate"] = True
+    else:
+        evidence["snapshot"]["signals"].append(dict(source_url=row["url"], evidence_maturity="media_reported"))
+    assert qa.evaluate(**evidence)["discovery_qa"] == "FAIL"
+
+
+def test_incidental_opinion_or_commercial_words_in_prose_never_supply_publisher_taxonomy():
+    article = {"@type": "NewsArticle", "articleSection": "Nacional", "keywords": ["salud", "opiniones de expertos"],
+               "articleBody": "Una opinión sobre anuncios branded y financiación de hospitales."}
+    assert qa.original_taxonomy(article, BASE + "factual/")["classification"] == "factual"
+    article["articleSection"] = "Branded"
+    assert qa.original_taxonomy(article, BASE + "factual/")["classification"] == "factual"
+    article["keywords"].append("Columna")
+    assert qa.original_taxonomy(article, BASE + "factual/")["classification"] == "opinion"
