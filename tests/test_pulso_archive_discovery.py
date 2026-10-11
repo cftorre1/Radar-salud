@@ -311,6 +311,79 @@ def ans_feed(offset=0, *, count=10000, day='2026-10-09', size=24, next_cursor=No
     return json.dumps(dict(content_elements=entries, count=count, next=offset+size if next_cursor is None else next_cursor))
 
 
+@pytest.mark.parametrize('seconds_per_page, expected_sizes', [(1, [24, 192]), (11, [24, 96, 168, 192])])
+def test_public_cache_periodic_checkpoints_preserve_all_original_details_and_warm_reuse(
+        tmp_path, monkeypatch, seconds_per_page, expected_sizes):
+    from urllib.parse import parse_qs, urlparse
+    from radar_salud import pending_queue, pulso_source
+    clock, saved_sizes, detail_calls = [0], [], []
+    atomic = pending_queue.atomic_json
+
+    def save(path, value):
+        saved_sizes.append(len(value['articles']))
+        atomic(path, value)
+
+    def loader(url):
+        if '/pf/api/' in url:
+            offset = json.loads(parse_qs(urlparse(url).query)['query'][0])['feedOffset']
+            clock[0] += seconds_per_page
+            return ans_feed(offset, count=192)
+        if '/noticia/' in url:
+            detail_calls.append(url)
+            return html_article(url)
+        return '<html></html>'
+
+    monkeypatch.setattr(pulso_source, 'monotonic', lambda: clock[0])
+    monkeypatch.setattr(pending_queue, 'atomic_json', save)
+    cache = tmp_path/'cache.json'
+    items, summary = pulso_source.discover_public_feeds(
+        loader, [], cache, today=TODAY, feeds=[('section', 'nacional')])
+    assert summary['coverage_complete'] and len(items) == 192
+    assert saved_sizes == expected_sizes and len(detail_calls) == 192
+    persisted = json.loads(cache.read_text())['articles']
+    assert set(persisted) == {item.url for item in items}
+    assert all(pulso_source.complete_article_body(row['metadata']) for row in persisted.values())
+    evidence = {item.url: (item.metadata['article_body_sha256'], item.metadata['publication_evidence'],
+                            item.metadata['captured_at']) for item in items}
+    saved_sizes.clear()
+    detail_calls.clear()
+    warm, summary = pulso_source.discover_public_feeds(
+        loader, [], cache, today=TODAY, feeds=[('section', 'nacional')])
+    assert summary['coverage_complete'] and not detail_calls
+    assert len(saved_sizes) == len(expected_sizes)
+    assert {item.url: (item.metadata['article_body_sha256'], item.metadata['publication_evidence'],
+                        item.metadata['captured_at']) for item in warm} == evidence
+
+
+def test_public_cache_failed_feed_preserves_every_previously_verified_detail(tmp_path, monkeypatch):
+    from urllib.error import HTTPError
+    from urllib.parse import parse_qs, urlparse
+    from radar_salud import pending_queue, pulso_source
+    saved_sizes = []
+    atomic = pending_queue.atomic_json
+
+    def save(path, value):
+        saved_sizes.append(len(value['articles']))
+        atomic(path, value)
+
+    def loader(url):
+        if '/pf/api/' in url:
+            offset = json.loads(parse_qs(urlparse(url).query)['query'][0])['feedOffset']
+            if offset == 72:
+                raise HTTPError(url, 404, 'Publisher inventory unavailable', {}, None)
+            return ans_feed(offset, count=192)
+        return html_article(url) if '/noticia/' in url else '<html></html>'
+
+    monkeypatch.setattr(pulso_source, 'monotonic', lambda: 0)
+    monkeypatch.setattr(pending_queue, 'atomic_json', save)
+    cache = tmp_path/'cache.json'
+    items, summary = pulso_source.discover_public_feeds(
+        loader, [], cache, today=TODAY, feeds=[('section', 'nacional')])
+    assert not summary['coverage_complete'] and len(items) == 72
+    assert saved_sizes == [24, 72]
+    assert set(json.loads(cache.read_text())['articles']) == {item.url for item in items}
+
+
 def test_public_frontend_url_matches_observed_button_and_parses_complete_inventory():
     from urllib.parse import parse_qs, urlparse
     from radar_salud.pulso_source import _public_feed_url, parse_public_feed
