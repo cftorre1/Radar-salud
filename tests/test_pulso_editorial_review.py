@@ -104,6 +104,58 @@ def test_duplicate_reviewed_publication_still_fails_with_native_offices(inputs):
         apply((history + [deepcopy(history[0])], queue, review))
 
 
+def temporal_followup(inputs):
+    history, queue, _ = apply(inputs)
+    signal = next(row for row in history if row["editorial_review"]["decision"] == "accept")
+    item = next(item for item in queue.values() if item["raw"]["url"] == signal["source_url"])
+    parent = next(record for record in inputs[2]["records"] if record["url"] == signal["source_url"])
+    record = dict(url=signal["source_url"], publication_date=signal["event_date"],
+                  original_signal=deepcopy(signal), original_signal_sha256=canonical_sha(signal),
+                  original_model_assessment=deepcopy(item["raw"]["metadata"]["editorial_assessment"]),
+                  original_body_sha256=item["raw"]["metadata"]["article_body_sha256"],
+                  evidence_quotes=deepcopy(parent["evidence_quotes"]), decision="correct",
+                  reason="bind_prior_observation_to_original_publication_date", event_status="historical",
+                  previous_editorial_review=deepcopy(signal["editorial_review"]),
+                  proposed=dict(what_happened=signal["what_happened"],
+                                why_it_matters=f"Según la publicación del {signal['event_date']}, {signal['why_it_matters']}"))
+    review = dict(schema_version="pulso_editorial_review_v1", review_id="independent-temporal-followup", records=[record])
+    return history, queue, review
+
+
+def test_temporal_followup_keeps_prior_review_and_is_inert_on_reapplication(inputs):
+    history, queue, review = temporal_followup(inputs)
+    updated, new_queue, report = apply((history, queue, review))
+    record = review["records"][0]
+    signal = next(row for row in updated if row["source_url"] == record["url"])
+    assert signal["editorial_review"]["previous_editorial_review"] == record["previous_editorial_review"]
+    assert signal["what_happened"] == record["original_signal"]["what_happened"]
+    assert signal["editorial_relevance"] == record["original_signal"]["editorial_relevance"]
+    assert report["applied_count"] == 1 and report["ai_calls"] == 0
+    repeated, repeated_queue, replay = apply((updated, new_queue, review))
+    assert repeated == updated and repeated_queue == new_queue
+    assert replay["applied_count"] == 0
+
+
+@pytest.mark.parametrize("mutation", ["predecessor", "reject", "what", "category", "status", "missing"])
+def test_temporal_followup_cannot_replace_review_decisions_or_change_other_fields(inputs, mutation):
+    history, queue, review = temporal_followup(inputs)
+    record = review["records"][0]
+    if mutation == "predecessor":
+        record["previous_editorial_review"]["review_sha256"] = "0" * 64
+    elif mutation == "reject":
+        record["previous_editorial_review"]["decision"] = "reject"
+    elif mutation == "what":
+        record["proposed"]["what_happened"] += " Ya se ejecutó una nueva medida."
+    elif mutation == "category":
+        record["proposed"]["category"] = "Prestadores"
+    elif mutation == "status":
+        record["event_status"] = "planned"
+    else:
+        record.pop("previous_editorial_review")
+    with pytest.raises(ValueError, match="invalid_observation_date_review_predecessor|conflicting_existing_editorial_review"):
+        apply((history, queue, review))
+
+
 def test_crash_after_history_write_resumes_only_exact_original_queue_acknowledgements(inputs):
     corrected_history, corrected_queue, _ = apply(inputs)
     resumed_history, resumed_queue, report = apply((corrected_history, inputs[1], inputs[2]))

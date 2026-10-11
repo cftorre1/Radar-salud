@@ -54,6 +54,9 @@ def validate_independent_binding(audit, independent, *, independent_sha256):
                 approved["category"] = parent["proposed_category"]
             if record.get("proposed") != approved:
                 raise ValueError("copy_correction_not_independently_reviewed")
+        if (record.get("previous_editorial_review") is not None
+                and record["previous_editorial_review"] != parent.get("previous_editorial_review")):
+            raise ValueError("review_predecessor_not_independently_bound")
         if record["decision"] == "group" and (record.get("duplicate_of") or {}).get("url") != parent.get("duplicate_of"):
             raise ValueError("group_target_not_independently_reviewed")
 
@@ -179,10 +182,30 @@ def apply_review(history, queue, audit, *, audit_sha256, audit_path):
                           original_model_assessment=deepcopy(original_assessment),
                           original_model_what_happened=original["what_happened"],
                           original_model_why_it_matters=original["why_it_matters"])
+        predecessor = record.get("previous_editorial_review")
+        if predecessor is not None:
+            # An independently bound follow-up may clarify the observation date
+            # of an accepted publication. It cannot undo a rejection/group,
+            # alter the original score, or replace previous review evidence.
+            if (not isinstance(predecessor, dict)
+                    or predecessor != original.get("editorial_review")
+                    or predecessor.get("schema_version") != "pulso_editorial_review_v1"
+                    or predecessor.get("decision") != "accept"
+                    or predecessor.get("original_terminal_status") != "published"
+                    or predecessor.get("publication_date") != day
+                    or predecessor.get("original_body_sha256") != body_sha
+                    or original.get("editorial_decision") != "accept"
+                    or original.get("feed_visibility") is not True
+                    or decision != "correct" or record.get("event_status") != "historical"
+                    or set(proposed) != {"what_happened", "why_it_matters"}
+                    or proposed["what_happened"] != original.get("what_happened")):
+                raise ValueError("invalid_observation_date_review_predecessor")
+            provenance["previous_editorial_review"] = deepcopy(predecessor)
         if duplicate:
             provenance["duplicate_of"] = duplicate
         previous = signal.get("editorial_review") or {}
-        if previous:
+        chained_initial_state = predecessor is not None and previous == predecessor
+        if previous and not chained_initial_state:
             if previous != provenance:
                 raise ValueError("conflicting_existing_editorial_review")
             expected = deepcopy(original)
@@ -228,6 +251,8 @@ def apply_review(history, queue, audit, *, audit_sha256, audit_path):
             continue
         if signal != original or item.get("status") != "published":
             raise ValueError("observed_original_signal_or_terminal_status_changed")
+        if chained_initial_state and metadata.get("editorial_review") != predecessor:
+            raise ValueError("queue_history_editorial_review_mismatch")
         if metadata.get("what_happened") != original["what_happened"] or metadata.get("why_it_matters") != original["why_it_matters"]:
             raise ValueError("observed_original_queue_model_prose_mismatch")
         assessment = metadata.get("editorial_assessment") or {}
