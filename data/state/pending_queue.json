@@ -115013,11 +115013,19 @@
         ],
         "publication_date_conflict": false,
         "publication_date_conflict_resolution": null,
-        "article_content_source": "missing_primary_article",
+        "article_content_source": "df_primary_images",
         "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
         "original_sha256": "89a71fca441de8e6d1bb5aeb17ff8d135a22ff4db17706e670ef79faa0e49bc4",
         "original_captured_at": "2026-10-11T04:30:20.481368+00:00",
-        "df_body_reaudit_version": 1
+        "df_body_reaudit_version": 1,
+        "primary_image_urls": [
+          "https://www.df.cl/noticias/site/artic/20261009/imag/foto_0000000120261009151903/d.png",
+          "https://www.df.cl/noticias/site/artic/20261009/imag/foto_0000000420261009151903/z.png",
+          "https://www.df.cl/noticias/site/artic/20261009/imag/foto_0000000520261009151903/x.png",
+          "https://www.df.cl/noticias/site/artic/20261009/imag/foto_0000001820261009151903/v.png",
+          "https://www.df.cl/noticias/site/artic/20261009/imag/foto_0000000220261009151903/zc.png"
+        ],
+        "primary_media_urls": []
       }
     },
     "source": "diario_financiero",
@@ -115025,7 +115033,7 @@
     "status": "retry",
     "detected_at": "2026-10-10T22:23:12.862520+00:00",
     "attempts": 2,
-    "reason": "df_insufficient_article_evidence",
+    "reason": "df_image_only_requires_ocr",
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -115250,6 +115258,73 @@
           "classification_watermark": "2026-10-10T22:23:12.862507+00:00",
           "classification_basis": "original_detection_day_conservative",
           "retry_at": null
+        }
+      },
+      {
+        "at": "2026-10-11T05:32:52.901959+00:00",
+        "action": "verified_original_format_gap",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "El primer Presupuesto de Kast",
+            "url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-09",
+            "raw_text": "El gobierno de José Antonio Kast presentó su primer proyecto de Presupuestos, con un gasto total de $91,18 billones, 1,5% superior en términos reales a la ejecución proyectada de 2026. Salud, Educación y Trabajo concentran la mayor parte de los recursos, mientras la iniciativa inicia ahora su tramitación en el Congreso.",
+            "metadata": {
+              "discovered_from": "https://www.df.cl/empresas/dfsalud",
+              "page_text": "",
+              "article_title": "El primer Presupuesto de Kast: quiénes ganan, quiénes pierden y cómo se reparten $ 91,18 billones",
+              "article_section": "Señal DF",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-09T18:19:03Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-09T18:19:03Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-09T18:19:03Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 9 de octubre de 2026 a las 15:40 hrs.",
+                  "day": "2026-10-09"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_primary_images",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "original_sha256": "89a71fca441de8e6d1bb5aeb17ff8d135a22ff4db17706e670ef79faa0e49bc4",
+              "original_captured_at": "2026-10-11T04:30:20.481368+00:00",
+              "df_body_reaudit_version": 1,
+              "primary_image_urls": [
+                "https://www.df.cl/noticias/site/artic/20261009/imag/foto_0000000120261009151903/d.png",
+                "https://www.df.cl/noticias/site/artic/20261009/imag/foto_0000000420261009151903/z.png",
+                "https://www.df.cl/noticias/site/artic/20261009/imag/foto_0000000520261009151903/x.png",
+                "https://www.df.cl/noticias/site/artic/20261009/imag/foto_0000001820261009151903/v.png",
+                "https://www.df.cl/noticias/site/artic/20261009/imag/foto_0000000220261009151903/zc.png"
+              ],
+              "primary_media_urls": [],
+              "fetch_error": "URLError"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-10T22:23:12.862520+00:00",
+          "attempts": 2,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:19:37.664598+00:00",
+          "classification_watermark": "2026-10-10T22:23:12.862507+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "retry_at": "2026-10-11T09:19:37.664607+00:00"
         }
       }
     ],
@@ -119797,16 +119872,16 @@
       "url": "https://www.df.cl/df-stream/videos/corazon-del-negocio-carmen-mariman-y-salud-mental",
       "source_name": "Diario Financiero",
       "source_type": "press_high_trust",
-      "event_date": null,
+      "event_date": "2026-09-01",
       "raw_text": "La directora ejecutiva y fundadora de PrevenConCiencia advirtió que pese a que hoy estamos más conectados que nunca, al mismo tiempo estamos más solos, y eso se agrava cuando las personas salen del mercado laboral.",
       "metadata": {
         "discovered_from": "https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html",
         "page_text": "",
         "article_title": "Corazón del Negocio | Carla Mariman y la importancia de la salud mental en las personas que envejecen",
         "article_section": "DF STREAM",
-        "publication_date_source": null,
+        "publication_date_source": "visible:published_label",
         "publication_timestamp": null,
-        "publication_label": null,
+        "publication_label": "Martes 1 de septiembre de 2026 a las 09:00 hrs.",
         "publication_date_candidates": [
           {
             "source": "cxenseparse:recs:publishtime",
@@ -119825,12 +119900,20 @@
           }
         ],
         "publication_date_conflict": true,
-        "publication_date_conflict_resolution": null,
-        "article_content_source": "missing_primary_article",
+        "publication_date_conflict_resolution": {
+          "rule": "primary_header_explicit_publication_label",
+          "selected_visible_day": "2026-09-01",
+          "basis": "DF enc-main header / author__date explicitly labels publication; matching NewsArticle URL and primary CUERPO verified. Metadata timestamps retained; discrepancy cause unknown."
+        },
+        "article_content_source": "df_embedded_media_without_transcript",
         "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
         "original_sha256": "a77c697d9b6d0185963f972cfcffea0a3976cdd05d30b8624faf535320b5ae3c",
         "original_captured_at": "2026-10-11T04:31:47.651559+00:00",
-        "df_body_reaudit_version": 1
+        "df_body_reaudit_version": 1,
+        "primary_image_urls": [],
+        "primary_media_urls": [
+          "https://mdstrm.com/embed/6a904fa97897765c7c70f94e"
+        ]
       }
     },
     "source": "diario_financiero",
@@ -119838,7 +119921,7 @@
     "status": "retry",
     "detected_at": "2026-10-11T04:30:15.404235+00:00",
     "attempts": 2,
-    "reason": "df_publication_date_conflict",
+    "reason": "df_media_transcript_unavailable",
     "classification_watermark": "2026-10-10T22:23:12.862507+00:00",
     "updated_at": "2026-10-11T05:15:36.900924+00:00",
     "retry_at": "2026-10-11T09:15:36.900934+00:00",
@@ -119893,6 +119976,72 @@
           "classification_watermark": "2026-10-10T22:23:12.862507+00:00",
           "updated_at": "2026-10-11T04:45:01.817517+00:00",
           "retry_at": "2026-10-11T06:45:01.817527+00:00"
+        }
+      },
+      {
+        "at": "2026-10-11T05:32:52.916194+00:00",
+        "action": "verified_original_format_gap",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Corazón del Negocio | Carla Mariman y la importancia de la salud mental en las personas que envejecen",
+            "url": "https://www.df.cl/df-stream/videos/corazon-del-negocio-carmen-mariman-y-salud-mental",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": null,
+            "raw_text": "La directora ejecutiva y fundadora de PrevenConCiencia advirtió que pese a que hoy estamos más conectados que nunca, al mismo tiempo estamos más solos, y eso se agrava cuando las personas salen del mercado laboral.",
+            "metadata": {
+              "discovered_from": "https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html",
+              "page_text": "",
+              "article_title": "Corazón del Negocio | Carla Mariman y la importancia de la salud mental en las personas que envejecen",
+              "article_section": "DF STREAM",
+              "publication_date_source": "visible:published_label",
+              "publication_timestamp": null,
+              "publication_label": "Martes 1 de septiembre de 2026 a las 09:00 hrs.",
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-08-31T19:15:57Z",
+                  "day": "2026-08-31"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-08-31T19:15:57Z",
+                  "day": "2026-08-31"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Martes 1 de septiembre de 2026 a las 09:00 hrs.",
+                  "day": "2026-09-01"
+                }
+              ],
+              "publication_date_conflict": true,
+              "publication_date_conflict_resolution": {
+                "rule": "primary_header_explicit_publication_label",
+                "selected_visible_day": "2026-09-01",
+                "basis": "DF enc-main header / author__date explicitly labels publication; matching NewsArticle URL and primary CUERPO verified. Metadata timestamps retained; discrepancy cause unknown."
+              },
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "original_sha256": "a77c697d9b6d0185963f972cfcffea0a3976cdd05d30b8624faf535320b5ae3c",
+              "original_captured_at": "2026-10-11T04:31:47.651559+00:00",
+              "df_body_reaudit_version": 1,
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://mdstrm.com/embed/6a904fa97897765c7c70f94e"
+              ],
+              "fetch_error": "URLError"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-11T04:30:15.404235+00:00",
+          "attempts": 2,
+          "reason": "df_publication_date_conflict",
+          "classification_watermark": "2026-10-10T22:23:12.862507+00:00",
+          "updated_at": "2026-10-11T05:15:36.900924+00:00",
+          "retry_at": "2026-10-11T09:15:36.900934+00:00"
         }
       }
     ]

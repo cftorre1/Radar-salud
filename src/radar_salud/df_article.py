@@ -164,7 +164,7 @@ def parse_df_article(html, url):
         chosen=next((c for c in valid if c['source']=='visible:published_label'),None)
         if chosen:
             resolution={'rule':'primary_header_explicit_publication_label','selected_visible_day':chosen['day'],
-                        'basis':'DF enc-main header / author__date explicitly labels publication; matching NewsArticle URL and primary CUERPO verified. Metadata timestamps retained; discrepancy cause unknown.'}
+                        'basis':'DF enc-main header / author__date explicitly labels publication; matching NewsArticle URL and primary body or embedded media container verified. Metadata timestamps retained; discrepancy cause unknown.'}
     if conflict:
         decisions=json.loads((Path(__file__).resolve().parents[2]/"config/df_date_provenance.json").read_text())["decisions"]
         rule=decisions.get(article_url(url))

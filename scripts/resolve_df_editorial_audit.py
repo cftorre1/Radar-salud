@@ -57,7 +57,13 @@ def main():
     report={'at':now.isoformat(),'branch':branch,'code_sha':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),
             'model_calls':0,'original_fetches':0,'decisions':decisions,'queue_counts':counts,
             'note':'Primary-body rejections/retries replace obsolete pending review labels. Numeric score cannot override explicit nonmaterial verdict; thresholds unchanged.'}
-    atomic_json(root/'data/audits/df_editorial_review_2026_10_11.json',report)
+    audit_path=root/'data/audits/df_editorial_review_2026_10_11.json'
+    previous=json.loads(audit_path.read_text()) if audit_path.exists() else {}
+    retained={(d['url'],d['reason']):d for d in previous.get('decisions',[])}
+    retained.update({(d['url'],d['reason']):d for d in decisions})
+    report.update(decisions=list(retained.values()),decisions_this_run=decisions,
+                  first_review_at=previous.get('first_review_at') or previous.get('at') or now.isoformat())
+    atomic_json(audit_path,report)
     print(json.dumps(report,ensure_ascii=False))
 
 
