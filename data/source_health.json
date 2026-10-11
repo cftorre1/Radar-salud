@@ -191,7 +191,7 @@
       "editorial_outcome": "no_new_signals"
     },
     "redsalud": {
-      "name": "Redsalud",
+      "name": "RedSalud",
       "checked_at": "2026-10-10T22:24:44.402308+00:00",
       "last_signal_at": "2026-09-21",
       "discovered": 10,
@@ -202,12 +202,23 @@
       "pending": 2,
       "deferred": 0,
       "rejected": 12,
-      "status": "ok",
+      "status": "warning",
       "error": null,
       "technical_status": "ok",
-      "coverage_status": "observed",
+      "coverage_status": "unverified",
       "content_freshness": "older",
-      "editorial_outcome": "pending"
+      "editorial_outcome": "pending",
+      "provider_audit": {
+        "as_of": "2026-10-11",
+        "path": "data/audits/providers_2026_10_11/redsalud.json",
+        "blockers": [
+          "runtime_original_http_CONNECT_403",
+          "90_day_pagination_incomplete_or_cache_inconsistent",
+          "assessment_pending_existing_gates"
+        ],
+        "latest_verified_original_at": "2026-09-21",
+        "recovered_pending": 1
+      }
     },
     "bupa_chile": {
       "name": "Bupa Chile",

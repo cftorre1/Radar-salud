@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "slug": "redsalud",
+  "as_of": "2026-10-11",
+  "timezone": "America/Santiago",
+  "window_rule": "0 <= as_of - verified publication_date <= 30/90 days inclusive; unknown date is null, never zero",
+  "audit_path": "data/audits/providers_2026_10_11/redsalud.json",
+  "status": "reconciled_with_exact_blockers",
+  "coverage": "partial_30_and_90_inventory",
+  "verification_method": "Original-site web reader on 2026-10-11; local collector transport separately blocked. No full-90 claim where pagination/date inventory is incomplete.",
+  "source_quality_gate": "passed",
+  "surfaces": [
+    {
+      "url": "https://www.redsalud.cl/noticias",
+      "result": "10 cards; newest 2026-10-07. Featured TMO repeated across pages."
+    },
+    {
+      "url": "https://www.redsalud.cl/noticias?page=2",
+      "result": "Older August/July cards readable; page=1 returned an inconsistent cached July view; page=3 unavailable via web tool."
+    }
+  ],
+  "blockers": [
+    "runtime_original_http_CONNECT_403",
+    "90_day_pagination_incomplete_or_cache_inconsistent",
+    "assessment_pending_existing_gates"
+  ],
+  "original_items": [
+    {
+      "title": "RedSalud incorpora nueva Unidad de Trasplante de Médula Ósea",
+      "url": "https://www.redsalud.cl/noticias/nueva-unidad-trasplante-medula-osea",
+      "publication_date": "2026-08-27",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Capacidad atribuida: 1.233 m², 24 camas intermedias y seis habitaciones protegidas; 40–50 trasplantes anuales proyectados. CAR-T 2028 es plan, no capacidad actual."
+    },
+    {
+      "title": "RedSalud y Nueva Masvida refuerzan su convenio",
+      "url": "https://www.redsalud.cl/noticias/redsalud-y-nueva-masvida-convenio",
+      "publication_date": "2026-09-21",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": false,
+      "evidence": "Ya registrado en Alicanto; comparar URL, no crear otra entidad ni republicar."
+    },
+    {
+      "title": "RedSalud anuncia procedimiento Varipulse Pro",
+      "url": "https://www.redsalud.cl/noticias/fibrilacion-auricular-varipulse-pro",
+      "publication_date": "2026-08-28",
+      "date_evidence": "verified_article_header",
+      "materiality": "clinical_review",
+      "recover": false,
+      "evidence": "Pendiente existente: técnica clínica; evaluar cambio de oferta/capacidad antes de considerar señal de mercado."
+    }
+  ],
+  "notes": [
+    "Primer listado dominado por educación clínica, campañas, horarios, hitos de procedimientos y reconocimientos; no se relajan 78 ni requisitos de cuerpo/H1/fecha.",
+    "Corrección: explorar cinco páginas y deduplicar la tarjeta destacada. No se declara inventario 90 completo por caché/páginas inaccesibles."
+  ],
+  "recovery_checkpoint": {
+    "at": "2026-10-11T04:41:10.283354+00:00",
+    "changes": [
+      {
+        "key": "b8c86555901f6f1da45b2f36d63ce5b13b53d72b1f7cf096ac258085557fe70a",
+        "url": "https://www.redsalud.cl/noticias/nueva-unidad-trasplante-medula-osea",
+        "action": "refresh_pending"
+      }
+    ]
+  },
+  "reconciliation": {
+    "scope": "verified original items; lower bound where inventory is blocked",
+    "material_candidates_30_days": 1,
+    "material_candidates_90_days": 2,
+    "publication_date_unknown": 0,
+    "queue_counts": {
+      "live_pending": 0,
+      "backfill_pending": 2,
+      "rejected": 12,
+      "published": 1
+    },
+    "items": [
+      {
+        "url": "https://www.redsalud.cl/noticias/nueva-unidad-trasplante-medula-osea",
+        "publication_date": "2026-08-27",
+        "in_30_days": false,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "b8c86555901f6f1da45b2f36d63ce5b13b53d72b1f7cf096ac258085557fe70a",
+            "status": "pending",
+            "reason": "audited_recovery_pending_assessment",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      },
+      {
+        "url": "https://www.redsalud.cl/noticias/redsalud-y-nueva-masvida-convenio",
+        "publication_date": "2026-09-21",
+        "in_30_days": true,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "decf12cac54c8934b979229db11cfc158f4349c43c4db10e052a96d13c01f7dc",
+            "status": "published",
+            "reason": null,
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 1,
+        "visible_count": 1
+      },
+      {
+        "url": "https://www.redsalud.cl/noticias/fibrilacion-auricular-varipulse-pro",
+        "publication_date": "2026-08-28",
+        "in_30_days": false,
+        "in_90_days": true,
+        "materiality": "clinical_review",
+        "queue": [
+          {
+            "key": "a48617343c570dfcb1ec86f62a6ef60c2059bf6313ee320a739876e4a716f365",
+            "status": "retry",
+            "reason": "budget_or_analysis_deferred",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      }
+    ]
+  }
+}

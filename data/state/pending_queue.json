@@ -84222,17 +84222,24 @@
       "raw_text": "",
       "metadata": {
         "discovered_from": "https://www.redsalud.cl/noticias",
-        "listing_date": "2026-08-27"
+        "listing_date": "2026-08-27",
+        "publication_date_source": "verified_article_header",
+        "recovery_audit": "data/audits/providers_2026_10_11/redsalud.json",
+        "source_quality_gate": "passed"
       }
     },
     "source": "redsalud",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "pending",
     "detected_at": "2026-09-24T17:51:49.535310+00:00",
     "attempts": 4,
-    "reason": "budget_or_analysis_deferred",
+    "reason": "audited_recovery_pending_assessment",
     "updated_at": "2026-09-30T19:09:38.324477+00:00",
-    "retry_at": "2026-10-01T11:09:38.324490+00:00"
+    "retry_at": null,
+    "audit_prior_state": {
+      "status": "retry",
+      "reason": "budget_or_analysis_deferred"
+    }
   },
   "decf12cac54c8934b979229db11cfc158f4349c43c4db10e052a96d13c01f7dc": {
     "raw": {
