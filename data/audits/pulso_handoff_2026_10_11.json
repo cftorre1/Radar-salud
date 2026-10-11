@@ -1,12 +1,12 @@
 {
   "schema_version": "2.0",
-  "recorded_at": "2026-10-11T06:38:17.272986+00:00",
+  "recorded_at": "2026-10-11T07:02:41.918128+00:00",
   "status": "IN_PROGRESS_NOT_ACCEPTED",
   "source": "pulso_latercera",
   "owner": "Codex B / Senior Source Recovery Engineer",
   "branch": "codex/b-pulso-runtime-20261011",
   "base_staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-  "current_product_candidate": "c5b51f0d6341e3fcfc23b47ba8c03531ea98137d",
+  "current_product_candidate": "920bf682d0a4e034da0f31de4c548d33bf5a73ee",
   "previous_handoff": "Historical pre-exhaustive record is preserved in git. Its CONNECT403 limitation is resolved through authorized GitHub Actions and is not a current source blocker.",
   "pr": "https://github.com/cftorre1/Radar-salud/pull/10",
   "issues_must_remain_open": [
@@ -24,7 +24,13 @@
     "scripts/qa_pulso_recovery.py",
     "tests/fixtures/pulso_runtime_real/manifest.json",
     "data/audits/pulso_cold_recovery_checkpoint_2026_10_11.json",
-    "data/audits/pulso_cold_control_omissions_2026_10_11.json"
+    "data/audits/pulso_cold_control_omissions_2026_10_11.json",
+    "data/audits/pulso_capture/manifest.json",
+    "data/audits/pulso_runtime_2026_10_11.json",
+    "data/audits/pulso_primary_corpus_2026_10_11.json",
+    "data/audits/pulso_cold_materiality_input_audit_2026_10_11.json",
+    "tests/fixtures/pulso_thin_primary_real/manifest.json",
+    "tests/fixtures/pulso_targeted_primary_real/manifest.json"
   ],
   "control": {
     "frozen_urls": 236,
@@ -46,24 +52,27 @@
   },
   "validation": {
     "directed_tests": "Independent77PASS at bbcbe55; agent15PASS runtime export increment e49f662",
-    "full_python": "440 PASS / 3 SKIP at c5b51f0: live credential test and two original runtime corpus tests await real captures; workflow YAML parsed successfully.",
+    "full_python": "553 PASS / 1 SKIP / 1 FAIL at short-headline checkpoint: corpus retention unit incorrectly assumes short headlines still fail; fixture correction assigned. Directed source103, video processing147 and runtime evidence22 PASS. This is not final candidate acceptance.",
     "acceptance": "NOT_RESOLVED_NO_MERGE; actualdatarecall/process/finalReviewer/stagingPASS pending",
-    "general_candidate_qa": "Actual tests/staging/Reviewer PASS on 8c38828 PR merge candidate a1bfcc9; durable pulso_candidate_qa_2026_10_11.json. New source evidence and final SHA still require independent acceptance."
+    "general_candidate_qa": "Actions38118986971 tests/staging/deterministic Reviewer PASS at e94eeea; newer source repairs and actual source outcomes require fresh final candidate checks."
   },
   "current_agents": {
-    "historical_discovery": "Read-only compatibility audit of source pagination evidence vs independent QA",
-    "actions_route": "c5b51f0 API proof retainer committed and pushed",
-    "external_control": "Read-only frozen-control evidence audit; semantic outcome review awaits processing",
-    "adversarial_review": "1885eed independent directed QA implemented; actual data run pending",
-    "publisher_surfaces": "Full-corpus materiality review prepared, body/noise audit in progress"
+    "historical_discovery": "Short headlines and original video identity repaired; preserving genuine publisher date conflicts without choosing a date.",
+    "publisher_surfaces": "All101 materiality rejections fully reviewed; precise false-negative admission repairs and verified source-format deferrals.",
+    "adversarial_review": "All retained original projections reviewed independently; actual warm inventory/semantic outcomes not yet accepted.",
+    "actions_route": "Retains original bytes for date conflicts, taxonomy exceptions and videos from authorized cold Actions artifact.",
+    "external_control": "Frozen29/79 controls preserved; later semantic processing review pending.",
+    "browser_pagination": "Real serialized candidate feed/UI awaits actual Pulso publication."
   },
   "resume_order": [
-    "Complete pending source repair checkpoints; never count current751/18/46as acceptance.",
-    "Fetch/rebase isolated remote targeted capture38118402792; preserve every small checkpoint and exact original hashes.",
-    "Download cold artifact in next isolated Actions execution; audit every retained HTML and retain all29 unique incomplete originals.",
-    "Run genuine warm discovery_only after date/transient/cursor repairs, then reconcile all29/79 controls and every feed.",
-    "Only after high explained coverage, execute source-scoped process using existing budgets; prioritise recent material outcomes without publishing quota.",
-    "Review all outcomes/history/actualfeed/fullprimaryinput; independentReviewer and exactfinalcandidateQA/staging required. Leaveissue6open/mainuntouched."
+    "All checkpoint commits are isolated on codex/b-pulso-runtime-20261011. Preserve all other orchestrator tasks and staged histories; issue6 remains open, main untouched.",
+    "ColdActions38115982275 genuine core discovered751, recall18/29 and46/79; only4/20feedscomplete and no publication. Never count these as accepted.",
+    "Full corpus capturedActions38118983728:3358retained identities,2994HTML,2453broad-health original projections; full bodies/hash evidence durable. These counts include old/current-day and nonmaterial articles, not90-day accepted coverage.",
+    "Finish video/date-conflict/taxonomy primary identity exceptions and precise materiality false-negative repairs with real original fixtures; preserve fullbody160/editorial72 and no fabricated dates/transcripts.",
+    "Run full tests then marker phase discovery_only (prior_capture_run_id38115982275), commit and normalpush to own branch. Actual warm core must re-enumerate Nacional and all20requiredfeeds; original controls29/79 remain immutable.",
+    "Audit actual warm pagination/recall, every exception and omission; independent directed discoveryQA and Reviewer required before phase process.",
+    "Process existing real queue with Daily budgets fast120/deep15 and unchanged monthlylimits; recent Pulso ordering only within existing slots. Trace publish/reject/defer; never reopen terminals or publish by quota.",
+    "Review all actual published primary bodies/attribution/proposals/periods; export real history/feed/product and genuine desktop/mobile UIQA. Final SHA tests/staging/Reviewer and PR/issue5/queue update required. No merge/production or issue6closure."
   ],
   "main_production": "Untouched; isolated branch only; no merge/deployment performed",
   "queued_report_run": null,
@@ -131,5 +140,17 @@
     ],
     "control_denominator": "Frozen b9c3ce2aea38107797fc19572581f27884d15611214fd2328d458bd35e906374 unchanged29/79",
     "independent_primary_review": "Raw HTML originals retained for12 failed controls; all21 absent originals rechecked independently with exact original byline and Nacional section; rechecks do not count as core discovery."
+  },
+  "complete_original_corpus_checkpoint": {
+    "capture_run": 38118983728,
+    "status": "ALL_RETAINED_ORIGINALS_AUDITED_NOT_SOURCE_ACCEPTANCE",
+    "original_retained_identities": 3358,
+    "original_html_documents": 2994,
+    "broad_health_original_projections_all_ages": 2453,
+    "known_cold_short_headline_false_negatives": 13,
+    "known_cold_thin_video_originals": 16,
+    "genuine_publisher_date_conflicts": 4,
+    "control_sha256": "b9c3ce2aea38107797fc19572581f27884d15611214fd2328d458bd35e906374",
+    "source_acceptance": "NOT_ACCEPTED; fresh warm core and actual editorial outcomes remain required"
   }
 }
