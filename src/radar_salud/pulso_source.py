@@ -134,6 +134,7 @@ class _Article(HTMLParser):
         self.script = None
         self.body = []
         self.paragraphs = []
+        self.body_paragraphs = []
         self.headline = []
         self.times = []
         self.byline_dates = []
@@ -192,6 +193,8 @@ class _Article(HTMLParser):
             self.headline.append(value)
         if frame["body"]:
             self.body.append(value)
+            if frame["paragraph"]:
+                self.body_paragraphs.append(value)
         elif frame["article"] and frame["paragraph"]:
             self.paragraphs.append(value)
 
@@ -266,6 +269,30 @@ class ExcludedArticle(ValueError):
         self.title, self.body, self.metadata = title, body, metadata
 
 
+class TextUnavailableArticle(ValueError):
+    """Verified publisher identity/date/format, with insufficient factual text."""
+    def __init__(self, reason, title, body, metadata):
+        super().__init__(reason)
+        self.title, self.body, self.metadata = title, body, metadata
+
+
+def verified_video_without_text(metadata):
+    """Structural evidence allows a pending candidate, never editorial approval."""
+    evidence = metadata.get("video_evidence", {})
+    canonical = metadata.get("canonical_url")
+    return (metadata.get("primary_identity_verified") is True
+            and metadata.get("publication_date_verified") is True
+            and publication_day(metadata.get("publication_date")) == metadata.get("publication_date")
+            and article_url(canonical) == canonical and canonical is not None
+            and metadata.get("article_body_complete") is False
+            and metadata.get("publisher_document_type") == "video"
+            and metadata.get("video_identity_verified") is True
+            and metadata.get("source_content_unavailable_reason") == "publisher_video_text_unavailable"
+            and isinstance(evidence, dict) and evidence.get("type") == "VideoObject"
+            and article_url(evidence.get("url")) == canonical
+            and evidence.get("id") == str(canonical) + "#video" and bool(evidence.get("embed_url")))
+
+
 def extract_article(html, expected_url):
     expected = article_url(expected_url)
     if not expected:
@@ -275,21 +302,24 @@ def extract_article(html, expected_url):
     identity = parser.canonical or parser.metas.get("og:url")
     if not identity or article_url(identity, expected) != expected:
         raise ValueError("article_identity_mismatch")
-    articles = []
+    articles, videos = [], []
     for script in parser.scripts:
         try:
             nodes = _nodes(json.loads(script))
             for node in nodes:
                 types = node.get("@type", [])
                 types = [types] if isinstance(types, str) else types
-                if not any(t in ("NewsArticle", "Article", "ReportageNewsArticle") for t in types):
+                if not any(t in ("NewsArticle", "Article", "ReportageNewsArticle", "VideoObject") for t in types):
                     continue
                 link = node.get("url") or node.get("mainEntityOfPage") or node.get("@id")
                 if isinstance(link, dict):
                     link = link.get("@id")
                 if not link or article_url(link, expected) != expected:
                     continue
-                articles.append(node)
+                if "VideoObject" in types:
+                    videos.append(node)
+                else:
+                    articles.append(node)
         except (ValueError, TypeError):
             continue
     if len(articles) > 1:
@@ -316,21 +346,45 @@ def extract_article(html, expected_url):
     title = node.get("headline") or " ".join(parser.headline) or parser.metas.get("og:title", "")
     title = re.sub(r"\s+-\s+La Tercera$", "", " ".join(title.split()))
     body = " ".join(parser.body or parser.paragraphs)
-    # The original publisher emits its primary story in URL-bound NewsArticle
-    # articleBody. Prefer it over broad HTML wrappers containing captions/tags.
-    if isinstance(node.get("articleBody"), str) and len(node["articleBody"].strip()) >= 160:
-        body = " ".join(node["articleBody"].split())
+    # A short URL-bound primary body must not be padded with wrapper text.
+    # Publisher videos can expose only a headline as articleBody, or no body;
+    # byline/share/tags are not a transcript even when their length exceeds160.
+    json_body = node.get("articleBody")
+    primary_video = (len(articles) == 1 and len(videos) == 1
+                     and expected.split('/')[3] == "videos"
+                     and article_url(videos[0].get("url")) == expected
+                     and videos[0].get("@id") == expected + "#video"
+                     and bool(videos[0].get("embedUrl")))
+    if isinstance(json_body, str) and json_body.strip():
+        body = " ".join(json_body.split())
+        body_source = "url_bound_json_ld_articleBody"
+    elif primary_video:
+        body = " ".join(parser.body_paragraphs or parser.paragraphs)
+        body_source = "publisher_video_html_transcript" if body else "publisher_video_no_textual_article_body"
+    else:
+        body_source = "article_html"
     section = node.get("articleSection") or parser.metas.get("article:section") or expected.split('/')[3]
     metadata = dict(section=section, keywords=node.get("keywords", []),
                             description=node.get("description", ""),
-                            body_source="url_bound_json_ld_articleBody" if node.get("articleBody") else "article_html",
+                            body_source=body_source,
                             publication_date=published, publication_timestamp=timestamp,
                             publication_date_source=date_source, visible_publication_date=visible_day,
                             publisher_date_convention=convention, publication_evidence=dated_evidence,
-                            canonical_url=expected,
-                            article_verified=True)
+                            canonical_url=expected, primary_identity_verified=True,
+                            publication_date_verified=True, article_verified=True)
     if re.search(r"opini[oó]n|editorial|columna", str(section), re.I):
         raise ExcludedArticle("excluded_opinion_content", title, body, metadata)
+    if primary_video:
+        video = videos[0]
+        metadata.update(publisher_document_type="video", video_identity_verified=True,
+                        video_evidence=dict(type="VideoObject", url=video.get("url"),
+                                            id=video.get("@id"), embed_url=video["embedUrl"],
+                                            upload_date=video.get("uploadDate")))
+        if title.strip() and len(body) < 160:
+            metadata.update(article_verified=False, article_body_complete=False,
+                            source_content_unavailable_reason="publisher_video_text_unavailable",
+                            editorial_assessment=dict(decision="pending", reason="publisher_video_text_unavailable"))
+            raise TextUnavailableArticle("publisher_video_text_unavailable", title, body, metadata)
     # A brief primary headline is not missing evidence: real publisher stories
     # such as "Vivir con TOC" contain complete, URL-bound factual article bodies.
     if not title.strip() or len(body) < 160:
@@ -366,6 +420,15 @@ def discover_listing(html, base, detail_loader, audit, visited):
                                event_date=metadata["publication_date"], raw_text=body[:1800], metadata=metadata))
             audit.append(dict(url=url, listing=base, status="discovered", section=metadata["section"],
                               publication_date=metadata["publication_date"]))
+        except TextUnavailableArticle as exc:
+            result = _verified_detail(dict(url=url, listing=base), lambda _: html, None, audit)
+            metadata = result["metadata"]
+            out.append(RawItem("pulso_latercera", result["title"], url, "Pulso / La Tercera", "press_high_trust",
+                               event_date=metadata["publication_date"], raw_text=result["body"], metadata=metadata))
+            audit.append(dict(url=url, listing=base, status="discovered_metadata_only", reason=str(exc),
+                              publication_date=metadata["publication_date"], section=metadata["section"],
+                              article_body_complete=False, source_content_unavailable_reason=str(exc),
+                              video_evidence=metadata["video_evidence"], html_sha256=metadata["html_sha256"]))
         except ExcludedArticle as exc:
             audit.append(dict(url=url, listing=base, status="excluded", reason=str(exc),
                               publication_date=exc.metadata["publication_date"], section=exc.metadata["section"]))
@@ -510,9 +573,13 @@ def _verified_detail(entry, loader, cached, audit=None):
     now = datetime.now(ZoneInfo("UTC")).isoformat()
     # lastmod is solely a change token: it never establishes publication date.
     if (cached and entry.get("lastmod") and cached.get("lastmod") == entry["lastmod"]
-            and cached.get("metadata", {}).get("article_verified")
+            and (cached.get("metadata", {}).get("article_verified")
+                 or verified_video_without_text(cached.get("metadata", {})))
             and cached.get("url") == url
-            and (not cached.get("relevant") or complete_article_body(cached.get("metadata", {})))):
+            and (not urlparse(url).path.startswith("/videos/")
+                 or cached.get("metadata", {}).get("video_identity_verified") is True)
+            and (not cached.get("relevant") or complete_article_body(cached.get("metadata", {}))
+                 or verified_video_without_text(cached.get("metadata", {})))):
         metadata = cached["metadata"]
         evidence = metadata.get("publication_evidence", [])
         dates = [(row.get("source"), row.get("timestamp"), publication_day(row.get("timestamp")))
@@ -543,6 +610,18 @@ def _verified_detail(entry, loader, cached, audit=None):
                         topics=health_topics(combined) if relevant else [])
         return dict(url=url, title=title, body=body[:1800] if relevant else "", metadata=metadata,
                     relevant=relevant, lastmod=entry.get("lastmod", ""), cache_hit=False)
+    except TextUnavailableArticle as exc:
+        metadata = dict(exc.metadata)
+        metadata.update(article_body_evidence(exc.body), discovered_from=entry["listing"],
+                        market_role="media", source_quality_gate="deferred_video_text", captured_at=now,
+                        html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest(),
+                        publisher_lastmod=entry.get("lastmod", ""),
+                        health_anchor_observed=health_anchor(exc.title + " " + str(metadata.get("keywords", ""))
+                                                             + " " + metadata.get("description", "")))
+        metadata["topics"] = health_topics(exc.title + " " + str(metadata.get("keywords", ""))
+                                           + " " + metadata.get("description", ""))
+        return dict(url=url, title=exc.title, body=exc.body, metadata=metadata, relevant=True,
+                    deferred_reason=str(exc), lastmod=entry.get("lastmod", ""), cache_hit=False)
     except ExcludedArticle as exc:
         metadata = dict(exc.metadata)
         metadata.update(discovered_from=entry["listing"], captured_at=now,
@@ -672,20 +751,27 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
             day = date.fromisoformat(metadata["publication_date"])
             dates.append(day)
             verified_days.append(day)
-            status = "discovered" if result["relevant"] and cutoff <= day <= today else "excluded"
-            reason = None if status == "discovered" else result.get("exclusion_reason", "no_health_anchor") if not result["relevant"] else "outside_90_day_window"
+            status = ("discovered_metadata_only" if result.get("deferred_reason") else "discovered") if result["relevant"] and cutoff <= day <= today else "excluded"
+            reason = result.get("deferred_reason") if status == "discovered_metadata_only" else None if status == "discovered" else result.get("exclusion_reason", "no_health_anchor") if not result["relevant"] else "outside_90_day_window"
             trace = dict(url=result["url"], listing=url, status=status, reason=reason,
                          title=result["title"], section=metadata["section"], topics=metadata.get("topics", []),
                          publication_date=metadata["publication_date"], publication_timestamp=metadata["publication_timestamp"],
                          publication_date_source=metadata["publication_date_source"],
                          visible_publication_date=metadata.get("visible_publication_date"),
                          publisher_date_convention=metadata.get("publisher_date_convention"),
-                         publication_evidence=metadata.get("publication_evidence"), html_sha256=metadata["html_sha256"],
+                         publication_evidence=metadata.get("publication_evidence"),
+                         primary_identity_verified=metadata.get("primary_identity_verified", True),
+                         publication_date_verified=metadata.get("publication_date_verified", True),
+                         article_verified=metadata.get("article_verified", True),
+                         article_body_complete=metadata.get("article_body_complete", True),
+                         source_content_unavailable_reason=metadata.get("source_content_unavailable_reason"),
+                         publisher_document_type=metadata.get("publisher_document_type", "article"),
+                         video_evidence=metadata.get("video_evidence"), html_sha256=metadata["html_sha256"],
                          captured_at=metadata["captured_at"], publisher_lastmod=entry.get("lastmod", ""),
                          cache_hit=result["cache_hit"], in_complete_30_days=today - timedelta(days=30) <= day < today,
                          in_complete_90_days=cutoff <= day < today, current_day_slice=day == today)
             audit.append(trace)
-            if status == "discovered":
+            if status in ("discovered", "discovered_metadata_only"):
                 out.append(RawItem("pulso_latercera", result["title"], result["url"], "Pulso / La Tercera",
                                    "press_high_trust", event_date=metadata["publication_date"], raw_text=result["body"], metadata=metadata))
         # A conservative observed boundary is based on verified detail dates,
@@ -857,7 +943,8 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                 # are still required for old-page boundary corroboration.
                 is_boundary_page = bool(primary_dates and max(primary_dates) < cutoff - timedelta(days=2))
                 if canonical in visited and not is_boundary_page:
-                    if cached and cached.get("metadata", {}).get("article_verified"):
+                    if cached and (cached.get("metadata", {}).get("article_verified")
+                                   or verified_video_without_text(cached.get("metadata", {}))):
                         page_results.append((entry, dict(cached, cache_hit=True)))
                     continue
                 candidates.append(entry)
@@ -879,21 +966,28 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                 articles[result["url"]] = {key: val for key, val in result.items() if key != "cache_hit"}
                 was_seen = result["url"] in visited
                 visited.add(result["url"])
-                status = "discovered" if result["relevant"] and cutoff <= day <= today else "excluded"
-                reason = None if status == "discovered" else result.get("exclusion_reason", "no_health_anchor") if not result["relevant"] else "outside_90_day_window"
+                status = ("discovered_metadata_only" if result.get("deferred_reason") else "discovered") if result["relevant"] and cutoff <= day <= today else "excluded"
+                reason = result.get("deferred_reason") if status == "discovered_metadata_only" else None if status == "discovered" else result.get("exclusion_reason", "no_health_anchor") if not result["relevant"] else "outside_90_day_window"
                 audit.append(dict(url=result["url"], listing=url, feed=kind + ":" + name, status=status, reason=reason,
                                   title=result["title"], section=metadata["section"], topics=metadata.get("topics", []),
                                   publication_date=metadata["publication_date"], publication_timestamp=metadata["publication_timestamp"],
                                   publication_date_source=metadata["publication_date_source"],
                          visible_publication_date=metadata.get("visible_publication_date"),
                          publisher_date_convention=metadata.get("publisher_date_convention"),
-                         publication_evidence=metadata.get("publication_evidence"), html_sha256=metadata["html_sha256"],
+                         publication_evidence=metadata.get("publication_evidence"),
+                         primary_identity_verified=metadata.get("primary_identity_verified", True),
+                         publication_date_verified=metadata.get("publication_date_verified", True),
+                         article_verified=metadata.get("article_verified", True),
+                         article_body_complete=metadata.get("article_body_complete", True),
+                         source_content_unavailable_reason=metadata.get("source_content_unavailable_reason"),
+                         publisher_document_type=metadata.get("publisher_document_type", "article"),
+                         video_evidence=metadata.get("video_evidence"), html_sha256=metadata["html_sha256"],
                                   captured_at=metadata["captured_at"], cache_hit=result["cache_hit"],
                                   publisher_lastmod=metadata.get("publisher_lastmod"),
                                   first_publish_date=entry.get("first_publish_date"), duplicate_inventory_url=was_seen,
                                   in_complete_30_days=today - timedelta(days=30) <= day < today,
                                   in_complete_90_days=cutoff <= day < today, current_day_slice=day == today))
-                if status == "discovered" and not was_seen:
+                if status in ("discovered", "discovered_metadata_only") and not was_seen:
                     out.append(RawItem("pulso_latercera", result["title"], result["url"], "Pulso / La Tercera", "press_high_trust",
                                        event_date=metadata["publication_date"], raw_text=result["body"], metadata=metadata))
             # Stop only on a sustained publisher first-publication boundary,
@@ -947,7 +1041,9 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                    coverage_complete=complete, required_feeds=[kind + ":" + name for kind, name in feeds],
                    complete_30_days=dict(start=(today - timedelta(days=30)).isoformat(), end=(today - timedelta(days=1)).isoformat()),
                    complete_90_days=dict(start=cutoff.isoformat(), end=(today - timedelta(days=1)).isoformat()),
-                   current_day_slice=today.isoformat(), new_health_urls=len(out))
+                   current_day_slice=today.isoformat(), new_health_urls=len(out),
+                   metadata_only_video_candidates=sum(not item.metadata.get("article_body_complete", True) for item in out),
+                   publication_date_coverage_only_for_text_unavailable_candidates=True)
     audit.append(summary)
     return out, summary
 
