@@ -1,6 +1,6 @@
 # Prestadores, gremio y farma · handoff de Codex F
 
-Estado del frente: **EXTERNAL_BLOCKER_PROVEN**. [PR #14](https://github.com/cftorre1/Radar-salud/pull/14) permanece draft en `codex/f-prestadores-gremio-2026-10-11`; no está READY_FOR_INTEGRATION. Rama reconciliada con `staging` **c4819844e413d31ede792521a2c137392c4ae104**, merge `96ad6f6`, preservando Work2/3/4 y gobernanza. No hubo merge directo, despliegue ni modificación de main/producción.
+Estado del frente: **EXTERNAL_BLOCKER_PROVEN**. [PR #14](https://github.com/cftorre1/Radar-salud/pull/14) permanece draft en `codex/f-prestadores-gremio-2026-10-11`; no está READY_FOR_INTEGRATION. Rama reconciliada con `staging` **eee5dbb0668b30605a22d86b7355b75b6a340ef6**, merge `f1a3129` (previo `96ad6f6`), preservando Work2/3/4 y gobernanza. No hubo merge directo, despliegue ni modificación de main/producción.
 
 ## Cobertura demostrada y límites
 
@@ -67,7 +67,7 @@ QA final: código/health de datos `8c7b246f034bb52bb7fdb540308aaf47e8fa8e1a`, br
 - Python completo:321 PASS,1 FAIL heredado,1 skip. El FAIL requiere12 actos Normativa visibles y encuentra11.
 - Browser desktop/mobile:44 PASS,6 FAIL heredados; prestadores4/4 PASS, unicidad, fuentes/fechas, BACKFILL, contrato y health honesto.
 - Reviewer determinístico: data/editorial/UX PASS, estadísticas FAIL con los mismos ocho códigos críticos de la base; sin nuevos críticos.
-- Baseline inicial y `staging` actual tienen árboles `web`, `src` y `tests` idénticos por SHA; los cambios intermedios son governance/audits. Se preserva evidencia de14 fallos browser iniciales y los seis comunes actuales, sin rebajar tests.
+- Baseline inicial y `staging` actual tienen árboles `web`, `src` y `tests` idénticos por SHA; los cambios intermedios son governance/audits. El avance concurrente Work3 `eee5dbb` se fusionó preservando sus registros y artifact; no altera código, tests ni datos operativos. Se preserva evidencia de14 fallos browser iniciales y los seis comunes actuales, sin rebajar tests.
 - Reviewer independiente revisó código/datos, detectó un P2 del lector de Chrome ya corregido y verificó las guardas y pruebas: exige canonical y Article propios y bloquea challenge/identidad ajena antes de AI. Dictamen final: **PASS scoped sobre `affa53d`**, sin hallazgos abiertos. Evidencia y pruebas propias en `provider_qa_2026_10_11/independent-reviewer.json`; no convierte los gates compartidos a PASS.
 
 ## Continuidad desde checkout limpio
