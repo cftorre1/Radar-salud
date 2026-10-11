@@ -499,14 +499,25 @@ def process_corporate_news(raw,cfg):
     else:
         try:page=fetch_html(raw.url)
         except Exception as exc:raise DeferredProcessing("RedSalud article temporarily unavailable") from exc
-        article=_RedSaludArticle();article.feed(page);article.finish()
+        article=_RedSaludArticle(raw.url);article.feed(page);article.finish()
         if not article.title or (raw.title.lower() not in article.title.lower()
                                  and article.title.lower() not in raw.title.lower()):
             raise DeferredProcessing("RedSalud headline mismatch between listing and article")
         detail_date=_date(article.published)
         if not detail_date:raise DeferredProcessing("RedSalud article publication date unavailable")
         if raw.metadata.get("listing_date") and raw.metadata["listing_date"]!=detail_date:
-            raise DeferredProcessing("RedSalud listing and article dates disagree")
+            # An old teaser URL can redirect to a republished Observatorio
+            # article. Only its own canonical identity AND agreeing visible
+            # publication header/JSON-LD can supersede that teaser stamp.
+            from urllib.parse import urlparse
+            canonical=urlparse(article.canonical_url or '')
+            if (canonical.scheme!='https' or canonical.netloc not in expected[1]
+                    or not canonical.path.startswith('/observatorio/noticias/')
+                    or article.header_date!=detail_date or not article.canonical_schema_match):
+                raise DeferredProcessing("RedSalud listing and article dates disagree")
+            raw.metadata.update(listing_date_before_canonical_verification=raw.metadata['listing_date'],
+                publication_date_source='canonical_article_publication',canonical_source_url=article.canonical_url,
+                publication_date_resolution='canonical_identity_jsonld_and_visible_header_agree')
         raw.event_date=detail_date;raw.raw_text=" ".join(article.body.split())[:9000];raw.metadata["page_text"]=raw.raw_text
     body=raw.metadata.get("page_text") or raw.raw_text
     if not raw.event_date:return None
@@ -569,22 +580,28 @@ class _BupaArticle(HTMLParser):
 
 
 class _RedSaludArticle(HTMLParser):
-    def __init__(self):
-        super().__init__();self.title="";self.published="";self.body="";self._script=False;self._json=[];self._after_h1=False;self._field=None;self._parts=[]
+    def __init__(self,url=None):
+        super().__init__();self.url=url;self.title="";self.published="";self.body="";self._script=False;self._json=[];self._after_h1=False;self._field=None;self._parts=[]
+        self.schemas=[];self._before=[];self.header_date=None;self.canonical_url=None;self.canonical_schema_match=False
     def handle_starttag(self,tag,attrs):
         attrs=dict(attrs);lower=tag.lower()
+        if lower=='link' and attrs.get('rel')=='canonical':self.canonical_url=attrs.get('href')
         if lower=="script" and attrs.get("type")=="application/ld+json":self._script=True;self._json=[]
-        elif lower=="h1":self._field="h1";self._parts=[]
+        elif lower=="h1":
+            self._field="h1";self._parts=[]
+            stamp=re.search(r'(\d{1,2}\s+[A-Za-zÁÉÍÓÚáéíóúñÑ]+\s+20\d{2})\s*$', ' '.join(self._before)[-120:])
+            self.header_date=_date(stamp.group(1)) if stamp else None
         elif self._after_h1 and lower in ("h2","p"):self._field="body";self._parts=[]
     def handle_data(self,data):
         if self._script:self._json.append(data)
         if self._field:self._parts.append(data)
+        if not self._script and not self._after_h1 and self._field!='h1':self._before.append(' '.join(data.split()))
     def handle_endtag(self,tag):
         lower=tag.lower()
         if lower=="script" and self._script:
             self._consume_json("".join(self._json));self._script=False
         elif lower=="h1" and self._field=="h1":
-            visible=" ".join(" ".join(self._parts).split());self.title=self.title or visible;self._after_h1=True;self._field=None
+            visible=" ".join(" ".join(self._parts).split());self.title=visible;self._after_h1=True;self._field=None
         elif lower in ("h2","p") and self._field=="body":
             self.body+=" "+" ".join(" ".join(self._parts).split());self._field=None
         elif lower=="footer":self._after_h1=False
@@ -601,10 +618,22 @@ class _RedSaludArticle(HTMLParser):
             kind=item.get("@type") or []
             kinds={kind} if isinstance(kind,str) else set(kind)
             if "NewsArticle" in kinds or "Article" in kinds:
-                self.title=str(item.get("headline") or item.get("name") or self.title)
-                self.published=str(item.get("datePublished") or self.published)
-                if item.get("articleBody"):self.body=str(item["articleBody"])
+                self.schemas.append(item)
     def finish(self):
+        from urllib.parse import urljoin
+        def canonical(value):return str(value or '').split('#')[0].rstrip('/')
+        dates=set()
+        for item in self.schemas:
+            identity=item.get('url') or item.get('mainEntityOfPage') or item.get('@id')
+            if isinstance(identity,dict):identity=identity.get('@id') or identity.get('url')
+            if identity:identity=urljoin(self.url or self.canonical_url or '',str(identity))
+            headline=str(item.get('headline') or item.get('name') or '')
+            title_match=bool(self.title and headline.casefold()==self.title.casefold())
+            identity_match=bool(identity and canonical(identity) in {canonical(self.url),canonical(self.canonical_url)}- {''})
+            if (identity and self.url and not identity_match) or not (identity_match or title_match):continue
+            if item.get('datePublished'):dates.add(str(item['datePublished']))
+            if identity_match and canonical(identity)==canonical(self.canonical_url):self.canonical_schema_match=True
+        self.published=next(iter(dates)) if len({_date(x) for x in dates})==1 else ''
         self.title=" ".join(self.title.split());self.body=" ".join(self.body.split())
 
 

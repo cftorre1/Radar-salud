@@ -118,3 +118,25 @@ def test_provider_agreement_with_named_laboratory_keeps_pharma_scope(monkeypatch
         'why_it_matters':'El acuerdo conecta una red de prestadores y un actor farmacéutico en un nuevo proyecto.'})
     row=beta_sources.process_curated_beta_source(raw,{'base_confidence':80})
     assert row['scopes']==['Prestadores','Farma / medicamentos']
+def test_redsalud_canonical_header_resolves_old_teaser_without_using_update(monkeypatch):
+    from radar_salud.models import RawItem
+    from radar_salud import public_source_pipeline as pipeline
+    from radar_salud.sources import load_sources,source_index
+    from pathlib import Path
+    title='Nueva unidad clínica de alta complejidad'
+    raw=RawItem('redsalud',title,'https://www.redsalud.cl/noticias/old-teaser','RedSalud','corporate','2026-08-27',metadata={'listing_date':'2026-08-27'})
+    canonical='https://www.redsalud.cl/observatorio/noticias/nueva-unidad'
+    html=f'<link rel="canonical" href="{canonical}"><script type="application/ld+json">'+__import__('json').dumps({'@type':'NewsArticle','url':canonical,'headline':title,'datePublished':'2026-09-04','dateModified':'2026-10-07'})+f'</script><span>4 Sep 2026</span><h1>{title}</h1><p>'+('Nueva capacidad de atención documentada. '*40)+'</p>'
+    monkeypatch.setattr(pipeline,'fetch_html',lambda _:html)
+    monkeypatch.setattr(pipeline,'analyze_news',lambda **kw:{'relevance_score':86,'reason':'Nueva capacidad hospitalaria documentada.',
+        'what_happened':'El prestador abrió una nueva unidad hospitalaria de alta complejidad con capacidad adicional.',
+        'why_it_matters':'Amplía la oferta para pacientes del sistema público y privado con necesidades especializadas.'})
+    cfg=source_index(load_sources(Path('config/sources.json')))['redsalud']
+    assert pipeline.process_corporate_news(raw,cfg)['event_date']=='2026-09-04'
+    assert raw.metadata['listing_date_before_canonical_verification']=='2026-08-27'
+    assert raw.metadata['publication_date_source']=='canonical_article_publication'
+    monkeypatch.setattr(pipeline,'fetch_html',lambda _:html.replace('4 Sep 2026','7 Oct 2026'))
+    import pytest
+    from radar_salud.processing import DeferredProcessing
+    with pytest.raises(DeferredProcessing,match='dates disagree'):pipeline.process_corporate_news(raw,cfg)
+
