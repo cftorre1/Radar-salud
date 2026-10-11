@@ -1,9 +1,9 @@
 {
   "result": "PASS",
   "reviewer": "independent /root/reviewer",
-  "created_at": "2026-10-11T14:58:01.232161+00:00",
+  "created_at": "2026-10-11T15:02:55.564770+00:00",
   "run_id": "38147873198",
-  "auditor_script_sha256": "083b34c4a583b2590b5481a4b7d69be24302cdf3c5af141f3246803c618d0741",
+  "auditor_script_sha256": "7453bf8061f94edba7cc2db316c9456debbbb56184c3ec0d95a81f7e8023a495",
   "inventory_sha256": "faba5448983390f09006e0b830f003aa007bd1c4c32a904f690a0da2f3ec9923",
   "captures": 1073,
   "captured_http_statuses": {
@@ -11847,924 +11847,1536 @@
       "section": "news",
       "url": "https://www.who.int/api/hubs/newsitems?sf_site=15210d59-ad60-47ff-a542-7ed76645f0c7&sf_provider=OpenAccessDataProvider&sf_culture=en&%24orderby=PublicationDateAndTime+desc&%24select=Title%2CItemDefaultUrl%2CFormatedDate%2CTag%2CThumbnailUrl&%24skip=0&%24top=50",
       "native_records": 50,
-      "body_sha256": "390595a95aaf8839de2a73bb456da9b4ef85c194e373b604c1facbd42d2c47cf"
+      "body_sha256": "390595a95aaf8839de2a73bb456da9b4ef85c194e373b604c1facbd42d2c47cf",
+      "date_query_checks": null
     },
     {
       "source": "who",
       "section": "news",
       "url": "https://www.who.int/api/hubs/newsitems?sf_site=15210d59-ad60-47ff-a542-7ed76645f0c7&sf_provider=OpenAccessDataProvider&sf_culture=en&%24orderby=PublicationDateAndTime+desc&%24select=Title%2CItemDefaultUrl%2CFormatedDate%2CTag%2CThumbnailUrl&%24skip=50&%24top=50",
       "native_records": 50,
-      "body_sha256": "f7b80474971dd91b5a7ac842b766620bb3b07c6e70c8a693ce72e899c52ffae2"
+      "body_sha256": "f7b80474971dd91b5a7ac842b766620bb3b07c6e70c8a693ce72e899c52ffae2",
+      "date_query_checks": null
     },
     {
       "source": "who",
       "section": "news",
       "url": "https://www.who.int/api/hubs/newsitems?sf_site=15210d59-ad60-47ff-a542-7ed76645f0c7&sf_provider=OpenAccessDataProvider&sf_culture=en&%24orderby=PublicationDateAndTime+desc&%24select=Title%2CItemDefaultUrl%2CFormatedDate%2CTag%2CThumbnailUrl&%24skip=100&%24top=50",
       "native_records": 50,
-      "body_sha256": "a678e7e283a899ac941a23762c51077a98da560b9fe8a9e332e751213d308bbc"
+      "body_sha256": "a678e7e283a899ac941a23762c51077a98da560b9fe8a9e332e751213d308bbc",
+      "date_query_checks": null
     },
     {
       "source": "who",
       "section": "publications",
       "url": "https://www.who.int/api/hubs/publications?sf_site=15210d59-ad60-47ff-a542-7ed76645f0c7&sf_provider=OpenAccessProvider&sf_culture=en&%24orderby=PublicationDateAndTime+desc&%24select=Title%2CItemDefaultUrl%2CFormatedDate%2CTag%2CThumbnailUrl%2CDownloadUrl%2CTrimmedTitle&%24skip=0&%24top=50",
       "native_records": 50,
-      "body_sha256": "9f3b5865c49ec48d441b494092a682b8ffa07e27ae2a2d0a4a52e15b824fbd9d"
+      "body_sha256": "9f3b5865c49ec48d441b494092a682b8ffa07e27ae2a2d0a4a52e15b824fbd9d",
+      "date_query_checks": null
     },
     {
       "source": "who",
       "section": "publications",
       "url": "https://www.who.int/api/hubs/publications?sf_site=15210d59-ad60-47ff-a542-7ed76645f0c7&sf_provider=OpenAccessProvider&sf_culture=en&%24orderby=PublicationDateAndTime+desc&%24select=Title%2CItemDefaultUrl%2CFormatedDate%2CTag%2CThumbnailUrl%2CDownloadUrl%2CTrimmedTitle&%24skip=50&%24top=50",
       "native_records": 50,
-      "body_sha256": "3cec903f871b551bbe79776e749670c298e0f4c886e3c7210f3fa21b5eaa75c8"
+      "body_sha256": "3cec903f871b551bbe79776e749670c298e0f4c886e3c7210f3fa21b5eaa75c8",
+      "date_query_checks": null
     },
     {
       "source": "who",
       "section": "publications",
       "url": "https://www.who.int/api/hubs/publications?sf_site=15210d59-ad60-47ff-a542-7ed76645f0c7&sf_provider=OpenAccessProvider&sf_culture=en&%24orderby=PublicationDateAndTime+desc&%24select=Title%2CItemDefaultUrl%2CFormatedDate%2CTag%2CThumbnailUrl%2CDownloadUrl%2CTrimmedTitle&%24skip=100&%24top=50",
       "native_records": 50,
-      "body_sha256": "4b17573b03375c448416dc3cb779c434a185bae25ed96611d59890c343017580"
+      "body_sha256": "4b17573b03375c448416dc3cb779c434a185bae25ed96611d59890c343017580",
+      "date_query_checks": null
     },
     {
       "source": "who",
       "section": "disease_outbreak_news",
       "url": "https://www.who.int/api/emergencies/diseaseoutbreaknews?sf_provider=dynamicProvider372&sf_culture=en&%24orderby=PublicationDateAndTime+desc&%24expand=EmergencyEvent&%24select=Title%2CTitleSuffix%2COverrideTitle%2CUseOverrideTitle%2Cregionscountries%2CItemDefaultUrl%2CFormattedDate%2CPublicationDateAndTime&%24skip=0&%24top=50",
       "native_records": 50,
-      "body_sha256": "9d8c202e097cc16e534693c7e5807ad4fcadb37856bd6962826c873bc0f7980e"
+      "body_sha256": "9d8c202e097cc16e534693c7e5807ad4fcadb37856bd6962826c873bc0f7980e",
+      "date_query_checks": null
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-07-13&date%5Bmax%5D=2026-07-21",
       "native_records": 9,
-      "body_sha256": "f580ad13c4736e300a4897cc71d0958817a52b8043fabeb5971e613a4e8f20d5"
+      "body_sha256": "f580ad13c4736e300a4897cc71d0958817a52b8043fabeb5971e613a4e8f20d5",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-07-13&date%5Bmax%5D=2026-07-21&page=1",
       "native_records": 9,
-      "body_sha256": "65df90ef1ba368253b5d899e1a1f32ca28b3d086942edb84cd4ac8de7986d0f0"
+      "body_sha256": "65df90ef1ba368253b5d899e1a1f32ca28b3d086942edb84cd4ac8de7986d0f0",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-07-20&date%5Bmax%5D=2026-07-28",
       "native_records": 9,
-      "body_sha256": "dd3e499d29588f0dc23873eb7528c66378065f6ee864df81751046358e94e62c"
+      "body_sha256": "dd3e499d29588f0dc23873eb7528c66378065f6ee864df81751046358e94e62c",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-07-20&date%5Bmax%5D=2026-07-28&page=1",
       "native_records": 9,
-      "body_sha256": "dea26c604dd65d3d89c8e77ee91a4dd1e5ce61dc3e4033fc620c2f47383570ee"
+      "body_sha256": "dea26c604dd65d3d89c8e77ee91a4dd1e5ce61dc3e4033fc620c2f47383570ee",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-07-20&date%5Bmax%5D=2026-07-28&page=2",
       "native_records": 9,
-      "body_sha256": "9927b2cbd8ee356fbf9cc5d3c7baca86779a45e6cf76d1d8762c0d07163602da"
+      "body_sha256": "9927b2cbd8ee356fbf9cc5d3c7baca86779a45e6cf76d1d8762c0d07163602da",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-07-20&date%5Bmax%5D=2026-07-28&page=3",
       "native_records": 3,
-      "body_sha256": "071643679b0309027c3b35bbc549242e845dd5d1c38a2b546c2ff2c04196b3a7"
+      "body_sha256": "071643679b0309027c3b35bbc549242e845dd5d1c38a2b546c2ff2c04196b3a7",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-07-20&date%5Bmax%5D=2026-07-28&page=4",
       "native_records": 0,
-      "body_sha256": "efadd9ced91d72a455b8421eed6d2266680fcf581ad167d55231216f8ee795ac"
+      "body_sha256": "efadd9ced91d72a455b8421eed6d2266680fcf581ad167d55231216f8ee795ac",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-07-27&date%5Bmax%5D=2026-08-04",
       "native_records": 9,
-      "body_sha256": "f9f1ac7a32098d8afb4e1e10a4f63220c7af8129444a539c75d5c31a1c3fcee0"
+      "body_sha256": "f9f1ac7a32098d8afb4e1e10a4f63220c7af8129444a539c75d5c31a1c3fcee0",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-07-27&date%5Bmax%5D=2026-08-04&page=1",
       "native_records": 7,
-      "body_sha256": "4e577e170ec00f1a9c116b91649b2bb3e2cdd1398c9b566ffdcac204ce2ee2cf"
+      "body_sha256": "4e577e170ec00f1a9c116b91649b2bb3e2cdd1398c9b566ffdcac204ce2ee2cf",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-07-27&date%5Bmax%5D=2026-08-04&page=2",
       "native_records": 0,
-      "body_sha256": "27c17d7447292f340806f74083b2407dd28696286eb734c4a3d5fd32cb6bee74"
+      "body_sha256": "27c17d7447292f340806f74083b2407dd28696286eb734c4a3d5fd32cb6bee74",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-03&date%5Bmax%5D=2026-08-11",
       "native_records": 9,
-      "body_sha256": "7e40da1c25fcf5708ad7d7f4abdabc7f358fa0e6a1e24c7cac5f22eb9bf529b4"
+      "body_sha256": "7e40da1c25fcf5708ad7d7f4abdabc7f358fa0e6a1e24c7cac5f22eb9bf529b4",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-03&date%5Bmax%5D=2026-08-11&page=1",
       "native_records": 7,
-      "body_sha256": "f2632dbb23fcf18a71028cba628f75169469ef5d4a86c6b80e61a2c286c03881"
+      "body_sha256": "f2632dbb23fcf18a71028cba628f75169469ef5d4a86c6b80e61a2c286c03881",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-03&date%5Bmax%5D=2026-08-11&page=2",
       "native_records": 0,
-      "body_sha256": "f50956aae931fbf0a8ac50b6da160ee0a9be158e7a57283192a6f1710a901007"
+      "body_sha256": "f50956aae931fbf0a8ac50b6da160ee0a9be158e7a57283192a6f1710a901007",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-10&date%5Bmax%5D=2026-08-18",
       "native_records": 9,
-      "body_sha256": "18435ce690fb1a44589b999cd1d7541915076c7f5cc81129bd98e174dd30205d"
+      "body_sha256": "18435ce690fb1a44589b999cd1d7541915076c7f5cc81129bd98e174dd30205d",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-10&date%5Bmax%5D=2026-08-18&page=1",
       "native_records": 6,
-      "body_sha256": "a6b1a044c3a0c05f3960ec2cacd2ceb78f82479f9c6c82a0c7e515a2ab6f4713"
+      "body_sha256": "a6b1a044c3a0c05f3960ec2cacd2ceb78f82479f9c6c82a0c7e515a2ab6f4713",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-10&date%5Bmax%5D=2026-08-18&page=2",
       "native_records": 0,
-      "body_sha256": "c2dfb1c48bad35040a1ababd86fdb15416c41bd3ebc3e6d1fc3ee541cb7b402a"
+      "body_sha256": "c2dfb1c48bad35040a1ababd86fdb15416c41bd3ebc3e6d1fc3ee541cb7b402a",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-17&date%5Bmax%5D=2026-08-25",
       "native_records": 9,
-      "body_sha256": "cf4d955cdcdd3972cd2b321633dd350c3238a2cf986ae90c50dac0cc2faa6fed"
+      "body_sha256": "cf4d955cdcdd3972cd2b321633dd350c3238a2cf986ae90c50dac0cc2faa6fed",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-17&date%5Bmax%5D=2026-08-25&page=1",
       "native_records": 2,
-      "body_sha256": "a307f30d8b93c2729c5b213478d00ad93eef9ffa9e16cc8b2d292913ed07d5ed"
+      "body_sha256": "a307f30d8b93c2729c5b213478d00ad93eef9ffa9e16cc8b2d292913ed07d5ed",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-17&date%5Bmax%5D=2026-08-25&page=2",
       "native_records": 0,
-      "body_sha256": "15128ebeb99be48d566d570fba01e6918debde2e0e81c4b67098fcfe3bb1e604"
+      "body_sha256": "15128ebeb99be48d566d570fba01e6918debde2e0e81c4b67098fcfe3bb1e604",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-24&date%5Bmax%5D=2026-09-01",
       "native_records": 9,
-      "body_sha256": "3d686ab2007f124ede57a645e50c804815fdbdbb9754a133d2a626b8fe05f627"
+      "body_sha256": "3d686ab2007f124ede57a645e50c804815fdbdbb9754a133d2a626b8fe05f627",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-24&date%5Bmax%5D=2026-09-01&page=1",
       "native_records": 8,
-      "body_sha256": "17fd74acbf5a99bf1847c1bb2cf058ca46b6b61f81a2becc3780b6f32b318e97"
+      "body_sha256": "17fd74acbf5a99bf1847c1bb2cf058ca46b6b61f81a2becc3780b6f32b318e97",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-24&date%5Bmax%5D=2026-09-01&page=2",
       "native_records": 0,
-      "body_sha256": "4c01cb6b9dd7a2afc10b649986c6fe08b90b4ba46de009815cd5351ea95098b0"
+      "body_sha256": "4c01cb6b9dd7a2afc10b649986c6fe08b90b4ba46de009815cd5351ea95098b0",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-31&date%5Bmax%5D=2026-09-08",
       "native_records": 9,
-      "body_sha256": "d31d24bd0dff19b0f9514b83c08b6c2756cc5da2405dd1f793d290733dfd91f3"
+      "body_sha256": "d31d24bd0dff19b0f9514b83c08b6c2756cc5da2405dd1f793d290733dfd91f3",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-31&date%5Bmax%5D=2026-09-08&page=1",
       "native_records": 2,
-      "body_sha256": "589583638ffbdb6b55d9255385568b7570c0576ef6f40a070e54b1526d65dcaf"
+      "body_sha256": "589583638ffbdb6b55d9255385568b7570c0576ef6f40a070e54b1526d65dcaf",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-08-31&date%5Bmax%5D=2026-09-08&page=2",
       "native_records": 0,
-      "body_sha256": "fb3c482b2316e71b3ee58037818c53c9da450b5800ed41843dac8dca1067857d"
+      "body_sha256": "fb3c482b2316e71b3ee58037818c53c9da450b5800ed41843dac8dca1067857d",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-07&date%5Bmax%5D=2026-09-15",
       "native_records": 9,
-      "body_sha256": "4bb64ce9fc81ff71208fb969903d388165ca41ad3a5c779a6d40714c3fd004dc"
+      "body_sha256": "4bb64ce9fc81ff71208fb969903d388165ca41ad3a5c779a6d40714c3fd004dc",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-07&date%5Bmax%5D=2026-09-15&page=1",
       "native_records": 4,
-      "body_sha256": "6697802b85226f5610974f2506b74d3a2bd8812afeb3874b11073035ef9cc922"
+      "body_sha256": "6697802b85226f5610974f2506b74d3a2bd8812afeb3874b11073035ef9cc922",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-07&date%5Bmax%5D=2026-09-15&page=2",
       "native_records": 0,
-      "body_sha256": "e5e86ce1fdfd8b2daacc5aaf60c8fde72800085a19757e6c9e33adfc5ec1ec29"
+      "body_sha256": "e5e86ce1fdfd8b2daacc5aaf60c8fde72800085a19757e6c9e33adfc5ec1ec29",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22",
       "native_records": 9,
-      "body_sha256": "c6110c9d9eeef3e4bca3da978f5537a464820346ce01a110bede72cfeaeb3e1a"
+      "body_sha256": "c6110c9d9eeef3e4bca3da978f5537a464820346ce01a110bede72cfeaeb3e1a",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22&page=1",
       "native_records": 9,
-      "body_sha256": "82bcc6d5e43b95d8c4922f4ad525db4700ab3e4567949ea4d106bbd77b8154ca"
+      "body_sha256": "82bcc6d5e43b95d8c4922f4ad525db4700ab3e4567949ea4d106bbd77b8154ca",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22&page=2",
       "native_records": 4,
-      "body_sha256": "cb666fe1a9b1c40c9e1d7ada2917482afcca715b68b0b6d0448aa3ed721e9a80"
+      "body_sha256": "cb666fe1a9b1c40c9e1d7ada2917482afcca715b68b0b6d0448aa3ed721e9a80",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22&page=3",
       "native_records": 0,
-      "body_sha256": "6d09b6113bb0335bebc84e695d9a7ba5b577134efac94c00394aa35f3102fc93"
+      "body_sha256": "6d09b6113bb0335bebc84e695d9a7ba5b577134efac94c00394aa35f3102fc93",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-21&date%5Bmax%5D=2026-09-29",
       "native_records": 9,
-      "body_sha256": "92c0e238c77829ea70b2aee818142cf8621cfe8fa99756fd49b628d6af7b7f10"
+      "body_sha256": "92c0e238c77829ea70b2aee818142cf8621cfe8fa99756fd49b628d6af7b7f10",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-21&date%5Bmax%5D=2026-09-29&page=1",
       "native_records": 9,
-      "body_sha256": "e0a05ff7c1709ad8e5e57ff19fd043660492248aff925a5bac213b826dd32b0e"
+      "body_sha256": "e0a05ff7c1709ad8e5e57ff19fd043660492248aff925a5bac213b826dd32b0e",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-21&date%5Bmax%5D=2026-09-29&page=2",
       "native_records": 6,
-      "body_sha256": "929eb9fbbeae7e17382783d5c24ff02ac57254b2719e2d67bf42c0ea804d5825"
+      "body_sha256": "929eb9fbbeae7e17382783d5c24ff02ac57254b2719e2d67bf42c0ea804d5825",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-21&date%5Bmax%5D=2026-09-29&page=3",
       "native_records": 0,
-      "body_sha256": "c29579439ac8a73b91e572dc852b7da4da6026c79bc7b610798d051e4bdc0153"
+      "body_sha256": "c29579439ac8a73b91e572dc852b7da4da6026c79bc7b610798d051e4bdc0153",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06",
       "native_records": 9,
-      "body_sha256": "8d3bca00e93419229819b44b5eef60b93c3c9a63fe46ff0996f1186bef12f0ef"
+      "body_sha256": "8d3bca00e93419229819b44b5eef60b93c3c9a63fe46ff0996f1186bef12f0ef",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06&page=1",
       "native_records": 9,
-      "body_sha256": "a147132d557990a999ed0bf496d523b89cd5d1ba80cabce2faf54d84cefcad7b"
+      "body_sha256": "a147132d557990a999ed0bf496d523b89cd5d1ba80cabce2faf54d84cefcad7b",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06&page=2",
       "native_records": 9,
-      "body_sha256": "ea895969bca8c338bb1a9de1560769b341e7aaa0f20a50463932cb6f50cf1a64"
+      "body_sha256": "ea895969bca8c338bb1a9de1560769b341e7aaa0f20a50463932cb6f50cf1a64",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06&page=3",
       "native_records": 2,
-      "body_sha256": "984b55adae16b75db6f00bab8a8e9c3a0c9e090577c4b4d99a6d7472dc07ee49"
+      "body_sha256": "984b55adae16b75db6f00bab8a8e9c3a0c9e090577c4b4d99a6d7472dc07ee49",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06&page=4",
       "native_records": 0,
-      "body_sha256": "5f02d1ab1f51db2692769e5bab86996b837dc836c3eac101befdf4b19461a749"
+      "body_sha256": "5f02d1ab1f51db2692769e5bab86996b837dc836c3eac101befdf4b19461a749",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-10-05&date%5Bmax%5D=2026-10-12",
       "native_records": 9,
-      "body_sha256": "71d3e8cf033dbb5a27d6e8533bc9a0c8ed85878101d1d1680a977808a79e3fd6"
+      "body_sha256": "71d3e8cf033dbb5a27d6e8533bc9a0c8ed85878101d1d1680a977808a79e3fd6",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news",
       "url": "https://www.paho.org/en/news?date%5Bmin%5D=2026-10-05&date%5Bmax%5D=2026-10-12&page=1",
       "native_records": 0,
-      "body_sha256": "50fd1a7bc510bb4c6ca85a3e1ded93658a5de43afa0a8e80750b5f5abbe2774b"
+      "body_sha256": "50fd1a7bc510bb4c6ca85a3e1ded93658a5de43afa0a8e80750b5f5abbe2774b",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-13&date%5Bmax%5D=2026-07-21",
       "native_records": 9,
-      "body_sha256": "4f7570fa0030176905a3bf1dc0cf952e2b036cd33194d1bd83673b0a82c951ec"
+      "body_sha256": "4f7570fa0030176905a3bf1dc0cf952e2b036cd33194d1bd83673b0a82c951ec",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-13&date%5Bmax%5D=2026-07-21&page=1",
       "native_records": 9,
-      "body_sha256": "275f010337fe14272b0c8a457cb3b2b992affb9d212508498c7d7c5b3e8320e3"
+      "body_sha256": "275f010337fe14272b0c8a457cb3b2b992affb9d212508498c7d7c5b3e8320e3",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-13&date%5Bmax%5D=2026-07-21&page=2",
       "native_records": 9,
-      "body_sha256": "93191438cb569829159ca9b7dbea83dd3448e6ca78c37b6bb7cd1540fc896999"
+      "body_sha256": "93191438cb569829159ca9b7dbea83dd3448e6ca78c37b6bb7cd1540fc896999",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-13&date%5Bmax%5D=2026-07-21&page=3",
       "native_records": 9,
-      "body_sha256": "913cfa4a20cb516e8bff8d1d0f806bb651255a8a08c7ae602f0ee13bd969d5a3"
+      "body_sha256": "913cfa4a20cb516e8bff8d1d0f806bb651255a8a08c7ae602f0ee13bd969d5a3",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-13&date%5Bmax%5D=2026-07-21&page=4",
       "native_records": 6,
-      "body_sha256": "b437797ac483a3b422fe68c06b99c1b373293bd996c0404589ce607f24bc8801"
+      "body_sha256": "b437797ac483a3b422fe68c06b99c1b373293bd996c0404589ce607f24bc8801",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-20&date%5Bmax%5D=2026-07-28",
       "native_records": 9,
-      "body_sha256": "d73d3d4d287073402a0af03a53b9c4735cdf2367d150f45599d56481ddda6284"
+      "body_sha256": "d73d3d4d287073402a0af03a53b9c4735cdf2367d150f45599d56481ddda6284",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-20&date%5Bmax%5D=2026-07-28&page=1",
       "native_records": 9,
-      "body_sha256": "7e4439949d5a4b1c7b5b456c2633f5ee1d3b7a8653fa14c0eebb7830013625a7"
+      "body_sha256": "7e4439949d5a4b1c7b5b456c2633f5ee1d3b7a8653fa14c0eebb7830013625a7",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-20&date%5Bmax%5D=2026-07-28&page=2",
       "native_records": 9,
-      "body_sha256": "19bcaf2f39864b3448a9df5019cd3463e1012c569e5a34981429c97d8b0e6983"
+      "body_sha256": "19bcaf2f39864b3448a9df5019cd3463e1012c569e5a34981429c97d8b0e6983",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-20&date%5Bmax%5D=2026-07-28&page=3",
       "native_records": 9,
-      "body_sha256": "6af777b4647503bba02235293d83a750b6ec011e7a52a3a39c112218d930f837"
+      "body_sha256": "6af777b4647503bba02235293d83a750b6ec011e7a52a3a39c112218d930f837",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-20&date%5Bmax%5D=2026-07-28&page=4",
       "native_records": 6,
-      "body_sha256": "69eb36a4e8f2ae2a3393b2495c734d150a9afc2b0fe413734d5d992fa6473df9"
+      "body_sha256": "69eb36a4e8f2ae2a3393b2495c734d150a9afc2b0fe413734d5d992fa6473df9",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-20&date%5Bmax%5D=2026-07-28&page=5",
       "native_records": 0,
-      "body_sha256": "0fc00b34e2c62c20cbfa113fc7d751809623197b404da6f543a57bd70f2372d1"
+      "body_sha256": "0fc00b34e2c62c20cbfa113fc7d751809623197b404da6f543a57bd70f2372d1",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-27&date%5Bmax%5D=2026-08-04",
       "native_records": 9,
-      "body_sha256": "e5dbfd58e87b50bd815583c86ae5dbcf2b19c7e7716c270ba7d42c6950f41ff3"
+      "body_sha256": "e5dbfd58e87b50bd815583c86ae5dbcf2b19c7e7716c270ba7d42c6950f41ff3",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-27&date%5Bmax%5D=2026-08-04&page=1",
       "native_records": 9,
-      "body_sha256": "47ac80d2775ad8302a1d54df29590277a5b281941f9b01233a099ad6614a04ab"
+      "body_sha256": "47ac80d2775ad8302a1d54df29590277a5b281941f9b01233a099ad6614a04ab",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-27&date%5Bmax%5D=2026-08-04&page=2",
       "native_records": 9,
-      "body_sha256": "a9e3bd4d7d80b05df8f42fc07153d7a3fea7280786d8daf75389653e9744e42d"
+      "body_sha256": "a9e3bd4d7d80b05df8f42fc07153d7a3fea7280786d8daf75389653e9744e42d",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-27&date%5Bmax%5D=2026-08-04&page=3",
       "native_records": 4,
-      "body_sha256": "7617dac7683b01701386d0f65162624e5fac04b53d689098498c65498508de19"
+      "body_sha256": "7617dac7683b01701386d0f65162624e5fac04b53d689098498c65498508de19",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-07-27&date%5Bmax%5D=2026-08-04&page=4",
       "native_records": 0,
-      "body_sha256": "2d9cd8515573531fe4553d31a3ad8042fed39cf272403d26f13558050ce27ed1"
+      "body_sha256": "2d9cd8515573531fe4553d31a3ad8042fed39cf272403d26f13558050ce27ed1",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-03&date%5Bmax%5D=2026-08-11",
       "native_records": 9,
-      "body_sha256": "1ad07b5711b7d393f34563c413b50d455f9bf8aabbd31fed4d321b2036902404"
+      "body_sha256": "1ad07b5711b7d393f34563c413b50d455f9bf8aabbd31fed4d321b2036902404",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-03&date%5Bmax%5D=2026-08-11&page=1",
       "native_records": 9,
-      "body_sha256": "aa92e81cf23dcf54acad12a5b9109c84f29cc286c889cbf865bc4d138e5e5118"
+      "body_sha256": "aa92e81cf23dcf54acad12a5b9109c84f29cc286c889cbf865bc4d138e5e5118",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-03&date%5Bmax%5D=2026-08-11&page=2",
       "native_records": 9,
-      "body_sha256": "a495c86e1ed3698a8a9db408b0f8645e0ebe50d38d33c016e39f051184798d6e"
+      "body_sha256": "a495c86e1ed3698a8a9db408b0f8645e0ebe50d38d33c016e39f051184798d6e",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-03&date%5Bmax%5D=2026-08-11&page=3",
       "native_records": 9,
-      "body_sha256": "734f6c094c48cf4ca655b715ed79920bd19eac3eb78c459339e3cd236d2d25ec"
+      "body_sha256": "734f6c094c48cf4ca655b715ed79920bd19eac3eb78c459339e3cd236d2d25ec",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-03&date%5Bmax%5D=2026-08-11&page=4",
       "native_records": 4,
-      "body_sha256": "d003e4e6084e9ae333b68ac93378ab1e040dd98f93db2d78a2dc6ec0ac955aa4"
+      "body_sha256": "d003e4e6084e9ae333b68ac93378ab1e040dd98f93db2d78a2dc6ec0ac955aa4",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-03&date%5Bmax%5D=2026-08-11&page=5",
       "native_records": 0,
-      "body_sha256": "ed8efcc3e62f75ebf6ffc3b5e8fda3ed5e90894bf407c02a37e73fd14bc01bb1"
+      "body_sha256": "ed8efcc3e62f75ebf6ffc3b5e8fda3ed5e90894bf407c02a37e73fd14bc01bb1",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-10&date%5Bmax%5D=2026-08-18",
       "native_records": 9,
-      "body_sha256": "65a332037ed3e12bf0f5353a2391f42a5ed25ba989e25b26386289148ecb71c3"
+      "body_sha256": "65a332037ed3e12bf0f5353a2391f42a5ed25ba989e25b26386289148ecb71c3",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-10&date%5Bmax%5D=2026-08-18&page=1",
       "native_records": 9,
-      "body_sha256": "dd272b5cfd42e4177e9acd927d917d91c8794a7b10321d96e8354dca6179a033"
+      "body_sha256": "dd272b5cfd42e4177e9acd927d917d91c8794a7b10321d96e8354dca6179a033",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-10&date%5Bmax%5D=2026-08-18&page=2",
       "native_records": 9,
-      "body_sha256": "3dde4a5c7fa6f23743163c9aeb6752825cc26148f4a3aecf3077f8d2556384ba"
+      "body_sha256": "3dde4a5c7fa6f23743163c9aeb6752825cc26148f4a3aecf3077f8d2556384ba",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-10&date%5Bmax%5D=2026-08-18&page=3",
       "native_records": 9,
-      "body_sha256": "3af3a021a90c39c6bd707177cf1cb7c62ff9089e43c86e8cc157a76451eddc6a"
+      "body_sha256": "3af3a021a90c39c6bd707177cf1cb7c62ff9089e43c86e8cc157a76451eddc6a",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-10&date%5Bmax%5D=2026-08-18&page=4",
       "native_records": 6,
-      "body_sha256": "0de8d902943f59dbb75b8eb2fe66173122535ae6737b9c322e98bf09efdc817d"
+      "body_sha256": "0de8d902943f59dbb75b8eb2fe66173122535ae6737b9c322e98bf09efdc817d",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-10&date%5Bmax%5D=2026-08-18&page=5",
       "native_records": 0,
-      "body_sha256": "4c04e85c89df001bf9329273462642252c4c1e4d52133d0793add2723dd4f333"
+      "body_sha256": "4c04e85c89df001bf9329273462642252c4c1e4d52133d0793add2723dd4f333",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-17&date%5Bmax%5D=2026-08-25",
       "native_records": 9,
-      "body_sha256": "6bb14c21f1551b9ddc872ba9ae517b50c9d8b6db3e8ea58f0470dca3c8535573"
+      "body_sha256": "6bb14c21f1551b9ddc872ba9ae517b50c9d8b6db3e8ea58f0470dca3c8535573",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-17&date%5Bmax%5D=2026-08-25&page=1",
       "native_records": 9,
-      "body_sha256": "25cb04b5fd25fb541f891c95facbf239da2630999624579f8025dd7df6885c2e"
+      "body_sha256": "25cb04b5fd25fb541f891c95facbf239da2630999624579f8025dd7df6885c2e",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-17&date%5Bmax%5D=2026-08-25&page=2",
       "native_records": 9,
-      "body_sha256": "392b2859bf0a14b766f0e4e9119294ae17260585a84c82a2d3c8ce113440ff86"
+      "body_sha256": "392b2859bf0a14b766f0e4e9119294ae17260585a84c82a2d3c8ce113440ff86",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-17&date%5Bmax%5D=2026-08-25&page=3",
       "native_records": 0,
-      "body_sha256": "5b99a2e17de6c4333628e0b1aa38928e463e40d6a7b74131fbbe46fc0572a623"
+      "body_sha256": "5b99a2e17de6c4333628e0b1aa38928e463e40d6a7b74131fbbe46fc0572a623",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-24&date%5Bmax%5D=2026-09-01",
       "native_records": 9,
-      "body_sha256": "b88f28683faf41b29a24c364a9036b644b9ea0567a4290099ee95ec1cabb2558"
+      "body_sha256": "b88f28683faf41b29a24c364a9036b644b9ea0567a4290099ee95ec1cabb2558",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-24&date%5Bmax%5D=2026-09-01&page=1",
       "native_records": 9,
-      "body_sha256": "b49d6f1ecce761080f7225845d34a424214783aa811228f4366526ef3af7dbc9"
+      "body_sha256": "b49d6f1ecce761080f7225845d34a424214783aa811228f4366526ef3af7dbc9",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-24&date%5Bmax%5D=2026-09-01&page=2",
       "native_records": 9,
-      "body_sha256": "ada4d2029794bf0ac394e85b56718611e7800552f7ac16f0b66449d2a95b3e03"
+      "body_sha256": "ada4d2029794bf0ac394e85b56718611e7800552f7ac16f0b66449d2a95b3e03",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-24&date%5Bmax%5D=2026-09-01&page=3",
       "native_records": 9,
-      "body_sha256": "8942ca88e20ba796167c5692fa8370d2c24b9155030d26aaf21e14af8e5b5b9b"
+      "body_sha256": "8942ca88e20ba796167c5692fa8370d2c24b9155030d26aaf21e14af8e5b5b9b",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-24&date%5Bmax%5D=2026-09-01&page=4",
       "native_records": 0,
-      "body_sha256": "96c7ec86231883e0a0759822ad04bb222d125315440c5b8b5680f6b198363592"
+      "body_sha256": "96c7ec86231883e0a0759822ad04bb222d125315440c5b8b5680f6b198363592",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-31&date%5Bmax%5D=2026-09-08",
       "native_records": 9,
-      "body_sha256": "4298a260947053b09b41b2dd07b841320180fceb071326a697c83858c21985e7"
+      "body_sha256": "4298a260947053b09b41b2dd07b841320180fceb071326a697c83858c21985e7",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-31&date%5Bmax%5D=2026-09-08&page=1",
       "native_records": 9,
-      "body_sha256": "fde5f67930b48ffd442aae1b0273ad6555b0c8dbb041d2e61010fe9f4dfe1a72"
+      "body_sha256": "fde5f67930b48ffd442aae1b0273ad6555b0c8dbb041d2e61010fe9f4dfe1a72",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-31&date%5Bmax%5D=2026-09-08&page=2",
       "native_records": 9,
-      "body_sha256": "30322f07a44c8de55856b14b7e1a7d134e9e58904d6ee70c0b04cb1ace3eddd9"
+      "body_sha256": "30322f07a44c8de55856b14b7e1a7d134e9e58904d6ee70c0b04cb1ace3eddd9",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-31&date%5Bmax%5D=2026-09-08&page=3",
       "native_records": 9,
-      "body_sha256": "6052c4077eedb812ea0cce01b924d48cd848320d808fc66e7286a880c182c598"
+      "body_sha256": "6052c4077eedb812ea0cce01b924d48cd848320d808fc66e7286a880c182c598",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-31&date%5Bmax%5D=2026-09-08&page=4",
       "native_records": 9,
-      "body_sha256": "c5d66abe95ebc9621b0fb5fe79a716d96fc8ff37b54b7d1883f01df47d7e8f4c"
+      "body_sha256": "c5d66abe95ebc9621b0fb5fe79a716d96fc8ff37b54b7d1883f01df47d7e8f4c",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-31&date%5Bmax%5D=2026-09-08&page=5",
       "native_records": 4,
-      "body_sha256": "84faeab2fa324b9f4141ef67a2c65406889f4a401d532148c6ebe3387302e16c"
+      "body_sha256": "84faeab2fa324b9f4141ef67a2c65406889f4a401d532148c6ebe3387302e16c",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-08-31&date%5Bmax%5D=2026-09-08&page=6",
       "native_records": 0,
-      "body_sha256": "831d4c15b3a2566b92df37efa54445cf06239ee03bc9b7d5950de8fa8ce7b50e"
+      "body_sha256": "831d4c15b3a2566b92df37efa54445cf06239ee03bc9b7d5950de8fa8ce7b50e",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-07&date%5Bmax%5D=2026-09-15",
       "native_records": 9,
-      "body_sha256": "b512aed8eb1d156e1be9d5345c22f4bf5d5bbf40c473f15a86f42fecc494c564"
+      "body_sha256": "b512aed8eb1d156e1be9d5345c22f4bf5d5bbf40c473f15a86f42fecc494c564",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-07&date%5Bmax%5D=2026-09-15&page=1",
       "native_records": 9,
-      "body_sha256": "b9c8e3b4fef33067f589cf8957e6b7e48737220baa67a6203f910bf7cfb22ece"
+      "body_sha256": "b9c8e3b4fef33067f589cf8957e6b7e48737220baa67a6203f910bf7cfb22ece",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-07&date%5Bmax%5D=2026-09-15&page=2",
       "native_records": 9,
-      "body_sha256": "9e8a2a83b5a6adca190299729f5f0dc95af250af327b2e112aa4b8552ca56675"
+      "body_sha256": "9e8a2a83b5a6adca190299729f5f0dc95af250af327b2e112aa4b8552ca56675",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-07&date%5Bmax%5D=2026-09-15&page=3",
       "native_records": 9,
-      "body_sha256": "7792eca91d26d8c8e78153e03bdcad7396a178c14c1ea24169e8faf1a859480c"
+      "body_sha256": "7792eca91d26d8c8e78153e03bdcad7396a178c14c1ea24169e8faf1a859480c",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-07&date%5Bmax%5D=2026-09-15&page=4",
       "native_records": 9,
-      "body_sha256": "301f5422207359acc9b8fdaaea88ad5c3001f7b858536957f26bfe80f2d21e1e"
+      "body_sha256": "301f5422207359acc9b8fdaaea88ad5c3001f7b858536957f26bfe80f2d21e1e",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-07&date%5Bmax%5D=2026-09-15&page=5",
       "native_records": 0,
-      "body_sha256": "e1c64edd1be3aa5ce5b3a60c67c3e748a37b642e5ab4191418efd59b71f8afcf"
+      "body_sha256": "e1c64edd1be3aa5ce5b3a60c67c3e748a37b642e5ab4191418efd59b71f8afcf",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22",
       "native_records": 9,
-      "body_sha256": "4b8e47233b9a22a2ffa2ac500f04a1744eff1367b0e6687f5aeab29586327d04"
+      "body_sha256": "4b8e47233b9a22a2ffa2ac500f04a1744eff1367b0e6687f5aeab29586327d04",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22&page=1",
       "native_records": 9,
-      "body_sha256": "a60bad66ec3e66f3823912fb93ca7d7e21a3faf9b57a561a006cafc3510b3182"
+      "body_sha256": "a60bad66ec3e66f3823912fb93ca7d7e21a3faf9b57a561a006cafc3510b3182",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22&page=2",
       "native_records": 9,
-      "body_sha256": "ee1efd74614e32cdc51667a19255be3322d24555dc97776f2831ba3c1dadf7a8"
+      "body_sha256": "ee1efd74614e32cdc51667a19255be3322d24555dc97776f2831ba3c1dadf7a8",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22&page=3",
       "native_records": 9,
-      "body_sha256": "d95b0b73869824018f73d5185e88110fb2d40745d62ade00a8db82432038f5eb"
+      "body_sha256": "d95b0b73869824018f73d5185e88110fb2d40745d62ade00a8db82432038f5eb",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22&page=4",
       "native_records": 9,
-      "body_sha256": "570a6090047ac2d88754489735370a8311fb0324fa8bd55f268ccf928cb9ce54"
+      "body_sha256": "570a6090047ac2d88754489735370a8311fb0324fa8bd55f268ccf928cb9ce54",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22&page=5",
       "native_records": 2,
-      "body_sha256": "a226d8f9219d28c1b2abad3c7362c77d05331a679e6b0da3fc1505278ffbc94f"
+      "body_sha256": "a226d8f9219d28c1b2abad3c7362c77d05331a679e6b0da3fc1505278ffbc94f",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22&page=6",
       "native_records": 0,
-      "body_sha256": "0cd688efccb556089841e30987c2e50211b095aeff5b9854b379b048c1e32b8d"
+      "body_sha256": "0cd688efccb556089841e30987c2e50211b095aeff5b9854b379b048c1e32b8d",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-21&date%5Bmax%5D=2026-09-29",
       "native_records": 9,
-      "body_sha256": "7d212dacde5c2aba8bb525767a5d6b7eb2958fdb5ae3b967856242df4f35a4c0"
+      "body_sha256": "7d212dacde5c2aba8bb525767a5d6b7eb2958fdb5ae3b967856242df4f35a4c0",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-21&date%5Bmax%5D=2026-09-29&page=1",
       "native_records": 9,
-      "body_sha256": "45d919471a17c5bbecb754dbcf9bfb5e913047483932892db5efd223b0eb593e"
+      "body_sha256": "45d919471a17c5bbecb754dbcf9bfb5e913047483932892db5efd223b0eb593e",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-21&date%5Bmax%5D=2026-09-29&page=2",
       "native_records": 9,
-      "body_sha256": "1ec910e6c661c6f2809cc2ef69077b00595289103f651b095545e1cee05d0e83"
+      "body_sha256": "1ec910e6c661c6f2809cc2ef69077b00595289103f651b095545e1cee05d0e83",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-21&date%5Bmax%5D=2026-09-29&page=3",
       "native_records": 9,
-      "body_sha256": "f607609d351df32f95e8a72f7ae0fa1abba2938b7ab3e94fac367de26685833a"
+      "body_sha256": "f607609d351df32f95e8a72f7ae0fa1abba2938b7ab3e94fac367de26685833a",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-21&date%5Bmax%5D=2026-09-29&page=4",
       "native_records": 9,
-      "body_sha256": "91b5633ced20f067cbcecea9e5bcb1ab5163b4941fb74a9e5a5b529388c1d030"
+      "body_sha256": "91b5633ced20f067cbcecea9e5bcb1ab5163b4941fb74a9e5a5b529388c1d030",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-21&date%5Bmax%5D=2026-09-29&page=5",
       "native_records": 7,
-      "body_sha256": "0c5fbf4980cde7811aa31f96dccc6767a81ef63bb95d9b1f76fd42c58d54ce73"
+      "body_sha256": "0c5fbf4980cde7811aa31f96dccc6767a81ef63bb95d9b1f76fd42c58d54ce73",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-21&date%5Bmax%5D=2026-09-29&page=6",
       "native_records": 0,
-      "body_sha256": "c2cd446f5a30bf0ab45d182cb277d57a5a163c8684701d6b174d15585d93c92d"
+      "body_sha256": "c2cd446f5a30bf0ab45d182cb277d57a5a163c8684701d6b174d15585d93c92d",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06",
       "native_records": 9,
-      "body_sha256": "21a4eefc17c13e7d1b7a7505f2f625549cf7f6ff14b8700253b73028c5ed1922"
+      "body_sha256": "21a4eefc17c13e7d1b7a7505f2f625549cf7f6ff14b8700253b73028c5ed1922",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06&page=1",
       "native_records": 9,
-      "body_sha256": "85f54bef3d4ef06881d4c326fbaa293e298621de07808509111156ca5d8d8a9f"
+      "body_sha256": "85f54bef3d4ef06881d4c326fbaa293e298621de07808509111156ca5d8d8a9f",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06&page=2",
       "native_records": 9,
-      "body_sha256": "eeff39bca93865677d00de351248f97bc9b68557d03d75952194e5171a81d9cd"
+      "body_sha256": "eeff39bca93865677d00de351248f97bc9b68557d03d75952194e5171a81d9cd",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06&page=3",
       "native_records": 9,
-      "body_sha256": "a9ddf3c9f17e6ef98f6c82585cdf93ca9d66d9515231579db05894de2d83ba5c"
+      "body_sha256": "a9ddf3c9f17e6ef98f6c82585cdf93ca9d66d9515231579db05894de2d83ba5c",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06&page=4",
       "native_records": 9,
-      "body_sha256": "180044234f861c741f114a117dc2d5ec82ec2e98ddd4d0f2b6d8b50ea462ef2b"
+      "body_sha256": "180044234f861c741f114a117dc2d5ec82ec2e98ddd4d0f2b6d8b50ea462ef2b",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06&page=5",
       "native_records": 9,
-      "body_sha256": "0c9ae43f8e20f7a2ec8f2d4b9fa56373d33286db72c6d27e19e662d69f8f9a77"
+      "body_sha256": "0c9ae43f8e20f7a2ec8f2d4b9fa56373d33286db72c6d27e19e662d69f8f9a77",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06&page=6",
       "native_records": 9,
-      "body_sha256": "14e1c34b819c88c8773190d2016ff96bb94418573a511146b26cb98415715039"
+      "body_sha256": "14e1c34b819c88c8773190d2016ff96bb94418573a511146b26cb98415715039",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06&page=7",
       "native_records": 4,
-      "body_sha256": "e5527316d8878b761c01dc6f6f9c724e74927c28a52b980543daf091d4514f24"
+      "body_sha256": "e5527316d8878b761c01dc6f6f9c724e74927c28a52b980543daf091d4514f24",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-09-28&date%5Bmax%5D=2026-10-06&page=8",
       "native_records": 0,
-      "body_sha256": "7d766fddec225eb45f873cca0a9ec5d8615b8b8d8b204fce8ddfb6b9a016e6b1"
+      "body_sha256": "7d766fddec225eb45f873cca0a9ec5d8615b8b8d8b204fce8ddfb6b9a016e6b1",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-10-05&date%5Bmax%5D=2026-10-12",
       "native_records": 9,
-      "body_sha256": "01efe94734dbc3cf3e4246d192b00bd981d27db58999ac406f854416404ffd10"
+      "body_sha256": "01efe94734dbc3cf3e4246d192b00bd981d27db58999ac406f854416404ffd10",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-10-05&date%5Bmax%5D=2026-10-12&page=1",
       "native_records": 9,
-      "body_sha256": "f568fa1a5aaf83b306c075513092f662915d1cd25f32533e4d27ba3a1ad7c12b"
+      "body_sha256": "f568fa1a5aaf83b306c075513092f662915d1cd25f32533e4d27ba3a1ad7c12b",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-10-05&date%5Bmax%5D=2026-10-12&page=2",
       "native_records": 8,
-      "body_sha256": "e904e7bb6644670192fab3de1137f6515404015745853c06618dcbeff967a66e"
+      "body_sha256": "e904e7bb6644670192fab3de1137f6515404015745853c06618dcbeff967a66e",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "regional_news_es",
       "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-10-05&date%5Bmax%5D=2026-10-12&page=3",
       "native_records": 0,
-      "body_sha256": "a1b8799e67e8dc937bd8b14aae88a4e747d893441fba6f096b1f826d885b7b76"
+      "body_sha256": "a1b8799e67e8dc937bd8b14aae88a4e747d893441fba6f096b1f826d885b7b76",
+      "date_query_checks": {
+        "date_query_unambiguous": true,
+        "date_query_echo": true,
+        "native_dates_inside_query_bounds": true
+      }
     },
     {
       "source": "paho",
       "section": "chile_news",
       "url": "https://www.paho.org/en/news?c%5B%5D=65",
       "native_records": 9,
-      "body_sha256": "0f6c30a7dcec62bbd5b090c05086306acf37742fdb36e4610d9007b5b136e52c"
+      "body_sha256": "0f6c30a7dcec62bbd5b090c05086306acf37742fdb36e4610d9007b5b136e52c",
+      "date_query_checks": null
     },
     {
       "source": "paho",
       "section": "chile_news_es",
       "url": "https://www.paho.org/es/noticias?c%5B%5D=65",
       "native_records": 9,
-      "body_sha256": "922149ba5306a0e6831645485f09b08e850318fcd6d6a2755ec6d5907e51690c"
+      "body_sha256": "922149ba5306a0e6831645485f09b08e850318fcd6d6a2755ec6d5907e51690c",
+      "date_query_checks": null
     },
     {
       "source": "paho",
       "section": "chile_news_es",
       "url": "https://www.paho.org/es/noticias?c%5B0%5D=65&page=1",
       "native_records": 9,
-      "body_sha256": "c53aa54496b00ad9fbfadec79a2b1f5b32ffa1c5135f7de4defab8d4c62bab14"
+      "body_sha256": "c53aa54496b00ad9fbfadec79a2b1f5b32ffa1c5135f7de4defab8d4c62bab14",
+      "date_query_checks": null
     },
     {
       "source": "paho",
       "section": "epidemiological_alerts",
       "url": "https://www.paho.org/en/epidemiological-alerts-and-updates",
       "native_records": 18,
-      "body_sha256": "39b66b001eb0e2a4643ed1fe2f385f31046d372735ffdab669a148062a8ccd5b"
+      "body_sha256": "39b66b001eb0e2a4643ed1fe2f385f31046d372735ffdab669a148062a8ccd5b",
+      "date_query_checks": null
     },
     {
       "source": "paho",
       "section": "technical_reports",
       "url": "https://www.paho.org/es/informes-tecnicos",
       "native_records": 18,
-      "body_sha256": "9b86f536f43d33cc410a79967dcff111a2d4f53840fd695ec308197fdebb023a"
+      "body_sha256": "9b86f536f43d33cc410a79967dcff111a2d4f53840fd695ec308197fdebb023a",
+      "date_query_checks": null
     }
   ],
   "details": [
