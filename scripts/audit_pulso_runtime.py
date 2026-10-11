@@ -387,6 +387,38 @@ def current_execution_discovery(discovery, started_at):
     return stale, False
 
 
+def annotate_pending(report, execution):
+    """Explain operational pending states only when current observations support it."""
+    unresolved = []
+    for row in report["matrix"]:
+        if row["editorial_outcome"] != "pending" or not row["exact_reason"].startswith("not_processed;"):
+            continue
+        reason = None
+        pending = [item for item in row["queue"] if item["status"] == "pending"]
+        ended = execution.get("finished_at") or execution.get("started_at")
+        if ended and pending and all(item.get("publication_date") and item["publication_date"] > ended[:10] for item in pending):
+            reason = "processing_not_attempted:future_BACKFILL_date_excluded_by_queue_ready"
+        elif ended and pending and all(item.get("retry_at") and item["retry_at"] > ended for item in pending):
+            reason = "processing_not_attempted:retry_at_not_reached"
+        elif execution.get("engine_called") and not execution.get("engine_completed"):
+            reason = "processing_not_completed:runtime_error:" + str(execution.get("error_type", "unknown"))
+        elif execution.get("mode") == "discovery_only":
+            reason = "processing_not_attempted:explicit_discovery_only"
+        elif execution.get("engine_completed"):
+            limit = execution.get("processing_limit", 0)
+            if limit and execution.get("processing_attempts_increased", 0) >= limit:
+                reason = "processing_not_attempted:global_processing_limit_reached"
+            elif execution.get("model_capacity_after") == {"fast": False, "deep": False}:
+                reason = "processing_not_attempted:both_model_budget_capacities_exhausted"
+        if reason:
+            row["exact_reason"] = reason
+            row["operational_reason_evidence"] = "execution flags, real attempt deltas and read-only budget state; no editorial rejection inferred"
+        else:
+            row["operational_reason_unresolved"] = True
+            unresolved.append(row["url"])
+    report["unresolved_pending_operational_reasons"] = unresolved
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=REPOSITORY)
@@ -419,7 +451,11 @@ def main():
                  "started_at": datetime.now(timezone.utc).isoformat(), "processing_limit": args.limit,
                  "ai_credentials_present": bool(os.environ.get("OPENAI_API_KEY")), "ai_guardrails_modified": False}
     if not args.report_only:
-        from radar_salud import engine_cli
+        from radar_salud import ai_budget, engine_cli
+        try:
+            execution["budget_before"] = json.loads(json.dumps(ai_budget.status()))
+        except Exception as error:
+            execution["budget_before_read_error"] = type(error).__name__ + ":" + str(error)[:200]
         observer = CaptureObserver(capture_path, {normalized_url(row["url"]) for row in control["articles"]})
         original_argv = sys.argv
         previous_term = signal.getsignal(signal.SIGTERM)
@@ -440,12 +476,21 @@ def main():
             sys.argv = original_argv
             signal.signal(signal.SIGTERM, previous_term)
             observer.flush()
+            try:
+                execution["budget_after"] = json.loads(json.dumps(ai_budget.status()))
+                execution["model_capacity_after"] = {kind: ai_budget.has_capacity(kind) for kind in ("fast", "deep")}
+            except Exception as error:
+                execution["budget_after_read_error"] = type(error).__name__ + ":" + str(error)[:200]
+            execution["finished_at"] = datetime.now(timezone.utc).isoformat()
     discovery = read_json(root / "data/state/discovery_run.json", {})
     discovery_record = discovery
     discovery_current = None
     if not args.report_only:
         discovery, discovery_current = current_execution_discovery(discovery, execution["started_at"])
     after = read_json(queue_path, {})
+    if not args.report_only:
+        execution["processing_attempts_increased"] = sum(max(0, item.get("attempts", 0) - before.get(key, {}).get("attempts", 0))
+            for key, item in after.items() if item.get("source") == SOURCE)
     history_value = read_json(root / "data/history/superintendencia_signals.json", [])
     history = history_value.get("signals", []) if isinstance(history_value, dict) else history_value
     feed = curate_history(history)
@@ -466,6 +511,7 @@ def main():
                   capture_manifest=str(capture_path / "manifest.json"),
                   unrelated_queue_unchanged=unrelated_before == digest_json({key: row for key, row in after.items() if row.get("source") != SOURCE}),
                   feed_method="actual full-history curate(resolve_external=False); no injected rows")
+    annotate_pending(report, report["last_core_execution"] or execution)
     atomic_json(out, report)
     print(json.dumps({"report": str(out), "core_source_present": report["core_source_present"],
                       "counts": report["counts"], "recall": {days: row["recall"] for days, row in report["windows"].items()},

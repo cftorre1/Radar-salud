@@ -177,3 +177,25 @@ def test_recent_history_feed_exclusion_is_flagged_unresolved():
     assert report["matrix"][0]["traceability_unresolved"]
     assert report["unresolved_recent_feed_exclusions"] == [row["source_url"]]
     assert "specific exclusion is not emitted" in report["matrix"][0]["exact_reason"]
+
+
+@pytest.mark.parametrize("execution,reason", [
+    ({"engine_called": True, "engine_completed": True, "mode": "discovery_only"}, "explicit_discovery_only"),
+    ({"engine_called": True, "engine_completed": True, "mode": "real_core_processing", "processing_limit": 250,
+      "processing_attempts_increased": 250, "model_capacity_after": {"fast": False, "deep": False}}, "global_processing_limit_reached"),
+    ({"engine_called": True, "engine_completed": True, "mode": "real_core_processing", "processing_limit": 250,
+      "processing_attempts_increased": 45, "model_capacity_after": {"fast": False, "deep": False}}, "both_model_budget_capacities_exhausted"),
+])
+def test_pending_reason_uses_observed_execution_and_preserves_unknown_editorial_gate(execution, reason):
+    report = audit.join_report(discovery([trace("pending")]), {"pending": item("pending", "pending")}, [], [], control([]))
+    audit.annotate_pending(report, execution)
+    assert report["matrix"][0]["exact_reason"] == "processing_not_attempted:" + reason
+    assert report["matrix"][0]["passed_gate"] is None
+    assert not report["unresolved_pending_operational_reasons"]
+
+
+def test_pending_without_observed_stop_cause_remains_unresolved():
+    report = audit.join_report(discovery([trace("pending")]), {"pending": item("pending", "pending")}, [], [], control([]))
+    audit.annotate_pending(report, {"mode": "report_only_rejoin", "engine_called": False})
+    assert report["matrix"][0]["operational_reason_unresolved"]
+    assert report["unresolved_pending_operational_reasons"] == [BASE + "pending/"]
