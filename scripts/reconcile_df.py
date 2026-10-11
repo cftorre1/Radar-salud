@@ -43,6 +43,7 @@ def main():
     ap.add_argument("--max-pages", type=int, default=12)
     ap.add_argument("--minutes", type=int, default=12)
     ap.add_argument("--reuse-originals", action="store_true",help="Replay previously captured originals; retain their original capture timestamps")
+    ap.add_argument("--refresh-listings",action="store_true",help="Poll current DF listings while reusing hashed detail originals")
     ap.add_argument("--capture-fixtures", action="store_true",help="Save publisher markup samples for date/body regressions")
     ap.add_argument("--capture-only",action="store_true",help="Reconcile/capture without consuming an AI processing slot")
     ap.add_argument("--repair-contaminated-bodies",action="store_true",help="Trace and re-evaluate old decisions based on unrelated recommendation text")
@@ -80,6 +81,12 @@ def main():
                 "evidence":{k:v for k,v in parsed["metadata"].items() if k!="page_text"},"replayed_by_sha":report["code_sha"],
                 "readable_characters":len(parsed["metadata"]["page_text"]),"article_excerpt":parsed["metadata"]["page_text"][:1200]}
     atomic_json(out, report)
+    if args.refresh_listings:
+        report['mode']='fresh_listings_with_captured_details_plus_new_fetches'
+        for page in DfHealthScout.PAGES:
+            cache.pop(page,None)
+            previous=report['originals'].pop(page,None)
+            if previous:report.setdefault('previous_listing_captures',{})[page]=previous
     if args.capture_fixtures:
         samples={"df_san_carlos_real":"aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
                  "df_catastrofe_real":"kast-decreta-estado-de-catastrofe-tras-aluvion-en-las-condes-que-deja-al",
@@ -243,7 +250,7 @@ def main():
             atomic_json(health_path,health)
             watermark_path=root/'data/state/discovery_watermarks.json'
             after=json.loads(watermark_path.read_text())
-            if 'diario_financiero' in watermarks:after['diario_financiero']=watermarks['diario_financiero']
+            if not args.refresh_listings and 'diario_financiero' in watermarks:after['diario_financiero']=watermarks['diario_financiero']
             atomic_json(watermark_path,after)
         queue = PendingQueue(queue.path)
         history = load_history(root / "data/history/superintendencia_signals.json")
