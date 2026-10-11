@@ -52,6 +52,7 @@ jobs:
           if test -f data/audits/pulso_targeted_primary_date_audit_2026_10_11.json; then git add data/audits/pulso_targeted_primary_date_audit_2026_10_11.json; fi
           if test -f data/audits/pulso_primary_corpus_2026_10_11.json; then git add data/audits/pulso_primary_corpus_2026_10_11.json; fi
           if test -f tests/fixtures/pulso_thin_primary_real/manifest.json; then git add tests/fixtures/pulso_thin_primary_real; fi
+          if test -f tests/fixtures/pulso_editorial_exception_real/manifest.json; then git add tests/fixtures/pulso_editorial_exception_real; fi
           git diff --cached --quiet || git commit -m "audit(pulso): preserve targeted original dates and full bodies [skip ci]"
           git fetch origin codex/b-pulso-runtime-20261011
           git rebase origin/codex/b-pulso-runtime-20261011
@@ -66,4 +67,5 @@ jobs:
             data/audits/pulso_targeted_primary_date_audit_2026_10_11.json
             data/audits/pulso_primary_corpus_2026_10_11.json
             tests/fixtures/pulso_thin_primary_real/
+            tests/fixtures/pulso_editorial_exception_real/
           if-no-files-found: error
