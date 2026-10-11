@@ -461,7 +461,8 @@ def _sanction_pulses(signals, today=None):
     for s in signals:
         scopes=s.get("scopes") or []
         sector=next((x for x in ("Isapres","Prestadores") if x in scopes),None)
-        age=(today-_d(s.get("event_date"))).days if _d(s.get("event_date")) else 999
+        publication = _d(s.get("publication_date") or s.get("event_date"))
+        age=(today-publication).days if publication else 999
         if s.get("event_type")=="SANCTION" and sector:
             if 0<=age<=30:groups[sector].append(s)
             # Individual and older resolutions stay in durable history.
@@ -481,7 +482,7 @@ def _sanction_pulses(signals, today=None):
             if topic:parts.append(topic)
             return " · ".join(x for x in parts if x)
         resolutions=[{"title":s.get("title"),"source_name":s.get("source_name"),
-            "url":s.get("source_url"),"event_date":s.get("event_date"),"material":material(s),
+            "url":s.get("source_url"),"event_date":s.get("event_date"),"publication_date":s.get("publication_date"),"material":material(s),
             "ingestion_mode":s.get("ingestion_mode"),"detected_at":s.get("detected_at")}
             for s in items if s.get("source_url")]
         lead=material(items[0])
@@ -493,11 +494,13 @@ def _sanction_pulses(signals, today=None):
         if brief_topic:brief_parts.append(brief_topic)
         brief_material=" · ".join(x for x in brief_parts if x)
         pulse=dict(latest,title=f"Pulso de sanciones a {sector} · últimos 30 días",
-            what_happened=f"{len(items)} {'sanción registrada' if len(items)==1 else 'sanciones registradas'} en los últimos 30 días. {len(live)} detectadas en LIVE; {len(items)-len(live)} incorporadas desde el histórico."+(f" Entre ellas: {lead}." if lead else ""),
+            what_happened=f"{len(items)} {'resolución sancionadora publicada' if len(items)==1 else 'resoluciones sancionadoras publicadas'} en los últimos 30 días. {len(live)} detectadas en LIVE; {len(items)-len(live)} incorporadas desde el histórico."+(f" Entre ellas: {lead}." if lead else ""),
             why_it_matters="Permite observar focos recientes de fiscalización y revisar cada resolución en su fuente original.",
             source_alternatives=resolutions,
             card_what=f"{len(items)} sanciones a {sector} en 30 días."+(f" Entre ellas: {brief_material}." if brief_material else ""),
-            sanction_count=len(items),source_documents=[],key_points=[f"{x['material']} · {x['title']}" for x in resolutions if x['material']],risk_notes=[],key_facts=[],
+            event_date=max((s.get("publication_date") or s.get("event_date") or "" for s in items)),
+            publication_date=max((s.get("publication_date") or s.get("event_date") or "" for s in items)),
+            window_basis="publication_date", sanction_count=len(items),source_documents=[],key_points=[f"{x['material']} · {x['title']}" for x in resolutions if x['material']],risk_notes=[],key_facts=[],
             related_reference_ids=[],related_reference_contexts=[],affected_processes=[],
             regulated_entity=None,sanction_amount=None,sanction_unit=None,fiscalization_topic=None,
             radar_score=max(s.get("radar_score") or 0 for s in items),

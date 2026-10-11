@@ -136,3 +136,32 @@ def test_fiscalization_legacy_seen_is_respected_and_other_source_identity_unchan
     assert queue.discover(raw.source_slug,[raw],seen={legacy_fingerprint(raw)}) == 0
     raw.source_slug='minsal'
     assert fingerprint(raw) == legacy_fingerprint(raw)
+
+
+def test_sis_date_conflict_gets_durable_review_reason_and_appeal_is_not_new_sanction():
+    import pytest
+    from radar_salud.processing import RejectedProcessing
+    from radar_salud.models import RawItem
+    from radar_salud.superintendencia_fiscalizacion import process_fiscalizacion
+    raw=RawItem('superintendencia_fiscalizacion','Resolución Exenta IP/N°7462','https://example.org/7462','SIS','official','2026-09-23',metadata={'date_conflicts':['publication_precedes_emission']})
+    with pytest.raises(RejectedProcessing, match='source_date_conflict_requires_review'):
+        process_fiscalizacion(raw,{})
+    raw.metadata={'scope':'Prestadores','fiscalization_kind':'sanction','regulated_entity':'Red Salud Alameda','sanction_effect':'amendment','sanction_amount':120,'sanction_unit':'UF','publication_date':'2026-08-20','emission_date':'2026-08-20','event_date_basis':'emission'}
+    raw.event_date='2026-08-20'
+    row=process_fiscalizacion(raw,{'base_confidence':100})
+    assert row['event_type']=='SANCTION_AMENDMENT'
+    assert row['publication_date']==row['emission_date']=='2026-08-20'
+    assert 'modifica una sanción anterior' in row['why_it_matters']
+
+
+def test_sanction_pulse_counts_publications_without_changing_act_dates():
+    import importlib.util
+    from pathlib import Path
+    from datetime import date
+    spec=importlib.util.spec_from_file_location('fiscal_export',Path('scripts/export_web_snapshot.py'))
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    row={'title':'Resolución 6836','source_url':'https://example.org/6836','event_type':'SANCTION','scopes':['Prestadores'],'event_date':'2026-09-08','publication_date':'2026-09-15','regulated_entity':'Clínica Los Carrera','sanction_amount':70,'sanction_unit':'UF'}
+    pulse,=module._sanction_pulses([row],date(2026,10,11))
+    assert pulse['event_date']=='2026-09-15' and pulse['window_basis']=='publication_date'
+    assert pulse['source_alternatives'][0]['event_date']=='2026-09-08'
+    assert pulse['source_alternatives'][0]['publication_date']=='2026-09-15'

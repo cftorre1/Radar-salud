@@ -148,20 +148,29 @@ class SuperintendenciaFiscalizacionScout:
 
 def process_fiscalizacion(raw,cfg):
     from .pipeline import build_signal
+    from .processing import RejectedProcessing, DeferredProcessing
+    if raw.metadata.get("date_conflicts"):
+        raise RejectedProcessing("source_date_conflict_requires_review")
+    if not raw.event_date:
+        raise DeferredProcessing("missing_verified_fiscalization_date")
     kind=raw.metadata.get("fiscalization_kind")
     scope=raw.metadata.get("scope") or "Sistema de salud"
     entity=raw.metadata.get("regulated_entity")
     topic=raw.metadata.get("fiscalization_topic")
     amount=raw.metadata.get("sanction_amount");unit=raw.metadata.get("sanction_unit")
     if kind=="sanction":
+        if not entity:
+            raise DeferredProcessing("missing_verified_regulated_entity")
         bits=[]
         if entity:bits.append(entity)
         if amount and unit:bits.append(f"{amount:g} {unit}")
         if topic:bits.append(topic)
-        why=("Permite observar qué incumplimientos está sancionando la Superintendencia y comparar recurrencia, "
-             "materias y actores. Es especialmente útil para anticipar focos de cumplimiento y fiscalización.")
+        effect = raw.metadata.get("sanction_effect", "sanction")
+        subject = topic or "la materia descrita en la resolución"
+        why = (f"{entity}: la resolución {'modifica una sanción anterior' if effect in ('amendment', 'revocation') else 'documenta una medida de cumplimiento'} "
+               f"en {subject}. Permite revisar el incumplimiento y el efecto exacto del acto en la fuente oficial.")
         raw.metadata.update({"what_happened":raw.raw_text or raw.title,"why_it_matters":why,
-          "signal_types":["Fiscalización"],"scopes":[scope],"event_type":"SANCTION",
+          "signal_types":["Fiscalización"],"scopes":[scope],"event_type":{"amendment":"SANCTION_AMENDMENT","revocation":"SANCTION_REVOCATION"}.get(effect,"SANCTION"),
           "watch_tags":["fiscalización","sanción",scope.lower()]+([topic.lower()] if topic else []),
           "scores":{"economic":65 if amount else 50,"regulatory":88,"scope":72,"novelty":70,"actionability":84}})
     else:
@@ -173,5 +182,8 @@ def process_fiscalizacion(raw,cfg):
     s=build_signal(raw,cfg);row=s.to_dict()
     row["signal_types"]=["Fiscalización"];row["scopes"]=[scope]
     row["regulated_entity"]=entity;row["sanction_amount"]=amount;row["sanction_unit"]=unit
+    row.update(publication_date=raw.metadata.get("publication_date"), emission_date=raw.metadata.get("emission_date"),
+        event_date_basis=raw.metadata.get("event_date_basis"), date_conflicts=raw.metadata.get("date_conflicts", []),
+        sanction_effect=raw.metadata.get("sanction_effect"),actor_evidence=raw.metadata.get("actor_evidence"))
     row["fiscalization_topic"]=topic;row["source_documents"]=raw.metadata.get("attachments",[])
     return row
