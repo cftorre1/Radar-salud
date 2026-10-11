@@ -26,6 +26,13 @@ MAX_FILE_BYTES = 262_144
 MAX_PLAN_BYTES = 65_536
 MAX_CONTEXT_BYTES = 65_536
 MAX_CONTEXT_FILES = 8
+VALIDATION_CREDENTIALS = frozenset({
+    "OPENAI_API_KEY", "GH_TOKEN", "GITHUB_TOKEN",
+    "AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_SESSION_TOKEN", "AWS_SECURITY_TOKEN",
+    "AWS_ACCESS_KEY", "AWS_SECRET_KEY", "AWS_WEB_IDENTITY_TOKEN_FILE",
+    "AWS_CONTAINER_CREDENTIALS_RELATIVE_URI", "AWS_CONTAINER_CREDENTIALS_FULL_URI",
+    "AWS_CONTAINER_AUTHORIZATION_TOKEN", "AWS_CONTAINER_AUTHORIZATION_TOKEN_FILE",
+})
 ALLOWED_ROOTS = {"src", "scripts", "web"}
 CANONICAL_ROOT_FILES = {"app.js", "index.html"}
 GENERATED_ASSETS = {"web/app.js": "app.js", "web/index.html": "index.html"}
@@ -282,8 +289,11 @@ def run_command(command: list[str], root: Path, *, timeout: int = 300) -> dict:
         # Same-size replacements within one second can otherwise reuse stale
         # .pyc files and test the original failure rather than candidate content.
         with tempfile.TemporaryDirectory(prefix="autonomy-validation-cache-") as cache:
-            environment = {**os.environ, "PYTHONPYCACHEPREFIX": cache, "PYTHONDONTWRITEBYTECODE": "1",
-                "PYTHONPATH": str(root / "src") + os.pathsep + str(root)}
+            # QA must not opt into credential-gated live/paid integrations merely
+            # because its parent can dispatch or request a policy-approved model.
+            environment = {key: value for key, value in os.environ.items() if key not in VALIDATION_CREDENTIALS}
+            environment.update({"PYTHONPYCACHEPREFIX": cache, "PYTHONDONTWRITEBYTECODE": "1",
+                "PYTHONPATH": str(root / "src") + os.pathsep + str(root)})
             completed = subprocess.run(command, cwd=root, env=environment, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout, check=False)
         return {"command": command, "returncode": completed.returncode, "output": redact(completed.stdout[-24_000:])}
     except (OSError, subprocess.TimeoutExpired) as exc:

@@ -322,6 +322,28 @@ class RecoveryTests(unittest.TestCase):
             with self.assertRaisesRegex(recovery.RecoveryError, "disables"):
                 recovery.generate_plan(self.root, [], "failure", {})
 
+    def test_validation_child_drops_credentials_and_preserves_parent_and_network(self):
+        credentials = {key: "isolated-validation-sentinel" for key in recovery.VALIDATION_CREDENTIALS}
+        ordinary = {"AUTONOMY_VALIDATION_MARKER": "preserved", "HTTPS_PROXY": "http://proxy.test:8080", "REQUESTS_CA_BUNDLE": "/tmp/validation-ca.pem"}
+        child = "import json, os; print(json.dumps({'credentials_present': [key for key in " + repr(sorted(credentials)) + " if key in os.environ], 'ordinary': {key: os.environ.get(key) for key in " + repr(sorted(ordinary)) + "}}))"
+        with patch.dict(os.environ, {**credentials, **ordinary}):
+            result = recovery.run_command([sys.executable, "-c", child], self.root)
+            self.assertEqual(result["returncode"], 0, result)
+            payload = json.loads(result["output"])
+            self.assertEqual(payload["credentials_present"], [])
+            self.assertEqual(payload["ordinary"], ordinary)
+            for key, value in credentials.items():
+                self.assertEqual(os.environ[key], value, key)
+
+    def test_real_pytest_gate_does_not_enable_credential_opt_in_integration(self):
+        gate = self.root / "tests/test_credential_boundary.py"
+        gate.write_text("import os\n\ndef test_real_gate_executes():\n    assert os.environ['AUTONOMY_VALIDATION_MARKER'] == 'executed'\n    assert not os.environ.get('OPENAI_API_KEY'), 'credential would enable unrelated integration'\n")
+        with patch.dict(os.environ, {"OPENAI_API_KEY": "isolated-validation-sentinel", "AUTONOMY_VALIDATION_MARKER": "executed"}):
+            result = recovery.run_command([sys.executable, "-m", "pytest", "-q", "tests/test_credential_boundary.py"], self.root)
+            self.assertEqual(result["returncode"], 0, result)
+            self.assertIn("1 passed", result["output"])
+            self.assertEqual(os.environ["OPENAI_API_KEY"], "isolated-validation-sentinel")
+
     def test_model_requires_shared_task_bound_approved_budget_reservation(self):
         (self.root / "config").mkdir()
         (self.root / "config/autopilot.json").write_text('{"ai_builder_enabled": true}')
