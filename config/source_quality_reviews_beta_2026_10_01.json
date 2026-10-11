@@ -55,8 +55,12 @@
     "clinicas_achs_salud": {
       "status": "pass_active",
       "slug": "clinicas_achs_salud",
-      "evidence": "https://www.achs.cl/lista-noticias",
-      "reason": "official dated newsroom includes capacity and Fonasa/MCC signals"
+      "evidence": "https://www.achs.cl/centro-de-noticias",
+      "reason": "official dated newsroom includes capacity and Fonasa/MCC signals",
+      "operational_status": "blocked_pending_live_validation",
+      "operational_reviewed_at": "2026-10-11",
+      "operational_evidence": "data/audits/source_e/clinicas_achs_salud.json",
+      "inventory_90_days_complete": false
     },
     "redsalud": {
       "status": "pass_existing",
@@ -97,20 +101,32 @@
     "achs_seguro_laboral": {
       "status": "pass_active",
       "slug": "achs_seguro_laboral",
-      "evidence": "https://www.achs.cl/lista-noticias",
-      "reason": "dated official newsroom with health-labor and prevention signals"
+      "evidence": "https://www.achs.cl/centro-de-noticias",
+      "reason": "dated official newsroom with health-labor and prevention signals",
+      "operational_status": "blocked_pending_live_validation",
+      "operational_reviewed_at": "2026-10-11",
+      "operational_evidence": "data/audits/source_e/achs_seguro_laboral.json",
+      "inventory_90_days_complete": false
     },
     "mutual_seguridad": {
       "status": "pass_active",
       "slug": "mutual_seguridad",
       "evidence": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
-      "reason": "official newsroom with dated operational/prevention updates"
+      "reason": "Source Quality Gate historically passed; current original access is blocked by Incapsula. Do not infer live operational coverage.",
+      "operational_status": "blocked_pending_live_validation",
+      "operational_reviewed_at": "2026-10-11",
+      "operational_evidence": "data/audits/source_e/mutual_seguridad.json",
+      "inventory_90_days_complete": false
     },
     "ist": {
       "status": "pass_active",
       "slug": "ist",
       "evidence": "https://ist.cl/noticias/",
-      "reason": "stable dated official newsroom; strict noise filter required"
+      "reason": "Current original-domain article headers reconciled; heading selectors repaired; live HTML replay blocked. Historical 2016 discovery was not current coverage.",
+      "operational_status": "blocked_pending_live_validation",
+      "operational_reviewed_at": "2026-10-11",
+      "operational_evidence": "data/audits/source_e/ist.json",
+      "inventory_90_days_complete": false
     }
   },
   "media": {

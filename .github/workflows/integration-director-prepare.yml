@@ -1,0 +1,47 @@
+name: Reproduce reviewed SIS integration candidate
+on:
+  push:
+    branches: [codex/integration-director-20261011]
+    paths: ['.github/integration-director-prepare']
+permissions:
+  contents: write
+concurrency:
+  group: integration-director-prepare
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest
+      - name: Merge pinned source candidate and reproduce reviewed resolution
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/codex/integration-director-20261011
+          git config user.name 'Codex Integration Director'
+          git config user.email 'codex@users.noreply.github.com'
+          git fetch origin e654dd623001ddf6de54da5e31d84a795e78e997
+          git merge --no-commit --no-ff e654dd623001ddf6de54da5e31d84a795e78e997 || test -f .git/MERGE_HEAD
+          python scripts/integration/resolve_sis.py
+          python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json --offline
+          cp data/source_health.json web/data/source_health.json
+          python scripts/review_candidate.py --web web --sha "$GITHUB_SHA" --output data/audits/integration_20261011/reviewer-sis-candidate.json
+          python -m pytest -q
+          node --test tests/web.test.cjs
+          git add config data src scripts tests web .github/workflows/fiscalization-recovery.yml
+          git diff --cached --check
+          git commit -m 'integrate(sis-suseso): reproduce reviewed merge preserving DF and record identities'
+          git push origin HEAD:refs/heads/codex/integration-director-20261011
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-director-preparation-${{ github.sha }}
+          path: data/audits/integration_20261011/

@@ -1,0 +1,190 @@
+{
+  "source_slug": "mutual_seguridad",
+  "checkpoint": "CURRENT_CAPTURE_VERIFIED_FINITE_OFFICIAL_FALLBACKS_EVALUATED",
+  "as_of_chile": "2026-10-11",
+  "source_availability": "OPERATIVE_DEGRADED",
+  "coverage_90_days": "INCOMPLETE_PUBLIC_ARCHIVE_CONTINUATION",
+  "live_evidence": {
+    "run_id": "38114830625",
+    "captured_at": "2026-10-11T05:28:49.477795+00:00",
+    "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+    "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+    "http_status": 200,
+    "tls_verified": true,
+    "waf_challenge": false,
+    "identified_and_browser_user_agents": "both HTTP 200, actual publisher HTML",
+    "artifact": "data/audits/source_e_recovery/actions/38114830625/14ab5b96dc76929b4786-0.body",
+    "sha256": "b717cee04366aecd0dfe406b41ff10e1850cdc81f70161b5c2ba2262054d1d20",
+    "native_cards": {
+      "category_branches": 25,
+      "card_occurrences": 119,
+      "distinct_query_selected_articles": 84,
+      "unrecognized_cards": 0,
+      "newest_explicit_publication_date": "2026-10-09",
+      "newest_original_date_field": "9 oct. 2026",
+      "client_pagination": "collectUniqueCards unions all categories, deduplicates href and chunks into five-card pages without fetch"
+    }
+  },
+  "transport_attribution": {
+    "codex_executor": "Proxy CONNECT returns 403 before publisher TLS; not an origin response or source-wide blocker",
+    "github_actions": "Real origin content captured with verified TLS and no challenge; supersedes prior cached/indexed iframe observations"
+  },
+  "official_alternatives_evaluated": [
+    {
+      "url": "https://www.mutual.cl/robots.txt",
+      "result": "HTTP 200; public pages allowed; only /portal/privado/empresas/sucursalvirtual/ disallowed",
+      "artifact": "data/audits/source_e_recovery/actions/38114830625/24b36bf097028858ac13-0.body"
+    },
+    {
+      "url": "https://www.mutual.cl/sitemap.xml",
+      "result": "HTTP 200 XML listing institutional routes, newsroom, memorias and finance; no dated article inventory",
+      "artifact": "data/audits/source_e_recovery/actions/38114830625/5ef07b5f611c28e073f9-0.body"
+    },
+    {
+      "url": "https://www.mutual.cl/feed/",
+      "result": "Official redirect to portal home, actual HTML; not RSS",
+      "artifact": "data/audits/source_e_recovery/actions/38114830625/10caecc9fd89abfb268c-2.body"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/conocenos/memorias/",
+      "result": "Official sitemap route; older indexed Memoria 2024 has publication month May 2025 only, insufficient exact publication day; current captures handled by parent Actions"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/conocenos/informacion-financiera/",
+      "result": "Official sitemap route; reporting/approval dates are not publication evidence; current captures handled by parent Actions"
+    }
+  ],
+  "implemented_contract": {
+    "interface": "MutualNewsScout(fetcher=None, as_of=None, max_pages=100).discover_inventory(); discover() returns raw_items",
+    "publication_evidence": "Explicit native card field bound to exact IBM query article URL, strict detail title/body identity, and listing/detail SHA256; any declared detail date must agree",
+    "prohibited_inference": [
+      "CMS modification timestamp",
+      "sitemap lastmod",
+      "data period",
+      "event date in prose",
+      "related news date",
+      "path year"
+    ],
+    "paging": "Only observed official category nextPage anchors; independent branches; repeated states, limits and missing branches leave coverage incomplete",
+    "materiality": "Shared occupational_sources deterministic gate; rejected editorial noise retains verified capture evidence",
+    "honest_health": "No source-health edits in this checkpoint; pending detail, parse or category coverage leaves coverage_complete=false"
+  },
+  "regression_tests": {
+    "command": ".venv/bin/python -m pytest -q tests/test_mutual_recovery.py",
+    "result": "85 Mutual PASS; actualRun13 wire hashes, all21 literal rawhrefs and verifiedfinal200 institutional layouts/noadditionalIDs; guard/deadline regressions pass.",
+    "shared_command": ".venv/bin/python -m pytest -q tests/test_mutual_recovery.py tests/test_occupational_integrity.py",
+    "shared_result": "161 Mutual + integrity passed after gate and reviewer adjustment; py_compile passed."
+  },
+  "follow_up_checkpoint": {
+    "coverage_checks": [
+      "Dropdown category IDs missing from server HTML are explicit gaps",
+      "A visible lastPage anchor without nextPage cannot imply branch exhaustion",
+      "Invalid/conflicting listing dates and unverified detail identity produce explicit diagnostics",
+      "An unordered category cannot cross the cutoff early; capture continues to branch exhaustion",
+      "All diagnostics distinguish proxy denial from real origin HTTP status"
+    ],
+    "paging_resolution_routes": "data/audits/source_e_recovery/mutual_paging_routes.json",
+    "known_live_validation_pending": "None of the identified finite technical checks is left unperformed: robots/RSS/sitemap/publicscripts/search/fouralternative listings/PDFs, actual company native browser, and all21observedWorker nativeanchors evaluated. Publisher archive coverage gap remains explicit."
+  },
+  "next_actions": [
+    "Parent retains honest source_health warning and integrates reviewed source checkpoint in the isolated branch.",
+    "Resume only when an observed official publisher archive/publication route changes; use stored rawhashes/listing/body/date evidence to compare without reconstructing context."
+  ],
+  "live_detail_validation": {
+    "run_id": "38115788047",
+    "request_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fsalud-mental-y-autocuidado-mutual-de-seguridad-impulsa-jornada-en-division-de-salud-del-ejercito",
+    "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/noticias_detalle/salud-mental-y-autocuidado-mutual-de-seguridad-impulsa-jornada-en-division-de-salud-del-ejercito/!ut/p/z1/jVJda8JAEPwt_oBj93KfPpoKNdWk0nBN715Kak4JahSxFvvrG6EU1Hpx3wZmdndmFxy8gWvKQ70o9_WmKVcttk6-MzqWCdNR1E9jhVJlXAs9ofgcQXFOmKKhKOMsHWtkLDEUXECvZVifC36fHm_UALv0r2BjsMP088MuLpe5duvCswpw5_P-iSNEyAXrIvBfQmAL27pQt10oKA61_wLTbHbr9sT5qeN2VldgfTWfeSoZ6UvhCfdKEs2whWKuBPdeaE9hhPAUTPX0FQ9_mToK27UxpjmS5cvoO87Ioxn0ej9GYrq5/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+    "redirect_count": 1,
+    "http_status": 200,
+    "tls_verified": true,
+    "sha256": "5aa63bebd74e94b4b119b728f9e068f5ca389f5bc2037f531ea2841c961460bc",
+    "artifact": "data/audits/source_e_recovery/actions/38115788047/0373bc415094137b062c-1.body",
+    "native_title_selector": "div.noticia-conteiner > div.cabecera-noticia > h1.titulo-noticia",
+    "native_date_selector": "div.cabecera-noticia > div.fecha-noticia",
+    "native_body_selector": "div.noticia-conteiner div.text-noticia",
+    "publication_date": "2026-10-09",
+    "original_date": "9 oct. 2026",
+    "body_chars": 1202,
+    "materiality_accepted": false,
+    "materiality_reason": "no_verifiable_material_change",
+    "related_cards_excluded": true,
+    "same_article_redirect": "Decoded WCM query slug equals official final noticias_detalle path article slug; opaque IBM state may vary"
+  },
+  "observed_paging_failure": {
+    "run_id": "38115788047",
+    "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MK5h3w7g=GB=/",
+    "http_status": 200,
+    "reason": "HTML responds as Noticias but contains no native card components; stable-route+p0 is not verified archive continuation",
+    "artifact": "data/audits/source_e_recovery/actions/38115788047/52c97d93417e2932036d-0.body",
+    "next_action": "Parent Run4 probes exact observed alternate theme base with relative nextPage; do not claim 90-day completeness before verified traversal"
+  },
+  "theme_paging_contract": {
+    "origin_evidence_run_id": "38115788047",
+    "origin_artifact": "data/audits/source_e_recovery/actions/38115788047/14ab5b96dc76929b4786-0.body",
+    "base_evidence": {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+      "field": "link[rel=\"alternate\"]#YaHLaEuLiYE",
+      "value": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/",
+      "observed_script": "wpModules.theme.WindowUtils.baseURL.resolve(element.href)",
+      "purpose": "experimental_archive_fallback",
+      "browser_anchor_rewrite_verified": false
+    },
+    "observed_next_component_2_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKQCPjPdRw=GH=/",
+    "method": "Observed alternate field retained only as experimental archive fallback; each response must prove category progress before any horizon completeness. Stable+p0 has no cards; old theme+p0 repeats initial25 branches.",
+    "opaque_state": "MK token changes between captured listings; every continuation must use the current captured anchor, not a frozen token",
+    "live_status": "FALLBACK_EXPERIMENTAL_EVALUATED_NOT_BROWSER_CONTRACT; Run6 public JS proves Promise initialization, not href resolution."
+  },
+  "public_theme_contract_script": "data/audits/source_e_recovery/mutual_paging_routes.json: public_theme_contract_script_routes contains exact publisher script.src with wp_theme_utils; prepared for conditional live contract inspection, no request made by agent",
+  "actual_run4_replay": "data/audits/source_e_recovery/mutual_run4_replay.json",
+  "browser_probe": {
+    "script": "scripts/mutual_public_paging_probe.py",
+    "workflow_dependencies": [
+      "pip install playwright",
+      "python -m playwright install --with-deps chromium"
+    ],
+    "command": "python scripts/mutual_public_paging_probe.py --output OUTPUT/mutual-browser --as-of 2026-10-11",
+    "purpose": "Anonymous official robots-allowed public GET navigation; before executing document checks challenge; blocks third-party/private requests and non-GET/HEAD; stores no cookie or request headers; labels rendered DOM separately from publisher response bytes.",
+    "run_status": "VERIFIED_CORRECTED_WORKER_ACTIONS_38122111500",
+    "result": "All21 currentWorker rawanchors attempted, allfinal200/TLS/noWAF,0newscomponents/IDs/newarticles; native302 captured and aborted before rendering finalHTML. 8.398sec within120sec."
+  },
+  "actual_run4_replay_after_gate": "data/audits/source_e_recovery/mutual_run4_replay_after_gate.json",
+  "materiality_review": {
+    "shared_gate_commit": "bcdb9e2",
+    "actual_verified_articles_90_days": 51,
+    "candidates_90_days": 2,
+    "rejected_90_days": 49,
+    "actual_verified_articles_30_days": 33,
+    "candidates_30_days": 0,
+    "coverage_complete": false,
+    "candidate_semantics": [
+      "2026-08-27: Construction procurement call includes optional850m² CAM Vallenar pilot; not award or opening.",
+      "2026-07-28: Gran Américas new adherence; quantified8of9 transport companies, no worker headcount."
+    ],
+    "retained_rejection": "2026-07-17 GRC manual event has no verifiable new clinical/operational protocol impact."
+  },
+  "official_pdf_fallback_checkpoint": "data/audits/source_e_recovery/mutual_pdf_fallbacks.json",
+  "actual_run6_replay": "data/audits/source_e_recovery/mutual_run6_replay.json",
+  "latest_actual_archive_gap": {
+    "actions_run": "38117675962",
+    "initial_cards_unique": 84,
+    "verified_detail_articles_90_days": 51,
+    "candidates_90_days": 2,
+    "rejected_90_days": 49,
+    "captured_listing_pages": 15,
+    "actual_continuation_failures": 14,
+    "failure_code": "repeated_pagination_page",
+    "origin_status": "HTTP200 verified TLS; returned same initial category cards, not archive advancement",
+    "coverage_complete": false,
+    "next_action": "Run13 verified all21 Worker observed next anchors302toinstitutional QuienesSomos200/noIDs; no further observed safe archive continuation remains to evaluate in this scoped checkpoint."
+  },
+  "qa_reviewer": {
+    "reviewer": "independent /root/reviewer",
+    "result": "PASS independent actualRun13:48raw+2preflight SHA/bytes/TLS/GET/noWAF;21literalrawhrefs/branch bound to84IDs;21final200institutional/no IDs, no nativefinal render;85Mutual testsPASS.",
+    "remaining": "No implementation or finite observed-route check pending. Publisher full90-day archive coverage remains incomplete; sourceOPERATIVE_DEGRADED, external_blocker=null."
+  },
+  "actual_run9_evidence": "data/audits/source_e_recovery/mutual_run9_closure_evidence.json",
+  "external_blocker": null,
+  "actual_run10_alternative_evidence": "data/audits/source_e_recovery/mutual_run10_alternative_listing_evidence.json",
+  "actual_run12_worker_evidence": "data/audits/source_e_recovery/mutual_run12_worker_evidence.json",
+  "actual_run13_worker_closure": "data/audits/source_e_recovery/mutual_run13_worker_closure.json"
+}

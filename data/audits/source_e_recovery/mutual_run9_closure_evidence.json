@@ -1,0 +1,449 @@
+{
+  "source_slug": "mutual_seguridad",
+  "as_of_chile": "2026-10-11",
+  "actions_run": "38119024441",
+  "checked_at_utc": "2026-10-11T06:59:48.197877+00:00",
+  "source_status": "OPERATIVE_DEGRADED",
+  "external_blocker": null,
+  "coverage_complete": false,
+  "main_inventory_metrics": {
+    "30": {
+      "start": "2026-09-11",
+      "end": "2026-10-11",
+      "dated_articles": 33,
+      "expected_role": 33,
+      "candidates": 0,
+      "rejected": 33,
+      "pending": 0,
+      "excluded_role": 0,
+      "unknown_date_items": 0,
+      "complete": false
+    },
+    "90": {
+      "start": "2026-07-13",
+      "end": "2026-10-11",
+      "dated_articles": 51,
+      "expected_role": 51,
+      "candidates": 2,
+      "rejected": 49,
+      "pending": 0,
+      "excluded_role": 0,
+      "unknown_date_items": 0,
+      "complete": false
+    }
+  },
+  "main_inventory_errors": {
+    "repeated_pagination_page": 14
+  },
+  "browser_evidence": {
+    "report": "data/audits/source_e_recovery/actions/38119024441/mutual_browser/report.json",
+    "report_sha256": "34a0456ee99d8f3e2455754d90fca974b674e11904044b9069baab45b2e7c059",
+    "steps": [
+      {
+        "step": "initial",
+        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+        "document_base_uri": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+        "dom_artifact": "initial.dom.html",
+        "dom_sha256": "7e6ec512b0021d65b0af4847402fb7d1bb9d12c30ab9d7598b9ce177cb10af73",
+        "evidence_type": "browser_rendered_dom_not_raw_publisher_response",
+        "visible_cards": [
+          {
+            "title": "Salud mental y autocuidado: Mutual de Seguridad impulsa jornada en División de Salud del Ejército",
+            "date": "9 oct. 2026",
+            "href": "?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fsalud-mental-y-autocuidado-mutual-de-seguridad-impulsa-jornada-en-division-de-salud-del-ejercito"
+          },
+          {
+            "title": "Fundación León Bloy fortalece su gestión preventiva con acompañamiento de Mutual de Seguridad",
+            "date": "9 oct. 2026",
+            "href": "?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Ffundacion-leon-bloy-fortalece-su-gestion-preventiva-con-acompanamiento-de-mutual-de-seguridad"
+          },
+          {
+            "title": "Círculo Hotelero fortalece la prevención con herramientas de Mutual de Seguridad",
+            "date": "9 oct. 2026",
+            "href": "?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fcirculo-hotelero-fortalece-la-prevencion-con-herramientas-de-mutual-de-seguridad"
+          },
+          {
+            "title": "Escuelas rurales del sur lideran una inédita cruzada educativa para cambiar la cultura vial en Chile",
+            "date": "8 oct. 2026",
+            "href": "?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fescuelas-rurales-del-sur-lideran-una-inedita-cruzada-educativa-para-cambiar-la-cultura-vial-en-chile"
+          },
+          {
+            "title": "adidas Chile fortalece su cultura preventiva y recibe certificaciones de Mutual de Seguridad",
+            "date": "7 oct. 2026",
+            "href": "?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fadidas-chile-fortalece-su-cultura-preventiva-y-recibe-certificaciones-de-mutual-de-seguridad"
+          }
+        ],
+        "native_category_components": 26
+      },
+      {
+        "step": "visible_client_page_2",
+        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+        "document_base_uri": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+        "dom_artifact": "visible_client_page_2.dom.html",
+        "dom_sha256": "3788d64db7fb065c977771dace4d730d42663a311f912de4b64937ba790da542",
+        "evidence_type": "browser_rendered_dom_not_raw_publisher_response",
+        "visible_cards": [
+          {
+            "title": "Mutual de Seguridad impulsa taller de seguridad vial en Liceo Juana Ross",
+            "date": "7 oct. 2026",
+            "href": "?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fmutual-de-seguridad-impulsa-taller-de-seguridad-vial-en-liceo-juana-ross"
+          },
+          {
+            "title": "Constructora Manzano alcanza certificaciones de excelencia y recibe reconocimiento de Mutual de Seguridad",
+            "date": "7 oct. 2026",
+            "href": "?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fconstructora-manzano-alcanza-certificaciones-de-excelencia-y-recibe-reconocimiento-de-mutual-de-seguridad"
+          },
+          {
+            "title": "Fábrica de Bandejas (Vanni) logra certificación Oro y es reconocida por Mutual de Seguridad",
+            "date": "7 oct. 2026",
+            "href": "?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Ffabrica-de-bandejas-vanni-logra-certificacion-oro-y-es-reconocida-por-mutual-de-seguridad"
+          },
+          {
+            "title": "Holding Enjoy fortalece su gestión preventiva junto al acompañamiento de Mutual de Seguridad",
+            "date": "7 oct. 2026",
+            "href": "?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fholding-enjoy-fortalece-su-gestion-preventiva-junto-al-acompanamiento-de-mutual-de-seguridad"
+          },
+          {
+            "title": "Ripley certifica 40 centros de trabajo y fortalece su gestión preventiva con Mutual de Seguridad",
+            "date": "7 oct. 2026",
+            "href": "?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fripley-certifica-40-centros-de-trabajo-y-fortalece-su-gestion-preventiva-con-mutual-de-seguridad"
+          }
+        ],
+        "native_category_components": 26,
+        "new_document_or_xhr_responses": 0
+      },
+      {
+        "href": "p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKSQFBGeCA=GH=/",
+        "absolute_href": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKSQFBGeCA=GH=/",
+        "onclick": null,
+        "step": "observed_native_next_anchor",
+        "visible": false
+      },
+      {
+        "step": "native_next_result",
+        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKSQFBGeCA=GH=/",
+        "document_base_uri": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKSQFBGeCA=GH=/",
+        "dom_artifact": "native_next_result.dom.html",
+        "dom_sha256": "8c5f156ed5dfb5dacf2a2f88415140eed3841ff0aaad8ef4ea1390303a7a239c",
+        "evidence_type": "browser_rendered_dom_not_raw_publisher_response",
+        "visible_cards": [],
+        "native_category_components": 0
+      }
+    ],
+    "document_responses": [
+      {
+        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+        "response_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+        "resource_type": "document",
+        "method": "GET",
+        "captured_at": "2026-10-11T06:49:31.063253+00:00",
+        "http_status": 200,
+        "headers": {
+          "date": "Sun, 11 Oct 2026 06:49:30 GMT",
+          "content-type": "text/html; charset=UTF-8",
+          "server": "nginx/1.29.8",
+          "cache-control": "no-cache, no-store, must-revalidate",
+          "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+          "x-cdn": "Imperva",
+          "x-iinfo": "54-138530084-138530088 NNYN CT(30 30 0) RT(1791701370632 17) q(0 0 0 -1) r(2 2) U24"
+        },
+        "tls_verified": true,
+        "tls_mechanism": "default_browser_certificate_validation",
+        "sha256": "a8b8ccb2b08bb5cec6684df268f649b8214e906a0f8a91833a27ad56d3d7c36f",
+        "bytes": 445816,
+        "body_file": "effbb9fed0a8fadc0a85.body",
+        "waf": null,
+        "artifact": "data/audits/source_e_recovery/actions/38119024441/mutual_browser/effbb9fed0a8fadc0a85.body"
+      },
+      {
+        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKSQFBGeCA=GH=/",
+        "response_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKSQFBGeCA=GH=/",
+        "resource_type": "document",
+        "method": "GET",
+        "captured_at": "2026-10-11T06:49:32.653786+00:00",
+        "http_status": 200,
+        "headers": {
+          "date": "Sun, 11 Oct 2026 06:49:32 GMT",
+          "content-type": "text/html; charset=UTF-8",
+          "server": "nginx/1.29.8",
+          "cache-control": "no-cache, no-store, must-revalidate",
+          "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+          "x-cdn": "Imperva",
+          "x-iinfo": "18-100162174-100162175 SNYy RT(1791701371218 1292) q(0 0 0 -1) r(1 1) U24"
+        },
+        "tls_verified": true,
+        "tls_mechanism": "default_browser_certificate_validation",
+        "sha256": "94ba64bc4748385a40bb997f35cbe150547aaf295962f48794506dcab02d284e",
+        "bytes": 93289,
+        "body_file": "ab4e872f78253f8a65fc.body",
+        "waf": null,
+        "artifact": "data/audits/source_e_recovery/actions/38119024441/mutual_browser/ab4e872f78253f8a65fc.body"
+      }
+    ],
+    "finding": "Visible page2 changes client-union cards only, zero new document/XHR; native observed hidden nextPage has no onclick and uses actual document.baseURI. Click returns verified HTTP200 with no news components. Theme fallback archive requests repeat initial branch cards. No WAF/connectivity outage."
+  },
+  "public_search_evidence": [
+    {
+      "request_url": "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=Mutual",
+      "captured_at": "2026-10-11T06:48:58.923782+00:00",
+      "http_status": 200,
+      "tls_verified": true,
+      "artifact": "data/audits/source_e_recovery/actions/38119024441/cc5816e60f195718a7ea-0.body",
+      "sha256": "13639e20b94a44a83ef79eaa6284cec1ccbe4b125013a5d4ead9489adf4040a6",
+      "parsed": {
+        "url": "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=Mutual",
+        "sha256": "13639e20b94a44a83ef79eaa6284cec1ccbe4b125013a5d4ead9489adf4040a6",
+        "results": [
+          {
+            "url": "https://www.mutual.cl/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/JYxBCsIwEABfFDaNUvVYBEuLPRQU0r3ImqZxsSahib7fiscZhgEEDejpw44yB0_zygOWt7aqStXU8lxvDjvZq37byMu12J8KaAHdHO7_VC3dsXOAkfJDsJ8C6MQp2xclMVrhbPptRbQGNPu8hPFtzGogPnH4Apd2hU0!/",
+            "href": "/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/JYxBCsIwEABfFDaNUvVYBEuLPRQU0r3ImqZxsSahib7fiscZhgEEDejpw44yB0_zygOWt7aqStXU8lxvDjvZq37byMu12J8KaAHdHO7_VC3dsXOAkfJDsJ8C6MQp2xclMVrhbPptRbQGNPu8hPFtzGogPnH4Apd2hU0!/",
+            "excerpt": "Mutual de Seguridad Resumen: Visor de contenido web. Display content menu. Descarga y conoce nuestras nuevas aplicaciones. Visitar arrow_forward",
+            "news_listing": false,
+            "article_url": null,
+            "publication_date": null
+          },
+          {
+            "url": "https://www.mutual.cl/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/JY3BCsIwFAS_KLy2StVjEZQWeygotLnI2j5jsCYhiT349UY8zjLskKSepMGiFaK2BnPiQZbXpqrKoj5mp-Nqt8m6olvX2fmSbw85NSTVbG9_tfDtvlUkHeJDaHO31CNwsF5DOM8Lm6gXCA6OR41ZfzCBeuet8nhBTCwUh19ZOHikhwTxPaaBA7mnHL48ia9o/",
+            "href": "/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/JY3BCsIwFAS_KLy2StVjEZQWeygotLnI2j5jsCYhiT349UY8zjLskKSepMGiFaK2BnPiQZbXpqrKoj5mp-Nqt8m6olvX2fmSbw85NSTVbG9_tfDtvlUkHeJDaHO31CNwsF5DOM8Lm6gXCA6OR41ZfzCBeuet8nhBTCwUh19ZOHikhwTxPaaBA7mnHL48ia9o/",
+            "excerpt": "Mutual de Seguridad Resumen: Visor de contenido web. Display content menu. Descarga y conoce nuestras nuevas aplicaciones. Visitar arrow_forward",
+            "news_listing": false,
+            "article_url": null,
+            "publication_date": null
+          },
+          {
+            "url": "https://www.mutual.cl/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zivRwdzYw83Q183I0tzQ0CjQJNPA1CQg0t3Az1vfSj0nPykyBKjYp8nX3T9aMKEksydDPz0vL1IwqKUtNL80oSi3XTilKTS1PzSlKLdVOKzcz1C7KjIgFOBur4/",
+            "href": "/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zivRwdzYw83Q183I0tzQ0CjQJNPA1CQg0t3Az1vfSj0nPykyBKjYp8nX3T9aMKEksydDPz0vL1IwqKUtNL80oSi3XTilKTS1PzSlKLdVOKzcz1C7KjIgFOBur4/",
+            "excerpt": "Mutual de Seguridad Resumen: Visor de contenido web. Display content menu. Descarga y conoce nuestras nuevas aplicaciones. Visitar arrow_forward",
+            "news_listing": false,
+            "article_url": null,
+            "publication_date": null
+          },
+          {
+            "url": "https://www.mutual.cl/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zivRwdzYw83Q183I0tzQ0CjQJNPA1CQg0t3Az1C7IdFQEFMoBL/",
+            "href": "/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zivRwdzYw83Q183I0tzQ0CjQJNPA1CQg0t3Az1C7IdFQEFMoBL/",
+            "excerpt": "Mutual de Seguridad Resumen: Visor de contenido web. Display content menu. Descarga y conoce nuestras nuevas aplicaciones. Visitar arrow_forward",
+            "news_listing": false,
+            "article_url": null,
+            "publication_date": null
+          },
+          {
+            "url": "https://www.mutual.cl/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zivRwdzYw83Q183I0tzQ0CjQJNPA1CQg0t3Az1vfSj0nPykyBKjYp8nX3T9aMKEksydDPz0vL1I5Lz8_KTU_Pyi_ULsqMiAcDgENE!/",
+            "href": "/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zivRwdzYw83Q183I0tzQ0CjQJNPA1CQg0t3Az1vfSj0nPykyBKjYp8nX3T9aMKEksydDPz0vL1I5Lz8_KTU_Pyi_ULsqMiAcDgENE!/",
+            "excerpt": "Mutual de Seguridad Resumen: Visor de contenido web. Display content menu. Descarga y conoce nuestras nuevas aplicaciones. Visitar arrow_forward",
+            "news_listing": false,
+            "article_url": null,
+            "publication_date": null
+          },
+          {
+            "url": "https://www.mutual.cl/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zivRwdzYw83Q183I0tzQ0CjQJNPA1CQg0t3Az1vfSj0nPykyBKjYp8nX3T9aMKEksydDPz0vL1I5ITCxKTM0uAOD8vtVi_IDsqEgDTrROf/",
+            "href": "/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zivRwdzYw83Q183I0tzQ0CjQJNPA1CQg0t3Az1vfSj0nPykyBKjYp8nX3T9aMKEksydDPz0vL1I5ITCxKTM0uAOD8vtVi_IDsqEgDTrROf/",
+            "excerpt": "Mutual de Seguridad Resumen: Visor de contenido web. Display content menu. Descarga y conoce nuestras nuevas aplicaciones. Visitar arrow_forward",
+            "news_listing": false,
+            "article_url": null,
+            "publication_date": null
+          },
+          {
+            "url": "https://www.mutual.cl/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zivRwdzYw83Q183I0tzQ0CjQJNPA1CQg0t3Az1vfSj0nPykyBKjYp8nX3T9aMKEksydDPz0vL1I3JLS0oTc3QLKnNT9QuyoyIBKmImhA!!/",
+            "href": "/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zivRwdzYw83Q183I0tzQ0CjQJNPA1CQg0t3Az1vfSj0nPykyBKjYp8nX3T9aMKEksydDPz0vL1I3JLS0oTc3QLKnNT9QuyoyIBKmImhA!!/",
+            "excerpt": "Mutual de Seguridad Resumen: Visor de contenido web. Display content menu. Descarga y conoce nuestras nuevas aplicaciones. Visitar arrow_forward",
+            "news_listing": false,
+            "article_url": null,
+            "publication_date": null
+          },
+          {
+            "url": "https://www.mutual.cl/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zivRwdzYw83Q183I0tzQ0CjQJNPA1CQg0t3Az1vfSj0nPykyBKjYp8nX3T9aMKEksydDPz0vL1I5JT80qK8osTc0pT9AuyoyIBO7Ph3A!!/",
+            "href": "/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zivRwdzYw83Q183I0tzQ0CjQJNPA1CQg0t3Az1vfSj0nPykyBKjYp8nX3T9aMKEksydDPz0vL1I5JT80qK8osTc0pT9AuyoyIBO7Ph3A!!/",
+            "excerpt": "Mutual de Seguridad Resumen: Visor de contenido web. Display content menu. Descarga y conoce nuestras nuevas aplicaciones. Visitar arrow_forward",
+            "news_listing": false,
+            "article_url": null,
+            "publication_date": null
+          },
+          {
+            "url": "https://www.mutual.cl/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zivRwdzYw83Q183I0tzQ0CjQJNPA1CQg0t3Az1vfSj0nPykyBKjYp8nX3T9aMKEksydDPz0vL1IwqKUtNL80oSi3XTilKTS1PzSlKLgVKZyZn5-gXZUZEAwTWoYQ!!/",
+            "href": "/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zivRwdzYw83Q183I0tzQ0CjQJNPA1CQg0t3Az1vfSj0nPykyBKjYp8nX3T9aMKEksydDPz0vL1IwqKUtNL80oSi3XTilKTS1PzSlKLgVKZyZn5-gXZUZEAwTWoYQ!!/",
+            "excerpt": "Mutual de Seguridad Resumen: Visor de contenido web. Display content menu. Descarga y conoce nuestras nuevas aplicaciones. Visitar arrow_forward",
+            "news_listing": false,
+            "article_url": null,
+            "publication_date": null
+          },
+          {
+            "url": "https://www.mutual.cl/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/JY1BC8IgGEB_kXzOYtVxBI2NdhgUOC9h6txHS0Vd0L9P6PAODx48EMBBOPlBKzN6J9fik6gffdPUrGvptd2dDnRk476jt3t1vFTQg7Crf_5TFofzYEEEmReCbvbAlX9jNokEGTEXfCLakAUtGmfIlyRjt4haauDocvR6U6qsIbzE9APKsLIV/",
+            "href": "/portal/publico/mutual/inicio/mutual-aplicaciones/!ut/p/z0/JY1BC8IgGEB_kXzOYtVxBI2NdhgUOC9h6txHS0Vd0L9P6PAODx48EMBBOPlBKzN6J9fik6gffdPUrGvptd2dDnRk476jt3t1vFTQg7Crf_5TFofzYEEEmReCbvbAlX9jNokEGTEXfCLakAUtGmfIlyRjt4haauDocvR6U6qsIbzE9APKsLIV/",
+            "excerpt": "Mutual de Seguridad Resumen: Visor de contenido web. Display content menu. Descarga y conoce nuestras nuevas aplicaciones. Visitar arrow_forward",
+            "news_listing": false,
+            "article_url": null,
+            "publication_date": null
+          }
+        ],
+        "news_listing_urls": [],
+        "article_urls": [],
+        "query_result_pages": {
+          "current": 1,
+          "total": 1
+        },
+        "jsf_ajax_paging_observed": true,
+        "publication_date_evidence": null,
+        "coverage_complete": false
+      }
+    },
+    {
+      "request_url": "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=2026",
+      "captured_at": "2026-10-11T06:49:01.978923+00:00",
+      "http_status": 200,
+      "tls_verified": true,
+      "artifact": "data/audits/source_e_recovery/actions/38119024441/2c0b76638b356e24d869-0.body",
+      "sha256": "c933299843e1f683073514df3bb345b4de853d647b5d7f0b03fc5993c1c02b32",
+      "parsed": {
+        "url": "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=2026",
+        "sha256": "c933299843e1f683073514df3bb345b4de853d647b5d7f0b03fc5993c1c02b32",
+        "results": [
+          {
+            "url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/noticias",
+            "href": "/portal/publico/trabajador/home/nuestra-mutual/noticias",
+            "excerpt": "Noticias Resumen: Club de Beneficio. Fono Rescate 1407. Santo Tomás Puente Alto recibe cuatro reconocimientos y es distinguida por Mutual de Seguridad. Visitar arrow_forward",
+            "news_listing": true,
+            "article_url": null,
+            "publication_date": null
+          },
+          {
+            "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias",
+            "href": "/portal/publico/empresa/home/nuestra-mutual/noticias",
+            "excerpt": "Noticias Resumen: Fono Rescate 1407. Prevención colaborativa: Mutual de Seguridad y Ripley fortalecen estrategias para reducir la accidentabilidad. Mutual de Seguridad y Ripley realizaron el Segundo Encuentro Anual de Prevención, una instancia de trabajo orientada a fortalecer la cultura preventiva y avanzar en desafíos compartidos relacionados con la seguridad y salud en el trabajo. Visitar arrow_forward",
+            "news_listing": true,
+            "article_url": null,
+            "publication_date": null
+          },
+          {
+            "url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/noticias/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLI1NnQ3MAsx8jY2MLQwNTAz1C7IdFQFlhTit/",
+            "href": "/portal/publico/trabajador/home/nuestra-mutual/noticias/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLI1NnQ3MAsx8jY2MLQwNTAz1C7IdFQFlhTit/",
+            "excerpt": "Noticias Resumen: Club de Beneficio. A Impresores es reconocida por alcanzar Tasa Adicional 0% conforme al D.S. Continúa leyendo arrow_forward. Visitar arrow_forward",
+            "news_listing": true,
+            "article_url": null,
+            "publication_date": null
+          },
+          {
+            "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLI1NnQ3MArz9PDy8gw0MAoz1C7IdFQEjM-fw/",
+            "href": "/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLI1NnQ3MArz9PDy8gw0MAoz1C7IdFQEjM-fw/",
+            "excerpt": "Noticias Resumen: Fono Rescate 1407. A Impresores es reconocida por alcanzar Tasa Adicional 0% conforme al D.S. Continúa leyendo arrow_forward. Visitar arrow_forward",
+            "news_listing": true,
+            "article_url": null,
+            "publication_date": null
+          }
+        ],
+        "news_listing_urls": [
+          "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/noticias",
+          "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias",
+          "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/noticias/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLI1NnQ3MAsx8jY2MLQwNTAz1C7IdFQFlhTit/",
+          "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLI1NnQ3MArz9PDy8gw0MAoz1C7IdFQEjM-fw/"
+        ],
+        "article_urls": [],
+        "query_result_pages": {
+          "current": 1,
+          "total": 1
+        },
+        "jsf_ajax_paging_observed": true,
+        "publication_date_evidence": null,
+        "coverage_complete": false
+      }
+    }
+  ],
+  "pending_official_alternate_news_listings": [
+    "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/noticias",
+    "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias",
+    "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/noticias/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLI1NnQ3MAsx8jY2MLQwNTAz1C7IdFQFlhTit/",
+    "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLI1NnQ3MArz9PDy8gw0MAoz1C7IdFQEjM-fw/"
+  ],
+  "pdf_fallback_evidence": [
+    {
+      "request_url": "https://www.mutual.cl/portal/wcm/connect/28973518-0f53-4887-94fb-4c163aa90de0/memoria-mutual-de-seguridad-2025.pdf?MOD=AJPERES",
+      "captured_at": "2026-10-11T06:48:44.466970+00:00",
+      "http_status": 200,
+      "tls_verified": true,
+      "artifact": "data/audits/source_e_recovery/actions/38119024441/99f1ab903150aa966bfa-0.body",
+      "sha256": "ec0fccd3e312e8bb792ec337deb844eb6396ecc1156b34a55d0c36ee0353eaf2",
+      "bytes": 14122462,
+      "pdf_header_verified": true,
+      "text_extraction": "pdftotext -raw; exit0; font-weight warnings did not stop text extraction",
+      "pdf_pages": 334,
+      "text_sha256": "1a485d6992e0e7a64c24dc4ff34d89e95e3b8e6de7e07839ae74099d74b83889",
+      "report_period": "2025",
+      "publication_date": null,
+      "publication_day_verified": false,
+      "date_gate": "fail_closed_no_explicit_full_report_publication_date",
+      "other_date_semantics": [
+        "Annual report period/year is not publication date.",
+        "Approval/signing dates in annual financial statements do not date publisher release.",
+        "Publication dates of cited medical research articles do not date the hospital annuary."
+      ]
+    },
+    {
+      "request_url": "https://www.mutual.cl/portal/wcm/connect/d338dbae-1d13-4bbb-b0bc-596d47ea6c4b/diseno-anuario-hospital-mutual-2024-v12.pdf?MOD=AJPERES",
+      "captured_at": "2026-10-11T06:48:46.435779+00:00",
+      "http_status": 200,
+      "tls_verified": true,
+      "artifact": "data/audits/source_e_recovery/actions/38119024441/da2f822dea22203b7bd0-0.body",
+      "sha256": "fefa926d159edc98e270a49904894cbf8bf7cf4d03221bb482d42b8d8a2be9cb",
+      "bytes": 11088577,
+      "pdf_header_verified": true,
+      "text_extraction": "pdftotext -raw; exit0; font-weight warnings did not stop text extraction",
+      "pdf_pages": 80,
+      "text_sha256": "8fd0ba63d5bd6eceb2e4b5bf945f34b802e8062e9c02664f00314135c5dafeed",
+      "report_period": "2024",
+      "publication_date": null,
+      "publication_day_verified": false,
+      "date_gate": "fail_closed_no_explicit_full_report_publication_date",
+      "other_date_semantics": [
+        "Annual report period/year is not publication date.",
+        "Approval/signing dates in annual financial statements do not date publisher release.",
+        "Publication dates of cited medical research articles do not date the hospital annuary."
+      ]
+    }
+  ],
+  "cam_published_content_assessment": {
+    "title": "Licitación Pública Convenio Marco: Plan Nacional de Construcción Modular para Mutual de Seguridad C.Ch.C.",
+    "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Flicitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc",
+    "publication_date": "2026-08-27",
+    "publication_evidence": {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Flicitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc",
+      "kind": "publisher:mutual_detail_fecha",
+      "value": "27 ago. 2026",
+      "date": "2026-08-27"
+    },
+    "capture": {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Flicitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc",
+      "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/noticias_detalle/licitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc/!ut/p/z1/jVJNTwIxEP0tHDg2M_2aluPWgyCwGjd1bS9mYQ3ZKIUQgtFf75KYGFSKc3vJezPz3gxEeISYmkO3avbdJjWvPQ6RniSf0kRaIUZzZ5BMqay2M463AupTwh16juTK-dSilBPPIWb0lvL6Sqv_6fFMFXhJ_wDBQVgN0aW6-LnNb7sxP6yGeDrwjzxyhErLSwT1RchsEXoX5rwLA_Whe34Dnza7dX_j6thxu-xaCDTium20YhwFMaWEYnbRQylJtot2yY0hGCPcZGM9vsXVd6iRw3btvU_v7OV-_OFKdu2LweATPlUqOQ!!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "captured_at": "2026-10-11T06:18:53.278812+00:00",
+      "sha256": "9afeee854770e56970ad2260ce94c3471426c4931d1596ae9e965700edd582d7",
+      "http_status": 200,
+      "tls_verified": true,
+      "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/416dcb2831bc0e60f941-1.body",
+      "environment": "github_actions"
+    },
+    "body_sha256": "06b855bc9e08247a0335af173d76d9573b06794f6df6095f7cbfc4349a3cac43",
+    "explicit_source_facts": {
+      "contract_term_years": 5,
+      "cam_pilot_area_m2": 850,
+      "area_qualifier": "referential approximate",
+      "pilot_execution": "optional for Mutual; award/materialization depend on offers and institutional decision",
+      "bidder_registration_deadline_local": "2026-09-03 18:00",
+      "bidder_documents_release_date": "2026-09-04"
+    },
+    "no_award_or_opening_claim": true,
+    "as_of_chile": "2026-10-11",
+    "registration_open_as_of": false,
+    "published_summary_supported": "Mutual de Seguridad CCh.C. abrió una licitación pública para establecer un convenio marco de cinco años destinado al suministro, despacho e instalación de construcciones modulares en cualquier región de Chile. El proceso incluye una propuesta facultativa para un eventual Centro de Atención Mutual (CAM) piloto en Vallenar, de aproximadamente 850 m².",
+    "unsupported_present_tense_clause_detected": true,
+    "editorial_field_needing_root_fix": "why_it_matters",
+    "key_numbers_in_signal": [],
+    "ingestion_mode": "BACKFILL",
+    "distribution": "archive",
+    "no_history_or_queue_mutation": true
+  },
+  "next_action": "Parent isolated Actions captures exactly4 search-linked employer/worker news listing routes. Until those are evaluated, do not claim all official alternatives or complete90-day inventory. Root fixes stale present-tense bid-registration wording without new paid calls.",
+  "tests": {
+    "command": ".venv/bin/python -m pytest -q tests/test_mutual_recovery.py",
+    "result": "74 passed, including actual Run9 search/body hash and native browser response regressions."
+  },
+  "paid_api_called": false,
+  "canonical_queue_mutated": false
+}

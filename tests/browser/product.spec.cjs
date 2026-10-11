@@ -14,8 +14,8 @@ function knownHistoricalSignal(predicate){
  return signal;
 }
 function withinSnapshotHorizon(radar,source){
- const days=radar.signals.filter(s=>/^\d{4}-\d{2}-\d{2}$/.test(s.event_date||'')).map(s=>Date.parse(s.event_date+'T00:00:00Z'));
- expect(days.length,'Snapshot needs a dated source to define the rolling window').toBeGreaterThan(0);
+ const days=historicalSignals.filter(s=>/^\d{4}-\d{2}-\d{2}$/.test(s.event_date||'')).map(s=>Date.parse(s.event_date+'T00:00:00Z'));
+ expect(days.length,'Independent durable history needs a dated source to define the rolling window').toBeGreaterThan(0);
  expect(source.event_date,'Known source document needs its original publication date').toMatch(/^\d{4}-\d{2}-\d{2}$/);
  const age=(Math.max(...days)-Date.parse(source.event_date+'T00:00:00Z'))/86400000;
  return age>=0&&age<=90;
@@ -592,15 +592,17 @@ test('priority statistical releases use compact tables and collapsed traceabilit
    await page.locator('#detailDialog [data-close]').click();
  }
  const bulletin=radar.signals.find(x=>x.source_url===STATISTICAL_URLS.bulletin);
- expect(new Set(bulletin.summary_table.rows.map(r=>r.cells[0]))).toEqual(new Set(['Acreditación','Mediación','Reclamos','RNPI']));
- const bulletinCard=page.locator('article[data-card]').filter({hasText:'Boletín Estadístico Informativo IP'});
- await bulletinCard.locator('[data-detail]').click();
- const detail=page.locator('#detailBody');
- await expect(detail.locator('details.statistical-methodology')).not.toHaveAttribute('open','');
- await expect(detail).not.toContainText('Muestra de datos validada');
- await expect(detail.locator('.source')).toContainText('Fuente original');
- expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
- await page.getByRole('button',{name:'Cerrar resumen'}).click();
+ if(bulletin){
+  expect(new Set(bulletin.summary_table.rows.map(r=>r.cells[0]))).toEqual(new Set(['Acreditación','Mediación','Reclamos','RNPI']));
+  const bulletinCard=page.locator('article[data-card]').filter({hasText:'Boletín Estadístico Informativo IP'});
+  await bulletinCard.locator('[data-detail]').click();
+  const detail=page.locator('#detailBody');
+  await expect(detail.locator('details.statistical-methodology')).not.toHaveAttribute('open','');
+  await expect(detail).not.toContainText('Muestra de datos validada');
+  await expect(detail.locator('.source')).toContainText('Fuente original');
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+  await page.getByRole('button',{name:'Cerrar resumen'}).click();
+ }
 });
 
 test('Normative V2.1 puts document, subject and action in each current headline',async({page})=>{

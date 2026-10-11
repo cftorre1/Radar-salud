@@ -1,0 +1,12 @@
+name: Integration Commander candidate QA
+on:
+  push:
+    branches: [codex/integration-commander-20261011]
+permissions:
+  contents: read
+concurrency:
+  group: integration-commander-candidate
+  cancel-in-progress: false
+jobs:
+  qa:
+    uses: ./.github/workflows/qa.yml

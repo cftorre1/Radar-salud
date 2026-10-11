@@ -45,7 +45,11 @@ def _field(text,label):
 def enrich(raw):
     raw.metadata.pop("fetch_error",None)
     try:
-        p=_Meta();p.feed(fetch_html(raw.url));body=" ".join(p.text)
+        html=fetch_html(raw.url)
+        if raw.source_slug=="diario_financiero":
+            from .df_article import bind_df_article
+            return bind_df_article(raw,html)
+        p=_Meta();p.feed(html);body=" ".join(p.text)
         if p.ogtitle and len(raw.title)<18:raw.title=p.ogtitle
         raw.raw_text=p.description or body[:1400]
         raw.event_date=raw.event_date or _date(p.published)
@@ -99,6 +103,9 @@ def _suseso_date(text):
 
 def process_suseso(raw,cfg):
     """Publish SUSESO normative acts with document-specific subject, affected actors and validity."""
+    if raw.metadata.get("reviewed_normative"):
+        from .suseso_fiscalizacion import process_reviewed_normative
+        return process_reviewed_normative(raw, cfg)
     raw=enrich(raw)
     text=raw.metadata.get("page_text") or raw.raw_text
     raw.event_date=_suseso_date(text) or raw.event_date
@@ -173,27 +180,19 @@ def process_suseso_news(raw,cfg):
 
 
 def process_suseso_fiscalizacion(raw,cfg):
-    """Official SUSESO fiscalization signal for Isapres or COMPIN."""
-    raw=enrich(raw)
-    if not raw.event_date:return None
-    body=raw.metadata.get("page_text") or raw.raw_text
-    actor=raw.metadata.get("fiscalized_actor") or "Sistema de salud"
-    ai=analyze_official_news(title=raw.title,text=body,source_name="Superintendencia de Seguridad Social (SUSESO)")
-    score=int(ai.get("relevance_score")) if ai else 72
-    if score<65:return None
-    scope="Isapres" if actor=="Isapres" else "Salud pública"
-    raw.metadata.update({
-      "what_happened":(ai.get("what_happened") if ai else raw.raw_text) or raw.title,
-      "why_it_matters":(ai.get("why_it_matters") if ai else
-        "La publicación permite monitorear criterios de fiscalización y cumplimiento aplicables al actor fiscalizado."),
-      "signal_types":["Fiscalización"],"scopes":[scope],
-      "watch_tags":["suseso","fiscalización",actor.lower()],
-      "event_type":"FISCALIZATION",
-      "scores":{"economic":50,"regulatory":88,"scope":score,"novelty":score,"actionability":80}
-    })
-    row=build_signal(raw,cfg).to_dict()
-    row["signal_types"]=["Fiscalización"];row["scopes"]=[scope];row["fiscalized_actor"]=actor;row["editorial_relevance"]=score
-    return row
+    """Publish only verified enforcement, never a related normative taxonomy row."""
+    from .processing import RejectedProcessing
+    if raw.metadata.get("document_class") == "related_normative" or re.match(r"(?:Circular|Dictamen)\b", raw.title, re.I):
+        raise RejectedProcessing("related_normative_not_enforcement")
+    if raw.metadata.get('document_class') == 'enforcement_sanction':
+        from .suseso_fiscalizacion import process_professional_sanction
+        return process_professional_sanction(raw, cfg)
+    if raw.metadata.get('document_class') == 'official_news':
+        from .suseso_fiscalizacion import process_enforcement_news
+        return process_enforcement_news(raw,cfg)
+    if raw.metadata.get('document_class')=='enforcement_report_candidate' and not raw.event_date:
+        raise DeferredProcessing('official_medical_report_missing_daily_publication_and_emission_date; execution_period_is_not_publication')
+    raise DeferredProcessing("SUSESO enforcement candidate requires document/actor/materiality review")
 
 def _scopes(text):
     t=text.lower();out=[]
@@ -208,23 +207,80 @@ def _health_relevance(title,text):
     t=f"{title} {text}".lower()
     health_terms=("salud","clínica","clinica","hospital","isapre","fonasa","médic","medic","farmac","laboratorio",
                   "healthtech","biotech","telemedicina","prestador","bupa","redsalud","banmédica","banmedica",
-                  "colmena","consalud","cruz blanca","nueva masvida","esencial")
+                  "colmena","consalud","cruz blanca","nueva masvida","esencial","cesfam","cescosf")
     return any(x in t for x in health_terms)
 
 def process_df(raw,cfg):
-    if not raw.event_date or not raw.metadata.get("page_text"):
+    from .df_media_gate import policy, exclusion, material, assessment_exclusion
+    from .editorial_gate import publication_ready
+    known_format=bool(raw.metadata.get('primary_image_urls') or raw.metadata.get('primary_media_urls'))
+    if not raw.metadata.get("publication_date_source") or (not raw.metadata.get("page_text") and not known_format):
         raw=enrich(raw)
-    if not raw.event_date:return None
-    body=raw.metadata.get("page_text") or raw.raw_text
-    if not _health_relevance(raw.title,body):return None
-    ai=analyze_news(title=raw.title,text=body,source_name=raw.source_name,kind="prensa económica especializada en salud")
-    if not ai:raise DeferredProcessing("DF pendiente de evaluación IA")
-    if int(ai.get("relevance_score",0))<65:return None
+    if raw.metadata.get("fetch_error"):
+        raise DeferredProcessing("DF detail capture failed",reason="df_detail_fetch_failed")
+    body=raw.metadata.get("page_text") or ""
+    raw.metadata.pop("rejection_reason",None)
+    reason=exclusion(raw)
+    title=raw.metadata.get("article_title") or raw.title
+    if not reason and len(body)>=160 and not _health_relevance(title,body):reason="df_unrelated_to_health"
+    if not reason and len(body)>=160 and not material(title,body):reason="media_no_material_event"
+    if reason:
+        raw.metadata["rejection_reason"]=reason
+        return None
+    if raw.metadata.get("publication_date_conflict") and not raw.metadata.get("publication_date_conflict_resolution"):
+        raise DeferredProcessing("DF publication dates conflict",reason="df_publication_date_conflict")
+    if not raw.event_date:
+        raise DeferredProcessing("DF has no verifiable publication date",reason="df_missing_publication_date")
+    if len(body)<160:
+        reason=('df_image_only_requires_ocr' if raw.metadata.get('primary_image_urls') else
+                'df_media_transcript_unavailable' if raw.metadata.get('primary_media_urls') else 'df_insufficient_article_evidence')
+        raise DeferredProcessing("DF has insufficient readable primary evidence",reason=reason)
+    ai=analyze_news(title=raw.metadata.get("article_title") or raw.title,text=body,source_name=raw.source_name,
+                    kind="prensa económica; exigir cambio material explícito de un actor, financiamiento, regulación o capacidad del sector salud. Macro/política genérica sin consecuencia sanitaria concreta no es señal elegible. Resumir sólo este artículo, atribuir a Diario Financiero, no convertir reporte en confirmación oficial")
+    if not ai:raise DeferredProcessing("DF pendiente de evaluación IA",reason="df_analysis_deferred")
+    gate=policy();threshold=int(gate["minimum_relevance_score"])
+    raw.metadata["editorial_assessment"]={"score":int(ai.get("relevance_score",0)),"reason":ai.get("reason"),
+                                          "gate":gate["name"],"gate_version":gate["version"],"threshold":threshold}
+    reason=assessment_exclusion(ai)
+    if reason:
+        raw.metadata['rejection_reason']=reason
+        return None
+    if int(ai.get("relevance_score",0))<threshold:
+        raw.metadata["rejection_reason"]=f"media_score_below_{threshold}"
+        return None
+    return df_signal_from_assessment(raw,cfg,ai)
+
+def df_signal_from_assessment(raw,cfg,ai):
+    """Build from an already-paid assessment; usable for crash checkpoint recovery."""
+    from .editorial_gate import publication_ready
+    from .df_media_gate import policy, assessment_exclusion
+    if not raw.event_date or not raw.metadata.get("publication_date_source") or (raw.metadata.get("publication_date_conflict") and not raw.metadata.get("publication_date_conflict_resolution")):
+        raise ValueError("DF assessment recovery requires verified publisher date")
+    if int(ai.get("relevance_score",0))<int(policy()["minimum_relevance_score"]):
+        raise ValueError("DF assessment recovery failed Media Early Signal Gate")
+    if assessment_exclusion(ai):
+        raise ValueError('DF assessment explicitly says no material event')
     score=int(ai.get("relevance_score",0));sc=_scopes(f"{raw.title} {raw.raw_text}")
     raw.metadata.update({"what_happened":ai.get("what_happened") or raw.title,"why_it_matters":ai.get("why_it_matters") or "",
       "signal_types":["Noticias"],"scopes":sc,"watch_tags":["df","noticias"]+[x.lower() for x in sc],
       "scores":{"economic":min(95,max(65,score)),"regulatory":30,"scope":70,"novelty":score,"actionability":70}})
-    s=build_signal(raw,cfg);row=s.to_dict();row["signal_types"]=["Noticias"];row["scopes"]=sc;row["editorial_relevance"]=score;return row
+    s=build_signal(raw,cfg);row=s.to_dict();row["signal_types"]=["Noticias"];row["scopes"]=sc;row["editorial_relevance"]=score
+    row["title"]=raw.metadata.get("article_title") or raw.title
+    row["evidence_maturity"]="media_reported"
+    row["confirmation_policy"]="upgrade_same_signal_when_company_or_official_source_confirms"
+    row["editorial_assessment"]=raw.metadata["editorial_assessment"]
+    for key in ("publication_date_source","publication_timestamp","publication_label","publication_date_candidates","date_semantics",
+                "publication_date_conflict","publication_date_conflict_resolution","article_content_source",
+                "original_sha256","original_captured_at"):
+        row[key]=raw.metadata.get(key)
+    if "diario financiero" not in row["what_happened"].lower():
+        row["what_happened"]="Según Diario Financiero, "+row["what_happened"]
+    passed,reason,quality=publication_ready(row)
+    raw.metadata["publication_gate"]={"passed":passed,"reason":reason,"quality":quality}
+    if not passed:
+        raw.metadata["rejection_reason"]=reason
+        return None
+    return row
 
 def process_diario_oficial(raw,cfg):
     text=extract_pdf_text(raw.url,max_pages=10)

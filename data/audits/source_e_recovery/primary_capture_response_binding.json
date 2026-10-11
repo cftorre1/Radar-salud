@@ -1,0 +1,130 @@
+{
+  "audited_at": "2026-10-11T07:34:07.535845+00:00",
+  "as_of": "2026-10-11",
+  "finding": "Primary HTML evidence previously accepted authentic publisher bytes copied to an unsupported-proof.body without an origin response record. SHA proved byte equality but transport metadata was not bound to the saved origin response.",
+  "reviewer_original_reproduction": "/tmp/reviewer-primary-record-binding-repro.json",
+  "fix": "Require URL+User-Agent derived20hex-hop.body and same origin JSON; validate first/final hop URL, record/declaration timestamp, response stop/status/WAF, every hop official HTTPS/curl0/TLSverified, redirect statuses, exact final body filename/hop number/hash/byte count. Preserve strict article redirect identity and publisher/body equality checks.",
+  "tests": {
+    "passed": 279,
+    "command": "PYTHONPATH=src:. .venv/bin/python -m pytest -q tests/test_occupational_response_binding.py tests/test_occupational_evidence.py tests/test_occupational_sources.py tests/test_occupational_documents.py tests/test_occupational_document_integration.py tests/test_occupational_snapshot.py tests/test_occupational_reconcile.py tests/test_occupational_capture_cache.py",
+    "origin_binding_regressions": 30,
+    "adversarial_mutations": [
+      "arbitrary filename",
+      "validly named file with no origin JSON",
+      "wrong requested/first/final URL",
+      "different User-Agent identity",
+      "wrong capture timestamp",
+      "failed response stop reason",
+      "WAF",
+      "record HTTP403",
+      "hop HTTP403",
+      "curl failure",
+      "TLSunverified",
+      "different body file",
+      "different body SHA",
+      "byte count mismatch",
+      "wrong hop filename index",
+      "malformed JSON",
+      "external/insecure redirect hop",
+      "nonredirect intermediate status",
+      "intermediate TLS/curl failure"
+    ],
+    "verification_groups": [
+      {
+        "passed": 120,
+        "scope": "origin binding, processing, saved publisher evidence, documents, snapshot, reconcile and capture cache"
+      },
+      {
+        "passed": 159,
+        "scope": "engine recovery, full inventory, materiality/date integrity and merge"
+      }
+    ],
+    "additional_command": "PYTHONPATH=src:. .venv/bin/python -m pytest -q tests/test_occupational_engine_recovery.py tests/test_occupational_inventory.py tests/test_occupational_integrity.py tests/test_occupational_merge.py"
+  },
+  "actual_publications_verified": [
+    {
+      "source_slug": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+      "title": "Nueva guía entrega orientaciones basadas en evidencia para el abordaje de la salud mental laboral",
+      "publication_date": "2026-09-24",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+        "value": "24/09/2026",
+        "date": "2026-09-24",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_file": "data/audits/source_e_recovery/actions/38120730741/2f8702b2b7fdab6e7e6c-0.body",
+      "body_sha256": "fa70257082ed4913e36d9cd9d208aa4ab812b8fc07f21f0f8956ae7fc26296e6",
+      "origin_record": "data/audits/source_e_recovery/actions/38120730741/2f8702b2b7fdab6e7e6c.json",
+      "record_sha256": "6b89851263643e1bc0a12b34cb7dff2fd6236a13c44ee334bb7b16e22f66b0e8",
+      "record_user_agent": "identified",
+      "record_captured_at": "2026-10-11T07:20:37.587000+00:00",
+      "redirect_hops": 1,
+      "result": "verified"
+    },
+    {
+      "source_slug": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/a-dos-anos-de-la-ley-karin-avances-desafios-y-aprendizajes-para-construir-entornos-laborales-mas-seguros",
+      "title": "A dos años de la Ley Karin: avances, desafíos y aprendizajes para construir entornos laborales más seguros",
+      "publication_date": "2026-09-17",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/a-dos-anos-de-la-ley-karin-avances-desafios-y-aprendizajes-para-construir-entornos-laborales-mas-seguros",
+        "value": "17/09/2026",
+        "date": "2026-09-17",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_file": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/f7ea1315f5a411c15bcb-0.body",
+      "body_sha256": "3e1ffa52dc65b8b3552ed53da4462cbae38a8379c95c088891292de1508d5327",
+      "origin_record": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/f7ea1315f5a411c15bcb.json",
+      "record_sha256": "3afcc4f13ba58aabbe58ec87f07d4caa47cb7398a37e75a597a70ad27081531f",
+      "record_user_agent": "identified",
+      "record_captured_at": "2026-10-11T05:56:38.696221+00:00",
+      "redirect_hops": 1,
+      "result": "verified"
+    },
+    {
+      "source_slug": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/innovar-para-llegar-a-tiempo",
+      "title": "Innovar para llegar a tiempo",
+      "publication_date": "2026-08-25",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/innovar-para-llegar-a-tiempo",
+        "value": "25/08/2026",
+        "date": "2026-08-25",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_file": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/a2b95068261acc188842-0.body",
+      "body_sha256": "b3fd147fa5ff69a7f780c88d90fc079401429ffe9f16d0b0ea9eedabb2e14f93",
+      "origin_record": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/a2b95068261acc188842.json",
+      "record_sha256": "a17f76a002f79cbc068da3793817de3ebedbb8d53ac3f2a4f8b064674fcc9b09",
+      "record_user_agent": "identified",
+      "record_captured_at": "2026-10-11T05:56:51.432380+00:00",
+      "redirect_hops": 1,
+      "result": "verified"
+    },
+    {
+      "source_slug": "mutual_seguridad",
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Flicitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc",
+      "title": "Licitación Pública Convenio Marco: Plan Nacional de Construcción Modular para Mutual de Seguridad C.Ch.C.",
+      "publication_date": "2026-08-27",
+      "publication_evidence": {
+        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Flicitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc",
+        "kind": "publisher:mutual_detail_fecha",
+        "value": "27 ago. 2026",
+        "date": "2026-08-27"
+      },
+      "body_file": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/416dcb2831bc0e60f941-1.body",
+      "body_sha256": "9afeee854770e56970ad2260ce94c3471426c4931d1596ae9e965700edd582d7",
+      "origin_record": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/416dcb2831bc0e60f941.json",
+      "record_sha256": "27300fe1eb5fc3e572f69c8126e56387afef9074a2307ef20c951fc6b6c1a4ee",
+      "record_user_agent": "identified",
+      "record_captured_at": "2026-10-11T06:18:53.278812+00:00",
+      "redirect_hops": 2,
+      "result": "verified"
+    }
+  ],
+  "canonical_state_mutated": false,
+  "new_network_requests": 0,
+  "new_ai_requests": 0,
+  "limit": "This binds saved captures to their origin response records; it does not cryptographically attest an entire locally rewritten capture bundle."
+}

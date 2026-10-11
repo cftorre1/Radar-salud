@@ -1,0 +1,321 @@
+{
+  "schema_version": 1,
+  "observed_at_utc": "2026-10-11T05:29:13Z",
+  "timezone": "America/Santiago",
+  "branch": "codex/e-salud-laboral-20261011",
+  "scope": "Read-only official ACHS route investigation; no parser, queue, source health, workflow or commit changed by this subtask.",
+  "reference_window": {
+    "as_of": "2026-10-11",
+    "lookback_days": 90,
+    "cutoff_inclusive": "2026-07-13",
+    "rule": "Ages <=90 days; publication date must be verified per detail, not event/data period or a listing's modification field."
+  },
+  "validated_surfaces": [
+    {
+      "url": "https://www.achs.cl/centro-de-noticias",
+      "result": "Official HTML content available via independent browser; 20 article rows.",
+      "publication_dates_observed": {
+        "newest": "2026-10-05",
+        "oldest": "2026-08-04"
+      },
+      "rows_in_window_by_listing_date": 20,
+      "detail_pattern": "/centro-de-noticias/noticia/20\\d{2}/[^/]+",
+      "date_scheme": "DD/MM/YYYY standalone below article H1; listing date is associated with each card."
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/1",
+      "result": "Same first-page rows available via independent browser, confirmed current top date 05/10/2026.",
+      "alias_of": "https://www.achs.cl/centro-de-noticias"
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/2",
+      "result": "Official HTML content available via independent browser; different second page of 20 article rows.",
+      "publication_dates_observed": {
+        "newest": "2026-07-27",
+        "oldest": "2026-05-13"
+      },
+      "rows_in_window_by_listing_date": 5,
+      "dates_in_window": [
+        "2026-07-27",
+        "2026-07-15",
+        "2026-07-15",
+        "2026-07-15",
+        "2026-07-15"
+      ],
+      "first_older_card_date": "2026-07-10"
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/3",
+      "result": "Official HTML content available via independent browser; third page begins 13/05/2026 and ends 11/03/2026.",
+      "rows_in_window_by_listing_date": 0
+    },
+    {
+      "url": "https://www.achssalud.cl/",
+      "result": "Official provider homepage available; links separate Clinics, Hospital del Trabajador and Centers, and distinguish Achs Seguro Laboral.",
+      "clinic_network_target": "https://www.clinicasachssalud.cl/",
+      "publication_date_verified": false
+    },
+    {
+      "url": "https://www.achssalud.cl/areasdeatencion/clinicas",
+      "result": "Official provider identity/service listing available; individual clinic links present. Undated institutional directory, not a publication.",
+      "publication_date_verified": false
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/",
+      "result": "Official clinic subsidiary homepage linked by Achs Salud; presents clinic network, distinct from Centers and Hospital. No news archive link found in rendered homepage.",
+      "publication_date_verified": false,
+      "data_period_observed": "Annual figures through December 2025",
+      "date_warning": "Data period and website copyright are not publication dates."
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/feed/",
+      "result": "Independent browser fetch reports application/rss+xml, then refuses unsupported MIME.",
+      "exact_tool_result": "Failed to fetch https://www.clinicasachssalud.cl/feed/: (400) Unsupported content-type: application/rss+xml",
+      "rss_mime_observed": true,
+      "feed_entries_captured": false,
+      "origin_http_status": null,
+      "interpretation": "The 400 label belongs to tool failure envelope; do not claim origin HTTP400. Capture XML in Actions to verify item dates, completeness and whether feed is empty."
+    },
+    {
+      "url": "https://www.achssalud.cl/blog",
+      "result": "Official Salud y Bienestar archive available; browser renders paging controls Anterior/Siguiente and 1/10 plus inline item payloads.",
+      "detail_pattern": "/blog/detalle/[^/]+",
+      "paging_route_verified": false,
+      "inline_payload_observed": true,
+      "ordinary_article_href_warning": "Rendered archive exposes literal detail paths in item payloads, while visible Leer artículo may resolve to a generic/no-specific target; inspect raw markup/JS before implementing discovery.",
+      "date_warning": "Multiple timestamps occur per item; field semantics are not exposed by this browser."
+    }
+  ],
+  "verified_detail_examples": [
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+      "publication_date": "2026-08-28",
+      "evidence": {
+        "kind": "visible_date_after_h1",
+        "value": "28/08/2026",
+        "browser_lines": "H1 line165; date line167"
+      },
+      "market_role": "provider_clinics",
+      "reason": "Article identifies Clínicas Achs Salud subsidiary and Clínica Atacama as participants in SAFED. The beginning of service August19 is an event date, not the publication date."
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+      "publication_date": "2026-08-19",
+      "evidence": {
+        "kind": "visible_date_after_h1",
+        "value": "19/08/2026",
+        "browser_lines": "H1 line165; date line167"
+      },
+      "market_role": "provider_centers",
+      "reason": "Changes concern Centro Linares, Centro San Javier and Centro La Florida; Clínica Lircay appears as an out-of-hours referral. Do not assign the Centers expansion to the clinic subsidiary."
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+      "publication_date": "2026-09-24",
+      "evidence": {
+        "kind": "visible_date_after_h1",
+        "value": "24/09/2026",
+        "browser_lines": "H1 line165; date line167"
+      },
+      "market_role": "mutuality",
+      "reason": "Guide for treatment of occupational mental-health conditions; 2024 research call in body is not publication date."
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+      "publication_date": "2026-09-15",
+      "evidence": {
+        "kind": "visible_date_after_h1",
+        "value": "15/09/2026",
+        "browser_lines": "H1 line165; date line167"
+      },
+      "market_role": "mutuality",
+      "reason": "Occupational commuting accidents. First-semester data period is not publication date."
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+      "publication_date": "2026-07-15",
+      "evidence": {
+        "kind": "visible_date_after_h1",
+        "value": "15/07/2026",
+        "browser_lines": "H1 line165; date line167"
+      },
+      "market_role": "mutuality",
+      "reason": "New preventive operational module; found on archive page2 inside the 90-day window."
+    }
+  ],
+  "paging_findings": {
+    "newsroom": {
+      "strategy": "Fetch canonical first page, then /2, /3 etc. Deduplicate /1 against canonical, and details by canonical URL.",
+      "observed_page_size": 20,
+      "observed_first_two_page_candidates_in_90d": 25,
+      "pages_checked": 3,
+      "next_stop_rule": "Stop only after a fully captured page contains no date in window and ordering is verified; retain date/detail failures as unverified.",
+      "caveat": "Browser rendered markup lacks explicit paging-link destinations; URL segment scheme is verified by distinct live page responses. Raw HTML/server status remains for Actions."
+    },
+    "provider_blog": {
+      "strategy_status": "Not established",
+      "observations": [
+        "UI has Anterior/Siguiente and 1/10.",
+        "Inline media URLs use /images/librariesprovider17/... and sfvrsn query strings.",
+        "Date triplets and YYYYMMDDHHMMSS values occur with each literal /blog/detalle/ path."
+      ],
+      "cms_inference": "These are Sitefinity-style signatures; CMS/API contract and JS network requests have not been captured, so no API endpoint is claimed verified.",
+      "date_trap": {
+        "item": "https://www.achssalud.cl/blog/detalle/estoy-triste-o-deprimido",
+        "archive_values": [
+          "2026-04-07 09:59",
+          "2024-08-21 10:58",
+          "2024-10-16 22:16"
+        ],
+        "publication_date_verified": false,
+        "reason": "Detail contains no visible publication date; first timestamp may be migration/modification. Do not promote old content as a 2026 publication."
+      },
+      "recent_item": {
+        "url": "https://www.achssalud.cl/blog/detalle/por-qu%C3%A9-volver-a-usar-el-protector-solar",
+        "archive_values": [
+          "2026-10-01 09:00",
+          "2026-10-01 08:31",
+          "2026-10-01 09:00",
+          "2026-10-01 09:30"
+        ],
+        "detail_visible_publication_date": false,
+        "publication_date_verified": false,
+        "reason": "Current item path is real, but rendered detail has no standalone date and archive has several unlabeled timestamps. Requires raw metadata/schema verification; health education alone is not a market-change signal."
+      }
+    }
+  },
+  "separation_rules": [
+    "Use article actors/content, not host-wide branding, navigation, footer or the common SUSESO footer.",
+    "Achs Salud includes clinics, Hospital del Trabajador and ambulatory Centers; do not collapse all three into Clínicas Achs Salud.",
+    "Clinic subsidiary attribution requires the subsidiary or a participating clinic as actor in the specific story.",
+    "Occupational insurance, prevention, commuting accidents and occupational-health tools belong to Achs Seguro Laboral; provider articles may share the same newsroom.",
+    "Undated identity pages and differing old/current clinic counts do not establish a dated expansion signal."
+  ],
+  "numeric_route_trap": {
+    "url": "https://www.achs.cl/centro-de-noticias/noticia/1",
+    "result": "Direct independent browser open returns a newsroom listing despite the noticia path; H1 is Centro de Noticias and cards contain multiple publication dates.",
+    "recommendation": "Keep canonical year/slug detail pattern and verify H1/article-bound date; reject numeric pseudo-detail listings."
+  },
+  "candidate_probes_not_confirmed": [
+    "https://www.achs.cl/robots.txt",
+    "https://www.achs.cl/sitemap.xml",
+    "https://www.achs.cl/feed/",
+    "https://www.achs.cl/rss",
+    "https://www.achs.cl/api/default/newsitems",
+    "https://www.achssalud.cl/robots.txt",
+    "https://www.achssalud.cl/sitemap.xml",
+    "https://www.achssalud.cl/noticias",
+    "https://www.achssalud.cl/blog/2",
+    "https://www.achssalud.cl/blog?page=2",
+    "https://www.achssalud.cl/api/default/blogposts",
+    "https://www.achssalud.cl/api/default",
+    "https://www.achssalud.cl/feed/",
+    "https://www.clinicasachssalud.cl/wp-json/wp/v2/posts?per_page=1",
+    "https://www.clinicasachssalud.cl/noticias/"
+  ],
+  "candidate_probe_interpretation": "Browser tool says inaccessible without origin status. This neither proves nonexistent endpoints nor confirms their availability.",
+  "exact_browser_probe_errors": [
+    "Internal Error ()\n【turn913586view0】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.achs.cl/robots.txt\",\"lineno\":null}); Total lines: 1\nL0: URL https://www.achs.cl/robots.txt is not accessible via this tool.\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn913586view1】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.achs.cl/sitemap.xml\",\"lineno\":null}); Total lines: 1\nL0: URL https://www.achs.cl/sitemap.xml is not accessible via this tool.\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn913586view2】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.achs.cl/feed/\",\"lineno\":null}); Total lines: 1\nL0: URL https://www.achs.cl/feed/ is not accessible via this tool.\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn913586view3】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.achs.cl/rss\",\"lineno\":null}); Total lines: 1\nL0: URL https://www.achs.cl/rss is not accessible via this tool.\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn913586view4】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.achs.cl/api/default/newsitems\",\"lineno\":null}); Total lines: 1\nL0: URL https://www.achs.cl/api/default/newsitems is not accessible via this tool.\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn913586view5】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.achssalud.cl/robots.txt\",\"lineno\":null}); Total lines: 1\nL0: URL https://www.achssalud.cl/robots.txt is not accessible via this tool.\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn913586view6】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.achssalud.cl/sitemap.xml\",\"lineno\":null}); Total lines: 1\nL0: URL https://www.achssalud.cl/sitemap.xml is not accessible via this tool.\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn913586view7】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.achssalud.cl/noticias\",\"lineno\":null}); Total lines: 1\nL0: URL https://www.achssalud.cl/noticias is not accessible via this tool.\n\n--------------------------------------------------------------------------------\n",
+    "Internal Error ()\n【turn825617view0】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.achssalud.cl/blog/2\",\"lineno\":null}); Total lines: 1\nL0: URL https://www.achssalud.cl/blog/2 is not accessible via this tool.\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn825617view1】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.achssalud.cl/blog?page=2\",\"lineno\":null}); Total lines: 1\nL0: URL https://www.achssalud.cl/blog?page=2 is not accessible via this tool.\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn825617view2】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.achssalud.cl/api/default/blogposts\",\"lineno\":null}); Total lines: 1\nL0: URL https://www.achssalud.cl/api/default/blogposts is not accessible via this tool.\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn825617view3】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.achssalud.cl/api/default\",\"lineno\":null}); Total lines: 1\nL0: URL https://www.achssalud.cl/api/default is not accessible via this tool.\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn825617view4】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.achssalud.cl/feed/\",\"lineno\":null}); Total lines: 1\nL0: URL https://www.achssalud.cl/feed/ is not accessible via this tool.\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn825617view5】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.clinicasachssalud.cl/wp-json/wp/v2/posts?per_page=1\",\"lineno\":null}); Total lines: 1\nL0: URL https://www.clinicasachssalud.cl/wp-json/wp/v2/posts?per_page=1 is not accessible via this tool.\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn825617view6】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.clinicasachssalud.cl/feed/\",\"lineno\":null}); Total lines: 1\nL0: Failed to fetch https://www.clinicasachssalud.cl/feed/: (400) Unsupported content-type: application/rss+xml\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn825617view7】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.clinicasachssalud.cl/noticias/\",\"lineno\":null}); Total lines: 1\nL0: URL https://www.clinicasachssalud.cl/noticias/ is not accessible via this tool.\n"
+  ],
+  "shell_transport_records": [
+    {
+      "started_at_utc": "2026-10-11T05:27:54.121844+00:00",
+      "url": "https://www.achs.cl/centro-de-noticias",
+      "requested_method": "HEAD",
+      "command": [
+        "curl",
+        "--head",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.3 (+public-source-monitor)",
+        "https://www.achs.cl/centro-de-noticias"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 05:27:53 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "started_at_utc": "2026-10-11T05:27:54.134074+00:00",
+      "url": "https://www.achs.cl/centro-de-noticias/2",
+      "requested_method": "HEAD",
+      "command": [
+        "curl",
+        "--head",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.3 (+public-source-monitor)",
+        "https://www.achs.cl/centro-de-noticias/2"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 05:27:53 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "started_at_utc": "2026-10-11T05:27:54.145653+00:00",
+      "url": "https://www.achssalud.cl/blog",
+      "requested_method": "HEAD",
+      "command": [
+        "curl",
+        "--head",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.3 (+public-source-monitor)",
+        "https://www.achssalud.cl/blog"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 05:27:53 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    },
+    {
+      "started_at_utc": "2026-10-11T05:27:54.158104+00:00",
+      "url": "https://www.clinicasachssalud.cl/feed/",
+      "requested_method": "HEAD",
+      "command": [
+        "curl",
+        "--head",
+        "--location",
+        "--max-time",
+        "12",
+        "--silent",
+        "--show-error",
+        "--user-agent",
+        "RadarSaludBot/0.3 (+public-source-monitor)",
+        "https://www.clinicasachssalud.cl/feed/"
+      ],
+      "exit_code": 56,
+      "stdout": "HTTP/1.1 403 Forbidden\ncontent-length: 16\ncontent-type: text/plain\ndate: Sun, 11 Oct 2026 05:27:53 GMT\nserver: envoy\nconnection: close\n\n",
+      "stderr": "curl: (56) CONNECT tunnel failed, response 403\n",
+      "origin_reached": false
+    }
+  ],
+  "limitations": [
+    "Approved shell network still receives CONNECT403 from envoy proxy before origin/TLS; do not attribute denial to ACHS.",
+    "Browser exposes extracted text/content type but no raw HTML, response headers, TLS chain, redirects, hidden field labels or JS network traffic.",
+    "Indexed hints are discovery only; the five article dates above were separately verified on official detail pages.",
+    "Read-only subtask does not modify health/pending/feed and does not establish full source operational status."
+  ],
+  "recommended_actions_capture": [
+    "https://www.achs.cl/centro-de-noticias",
+    "https://www.achs.cl/centro-de-noticias/2",
+    "https://www.achs.cl/centro-de-noticias/3",
+    "https://www.achssalud.cl/blog",
+    "https://www.clinicasachssalud.cl/feed/"
+  ],
+  "next_action": "Actions runner: preserve verified TLS, redirects/status/headers, raw HTML/XML hashes. Confirm archive paging and own-detail dates; inspect blog item field names and page JS/API requests, and parse RSS pubDate/entries before registering any alternative discovery route."
+}

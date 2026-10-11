@@ -193,11 +193,17 @@ def _normative_contract(s):
     title=str(r.get("source_title_full") or r.get("title") or "").strip()
     m=re.search(r"\b(Resolución(?:\s+Exenta)?|Circular|Oficio(?:\s+Ord(?:inario)?)?|Decreto)\s+(?:(IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*([\d\.]+)",title,re.I)
     if not m:m=re.search(r"\b(Resolución(?:\s+Exenta)?|Circular|Oficio(?:\s+Ord(?:inario)?)?|Decreto)\s+(?:(IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*([\d\.]+)",str(r.get("normative_document_label") or ""),re.I)
-    if not m:return r
-    kind=" ".join(m.group(1).split());prefix=(m.group(2) or "").upper();raw_number=m.group(3);number=re.sub(r"\D","",raw_number)
-    label=f"{kind} {prefix+'/' if prefix else ''}N°{raw_number}"
-    r.update({"normative_document_type":kind,"normative_document_number":f"{prefix+'/' if prefix else ''}N°{raw_number}","normative_document_label":label,"legal_identity":label})
-    cfg=_normative_v2_config();record=cfg.get("records",{}).get(number,{})
+    cfg=_normative_v2_config()
+    if not m:
+        record=cfg.get("source_records",{}).get(str(r.get("source_url") or ""),{})
+        label=str(record.get("legal_identity") or "")
+        if not label:return r
+        r.update(normative_document_label=label,legal_identity=label,normative_document_number=label)
+    else:
+        kind=" ".join(m.group(1).split());prefix=(m.group(2) or "").upper();raw_number=m.group(3);number=re.sub(r"\D","",raw_number)
+        label=f"{kind} {prefix+'/' if prefix else ''}N°{raw_number}"
+        r.update({"normative_document_type":kind,"normative_document_number":f"{prefix+'/' if prefix else ''}N°{raw_number}","normative_document_label":label,"legal_identity":label})
+        record=cfg.get("records",{}).get(number,{})
     plain=str(record.get("plain_language_title") or "").strip();context=str(record.get("normative_context") or "").strip()
     subtitle=str(record.get("legal_subtitle") or label).strip()
     norm=lambda x:re.sub(r"[^a-z0-9]+"," ",str(x or "").lower().translate(str.maketrans("áéíóúüñ","aeiouun"))).strip()
@@ -218,6 +224,10 @@ def _normative_contract(s):
     return r
 
 def _doc_key(s):
+    if "Fiscalización" in (s.get("signal_types") or []) and s.get("source_url"):
+        from radar_salud.superintendencia_fiscalizacion import canonical_url
+        identity = s.get('source_record_id')
+        return "fiscalization:"+canonical_url(s["source_url"])+(f'|record:{identity}' if identity else '')
     title=s.get("title","") or ""
     m=re.search(r"resoluci[oó]n(?:\s+exenta)?\s+(?:n[uú]mero\s+)?(?:if|ip)?\s*[/\-]?\s*n?[°º]?\s*([\d\.]+)",title,re.I)
     if m:return "res-"+re.sub(r"\D","",m.group(1))
@@ -272,14 +282,26 @@ def _related_context(signals,resolve_external=True):
         r.pop("related_norms",None);r.pop("related_sources",None);out.append(r)
     return out
 
-def _statistical_analysis_overrides(path=Path("data/statistical_analysis_overrides_v1.json")):
-    if not path.exists(): return {}
-    try:
-        payload=json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
-        return {}
-    rows=payload.get("signals",{}) if isinstance(payload,dict) else {}
-    return rows if isinstance(rows,dict) else {}
+def _statistical_analysis_overrides(
+    path=Path("data/statistical_analysis_overrides_v1.json"),
+    verified_path=Path(__file__).resolve().parents[1]/"config"/"statistical_analysis_verified_v1.json",
+):
+    # Replays need the reviewed primary evidence, not an uncommitted CI file.
+    # A newly built analysis may supersede that presentation; malformed inputs
+    # must fail explicitly rather than silently degrading to an empty inventory.
+    merged={}
+    for candidate in (verified_path,path):
+        if not candidate.exists():
+            continue
+        payload=json.loads(candidate.read_text(encoding="utf-8"))
+        rows=payload.get("signals") if isinstance(payload,dict) else None
+        if not isinstance(rows,dict) or any(not isinstance(row,dict) for row in rows.values()):
+            raise ValueError(f"Invalid statistical analysis signals: {candidate}")
+        identity_fields={"event_date","source_url","source_name","detected_at","ingestion_mode"}
+        if any(identity_fields.intersection(row) for row in rows.values()):
+            raise ValueError(f"Statistical presentation must preserve source identity/date: {candidate}")
+        merged.update(rows)
+    return merged
 
 def add_material_epidemiology(signals, payload):
     """Append only a promoted material-week pulse; never leak provider-ready drafts."""
@@ -441,33 +463,97 @@ def _statistical_value_ladder(s):
     elif level=="publication_inventory":
         if inventory:
             r["card_what"]=f"La publicación reúne {len(docs)} archivos oficiales sobre "+", ".join(inventory)+"."
-            r["card_why"]="Aunque aún no exista un insight calculado, permite conocer qué estadísticas públicas están disponibles y decidir qué serie revisar."
         elif docs:
             r["card_what"]=f"La publicación incorpora {len(docs)} archivos estadísticos oficiales."
-            r["card_why"]="Alicanto la mantiene visible para que puedas saber qué información pública existe sin abrir cada archivo."
         else:
             r["card_what"]=r.get("what_happened") or f"Se publicó {title}."
-            r["card_why"]="Alicanto la mantiene visible como fuente estadística pública; aún no existe un análisis reproducible para esta entrega."
+        r["card_why"]=""
+        r["card_why_optional"]=True
+        r["methodology_visibility"]="collapsed"
+        r["incremental_value_gate"]={"inventory":"Official document links and topic coverage only; no calculated statistical finding"}
+        r["statistical_methodology"]={"source_url":r.get("source_url"),"scope":"document_inventory_only","analysis_status":"not_performed"}
     elif level=="deep_analysis" and not r.get("card_what"):
         r["card_what"]=r.get("what_happened")
         r["card_why"]=r.get("why_it_matters")
 
     return r
 
+def _enforcement_register_pulses(signals, today=None):
+    """Keep legal records individually; aggregate only reviewed register families."""
+    today=today or date.today()
+    from radar_salud.suseso_fiscalizacion import current_professional_suspension
+    groups=defaultdict(list);contexts=defaultdict(list);other=[]
+    for signal in signals:
+        family=('suseso_emisores' if signal.get('source_record_id') and
+            signal.get('document_class')=='enforcement_sanction' else
+            'sis_agentes' if signal.get('scopes')==['Agentes de ventas'] else None)
+        emitted=_d(signal.get('emission_date'))
+        if family and emitted and 0 <= (today-emitted).days <=90:
+            groups[family].append(signal)
+        elif family=='suseso_emisores' and current_professional_suspension(signal['source_url'],signal,today):
+            contexts[family].append(signal)
+        else:other.append(signal)
+    for family,items in groups.items():
+        items.sort(key=lambda s:(s['emission_date'],s.get('source_record_id') or s['source_url']),reverse=True)
+        recent30=sum((today-_d(s['emission_date'])).days<=30 for s in items)
+        latest=items[0]
+        alternatives=[]
+        current_context=[]
+        for s in items+contexts[family]:
+            amount=s.get('sanction_amount');unit=s.get('sanction_unit')
+            material=s.get('regulated_entity') or ''
+            if amount is not None and unit:material+=f' · {amount:g} {unit}'
+            material+=' · '+(s.get('validity_text') or s.get('what_happened') or '')
+            reference=dict(title=s['title'],url=s['source_url'],source_record_id=s.get('source_record_id'),
+                event_date=s['emission_date'],emission_date=s['emission_date'],publication_date=s.get('publication_date'),
+                event_date_basis='emission',material=material,ingestion_mode=s.get('ingestion_mode'),detected_at=s.get('detected_at'))
+            (current_context if s in contexts[family] else alternatives).append(reference)
+        if family=='suseso_emisores':
+            title='SUSESO sanciona a emisores de licencias · registro de 90 días'
+            what=f'{recent30} oficios emitidos en 30 días y {len(items)} en 90 días, con multas y suspensión de emisión de licencias. Las fechas de suspensión se detallan por profesional.'
+            if current_context:
+                what+=f' Además, {len(current_context)} oficios anteriores mantienen suspensiones vigentes; se muestran como antecedentes y no se suman a las novedades.'
+            why='Prestadores, COMPIN e Isapres deben contrastar las licencias con las suspensiones del registro. Los sancionados son los profesionales emisores.'
+        else:
+            from collections import Counter
+            effects=Counter(s['event_type'] for s in items)
+            title='SIS sanciona a agentes de ventas · registro de 90 días'
+            what=f'{recent30} resoluciones emitidas en 30 días y {len(items)} en 90: {effects["REGISTRATION_CANCELLATION"]} cancelaciones directas, {effects["SANCTION_SUBSTITUTION"]} multas impagas sustituidas por cancelación, {effects["SANCTION"]} multas y {effects["SANCTION_WARNING"]} censuras.'
+            why='Las Isapres deben revisar habilitación, consentimiento y veracidad de la venta. La cancelación del registro impide actuar como agente; no equivale a una absolución.'
+        pulse=dict(latest,title=title,what_happened=what,why_it_matters=why,card_what=what,card_why=why,
+            event_type='SANCTION_REGISTER',source_record_id=family+':rolling90',regulated_entity=None,
+            event_date=latest['emission_date'],emission_date=latest['emission_date'],publication_date=None,
+            event_date_basis='emission',window_basis='emission_date',sanction_count=len(items),
+            counts={'30':recent30,'90':len(items)},source_alternatives=alternatives,source_documents=[],
+            historical_sanction_context=current_context,
+            sanction_amount=None,sanction_unit=None,key_points=[],related_reference_ids=[],
+            validity_text='Cada acto conserva su fecha de emisión y efecto. La fecha de publicación del registro no está acreditada; consulte la vigencia individual.',
+            ingestion_mode='BACKFILL',risk_notes=[],key_facts=[])
+        other.append(pulse)
+    return other
+
 def _sanction_pulses(signals, today=None):
     """Keep individual records in history, show one rolling pulse per sector."""
     today=today or date.today()
+    signals=_enforcement_register_pulses(signals,today)
     groups=defaultdict(list);other=[]
     for s in signals:
         scopes=s.get("scopes") or []
         sector=next((x for x in ("Isapres","Prestadores") if x in scopes),None)
-        age=(today-_d(s.get("event_date"))).days if _d(s.get("event_date")) else 999
+        if s.get('date_reconciliation') and not s.get('publication_date'):
+            # A verified issuance is visible individually; an inconsistent listing
+            # publication must never become a fictitious new publication pulse.
+            other.append(s)
+            continue
+        publication = _d(s.get("publication_date") or s.get("event_date"))
+        age=(today-publication).days if publication else 999
         if s.get("event_type")=="SANCTION" and sector:
-            if 0<=age<=30:groups[sector].append(s)
+            if 0<=age<=30:groups[(sector,30)].append(s)
+            elif 30<age<=90:groups[(sector,90)].append(s)
             # Individual and older resolutions stay in durable history.
             continue
         other.append(s)
-    for sector,items in groups.items():
+    for (sector,window),items in groups.items():
         items.sort(key=lambda x:_d(x.get("event_date")) or date.min,reverse=True)
         live=[s for s in items if s.get("ingestion_mode")=="LIVE"]
         latest=live[0] if live else items[0]
@@ -481,7 +567,8 @@ def _sanction_pulses(signals, today=None):
             if topic:parts.append(topic)
             return " · ".join(x for x in parts if x)
         resolutions=[{"title":s.get("title"),"source_name":s.get("source_name"),
-            "url":s.get("source_url"),"event_date":s.get("event_date"),"material":material(s),
+            "url":s.get("source_url"),"event_date":s.get("event_date"),"publication_date":s.get("publication_date"),"material":material(s),
+            "emission_date":s.get("emission_date"),"event_date_basis":s.get("event_date_basis"),"signal_types":["Fiscalización"],
             "ingestion_mode":s.get("ingestion_mode"),"detected_at":s.get("detected_at")}
             for s in items if s.get("source_url")]
         lead=material(items[0])
@@ -492,12 +579,17 @@ def _sanction_pulses(signals, today=None):
         if isinstance(amount,(int,float)) and not isinstance(amount,bool) and amount>=0 and unit:brief_parts.append(f"{amount:g} {unit}")
         if brief_topic:brief_parts.append(brief_topic)
         brief_material=" · ".join(x for x in brief_parts if x)
-        pulse=dict(latest,title=f"Pulso de sanciones a {sector} · últimos 30 días",
-            what_happened=f"{len(items)} {'sanción registrada' if len(items)==1 else 'sanciones registradas'} en los últimos 30 días. {len(live)} detectadas en LIVE; {len(items)-len(live)} incorporadas desde el histórico."+(f" Entre ellas: {lead}." if lead else ""),
+        period='últimos 30 días' if window==30 else 'días 31 a 90'
+        title=f"Pulso de sanciones a {sector} · {period}" if window==30 else f"Sanciones a {sector} · {period}"
+        pulse=dict(latest,title=title,
+            what_happened=f"{len(items)} {'resolución sancionadora publicada' if len(items)==1 else 'resoluciones sancionadoras publicadas'} en {period}. {len(live)} detectadas en LIVE; {len(items)-len(live)} incorporadas desde el histórico."+(f" Entre ellas: {lead}." if lead else ""),
             why_it_matters="Permite observar focos recientes de fiscalización y revisar cada resolución en su fuente original.",
             source_alternatives=resolutions,
-            card_what=f"{len(items)} sanciones a {sector} en 30 días."+(f" Entre ellas: {brief_material}." if brief_material else ""),
-            sanction_count=len(items),source_documents=[],key_points=[f"{x['material']} · {x['title']}" for x in resolutions if x['material']],risk_notes=[],key_facts=[],
+            card_what=f"{len(items)} sanciones a {sector} · {period}."+(f" Entre ellas: {brief_material}." if brief_material else ""),
+            event_date=max((s.get("publication_date") or s.get("event_date") or "" for s in items)),
+            publication_date=max((s.get("publication_date") or s.get("event_date") or "" for s in items)),
+            event_date_basis="publication", emission_date=None,
+            window_basis="publication_date", sanction_count=len(items),source_documents=[],key_points=[f"{x['material']} · {x['title']}" for x in resolutions if x['material']],risk_notes=[],key_facts=[],
             related_reference_ids=[],related_reference_contexts=[],affected_processes=[],
             regulated_entity=None,sanction_amount=None,sanction_unit=None,fiscalization_topic=None,
             radar_score=max(s.get("radar_score") or 0 for s in items),
@@ -507,21 +599,33 @@ def _sanction_pulses(signals, today=None):
         other.append(pulse)
     return other
 
-def curate(signals,resolve_external=True):
+def curate(signals,resolve_external=True,as_of=None):
     normalized=[]
     for s in signals:
         r=_normative_contract(_suseso_normative_upgrade(_editorial_enrichment(_card_micro(_separate_df_deck(_normalize_scopes(_normalize_type(s)))))))
         ok,reason,q=publication_ready(r);r["publication_ready_score"]=q;r["publication_gate_reason"]=reason
         if ok:normalized.append(r)
     if not normalized:return []
-    latest=max([_d(x.get("event_date")) for x in normalized if _d(x.get("event_date"))] or [date.today()])
-    recent=[s for s in normalized if _d(s.get("event_date")) and (latest-_d(s.get("event_date"))).days<=90 and not _routine_accreditation(s)]
+    latest=as_of or max([_d(x.get("event_date")) for x in normalized if _d(x.get("event_date"))] or [date.today()])
+    def within_window(s):
+        from radar_salud.suseso_fiscalizacion import current_professional_suspension
+        if 'Fiscalización' in s.get('signal_types',[]) and current_professional_suspension(s.get('source_url',''),s,latest):
+            return True
+        dates=[_d(s.get('event_date'))]
+        if 'Fiscalización' in s.get('signal_types',[]):dates.append(_d(s.get('publication_date')))
+        return any(day and 0<=(latest-day).days<=90 for day in dates)
+    recent=[s for s in normalized if within_window(s) and not _routine_accreditation(s)]
     # Public statistics remain visible even when deep analysis is unavailable.
     # Enrich each one to the highest supported level: connected insight -> deep analysis
     # -> central finding -> useful publication inventory.
     recent=_apply_statistical_analysis(recent)
     recent=[_statistical_value_ladder(s) for s in recent]
     recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent);recent=_related_context(recent,resolve_external);recent=_resolution_relation_titles(recent)
+    # An explicitly reviewed DF corroboration yields to its official event when
+    # that counterpart is present. Keep both source records in durable history.
+    counterpart_urls={s.get('source_url') for s in recent}
+    recent=[s for s in recent if not (s.get('source_name')=='Diario Financiero' and s.get('df_duplicate_of')
+        and s.get('df_duplicate_of') in counterpart_urls)]
     recent=_apply_persistent_editorial_decisions(recent)
     recent=[_normative_contract(s) if s.get("event_type")=="REGULATION" or "Normativa" in (s.get("signal_types") or []) else s for s in recent]
     recent=[s for s in recent if s.get("feed_visibility") is not False]

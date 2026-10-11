@@ -1,0 +1,42 @@
+{
+  "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=1",
+  "user_agent": "identified",
+  "captured_at": "2026-10-11T07:04:40.183460+00:00",
+  "hops": [
+    {
+      "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=1",
+      "http_status": 200,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 200 ",
+          "server": "nginx",
+          "date": "Sun, 11 Oct 2026 07:04:40 GMT",
+          "content-type": "application/json; charset=UTF-8",
+          "cache-control": "no-store, no-cache, must-revalidate",
+          "x-robots-tag": "noindex",
+          "x-wp-total": "1238",
+          "x-wp-totalpages": "1238",
+          "link": "<https://ist.cl/wp-json/wp/v2/posts?per_page=1&page=2>; rel=\"next\"",
+          "strict-transport-security": "max-age=31536000"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "application/json; charset=UTF-8",
+      "bytes": 6434,
+      "sha256": "129d83ef1f4ecbacee9791314e64335fa3d8c7c389d1df08b6358057128be972",
+      "waf": null,
+      "error": null,
+      "body_file": "882aeae634d8d66757a5-0.body"
+    }
+  ],
+  "stop_reason": "response_captured",
+  "final_url": "https://ist.cl/wp-json/wp/v2/posts?per_page=1",
+  "http_status": 200,
+  "waf": null
+}

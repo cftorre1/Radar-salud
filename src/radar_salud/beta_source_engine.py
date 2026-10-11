@@ -8,6 +8,8 @@ from .history import load_history, merge_history, save_history
 from .paths import project_root
 from .source_health import record as health_record
 from .beta_core_handoff import core_handoff
+from .occupational_sources import SOURCES as OCCUPATIONAL_SOURCES
+from .processing import DeferredProcessing
 
 
 def _cfgs(root):
@@ -56,7 +58,8 @@ def main():
         if handoff is not None:
             audit["sources"][slug]=handoff
             continue
-        rows=[];rejected=0;error=None;found=[]
+        rows=[];rejected=0;deferred=0;error=None;error_detail=None;found=[];decisions=[]
+        owner=getattr(discover,"__self__",None)
         try:
             found=discover()
             for raw in found[:3]:
@@ -64,21 +67,31 @@ def main():
                     row=processor(raw,cfgs[slug])
                     if row:
                         row["detected_at"]=datetime.now(timezone.utc).isoformat()
-                        row["ingestion_mode"]=_lane(row.get("event_date"))
+                        row["ingestion_mode"]="BACKFILL" if slug in OCCUPATIONAL_SOURCES else _lane(row.get("event_date"))
                         rows.append(row)
+                        decisions.append({"url":raw.url,"status":"published","event_date":raw.event_date})
                     else:
                         rejected+=1
-                except Exception:
-                    rejected+=1
+                        decisions.append({"url":raw.url,"status":"rejected","reason":raw.metadata.get("publication_rejection_reason") or "processor_rejected"})
+                except DeferredProcessing:
+                    deferred+=1
+                    decisions.append({"url":raw.url,"status":"pending","reason":"analysis_deferred"})
+                except Exception as exc:
+                    deferred+=1
+                    decisions.append({"url":raw.url,"status":"pending","reason":"processing_failed","error":type(exc).__name__})
         except Exception as exc:
             error=type(exc).__name__
+            error_detail={"code":getattr(exc,"code",error),"url":getattr(exc,"url",None),"message":str(exc)}
         if rows:
             history=merge_history(history,rows)
         health_record(root,slug,name=cfgs[slug]["name"],discovered=len(found),new=0,published=len(rows),
-                      rows=rows,pending=0,rejected=rejected,error=error,live_pending=0,backfill_pending=0)
+                      rows=rows,pending=deferred,deferred=deferred,rejected=rejected,error=error,
+                      live_pending=0,backfill_pending=deferred,error_detail=error_detail)
         audit["sources"][slug]={
             "discovered":len(found),"published":len(rows),"rejected_sample":rejected,
             "technical_status":"error" if error else "ok","error":error,
+            "error_detail":error_detail,"deferred_sample":deferred,"processing_decisions":decisions,
+            "discovery_decisions":getattr(owner,"decisions",[]),
             "newest_event_date":max([x.event_date for x in found if x.event_date],default=None)
         }
     audit["media_gate_df_rows"]=_apply_media_gate(history)

@@ -1,0 +1,70 @@
+{
+  "url": "https://clinicasachssalud.cl/feed/",
+  "user_agent": "identified",
+  "captured_at": "2026-10-11T06:34:59.156269+00:00",
+  "hops": [
+    {
+      "url": "https://clinicasachssalud.cl/feed/",
+      "http_status": 301,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 301 ",
+          "content-type": "application/rss+xml; charset=UTF-8",
+          "last-modified": "Wed, 19 Aug 2026 16:32:09 GMT",
+          "location": "https://www.clinicasachssalud.cl/feed/",
+          "cache-control": "public, max-age=3600",
+          "content-length": "0",
+          "date": "Sun, 11 Oct 2026 06:35:00 GMT",
+          "server": "LiteSpeed",
+          "strict-transport-security": "max-age=31536000; includeSubDomains"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "application/rss+xml; charset=UTF-8",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "waf": null,
+      "error": null,
+      "body_file": "a49f69db87228a47c38f-0.body"
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/feed/",
+      "http_status": 200,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 200 ",
+          "last-modified": "Wed, 19 Aug 2026 16:32:09 GMT",
+          "link": "<https://www.clinicasachssalud.cl/wp-json/>; rel=\"https://api.w.org/\"",
+          "content-type": "application/rss+xml; charset=UTF-8",
+          "cache-control": "public, max-age=3600",
+          "date": "Sun, 11 Oct 2026 06:35:03 GMT",
+          "server": "LiteSpeed",
+          "strict-transport-security": "max-age=31536000; includeSubDomains"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "application/rss+xml; charset=UTF-8",
+      "bytes": 1046,
+      "sha256": "e78e30c7fe32e9d43a07727744eb9716e7672de21fc64da71ba6fb59f13a2596",
+      "waf": null,
+      "error": null,
+      "body_file": "a49f69db87228a47c38f-1.body"
+    }
+  ],
+  "stop_reason": "response_captured",
+  "final_url": "https://www.clinicasachssalud.cl/feed/",
+  "http_status": 200,
+  "waf": null
+}

@@ -46,16 +46,21 @@ def main():
         if handoff is not None:
             audit["sources"][slug]=handoff
             continue
-        found=[];error=None
+        found=[];error=None;error_detail=None
+        owner=getattr(discover,"__self__",None)
         try:
             found=discover()
         except Exception as exc:
             error=type(exc).__name__
+            error_detail={"code":getattr(exc,"code",error),"url":getattr(exc,"url",None),"message":str(exc)}
         health_record(root,slug,name=cfgs[slug]["name"],discovered=len(found),new=0,published=0,
-                      rows=[],pending=0,rejected=0,error=error,live_pending=0,backfill_pending=0)
+                      rows=[],pending=0,rejected=0,error=error,live_pending=0,backfill_pending=0,error_detail=error_detail)
         audit["sources"][slug]={
             "discovered":len(found),"published":0,
             "technical_status":"error" if error else "ok","error":error,
+            "error_detail":error_detail,
+            "decisions":getattr(owner,"decisions",[]),
+            "validation_scope":"bounded_discovery_only_not_publication_or_90_day_inventory",
             "newest_event_date":max([x.event_date for x in found if x.event_date],default=None)
         }
     audit["media_gate_df_rows"]=_apply_media_gate(history)

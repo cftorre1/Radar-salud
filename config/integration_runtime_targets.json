@@ -1,0 +1,26 @@
+{
+  "sources": [
+    "achs_seguro_laboral",
+    "clinicas_achs_salud",
+    "mutual_seguridad",
+    "ist"
+  ],
+  "origin_prs": [
+    12
+  ],
+  "purpose": "Actual post-integration discovery and processing on a copied staging stock; no automatic state publication",
+  "expectations": {
+    "clinicas_achs_salud": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    },
+    "mutual_seguridad": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    },
+    "ist": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    }
+  }
+}

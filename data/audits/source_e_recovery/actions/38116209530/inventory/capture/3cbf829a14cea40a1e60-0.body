@@ -1,0 +1,1835 @@
+ <!-- HTML --> <!DOCTYPE html> <html lang="es"> <head> <title>
+	El 91% de las personas teme cruzarse con conductores bajo los efectos del alcohol o las drogas en estas Fiestas Patrias
+</title> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> <meta name="viewport" content="width=device-width,initial-scale=1"> <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous" async> <link href="https://fonts.googleapis.com/css?family=Catamaran:400,700&display=swap" rel="stylesheet"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous" /> <link rel="stylesheet" href="/ResourcePackages/AchsCorporativo/assets/dist/css/bootstrap-grid.min.css" type="text/css"> <link rel="stylesheet" href="/ResourcePackages/AchsCorporativo/assets/dist/css/animate.css" type="text/css"> <link rel="stylesheet" href="/ResourcePackages/AchsCorporativo/assets/dist/css/tiny-slider.css" type="text/css"> <link rel="stylesheet" href="/ResourcePackages/AchsCorporativo/assets/dist/css/normalize.css" type="text/css"> <link rel="stylesheet" href="/ResourcePackages/AchsCorporativo/assets/dist/css/layout.min.css" type="text/css">  <!-- Google Tag Manager --> <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-W37H2JT');</script> <!-- End Google Tag Manager --> <script type="text/javascript">
+(function(h, o, t, j, a, r) { h.hj = h.hj || function() {
+        (h.hj.q = h.hj.q || []).push(arguments) };
+    h._hjSettings = { hjid: 2484564, hjsv: 6 };
+    a = o.getElementsByTagName('head')[0];
+    r = o.createElement('script');
+    r.async = 1;
+    r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+    a.appendChild(r); })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+</script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=G-EZP33TFVF8"></script><script type="text/javascript">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-EZP33TFVF8');
+
+</script><style type="text/css" media="all">.notificacion{
+    padding: 10px;
+    background-color: #FBF5DE; 
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.notificacion:before{
+    content:"";
+    display: block;
+    width: 24px;
+    height: 24px;
+    background-image: url(/images/librariesprovider2/default-album/info.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+body .notificacion p{
+    margin: 0 !important;
+    line-height: 1.5 !important;
+    font-size: 16px !important;
+    color: #373737 !important;
+}
+
+.trabajador-empresa img{
+	width:32px !important;
+}
+</style><script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script><script type="text/javascript">
+$(document).ready(function () {
+    // Elementos alterables del DOM.
+    const domElements =
+        "a:not(.not-resize),p:not(.not-resize),span:not(.not-resize),h1:not(.not-resize),h2:not(.not-resize),h3:not(.not-resize),h4:not(.not-resize),h5:not(.not-resize),h6:not(.not-resize)";
+    /**
+     * Cambiar tamaño de texto
+     */
+    let sizeStep = 4; // Cantidad de pasos para alterar el texto - 4 es default.
+    // const stepnum = 3;
+    // const initialFontSize = (el) => {
+    //     let element = document.querySelectorAll(el);
+
+    //     element.forEach((el) => {
+    //         let style = getComputedStyle(el);
+    //         let fontNum = style.fontSize.replace("px", "");
+
+    //         console.log(fontNum);
+    //     });
+    // };
+    // initialFontSize(domElements);
+    /** Aumentar tamaño */
+    const upFontSize = (el, currentStep) => {
+        let element = document.querySelectorAll(el);
+
+        element.forEach((el) => {
+            let style = getComputedStyle(el);
+            let fontNum = parseFloat(style.fontSize.replace("px", ""));
+
+            let newCss = parseFloat(fontNum + currentStep);
+
+            el.style.fontSize = `${newCss}px`;
+        });
+    };
+    /** Disminur tamaño */
+    const downFontSize = (el, currentStep) => {
+        let element = document.querySelectorAll(el);
+
+        element.forEach((el) => {
+            let style = getComputedStyle(el);
+            let fontNum = parseFloat(style.fontSize.replace("px", ""));
+
+            let newCss = parseFloat(fontNum - currentStep);
+
+            el.style.fontSize = `${newCss}px`;
+        });
+    };
+    // Función de incremento
+    const increaseFontSize = () => {
+        if (sizeStep < 7) {
+            sizeStep++;
+            upFontSize(domElements, 3);
+        }
+    };
+    // Función de decremento
+    const decreaseFontSize = () => {
+        if (sizeStep > 1) {
+            sizeStep--;
+            downFontSize(domElements, 3);
+        }
+    };
+    /**
+     * FIN Cambiar tamaño de texto
+     */
+
+    /**
+     * Destacar Elementos
+     */
+    const highlightObjects = (el) => {
+        let element = document.querySelectorAll(el);
+
+        element.forEach((el) => {
+            el.classList.toggle("hl-objects");
+        });
+    };
+
+    const increaseBtn = document.querySelector("#agrandar");
+    const decreaseBtn = document.querySelector("#disminuir");
+    const contrastBtn = document.querySelector("#contraste");
+    const lineaBtn = document.querySelector("#lectura");
+    const resaltarBtn = document.querySelector("#resaltar");
+    const cursorBtn = document.querySelector("#cursor");
+    const audioBtn = document.querySelector("#audio-lectura");
+    increaseBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        increaseFontSize();
+    });
+    decreaseBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        decreaseFontSize();
+    });
+    contrastBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+      document.querySelector("body").classList.toggle("high-contrast-for-all");
+        document.querySelector("header").classList.toggle("high-contrast");
+        document.querySelector("footer").classList.toggle("high-contrast");
+        document
+            .querySelector("#assistArea")
+            .classList.toggle("high-contrast");
+        document
+            .querySelector(".menu-responsive")
+            .classList.toggle("high-contrast");
+        contrastBtn.classList.toggle("active-btn");
+    });
+    lineaBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        document.querySelector(".cursor").classList.toggle("activo");
+        lineaBtn.classList.toggle("active-btn");
+    });
+    resaltarBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        highlightObjects(domElements);
+        resaltarBtn.classList.toggle("active-btn");
+    });
+    cursorBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        document.body.classList.toggle("new-cursor");
+        cursorBtn.classList.toggle("active-btn");
+    });
+    const cursorHL = document.querySelector(".hl");
+
+    document.addEventListener("mousemove", (e) => {
+        cursorHL.setAttribute("style", `top: ${e.clientY}px;`);
+    });
+    audioBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelector('#__ba_floatingLaunch > button').click();
+    })
+});
+
+</script><script type="text/javascript">
+$(document).ready(function(){
+    // Abrir Accesibilidad
+    $("#abrir-btn").click(function (e) {
+        e.preventDefault();
+        $(this).removeClass("active");
+        $("#cerrar-btn").addClass("active");
+        $("#assistArea").removeClass("hide");
+    });
+    // Cerrar Accesibilidad
+    $("#cerrar-btn").click(function (e) {
+        e.preventDefault();
+        $(this).removeClass("active");
+        $("#abrir-btn").addClass("active");
+        $("#assistArea").addClass("hide");
+    });
+});
+</script><link href="/docs/librariesprovider2/accesibilidad/style-accesibilidad-2023.css" media="all" rel="stylesheet" type="text/css" /><meta property="og:title" content="El 91% de las personas teme cruzarse con conductores bajo los efectos del alcohol o las drogas en estas Fiestas Patrias" /><meta property="og:type" content="article" /><meta property="og:url" content="https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias" /><meta property="og:site_name" content="Achs Web" /><link href="/ResourcePackages/AchsCorporativo/assets/dist/css_new/bootstrap-4.5.2.min.css" media="all" rel="stylesheet" type="text/css" /><style type="text/css" media="all">.btn.btn-verde {
+    color: #fff !important;
+}
+/* FIX COLOR LOGO FOOTER */
+.row-final img {
+    filter: brightness(1.6);
+}
+.mensaje {
+  background: #DFF3F2;
+}
+
+.mensaje .alerta {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+   
+    padding: .2rem 1rem;
+    position: relative;
+}
+
+
+.mensaje .alerta .cerrar {
+    position: absolute;
+    font-size: 1.8rem;
+    color: #EECF00;
+    right: 1rem;
+    cursor: pointer;
+}
+
+
+.mensaje .amarillo {
+   background: #FBF6C4;
+}
+
+.mensaje .alerta p {
+    color: #333;
+    margin-bottom: 0;
+    font-size: .8rem;
+}
+.mensaje .alerta img {
+    width: 2.25rem;
+    height: auto;
+    margin-right: 1rem;
+}
+
+.mensaje .alerta p a {
+    font-weight: bold;
+    color: #333333;
+    text-decoration: none;
+}
+
+.head nav ul li {
+      justify-content: left;
+}
+
+
+.buscador-header button {
+    border: none;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.buscador-achs .sf-search-results a {
+    text-decoration: none;
+    color: #13C045;
+    font-size: 0.7rem;
+}
+
+.buscador-achs .sf-search-results h3 a {
+    color: #13C045;
+    font-size: 1rem;
+   
+}
+
+
+.contenedor-texto .buscador-achs .sf-search-results p {
+    margin: 0px;
+}
+
+.buscador-achs .media.sf-media {
+border-bottom-style: solid;
+border-bottom-color: #373737;
+padding-bottom: 1rem;
+border-bottom: 1px solid #000;
+}
+.libro .w-libro .item span{
+margin-left: 5px;
+}
+.head nav ul li.ingresa {
+    border: 0px solid #13C045 !important;
+}
+/*
+@media (min-width: 1000px) {
+.btn-achs-vg, .btn-achs-vg a:hover {
+    height: 44px!important;
+}
+}
+*/
+.bread-title-snl {
+    font-family: Catamaran;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px!important;
+    margin: 0px!important;
+    color: #13C045 !important;
+    text-decoration: none !important;
+}
+
+.bread-slash {
+    display: inline-block;
+    color: #373737;
+    margin-left: 10px!important;
+}
+
+.bread a {
+    color: #373737;
+  font-size:14px!important;
+}
+
+.bread {
+    font-size: 0.615rem;
+    color: #373737;
+    padding: 1.5rem 0 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.615rem;
+    color: #373737;
+    padding: 1.5rem 0 0.5rem;
+    margin-bottom: 1rem;
+    height: 44px;
+    width: 100% !important;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: end;
+    background: #F4F4F4;
+    opacity: 0.9;
+}</style><link href="/ResourcePackages/AchsCorporativo/assets/dist/css/estilos-interior.min.css" media="all" rel="stylesheet" type="text/css" /><link href="/ResourcePackages/AchsCorporativo/assets/dist/css/implementacion_achs_corporativo.css" media="all" rel="stylesheet" type="text/css" /><link href="/ResourcePackages/AchsCorporativo/assets/dist/css_new/pop_up_achs_virtual.css" media="all" rel="stylesheet" type="text/css" /><script type="text/javascript">
+  window.rsConf = {general: {usePost: true}};
+</script><style type="text/css" media="all">.c-titulo .wrap {
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+}
+
+
+.c-titulo h1.titulo-verde {
+  color: #13C045;
+  font-size: 1.538rem;
+  margin: 0 0 1rem;
+  font-weight: bold;
+
+}
+.noticia-detalle .detalle .imagen-noticia-detalle {
+  width: 20.4rem;
+  min-width: 20.4rem;
+}
+
+.datatable-achs table tbody tr td .accion span {
+  color: #13C045;
+  text-decoration: underline;
+  display: block;
+  margin-left: .2rem;
+}
+
+.figure-metas img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.sm-interior {
+padding-bottom: 0 !important;
+}
+
+
+.libro .w-libro .item:before {
+  width: 20px;
+  height: 20px;
+}
+.wrap-panel-doc{
+    padding: 1rem;
+}
+
+
+.boxes-ayuda {
+    padding: 1rem 0 1rem;
+}
+
+.item-info .texto-doc p {
+  color: #373737;
+  font-size: .7rem;
+  margin-bottom: 1rem;
+font-weight: normal
+}
+
+figure.img-memoria {
+flex:0; 
+min-width:2.5rem
+}
+
+.contenido li  {
+  font-size: .65rem;
+  color: #373737;
+  line-height: 1.6;
+  font-weight: normal;
+  margin-top: 0;
+}
+
+.c-interior li {
+  font-size: .65rem;
+  color: #373737;
+  line-height: 1.6;
+  font-weight: normal;
+  margin-top: 0;
+margin-bottom: 6px;
+}
+
+.contenedor-texto li {
+  font-size: .65rem;
+  color: #373737;
+  line-height: 1.6;
+  font-weight: normal;
+  margin-top: 0;
+}
+
+.contenedor-texto p {
+  font-size: .65rem;
+  color: #373737;
+  line-height: 1.6;
+  font-weight: normal;
+  margin-top: 0;
+}
+
+
+.item-info .texto h4 {
+  font-weight: normal;
+  color: #373737;
+  font-size: 0.9rem;
+  margin: 0 0 .75rem;
+}
+
+.contenido h2 {
+  color: #000000;
+  font-size: 1.2rem;
+  margin: 0 0 1rem;
+  font-weight: bold;
+}
+
+.central  h2 {
+  color: #000000;
+  font-size: 1.2rem;
+  margin: 0 0 1rem;
+  font-weight: bold;
+}
+
+.c-interior  h2 {
+  color: #000000;
+  font-size: 1.2rem;
+  margin: 0 0 1rem;
+  font-weight: bold;
+}
+
+.contenedor-texto h1 {
+ color: #000000;
+  font-size: 1.2rem;
+  margin: 0 0 1rem;
+  font-weight: bold;
+}
+
+.contenido h1 {
+  color: #000000;
+  font-size: 1.2rem;
+  margin: 0 0 1rem;
+  font-weight: bold;
+}
+
+.central  h1 {
+  color: #000000;
+  font-size: 1.2rem;
+  margin: 0 0 1rem;
+  font-weight: bold;
+}
+
+.sub-menu1 a {
+
+  font-size: 0.7rem;
+
+}
+
+.c-interior h4 {
+  font-size: 0.9rem;
+  color: #373737;
+  font-weight: bold;
+  margin: 0rem 0 1rem;
+}
+
+section.s-block.contenedor {
+padding:0px;
+}
+.centrada {
+ text-align: center; 
+  
+}
+.bread span {
+  display: inline-block;
+  margin: 0 .5rem;
+}
+.c-interior {
+  padding-bottom: 2rem;
+}
+.certificacion {
+  padding: 1rem 0;
+}
+p a {
+  text-decoration: underline;
+  font-weight: bold;
+  color: #13C045;
+}
+
+.subhome-nosotros .menu-lateral a.activo {   
+  font-weight: bold;
+  background: #F2F2F2;
+}
+.menu-lateral em{
+float: right;
+}
+
+
+.menu-tabs-int a.activo {
+  background: #13C045;
+  color: #fff;
+}
+.menu-tabs-int a {
+  display: block;
+  font-size: .7rem;
+  background: #D8D8D8;
+  font-weight: bold;
+  color: #373737;
+  padding: .7rem 1rem;
+  margin-right: .2rem;
+  border-radius: .2rem;
+}
+.menu-tabs-int {
+  display: flex;
+  margin-bottom: 0rem;
+}
+.menu-tabs-int {
+  margin-bottom: 1rem;
+}
+.box-denuncia p{
+  height: 50px;
+}
+
+.info-denuncia .item-mas-info {
+  width:100%
+}
+
+.ejes-estrategicos .box-eje {
+
+  min-height: 10rem;
+}
+
+.c-interior li {
+  font-size: .65rem;
+  color: #373737;
+  line-height: 1.6;
+}
+
+.box-not .fecha {
+ font-size: .65rem;
+  color: #373737;
+  line-height: 1.6;
+margin: 0 0 1.0rem;
+}
+
+.lista-noticias .box-not .texto h4 {
+   margin: 0 0 .2rem;
+}
+
+.centro-ficha img {
+  min-width: 100% !important;
+max-width: none !important;
+}
+
+.centro-ficha .dataTables_filter {
+  margin: 1rem 0 1.5rem;
+}
+
+.box-mision a {
+  color: #fff;
+}
+
+.banner-ds figure {
+width: 100%;
+height: 100%;
+}
+
+.banner-ds img {
+width: 100%;
+height: 100%;
+}
+.banner-ds-img {
+ width: 70%;
+}
+li a{
+color: #13C045;
+}
+li a:active{
+color: #004c14;
+}
+li a:visited{
+color: #004c14;
+}
+
+ul.menu-subhome {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+ul.menu-subhome li {
+  margin-bottom: .85rem;
+  position: relative;
+  padding-left: 1.2rem;
+}
+
+ul.menu-subhome li:before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+  top: 10px;
+  background: #13C045;
+}
+
+ul.menu-subhome li a {
+  color: #373737;
+  font-size: 24px;
+}
+
+ul.menu-subhome li a:hover {
+  text-decoration: underline;
+  color: #004c14;
+}
+
+@media only screen and (max-width: 991px) {
+.boton-menu-lateral {
+  top: -100px;
+}
+}
+
+
+.que-es.box-que-es {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 3rem;
+}
+
+.que-es.box-que-es .texto {
+  width: 42%;
+  min-width: 42%;
+  background: #13C045;
+  padding: 1.5rem 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.que-es.box-que-es .texto p {
+  color: #fff;
+  font-size: 1rem;
+}
+
+
+.que-es.box-que-es span {
+  width: 58%;
+  min-width: 58%;
+}
+
+
+.que-es.box-que-es figure {
+  width: 100%;
+  min-width: 100%;
+}
+
+
+.que-es.box-que-es figure img {
+  vertical-align: bottom;
+  width: 100%;
+}
+
+
+@media only screen and (max-width: 550px) {
+.c-interior.que-es.box-que-es .texto {
+  padding: 1.5rem;
+}
+}
+
+@media only screen and (max-width: 991px) {
+.que-es.box-que-es .texto {
+  width: 100%;
+  min-width: 100%;
+}
+}
+
+@media only screen and (max-width: 768px){
+.que-es.box-que-es figure {
+  display: none;
+}
+}
+@media only screen and (max-width: 991px) {
+.que-es.box-que-es figure {
+  width: 100%;
+  min-width: 100%;
+}
+}
+ul.menu-subhome li a {
+  font-size: 17px;
+padding-bottom: 40px;
+}
+
+
+
+.jplist-panel .jplist-pagingmid .jplist-pagesbox button[type="button"].jplist-current {
+  background: #13C045;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+.menu-tabs-int {
+  flex-wrap: wrap;
+ }
+
+ .item-ficha .texto h2 {
+  font-size: 16px !important;
+  line-height: 16px !important;
+ }
+
+ .item-ficha .texto {
+  padding: 20px !important;
+  }
+.menu-tabs-int a {
+  margin-bottom: 5px;
+ }
+.c-interior figure img {
+  margin-bottom: 10px;
+ }
+.c-titulo h1.titulo-verde {
+  font-size: 1.58rem;
+  }
+.banner-ds img {
+  width: 142%;
+  }
+}
+.beneficios .box-beneficio{
+  margin-bottom: 50px;
+}
+ul.menu-subhome {
+  padding-bottom: 60px;
+}
+
+.jplist-panel .jplist-pagingmid .jplist-pagesbox button[type="button"] {
+  border: none;
+  background-color: transparent;
+  color: #6D7278;
+  width: 1.05rem;
+  width: 1.05rem;
+  height: 1.05rem;
+  display: -ms-flexbox;
+  -ms-flex-align: center;
+  -ms-flex-pack: center;
+  margin: 0rem;
+  font-size: .65rem;
+  border-radius: .2rem;
+  margin-bottom: 0.08rem;
+  /* display: -webkit-box; */
+  /* display: flex; */
+  /* -webkit-box-align: center; */
+  /* align-items: center; */
+  /* -webkit-box-pack: center; */
+  /* justify-content: center; */
+}
+
+
+.jplist-panel .jplist-pagingprev button.jplist-first,
+.jplist-panel .jplist-pagingprev button.jplist-prev,
+.jplist-panel .jplist-pagingnext button.jplist-next,
+.jplist-panel .jplist-pagingnext button.jplist-last {
+  display: none;
+}
+.proy-2019 .b-pr .texto-graf p {
+  /* font-size: 1.3rem; */
+}
+.accidente-1 h2 {
+  margin: 0 0 3rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: black;
+  text-align: left;
+}
+.informate.ultimas-publicaciones .carrusel .tns-nav {
+  bottom: 2.7rem;
+}
+.ejes-est .b-eje {
+  min-height: 9rem;
+}
+.item-ficha .texto a.btn {
+     display: inline-block !important;
+}</style><style type="text/css" media="all">
+/* estilos menu mobile */
+@media only screen and (min-width: 769px) {
+  .head nav ul li a i.fas.fa-caret-up, 
+  .head nav ul li a em.fas.fa-caret-up {
+    display: none;
+  }
+}
+@media only screen and (max-width: 768px) {
+
+ .head nav ul li:hover .submenu {
+     max-height: 0px;
+     display: none;
+     opacity: 1;
+     visibility: hidden;
+ }
+ .head nav ul li .submenu.look {
+     max-height: 500px;
+     display: block;
+     opacity: 1;
+     visibility: visible;
+ }
+  .head nav ul li a i.fas.fa-caret-down, 
+  .head nav ul li a em.fas.fa-caret-down {
+   position: absolute;
+   right: 10%;
+   top:15%;
+   font-size: 20px; 
+   }
+  .head nav ul li a i.fas.fa-caret-up, 
+  .head nav ul li a em.fas.fa-caret-up {
+   position: absolute;
+   right: 10%;
+   top:5%;
+   font-size: 20px; 
+   }
+   .head nav ul li a i.fas.fa-caret-up {
+     display: none;
+   }
+   .head nav ul li a em.fas.fa-caret-up {
+     display: none;
+   }
+   .head nav ul li a i.fas.fa-caret-down {
+     display: block;
+   }
+   .head nav ul li a em.fas.fa-caret-down {
+     display: block;
+   }
+   .head nav ul li a.icon i.fas.fa-caret-up {
+     display: block;
+   }
+   .head nav ul li a.icon em.fas.fa-caret-up {
+     display: block;
+   }
+   .head nav ul li a.icon i.fas.fa-caret-down {
+     display: none;
+   }
+   .head nav ul li a.icon em.fas.fa-caret-down {
+     display: none;
+   }
+   .noticia-detalle .detalle .imagen-noticia-detalle {
+   width: 100%;
+   min-width: 100%;
+   }
+   .informate.ultimas-publicaciones .box-informate .texto {
+       height: 400px;
+           position: relative;
+   } 
+   .informate.ultimas-publicaciones .box-informate .texto a {
+       position: absolute;
+       bottom: 0%;
+     }
+     .informate.ultimas-publicaciones .carrusel .tns-nav {
+       left: 64%;
+   max-width: 90px;
+   overflow: hidden;    
+   }
+           .informate.ultimas-publicaciones .carrusel .tns-nav {
+       bottom: 3rem;
+       } 
+}
+/*css formulario laboratorio */
+
+/*ESTILOS FORM*/
+#formModal .modal-content {
+ padding: 30px 20px;
+}
+#formModal div.form-group {
+ margin-bottom: 1rem;
+}
+#formModal label {
+ display: block;
+   color: #373737;
+   font-size: 14px;
+   line-height: 23px;
+  /*text-transform: uppercase;*/
+   letter-spacing: 3.483333px;
+   font-weight: bold;
+   margin-top: 15px;
+   margin-bottom: 5px;
+}
+#formModal input {
+ width: 100%;
+ height: 40px;
+   border: .5px solid #ececec;
+   border-radius: 6px;
+   color: #6d7278;
+   padding-left: 15px;
+   font-size: 16px;
+   margin-bottom: .7rem;
+}
+
+#formModal textarea {
+   border: .5px solid #ececec;
+   background: #ffffff;
+   border-radius: 6px;
+   color: #6d7278;
+   padding: 15px;
+   max-height: 200px;
+   min-height: 125px;
+   width: 100%;
+   font-size: 16px;
+   margin-bottom: .7rem;
+}
+
+#formModal button[type="submit"] {
+ width: 130px;
+   height: 50px;
+   color: #ffffff;
+   background: #13c045;
+   border-radius: 6px;
+   border-style: none;
+   font-weight: bold;
+   font-size: 16px;
+
+}
+
+#formModal button.btn-cerrar {
+ width: 130px;
+   height: 50px;
+   color: #ffffff;
+   background: #212529;
+   border-radius: 6px;
+   border-style: none;
+   font-weight: bold;
+   font-size: 16px;
+   margin-right: 1rem;
+}
+#formModal .container.botonera {
+ display: flex;
+   justify-content: center;
+   padding-top: 1rem;
+}
+#formModal p[data-sf-role=error-message],
+#TextboxErrorMessage-1,
+#TextboxErrorMessage-2,
+#EmailErrorMessage-1,
+#TextboxErrorMessage-4,
+#ParagraphErrorMessage-1 {
+ margin-bottom: 0px;
+ color: red;
+   font-size: 14px;
+   position: relative;
+   /*margin-top: -15px;*/
+
+}
+@media (min-width: 1000px) {
+/*.btn-achs-vg a.sub-ingresa {
+   top: 44px;
+}*/
+.btn-achs-vg a.btn-a-ges {
+   top: 88px;
+}
+.btn-achs-vg {
+  
+}
+.c-interior .sidebar .w-links ul li a.activo {
+   background: #FFF;
+}
+}</style><style type="text/css" media="all">/* Ajustes CSS */
+.opcion-navbar > a, .opcion-navbar > .b-princ{
+    line-height: 1.5;
+}
+.caja-subseccion a{
+    line-height: 1.5;
+}
+.globo-txt{
+    line-height: 1.5;
+}
+footer{
+    text-align: left;
+}
+.c-interior p{
+    font-size: .9rem;
+}
+.logo-achs{
+    margin-right: 15px;
+}
+@media (min-width: 1501px){
+    .c-interior p{
+        font-size: 16px;
+    }
+}
+@media (min-width: 1000px){
+    .btn-achs-vg a.btn-a-ges{
+        top: 100px;
+    }
+}
+@media (max-width: 1199px){
+    .btn-achs-vg a.btn-a-ges {
+        top: 94px;
+    }
+}
+@media(max-width: 991px){
+    .sub-ingresa-mobile{
+        top: 44px;
+    }
+}</style><style type="text/css" media="all">/*CSS aviso modal*/
+.aviso-modal{
+    width: 100%;
+    background: #faedd7;
+    border-radius: 8px;
+    padding: 10px;
+    background-image: url(https://www.achs.cl/docs/librariesprovider2/archivos-svg/ico-alerta.svg?sfvrsn=66b142a4_2);
+    background-position: left 10px center;
+    background-repeat: no-repeat;
+    margin-top: 15px;
+    padding-left: 45px;
+    text-align: left;
+    color: #373737;
+    font-size: .67rem;
+}
+@media (max-width: 1500px){
+    .aviso-modal{
+        font-size: .95em;
+    }
+}
+@media(min-width:992px){
+    .img-achs-empresa img{
+        height: 100%;
+        object-fit: cover;
+    }
+}</style><style type="text/css" media="all">.ficha-pop-up h2, 
+.ficha-pop-up h3, 
+.ficha-pop-up ul li,
+.ficha-pop-up p,
+.ficha-pop-up a span{
+    color: #13c045 !important;
+}
+.ficha-pop-up ul li{
+	font-size: 18px !important;
+}
+.ficha-pop-up p a span{
+    font-weight: bold !important;
+}
+.ficha-pop-up .texto-pop-up a.btn-achs-virtual {
+    background: #13c045 !important;
+  color: #fff !important;
+  margin: 43px 0px 43px 0px !important;
+}
+.ficha-pop-up .texto-pop-up {
+    border-bottom: 1px solid #13c045 !important;
+}
+
+.seccion-pop-up-achs-virtual .modal-body {
+    background-color: #e3e2e2 !important;
+}</style><style type="text/css" media="all">.mod-flecha > .titl-info-r > p,  
+.c-titulo h1.titulo-verde,
+.central p a,
+.link-mail, 
+.link-mail:hover, 
+.link-mail:focus,
+.achs-request-success p strong,
+body .text-green,
+.sec-pie p a,
+body section.achs-material .achs-material__download a,
+.caja-subseccion a.submenu-titl, 
+.caja-subseccion > .subm-t-mobile{
+    color: #13C045 !important;
+}
+
+.values-item:nth-child(2) .values-wrapper:after{
+    background-color: #27933E !important;
+}
+
+.values-item:nth-child(1) .values-wrapper:after {
+    background-color: #004C14  !important;
+}
+
+.btn-verde,
+.btn-verde, 
+.btn-verde:hover, 
+.btn-verde:focus, 
+.btn-verde-o, 
+.btn-verde-o:hover, 
+.btn-verde-o:focus, 
+.btn-blanco, 
+.btn-blanco:hover, 
+.btn-blanco:focus, 
+.btn-turquesa, 
+.btn-turquesa:hover, 
+.btn-turquesa:focus, 
+.btn-turquesa-o, 
+.btn-turquesa-o:hover, 
+.btn-turquesa-o:focus, 
+.btn-lima, 
+.btn-lima:hover, 
+.btn-lima:focus,
+a.btn-trabajador.active, 
+a.btn-empresa.active, 
+a.btn-trabajador.active:hover, 
+a.btn-empresa.active:hover, 
+a.btn-trabajador.active:focus, 
+a.btn-empresa.active:focus,
+.achs-request-form__step.active::after,
+.achs-request-success .button-success,
+.btn-f-verde,
+.info-beneficio .btn-f-verde,
+.btn-f-verde,
+.btn-primary,
+.caja-webinar a, 
+.caja-webinar a:hover{
+    background-color: #13C045 !important;
+    border: 1px solid #13C045 !important;
+    color: #fff !important;
+}
+
+.achs-request-success .button-success:hover,
+.btn-f-verde:hover,
+.info-beneficio .btn-f-verde:hover,
+.btn-f-verde:hover,
+.btn-primary:hover{
+    background-color: #004C14 !important;
+    border: 1px solid #004C14 !important;
+    color: #fff !important;
+    border-color:#004C14 !important;
+}
+
+body section.achs-conversations a, 
+body section.achs-equity a, 
+body section.achs-campaign-rrss a{
+    background-color: #13C045 !important;
+}
+
+.achs-request-form__step.active span{
+    background-color: #13C045 !important;
+    border: 1px solid #13C045 !important;
+}
+
+.achs-request-form button{
+    color: #13C045 !important;
+    border: 1px solid #13C045 !important;
+}
+
+.achs-request-form button svg path {
+    fill: #13C045 !important;
+}
+
+.achs-request-form button.active svg path, .achs-request-form button:hover svg path {
+    fill: #ffffff !important;
+}
+
+.achs-request-form button.active, .achs-request-form button:hover {
+    background-color: #004C14;
+}
+
+.achs-request-form button:hover,
+.btn-verde:hover, 
+.btn-verde:focus{
+    border-color:#004C14 !important;
+    background-color: #004C14 !important;
+    color:#ffffff !important;
+}
+
+body section.achs-worker a{
+    border: 1px solid #13C045 !important;
+    color: #13C045 !important;
+}
+
+body section.achs-worker a:hover{
+    border: 1px solid #004C14 !important;
+    color: #fff !important;
+    background-color: #004C14 !important;
+}
+
+.bloque-ben {
+    background-color: #f4f4f4 !important;
+}
+
+.btn-blanco-fle, 
+.btn-blanco-fle:hover{
+    border: 1px solid #13C045  !important;
+    color: #13C045 !important;
+}
+
+.promocion,
+.caja-rrss a,
+.carousel-indicators li,
+.btn-fl:hover:after{
+    background-color: #13C045  !important;
+}
+
+body .caja-webinar a, body .caja-webinar a:hover{
+    background-color: #004C14 !important;
+}
+
+.linea-et {
+    background-color: #81D877 !important;
+}
+
+.achs-request ul li svg circle,
+.achs-material__download path{
+    fill:#13C045 !important;
+}
+
+.info-beneficio span{
+    color:#81D877;
+}
+
+body section.achs-material .achs-material__download a:hover {
+    border-color: #13C045 !important;
+}
+
+@media (max-width: 991px){
+  .btn-unete-mobile{
+    background-color: #0E9436 !important;
+}
+}
+</style><link href="/docs/librariesprovider2/cambio-de-marca-2023/salud-laboral-cambio-marca-2023.css" media="all" rel="stylesheet" type="text/css" /><script type="text/javascript">
+ document.addEventListener('DOMContentLoaded', function() {
+      var favicon = document.createElement('link');
+      favicon.setAttribute('rel', 'icon');
+      favicon.setAttribute('type', 'image/png');
+      favicon.setAttribute('href', '/images/librariesprovider2/logo/favicon.png');
+
+      var head = document.getElementsByTagName('head')[0];
+      head.appendChild(favicon);
+ });
+</script><style type="text/css" media="all">#onesignal-slidedown-dialog{
+ display:none! important;
+}</style><link rel="canonical" href="https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias" /></head> <body> <!-- Google Tag Manager (noscript) --> <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W37H2JT"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> <!-- End Google Tag Manager (noscript) -->  <!-- header --> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <section class="seccion-pop-up-achs-virtual">
+    <div class="container">
+        <div class="modal fade" id="popUpAchs" tabindex="-1" role="dialog" aria-labelledby="popUpAchs" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div><button type="button" id="btn-close-pop-up-achs-virtual" class="close" data-dismiss="modal"><img src="/ResourcePackages/AchsCorporativo/assets/dist/images/img_cerrar.svg" alt="" /></button></div>
+                            <div class="col-lg-4 img-achs-empresa"><img src="/ResourcePackages/AchsCorporativo/assets/dist/images/img_achs_virtual.png" alt="" /></div>
+                            <div class="col-lg-8 text-left">
+                                <div class="ficha-pop-up">
+                                    <div class="texto-pop-up">
+                                        <div>
+                                            <h2>Ahora puedes hacer todo lo que necesitas a trav&eacute;s de
+                                                <strong>ACHS Virtual</strong>
+                                            </h2>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="trabajador-empresa"><img src="/images/librariesprovider2/popup-achs-virtual/img_trabajador_dos.svg" alt="" /><h3>Funcionalidades Trabajador</h3>
+                                                </div>
+                                                <div>
+                                                    <p>Siniestros, controles, documentos de atenci&oacute;n, liquidaci&oacute;n de pagos de subsidios y capacitaciones
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="trabajador-empresa"><img src="/images/librariesprovider2/popup-achs-virtual/img_empresa.png" alt="" /><h3>Funcionalidades Empresa</h3>
+                                                </div>
+                                                <div>
+                                                    <p>COVID-19, siniestros, denuncia, prestaciones econ&oacute;micas, certificados, estad&iacute;sticas, entre otras.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="aviso-modal">Atenci&oacute;n: El proceso de registro de usuarios se encuentra temporalmente con intermitencias.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="anclas"><a class="btn-achs-virtual" href="https://achsvirtual.achs.cl/">Ir a ACHS Virtual
+                                            </a>
+                                            <p>Si quieres acceder al Sitio Web Empresa haz clic
+                                                <a href="https://externo.achs.cl/irj/portal/2016?opcion=1"><span style="text-decoration:underline;">aqu&iacute;</span></a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="disclaimer-pop-up">
+                                        <p>Para mayor informaci&oacute;n cont&aacute;ctanos a nuestro Call Center al
+                                            <strong>600 600 22 47</strong> o escr&iacute;benos a nuestro chat que tenemos disponible para ti.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+<section class="seccion-pop-up-achs-virtual"><div class="container"><div class="modal fade" id="popUpAchs" tabindex="-1" role="dialog" aria-labelledby="popUpAchs" aria-hidden="true"><div class="modal-dialog modal-lg" role="document"><div class="modal-content"><div class="modal-body"><div class="row"><div><button type="button" id="btn-close-pop-up-achs-virtual" class="close" data-dismiss="modal"><img src="/ResourcePackages/AchsCorporativo/assets/dist/images/img_cerrar.svg" alt="" /></button></div><div class="col-lg-4 img-achs-empresa"><img src="/images/librariesprovider2/popup/popup-achs-virtual.jpg" alt="" /></div><div class="col-lg-8 text-left"><div class="ficha-pop-up"><div class="texto-pop-up"><div><h2 class="d-none"><strong>ACHS Virtual:</strong> r&aacute;pida, siempre disponible y en un solo lugar
+                                            </h2><h2 class="d-none"><strong>Atenci&oacute;n:</strong> Nuestros equipos se encuentran trabajando en solucionar intermitencias en el registro de usuario y recuperaci&oacute;n de contrase&ntilde;a. Vuelva a intentar acceder a estos
+                                                flujos m&aacute;s tarde.</h2><h2><strong>ACHS Virtual:</strong> r&aacute;pida, siempre disponible y en un solo lugar.</h2></div><div class="row"><div class="col-lg-6"><div class="trabajador-empresa"><img src="/images/librariesprovider2/popup-achs-virtual/img_trabajador_dos.svg" alt="" /><h3>Para trabajadores</h3></div><div><ul><li>Informaci&oacute;n en caso de accidente</li><li>Acceso a capacitaciones</li><li>Beneficios de Mundo ACHS</li><li>Descarga resultados de ex&aacute;menes</li><li>Solicita subsidios</li><li>Y mucho m&aacute;s...</li></ul></div></div><div class="col-lg-6"><div class="trabajador-empresa"><img src="/images/librariesprovider2/popup-achs-virtual/img_empresa.png" alt="" /><h3>Para empresas</h3></div><div><ul><li>Gestiona y visualiza accidentes y enfermedades laborales</li><li>Obt&eacute;n prestaciones econ&oacute;micas</li><li>Solicita certificados</li><li>Gestiona la prevenci&oacute;n de tu empresa</li><li>Y mucho m&aacute;s...</li></ul></div></div><div class="col-lg-12 d-none"><div class="aviso-modal">Atenci&oacute;n: El proceso de registro de usuarios se encuentra temporalmente con intermitencias.
+                                                </div></div></div><div class="row d-none"><div class="col-lg-12"><div class="notificacion"><p><strong>&iexcl;Atenci&oacute;n! Por mantenci&oacute;n programada de nuestros proveedores,</strong>&iexcl; los procesos de registro de cuenta y recuperaci&oacute;n de contrase&ntilde;a de ACHS Virtual
+                                                        podr&iacute;an presentar intermitencias <strong>&iexcl;a contar de las 18:00 hrs del jueves 10, 17 y 24 de agosto.</strong></p></div></div></div><div class="anclas"><a class="btn-achs-virtual" href="https://achsvirtual.achs.cl/">Ir a ACHS Virtual
+                                            </a>
+ <p class="mb-0">Si quieres acceder al Sitio Web Empresa haz clic
+                                                <a href="https://externo.achs.cl/irj/portal/2016?opcion=1"><span style="text-decoration:underline;">aqu&iacute;</span></a>
+ </p></div></div><div class="disclaimer-pop-up"><p>Para mayor informaci&oacute;n cont&aacute;ctanos a nuestro Call Center al <strong>600 600 22 47</strong> o escr&iacute;benos a nuestro chat que tenemos disponible para ti.
+                                        </p></div></div></div></div></div></div></div></div></div></section>
+<!--FIN-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="sec-navbar-top"><div class="caja-btns-top"><a class="btn-unete-mobile" href="/sumate-old"><img src="/ResourcePackages/AchsCorporativo/assets/dist/images/ico-unete.svg" alt="únete" data-sf-ec-immutable="" />S&uacute;mate a la ACHS
+        </a>
+ <div class="btn-ingresa-mobile"><img src="/ResourcePackages/AchsCorporativo/assets/dist/images/ico-ingresa.svg" alt="únete" data-sf-ec-immutable="" />Ingresa <img src="/ResourcePackages/AchsCorporativo/assets/dist/images/flecha-nav-blanca.svg" alt="flecha" data-sf-ec-immutable="" /></div><div class="sub-ingresa-mobile"><div class="btn-a-sub-i"><a href="#" data-toggle="modal" data-target="#popUpAchs" data-sf-ec-immutable="">ACHS VIRTUAL</a>
+ <div class="ico-preg1"><img src="/ResourcePackages/AchsCorporativo/assets/dist/images/ico-pregunta.svg" alt="pregunta" data-sf-ec-immutable="" /><div class="globo-txt glb1"><div class="punta-globo-vg"><div class="punta-glob-vg">&nbsp;</div></div><p>En ACHS Virtual realiza todas las gestiones preventivas, de salud y econ&oacute;micas, reporte de accidentes, certificados, estad&iacute;sticas y otros</p><div class="btn-ok-globo">Ok</div></div></div></div><div class="btn-a-sub-i"><a href="http://achsgestion.achs.cl/home-achs-gestion">ACHS GESTI&Oacute;N</a>
+ <div class="ico-preg2"><img src="/ResourcePackages/AchsCorporativo/assets/dist/images/ico-pregunta.svg" alt="pregunta" data-sf-ec-immutable="" /><div class="globo-txt glb2"><div class="punta-globo-vg">empresa
+ <div class="punta-glob-vg">&nbsp;</div></div><p>En ACHS Gesti&oacute;n realiza la gesti&oacute;n preventiva de tu empresa y seguridad laboral, realizando tu plan de prevenci&oacute;n, gesti&oacute;n de aspectos legales, comit&eacute;s paritarios y otros</p><div class="btn-ok-globo">Ok</div></div></div></div></div></div><div class="container"><div class="row"><div class="container mod-mob"><a href="/" class="logo-navbar"><img src="/images/librariesprovider2/logo/logo-achs-seguro-laboral.png?sfvrsn=7ce29042_2" height="68" alt="logo ACHS" class="logo-achs" /><img src="/ResourcePackages/AchsCorporativo/assets/dist/images/Bienvenidos-cabecera.svg" class="bajada-logo d-none" alt="Bienvenidos a la Asociación Chilena de Seguridad" style="display:none;" data-sf-ec-immutable="" /></a>
+ 
+                <div class="btn-ham"><div class="linea-mh">&nbsp;</div><div class="linea-mh">&nbsp;</div><div class="linea-mh">&nbsp;</div></div><div class="btn-lupa d-none"><img src="/ResourcePackages/AchsCorporativo/assets/dist/images/ico-lupa-buscador.svg" alt="lupa" data-sf-ec-immutable="" /></div><div class="bloque-der"><div class="caja-dato-nav"><img src="/ResourcePackages/AchsCorporativo/assets/dist/images/tel-navbar.svg" alt="ícono teléfono" data-sf-ec-immutable="" />Call center <a href="tel:6006002247" data-sf-ec-immutable=""><strong>600 600 2247</strong></a>
+ </div><div class="caja-dato-nav"><img src="/ResourcePackages/AchsCorporativo/assets/dist/images/rescate-navbar.svg" alt="ícono baliza" data-sf-ec-immutable="" />Rescate <a href="tel:1404" data-sf-ec-immutable=""><strong>1404</strong></a>
+ </div><div class="caja-dato-nav"><img src="/ResourcePackages/AchsCorporativo/assets/dist/images/sedes-navbar.svg" alt="ícono ubicación" data-sf-ec-immutable="" /><a href="/nosotros/ubicacion">Sedes</a>
+ </div></div></div></div></div><div class="container-fluid barra-busqueda d-none"><div class="container"><div class="row"><div class="col-12"><div class="buscador"><img src="/ResourcePackages/AchsCorporativo/assets/dist/images/lupa-busqueda.svg" alt="lupa" data-sf-ec-immutable="" /><input type="text" id="txtBusqueda" placeholder="Ingresa tu búsqueda" /><div class="btn-cruz-buscador">&nbsp;</div></div></div></div></div></div></section>
+<!--FIN-->
+
+
+
+
+
+
+<nav class="sec-navbar-principal"><div class="container-fluid"><div class="container cont-nav"><div class="buscador-mobile d-none"><input type="text" id="txtBusquedaMobile" placeholder="Escribe aquí para buscar…" /></div><!--Seccion Nosotros-->
+ <div class="opcion-navbar"><a id="nosotros" class="anchor-menu-mobile" data-sf-ec-immutable=""></a><a class="b-princ b-princ-desk" href="/nosotros">NOSOTROS <img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-nav.svg" alt="flecha" class="flecha-m-desk" data-sf-ec-immutable="" /></a>
+ <div class="b-princ b-princ-mobile" id="menu-nosotros">NOSOTROS <img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-menu-ham.svg" alt="flecha" class="flecha-m-mob" data-sf-ec-immutable="" /></div><div class="submenu-navbar nav-nosotros"><div class="columna-submenu"><div class="caja-subseccion"><a href="/nosotros/achs-corporativo/marco-regulatorio-ley-16744">&iquest;Qu&eacute;
+ es la ACHS??</a>
+ <a href="/nosotros/que-es-la-achs/conoce-sobre-la-ley/accidentes-de-trayecto">Todo
+ sobre la ley</a>
+
+ <a href="/nosotros/achs-corporativo/transparencia">Transparencia</a>
+
+ <!--<a href="/nosotros/achs-corporativo/aspiracion-y-valores" sfref="[9eb96361-142e-493e-bb55-39f5667c6e61%7Clng%3Aes]D22F0CAC-5A3A-4DDF-869E-3097B25CD3E5" data-sf-ec-immutable="">Nuestro prop&oacute;sito</a>-->
+ <a data-sf-ec-immutable="" href="https://trabajos.achs.cl/">Trabaja con nosotros</a>
+ <a href="/nosotros/sostenibilidad">Sostenibilidad</a>
+ <a class="a-ver-todo" href="/nosotros">Ver todo</a>
+ </div></div></div></div><!--Seccion Trabajadores-->
+ <div class="opcion-navbar"><a id="trabajadores" class="anchor-menu-mobile" data-sf-ec-immutable=""></a><a class="b-princ b-princ-desk" href="/trabajadores">TRABAJADORES <img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-nav.svg" alt="flecha" class="flecha-m-desk" data-sf-ec-immutable="" /></a>
+ <div class="b-princ b-princ-mobile" id="menu-trabajadores">TRABAJADORES <img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-menu-ham.svg" alt="flecha" class="flecha-m-mob" data-sf-ec-immutable="" /></div><div class="submenu-navbar"><div class="columna-submenu"><div class="caja-subseccion"><a href="https://prestacioneseconomicas.achs.cl/" class="submenu-titl subm-t-desk" data-sf-ec-immutable="">Prestaciones econ&oacute;micas</a>
+ <div class="submenu-titl subm-t-mobile"><img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-menu-ham.svg" alt="flecha" class="flecha-m-mob" data-sf-ec-immutable="" />Prestaciones econ&oacute;micas
+                            </div><div class="sub-submenu-mob"><a href="https://prestacioneseconomicas.achs.cl/subsidios.html" data-sf-ec-immutable="">Subsidios</a>
+ <a href="https://prestacioneseconomicas.achs.cl/indemnizacion.html" data-sf-ec-immutable="">Indemnizaciones</a>
+ <a href="https://prestacioneseconomicas.achs.cl/pensiones.html" data-sf-ec-immutable="">Pensiones</a>
+ <a href="https://prestacioneseconomicas.achs.cl/" data-sf-ec-immutable="">Estado de tu tr&aacute;mite</a>
+ <a href="https://prestacioneseconomicas.achs.cl/" class="a-ver-todo" data-sf-ec-immutable="">Ver todo</a>
+ </div></div><div class="caja-subseccion"><a class="submenu-titl subm-t-desk" href="/empresas/fichas/aprende-a-prevenir">Aprende a prevenir</a>
+ <div class="submenu-titl subm-t-mobile"><img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-menu-ham.svg" alt="flecha" class="flecha-m-mob" data-sf-ec-immutable="" />Aprende a prevenir
+                            </div><div class="sub-submenu-mob"><a href="https://empresas.achs.cl/conoce-mis-beneficios/material-preventivo" data-sf-ec-immutable="">Material preventivo</a>
+ <a href="/nosotros/repositorio-de-campanas-achs">Repositorio de campa&ntilde;as</a>
+ <a href="/trabajadores/ley-karin-para-personas-trabajadoras">Ley Karin para personas trabajadoras</a>
+ <a href="https://coronavirus.achs.cl/" data-sf-ec-immutable="">Coronavirus</a>
+ <!-- <a data-sf-ec-immutable="" href="https://senalesdevida.achs.cl/">Se&ntilde;ales de vida</a>-->
+ <a class="a-ver-todo" href="/empresas/fichas/aprende-a-prevenir">Ver todo</a>
+ </div></div></div><div class="columna-submenu"><div class="caja-subseccion"><a href="https://capacitacion.achs.cl/" class="submenu-titl subm-t-desk" data-sf-ec-immutable="">Capacitaciones</a>
+ <div class="submenu-titl subm-t-mobile"><img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-menu-ham.svg" alt="flecha" class="flecha-m-mob" data-sf-ec-immutable="" />Capacitaciones
+ </div><div class="sub-submenu-mob"><a href="https://capacitacion.achs.cl/buscar-capacitaciones" data-sf-ec-immutable="">Ofertas de cursos</a>
+ <a href="https://capacitacion.achs.cl/#seccion-cursos-destacados" data-sf-ec-immutable="">Cursos destacados</a>
+ <a href="https://capacitacion.achs.cl/calendario" data-sf-ec-immutable="">Inscripci&oacute;n cursos abiertos</a>
+ <a href="https://achsvirtual.achs.cl/" data-sf-ec-immutable="">Ir a tu curso E-Learning</a>
+ <a href="https://capacitacion.achs.cl/" class="a-ver-todo" data-sf-ec-immutable="">Ver todo</a>
+ </div></div><div class="caja-subseccion"><a href="https://quehacerencasodeaccidente.achs.cl/" class="submenu-titl subm-t-desk" data-sf-ec-immutable="">En caso de accidentes</a>
+ <div class="submenu-titl subm-t-mobile"><img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-menu-ham.svg" alt="flecha" class="flecha-m-mob" data-sf-ec-immutable="" />En caso de accidentes
+                            </div><div class="sub-submenu-mob"><!--  <a href="https://quehacerencasodeaccidente.achs.cl/empresa" data-sf-ec-immutable="">Empresas</a> -->
+ <a href="https://quehacerencasodeaccidente.achs.cl/accidente-en-tu-hogar-trabajador" data-sf-ec-immutable="">Trabajadores</a>
+ <a href="https://quehacerencasodeaccidente.achs.cl/" class="a-ver-todo" data-sf-ec-immutable="">Ver todo</a>
+ </div></div><div class="caja-subseccion"><a href="https://empresas.achs.cl/conoce-mis-beneficios" class="submenu-titl subm-t-desk" data-sf-ec-immutable="">Club de beneficios</a>
+ <div class="submenu-titl subm-t-mobile"><img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-menu-ham.svg" alt="flecha" class="flecha-m-mob" data-sf-ec-immutable="" />Club de beneficios
+                            </div><div class="sub-submenu-mob"><a href="https://www.mundoachs.cl/" data-sf-ec-immutable="">Mundo ACHS</a>
+
+ <a href="https://empresas.achs.cl/conoce-mis-beneficios" class="a-ver-todo" data-sf-ec-immutable="">Ver todo</a>
+ </div></div></div><div class="columna-submenu"><div class="caja-subseccion"><a href="https://vigilanciadelasaludtrabajadores.achs.cl/" class="submenu-titl subm-t-desk" data-sf-ec-immutable="">Prestaciones salud preventiva</a>
+ <div class="submenu-titl subm-t-mobile"><img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-menu-ham.svg" alt="flecha" class="flecha-m-mob" data-sf-ec-immutable="" />Prestaciones salud preventiva
+                            </div><div class="sub-submenu-mob"><a href="/empresas/productos-y-servicios/articulos-productos-y-servicio/sel/productos">Servicios de evaluaciones laborales SEL</a>
+ <a href="https://vigilanciadelasaludtrabajadores.achs.cl/" data-sf-ec-immutable="">Vigilancia de la salud</a>
+ <a href="/vigilancia-de-salud">Certificados SEL - Informes de Vigilancia</a>
+ </div></div><div class="caja-subseccion"><a href="https://trabajadorindependiente.achs.cl/" class="submenu-titl subm-t-desk" data-sf-ec-immutable="">Trabajadores independientes</a>
+ <div class="submenu-titl subm-t-mobile"><img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-menu-ham.svg" alt="flecha" class="flecha-m-mob" data-sf-ec-immutable="" />Trabajadores independientes
+                            </div><div class="sub-submenu-mob"><a href="/que-es-la-achs/conoce-sobre-la-ley/enfermedad-profesional">Ley 16.744</a>
+ <a href="https://trabajadorindependiente.achs.cl/" data-sf-ec-immutable="">Prevenci&oacute;n de riesgos</a>
+ <a href="https://trabajadorindependiente.achs.cl/" class="a-ver-todo" data-sf-ec-immutable="">Ver todo</a>
+ </div></div><div class="caja-subseccion"><a class="submenu-titl subm-t-desk" href="/salud-no-laboral">Salud ACHS</a>
+ <a href="/salud-no-laboral">Salud ACHS</a>
+ <!--<a href="http://prevencionprimaria.achs.cl/inicio" sfref="[10d9e387-c453-494c-a809-275081d19a94%7Clng%3Aes]8569F177-D72D-44FD-9E4B-AD520A6EE26A" data-sf-ec-immutable="">Prevenci&oacute;n primaria</a>-->
+ <div class="submenu-titl subm-t-mobile"><img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-menu-ham.svg" alt="flecha" class="flecha-m-mob" data-sf-ec-immutable="" />Salud ACHS
+                            </div><!-- <div class="submenu-titl subm-t-mobile"><img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-menu-ham.svg" alt="flecha" class="flecha-m-mob" data-sf-ec-immutable="" />Prevenci&oacute;n primaria
+                            </div>-->
+ <div class="sub-submenu-mob"><a class="a-ver-todo" href="http://saludintegral.achs.cl/inicio">Ver todo</a>
+ </div></div></div></div></div><!--Seccion Empresas-->
+ <div class="opcion-navbar"><a id="empresas" class="anchor-menu-mobile" data-sf-ec-immutable=""></a><a href="https://empresas.achs.cl/" class="b-princ b-princ-desk">EMPRESAS <img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-nav.svg" alt="flecha" class="flecha-m-desk" data-sf-ec-immutable="" /></a>
+ <div class="b-princ b-princ-mobile" id="menu-empresas">EMPRESAS <img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-menu-ham.svg" alt="flecha" class="flecha-m-mob" data-sf-ec-immutable="" /></div><div class="submenu-navbar"><div class="columna-submenu"><div class="caja-subseccion"><a href="https://empresas.achs.cl/conoce-sobre-el-seguro-laboral" class="submenu-titl subm-t-desk" data-sf-ec-immutable="">Seguro laboral</a>
+ <div class="submenu-titl subm-t-mobile"><img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-menu-ham.svg" alt="flecha" class="flecha-m-mob" data-sf-ec-immutable="" />Seguro laboral
+                            </div><div class="sub-submenu-mob"><a href="/empresas/asistente-preventivo">Chat preventivo APia</a>
+ <a href="/ds-67">Conoce el proceso del DS67</a>
+ <a href="https://empresas.achs.cl/conoce-sobre-el-seguro-laboral/que-es-el-seguro-laboral-y-cual-es-su-marco-legal" data-sf-ec-immutable="">Qu&eacute; es el seguro laboral y cu&aacute;l es su marco legal</a>
+ <a href="https://empresas.achs.cl/conoce-sobre-el-seguro-laboral/responsabilidad-y-obligaciones-empresa" data-sf-ec-immutable="">Obligaciones de las empresas e instituciones</a>
+ <a href="https://empresas.achs.cl/conoce-sobre-el-seguro-laboral/coberturas-que-te-ofrece-la-achs" data-sf-ec-immutable="">A qui&eacute;nes y c&oacute;mo cubre el seguro</a>
+ <a href="https://empresas.achs.cl/conoce-sobre-el-seguro-laboral/que-es-una-mutualidad" data-sf-ec-immutable="">Qu&eacute; es una mutualidad</a>
+ <a href="https://empresas.achs.cl/conoce-sobre-el-seguro-laboral" class="a-ver-todo" data-sf-ec-immutable="">Ver todo</a>
+ </div></div><div class="caja-subseccion"><a href="https://empresas.achs.cl/conoce-sobre-la-achs" class="submenu-titl subm-t-desk" data-sf-ec-immutable="">Conoce sobre la ACHS</a>
+ <div class="submenu-titl subm-t-mobile"><img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-menu-ham.svg" alt="flecha" class="flecha-m-mob" data-sf-ec-immutable="" />Conoce sobre la ACHS
+                            </div><div class="sub-submenu-mob"><a href="/sumate-a-la-achs">&Uacute;nete a la ACHS</a>
+ <a href="/nosotros/gobierno-corporativo/estadisticas-de-gestion">Participaci&oacute;n de mercado de la ACHS</a>
+ <a href="https://empresas.achs.cl/conoce-sobre-la-achs/que-es-la-achs" data-sf-ec-immutable="">&iquest;Qui&eacute;nes somos?</a>
+ <a href="https://empresas.achs.cl/conoce-sobre-la-achs/rol-achs-y-rol-empresa" data-sf-ec-immutable="">Rol de la ACHS y de la empresa</a>
+ <a href="https://empresas.achs.cl/conoce-sobre-la-achs" class="a-ver-todo" data-sf-ec-immutable="">Ver todo</a>
+ </div></div></div><div class="columna-submenu"><div class="caja-subseccion"><a href="https://empresas.achs.cl/conoce-como-cumplir-tu-responsabilidad-legal" class="submenu-titl subm-t-desk" data-sf-ec-immutable="">Responsabilidad legal</a>
+ <div class="submenu-titl subm-t-mobile"><img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-menu-ham.svg" alt="flecha" class="flecha-m-mob" data-sf-ec-immutable="" />Responsabilidad legal
+                            </div><div class="sub-submenu-mob"><a href="/circular-3370-teletrabajo">Trabajo a distancia y teletrabajo</a>
+ <a href="https://empresas.achs.cl/conoce-como-cumplir-tu-responsabilidad-legal/gestion-de-tu-cumplimiento-de-aspectos-legales" data-sf-ec-immutable="">Gesti&oacute;n de tu cumplimiento de aspectos legales</a>
+ <a href="https://empresas.achs.cl/conoce-como-cumplir-tu-responsabilidad-legal/estructura-tu-organizacion-sus-funciones-y-responsabilidades-preventivas" data-sf-ec-immutable="">Preventiva ocupacional</a>
+ <a href="/cotizaciones_y_devoluciones">Proceso de devoluci&oacute;n de cotizaciones</a>
+ <a href="https://empresas.achs.cl/conoce-como-cumplir-tu-responsabilidad-legal" class="a-ver-todo" data-sf-ec-immutable="">Ver todo</a>
+ </div></div><div class="caja-subseccion"><a href="https://empresas.achs.cl/conoce-mi-gestion" class="submenu-titl subm-t-desk" data-sf-ec-immutable="">C&oacute;mo cuidar a tus trabajadores</a>
+ <div class="submenu-titl subm-t-mobile"><img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-menu-ham.svg" alt="flecha" class="flecha-m-mob" data-sf-ec-immutable="" />C&oacute;mo cuidar a tus trabajadores
+                            </div><div class="sub-submenu-mob"><a href="http://achsgestion.achs.cl/home-achs-gestion">ACHS Gesti&oacute;n</a>
+ <a href="/productos-preventivos">Cat&aacute;logo productos preventivos</a>
+ <a href="/empresas/protocolos-MINSAL-ACHS">Protocolos de vigilancia &ndash; Protocolos MINSAL</a>
+ <a href="/empresas/productos-y-servicios/articulos-productos-y-servicio/sel/productos">Servicios de evaluaciones laborales</a>
+ <a href="/empresas/enfermedades-profesionales">Enfermedades profesionales</a><a href="https://empresas.achs.cl/conoce-mi-gestion" class="a-ver-todo" data-sf-ec-immutable="">Ver todo</a>
+ </div></div></div><div class="columna-submenu"><div class="caja-subseccion"><a href="https://empresas.achs.cl/conoce-mis-beneficios" class="submenu-titl subm-t-desk" data-sf-ec-immutable="">Productos y beneficios</a>
+ <div class="submenu-titl subm-t-mobile"><img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-menu-ham.svg" alt="flecha" class="flecha-m-mob" data-sf-ec-immutable="" />Productos y beneficios
+                            </div><div class="sub-submenu-mob"><a href="https://capacitacion.achs.cl/" data-sf-ec-immutable="">Capacitaciones</a>
+ <a href="https://www.mundoachs.cl/eventos" data-sf-ec-immutable="">Eventos</a>
+
+ <a href="https://empresas.achs.cl/conoce-mis-beneficios/material-preventivo" data-sf-ec-immutable="">Material preventivo</a>
+ <a href="/consultoria-en-seguridad-estrategica">Consultor&iacute;a Seguridad Estrat&eacute;gica</a>
+ <a href="/gestionachs45001">Sistema de Gesti&oacute;n Achs</a>
+ <a href="https://www.mundoachs.cl/" data-sf-ec-immutable="">Mundo ACHS</a>
+ <a href="https://prevencioncovid.achs.cl/" data-sf-ec-immutable="">Sello COVID</a>
+ <a href="https://empresas.achs.cl/conoce-mis-beneficios" class="a-ver-todo" data-sf-ec-immutable="">Ver todo</a>
+ </div></div></div></div></div><div class="opcion-navbar"><a href="https://serviciosenlinea.achs.cl/" data-sf-ec-immutable="">SERVICIOS EN LINEA</a>
+ </div><div class="opcion-navbar"><a href="https://quehacerencasodeaccidente.achs.cl/" data-sf-ec-immutable="">EN CASO DE ACCIDENTE</a>
+ </div><div class="opcion-navbar btn-achs-vg"><a href="#"><img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/ico-achs-virtual.svg" alt="usuario" class="ico-usuario-nav" data-sf-ec-immutable="" />INGRESA
+ <img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/flecha-nav-blanca.svg" alt="flecha" class="flecha-vb" data-sf-ec-immutable="" /></a>
+ <a href="#" class="sub-ingresa" data-toggle="modal" data-target="#popUpAchs"> ACHS VIRTUAL
+                    <div class="ico-preg1"><img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/ico-pregunta.svg" alt="pregunta" data-sf-ec-immutable="" /><div class="globo-txt glb1"><div class="punta-globo-vg"><div class="punta-glob-vg"></div></div>En ACHS Virtual realiza todas las gestiones preventivas, de salud y econ&oacute;micas, reporte e accidentes, certificados, estad&iacute;sticas y otros
+                        </div></div></a>
+ <a class="sub-ingresa btn-a-ges" href="http://achsgestion.achs.cl/home-achs-gestion"> ACHS GESTI&Oacute;N
+                    <div class="ico-preg2"><img src="/ResourcePackages/NewAchsCorporativo/assets/dist/images/ico-pregunta.svg" alt="pregunta" data-sf-ec-immutable="" /><div class="globo-txt glb2"><div class="punta-globo-vg"><div class="punta-glob-vg"></div></div>En ACHS Gesti&oacute;n realiza la gesti&oacute;n preventiva de tu empresa y seguridad laboral, realizando tu plan de prevenci&oacute;n, gesti&oacute;n de aspectos legales, comit&eacute;s paritarios y otros
+                        </div></div></a>
+ </div><div class="opcion-navbar btn-sumate"><a href="/sumate-a-la-achs">S&Uacute;MATE A LA ACHS</a>
+ </div></div></div></nav>
+<!--FIN-->
+ <!-- /header --> <!--MAIN CONTENT--> 
+<div class="bread">
+  <div class="container">
+    <a class="title-slash" href="/">ACHS</a>
+    <span class="bread-slash"><img src="/images/librariesprovider2/salud-no-laboral/flechita-breead.svg?sfvrsn=99002c69_2" alt=""></span>
+                    <a href="/centro-de-noticias">Centro de Noticias </a><span><img src="/images/librariesprovider2/salud-no-laboral/flechita-breead.svg?sfvrsn=99002c69_2" alt=""></span>
+                  <span class="bread-title-snl">Noticia</span>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Box Accesibilidad -->
+<div id="assistArea" class="hide"><div class="active-area"><a id="cerrar-btn" class="activate-btn not-resize"><span class="icono"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37"><path d="M161.94,14.88a18.5,18.5,0,1,0,18.5,18.5A18.52,18.52,0,0,0,161.94,14.88Zm0,32a13.5,13.5,0,1,1,13.5-13.5A13.51,13.51,0,0,1,161.94,46.88Z" transform="translate(-143.44 -14.88)"></path><path d="M168.59,26.57a.59.59,0,0,0-.83,0l-5.9,5.9-5.9-5.9a.59.59,0,0,0-.83,0,.6.6,0,0,0,0,.84L161,33.3l-5.9,5.9a.6.6,0,0,0,0,.84.59.59,0,0,0,.83,0l5.9-5.9,5.9,5.9a.59.59,0,0,0,.83,0,.6.6,0,0,0,0-.84l-5.9-5.9,5.9-5.89A.6.6,0,0,0,168.59,26.57Z" transform="translate(-143.44 -14.88)"></path></svg>
+ </span>
+ <span class="texto">
+ Cerrar
+                </span>
+ </a>
+ <a id="abrir-btn" class="activate-btn active not-resize">
+ <span class="icono">
+ <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path d="M18,0A18,18,0,1,0,36,18,18,18,0,0,0,18,0Zm0,35A17,17,0,1,1,35,18,17,17,0,0,1,18,35Z" transform="translate(0 0)"></path><path d="M18,2.45A15.55,15.55,0,1,0,33.54,18,15.57,15.57,0,0,0,18,2.45Zm0,28.1A12.55,12.55,0,1,1,30.54,18,12.56,12.56,0,0,1,18,30.55Z" transform="translate(0 0)"></path><path d="M18,12.39a2.08,2.08,0,1,0-2.08-2.07A2.08,2.08,0,0,0,18,12.39Z" transform="translate(0 0)"></path><path d="M25.57,13.14c-.15-.45-.38-1-1.35-.63A30.12,30.12,0,0,1,18,13.63a30,30,0,0,1-6.22-1.12c-1-.33-1.2.18-1.35.63a1.09,1.09,0,0,0,.71,1.47c.84.31,4,1.38,4.25,1.58s.26.59.17,1.26-.55,3.89-.89,5.46a15,15,0,0,0-.55,3.37,1.05,1.05,0,0,0,.94.84c.46,0,1.17,0,1.4-1.19s1.06-5.79,1.54-5.79,1.32,4.6,1.54,5.79.94,1.19,1.4,1.19a1.05,1.05,0,0,0,.94-.84,15,15,0,0,0-.55-3.37c-.34-1.57-.8-4.8-.89-5.46s0-1.07.17-1.26,3.41-1.27,4.25-1.58A1.09,1.09,0,0,0,25.57,13.14Z" transform="translate(0 0)"></path></svg>
+ </span>
+ </a>
+ </div><div class="access-opt pt-5 mt-5 mt-lg-0"><div class="container"><div class="row pt-5"><div class="col-6 mb-4"><a href="#" id="resaltar" class="assist-btn not-resize"><span class="icono"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><rect x="17.84" y="6.95" width="10.82" height="4" transform="translate(-14.94 18.29) rotate(-45)"></rect><polygon points="0 16 4.41 14.41 1.6 11.62 0 16"></polygon><path d="M29.42.77A2,2,0,0,0,28,1.36L26.36,3l2.83,2.83,1.65-1.65a2,2,0,0,0,.58-1.42A2,2,0,0,0,29.42.77Z" transform="translate(-15.42 -0.77)"></path></svg>
+ </span>
+ <span class="texto">
+ Resaltar Objetos
+                            </span>
+ </a>
+ </div><div class="col-6 mb-4"><a href="#" id="lectura" class="assist-btn not-resize"><span class="icono"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 12"><path class="cls-1" d="M10,4a2,2,0,1,0,2,2A2,2,0,0,0,10,4ZM20,6v0h0v0a.82.82,0,0,0-.21-.44,15.89,15.89,0,0,0-2.17-2.17A13.74,13.74,0,0,0,12,.21,9,9,0,0,0,8.3.16,10.83,10.83,0,0,0,5.12,1.35,17.37,17.37,0,0,0,.88,4.68c-.23.25-.46.49-.67.76a.85.85,0,0,0,0,1.12A15.89,15.89,0,0,0,2.38,8.73,13.86,13.86,0,0,0,8,11.79a9,9,0,0,0,3.66.05,11.14,11.14,0,0,0,3.18-1.2,17.37,17.37,0,0,0,4.24-3.33c.23-.24.46-.49.67-.75A.86.86,0,0,0,20,6.12v0h0V6ZM10,10a4,4,0,1,1,4-4A4,4,0,0,1,10,10Z" transform="translate(0 0)"></path></svg>
+ </span>
+ <span class="texto">
+ Gu&iacute;a de Lectura
+                            </span>
+ </a>
+ </div><div class="col-6 mb-4"><a href="#" id="contraste" class="assist-btn not-resize"><span class="icono"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M32,1A10,10,0,1,0,42,11,10,10,0,0,0,32,1Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,32,19Z" transform="translate(-22.01 -0.98)"></path><path d="M37.15,5.84A7.23,7.23,0,0,0,32,3.71V18.25A7.27,7.27,0,0,0,37.15,5.84Z" transform="translate(-22.01 -0.98)"></path></svg>
+ </span>
+ <span class="texto">
+ Contraste
+                            </span>
+ </a>
+ </div><div class="col-6 mb-4"><a href="#" id="cursor" class="assist-btn not-resize"><span class="icono"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 21"><path d="M64.85,15.82l-14-11.9V22l4.54-4.24,3.32,7.12,3.2-1.42L58.6,16.38Z" transform="translate(-50.85 -3.92)"></path></svg>
+ </span>
+ <span class="texto">
+ Cursor
+                            </span>
+ </a>
+ </div><div class="col-6 mb-4"><a href="#" id="agrandar" class="assist-btn not-resize"><span class="icono"><strong>A+</strong>
+ </span>
+ <span class="texto">
+ Agrandar
+                            </span>
+ </a>
+ </div><div class="col-6 mb-4"><a href="#" id="disminuir" class="assist-btn not-resize"><span class="icono"><strong>A-</strong>
+ </span>
+ <span class="texto">
+ Disminuir
+                            </span>
+ </a>
+ </div><!-- <a href="#" id="audio-lectura" class="assist-btn not-resize">
+                        <span class="icono">
+                            <i class="icon-audio"></i>
+                        </span>
+                        <span class="texto">
+                            Audio Lectura
+                        </span>
+                    </a> -->
+ </div></div></div></div><!-- FIN Box Accesibilidad -->
+<!-- Cursor lectura -->
+<div class="cursor" style="background-color:transparent !important;"><div class="hl" style="top:918px;"></div></div><!-- FIN Cursor lectura -->
+<!--FIN-->
+
+
+
+
+
+
+
+
+
+<section class="c-interior mb-small" id="rs" >
+  <div class="wrap full-width"  >
+    <h1 class="titulo">El 91% de las personas teme cruzarse con conductores bajo los efectos del alcohol o las drogas en estas Fiestas Patrias</h1>
+
+    <div class="noticia-detalle">
+      <div class="fecha"> 17/09/2026</div>
+      <div class="detalle">
+        <figure>
+          <img class="lazy"  data-src='https://www.achs.cl/images/librariesprovider2/noticias-2026/achs-conaset-fp-2026.jpeg?sfvrsn=f0aaaa75_1' alt='El 91% de las personas teme cruzarse con conductores bajo los efectos del alcohol o las drogas en estas Fiestas Patrias' title='El 91% de las personas teme cruzarse con conductores bajo los efectos del alcohol o las drogas en estas Fiestas Patrias' />
+        </figure>
+        <div class="texto">
+          <p><em>El Estudio de Seguridad Vial en Fiestas Patrias 2026 Achs-Datavoz revel&oacute; que las mayores preocupaciones para este fin de semana largo se concentran en factores externos como las imprudencias e incumplimiento de normas por parte de terceros. Esto contrasta con que solo un 38,1% declara que evitar&aacute; el consumo de sustancias antes de manejar y que m&aacute;s de un tercio de los automovilistas no revisar&aacute; el estado mec&aacute;nico de su veh&iacute;culo antes de viajar.</em><br /></p><p>Un marcado temor a los comportamientos de riesgo de otros usuarios de las v&iacute;as es el principal factor que marcar&aacute; los desplazamientos durante las celebraciones de septiembre. As&iacute; lo revel&oacute; el Estudio de Seguridad Vial en Fiestas Patrias 2026 Achs-Datavoz, el cual expone que las principales inquietudes de la poblaci&oacute;n ante los trayectos festivos no se centran en la preparaci&oacute;n propia, sino en la exposici&oacute;n a la conducci&oacute;n irresponsable y al estado del entorno vial.<br /></p><p>La medici&oacute;n, realizada de forma telef&oacute;nica a 1.500 personas mayores de edad a nivel nacional, identific&oacute; que cerca de dos tercios (65,6%) de los consultados se desplazar&aacute;n durante el fin de semana festivo y que el autom&oacute;vil particular ser&aacute; su medio de transporte predominante, siendo seleccionado por el 44,6% (el transporte p&uacute;blico urbano ocup&oacute; el segundo lugar con el 13,6% de las preferencias).<br /><br />En este contexto de alta movilidad vehicular, la principal preocupaci&oacute;n manifestada corresponde al incumplimiento de las normas de tr&aacute;nsito e imprudencias por parte de otros conductores o peatones, se&ntilde;alada por un 92,6% de las personas. A esta le sigue de cerca el temor a la presencia de conductores bajo la influencia del alcohol o drogas, con un 90,8% de adhesi&oacute;n total. Asimismo, 8 de cada 10 personas (80,7%) reporta preocupaci&oacute;n por la delincuencia o inseguridad durante el viaje y 70,9% teme verse involucrado en un accidente de tr&aacute;nsito. En tanto, 78,7% se muestra inquieto por los episodios de congesti&oacute;n en carreteras y v&iacute;as urbanas.<br /></p><p>Alberto Escobar, secretario ejecutivo de la Comisi&oacute;n Nacional de Seguridad de Tr&aacute;nsito (Conaset), apunta que &ldquo;la principal causa de siniestros viales en el pa&iacute;s es la distracci&oacute;n del conductor, y la principal causa de fallecidos es por velocidad imprudente. De todos modos el llamado siempre es que si la persona va a tomar no maneje, y para ello tambi&eacute;n hemos impulsado nuestra campa&ntilde;a de seguridad vial bajo el lema &lsquo;Tom&eacute; buenas decisiones&rsquo;. Y una de esas buenas decisiones es que si tom&eacute;, no manej&eacute;&rdquo;.<br /></p><p>Al respecto, Rodrigo de la Calle, gerente de la Divisi&oacute;n Prevenci&oacute;n y Desarrollo Comercial de la Achs, se&ntilde;ala que &ldquo;como Achs, realizamos este estudio porque la prevenci&oacute;n requiere evidencia concreta. Los datos muestran un alto nivel de conciencia respecto a los peligros del entorno, pero tambi&eacute;n una brecha preocupante entre el riesgo que percibimos en el resto y las medidas que tomamos en nuestra propia conducci&oacute;n. La prevenci&oacute;n no es solo estar alerta a lo que hace el de al lado; implica planificar el viaje, preparar el veh&iacute;culo, descansar lo suficiente y respetar estrictamente la normativa. El llamado para estas Fiestas Patrias es a reforzar el compromiso con la convivencia vial y asumir una responsabilidad activa en la ruta para evitar tragedias que son evitables&rdquo;.<br /></p><p>En efecto, los resultados de la encuesta confirman que, aunque la mayor&iacute;a de los viajeros declara planificar sus trayectos, un grupo significativo omite revisiones preventivas esenciales antes de salir a la ruta. Si bien un 87,8% de los automovilistas asegura que usar&aacute; el cintur&oacute;n de seguridad durante todo el viaje, y el 56,5% de las personas afirma que planificar&aacute; la ruta y los horarios de salida y s&oacute;lo un 38,1% menciona evitar&aacute; consumir alcohol, drogas o alg&uacute;n medicamente que afecten la conducci&oacute;n. Adicionalmente, el 38% tambi&eacute;n admite que verificar&aacute; elementos b&aacute;sicos como neum&aacute;ticos, luces y frenos, un 34,8% declara que descansar&aacute; adecuadamente antes de manejar y un 30,8% indica que evitar&aacute; conducir tras una jornada laboral extensa.<br /><br />Por su parte, la Dra. Marcela Garrido, jefa del Servicio de Urgencia del Hospital del Trabajador Achs Salud, enfatiza el impacto cl&iacute;nico de la conducci&oacute;n bajo los efectos de sustancias. "El consumo de alcohol o drogas altera directamente la percepci&oacute;n del riesgo, ralentiza la capacidad de reacci&oacute;n y multiplica la gravedad de cualquier impacto en la ruta. Desde la atenci&oacute;n de urgencia vemos c&oacute;mo este factor de riesgo transforma siniestros evitables en lesiones graves o fatales. Es por eso que la prevenci&oacute;n y evitar el consumo son claves para evitar situaciones lamentables&rdquo;, explica.</p><p><strong>Mujeres y j&oacute;venes se preocupan m&aacute;s, hombres declaran mayores niveles de prevenci&oacute;n</strong></p><p>El estudio tambi&eacute;n revel&oacute; algunas diferencias en la adopci&oacute;n efectiva de medidas de preparaci&oacute;n entre g&eacute;neros. Los hombres declaran en mayor proporci&oacute;n realizar acciones preventivas en los veh&iacute;culos. Un 42,5% de los hombres afirma que revisar&aacute; el estado mec&aacute;nico de su autom&oacute;vil antes de salir, comparado con solo un 23,5% de las mujeres, mientras que un 45,9% de los hombres chequear&aacute; los neum&aacute;ticos, luces y sistemas de freno, versus un 25,4% en el segmento femenino.<br /><br />En tanto, tras el veh&iacute;culo particular, el transporte p&uacute;blico se posiciona como la segunda alternativa de desplazamiento para estas festividades.. A diferencia de los automovilistas, quienes utilizan este tipo de servicios enfrentan el trayecto con un menor margen de control t&eacute;cnico sobre el veh&iacute;culo, por lo que sus medidas de resguardo se centran en la organizaci&oacute;n log&iacute;stica y la comunicaci&oacute;n constante durante el recorrido.</p><p>Entre las principales acciones declaradas por los usuarios de transporte p&uacute;blico destacan mantener contacto permanente con familiares o acompa&ntilde;antes durante el viaje (54,9%), planificar los horarios y las rutas con anticipaci&oacute;n (52%) y revisar la informaci&oacute;n de tr&aacute;nsito o las condiciones del servicio antes de salir (49,4%). En contraposici&oacute;n, evitar los horarios de mayor congesti&oacute;n aparece como la medida de prevenci&oacute;n menos adoptada en este grupo, con solo un 37,4% de adhesi&oacute;n.</p><p><strong>Revisa el informe completo</strong></p><p><strong>Te invitamos a revisar el material disponible y a visitar nuestra web de <a href="https://www.achs.cl/estudios/seguridad-vial/2026" data-sf-ec-immutable="">Estudios de Seguridad Vial</a> para conocer en mayor detalle sus principales hallazgos y aprendizajes.</strong></p><p><a target="_blank" href="/docs/librariesprovider2/documentos-seguridad-vial/achs-infografia-seguridad-vial-v03.pdf?sfvrsn=a7ad0b55_1">Infograf&iacute;a Estudio de Seguridad Vial en Fiestas Patrias 2026</a></p><p><a target="_blank" href="/docs/librariesprovider2/documentos-seguridad-vial/estudio-de-seguridad-vial-en-fiestas-patrias-achs-datavoz-2026.pdf?sfvrsn=33de2304_1">Informe Estudio de Seguridad Vial en Fiestas Patrias 2026</a></p><p><strong style="background-color:transparent;color:inherit;font-size:inherit;text-align:inherit;text-transform:inherit;word-spacing:normal;caret-color:auto;white-space:inherit;"><br /></strong></p><p>Las mutualidades de empleadores son fiscalizadas por la Superintendencia de Seguridad Social (<a href="https://www.suseso.cl/" data-sf-ec-immutable="">www.suseso.cl</a>).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<div class="informate no-bg ultimas-publicaciones">
+  <div class="wrap">
+    <h2>Últimas publicaciones</h2>
+    <div class="carrusel verde">
+      <div class="c-informate">
+        <div class="item">
+          <div class="box-informate">
+            <figure>
+               <img class="lazy"  data-src='https://www.achs.cl/images/librariesprovider2/noticias-2026/comite-paritario-contact-center-1.jpeg?sfvrsn=f9f2efb4_1' alt='Comit&#233; Paritario del Contact Center de Banco Ita&#250; obtiene certificaci&#243;n de nivel inicial de Achs Seguro Laboral' title='Comit&#233; Paritario del Contact Center de Banco Ita&#250; obtiene certificaci&#243;n de nivel inicial de Achs Seguro Laboral' />
+            </figure>
+            <div class="texto">
+              <div class="fecha"> 05/10/2026</div>
+               <h3>Comit&#233; Paritario del Contact Center de Banco Ita&#250; obtiene certificaci&#243;n de nivel inicial de Achs Seguro Laboral</h3>
+                       <p></p>
+              <a href="https://www.achs.cl/centro-de-noticias/noticia/2026/comie&#233;-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral">Ver más</a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="box-informate">
+            <figure>
+               <img class="lazy"  data-src='https://www.achs.cl/images/librariesprovider2/noticias-2026/milab.jpeg?sfvrsn=dc89148_1' alt='Achs Seguro Laboral y MILAB fortalecen su alianza preventiva a trav&#233;s de nueva caminata de la seguridad' title='Achs Seguro Laboral y MILAB fortalecen su alianza preventiva a trav&#233;s de nueva caminata de la seguridad' />
+            </figure>
+            <div class="texto">
+              <div class="fecha"> 28/09/2026</div>
+               <h3>Achs Seguro Laboral y MILAB fortalecen su alianza preventiva a trav&#233;s de nueva caminata de la seguridad</h3>
+                       <p></p>
+              <a href="https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad">Ver más</a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="box-informate">
+            <figure>
+               <img class="lazy"  data-src='https://www.achs.cl/images/librariesprovider2/noticias-2026/presentaci&#243;n-guia-tratamiento-epsm.jpeg?sfvrsn=fa55542a_1' alt='Nueva gu&#237;a entrega orientaciones basadas en evidencia para el abordaje de la salud mental laboral' title='Nueva gu&#237;a entrega orientaciones basadas en evidencia para el abordaje de la salud mental laboral' />
+            </figure>
+            <div class="texto">
+              <div class="fecha"> 24/09/2026</div>
+               <h3>Nueva gu&#237;a entrega orientaciones basadas en evidencia para el abordaje de la salud mental laboral</h3>
+                       <p></p>
+              <a href="https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral">Ver más</a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="box-informate">
+            <figure>
+               <img class="lazy"  data-src='https://www.achs.cl/images/librariesprovider2/noticias-2026/neuroprevencion.jpg?sfvrsn=69d64042_1' alt='La neurociencia como herramienta para fortalecer la prevenci&#243;n' title='La neurociencia como herramienta para fortalecer la prevenci&#243;n' />
+            </figure>
+            <div class="texto">
+              <div class="fecha"> 23/09/2026</div>
+               <h3>La neurociencia como herramienta para fortalecer la prevenci&#243;n</h3>
+                       <p></p>
+              <a href="https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion">Ver más</a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="box-informate">
+            <figure>
+               <img class="lazy"  data-src='https://www.achs.cl/images/librariesprovider2/noticias-2026/achs-conaset-fp-2026.jpeg?sfvrsn=f0aaaa75_1' alt='El 91% de las personas teme cruzarse con conductores bajo los efectos del alcohol o las drogas en estas Fiestas Patrias' title='El 91% de las personas teme cruzarse con conductores bajo los efectos del alcohol o las drogas en estas Fiestas Patrias' />
+            </figure>
+            <div class="texto">
+              <div class="fecha"> 17/09/2026</div>
+               <h3>El 91% de las personas teme cruzarse con conductores bajo los efectos del alcohol o las drogas en estas Fiestas Patrias</h3>
+                       <p></p>
+              <a href="https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias">Ver más</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> <!-- /MAIN CONTENT--> <!-- footer --> <footer> <div class="footer-principal"> <div class="container-fluid"> <div class="row"> <div class="cajas-footer"> <div class="caja-footer"> <!--footer1--> 
+
+
+
+
+
+
+
+<h3>Informaci&oacute;n Corporativa</h3><a href="/nosotros/achs-corporativo/marco-regulatorio-ley-16744">&iquest;Qu&eacute; es la Achs?</a><br /><a href="/nosotros/gobierno-corporativo/informacion-financiera/estados-financieros">Informaci&oacute;n financiera</a><br /><a href="/nosotros/gobierno-corporativo">Gobierno corporativo</a><br /><a data-sf-ec-immutable="" href="/nosotros/que-es-la-achs/politica-de-equidad-inclusion-y-diversidad">Pol&iacute;tica de Equidad Inclusi&oacute;n y Diversidad</a><br /><a data-sf-ec-immutable="" target="_blank" href="https://derechosydeberespacientes.achs.cl/">Derechos y deberes pacientes</a>
+<!--FIN--> <!-- /footer1--> </div> <div class="caja-footer"> <!--footer2--> 
+
+
+
+
+
+
+
+<h3>Link de inter&eacute;s</h3><a href="/nosotros/gobierno-corporativo/proveedores">Proveedores</a><br /><a href="/nosotros/canal-de-denuncias">Canal de Denuncia</a><!--<a href="/nosotros/ubicacion" sfref="[9eb96361-142e-493e-bb55-39f5667c6e61%7Clng%3Aes]1C57496F-5F6A-4981-A58A-ED76EF42B37B" data-sf-ec-immutable="">Sedes</a>--><br /><a data-sf-ec-immutable="" href="https://trabajos.achs.cl/">Trabaja con Nosotros</a><br />
+<!--FIN--> <!-- /footer2--> </div> <div class="caja-footer"> <!--footer3--> 
+
+
+
+
+
+
+
+<h3>Nuestros sitios</h3><a class="link-footer" href="http://www.hospitaldeltrabajador.cl/ht/Comunidad/Paginas/home.aspx" data-sf-ec-immutable="">Hospital del Trabajador</a><br /><a class="link-footer" href="http://www.esachs.cl/" data-sf-ec-immutable="">Achs Servicios</a><br /><a class="link-footer" href="https://www.mundoachs.cl/" data-sf-ec-immutable="">Mundo Achs</a><br /><a class="link-footer" href="/nosotros/proyectos-de-investigacion-e-innovacion">Proyectos de<br data-sf-ec-immutable="" />investigaci&oacute;n e <br />innovaci&oacute;n</a>
+
+
+
+<br /><a href="https://www.achssalud.cl/" class="link-footer">Achs Salud</a>
+<!--FIN--> <!-- /footer3--> </div> <div class="caja-footer"> <!--footer4--> 
+
+
+
+
+
+
+
+<h3>Canales de atenci&oacute;n</h3><a data-sf-ec-immutable="" href="tel:6006002247" class="link-footer"><strong>Call Center</strong> 600 600 2247</a><br /><a class="link-footer" href="/cdn-cgi/l/email-protection#513032392211303239227f323d"><strong>Correo</strong> <span class="__cf_email__" data-cfemail="debfbdb6ad9ebfbdb6adf0bdb2">[email&#160;protected]</span></a><br /><a data-sf-ec-immutable="" href="tel:+1404" class="link-footer"><strong>Fono rescate</strong> 1404</a><br /><a href="/nosotros/ubicacion" class="link-footer" target="_blank">Centros</a><br /><a data-sf-ec-immutable="" target="_blank" href="https://www.achs.cl/nosotros/servicio-al-cliente" class="link-footer">Sugerencia o reclamo</a><br /><br /><a target="_blank" href="https://www.instagram.com/achs.segurolaboral/" class="link-footer"><img data-sf-ec-immutable="" height="27" width="27" src="/ResourcePackages/AchsCorporativo/assets/dist/images/logo-instagram2.svg" alt="" /></a>&nbsp;&nbsp;
+<a target="_blank" href="https://www.facebook.com/Achs.segurolaboral"><img data-sf-ec-immutable="" height="27" width="27" src="/ResourcePackages/AchsCorporativo/assets/dist/images/logo_facebook2.svg" alt="" /></a>&nbsp;&nbsp;
+<a target="_blank" href="https://www.linkedin.com/company/achs/"><img data-sf-ec-immutable="" height="27" width="27" src="/ResourcePackages/AchsCorporativo/assets/dist/images/logo-linkedin2.svg" alt="" /></a>&nbsp;&nbsp;
+<a target="_blank" href="https://x.com/Achs_Seguro"><img data-sf-ec-immutable="" height="27" width="27" src="/ResourcePackages/AchsCorporativo/assets/dist/images/logo-twitter2.svg" alt="" /></a>&nbsp;&nbsp;
+<a target="_blank" href="https://www.youtube.com/user/prevencionACHS"><img data-sf-ec-immutable="" height="27" width="27" src="/ResourcePackages/AchsCorporativo/assets/dist/images/logo_youtube2.svg" alt="" /></a>
+<!--FIN--> <!-- /footer4--> </div> <div class="caja-footer"> <!--footer4--> 
+ <!-- /footer4--> </div> </div> </div> <div class="row"> <div class="col-12"> <p class="frase-suceso"> 
+
+
+
+
+
+
+
+Las mutualidades de empleadores son fiscalizadas por la Superintendencia de Seguridad Social (<a href="https://www.suseso.cl/601/w3-channel.html">www.suseso.cl</a>)
+<!--FIN--> </p> </div> </div> </div> </div> <div class="container"> <div class="row"> <div class="col-12 txt-footer-inferior" style="text-align: center;"> 
+
+
+
+
+
+
+
+<span><strong>Asociaci&oacute;n Chilena de Seguridad.</strong></span><span><img src="/ResourcePackages/AchsCorporativo/assets/dist/images/Icon-place-green.svg" alt="" /><strong>Casa Central:</strong> Ram&oacute;n Carnicer 163, Providencia, Santiago.</span><span><img src="/ResourcePackages/AchsCorporativo/assets/dist/images/Icon-phone-green.svg" alt="" />Call center: <a href="tel:6006002247"><strong>600 600 2247</strong></a></span>
+<!--FIN--> </div> </div> </div> </footer> <!-- footer --> <!-- JS --> <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/ResourcePackages/AchsCorporativo/assets/dist/js/tiny-slider.js" defer></script> <script src="/ResourcePackages/AchsCorporativo/assets/dist/js/accordion.js" defer></script> <script src="/ResourcePackages/AchsCorporativo/assets/dist/js/wow.js" defer></script> <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@13.0.1/dist/lazyload.min.js" defer></script> <script src="/ResourcePackages/AchsCorporativo/assets/dist/js/funciones.js" defer></script> 
+
+
+
+
+
+<script src="/ResourcePackages/AchsCorporativo/assets/dist/js_new/bootstrap.min.js" defer></script>
+<script src="/ResourcePackages/AchsCorporativo/assets/dist/js/funciones-widget.js" defer></script>
+<script type="text/javascript" src="/ResourcePackages/NewAchsCorporativo/assets/dist/js/interiores-new.js" defer></script>
+<script type="text/javascript">
+let divSearch = document.querySelector('.btn-lupa');
+let divInput = document.querySelector('.barra-busqueda');
+let divClose = document.querySelector('.btn-cruz-buscador');
+
+divSearch.addEventListener("click", function (event) {
+    divInput.classList.remove("d-none");
+});
+
+divClose.addEventListener("click", function (event) {
+    divInput.classList.add("d-none");
+});
+</script>
+
+
+
+
+  <!-- /JS --> <script type="text/javascript">
+const  ulContainer = document.getElementsByClassName("w-links");
+for (var i = 0; i < ulContainer.length; i++) {
+ulContainer[i].getElementsByTagName('ul')[0].querySelectorAll("li a").forEach( element => {
+if (element.href === window.location.href) {
+  		console.log("activo");
+            console.log(element);
+   element.classList.add("activo");
+    }
+})                   
+}
+
+
+const  ulContainer1 = document.getElementsByClassName("menu-lateral");
+for (var i = 0; i < ulContainer1.length; i++) {
+ulContainer1[i].querySelectorAll("a").forEach( element => {
+if (element.href === window.location.href) {
+  		console.log("activo");
+            console.log(element);
+   element.classList.add("activo");
+    }
+})                   
+}
+</script><script type="text/javascript">
+$(document).ready(function() {
+    setTimeout(function() {
+
+      $(".btn-ham").off("click").on("click", function() {
+        $(this).toggleClass("btn-h-activo");
+        var $nav = $(".sec-navbar-principal");
+        if ($nav.is(":hidden")) {
+          $nav[0].style.setProperty("display", "block", "important");
+        } else {
+          $nav[0].style.setProperty("display", "none", "important");
+        }
+      });
+
+      $(".btn-ingresa-mobile").off("click").on("click", function() {
+        $(".sub-ingresa-mobile").toggle();
+      });
+
+      $(".b-princ").off("click").on("click", function() {
+        $(".b-princ").not($(this)).removeClass("sub-mm-activo");
+        $(".submenu-navbar").not($(this).next(".submenu-navbar")).hide();
+        $(this).toggleClass("sub-mm-activo");
+        $(this).next(".submenu-navbar").toggle();
+      });
+
+      $(".submenu-titl").off("click").on("click", function() {
+        $(".submenu-titl").not($(this)).removeClass("subsub-m-activo");
+        $(".sub-submenu-mob").not($(this).next(".sub-submenu-mob")).hide();
+        $(this).toggleClass("subsub-m-activo");
+        $(this).next(".sub-submenu-mob").toggle();
+      });
+
+      $(".btn-con-titl").off("click").on("click", function() {
+        $(".btn-con-titl").not($(this)).removeClass("btn-con-activo");
+        $(".info-con").not($(this).next(".info-con")).hide();
+        $(this).toggleClass("btn-con-activo");
+        $(this).next(".info-con").toggle();
+      });
+
+    }, 0);
+  });
+</script> <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a48b9f65588cae43',t:'MTc5MTY5ODE5Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body> </html>

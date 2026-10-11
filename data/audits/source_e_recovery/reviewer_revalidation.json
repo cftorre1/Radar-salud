@@ -1,0 +1,413 @@
+{
+  "reviewer": "independent /root/reviewer",
+  "reviewed_at": "2026-10-11T06:38:03.255761+00:00",
+  "candidate_sha": "43d9c21ad2dae7c6afef68c7befc8b0d4450c4ab",
+  "baseline_sha": "ac70ed4",
+  "branch": "codex/e-salud-laboral-20261011",
+  "existing_pr": 12,
+  "verdict": "incremental_engineering_checks_pass_final_live_gate_pending",
+  "scope": [
+    "clinicas_achs_salud",
+    "achs_seguro_laboral",
+    "mutual_seguridad",
+    "ist"
+  ],
+  "limitations": [
+    "No live requests or paid API calls by reviewer. Replayed stored raw publisher captures only.",
+    "Builders and parent were integrating new Actions evidence concurrently; this is not approval of later merged state.",
+    "No PR closure, production promotion, canonical state write or implementation edit by reviewer."
+  ],
+  "file_sha256": {
+    "scripts/occupational_inventory.py": "3ed15cfc5f3a0cdd90b569907ba1cc5135c5de7594cda314145da9b84330c072",
+    "scripts/mutual_public_paging_probe.py": "4b3972d32684b692f56b414e78453c3cf428b18776d21404b341ffd871cc7432",
+    "src/radar_salud/occupational_recovery.py": "877b97983765268b248f578c8c8d0295cfe2444c5005702cc8879303d6c4c8fd",
+    "src/radar_salud/occupational_budget.py": "0238836845b5bc06b29e5c2e21c1d04cc7226f8b74231cf8b61aedc54ecf5804",
+    "src/radar_salud/occupational_evidence.py": "7a60c7c095977a172f572f7f81a25d36908160eea1adb006380570e0b3668090",
+    "src/radar_salud/occupational_sources.py": "d063e797821f42c25e6d0828e79739ef6dc25b3d304dc03543884318e7302947",
+    "src/radar_salud/mutual_sources.py": "2915746650d6720257dc5f849d615caa552ad291ccb7069ea4e417d81cd5db15",
+    ".github/workflows/occupational-source-recovery.yml": "154612cd45539ea3bf12e75d6ea7718590511d6705bdd6cd997077f2a79fcaac"
+  },
+  "tests": [
+    {
+      "command": ".venv/bin/python -m pytest -q tests/test_occupational_reconcile.py tests/test_occupational_capture_cache.py tests/test_occupational_evidence.py tests/test_occupational_merge.py tests/test_occupational_budget.py tests/test_mutual_recovery.py",
+      "result": "104 passed in 0.24s",
+      "exit_code": 0
+    }
+  ],
+  "closed_findings": [
+    {
+      "id": "editorial_decision_bound_to_input_revision",
+      "evidence": "Tests verify current raw and input fingerprint replace prior raw, revisions retain previous reason/assessment, changed rejected input becomes pending_reassessment, published remains terminal."
+    },
+    {
+      "id": "prior_published_current_capture_gap",
+      "evidence": "A previously published URL remains published when current raw capture is absent; current_capture_gap is separate from history."
+    },
+    {
+      "id": "unique_merged_metrics",
+      "evidence": "Metrics recomputed from unique URLs, actual publication dates and roles. No summed surface inflation."
+    },
+    {
+      "id": "merged_date_conflict",
+      "evidence": "347b0dc retains both observations, clears trusted date/evidence, removes raw before AI, marks partial; repeated merge preserves conflict."
+    },
+    {
+      "id": "relative_source_checkpoint_path",
+      "evidence": "Workflow-relative output normalized with resolve(); targeted regression passes. Isolated GITHUB_REF required."
+    },
+    {
+      "id": "shared_three_failure_limit",
+      "evidence": "Same assessment_state persists across per-source reconciliation; regression verifies a next source cannot reopen capacity after three failures."
+    },
+    {
+      "id": "code_changed_during_checkpoint_pull",
+      "evidence": "After durable commit/push, code/config/workflow diff against original candidate stops process and requires resume; prevents next source mixing code revisions."
+    },
+    {
+      "id": "monthly_and_phase_budget_receipt",
+      "evidence": "Additive upstream plus isolated delta replaces MAX; divergent 31+20 upstream+10 isolated equals61, idempotent repeat, later3 equals64. Missing receipt blocks apply; cumulative5/29/30/31 gives25/1/0/0 phase capacity."
+    },
+    {
+      "id": "capture_cache_ttl",
+      "evidence": "Six-hour retention excludes old, future, naive and missing timestamp fixtures; original capture times kept separate from reconciliation time."
+    }
+  ],
+  "previous_live_evidence": {
+    "path": "data/audits/source_e_recovery/actions/38116209530/inventory/inventory.json",
+    "sha256": "fac1decf8ff71cf853dfd65ab38e2696cb5949c293c9138e4a1807bf5bf8e884",
+    "candidate_sha": "00ec95b593918ea0b95ff7646387584153b580fb",
+    "editorial_runtime": {
+      "credentials_available": true,
+      "model": "gpt-5.6-luna",
+      "budget_before": {
+        "run": {
+          "deep": {
+            "attempted": 0,
+            "successful": 0,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 0,
+            "successful": 0,
+            "failed": 0
+          }
+        },
+        "month": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 31,
+            "successful": 31,
+            "failed": 0
+          }
+        }
+      },
+      "budget_after": {
+        "run": {
+          "deep": {
+            "attempted": 0,
+            "successful": 0,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 5,
+            "successful": 5,
+            "failed": 0
+          }
+        },
+        "month": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 36,
+            "successful": 36,
+            "failed": 0
+          }
+        }
+      },
+      "same_failure_limit": 3
+    },
+    "editorial_outcome": "Five actual successful API attempts scored72,73,70,72,70 below threshold75; zero publications is evidenced for that candidate, without changing the threshold.",
+    "qualification": "Run4 predates current materiality and clinical parser changes; it cannot close later candidates or missing coverage."
+  },
+  "read_only_current_parser_replay": {
+    "command": ".venv/bin/python scripts/occupational_inventory.py --output /tmp/reviewer-run4-replay-current --replay data/audits/source_e_recovery/actions/38116209530/inventory --as-of 2026-10-11",
+    "result_sha256": "8ba9f9a10a8f204c6d7548eaeaba00d5c0ed7134ac667e4292cfebe4075e9193",
+    "exit_code": 0,
+    "mode": "read_only_replay",
+    "processing": {},
+    "editorial_runtime": {
+      "credentials_available": false,
+      "model": "gpt-5.6-luna",
+      "budget_before": {
+        "run": {
+          "deep": {
+            "attempted": 0,
+            "successful": 0,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 0,
+            "successful": 0,
+            "failed": 0
+          }
+        },
+        "month": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 36,
+            "successful": 36,
+            "failed": 0
+          }
+        }
+      },
+      "budget_after": {
+        "run": {
+          "deep": {
+            "attempted": 0,
+            "successful": 0,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 0,
+            "successful": 0,
+            "failed": 0
+          }
+        },
+        "month": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 36,
+            "successful": 36,
+            "failed": 0
+          }
+        }
+      },
+      "same_failure_limit": 3
+    },
+    "sources": {
+      "achs_seguro_laboral": {
+        "rows": 40,
+        "raw_items": 23,
+        "errors": 0,
+        "coverage_complete": true,
+        "stop_reason": "verified_older_boundary",
+        "metrics": {
+          "30": {
+            "start": "2026-09-11",
+            "end": "2026-10-11",
+            "dated_articles": 10,
+            "expected_role": 10,
+            "candidates": 3,
+            "rejected": 7,
+            "excluded_role": 0,
+            "pending": 0,
+            "unknown_date_items": 0,
+            "complete": true
+          },
+          "90": {
+            "start": "2026-07-13",
+            "end": "2026-10-11",
+            "dated_articles": 25,
+            "expected_role": 23,
+            "candidates": 8,
+            "rejected": 15,
+            "excluded_role": 2,
+            "pending": 0,
+            "unknown_date_items": 0,
+            "complete": true
+          }
+        },
+        "reconciliation": {
+          "omitted_before": 0,
+          "material_omitted_before": 0,
+          "states": {
+            "rejected": 18,
+            "pending_reassessment": 5,
+            "excluded": 2,
+            "outside_window": 15
+          },
+          "detected_before": 23
+        }
+      },
+      "clinicas_achs_salud": {
+        "rows": 40,
+        "raw_items": 2,
+        "errors": 19,
+        "coverage_complete": false,
+        "stop_reason": "verified_older_boundary",
+        "metrics": {
+          "30": {
+            "start": "2026-09-11",
+            "end": "2026-10-11",
+            "dated_articles": 10,
+            "expected_role": 0,
+            "candidates": 0,
+            "rejected": 0,
+            "excluded_role": 10,
+            "pending": 0,
+            "unknown_date_items": 0,
+            "complete": false
+          },
+          "90": {
+            "start": "2026-07-13",
+            "end": "2026-10-11",
+            "dated_articles": 25,
+            "expected_role": 2,
+            "candidates": 2,
+            "rejected": 0,
+            "excluded_role": 23,
+            "pending": 0,
+            "unknown_date_items": 0,
+            "complete": false
+          }
+        },
+        "reconciliation": {
+          "omitted_before": 0,
+          "material_omitted_before": 0,
+          "states": {
+            "excluded": 23,
+            "rejected": 2,
+            "outside_window": 15
+          },
+          "detected_before": 2
+        }
+      },
+      "ist": {
+        "rows": 36,
+        "raw_items": 20,
+        "errors": 2,
+        "coverage_complete": false,
+        "stop_reason": "ist_api_comparison_incomplete",
+        "metrics": {
+          "30": {
+            "start": "2026-09-11",
+            "end": "2026-10-11",
+            "dated_articles": 6,
+            "expected_role": 6,
+            "candidates": 0,
+            "rejected": 6,
+            "excluded_role": 0,
+            "pending": 0,
+            "unknown_date_items": 0,
+            "complete": false
+          },
+          "90": {
+            "start": "2026-07-13",
+            "end": "2026-10-11",
+            "dated_articles": 20,
+            "expected_role": 20,
+            "candidates": 0,
+            "rejected": 20,
+            "excluded_role": 0,
+            "pending": 0,
+            "unknown_date_items": 0,
+            "complete": false
+          }
+        },
+        "reconciliation": {
+          "omitted_before": 20,
+          "material_omitted_before": 0,
+          "states": {
+            "discovered": 20,
+            "outside_window": 16
+          },
+          "detected_before": 0
+        }
+      },
+      "mutual_seguridad": {
+        "rows": 84,
+        "raw_items": 51,
+        "errors": 14,
+        "coverage_complete": false,
+        "stop_reason": "inventory_incomplete",
+        "metrics": {
+          "30": {
+            "start": "2026-09-11",
+            "end": "2026-10-11",
+            "dated_articles": 33,
+            "expected_role": 33,
+            "candidates": 0,
+            "rejected": 33,
+            "pending": 0,
+            "excluded_role": 0,
+            "unknown_date_items": 0,
+            "complete": false
+          },
+          "90": {
+            "start": "2026-07-13",
+            "end": "2026-10-11",
+            "dated_articles": 51,
+            "expected_role": 51,
+            "candidates": 2,
+            "rejected": 49,
+            "pending": 0,
+            "excluded_role": 0,
+            "unknown_date_items": 0,
+            "complete": false
+          }
+        },
+        "reconciliation": {
+          "omitted_before": 0,
+          "material_omitted_before": 0,
+          "states": {
+            "rejected": 49,
+            "pending_reassessment": 2,
+            "outside_window": 33
+          },
+          "detected_before": 51
+        }
+      }
+    },
+    "conclusion": "Current changed inputs become pending_reassessment for five ACHS and two Mutual URLs; the read-only replay does not reuse earlier rejection as a final decision for those revisions."
+  },
+  "mutual_browser_probe_review": {
+    "status": "read_only_review_before_live_execution",
+    "strengths": [
+      "Only GET/HEAD on official HTTPS www.mutual.cl; TLS validation enabled; private portal, offsite and disallowed robots routes aborted.",
+      "Preflight rejects recognized WAF/challenge documents before executing publisher HTML.",
+      "Rendered DOM is explicitly derivative evidence, raw response bodies recorded separately; coverage_complete always false.",
+      "Public hidden native anchor is recorded as hidden, not portrayed as a visible UI control; actual observed href is clicked without inventing a route."
+    ],
+    "reported_finding_and_resolution": {
+      "id": "script_response_challenge_inspection",
+      "severity": "contract_gap_before_browser_probe",
+      "file": "scripts/mutual_public_paging_probe.py",
+      "detail": "Allowed /portal/ script responses use route.continue_ without raw capture or waf_kind inspection, unlike document/xhr/fetch. An unexpected challenge response at that script route could execute. Current raw Run4 root anti-WAF script is blocked by prefix, so no actual challenge execution is alleged.",
+      "next_action": "Fetch and inspect allowed script bodies before fulfill and abort recognized challenges.",
+      "status": "resolved_in_current_working_tree_pending_builder_checkpoint",
+      "resolution": "guard_browser_route now fetches and hashes allowed portal script bodies, inspects waf_kind before fulfill, aborts recognized challenge responses, and blocks the private path without a trailing slash."
+    }
+  },
+  "remaining_gate": [
+    "New live reconciliation after native clinic and materiality fixes; current 0 publications must not be generalized to unassessed revisions.",
+    "Mutual archive paging remains experimental pending live browser evidence and independently verified raw retrieval; 14 missing archive surfaces are still honest partial coverage.",
+    "Independent final canonical preservation/ledger/health/UI reconciliation after parent finishes merging fresh Actions evidence."
+  ],
+  "maintenance_notes": [
+    "CLI --sync-budget help still describes the old larger-counter/MAX policy; update to additive staging plus isolated-delta language.",
+    "Only final all-source inventory writes occupational_source_discovery; per-source checkpoints are durable in their own report plus health/queue/ledger and must remain referenced for resumption."
+  ],
+  "post_review_supplement": {
+    "reviewed_at": "2026-10-11T06:38:31.651063+00:00",
+    "implementation_sha256": "4b3972d32684b692f56b414e78453c3cf428b18776d21404b341ffd871cc7432",
+    "tests_sha256": "bb63b6a3562b45e6924ef52c95ec96d037a4216dea42ae9adae772e5f237f865",
+    "command": ".venv/bin/python -m pytest -q tests/test_mutual_recovery.py",
+    "result": "70 passed in 0.15s",
+    "evidence": "Fake challenge script response aborted and never fulfilled/continued; clean script body persisted with matching SHA, allowed headers, and no Set-Cookie."
+  }
+}

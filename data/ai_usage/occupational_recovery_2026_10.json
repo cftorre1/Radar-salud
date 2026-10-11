@@ -1,0 +1,40 @@
+{
+  "baseline": {
+    "fast": {
+      "attempted": 31,
+      "successful": 31,
+      "failed": 0
+    },
+    "deep": {
+      "attempted": 14,
+      "successful": 14,
+      "failed": 0
+    }
+  },
+  "upstream": {
+    "deep": {
+      "attempted": 14,
+      "successful": 14,
+      "failed": 0
+    },
+    "fast": {
+      "attempted": 31,
+      "successful": 31,
+      "failed": 0
+    }
+  },
+  "isolated_delta": {
+    "fast": {
+      "attempted": 16,
+      "successful": 16,
+      "failed": 0
+    },
+    "deep": {
+      "attempted": 0,
+      "successful": 0,
+      "failed": 0
+    }
+  },
+  "policy": "Unpromoted isolated branch: staging plus its own delta, shared writer lock; no staging/main writes",
+  "phase_fast_limit": 30
+}
