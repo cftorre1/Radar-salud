@@ -18,7 +18,8 @@ CONTROLS = [row for row in json.loads((REAL / 'manifest.json').read_text())['fix
                        'uc-christus-san-carlos-de-apoquindo-suspende-atencion-de-urgencia'))]
 PROJECTIONS = json.loads((Path(__file__).parent / 'fixtures/pulso_expanded_materiality_real/verified_primary_body_projections.json').read_text())['fixtures']
 REPAIRED_PROJECTIONS = ('proposed_clinical_condition_colmed', 'regional_health_power_interruption',
-                        'modular_hospital_transport', 'mapped_multi_provider_flood_damage')
+                        'modular_hospital_transport', 'mapped_multi_provider_flood_damage',
+                        'proposed_reproductive_legislative_progress')
 
 
 def original_raw(entry):
@@ -142,6 +143,15 @@ def test_original_mapped_flood_names_two_affected_clinics_without_asserting_thei
     assert 'suspend' not in entry['body']
 
 
+def test_original_reproductive_bill_is_discussion_started_with_no_adopted_government_position():
+    entry = next(row for row in PROJECTIONS if row['name'] == 'proposed_reproductive_legislative_progress')
+    assert entry['publication_date'] == '2026-08-13'
+    assert 'comisión de Salud del Senado inició la discusión del proyecto de ley' in entry['body']
+    assert 'busca regular la gestación subrogada' in entry['body']
+    assert 'es algo que está en discusión' in entry['body']
+    assert 'en 2025 la experta de la ONU' in entry['body']
+
+
 @pytest.mark.parametrize(('title', 'body'), [
     ('Minsal informa sobre salud de personas mayores', 'Los ELEAM necesitan autorización sanitaria. Las familias visitan a sus parientes.'),
     ('Lista de residencias ELEAM', 'Un directorio comercial ofrece un listado de ELEAM con autorización sanitaria, disponible públicamente.'),
@@ -155,6 +165,8 @@ def test_original_mapped_flood_names_two_affected_clinics_without_asserting_thei
     ('Salud organiza clases', 'Se traslada una sala modular para apoyar las clases de salud; no es un recinto hospitalario.'),
     ('Carabineros monitorea lluvia cerca de clínicas', 'Carabineros realiza monitoreo por dron de viviendas dañadas, mientras las clínicas permanecen sin daño.'),
     ('Salud aborda inundaciones', 'Un estudio describe clínicas inundadas y recintos asistenciales afectados durante un temporal histórico, sin respuesta actual.'),
+    ('Una ministra comenta gestación subrogada', 'La ministra ofrece su opinión sobre gestación subrogada y propone que la comisión de Salud converse el tema algún día.'),
+    ('El Senado debate educación', 'La comisión de educación inició la discusión del proyecto de ley de escuelas. En una entrevista aparte, un médico comenta gestación subrogada.'),
 ])
 def test_narrow_registry_and_care_suspension_rules_do_not_admit_generic_directory_or_unadopted_ideas(title, body):
     assert not beta_sources._material('media', title, body)
