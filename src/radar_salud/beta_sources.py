@@ -89,7 +89,7 @@ class CuratedBetaSourceScout:
             "type": "mutuality",
             "page": "https://ist.cl/noticias/",
             "hosts": ("www.ist.cl", "ist.cl"),
-            "path": r"/[^/]+/?",
+            "path": r"/[a-z0-9][a-z0-9-]*/?",
             "role": "mutuality",
         },
         "pulso_latercera": {

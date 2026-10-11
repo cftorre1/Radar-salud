@@ -14,7 +14,7 @@ from zoneinfo import ZoneInfo
 from .models import RawItem
 from .public_source_pipeline import _date
 
-SOURCES = {"clinicas_achs_salud", "achs_seguro_laboral"}
+SOURCES = {"clinicas_achs_salud", "achs_seguro_laboral", "ist"}
 
 
 class SourceDiscoveryError(RuntimeError):
@@ -47,7 +47,7 @@ This intentionally uses semantic elements, not unverified CSS classes. Missing
 or conflicting publication evidence is fail-closed.
 """
     STOP = ("ultimas publicaciones", "noticias relacionadas", "informacion corporativa",
-            "tambien te puede interesar", "deja una respuesta", "dejar un comentario")
+            "tambien te puede interesar", "deja una respuesta", "dejar un comentario", "que es ist")
     IGNORE = {"script", "style", "nav", "footer", "aside", "noscript"}
 
     def __init__(self):
@@ -167,7 +167,26 @@ def discover_items(scout, html, detail_loader):
     from .beta_sources import _Links
     from urllib.parse import urljoin, urlparse, urlunparse
 
-    links = _Links()
+    class NewsHeadings(_Links):
+        """IST news links occur in article headings, not the main navigation."""
+        def __init__(self):
+            super().__init__()
+            self.heading = False
+            self.ignored = []
+        def handle_starttag(self, tag, attrs):
+            if tag in ("nav", "header", "footer", "aside"):
+                self.ignored.append(tag)
+            if tag in ("h2", "h3") and not self.ignored:
+                self.heading = True
+            if self.heading and not self.ignored:
+                super().handle_starttag(tag, attrs)
+        def handle_endtag(self, tag):
+            super().handle_endtag(tag)
+            if tag in ("h2", "h3"):
+                self.heading = False
+            if self.ignored and tag == self.ignored[-1]:
+                self.ignored.pop()
+    links = NewsHeadings() if scout.slug == "ist" else _Links()
     links.feed(html)
     rows, seen = [], set()
     scout.decisions = []
@@ -177,6 +196,8 @@ def discover_items(scout, html, detail_loader):
         if parsed.scheme != "https" or parsed.netloc not in scout.cfg["hosts"]:
             continue
         if not re.fullmatch(scout.cfg["path"], parsed.path):
+            continue
+        if scout.slug == "ist" and parsed.path.rstrip("/") in ("/noticias", "/contacto", "/historia", "/quienes-somos"):
             continue
         url = urlunparse(parsed._replace(query="", fragment=""))
         if url in seen:
@@ -196,7 +217,10 @@ def discover_items(scout, html, detail_loader):
         if not published or len(title) < 18 or len(body) < 160:
             decision.update(status="pending", reason=evidence if not published else "article_content_unrecognized")
             continue
-        role = market_role(title, body)
+        if (chile_today() - date.fromisoformat(published)).days > 90:
+            decision.update(status="rejected", reason="outside_90_day_horizon")
+            continue
+        role = market_role(title, body) if scout.slug != "ist" else "mutuality"
         expected = scout.cfg["role"]
         if role != expected:
             decision.update(status="rejected", reason="different_market_role", actual_role=role)

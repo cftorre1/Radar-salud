@@ -125,3 +125,29 @@ def test_processing_reuses_scoped_detail_and_rejects_before_llm(monkeypatch):
     monkeypatch.setattr("radar_salud.public_source_pipeline.fetch_html", forbidden)
     monkeypatch.setattr("radar_salud.llm_analysis.analyze_news", forbidden)
     assert process_curated_beta_source(rows[0], {}) is None
+
+
+def test_ist_heading_selectors_skip_history_navigation_and_archive_page_date():
+    html = ('<meta property="article:published_time" content="2016-11-02">'
+            '<nav><a href="/historia/">Historia del IST desde 1957</a></nav>'
+            '<a href="/contacto/">Contáctanos y agenda tu atención</a>'
+            '<article><h2 class="entry-title"><a href="/nueva-cobertura/">Nuevo adherente IST</a></h2></article>')
+    visited = []
+    def load(url):
+        visited.append(url)
+        return detail("IST incorpora a MK Recursos Humanos como adherente", "29/07/2026",
+                      "Se incorpora un nuevo adherente, incorporando a más de 700 trabajadores "
+                      "y trabajadoras. Esta nueva cobertura nacional permite acompañamiento técnico "
+                      "a la empresa y sus trabajadores en el sistema de salud laboral.")
+    rows = CuratedBetaSourceScout("ist").discover_from_html(html, load)
+    assert visited == ["https://ist.cl/nueva-cobertura/"]
+    assert rows[0].event_date == "2026-07-29"
+    assert rows[0].metadata["materiality_reason"] == "quantified_coverage_change"
+
+
+def test_old_ist_article_keeps_historical_date_and_does_not_enter_recent_discovery():
+    scout = CuratedBetaSourceScout("ist")
+    listing = '<h2><a href="/nota-historica/">Una noticia histórica del IST</a></h2>'
+    assert scout.discover_from_html(listing, lambda url: detail("Una noticia histórica del IST", "02/11/2016")) == []
+    assert scout.decisions[0]["event_date"] == "2016-11-02"
+    assert scout.decisions[0]["reason"] == "outside_90_day_horizon"
