@@ -25,7 +25,7 @@ from radar_salud.pending_queue import atomic_json
 from radar_salud.source_scouts import CorporateNewsroomScout, ClinicasChileScout
 from radar_salud.beta_sources import CuratedBetaSourceScout, _ProviderPublication
 from radar_salud.public_source_pipeline import (
-    _BupaArticle, _IndisaArticle, _RedSaludArticle, _VisibleArticle, _date,
+    _BupaArticle, _IndisaArticle, _PfizerArticle, _RedSaludArticle, _VisibleArticle, _date,
 )
 
 SLUGS = ('redsalud', 'bupa_chile', 'indisa', 'red_davila', 'andes_salud',
@@ -114,6 +114,12 @@ def detail_evidence(slug, url, html):
     elif slug=='redsalud':
         a=_RedSaludArticle(url);a.feed(html);a.finish()
         if a.header_date:stamps.append({'kind':'verified_article_header','value':a.header_date,'date':a.header_date})
+    elif slug=='pfizer_chile':
+        a=_PfizerArticle();a.feed(html);a.finish();title=a.title;body=a.body
+        # Some historical Pfizer cards route to a different article. The
+        # component's initial publication field is independent of those cards.
+        stamp=re.match(r'^(\d{2}/\d{2}/20\d{2})(?:\s|$)',body)
+        if stamp:stamps.append({'kind':'verified_component_publication_header','value':stamp.group(1),'date':_date(stamp.group(1))})
     elif slug in CuratedBetaSourceScout.SOURCES:
         a=_ProviderPublication();a.feed(html);stamp,provenance=a.publication()
         if stamp:stamps.append({'kind':provenance,'value':stamp,'date':stamp})
@@ -126,9 +132,10 @@ def detail_evidence(slug, url, html):
 
 
 class Inventory:
-    def __init__(self,slug,as_of,root,limit=240):
+    def __init__(self,slug,as_of,root,limit=240,exhaustive=False):
         self.slug=slug;self.as_of=as_of;self.cutoff=as_of-timedelta(days=90)
         self.root=root;self.limit=limit;self.cache={};self.requests=[];self.items={};self.notes=[];self.archive_index=[]
+        self.exhaustive=exhaustive
         if slug=='clinicas_chile':
             self.scout=ClinicasChileScout();self.page=self.scout.PAGES[0][1];self.pattern=r'/(?:noticias/)?[^/]+/?'
         elif slug in CorporateNewsroomScout.SOURCES:
@@ -276,11 +283,11 @@ class Inventory:
                     # sitemap articles while current items remain unresolved.
                     if self.cms_complete and canonical(target) not in self.items:continue
                     if self.slug=='clinicas_chile' and canonical(target) not in self.items:continue
-                    if self.slug=='red_davila' and canonical(target) not in self.items:continue
+                    if self.slug=='red_davila' and not self.exhaustive and canonical(target) not in self.items:continue
                     self.add(target,'',url)
                     item=self.items[canonical(target)]
                     if children.get('lastmod'):item['sitemap_lastmod']=children['lastmod']
-                elif local=='url' and target and self.slug=='clinicas_chile' and 'knowledgebase' in target:
+                elif local=='url' and target and self.slug=='clinicas_chile' and '/knowledgebase/' in target:
                     self.add(target,'',url,'Library entry')
         self.xml_pages_checked=len(visited)
 
@@ -317,6 +324,10 @@ class Inventory:
             if not html:
                 item['access_error']=next((x for x in reversed(self.requests) if x['url']==item['url']),{'error':'request_limit_reached'});continue
             detail=detail_evidence(self.slug,item['url'],html)
+            if self.slug=='pfizer_chile' and item['title'] and detail['detail_title'] and item['title'].casefold()!=detail['detail_title'].casefold():
+                item['listing_title_before_detail_verification']=item['title']
+                item['date_stamps']=[x for x in item['date_stamps'] if x['kind']!='listing_date']
+                item['listing_identity_mismatch']=True
             item['date_stamps'].extend(detail.pop('date_stamps'));item.update(detail)
             if item.get('detail_title'):item['title']=item['detail_title']
             stamps={x['date'] for x in item['date_stamps'] if x.get('date')}
@@ -349,10 +360,10 @@ class Inventory:
 
 
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument('--source',choices=SLUGS);ap.add_argument('--as-of',default='2026-10-11');ap.add_argument('--request-limit',type=int,default=240)
+    ap=argparse.ArgumentParser();ap.add_argument('--source',choices=SLUGS);ap.add_argument('--as-of',default='2026-10-11');ap.add_argument('--request-limit',type=int,default=240);ap.add_argument('--exhaustive',action='store_true')
     args=ap.parse_args();slugs=[args.source] if args.source else SLUGS
     with ThreadPoolExecutor(max_workers=4) as pool:
-        futures=[pool.submit(Inventory(s,date.fromisoformat(args.as_of),Path('.'),args.request_limit).run) for s in slugs]
+        futures=[pool.submit(Inventory(s,date.fromisoformat(args.as_of),Path('.'),args.request_limit,args.exhaustive).run) for s in slugs]
         for future in futures:future.result()
 
 

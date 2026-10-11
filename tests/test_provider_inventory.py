@@ -25,3 +25,12 @@ def test_current_jsonld_publication_is_associated_by_url():
     row=inventory.detail_evidence('redsalud','https://www.redsalud.cl/noticias/current',html)
     assert row['date_stamps'][0]['date']=='2026-09-04'
     assert row['article_schemas'][0]['dateModified']=='2026-09-21'
+
+
+def test_pfizer_component_header_is_distinct_from_body_dates():
+    def html(body):return '<helix-core-heading variant="h1">Actual article</helix-core-heading><helix-core-content>'+body+'</helix-core-content>'
+    dated=inventory.detail_evidence('pfizer_chile','https://www.pfizer.cl/news/actual',html('17/06/2021 A vaccine was introduced.'))
+    assert dated['date_stamps'][0]['date']=='2021-06-17'
+    assert dated['detail_title']=='Actual article'
+    undated=inventory.detail_evidence('pfizer_chile','https://www.pfizer.cl/news/actual',html('The target is 17/06/2027.'))
+    assert undated['date_stamps']==[]

@@ -4,6 +4,8 @@ from html.parser import HTMLParser
 import json
 from pathlib import Path
 import re
+import shutil
+import subprocess
 from urllib.parse import urljoin,urlparse
 
 from provider_inventory import Inventory,Metadata,SLUGS
@@ -70,6 +72,26 @@ def main():
             text=inv.fetch('/?feed=rss2&post_type=kbe_knowledgebase','library_feed_diagnostic')
             if text:rows.append({'url':inv.origin+'/?feed=rss2&post_type=kbe_knowledgebase','feed_publications':re.findall(r'<pubDate>(.*?)</pubDate>',text),'feed_links':re.findall(r'<link>(.*?)</link>',text)})
         out['sources'][slug]={'requests':inv.requests,'metadata':rows}
+        if slug=='indisa':
+            chrome=shutil.which('google-chrome') or shutil.which('chromium')
+            browser=[]
+            for target in (inv.page,'https://www.indisa.cl/blog/clinica-indisa-fortalece-su-propuesta-de-atencion-preferente-junto-a-isapre-esencial'):
+                row={'url':target,'method':'ordinary unauthenticated native Chrome navigation; no challenge handling','http_status':'not_observed_by_dump_dom'}
+                if not chrome:row['error']='native_chrome_unavailable'
+                else:
+                    try:
+                        result=subprocess.run([chrome,'--headless','--disable-gpu','--no-sandbox',
+                            '--user-data-dir='+str(root.resolve()/'work/provider_inventory/browser-profile'),
+                            '--virtual-time-budget=6000','--dump-dom',target],capture_output=True,text=True,timeout=25)
+                        from radar_salud.public_source_pipeline import _IndisaArticle
+                        article=_IndisaArticle();article.feed(result.stdout);article.finish()
+                        row.update(exit_code=result.returncode,dom_sha256=__import__('hashlib').sha256(result.stdout.encode()).hexdigest(),
+                            original_article_title=article.title,original_publication_date=article.event_date(),
+                            challenge_detected=bool(re.search(r'Just a moment|cf-chl-|captcha|Access denied',result.stdout,re.I)),
+                            stderr_kind='TLS_or_browser_error' if re.search(r'ERR_|SSL|certificate',result.stderr) else None)
+                    except Exception as exc:row['error']=type(exc).__name__
+                browser.append(row)
+            out['sources'][slug]['ordinary_browser']=browser
     atomic_json('data/audits/provider_original_diagnostics_2026_10_11.json',out)
     print('PROVIDER_DIAGNOSTICS_JSON '+json.dumps(out,ensure_ascii=False,separators=(',',':')))
 
