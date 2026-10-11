@@ -1,0 +1,114 @@
+{
+  "at": "2026-10-11T04:41:29.067249+00:00",
+  "candidate_sha": "84576ade99300d8651734ff470bcaabe8ebe878d",
+  "target": "staging only; draft PR11",
+  "focused_tests": {
+    "outcome": "PASS",
+    "passed": 34,
+    "publisher_and_model_mocked_in_replay": true
+  },
+  "full_qa": {
+    "run": "https://github.com/cftorre1/Radar-salud/actions/runs/38111771457",
+    "tested_merge_sha": "095b646271146596c53e96159db1c07da7b29d35",
+    "outcome": "FAIL",
+    "passed": 280,
+    "failed": 1,
+    "skipped": 1,
+    "failure": "test_web_snapshot.py:289 expected >=12 Normativa; baseline has11; not repaired within DF scope",
+    "staging_job": "skipped",
+    "reviewer_job": "skipped"
+  },
+  "local_recurated_reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "e703faf638c9ef0b9708b242e1bbceed95188e24",
+    "reviewed_at": "2026-10-11T04:34:55.107261+00:00",
+    "findings": [
+      {
+        "category": "statistics",
+        "code": "invalid_statistical_table",
+        "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+        "detail": "Every visible statistical row must map to the declared columns",
+        "severity": "critical"
+      },
+      {
+        "category": "statistics",
+        "code": "methodology_not_collapsed",
+        "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+        "detail": "Technical traceability must be available in a collapsed layer",
+        "severity": "critical"
+      },
+      {
+        "category": "statistics",
+        "code": "missing_incremental_value_gate",
+        "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+        "detail": "Visible blocks need an explicit incremental value decision",
+        "severity": "critical"
+      },
+      {
+        "category": "statistics",
+        "code": "generic_why_required",
+        "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+        "detail": "Statistical cards must allow omission of generic impact copy",
+        "severity": "critical"
+      },
+      {
+        "category": "statistics",
+        "code": "untraceable_statistical_evidence",
+        "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+        "detail": "Data evidence must link to an official source",
+        "severity": "critical"
+      },
+      {
+        "category": "statistics",
+        "code": "bulletin_coverage",
+        "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+        "detail": "June 2026 audit must include accreditation, mediation, complaints and RNPI",
+        "severity": "critical"
+      },
+      {
+        "category": "statistics",
+        "code": "bulletin_missing_pdf",
+        "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+        "detail": "All four official June 2026 bulletin PDFs must be traceable",
+        "severity": "critical"
+      },
+      {
+        "category": "statistics",
+        "code": "bulletin_stock_flow_confusion",
+        "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+        "detail": "Stock, cumulative flow and monthly flow must be labelled separately",
+        "severity": "critical"
+      }
+    ],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": false,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "node_tests": "PASS",
+  "browser_qa": {
+    "outcome": "BLOCKED",
+    "reason": "Chromium absent; download returns403 Domain forbidden from proxy",
+    "product_test_executions": 0,
+    "launch_failures": 46
+  },
+  "runtime1": {
+    "run": "https://github.com/cftorre1/Radar-salud/actions/runs/38111768459",
+    "originals_ok": 214,
+    "originals_failed": 1,
+    "recovered_records": 163,
+    "df_published": 2,
+    "fast_attempted": 14,
+    "fast_successful": 14,
+    "checkpoint": "failed absent data/telemetry; original artifacts preserved; recovering in next run",
+    "artifact_id": 11691902368
+  },
+  "next_action": "Inspect restored real runtime on isolated branch, review originals and decisions, complete 30/90 boundaries; full candidate blocked by independent non-DF QA/statistical defects."
+}
