@@ -33,6 +33,13 @@ def test_primary_deis_notice_binds_june_release_to_requestable_pdf():
     assert ' ' not in latest.url
     assert verified_publication(latest)
     assert len(items) == 12
+    scout = DeisDocumentScout()
+    scout.discover_from_html(captured('https://deis.minsal.cl/centrofic/'))
+    excluded = scout.diagnostics['excluded_documents']
+    assert all(row['url'].startswith('https://') and row['listing_sha256'] for row in excluded)
+    references = scout.diagnostics['reference_only_resources']
+    assert any('ENO' in row['title'] for row in references)
+    assert all(row['reason'] == 'non_pdf_reference_outside_dated_document_lane' for row in references)
 
 
 def test_primary_deis_homepage_declares_all_public_catalogs_and_ajax_identity():

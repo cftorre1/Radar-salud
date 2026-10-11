@@ -131,40 +131,64 @@ class DeisDocumentScout:
             "rejected_missing_date": 0, "rejected_invalid_date": 0,
             "rejected_ambiguous_date": 0, "rejected_editorial_only": 0,
             "rejected_unproven_update": 0, "document_verification": "pending_pipeline",
+            "excluded_documents": [],
+            "reference_only_resources": [],
         }
         digest = hashlib.sha256(html.encode("utf-8")).hexdigest()
         out = []
         seen = set()
         for block in parser.blocks:
+            for href, title in block['links']:
+                reference = urljoin(page, href)
+                if (href and official_deis_url(reference)
+                        and urlsplit(reference).path.lower().endswith(('.xlsx', '.xls', '.zip'))):
+                    self.diagnostics['reference_only_resources'].append({
+                        'url': normalized_official_url(reference, self.SOURCE_SLUG),
+                        'title': title, 'listing_url': page, 'publication_date': None,
+                        'reason': 'non_pdf_reference_outside_dated_document_lane',
+                        'listing_notice': ' '.join(' '.join(block['parts']).split())[:600]})
             links = [(urljoin(page, href), title) for href, title in block["links"]
                      if href and len(title) >= 12 and official_deis_url(urljoin(page, href), pdf=True)]
             if len({url for url, _ in links}) != 1:
                 continue
             self.diagnostics["document_blocks"] += 1
             text = " ".join(" ".join(block["parts"]).split())
+            def reject(reason):
+                self.diagnostics['excluded_documents'].append({
+                    'url': normalized_official_url(links[0][0], self.SOURCE_SLUG),
+                    'title': links[0][1], 'listing_url': page,
+                    'reason': reason, 'publication_date': None,
+                    'listing_notice': text[:600], 'listing_sha256': digest,
+                    'listing_sha256_kind': 'utf8_decoded_listing'})
             if _EDITORIAL.search(text):
                 self.diagnostics["rejected_editorial_only"] += 1
+                reject('editorial_only_without_material_change')
                 continue
             notices = list(_NOTICE.finditer(text))
             published = [notice for notice in notices if notice["label"].lower().startswith("publicad")]
             selected = published or notices
             if not selected:
                 self.diagnostics["rejected_missing_date"] += 1
+                reject('missing_explicit_publication_date')
                 continue
             if len({(m["year"], m["month"], m["day"]) for m in selected}) != 1:
                 self.diagnostics["rejected_ambiguous_date"] += 1
+                reject('ambiguous_publication_dates')
                 continue
             if not published and not _SUBSTANTIVE_UPDATE.search(text):
                 self.diagnostics["rejected_unproven_update"] += 1
+                reject('update_without_proven_material_change')
                 continue
             notice = selected[0]
             try:
                 release_date = date(int(notice["year"]), int(notice["month"]), int(notice["day"]))
             except ValueError:
                 self.diagnostics["rejected_invalid_date"] += 1
+                reject('invalid_publication_date')
                 continue
             if release_date > today:
                 self.diagnostics["rejected_invalid_date"] += 1
+                reject('future_publication_date')
                 continue
             url, title = links[0]
             url = normalized_official_url(url, self.SOURCE_SLUG)
