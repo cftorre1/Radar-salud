@@ -37,3 +37,11 @@ Current evidence and integration boundary:
 
 Next action:
 Compare the dated native ACHS detail header against the second Actions capture, then add a raw-capture regression and rerun scoped and integration tests. Parent handles pagination, source_health, legacy fixture migration and independent Reviewer acceptance.
+
+Follow-up timezone checkpoint:
+- Verified IST API local publication 2026-10-05T21:22:30 corresponds to GMT 2026-10-06T00:22:30; a timezone-aware publication instant must use the Chile calendar day.
+- ISO-aware fields now convert to America/Santiago before conflict and future-date checks. Plain dates and naive publisher timestamps retain their declared calendar day.
+- Regressions cover UTC midnight rollover, matching local/UTC fields, and future-date validation across the Chile boundary.
+- PYTHONPATH=src .venv/bin/python -m pytest -q tests/test_occupational_integrity.py tests/test_occupational_inventory.py
+- 78 passed in 0.25s.
+- Parent confirmed processing guard reparses evidence through shared valid_date, preserving normalization consistency.

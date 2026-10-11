@@ -59,6 +59,21 @@ def test_calendar_and_explicit_audit_day(value, expected):
     assert valid_date(value, today=TODAY) == expected
 
 
+def test_timezone_publication_instant_uses_chile_day_including_future_boundary():
+    assert valid_date("2026-10-06T00:22:30Z", today=TODAY) == "2026-10-05"
+    assert valid_date("2026-10-05T21:22:30-03:00", today=TODAY) == "2026-10-05"
+    assert valid_date("2026-10-12T00:22:30Z", today=TODAY) == "2026-10-11"
+    assert valid_date("2026-10-12T04:22:30Z", today=TODAY) is None
+
+
+def test_local_and_utc_publication_fields_agree_on_chile_day():
+    html = ('<meta property="article:published_time" content="2026-10-06T00:22:30Z">'
+            f'<h1>{GUIDE}</h1><time class="published" datetime="2026-10-05T21:22:30-03:00"></time><p>{BODY}</p>')
+    parser = parse(html)
+    assert parser.result(today=TODAY)[1] == "2026-10-05"
+    assert parser.publication_evidence(today=TODAY)["value"] == "2026-10-06T00:22:30Z"
+
+
 @pytest.mark.parametrize("field", [
     '<div>24/09/2026</div>', '<time datetime="2026-09-24">24/09/2026</time>',
     '<time class="unpublished" datetime="2026-09-24">24/09/2026</time>',

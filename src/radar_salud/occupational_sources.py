@@ -73,7 +73,11 @@ def valid_date(value, *, today=None):
     value = value.strip()
     try:
         if re.fullmatch(r"\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:\d{2})?)?", value):
-            parsed = datetime.fromisoformat(value.replace("Z", "+00:00")).date() if "T" in value else date.fromisoformat(value)
+            if "T" in value:
+                instant = datetime.fromisoformat(value.replace("Z", "+00:00"))
+                parsed = (instant.astimezone(ZoneInfo("America/Santiago")) if instant.tzinfo else instant).date()
+            else:
+                parsed = date.fromisoformat(value)
         else:
             numbered = re.fullmatch(r"(\d{1,2})([/-])(\d{1,2})\2(\d{4})", value)
             if numbered:
