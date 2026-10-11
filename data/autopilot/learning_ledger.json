@@ -506,11 +506,53 @@
     "class": "rolling_population_and_inventory_contract",
     "finding": "Historical twelve-act normative cohort ages out; an inventory-only bulletin cannot claim numerical table analysis. DF cumulative rejections do not describe the latest poll.",
     "specific_fix": "Frozen original cohort retains threshold twelve; eligible-current-set checks and explicit inventory contract preserve deep numerical checks. Source health separates current poll and cumulative stock.",
-    "status": "validated_in_staging_for_df; fiscalization_candidate_in_review",
+    "status": "superseded_statistical_interpretation; normative_and_poll_fix_valid",
     "proof_status": "VERIFIED",
     "evidence": [
       "data/audits/integration_20261011/baseline-root-cause.json",
       "data/audits/integration_20261011/df/receipt.json"
+    ],
+    "source_closed": false,
+    "correction": "PR17 primary PDF review proves all eight findings were export/presentation defects, not obsolete expectations. Restore original strict Reviewer; persist reviewed analysis. Preserve this record as historical reasoning."
+  },
+  {
+    "id": "staging_qa_obsolete_inventory_and_ephemeral_analysis_2026_10_11",
+    "at": "2026-10-11T13:14:40.423159+00:00",
+    "scope": "Independent Staging QA Gatekeeper; no source collector changes",
+    "trigger": "User had to separate inherited QA/Reviewer failures blocking multiple unrelated source PRs.",
+    "why_missed": "Snapshot tests treated12reviewed normative acts and3July statistical releases as a permanent live inventory; exports consumed an analysis file generated only in CI and not retained in clean checkouts. Source-specific tests could pass while global gates stalled; new normative rows could mask the wrong count.",
+    "specific_fix": "Verify every eligible reviewed identity and preserve expired history, test90/91boundaries, version four-primary-PDF bulletin analysis, fail on malformed/identity-changing patches, build only eligible release inputs and keep a historical-clock browser fixture. Restore original strict Reviewer after concurrent inventory exemption; negative regression reproduces every inherited finding regardless of value-level label.",
+    "preventive_controls": [
+      "deterministic_test",
+      "browser_qa_assertion",
+      "data_validation_rule"
+    ],
+    "evidence": [
+      "tests/test_web_snapshot.py",
+      "tests/test_statistics_reviewer.py",
+      "tests/browser/statistical-contract.spec.cjs",
+      "config/statistical_analysis_verified_v1.json",
+      "data/audits/staging_qa_gates_2026_10_11.json",
+      "https://github.com/cftorre1/Radar-salud/actions/runs/38141940100",
+      "https://github.com/cftorre1/Radar-salud/actions/runs/38143298390"
+    ],
+    "status": "validated_native_ci_ready_for_integration",
+    "owner_time_saved": "Independent source PRs no longer need owner intervention to diagnose stale fixed-volume gates; no editorial quota or Reviewer weakening.",
+    "validated_at": "2026-10-11T13:31:36.889931+00:00",
+    "validated_implementation_sha": "8339640f43309f908f69edae43b1b34bbbf23d24",
+    "next_check": "Integration Commander post-merge QA; revalidate independent source PRs without inheriting obsolete inventories."
+  },
+  {
+    "id": "integration_strict_statistical_baseline_correction_20261011",
+    "at": "2026-10-11T13:43:00Z",
+    "class": "reviewer_strength_and_durable_primary_analysis",
+    "finding": "An inventory interpretation bypassed existing table/coverage/type gates when the derived analysis file was absent from a clean checkout.",
+    "specific_fix": "Incorporate PR17 with four reviewed primary PDFs, canonical verified analysis and original byte-identical strict Reviewer. Malformed analysis and identity/date patches fail explicitly.",
+    "status": "candidate_under_hosted_validation",
+    "proof_status": "PRIMARY_REVIEW_RECEIVED",
+    "evidence": [
+      "data/audits/staging_qa_gates_2026_10_11.json",
+      "config/statistical_analysis_verified_v1.json"
     ],
     "source_closed": false
   }

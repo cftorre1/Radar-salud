@@ -4669,6 +4669,43 @@
       "last_progress_at": "2026-10-11",
       "current_subfront": "expand_discovery_beyond_11_sample",
       "next_action": "Ampliar superficies y paginación, luego reconciliar contra set externo reciente antes de considerar PR #10 integrable."
+    },
+    {
+      "id": "staging_qa_gatekeeper_2026_10_11",
+      "status": "READY_FOR_INTEGRATION",
+      "priority": "critical",
+      "owner": "Independent Staging QA Gatekeeper",
+      "source": "Dirección / explicit user request",
+      "objective": "Repair inherited normative/statistical QA causes without lowering gates or mixing source repair PRs.",
+      "depends_on": [],
+      "approved_at": "2026-10-11T12:52:18.984015+00:00",
+      "started_at": "2026-10-11T12:52:18.984015+00:00",
+      "last_progress_at": "2026-10-11T13:31:36.889931+00:00",
+      "current_subfront": "complete_handoff_to_integration_commander",
+      "branch": "codex/staging-qa-gates-20261011",
+      "base_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
+      "next_action": "Integration Commander: merge complete PR17 into current staging; run canonical QA after merge; revalidate remaining source PRs against that staging. No main/production promotion and no source issue closure.",
+      "evidence": [
+        "data/audits/staging_qa_gates_2026_10_11.json",
+        "config/statistical_analysis_verified_v1.json",
+        "docs/STAGING_QA_GATEKEEPER_2026_10_11.md",
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38143298390"
+      ],
+      "human_decision_required": false,
+      "completed": [
+        "Normative rolling-window gate fixed with primary date evidence;267PythonPASS/1explicitSKIP;2browser normativePASS",
+        "Eight actual statistical findings resolved by primary-PDF evidence/durable export input;270PythonPASS/1SKIP;36focusedPASS;Reviewer0findings;48other feed records preserved",
+        "Canonical local48browser/270Python/41Node/Reviewer0findings PASS; initial CI tests-staging-reviewerPASS; final historical regression preserved",
+        "Merged current staging916fe2d in isolated branch; concurrent governance and72unrelatedfeedrows preserved;312Python/1skip+41NodePASS; original strict Reviewer retained.",
+        "Native exact-head CI38143298390PASS:312Python/1justifiedSKIP,41Node,48desktop/mobile,strictReviewer0findings; all8resolved with primary evidence."
+      ],
+      "pr": "https://github.com/cftorre1/Radar-salud/pull/17",
+      "ready_for_integration": true,
+      "validated_implementation_sha": "8339640f43309f908f69edae43b1b34bbbf23d24",
+      "integration_base_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+      "ci": "https://github.com/cftorre1/Radar-salud/actions/runs/38143298390",
+      "failing": [],
+      "blocked_by": []
     }
   ],
   "execution_policy": {

@@ -31,10 +31,9 @@ def review_statistics(signals):
         table = signal.get("summary_table") or {}
         columns = table.get("columns") or []
         rows = table.get("rows") or []
-        inventory = signal.get("statistical_value_level") == "publication_inventory"
         if urlparse(url).scheme != "https" or urlparse(url).netloc != OFFICIAL_HOST:
             fail("nonofficial_statistical_source", url, "Primary statistical page must use HTTPS on Superintendencia de Salud")
-        if not inventory and (not rows or not columns or any(len(row.get("cells") or []) != len(columns) for row in rows)):
+        if not rows or not columns or any(len(row.get("cells") or []) != len(columns) for row in rows):
             fail("invalid_statistical_table", url, "Every visible statistical row must map to the declared columns")
         if signal.get("methodology_visibility") != "collapsed":
             fail("methodology_not_collapsed", url, "Technical traceability must be available in a collapsed layer")
@@ -45,27 +44,6 @@ def review_statistics(signals):
         if not signal.get("card_why_optional"):
             fail("generic_why_required", url, "Statistical cards must allow omission of generic impact copy")
         evidence = signal.get("data_insight_evidence") or []
-        if inventory:
-            # Inventory is an explicitly supported lower value level. It must
-            # not claim a table, calculations or numerical findings it lacks.
-            if table or signal.get("data_insights") or evidence:
-                fail("inventory_claims_analysis", url, "An inventory cannot contain statistical findings or an unvalidated table")
-            documents = signal.get("source_documents") or []
-            if not documents or any(urlparse(item.get("url", "")).scheme != "https" or urlparse(item.get("url", "")).netloc != OFFICIAL_HOST for item in documents):
-                fail("untraceable_statistical_inventory", url, "Inventory must expose official HTTPS document links")
-            method = signal.get("statistical_methodology") or {}
-            if method.get("scope") != "document_inventory_only" or method.get("analysis_status") != "not_performed":
-                fail("inventory_analysis_status", url, "Inventory must declare that no statistical analysis has been performed")
-            if signal.get("card_why"):
-                fail("generic_inventory_impact", url, "Do not substitute generic impact copy for an absent statistical finding")
-            if family == "bulletin" and not all(any(str(item.get("url", "")).endswith(name) for item in documents) for name in (
-                "boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf",
-                "boletin-n2-2026-mediacion-enero-junio-2026.pdf",
-                "boletin-n2-2026-reclamos-enero-junio-2026.pdf",
-                "boletin-n2-2026-rnpi-enero-junio-2026.pdf",
-            )):
-                fail("bulletin_missing_pdf", url, "The four declared bulletin topics need their matching official PDFs")
-            continue
         if not evidence or any(urlparse(item.get("source_url", "")).netloc != OFFICIAL_HOST for item in evidence):
             fail("untraceable_statistical_evidence", url, "Data evidence must link to an official source")
 
