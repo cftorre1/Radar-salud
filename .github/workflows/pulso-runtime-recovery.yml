@@ -85,6 +85,7 @@ jobs:
           phase=json.load(open('.github/run-pulso-runtime-now'))['phase']
           if phase=='process':
               subprocess.run([sys.executable, 'scripts/export_web_snapshot.py', '--input', 'data/history/superintendencia_signals.json', '--offline'], check=True)
+              subprocess.run([sys.executable, 'scripts/product_report.py'], check=True)
               subprocess.run([sys.executable, 'scripts/audit_pulso_runtime.py', '--report-only'], check=True)
           PY
       - name: Independently verify actual original coverage and exact editorial outcomes
@@ -110,6 +111,9 @@ jobs:
           if test -f data/audits/pulso_directed_discovery_qa_2026_10_11.json || test -f data/audits/pulso_directed_processing_qa_2026_10_11.json; then git add 'data/audits/pulso_directed_*_qa_2026_10_11.json'; fi
           if test -f web/data/radar_today.json; then git add web/data/radar_today.json; fi
           if test -f web/data/source_health.json; then git add web/data/source_health.json; fi
+          if test -f web/data/product.json; then git add web/data/product.json; fi
+          if test -f web/data/free_value.json; then git add web/data/free_value.json; fi
+          if test -f web/data/excel_diagnostics.csv; then git add web/data/excel_diagnostics.csv; fi
           if test -f tests/fixtures/pulso_runtime_real/manifest.json; then git add tests/fixtures/pulso_runtime_real; fi
           git diff --cached --quiet || git commit -m "audit(pulso): preserve real core inventory and exact outcomes [skip ci]"
           git fetch origin codex/b-pulso-runtime-20261011
@@ -130,5 +134,7 @@ jobs:
             data/history/superintendencia_signals.json
             web/data/radar_today.json
             web/data/source_health.json
+            web/data/product.json
+            web/data/free_value.json
             tests/fixtures/pulso_runtime_real/
           if-no-files-found: error
