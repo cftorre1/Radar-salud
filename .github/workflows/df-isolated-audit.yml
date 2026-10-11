@@ -1,0 +1,109 @@
+name: DF isolated runtime reconciliation
+on:
+  push:
+    branches: [codex/df-end-to-end-20261011]
+    paths: ['.github/run-df-audit-now']
+permissions:
+  contents: write
+  issues: write
+  actions: read
+concurrency:
+  group: alicanto-staging-writer
+  cancel-in-progress: false
+jobs:
+  df:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      RADAR_FAST_MODEL: gpt-5.6-luna
+      RADAR_DEEP_MODEL: gpt-5.6-terra
+      RADAR_DEEP_PER_RUN: 15
+      RADAR_FAST_PER_RUN: 120
+      RADAR_DEEP_PER_MONTH: 180
+      RADAR_FAST_PER_MONTH: 1500
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read current staging baseline for differential review
+        run: git fetch --depth=1 origin +refs/heads/staging:refs/remotes/origin/staging
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest
+      - uses: actions/download-artifact@v4
+        with:
+          name: df-originals-d68d444e04b43e6a08de9be31f2f04983d40f41f
+          run-id: 38111768459
+          github-token: ${{ github.token }}
+          path: work/previous-df-runtime
+      - name: Restore first paid checkpoint without duplicate model calls
+        run: python scripts/restore_df_runtime_artifact.py work/previous-df-runtime
+      - uses: actions/download-artifact@v4
+        with:
+          name: df-originals-aed91cd225e3db120073e6dc2a6bbf77cde183bb
+          run-id: 38118591782
+          github-token: ${{ github.token }}
+          path: work/latest-df-runtime
+      - name: Reuse latest hashed originals without replaying state or paid decisions
+        run: python -c "import shutil; shutil.copytree('work/latest-df-runtime/work/df-originals', 'work/df-originals', dirs_exist_ok=True)"
+      - name: Assert exclusive isolated branch
+        run: test "$GITHUB_REF" = refs/heads/codex/df-end-to-end-20261011
+      - name: DF regressions
+        run: python -m pytest -q tests/test_df_recovery.py tests/test_press_pipeline.py tests/test_autopilot.py tests/test_live_evidence_replay.py tests/test_source_health_facets.py tests/test_state_persistence.py
+      - name: Targeted integration debt and independent publisher controls
+        run: timeout --signal=TERM 8m python scripts/audit_df_integration.py --capture-controls --capture-publications --resolve
+      - name: Actual Daily DF runtime with the repaired discovery surfaces
+        run: RADAR_ROOT="$PWD" timeout --signal=TERM 8m python -m radar_salud.engine_cli --source diario_financiero --limit 30
+      - name: Align recorded editorial outcomes without new model calls
+        run: python scripts/resolve_df_editorial_audit.py
+      - name: Refresh matrix after editorial review, preserving runtime provenance
+        run: python scripts/reconcile_df.py --update-matrix-only
+      - name: Rebuild candidate feed offline
+        run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json --offline
+      - name: Reaudit accepted publications and final debt states
+        run: python scripts/audit_df_integration.py --resolve
+      - name: Preserve isolated checkpoint and issue evidence
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$GITHUB_REF" = refs/heads/codex/df-end-to-end-20261011
+          python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+          files=sorted(Path('data/audits').glob('df_reconciliation_*.json'))
+          report=json.loads(files[-1].read_text()) if files else {}
+          path=Path('config/orchestrator_queue.json');queue=json.loads(path.read_text())
+          df=next(t for t in queue['tasks'] if t['id']=='source_repair_media_lane_2026_10_11')['df_execution']
+          url=f"https://github.com/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{os.environ['GITHUB_RUN_ID']}"
+          df.update(last_progress_at=datetime.now(timezone.utc).isoformat(),current_subfront='remote_runtime_checkpoint_requires_review',
+                    runtime_run=url,runtime_artifact=str(files[-1]) if files else None,
+                    runtime_counts=report.get('queue_counts'),next_action=report.get('next_action','Inspect failed workflow before declaring runtime evidence.'))
+          path.write_text(json.dumps(queue,ensure_ascii=False,indent=2)+'\n')
+          Path('work').mkdir(exist_ok=True)
+          body=f"Codex A · checkpoint runtime DF aislado: {url}\n\nOriginales OK: {report.get('originals_ok','unavailable')}; fallos: {report.get('originals_failed','unavailable')}; registros con recuperación: {report.get('recovered_records','unavailable')}. Cola: {report.get('queue_counts','unavailable')}. Artefacto: {df.get('runtime_artifact')}.\n\nEngine ejecutado: {report.get('processing',{}).get('engine_executed',False)}. Captura: {report.get('mode')}; un replay no acredita nuevo polling. Se mantienen los guardrails existentes. No declarar PASS por workflow verde: reconciliación 30/90 e independencia editorial siguen abiertas hasta revisar originales y cada omisión. Sólo se escribe la rama aislada; main/staging/producción no se actualizan. Siguiente acción: {df['next_action']}"
+          Path('work/df-runtime-comment.md').write_text(body)
+          PY
+          git config user.name alicanto-salud-bot
+          git config user.email alicanto-salud-bot@users.noreply.github.com
+          git add config/orchestrator_queue.json data/audits/df_*.json data/state data/history data/source_health.json data/ai_usage web/data
+          git add data/audits/df_runtime_restoration_2026_10_11.json
+          git add data/audits/df_original_capture_2026_10_11.json
+          if test -f tests/fixtures/df_original_manifest.json; then git add tests/fixtures/df_*; fi
+          git diff --cached --quiet || git commit -m "audit(df): preserve isolated runtime originals and outcomes [skip ci]"
+          git push origin HEAD:codex/df-end-to-end-20261011
+          gh issue comment 5 --repo cftorre1/Radar-salud --body-file work/df-runtime-comment.md
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: df-originals-${{ github.sha }}
+          path: |
+            work/df-originals/
+            data/audits/df_reconciliation_*.json
+            data/state/
+            data/source_health.json
+            data/history/
+            data/ai_usage/
+            config/orchestrator_queue.json
+            web/data/

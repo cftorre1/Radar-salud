@@ -31,8 +31,16 @@ def lane(raw, now, last_discovered_at=None):
         return "BACKFILL"
     try:
         published = datetime.fromisoformat(raw.event_date[:10]).date()
-        watermark = datetime.fromisoformat(last_discovered_at.replace("Z", "+00:00")).date()
-        return "LIVE" if watermark <= published <= now.date() and (now.date() - published).days <= 7 else "BACKFILL"
+        stamp = datetime.fromisoformat(last_discovered_at.replace("Z", "+00:00"))
+        current_day=now.date()
+        if raw.source_slug=="diario_financiero":
+            from zoneinfo import ZoneInfo
+            # DF publishes Chile calendar days. A UTC midnight watermark must
+            # not turn a still-current Chile article into historical backfill.
+            if stamp.tzinfo:stamp=stamp.astimezone(ZoneInfo("America/Santiago"))
+            if now.tzinfo:current_day=now.astimezone(ZoneInfo("America/Santiago")).date()
+        watermark = stamp.date()
+        return "LIVE" if watermark <= published <= current_day and (current_day - published).days <= 7 else "BACKFILL"
     except (TypeError, ValueError):
         return "BACKFILL"
 
@@ -53,26 +61,36 @@ class PendingQueue:
     def save(self):
         atomic_json(self.path, self.items)
 
-    def discover(self, source, items, seen=(), now=None, last_discovered_at=None):
+    def discover(self, source, items, seen=(), now=None, last_discovered_at=None, published_urls=()):
         now = now or now_utc()
         added = 0
         for raw in items:
             key = fingerprint(raw)
+            if source == "diario_financiero":
+                from .df_recovery import reconcile_existing
+                if reconcile_existing(self, raw, now, last_discovered_at, published_urls):
+                    continue
             if key in self.items or key in seen:
                 continue
             item_lane = lane(raw, now, last_discovered_at)
             archived = item_lane == "BACKFILL" and beyond_backfill_horizon(raw, now)
+            already_published=False
+            if source=="diario_financiero":
+                from .df_article import article_url
+                already_published=article_url(raw.url) in {article_url(url) for url in published_urls}
             self.items[key] = dict(raw=asdict(raw), source=source, lane=item_lane,
-                status="archived" if archived else "pending", detected_at=now.isoformat(),
-                attempts=0, reason="outside_90_day_backfill" if archived else None)
+                status="superseded" if already_published else "archived" if archived else "pending", detected_at=now.isoformat(),
+                attempts=0, reason="already_published_in_history" if already_published else "outside_90_day_backfill" if archived else None,
+                classification_watermark=last_discovered_at)
             added += 1
         self.save()
         return added
 
-    def enforce_backfill_horizon(self, now=None):
+    def enforce_backfill_horizon(self, now=None, sources=None):
         now = now or now_utc()
         changed = 0
         for item in self.items.values():
+            if sources is not None and item.get("source") not in sources:continue
             if item.get("lane") == "BACKFILL" and item.get("status") in ("pending", "retry", "processing"):
                 raw = item.get("raw", {})
                 try:

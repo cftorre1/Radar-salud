@@ -2,7 +2,7 @@
   "at": "2026-10-11T12:52:18.984015+00:00",
   "base_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
   "branch": "codex/staging-qa-gates-20261011",
-  "status": "LOCAL_PASS_FINAL_CI_PENDING",
+  "status": "RECONCILED_STAGING_PYTHON_NODE_PASS_BROWSER_CI_PENDING",
   "preview": {
     "run_id": 38128983053,
     "job_id": 114439217514,
@@ -91,8 +91,8 @@
     }
   ],
   "missing_analysis_file": "data/statistical_analysis_overrides_v1.json is not versioned/present on staging; investigation of CI export overwrite follows",
-  "next_action": "Await CI for final regression commit, then persist exact run/artifact/SHA and hand off complete PR17 to Integration Commander.",
-  "last_progress_at": "2026-10-11T13:18:43.383122+00:00",
+  "next_action": "Run canonical build, desktop/mobile48checks and original strict Reviewer on reconciled staging; commit/push and wait exact-head GitHub QA.",
+  "last_progress_at": "2026-10-11T13:27:49.549750+00:00",
   "statistics_resolution": [
     {
       "code": "invalid_statistical_table",
@@ -266,5 +266,19 @@
     "issues_closed": false,
     "merged_to_staging": false,
     "main_production_written": false
+  },
+  "staging_reconciliation": {
+    "base_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+    "at": "2026-10-11T13:27:49.549750+00:00",
+    "reason": "Staging advanced and PR became unmergeable; automatic synchronize CI suppressed by conflicts.",
+    "strict_reviewer": "Current staging added inventory bypass. Restored statistics_reviewer byte-identical to original4ff51cf; negative regression reproduces all8findings even when labeled publication_inventory. Real primary PDF analysis, not exemption, resolves them.",
+    "python_passed": 312,
+    "python_skipped": 1,
+    "node_passed": 41,
+    "focused_tests_passed": 38,
+    "concurrent_governance_preserved": true,
+    "source_state_health_unchanged_against_current_staging": true,
+    "unrelated_feed_rows_preserved": 72,
+    "source_changes": "None authored by QA; DF integration already on staging inherited unchanged."
   }
 }

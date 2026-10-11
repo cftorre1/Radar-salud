@@ -21,3 +21,14 @@ def test_source_health_marks_zero_discovery_unknown_freshness_as_coverage_gap(tm
     assert row["status"]=="warning"
     assert row["coverage_status"]=="gap"
     assert row["content_freshness"]=="unknown"
+
+
+def test_df_all_undated_is_partial_not_healthy_or_fresh(tmp_path):
+    record(tmp_path,"diario_financiero",name="Diario Financiero",discovered=73,new=0,published=0,pending=44,rejected=170,
+           discovery_evidence={"dated":0,"undated":73,"detail_errors":0,"newest_event_date":None,"last_published_event_at":"2026-09-22"})
+    row=json.loads((tmp_path/"data/source_health.json").read_text())["sources"]["diario_financiero"]
+    assert row["status"]=="warning" and row["technical_status"]=="partial"
+    assert row["coverage_status"]=="date_or_detail_gap"
+    assert row["content_freshness"]=="older"
+    assert row["counts_scope"]["published"]=="this_run"
+    assert row["counts_scope"]["rejected"]=="cumulative_queue"

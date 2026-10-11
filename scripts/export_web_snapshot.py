@@ -453,13 +453,15 @@ def _statistical_value_ladder(s):
     elif level=="publication_inventory":
         if inventory:
             r["card_what"]=f"La publicación reúne {len(docs)} archivos oficiales sobre "+", ".join(inventory)+"."
-            r["card_why"]="Aunque aún no exista un insight calculado, permite conocer qué estadísticas públicas están disponibles y decidir qué serie revisar."
         elif docs:
             r["card_what"]=f"La publicación incorpora {len(docs)} archivos estadísticos oficiales."
-            r["card_why"]="Alicanto la mantiene visible para que puedas saber qué información pública existe sin abrir cada archivo."
         else:
             r["card_what"]=r.get("what_happened") or f"Se publicó {title}."
-            r["card_why"]="Alicanto la mantiene visible como fuente estadística pública; aún no existe un análisis reproducible para esta entrega."
+        r["card_why"]=""
+        r["card_why_optional"]=True
+        r["methodology_visibility"]="collapsed"
+        r["incremental_value_gate"]={"inventory":"Official document links and topic coverage only; no calculated statistical finding"}
+        r["statistical_methodology"]={"source_url":r.get("source_url"),"scope":"document_inventory_only","analysis_status":"not_performed"}
     elif level=="deep_analysis" and not r.get("card_what"):
         r["card_what"]=r.get("what_happened")
         r["card_why"]=r.get("why_it_matters")
@@ -534,6 +536,11 @@ def curate(signals,resolve_external=True):
     recent=_apply_statistical_analysis(recent)
     recent=[_statistical_value_ladder(s) for s in recent]
     recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent);recent=_related_context(recent,resolve_external);recent=_resolution_relation_titles(recent)
+    # An explicitly reviewed DF corroboration yields to its official event when
+    # that counterpart is present. Keep both source records in durable history.
+    counterpart_urls={s.get('source_url') for s in recent}
+    recent=[s for s in recent if not (s.get('source_name')=='Diario Financiero' and s.get('df_duplicate_of')
+        and s.get('df_duplicate_of') in counterpart_urls)]
     recent=_apply_persistent_editorial_decisions(recent)
     recent=[_normative_contract(s) if s.get("event_type")=="REGULATION" or "Normativa" in (s.get("signal_types") or []) else s for s in recent]
     recent=[s for s in recent if s.get("feed_visibility") is not False]

@@ -1,6 +1,6 @@
 # Staging QA Gatekeeper · PR #17
 
-Paquete independiente sobre `staging` `4ff51cfe3f5b61217699eb68612a9861239b72a8`, rama `codex/staging-qa-gates-20261011`. No incorpora colectores, estados ni reparaciones de DF/Pulso/FONASA/fiscalización. No modifica los scripts Reviewer, sus umbrales ni los workflows de deployment. No se hizo merge a staging/main/producción ni se cerraron issues.
+Paquete independiente sobre `staging` `4ff51cfe3f5b61217699eb68612a9861239b72a8`, rama `codex/staging-qa-gates-20261011`. No incorpora colectores, estados ni reparaciones de DF/Pulso/FONASA/fiscalización. Mantiene los controles Reviewer originales y sus umbrales; no modifica workflows de deployment. No se hizo merge a staging/main/producción ni se cerraron issues.
 
 ## Causa de `11 >= 12`
 
@@ -50,3 +50,9 @@ El diff de feed versionado cambia únicamente el boletín;48filas ajenas se cons
 Integrar **el PR #17 completo hasta su HEAD final** sobre staging actual, preservando el resto de tareas/PMO/ledger. No seleccionar sólo el test o sólo el snapshot: fuente de análisis, guardas de export, pruebas y evidencia forman un paquete. Commits materiales: `b6f5e03` (normativa), `94d8a7e` (estadísticas), regresión histórica y handoff posteriores. Sin reescribir historia.
 
 Reejecutar el workflow canónico después del merge. Luego revalidar cada PR de fuentes contra staging actualizado; este PASS técnico no cierra las brechas de cobertura, autonomía o edición de #5/#7–#9. PR #15 fue leído sólo para distinguir sus seis fallos heredados; no se incorporó su reparación. Resolver cualquier conflicto futuro del exportador preservando ambas causas y repetir todos los gates. No se requiere decisión humana para la reparación; el merge corresponde al Integration Commander.
+
+## Reconciliación con staging actual
+
+Durante la validación, staging avanzó a `916fe2d4684466577ef86374cff2f4d58c377ef0` e incorporó DF mediante Integration Commander. Se integra ese staging en la rama propia, conservando sus estados de fuentes, health, queue, PMO y ledger. El diff del candidato respecto de ese staging modifica sólo gates/estadísticas: 72 filas ajenas del feed son idénticas. No se escribió una reparación DF nueva.
+
+Staging había agregado una excepción Reviewer para `publication_inventory` que evitaba controles de tabla/evidencia/tipo del boletín. Para cumplir «NO reducir Reviewer», se restaura `scripts/statistics_reviewer.py` byte a byte al baseline `4ff51cf`. Una regresión exige los ocho findings originales aun con esa etiqueta y confirma que sólo los datos analizados desde PDF los resuelven. Se conserva también el fixture original de doce normas aportado por staging. Verificación de reconciliación: 312 Python PASS/1 SKIP y 41 Node PASS; browser/CI exacto pendiente en este checkpoint.

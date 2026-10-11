@@ -118,32 +118,34 @@ class SusesoFiscalizacionScout:
 
 class DfHealthScout:
     SOURCE_SLUG="diario_financiero";SOURCE_NAME="Diario Financiero";SOURCE_TYPE="press_high_trust"
-    PAGES=["https://www.df.cl/empresas/dfsalud","https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html"]
+    PAGES=["https://www.df.cl/empresas/dfsalud","https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html",
+           "https://www.df.cl/noticias/site/tag/port/all/tagport_2916_1.html"]
     def discover(self):
-        from .public_source_pipeline import _Meta, _date
+        from .df_article import bind_df_article
+        from .df_inventory import DfListing
         out=[];seen=set()
         for page in self.PAGES:
             try:html=fetch_html(page)
             except Exception as e:print("DF fetch:",e);continue
             p=_A();p.feed(html)
-            for href,text in p.links:
+            listing=DfListing();listing.feed(html)
+            links=listing.primary_links if listing.has_primary_layout else p.links
+            for href,text in links:
                 if not href or len(text)<18:continue
                 url=urljoin(page,href);u=urlparse(url);path=u.path.rstrip("/")
                 if u.netloc not in ("www.df.cl","df.cl"):continue
                 if any(x in path for x in ("/autor/","/suscripcion","/login","/tag/","/tax/")):continue
+                if path.endswith(".pdf") or re.search(r"/p/\d+/?$",path):continue
                 if path in ("/empresas/dfsalud","/empresas/salud","/noticias/site/tag/port/all/tagport_161_1.html") or path.count("/")<3 or url in seen:continue
                 seen.add(url)
-                event_date=None;body="";description="";fetch_error=None
+                raw=RawItem(self.SOURCE_SLUG,text,url,self.SOURCE_NAME,self.SOURCE_TYPE,
+                            metadata={"discovered_from":page,"listing_extraction":"primary_cards" if listing.has_primary_layout else "unstructured_links"})
                 try:
-                    meta=_Meta();meta.feed(fetch_html(url));body=" ".join(meta.text);description=meta.description or ""
-                    event_date=_date(meta.published) or _date(body[:5000])
+                    bind_df_article(raw,fetch_html(url))
                 except Exception as exc:
-                    fetch_error=type(exc).__name__
-                metadata={"discovered_from":page}
-                if body:metadata["page_text"]=body[:18000]
-                if fetch_error:metadata["fetch_error"]=fetch_error
-                out.append(RawItem(self.SOURCE_SLUG,text,url,self.SOURCE_NAME,self.SOURCE_TYPE,
-                                   event_date=event_date,raw_text=description or body[:1800],metadata=metadata))
+                    raw.metadata["fetch_error"]=type(exc).__name__
+                out.append(raw)
+        if not out:raise RuntimeError("DF listing unavailable or no article candidates")
         print(f"DF discovered={len(out)}");return out
 
 

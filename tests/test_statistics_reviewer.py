@@ -173,3 +173,23 @@ def test_ges_parser_handles_multilevel_insurer_headers_and_uses_source_problem_n
     assert result["summary_table"]["rows"][0]["cells"][0] == "Problema de salud validado 6"
     assert result["summary_table"]["rows"][0]["cells"][3] == 162
     assert result["statistical_methodology"]["sheet"] == "Año 2026"
+
+
+def test_inventory_label_does_not_exempt_known_bulletin_from_inherited_gates():
+    import json
+    history = json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    original = next(s for s in history if s.get("source_url") == URLS["bulletin"])
+    expected = {
+        "invalid_statistical_table", "methodology_not_collapsed",
+        "missing_incremental_value_gate", "generic_why_required",
+        "untraceable_statistical_evidence", "bulletin_coverage",
+        "bulletin_missing_pdf", "bulletin_stock_flow_confusion",
+    }
+    labeled = dict(original, statistical_value_level="publication_inventory")
+    assert {f["code"] for f in review_statistics([labeled])} == expected
+    verified = json.loads(Path("config/statistical_analysis_verified_v1.json").read_text())["signals"][URLS["bulletin"]]
+    analyzed = dict(original, **verified)
+    assert review_statistics([analyzed]) == []
+    analyzed.pop("summary_table")
+    analyzed["statistical_value_level"] = "publication_inventory"
+    assert "invalid_statistical_table" in {f["code"] for f in review_statistics([analyzed])}

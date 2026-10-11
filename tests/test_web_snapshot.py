@@ -345,3 +345,16 @@ def test_malformed_statistical_override_fails_instead_of_hiding_findings(tmp_pat
     runtime.write_text('{"signals": {"https://example.test/release": {"event_date": "2099-01-01"}}}')
     with pytest.raises(ValueError,match="preserve source identity/date"):
         m._statistical_analysis_overrides(path=runtime)
+
+def test_normative_original_cohort_ages_out_without_losing_history():
+    cohort=json.loads(Path("tests/fixtures/normative_v2_original_12.json").read_text())["signals"]
+    # The original twelve were in range in September; an October anchor puts
+    # July 10 outside 90 days. Dates and the historical cohort are unchanged.
+    anchor=sig("Recent material health event",event="2026-10-10",url="https://x/anchor")
+    out=m.curate([*cohort,anchor],resolve_external=False)
+    expected={s["source_url"] for s in cohort if s["event_date"]>="2026-07-12"}
+    assert {s["source_url"] for s in out if "Normativa" in s.get("signal_types",[])}==expected
+    july10=next(s for s in cohort if s["source_url"].endswith("circular-if-n529/"))
+    assert july10["event_date"]=="2026-07-10"
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    assert any(s["source_url"]==july10["source_url"] and s["event_date"]==july10["event_date"] for s in history)
