@@ -134,7 +134,12 @@ def valid_assessment(ai, request, *, witness=None):
         response_id="unit-test-response", model="unit-test-no-paid-call",
         raw_model_output_sha256=hashlib.sha256(raw_output.encode()).hexdigest())
     validation = validate_pulso_editorial_proof(result, body)
-    assert validation["decision"] == "ready", validation
+    score = result["relevance_score"]
+    if type(score) is int and 0 <= score < 72:
+        assert validation["decision"] == "rejected", validation
+        assert validation["reason"] == "editorial_relevance_below_threshold", validation
+    else:
+        assert validation["decision"] == "ready", validation
     assert result["relevance_score"] == ai["relevance_score"]
     assert result["reason"] == ai["reason"]
     return result
