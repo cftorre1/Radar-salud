@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T14:41:20.711400+00:00",
+  "updated_at": "2026-10-11T14:45:50.467689+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -3506,7 +3506,15 @@
         "data/audits/source_expansion_matrix_2026_10_11.json",
         "config/source_expansion_backlog_2026_10_11.json",
         "docs/SOURCE_EXPANSION_AUDIT_2026_10_11.md"
-      ]
+      ],
+      "integration_followups": {
+        "w4_global_recurring_sources_2026_10_11": {
+          "owner": "Work4 / source expansion",
+          "status": "backlog_not_implemented",
+          "evidence": "data/audits/integration_20261011/global/regression-and-recurring-gap.json",
+          "next_action": "Prioritize a bounded permitted publisher route, implement source-specific discovery separately, and record original 30/90-day samples plus absence/blockers exactly."
+        }
+      }
     },
     {
       "id": "source_repair_media_lane_2026_10_11",
@@ -4811,9 +4819,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T14:40:23.112019+00:00",
+      "last_progress_at": "2026-10-11T14:45:50.467689+00:00",
       "current_subfront": "post_merge_PR23",
-      "next_action": "Validar runtime de la integración actual y continuar los siguientes frentes seguros. Pulso requiere READY explícito.",
+      "next_action": "Finish native postmerge38148412191 and preview; reconcile receipts. PulsoPR10 remainsNOT_READY until explicitREADY plus runtime/semantic/QA gates. Continue only documented residual source repairs.",
       "independent_review_cuts": [
         {
           "reviewer": "Work 3",
@@ -4923,6 +4931,106 @@
         }
       },
       "integrated_source_rows": {
+        "diario_financiero": {
+          "source": "diario_financiero",
+          "issues": [
+            5,
+            6
+          ],
+          "task_id": "source_repair_media_lane_2026_10_11",
+          "pr": 11,
+          "branch": "codex/df-end-to-end-20261011",
+          "candidate_sha": "50cef26c4d829f18b3619d41710fffdf50534e91",
+          "integration": "merged_PR11",
+          "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+          "qa": {
+            "run": 38142527882,
+            "status": "PASS"
+          },
+          "reviewer": {
+            "run": 38142527882,
+            "status": "PASS",
+            "scope": "deterministic + desktop/mobile; original semantic scope retained"
+          },
+          "runtime_post_merge": {
+            "run": 38142527704,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/df-postmerge-916fe2d.json"
+          },
+          "final_state": "INTEGRATED_DEGRADED",
+          "owner": "Pele + Media Source Worker",
+          "next_action": "Mantener seguimiento periódico y cerrar sólo gaps de cobertura demostrados; inventario parcial explícito.",
+          "limits": [
+            "partial 30/90 inventory",
+            "19 multimedia deferred"
+          ]
+        },
+        "superintendencia_fiscalizacion": {
+          "source": "superintendencia_fiscalizacion",
+          "issues": [
+            5,
+            8
+          ],
+          "task_id": "source_repair_fiscalization_lane_2026_10_11",
+          "pr": 15,
+          "branch": "codex/d-fiscalizacion-sis-suseso-20261011",
+          "candidate_sha": "e654dd623001ddf6de54da5e31d84a795e78e997",
+          "integration": "merged_PR18",
+          "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+          "qa": {
+            "run": 38143952494,
+            "status": "PASS"
+          },
+          "reviewer": {
+            "run": 38143952494,
+            "status": "PASS",
+            "scope": "deterministic + desktop/mobile; original semantic scope retained"
+          },
+          "runtime_post_merge": {
+            "run": 38143952220,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/sis-postmerge-9920e3d.json"
+          },
+          "final_state": "INTEGRATED_DEGRADED",
+          "owner": "Codex D · Regulatory Source Recovery",
+          "next_action": "Mantener seguimiento periódico y cerrar sólo gaps de cobertura demostrados; inventario parcial explícito."
+        },
+        "suseso_fiscalizacion": {
+          "source": "suseso_fiscalizacion",
+          "issues": [
+            5,
+            8
+          ],
+          "task_id": "source_repair_fiscalization_lane_2026_10_11",
+          "pr": 15,
+          "branch": "codex/d-fiscalizacion-sis-suseso-20261011",
+          "candidate_sha": "e654dd623001ddf6de54da5e31d84a795e78e997",
+          "integration": "merged_PR18",
+          "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+          "qa": {
+            "run": 38143952494,
+            "status": "PASS"
+          },
+          "reviewer": {
+            "run": 38143952494,
+            "status": "PASS",
+            "scope": "deterministic + desktop/mobile; original semantic scope retained"
+          },
+          "runtime_post_merge": {
+            "run": 38143952220,
+            "status": "PASS",
+            "polls": 2,
+            "idempotent": true,
+            "artifact": "data/audits/integration_20261011/sis-postmerge-9920e3d.json"
+          },
+          "final_state": "INTEGRATED_DEGRADED",
+          "owner": "Codex D · Regulatory Source Recovery",
+          "next_action": "Mantener seguimiento periódico y cerrar sólo gaps de cobertura demostrados; inventario parcial explícito."
+        },
         "achs_seguro_laboral": {
           "source": "achs_seguro_laboral",
           "issues": [
@@ -5504,7 +5612,7 @@
           },
           "final_state": "INTEGRATED_VALIDATED",
           "owner": "Pele + Source Intelligence + Editorial Committee",
-          "next_action": "Maintain verified CMS+header discovery; three outputs are integrable only after shared beta gates are resolved.",
+          "next_action": "Maintain verified CMS/header discovery and reviewed stock. Shared gates resolved; 3 reviewed outputs are integrated and genuine two-poll runtime passed within the official archive scope.",
           "candidate_qa": {
             "prior_history_rows": 891,
             "new_verified_signals": 6,
@@ -5603,6 +5711,25 @@
             "All17observed original news URLs inspected with componentH1/body; historical publication headers recovered, broken healthtech/covax links identified. No verified2026news; undated/misrouted/legacy originals and stale newsroom prevent exact recent total.0verified is not proof of zero activity.",
             "Idempotence covers accepted publication stock, history and queue identities; pending non-editorial records progressed during the two polls."
           ]
+        },
+        "pulso_latercera": {
+          "source": "pulso_latercera",
+          "issues": [
+            5,
+            6
+          ],
+          "task_id": "source_repair_media_lane_2026_10_11",
+          "pr": 10,
+          "branch": "codex/b-pulso-runtime-20261011",
+          "candidate_sha": "90e99ad30e6eeaf470480e7847a7a814334a2b7b",
+          "integration": "pending",
+          "staging_sha": null,
+          "qa": "NOT_RUN_POST_INTEGRATION",
+          "reviewer": "NOT_RUN_POST_INTEGRATION",
+          "runtime_post_merge": null,
+          "final_state": "NOT_READY",
+          "owner": "Pele + Media Source Worker",
+          "next_action": "DF integrado con runtime validado y limitaciones preservadas; PR10 continúa en su rama hasta READY_FOR_INTEGRATION."
         }
       }
     },

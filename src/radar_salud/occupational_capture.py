@@ -97,4 +97,3 @@ class CaptureLoader:
         return {"url": url, "final_url": r["final_url"], "captured_at": r["captured_at"],
                 "sha256": h["sha256"], "http_status": h["http_status"], "tls_verified": h["tls"]["verified"],
                 "artifact": str(Path(r["artifact_dir"]) / h["body_file"]), "environment": "github_actions"}
-

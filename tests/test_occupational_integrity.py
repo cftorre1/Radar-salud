@@ -433,4 +433,3 @@ def test_content_kind_labels_cannot_override_missing_date_or_generic_promotion()
     assert classify_content_kind("no_verifiable_material_change", "Descuentos en atenciones") == "commercial"
     assert classify_content_kind("campaign_event_testimonial_or_recognition", "Campaña rutinaria de prevención") == "prevention"
     assert not materiality("mutuality", "Descuentos en atenciones", "Una promoción comercial ofrece precios especiales.")[0]
-
