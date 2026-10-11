@@ -197,8 +197,8 @@ def main():
             report["body_reaudit"]=repair_contaminated_evidence(queue,raw_items,history,now)
             save_history(root/"data/history/superintendencia_signals.json",history)
             atomic_json(out,report)
+        watermarks = json.loads((root / "data/state/discovery_watermarks.json").read_text())
         if raw_items:
-            watermarks = json.loads((root / "data/state/discovery_watermarks.json").read_text())
             queue.discover("diario_financiero", raw_items, now=now, last_discovered_at=watermarks.get("diario_financiero"),
                            published_urls=[row["source_url"] for row in history if row.get("source_url")])
         # Actual core engine, including real AI client and existing budget guardrails.
