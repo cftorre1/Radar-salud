@@ -50,7 +50,7 @@ def _load_review():
         return None
 
 
-def _publisher_day(timestamp):
+def _publisher_day(timestamp, *, timestamp_calendar=False):
     if not isinstance(timestamp, str):
         return None
     try:
@@ -59,6 +59,8 @@ def _publisher_day(timestamp):
         parsed = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
         if parsed.tzinfo is None:
             return None
+        if timestamp_calendar:
+            return parsed.date().isoformat()
         return parsed.astimezone(ZoneInfo("America/Santiago")).date().isoformat()
     except ValueError:
         return None
@@ -69,6 +71,7 @@ def _primary_evidence_matches(raw, entry, reviewed_on):
     body = meta.get("page_text")
     day = entry["publication_date"]
     if (meta.get("article_verified") is not True
+            or meta.get("publication_date_verified") is False
             or meta.get("source_quality_gate") != "passed"
             or meta.get("market_role") != "media"
             or meta.get("canonical_url") != raw.url
@@ -79,12 +82,33 @@ def _primary_evidence_matches(raw, entry, reviewed_on):
             or hashlib.sha256(body.encode("utf-8")).hexdigest() != meta.get("article_body_sha256")):
         return False
     evidence = meta.get("publication_evidence")
+    timestamp_calendar = meta.get("publisher_date_convention") == "timestamp_calendar"
+    if timestamp_calendar:
+        # An original byline can corroborate the timestamp's calendar day at
+        # 00:xxZ instead of Santiago's preceding day. Honor that verified
+        # convention only for the complete primary evidence, never a fallback.
+        if (meta.get("primary_identity_verified") is not True
+                or meta.get("publication_date_verified") is not True
+                or meta.get("publication_date_source") != "visible_article_byline"
+                or meta.get("visible_publication_date") != day
+                or meta.get("possible_publication_days")
+                or meta.get("publisher_exception_reason") == "publisher_conflicting_publication_dates"):
+            return False
+        if (not isinstance(evidence, list) or not evidence
+                or any(not isinstance(item, dict)
+                       or item.get("timestamp_calendar_day") != _publisher_day(
+                           item.get("timestamp"), timestamp_calendar=True)
+                       or item.get("america_santiago_day") != _publisher_day(item.get("timestamp"))
+                       for item in evidence)
+                or not any(item.get("timestamp") == meta.get("publication_timestamp")
+                           for item in evidence)):
+            return False
     if (not isinstance(evidence, list) or not evidence
             or any(not isinstance(item, dict)
                    or item.get("publisher_day") != day
-                   or _publisher_day(item.get("timestamp")) != day
+                   or _publisher_day(item.get("timestamp"), timestamp_calendar=timestamp_calendar) != day
                    or item.get("source") not in _DATE_SOURCES for item in evidence)
-            or _publisher_day(meta.get("publication_timestamp")) != day
+            or _publisher_day(meta.get("publication_timestamp"), timestamp_calendar=timestamp_calendar) != day
             or meta.get("visible_publication_date") not in (None, day)):
         return False
     if (meta["publication_date_source"] == "visible_article_byline"

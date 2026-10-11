@@ -1,9 +1,11 @@
 """Review application is constrained to verified evidence and three legacy holds."""
+import gzip
 import hashlib
 import json
 from copy import deepcopy
 from dataclasses import asdict
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
 import pytest
 
@@ -230,3 +232,102 @@ def test_audit_modified_or_missing_fails_closed(tmp_path, monkeypatch):
     audit_path.write_text(json.dumps(edited), encoding="utf-8")
     assert not review.apply_incremental_review(raw)
     assert raw.metadata == original
+
+
+def original_midnight_candidate():
+    """Replay the retained publisher bytes, including its July 14 byline."""
+    from radar_salud.pulso_source import article_body_evidence, extract_article
+    digest = "404af1941f27b1f23eeb6f9d226cb8c1e680f7fa622f527287c291d904a8f1e1"
+    fixture = Path(__file__).parents[1] / "tests/fixtures/pulso_runtime_real" / (digest + ".html.gz")
+    compressed = fixture.read_bytes()
+    assert hashlib.sha256(compressed).hexdigest() == "ab0f03dcd224fa94c4b91eb2e1937a38fe2ed81db00fa4f46c6da7bc81a5a70f"
+    original = gzip.decompress(compressed)
+    assert hashlib.sha256(original).hexdigest() == digest
+    entry = ENTRIES["2026-07-14"]
+    title, body, metadata = extract_article(original.decode("utf-8"), entry["source_url"])
+    assert metadata["publication_date"] == metadata["visible_publication_date"] == "2026-07-14"
+    assert metadata["publication_timestamp"] == "2026-07-14T00:36:58.91Z"
+    assert metadata["publisher_date_convention"] == "timestamp_calendar"
+    assert metadata["primary_identity_verified"] is metadata["publication_date_verified"] is True
+    assert len(body) == 5432
+    assert hashlib.sha256(body.encode()).hexdigest() == "35ce3696d5b7b638452ffe3aa8783bfaef251cb7809efae3962f51aac3f2dffb"
+    metadata.update(article_body_evidence(body), market_role="media", source_quality_gate="passed",
+                    html_sha256=digest, captured_at="2026-10-11T07:12:12.446358+00:00",
+                    editorial_hold=review.LEGACY_HOLD,
+                    event_equivalence_review=[{"source_url": entry["compared_signal"]["source_url"],
+                                              "publication_date": entry["compared_signal"]["publication_date"]}])
+    return RawItem("pulso_latercera", title, entry["source_url"], "Pulso / La Tercera",
+                   "press_high_trust", metadata["publication_date"], raw_text=body[:1800], metadata=metadata)
+
+
+def test_real_midnight_byline_releases_only_for_analysis_preserving_may_flow_and_july_stock():
+    raw = original_midnight_candidate()
+    original_key = fingerprint(raw)
+    assert review._publisher_day(raw.metadata["publication_timestamp"]) == "2026-07-13"
+    assert {entry["publisher_day"] for entry in raw.metadata["publication_evidence"]} == {"2026-07-14"}
+    assert review.apply_incremental_review(raw)
+    assert raw.event_date == "2026-07-14" and fingerprint(raw) == original_key
+    assert "editorial_hold" not in raw.metadata
+    assert raw.metadata["incremental_review"]["decision"] == "release_hold_for_editorial_analysis"
+    context = raw.metadata["editorial_review_context"]
+    assert context["metric_comparison"]["pulso"]["net_contracts"] == 52
+    assert context["metric_comparison"]["df"]["stock_change"] == 525
+    assert context["media_materiality_threshold"] == 72
+    assert context["publication_approved"] is False
+    assert "editorial_relevance" not in raw.metadata
+
+
+def test_real_midnight_article_still_fails_unchanged_editorial_gate_at_71(monkeypatch):
+    from radar_salud import llm_analysis
+    from radar_salud.beta_sources import process_curated_beta_source
+    raw = original_midnight_candidate()
+    calls = []
+    def analysis(**kwargs):
+        calls.append(kwargs)
+        return {"relevance_score": 71, "what_happened": "", "why_it_matters": "",
+                "reason": "El antecedente no agrega un cambio material suficiente."}
+    monkeypatch.setattr(llm_analysis, "analyze_news", analysis)
+    assert process_curated_beta_source(raw, {}) is None
+    assert len(calls) == 1 and calls[0]["full_text"] is True
+    assert calls[0]["text"] == raw.metadata["page_text"]
+    assert "net_contracts" in calls[0]["kind"] and "stock_change" in calls[0]["kind"]
+    assert raw.metadata["editorial_assessment"]["threshold"] == 72
+    assert raw.metadata["editorial_assessment"]["relevance_score"] == 71
+    assert raw.metadata["rejection_reason"] == "editorial_relevance_below_threshold"
+
+
+@pytest.mark.parametrize("changes", [
+    {"publisher_date_convention": None},
+    {"primary_identity_verified": False},
+    {"publication_date_verified": False},
+    {"publication_date_source": "json_ld_datePublished"},
+    {"visible_publication_date": None},
+    {"visible_publication_date": "2026-07-13"},
+    {"possible_publication_days": ["2026-07-13", "2026-07-14"]},
+    {"publisher_exception_reason": "publisher_conflicting_publication_dates"},
+    {"publication_date": None, "publication_timestamp": None,
+     "publication_date_verified": False, "source_quality_gate": "deferred_publication_date"},
+])
+def test_real_midnight_convention_cannot_override_missing_byline_or_conflict(changes):
+    raw = original_midnight_candidate()
+    raw.metadata.update(changes)
+    if raw.metadata["publication_date"] is None:
+        raw.event_date = None
+    before = deepcopy(asdict(raw))
+    assert not review.apply_incremental_review(raw)
+    assert asdict(raw) == before
+
+
+@pytest.mark.parametrize("field,value", [
+    ("timestamp_calendar_day", "2026-07-13"),
+    ("america_santiago_day", "2026-07-14"),
+    ("publisher_day", "2026-07-13"),
+    ("timestamp", "2026-07-15T00:36:58.91Z"),
+    ("timestamp_calendar_day", None),
+])
+def test_real_midnight_primary_evidence_must_agree_without_per_field_date_choice(field, value):
+    raw = original_midnight_candidate()
+    raw.metadata["publication_evidence"][0][field] = value
+    before = deepcopy(asdict(raw))
+    assert not review.apply_incremental_review(raw)
+    assert asdict(raw) == before
