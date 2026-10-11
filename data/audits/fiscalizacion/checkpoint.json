@@ -1,12 +1,14 @@
 {
-  "recorded_at": "2026-10-11T06:17:21.011800+00:00",
+  "recorded_at": "2026-10-11T07:39:26.902569+00:00",
   "branch": "codex/d-fiscalizacion-sis-suseso-20261011",
   "pr": 15,
   "baseline_sha": "cadb6c2",
-  "latest_parser_sha": "3d2cf3255f81873b24dd193c019602429477d4da",
-  "native_http": "validated; local CONNECT403 bypassed through authorized read-only GitHub Actions",
-  "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38116583352",
-  "receipts": 192,
+  "latest_parser_sha": "8798bfc5abe48c7485208ca7058c519d949acd18",
+  "stock_commit_sha": "9fe964cfd7733f9eac6a1717bf2a40a9b9a18f01",
+  "native_http": "Official native HTTP/TLS validated by read-only isolated GitHub Actions; local CONNECT403 is not a blocker.",
+  "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38121751340",
+  "runtime_sha": "7f321cf81e0150d5b6630785f976c7d62f6bd9d7",
+  "receipts": 204,
   "official_recent_confirmed": {
     "sis": {
       "30": 14,
@@ -19,16 +21,196 @@
       "enforcement_publications_90": 2
     }
   },
-  "date_uncertain_suseso_reports": 10,
-  "real_engine_replay": {
-    "idempotent": true,
-    "other_queue_records_preserved": true,
-    "github_run_pending": "https://github.com/cftorre1/Radar-salud/actions/runs/38117344816"
+  "exact_calendar_windows": {
+    "superintendencia_fiscalizacion": {
+      "30": {
+        "official_confirmed": 14,
+        "detected": 14,
+        "omitted": 0,
+        "material": 14,
+        "published": 14,
+        "rejected": 0,
+        "deferred": 0,
+        "boundary_records_excluded": 0
+      },
+      "90": {
+        "official_confirmed": 28,
+        "detected": 28,
+        "omitted": 0,
+        "material": 28,
+        "published": 28,
+        "rejected": 0,
+        "deferred": 0,
+        "boundary_records_excluded": 4
+      }
+    },
+    "suseso_fiscalizacion": {
+      "30": {
+        "official_confirmed": 20,
+        "detected": 20,
+        "omitted": 0,
+        "material": 20,
+        "published": 20,
+        "rejected": 0,
+        "deferred": 0,
+        "boundary_records_excluded": 0
+      },
+      "90": {
+        "official_confirmed": 74,
+        "detected": 74,
+        "omitted": 0,
+        "material": 74,
+        "published": 74,
+        "rejected": 0,
+        "deferred": 0,
+        "boundary_records_excluded": 3
+      }
+    }
   },
+  "window_semantics": {
+    "primary": "inclusive elapsed date age: 0..30 and 0..90; matches the existing application filter",
+    "30_start": "2026-09-11",
+    "90_start": "2026-07-13",
+    "exact_calendar_30_start": "2026-09-12",
+    "exact_calendar_90_start": "2026-07-14"
+  },
+  "date_uncertain_suseso_reports": 10,
+  "unknown_daily_publication_programmes": 439,
+  "historical_active_stock": {
+    "suseso": 17,
+    "published_backfill": 17,
+    "counted_as_recent": false
+  },
+  "real_engine_replay": {
+    "processing_candidate_sha": "7f321cf81e0150d5b6630785f976c7d62f6bd9d7",
+    "runtime_run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121751340",
+    "captured_sha": "7f321cf81e0150d5b6630785f976c7d62f6bd9d7",
+    "actual_collectors": true,
+    "actual_engine": true,
+    "network_mode": "verified_native_capture_replay",
+    "surfaces": {
+      "superintendencia_fiscalizacion": [
+        {
+          "url": "https://www.superdesalud.gob.cl/tax-otros-actos-de-la-superintendencia/informes-de-fiscalizacion-5126/",
+          "status": "parsed",
+          "documents": 231
+        },
+        {
+          "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-isapres-6248/",
+          "status": "parsed",
+          "documents": 616
+        },
+        {
+          "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-prestadores-6249/",
+          "status": "parsed",
+          "documents": 1848
+        },
+        {
+          "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/informes-de-fiscalizacion-3218/",
+          "status": "parsed",
+          "documents": 325
+        },
+        {
+          "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-entidades-acreditadoras-7059/",
+          "status": "parsed",
+          "documents": 75
+        },
+        {
+          "url": "https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-agentes-de-ventas-7441/",
+          "status": "parsed",
+          "documents": 470
+        },
+        {
+          "url": "https://www.superdesalud.gob.cl/tax-otros-actos-de-la-superintendencia/sanciones-aplicadas-5113/",
+          "status": "parsed",
+          "documents": 2944
+        }
+      ],
+      "suseso_fiscalizacion": [
+        {
+          "url": "https://www.suseso.gob.cl/612/w3-propertyvalue-30981.html",
+          "status": "parsed",
+          "documents": 359,
+          "undated": 0
+        },
+        {
+          "url": "https://www.suseso.gob.cl/612/w3-propertyvalue-30982.html",
+          "status": "parsed",
+          "documents": 407,
+          "undated": 0
+        },
+        {
+          "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
+          "status": "parsed",
+          "documents": 101,
+          "undated": 0,
+          "surface_kind": "professionals"
+        },
+        {
+          "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-806511.html",
+          "status": "parsed",
+          "documents": 109,
+          "undated": 0,
+          "surface_kind": "entities"
+        },
+        {
+          "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-559471.html",
+          "status": "parsed",
+          "documents": 157,
+          "undated": 157,
+          "surface_kind": "reports"
+        },
+        {
+          "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-715128.html",
+          "status": "parsed",
+          "documents": 282,
+          "undated": 282,
+          "surface_kind": "reports"
+        },
+        {
+          "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-814414.html",
+          "status": "parsed",
+          "documents": 10,
+          "undated": 10,
+          "surface_kind": "medical_reports"
+        },
+        {
+          "url": "https://www.suseso.gob.cl/605/w3-propertyname-536.html",
+          "status": "parsed",
+          "documents": 187,
+          "surface_kind": "official_news"
+        }
+      ]
+    },
+    "inventory_items": 4616,
+    "idempotent": true,
+    "snapshots": [
+      {
+        "history": "ca1f8aa20988eaeec6a6d2aa4b5b4f2d398cc4dc464b2a0922b4dca40bdb2797",
+        "queue": "e9cda7a7b63ed8bea8cfaf4212b4456e69d9237943b36d66a3af06989495b858"
+      },
+      {
+        "history": "ca1f8aa20988eaeec6a6d2aa4b5b4f2d398cc4dc464b2a0922b4dca40bdb2797",
+        "queue": "e9cda7a7b63ed8bea8cfaf4212b4456e69d9237943b36d66a3af06989495b858"
+      }
+    ],
+    "other_queue_records_preserved": true,
+    "writes_to_repository_state": false,
+    "writes_to_staging_or_main": false,
+    "ai_budget_available": false
+  },
+  "stock_replay_byte_identical": true,
   "coverage_complete": false,
   "source_states": {
     "sis": "OPERATIVE_DEGRADED",
     "suseso": "OPERATIVE_DEGRADED"
   },
-  "next_step": "Apply native replay to fiscalization stock; independently reconcile every recent record to history/feed; validate desktop/mobile and independent Reviewer. Unknown report publication dates and contradictory historical IP4640 listing remain explicit. Global baseline failures do not authorize release."
+  "validation": "data/audits/fiscalizacion/validation_native_2026_10_11.json",
+  "release_ready": false,
+  "next_step": "Resolve source date uncertainty and inherited global QA/Reviewer gates; integrate PR #15 safely to staging only after gates, rerun core and close Work 3 SUSESO omission with exact 20/72 office reconciliation. No staging/main state was changed.",
+  "durable_original_archive": {
+    "path": "data/audits/fiscalizacion/native_original_indexes_2026_10_11.zip",
+    "sha256": "69ed74351514f54dfc40e46a09260487a1ddbab8c575b08328fb9173b065ed80",
+    "body_count": 87
+  }
 }

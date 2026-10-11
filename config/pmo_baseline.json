@@ -745,15 +745,28 @@
     },
     "fiscalization_native_recovery_2026_10_11": {
       "kind": "source_reconciliation",
-      "result": "in_progress",
-      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116583352",
-      "sha": "3d2cf3255f81873b24dd193c019602429477d4da",
-      "scope": "Isolated PR #15 branch; no staging/main writes. Official transport validated, scoped coverage/stock gates pending; does not qualify global QA or release readiness.",
+      "result": "OPERATIVE_DEGRADED",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121751340",
+      "sha": "7f321cf81e0150d5b6630785f976c7d62f6bd9d7",
+      "stock_commit_sha": "9fe964cfd7733f9eac6a1717bf2a40a9b9a18f01",
+      "scope": "Isolated PR #15. Dated source windows and current historical suspension stock reconciled; site-wide completeness, staging integration and global release readiness remain unvalidated.",
       "checks": [
-        "native HTTPS/TLS receipts",
-        "actual engine replay locally idempotent"
+        "official HTTPS/TLS native receipts",
+        "real collectors and engine twice",
+        "idempotent replay",
+        "other queue lanes preserved",
+        "305 Python PASS, 1 explicit unrelated SKIP",
+        "42 Node PASS",
+        "4 scoped desktop/mobile PASS",
+        "independent read-only coverage Reviewer PASS"
       ],
-      "artifact": "data/audits/fiscalizacion/checkpoint.json"
+      "global_gates": "FAIL: inherited local browser14 / CI6 and statistical Reviewer8; no gate lowered",
+      "artifact": "data/audits/fiscalizacion/validation_native_2026_10_11.json",
+      "latest_independent_native_gate": {
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38122064329",
+        "sha": "8798bfc5abe48c7485208ca7058c519d949acd18",
+        "result": "PASS; 59 primary news bodies match reviewed hashes"
+      }
     }
   },
   "blocks": [
@@ -1986,7 +1999,21 @@
         "Key identity by oficio (not the shared page URL) while deduplicating repeats and keeping date-oficio distinct from suspension dates.",
         "Publish aggregates or material groupings without exposing personal identifiers; record explicit rejection/grouping reasons rather than creating cards by quota.",
         "Keep health partial/error until the omitted surface has a real post-merge outcome; QA and independent Reviewer must pass."
-      ]
+      ],
+      "candidate_repair": {
+        "pr": 15,
+        "branch": "codex/d-fiscalizacion-sis-suseso-20261011",
+        "sha": "9fe964cfd7733f9eac6a1717bf2a40a9b9a18f01",
+        "native_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38121751340",
+        "exact_calendar_oficios": {
+          "30": 20,
+          "90": 72
+        },
+        "inclusive_boundary_oficios": 3,
+        "historical_active_stock": 17,
+        "closure_status": "OPEN: isolated candidate repair; staging merge, post-merge core and global gates outstanding",
+        "artifact": "data/audits/fiscalizacion/native_reconciliation_2026_10_11.json"
+      }
     }
   ],
   "approved_addenda": [
@@ -3261,9 +3288,9 @@
       ]
     }
   ],
-  "updated_at": "2026-10-11T07:21:59.245Z",
+  "updated_at": "2026-10-11T07:39:26.902569+00:00",
   "closed_beta": {
-    "status": "ready",
+    "status": "pending_validation",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",
     "audience": "10–30 usuarios invitados del ecosistema salud",
     "evidence": "closed_beta_read_only_qa",
@@ -3283,10 +3310,11 @@
     ],
     "independent_review": {
       "status": "not_validated_current_candidate",
-      "reviewed_at": "2026-10-11T04:00:00Z",
-      "reviewed_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
-      "artifact": "data/audits/work3_adversarial_2026_10_11.json",
-      "reason": "Historical readiness does not close current QA/source/editorial failures."
-    }
+      "reviewed_at": "2026-10-11T07:39:26.902569+00:00",
+      "reviewed_sha": "8798bfc5abe48c7485208ca7058c519d949acd18",
+      "artifact": "data/audits/fiscalizacion/validation_native_2026_10_11.json",
+      "reason": "Current source coverage is bounded and degraded; global browser/statistical Reviewer gates fail. Historical beta proof does not qualify this isolated candidate."
+    },
+    "historical_status": "ready"
   }
 }
