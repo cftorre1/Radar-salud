@@ -51,6 +51,9 @@ jobs:
           tests/test_pulso_editorial_review.py tests/test_pulso_bound_editorial_review_qa.py
           tests/test_pulso_paid_guard_revalidation.py tests/test_pulso_v5_revalidation_manifest.py
           tests/test_pulso_paid_revalidation_qa.py tests/test_pulso_actual49_second_reader_context.py
+          tests/test_pulso_current_paid_guard_revalidation.py tests/test_pulso_current_paid_revalidation_qa.py
+          tests/test_pulso_revalidated_publication_review_qa.py tests/test_pulso_actual_mixed12_guard_repair.py
+          tests/test_pulso_mixed_reused18_semantic_review.py tests/test_pulso_mixed25_first8_review_v2_group.py
       - name: Read optional prior and additional original capture runs
         id: prior_capture
         run: |
