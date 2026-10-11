@@ -150954,11 +150954,43 @@
           "publication_date_source": "visible_article_byline",
           "assessment": {
             "decision": "published",
+            "reason": "independent_editorial_copy_corrected",
             "relevance_score": 86,
             "threshold": 72,
-            "analysis_reason": "Señal regulatoria sanitaria nacional y temporal, con efecto directo en la operación de servicios de urgencia, diálisis y oncohematología públicos y privados. La nota combina una medida ya vigente con una extensión anunciada hasta el 30 de septiembre, por lo que no permite inferir vigencia posterior a la fecha de revisión."
+            "original_model_assessment": {
+              "decision": "published",
+              "relevance_score": 86,
+              "threshold": 72,
+              "analysis_reason": "Señal regulatoria sanitaria nacional y temporal, con efecto directo en la operación de servicios de urgencia, diálisis y oncohematología públicos y privados. La nota combina una medida ya vigente con una extensión anunciada hasta el 30 de septiembre, por lo que no permite inferir vigencia posterior a la fecha de revisión."
+            },
+            "review_sha256": "8ff73f3d5abba75148238f609d39f96957bf9e51e9b3f16add04c60806c8760c"
           },
-          "editorial_review": null,
+          "editorial_review": {
+            "schema_version": "pulso_editorial_review_v1",
+            "review_id": "pulso_actual323_ilc_mask_exact_publication_review",
+            "review_file": "data/audits/pulso_actual323_ilc_mask_editorial_review_2026_10_11.json",
+            "review_sha256": "8ff73f3d5abba75148238f609d39f96957bf9e51e9b3f16add04c60806c8760c",
+            "record_sha256": "baece0736409c8655ce33cd080d5c2ec82d0e94a02091abb29e83ecf0826c874",
+            "original_signal_sha256": "ef9e010220b219b7b1a291b76c323e1ad768be23469a8490b0da3a5f7eed585a",
+            "original_body_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+            "publication_date": "2026-09-01",
+            "decision": "correct",
+            "reason": "The press report dates the mandatory-mask extension onSeptember1 throughSeptember30, with positivity56.1%fromweek33 August16–22. Both fields expressly avoid October11 validity. This is a national reported healthcare obligation for urgent care/dialysis/oncohematology, so categoryRegulación &Legal is more accurate than Mercado. Correct category only; keep both complete texts, score86, planned/True, body and paid response unchanged.",
+            "evidence_quotes": [
+              "uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología",
+              "anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país",
+              "el objetivo es reforzar la protección de las personas que se encuentran en espacios asistenciales donde existe una mayor exposición a virus respiratorios"
+            ],
+            "original_terminal_status": "published",
+            "original_model_assessment": {
+              "decision": "published",
+              "relevance_score": 86,
+              "threshold": 72,
+              "analysis_reason": "Señal regulatoria sanitaria nacional y temporal, con efecto directo en la operación de servicios de urgencia, diálisis y oncohematología públicos y privados. La nota combina una medida ya vigente con una extensión anunciada hasta el 30 de septiembre, por lo que no permite inferir vigencia posterior a la fecha de revisión."
+            },
+            "original_model_what_happened": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, el Ministerio de Salud anunció extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país. La obligación estaba vigente desde el 1 de abril y la nota reportó una positividad de 56,1% en las muestras de la semana epidemiológica 33, correspondiente al 16 y al 22 de agosto. La extensión se anunciaba para ese período y este contenido no acredita que la medida siguiera vigente al 11 de octubre de 2026.",
+            "original_model_why_it_matters": "Al 1 de septiembre de 2026, según la nota, la medida del Ministerio de Salud afectaba a prestadores públicos y privados de todo Chile y buscaba reforzar la protección de pacientes, personas en tratamiento médico y equipos de salud en espacios asistenciales con mayor exposición a virus respiratorios. La señal merecía atención por su alcance nacional y por basarse en una positividad de 56,1% registrada en la semana epidemiológica 33; la nota no acredita que esa obligación permaneciera vigente al 11 de octubre."
+          },
           "rejection_reason": null,
           "editorial_hold": null,
           "article_body_complete": true,
@@ -150970,7 +151002,32 @@
       "editorial_relevance_score": 86,
       "media_gate_threshold": 72,
       "original_model_gate_passed": true,
-      "editorial_review_evidence": null,
+      "editorial_review_evidence": {
+        "schema_version": "pulso_editorial_review_v1",
+        "review_id": "pulso_actual323_ilc_mask_exact_publication_review",
+        "review_file": "data/audits/pulso_actual323_ilc_mask_editorial_review_2026_10_11.json",
+        "review_sha256": "8ff73f3d5abba75148238f609d39f96957bf9e51e9b3f16add04c60806c8760c",
+        "record_sha256": "baece0736409c8655ce33cd080d5c2ec82d0e94a02091abb29e83ecf0826c874",
+        "original_signal_sha256": "ef9e010220b219b7b1a291b76c323e1ad768be23469a8490b0da3a5f7eed585a",
+        "original_body_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+        "publication_date": "2026-09-01",
+        "decision": "correct",
+        "reason": "The press report dates the mandatory-mask extension onSeptember1 throughSeptember30, with positivity56.1%fromweek33 August16–22. Both fields expressly avoid October11 validity. This is a national reported healthcare obligation for urgent care/dialysis/oncohematology, so categoryRegulación &Legal is more accurate than Mercado. Correct category only; keep both complete texts, score86, planned/True, body and paid response unchanged.",
+        "evidence_quotes": [
+          "uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología",
+          "anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país",
+          "el objetivo es reforzar la protección de las personas que se encuentran en espacios asistenciales donde existe una mayor exposición a virus respiratorios"
+        ],
+        "original_terminal_status": "published",
+        "original_model_assessment": {
+          "decision": "published",
+          "relevance_score": 86,
+          "threshold": 72,
+          "analysis_reason": "Señal regulatoria sanitaria nacional y temporal, con efecto directo en la operación de servicios de urgencia, diálisis y oncohematología públicos y privados. La nota combina una medida ya vigente con una extensión anunciada hasta el 30 de septiembre, por lo que no permite inferir vigencia posterior a la fecha de revisión."
+        },
+        "original_model_what_happened": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, el Ministerio de Salud anunció extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país. La obligación estaba vigente desde el 1 de abril y la nota reportó una positividad de 56,1% en las muestras de la semana epidemiológica 33, correspondiente al 16 y al 22 de agosto. La extensión se anunciaba para ese período y este contenido no acredita que la medida siguiera vigente al 11 de octubre de 2026.",
+        "original_model_why_it_matters": "Al 1 de septiembre de 2026, según la nota, la medida del Ministerio de Salud afectaba a prestadores públicos y privados de todo Chile y buscaba reforzar la protección de pacientes, personas en tratamiento médico y equipos de salud en espacios asistenciales con mayor exposición a virus respiratorios. La señal merecía atención por su alcance nacional y por basarse en una positividad de 56,1% registrada en la semana epidemiológica 33; la nota no acredita que esa obligación permaneciera vigente al 11 de octubre."
+      },
       "duplicate_of": null,
       "corroboration": {
         "status": "unknown",
@@ -166093,11 +166150,47 @@
           "publication_date_source": "visible_article_byline",
           "assessment": {
             "decision": "published",
+            "reason": "independent_editorial_copy_corrected",
             "relevance_score": 84,
             "threshold": 72,
-            "analysis_reason": "Merece radar por exponer una revisión nacional de compras públicas con impacto potencial en el financiamiento y control de los Servicios de Salud. Es un BACKFILL: la nota es del 21 de septiembre de 2026 y no permite afirmar que las recomendaciones, reajustes o medidas correctivas sigan pendientes, estén vigentes o se hayan implementado al 11 de octubre de 2026."
+            "original_model_assessment": {
+              "decision": "published",
+              "relevance_score": 84,
+              "threshold": 72,
+              "analysis_reason": "Merece radar por exponer una revisión nacional de compras públicas con impacto potencial en el financiamiento y control de los Servicios de Salud. Es un BACKFILL: la nota es del 21 de septiembre de 2026 y no permite afirmar que las recomendaciones, reajustes o medidas correctivas sigan pendientes, estén vigentes o se hayan implementado al 11 de octubre de 2026."
+            },
+            "review_sha256": "312cc47e9d22bedd31c783553708623aefa7dcfb30a4fa596fc6c121409788b5"
           },
-          "editorial_review": null,
+          "editorial_review": {
+            "schema_version": "pulso_editorial_review_v1",
+            "review_id": "pulso_actual_followup_dipres_published_attribution_2026_10_11",
+            "review_file": "data/audits/pulso_actual_followup_dipres_editorial_correction_2026_10_11.json",
+            "review_sha256": "312cc47e9d22bedd31c783553708623aefa7dcfb30a4fa596fc6c121409788b5",
+            "record_sha256": "d6660de8f2de9df478c249d5456fada61a1c00a5308eb835c1a6b2c4aeb9cb27",
+            "original_signal_sha256": "bababa53e1813f7b444aa5da50fad960b46828b0913f4094be7c5b2fda0e1ebc",
+            "original_body_sha256": "9113e0fd67a716d5a03a5f50bd0dba68dcb391278e16be3e3a900bbc0eebd982",
+            "publication_date": "2026-09-21",
+            "decision": "correct",
+            "reason": "La publicación real323 usa íntegramente la respuesta pagada66 de84, revalidada sin nuevaFAST paraDipres ycon dobleprocedencia comprobada. La copia separa compras2022–23, informeQ22026/baseabril2025, concentración28entidades/91,2%deltotalpúblico y consideración de asignaciones2026. No transforma10.615millones en todoSalud, ahorrorealizado, nuevaspartidas2026/27 o recomendación implementada, nipresenta estadoOct11. RegLegal yprospectividadTrue son defendibles. WHAT dice sóloSegúnla nota sinnombrar elmedio; la única corrección propuesta nombraPulso/LaTercera enelprimerprefijo, manteniendo toda la copia restante,WHY, números, categorías, fechas y84/72. Ninguna primaryoficial confirmaaquí eldesglose oejecución.",
+            "evidence_quotes": [
+              "El Servicio de Salud del Maule compró en 2022 un total de 886 computadores marca HP por unos $595 millones.",
+              "durante el pasado gobierno de Gabriel Boric en los años 2022 y 2023.",
+              "se detectaron $10.615 millones en sobregasto en las compras de convenio marco",
+              "solo 28 entidades públicas concentran el 91,2% de esos $10 mil millones.",
+              "La Tercera accedió vía Ley de Transparencia al desglose de esos $10 mil millones de sobregasto.",
+              "se recomienda reforzar los incentivos para evitar la ejecución innecesaria de recursos hacia el cierre del ejercicio presupuestario",
+              "Los datos generales de este estudio son de abril de 2025 y sus resultados fueron contemplados para reajustar las respectivas asignaciones de los 28 servicios involucrados en la Ley de Presupuesto 2026."
+            ],
+            "original_terminal_status": "published",
+            "original_model_assessment": {
+              "decision": "published",
+              "relevance_score": 84,
+              "threshold": 72,
+              "analysis_reason": "Merece radar por exponer una revisión nacional de compras públicas con impacto potencial en el financiamiento y control de los Servicios de Salud. Es un BACKFILL: la nota es del 21 de septiembre de 2026 y no permite afirmar que las recomendaciones, reajustes o medidas correctivas sigan pendientes, estén vigentes o se hayan implementado al 11 de octubre de 2026."
+            },
+            "original_model_what_happened": "Según la nota del 21 de septiembre de 2026, la Dirección de Presupuestos (Dipres) revisó compras de convenio marco realizadas durante 2022 y 2023 y reportó $10.615 millones de sobregasto. La Tercera obtuvo vía Ley de Transparencia el desglose, según el cual 28 entidades públicas concentraron el 91,2% del monto; entre ellas aparecen varios Servicios de Salud. La base general del estudio correspondía a abril de 2025. Según la nota, sus resultados fueron contemplados para reajustar las asignaciones de esas entidades en la Ley de Presupuesto 2026, pero esto no acredita que el reajuste se haya ejecutado. La nota también reportó recomendaciones de revisión focalizada y de refuerzo de incentivos, sin acreditar su implementación al 21 de septiembre de 2026.",
+            "original_model_why_it_matters": "Según la nota del 21 de septiembre de 2026, el hallazgo afecta la gestión del financiamiento de los Servicios de Salud mencionados, que forman parte de las entidades públicas incluidas en el desglose del sobregasto. La información puede orientar eventuales medidas correctivas y decisiones presupuestarias sobre compras sanitarias, pero la nota no acredita una reasignación ya ejecutada ni un efecto operativo actual en esos servicios. Para el radar, importa separar los datos de compras de 2022-2023, la base de abril de 2025, las asignaciones 2026 contempladas y las recomendaciones futuras reportadas por Pulso/La Tercera."
+          },
           "rejection_reason": null,
           "editorial_hold": null,
           "article_body_complete": true,
@@ -166109,7 +166202,36 @@
       "editorial_relevance_score": 84,
       "media_gate_threshold": 72,
       "original_model_gate_passed": true,
-      "editorial_review_evidence": null,
+      "editorial_review_evidence": {
+        "schema_version": "pulso_editorial_review_v1",
+        "review_id": "pulso_actual_followup_dipres_published_attribution_2026_10_11",
+        "review_file": "data/audits/pulso_actual_followup_dipres_editorial_correction_2026_10_11.json",
+        "review_sha256": "312cc47e9d22bedd31c783553708623aefa7dcfb30a4fa596fc6c121409788b5",
+        "record_sha256": "d6660de8f2de9df478c249d5456fada61a1c00a5308eb835c1a6b2c4aeb9cb27",
+        "original_signal_sha256": "bababa53e1813f7b444aa5da50fad960b46828b0913f4094be7c5b2fda0e1ebc",
+        "original_body_sha256": "9113e0fd67a716d5a03a5f50bd0dba68dcb391278e16be3e3a900bbc0eebd982",
+        "publication_date": "2026-09-21",
+        "decision": "correct",
+        "reason": "La publicación real323 usa íntegramente la respuesta pagada66 de84, revalidada sin nuevaFAST paraDipres ycon dobleprocedencia comprobada. La copia separa compras2022–23, informeQ22026/baseabril2025, concentración28entidades/91,2%deltotalpúblico y consideración de asignaciones2026. No transforma10.615millones en todoSalud, ahorrorealizado, nuevaspartidas2026/27 o recomendación implementada, nipresenta estadoOct11. RegLegal yprospectividadTrue son defendibles. WHAT dice sóloSegúnla nota sinnombrar elmedio; la única corrección propuesta nombraPulso/LaTercera enelprimerprefijo, manteniendo toda la copia restante,WHY, números, categorías, fechas y84/72. Ninguna primaryoficial confirmaaquí eldesglose oejecución.",
+        "evidence_quotes": [
+          "El Servicio de Salud del Maule compró en 2022 un total de 886 computadores marca HP por unos $595 millones.",
+          "durante el pasado gobierno de Gabriel Boric en los años 2022 y 2023.",
+          "se detectaron $10.615 millones en sobregasto en las compras de convenio marco",
+          "solo 28 entidades públicas concentran el 91,2% de esos $10 mil millones.",
+          "La Tercera accedió vía Ley de Transparencia al desglose de esos $10 mil millones de sobregasto.",
+          "se recomienda reforzar los incentivos para evitar la ejecución innecesaria de recursos hacia el cierre del ejercicio presupuestario",
+          "Los datos generales de este estudio son de abril de 2025 y sus resultados fueron contemplados para reajustar las respectivas asignaciones de los 28 servicios involucrados en la Ley de Presupuesto 2026."
+        ],
+        "original_terminal_status": "published",
+        "original_model_assessment": {
+          "decision": "published",
+          "relevance_score": 84,
+          "threshold": 72,
+          "analysis_reason": "Merece radar por exponer una revisión nacional de compras públicas con impacto potencial en el financiamiento y control de los Servicios de Salud. Es un BACKFILL: la nota es del 21 de septiembre de 2026 y no permite afirmar que las recomendaciones, reajustes o medidas correctivas sigan pendientes, estén vigentes o se hayan implementado al 11 de octubre de 2026."
+        },
+        "original_model_what_happened": "Según la nota del 21 de septiembre de 2026, la Dirección de Presupuestos (Dipres) revisó compras de convenio marco realizadas durante 2022 y 2023 y reportó $10.615 millones de sobregasto. La Tercera obtuvo vía Ley de Transparencia el desglose, según el cual 28 entidades públicas concentraron el 91,2% del monto; entre ellas aparecen varios Servicios de Salud. La base general del estudio correspondía a abril de 2025. Según la nota, sus resultados fueron contemplados para reajustar las asignaciones de esas entidades en la Ley de Presupuesto 2026, pero esto no acredita que el reajuste se haya ejecutado. La nota también reportó recomendaciones de revisión focalizada y de refuerzo de incentivos, sin acreditar su implementación al 21 de septiembre de 2026.",
+        "original_model_why_it_matters": "Según la nota del 21 de septiembre de 2026, el hallazgo afecta la gestión del financiamiento de los Servicios de Salud mencionados, que forman parte de las entidades públicas incluidas en el desglose del sobregasto. La información puede orientar eventuales medidas correctivas y decisiones presupuestarias sobre compras sanitarias, pero la nota no acredita una reasignación ya ejecutada ni un efecto operativo actual en esos servicios. Para el radar, importa separar los datos de compras de 2022-2023, la base de abril de 2025, las asignaciones 2026 contempladas y las recomendaciones futuras reportadas por Pulso/La Tercera."
+      },
       "duplicate_of": null,
       "corroboration": {
         "status": "unknown",
@@ -300608,7 +300730,32 @@
             "threshold": 72,
             "analysis_reason": "La nota entrega resultados financieros semestrales cuantificados de ILC y de sus subsidiarias de salud, con desglose para RedSalud, Sanatorio Alemán y Consalud. Merece radar por su relevancia para prestadores y aseguramiento privado, aunque la evidencia corresponde a desempeño reportado y a una intención futura de inversión, no a una medida regulatoria ni a capacidad nueva ya implementada."
           },
-          "editorial_review": null,
+          "editorial_review": {
+            "schema_version": "pulso_editorial_review_v1",
+            "review_id": "pulso_actual323_ilc_mask_exact_publication_review",
+            "review_file": "data/audits/pulso_actual323_ilc_mask_editorial_review_2026_10_11.json",
+            "review_sha256": "8ff73f3d5abba75148238f609d39f96957bf9e51e9b3f16add04c60806c8760c",
+            "record_sha256": "d46c5e635b0fb9681b45a503a07bd12305c143644df6eaa8dc566211ed2bab3a",
+            "original_signal_sha256": "762d12f6418b61301b6d992bff2d1c02d3036bc2f1c5b4768202674825d4bc62",
+            "original_body_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+            "publication_date": "2026-09-01",
+            "decision": "accept",
+            "reason": "The complete reported financial result distinguishes165billion holding profit from36,783million health-subsidiary profit. RedSalud4,380million and Consalud2,506million are differences from the comparison semester, not their absolute profit;Sanatorio1,412million is contribution. Affiliates−3.6% and futureinvestment remain separate. Existing source body/date/media maturity and the pinned genuine paid reuse are intact. Accept; no copied fact is official confirmation or new capacity achieved.",
+            "evidence_quotes": [
+              "explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán, que en el semestre contribuyó con una utilidad de $1.412 millones",
+              "registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones",
+              "explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán"
+            ],
+            "original_terminal_status": "published",
+            "original_model_assessment": {
+              "decision": "published",
+              "relevance_score": 82,
+              "threshold": 72,
+              "analysis_reason": "La nota entrega resultados financieros semestrales cuantificados de ILC y de sus subsidiarias de salud, con desglose para RedSalud, Sanatorio Alemán y Consalud. Merece radar por su relevancia para prestadores y aseguramiento privado, aunque la evidencia corresponde a desempeño reportado y a una intención futura de inversión, no a una medida regulatoria ni a capacidad nueva ya implementada."
+            },
+            "original_model_what_happened": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, Inversiones La Construcción (ILC) reportó ganancias por $165 mil millones en el primer semestre de 2026, un 45% más que en igual período anterior. La nota atribuyó $36.783 millones a las subsidiarias del sector salud; dentro de ese resultado, RedSalud registró una utilidad superior en $4.380 millones frente al primer semestre de 2025, asociada a una mayor complejidad de sus prestaciones y a la incorporación del Sanatorio Alemán, que aportó $1.412 millones en el semestre. Consalud también registró un mayor resultado por $2.506 millones, aunque con una disminución de 3,6% de sus afiliados suscritos. Como proyección informada en esa misma fecha, el gerente general de ILC señaló que el crecimiento respaldaba a la compañía para seguir invirtiendo en proyectos de largo plazo.",
+            "original_model_why_it_matters": "Al 1 de septiembre de 2026, según la nota, los resultados de RedSalud y Consalud constituían parte del desempeño financiero del principal grupo propietario de prestadores y aseguramiento privado mencionado en el artículo. La señal es relevante para el radar porque cuantifica el desempeño semestral de negocios de salud, incluyendo la contribución del Sanatorio Alemán y el resultado de Consalud, pero no acredita por sí sola una mejora actual de cobertura, capacidad clínica o afiliación. En esa fecha, ILC también expresó su intención de seguir invirtiendo en proyectos de largo plazo; se trataba de una proyección declarada, no de inversiones ya ejecutadas ni de capacidad sanitaria adicional verificada."
+          },
           "rejection_reason": null,
           "editorial_hold": null,
           "article_body_complete": true,
@@ -300620,7 +300767,32 @@
       "editorial_relevance_score": 82,
       "media_gate_threshold": 72,
       "original_model_gate_passed": true,
-      "editorial_review_evidence": null,
+      "editorial_review_evidence": {
+        "schema_version": "pulso_editorial_review_v1",
+        "review_id": "pulso_actual323_ilc_mask_exact_publication_review",
+        "review_file": "data/audits/pulso_actual323_ilc_mask_editorial_review_2026_10_11.json",
+        "review_sha256": "8ff73f3d5abba75148238f609d39f96957bf9e51e9b3f16add04c60806c8760c",
+        "record_sha256": "d46c5e635b0fb9681b45a503a07bd12305c143644df6eaa8dc566211ed2bab3a",
+        "original_signal_sha256": "762d12f6418b61301b6d992bff2d1c02d3036bc2f1c5b4768202674825d4bc62",
+        "original_body_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+        "publication_date": "2026-09-01",
+        "decision": "accept",
+        "reason": "The complete reported financial result distinguishes165billion holding profit from36,783million health-subsidiary profit. RedSalud4,380million and Consalud2,506million are differences from the comparison semester, not their absolute profit;Sanatorio1,412million is contribution. Affiliates−3.6% and futureinvestment remain separate. Existing source body/date/media maturity and the pinned genuine paid reuse are intact. Accept; no copied fact is official confirmation or new capacity achieved.",
+        "evidence_quotes": [
+          "explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán, que en el semestre contribuyó con una utilidad de $1.412 millones",
+          "registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones",
+          "explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán"
+        ],
+        "original_terminal_status": "published",
+        "original_model_assessment": {
+          "decision": "published",
+          "relevance_score": 82,
+          "threshold": 72,
+          "analysis_reason": "La nota entrega resultados financieros semestrales cuantificados de ILC y de sus subsidiarias de salud, con desglose para RedSalud, Sanatorio Alemán y Consalud. Merece radar por su relevancia para prestadores y aseguramiento privado, aunque la evidencia corresponde a desempeño reportado y a una intención futura de inversión, no a una medida regulatoria ni a capacidad nueva ya implementada."
+        },
+        "original_model_what_happened": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, Inversiones La Construcción (ILC) reportó ganancias por $165 mil millones en el primer semestre de 2026, un 45% más que en igual período anterior. La nota atribuyó $36.783 millones a las subsidiarias del sector salud; dentro de ese resultado, RedSalud registró una utilidad superior en $4.380 millones frente al primer semestre de 2025, asociada a una mayor complejidad de sus prestaciones y a la incorporación del Sanatorio Alemán, que aportó $1.412 millones en el semestre. Consalud también registró un mayor resultado por $2.506 millones, aunque con una disminución de 3,6% de sus afiliados suscritos. Como proyección informada en esa misma fecha, el gerente general de ILC señaló que el crecimiento respaldaba a la compañía para seguir invirtiendo en proyectos de largo plazo.",
+        "original_model_why_it_matters": "Al 1 de septiembre de 2026, según la nota, los resultados de RedSalud y Consalud constituían parte del desempeño financiero del principal grupo propietario de prestadores y aseguramiento privado mencionado en el artículo. La señal es relevante para el radar porque cuantifica el desempeño semestral de negocios de salud, incluyendo la contribución del Sanatorio Alemán y el resultado de Consalud, pero no acredita por sí sola una mejora actual de cobertura, capacidad clínica o afiliación. En esa fecha, ILC también expresó su intención de seguir invirtiendo en proyectos de largo plazo; se trataba de una proyección declarada, no de inversiones ya ejecutadas ni de capacidad sanitaria adicional verificada."
+      },
       "duplicate_of": null,
       "corroboration": {
         "status": "unknown",
@@ -408710,23 +408882,23 @@
     }
   ],
   "method": "Current source_details discovered records establish verified health recall; discovered_metadata_only records establish enumerated identities without verified article content and never inflate health recall. Queue/history/control are separate evidence joins. Control dates define frozen complete calendar windows. No search snippet supplies a date.",
-  "at": "2026-10-11T21:56:28.804286+00:00",
+  "at": "2026-10-11T22:19:43.668481+00:00",
   "branch": "codex/b-pulso-runtime-20261011",
-  "code_sha": "c2db17141fd55cbacbcda5b53805341aa4dfa86f",
+  "code_sha": "aea4644c235d29f13b038fb513a00e1b4ab729ae",
   "execution": {
     "mode": "report_only_rejoin",
     "engine_called": false,
     "engine_completed": false,
-    "started_at": "2026-10-11T21:56:27.357720+00:00",
+    "started_at": "2026-10-11T22:19:42.182925+00:00",
     "processing_limit": 250,
-    "ai_credentials_present": true,
+    "ai_credentials_present": false,
     "ai_guardrails_modified": false
   },
   "prior_execution": {
     "mode": "report_only_rejoin",
     "engine_called": false,
     "engine_completed": false,
-    "started_at": "2026-10-11T21:56:22.214687+00:00",
+    "started_at": "2026-10-11T21:56:27.357720+00:00",
     "processing_limit": 250,
     "ai_credentials_present": true,
     "ai_guardrails_modified": false
@@ -409183,8 +409355,8 @@
   },
   "external_control_path": "data/audits/pulso_external_control_2026_10_11.json",
   "external_control_sha256": "b9c3ce2aea38107797fc19572581f27884d15611214fd2328d458bd35e906374",
-  "capture_manifest": "/home/runner/work/Radar-salud/Radar-salud/data/audits/pulso_runtime_capture/manifest.json",
-  "preserved_original_fixture_manifest": "/home/runner/work/Radar-salud/Radar-salud/tests/fixtures/pulso_runtime_real/manifest.json",
+  "capture_manifest": "/workspace/Radar-salud/data/audits/pulso_runtime_capture/manifest.json",
+  "preserved_original_fixture_manifest": "/workspace/Radar-salud/tests/fixtures/pulso_runtime_real/manifest.json",
   "preserved_original_fixture_status": "ORIGINAL_FIXTURES_AVAILABLE_NOT_SOURCE_ACCEPTANCE",
   "preserved_original_fixture_manifests": [
     {
@@ -409208,10 +409380,10 @@
   "feed_evidence": {
     "mode": "actual_serialized_candidate_snapshot",
     "serialized_feed_verified": true,
-    "generated_at": "2026-10-11T21:56:24.326925+00:00",
+    "generated_at": "2026-10-11T22:19:39.377272+00:00",
     "generated_after_current_history": true,
-    "path": "/home/runner/work/Radar-salud/Radar-salud/web/data/radar_today.json",
-    "sha256": "98017dfff63f2a50e16f6bd99ed1d128a7fa1bb3fb379937665d7e49e0d210bf"
+    "path": "/workspace/Radar-salud/web/data/radar_today.json",
+    "sha256": "375ec9e73ed34156d98698fb019e6c483a0eec0a9abe724db3bc1644dad00a34"
   },
   "unresolved_pending_operational_reasons": []
 }
