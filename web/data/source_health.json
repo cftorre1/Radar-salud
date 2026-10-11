@@ -98,7 +98,7 @@
     "superintendencia_fiscalizacion": {
       "name": "Superintendencia Fiscalizacion",
       "checked_at": "2026-10-10T22:24:44.395005+00:00",
-      "last_signal_at": "2025-10-24",
+      "last_signal_at": "2026-09-08",
       "discovered": 2696,
       "new": 0,
       "published": 0,
@@ -106,13 +106,34 @@
       "backfill_pending": 0,
       "pending": 0,
       "deferred": 0,
-      "rejected": 0,
-      "status": "ok",
+      "rejected": 1,
+      "status": "warning",
       "error": null,
       "technical_status": "ok",
-      "coverage_status": "observed",
+      "coverage_status": "partial",
       "content_freshness": "older",
-      "editorial_outcome": "no_new_signals"
+      "editorial_outcome": "reconciled_existing_history",
+      "coverage_reason": "verified_visible_web_rows; native_http_blocked; site_wide_completeness_unverified",
+      "published_total": 180,
+      "last_observed_event_at": "2026-09-23",
+      "last_observed_publication_at": "2026-09-15",
+      "archived": 2515,
+      "rejection_reasons": {
+        "source_date_conflict_requires_review": 1
+      },
+      "reconciliation": {
+        "at": "2026-10-11T04:32:14.775607+00:00",
+        "mode": "official_web_observation_replay",
+        "native_live_validated": false
+      },
+      "counter_semantics": {
+        "discovered": "last native discovery run, including historical documents",
+        "published": "last native run publications; not history/feed stock",
+        "published_total": "persisted fiscalization history stock",
+        "pending": "current queue stock",
+        "rejected": "current evaluated rejection stock",
+        "archived": "queue outside 90-day horizon"
+      }
     },
     "superintendencia": {
       "name": "Superintendencia",
@@ -315,17 +336,38 @@
       "backfill_pending": 0,
       "pending": 0,
       "deferred": 0,
-      "rejected": 0,
-      "status": "ok",
+      "rejected": 15,
+      "status": "warning",
       "error": null,
       "technical_status": "ok",
-      "coverage_status": "observed",
+      "coverage_status": "partial",
       "content_freshness": "unknown",
-      "editorial_outcome": "no_new_signals"
+      "editorial_outcome": "related_normative_excluded",
+      "coverage_reason": "verified_visible_web_rows; native_http_blocked; site_wide_completeness_unverified",
+      "published_total": 0,
+      "last_observed_event_at": "2026-09-29",
+      "last_observed_publication_at": "2026-09-29",
+      "archived": 38,
+      "rejection_reasons": {
+        "related_normative_not_enforcement": 15
+      },
+      "reconciliation": {
+        "at": "2026-10-11T04:32:14.775607+00:00",
+        "mode": "official_web_observation_replay",
+        "native_live_validated": false
+      },
+      "counter_semantics": {
+        "discovered": "last native discovery run, including historical documents",
+        "published": "last native run publications; not history/feed stock",
+        "published_total": "persisted fiscalization history stock",
+        "pending": "current queue stock",
+        "rejected": "current evaluated rejection stock",
+        "archived": "queue outside 90-day horizon"
+      }
     },
     "prestadores_data": {
       "name": "Superintendencia de Salud · Intendencia de Prestadores",
-      "checked_at": "2026-10-09T16:33:24.290849+00:00",
+      "checked_at": "2026-10-10T22:24:58.258379+00:00",
       "last_signal_at": null,
       "discovered": 8,
       "new": 0,
@@ -344,7 +386,7 @@
     },
     "red_davila": {
       "name": "Red Dávila",
-      "checked_at": "2026-10-09T16:33:34.153673+00:00",
+      "checked_at": "2026-10-10T22:25:07.025584+00:00",
       "last_signal_at": null,
       "discovered": 5,
       "new": 0,
@@ -363,7 +405,7 @@
     },
     "andes_salud": {
       "name": "Andes Salud",
-      "checked_at": "2026-10-09T16:33:40.278136+00:00",
+      "checked_at": "2026-10-10T22:25:14.907821+00:00",
       "last_signal_at": null,
       "discovered": 5,
       "new": 0,
@@ -382,7 +424,7 @@
     },
     "clinicas_achs_salud": {
       "name": "Clínicas Achs Salud",
-      "checked_at": "2026-10-09T16:33:44.193625+00:00",
+      "checked_at": "2026-10-10T22:25:19.266882+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -401,7 +443,7 @@
     },
     "achs_seguro_laboral": {
       "name": "Achs Seguro Laboral",
-      "checked_at": "2026-10-09T16:33:47.436576+00:00",
+      "checked_at": "2026-10-10T22:25:23.401038+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -420,7 +462,7 @@
     },
     "mutual_seguridad": {
       "name": "Mutual de Seguridad CChC",
-      "checked_at": "2026-10-09T16:33:47.675654+00:00",
+      "checked_at": "2026-10-10T22:25:23.787318+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -439,7 +481,7 @@
     },
     "ist": {
       "name": "Instituto de Seguridad del Trabajo (IST)",
-      "checked_at": "2026-10-09T16:33:58.439894+00:00",
+      "checked_at": "2026-10-10T22:25:41.265782+00:00",
       "last_signal_at": null,
       "discovered": 3,
       "new": 0,
@@ -458,7 +500,7 @@
     },
     "pulso_latercera": {
       "name": "Pulso / La Tercera",
-      "checked_at": "2026-10-09T16:34:00.274780+00:00",
+      "checked_at": "2026-10-10T22:25:43.933385+00:00",
       "last_signal_at": null,
       "discovered": 5,
       "new": 0,
@@ -514,5 +556,5 @@
       "editorial_outcome": "pending"
     }
   },
-  "generated_at": "2026-10-10T22:24:44.409620+00:00"
+  "generated_at": "2026-10-10T22:25:43.933396+00:00"
 }

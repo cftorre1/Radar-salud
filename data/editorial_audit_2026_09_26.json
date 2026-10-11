@@ -152,7 +152,9 @@
       "kind": "fiscalizacion",
       "source": "Superintendencia de Salud",
       "event_date": "2026-09-15",
-      "verdict": ["ajustar_por_que_importa"],
+      "verdict": [
+        "ajustar_por_que_importa"
+      ],
       "current": {
         "title": "Pulso de sanciones a Prestadores · últimos 30 días",
         "summary": "3 sanciones a Prestadores en 30 días. Entre ellas: Clínica Los Carrera · 70 UF · cheque en garantía.",
@@ -161,10 +163,16 @@
       "proposed": {
         "title": null,
         "summary": null,
-        "why": "Resume tres resoluciones históricas incorporadas al período; no representa sanciones detectadas en LIVE."
+        "why": "Resume tres resoluciones publicadas el 15 de septiembre, con emisiones del 3 y 8 de septiembre; no son sanciones detectadas en LIVE."
       },
       "rationale": "La utilidad ejecutiva debe distinguir el backfill documental de una alerta nueva para evitar una falsa sensación de inmediatez.",
-      "evidence_flag": "0 sanciones LIVE y 3 BACKFILL; mantener esta procedencia visible."
+      "evidence_flag": "0 sanciones LIVE y 3 BACKFILL; mantener esta procedencia visible.",
+      "superseded_proposed": {
+        "title": null,
+        "summary": null,
+        "why": "Resume tres resoluciones históricas incorporadas al período; no representa sanciones detectadas en LIVE."
+      },
+      "review_revision": "fiscalization_dates_2026_10_11"
     },
     {
       "id": "https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion",

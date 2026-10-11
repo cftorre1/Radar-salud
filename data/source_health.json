@@ -98,7 +98,7 @@
     "superintendencia_fiscalizacion": {
       "name": "Superintendencia Fiscalizacion",
       "checked_at": "2026-10-10T22:24:44.395005+00:00",
-      "last_signal_at": "2025-10-24",
+      "last_signal_at": "2026-09-08",
       "discovered": 2696,
       "new": 0,
       "published": 0,
@@ -106,13 +106,34 @@
       "backfill_pending": 0,
       "pending": 0,
       "deferred": 0,
-      "rejected": 0,
-      "status": "ok",
+      "rejected": 1,
+      "status": "warning",
       "error": null,
       "technical_status": "ok",
-      "coverage_status": "observed",
+      "coverage_status": "partial",
       "content_freshness": "older",
-      "editorial_outcome": "no_new_signals"
+      "editorial_outcome": "reconciled_existing_history",
+      "coverage_reason": "verified_visible_web_rows; native_http_blocked; site_wide_completeness_unverified",
+      "published_total": 180,
+      "last_observed_event_at": "2026-09-23",
+      "last_observed_publication_at": "2026-09-15",
+      "archived": 2515,
+      "rejection_reasons": {
+        "source_date_conflict_requires_review": 1
+      },
+      "reconciliation": {
+        "at": "2026-10-11T04:32:14.775607+00:00",
+        "mode": "official_web_observation_replay",
+        "native_live_validated": false
+      },
+      "counter_semantics": {
+        "discovered": "last native discovery run, including historical documents",
+        "published": "last native run publications; not history/feed stock",
+        "published_total": "persisted fiscalization history stock",
+        "pending": "current queue stock",
+        "rejected": "current evaluated rejection stock",
+        "archived": "queue outside 90-day horizon"
+      }
     },
     "superintendencia": {
       "name": "Superintendencia",
@@ -315,13 +336,34 @@
       "backfill_pending": 0,
       "pending": 0,
       "deferred": 0,
-      "rejected": 0,
-      "status": "ok",
+      "rejected": 15,
+      "status": "warning",
       "error": null,
       "technical_status": "ok",
-      "coverage_status": "observed",
+      "coverage_status": "partial",
       "content_freshness": "unknown",
-      "editorial_outcome": "no_new_signals"
+      "editorial_outcome": "related_normative_excluded",
+      "coverage_reason": "verified_visible_web_rows; native_http_blocked; site_wide_completeness_unverified",
+      "published_total": 0,
+      "last_observed_event_at": "2026-09-29",
+      "last_observed_publication_at": "2026-09-29",
+      "archived": 38,
+      "rejection_reasons": {
+        "related_normative_not_enforcement": 15
+      },
+      "reconciliation": {
+        "at": "2026-10-11T04:32:14.775607+00:00",
+        "mode": "official_web_observation_replay",
+        "native_live_validated": false
+      },
+      "counter_semantics": {
+        "discovered": "last native discovery run, including historical documents",
+        "published": "last native run publications; not history/feed stock",
+        "published_total": "persisted fiscalization history stock",
+        "pending": "current queue stock",
+        "rejected": "current evaluated rejection stock",
+        "archived": "queue outside 90-day horizon"
+      }
     },
     "prestadores_data": {
       "name": "Superintendencia de Salud · Intendencia de Prestadores",
