@@ -141,6 +141,34 @@ prompt, retain its incident, and automate the missing pickup or recovery path.
 
 ## Current evidence and exact continuation
 
+The complete seventeen-commit infrastructure payload was explicitly approved
+and published on main as `b6794bf` at 2026-10-11T05:28:53Z. Push-triggered
+controller `38114913138` dispatched all six families concurrently. Canonical
+state recorded six distinct claims and renewable minute heartbeats. The first
+episode ended in six evidenced blockers, not source repairs or product closures;
+completion-triggered controllers did not credit their green conclusions.
+
+An independent observation job now publishes pinned queue/PMO projections and
+deduplicated learning incidents on `autopilot-state`, preserving canonical
+approvals and product refs. Observer or diagnostic failure cannot block the
+controller's repair matrix. Actions metadata and unknown owner-prompt coverage
+are explicit; these observations do not count as material progress.
+
+The separate `lease-heartbeat-v1` canary performs one bounded hosted fault
+injection with actual UTC time: it acquires an isolated lease, deliberately omits
+the heartbeat, and waits for a later controller observation to detect STALLED,
+reclaim a new generation and reject the old token. Its immutable proof is under
+`data/autopilot/evidence/hosted_canary_lease-heartbeat-v1_*`. It never modifies
+`control_v2` or source tasks and never earns useful-progress or source-LIVE credit.
+Unit clocks and offline transport replays are expressly not hosted proof.
+
+Current hosted source blockers include missing acceptance manifests and scoped
+runtime failures. The original normative `11 >= 12` failure remains intact. The
+full-source diagnostic was also truncated before parsing, hiding its JSON marker;
+the corrective executor parses structured evidence before bounding human-readable
+output. The relevant executor revision must change before that infrastructure
+blocker is retried, preserving failure history and per-input retry limits.
+
 Use `docs/AUTONOMY_CHECKPOINTS.md` and the committed evidence report for directed
 test results. The normative test was rerun at `24d4c1a…` and fails `11 >= 12`; its
 contract remains intact. The managed cloud allows package/Git hosts but not the

@@ -400,3 +400,26 @@ Next hypothesis: bounded source evidence must survive log truncation, and a
 corrected executor must automatically retry an infrastructure-blocked task when
 its relevant executor implementation changes. Hosted four-hour acceptance remains
 NOT_PROVEN; the owner prompt-event observer is still unavailable.
+## 20. Observe independently and exercise real heartbeat failure safely
+
+The observer runs as a separate job after planning. Its failure cannot suppress
+six-family dispatch. It pins Git queue/ledger blobs, infrastructure and staging
+SHAs, reads fresh canonical state inside CAS, publishes queue/PMO projections and
+deduplicated learning records, and leaves approvals, material events and product
+refs intact. Work/chat owner followups remain unknown, so neither green Actions
+nor empty counters can validate four-hour acceptance.
+
+The heartbeat canary uses the existing engine/store in a separate namespace and
+a fixed single episode. A real later observation must detect the omitted
+heartbeat, reclaim a new generation and reject the old token. It labels every
+record as infrastructure fault injection and excludes those records from useful
+work and source LIVE evidence. Terminal calls validate immutable proof and do
+not write again.
+
+Directed validation: fifteen canary tests, including actual bare-Git conflict
+replay, preserved product/live control, bounded episode and environment guards;
+observer tests cover fresh CAS replay, projections, token hashing and truthful
+owner/acceptance limitations. Actionlint validates the independent job wiring.
+Next hypothesis: the first real hosted canary reaches STALLED after at least
+three actual minutes and publishes a fenced recovery proof while ordinary repair
+families continue independently.

@@ -88,3 +88,34 @@ jobs:
       candidate_commit: ${{ matrix.candidate_commit }}
       candidate_branch: ${{ matrix.candidate_branch }}
     secrets: inherit
+  observe:
+    needs: control
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    concurrency:
+      group: alicanto-autonomy-observation
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          path: infrastructure
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+          path: candidate
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Persist pinned queue, PMO and learning observations
+        run: python infrastructure/scripts/autonomy_observation.py --infrastructure infrastructure --workspace candidate --report artifacts/autonomy-observation.json
+      - name: Observe isolated bounded heartbeat fault injection
+        if: always()
+        run: python infrastructure/scripts/autonomy_hosted_canary.py --infrastructure infrastructure --report artifacts/hosted-canary.json --version lease-heartbeat-v1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autonomy-observation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts
