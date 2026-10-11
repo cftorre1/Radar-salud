@@ -286,20 +286,41 @@ def execute(args):
     queue = queue_for(workspace, args.failure_json)
     store = store_for(args)
     owner = os.environ.get("GITHUB_RUN_ID", "local") + "-" + os.environ.get("GITHUB_RUN_ATTEMPT", "1") + "-" + args.family
+    run_url = "https://github.com/" + os.environ.get("GITHUB_REPOSITORY", "cftorre1/Radar-salud") + "/actions/runs/" + os.environ.get("GITHUB_RUN_ID", "local")
     operation = uuid.uuid4().hex
     def acquire(snapshot):
         previous = initial_state(snapshot)
         effective_queue = overlay_queue(queue, previous,
             integrated_candidate_commits=integrated_candidates(workspace, queue, previous))
         state, lease = engine.claim(previous, effective_queue, args.family, owner, now())
-        writes = state_write(state, {"operation_id": operation, "kind": "pickup", "lease": lease, "at": now()}) if lease else state_write(state)
         if lease:
+            writes = state_write(state, {"operation_id": operation, "kind": "pickup", "lease": lease, "at": now()})
             lease = {**lease, "_queue_task": next(t for t in effective_queue["tasks"] if t["id"] == lease["task_id"])}
-        return Mutation(writes, lease)
+            return Mutation(writes, {"lease": lease})
+        family_tasks = [{"task_id": task["id"], "status": task["status"],
+                         "reason": task.get("reason"),
+                         "awaiting_dependencies": task.get("awaiting_dependencies", False)}
+                        for task in sorted(state["tasks"].values(), key=lambda task: task["id"])
+                        if task.get("family") == args.family and task.get("queue_status") in engine.APPROVED]
+        statuses = {task["status"] for task in family_tasks}
+        reason = ("no_approved_task_for_family" if not family_tasks else
+                  "family_already_leased" if "RUNNING" in statuses else
+                  "family_awaiting_dependencies" if any(task["awaiting_dependencies"] for task in family_tasks) else
+                  "family_blocked" if statuses == {"BLOCKED"} else
+                  "family_tasks_closed" if statuses == {"CLOSED"} else "family_not_executable")
+        report = {"family": args.family, "status": "NO_EXECUTABLE_TASK", "reason": reason,
+                  "family_tasks": family_tasks, "observed_state_commit": snapshot.commit,
+                  "input_sha": queue["input_sha"], "run_id": owner, "run_url": run_url,
+                  "generated_at": now(), "changed_paths": [], "material_progress": False}
+        evidence = {"operation_id": operation, "kind": "worker_observation", "report": report}
+        return Mutation(state_write(state, evidence), {"lease": None, "report": report})
     result = store.transact(acquire, message="autonomy: atomically lease " + args.family)
-    lease = result.value
+    lease = result.value["lease"]
     if not lease:
-        print(encode({"family": args.family, "status": "NO_EXECUTABLE_TASK"}))
+        report = {**result.value["report"], "state_commit": result.commit}
+        Path(args.report).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.report).write_text(encode(report))
+        print(encode(report))
         return
     task = lease.pop("_queue_task")
     task = {**task, **lease, "pickup_commit": result.commit}
@@ -381,7 +402,7 @@ def execute(args):
         thread.join(timeout=10)
     report["input_sha"] = lease["input_sha"]
     report["run_id"] = owner
-    report["run_url"] = "https://github.com/" + os.environ.get("GITHUB_REPOSITORY", "cftorre1/Radar-salud") + "/actions/runs/" + os.environ.get("GITHUB_RUN_ID", "local")
+    report["run_url"] = run_url
     evidence = {"operation_id": uuid.uuid4().hex, "kind": "worker_result", "at": now(), "report": report}
     def complete(snapshot):
         state = engine.finish(snapshot.read_json(STATE, {}), lease["task_id"], lease["token"], report, now())

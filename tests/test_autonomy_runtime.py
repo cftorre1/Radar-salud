@@ -447,6 +447,60 @@ Path(a.report).write_text(json.dumps(report))
         evidence = [json.loads(self.remote_show("autopilot-state", path)) for path in evidence_paths]
         self.assertEqual({row["kind"] for row in evidence}, {"pickup", "worker_result"})
 
+    def test_worker_without_approved_family_persists_report_without_material_credit(self):
+        before_refs = self.product_refs()
+        observed_commit = self.git("--git-dir", str(self.remote), "rev-parse", "autopilot-state")
+        report = self.invoke("execute", "mutualities")
+        self.assertEqual(report, json.loads(self.report.read_text()))
+        self.assertEqual(report["status"], "NO_EXECUTABLE_TASK")
+        self.assertEqual(report["reason"], "no_approved_task_for_family")
+        self.assertEqual(report["family"], "mutualities")
+        self.assertEqual(report["run_url"], "https://github.com/cftorre1/Radar-salud/actions/runs/123")
+        self.assertEqual(report["observed_state_commit"], observed_commit)
+        self.assertEqual(report["state_commit"], self.git("--git-dir", str(self.remote), "rev-parse", "autopilot-state"))
+        self.assertFalse(report["material_progress"])
+        self.assertEqual(report["changed_paths"], [])
+        self.assertEqual(self.state()["material_events"], [])
+        self.assertEqual(self.state()["lease_events"], [])
+        self.assertEqual(self.product_refs(), before_refs)
+        paths = self.git("--git-dir", str(self.remote), "ls-tree", "-r", "--name-only",
+                         "autopilot-state", "data/autopilot/evidence").splitlines()
+        self.assertEqual(len(paths), 1)
+        evidence = json.loads(self.remote_show("autopilot-state", paths[0]))
+        self.assertEqual(evidence["kind"], "worker_observation")
+        self.assertEqual(evidence["report"]["observed_state_commit"], observed_commit)
+
+    def test_worker_without_available_lease_reports_existing_owner_and_preserves_task(self):
+        store = runtime.GitStateStore(repository=self.workspace, initial_backoff=0)
+        queue = runtime.queue_for(self.workspace)
+        def acquire(snapshot):
+            state, lease = runtime.engine.claim(runtime.initial_state(snapshot), queue,
+                                                 "media", "other-worker", runtime.now())
+            return runtime.Mutation(runtime.state_write(state), lease)
+        lease = store.transact(acquire).value
+        before = self.state()
+        report = self.invoke("execute", "media")
+        self.assertEqual(report["status"], "NO_EXECUTABLE_TASK")
+        self.assertEqual(report["reason"], "family_already_leased")
+        self.assertEqual(report["family_tasks"], [{"task_id": MEDIA, "status": "RUNNING",
+                                                   "reason": None, "awaiting_dependencies": False}])
+        self.assertEqual(self.state()["tasks"][MEDIA], before["tasks"][MEDIA])
+        self.assertEqual(self.state()["tasks"][MEDIA]["lease"]["token"], lease["token"])
+        self.assertEqual(self.state()["lease_events"], before["lease_events"])
+        self.assertEqual(self.state()["material_events"], [])
+        self.assertEqual(self.state()["tasks"][PUBLIC]["status"], "READY")
+
+    def test_repeated_blocked_worker_report_never_counts_an_identical_blocker_as_progress(self):
+        self.install_runner("blocker")
+        self.invoke("execute", "media")
+        before = self.state()
+        report = self.invoke("execute", "media")
+        self.assertEqual(report["reason"], "family_blocked")
+        self.assertEqual(report["family_tasks"][0]["status"], "BLOCKED")
+        self.assertFalse(report["material_progress"])
+        self.assertEqual(self.state()["material_events"], before["material_events"])
+        self.assertEqual(self.state()["lease_events"], before["lease_events"])
+
     def test_blocker_finishes_lease_and_next_independent_pickup_is_transition(self):
         self.install_runner("blocker")
         self.invoke("execute", "media")
