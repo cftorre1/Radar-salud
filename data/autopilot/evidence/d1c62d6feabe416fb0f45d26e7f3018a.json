@@ -1,0 +1,125 @@
+{
+  "acceptance": {
+    "metrics": {
+      "autonomous_pickups": 19,
+      "material_event_count": 23,
+      "max_material_gap_seconds": 2173.162637,
+      "mode": "live",
+      "observed_seconds": 5661.967164,
+      "original_started_at": "2026-10-11T05:29:46.231497Z",
+      "owner_observation_verified": false,
+      "owner_prompts": 0,
+      "owner_restarts": 0,
+      "total_elapsed_seconds": 5661.967164,
+      "window_started_at": "2026-10-11T05:29:46.231497Z"
+    },
+    "observed_until": "2026-10-11T07:04:08.198661Z",
+    "reasons": [
+      "four_real_wall_hours_not_observed",
+      "owner_intervention_observation_not_verified",
+      "durable_verified_mutation_not_observed",
+      "real_failure_verified_repair_not_observed",
+      "material_progress_gap_exceeded_30m"
+    ],
+    "status": "NOT_PROVEN"
+  },
+  "candidate_reviews": [],
+  "families": {
+    "editorial": {
+      "evidence_revision": "b0dbdad905f55972c1d722b7e89bade577979f5e11737b15ec280551cae3282d",
+      "failure": null,
+      "family": "editorial",
+      "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+      "reason": "no_material_progress_30m",
+      "task_id": "editorial_repair_lane_2026_10_11"
+    },
+    "fiscalization": {
+      "evidence_revision": "2c92af3b8a8b8319366d819aa4f039a6c8016ccdf6e7ef4d2139a03dc289e8ae",
+      "failure": null,
+      "family": "fiscalization",
+      "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+      "reason": "no_material_progress_30m",
+      "task_id": "source_repair_fiscalization_lane_2026_10_11"
+    },
+    "media": {
+      "evidence_revision": "2e6e2de74f7ab074a36c2453dc534f58b6f34199d15500ff0a3a774df58b617d",
+      "failure": null,
+      "family": "media",
+      "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+      "reason": "no_material_progress_30m",
+      "task_id": "source_repair_media_lane_2026_10_11"
+    },
+    "mutualities": {
+      "evidence_revision": "9400bdb61e0ff4ae153d091b6fb186e2d9aacc191e19721fc460d6dcd51f9d8a",
+      "failure": null,
+      "family": "mutualities",
+      "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+      "reason": "no_material_progress_30m",
+      "task_id": "source_repair_mutualities_lane_2026_10_11"
+    },
+    "public_data": {
+      "evidence_revision": "7315d917f1f7476343d24d1c5226e2a60e74c5b8c619e97916ce0ddf60c1f149",
+      "failure": null,
+      "family": "public_data",
+      "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+      "reason": "no_material_progress_30m",
+      "task_id": "source_repair_public_data_lane_2026_10_11"
+    },
+    "staging_qa": {
+      "evidence_revision": "b6cba97019c0dbe323e14c53d24b386c414f4d6e15728eb3f822dde0f5a7abdf",
+      "failure": {
+        "conclusion": "failure",
+        "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+        "head_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+        "run_id": 38116961282,
+        "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116961282"
+      },
+      "family": "staging_qa",
+      "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+      "reason": "no_material_progress_30m",
+      "task_id": "staging_qa_failed_run_38116961282"
+    }
+  },
+  "generated_at": "2026-10-11T07:04:08.198661+00:00",
+  "input_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+  "kind": "controller_observation",
+  "operation_id": "d1c62d6feabe416fb0f45d26e7f3018a",
+  "stalled_tasks": [
+    {
+      "family": "editorial",
+      "reason": "no_material_progress_30m",
+      "recovery_reclaims": 1,
+      "task_id": "editorial_repair_lane_2026_10_11"
+    },
+    {
+      "family": "fiscalization",
+      "reason": "no_material_progress_30m",
+      "recovery_reclaims": 0,
+      "task_id": "source_repair_fiscalization_lane_2026_10_11"
+    },
+    {
+      "family": "media",
+      "reason": "no_material_progress_30m",
+      "recovery_reclaims": 0,
+      "task_id": "source_repair_media_lane_2026_10_11"
+    },
+    {
+      "family": "mutualities",
+      "reason": "no_material_progress_30m",
+      "recovery_reclaims": 0,
+      "task_id": "source_repair_mutualities_lane_2026_10_11"
+    },
+    {
+      "family": "public_data",
+      "reason": "no_material_progress_30m",
+      "recovery_reclaims": 0,
+      "task_id": "source_repair_public_data_lane_2026_10_11"
+    },
+    {
+      "family": "staging_qa",
+      "reason": "no_material_progress_30m",
+      "recovery_reclaims": 0,
+      "task_id": "staging_qa_failed_run_38116961282"
+    }
+  ]
+}
