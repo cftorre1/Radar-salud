@@ -133,3 +133,8 @@ def test_data_external_and_navigation_links_are_ignored():
     ))
     with pytest.raises(FonasaDiscoveryError, match="no verifiable publication"):
         scout.discover()
+
+
+def test_malformed_external_link_does_not_hide_official_newsroom_candidate():
+    html = '<a href="https://[bad/">Artículo externo mal formado</a>' + LISTING
+    assert [row.url for row in FonasaNewsScout().discover_from_html(html)] == [URL]

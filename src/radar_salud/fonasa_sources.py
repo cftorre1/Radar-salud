@@ -15,7 +15,7 @@ from urllib.parse import urljoin, urlsplit
 from zoneinfo import ZoneInfo
 
 from .models import RawItem
-from .scouts import fetch_html
+from .public_source_transport import fetch_official_html
 
 
 NEWS_HOSTS = frozenset(("www.fonasa.gob.cl", "fonasa.gob.cl"))
@@ -23,9 +23,12 @@ DATA_HOSTS = frozenset(("datosabiertos.fonasa.cl", "www.datosabiertos.fonasa.cl"
 
 
 def _official(url: str, hosts: frozenset[str]) -> bool:
-    parsed = urlsplit(url)
-    return (parsed.scheme == "https" and parsed.netloc in hosts
-            and not parsed.username and not parsed.password)
+    try:
+        parsed = urlsplit(url)
+        return (parsed.scheme == "https" and parsed.netloc in hosts
+                and not parsed.username and not parsed.password)
+    except (ValueError, TypeError):
+        return False
 
 
 def _publication_date(value: str, today: date | None = None) -> str | None:
@@ -147,7 +150,7 @@ class FonasaNewsScout:
     PAGE = "https://www.fonasa.gob.cl/noticias/"
 
     def __init__(self, fetcher: Callable[[str], str] | None = None):
-        self.fetcher = fetcher or fetch_html
+        self.fetcher = fetcher or (lambda url: fetch_official_html(url, self.SOURCE_SLUG))
         self.diagnostics: list[dict] = []
 
     def discover_from_html(self, html):
@@ -156,7 +159,10 @@ class FonasaNewsScout:
         result = []
         seen = set()
         for href, title in page.links:
-            url = urljoin(self.PAGE, href)
+            try:
+                url = urljoin(self.PAGE, href)
+            except ValueError:
+                continue
             if len(title) < 18 or not _official(url, NEWS_HOSTS):
                 continue
             parsed = urlsplit(url)
@@ -216,7 +222,7 @@ class FonasaDataHubScout:
     HOSTS = tuple(sorted(DATA_HOSTS))
 
     def __init__(self, fetcher: Callable[[str], str] | None = None):
-        self.fetcher = fetcher or fetch_html
+        self.fetcher = fetcher or (lambda url: fetch_official_html(url, self.SOURCE_SLUG))
         self.diagnostics: list[dict] = []
 
     def discover(self):
@@ -236,8 +242,11 @@ class FonasaDataHubScout:
                 continue
             candidates = 0
             for href, title in page.links:
-                url = urljoin(listing, href)
-                parsed = urlsplit(url)
+                try:
+                    url = urljoin(listing, href)
+                    parsed = urlsplit(url)
+                except ValueError:
+                    continue
                 path = parsed.path.lower()
                 if len(title) < 12 or not _official(url, DATA_HOSTS) or url in seen:
                     continue
