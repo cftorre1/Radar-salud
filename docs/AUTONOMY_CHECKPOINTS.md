@@ -270,3 +270,22 @@ confirmed its correction.
 
 Next hypothesis: hosted material events can retain meaningful code/content
 changes without treating recurring export/audit observations as useful progress.
+
+## 14. Observed owner continuity rather than empty counters
+
+Decision: Stage A requires a verified immutable owner observation covering the
+entire actual window in both GitHub Actions and owner prompt events. Empty
+restart/prompt arrays cannot attest zero intervention. Missing, partial, future,
+unsafe or unhashed observation evidence explicitly keeps acceptance NOT_PROVEN.
+No event collector or zero-prompt attestation is fabricated. A trusted Work/chat
+event source remains an acceptance instrumentation blocker, not a repair-lane
+blocker.
+
+Directed validation: 58 engine tests passed, including five new observation
+tests and negative subcases. Clock-injected positive fixtures include explicit
+test observations; they remain local test evidence. Live owner absence and
+four actual hours remain unproven.
+
+Next hypothesis: automatic GitHub pickup and real repair evidence can be
+observed after infrastructure publication while a trusted prompt-event observer
+provides the independent continuity proof required for Stage A.

@@ -718,7 +718,13 @@ class AutonomyEngineTests(unittest.TestCase):
 class AcceptanceTests(unittest.TestCase):
     def observed_state(self, mode="live"):
         state = {"acceptance": {"mode": mode, "started_at": BASE.isoformat(),
-                                "owner_restarts": [], "owner_prompts": []},
+                                "owner_restarts": [], "owner_prompts": [],
+                                "owner_observation": {
+                                    "verified": True, "started_at": BASE.isoformat(),
+                                    "observed_until": (BASE + timedelta(hours=4)).isoformat(),
+                                    "channels": ["github_actions", "owner_prompt_events"],
+                                    "evidence": {"path": "data/autopilot/evidence/owner-window.json",
+                                                 "sha256": "e" * 64}}},
                  "material_events": [], "lease_events": [{"kind": "pickup", "autonomous": True,
                                                            "at": BASE.isoformat()}]}
         for minute in range(0, 241, 20):
@@ -736,6 +742,69 @@ class AcceptanceTests(unittest.TestCase):
         result = evaluate_acceptance(self.observed_state(), end, wall_now=end)
         self.assertEqual(result["status"], "PASS")
         self.assertEqual(result["metrics"]["max_material_gap_seconds"], 1200)
+        self.assertTrue(result["metrics"]["owner_observation_verified"])
+
+    def test_empty_owner_lists_without_observation_do_not_prove_absence(self):
+        state = self.observed_state()
+        del state["acceptance"]["owner_observation"]
+        end = BASE + timedelta(hours=4)
+        result = evaluate_acceptance(state, end, wall_now=end)
+        self.assertEqual(result["status"], "NOT_PROVEN")
+        self.assertEqual(result["reasons"], ["owner_intervention_observation_not_verified"])
+        self.assertFalse(result["metrics"]["owner_observation_verified"])
+
+    def test_actions_only_or_unverified_owner_observation_does_not_pass(self):
+        end = BASE + timedelta(hours=4)
+        for patch in ({"channels": ["github_actions"]},
+                      {"channels": ["owner_prompt_events"]},
+                      {"channels": "github_actions owner_prompt_events"},
+                      {"verified": False}, {"verified": 1}):
+            with self.subTest(patch=patch):
+                state = self.observed_state()
+                state["acceptance"]["owner_observation"].update(patch)
+                result = evaluate_acceptance(state, end, wall_now=end)
+                self.assertEqual(result["status"], "NOT_PROVEN")
+                self.assertIn("owner_intervention_observation_not_verified", result["reasons"])
+
+    def test_owner_observation_must_cover_the_entire_real_window(self):
+        end = BASE + timedelta(hours=4)
+        for patch in ({"started_at": (BASE + timedelta(seconds=1)).isoformat()},
+                      {"observed_until": (end - timedelta(seconds=1)).isoformat()},
+                      {"observed_until": (end + timedelta(seconds=1)).isoformat()},
+                      {"started_at": (end + timedelta(seconds=1)).isoformat()}):
+            with self.subTest(patch=patch):
+                state = self.observed_state()
+                state["acceptance"]["owner_observation"].update(patch)
+                result = evaluate_acceptance(state, end, wall_now=end)
+                self.assertEqual(result["status"], "NOT_PROVEN")
+                self.assertIn("owner_intervention_observation_not_verified", result["reasons"])
+
+    def test_owner_observation_must_have_immutable_evidence_binding(self):
+        end = BASE + timedelta(hours=4)
+        for evidence in (None, {},
+                         {"path": "data/autopilot/evidence/owner.json", "sha256": "short"},
+                         {"path": "data/autopilot/owner_latest.json", "sha256": "e" * 64},
+                         {"path": "/data/autopilot/evidence/owner.json", "sha256": "e" * 64},
+                         {"path": "data/autopilot/evidence/../owner.json", "sha256": "e" * 64},
+                         {"path": "data/autopilot/evidence/", "sha256": "e" * 64},
+                         {"path": "data/autopilot/evidence/owner\\window.json", "sha256": "e" * 64}):
+            with self.subTest(evidence=evidence):
+                state = self.observed_state()
+                state["acceptance"]["owner_observation"]["evidence"] = evidence
+                result = evaluate_acceptance(state, end, wall_now=end)
+                self.assertEqual(result["status"], "NOT_PROVEN")
+                self.assertIn("owner_intervention_observation_not_verified", result["reasons"])
+
+    def test_malformed_owner_observation_times_fail_closed(self):
+        end = BASE + timedelta(hours=4)
+        for patch in ({"started_at": "invalid"}, {"observed_until": None},
+                      {"observed_until": "2026-10-10T04:00:00"}):
+            with self.subTest(patch=patch):
+                state = self.observed_state()
+                state["acceptance"]["owner_observation"].update(patch)
+                result = evaluate_acceptance(state, end, wall_now=end)
+                self.assertEqual(result["status"], "NOT_PROVEN")
+                self.assertIn("owner_intervention_observation_not_verified", result["reasons"])
 
     def test_four_hour_block_only_window_remains_material_but_does_not_pass_stage_a(self):
         end = BASE + timedelta(hours=4)

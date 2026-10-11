@@ -724,11 +724,44 @@ def finish(state, task_id, token, report, now):
     return result
 
 
+def _owner_observation_verified(observation, start, end, real_now):
+    """Require a verified, evidence-bound observation across both owner channels.
+
+    The observation producer must verify the immutable document and its hash.
+    This pure reducer checks the attestation contract; empty event lists alone
+    cannot prove that owner interventions were observed and absent.
+    """
+    if not isinstance(observation, dict) or observation.get("verified") is not True:
+        return False
+    channels = observation.get("channels")
+    if (not isinstance(channels, list) or not all(isinstance(item, str) for item in channels)
+            or not {"github_actions", "owner_prompt_events"}.issubset(channels)):
+        return False
+    evidence = observation.get("evidence")
+    if not isinstance(evidence, dict) or not HASH_RE.fullmatch(str(evidence.get("sha256", ""))):
+        return False
+    path = evidence.get("path")
+    prefix = "data/autopilot/evidence/"
+    if not isinstance(path, str) or not path.startswith(prefix):
+        return False
+    components = path[len(prefix):].split("/")
+    if any(not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*", part)
+           or part in {".", ".."} for part in components):
+        return False
+    try:
+        observed_start = _time(observation["started_at"])
+        observed_until = _time(observation["observed_until"])
+    except (KeyError, TypeError, ValueError, OverflowError):
+        return False
+    return observed_start <= start <= end <= observed_until <= real_now
+
+
 def evaluate_acceptance(state, now, *, wall_now=None):
     """Evaluate Stage A using real elapsed time; simulation never yields PASS.
 
     ``wall_now`` is injectable only for tests. The production caller must omit
-    it. Material gaps include both edges of the observation window.
+    it. Material gaps include both edges of the observation window. Absence of
+    owner intervention requires verified coverage of Actions and owner prompts.
     """
     now = _time(now)
     real_now = _time(wall_now) if wall_now is not None else datetime.now(timezone.utc)
@@ -743,6 +776,10 @@ def evaluate_acceptance(state, now, *, wall_now=None):
         reasons.append("observation_time_is_in_the_future")
     if elapsed < 4 * 3600:
         reasons.append("four_real_wall_hours_not_observed")
+    owner_observation_verified = _owner_observation_verified(
+        acceptance.get("owner_observation"), start, end, real_now)
+    if not owner_observation_verified:
+        reasons.append("owner_intervention_observation_not_verified")
     if acceptance.get("owner_restarts") or acceptance.get("owner_prompts"):
         reasons.append("owner_restart_or_followup_in_window")
     events = [e for e in state.get("material_events", []) if start <= _time(e["at"]) <= end]
@@ -764,5 +801,6 @@ def evaluate_acceptance(state, now, *, wall_now=None):
             "metrics": {"observed_seconds": elapsed, "material_event_count": len(events),
                         "autonomous_pickups": len(pickups), "max_material_gap_seconds": max_gap,
                         "owner_restarts": len(acceptance.get("owner_restarts", [])),
+                        "owner_observation_verified": owner_observation_verified,
                         "mode": acceptance.get("mode")},
             "observed_until": _iso(end)}
