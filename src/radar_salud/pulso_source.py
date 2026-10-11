@@ -660,6 +660,8 @@ def _public_feed_url(kind, name, offset, deployment=None):
 def parse_public_feed(value):
     """Parse the publicly rendered ANS inventory without a title/topic gate."""
     value = json.loads(value) if isinstance(value, str) else value
+    if isinstance(value, dict) and isinstance(value.get("data"), dict):
+        value = value["data"]
     if not isinstance(value, dict) or not isinstance(value.get("content_elements"), list):
         raise ValueError("unexpected_public_feed_document")
     entries = []

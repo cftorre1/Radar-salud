@@ -416,3 +416,9 @@ def test_default_discovery_cache_is_in_durable_daily_state(tmp_path, monkeypatch
         return html_article(value)
     discover_pulso(loader, [], today=TODAY, include_listings=False, include_public_feeds=False)
     assert (tmp_path/'data/state/pulso_discovery_cache.json').exists()
+
+
+def test_public_feed_accepts_frontend_data_envelope():
+    from radar_salud.pulso_source import parse_public_feed
+    entries, count, next_cursor = parse_public_feed(json.dumps({'data': json.loads(ans_feed())}))
+    assert len(entries) == 24 and count == 10000 and next_cursor == 24
