@@ -265,8 +265,9 @@ def df_signal_from_assessment(raw,cfg,ai):
     row["evidence_maturity"]="media_reported"
     row["confirmation_policy"]="upgrade_same_signal_when_company_or_official_source_confirms"
     row["editorial_assessment"]=raw.metadata["editorial_assessment"]
-    for key in ("publication_date_source","publication_timestamp","publication_date_candidates","date_semantics",
-                "publication_date_conflict","publication_date_conflict_resolution"):
+    for key in ("publication_date_source","publication_timestamp","publication_label","publication_date_candidates","date_semantics",
+                "publication_date_conflict","publication_date_conflict_resolution","article_content_source",
+                "original_sha256","original_captured_at"):
         row[key]=raw.metadata.get(key)
     if "diario financiero" not in row["what_happened"].lower():
         row["what_happened"]="Según Diario Financiero, "+row["what_happened"]

@@ -346,3 +346,43 @@ def test_nonarticle_and_verified_nonhealth_rejections_do_not_require_fake_date(m
     raw.metadata = {'page_text': 'El banco compra oficinas y amplía su negocio financiero. ' * 10, 'publication_date_conflict': True}
     assert process_df(raw, DF_CFG) is None
     assert raw.metadata['rejection_reason'] == 'df_unrelated_to_health'
+
+
+def test_capture_defect_reaudit_withdraws_wrong_story_and_reopens_only_once(tmp_path):
+    from dataclasses import asdict
+    from radar_salud.df_recovery import repair_contaminated_evidence
+    queue = PendingQueue(tmp_path / 'q.json')
+    original = _raw(dated=True)
+    original.metadata['article_content_source'] = 'visible_article'
+    original.metadata['page_text'] += ' Recomendaciones sobre otro hospital.'
+    queue.discover('diario_financiero', [original], now=CAPTURE)
+    key = fingerprint(original)
+    queue.start(key);queue.finish(key, 'published', now=CAPTURE)
+    history = [{'source_url': URL, 'title': 'Otro hospital', 'editorial_assessment': {'score': 82}}]
+    corrected = _raw(dated=True)
+    corrected.metadata['article_content_source'] = 'df_primary_body'
+    changes = repair_contaminated_evidence(queue, [corrected], history, NOW)
+    assert changes[0]['status'] == 'pending'
+    assert queue.items[key]['recovery_observations'][-1]['before']['status'] == 'published'
+    assert history[0]['editorial_decision'] == 'reject'
+    assert history[0]['df_body_reaudit_observations'][0]['before']['title'] == 'Otro hospital'
+    assert repair_contaminated_evidence(queue, [corrected], history, NOW) == []
+    # A valid primary-text score rejection is editorial, not a capture defect.
+    queue.items[key]['status'] = 'rejected'
+    queue.items[key]['reason'] = 'media_score_below_72'
+    queue.items[key]['raw'] = asdict(corrected)
+    assert repair_contaminated_evidence(queue, [corrected], history, NOW) == []
+
+
+def test_capture_defect_reaudit_nonhealth_rejects_without_spending_ai(tmp_path):
+    from radar_salud.df_recovery import repair_contaminated_evidence
+    queue = PendingQueue(tmp_path / 'q.json')
+    original = _raw('Banco amplía oficinas', dated=True)
+    original.metadata['article_content_source'] = 'visible_article'
+    queue.discover('diario_financiero', [original], now=CAPTURE)
+    key = fingerprint(original);queue.finish(key, 'published', now=CAPTURE)
+    corrected = _raw('Banco amplía oficinas', dated=True)
+    corrected.metadata.update(article_content_source='df_primary_body', page_text='El banco amplía oficinas y compra negocios financieros. ' * 8)
+    changes = repair_contaminated_evidence(queue, [corrected], [], NOW)
+    assert changes[0]['reason'] == 'df_unrelated_to_health'
+    assert queue.items[key]['status'] == 'rejected'

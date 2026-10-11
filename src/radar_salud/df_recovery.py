@@ -73,3 +73,61 @@ def reconcile_existing(queue, raw, now, last_discovered_at, published_urls=()):
                 duplicate.update(status="superseded", reason="duplicate_df_url", duplicate_of=primary_key,
                                  updated_at=now.isoformat(), retry_at=None)
     return True
+
+
+def repair_contaminated_evidence(queue, originals, history, now):
+    """One-time, traced re-audit of decisions made with the old broad body parser.
+
+    Original assessments remain in recovery_observations and history review
+    snapshots. A score from another story is not a legitimate terminal verdict.
+    Hide affected publications until the real processor evaluates primary text.
+    """
+    from .df_media_gate import exclusion, material
+    from .public_source_pipeline import _health_relevance
+    from .pending_queue import beyond_backfill_horizon
+    by_url = {article_url(raw.url): raw for raw in originals}
+    decisions = []
+    for key, item in queue.items.items():
+        if item.get("source") != "diario_financiero" or item["status"] == "superseded":
+            continue
+        raw = by_url.get(article_url(item["raw"]["url"]))
+        if not raw or raw.metadata.get("fetch_error"):
+            continue
+        old = item["raw"].get("metadata", {})
+        affected = old.get("article_content_source") == "visible_article" or (
+            item["status"] == "rejected" and item.get("reason") == "processor_rejected" and not item["raw"].get("event_date"))
+        if not affected or old.get("df_body_reaudit_version"):
+            continue
+        _remember(item, now, "primary_body_capture_defect_reaudit")
+        enriched = asdict(raw)
+        enriched["title"] = item["raw"]["title"]
+        enriched["metadata"]["df_body_reaudit_version"] = 1
+        body = raw.metadata.get("page_text", "")
+        title = raw.metadata.get("article_title") or raw.title
+        reason = exclusion(raw)
+        if not reason and len(body) >= 160 and not _health_relevance(title, body):
+            reason = "df_unrelated_to_health"
+        if not reason and len(body) >= 160 and not material(title, body):
+            reason = "media_no_material_event"
+        if reason:
+            status = "rejected"
+            enriched["metadata"]["rejection_reason"] = reason
+        elif beyond_backfill_horizon(raw, now):
+            status, reason = "archived", "outside_90_day_backfill"
+        else:
+            status, reason = "pending", "df_primary_body_reassessment_required"
+        previous_status = item["status"]
+        item.update(raw=enriched, status=status, reason=reason, retry_at=None, updated_at=now.isoformat())
+        for row in history:
+            if article_url(row.get("source_url", "")) != article_url(raw.url):
+                continue
+            if previous_status == "published":
+                snapshot = deepcopy(row)
+                row.setdefault("df_body_reaudit_observations", []).append({"at": now.isoformat(), "before": snapshot})
+                row.update(editorial_decision="reject", feed_visibility=False,
+                           df_body_reaudit_reason=reason, df_body_reaudit_status=status)
+        decisions.append({"fingerprint": key, "url": raw.url, "previous_status": previous_status,
+                          "status": status, "reason": reason, "primary_body_characters": len(body),
+                          "original_sha256": raw.metadata.get("original_sha256")})
+    queue.save()
+    return decisions

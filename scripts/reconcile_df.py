@@ -19,7 +19,7 @@ from zoneinfo import ZoneInfo
 
 from radar_salud import engine_cli, source_scouts, public_source_pipeline
 from radar_salud.df_article import parse_df_article, article_url
-from radar_salud.history import load_history
+from radar_salud.history import load_history, save_history
 from radar_salud.models import RawItem
 from radar_salud.pending_queue import PendingQueue, atomic_json
 from radar_salud.scouts import fetch_html
@@ -43,6 +43,7 @@ def main():
     ap.add_argument("--reuse-originals", action="store_true",help="Replay previously captured originals; retain their original capture timestamps")
     ap.add_argument("--capture-fixtures", action="store_true",help="Save publisher markup samples for date/body regressions")
     ap.add_argument("--capture-only",action="store_true",help="Reconcile/capture without consuming an AI processing slot")
+    ap.add_argument("--repair-contaminated-bodies",action="store_true",help="Trace and re-evaluate old decisions based on unrelated recommendation text")
     args = ap.parse_args()
     root = Path(__file__).resolve().parents[1]
     branch = subprocess.check_output(["git", "branch", "--show-current"], cwd=root, text=True).strip()
@@ -74,7 +75,8 @@ def main():
             # Re-evaluate date/body with current code, preserve capture provenance.
             parsed=parse_df_article(html,url)
             report["originals"][url]={**original,"event_date":parsed["event_date"],
-                "evidence":{k:v for k,v in parsed["metadata"].items() if k!="page_text"},"replayed_by_sha":report["code_sha"]}
+                "evidence":{k:v for k,v in parsed["metadata"].items() if k!="page_text"},"replayed_by_sha":report["code_sha"],
+                "readable_characters":len(parsed["metadata"]["page_text"]),"article_excerpt":parsed["metadata"]["page_text"][:1200]}
     atomic_json(out, report)
     if args.capture_fixtures:
         samples={"df_san_carlos_real":"aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
@@ -170,6 +172,14 @@ def main():
                     {**evidence["metadata"], "discovered_from": "df_30_90_reconciliation"})
             except Exception: continue
         raw_items = list(by_url.values())
+        for raw in raw_items:
+            original=report["originals"].get(raw.url,{})
+            raw.metadata.update(original_sha256=original.get("sha256"),original_captured_at=original.get("captured_at"))
+        if args.repair_contaminated_bodies:
+            from radar_salud.df_recovery import repair_contaminated_evidence
+            report["body_reaudit"]=repair_contaminated_evidence(queue,raw_items,history,now)
+            save_history(root/"data/history/superintendencia_signals.json",history)
+            atomic_json(out,report)
         if raw_items:
             watermarks = json.loads((root / "data/state/discovery_watermarks.json").read_text())
             queue.discover("diario_financiero", raw_items, now=now, last_discovered_at=watermarks.get("diario_financiero"),
@@ -211,7 +221,10 @@ def main():
         date = original.get("event_date") or history_by_url.get(normalized, {}).get("event_date")
         if not date: date = next((e["event_date"] for e in entries if e["event_date"]), None)
         terminal_reject = next((e["reason"] for e in entries if e["status"] == "rejected" and e["reason"] != "processor_rejected"), None)
-        if normalized in feed_urls: disposition = "published_in_history_and_feed"
+        reviewed=history_by_url.get(normalized,{})
+        if reviewed.get("df_body_reaudit_status") and reviewed.get("editorial_decision")=="reject":
+            disposition="withdrawn_capture_defect:"+str(reviewed.get("df_body_reaudit_reason"))
+        elif normalized in feed_urls: disposition = "published_in_history_and_feed"
         elif normalized in history_by_url: disposition = "history_present_feed_curator_excluded"
         elif terminal_reject: disposition = "editorial_rejected:" + terminal_reject
         elif any(e["status"] == "retry" for e in entries): disposition = "technical_or_analysis_retry:" + str(next(e["reason"] for e in entries if e["status"] == "retry"))

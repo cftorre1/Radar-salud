@@ -122,6 +122,12 @@ def main():
             row=processor(processing_raw,cfg)
             if row:
                 row.update(detected_at=item["detected_at"],ingestion_mode=item["lane"])
+                if item["source"]=="diario_financiero":
+                    previous=next((s for s in history if s.get("source_url")==row.get("source_url")),{})
+                    if previous.get("df_body_reaudit_observations"):
+                        row.update(df_body_reaudit_observations=previous["df_body_reaudit_observations"],
+                                   df_body_reaudit_status="published_after_primary_body_reassessment",
+                                   editorial_decision="accept")
                 # Save output before terminal queue acknowledgement (crash safe replay).
                 history=merge_history(history,[row]);save_history(history_path,history)
                 produced[item["source"]].append(row)
