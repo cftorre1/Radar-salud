@@ -1,7 +1,7 @@
 {
   "version": "0.9.0",
-  "generated_at": "2026-10-11T17:51:19.595734+00:00",
-  "snapshot_at": "2026-10-11T17:51:18.481278+00:00",
+  "generated_at": "2026-10-11T18:08:34.055088+00:00",
+  "snapshot_at": "2026-10-11T18:08:32.805745+00:00",
   "published": 128,
   "queue": {
     "live_pending": 6,
@@ -697431,16 +697431,16 @@
   "iterations": [],
   "usage": {
     "calls": {
-      "2026-10": {
+      "2026-09": {
         "deep": {
-          "attempted": 14,
-          "successful": 14,
+          "attempted": 28,
+          "successful": 28,
           "failed": 0
         },
         "fast": {
-          "attempted": 479,
-          "successful": 479,
-          "failed": 0
+          "attempted": 124,
+          "successful": 82,
+          "failed": 42
         }
       },
       "occupational_recovery_2026_10": {
@@ -697483,16 +697483,16 @@
         "policy": "Unpromoted isolated branch: staging plus its own delta, shared writer lock; no staging/main writes",
         "phase_fast_limit": 30
       },
-      "2026-09": {
+      "2026-10": {
         "deep": {
-          "attempted": 28,
-          "successful": 28,
+          "attempted": 14,
+          "successful": 14,
           "failed": 0
         },
         "fast": {
-          "attempted": 124,
-          "successful": 82,
-          "failed": 42
+          "attempted": 479,
+          "successful": 479,
+          "failed": 0
         }
       }
     },
@@ -699241,7 +699241,7 @@
     ],
     "observed": {
       "development": {
-        "deployable_sha": "03bf998a4bb5840c84da6473666e932fbc5cedd9",
+        "deployable_sha": null,
         "blocked_task_count": 9,
         "active_task_count": 35,
         "test_pass_count": null
@@ -699273,8 +699273,8 @@
     }
   },
   "read_model": {
-    "generated_at": "2026-10-11T17:51:19.601354+00:00",
-    "queue_updated_at": "2026-10-11T15:07:30.832140+00:00",
+    "generated_at": "2026-10-11T18:08:34.059692+00:00",
+    "queue_updated_at": "2026-10-11T18:12:00+00:00",
     "queue_task_count": 86,
     "active_task_count": 35,
     "blocked_task_count": 9,
@@ -699283,7 +699283,7 @@
   "pmo": {
     "version": "beta-friday-2026-09-25",
     "target_date": "2026-09-25",
-    "candidate_sha": "03bf998a4bb5840c84da6473666e932fbc5cedd9",
+    "candidate_sha": null,
     "reference_staging_sha": "3433b3e26f4d76ea6ce0970015bc03e10fd85105",
     "production_reference_sha": "ea55bc7e084b54ff07cb25ea50e211186dfb1c63",
     "reference_deploy": {
