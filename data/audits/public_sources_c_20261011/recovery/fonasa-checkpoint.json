@@ -150,7 +150,8 @@
       }
     ],
     "stage": "proxy_connect",
-    "origin_tls_observed": false
+    "origin_tls_observed": false,
+    "final_confirmation_evidence": "codex-final-transport.json"
   },
   "github_actions": {
     "run": "https://github.com/cftorre1/Radar-salud/actions/runs/38115282340",
@@ -492,5 +493,28 @@
     "baseline_evidence": "stock-baseline.json"
   },
   "repair": "Scouts mantienen separación de newsroom y hub, validación de detalle, fechas y falla explícita; no se inventa URL vigente bajo403.",
-  "next_action": "Administrador web de FONASA: revisar el rechazo HTTP403 del frontal AWS ALB para GET público desde GitHub hospedado, habilitar acceso autorizado de monitoreo o entregar export oficial accesible y confirmar rutas canónicas de noticias; luego repetir esta Action."
+  "next_action": "Administrador web de FONASA: revisar el rechazo HTTP403 del frontal AWS ALB para GET público desde GitHub hospedado, habilitar acceso autorizado de monitoreo o entregar export oficial accesible y confirmar rutas canónicas de noticias; luego repetir esta Action.",
+  "final_confirmation_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117670184",
+  "final_native_error_details": {
+    "exception_chain": [
+      {
+        "type": "FonasaDiscoveryError"
+      },
+      {
+        "type": "HTTPError",
+        "http_status": 403,
+        "url": "https://www.fonasa.gob.cl/noticias/",
+        "reason": "Forbidden"
+      }
+    ],
+    "failure_signature": "FonasaDiscoveryError > HTTPError:403:Forbidden > HTTPError:HTTP Error 403: Forbidden",
+    "endpoint_failures": [
+      {
+        "url": "https://www.fonasa.gob.cl/noticias/",
+        "type": "HTTPError",
+        "reason": "HTTP Error 403: Forbidden"
+      }
+    ]
+  },
+  "final_native_checked_at": "2026-10-11T06:25:44.284665+00:00"
 }

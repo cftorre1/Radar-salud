@@ -1,8 +1,8 @@
 {
   "source": "deis",
   "outcome": "OPERATIVE_DEGRADED",
-  "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117181348",
-  "runtime_commit": "3d3a272218fd49a67c585fc901fb1950fb14d4b5",
+  "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117670184",
+  "runtime_commit": "55e31b1b7266d848b728faba11c9d6dad24c81f7",
   "verified_primary_html_sha256": "799dbf08981dc768a636edac5b8769f864b2d1718d0eb0170cf28ab2e70ce58e",
   "repair": "Literal-space and Unicode official document links encoded once; Ninja Tables row cells unwrapped from captured response; catalog periods remain undated non-feed resources.",
   "dated_documents_discovered": 12,
@@ -13,7 +13,10 @@
     "scope": "Centro FIC dated PDF notices only; not entire DEIS release coverage",
     "material_30_days": 0,
     "material_90_days": 0,
-    "other_dated_references_in_90_days": "ENO and GES are XLS/XLSX references outside the dated-PDF lane; no material publication is asserted from an update label. See URL-level reference evidence."
+    "other_dated_references_in_90_days": "ENO and GES are XLS/XLSX references outside the dated-PDF lane; no material publication is asserted from an update label. See URL-level reference evidence.",
+    "national_datasets_with_resource_updates_30_days": 4,
+    "national_datasets_with_resource_updates_90_days": 4,
+    "data_update_count_is_not_editorial_publication_count": true
   },
   "alicanto": {
     "detected": 12,
@@ -24,11 +27,45 @@
     "queue_scope": "Only actual GitHub native queue replay rows for DEIS appended; all other queue rows preserved"
   },
   "catalog_phase": "All five live catalogs captured and parsed through native discovery, 572 resources; five publisher-verified national datasets captured; no catalog surface error",
-  "next_action": "After safe merge to staging, replay the core capture with preserved queue state and verify catalog/reference changes; do not publish an undated dataset as news. Historical over-limit PDF references retain exact degradation.",
+  "next_action": "After safe merge to staging, replay the core capture with preserved queue state. Both national CSV samples are fully captured and structurally validated; compare subsequent dataset snapshots before claiming a periodic material change. Keep original data update timestamps separate from publication dates, and retain native 20 MiB historical PDF degradation.",
   "catalog_resources": 572,
   "national_datasets": 5,
   "catalog_state": "data/state/deis_catalog.json",
   "excluded_document_evidence": "deis-excluded-documents.json",
   "codex_evidence": "codex-final-transport.json",
-  "dataset_sample_evidence": "runs/38117463026/dataset_samples.json"
+  "dataset_sample_evidence": "runs/38117670184/dataset_samples.json",
+  "dataset_samples": [
+    {
+      "format": "xlsx",
+      "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/REM20/Estad%C3%ADsticas%20Hospitalarias%20A%C3%B1o%202024.xlsx",
+      "status": "readable",
+      "data_rows": null,
+      "first_sheet_rows": 14641,
+      "sha256": "4c4578b81f87c4ea85086750815ea05903bd12b6fca1ec78529ce9f27ee9e06f",
+      "publication_date": null,
+      "feed_eligible": false
+    },
+    {
+      "format": "csv",
+      "url": "https://datos.gob.cl/dataset/3bf4cf7c-f638-4735-9a01-f65faae4beca/resource/2c44d782-3365-44e3-aefb-2c8b8363a1bc/download/establecimientos_20261006.csv",
+      "status": "readable",
+      "data_rows": 5782,
+      "first_sheet_rows": null,
+      "sha256": "244426f9201ecfaa4f8dc964d3ee7479a65eef565c37b9ddf05d22cac31343a6",
+      "publication_date": null,
+      "feed_eligible": false
+    },
+    {
+      "format": "csv",
+      "url": "https://datos.gob.cl/dataset/a756323f-85ba-4759-87dc-f5d5e63868cc/resource/657cc933-eac8-4bfc-b004-c4d6dcd988a8/download/indicadores_rem20_20260925.csv",
+      "status": "readable",
+      "data_rows": 168474,
+      "first_sheet_rows": null,
+      "sha256": "5085664576302b361f9207ce13b96acacd4a29da16477ebf2cccbce487571559",
+      "publication_date": null,
+      "feed_eligible": false
+    }
+  ],
+  "primary_capture_bundle": "runs/38117670184/full-primary-evidence.zip",
+  "dataset_capture_limit_mib": 32
 }

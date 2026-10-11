@@ -269,7 +269,8 @@
       }
     ],
     "stage": "proxy_connect",
-    "origin_tls_observed": false
+    "origin_tls_observed": false,
+    "final_confirmation_evidence": "codex-final-transport.json"
   },
   "github_actions": {
     "run": "https://github.com/cftorre1/Radar-salud/actions/runs/38115282340",
@@ -722,5 +723,37 @@
   "alternative_evidence": [
     "fonasa-national-catalog.json",
     "fonasa-financing-alternatives.json"
-  ]
+  ],
+  "final_confirmation_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117670184",
+  "final_native_error_details": {
+    "exception_chain": [
+      {
+        "type": "FonasaDiscoveryError"
+      }
+    ],
+    "failure_signature": "FonasaDiscoveryError > HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden",
+    "endpoint_failures": [
+      {
+        "url": "https://datosabiertos.fonasa.cl/noticias/",
+        "type": "HTTPError",
+        "reason": "HTTP Error 403: Forbidden"
+      },
+      {
+        "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+        "type": "HTTPError",
+        "reason": "HTTP Error 403: Forbidden"
+      },
+      {
+        "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+        "type": "HTTPError",
+        "reason": "HTTP Error 403: Forbidden"
+      },
+      {
+        "url": "https://datosabiertos.fonasa.cl/analysis/",
+        "type": "HTTPError",
+        "reason": "HTTP Error 403: Forbidden"
+      }
+    ]
+  },
+  "final_native_checked_at": "2026-10-11T06:25:44.358593+00:00"
 }

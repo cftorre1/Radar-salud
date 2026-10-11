@@ -184,7 +184,8 @@
       }
     ],
     "stage": "proxy_connect",
-    "origin_tls_observed": false
+    "origin_tls_observed": false,
+    "final_confirmation_evidence": "codex-final-transport.json"
   },
   "github_actions": {
     "run": "https://github.com/cftorre1/Radar-salud/actions/runs/38115282340",
@@ -489,5 +490,23 @@
     "baseline_evidence": "stock-baseline.json"
   },
   "repair": "Scouts admiten los cuatro aliases oficiales .cl/.gob.cl y preservan validación de fechas y documentos; ninguna captura ISP operativa se afirma.",
-  "next_action": "Operador de red/hosting de ISP: verificar listener y ruta TCP 443 de www.ispch.cl, ispch.cl, www.ispch.gob.cl e ispch.gob.cl frente al egress de GitHub hospedado, restaurar acceso HTTPS público o entregar un feed/document export oficial accesible; luego repetir esta Action."
+  "next_action": "Operador de red/hosting de ISP: verificar listener y ruta TCP 443 de www.ispch.cl, ispch.cl, www.ispch.gob.cl e ispch.gob.cl frente al egress de GitHub hospedado, restaurar acceso HTTPS público o entregar un feed/document export oficial accesible; luego repetir esta Action.",
+  "final_confirmation_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117670184",
+  "final_native_error_details": {
+    "exception_chain": [
+      {
+        "type": "RuntimeError"
+      },
+      {
+        "type": "URLError",
+        "reason": "timed out"
+      },
+      {
+        "type": "TimeoutError",
+        "reason": "timed out"
+      }
+    ],
+    "failure_signature": "RuntimeError > URLError:timed out > TimeoutError:timed out"
+  },
+  "final_native_checked_at": "2026-10-11T06:30:45.584912+00:00"
 }

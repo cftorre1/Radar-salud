@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T06:27:22.757339+00:00",
+  "updated_at": "2026-10-11T06:35:32.562316+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -3485,11 +3485,11 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T06:27:22.757339+00:00",
+      "last_progress_at": "2026-10-11T06:35:32.562316+00:00",
       "current_subfront": "branch_runtime_outcomes_proven_pending_postmerge_staging_gate",
       "next_action": "Integración/Reviewer: revisar PR #13, hacer merge seguro a staging cuando sus gates lo permitan y repetir runtime real de DEIS después del merge. Mantener independientes los blockers FONASA ALB403 e ISP TCP443; sus propietarios oficiales deben habilitar acceso o export actual. No cerrar issue #5 con evidencia sólo de rama.",
       "blocked_by": [],
-      "progress": "Recuperación efectiva en la rama: DEIS OPERATIVE_DEGRADED con 12 documentos fechados, 10 PDF legibles, 5 catálogos/572 recursos y 5 datasets oficiales nacionales; cuatro EXTERNAL_BLOCKER_PROVEN desde Codex + GitHub, con alternativas oficiales. 136 tests dirigidos; 388 PASS/1 fallo heredado/1 SKIP; Node41; browser 32/14 igual baseline; Reviewer sin nuevos hallazgos. Sin merge/deploy ni publicaciones nuevas.",
+      "progress": "Recuperación efectiva en la rama: DEIS OPERATIVE_DEGRADED con 12 documentos fechados, 10 PDF legibles, 5 catálogos/572 recursos y 5 datasets oficiales nacionales; cuatro EXTERNAL_BLOCKER_PROVEN desde Codex + GitHub, con alternativas oficiales. 137 tests dirigidos; 389 PASS/1 fallo heredado/1 SKIP; Node41; browser 32/14 igual baseline; Reviewer sin nuevos hallazgos. Sin merge/deploy ni publicaciones nuevas. Final runtime 38117670184 at 55e31b1 confirms all five native scouts and XLSX/CSV samples: 14,641 sheet rows, 5,782 establishments, 168,474 hospital-indicator rows, with no editorial date fabricated.",
       "evidence": [
         "data/audits/public_sources_c_20261011/runtime_capture.json",
         "data/audits/public_sources_c_20261011/reviewer.json",
@@ -3500,11 +3500,12 @@
         "data/audits/public_sources_c_20261011/recovery/stock-reconciliation.json",
         "data/audits/public_sources_c_20261011/recovery/fonasa-national-catalog.json",
         "data/audits/public_sources_c_20261011/recovery/fonasa-financing-alternatives.json",
-        "data/audits/public_sources_c_20261011/recovery/deis-excluded-documents.json"
+        "data/audits/public_sources_c_20261011/recovery/deis-excluded-documents.json",
+        "data/audits/public_sources_c_20261011/recovery/recovery-matrix.json"
       ],
       "branch": "codex/c-public-sources-20261011",
       "baseline_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
-      "github_runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117181348",
+      "github_runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117670184",
       "source_outcomes": {
         "fonasa": "EXTERNAL_BLOCKER_PROVEN",
         "fonasa_datos_abiertos": "EXTERNAL_BLOCKER_PROVEN",

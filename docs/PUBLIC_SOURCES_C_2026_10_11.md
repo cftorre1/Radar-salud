@@ -31,14 +31,18 @@ El inventario **editorial Centro FIC PDF** tiene 0 publicaciones materiales veri
 
 Las 12 filas reales del replay de cola quedan `archived / outside_90_day_backfill`, con fecha, URL y observación originales. El baseline tenía 2.913 filas; las 2.925 actuales conservan todas las originales. **0 publicaciones nuevas, 0 llamadas IA, historial/feed/watermarks sin cambios.** El inventario de otras fuentes bloqueadas es desconocido; sus ceros de Alicanto no se presentan como ausencia de noticias. La reconciliación usa fuente/URL exactas y no certifica equivalencia semántica de eventos publicados por terceros.
 
+Las muestras de datos comprobadas incluyen un XLSX hospitalario con 14.641 filas en su primera hoja, el CSV de establecimientos con 5.782 filas y el CSV de indicadores hospitalarios con 168.474 filas. El último se descarga completo (27.248.718 bytes) con límite explícito de 32 MiB; ambos CSV pasan validación estructural. Cuatro datasets nacionales tienen actualización de recurso en 30/90 días; esas actualizaciones no son publicaciones editoriales ni acreditan por sí solas cambio material.
+
 ## Evidencia y QA
+
+Confirmación final: [38117670184](https://github.com/cftorre1/Radar-salud/actions/runs/38117670184), SHA de código `55e31b1`, cinco scouts ejecutados en paralelo con archivos de salud aislados. El paquete íntegro `recovery/runs/38117670184/full-primary-evidence.zip` tiene SHA256 `a0a887a425ea0c4dacfa122ac809327ee811e644fb5f30c772a80ddba1225658`, incluyendo todas las capturas originales.
 
 Ruta durable: `data/audits/public_sources_c_20261011/recovery/`. Los artefactos de Actions duran 14 días; capturas relevantes, hashes, inventarios y resultados se guardan también en git.
 
 - Runtime inicial [38114731188](https://github.com/cftorre1/Radar-salud/actions/runs/38114731188); recuperación PDF [38115202557](https://github.com/cftorre1/Radar-salud/actions/runs/38115202557); diagnóstico TCP/TLS/aliases [38115282340](https://github.com/cftorre1/Radar-salud/actions/runs/38115282340); cinco catálogos [38115490854](https://github.com/cftorre1/Radar-salud/actions/runs/38115490854); integración nativa [38116537392](https://github.com/cftorre1/Radar-salud/actions/runs/38116537392).
 - Alternativas GRD [38117181340](https://github.com/cftorre1/Radar-salud/actions/runs/38117181340); catálogo nacional y muestra reciente [38117463026](https://github.com/cftorre1/Radar-salud/actions/runs/38117463026); inventario completo del publicador FONASA [38117618594](https://github.com/cftorre1/Radar-salud/actions/runs/38117618594).
 - Checkpoints separados por fuente: `fonasa-checkpoint.json`, `fonasa_datos_abiertos-checkpoint.json`, `isp_anamed-checkpoint.json`, `isp_surveillance-checkpoint.json`, `deis-checkpoint.json`. Cada uno registra endpoint, intentos, outcome, limitación y responsable/siguiente acción.
-- **136 tests dirigidos PASS; suite completa 388 PASS, 1 SKIP, 1 fallo heredado**, reproducido en baseline. Exige 12 actos normativos y el snapshot contiene 11; no se relaja el test. QA remoto reproduce ese mismo fallo.
+- **137 tests dirigidos PASS; suite completa 389 PASS, 1 SKIP, 1 fallo heredado**, reproducido en baseline. Exige 12 actos normativos y el snapshot contiene 11; no se relaja el test. QA remoto reproduce ese mismo fallo.
 - **Node 41 PASS** mediante ejecución directa del archivo de tests. Desktop/mobile: 32 PASS y 14 FAIL tanto en candidato como en baseline, con idénticos títulos/proyectos de fallo y 0 regresiones nuevas.
 - Reviewer determinista ejecutado en proceso independiente contra candidato y baseline: datos/editorial/UX PASS; estadísticas conserva los mismos ocho hallazgos heredados. No se afirma PASS global ni certificación semántica/médico-legal. El Reviewer remoto queda skipped por la dependencia de QA normativo.
 
