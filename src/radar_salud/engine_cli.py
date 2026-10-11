@@ -60,9 +60,17 @@ def main():
     ap.add_argument("--reset-state",action="store_true")
     ap.add_argument("--sources",nargs="+",help="Run selected core source slugs; other queue records remain untouched")
     ap.add_argument("--discovery-only",action="store_true",help="Persist genuine core discovery without consuming analysis or altering processing attempts")
+    ap.add_argument("--queue-selection",type=Path,help="Process only canonical URLs already present in the selected Pulso queue; discovery remains complete")
     args=ap.parse_args()
     if args.reset_state:
         ap.error("Reset disabled: backfill must preserve paid analyses and queue state")
+    selection=None
+    if args.queue_selection:
+        from .queue_selection import load_queue_selection
+        try:
+            selection=load_queue_selection(args.queue_selection,args.sources)
+        except (OSError,ValueError) as exc:
+            ap.error(str(exc))
     root=project_root()
     cfgs=source_index(load_sources(root/"config"/"sources.json"))
     queue=PendingQueue(root/"data/state/pending_queue.json")
@@ -138,6 +146,21 @@ def main():
     produced={name:[] for name in processors}
     queue.enforce_backfill_horizon(sources=args.sources)
     ready=((key,item) for key,item in _prioritize_pulso_ready(queue.ready()) if item["source"] in processors)
+    if selection is not None:
+        from .queue_selection import select_ready
+        discovery_run=json.loads((root/"data/state/discovery_run.json").read_text())
+        try:
+            ready,selection_audit=select_ready(selection,queue.items,ready)
+        except ValueError as exc:
+            discovery_run.update(processing_attempts=0,processing_selection=dict(
+                source="pulso_latercera",path=selection.path,sha256=selection.sha256,
+                file_sha256=selection.sha256,selected_urls=list(selection.urls),
+                selected_url_count=len(selection.urls),validation_error=str(exc),
+                reason="explicit_queue_selection_invalid"))
+            atomic_json(root/"data/state/discovery_run.json",discovery_run)
+            ap.error(str(exc))
+        discovery_run["processing_selection"]=selection_audit
+        atomic_json(root/"data/state/discovery_run.json",discovery_run)
     if args.discovery_only:
         ready=iter(())
     processed_count=0
