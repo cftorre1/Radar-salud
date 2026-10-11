@@ -76,7 +76,8 @@ def main():
             store=SeenStore(root/"data/state"/f"{name}_seen.json")
             seen={fingerprint(raw) for raw in items if store.is_seen(fingerprint(raw))}
             checked_at=datetime.now(timezone.utc).isoformat()
-            added=queue.discover(name,items,seen,last_discovered_at=watermarks.get(name))
+            added=queue.discover(name,items,seen,last_discovered_at=watermarks.get(name),
+                                 published_urls=[row["source_url"] for row in history if row.get("source_url")])
             watermarks[name]=checked_at
             atomic_json(watermark_path,watermarks)
             discoveries[name]=(len(items),added,None)

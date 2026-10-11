@@ -53,18 +53,23 @@ class PendingQueue:
     def save(self):
         atomic_json(self.path, self.items)
 
-    def discover(self, source, items, seen=(), now=None, last_discovered_at=None):
+    def discover(self, source, items, seen=(), now=None, last_discovered_at=None, published_urls=()):
         now = now or now_utc()
         added = 0
         for raw in items:
             key = fingerprint(raw)
+            if source == "diario_financiero":
+                from .df_recovery import reconcile_existing
+                if reconcile_existing(self, raw, now, last_discovered_at, published_urls):
+                    continue
             if key in self.items or key in seen:
                 continue
             item_lane = lane(raw, now, last_discovered_at)
             archived = item_lane == "BACKFILL" and beyond_backfill_horizon(raw, now)
             self.items[key] = dict(raw=asdict(raw), source=source, lane=item_lane,
                 status="archived" if archived else "pending", detected_at=now.isoformat(),
-                attempts=0, reason="outside_90_day_backfill" if archived else None)
+                attempts=0, reason="outside_90_day_backfill" if archived else None,
+                classification_watermark=last_discovered_at)
             added += 1
         self.save()
         return added
