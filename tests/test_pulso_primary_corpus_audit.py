@@ -251,6 +251,55 @@ def test_real_alzheimer_original_keeps_84_primary_characters_without_wrapper_pad
     assert projection["current_parser"]["reason"] == "publisher_video_text_unavailable"
 
 
+def test_real_bound_liveblog_preserves_original_document_and_separates_primary_paragraph_scope():
+    base = ROOT / "tests/fixtures/pulso_editorial_exception_real"
+    manifest = json.loads((base / 'manifest.json').read_text())
+    row = next(row for row in manifest['requests'] if '/politica/noticia/minuto-a-minuto-' in row['url'])
+    _, _, html = corpus.verify_original(base, row)
+    projection = corpus.primary_projection(html, row['url'])
+    assert projection['url_bound_article_nodes'] == 0 and projection['url_bound_liveblog_nodes'] == 1
+    assert projection['primary_body_chars'] == 18955
+    assert projection['primary_body_sha256'] == 'db210fa2fbe8ae4192f9e4ccdb4afb3a337e8aa9c755eda33c4948b0e641c088'
+    assert projection['primary_body_source'] == 'liveblog_document_html'
+    proof = projection['liveblog_document_projection']
+    assert proof['timeline_temporal_evidence_verified'] and proof['primary_timeline_entries'] == 110
+    assert proof['original_html_sha256'] == row['sha256']
+    assert proof['paragraph_chars'] == 10312
+    assert proof['paragraph_sha256'] == '2e53fa938fe73855217e4fdb0699cc302383d66c4497ece4bc67c83f4228620b'
+    assert 'wrapper_controls' in proof['scope']
+    assert projection['current_parser']['body_matches_original_projection']
+    # Changing only the retained document's declared JSON-LD type is a test
+    # mutation. An embedded video cannot authorize full document fallback.
+    changed = corpus.primary_projection(html.replace('"LiveBlogPosting"', '"RelatedArticle"'), row['url'])
+    assert changed['url_bound_liveblog_nodes'] == 0 and changed['liveblog_document_projection'] is None
+    assert changed['primary_body_chars'] == 10312 and changed['primary_body_source'] == 'article_html_primary_paragraphs'
+
+
+def test_nineteen_cold_video_wrappers_remain_hash_verified_history_without_primary_text_credit():
+    import copy
+    from pulso_fixture_witnesses import COLD_RECORDS, assert_cold_witnesses
+    base = ROOT / 'tests/fixtures/pulso_editorial_exception_real'
+    manifest = json.loads((base / 'manifest.json').read_text())
+    changed = []
+    for row in manifest['requests']:
+        cold = COLD_RECORDS.get(row['url'])
+        if not cold or '/videos/' not in row['url'] or cold['primary_body_source'] != 'article_html':
+            continue
+        _, _, html = corpus.verify_original(base, row)
+        projection = corpus.primary_projection(html, row['url'])
+        assert projection['full_primary_body'] == '' and projection['primary_body_chars'] == 0
+        assert projection['html_wrapper_observation']['chars'] == cold['primary_body_chars']
+        assert projection['html_wrapper_observation']['sha256'] == cold['primary_body_sha256']
+        changed.append(row['url'])
+    assert len(changed) == 19
+    assert_cold_witnesses(manifest['requests'])
+    forged = copy.deepcopy(manifest['requests'])
+    row = next(row for row in forged if row['url'] == changed[0])
+    row['primary_body_chars'], row['primary_body_sha256'] = 1, hashlib.sha256(b'x').hexdigest()
+    with pytest.raises(AssertionError):
+        assert_cold_witnesses(forged)
+
+
 def test_empty_or_metadata_only_corpus_cannot_claim_original_full_body_evidence(tmp_path):
     report = corpus.audit(tmp_path / "missing", tmp_path / "report.json", tmp_path / "thin")
     assert report["status"] == "PRIMARY_CORPUS_AUDIT_PARTIAL"

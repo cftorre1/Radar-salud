@@ -18,7 +18,9 @@ from urllib.parse import urljoin, urlsplit, urlunsplit
 from zoneinfo import ZoneInfo
 
 from radar_salud.beta_sources import _material
-from radar_salud.pulso_source import _Article, _nodes, _visible_byline_day, extract_article, health_anchor, publication_day
+from radar_salud.pulso_source import (_Article, _nodes, _visible_byline_day, extract_article,
+                                    health_anchor, publication_day, verified_liveblog_temporal_evidence,
+                                    article_body_evidence)
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = "pulso_latercera"
@@ -113,7 +115,7 @@ def primary_projection(text, url):
     expected = normalized_url(url)
     parser = _Article()
     parser.feed(text)
-    nodes, videos = [], []
+    nodes, videos, liveblogs = [], [], []
     for script in parser.scripts:
         try:
             for node in _nodes(json.loads(script)):
@@ -127,6 +129,8 @@ def primary_projection(text, url):
                         nodes.append(node)
                     if "VideoObject" in kinds:
                         videos.append(node)
+                    if "LiveBlogPosting" in kinds:
+                        liveblogs.append(node)
         except (ValueError, TypeError):
             continue
     node = nodes[0] if len(nodes) == 1 else {}
@@ -141,6 +145,34 @@ def primary_projection(text, url):
         # length never proves a transcript or a complete primary body.
         body = " ".join(parser.body_paragraphs)
         body_source = "article_html_primary_paragraphs" if body else "primary_text_missing_in_original"
+    parsed_result, parser_error, liveblog_document = None, None, None
+    try:
+        parsed_result = extract_article(text, url)
+    except Exception as error:
+        parser_error = error
+    if (len(liveblogs) == 1 and normalized_url(parser.canonical) == expected
+            and not urlsplit(expected).path.startswith('/videos/') and parsed_result is not None):
+        parsed_title, parsed_body, metadata = parsed_result
+        timeline = metadata.get('liveblog_temporal_evidence', {})
+        document_body = ' '.join(parser.body or parser.paragraphs)
+        # A bound liveblog includes entry headings and timestamps outside its
+        # paragraphs. Preserve the exact document body used by the source,
+        # separately identifying wrapper controls and the primary timeline.
+        # An embedded video alone never enables this document fallback.
+        if (metadata.get('publisher_document_type') == 'liveblog'
+                and verified_liveblog_temporal_evidence(dict(metadata, **article_body_evidence(parsed_body)))
+                and timeline.get('canonical_url') == expected
+                and timeline.get('original_html_sha256') == digest(text.encode())
+                and timeline.get('base_article_body_sha256') == digest(document_body.encode())
+                and parsed_body == document_body):
+            body, body_source = document_body, 'liveblog_document_html'
+            liveblog_document = dict(
+                scope='complete_original_liveblog_html_including_entry_headings_timestamps_and_wrapper_controls',
+                original_html_sha256=timeline['original_html_sha256'],
+                base_article_body_sha256=timeline['base_article_body_sha256'],
+                timeline_temporal_evidence_verified=True, primary_timeline_entries=len(timeline['entries']),
+                paragraph_chars=len(' '.join(parser.body_paragraphs)),
+                paragraph_sha256=digest(' '.join(parser.body_paragraphs).encode()))
     visible_error = None
     try:
         visible = _visible_byline_day(parser.byline_dates)
@@ -152,6 +184,11 @@ def primary_projection(text, url):
     result = {"title": title, "title_chars": len(title), "canonical": parser.canonical,
               "canonical_matches_requested": normalized_url(parser.canonical) == expected,
               "url_bound_article_nodes": len(nodes), "section": node.get("articleSection") or parser.metas.get("article:section"),
+              "url_bound_liveblog_nodes": len(liveblogs), "liveblog_document_projection": liveblog_document,
+              "html_wrapper_observation": dict(
+                  scope="body_container_text_including_nonprimary_controls_not_a_video_transcript",
+                  chars=len(' '.join(parser.body or parser.paragraphs)),
+                  sha256=digest(' '.join(parser.body or parser.paragraphs).encode())),
               "url_bound_video_objects": len(videos),
               "url_bound_video_evidence": [{key: video.get(key) for key in (
                   "@type", "@id", "url", "mainEntityOfPage", "name", "description", "uploadDate", "embedUrl")}
@@ -166,13 +203,13 @@ def primary_projection(text, url):
               "title_below_18": len(title) < 18,
               "original_metadata_description": node.get("description") or parser.metas.get("og:description"),
               "keywords": node.get("keywords", []), "full_primary_body": body}
-    try:
-        parsed_title, parsed_body, metadata = extract_article(text, url)
+    if parsed_result is not None:
+        parsed_title, parsed_body, metadata = parsed_result
         result["current_parser"] = {"status": "verified", "title": parsed_title,
                                     "body_chars": len(parsed_body), "metadata": metadata,
                                     "body_matches_original_projection": parsed_body == body}
-    except Exception as error:
-        result["current_parser"] = {"status": "error", "error_type": type(error).__name__, "reason": str(error)}
+    else:
+        result["current_parser"] = {"status": "error", "error_type": type(parser_error).__name__, "reason": str(parser_error)}
     combined = title + " " + body + " " + str(result["keywords"]) + " " + str(result["original_metadata_description"] or "")
     result["health_anchor_current_source"] = health_anchor(combined)
     result["health_anchor_broad_clinical_audit"] = bool(CLINICAL.search(combined))
