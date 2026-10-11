@@ -436,6 +436,104 @@ def _source_problem(value, *, covered=False, request_capture=False, path=()):
     return value
 
 
+def _redundant_incomplete_recovery(item, rows):
+    """Recognize only a proven, unexecuted coverage diagnostic.
+
+    The old hosted fiscalization records d9b68ac4/5d7c14c5 included a
+    diagnostic full-suite baseline and product context. These exact semantic
+    digests come from their immutable worker evidence in the imported legacy
+    bindings (state 2e7658142e63); only pytest duration differs. Their known
+    baseline is not a blanket license to discard other failures or context.
+    """
+    if not isinstance(item, dict) or set(item) != {"automated_recovery"}:
+        return False
+    original = item["automated_recovery"]
+    if not isinstance(original, dict):
+        return False
+    if original == {"attempted": False, "reason": "Instrumentation limit is not a demonstrated source failure"}:
+        return type(original["attempted"]) is bool
+    record = _unexecuted_capability_overlay(original)
+    allowed = {"status", "validated", "material_progress", "changed_paths", "signature", "source_run_id",
+               "source_slug", "failure_sha256", "live_baseline", "blocker", "evidence", "baseline_full_gate", "context"}
+    required = allowed - {"baseline_full_gate", "context"}
+    if (set(record) - allowed or not required.issubset(record) or record.get("status") != "BLOCKED"
+            or record.get("validated") is not False or record.get("material_progress") is not False
+            or record.get("changed_paths") != [] or record.get("signature") is not None
+            or record.get("source_run_id") is not None
+            or record.get("blocker") not in {
+                "Reproduced failure requires a bounded repair plan; model lane disabled",
+                "Unsupported live repair: source has empty/undated inventory without a demonstrated parser exception"}):
+        return False
+    gates = record.get("evidence")
+    if not isinstance(gates, list) or len(gates) not in {1, 3} or not all(isinstance(gate, dict) for gate in gates):
+        return False
+    source = gates[0]
+    source_keys = {"command", "returncode", "output", "captured_stdout_sha256", "captured_stdout_bytes",
+                   "source_evidence", "source_evidence_sha256"}
+    row = source.get("source_evidence")
+    if (set(source) != source_keys or type(source.get("returncode")) is not int or source["returncode"] != 1
+            or not _source_probe_incomplete(row) or record.get("source_slug") != row["slug"]
+            or _hash(record.get("live_baseline")) != _hash(row)
+            or not any(_hash(_source_problem(row)) == _hash(_source_problem(known)) for known in rows)
+            or record.get("failure_sha256") != source.get("captured_stdout_sha256")):
+        return False
+    output = source["output"]
+    normalized = normalize_source_diagnostic_output(source, output)
+    placeholder = "<retained-structured-source-evidence>"
+    # Exact legacy DF prefix, not a regex that could erase a changed discovery
+    # count. Records d2266ac7/52a5d241 prove these same two diagnostic lines.
+    df_prefix = "DF fetch: bounded_probe_budget: 24 requests per source\nDF discovered=64\n"
+    if normalized not in {placeholder, df_prefix + placeholder + "\n"}:
+        return False
+    command = source["command"]
+    if (not isinstance(command, list) or len(command) != 4 or command[2:] != ["--diagnose-source", row["slug"]]
+            or not str(command[1]).endswith("scripts/autonomy_lane_runner.py")):
+        return False
+    def captured(gate):
+        raw = gate.get("output")
+        return (isinstance(raw, str) and type(gate.get("captured_stdout_bytes")) is int
+                and gate["captured_stdout_bytes"] == len(raw.encode("utf-8"))
+                and gate.get("captured_stdout_sha256") == hashlib.sha256(raw.encode("utf-8")).hexdigest())
+    if captured(source):
+        records = [line[len("AUTONOMY_SOURCE_JSON="):] for line in output.splitlines()
+                   if line.startswith("AUTONOMY_SOURCE_JSON=")]
+        if (len(records) != 1 or source["source_evidence_sha256"] != hashlib.sha256(records[0].encode("utf-8")).hexdigest()):
+            return False
+    else:
+        # Prove the tail again rather than assuming which helper branch matched:
+        # a full JSON record of exactly 24k cannot spoof a larger capture.
+        raw = _source_worker_record(row)
+        if raw is None:
+            return False
+        full = "AUTONOMY_SOURCE_JSON=" + raw + "\n"
+        if (normalized != placeholder or len(full) <= 24_000 or output != full[-24_000:]
+                or type(source.get("captured_stdout_bytes")) is not int
+                or source["captured_stdout_bytes"] != len(full.encode("utf-8"))
+                or source["source_evidence_sha256"] != hashlib.sha256(raw.encode("utf-8")).hexdigest()
+                or source["captured_stdout_sha256"] != hashlib.sha256(full.encode("utf-8")).hexdigest()):
+            return False
+    if len(gates) == 1:
+        return "baseline_full_gate" not in record and "context" not in record
+    baseline = record.get("baseline_full_gate")
+    if (not isinstance(baseline, dict) or baseline != gates[2]
+            or _hash(record.get("context")) != "d7eb011aa5741dfe1074a47eeba430d42c6fe29d39a1f01d544a57247bba9831"):
+        return False
+    gate_keys = {"command", "returncode", "output", "captured_stdout_sha256", "captured_stdout_bytes"}
+    target = gates[1]
+    expected_tests = ["tests/test_press_pipeline.py", "tests/test_fonasa_source.py", "tests/test_isp_anamed_source.py",
+                      "tests/test_deis_source.py", "tests/test_suseso_pipeline.py"]
+    if (set(target) != gate_keys or set(baseline) != gate_keys or not captured(target) or not captured(baseline)
+            or type(target.get("returncode")) is not int or target["returncode"] != 0
+            or type(baseline.get("returncode")) is not int or baseline["returncode"] != 1
+            or not isinstance(target.get("command"), list) or not isinstance(baseline.get("command"), list)
+            or target.get("command", [])[1:] != ["-m", "pytest", "-q"] + expected_tests
+            or baseline.get("command", [])[1:] != ["-m", "pytest", "-q"]
+            or not re.fullmatch(r"[. ]+\[100%\]\n16 passed in \d+(?:\.\d+)?s\n", target["output"])):
+        return False
+    baseline_output = re.sub(r"\bin \d+(?:\.\d+)?s\b", "in <duration>", baseline["output"])
+    return hashlib.sha256(baseline_output.encode("utf-8")).hexdigest() == "9711c18cf352fad96f844306920b0d523af6427d4542bd91b6e91396ccbf0115"
+
+
 def _source_blocker_identity(blocker, product_fingerprint, family):
     if (family not in SOURCE_TASKS.values() or not HASH_RE.fullmatch(str(product_fingerprint))
             or not any(_source_rows(blocker.get("evidence", [])))):
@@ -452,7 +550,7 @@ def _source_blocker_identity(blocker, product_fingerprint, family):
         if "source_urls" in component:
             problem["source_urls"] = sorted(component["source_urls"])
         problem["evidence"] = sorted({_hash(_source_problem(item, covered=covered)) for item in evidence
-                                      if not (incomplete and isinstance(item, dict) and "automated_recovery" in item)})
+                                      if not (incomplete and _redundant_incomplete_recovery(item, rows))})
         problems.append(_hash(problem))
     return {"family": family, "product_input_fingerprint": product_fingerprint,
             "source_problem_signature": _hash(sorted(set(problems))), "problems": sorted(set(problems))}

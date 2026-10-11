@@ -224,6 +224,125 @@ def unsupported_recovery_observation(*, typed=False):
     return record
 
 
+def incomplete_recovery_observation():
+    q, report = source_observation()
+    row = report["blockers"][0]["evidence"][1]
+    row.update(error="RuntimeError: bounded_probe_budget:24 requests per source",
+        requests=[{"url": "https://source.example/news", "status": "PASS", "response_sha256": "a" * 64},
+                  {"url": "https://source.example/omitted", "status": "UNVERIFIED",
+                   "error": "bounded_probe_budget:24 requests per source"}])
+    raw = json.dumps(row, ensure_ascii=False)
+    output = "AUTONOMY_SOURCE_JSON=" + raw + "\n"
+    capture = hashlib.sha256(output.encode()).hexdigest()
+    gate = {"command": ["python", "scripts/autonomy_lane_runner.py", "--diagnose-source", row["slug"]],
+        "returncode": 1, "output": output, "source_evidence": deepcopy(row),
+        "source_evidence_sha256": hashlib.sha256(raw.encode()).hexdigest(),
+        "captured_stdout_sha256": capture, "captured_stdout_bytes": len(output.encode())}
+    report["blockers"][0]["evidence"][2] = {"automated_recovery": {
+        "status": "BLOCKED", "validated": False, "material_progress": False, "changed_paths": [],
+        "signature": None, "source_run_id": None, "source_slug": row["slug"], "failure_sha256": capture,
+        "live_baseline": deepcopy(row), "evidence": [gate],
+        "blocker": "Unsupported live repair: source has empty/undated inventory without a demonstrated parser exception"}}
+    return q, report
+
+
+class IncompleteRecoveryIdentityTests(unittest.TestCase):
+    def identity(self, report):
+        return engine._source_blocker_identity({"blockers": report["blockers"],
+            "evidence": [x for b in report["blockers"] for x in b["evidence"]]}, "a" * 64, "media")
+
+    def test_only_proven_unexecuted_coverage_diagnostic_is_redundant(self):
+        _, report = incomplete_recovery_observation()
+        original = deepcopy(report)
+        skipped = deepcopy(report)
+        skipped["blockers"][0]["evidence"][2] = {"automated_recovery": {
+            "attempted": False, "reason": "Instrumentation limit is not a demonstrated source failure"}}
+        self.assertEqual(self.identity(report), self.identity(skipped))
+        self.assertEqual(report, original)
+
+    def test_assertion_prefix_suffix_and_arbitrary_output_survive_incomplete_component(self):
+        _, report = incomplete_recovery_observation()
+        baseline = self.identity(report)
+        output = report["blockers"][0]["evidence"][2]["automated_recovery"]["evidence"][0]["output"]
+        for changed_output in ("FAILED assert 10 >= 12\n", "FAILED assert 10 >= 12\n" + output,
+                               output + "FAILED assert 10 >= 12\n", output + "Publication date 2026-10-11\n"):
+            with self.subTest(output=changed_output):
+                changed = deepcopy(report)
+                record = changed["blockers"][0]["evidence"][2]["automated_recovery"]
+                gate = record["evidence"][0]
+                gate.update(output=changed_output, captured_stdout_bytes=len(changed_output.encode()),
+                    captured_stdout_sha256=hashlib.sha256(changed_output.encode()).hexdigest())
+                record["failure_sha256"] = gate["captured_stdout_sha256"]
+                self.assertNotEqual(self.identity(changed), baseline)
+
+    def test_plan_execution_context_extra_gate_and_unknown_outcomes_are_not_discarded(self):
+        changes = (
+            lambda r: r.update(deterministic_planning={"status": "PLANNED"}),
+            lambda r: r.update(deterministic_planning={"status": "REJECTED"}),
+            lambda r: r.update(plan={"replacements": [{"new": "repair"}]}),
+            lambda r: r.update(repair_strategy="actual_strategy"),
+            lambda r: r.update(rolled_back=True), lambda r: r.update(attempted=True),
+            lambda r: r.update(candidate_commit="b" * 40),
+            lambda r: r.update(changed_paths=["src/radar_salud/scouts.py"]),
+            lambda r: r.update(context=[{"path": "src/radar_salud/scouts.py", "sha256": "c" * 64}]),
+            lambda r: r["evidence"].append({"command": ["python", "live.py"], "returncode": 1, "output": "new LIVE failure"}),
+            lambda r: r["evidence"][0].update(independent_assertion="assert 10 >= 12"),
+            lambda r: r.update(paid_calls=1), lambda r: r.update(unknown_outcome="actual repair rejected"),
+        )
+        _, report = incomplete_recovery_observation()
+        baseline = self.identity(report)
+        for change in changes:
+            with self.subTest(change=change):
+                changed = deepcopy(report)
+                change(changed["blockers"][0]["evidence"][2]["automated_recovery"])
+                self.assertNotEqual(self.identity(changed), baseline)
+
+    def test_unbound_hashes_bytes_source_row_and_command_cannot_be_discarded(self):
+        changes = (
+            lambda r: r.update(failure_sha256="f" * 64),
+            lambda r: r["evidence"][0].update(captured_stdout_sha256="f" * 64),
+            lambda r: r["evidence"][0].update(captured_stdout_bytes=False),
+            lambda r: r["evidence"][0].update(source_evidence_sha256="f" * 64),
+            lambda r: r["evidence"][0].update(returncode=True),
+            lambda r: r["evidence"][0].update(command=["python", "repair.py", "--diagnose-source", "diario_financiero"]),
+            lambda r: r["live_baseline"].update(inventory_hash="b" * 64),
+            lambda r: r["evidence"][0]["source_evidence"].update(error="HTTP 403 Forbidden"),
+        )
+        _, report = incomplete_recovery_observation()
+        baseline = self.identity(report)
+        for change in changes:
+            with self.subTest(change=change):
+                changed = deepcopy(report)
+                change(changed["blockers"][0]["evidence"][2]["automated_recovery"])
+                self.assertNotEqual(self.identity(changed), baseline)
+
+    def test_skip_metadata_extra_field_or_integer_false_is_not_redundant(self):
+        _, report = incomplete_recovery_observation()
+        baseline = self.identity(report)
+        for skip in ({"attempted": 0, "reason": "Instrumentation limit is not a demonstrated source failure"},
+                     {"attempted": False, "reason": "Instrumentation limit is not a demonstrated source failure", "assertion": "assert 10 >= 12"}):
+            changed = deepcopy(report)
+            changed["blockers"][0]["evidence"][2] = {"automated_recovery": skip}
+            self.assertNotEqual(self.identity(changed), baseline)
+
+    def test_bound_identity_and_finish_preserve_independent_assertion_after_incomplete_diagnosis(self):
+        q, report = incomplete_recovery_observation()
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], report, BASE)
+        old_event = deepcopy(state["material_events"][0])
+        binding = engine._source_event_binding(old_event, state)
+        changed = deepcopy(report)
+        changed["blockers"][0]["evidence"][2]["automated_recovery"]["evidence"][0]["output"] += "FAILED assert 10 >= 12\n"
+        q["tasks"][0]["evidence_revision"] = "new-assertion"
+        state, lease = claim(state, q, "media", "worker", BASE + timedelta(minutes=1))
+        state = finish(state, MEDIA, lease["token"], changed, BASE + timedelta(minutes=1))
+        new_event = state["material_events"][-1]
+        self.assertNotEqual(engine._bound_blocker_identity(old_event, binding),
+            engine._bound_blocker_identity(new_event, engine._source_event_binding(new_event, state)))
+        self.assertEqual(len([event for event in state["material_events"] if event["kind"] == "blocker"]), 2)
+        self.assertNotIn("last_failure", state["tasks"][MEDIA])
+
+
 class CapabilityDiagnosticIdentityTests(unittest.TestCase):
     def test_exact_unexecuted_typed_overlay_preserves_legacy_problem_without_mutating_report(self):
         old, new = unsupported_recovery_observation(), unsupported_recovery_observation(typed=True)
@@ -566,12 +685,8 @@ class SourceMaterialIdentityTests(unittest.TestCase):
         self.assertFalse(engine._repaired_failure_event(legacy))
 
     def test_correcting_budget_classification_and_skipping_false_recovery_is_not_new_credit(self):
-        q, report = source_observation()
+        q, report = incomplete_recovery_observation()
         old = report["blockers"][0]
-        row = old["evidence"][1]
-        row.update(error="RuntimeError: bounded_probe_budget:24 requests per source",
-                   requests=[{"url": "https://source.example/news", "status": "PASS", "response_sha256": "a" * 64},
-                             {"url": "https://source.example/omitted", "status": "UNVERIFIED", "error": "bounded_probe_budget:24 requests per source"}])
         newer = deepcopy(old)
         newer.update(kind="instrumentation", reason="Scoped coverage INCOMPLETE: internal request budget reached: diario_financiero")
         newer["evidence"][1].update(technical_status="incomplete", probe_complete=False,
