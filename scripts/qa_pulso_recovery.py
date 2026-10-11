@@ -417,7 +417,24 @@ def has_paid_revalidation_claim(metadata):
                    for revision in metadata.get("evidence_revisions", [])))
 
 
-def replay_paid_guard_validation(current, body, root, execution, admission):
+def execution_bound_paid_guard_bytes(root, execution, *, archived=False):
+    path = "src/radar_salud/pulso_editorial_proof.py"
+    if archived:
+        code = execution.get("code_sha")
+        if not isinstance(code, str) or not re.fullmatch(r"[0-9a-f]{40}", code):
+            raise ValueError("paid_revalidation_archived_execution_code_missing")
+        result = subprocess.run(["git", "show", code + ":" + path], cwd=root, capture_output=True, check=False)
+        if result.returncode:
+            raise ValueError("paid_revalidation_archived_guard_bytes_unavailable")
+        payload = result.stdout
+    else:
+        payload = local_capture_path(root, path).read_bytes()
+    if execution.get("runtime_fingerprint", {}).get("files", {}).get(path) != digest(payload):
+        raise ValueError("paid_revalidation_guard_not_bound_to_actual_execution")
+    return payload
+
+
+def replay_paid_guard_validation(current, body, root, execution, admission, *, archived=False):
     """Replay the pure validator from the exact execution-bound file bytes.
 
     Admission/application/queue helpers are never invoked. This establishes the
@@ -426,10 +443,7 @@ def replay_paid_guard_validation(current, body, root, execution, admission):
     cached by a test or process after a validated source checkpoint changed.
     """
     path = local_capture_path(root, "src/radar_salud/pulso_editorial_proof.py")
-    payload = path.read_bytes()
-    if execution.get("runtime_fingerprint", {}).get("files", {}).get(
-            "src/radar_salud/pulso_editorial_proof.py") != digest(payload):
-        raise ValueError("paid_revalidation_guard_not_bound_to_actual_execution")
+    payload = execution_bound_paid_guard_bytes(root, execution, archived=archived)
     guard = types.ModuleType("radar_salud._qa_replayed_paid_guard")
     guard.__package__ = "radar_salud"
     guard.__file__ = str(path)
@@ -444,7 +458,7 @@ def replay_paid_guard_validation(current, body, root, execution, admission):
     return expected
 
 
-def verify_paid_guard_revalidation(item, root, *, execution, telemetry, origin=None):
+def verify_paid_guard_revalidation(item, root, *, execution, telemetry, origin=None, archived_execution=False):
     """Independently bind an old paid answer to its new genuine core verdict.
 
     The repaired guard receipt and old API response have separate provenance.
@@ -524,7 +538,7 @@ def verify_paid_guard_revalidation(item, root, *, execution, telemetry, origin=N
         attempts = metadata.get("paid_guard_new_fast_attempt_receipts") or []
         latest = attempts[-1] if attempts else {}
         guard_path = "src/radar_salud/pulso_editorial_proof.py"
-        guard_sha = digest(local_capture_path(root, guard_path).read_bytes())
+        guard_sha = digest(execution_bound_paid_guard_bytes(root, execution, archived=archived_execution))
         when = stamp(latest.get("assessed_at"))
         ids = [attempt.get("new_response_id") for attempt in attempts]
         all_actual_ids = {event.get("response_id") for event in telemetry
@@ -549,7 +563,7 @@ def verify_paid_guard_revalidation(item, root, *, execution, telemetry, origin=N
             raise ValueError("paid_revalidation_original_model_or_response_changed")
         when = stamp(receipt.get("revalidated_at")) if isinstance(receipt, dict) else None
         guard_path = "src/radar_salud/pulso_editorial_proof.py"
-        guard_sha = digest(local_capture_path(root, guard_path).read_bytes())
+        guard_sha = digest(execution_bound_paid_guard_bytes(root, execution, archived=archived_execution))
         if (execution.get("runtime_fingerprint", {}).get("files", {}).get(guard_path) != guard_sha
                 or not when or not begin or not end or not begin <= when <= end):
             raise ValueError("paid_revalidation_guard_not_bound_to_actual_execution")
@@ -584,7 +598,7 @@ def verify_paid_guard_revalidation(item, root, *, execution, telemetry, origin=N
             or binding.get("raw_event_date") != row["publication_date"]
             or binding.get("primary_publication_date") != row["publication_date"]):
         raise ValueError("paid_revalidation_final_answer_or_primary_binding_missing")
-    if validation != replay_paid_guard_validation(current, body, root, execution, expected):
+    if validation != replay_paid_guard_validation(current, body, root, execution, expected, archived=archived_execution):
         raise ValueError("paid_revalidation_recorded_verdict_not_actual_guard_result")
     if validation.get("decision") == "deferred":
         raise ValueError("paid_revalidation_actual_validation_still_deferred")
@@ -632,7 +646,7 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
     history_claims = [row for row in all_history_claims if row["editorial_review"].get("review_file") != EDITORIAL_REVIEW_PATH]
     if not claimed and not history_claims:
         return {}, []
-    cache, active, producers, required_records = {}, set(), {}, set()
+    cache, active, producers, required_records, revalidation_origins = {}, set(), {}, set(), {}
 
     def audit_path(value):
         if (not isinstance(value, str) or not re.fullmatch(r"data/audits/pulso_[A-Za-z0-9_]+\.json", value)
@@ -804,6 +818,34 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
                       and event.get("success") is True and event.get("kind") == "fast"
                       and begin and end and stamp(event.get("at")) and begin <= stamp(event["at"]) <= end]
             binding = reader.get("original_output_binding") or {}
+            revalidated_paid_response = None
+            if not events and has_paid_revalidation_claim(paid_metadata):
+                # A published revalidation has two immutable provenances: its
+                # actual publication/guard run and the earlier genuinely paid
+                # answer. Never invent a Response event in the later window.
+                if PAID_REVALIDATION_PRODUCER not in revalidation_origins:
+                    revalidation_origins[PAID_REVALIDATION_PRODUCER] = paid_revalidation_origin(root)
+                else:
+                    paid_revalidation_proof_files(root)
+                origin = revalidation_origins[PAID_REVALIDATION_PRODUCER]
+                receipt = verify_paid_guard_revalidation(paid, root, execution=execution,
+                    telemetry=archived["telemetry"], origin=origin, archived_execution=True)
+                if receipt.get("old_paid_output_reused") is not True or receipt.get("disposition") != "reuse_code_fn":
+                    raise ValueError("editorial_revalidation_not_exact_frozen_paid_publication")
+                old_execution = origin["execution"]
+                old_begin, old_end = stamp(old_execution["started_at"]), stamp(old_execution["finished_at"])
+                events = [event for event in origin["telemetry"]
+                          if event.get("response_id") == model_response.get("response_id")
+                          and event.get("success") is True and event.get("kind") == "fast"
+                          and stamp(event.get("at")) and old_begin <= stamp(event["at"]) <= old_end]
+                revalidated_paid_response = dict(original_producer=PAID_REVALIDATION_PRODUCER,
+                    original_core_code=PAID_REVALIDATION_CODE,
+                    publication_execution_code=execution["code_sha"],
+                    manifest_ref=PAID_REVALIDATION_PATH, manifest_sha256=PAID_REVALIDATION_SHA256,
+                    actual_receipt_sha256=object_digest(paid_metadata["paid_guard_revalidation_receipt"]),
+                    proof=receipt)
+            if binding.get("revalidated_paid_response") != revalidated_paid_response:
+                raise ValueError("editorial_revalidated_response_dual_provenance_changed")
             request = "Fuente: Pulso / La Tercera\nTítulo: " + paid["raw"]["title"] + "\nContenido:\n" + body
             if (paid.get("status") != "published" or type(paid.get("attempts")) is not int or paid["attempts"] < 1
                     or paid["raw"].get("source_slug") != SOURCE or paid["raw"].get("source_type") != "press_high_trust"
@@ -2498,7 +2540,10 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
                 if repair:
                     checks.setdefault("immutable_code_repair_assessments", {})[url] = repair
             except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
-                fail("processing", "code_repair_old_or_new_paid_evidence_unverified", url=url, error=str(error))
+                code = ("code_repair_actual_paid_validation_deferred"
+                        if str(error) == "code_repair_new_genuine_v5_validation_deferred"
+                        else "code_repair_old_or_new_paid_evidence_unverified")
+                fail("processing", code, url=url, error=str(error))
             if has_paid_revalidation_claim(item.get("raw", {}).get("metadata", {})):
                 try:
                     if paid_origin is None:
@@ -2508,7 +2553,10 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
                         telemetry=telemetry, origin=paid_origin)
                     checks.setdefault("immutable_paid_guard_revalidations", {})[url] = revalidated
                 except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
-                    fail("processing", "paid_guard_revalidation_provenance_unverified", url=url, error=str(error))
+                    code = ("paid_guard_actual_validation_deferred"
+                            if str(error) == "paid_revalidation_actual_validation_still_deferred"
+                            else "paid_guard_revalidation_provenance_unverified")
+                    fail("processing", code, url=url, error=str(error))
             assessment = item.get("raw", {}).get("metadata", {}).get("editorial_assessment") or {}
             score = assessment.get("relevance_score")
             if url in selected_urls:

@@ -114,6 +114,35 @@ def process(data):
     data["snapshot"]["generated_at"] = "2026-10-11T12:05:00Z"
 
 
+@pytest.mark.parametrize('verifier,error,expected', [
+    ('code_repair', 'code_repair_new_genuine_v5_validation_deferred', 'code_repair_actual_paid_validation_deferred'),
+    ('code_repair', 'code_repair_new_genuine_v5_assessment_missing_or_unbound', 'code_repair_old_or_new_paid_evidence_unverified'),
+    ('paid_guard', 'paid_revalidation_actual_validation_still_deferred', 'paid_guard_actual_validation_deferred'),
+    ('paid_guard', 'paid_revalidation_original_model_or_response_changed', 'paid_guard_revalidation_provenance_unverified'),
+])
+def test_processing_qa_distinguishes_actual_deferred_verdict_from_missing_proof_without_acceptance(
+        evidence, monkeypatch, verifier, error, expected):
+    process(evidence)
+    item = next(iter(evidence['queue'].values()))
+    url = item['raw']['url']
+    def rejected_proof(value, *args, **kwargs):
+        raw = value.get('raw', value)
+        if raw['url'] == url:
+            raise ValueError(error)
+        return None
+    if verifier == 'code_repair':
+        monkeypatch.setattr(qa, 'verify_code_repair_reference', rejected_proof)
+    else:
+        item['raw']['metadata']['paid_guard_revalidation_admission'] = {'unit_only': True}
+        monkeypatch.setattr(qa, 'paid_revalidation_origin', lambda root: {})
+        monkeypatch.setattr(qa, 'verify_paid_guard_revalidation', rejected_proof)
+    result = qa.evaluate(**evidence)
+    assert any(row['url'] == url and row['code'] == expected and row['error'] == error
+               for row in result['findings'] if 'url' in row)
+    assert result['processing_qa'] == result['verdict'] == 'FAIL'
+    assert result['acceptance'] == 'NOT_ACCEPTED'
+
+
 def publish_first(data, *, url=None):
     process(data)
     row = data["report"]["matrix"][0]
