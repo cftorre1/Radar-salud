@@ -11,6 +11,36 @@ from radar_salud.pending_queue import PendingQueue, fingerprint
 URL = "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos"
 
 
+def test_multimedia_disposition_does_not_retry_or_mark_seen_and_resumes_verified_text(tmp_path):
+    from radar_salud.df_resolution import defer_format
+    from dataclasses import asdict
+    queue=PendingQueue(tmp_path/'q.json')
+    raw=_raw(dated=True);raw.metadata['page_text']='';raw.metadata['primary_media_urls']=['https://youtube.com/embed/official']
+    queue.discover('diario_financiero',[raw],now=NOW)
+    key=fingerprint(raw);queue.finish(key,'retry','df_media_transcript_unavailable',now=NOW)
+    assert defer_format(queue.items[key],'df_media_transcript_unavailable',NOW)
+    queue.save()
+    assert not queue.ready(NOW)
+    assert queue.items[key]['df_resolution']['state']=='DEFERRED_MULTIMEDIA'
+    assert queue.items[key]['recovery_observations'][-1]['before']['status']=='retry'
+    queue.discover('diario_financiero',[raw],now=NOW)
+    assert queue.items[key]['status']=='deferred'
+    queue.discover('diario_financiero',[_raw(dated=True)],now=NOW)
+    assert queue.items[key]['status']=='pending'
+    assert queue.items[key]['df_resolution']['state']=='RESUMED_VERIFIED_TEXT'
+    assert len(queue.ready(NOW))==1
+    # Date-only enrichment cannot resume an untranscribed format.
+    assert not defer_format(queue.items[key],'df_analysis_deferred',NOW)
+
+
+def test_publisher_branded_byline_is_rejected_even_when_url_has_no_brand_prefix():
+    from radar_salud.df_media_gate import exclusion
+    raw=_raw(dated=True);raw.metadata['article_author']='BRANDCORNER'
+    assert exclusion(raw)=='media_branded_content'
+    raw.metadata['article_author']='Martín Baeza'
+    assert exclusion(raw) is None
+
+
 def test_recorded_real_publisher_metadata_samples():
     # Recorded Work3 metadata, NOT freshly fetched full original HTML.
     from pathlib import Path

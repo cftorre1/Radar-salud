@@ -47,7 +47,7 @@ def reconcile_existing(queue, raw, now, last_discovered_at, published_urls=()):
     if not matches:
         return False
     published = url in {article_url(u) for u in published_urls}
-    rank = {"published": 0, "processing": 1, "pending": 2, "retry": 3, "rejected": 4, "archived": 5, "superseded": 6}
+    rank = {"published": 0, "processing": 1, "pending": 2, "retry": 3, "deferred": 4, "rejected": 5, "archived": 6, "superseded": 7}
     matches.sort(key=lambda pair: (rank.get(pair[1]["status"], 7), pair[1]["detected_at"]))
     primary_key, item = matches[0]
     dated = (raw.event_date and raw.metadata.get("publication_date_source")
@@ -56,7 +56,8 @@ def reconcile_existing(queue, raw, now, last_discovered_at, published_urls=()):
     verified=dated and len(raw.metadata.get('page_text',''))>=160
     legacy_reject = (item["status"] == "rejected" and item.get("reason") == "processor_rejected"
                      and not item["raw"].get("event_date"))
-    active = item["status"] in ("pending", "retry", "processing")
+    resume_format = item["status"] == "deferred" and verified
+    active = item["status"] in ("pending", "retry", "processing") or resume_format
     if published and item["status"] not in ("published", "superseded"):
         _remember(item, now, "already_published_in_history")
         item.update(status="superseded", reason="already_published_in_history", updated_at=now.isoformat(), retry_at=None)
@@ -78,8 +79,8 @@ def reconcile_existing(queue, raw, now, last_discovered_at, published_urls=()):
                           and (original.get("event_date")!=raw.event_date
                                or original.get('metadata',{}).get('fetch_error')
                                or len(original.get('metadata',{}).get('page_text',''))<160))
-        new_status = "pending" if legacy_reject or capture_repaired else item["status"]
-        reason = None if legacy_reject or capture_repaired else item.get("reason")
+        new_status = "pending" if legacy_reject or capture_repaired or resume_format else item["status"]
+        reason = None if legacy_reject or capture_repaired or resume_format else item.get("reason")
         if beyond_backfill_horizon(raw, now):
             new_status, reason = "archived", "outside_90_day_backfill"
         if original != enriched or item["lane"] != new_lane or item["status"] != new_status:
@@ -87,7 +88,9 @@ def reconcile_existing(queue, raw, now, last_discovered_at, published_urls=()):
             item.update(raw=enriched, lane=new_lane, status=new_status, reason=reason, updated_at=now.isoformat(),
                         classification_watermark=basis,
                         classification_basis="stored_watermark" if item.get("classification_watermark") else "original_detection_day_conservative")
-            if legacy_reject or capture_repaired:
+            if resume_format:
+                item['df_resolution'] = {**item.get('df_resolution', {}), 'state': 'RESUMED_VERIFIED_TEXT'}
+            if legacy_reject or capture_repaired or resume_format:
                 item["retry_at"] = None
     # Collapse changed-title duplicates only after verified evidence or history.
     if verified or published:

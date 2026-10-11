@@ -151,7 +151,11 @@ def main():
                     previous.update(df_body_reaudit_status='retry_after_primary_body_reassessment',
                                     df_body_reaudit_reason=exc.reason,editorial_decision='reject',feed_visibility=False)
                     save_history(history_path,history)
-            queue.finish(key,"retry",exc.reason or "budget_or_analysis_deferred")
+            from .df_resolution import defer_format
+            if item['source']=='diario_financiero' and defer_format(item, exc.reason, datetime.now(timezone.utc)):
+                queue.save()
+            else:
+                queue.finish(key,"retry",exc.reason or "budget_or_analysis_deferred")
         except Exception as exc:
             queue.finish(key,"retry",type(exc).__name__)
     for name,(discovered,new,error) in discoveries.items():
