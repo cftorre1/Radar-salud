@@ -1,0 +1,85 @@
+{
+  "acceptance": "NOT_PROVEN",
+  "authority": {
+    "before_control_sha256": "eaed3d08caa81761d53d96f7f515fa4368a2ec5c05d1c0846927973af6057992",
+    "before_state_commit": "bf8e94288ed48baf3b52607ec19309385b9d37e9",
+    "claim_control_sha256": "d3e0564243198ac458abcb50ccb64f50baba87aa14eec08bf7e4b1a89b4e04c3",
+    "claim_parent_commit": "098fae102da1b8d90f70866b7abc5723e03bc8ff",
+    "claim_parent_control_sha256": "7fca9b938d189da7c3f06f7731fde5c7a9c054fe3960452c70ec987a939f0aa4",
+    "claim_state_commit": "5a10bac3620a22dddffdf9981d33f37f33da4a61",
+    "destination_infrastructure_commit": "15416d1dee5b71f5afd4468a4e295fd3efc5ff49",
+    "destination_product_commit": "e87e844aa9c5615381291ae925a6c6d2200f6012",
+    "prior_finish_commit": "39444ac8b2be7d535f128ff216ff39d2af74ba19",
+    "prior_finish_control_sha256": "88fbf31df5048b0b8755bc0eb725ff26986fda260fbbef45bd4e607a7c610ee1",
+    "prior_finish_evidence_revision": "b6cba97019c0dbe323e14c53d24b386c414f4d6e15728eb3f822dde0f5a7abdf",
+    "prior_finish_revision_basis": "engine._revision(queue task definition/failure/dependencies, combined input_fingerprint)",
+    "prior_finish_revision_namespace": "lease_engine_task_evidence_authority",
+    "prior_infrastructure_commit": "ce40f5afaad0efb1efec3a010db86d9eb1e9d676",
+    "prior_product_commit": "c4819844e413d31ede792521a2c137392c4ae104",
+    "prior_report_evidence_revision": "2c8bd69edbf976018177338a987fd49198cf684b1716e8703fdb6d70eb4bfe61",
+    "prior_report_revision_basis": "runner.semantic_hash({task:{id,objective},acceptance:[]})",
+    "prior_report_revision_matches_finish": false,
+    "prior_report_revision_namespace": "lane_runner_report_semantic_basis",
+    "prior_revision_relation": "Distinct semantic bases: diagnostic report revision does not replace the leased task authority.",
+    "prior_worker_result": {
+      "path": "data/autopilot/evidence/3fe44229579642b39934cf9d9eefad59.json",
+      "sha256": "c2206c672e4bfca78f2f63a2624893f24d1b65412c2ca547025d5169aade5453"
+    }
+  },
+  "checks": {
+    "actual_claim_introduced_event": true,
+    "actual_pending_terminal_consumed": true,
+    "committed_product_and_executor_scopes_verified": true,
+    "prior_completed_before_alias": true,
+    "prior_worker_exact_git_finish": true,
+    "same_failure_and_all_scoped_inputs": true
+  },
+  "computed_fingerprints": {
+    "destination_executor": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
+    "destination_product": "b437bd6368446d989c120564a149625360e12cf19044a1f056368f450491c0fd",
+    "prior_executor": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
+    "prior_product": "b437bd6368446d989c120564a149625360e12cf19044a1f056368f450491c0fd"
+  },
+  "counts_as_material_progress": false,
+  "destination": {
+    "declared_repair_inputs": {},
+    "executor_fingerprint": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
+    "failure": {
+      "conclusion": "failure",
+      "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+      "head_sha": "e87e844aa9c5615381291ae925a6c6d2200f6012",
+      "run_id": 38123952091,
+      "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38123952091"
+    },
+    "family": "staging_qa",
+    "input_fingerprint": "b4bf579f780e291cef38328053a2795414830b7441956b8d66ac98ef7bc734db",
+    "product_input_fingerprint": "b437bd6368446d989c120564a149625360e12cf19044a1f056368f450491c0fd",
+    "task_id": "staging_qa_failed_run_38123952091"
+  },
+  "event_sha256": "498547d4f63204877ac391abfc5129eaa598ffc890ad42f3c18b34832b451828",
+  "prior": {
+    "attempts": 1,
+    "completed_at": "2026-10-11T07:06:30.278098Z",
+    "declared_repair_inputs": {},
+    "executor_fingerprint": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
+    "failure": {
+      "conclusion": "failure",
+      "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+      "head_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+      "run_id": 38116961282,
+      "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116961282"
+    },
+    "family": "staging_qa",
+    "history_key": "22b3658760134cf4791788a496e133b1a2a445f95743fb542d808f709ad50cad",
+    "input_fingerprint": "b4bf579f780e291cef38328053a2795414830b7441956b8d66ac98ef7bc734db",
+    "product_input_fingerprint": "b437bd6368446d989c120564a149625360e12cf19044a1f056368f450491c0fd",
+    "task_id": "staging_qa_failed_run_38116961282"
+  },
+  "production_promoted": false,
+  "raw_event_id": "007b67424c875e2c69e2d229bfe23f834ac0c89c26a3c5bff2b3b01a192c5c17",
+  "raw_events_modified": false,
+  "schema": "trusted_qa_alias_transition_git_authority.v1",
+  "task_states_modified": false,
+  "terminal_event_id": "8942850fdeb14c78e5ffca6a78535977aca7545ee5329bd74e603dda46f2766c",
+  "terminal_event_sha256": "2ed9d38034f7a28cb43693792f1013a279c04b1cd51de5dad4a9db2039469f4a"
+}
