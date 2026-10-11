@@ -3006,5 +3006,30 @@
     "source_closed": false,
     "specific_fix": "Committed infrastructure refuses same-input alias claim credit and records an append-only retirement of the earlier claim transition. Raw evidence, leases, first acceptance window and prior snapshots remain immutable; before/after effective counts are independent.",
     "status": "infrastructure_implemented_acceptance_not_proven"
+  },
+  {
+    "blocker_fingerprint": "6405665650a49a3e21510c0920470210a3fc79bdb3b1a51f83080112248229ed",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-ea24c8abf8834d82b636e92dcaa32722.json",
+        "sha256": "4f6cdbfc2b5712bb3b8296e203560626d9a7f8f01cc07efb80b0bd3945dca551",
+        "staging_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
+        "state_sha": "396bb1ca0231dea4e33e55b7fc5705605e9a935b"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: staging_qa_failed_run_38128983053",
+    "id": "autonomy_observed_7fad8c467c35cc21ccefb12fb592028ce6ae37969f0ad86f66bc30313edabadc",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "staging_qa_failed_run_38128983053"
   }
 ]
