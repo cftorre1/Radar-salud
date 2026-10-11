@@ -70,3 +70,12 @@ def test_sitemap_primary_urls_exclude_images_and_keep_news_publication_evidence(
         "lastmod": "2026-10-11T08:00:00Z",
         "publication_date": "2026-10-10T10:00:00-03:00",
         "title": "Clinica title", "keywords": "salud, prestadores"}]
+
+
+def test_empty_archive_page_is_observed_without_inventing_article_entries():
+    observed = probe.describe(
+        b'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"/>',
+        probe.EXTENDED_BOUNDARIES[0], "application/xml")
+    assert observed["xml_root"] == "urlset"
+    assert observed["xml_location_count"] == 0
+    assert observed["xml_locations"] == observed["xml_entries"] == []

@@ -31,6 +31,12 @@ SITEMAPS = (
     BASE + "/arc/outboundfeeds/sitemap/?outputType=xml",
 )
 SITEMAP_BOUNDARY = BASE + "/arc/outboundfeeds/sitemap/?outputType=xml&from=9900"
+EXTENDED_BOUNDARIES = (
+    BASE + "/arc/outboundfeeds/sitemap/?outputType=xml&from=10000",
+    BASE + "/arc/outboundfeeds/sitemap/?outputType=xml&from=15000",
+    BASE + "/arc/outboundfeeds/sitemap/?outputType=xml&from=19000",
+    BASE + "/arc/outboundfeeds/news-sitemap/?outputType=xml&from=10000",
+)
 XML_FIXTURES = {
     BASE + "/robots.txt": "robots.txt",
     SITEMAPS[0]: "sitemap_index.xml",
@@ -39,6 +45,10 @@ XML_FIXTURES = {
     BASE + "/arc/outboundfeeds/news-sitemap/?outputType=xml": "news_sitemap_first_page.xml",
     BASE + "/arc/outboundfeeds/rss/?outputType=xml": "rss.xml",
     SITEMAP_BOUNDARY: "sitemap_boundary_9900.xml",
+    EXTENDED_BOUNDARIES[0]: "sitemap_boundary_10000.xml",
+    EXTENDED_BOUNDARIES[1]: "sitemap_boundary_15000.xml",
+    EXTENDED_BOUNDARIES[2]: "sitemap_boundary_19000.xml",
+    EXTENDED_BOUNDARIES[3]: "news_sitemap_boundary_10000.xml",
 }
 ARTICLE_FIXTURES = (
     BASE + "/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
@@ -48,6 +58,8 @@ SEEDS = (
     (BASE + "/robots.txt", "robots", "publisher_declaration"),
     *((url, "sitemap", "robots_declaration_verified_independently") for url in SITEMAPS),
     (SITEMAP_BOUNDARY, "sitemap_boundary", "observed_100_page_index_last_child"),
+    *((url, "sitemap_boundary", "derived_from_observed_100_offset_pagination_unverified_extension")
+      for url in EXTENDED_BOUNDARIES),
     *((BASE + path, "listing", "configured_or_known_taxonomy") for path in (
         "/canal/pulso/", "/canal/nacional/", "/etiqueta/salud/",
         "/etiqueta/isapres/", "/etiqueta/fonasa/", "/etiqueta/clinicas/",
