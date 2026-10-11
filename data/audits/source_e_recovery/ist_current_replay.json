@@ -1,0 +1,941 @@
+{
+  "checkpoint": "IST real detail replay after strict CMS publisher-field date recovery",
+  "as_of": "2026-10-11",
+  "network_during_replay": false,
+  "api_capture": {
+    "report": "data/audits/source_e_recovery/actions/38115274609/report.json",
+    "run_id": "38115274609",
+    "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+    "sha256": "8d0abf995137f604321fa7955661d7592147e0f6524ac9f9ee62d2e545f2ccf7",
+    "http_status": 200,
+    "tls": {
+      "origin_handshake_observed": true,
+      "certificate_verification_result": 0,
+      "verified": true
+    },
+    "headers": [
+      {
+        "status_line": "HTTP/2 200 ",
+        "server": "nginx",
+        "date": "Sun, 11 Oct 2026 05:38:32 GMT",
+        "content-type": "application/json; charset=UTF-8",
+        "cache-control": "no-store, no-cache, must-revalidate",
+        "x-robots-tag": "noindex",
+        "link": "<https://ist.cl/wp-json/>; rel=\"https://api.w.org/\"",
+        "x-wp-total": "21",
+        "x-wp-totalpages": "1",
+        "strict-transport-security": "max-age=31536000"
+      }
+    ]
+  },
+  "detail_capture_index": "data/audits/source_e_recovery/actions/38116209530/inventory/capture_index.json",
+  "detail_run_id": "38116209530",
+  "prior_parser_failure": {
+    "code": "invalid_publication_date",
+    "cause": "Semantic span.published native field uses Mon D, YYYY: Oct 7, 2026 / Ago 31, 2026, not accepted by prior full-field date parser",
+    "scope": "20 captured current API-linked newsroom articles; previous runtime entire-source unknown-date metrics were355"
+  },
+  "summary": {
+    "api_posts": 21,
+    "valid_native_api_publication_dates": 21,
+    "captured_newsroom_details": 20,
+    "valid_detail_publisher_dates": 20,
+    "api_linked_verified_inventory_dates": 19,
+    "promotable_raw_items": 19,
+    "raw_item_urls": [
+      "https://ist.cl/mes-de-la-salud-mental-junto-a-uai-realizamos-significativo-encuentro-sobre-su-cuidado/",
+      "https://ist.cl/dimos-inicio-a-la-semana-de-la-seguridad-junto-a-ebco/",
+      "https://ist.cl/potenciando-la-salud-ocupacional-e-higiene-industrial-junto-a-codelco-vp-y-newrest/",
+      "https://ist.cl/fortaleciendo-el-bienestar-junto-a-confusam-aconcagua/",
+      "https://ist.cl/feria-de-bienestar-2026-promoviendo-el-cuidado-de-la-vida-junto-a-puerto-ventanas/",
+      "https://ist.cl/con-gran-entusiasmo-participamos-en-el-4-seminario-magallanes-puerto-sostenible/",
+      "https://ist.cl/reconocimos-a-dyc-division-logistica-san-bernardo-por-cinco-anos-sin-accidentes/",
+      "https://ist.cl/avanzando-en-transformacion-digital-y-cuidado-de-la-vida-junto-a-la-municipalidad-de-puerto-montt/",
+      "https://ist.cl/reconocimos-a-h-constructora-por-cumplir-un-ano-sin-accidentes/",
+      "https://ist.cl/felicitamos-al-comite-paritario-de-transportes-cruz-del-sur-temuco-por-certificacion-sac/",
+      "https://ist.cl/reconocimos-a-fl-ingenieria-por-26-anos-de-trayectoria-y-compromiso/",
+      "https://ist.cl/poniendo-a-las-personas-en-el-centro-en-el-seminario-la-hospitalidad-que-viene-sociedad-5-0-humanizacion-y-cuidado-de-la-vida/",
+      "https://ist.cl/con-gran-orgullo-recibimos-nuevamente-el-premio-nacional-de-satisfaccion-de-clientes-en-el-sector-mutualidades/",
+      "https://ist.cl/realizamos-el-tercer-encuentro-de-comites-paritarios-2026-de-la-universidad-de-talca/",
+      "https://ist.cl/fuimos-parte-de-un-encuentro-significativo-junto-a-julio-olalla/",
+      "https://ist.cl/fortaleciendo-el-cuidado-de-la-vida-en-encuentro-de-comites-paritarios-de-universidad-de-valparaiso/",
+      "https://ist.cl/con-gran-exito-participamos-en-congreso-latinoamericano-de-coaching-icf-chile-2026/",
+      "https://ist.cl/damos-la-bienvenida-a-mk-recursos-humanos/",
+      "https://ist.cl/firmamos-acuerdo-con-hospital-dr-eduardo-pereira-que-fortalece-gestion-preventiva/"
+    ],
+    "pending_api_posts": [
+      {
+        "url": "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/",
+        "reason": "api_visible_publication_date_conflict"
+      },
+      {
+        "url": "https://ist.cl/reporte-sostenibilidad-2025/",
+        "reason": "api_detail_fetch_failed"
+      }
+    ],
+    "html_rows": 36,
+    "html_dated_90": 20,
+    "html_pages": 2,
+    "api_response_complete": true,
+    "inclusive_90_day_bounds": false,
+    "coverage_complete": false,
+    "error_codes": {
+      "api_calendar_bounds_unverified": 1,
+      "api_visible_publication_date_conflict": 1,
+      "api_detail_fetch_failed": 1
+    }
+  },
+  "dates_not_inferred_from": [
+    "article event body",
+    "modified or date_gmt",
+    "landing metadata2016",
+    "document data period2025"
+  ],
+  "observations": [
+    {
+      "url": "https://ist.cl/mes-de-la-salud-mental-junto-a-uai-realizamos-significativo-encuentro-sobre-su-cuidado/",
+      "native_publication_value": "2026-10-07T11:34:47",
+      "native_publication_date": "2026-10-07",
+      "detail_publication_date": "2026-10-07",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-10-07T14:34:47+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Oct 7, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/mes-de-la-salud-mental-junto-a-uai-realizamos-significativo-encuentro-sobre-su-cuidado/",
+        "final_url": "https://ist.cl/mes-de-la-salud-mental-junto-a-uai-realizamos-significativo-encuentro-sobre-su-cuidado/",
+        "captured_at": "2026-10-11T05:57:37.036246+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "2b0b1439870d0d036716-0.body",
+        "sha256": "14165a3564ca3adc851a5d747cb4173312ccd4bc57efc48906a68bded48ca035",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "no_verifiable_material_change",
+      "verified_publication_date": "2026-10-07",
+      "api_visible_header_dates": [
+        {
+          "value": "07/10/2026",
+          "date": "2026-10-07",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/dimos-inicio-a-la-semana-de-la-seguridad-junto-a-ebco/",
+      "native_publication_value": "2026-10-05T21:22:30",
+      "native_publication_date": "2026-10-05",
+      "detail_publication_date": "2026-10-05",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-10-06T00:22:30+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Oct 5, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/dimos-inicio-a-la-semana-de-la-seguridad-junto-a-ebco/",
+        "final_url": "https://ist.cl/dimos-inicio-a-la-semana-de-la-seguridad-junto-a-ebco/",
+        "captured_at": "2026-10-11T05:57:40.038629+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "73fabf45ae1cfb6a5af3-0.body",
+        "sha256": "f8ae70dfbbed9c451e8a936b16026b36414119aa1a283edaf661b7fd17a529fa",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "campaign_event_testimonial_or_recognition",
+      "verified_publication_date": "2026-10-05",
+      "api_visible_header_dates": [
+        {
+          "value": "05/10/2026",
+          "date": "2026-10-05",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/potenciando-la-salud-ocupacional-e-higiene-industrial-junto-a-codelco-vp-y-newrest/",
+      "native_publication_value": "2026-09-28T11:23:16",
+      "native_publication_date": "2026-09-28",
+      "detail_publication_date": "2026-09-28",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-09-28T14:23:16+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Sep 28, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/potenciando-la-salud-ocupacional-e-higiene-industrial-junto-a-codelco-vp-y-newrest/",
+        "final_url": "https://ist.cl/potenciando-la-salud-ocupacional-e-higiene-industrial-junto-a-codelco-vp-y-newrest/",
+        "captured_at": "2026-10-11T05:57:43.185956+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "be7418b97731bb0909f9-0.body",
+        "sha256": "5d41315a560099fa597fa97b6594d9600181558e07f5dae0fac2c9417414e5e8",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "no_verifiable_material_change",
+      "verified_publication_date": "2026-09-28",
+      "api_visible_header_dates": [
+        {
+          "value": "28/09/2026",
+          "date": "2026-09-28",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/fortaleciendo-el-bienestar-junto-a-confusam-aconcagua/",
+      "native_publication_value": "2026-09-22T16:35:09",
+      "native_publication_date": "2026-09-22",
+      "detail_publication_date": "2026-09-22",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-09-22T19:35:09+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Sep 22, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/fortaleciendo-el-bienestar-junto-a-confusam-aconcagua/",
+        "final_url": "https://ist.cl/fortaleciendo-el-bienestar-junto-a-confusam-aconcagua/",
+        "captured_at": "2026-10-11T05:57:46.218556+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "68103cd1100ff5359a2f-0.body",
+        "sha256": "aabb4609b901002474972e56498ad377bbbec66057a5e2c8c6935cf2a04c59f3",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "no_verifiable_material_change",
+      "verified_publication_date": "2026-09-22",
+      "api_visible_header_dates": [
+        {
+          "value": "22/09/2026",
+          "date": "2026-09-22",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/feria-de-bienestar-2026-promoviendo-el-cuidado-de-la-vida-junto-a-puerto-ventanas/",
+      "native_publication_value": "2026-09-17T13:19:59",
+      "native_publication_date": "2026-09-17",
+      "detail_publication_date": "2026-09-17",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-09-17T16:19:59+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Sep 17, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/feria-de-bienestar-2026-promoviendo-el-cuidado-de-la-vida-junto-a-puerto-ventanas/",
+        "final_url": "https://ist.cl/feria-de-bienestar-2026-promoviendo-el-cuidado-de-la-vida-junto-a-puerto-ventanas/",
+        "captured_at": "2026-10-11T05:57:49.264620+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "261ce0bc2aac9b3e0656-0.body",
+        "sha256": "2b4459f687a0e032c259b8c33256a9f41a088f7c7a50f0a0c4a6f0216e0ba1ad",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "campaign_event_testimonial_or_recognition",
+      "verified_publication_date": "2026-09-17",
+      "api_visible_header_dates": [
+        {
+          "value": "17/09/2026",
+          "date": "2026-09-17",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/con-gran-entusiasmo-participamos-en-el-4-seminario-magallanes-puerto-sostenible/",
+      "native_publication_value": "2026-09-11T16:34:05",
+      "native_publication_date": "2026-09-11",
+      "detail_publication_date": "2026-09-11",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-09-11T19:34:05+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Sep 11, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/con-gran-entusiasmo-participamos-en-el-4-seminario-magallanes-puerto-sostenible/",
+        "final_url": "https://ist.cl/con-gran-entusiasmo-participamos-en-el-4-seminario-magallanes-puerto-sostenible/",
+        "captured_at": "2026-10-11T05:57:52.141650+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "db415d6ad272db506db3-0.body",
+        "sha256": "923939b27666dc9b58c6b8267a29618b1f6c0b35510d4393d20b07f3f5126ece",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "campaign_event_testimonial_or_recognition",
+      "verified_publication_date": "2026-09-11",
+      "api_visible_header_dates": [
+        {
+          "value": "11/09/2026",
+          "date": "2026-09-11",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/reconocimos-a-dyc-division-logistica-san-bernardo-por-cinco-anos-sin-accidentes/",
+      "native_publication_value": "2026-09-10T11:13:24",
+      "native_publication_date": "2026-09-10",
+      "detail_publication_date": "2026-09-10",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-09-10T14:13:24+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Sep 10, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/reconocimos-a-dyc-division-logistica-san-bernardo-por-cinco-anos-sin-accidentes/",
+        "final_url": "https://ist.cl/reconocimos-a-dyc-division-logistica-san-bernardo-por-cinco-anos-sin-accidentes/",
+        "captured_at": "2026-10-11T05:57:55.219271+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "8777ce6eeb90e38118af-0.body",
+        "sha256": "e2ebcabcea285e2174e5576decf20a287117a601ee320165bf85da5be02742a7",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "campaign_event_testimonial_or_recognition",
+      "verified_publication_date": "2026-09-10",
+      "api_visible_header_dates": [
+        {
+          "value": "10/09/2026",
+          "date": "2026-09-10",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/avanzando-en-transformacion-digital-y-cuidado-de-la-vida-junto-a-la-municipalidad-de-puerto-montt/",
+      "native_publication_value": "2026-09-08T10:51:38",
+      "native_publication_date": "2026-09-08",
+      "detail_publication_date": "2026-09-08",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-09-08T13:51:38+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Sep 8, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/avanzando-en-transformacion-digital-y-cuidado-de-la-vida-junto-a-la-municipalidad-de-puerto-montt/",
+        "final_url": "https://ist.cl/avanzando-en-transformacion-digital-y-cuidado-de-la-vida-junto-a-la-municipalidad-de-puerto-montt/",
+        "captured_at": "2026-10-11T05:57:58.055719+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "8bec17ac4b47d303bcfe-0.body",
+        "sha256": "9112ce9b047b45bfb33b057fd7b988b3379e91f3dc9ddcc3289820a4a775ffad",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "no_verifiable_material_change",
+      "verified_publication_date": "2026-09-08",
+      "api_visible_header_dates": [
+        {
+          "value": "08/09/2026",
+          "date": "2026-09-08",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/reconocimos-a-h-constructora-por-cumplir-un-ano-sin-accidentes/",
+      "native_publication_value": "2026-09-03T17:54:32",
+      "native_publication_date": "2026-09-03",
+      "detail_publication_date": "2026-09-03",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-09-03T20:54:32+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Sep 3, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/reconocimos-a-h-constructora-por-cumplir-un-ano-sin-accidentes/",
+        "final_url": "https://ist.cl/reconocimos-a-h-constructora-por-cumplir-un-ano-sin-accidentes/",
+        "captured_at": "2026-10-11T05:58:00.914469+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "cea82e770f00a67eb44d-0.body",
+        "sha256": "42a88d26bc787a1e6cd0f8cdaa68129527471a138747c1066ba293dfbbae284b",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "campaign_event_testimonial_or_recognition",
+      "verified_publication_date": "2026-09-03",
+      "api_visible_header_dates": [
+        {
+          "value": "03/09/2026",
+          "date": "2026-09-03",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/felicitamos-al-comite-paritario-de-transportes-cruz-del-sur-temuco-por-certificacion-sac/",
+      "native_publication_value": "2026-08-31T13:43:55",
+      "native_publication_date": "2026-08-31",
+      "detail_publication_date": "2026-08-31",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-08-31T16:43:55+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Ago 31, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/felicitamos-al-comite-paritario-de-transportes-cruz-del-sur-temuco-por-certificacion-sac/",
+        "final_url": "https://ist.cl/felicitamos-al-comite-paritario-de-transportes-cruz-del-sur-temuco-por-certificacion-sac/",
+        "captured_at": "2026-10-11T05:58:03.982368+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "cfc38d4f989f190eb5b2-0.body",
+        "sha256": "b91bf5c847eabe0a54518759c89ec76ebbc308a88c7fe2d77b2cf7d29ea2c27e",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "no_verifiable_material_change",
+      "verified_publication_date": "2026-08-31",
+      "api_visible_header_dates": [
+        {
+          "value": "31/08/2026",
+          "date": "2026-08-31",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/reconocimos-a-fl-ingenieria-por-26-anos-de-trayectoria-y-compromiso/",
+      "native_publication_value": "2026-08-25T15:29:50",
+      "native_publication_date": "2026-08-25",
+      "detail_publication_date": "2026-08-25",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-08-25T18:29:50+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Ago 25, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/reconocimos-a-fl-ingenieria-por-26-anos-de-trayectoria-y-compromiso/",
+        "final_url": "https://ist.cl/reconocimos-a-fl-ingenieria-por-26-anos-de-trayectoria-y-compromiso/",
+        "captured_at": "2026-10-11T05:58:06.828097+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "3a2a7697ba14b06cc071-0.body",
+        "sha256": "c1bce9381d67d2f4ad9311c26a99619858a90b4e400b6942f9bfb11e07765bb8",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "campaign_event_testimonial_or_recognition",
+      "verified_publication_date": "2026-08-25",
+      "api_visible_header_dates": [
+        {
+          "value": "25/08/2026",
+          "date": "2026-08-25",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/poniendo-a-las-personas-en-el-centro-en-el-seminario-la-hospitalidad-que-viene-sociedad-5-0-humanizacion-y-cuidado-de-la-vida/",
+      "native_publication_value": "2026-08-19T19:20:08",
+      "native_publication_date": "2026-08-19",
+      "detail_publication_date": "2026-08-19",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-08-19T22:20:08+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Ago 19, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/poniendo-a-las-personas-en-el-centro-en-el-seminario-la-hospitalidad-que-viene-sociedad-5-0-humanizacion-y-cuidado-de-la-vida/",
+        "final_url": "https://ist.cl/poniendo-a-las-personas-en-el-centro-en-el-seminario-la-hospitalidad-que-viene-sociedad-5-0-humanizacion-y-cuidado-de-la-vida/",
+        "captured_at": "2026-10-11T05:58:09.852150+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "89716ec767def1f49c23-0.body",
+        "sha256": "d1e2806755def2c216c8d6520e45c2ba969cb4a23360a4d6c62281fe0728a98a",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "campaign_event_testimonial_or_recognition",
+      "verified_publication_date": "2026-08-19",
+      "api_visible_header_dates": [
+        {
+          "value": "19/08/2026",
+          "date": "2026-08-19",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/con-gran-orgullo-recibimos-nuevamente-el-premio-nacional-de-satisfaccion-de-clientes-en-el-sector-mutualidades/",
+      "native_publication_value": "2026-08-14T11:57:42",
+      "native_publication_date": "2026-08-14",
+      "detail_publication_date": "2026-08-14",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-08-14T14:57:42+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Ago 14, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/con-gran-orgullo-recibimos-nuevamente-el-premio-nacional-de-satisfaccion-de-clientes-en-el-sector-mutualidades/",
+        "final_url": "https://ist.cl/con-gran-orgullo-recibimos-nuevamente-el-premio-nacional-de-satisfaccion-de-clientes-en-el-sector-mutualidades/",
+        "captured_at": "2026-10-11T05:58:12.938562+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "23a600a9590bf26351b7-0.body",
+        "sha256": "b68aa141cf5a163503480ed1f7331c8416550e8d5f5aa8fc2b7e6ab0c29b7e05",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "campaign_event_testimonial_or_recognition",
+      "verified_publication_date": "2026-08-14",
+      "api_visible_header_dates": [
+        {
+          "value": "14/08/2026",
+          "date": "2026-08-14",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/realizamos-el-tercer-encuentro-de-comites-paritarios-2026-de-la-universidad-de-talca/",
+      "native_publication_value": "2026-08-14T11:44:50",
+      "native_publication_date": "2026-08-14",
+      "detail_publication_date": "2026-08-14",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-08-14T14:44:50+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Ago 14, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/realizamos-el-tercer-encuentro-de-comites-paritarios-2026-de-la-universidad-de-talca/",
+        "final_url": "https://ist.cl/realizamos-el-tercer-encuentro-de-comites-paritarios-2026-de-la-universidad-de-talca/",
+        "captured_at": "2026-10-11T05:58:15.826265+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "b2be10328bc5459c7933-0.body",
+        "sha256": "d5a1f0b674513e72b8141882eeea6c498b7958f4e2b2b0632da1b9f312253ae2",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "no_verifiable_material_change",
+      "verified_publication_date": "2026-08-14",
+      "api_visible_header_dates": [
+        {
+          "value": "14/08/2026",
+          "date": "2026-08-14",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/fuimos-parte-de-un-encuentro-significativo-junto-a-julio-olalla/",
+      "native_publication_value": "2026-08-13T17:59:07",
+      "native_publication_date": "2026-08-13",
+      "detail_publication_date": "2026-08-13",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-08-13T20:59:07+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Ago 13, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/fuimos-parte-de-un-encuentro-significativo-junto-a-julio-olalla/",
+        "final_url": "https://ist.cl/fuimos-parte-de-un-encuentro-significativo-junto-a-julio-olalla/",
+        "captured_at": "2026-10-11T05:58:18.861503+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "a1bf466946ceabb2ff3e-0.body",
+        "sha256": "83561547469c65940be5a8ee04cfa52af8e0907ee12ef0131ded248cf6fddfb9",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "no_verifiable_material_change",
+      "verified_publication_date": "2026-08-13",
+      "api_visible_header_dates": [
+        {
+          "value": "13/08/2026",
+          "date": "2026-08-13",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/fortaleciendo-el-cuidado-de-la-vida-en-encuentro-de-comites-paritarios-de-universidad-de-valparaiso/",
+      "native_publication_value": "2026-08-12T12:22:39",
+      "native_publication_date": "2026-08-12",
+      "detail_publication_date": "2026-08-12",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-08-12T15:22:39+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Ago 12, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/fortaleciendo-el-cuidado-de-la-vida-en-encuentro-de-comites-paritarios-de-universidad-de-valparaiso/",
+        "final_url": "https://ist.cl/fortaleciendo-el-cuidado-de-la-vida-en-encuentro-de-comites-paritarios-de-universidad-de-valparaiso/",
+        "captured_at": "2026-10-11T05:58:21.934927+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "f2866f1b82ded1dc5e8f-0.body",
+        "sha256": "dd0b7ddd84469eb52ca98c0d17c75601890253623ea229e9f7d8360753fd3ea5",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "no_verifiable_material_change",
+      "verified_publication_date": "2026-08-12",
+      "api_visible_header_dates": [
+        {
+          "value": "12/08/2026",
+          "date": "2026-08-12",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/",
+      "native_publication_value": "2026-08-12T11:38:53",
+      "native_publication_date": "2026-08-12",
+      "detail_publication_date": "2026-08-12",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-08-12T14:38:53+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Ago 12, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/",
+        "final_url": "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/",
+        "captured_at": "2026-10-11T05:58:25.030670+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "83c7b1e01c04e080e4d8-0.body",
+        "sha256": "c271d7d3ab0a6bb1663191e9389076ec627d7c6ec7859e2127c41e5a7d2a9349",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "pending",
+      "inventory_reason": "api_visible_publication_date_conflict",
+      "verified_publication_date": null,
+      "api_visible_header_dates": [
+        {
+          "value": "10/08/2026",
+          "date": "2026-08-10",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/con-gran-exito-participamos-en-congreso-latinoamericano-de-coaching-icf-chile-2026/",
+      "native_publication_value": "2026-08-03T18:01:53",
+      "native_publication_date": "2026-08-03",
+      "detail_publication_date": "2026-08-03",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-08-03T21:01:53+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Ago 3, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/con-gran-exito-participamos-en-congreso-latinoamericano-de-coaching-icf-chile-2026/",
+        "final_url": "https://ist.cl/con-gran-exito-participamos-en-congreso-latinoamericano-de-coaching-icf-chile-2026/",
+        "captured_at": "2026-10-11T05:58:28.205217+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "e0bf129168643f42713b-0.body",
+        "sha256": "98aef254e3e925c45e4eff78b9ba4f7b6fad11d543fb9a59c5aba7f6214c883b",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "campaign_event_testimonial_or_recognition",
+      "verified_publication_date": "2026-08-03",
+      "api_visible_header_dates": [
+        {
+          "value": "03/08/2026",
+          "date": "2026-08-03",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/damos-la-bienvenida-a-mk-recursos-humanos/",
+      "native_publication_value": "2026-07-29T18:31:38",
+      "native_publication_date": "2026-07-29",
+      "detail_publication_date": "2026-07-29",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-07-29T21:31:38+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Jul 29, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/damos-la-bienvenida-a-mk-recursos-humanos/",
+        "final_url": "https://ist.cl/damos-la-bienvenida-a-mk-recursos-humanos/",
+        "captured_at": "2026-10-11T05:58:34.998364+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "d950f66d4a4ff8be4f26-0.body",
+        "sha256": "318ab49b7142c65ef54b75bcce358d58e71974cbe77473e080680f40d761e7af",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "no_verifiable_material_change",
+      "verified_publication_date": "2026-07-29",
+      "api_visible_header_dates": [
+        {
+          "value": "29/07/2026",
+          "date": "2026-07-29",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/firmamos-acuerdo-con-hospital-dr-eduardo-pereira-que-fortalece-gestion-preventiva/",
+      "native_publication_value": "2026-07-22T18:39:30",
+      "native_publication_date": "2026-07-22",
+      "detail_publication_date": "2026-07-22",
+      "detail_date_candidates": [
+        {
+          "kind": "article:published_time",
+          "value": "2026-07-22T21:39:30+00:00"
+        },
+        {
+          "kind": "publisher:publication_container",
+          "value": "Jul 22, 2026"
+        }
+      ],
+      "detail_date_result": "article:published_time",
+      "capture": {
+        "url": "https://ist.cl/firmamos-acuerdo-con-hospital-dr-eduardo-pereira-que-fortalece-gestion-preventiva/",
+        "final_url": "https://ist.cl/firmamos-acuerdo-con-hospital-dr-eduardo-pereira-que-fortalece-gestion-preventiva/",
+        "captured_at": "2026-10-11T05:58:38.079879+00:00",
+        "artifact_dir": "data/audits/source_e_recovery/actions/38116209530/inventory/capture",
+        "body_file": "eca6ea044feade323ef4-0.body",
+        "sha256": "a35ae98db2972fd846f9e5a87ee46b3056aa29b868488259cf2207ff93ce056d",
+        "http_status": 200,
+        "tls": {
+          "origin_handshake_observed": true,
+          "certificate_verification_result": 0,
+          "verified": true
+        }
+      },
+      "inventory_status": "rejected",
+      "inventory_reason": "no_verifiable_material_change",
+      "verified_publication_date": "2026-07-22",
+      "api_visible_header_dates": [
+        {
+          "value": "22/07/2026",
+          "date": "2026-07-22",
+          "kind": "rendered_content:date_before_h1"
+        }
+      ]
+    },
+    {
+      "url": "https://ist.cl/reporte-sostenibilidad-2025/",
+      "native_publication_value": "2026-07-14T14:52:49",
+      "native_publication_date": "2026-07-14",
+      "detail_capture": "absent_from_Run4_capture_index",
+      "inventory_status": "pending",
+      "inventory_reason": "api_detail_fetch_failed",
+      "verified_publication_date": null,
+      "api_visible_header_dates": []
+    }
+  ],
+  "next_action": [
+    "Capture exact official detail https://ist.cl/reporte-sostenibilidad-2025/ to verify 14Jul2026 independently of native REST listing; retain data_period2025 separately",
+    "Capture current inclusive API URL after=2026-07-12T23:59:59&before=2026-10-12T00:00:00; existing afterJul13T00 exclusive capture cannot certify first-day-midnight coverage",
+    "Keep TPS pending: native/date+detail metadata12Aug2026 conflicts with visible rendered header10Aug2026; do not choose one automatically"
+  ],
+  "regression_command": ".venv/bin/python -m pytest -q tests/test_occupational_inventory.py tests/test_occupational_integrity.py",
+  "regression_validation": {
+    "exit_code": 0,
+    "passed": 114,
+    "result": "114 passed in0.63s",
+    "tests": [
+      "tests/test_occupational_inventory.py",
+      "tests/test_occupational_integrity.py"
+    ]
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "reviewer": "independent agent /root/reviewer",
+  "reviewed_at": "2026-10-11T08:13:44.557430+00:00",
+  "reviewed_head": "fb572d017fcc915e6ecabd477b501fc4b1944b3e",
+  "run_id": "38122998011",
+  "verdict": "ACCEPT_ITEM",
+  "queue_id": "2b8181bd912960c79b4d60f98210c1d5aedfeded4f4d9faf71b8495f3afb9927",
+  "source_slug": "ist",
+  "source_url": "https://ist.cl/reporte-sostenibilidad-2025/",
+  "native_title": "Reporte de Sostenibilidad IST 2025",
+  "market_role": "mutuality",
+  "publication_date": "2026-07-14",
+  "publication_evidence": {
+    "url": "https://ist.cl/reporte-sostenibilidad-2025/",
+    "value": "2026-07-14T17:52:49+00:00",
+    "date": "2026-07-14",
+    "kind": "article:published_time"
+  },
+  "data_period": "2025",
+  "ingestion_mode": "BACKFILL",
+  "document_publication_date": null,
+  "actual_ai_assessment": {
+    "score": 78,
+    "reason": "Relevancia secundaria-alta: es información financiera y operacional verificable de una mutualidad relevante, pero corresponde a un reporte institucional del período 2025 publicado el 14 de julio de 2026. Ingresa como backfill y no permite afirmar que exista una convocatoria, inscripción o vigencia operativa abierta al 11 de octubre de 2026.",
+    "threshold": 75
+  },
+  "actual_ai_calls_this_run": 1,
+  "monthly_fast_attempts_before": 46,
+  "monthly_fast_attempts_after": 47,
+  "capture_evidence": {
+    "url": "https://ist.cl/reporte-sostenibilidad-2025/",
+    "final_url": "https://ist.cl/reporte-sostenibilidad-2025/",
+    "captured_at": "2026-10-11T06:32:01.427609+00:00",
+    "sha256": "bb3e7a4c9f5f0a60b9fe7daf32028b06f571d01a27bd208c75a3fbb5e16237fc",
+    "http_status": 200,
+    "tls_verified": true,
+    "artifact": "data/audits/source_e_recovery/actions/38117675962/inventory/capture/fcf3c6d8b68614862e5b-0.body",
+    "environment": "github_actions"
+  },
+  "document_capture_evidence": {
+    "url": "https://ist.cl/wp-content/uploads/2026/07/Reporte-de-sostenibilidad-2025.pdf",
+    "final_url": "https://ist.cl/wp-content/uploads/2026/07/Reporte-de-sostenibilidad-2025.pdf",
+    "captured_at": "2026-10-11T08:07:33.992671+00:00",
+    "sha256": "acc895136dcfabe0ed8fd7ec2af599f5c0018b0e8288581ecc625e5ac12f53f7",
+    "http_status": 200,
+    "tls_verified": true,
+    "artifact": "data/audits/source_e_recovery/actions/38122998011/1ab8f6434b9953521e51-0.body",
+    "environment": "github_actions"
+  },
+  "document_bytes_match_complete_offline_review": true,
+  "document_binary_sha256": "acc895136dcfabe0ed8fd7ec2af599f5c0018b0e8288581ecc625e5ac12f53f7",
+  "primary_and_required_document_guards": "PASS independent verify_capture + verified_document_text",
+  "financial_profile": "ist_2025_financial_context_v1",
+  "selected_additional_facts": "Página 54:\nTabla 12. Comparativa de ingresos ordinarios (2024 –2025)\nIndicador Financiero 2025 2024\nIngresos ordinarios $127.894 MM $124.317 MM\n\nPágina 55:\nTabla 13. Comparativa de egresos ordinarios (2024 –2025)\nIndicador Financiero 2025 2024\nEgresos ordinarios $129.140 MM $126.409 MM\n\nPágina 58:\nDurante 2025, IST no registró excedentes, destinando la totalidad de sus recursos al financiamiento\nde las prestaciones, servicio s y obligaciones propias de su operación.\n\nPágina 59:\nLos fondos de reserva de IST han mostrado un crecimiento sostenido durante los últimos años,\nsuperando los $70.600 millones en 2025. Estas reservas cumplen un rol fundamental en la\nsostenibilidad del Seguro Social de la Ley N° 16.744, ya que permiten respaldar obligaciones futuras\nasociadas al pago de pensiones y otras contingencias y eventualidades de largo plazo.",
+  "selected_additional_facts_sha256": "f349721b91a098d1867c9419060f66034903441c7db804778dbfcb5b7a837744",
+  "independently_checked_claims": [
+    {
+      "claim": "ordinary revenue2025/2024",
+      "pdf_page": 54,
+      "values_MM_CLP": [
+        127894,
+        124317
+      ],
+      "period_columns": [
+        "2025",
+        "2024"
+      ],
+      "source_category": "Ingresos ordinarios"
+    },
+    {
+      "claim": "ordinary expense2025/2024",
+      "pdf_page": 55,
+      "values_MM_CLP": [
+        129140,
+        126409
+      ],
+      "period_columns": [
+        "2025",
+        "2024"
+      ],
+      "source_category": "Egresos ordinarios"
+    },
+    {
+      "claim": "No surplus2025; resources finance prestations/services/operation obligations",
+      "pdf_page": 58,
+      "publisher_quote": "Durante2025, IST no registró excedentes; literal claim, no derived net loss."
+    },
+    {
+      "claim": "Reserves exceedCLP70,600million in2025; backing future pensions and other long-term contingencies",
+      "pdf_page": 59
+    },
+    {
+      "claim": "GRI/SASB indicators",
+      "evidence": "Verified native parent article states60 GRI/SASB indicators for2025 report."
+    }
+  ],
+  "approved_copy": {
+    "title": "Reporte de Sostenibilidad IST 2025",
+    "publication_date": "2026-07-14",
+    "data_period": "2025",
+    "market_role": "mutuality",
+    "display_title": "IST reporta ingresos ordinarios de $127.894 millones y ausencia de excedentes en 2025",
+    "what_happened": "El Instituto de Seguridad del Trabajo publicó el 14 de julio de 2026 su Reporte de Sostenibilidad IST 2025, correspondiente al período 2025 y elaborado con indicadores GRI y SASB. En la Tabla 12, “Comparativa de ingresos ordinarios (2024–2025)”, informa ingresos ordinarios por $127.894 millones en 2025, frente a $124.317 millones en 2024. En la Tabla 13, “Comparativa de egresos ordinarios (2024–2025)”, reporta egresos ordinarios por $129.140 millones en 2025, frente a $126.409 millones en 2024. El informe señala que durante 2025 IST no registró excedentes y que destinó la totalidad de sus recursos al financiamiento de las prestaciones, servicios y obligaciones propias de su operación. También informa fondos de reserva superiores a $70.600 millones en 2025, destinados a respaldar obligaciones futuras del Seguro Social de la Ley N° 16.744, incluyendo pensiones y otras contingencias de largo plazo.",
+    "why_it_matters": "Para las mutualidades y otros actores del seguro de accidentes del trabajo, el reporte entrega señales concretas sobre la escala financiera de IST, la evolución de sus ingresos y egresos ordinarios y la disponibilidad de reservas para obligaciones futuras. La ausencia de excedentes, atribuida al propio informe, y el nivel de reservas son elementos relevantes para monitorear su capacidad operacional y el respaldo financiero de prestaciones de largo plazo. Merece atención como antecedente comparativo sectorial, aunque no documenta por sí solo un cambio regulatorio ni una modificación inmediata de cobertura o capacidad."
+  },
+  "copy_limits": [
+    "Institutional historical report, not a fresh2026 operating result or a currently open tender.",
+    "Ordinary income and ordinary expense are categories in two distinct tables; the approved copy does not subtract them to claim a quantified net loss, deficit, profitability or solvency.",
+    "No new0.9%contribution requirement, cross-mutuality financial ranking, coverage expansion or clinical investment is inferred.",
+    "Page1–113 complete document offline review and cited financial tables are durable; production AI input is intentionally bounded40pages/30000chars and850additionalfacts.",
+    "Existing four approvals remain frozen. This artifact approves only this fifth item.",
+    "Source coverage remains degraded because of the separate TPS publication-date conflict; clinical runtime recovery/global final gate remains pending."
+  ],
+  "canonical_state_mutated": false,
+  "paid_API_called_by_reviewer": false
+}

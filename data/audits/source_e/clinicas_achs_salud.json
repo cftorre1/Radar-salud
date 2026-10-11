@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-11",
+  "listing": "https://www.achs.cl/centro-de-noticias",
+  "provider_identity_url": "https://www.achssalud.cl/areasdeatencion/clinicas",
+  "evidence_method": "connected web reader of original listing and canonical detail; no raw HTML replay",
+  "cause": "Shared ACHS newsroom was treated as two interchangeable sources. Presence of provider names in menus or related news is not provider attribution. Five-link runtime cap hid the clinic story below mutuality content.",
+  "repair": "Use scoped article content and exclusive provider_achs attribution. Clinicas and named clinics qualify as actors; center-only Master Plan and occupational accident reporting do not become clinic news. Scan listing before output cap.",
+  "runtime_blocker": "Executor proxy denies achs.cl and achssalud.cl: URLError, Tunnel connection failed: 403 Forbidden. Live collector remains unverified.",
+  "windows": {"as_of_chile": "2026-10-11", "30_day_start": "2026-09-11", "90_day_start": "2026-07-13", "inventory_complete": false},
+  "samples": [
+    {"url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias", "publication_date": "2026-08-28", "date_evidence": "visible date immediately after H1; newsroom listing agrees", "within_30_days": false, "within_90_days": true, "decision": "candidate_pending_editorial_analysis", "reason": "Clinica Atacama participates in SAFED/Fonasa ambulatory care for FIBE-qualified disaster victims. Over 4200 slots are the combined private-provider effort, not Clinica Atacama capacity.", "published": false},
+    {"url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor", "publication_date": "2026-08-19", "date_evidence": "visible date after H1; listing agrees", "within_30_days": false, "within_90_days": true, "decision": "rejected_for_clinic_lane", "reason": "Operational center changes in Linares, San Javier and La Florida; clinic reference is only out-of-hours routing. This is not a clinic capacity change.", "published": false},
+    {"url": "https://www.achs.cl/centro-de-noticias/noticia/2025/achs-y-su-filial-clinicas-achs-salud-se-suman-a-la-modalidad-de-cobertura-complementaria-de-fonasa", "publication_date": null, "date_evidence": "historical 2025 route; exact original date not reconciled in this audit", "within_30_days": false, "within_90_days": false, "decision": "excluded_from_recent_sample", "reason": "Historical MCC incorporation must not inherit dates from current related stories.", "published": false}
+  ],
+  "handoff": "Validate actual HTML and repeat 90-day listing pagination after the executor network is configured. Keep the shared official newsroom but preserve exclusive provider attribution. No recent clinic publication was verified within 30 days in the reviewed sample; this is not proof that none exists."
+}

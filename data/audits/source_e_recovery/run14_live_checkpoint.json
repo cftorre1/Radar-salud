@@ -1,0 +1,723 @@
+{
+  "run_id": 38122998011,
+  "run_conclusion": "success",
+  "branch_only": true,
+  "paid_AI_calls": 1,
+  "AI_successful": 1,
+  "fast_month_before": 46,
+  "fast_month_after": 47,
+  "isolated_delta": 16,
+  "phase_cap": 30,
+  "origin_probe_counts": {
+    "response_captured": 74,
+    "transport_error": 46,
+    "redirect_outside_official_allowlist": 1
+  },
+  "clinical_failure_records": [
+    {
+      "url": "https://www.clinicasachssalud.cl/robots.txt",
+      "source": "achs_clinics",
+      "surface": "robots",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/",
+      "source": "achs_clinics",
+      "surface": "home",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/",
+      "source": "achs_clinics",
+      "surface": "home",
+      "user_agent": "browser_comparison",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/sitemap.xml",
+      "source": "achs_clinics",
+      "surface": "sitemap",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/feed/",
+      "source": "achs_clinics",
+      "surface": "feed",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicasachssalud.cl/",
+      "source": "achs_clinics",
+      "surface": "home_apex",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicasachssalud.cl/feed/",
+      "source": "achs_clinics",
+      "surface": "feed_apex",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://www.clinicaportada.cl/",
+      "source": "achs_clinic_subsite",
+      "surface": "official_home",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicaportada.cl port 443 after 12000 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicaatacama.cl/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicaatacama.cl port 443 after 12002 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicaloscoihues.cl/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicaloscoihues.cl port 443 after 12002 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://www.clinicamaitenes.cl/",
+      "source": "achs_clinic_subsite",
+      "surface": "official_home",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicamaitenes.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://www.clinicalircay.cl/",
+      "source": "achs_clinic_subsite",
+      "surface": "official_home",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicalircay.cl port 443 after 12000 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicalosandes.cl/",
+      "source": "achs_clinic_subsite",
+      "surface": "official_home",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicalosandes.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://www.clinicasur.cl/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasur.cl port 443 after 12000 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://www.clinicapuertomontt.cl/",
+      "source": "achs_clinic_subsite",
+      "surface": "official_home",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicapuertomontt.cl port 443 after 12000 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://www.clinica-curico.cl/",
+      "source": "achs_clinic_subsite",
+      "surface": "official_home",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinica-curico.cl port 443 after 12000 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicaloscoihues.cl/noticias",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicaloscoihues.cl port 443 after 12002 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinica-curico.cl/noticias/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12002 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinica-curico.cl/blog/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/formulario-licitacion-master-plan-serena/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicaportada.cl/noticias/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicaportada.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicaatacama.cl/noticias/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicaatacama.cl port 443 after 12000 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicamaitenes.cl/noticias/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicamaitenes.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicalircay.cl/noticias/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicalircay.cl port 443 after 12000 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://www.clinicalosandes.cl/noticias/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicalosandes.cl port 443 after 12000 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://www.clinicasur.cl/noticias/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasur.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicapuertomontt.cl/noticias/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicapuertomontt.cl port 443 after 12000 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicaportada.cl/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicaportada.cl port 443 after 12000 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicaportada.cl/blog/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicaportada.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicaatacama.cl/blog/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicaatacama.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicamaitenes.cl/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicamaitenes.cl port 443 after 12000 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicalircay.cl/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicalircay.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://www.clinicalosandes.cl/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicalosandes.cl port 443 after 12000 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://www.clinicasur.cl/blog-de-kinesiologia/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasur.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicapuertomontt.cl/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicapuertomontt.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicapuertomontt.cl/blog/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicapuertomontt.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinica-curico.cl/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicalircay.cl/2026/09/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicalircay.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicamaitenes.cl/nueva-unidad-de-paciente-critico/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicamaitenes.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicalircay.cl/modulo-fonasa-talca-lircay/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicalircay.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://www.clinicalosandes.cl/inauguramos-nuestro-nuevo-centro-medico/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicalosandes.cl port 443 after 12000 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinica-curico.cl/nuevo-scanner-tac/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12002 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinica-curico.cl/nuevo-resonador-magnetico-signa-creator/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12002 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicamaitenes.cl/mes-del-corazon-salud-cardiaca/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicamaitenes.cl port 443 after 12002 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinicaloscoihues.cl/clinicas-achs-salud-primer-lugar-total-brands",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicaloscoihues.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    },
+    {
+      "url": "https://clinica-curico.cl/clinicas-achs-salud-primer-lugar-total-brands/",
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route",
+      "user_agent": "identified",
+      "http_status": 0,
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12001 ms: Timeout was reached",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "waf": null
+    }
+  ],
+  "clinical_previous_verified_90": 16,
+  "clinical_latest_verified_90": 5,
+  "clinical_health_transport_errors": 18,
+  "previous_inventory_preserved": true,
+  "no_WAF_or_TLS_failure_inferred_from_connect_timeout": true,
+  "ist_reassessment": {
+    "old_score": 72,
+    "new_score": 78,
+    "threshold": 75,
+    "publication_date": "2026-07-14",
+    "data_period": "2025",
+    "PDF_sha256": "acc895136dcfabe0ed8fd7ec2af599f5c0018b0e8288581ecc625e5ac12f53f7",
+    "independent_editorial_review": "pending"
+  },
+  "next_action": "IST independent editorial review and scoped ordinary public clinical connectivity retry in second Actions runner; no WAF bypass and no artificial date/score/capture refresh."
+}

@@ -1,0 +1,60 @@
+{
+  "checkpoint": "deduplicated_occupational_merge_counts",
+  "captured_at_utc": "2026-10-11T06:22:02.306675+00:00",
+  "problem": "The same URL from two surfaces was retained once but contributed twice to summed counters.",
+  "behavior": "Rows and RawItems deduplicate independently, including duplicates within each input. 30/90-day counts are rebuilt from the final unique publication-date rows, status and configured accepted roles; stale window flags and input totals are ignored.",
+  "date_rule": "A publication_date must validate against the merged as_of day. event_date cannot substitute for a missing publication date. Unknown/future publication or pending rows keep coverage incomplete.",
+  "as_of": "Parent as_of propagation changes in occupational_recovery.py were preserved. Merging two different as_of days is rejected before mutation.",
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/test_occupational_merge.py",
+    "tests/test_occupational_engine_recovery.py",
+    "tests/test_achs_clinics.py",
+    "tests/test_occupational_inventory.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "stdout": "..................................................................       [100%]\n66 passed in 0.28s\n",
+  "stderr": "",
+  "files_sha256": {
+    "src/radar_salud/occupational_recovery.py": "31775514bc84a2139737c104982ddb18eefd3d3576e3680d4df868d361709022",
+    "tests/test_occupational_merge.py": "eff97b21a51da67d664e1d645f0a178de3d83ffe38f9f4d4b10fd96dc34f2fd3"
+  },
+  "next_action": "Await current nine-clinic Actions Run6 captures; replay the merged report and verify unique row totals against actual live source decisions.",
+  "publication_conflict_checkpoint": {
+    "problem": "Same URL with two separately verified dates retained first date and falsely claimed complete coverage.",
+    "behavior": "Retain both publication evidence observations; null publication/event dates; pending merged_publication_date_conflict; remove every RawItem for that URL; metrics show zero verified dated/candidate rows and coverage remains partial. Repeated merges retain both dates and diagnostic.",
+    "adversarial_dates": [
+      "2026-09-24",
+      "2026-10-01"
+    ],
+    "regressions": [
+      "test_two_verified_dates_for_same_url_preserve_both_evidences_and_remove_raw",
+      "test_merge_conflict_survives_repeated_reconciliation_with_one_matching_date",
+      "test_pending_or_unverifiable_ledger_row_cannot_keep_raw_from_another_surface"
+    ],
+    "validation": {
+      "command": ".venv/bin/python -m pytest -q tests/test_occupational_merge.py tests/test_achs_clinics.py tests/test_occupational_inventory.py tests/test_occupational_engine_recovery.py",
+      "passed": 80,
+      "exit_code": 0
+    },
+    "next_action": "Independent reviewer replay then origin inventory using the native clinic parser from bb6ee65 and current strict CMS date parser."
+  },
+  "static_surface_identity_checkpoint": {
+    "behavior": "An explicitly identified static clinical service page keeps publication/event datesNone, isexcluded frompublication metrics,neverkeepsRaw,anddoes not createfalseunknownarticle; genericNone stillunknown/failclosed.",
+    "required_bindings": [
+      "status excluded_surface/type service_page/reason publisher_declares_static_service_page",
+      "officialclinicHTTPS URL and matchingclinic_id/provideridentity/providerrole",
+      "wordpress:static_page evidenceurl equalsrowurl",
+      "positiveintegerobject_idnotbool; official_api_url samehostHTTPS/wp-json/wp/v2/pages/<id> noquery/fragment",
+      "matching bodyclass page page-id<id>"
+    ],
+    "regression_validation": {
+      "passed": 198,
+      "exit_code": 0
+    },
+    "source_evidence": "clinical_run6_current_replay.json"
+  }
+}

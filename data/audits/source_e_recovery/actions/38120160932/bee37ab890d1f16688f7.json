@@ -1,0 +1,39 @@
+{
+  "url": "https://ww2.mutual.cl/memorias.aspx",
+  "user_agent": "identified",
+  "captured_at": "2026-10-11T07:12:52.361412+00:00",
+  "hops": [
+    {
+      "url": "https://ww2.mutual.cl/memorias.aspx",
+      "http_status": 302,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/1.1 302 Found",
+          "content-type": "text/html; charset=iso-8859-1",
+          "location": "http://ww2.mutual.cl/",
+          "server": "Microsoft-IIS/10.0",
+          "date": "Sun, 11 Oct 2026 07:12:52 GMT",
+          "content-length": "138"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "text/html; charset=iso-8859-1",
+      "bytes": 138,
+      "sha256": "9a4c9d3b2dd2336736f9854fb8c4c268f95fd535ad1d15e2b270e4f347c64494",
+      "waf": null,
+      "error": null,
+      "body_file": "bee37ab890d1f16688f7-0.body"
+    }
+  ],
+  "stop_reason": "redirect_outside_official_allowlist",
+  "redirect_destination": "http://ww2.mutual.cl/",
+  "final_url": "https://ww2.mutual.cl/memorias.aspx",
+  "http_status": 302,
+  "waf": null
+}
