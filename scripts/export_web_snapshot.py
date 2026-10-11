@@ -546,6 +546,7 @@ def _sanction_pulses(signals, today=None):
             return " · ".join(x for x in parts if x)
         resolutions=[{"title":s.get("title"),"source_name":s.get("source_name"),
             "url":s.get("source_url"),"event_date":s.get("event_date"),"publication_date":s.get("publication_date"),"material":material(s),
+            "emission_date":s.get("emission_date"),"event_date_basis":s.get("event_date_basis"),"signal_types":["Fiscalización"],
             "ingestion_mode":s.get("ingestion_mode"),"detected_at":s.get("detected_at")}
             for s in items if s.get("source_url")]
         lead=material(items[0])
@@ -575,15 +576,19 @@ def _sanction_pulses(signals, today=None):
         other.append(pulse)
     return other
 
-def curate(signals,resolve_external=True):
+def curate(signals,resolve_external=True,as_of=None):
     normalized=[]
     for s in signals:
         r=_normative_contract(_suseso_normative_upgrade(_editorial_enrichment(_card_micro(_separate_df_deck(_normalize_scopes(_normalize_type(s)))))))
         ok,reason,q=publication_ready(r);r["publication_ready_score"]=q;r["publication_gate_reason"]=reason
         if ok:normalized.append(r)
     if not normalized:return []
-    latest=max([_d(x.get("event_date")) for x in normalized if _d(x.get("event_date"))] or [date.today()])
-    recent=[s for s in normalized if _d(s.get("event_date")) and (latest-_d(s.get("event_date"))).days<=90 and not _routine_accreditation(s)]
+    latest=as_of or max([_d(x.get("event_date")) for x in normalized if _d(x.get("event_date"))] or [date.today()])
+    def within_window(s):
+        dates=[_d(s.get('event_date'))]
+        if 'Fiscalización' in s.get('signal_types',[]):dates.append(_d(s.get('publication_date')))
+        return any(day and 0<=(latest-day).days<=90 for day in dates)
+    recent=[s for s in normalized if within_window(s) and not _routine_accreditation(s)]
     # Public statistics remain visible even when deep analysis is unavailable.
     # Enrich each one to the highest supported level: connected insight -> deep analysis
     # -> central finding -> useful publication inventory.

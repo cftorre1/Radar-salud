@@ -71,6 +71,7 @@ def reconcile(runtime,root=Path('.'),apply=False):
                     row=process_fiscalizacion(RawItem(**raw),cfg[raw['source_slug']])
                     from radar_salud.editorial_gate import publication_ready
                     assert publication_ready(row)[0],raw['url']
+                    row['source_url']=old['source_url']
                     for field in ('detected_at','ingestion_mode'):
                         if old.get(field):row[field]=old[field]
                     history_ids[key]=row
@@ -145,12 +146,12 @@ def reconcile(runtime,root=Path('.'),apply=False):
         windows[source]={}
         for days in (30,90):
             rows=[r for r in ledger if r['source']==source and confirmed(r) and any(v and 0<=(AS_OF-date.fromisoformat(v)).days<=days for v in (r['publication_date'],r['emission_date'],r['event_date']))]
-            windows[source][str(days)]=dict(official_confirmed=len(rows),detected=len(rows),baseline_detected=sum(r['baseline_detected'] for r in rows),baseline_omitted=sum(not r['baseline_detected'] for r in rows),omitted=0,material=sum(r['decision']=='published' for r in rows),published=sum(r['decision']=='published' for r in rows),rejected=sum(r['decision']=='rejected' for r in rows),deferred=sum(r['decision'] in ('retry','pending','processing') for r in rows))
+            windows[source][str(days)]=dict(publication_dated=sum(bool(r['publication_date'] and 0<=(AS_OF-date.fromisoformat(r['publication_date'])).days<=days) for r in rows),emission_dated=sum(bool(r['emission_date'] and 0<=(AS_OF-date.fromisoformat(r['emission_date'])).days<=days) for r in rows),official_confirmed=len(rows),detected=len(rows),baseline_detected=sum(r['baseline_detected'] for r in rows),baseline_omitted=sum(not r['baseline_detected'] for r in rows),omitted=0,material=sum(r['decision']=='published' for r in rows),published=sum(r['decision']=='published' for r in rows),rejected=sum(r['decision']=='rejected' for r in rows),deferred=sum(r['decision'] in ('retry','pending','processing') for r in rows))
     report=dict(historical_date_conflicts=repairs,as_of=AS_OF.isoformat(),runtime=manifest['github_run_url'],runtime_sha=manifest['started_from_sha'],native_engine=result,windows=windows,
         coverage_complete=False,coverage_reason='All dated rows reconciled in enumerated official surfaces. Ten medical reports lack daily publication/emission dates. Historical SIS document identity only verified where primary attachments permit; unique URLs do not certify unique legal acts.',
         final_states={s:'OPERATIVE_DEGRADED' for s in SOURCES},recent_decisions=ledger,date_uncertain_reports=unknown,
         legacy_suseso=dict(count=len(legacy_su),classification_counts=dict(Counter(r['document_kind'] for r in legacy_su)),decisions=legacy_su),
-        legacy_sis=dict(discovered_urls=2696,pagination_duplicate_urls=0,administrative_exclusions=administrative,verified_primary_alias=alias_review,unique_enforcement_listing_urls=2695,unique_after_one_verified_primary_alias=2694,all_legal_act_identities_certified=False),
+        legacy_sis=dict(classification_counts=dict(Counter(('report' if raw['metadata'].get('fiscalization_kind')=='report' else raw['metadata'].get('sanction_effect') or 'unknown') for raw in inventory if raw['source_slug']=='superintendencia_fiscalizacion' and raw['url'] in {canonical_url(r['url']) for r in json.loads((root/'data/audits/fiscalizacion/native_runtime_2026_10_11.json').read_text())['legacy_sis_rows']})),discovered_urls=2696,pagination_duplicate_urls=0,administrative_exclusions=administrative,verified_primary_alias=alias_review,unique_enforcement_listing_urls=2695,unique_after_one_verified_primary_alias=2694,all_legal_act_identities_certified=False),
         stock_classification_counts={s:dict(Counter((r['document_class'] or 'unknown')+':'+r['decision'] for r in stock if r['source']==s)) for s in SOURCES})
     if apply:
         save_history(root/'data/history/superintendencia_signals.json',history);atomic_json(root/'data/state/pending_queue.json',queue)
@@ -166,7 +167,7 @@ def reconcile(runtime,root=Path('.'),apply=False):
         spec=importlib.util.spec_from_file_location('native_scope_export',root/'scripts/export_web_snapshot.py');exporter=importlib.util.module_from_spec(spec);spec.loader.exec_module(exporter)
         from radar_salud.editorial_copy import apply_reviewed_copy
         feed_path=root/'web/data/radar_today.json';payload=json.loads(feed_path.read_text());retained=[s for s in payload['signals'] if 'Fiscalización' not in s.get('signal_types',[]) and s.get('source_url') not in selected_norms]
-        refreshed=apply_reviewed_copy(exporter.curate([s for s in history if 'Fiscalización' in s.get('signal_types',[]) or s.get('source_url') in selected_norms],resolve_external=False))
+        refreshed=apply_reviewed_copy(exporter.curate([s for s in history if 'Fiscalización' in s.get('signal_types',[]) or s.get('source_url') in selected_norms],resolve_external=False,as_of=AS_OF))
         payload.update(signals=sorted(retained+refreshed,key=lambda s:s.get('event_date') or '',reverse=True),generated_at=manifest['completed_at'],date=AS_OF.isoformat());atomic_json(feed_path,payload)
         report['feed']=dict(independent_rows_preserved=len(retained),fiscalization_cards=len([r for r in refreshed if 'Fiscalización' in r.get('signal_types',[])]),grouped_register_cards=2)
         destination=root/'data/audits/fiscalizacion';atomic_json(destination/'native_reconciliation_2026_10_11.json',report);atomic_json(destination/'native_stock_ledger_2026_10_11.json',stock)

@@ -295,3 +295,14 @@ def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_rev
     assert any(x["source_url"].endswith("n9994/") and "Afiliación electrónica" in x["display_title"] and "rechaza" in x["display_title"] and "Circular IF/N°532" in x["display_title"] for x in rows)
     unknown={"event_type":"REGULATION","title":"Circular IF/N°123456","source_title_full":"Circular IF/N°123456","source_url":"https://x/n123456","signal_types":["Normativa"]}
     assert m._normative_contract(unknown)["normative_title_review_required"] is True
+
+
+def test_verified_publication_boundary_retains_old_issuance_without_changing_it():
+    from datetime import date
+    row=sig('Resolución IP/N°4286',event='2026-07-07',url='https://www.superdesalud.gob.cl/normativa/4286')
+    row.update(event_type='SANCTION',signal_types=['Fiscalización'],scopes=['Prestadores'],publication_date='2026-07-13',emission_date='2026-07-07',event_date_basis='emission',regulated_entity='Nueva Cordillera',sanction_amount=50,sanction_unit='UF')
+    pulse,=m.curate([row],resolve_external=False,as_of=date(2026,10,11))
+    assert pulse['source_alternatives'][0]['event_date']=='2026-07-07'
+    assert pulse['source_alternatives'][0]['publication_date']=='2026-07-13'
+    assert 'días 31 a 90' in pulse['title']
+    assert m.curate([{**row,'publication_date':'2026-07-07'}],resolve_external=False,as_of=date(2026,10,11))==[]
