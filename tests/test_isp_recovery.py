@@ -158,5 +158,3 @@ def test_surveillance_continues_laboratory_when_respiratory_is_blocked(monkeypat
     items = scout.discover()
     assert len(items) == 1 and items[0].event_date == "2026-06-17"
     assert scout.partial_failure is True
-
-
