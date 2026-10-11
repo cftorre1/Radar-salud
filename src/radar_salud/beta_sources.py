@@ -293,8 +293,18 @@ def _material(role, title, body):
             r"\b(?:cl[ií]nica|hospital)\b[^.!?]{0,100}\binundad[oa]s?\b", text)) and bool(
             re.search(r"ministerio de salud|\bminsal\b|autoridad sanitaria", text)) and bool(
             re.search(r"monitore|protecci[oó]n de los pacientes|resguard", text))
+        authorized_care_registry = all(re.search(pattern, text) for pattern in (
+            r"\beleam\b|establecimientos? de larga estad[ií]a",
+            r"\bminsal\b|ministerio de salud|autoridad sanitaria",
+            r"autorizaci[oó]n sanitaria", r"\bn[oó]mina\b|\blistado\b|\bregistro\b|\blista\b|\bcatastro\b",
+            r"disponible p[uú]blicamente|listado publicado esta jornada|lista ser[aá] actualizada semanalmente|"
+            r"public(?:a|ó|ado|ada|ar)\b[^.!?]{0,90}(?:n[oó]mina|listado|registro|catastro)"))
+        clinical_service_suspension = bool(re.search(r"\bcl[ií]nica\b|\bhospital\b|red de salud", text)) and bool(
+            re.search(r"\bsuspend(?:e|er[aá]|id[oa]|ieron|emos)\b[^.!?]{0,100}\batenci[oó]n\b[^.!?]{0,100}"
+                      r"(?:urgencias?|consultas? m[eé]dicas|procedimientos? ambulatorios?)", text))
         return (care_obligation or ges_coverage or care_legislation
-                or proposed_clinical_condition or provider_flood_response)
+                or proposed_clinical_condition or provider_flood_response
+                or authorized_care_registry or clinical_service_suspension)
     return False
 
 
