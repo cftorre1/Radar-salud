@@ -28,3 +28,14 @@ def test_invalid_or_regressing_upstream_fails_closed():
     with pytest.raises(ValueError,match='regressed'):reconcile_budget(add(BASELINE,5),bad,receipt)
     bad['fast']['attempted']='31'
     with pytest.raises(ValueError,match='invalid'):reconcile_budget(BASELINE,bad)
+
+
+def test_processing_requires_durable_phase_receipt_and_never_reopens_used_capacity(tmp_path,monkeypatch):
+    import json
+    from radar_salud.occupational_budget import remaining_phase_calls
+    path=tmp_path/'receipt.json'
+    monkeypatch.setattr('radar_salud.occupational_budget.receipt_path',lambda:path)
+    with pytest.raises(RuntimeError,match='receipt missing'):remaining_phase_calls()
+    for attempted,expected in ((5,25),(29,1),(30,0),(31,0)):
+        path.write_text(json.dumps({'phase_fast_limit':30,'isolated_delta':{'fast':{'attempted':attempted}}}))
+        assert remaining_phase_calls()==expected

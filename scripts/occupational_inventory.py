@@ -162,6 +162,8 @@ def reconcile(root, reports, loader, *, apply=False, assessment_state=None):
 def save_health(root, reports):
     backend = json.loads((root / "data/source_health.json").read_text())
     web = json.loads((root / "web/data/source_health.json").read_text())
+    product_path = root / "web/data/product.json"
+    product = json.loads(product_path.read_text()) if product_path.exists() else None
     for slug, report in reports.items():
         existing = backend.setdefault("sources", {}).get(slug, {})
         metrics = report.get("metrics", {})
@@ -188,9 +190,14 @@ def save_health(root, reports):
                    editorial_outcome="pending" if state.get("deferred") else "published" if state.get("published") else "rejected")
         backend["sources"][slug] = row
         web.setdefault("sources", {})[slug] = row
+        if product is not None:
+            product.setdefault("sources", {})[slug] = row
     backend["occupational_sources_checked_at"] = web["occupational_sources_checked_at"] = datetime.now(timezone.utc).isoformat()
     atomic_json(root / "data/source_health.json", backend)
     atomic_json(root / "web/data/source_health.json", web)
+    if product is not None:
+        product["occupational_sources_checked_at"] = backend["occupational_sources_checked_at"]
+        atomic_json(product_path, product)
 
 
 def commit_source_checkpoint(root, output, slug):
@@ -199,6 +206,7 @@ def commit_source_checkpoint(root, output, slug):
     paths = [str(output.resolve().relative_to(root.resolve())), "data/state/pending_queue.json",
              "data/history/superintendencia_signals.json", "data/source_health.json",
              "web/data/source_health.json", "data/ai_usage", "data/telemetry"]
+    paths.append("web/data/product.json")
     existing = [p for p in paths if (root / p).exists()]
     candidate = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
     for args in (["git", "add", "--", *existing],

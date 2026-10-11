@@ -97,3 +97,25 @@ def test_same_assessment_failure_limit_survives_separate_source_checkpoints(tmp_
     reports=report(raw());reconcile(tmp_path,reports,Loader(),apply=True,assessment_state=shared)
     assert not calls and shared['failures']==3
     assert reports['ist']['rows'][0]['processing_reason']=='analysis_failure_limit_reached_after_three_attempts'
+
+
+def test_health_and_product_sync_preserve_unrelated_sources_and_capture_time(tmp_path):
+    from scripts.occupational_inventory import save_health
+    for name in ('data/source_health.json','web/data/source_health.json','web/data/product.json'):
+        p=tmp_path/name;p.parent.mkdir(parents=True,exist_ok=True)
+        p.write_text(json.dumps({'sources':{'other':{'name':'Unrelated','count':8}},'untouched':42}))
+    reports={'ist':{'metrics':{'90':{'expected_role':1},'30':{'expected_role':1}},
+        'reconciliation':{'states':{'published':1,'pending':1}},'coverage_complete':False,
+        'errors':[{'code':'publisher_date_conflict'}],'window':{'as_of':'2026-10-11'},
+        'pages':[{'url':'https://ist.cl/noticias/'}], 'capture_checked_at':'2026-10-11T05:00:00+00:00',
+        'oldest_capture_at':'2026-10-11T04:00:00+00:00','rows':[{'url':URL,'status':'candidate',
+        'publication_date':'2026-10-10','alicanto_status':'published'}],'raw_items':[]}}
+    save_health(tmp_path,reports)
+    for name in ('data/source_health.json','web/data/source_health.json','web/data/product.json'):
+        saved=json.loads((tmp_path/name).read_text())
+        assert saved['sources']['other']=={'name':'Unrelated','count':8} and saved['untouched']==42
+        row=saved['sources']['ist']
+        assert row['recovery_outcome']=='OPERATIVE_DEGRADED' and row['status']!='ok'
+        assert row['checked_at']=='2026-10-11T05:00:00+00:00'
+        assert row['oldest_capture_at']=='2026-10-11T04:00:00+00:00'
+        assert row['published']==1 and row['pending']==1

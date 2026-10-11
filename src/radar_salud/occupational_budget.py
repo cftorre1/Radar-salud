@@ -57,6 +57,6 @@ def checkpoint_usage():
 def remaining_phase_calls():
     path=receipt_path()
     if not path.exists():
-        return 30
+        raise RuntimeError('Occupational budget receipt missing; sync the read-only staging ledger before --apply')
     record=json.loads(path.read_text())
     return max(0,record['phase_fast_limit']-record['isolated_delta']['fast']['attempted'])
