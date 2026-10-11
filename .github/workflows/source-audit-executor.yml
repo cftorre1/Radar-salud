@@ -51,4 +51,15 @@ jobs:
           PY
           git -C /tmp/source-audit-state add data/autopilot/source_audit_executor_latest.json
           git -C /tmp/source-audit-state diff --cached --quiet || git -C /tmp/source-audit-state commit -m 'chore: source audit executor evidence'
-          git -C /tmp/source-audit-state push origin HEAD:autopilot-state
+          for attempt in 1 2 3; do
+            git -C /tmp/source-audit-state fetch origin autopilot-state
+            git -C /tmp/source-audit-state rebase origin/autopilot-state
+            if git -C /tmp/source-audit-state push origin HEAD:autopilot-state; then
+              break
+            fi
+            if [ "$attempt" -eq 3 ]; then
+              echo "Failed to persist source audit evidence after 3 conflict-safe attempts."
+              exit 1
+            fi
+            sleep 2
+          done
