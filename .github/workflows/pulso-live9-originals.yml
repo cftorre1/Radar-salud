@@ -50,6 +50,30 @@ jobs:
           run-id: 38149773071
           name: pulso-real-core-81b844a654533891ad0923a40dfedfda03c17fa3
           path: .scratch/pulso-live9-original-artifact
+      - name: Download historical original primary artifact 38159032940
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: cftorre1/Radar-salud
+          run-id: 38159032940
+          name: pulso-real-core-03bf998a4bb5840c84da6473666e932fbc5cedd9
+          path: .scratch/pulso-live9-original-artifact-38159032940
+      - name: Download historical original primary artifact 38172352115
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: cftorre1/Radar-salud
+          run-id: 38172352115
+          name: pulso-real-core-de51496ca0bfbe656c96551743e52024b9b6608e
+          path: .scratch/pulso-live9-original-artifact-38172352115
+      - name: Download historical original primary artifact 38181190464
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: cftorre1/Radar-salud
+          run-id: 38181190464
+          name: pulso-real-core-46a3683c6760f0e61031a7dc7d5961c105cacb36
+          path: .scratch/pulso-live9-original-artifact-38181190464
       - name: Download actual updated paid primary artifact
         uses: actions/download-artifact@v4
         with:
@@ -64,7 +88,10 @@ jobs:
         run: |
           gh api repos/cftorre1/Radar-salud/actions/artifacts/11707255596/zip > .scratch/pulso-live9-original.zip
           gh api repos/cftorre1/Radar-salud/actions/artifacts/11718992843/zip > .scratch/pulso-live9-paid.zip
-          python scripts/retain_pulso_live9_originals.py --artifact-zip .scratch/pulso-live9-original.zip --artifact-root .scratch/pulso-live9-original-artifact --target-commit '${{ steps.targets.outputs.target_commit }}' --live-artifact-zip .scratch/pulso-live9-paid.zip --live-artifact-root .scratch/pulso-live9-paid-artifact --current-commit '${{ steps.targets.outputs.current_commit }}'
+          gh api repos/cftorre1/Radar-salud/actions/artifacts/11710432466/zip > .scratch/pulso-live9-original-38159032940.zip
+          gh api repos/cftorre1/Radar-salud/actions/artifacts/11714388920/zip > .scratch/pulso-live9-original-38172352115.zip
+          gh api repos/cftorre1/Radar-salud/actions/artifacts/11718153077/zip > .scratch/pulso-live9-original-38181190464.zip
+          python scripts/retain_pulso_live9_originals.py --artifact-zip .scratch/pulso-live9-original.zip --artifact-root .scratch/pulso-live9-original-artifact --target-commit '${{ steps.targets.outputs.target_commit }}' --live-artifact-zip .scratch/pulso-live9-paid.zip --live-artifact-root .scratch/pulso-live9-paid-artifact --current-commit '${{ steps.targets.outputs.current_commit }}' --supplemental-artifact-zip .scratch/pulso-live9-original-38159032940.zip --supplemental-artifact-root .scratch/pulso-live9-original-artifact-38159032940 --supplemental-artifact-zip .scratch/pulso-live9-original-38172352115.zip --supplemental-artifact-root .scratch/pulso-live9-original-artifact-38172352115 --supplemental-artifact-zip .scratch/pulso-live9-original-38181190464.zip --supplemental-artifact-root .scratch/pulso-live9-original-artifact-38181190464
       - name: Preserve only original evidence on the isolated branch
         if: always()
         run: |

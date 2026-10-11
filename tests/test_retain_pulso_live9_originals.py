@@ -100,3 +100,17 @@ def test_immutable_live9_original_and_actual_paid_prieto_revision_are_separate()
     attacked[0]['html_sha256'] = '0' * 64
     with pytest.raises(ValueError, match='not_exact_observed'):
         retainer.refreshed_targets(old, attacked)
+
+
+def test_originals_from_later_actual_artifact_keep_their_own_run_and_capture_provenance(original,tmp_path):
+    artifact,target,record,repo = original
+    empty = tmp_path/'earlier-run-without-target'
+    empty.mkdir()
+    (empty/'manifest.json').write_text('{"requests":[]}')
+    sources = [(empty,{'artifact_run_id':1}), (artifact,{'artifact_run_id':2,'artifact_id':22})]
+    kept, missing = retainer.recover_across_observed_artifacts(sources,[target],repo/'tests/fixtures/pulso_live9_primary_real',repo)
+    assert not missing and len(kept)==1
+    assert kept[0]['artifact_run_id']==2 and kept[0]['artifact_id']==22
+    assert kept[0]['captured_at']==record['captured_at']
+    assert kept[0]['original_capture_manifest_sha256']==retainer.digest((artifact/'manifest.json').read_bytes())
+    assert (repo/kept[0]['gzip_file']).read_bytes()==(artifact/Path(record['gzip_file']).name).read_bytes()

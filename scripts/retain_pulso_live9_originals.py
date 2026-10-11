@@ -21,6 +21,11 @@ LIVE_ARTIFACT_SHA256 = '9346939527e5ece2c6ff82c8e0659489e9ae26c6af1034527b29b9d6
 PRIETO_URL = 'https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/'
 PRIETO_CURRENT_HTML_SHA256 = 'f8a47c32d341468218003754ee4965ea84ee9aa3aef5f617e0e73db918306cb8'
 PRIETO_CURRENT_BODY_SHA256 = 'd5314e898c41422ecea913473d3cac6f7514a20705d10a684a7c91bc38862cd3'
+SUPPLEMENTAL_ARTIFACTS = (
+    {'artifact_run_id':38159032940,'artifact_id':11710432466,'artifact_zip_sha256':'57eec3e2b193d4dd6b7894faf112f459710258ce074e27ab7fd3e5ecf11db52b'},
+    {'artifact_run_id':38172352115,'artifact_id':11714388920,'artifact_zip_sha256':'23ba2e30ff5dbe3dacde409badf63c278c2b51308843c3d21b678894e423b001'},
+    {'artifact_run_id':38181190464,'artifact_id':11718153077,'artifact_zip_sha256':'7fa4b6850451f9aa7093446072fdb14a62bb5b63e351248300ba52cceb3d210d'},
+)
 COHORT = 'data/audits/pulso_additional_live9_recovery_cohort_2026_10_11.json'
 
 
@@ -167,6 +172,26 @@ def recover_originals(artifact_root, targets, destination, repo=REPO):
     return retained, missing
 
 
+def recover_across_observed_artifacts(sources, targets, destination, repo=REPO):
+    retained, remaining, history_errors = [], list(targets), {}
+    for root, artifact_proof in sources:
+        if not remaining:
+            break
+        found, missing = recover_originals(root, remaining, destination, repo)
+        for request in found:
+            request.update(artifact_proof)
+        retained.extend(found)
+        for row in missing:
+            history_errors.setdefault(row['url'], set()).update(row['errors'])
+        urls = {row['url'] for row in missing}
+        remaining = [row for row in remaining if row['url'] in urls]
+    missing = [dict(row, status='EXACT_ORIGINAL_MISSING_OR_INVALID',
+                    errors=sorted(history_errors.get(row['url'], set()))) for row in remaining]
+    order = {row['url']: index for index, row in enumerate(targets)}
+    retained.sort(key=lambda row: order[row['url']])
+    return retained, missing
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--artifact-zip', required=True)
@@ -175,19 +200,25 @@ def main():
     parser.add_argument('--current-commit', required=True)
     parser.add_argument('--live-artifact-zip', required=True)
     parser.add_argument('--live-artifact-root', required=True)
+    parser.add_argument('--supplemental-artifact-root', action='append', required=True)
+    parser.add_argument('--supplemental-artifact-zip', action='append', required=True)
     parser.add_argument('--destination', default='tests/fixtures/pulso_live9_primary_real')
     args = parser.parse_args()
     verify_zip(args.artifact_zip)
     verify_zip(args.live_artifact_zip, LIVE_ARTIFACT_SHA256)
+    if len(args.supplemental_artifact_zip) != 3 or len(args.supplemental_artifact_root) != 3:
+        raise ValueError('exact_three_supplemental_original_artifacts_required')
+    for path, proof in zip(args.supplemental_artifact_zip, SUPPLEMENTAL_ARTIFACTS):
+        verify_zip(path, proof['artifact_zip_sha256'])
     targets, target_proof = targets_from_git(args.target_commit)
     current, current_proof = targets_from_git(args.current_commit)
     changed = refreshed_targets(targets, current)
-    retained, missing = recover_originals(args.artifact_root, targets, REPO / args.destination)
+    sources = [(args.artifact_root, dict(artifact_run_id=38149773071, artifact_id=11707255596,artifact_zip_sha256=ARTIFACT_SHA256))]
+    sources.extend(zip(args.supplemental_artifact_root, SUPPLEMENTAL_ARTIFACTS))
+    retained, missing = recover_across_observed_artifacts(sources, targets, REPO / args.destination)
     refreshed, refreshed_missing = recover_originals(args.live_artifact_root, changed, REPO / args.destination)
     for request in retained:
         request['target_stage'] = 'original_discovery_primary'
-        request['artifact_run_id'] = 38149773071
-        request['artifact_id'] = 11707255596
     for request in refreshed:
         request['target_stage'] = 'current_paid_processing_primary'
         request['artifact_run_id'] = 38183583899
@@ -196,6 +227,7 @@ def main():
     proof = dict(schema_version='pulso_live9_original_primary_recovery_v1',
         artifact_run_id=38149773071, artifact_id=11707255596, artifact_zip_sha256=ARTIFACT_SHA256,
         target_proof=target_proof, current_target_proof=current_proof,
+        verified_supplemental_original_artifacts=list(SUPPLEMENTAL_ARTIFACTS),
         current_artifact_run_id=38183583899, current_artifact_id=11718992843,
         current_artifact_zip_sha256=LIVE_ARTIFACT_SHA256, retained_at=datetime.now(timezone.utc).isoformat(),
         targets=len(targets), retained_originals=len(retained), refreshed_primary_targets=len(changed),
