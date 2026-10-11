@@ -556,7 +556,7 @@ def numbered_pager(current,maximum=1):
         for modifier,number in [('first',0),('previous',current-1)]:
             li.insert(0 if modifier=='first' else 1,'<li class="pager__item pager__item--'+modifier+'">'+native_page_link(number,'prev')+'</li>')
     if current<maximum:li.append('<li class="pager__item pager__item--next">'+native_page_link(current+1,'next')+'</li>')
-    return '<nav class="pager-nav text-center" role="navigation" aria-labelledby="pagination-heading"><h2 id="pagination-heading">Pagination</h2><ul class="pagination js-pager__items">'+''.join(li)+'</ul></nav>'
+    return '<nav class="pager-nav text-center" role="navigation" aria-labelledby="pagination-heading"><h4 id="pagination-heading" class="visually-hidden">Pagination</h4><ul class="pagination js-pager__items">'+''.join(li)+'</ul></nav>'
 
 def test_numbered_native_end_then_empty_completes_bounded_date_partition():
     result=collect_route(FakeClient([news_view(date_card(0)+numbered_pager(0)),news_view(date_card(1)+numbered_pager(1)),news_view('')]),terminal_date_route(),AS_OF,10)
@@ -674,6 +674,8 @@ def test_actual_clamped_empty_pager_proves_only_a_verified_previous_terminal():
     lambda h:h.replace('Go to page 1','Different pager'),
     lambda h:h.replace('Current page 2','Current page 3'),
     lambda h:h.replace('>Pagination<','>Error<'),
+    lambda h:h.replace('<h4','<h2').replace('</h4>','</h2>'),
+    lambda h:h.replace('</nav>','<span>Unable to load news</span></nav>'),
     lambda h:h+'<meta property="article:published_time" content="2026-10-10">',
     lambda h:h.replace('</div>','<time datetime="2026-10-10"></time></div>'),
 ])
@@ -691,3 +693,17 @@ def test_listing_article_wrapper_does_not_invent_an_article_inside_empty_news_vi
     client=FakeClient([wrapper(news_view(date_card(0)+numbered_pager(0))),wrapper(news_view(date_card(1)+numbered_pager(1))),wrapper(news_view(numbered_pager(1)))])
     result=collect_route(client,terminal_date_route(),AS_OF,10)
     assert result['archive_complete'] and result['stop_reason']=='date_partition_native_empty_after_clamped_numbered_end'
+
+@pytest.mark.parametrize('lang',['en','es'])
+def test_capture_bound_real_h4_pager_clamps_empty_probe_without_relabeling_request(lang):
+    from radar_salud.global_source_discovery import verified_clamped_empty_end
+    meta=next(r for r in json.loads((NATIVE_PAGER_FIXTURES/'paho_clamped_terminal_provenance.json').read_text()) if r['fixture'].endswith('_'+lang+'.html'))
+    pager=(NATIVE_PAGER_FIXTURES/('paho_clamped_terminal_'+lang+'.html')).read_text()
+    context=news_view('').replace('2026-09-14',meta['bounds']['query_from']).replace('2026-09-22',meta['bounds']['query_to'])
+    if lang=='es':context=context.replace('>News<','>Noticias<').replace('action="/en/news"','action="/es/noticias"')
+    empty=context.replace('</div>',pager+'</div>')
+    prior=context.replace('</div>',date_card(0).replace('2026-09-17','2026-07-23')+pager+'</div>')
+    route=dict(ROUTE,url='https://www.paho.org/'+('en/news' if lang=='en' else 'es/noticias'))
+    result=verified_clamped_empty_end(Document(empty).root,Document(prior).root,route,meta['bounds'],meta['terminal_url'],meta['previous_url'])
+    assert result and result['requested_page']==result['clamped_current']+1 and result['maximum']==result['clamped_current']<8
+    assert '<h4' in pager and '<h2' not in pager

@@ -36,7 +36,7 @@ def numbered_pager(n,language='en'):
  # Unlike normal page 0, publisher pager anchors explicitly carry page=0.
  body=first+prior+numbers+current
  body=body.replace(url(0)+'"',url(0)+'&page=0"')
- return '<nav class="pager-nav text-center" role="navigation" aria-labelledby="pagination-heading"><h2 id="pagination-heading">Pagination</h2><ul class="pagination js-pager__items">'+body+'</ul></nav>'
+ return '<nav class="pager-nav text-center" role="navigation" aria-labelledby="pagination-heading"><h4 class="visually-hidden" id="pagination-heading">Pagination</h4><ul class="pagination js-pager__items">'+body+'</ul></nav>'
 
 def numbered_setup(n=1):
  raw={url(i):html(CARD) for i in range(n+1)}
@@ -174,7 +174,7 @@ class ClampedNativeEndProof(unittest.TestCase):
     self.assertTrue(all(clamped_checks(clamped_setup(n)).values()))
   raw=clamped_setup(4)
   for n in (4,5):raw[url(n)]=html((CARD if n==4 else '')+numbered_pager(4,'es'))
-  raw={u.replace('/en/news','/es/noticias'):b.replace(b'/en/news',b'/es/noticias').replace(b'>News</h1>',b'>Noticias</h1>').replace(b'>Pagination</h2>','>Paginación</h2>'.encode()) for u,b in raw.items()}
+  raw={u.replace('/en/news','/es/noticias'):b.replace(b'/en/news',b'/es/noticias').replace(b'>News</h1>',b'>Noticias</h1>').replace(b'>Pagination</h4>','>Paginación</h4>'.encode()) for u,b in raw.items()}
   self.assertTrue(all(clamped_checks(raw).values()))
  def test_clamped_terminal_negations(self):
   pager=numbered_pager(3)
@@ -198,7 +198,9 @@ class ClampedNativeEndProof(unittest.TestCase):
    'native_date_field':html(pager+'<div class="field--name-created">24 July 2026</div>'),
    'article_publication_meta':html(pager,extra='<meta property="article:published_time" content="2026-07-24">'),
    'news_card_retained':html(CARD+pager),
-   'changed_heading':html(pager.replace('>Pagination</h2>','>Search results</h2>')),
+   'changed_heading':html(pager.replace('>Pagination</h4>','>Search results</h4>')),
+   'wrong_heading_tag':html(pager.replace('<h4 ','<h2 ').replace('</h4>','</h2>')),
+   'wrong_heading_class':html(pager.replace('class="visually-hidden"','class="other"',1)),
    'changed_backward_text':html(pager.replace('>Previous page ‹<','>Other ‹<')),
    'changed_backward_title':html(pager.replace('title="Go to previous page"','title="Other"')),
    'unbound_query':html(pager.replace('2026-07-20','2026-07-19',1)),

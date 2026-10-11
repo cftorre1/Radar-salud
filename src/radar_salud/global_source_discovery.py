@@ -167,8 +167,8 @@ def verified_news_view(document, route, bounds, *, empty, allow_pager=False):
     if empty and allow_pager:
         navs=[n for n in view.nodes('nav') if n.has_class('pager-nav')]
         if len(navs)!=1:return False
-        headers=list(navs[0].nodes('h2'))
-        if len(headers)!=1 or not headers[0].closed or headers[0].parent is not navs[0] or headers[0].attrs.get('id')!='pagination-heading' or headers[0].text()!=('Paginación' if '/es/' in route['url'] else 'Pagination'):return False
+        headers=[n for n in navs[0].nodes() if n.attrs.get('id')=='pagination-heading']
+        if len(headers)!=1 or headers[0].tag!='h4' or set(headers[0].attrs.get('class','').split())!={'visually-hidden'} or [n.tag for n in navs[0].children if hasattr(n,'tag')]!=['h4','ul'] or not headers[0].closed or headers[0].parent is not navs[0] or headers[0].attrs.get('id')!='pagination-heading' or headers[0].text()!=('Paginación' if '/es/' in route['url'] else 'Pagination'):return False
         if any(n.tag=='time' or n.tag=='meta' and (n.attrs.get('property') or n.attrs.get('name') or '').lower() in {'article:published_time','datepublished','citation_publication_date','dc.date.issued'} for n in document.nodes()):return False
         excluded={id(form),id(navs[0])}
         def outside(node):

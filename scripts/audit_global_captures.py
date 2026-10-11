@@ -463,8 +463,10 @@ def native_clamped_empty_end_checks(ordered, page_readers, page_rows):
     expected_heading = "Paginación" if urlsplit(terminal).path == "/es/noticias" else "Pagination"
     for label, nav in (("terminal", current_nav), ("positive", prior_nav)):
         children = nav["children"] if nav else []
-        checks["clamped_" + label + "_recognized_heading_and_list_only"] = (len(children) == 2 and [node["tag"] for node in children] == ["h2", "ul"]
-            and children[0]["attrs"].get("id") == "pagination-heading" and normalized_text(children[0]) == expected_heading)
+        checks["clamped_" + label + "_recognized_heading_and_list_only"] = (len(children) == 2 and [node["tag"] for node in children] == ["h4", "ul"]
+            and children[0]["explicitly_closed"] and children[0]["attrs"].get("id") == "pagination-heading"
+            and set(children[0]["attrs"].get("class", "").split()) == {"visually-hidden"}
+            and normalized_text(children[0]) == expected_heading)
     return checks
 
 

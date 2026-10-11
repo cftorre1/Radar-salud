@@ -35,7 +35,9 @@ aliases/entities, document links and capture hashes; priority is not editorial s
 
 Two complete **fresh** live runs with distinct IDs, identical coverage contract and
 at least 86,400 seconds separation are required to prove cadence. Use per-source
-`next_cadence_validation_not_before`. Legacy ledgers without mode/reuse provenance,
+`next_cadence_validation_not_before` as a time bound, not guaranteed acceptance.
+PAHO contract4 still requires a first complete fresh live capture and a second one
+at least24h later; coverage qualification from saved bytes is not a fresh anchor. Legacy ledgers without mode/reuse provenance,
 campaign resume and zero-network replay cannot satisfy that requirement. A resume
 has a one-hour capture age bound and preserves original timestamps.
 
@@ -45,7 +47,7 @@ Restore the matching Actions artifact's `work/global-runtime-captures` directory
 The inventory and bytes must have the same run ID. Then:
 
 ```sh
-python -m pytest -q tests/test_global_source_discovery.py tests/test_global_source_probe_policy.py tests/test_global_intelligence.py tests/test_global_capture_audit.py tests/test_global_metadata_projection.py
+python -m pytest -q tests/test_global_source_discovery.py tests/test_global_source_probe_policy.py tests/test_global_intelligence.py tests/test_global_capture_audit.py tests/test_global_metadata_projection.py tests/test_global_coverage_projection.py
 python scripts/replay_global_sources.py
 python scripts/audit_global_captures.py --captures work/global-runtime-captures --inventory data/global_intelligence/discovery.json --output work/independent_capture_audit.json
 python scripts/discover_global_sources.py --project-inventory-csv
@@ -72,6 +74,15 @@ receipts; current mode becomes projection_replay. Metadata and CSV go to a separ
 metadata_requalification/<QA-run> receipt with before/after classifications. The
 projection cannot establish another fresh capture or cadence. Candidate/routine
 translation disagreements stay pending and unverified titles cannot raise priority.
+
+A separate coverage_requalification/<QA-run> receipt can qualify the observed
+PAHO empty overflow with its unchanged terminal pager. It preserves the original
+fresh capture, metadata qualification, all dates/identities/counts and the ledger.
+The strict proof requires requested n+1, unchanged final URL, the same closed
+clamped terminal n<8 and its original query-bound controls, only form/nav text,
+and no article/date/publication fields in the empty view. A Drupal page wrapper
+outside that view is page structure. Original fresh QA and metadata QA remain
+separate from the final zero-network qualification. Repeated pages do not qualify.
 
 Qualification outcomes and operational holds are documented in
 `docs/GLOBAL_SOURCE_DISCOVERY_2026_10_11.md` and the three `data/audits/w4_*` reports.
