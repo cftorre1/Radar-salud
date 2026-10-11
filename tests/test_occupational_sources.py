@@ -1,10 +1,16 @@
 """Semantic fixtures reconstructed from original pages; not raw HTML captures."""
 import pytest
+from datetime import date
 
 from radar_salud.beta_sources import CuratedBetaSourceScout, process_curated_beta_source
 from radar_salud.occupational_sources import Article, SourceDiscoveryError, materiality
 
 ACHS = "/centro-de-noticias/noticia/2026/"
+
+
+@pytest.fixture(autouse=True)
+def audit_calendar(monkeypatch):
+    monkeypatch.setattr("radar_salud.occupational_sources.chile_today", lambda: date(2026, 10, 11))
 
 
 def detail(title, published="24/09/2026", body=None, meta=""):
@@ -187,7 +193,7 @@ def test_blocked_mutual_does_not_prevent_independent_source_discovery():
 def test_unreconciled_occupational_source_never_becomes_live_from_new_watermark():
     from datetime import datetime, timezone
     from radar_salud.pending_queue import lane
-    now = datetime.now(timezone.utc)
+    now = datetime(2026, 10, 11, 12, tzinfo=timezone.utc)
     scout = CuratedBetaSourceScout("achs_seguro_laboral")
     raw = scout.discover_from_html(f'<a href="{ACHS}guia">Ver detalle</a>',
                                    lambda url: detail("Nueva guía de tratamiento en salud mental laboral", now.strftime("%d/%m/%Y")))[0]
