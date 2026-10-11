@@ -1,5 +1,6 @@
 """Adversarial publisher fields, actor attribution and partial captures."""
 from datetime import date
+from pathlib import Path
 from types import SimpleNamespace
 from urllib.error import HTTPError, URLError
 
@@ -72,6 +73,61 @@ def test_local_and_utc_publication_fields_agree_on_chile_day():
     parser = parse(html)
     assert parser.result(today=TODAY)[1] == "2026-10-05"
     assert parser.publication_evidence(today=TODAY)["value"] == "2026-10-06T00:22:30Z"
+
+
+@pytest.mark.parametrize("value,expected", [
+    ("Oct 7, 2026", "2026-10-07"), ("October 7, 2026", "2026-10-07"),
+    ("Ago 31, 2026", "2026-08-31"), ("Aug 31, 2026", "2026-08-31"),
+    ("Jan 1, 2026", "2026-01-01"), ("Ene 1, 2026", "2026-01-01"),
+    ("Apr 30, 2026", "2026-04-30"), ("Dec 31, 2025", "2025-12-31"),
+    ("February 29, 2024", "2024-02-29"),
+])
+def test_captured_cms_month_first_publication_fields(value, expected):
+    assert valid_date(value, today=TODAY) == expected
+
+
+@pytest.mark.parametrize("value", [
+    "Published Oct 7, 2026", "Oct 7, 2026 event", "Oct 7 2026", "Oct 7, 26",
+    "Feb 29, 2025", "Ago 32, 2026", "Apr 31, 2026", "Oct 12, 2026",
+    "Oct 7, 2026, 10:00", "October 7th, 2026", "Somemonth 7, 2026",
+])
+def test_month_first_field_stays_whole_calendar_valid_and_nonfuture(value):
+    assert valid_date(value, today=TODAY) is None
+
+
+def test_cms_publisher_date_agrees_with_iso_and_preserves_conflicting_days():
+    meta = '<meta property="article:published_time" content="2026-10-06T00:22:30Z">'
+    html = meta + f'<h1>{GUIDE}</h1><span class="published">Oct 5, 2026</span><p>{BODY}</p>'
+    parser = parse(html, "https://ist.cl/noticia/")
+    assert parser.result(today=TODAY)[1] == "2026-10-05"
+    assert parser.publication_evidence(today=TODAY)["value"] == "2026-10-06T00:22:30Z"
+    conflicting = parse(html.replace("Oct 5, 2026", "Oct 6, 2026"), "https://ist.cl/noticia/")
+    assert conflicting.result(today=TODAY)[3] == "conflicting_publication_dates"
+    assert conflicting.publication_evidence(today=TODAY) is None
+
+
+def test_bare_month_first_event_is_not_publication_evidence():
+    parser = parse(f'<h1>{GUIDE}</h1><p>Oct 7, 2026</p><p>{BODY}</p>', "https://ist.cl/noticia/")
+    assert parser.result(today=TODAY)[3] == "missing_publication_date"
+
+
+def test_live_ist_cms_semantic_date_matches_published_metadata():
+    import hashlib
+    import json
+    root = Path(__file__).resolve().parents[1]
+    audit = root / "data/audits/source_e_recovery/actions/38116209530/inventory"
+    url = "https://ist.cl/mes-de-la-salud-mental-junto-a-uai-realizamos-significativo-encuentro-sobre-su-cuidado/"
+    capture = json.loads((audit / "capture_index.json").read_text())[url]
+    hop = capture["hops"][-1]
+    content = (audit / "capture" / hop["body_file"]).read_bytes()
+    assert hashlib.sha256(content).hexdigest() == "14165a3564ca3adc851a5d747cb4173312ccd4bc57efc48906a68bded48ca035"
+    parser = parse(content.decode("utf-8"), url)
+    assert parser.date_candidates == [
+        {"kind": "article:published_time", "value": "2026-10-07T14:34:47+00:00"},
+        {"kind": "publisher:publication_container", "value": "Oct 7, 2026"},
+    ]
+    assert parser.result(today=TODAY)[1] == "2026-10-07"
+    assert parser.publication_evidence(today=TODAY)["value"] == "2026-10-07T14:34:47+00:00"
 
 
 @pytest.mark.parametrize("field", [

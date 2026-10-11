@@ -88,9 +88,20 @@ def valid_date(value, *, today=None):
                           "julio": 7, "agosto": 8, "septiembre": 9, "octubre": 10, "noviembre": 11, "diciembre": 12}
                 months.update({"ene": 1, "feb": 2, "mar": 3, "abr": 4, "may": 5, "jun": 6, "jul": 7,
                                "ago": 8, "sep": 9, "sept": 9, "oct": 10, "nov": 11, "dic": 12})
-                if not named or fold(named[2]) not in months:
+                months.update({"january": 1, "jan": 1, "february": 2, "march": 3, "mar": 3,
+                               "april": 4, "apr": 4, "june": 6, "july": 7, "august": 8, "aug": 8,
+                               "september": 9, "october": 10, "november": 11, "december": 12, "dec": 12})
+                # The captured IST CMS uses both "Oct 7, 2026" and "Ago 31,
+                # 2026" in an explicitly marked publisher date container.
+                # Accept that entire field, including its comma, not a date
+                # embedded in a heading, event description or free text.
+                cms = re.fullmatch(r"([a-záéíóúñ]+)\.?\s+(\d{1,2}),\s+(\d{4})", value, re.I)
+                if cms and fold(cms[1]) in months:
+                    parsed = date(int(cms[3]), months[fold(cms[1])], int(cms[2]))
+                elif named and fold(named[2]) in months:
+                    parsed = date(int(named[3]), months[fold(named[2])], int(named[1]))
+                else:
                     return None
-                parsed = date(int(named[3]), months[fold(named[2])], int(named[1]))
         return parsed.isoformat() if parsed <= (today or chile_today()) else None
     except (ValueError, TypeError):
         return None
