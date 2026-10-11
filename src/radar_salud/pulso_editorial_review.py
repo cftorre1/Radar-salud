@@ -181,7 +181,18 @@ def apply_review(history, queue, audit, *, audit_sha256, audit_path):
             if decision == "correct":
                 expected.update(proposed, event_status=record["event_status"],
                                 prospective_evidence=record["event_status"] in {"proposed", "planned"})
-            if signal != expected or item.get("status") != ("rejected" if decision in {"reject", "group"} else "published"):
+            if signal != expected:
+                raise ValueError("previous_editorial_review_state_tampered")
+            # History is persisted before queue acknowledgement, as in the core.
+            # Resume only the exact original published queue state after a crash.
+            if (not metadata.get("editorial_review") and item.get("status") == "published"
+                    and metadata.get("editorial_assessment") == record.get("original_model_assessment")
+                    and metadata.get("what_happened") == original["what_happened"]
+                    and metadata.get("why_it_matters") == original["why_it_matters"]
+                    and item.get("attempts", 0) >= 1):
+                plans.append((signal, item, record, provenance))
+                continue
+            if item.get("status") != ("rejected" if decision in {"reject", "group"} else "published"):
                 raise ValueError("previous_editorial_review_state_tampered")
             if metadata.get("editorial_review") != previous:
                 raise ValueError("queue_history_editorial_review_mismatch")

@@ -86,6 +86,21 @@ def test_second_application_is_identical_without_queue_or_paid_replay(inputs):
     assert replay["applied_count"] == 0 and replay["unchanged_on_replay"] == 5
 
 
+def test_crash_after_history_write_resumes_only_exact_original_queue_acknowledgements(inputs):
+    corrected_history, corrected_queue, _ = apply(inputs)
+    resumed_history, resumed_queue, report = apply((corrected_history, inputs[1], inputs[2]))
+    assert resumed_history == corrected_history
+    assert resumed_queue == corrected_queue
+    assert report["applied_count"] == 5 and report["ai_calls"] == 0
+
+
+def test_crash_resume_rejects_mutated_unacknowledged_queue_output(inputs):
+    corrected_history, _, _ = apply(inputs)
+    inputs[1]["0"]["raw"]["metadata"]["what_happened"] += " Tampered pending acknowledgement."
+    with pytest.raises(ValueError, match="queue_history_editorial_review_mismatch"):
+        apply((corrected_history, inputs[1], inputs[2]))
+
+
 @pytest.mark.parametrize("mutation, reason", [
     ("body", "review_original_primary_body_or_date_mismatch"),
     ("date", "review_queue_identity_not_unique"),
