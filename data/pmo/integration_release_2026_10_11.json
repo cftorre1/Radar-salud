@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-11T13:34:28.611883+00:00",
+  "updated_at": "2026-10-11T13:41:48.647967+00:00",
   "scope": "staging_only",
   "prior_staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
   "rows": [
@@ -13,7 +13,7 @@
       "pr": 11,
       "branch": "codex/df-end-to-end-20261011",
       "candidate_sha": "50cef26c4d829f18b3619d41710fffdf50534e91",
-      "integration": "merged_7fc33c9",
+      "integration": "merged_PR11",
       "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
       "qa": {
         "run": 38142527882,
@@ -22,19 +22,18 @@
       "reviewer": {
         "run": 38142527882,
         "status": "PASS",
-        "scope": "deterministic + separate browser; semantic limitations retained"
+        "scope": "deterministic + desktop/mobile; original semantic scope retained"
       },
       "runtime_post_merge": {
         "run": 38142527704,
         "status": "PASS",
         "polls": 2,
-        "discovered": 41,
         "idempotent": true,
         "artifact": "data/audits/integration_20261011/df-postmerge-916fe2d.json"
       },
       "final_state": "INTEGRATED_DEGRADED",
       "owner": "Pele + Media Source Worker",
-      "next_action": "DF integrado con runtime validado y limitaciones preservadas; PR10 continúa en su rama hasta READY_FOR_INTEGRATION.",
+      "next_action": "Mantener seguimiento periódico y cerrar sólo gaps de cobertura demostrados; inventario parcial explícito.",
       "limits": [
         "partial 30/90 inventory",
         "19 multimedia deferred"
@@ -50,14 +49,27 @@
       "pr": 15,
       "branch": "codex/d-fiscalizacion-sis-suseso-20261011",
       "candidate_sha": "e654dd623001ddf6de54da5e31d84a795e78e997",
-      "integration": "candidate_PR18",
-      "staging_sha": null,
-      "qa": "NOT_RUN_POST_INTEGRATION",
-      "reviewer": "NOT_RUN_POST_INTEGRATION",
-      "runtime_post_merge": null,
-      "final_state": "NOT_READY",
+      "integration": "merged_PR18",
+      "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+      "qa": {
+        "run": 38143952494,
+        "status": "PASS"
+      },
+      "reviewer": {
+        "run": 38143952494,
+        "status": "PASS",
+        "scope": "deterministic + desktop/mobile; original semantic scope retained"
+      },
+      "runtime_post_merge": {
+        "run": 38143952220,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/sis-postmerge-9920e3d.json"
+      },
+      "final_state": "INTEGRATED_DEGRADED",
       "owner": "Codex D · Regulatory Source Recovery",
-      "next_action": "QA/Reviewer de PR18; merge seguro a staging y runtime real con identidad por oficio. No cerrar #8 por el merge."
+      "next_action": "Mantener seguimiento periódico y cerrar sólo gaps de cobertura demostrados; inventario parcial explícito."
     },
     {
       "source": "suseso_fiscalizacion",
@@ -69,14 +81,27 @@
       "pr": 15,
       "branch": "codex/d-fiscalizacion-sis-suseso-20261011",
       "candidate_sha": "e654dd623001ddf6de54da5e31d84a795e78e997",
-      "integration": "candidate_PR18",
-      "staging_sha": null,
-      "qa": "NOT_RUN_POST_INTEGRATION",
-      "reviewer": "NOT_RUN_POST_INTEGRATION",
-      "runtime_post_merge": null,
-      "final_state": "NOT_READY",
+      "integration": "merged_PR18",
+      "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+      "qa": {
+        "run": 38143952494,
+        "status": "PASS"
+      },
+      "reviewer": {
+        "run": 38143952494,
+        "status": "PASS",
+        "scope": "deterministic + desktop/mobile; original semantic scope retained"
+      },
+      "runtime_post_merge": {
+        "run": 38143952220,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/sis-postmerge-9920e3d.json"
+      },
+      "final_state": "INTEGRATED_DEGRADED",
       "owner": "Codex D · Regulatory Source Recovery",
-      "next_action": "QA/Reviewer de PR18; merge seguro a staging y runtime real con identidad por oficio. No cerrar #8 por el merge."
+      "next_action": "Mantener seguimiento periódico y cerrar sólo gaps de cobertura demostrados; inventario parcial explícito."
     },
     {
       "source": "achs_seguro_laboral",

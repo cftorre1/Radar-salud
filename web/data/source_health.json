@@ -59,26 +59,34 @@
     },
     "diario_financiero": {
       "name": "Diario Financiero",
-      "checked_at": "2026-10-11T06:52:30.383782+00:00",
+      "checked_at": "2026-10-11T13:18:27.077647+00:00",
       "last_signal_at": "2026-10-10",
       "discovered": 41,
       "new": 0,
-      "published": 1,
+      "published": 0,
       "live_pending": 0,
       "backfill_pending": 0,
       "pending": 0,
       "deferred": 19,
-      "rejected": 176,
+      "rejected": 175,
       "status": "warning",
       "error": null,
       "technical_status": "partial",
       "coverage_status": "date_or_detail_gap",
       "content_freshness": "recent",
-      "editorial_outcome": "published",
+      "editorial_outcome": "rejected",
       "dated": 41,
       "undated": 0,
       "detail_errors": 0,
       "insufficient_evidence": 5,
+      "textual_candidates": 36,
+      "nontextual_candidates_known": 5,
+      "textual_capture_status": "verified",
+      "format_capability": {
+        "text": "runtime_verified",
+        "images": "requires_ocr",
+        "audio_video": "requires_official_text"
+      },
       "newest_event_date": "2026-10-10",
       "deferred_multimedia": 19,
       "unverifiable_date_dispositions": 0,
@@ -88,22 +96,17 @@
         "new": "this_run",
         "published": "this_run",
         "pending": "cumulative_queue",
-        "rejected": "cumulative_queue",
-        "deferred": "cumulative_queue"
+        "deferred": "cumulative_queue",
+        "rejected": "cumulative_queue"
       },
       "last_discovered_event_at": "2026-10-10",
-      "editorial_reviewed_at": "2026-10-11T06:55:59.923604+00:00",
-      "accepted_queue_publications": 26,
-      "review_withdrawn": 0,
-      "textual_candidates": 36,
-      "nontextual_candidates_known": 5,
-      "textual_capture_status": "verified",
-      "format_capability": {
-        "text": "runtime_verified",
-        "images": "requires_ocr",
-        "audio_video": "requires_official_text"
-      },
-      "format_facets_basis": "Derived from actual41 candidates/5 nontextual/0 undated/0 detail errors in runtime38119095016; no new polling"
+      "integration_state": "INTEGRATED_DEGRADED",
+      "integration_evidence": {
+        "staging_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+        "runtime_run": 38142527704,
+        "preview_run": 38142527882,
+        "artifact": "data/audits/integration_20261011/df-postmerge-916fe2d.json"
+      }
     },
     "diario_oficial": {
       "name": "Diario Oficial",
@@ -126,7 +129,7 @@
     },
     "superintendencia_fiscalizacion": {
       "name": "Superintendencia Fiscalizacion",
-      "checked_at": "2026-10-11T07:33:49.042777+00:00",
+      "checked_at": "2026-10-11T13:39:17.875662+00:00",
       "last_signal_at": "2026-09-28",
       "discovered": 3343,
       "new": 0,
@@ -189,7 +192,7 @@
       },
       "published_total": 200,
       "final_state": "OPERATIVE_DEGRADED",
-      "pages_checked": 49,
+      "pages_checked": 7,
       "items_discovered": 3343,
       "unique_items": 3343,
       "surface_rows_discovered": 6509,
@@ -200,33 +203,29 @@
       "surface_errors": 0,
       "windows": {
         "30": {
-          "publication_dated": 13,
-          "emission_dated": 11,
-          "official_confirmed": 14,
-          "detected": 14,
-          "baseline_detected": 4,
-          "baseline_omitted": 10,
-          "omitted": 0,
-          "material": 14,
+          "items_recent": 14,
+          "enforcement_recent": 14,
+          "official_news_recent": 0,
+          "related_normative_recent": 0,
           "published": 14,
           "rejected": 0,
-          "deferred": 0
+          "deferred": 0,
+          "items_material": 14,
+          "unaccounted": 0
         },
         "90": {
-          "publication_dated": 31,
-          "emission_dated": 27,
-          "official_confirmed": 32,
-          "detected": 32,
-          "baseline_detected": 13,
-          "baseline_omitted": 19,
-          "omitted": 0,
-          "material": 32,
+          "items_recent": 32,
+          "enforcement_recent": 32,
+          "official_news_recent": 0,
+          "related_normative_recent": 0,
           "published": 32,
           "rejected": 0,
-          "deferred": 0
+          "deferred": 0,
+          "items_material": 32,
+          "unaccounted": 0
         }
       },
-      "coverage_reason": "Seven official results indexes fully reconciled in 30/90-day dated windows; coverage outside these indexes and all historical legal-act identities not certified.",
+      "coverage_reason": "listed_documents_only; not site-wide reconciliation",
       "counter_semantics": {
         "discovered": "documents in this discovery run, including historical",
         "new": "queue additions this run",
@@ -236,48 +235,13 @@
         "rejected": "queue stock with evaluated rejection",
         "archived": "queue stock beyond backfill horizon"
       },
-      "zero_published_reason": "idempotent replay; all confirmed recent material acts already persisted",
-      "window_semantics": {
-        "primary": "inclusive elapsed date age: 0..30 and 0..90; matches the existing application filter",
-        "30_start": "2026-09-11",
-        "90_start": "2026-07-13",
-        "exact_calendar_30_start": "2026-09-12",
-        "exact_calendar_90_start": "2026-07-14"
-      },
-      "exact_calendar_windows": {
-        "30": {
-          "official_confirmed": 14,
-          "detected": 14,
-          "omitted": 0,
-          "material": 14,
-          "published": 14,
-          "rejected": 0,
-          "deferred": 0,
-          "boundary_records_excluded": 0
-        },
-        "90": {
-          "official_confirmed": 28,
-          "detected": 28,
-          "omitted": 0,
-          "material": 28,
-          "published": 28,
-          "rejected": 0,
-          "deferred": 0,
-          "boundary_records_excluded": 4
-        }
-      },
-      "documents_checked": 37,
-      "http_receipts_checked": 86,
-      "publication_date_uncertain_reports": 0,
-      "bounded_dated_coverage_complete": true,
-      "deferred_date_uncertain": 0,
-      "reconciliation": {
-        "at": "2026-10-11T07:34:17.473579+00:00",
-        "native_live_validated": true,
-        "runtime_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121751340",
-        "runtime_sha": "7f321cf81e0150d5b6630785f976c7d62f6bd9d7",
-        "stock_preserves_detected_at": true,
-        "backfill_only": true
+      "zero_published_reason": "evaluated_rejections_or_existing_published_history",
+      "integration_state": "INTEGRATED_DEGRADED",
+      "integration_evidence": {
+        "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+        "runtime_run": 38143952220,
+        "preview_run": 38143952494,
+        "artifact": "data/audits/integration_20261011/sis-postmerge-9920e3d.json"
       }
     },
     "superintendencia": {
@@ -472,7 +436,7 @@
     },
     "suseso_fiscalizacion": {
       "name": "Suseso Fiscalizacion",
-      "checked_at": "2026-10-11T07:34:17.256817+00:00",
+      "checked_at": "2026-10-11T13:39:17.928547+00:00",
       "last_signal_at": "2026-10-02",
       "discovered": 1273,
       "new": 0,
@@ -480,7 +444,7 @@
       "live_pending": 0,
       "backfill_pending": 10,
       "pending": 10,
-      "deferred": 10,
+      "deferred": 0,
       "rejected": 110,
       "status": "warning",
       "error": null,
@@ -557,44 +521,40 @@
       },
       "published_total": 94,
       "final_state": "OPERATIVE_DEGRADED",
-      "pages_checked": 108,
+      "pages_checked": 8,
       "items_discovered": 1273,
       "unique_items": 1273,
       "surface_rows_discovered": 1612,
-      "items_recent": 77,
+      "items_recent": 149,
       "items_material": 77,
       "items_recent_enforcement": 77,
       "parse_errors": 0,
       "surface_errors": 0,
       "windows": {
         "30": {
-          "publication_dated": 0,
-          "emission_dated": 20,
-          "official_confirmed": 20,
-          "detected": 20,
-          "baseline_detected": 0,
-          "baseline_omitted": 20,
-          "omitted": 0,
-          "material": 20,
+          "items_recent": 42,
+          "enforcement_recent": 20,
+          "official_news_recent": 18,
+          "related_normative_recent": 4,
           "published": 20,
-          "rejected": 0,
-          "deferred": 0
+          "rejected": 22,
+          "deferred": 0,
+          "items_material": 20,
+          "unaccounted": 0
         },
         "90": {
-          "publication_dated": 2,
-          "emission_dated": 75,
-          "official_confirmed": 77,
-          "detected": 77,
-          "baseline_detected": 0,
-          "baseline_omitted": 77,
-          "omitted": 0,
-          "material": 77,
+          "items_recent": 149,
+          "enforcement_recent": 77,
+          "official_news_recent": 59,
+          "related_normative_recent": 15,
           "published": 77,
-          "rejected": 0,
-          "deferred": 0
+          "rejected": 72,
+          "deferred": 0,
+          "items_material": 77,
+          "unaccounted": 0
         }
       },
-      "coverage_reason": "Dated sanctions and official news fully reconciled. Publication dates remain unknown for 439 historical-execution programme rows and ten medical result reports; no site-wide absence claim.",
+      "coverage_reason": "listed_documents_only; not site-wide reconciliation",
       "counter_semantics": {
         "discovered": "documents in this discovery run, including historical",
         "new": "queue additions this run",
@@ -604,51 +564,14 @@
         "rejected": "queue stock with evaluated rejection",
         "archived": "queue stock beyond backfill horizon"
       },
-      "zero_published_reason": "idempotent replay; all confirmed recent material acts already persisted",
-      "window_semantics": {
-        "primary": "inclusive elapsed date age: 0..30 and 0..90; matches the existing application filter",
-        "30_start": "2026-09-11",
-        "90_start": "2026-07-13",
-        "exact_calendar_30_start": "2026-09-12",
-        "exact_calendar_90_start": "2026-07-14"
-      },
-      "exact_calendar_windows": {
-        "30": {
-          "official_confirmed": 20,
-          "detected": 20,
-          "omitted": 0,
-          "material": 20,
-          "published": 20,
-          "rejected": 0,
-          "deferred": 0,
-          "boundary_records_excluded": 0
-        },
-        "90": {
-          "official_confirmed": 74,
-          "detected": 74,
-          "omitted": 0,
-          "material": 74,
-          "published": 74,
-          "rejected": 0,
-          "deferred": 0,
-          "boundary_records_excluded": 3
-        }
-      },
-      "documents_checked": 10,
-      "http_receipts_checked": 118,
-      "publication_date_uncertain_reports": 449,
-      "bounded_dated_coverage_complete": true,
-      "deferred_date_uncertain": 10,
-      "reconciliation": {
-        "at": "2026-10-11T07:34:17.473579+00:00",
-        "native_live_validated": true,
-        "runtime_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121751340",
-        "runtime_sha": "7f321cf81e0150d5b6630785f976c7d62f6bd9d7",
-        "stock_preserves_detected_at": true,
-        "backfill_only": true
-      },
-      "historical_sanctions_with_current_suspension": 17,
-      "historical_current_stock_published": 17
+      "zero_published_reason": "pending_or_deferred_candidates",
+      "integration_state": "INTEGRATED_DEGRADED",
+      "integration_evidence": {
+        "staging_sha": "9920e3d5fd40fc7a098025fecea1dfc0804d2ea1",
+        "runtime_run": 38143952220,
+        "preview_run": 38143952494,
+        "artifact": "data/audits/integration_20261011/sis-postmerge-9920e3d.json"
+      }
     },
     "prestadores_data": {
       "name": "Superintendencia de Salud · Intendencia de Prestadores",
@@ -841,5 +764,5 @@
       "editorial_outcome": "pending"
     }
   },
-  "generated_at": "2026-10-11T07:34:17.473579+00:00"
+  "generated_at": "2026-10-11T13:41:48.647967+00:00"
 }
