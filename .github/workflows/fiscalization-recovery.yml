@@ -6,6 +6,8 @@ on:
     paths:
       - '.github/workflows/fiscalization-recovery.yml'
       - 'scripts/probe_fiscalization_runtime.py'
+      - 'scripts/replay_fiscalization_runtime.py'
+      - 'config/fiscalization_editorial_reviews.json'
       - 'src/radar_salud/*fiscalizacion.py'
       - 'tests/test_fiscalization_runtime.py'
 permissions:
@@ -26,6 +28,8 @@ jobs:
       - run: pip install -e .
       - name: Native HTTP, TLS, listings and all recent primary documents
         run: python scripts/probe_fiscalization_runtime.py --as-of 2026-10-11
+      - name: Real collectors and engine, isolated state, idempotent native replay
+        run: python scripts/replay_fiscalization_runtime.py --captures artifacts/fiscalization-runtime --output artifacts/fiscalization-runtime/isolated-replay
       - uses: actions/upload-artifact@v4
         if: always()
         with:

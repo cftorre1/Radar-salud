@@ -26,6 +26,7 @@ def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--limit",type=int,default=0,help="Global processing cap; 0 uses AI guardrails only")
     ap.add_argument("--reset-state",action="store_true")
+    ap.add_argument('--only-source',action='append',default=[],help='Run only named source lanes; preserve all other queue/history state')
     args=ap.parse_args()
     if args.reset_state:
         ap.error("Reset disabled: backfill must preserve paid analyses and queue state")
@@ -67,7 +68,13 @@ def main():
       ("diario_financiero","diario_financiero",DfHealthScout().discover,process_df),
       ("pulso_latercera","pulso_latercera",CuratedBetaSourceScout("pulso_latercera").discover,process_curated_beta_source),
       ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial)]
+    if args.only_source:
+        unknown=set(args.only_source)-{name for name,_,_,_ in specs}
+        if unknown:ap.error('Unknown sources: '+', '.join(sorted(unknown)))
+        specs=[spec for spec in specs if spec[0] in args.only_source]
     processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
+    if 'suseso_fiscalizacion' in processors:
+        processors.setdefault('suseso',(cfgs['suseso'],process_suseso))
     discoveries={}
     observed={}
     surfaces={}
@@ -109,15 +116,18 @@ def main():
         "failed_sources":sum(error is not None for _,_,error in discoveries.values()),
     })
     produced={name:[] for name in processors}
-    queue.enforce_backfill_horizon()
-    for index,(key,item) in enumerate(queue.ready()):
+    queue.enforce_backfill_horizon(sources=set(processors) if args.only_source else None)
+    scoped_ready=[(key,item) for key,item in queue.ready() if not args.only_source or
+        item['source'] in args.only_source or ('suseso_fiscalizacion' in args.only_source and item['raw'].get('metadata',{}).get('routed_from')=='suseso_fiscalizacion')]
+    for index,(key,item) in enumerate(scoped_ready):
         if args.limit and index>=args.limit:break
         deterministic = item["source"] in FISCALIZATION_SOURCES or item["raw"].get("metadata",{}).get("reviewed_normative")
         if not deterministic and not has_capacity("fast") and not has_capacity("deep"):continue
         queue.start(key)
         try:
             cfg,processor=processors[item["source"]]
-            row=processor(RawItem(**item["raw"]),cfg)
+            from copy import deepcopy
+            row=processor(RawItem(**deepcopy(item["raw"])),cfg)
             if row:
                 row.update(detected_at=item["detected_at"],ingestion_mode=item["lane"])
                 # Save output before terminal queue acknowledgement (crash safe replay).

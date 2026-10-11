@@ -98,7 +98,7 @@ def parse_enforcement_listing(html, name, page, kind):
                     modification_date=_valid_date(cells[10]),event_date_basis='notification',
                     validity_text=cells[6],listing_url=page,listing_name=name,attachments=attachments)))
         elif kind in ('reports', 'medical_reports'):
-            if len(cells) < 5 or not re.search(r'20\d{2}', cells[0]):
+            if len(cells) < 5 or not re.search(r'20\d{2}', cells[0] + ' ' + cells[3]):
                 continue
             detail = next((urljoin(page, href) for href, _ in row[1].get('links', []) if 'w3-article-' in href), None)
             years = re.findall(r'20\d{2}',cells[3])
@@ -108,6 +108,7 @@ def parse_enforcement_listing(html, name, page, kind):
                 dict(document_class='enforcement_report_candidate' if kind=='medical_reports' else 'historical_enforcement_report',execution_period=cells[3],
                     legal_identity=cells[0],publication_date=None,emission_date=None,event_date_basis=None,
                     source_record_id=record_id,primary_result_available=bool(detail or row[4].get('links')),
+                    execution_period_year_upper_bound=max(years,default='1900')+'-12-31',
                     listing_url=page,listing_name=name,
                     attachments=[{'url':urljoin(page,href),'label':label} for href,label in row[4].get('links',[]) if '.pdf' in href])))
     return out

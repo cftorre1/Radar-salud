@@ -85,7 +85,9 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
         for days in (30,90):
             current={key:row for key,row in observed.items() if recent(row,days)}
             related={key for key,row in current.items() if row.get('metadata', {}).get('document_class')=='related_normative'}
-            windows[str(days)]=dict(items_recent=len(current),enforcement_recent=len(current)-len(related),
+            news={key for key,row in current.items() if row.get('metadata', {}).get('document_class')=='official_news'}
+            windows[str(days)]=dict(items_recent=len(current),enforcement_recent=len(set(current)-related-news)+len(news&published_ids),
+                official_news_recent=len(news),
                 related_normative_recent=len(related),published=len(set(current)&published_ids),
                 rejected=sum(queue_by_id.get(key,{}).get('status')=='rejected' for key in current),
                 deferred=sum(queue_by_id.get(key,{}).get('status') in ('retry','processing','pending') for key in current),
@@ -101,6 +103,7 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
             pages_checked=len(surfaces or []),items_discovered=discovered,unique_items=len(observed),
             surface_rows_discovered=sum(row.get('documents',0) for row in surfaces or [] if row.get('status')=='parsed'),
             items_recent=windows['90']['items_recent'],items_material=windows['90']['items_material'],
+            items_recent_enforcement=windows['90']['enforcement_recent'],
             parse_errors=sum(row.get('error') in ('ValueError','ParseError','HTMLParseError') for row in surfaces or []),
             surface_errors=surface_errors,windows=windows,
             coverage_reason="listed_documents_only; not site-wide reconciliation" if surface_success else "no_surface_receipt; discovery_count_is_not_coverage",

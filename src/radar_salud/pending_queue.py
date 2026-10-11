@@ -53,6 +53,10 @@ def beyond_backfill_horizon(raw, now, days=90):
         published = datetime.fromisoformat(raw.event_date[:10]).date()
         return (now.date() - published).days > days
     except (TypeError, ValueError):
+        bound=raw.metadata.get('execution_period_year_upper_bound')
+        if raw.metadata.get('document_class')=='historical_enforcement_report' and bound:
+            try:return (now.date()-datetime.fromisoformat(bound).date()).days>days
+            except (TypeError,ValueError):pass
         return False
 
 class PendingQueue:
@@ -98,6 +102,10 @@ class PendingQueue:
                         "previous_lane": item.get("lane"), "previous_status": item["status"],
                         "previous_reason": item.get("reason"), "reason": "verified_fiscalization_rediscovery"})
                     item["raw"] = asdict(raw)
+                    if (item['status']=='rejected' and item.get('reason')=='source_date_conflict_requires_review'
+                        and raw.metadata.get('primary_document_review',{}).get('decision')=='publish_fiscalization'
+                        and not raw.metadata.get('date_conflicts')):
+                        item.update(status='pending',lane='BACKFILL',reason=None,retry_at=None)
                     if item["status"] not in ("published", "rejected"):
                         item["lane"] = lane(raw, now, last_discovered_at)
                         archived = item["lane"] == "BACKFILL" and beyond_backfill_horizon(raw, now)
@@ -117,10 +125,12 @@ class PendingQueue:
         self.save()
         return added
 
-    def enforce_backfill_horizon(self, now=None):
+    def enforce_backfill_horizon(self, now=None, sources=None):
         now = now or now_utc()
         changed = 0
         for item in self.items.values():
+            if sources is not None and item.get('source') not in sources:
+                continue
             if item.get("lane") == "BACKFILL" and item.get("status") in ("pending", "retry", "processing"):
                 raw = item.get("raw", {})
                 try:

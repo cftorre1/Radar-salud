@@ -145,6 +145,10 @@ class SuperintendenciaFiscalizacionScout:
     SOURCE_TYPE = "official"
 
     def discover(self):
+        import json
+        from .paths import project_root
+        reviews_path=project_root()/'config/fiscalization_editorial_reviews.json'
+        primary_reviews=json.loads(reviews_path.read_text()).get('primary_document_reviews',{}) if reviews_path.exists() else {}
         out = {}
         self.surface_results = []
         for page_name, page_url, scope, kind in PAGES:
@@ -154,6 +158,8 @@ class SuperintendenciaFiscalizacionScout:
                     raise ValueError("Fiscalization table has no identifiable dated documents")
                 self.surface_results.append({"url": page_url, "status": "parsed", "documents": len(items)})
                 for raw in items:
+                    if raw.url in primary_reviews:
+                        raw=reviewed_primary_act(raw,primary_reviews)
                     if raw.url in out:
                         previous = out[raw.url]
                         previous.metadata['listing_urls'] = sorted(set(previous.metadata.get('listing_urls', [previous.metadata['listing_url']]) + [page_url]))
@@ -167,14 +173,16 @@ class SuperintendenciaFiscalizacionScout:
             raise RuntimeError("No SIS fiscalization surface parsed successfully")
         return sorted(out.values(), key=lambda raw: raw.event_date or "", reverse=True)
 
-def reviewed_primary_act(raw):
+def reviewed_primary_act(raw, primary_reviews=None):
     """Resolve only an exact, documented primary-source review; keep observations."""
     import json
     from dataclasses import replace
     from .paths import project_root
-    path = project_root() / 'config/fiscalization_editorial_reviews.json'
-    reviews = json.loads(path.read_text()) if path.exists() else {}
-    review = reviews.get('primary_document_reviews', {}).get(canonical_url(raw.url))
+    if primary_reviews is None:
+        path = project_root() / 'config/fiscalization_editorial_reviews.json'
+        reviews = json.loads(path.read_text()) if path.exists() else {}
+        primary_reviews=reviews.get('primary_document_reviews', {})
+    review = primary_reviews.get(canonical_url(raw.url))
     if not review or review.get('decision') != 'publish_fiscalization':
         return raw
     documents = {canonical_url(a['url']) for a in raw.metadata.get('attachments', [])}
