@@ -81,6 +81,25 @@ def test_original_clinical_legislation_remains_a_proposal_with_its_actual_dates(
     assert 'si la paciente declina escucharla, el profesional deberá negarse a practicar la interrupción' in entry['body']
 
 
+def test_all_101_independently_reviewed_complete_rejects_keep_frozen_eligibility_after_narrow_repairs():
+    cases = json.loads((FIXTURE.parent / 'all_101_semantic_prefilter_cases.json').read_text())['cases']
+    assert len(cases) == len({entry['url'] for entry in cases}) == 101
+    assert sum(entry['allows_analysis_after_repair'] for entry in cases) == 3
+    for entry in cases:
+        assert entry['original_bytes_verified'] is True
+        assert hashlib.sha256(entry['body'].encode()).hexdigest() == entry['body_sha256']
+        assert beta_sources._material('media', entry['title'], entry['body']) == entry['allows_analysis_after_repair'], entry['url']
+
+
+@pytest.mark.parametrize(('title', 'body'), [
+    ('Salud debate una propuesta sobre latidos', 'El proyecto Escucha su corazón genera discusión sobre el aborto, sin especificar una condición de atención.'),
+    ('Salud informa un aluvión', 'El Ministerio de Salud monitorea las lluvias. Una vivienda resultó inundada, mientras la clínica no sufrió daños.'),
+    ('Clínica resulta inundada', 'La clínica resultó inundada producto del temporal; no se informa respuesta de ninguna autoridad sanitaria.'),
+])
+def test_clinical_conditions_and_provider_damage_need_concrete_publisher_context(title, body):
+    assert not beta_sources._material('media', title, body)
+
+
 @pytest.mark.parametrize(('title', 'body'), [
     ('Ministerio de Salud presenta una guía de bienestar', 'La salud mejora con hábitos de descanso y una alimentación equilibrada.'),
     ('Salud recomienda usar mascarilla', 'El Ministerio de Salud recomienda usar mascarilla al visitar los servicios de urgencia.'),

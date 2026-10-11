@@ -284,7 +284,17 @@ def _material(role, title, body):
         care_legislation = bool(re.search(r"c[oó]digo sanitario", text)) and bool(
             re.search(r"proyecto|modific|tramit", text)) and bool(re.search(
                 r"\bprestaci[oó]n\b|atenci[oó]n|interrupci[oó]n(?: voluntaria)? del embarazo", text))
-        return care_obligation or ges_coverage or care_legislation
+        proposed_clinical_condition = bool(re.search(r"escucha su coraz[oó]n", text)) and bool(
+            re.search(r"proyecto|propuesta|iniciativa", text)) and bool(re.search(
+                r"aborto|abortar|interrupci[oó]n (?:legal |voluntaria )?del embarazo|ley de tres causales", text)) and bool(
+            re.search(r"mujeres?[^.!?]{0,100}\bdeban escuchar\b[^.!?]{0,100}\blatidos?\b|"
+                      r"m[eé]dico[^.!?]{0,120}\bnegarse a (?:realizar|practicar)\b[^.!?]{0,50}(?:procedimiento|interrupci[oó]n)", text))
+        provider_flood_response = bool(re.search(
+            r"\b(?:cl[ií]nica|hospital)\b[^.!?]{0,100}\binundad[oa]s?\b", text)) and bool(
+            re.search(r"ministerio de salud|\bminsal\b|autoridad sanitaria", text)) and bool(
+            re.search(r"monitore|protecci[oó]n de los pacientes|resguard", text))
+        return (care_obligation or ges_coverage or care_legislation
+                or proposed_clinical_condition or provider_flood_response)
     return False
 
 
