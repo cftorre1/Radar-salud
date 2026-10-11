@@ -145,6 +145,10 @@ def test_history_prevents_republishing_and_date_conflict_never_reopens(tmp_path)
     assert queue.items[key]["status"] == "superseded"
     assert queue.items[key]["reason"] == "already_published_in_history"
     assert not queue.ready(NOW)
+    empty = PendingQueue(tmp_path / "empty.json")
+    empty.discover("diario_financiero", [_raw(dated=True)], now=NOW, published_urls=[URL])
+    assert not empty.ready(NOW)
+    assert empty.items[key]["reason"] == "already_published_in_history"
 
 
 def _analysis(score=90):

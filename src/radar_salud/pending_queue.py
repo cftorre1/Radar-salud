@@ -66,9 +66,13 @@ class PendingQueue:
                 continue
             item_lane = lane(raw, now, last_discovered_at)
             archived = item_lane == "BACKFILL" and beyond_backfill_horizon(raw, now)
+            already_published=False
+            if source=="diario_financiero":
+                from .df_article import article_url
+                already_published=article_url(raw.url) in {article_url(url) for url in published_urls}
             self.items[key] = dict(raw=asdict(raw), source=source, lane=item_lane,
-                status="archived" if archived else "pending", detected_at=now.isoformat(),
-                attempts=0, reason="outside_90_day_backfill" if archived else None,
+                status="superseded" if already_published else "archived" if archived else "pending", detected_at=now.isoformat(),
+                attempts=0, reason="already_published_in_history" if already_published else "outside_90_day_backfill" if archived else None,
                 classification_watermark=last_discovered_at)
             added += 1
         self.save()
