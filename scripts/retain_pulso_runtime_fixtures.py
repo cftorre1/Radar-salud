@@ -13,7 +13,7 @@ import re
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urlsplit, urlunsplit
+from urllib.parse import parse_qs, urlsplit, urlunsplit
 
 from radar_salud.pulso_source import extract_article
 
@@ -74,7 +74,132 @@ def capture_manifests(capture_manifest, artifact_dir=None):
     return result
 
 
-def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=10):
+def api_page_key(url):
+    """Identify an observed publisher request, keeping query and cursor intact."""
+    try:
+        parsed = urlsplit(url or "")
+        if parsed.scheme != "https" or parsed.netloc != "www.latercera.com":
+            return None
+        query = json.loads(parse_qs(parsed.query)["query"][0])
+        if parsed.path == "/pf/api/v3/content/fetch/story-feed-sections-fetch":
+            feed = "section:" + query["includeSections"].lstrip("/")
+        elif parsed.path == "/pf/api/v3/content/fetch/story-feed-tag-fetch":
+            feed = "tag:" + query["tagSlug"]
+        else:
+            return None
+        offset = query["feedOffset"]
+        return (feed, offset) if type(offset) is int and offset >= 0 else None
+    except (ValueError, KeyError, TypeError, AttributeError):
+        return None
+
+
+def discovery_evidence(discovery_path, artifact_dir=None):
+    paths = [discovery_path] if discovery_path is not None and discovery_path.exists() else []
+    if artifact_dir is not None and artifact_dir.exists():
+        paths.extend(sorted(artifact_dir.rglob("discovery_run.json")))
+    candidates = []
+    for path in paths:
+        if artifact_dir is not None and path != discovery_path and not path.resolve().is_relative_to(artifact_dir.resolve()):
+            raise ValueError("unsafe_artifact_discovery_path")
+        payload = path.read_bytes()
+        value = json.loads(payload)
+        details = value.get("source_details", {}).get(SOURCE, [])
+        if any(row.get("status") == "public_feed_page" for row in details):
+            candidates.append((value.get("at") or "", sha256(payload), details))
+    return max(candidates, key=lambda row: row[0]) if candidates else None
+
+
+def preserve_api_proof(sources, evidence, output, requests):
+    """Retain first/last-three JSON originals and all observed HTTP chain hashes."""
+    if evidence is None:
+        return {"status": "PUBLIC_API_PROOF_NOT_AVAILABLE", "feeds": [], "required_feeds": []}
+    discovery_at, discovery_hash, details = evidence
+    runtime = next((row for row in reversed(details) if row.get("status") == "runtime_coverage"), {})
+    required = runtime.get("required_feeds", [])
+    summaries = {row["feed"]: row for row in details if row.get("status") == "public_feed_coverage"}
+    candidates = {}
+    for base, manifest_hash, records in sources:
+        for record in records:
+            key = api_page_key(record.get("url"))
+            if key:
+                candidates.setdefault(key, []).append((base, manifest_hash, record))
+    feeds = []
+    for feed in sorted(set(required) | set(summaries)):
+        pages = [row for row in details if row.get("status") == "public_feed_page" and row.get("feed") == feed]
+        proof_offsets = {row.get("offset") for row in pages[:1] + pages[-3:]}
+        chain = []
+        for index, page in enumerate(pages):
+            linked = [candidate for candidate in candidates.get((feed, page.get("offset")), [])
+                      if candidate[2].get("status") == 200 and candidate[2].get("captured_at")
+                      and re.fullmatch(r"[0-9a-f]{64}", page.get("json_sha256", ""))
+                      and page.get("json_sha256") in {candidate[2].get("sha256"), candidate[2].get("returned_text_utf8_sha256")}
+                      and re.fullmatch(r"[0-9a-f]{64}", candidate[2].get("sha256", ""))]
+            linked.sort(key=lambda candidate: candidate[2].get("captured_at") or "", reverse=True)
+            item = dict(page, proof_status="missing_observed_http_response",
+                        cursor_links_previous=(index == 0 and page.get("offset") == 0) or
+                            (index > 0 and pages[index-1].get("next") == page.get("offset") and
+                             page.get("offset", -1) > pages[index-1].get("offset", -1)),
+                        raw_payload_required=page.get("offset") in proof_offsets)
+            errors = []
+            for base, manifest_hash, record in linked:
+                compact = {key: record.get(key) for key in (
+                    "url", "requested_at", "captured_at", "status", "final_url", "content_type", "charset",
+                    "bytes", "sha256", "returned_text_utf8_sha256", "gzip_sha256")}
+                compact.update(feed=feed, offset=page["offset"], next=page.get("next"),
+                               json_sha256=page.get("json_sha256"), gzip_file=None,
+                               capture_provenance="observed_public_api_http_chain_metadata",
+                               raw_payload_retained=False,
+                               original_gzip_file=record.get("original_gzip_file", record.get("gzip_file")),
+                               original_capture_manifest_sha256=record.get("original_capture_manifest_sha256", manifest_hash))
+                if not item["raw_payload_required"]:
+                    requests[(compact["url"], compact["sha256"])] = compact
+                    item.update(proof_status="observed_http_sha_bound", http=compact)
+                    break
+                try:
+                    compressed, text = verify_original(base, record)
+                    document = json.loads(text)
+                    document = document.get("data", document)
+                    nodes = document["content_elements"]
+                    if (not isinstance(nodes, list) or len(nodes) != page.get("primary_entries")
+                            or document.get("count") != page.get("count") or document.get("next") != page.get("next")):
+                        raise ValueError("original_api_inventory_or_cursor_mismatch")
+                    from radar_salud.pulso_source import publication_day
+                    days = [publication_day(node.get("first_publish_date") or "") for node in nodes]
+                    if page.get("inventory_day_max") and (None in days or max(days) != page["inventory_day_max"]):
+                        raise ValueError("original_api_publication_boundary_mismatch")
+                    relative = compact["sha256"] + ".json.gz"
+                    destination = output / relative
+                    if destination.exists() and sha256(destination.read_bytes()) != compact["gzip_sha256"]:
+                        raise ValueError("existing_fixture_gzip_sha256_mismatch")
+                    destination.write_bytes(compressed)
+                    compact.update(gzip_file=relative, raw_payload_retained=True,
+                                   capture_provenance="preserved_original_public_api_response")
+                    requests[(compact["url"], compact["sha256"])] = compact
+                    item.update(proof_status="verified_original_boundary_json", http=compact)
+                    break
+                except Exception as error:
+                    errors.append({"error_type": type(error).__name__, "reason": str(error),
+                                   "captured_at": record.get("captured_at"), "sha256": record.get("sha256")})
+            if errors:
+                item["original_verification_errors"] = errors
+            chain.append(item)
+        summary = summaries.get(feed, {})
+        complete = (bool(chain) and len(chain) == summary.get("pages_attempted")
+                    and all(row["cursor_links_previous"] and row["proof_status"] in {
+                        "observed_http_sha_bound", "verified_original_boundary_json"} for row in chain))
+        feeds.append({"feed": feed, "summary": summary, "http_and_boundary_proof_complete": complete,
+                      "proof_payload_offsets": sorted(proof_offsets), "pages": chain})
+    chain_bytes = json.dumps([row.get("http") for feed in feeds for row in feed["pages"]],
+                            sort_keys=True, separators=(",", ":")).encode()
+    complete = bool(required and len(feeds) == len(required) and all(feed["http_and_boundary_proof_complete"] for feed in feeds))
+    return {"status": "PUBLIC_API_HTTP_AND_BOUNDARY_PROOF_AVAILABLE_NOT_SOURCE_ACCEPTANCE" if complete else "PUBLIC_API_PROOF_PARTIAL",
+            "discovery_at": discovery_at, "discovery_run_sha256": discovery_hash,
+            "required_feeds": required, "runtime_coverage": runtime,
+            "http_chain_sha256": sha256(chain_bytes), "feeds": feeds,
+            "raw_payload_retention": "Exact observed first and last three API responses per feed; interior pages retain observed HTTP metadata only."}
+
+
+def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=10, discovery_path=None):
     control_bytes = control_path.read_bytes()
     control = json.loads(control_bytes)
     window = control["window_90"]
@@ -164,6 +289,8 @@ def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=
             seen.add(digest)
         if len(debug_rows) >= max_debug:
             break
+    evidence = discovery_evidence(discovery_path, artifact_dir)
+    api_proof = preserve_api_proof(sources, evidence, output, requests)
     counts = dict(Counter(row["fixture_status"] for row in rows))
     manifest = {"schema_version": "1.0", "source": SOURCE,
                 "mode": "retention_only_no_discovery_or_queue_injection",
@@ -172,7 +299,8 @@ def retain(control_path, capture_manifest, output, artifact_dir=None, max_debug=
                 "window_90": window, "external_control_sha256": sha256(control_bytes),
                 "expected_controls": len(controls), "counts": counts,
                 "fixtures": rows, "debug_parser_errors": debug_rows,
-                "requests": list(requests.values()), "unique_original_payloads": len({row["sha256"] for row in requests.values()}),
+                "public_api_proof": api_proof,
+                "requests": list(requests.values()), "unique_original_payloads": len({row["sha256"] for row in requests.values() if row.get("gzip_file")}),
                 "acceptance_note": "These fixtures prove captured bytes and parser replay; they do not establish discovery recall or editorial acceptance."}
     temporary = previous_path.with_suffix(".json.tmp")
     temporary.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -185,9 +313,10 @@ def main():
     parser.add_argument("--control", type=Path, default=ROOT / "data/audits/pulso_external_control_2026_10_11.json")
     parser.add_argument("--capture-manifest", type=Path, default=ROOT / "data/audits/pulso_runtime_capture/manifest.json")
     parser.add_argument("--capture-artifact", type=Path)
+    parser.add_argument("--discovery", type=Path, default=ROOT / "data/state/discovery_run.json")
     parser.add_argument("--output", type=Path, default=ROOT / "tests/fixtures/pulso_runtime_real")
     args = parser.parse_args()
-    manifest = retain(args.control, args.capture_manifest, args.output, args.capture_artifact)
+    manifest = retain(args.control, args.capture_manifest, args.output, args.capture_artifact, discovery_path=args.discovery)
     print(json.dumps({key: manifest[key] for key in ("status", "expected_controls", "counts", "unique_original_payloads")}))
 
 
