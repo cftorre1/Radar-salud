@@ -1,12 +1,48 @@
 {
-  "version": 1,
+  "version": 3,
   "slug": "clinicas_achs_salud",
   "as_of": "2026-10-11",
   "timezone": "America/Santiago",
   "window_rule": "0 <= as_of - verified publication_date <= 30/90 days inclusive; unknown date is null, never zero",
   "audit_path": "data/audits/providers_2026_10_11/clinicas_achs_salud.json",
-  "status": "reconciled_with_exact_blockers",
-  "coverage": "partial_90_inventory_visible_30_reviewed",
+  "status": "OPERATIVE_DEGRADED",
+  "coverage": {
+    "outcome": "OPERATIVE_DEGRADED",
+    "coverage_complete": false,
+    "coverage_reason": "Shared parent archive160URLs/25recent90 checked; only subsidiary SAFED participation, related to existingBupa publication, is relevant. Mutuality excluded from this entity. Official subsidiary ownsite/CMS/feed checked (no90dayposts); LaSerena prequalification form has no dated release and is held without a new entity.",
+    "archive_depth": {
+      "parent_archive_urls": 160,
+      "own_site_alternatives": 8,
+      "own_cms_posts_90": 0
+    },
+    "owner": "Publisher Clínicas Achs Salud / Source Engineering",
+    "next_action": "Require a dated official LaSerena MasterPlan announcement with award/capacity/investment evidence; keep form held and one visible entity. Continue central archive exact-subsidiary filter; own CMS currently has no90-dayposts.",
+    "pages_checked": 177,
+    "latest_original_publication": "2026-10-05",
+    "discovered": 161,
+    "unique": 161,
+    "recent_30d": 10,
+    "recent_90d": 25,
+    "publication_date_unknown": 1,
+    "material_30d": 0,
+    "material_90d": 1,
+    "material_date_unknown": 1,
+    "material": 2,
+    "material_unknown": 0,
+    "published": 0,
+    "rejected": 1,
+    "deferred": 1,
+    "detected_material": 2,
+    "omitted_material": 0,
+    "parse_errors": 0,
+    "access_errors": 8,
+    "inventory": "data/audits/provider_inventory_2026_10_11/clinicas_achs_salud.json",
+    "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+    "relevant_30d_total": null,
+    "relevant_90d_total": null,
+    "publicable_confirmed": 0,
+    "publicable_total": null
+  },
   "verification_method": "Original-site reader and isolated GitHub Actions fetches on 2026-10-11; outcomes and dates stored durably. Full inventory is claimed only when original dates and boundary are verified.",
   "source_quality_gate": "passed",
   "market_role": "provider_achs",
@@ -17,11 +53,481 @@
     }
   ],
   "blockers": [
-    "first_listing_only_90_day_boundary_unverified",
-    "partial_discovery_unicode_url_comiee_and_2026_09_03_HTTPError",
-    "assessment_rejected_without_persisted_subreason"
+    "Shared parent archive160URLs/25recent90 checked; only subsidiary SAFED participation, related to existingBupa publication, is relevant. Mutuality excluded from this entity. Official subsidiary ownsite/CMS/feed checked (no90dayposts); LaSerena prequalification form has no dated release and is held without a new entity."
   ],
   "original_items": [
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+      "title": "Achs se une a iniciativa público-privada para entregar servicios gratuitos a afectados en Atacama y Coquimbo por las lluvias",
+      "publication_date": "2026-08-28",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Existing five-network SAFED programme already published from BupaAug13.4299 are joint beneficiaries, not Achs volume; no new own capacity or financing. Independent Reviewer current rationale; historical model reason unknown.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Existing five-network SAFED programme already published from BupaAug13.4299 are joint beneficiaries, not Achs volume; no new own capacity or financing. Independent Reviewer current rationale; historical model reason unknown.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [
+          "https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas"
+        ],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "8b518dbe40b2741bf3ed1454464f0a9072b99f8bb681e4132ca9e24f462a83f0",
+            "status": "rejected",
+            "reason": "related_existing_SAFED_without_incremental_change",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": {
+              "at": "2026-10-11T06:34:01.091479+00:00",
+              "method": "original evidence + independent Reviewer; no new paid model",
+              "reason": "related_existing_SAFED_without_incremental_change",
+              "rationale": "Existing five-network SAFED programme already published from BupaAug13.4299 are joint beneficiaries, not Achs volume; no new own capacity or financing. Independent Reviewer current rationale; historical model reason unknown.",
+              "related_to": [
+                "https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas"
+              ],
+              "historical_processor_reason": "processor_rejected",
+              "historical_model_diagnostics": "not persisted; do not reconstruct",
+              "prior_queue_state": {
+                "status": "rejected",
+                "reason": "processor_rejected"
+              }
+            }
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [
+          {
+            "url": "https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas",
+            "title": "Personas damnificadas recibirán atención gratuita en clínicas privadas gracias a la activación del sistema de atención fonasa para emergencias y desastres (safed)",
+            "publication_date": "2026-08-13"
+          }
+        ],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:54:34.882355+00:00",
+          "body_sha256": "38df92fd03d2bf369c2db965d4379e08ad1afd9b6e88039b41fdfae70fb06ff4",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "2026-08-28",
+              "date": "2026-08-28"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/clinicas_achs_salud.json"
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+      "title": "Master Plan Achs Salud: Modernizamos centros y ampliamos servicios para cuidarte mejor",
+      "publication_date": "2026-08-19",
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "verified_original_publication",
+      "materiality": "nonmaterial",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Shared parent newsroom: occupational-insurance/prevention content, not a change by the Clínicas Achs Salud subsidiary. Master Plan describes ambulatory centres; clinic reference is an existing referral address.",
+      "alicanto": {
+        "materiality": "nonmaterial",
+        "reason": "Shared parent newsroom: occupational-insurance/prevention content, not a change by the Clínicas Achs Salud subsidiary. Master Plan describes ambulatory centres; clinic reference is an existing referral address.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+        "detected": true,
+        "queue": [
+          {
+            "key": "e7cf3502b288674f441ecf9381e14b1184aa21e69c2ff380a0a598d160d5eb57",
+            "status": "rejected",
+            "reason": "reviewed_nonmaterial",
+            "lane": "BACKFILL",
+            "deferred_detail": null,
+            "assessment": null,
+            "current_editorial_review": {
+              "at": "2026-10-11T06:42:29.789541+00:00",
+              "method": "explicit original piece review; unpaid exclusion only",
+              "reason": "nonmaterial",
+              "rationale": "Shared parent newsroom: occupational-insurance/prevention content, not a change by the Clínicas Achs Salud subsidiary. Master Plan describes ambulatory centres; clinic reference is an existing referral address.",
+              "related_to": [],
+              "prior_queue_state": {
+                "status": "pending",
+                "reason": null
+              }
+            }
+          }
+        ],
+        "seen_ledger_match": true,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "rejected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T05:54:34.882412+00:00",
+          "body_sha256": "4fc8e59a86c195fa1e02ea9a6b31e5cae54da561282f57545722124b1591be3b",
+          "date_stamps": [
+            {
+              "kind": "verified_article_header",
+              "value": "2026-08-19",
+              "date": "2026-08-19"
+            }
+          ],
+          "date_reason": "verified_original_publication",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/clinicas_achs_salud.json"
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/formulario-licitacion-master-plan-serena/",
+      "title": "Formulario de Licitación Máster Plan Clínica La Serena",
+      "publication_date": null,
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "no_editorial_publication_date_on_official_form",
+      "materiality": "candidate",
+      "recover": false,
+      "queue_admission_completed": true,
+      "current_reason": "Official subsidiary opens prequalification for a La Serena Master Plan tender. No announcement date, amount, capacity, award or construction start confirmed. Undated form is not proof of a new90-day investment; durable hold until dated official evidence.",
+      "alicanto": {
+        "materiality": "candidate",
+        "reason": "Official subsidiary opens prequalification for a La Serena Master Plan tender. No announcement date, amount, capacity, award or construction start confirmed. Undated form is not proof of a new90-day investment; durable hold until dated official evidence.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": true,
+        "queue": [
+          {
+            "key": "b12b68ee28d1a9ef227a524fae7934004a5d06099f2ae555858b22bbcf6a51d0",
+            "status": "retry",
+            "reason": "original_publication_date_not_exposed",
+            "lane": "BACKFILL",
+            "deferred_detail": "Official original has no editorial publication date; date gate retained. No paid assessment performed.",
+            "assessment": null,
+            "current_editorial_review": null
+          }
+        ],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "retry",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11",
+          "body_sha256": null,
+          "date_stamps": [],
+          "date_reason": "no_editorial_publication_date_on_official_form",
+          "access_error": null
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/clinicas_achs_salud.json"
+    }
+  ],
+  "notes": [
+    "Mantiene market_role provider_achs y condición explícita de marca Clínicas Achs Salud; se filtra marketing/prevención laboral.",
+    "La omisión SAFED valida el rol con texto original. Una entidad visible por institución; no crear Clínica Atacama como fuente paralela."
+  ],
+  "recovery_checkpoint": {
+    "at": "2026-10-11T04:41:26.880224+00:00",
+    "changes": [
+      {
+        "key": "8b518dbe40b2741bf3ed1454464f0a9072b99f8bb681e4132ca9e24f462a83f0",
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+        "action": "admit_backfill"
+      }
+    ]
+  },
+  "reconciliation": {
+    "scope": "full original inventory with unknown totals explicit",
+    "summary": {
+      "outcome": "OPERATIVE_DEGRADED",
+      "coverage_complete": false,
+      "coverage_reason": "Shared parent archive160URLs/25recent90 checked; only subsidiary SAFED participation, related to existingBupa publication, is relevant. Mutuality excluded from this entity. Official subsidiary ownsite/CMS/feed checked (no90dayposts); LaSerena prequalification form has no dated release and is held without a new entity.",
+      "archive_depth": {
+        "parent_archive_urls": 160,
+        "own_site_alternatives": 8,
+        "own_cms_posts_90": 0
+      },
+      "owner": "Publisher Clínicas Achs Salud / Source Engineering",
+      "next_action": "Require a dated official LaSerena MasterPlan announcement with award/capacity/investment evidence; keep form held and one visible entity. Continue central archive exact-subsidiary filter; own CMS currently has no90-dayposts.",
+      "pages_checked": 177,
+      "latest_original_publication": "2026-10-05",
+      "discovered": 161,
+      "unique": 161,
+      "recent_30d": 10,
+      "recent_90d": 25,
+      "publication_date_unknown": 1,
+      "material_30d": 0,
+      "material_90d": 1,
+      "material_date_unknown": 1,
+      "material": 2,
+      "material_unknown": 0,
+      "published": 0,
+      "rejected": 1,
+      "deferred": 1,
+      "detected_material": 2,
+      "omitted_material": 0,
+      "parse_errors": 0,
+      "access_errors": 8,
+      "inventory": "data/audits/provider_inventory_2026_10_11/clinicas_achs_salud.json",
+      "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+      "relevant_30d_total": null,
+      "relevant_90d_total": null,
+      "publicable_confirmed": 0,
+      "publicable_total": null
+    },
+    "items": [
+      {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+        "title": "Achs se une a iniciativa público-privada para entregar servicios gratuitos a afectados en Atacama y Coquimbo por las lluvias",
+        "publication_date": "2026-08-28",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Existing five-network SAFED programme already published from BupaAug13.4299 are joint beneficiaries, not Achs volume; no new own capacity or financing. Independent Reviewer current rationale; historical model reason unknown.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Existing five-network SAFED programme already published from BupaAug13.4299 are joint beneficiaries, not Achs volume; no new own capacity or financing. Independent Reviewer current rationale; historical model reason unknown.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [
+            "https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas"
+          ],
+          "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+          "detected": true,
+          "queue": [
+            {
+              "key": "8b518dbe40b2741bf3ed1454464f0a9072b99f8bb681e4132ca9e24f462a83f0",
+              "status": "rejected",
+              "reason": "related_existing_SAFED_without_incremental_change",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": null,
+              "current_editorial_review": {
+                "at": "2026-10-11T06:34:01.091479+00:00",
+                "method": "original evidence + independent Reviewer; no new paid model",
+                "reason": "related_existing_SAFED_without_incremental_change",
+                "rationale": "Existing five-network SAFED programme already published from BupaAug13.4299 are joint beneficiaries, not Achs volume; no new own capacity or financing. Independent Reviewer current rationale; historical model reason unknown.",
+                "related_to": [
+                  "https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas"
+                ],
+                "historical_processor_reason": "processor_rejected",
+                "historical_model_diagnostics": "not persisted; do not reconstruct",
+                "prior_queue_state": {
+                  "status": "rejected",
+                  "reason": "processor_rejected"
+                }
+              }
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [
+            {
+              "url": "https://www.bupa.cl/somos-bupa/sala-de-prensa/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas",
+              "title": "Personas damnificadas recibirán atención gratuita en clínicas privadas gracias a la activación del sistema de atención fonasa para emergencias y desastres (safed)",
+              "publication_date": "2026-08-13"
+            }
+          ],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:54:34.882355+00:00",
+            "body_sha256": "38df92fd03d2bf369c2db965d4379e08ad1afd9b6e88039b41fdfae70fb06ff4",
+            "date_stamps": [
+              {
+                "kind": "verified_article_header",
+                "value": "2026-08-28",
+                "date": "2026-08-28"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/clinicas_achs_salud.json"
+      },
+      {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+        "title": "Master Plan Achs Salud: Modernizamos centros y ampliamos servicios para cuidarte mejor",
+        "publication_date": "2026-08-19",
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "verified_original_publication",
+        "materiality": "nonmaterial",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Shared parent newsroom: occupational-insurance/prevention content, not a change by the Clínicas Achs Salud subsidiary. Master Plan describes ambulatory centres; clinic reference is an existing referral address.",
+        "alicanto": {
+          "materiality": "nonmaterial",
+          "reason": "Shared parent newsroom: occupational-insurance/prevention content, not a change by the Clínicas Achs Salud subsidiary. Master Plan describes ambulatory centres; clinic reference is an existing referral address.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "historical_model_diagnostics": "unavailable; historical score/reason not persisted. Current manual rationale is independent.",
+          "detected": true,
+          "queue": [
+            {
+              "key": "e7cf3502b288674f441ecf9381e14b1184aa21e69c2ff380a0a598d160d5eb57",
+              "status": "rejected",
+              "reason": "reviewed_nonmaterial",
+              "lane": "BACKFILL",
+              "deferred_detail": null,
+              "assessment": null,
+              "current_editorial_review": {
+                "at": "2026-10-11T06:42:29.789541+00:00",
+                "method": "explicit original piece review; unpaid exclusion only",
+                "reason": "nonmaterial",
+                "rationale": "Shared parent newsroom: occupational-insurance/prevention content, not a change by the Clínicas Achs Salud subsidiary. Master Plan describes ambulatory centres; clinic reference is an existing referral address.",
+                "related_to": [],
+                "prior_queue_state": {
+                  "status": "pending",
+                  "reason": null
+                }
+              }
+            }
+          ],
+          "seen_ledger_match": true,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "rejected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T05:54:34.882412+00:00",
+            "body_sha256": "4fc8e59a86c195fa1e02ea9a6b31e5cae54da561282f57545722124b1591be3b",
+            "date_stamps": [
+              {
+                "kind": "verified_article_header",
+                "value": "2026-08-19",
+                "date": "2026-08-19"
+              }
+            ],
+            "date_reason": "verified_original_publication",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/clinicas_achs_salud.json"
+      },
+      {
+        "url": "https://www.clinicasachssalud.cl/formulario-licitacion-master-plan-serena/",
+        "title": "Formulario de Licitación Máster Plan Clínica La Serena",
+        "publication_date": null,
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "no_editorial_publication_date_on_official_form",
+        "materiality": "candidate",
+        "recover": false,
+        "queue_admission_completed": true,
+        "current_reason": "Official subsidiary opens prequalification for a La Serena Master Plan tender. No announcement date, amount, capacity, award or construction start confirmed. Undated form is not proof of a new90-day investment; durable hold until dated official evidence.",
+        "alicanto": {
+          "materiality": "candidate",
+          "reason": "Official subsidiary opens prequalification for a La Serena Master Plan tender. No announcement date, amount, capacity, award or construction start confirmed. Undated form is not proof of a new90-day investment; durable hold until dated official evidence.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "detected": true,
+          "queue": [
+            {
+              "key": "b12b68ee28d1a9ef227a524fae7934004a5d06099f2ae555858b22bbcf6a51d0",
+              "status": "retry",
+              "reason": "original_publication_date_not_exposed",
+              "lane": "BACKFILL",
+              "deferred_detail": "Official original has no editorial publication date; date gate retained. No paid assessment performed.",
+              "assessment": null,
+              "current_editorial_review": null
+            }
+          ],
+          "seen_ledger_match": false,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "retry",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11",
+            "body_sha256": null,
+            "date_stamps": [],
+            "date_reason": "no_editorial_publication_date_on_official_form",
+            "access_error": null
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/clinicas_achs_salud.json"
+      }
+    ]
+  },
+  "environment_blockers": {
+    "local_original_collector": "CONNECT_403_restricted_original_hosts",
+    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
+  },
+  "runtime_checkpoint": {
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
+    "probe": {
+      "discovered": 18,
+      "dated": 18,
+      "latest_original_at": "2026-09-28",
+      "technical_status": "partial",
+      "errors": [
+        "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral: UnicodeEncodeError",
+        "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-participa-como-aliado-estrategico-en-el-tercer-encuentro-del-ano-de-la-red-de-seguridad-escolar: HTTPError"
+      ],
+      "evaluation_performed": false
+    },
+    "promotion": "none"
+  },
+  "assessment_checkpoints": {
+    "results": [
+      {
+        "source": "clinicas_achs_salud",
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+        "outcome": "rejected"
+      }
+    ],
+    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
+    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
+    "repeated_paid_calls": 0
+  },
+  "coverage_claim": "Shared parent archive160URLs/25recent90 checked; only subsidiary SAFED participation, related to existingBupa publication, is relevant. Mutuality excluded from this entity. Official subsidiary ownsite/CMS/feed checked (no90dayposts); LaSerena prequalification form has no dated release and is held without a new entity.",
+  "baseline": {
+    "sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+    "queue_states": {},
+    "health": {
+      "technical_status": "error",
+      "editorial_outcome": "not_evaluated",
+      "last_signal_at": null,
+      "published": 0,
+      "pending": 0,
+      "rejected": 0
+    }
+  },
+  "checkpoint_commit": "76b4383",
+  "initial_checkpoint_status": "reconciled_with_exact_blockers",
+  "initial_original_items": [
     {
       "title": "Achs se une a iniciativa público-privada para entregar servicios gratuitos a afectados en Atacama y Coquimbo por las lluvias",
       "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
@@ -41,21 +547,12 @@
       "evidence": "Inversión en centros ambulatorios Linares/San Javier/La Florida. Sin identificación explícita de filial Clínicas Achs Salud, no reasignar la mutual al prestador."
     }
   ],
-  "notes": [
-    "Mantiene market_role provider_achs y condición explícita de marca Clínicas Achs Salud; se filtra marketing/prevención laboral.",
-    "La omisión SAFED valida el rol con texto original. Una entidad visible por institución; no crear Clínica Atacama como fuente paralela."
+  "blockers_before_exhaustive_audit": [
+    "first_listing_only_90_day_boundary_unverified",
+    "partial_discovery_unicode_url_comiee_and_2026_09_03_HTTPError",
+    "assessment_rejected_without_persisted_subreason"
   ],
-  "recovery_checkpoint": {
-    "at": "2026-10-11T04:41:26.880224+00:00",
-    "changes": [
-      {
-        "key": "8b518dbe40b2741bf3ed1454464f0a9072b99f8bb681e4132ca9e24f462a83f0",
-        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
-        "action": "admit_backfill"
-      }
-    ]
-  },
-  "reconciliation": {
+  "initial_reconciliation": {
     "scope": "verified original items; lower bound where inventory is blocked",
     "material_candidates_30_days": 0,
     "material_candidates_90_days": 1,
@@ -96,49 +593,13 @@
       }
     ]
   },
-  "environment_blockers": {
-    "local_original_collector": "CONNECT_403_restricted_original_hosts",
-    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
-  },
-  "runtime_checkpoint": {
-    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
-    "probe": {
-      "discovered": 18,
-      "dated": 18,
-      "latest_original_at": "2026-09-28",
-      "technical_status": "partial",
-      "errors": [
-        "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral: UnicodeEncodeError",
-        "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-participa-como-aliado-estrategico-en-el-tercer-encuentro-del-ano-de-la-red-de-seguridad-escolar: HTTPError"
-      ],
-      "evaluation_performed": false
-    },
-    "promotion": "none"
-  },
-  "assessment_checkpoints": {
-    "results": [
-      {
-        "source": "clinicas_achs_salud",
-        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
-        "outcome": "rejected"
-      }
-    ],
-    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
-    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
-    "repeated_paid_calls": 0
-  },
-  "coverage_claim": "material candidate counts are a verified lower bound; unknown release dates are null",
-  "baseline": {
-    "sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
-    "queue_states": {},
-    "health": {
-      "technical_status": "error",
-      "editorial_outcome": "not_evaluated",
-      "last_signal_at": null,
-      "published": 0,
-      "pending": 0,
-      "rejected": 0
-    }
-  },
-  "checkpoint_commit": "76b4383"
+  "outcome": "OPERATIVE_DEGRADED",
+  "original_items_role": "Current candidate reconciliation. Initial evidence is preserved separately; terminal results are not replayed.",
+  "latest_original_inventory": "data/audits/provider_inventory_2026_10_11/clinicas_achs_salud.json",
+  "piece_decisions": "data/audits/provider_editorial_decisions_2026_10_11.json",
+  "last_runtime_evidence": "data/audits/provider_recurrent_checkpoint_2026_10_11.json",
+  "next_action": "Require a dated official LaSerena MasterPlan announcement with award/capacity/investment evidence; keep form held and one visible entity. Continue central archive exact-subsidiary filter; own CMS currently has no90-dayposts.",
+  "blocker_owner": "Publisher Clínicas Achs Salud / Source Engineering",
+  "current_checkpoint_test": "55 passed, 1 skipped; provider/beta/publication/gremio/source-health focal suite on 2026-10-11",
+  "merged_staging_sha": "c4819844e413d31ede792521a2c137392c4ae104"
 }
