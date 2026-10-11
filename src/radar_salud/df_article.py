@@ -34,6 +34,7 @@ class _Article(HTMLParser):
         self.stack = []
         self.paragraphs = []
         self.article = []
+        self.primary = []
         self.json_blocks = []
         self.script = None
         self.times = []
@@ -52,8 +53,9 @@ class _Article(HTMLParser):
             self.script = [] if attrs.get("type", "").lower() == "application/ld+json" else None
         if tag not in ("meta", "link", "br", "img", "input", "hr", "source", "wbr"):
             classes = attrs.get("class", "") + " " + attrs.get("id", "")
-            body = tag == "article" or bool(re.search(r"\b(cuerpo|article-body|story-body|news-body)\b", classes, re.I))
-            self.stack.append((tag, body))
+            primary = bool(re.search(r"\b(cuerpo|article-body|story-body|news-body)\b", classes, re.I))
+            excluded = bool(re.search(r"\b(card|related|recommendations|newsletter|te-puede-interesar)\b", classes, re.I))
+            self.stack.append((tag, primary, tag == "article" and not excluded, excluded))
 
     def handle_endtag(self, tag):
         tag = tag.lower()
@@ -66,7 +68,7 @@ class _Article(HTMLParser):
                 break
 
     def handle_data(self, data):
-        tags = {t for t, _ in self.stack}
+        tags = {entry[0] for entry in self.stack}
         if "script" in tags:
             if self.script is not None:
                 self.script.append(data)
@@ -77,7 +79,11 @@ class _Article(HTMLParser):
         if not value:
             return
         self.visible.append(value)
-        if any(body for _, body in self.stack):
+        if any(entry[3] for entry in self.stack):
+            return
+        if any(entry[1] for entry in self.stack):
+            self.primary.append(value)
+        if any(entry[2] for entry in self.stack):
             self.article.append(value)
         if "p" in tags and "header" not in tags:
             self.paragraphs.append(value)
@@ -146,21 +152,25 @@ def parse_df_article(html, url):
             chosen=next((c for c in valid if c["source"]=="visible:published_label" and c["day"]==rule["selected_visible_day"]),None)
             if chosen:resolution=rule
     node = selected[0] if selected else {}
-    body = node.get("articleBody") or " ".join(p.article) or " ".join(p.paragraphs)
+    # DF's primary content is #articleLock/#articleFree.CUERPO. Recommendation
+    # cards also use <article>; never combine them with the story or fall back
+    # to every paragraph on the page (newsletter/paywall pages have those too).
+    body = node.get("articleBody") or " ".join(p.primary) or " ".join(p.article)
     description = p.meta.get("og:description") or p.meta.get("description") or node.get("description") or ""
     return {
         "event_date": chosen["day"] if chosen else None,
         "raw_text": description or body[:1800],
         "metadata": {
-            "page_text": body or description,
+            "page_text": body,
             "article_title": node.get("headline") or p.meta.get("og:title") or "",
             "article_section": node.get("articleSection") or p.meta.get("article:section") or "",
             "publication_date_source": chosen["source"] if chosen else None,
-            "publication_timestamp": chosen["value"] if chosen else None,
+            "publication_timestamp": chosen["value"] if chosen and chosen["source"] != "visible:published_label" else None,
+            "publication_label": chosen["value"] if chosen and chosen["source"] == "visible:published_label" else None,
             "publication_date_candidates": candidates,
             "publication_date_conflict": conflict,
             "publication_date_conflict_resolution": resolution,
-            "article_content_source": "jsonld:articleBody" if node.get("articleBody") else "visible_article" if body else "description",
+            "article_content_source": "jsonld:articleBody" if node.get("articleBody") else "df_primary_body" if p.primary else "semantic_article" if p.article else "missing_primary_article",
             "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
         },
     }

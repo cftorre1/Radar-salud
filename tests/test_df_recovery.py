@@ -289,3 +289,38 @@ def test_original_html_hash_validation_preserves_crlf_and_rejects_tampering(tmp_
     path.write_bytes(payload+b'tampered')
     with pytest.raises(ValueError,match="hash mismatch"):
         module.read_captured_html(path,hashlib.sha256(payload).hexdigest())
+
+
+def test_captured_df_primary_bodies_exclude_real_recommendation_cards():
+    import hashlib
+    from pathlib import Path
+    fixtures = Path(__file__).parent / 'fixtures'
+    manifest = json.loads((fixtures / 'df_original_manifest.json').read_text())
+    expected = {'df_san_carlos_real': ('2026-10-10', 1584), 'df_biometria_real': ('2026-10-01', 1612),
+                'df_ricarte_real': ('2026-10-08', 3796)}
+    for name, (day, size) in expected.items():
+        source = manifest[name]
+        payload = (fixtures / (name + '.html')).read_bytes()
+        assert hashlib.sha256(payload).hexdigest() == source['excerpt_sha256']
+        parsed = parse_df_article(payload.decode(), source['url'])
+        body = parsed['metadata']['page_text']
+        assert parsed['event_date'] == day
+        assert parsed['metadata']['article_content_source'] == 'df_primary_body'
+        assert len(body) == size
+        assert '{{' not in body and 'TE PUEDE INTERESAR' not in body
+        if name == 'df_biometria_real':
+            assert 'Ley Ricarte Soto' not in body
+            assert '1 de diciembre de 2026' in body
+        if name == 'df_san_carlos_real':
+            assert 'permanecerá cerrada durante algunas semanas' in body
+    ricarte = parse_df_article((fixtures / 'df_ricarte_real.html').read_text(), manifest['df_ricarte_real']['url'])
+    assert ricarte['metadata']['publication_timestamp'] is None
+    assert '04:00' in ricarte['metadata']['publication_label']
+
+
+def test_df_missing_primary_body_does_not_use_newsletter_or_description():
+    html = '<meta property="og:description" content="' + 'Suscriba nuestro newsletter. ' * 20 + '">'
+    html += '<p>Noticias de salud, inversiones y clínicas.</p><article class="card"><p>Otra clínica inaugura un hospital.</p></article>'
+    parsed = parse_df_article(html, URL)
+    assert parsed['metadata']['page_text'] == ''
+    assert parsed['metadata']['article_content_source'] == 'missing_primary_article'
