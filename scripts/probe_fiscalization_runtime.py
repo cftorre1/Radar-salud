@@ -16,7 +16,7 @@ from urllib.parse import urljoin, urlsplit
 from radar_salud.pending_queue import atomic_json
 from radar_salud.scouts import _AnchorParser
 from radar_salud.superintendencia_fiscalizacion import PAGES as SIS, parse_listing, canonical_url
-from radar_salud.suseso_fiscalizacion import PAGES as SUSESO, ENFORCEMENT_PAGES, parse_actor_listing, parse_enforcement_listing
+from radar_salud.suseso_fiscalizacion import PAGES as SUSESO, ENFORCEMENT_PAGES, parse_actor_listing, parse_enforcement_listing, parse_official_news_listing, NEWS_PAGE
 
 HOSTS = {'www.superdesalud.gob.cl', 'superdesalud.gob.cl', 'www.suseso.gob.cl', 'suseso.gob.cl'}
 
@@ -121,6 +121,8 @@ def probe(output, as_of):
         if seed['url'] in enforcement:
             seed['name'], kind = enforcement[seed['url']]
             seed['kind'] = 'enforcement_' + kind
+        if seed['url']==NEWS_PAGE:
+            seed['kind']='official_news'
     receipts=[]; inventory=[]; navigation=[]
     with ThreadPoolExecutor(max_workers=3) as pool:
         results=list(pool.map(lambda seed: fetch(seed['url'],captures), seeds))
@@ -135,6 +137,8 @@ def probe(output, as_of):
                     found=parse_actor_listing(html,seed['scope'],seed['url'])
                 elif seed['kind'].startswith('enforcement_'):
                     found=parse_enforcement_listing(html,seed['name'],seed['url'],seed['kind'].removeprefix('enforcement_'))
+                elif seed['kind']=='official_news':
+                    found=parse_official_news_listing(html,seed['url'])
                 receipt.update(parsed_items=len(found),parse_error=None if found or seed['kind']=='navigation' else 'no_identifiable_rows')
             except Exception as exc:
                 receipt.update(parsed_items=0,parse_error=type(exc).__name__)
@@ -165,6 +169,15 @@ def probe(output, as_of):
             news_rows.append(row)
             if within(published,as_of,90):targets.add(row['url'])
     atomic_json(output/'official_news_inventory.json',news_rows)
+    # A duplicate primary attachment on two SIS rows needs document-level review;
+    # a shared title alone cannot establish whether it is one act or two fines.
+    attachments = {}
+    for raw in inventory:
+        if raw['source_slug']=='superintendencia_fiscalizacion':
+            for attachment in raw['metadata'].get('attachments', []):
+                attachments.setdefault(attachment['url'],set()).add(raw['url'])
+    targets.update(url for url, acts in attachments.items() if len(acts)>1)
+    targets.update(acts_url for acts in attachments.values() if len(acts)>1 for acts_url in acts)
     # Inspect detail and primary documents for every recent candidate, including held dates.
     with ThreadPoolExecutor(max_workers=3) as pool:
         for receipt,_ in pool.map(lambda url: fetch(url,captures),sorted(targets)):

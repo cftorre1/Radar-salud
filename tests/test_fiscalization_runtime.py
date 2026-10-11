@@ -47,3 +47,17 @@ def test_inconsistent_register_row_is_retained_and_deferred():
     raw,=parse_enforcement_listing(professional_table(1).replace('04/01/2027','01/01/2026'),*ENFORCEMENT_PAGES[0])
     with pytest.raises(DeferredProcessing,match='invalid_official_sanction_register_row'):
         process_professional_sanction(raw,{})
+
+
+def test_official_news_needs_specific_primary_review_even_with_fiscalization_in_title():
+    import pytest
+    from radar_salud.suseso_fiscalizacion import parse_official_news_listing, process_enforcement_news
+    from radar_salud.processing import DeferredProcessing
+    html='<p class="fecha iso8601-20260821T1200000300">21 de agosto</p><h3><a href="w3-article-999999.html">Nueva fiscalización</a></h3>'
+    raw,=parse_official_news_listing(html)
+    with pytest.raises(DeferredProcessing,match='official_news_requires_primary_enforcement_review'):
+        process_enforcement_news(raw,{})
+    raw.url='https://www.suseso.gob.cl/605/w3-article-788234.html'
+    row=process_enforcement_news(raw,{'base_confidence':100})
+    assert row['event_type']=='ENFORCEMENT_BALANCE'
+    assert 'no se suman' in row['why_it_matters']

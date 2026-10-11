@@ -183,6 +183,9 @@ def process_suseso_fiscalizacion(raw,cfg):
     if raw.metadata.get('document_class') == 'enforcement_sanction':
         from .suseso_fiscalizacion import process_professional_sanction
         return process_professional_sanction(raw, cfg)
+    if raw.metadata.get('document_class') == 'official_news':
+        from .suseso_fiscalizacion import process_enforcement_news
+        return process_enforcement_news(raw,cfg)
     raise DeferredProcessing("SUSESO enforcement candidate requires document/actor/materiality review")
 
 def _scopes(text):

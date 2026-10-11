@@ -101,15 +101,34 @@ def parse_enforcement_listing(html, name, page, kind):
             if len(cells) < 5 or not re.search(r'20\d{2}', cells[0]):
                 continue
             detail = next((urljoin(page, href) for href, _ in row[1].get('links', []) if 'w3-article-' in href), None)
-            if not detail:
-                continue
-            out.append(RawItem('suseso_fiscalizacion',cells[1],canonical_url(detail),
+            years = re.findall(r'20\d{2}',cells[3])
+            record_id = None if detail else 'program:' + cells[0] + ':' + max(years,default='unknown')
+            out.append(RawItem('suseso_fiscalizacion',cells[1],canonical_url(detail or page),
                 'Superintendencia de Seguridad Social (SUSESO)','official',None,cells[2],
                 dict(document_class='enforcement_report_candidate' if kind=='medical_reports' else 'historical_enforcement_report',execution_period=cells[3],
                     legal_identity=cells[0],publication_date=None,emission_date=None,event_date_basis=None,
+                    source_record_id=record_id,primary_result_available=bool(detail or row[4].get('links')),
                     listing_url=page,listing_name=name,
                     attachments=[{'url':urljoin(page,href),'label':label} for href,label in row[4].get('links',[]) if '.pdf' in href])))
     return out
+
+
+NEWS_PAGE = 'https://www.suseso.gob.cl/605/w3-propertyname-536.html'
+
+
+def parse_official_news_listing(html, page=NEWS_PAGE):
+    import html as html_module
+    rows = {}
+    for day, href, title in re.findall(r'iso8601-(\d{8})T[^"\']*["\'][^>]*>[\s\S]*?<h3[^>]*>[\s\S]*?<a[^>]*href=["\']([^"\']+)["\'][^>]*>([\s\S]*?)</a>', html):
+        url = canonical_url(urljoin(page,href))
+        if not re.fullmatch(r'https://www\.suseso\.gob\.cl/605/w3-article-\d+\.html',url):
+            continue
+        title = ' '.join(html_module.unescape(re.sub('<[^>]*>',' ',title)).split())
+        published = _valid_date(f'{day[6:]}/{day[4:6]}/{day[:4]}')
+        rows[url] = RawItem('suseso_fiscalizacion',title,url,'Superintendencia de Seguridad Social (SUSESO)',
+            'official',published,title,dict(document_class='official_news',publication_date=published,
+                emission_date=None,event_date_basis='publication',listing_url=page))
+    return list(rows.values())
 
 
 class SusesoFiscalizacionScout:
@@ -153,6 +172,17 @@ class SusesoFiscalizacionScout:
                     items[(raw.url, raw.metadata.get('source_record_id'))] = raw
             except Exception as exc:
                 self.surface_results.append({'url':page,'status':'error','error':type(exc).__name__})
+        try:
+            news = parse_official_news_listing(fetch_html(NEWS_PAGE))
+            if not news:
+                raise ValueError('Official yearly news archive has no dated rows')
+            self.surface_results.append({'url':NEWS_PAGE,'status':'parsed','documents':len(news),'surface_kind':'official_news'})
+            # All news remains observable. Primary reviews, rather than a title
+            # keyword or volume, determine whether an enforcement signal exists.
+            for raw in news:
+                items[raw.url] = raw
+        except Exception as exc:
+            self.surface_results.append({'url':NEWS_PAGE,'status':'error','error':type(exc).__name__})
         if not items:
             raise RuntimeError('No SUSESO actor surface parsed successfully')
         # No arbitrary top-40 cap: all dated rows remain auditable, before queue horizon filtering.
@@ -175,6 +205,28 @@ def process_professional_sanction(raw, cfg):
             'fiscalized_actors','affected_actors','actor_evidence','sanction_amount','sanction_unit',
             'suspension_days','suspension_start','suspension_end','emission_date','publication_date','fact_date',
             'modification_date','event_date_basis','date_conflicts')})
+    return row
+
+
+def process_enforcement_news(raw, cfg):
+    import json
+    from .paths import project_root
+    from .pipeline import build_signal
+    from .processing import RejectedProcessing, DeferredProcessing
+    path = project_root() / 'config/fiscalization_editorial_reviews.json'
+    reviews = json.loads(path.read_text()) if path.exists() else {}
+    review = reviews.get('enforcement_news_reviews', {}).get(raw.url)
+    if not review or review.get('event_date') != raw.event_date:
+        raise DeferredProcessing('official_news_requires_primary_enforcement_review')
+    if review.get('decision')=='reject_fiscalization':
+        raise RejectedProcessing(review['reason'])
+    if review.get('decision')!='publish_fiscalization':
+        raise DeferredProcessing('official_news_requires_primary_enforcement_review')
+    raw.metadata.update(review,scores={'economic':65,'regulatory':90,'scope':80,'novelty':75,'actionability':85})
+    row=build_signal(raw,cfg).to_dict()
+    row.update(signal_types=['Fiscalización'],**{key:review.get(key) for key in ('scopes','event_type','regulated_entity',
+        'publication_date','emission_date','execution_period','validity_text','materiality_reason')})
+    row['editorial_review']=review
     return row
 
 
