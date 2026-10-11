@@ -200,6 +200,13 @@ def reviewed_primary_act(raw, primary_reviews=None):
     if not review or review.get('decision') != 'publish_fiscalization':
         return raw
     documents = {canonical_url(a['url']) for a in raw.metadata.get('attachments', [])}
+    if (raw.metadata.get('primary_document_review') == review
+        and canonical_url(review['primary_document_url']) in documents
+        and raw.metadata.get('emission_date') == review['emission_date']
+        and raw.metadata.get('publication_date') == (None if review.get('publication_unreliable', True) else review.get('observed_listing_publication_date'))):
+        # Scout, processor and stock reconciliation share this function. Applying
+        # the same review twice must retain the actual listing observation.
+        return raw
     if (canonical_url(review['primary_document_url']) not in documents or
         not re.fullmatch(r'[a-f0-9]{64}', review.get('primary_document_sha256', '')) or
         raw.metadata.get('emission_date') != review['emission_date'] or

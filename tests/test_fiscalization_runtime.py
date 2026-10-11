@@ -195,3 +195,21 @@ def test_active_old_office_is_context_in_recent_register_without_inflating_count
     assert context['source_record_id']=='O-02-S-00040-2026'
     assert context['event_date']=='2026-01-09' and context['publication_date'] is None
     assert 'no se suman a las novedades' in pulse['what_happened']
+
+
+def test_primary_review_is_idempotent_and_keeps_original_listing_summary_and_actor():
+    from dataclasses import asdict
+    import json
+    from radar_salud.models import RawItem
+    from radar_salud.superintendencia_fiscalizacion import reviewed_primary_act
+    reviews=json.loads(Path('config/fiscalization_editorial_reviews.json').read_text())['primary_document_reviews']
+    url=next(url for url in reviews if 'if-n11027-' in url);review=reviews[url]
+    raw=RawItem('superintendencia_fiscalizacion','Resolución IF/11027',url,'SIS','official',review['emission_date'],
+        raw_text='Texto original del listado con actor incorrecto.',metadata={'emission_date':review['emission_date'],
+            'publication_date':review['observed_listing_publication_date'],'regulated_entity':'Actor copiado incorrectamente',
+            'attachments':[{'url':review['primary_document_url']}],'date_conflicts':[]})
+    corrected=reviewed_primary_act(raw)
+    assert asdict(reviewed_primary_act(corrected))==asdict(corrected)
+    assert corrected.metadata['observed_listing_summary']==raw.raw_text
+    assert corrected.metadata['observed_listing_regulated_entity']=='Actor copiado incorrectamente'
+    assert corrected.metadata['regulated_entity']=='Doris del Pilar Alcántara Poblete'
