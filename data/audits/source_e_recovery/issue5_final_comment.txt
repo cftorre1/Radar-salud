@@ -1,0 +1,22 @@
+Checkpoint final del frente E en [PR #12](https://github.com/cftorre1/Radar-salud/pull/12), rama existente `codex/e-salud-laboral-20261011`. PR e issue permanecen abiertos; no hubo publicación ni despliegue en staging, main o producción.
+
+| Fuente | 30 días radar / calendario | 90 días conocidos | Detectados en inventario | BACKFILLs | Estado |
+|---|---:|---:|---:|---:|---|
+| ACHS Salud / Clínicas | 3 / 3 | 16 + 1 posible por fecha | 16 | 0 | OPERATIVE_DEGRADED |
+| ACHS Seguro Laboral | 10 / 10 | 23 | 23 | 3 | OPERATIVE_VALIDATED |
+| Mutual | ≥33 / ≥32 | ≥51 | 51 | 1 | OPERATIVE_DEGRADED |
+| IST | 6 / 6 | 21 nativos: 20 con fecha corroborada, 1 pendiente | 20 + pendiente | 1 | OPERATIVE_DEGRADED |
+
+Ventanas nativas inclusivas: 11 septiembre–11 octubre / 13 julio–11 octubre de 2026. La comparación calendario usa 12 septiembre / 14 julio y sólo cambia una nota de Mutual en 30 días. Son 110 URLs oficiales verificadas hoy, 102 grupos de título/fecha y 107 filas en queue; tres rechazos de blog quedan sólo en inventario. Las nueve clínicas replican una nota de premio. El baseline inicial no detectaba esas 110 URLs. Todos los ítems conocidos verificados quedaron reconciliados; el material desconocido de un archivo incompleto no puede cuantificarse.
+
+Trece candidatos materiales tienen evaluación real: cinco aceptados y ocho rechazados con motivo y score. Se recuperaron guía ACHS de salud mental, seguimiento de Ley Karin, columna Innovar, licitación modular Mutual y cifras financieras IST. El cero previo provenía de muestras sin persistencia y cinco scores iniciales inferiores a 75. El umbral se mantiene. La nueva lectura de las 113 páginas de IST y sus tablas financieras cambió 72 a 78; publicación 14 julio de 2026, datos 2025, sin inferir pérdida neta.
+
+El [runtime real de Actions](https://github.com/cftorre1/Radar-salud/actions/runs/38122998011) terminó SUCCESS con una llamada nueva exitosa: 47 fast mensuales, 16 propias de la recuperación, cero deep propios y límite 30. Mutual respondió con contenido real, TLS verificado y ambos User-Agents; no existe evidencia de bloqueo universal de automatización por Incapsula. El proxy CONNECT 403 de Codex es un bloqueo anterior a TLS del entorno.
+
+Clínicas: Run 14 validó sólo cinco ítems de las superficies centrales; once ítems anteriores conservan evidencia de Run 13 sin captura nueva. El [segundo runner](https://github.com/cftorre1/Radar-salud/actions/runs/38124717508) repitió 30 timeouts de conexión 443, con DNS correcto, HTTP 0 y sin observar TLS/WAF. Source health registra esta degradación, los conflictos y el diagnóstico; no se reingresa contenido desde una captura fallida.
+
+Brechas restantes: fecha conflictiva de Duelo Migratorio (4 septiembre / 9 abril); fecha TPS de IST (12 / 10 agosto, ambas dentro de 90 días); archivo Mutual cuyas 14 continuaciones repiten y cuyos 21 enlaces de trabajador redirigen sin nuevos artículos. PDFs oficiales evaluados no aportan fecha verificable de publicación. No se declara EXTERNAL_BLOCKER_PROVEN de una fuente completa ni cobertura total de 90 días.
+
+QA final: Python 731 PASS, una omitida, un fallo heredado de Normativa (11 actos visibles frente a ≥12); Node 41 PASS; desktop/mobile 4 PASS; Reviewer independiente; replay real sin IA con nueve hashes canónicos iguales y export idempotente de cinco publicaciones. Todas las 2.913 filas originales de queue, 733 de history, 49 del feed y fuentes ajenas permanecen exactas.
+
+[Reconciliación completa](https://github.com/cftorre1/Radar-salud/blob/codex/e-salud-laboral-20261011/data/audits/source_e_recovery/reconciliation_final.json), [CSV por candidato](https://github.com/cftorre1/Radar-salud/blob/codex/e-salud-laboral-20261011/data/audits/source_e_recovery/verified_inventory_30_90.csv), [Reviewer final](https://github.com/cftorre1/Radar-salud/blob/codex/e-salud-laboral-20261011/data/audits/source_e_recovery/reviewer_final.json), [replay](https://github.com/cftorre1/Radar-salud/blob/codex/e-salud-laboral-20261011/data/audits/source_e_recovery/saved_byte_replay_final.json), [diagnóstico clínico](https://github.com/cftorre1/Radar-salud/blob/codex/e-salud-laboral-20261011/data/audits/source_e_recovery/clinic_connectivity_diagnostic_result.json). Queue y PMO actualizados sólo para E: reparación técnica validada con brechas declaradas; aceptación global de cobertura sigue pendiente. Ningún otro frente de las 27 fuentes fue modificado por este checkpoint.
