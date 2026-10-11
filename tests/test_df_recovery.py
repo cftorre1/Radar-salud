@@ -56,6 +56,19 @@ def test_chile_day_not_utc_day_and_no_nav_or_incident_date_fallback():
     assert parse_df_article('<nav>10 de octubre de 2026</nav><article><p>El incidente ocurrió el 9 de octubre de 2026.</p></article>', URL)["event_date"] is None
 
 
+def test_reviewed_ricarte_visible_publication_provenance_preserves_conflicting_timestamps():
+    url="https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido"
+    html='<meta name="cXenseParse:recs:publishtime" content="2026-10-07T22:54:15Z">'
+    html+='<script type="application/ld+json">{"@type":"NewsArticle","datePublished":"2026-10-07T22:54:15Z"}</script><p>Publicado: jueves 8 de octubre de 2026 a las 04:00 hrs.</p>'
+    result=parse_df_article(html,url)
+    assert result["event_date"]=="2026-10-08"
+    assert result["metadata"]["publication_date_source"]=="visible:published_label"
+    assert result["metadata"]["publication_date_conflict"]
+    assert result["metadata"]["publication_date_conflict_resolution"]["selected_visible_day"]=="2026-10-08"
+    assert [x["day"] for x in result["metadata"]["publication_date_candidates"]]==["2026-10-07","2026-10-07","2026-10-08"]
+    assert parse_df_article(html.replace("2026-10-07T22:54:15Z","2026-10-06T22:54:15Z"),url)["event_date"] is None
+
+
 def test_listing_failure_is_not_successful_empty_discovery(monkeypatch):
     def blocked(url):
         raise OSError("CONNECT 403")

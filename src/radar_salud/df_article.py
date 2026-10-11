@@ -9,6 +9,7 @@ from datetime import datetime
 from html.parser import HTMLParser
 from urllib.parse import urlsplit
 from zoneinfo import ZoneInfo
+from pathlib import Path
 
 
 def _day(value):
@@ -135,6 +136,15 @@ def parse_df_article(html, url):
     valid = [c for c in candidates if c["day"]]
     conflict = len({c["day"] for c in valid}) > 1
     chosen = valid[0] if valid and not conflict else None
+    resolution=None
+    if conflict:
+        decisions=json.loads((Path(__file__).resolve().parents[2]/"config/df_date_provenance.json").read_text())["decisions"]
+        rule=decisions.get(article_url(url))
+        if rule and all(any(c["source"]==source and c["value"]==rule[field] for c in valid)
+                        for source,field in (("cxenseparse:recs:publishtime","expected_cx_timestamp"),
+                                             ("jsonld:datePublished","expected_jsonld_timestamp"))):
+            chosen=next((c for c in valid if c["source"]=="visible:published_label" and c["day"]==rule["selected_visible_day"]),None)
+            if chosen:resolution=rule
     node = selected[0] if selected else {}
     body = node.get("articleBody") or " ".join(p.article) or " ".join(p.paragraphs)
     description = p.meta.get("og:description") or p.meta.get("description") or node.get("description") or ""
@@ -149,6 +159,7 @@ def parse_df_article(html, url):
             "publication_timestamp": chosen["value"] if chosen else None,
             "publication_date_candidates": candidates,
             "publication_date_conflict": conflict,
+            "publication_date_conflict_resolution": resolution,
             "article_content_source": "jsonld:articleBody" if node.get("articleBody") else "visible_article" if body else "description",
             "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
         },

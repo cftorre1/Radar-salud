@@ -28,7 +28,7 @@ def reconcile_existing(queue, raw, now, last_discovered_at, published_urls=()):
     matches.sort(key=lambda pair: (rank.get(pair[1]["status"], 7), pair[1]["detected_at"]))
     primary_key, item = matches[0]
     verified = (raw.event_date and raw.metadata.get("publication_date_source")
-                and not raw.metadata.get("publication_date_conflict")
+                and (not raw.metadata.get("publication_date_conflict") or raw.metadata.get("publication_date_conflict_resolution"))
                 and not raw.metadata.get("fetch_error") and len(raw.metadata.get("page_text", "")) >= 160)
     legacy_reject = (item["status"] == "rejected" and item.get("reason") == "processor_rejected"
                      and not item["raw"].get("event_date"))
@@ -49,8 +49,11 @@ def reconcile_existing(queue, raw, now, last_discovered_at, published_urls=()):
         enriched["title"] = original["title"]
         enriched["metadata"] = {**original.get("metadata", {}), **enriched["metadata"]}
         enriched["metadata"].pop("fetch_error", None)
-        new_status = "pending" if legacy_reject else item["status"]
-        reason = None if legacy_reject else item.get("reason")
+        capture_repaired=(item["status"]=="retry" and item.get("reason") in
+                          ("df_detail_fetch_failed","df_missing_publication_date","df_publication_date_conflict","df_insufficient_article_evidence")
+                          and original.get("event_date")!=raw.event_date)
+        new_status = "pending" if legacy_reject or capture_repaired else item["status"]
+        reason = None if legacy_reject or capture_repaired else item.get("reason")
         if beyond_backfill_horizon(raw, now):
             new_status, reason = "archived", "outside_90_day_backfill"
         if original != enriched or item["lane"] != new_lane or item["status"] != new_status:
@@ -58,7 +61,7 @@ def reconcile_existing(queue, raw, now, last_discovered_at, published_urls=()):
             item.update(raw=enriched, lane=new_lane, status=new_status, reason=reason, updated_at=now.isoformat(),
                         classification_watermark=basis,
                         classification_basis="stored_watermark" if item.get("classification_watermark") else "original_detection_day_conservative")
-            if legacy_reject:
+            if legacy_reject or capture_repaired:
                 item["retry_at"] = None
     # Collapse changed-title duplicates only after verified evidence or history.
     if verified or published:

@@ -222,7 +222,7 @@ def process_df(raw,cfg):
         raw=enrich(raw)
     if raw.metadata.get("fetch_error"):
         raise DeferredProcessing("DF detail capture failed",reason="df_detail_fetch_failed")
-    if raw.metadata.get("publication_date_conflict"):
+    if raw.metadata.get("publication_date_conflict") and not raw.metadata.get("publication_date_conflict_resolution"):
         raise DeferredProcessing("DF publication dates conflict",reason="df_publication_date_conflict")
     if not raw.event_date:
         raise DeferredProcessing("DF has no verifiable publication date",reason="df_missing_publication_date")
@@ -251,7 +251,7 @@ def df_signal_from_assessment(raw,cfg,ai):
     """Build from an already-paid assessment; usable for crash checkpoint recovery."""
     from .editorial_gate import publication_ready
     from .df_media_gate import policy
-    if not raw.event_date or not raw.metadata.get("publication_date_source") or raw.metadata.get("publication_date_conflict"):
+    if not raw.event_date or not raw.metadata.get("publication_date_source") or (raw.metadata.get("publication_date_conflict") and not raw.metadata.get("publication_date_conflict_resolution")):
         raise ValueError("DF assessment recovery requires verified publisher date")
     if int(ai.get("relevance_score",0))<int(policy()["minimum_relevance_score"]):
         raise ValueError("DF assessment recovery failed Media Early Signal Gate")
@@ -264,7 +264,8 @@ def df_signal_from_assessment(raw,cfg,ai):
     row["evidence_maturity"]="media_reported"
     row["confirmation_policy"]="upgrade_same_signal_when_company_or_official_source_confirms"
     row["editorial_assessment"]=raw.metadata["editorial_assessment"]
-    for key in ("publication_date_source","publication_timestamp","publication_date_candidates","date_semantics"):
+    for key in ("publication_date_source","publication_timestamp","publication_date_candidates","date_semantics",
+                "publication_date_conflict","publication_date_conflict_resolution"):
         row[key]=raw.metadata.get(key)
     if "diario financiero" not in row["what_happened"].lower():
         row["what_happened"]="Según Diario Financiero, "+row["what_happened"]
