@@ -318,12 +318,13 @@ def process_curated_beta_source(raw, cfg):
         raise DeferredProcessing("curated beta source pending assessment")
     score = int(ai.get("relevance_score", 0))
     threshold = 72 if role == "media" else 75
+    analysis_reason = ai.get("reason") or "analysis_reason_not_supplied"
     what = (ai.get("what_happened") or "").strip()
     why = (ai.get("why_it_matters") or "").strip()
     if score < threshold:
-        return reject("editorial_relevance_below_threshold", relevance_score=score, threshold=threshold)
+        return reject("editorial_relevance_below_threshold", relevance_score=score, threshold=threshold, analysis_reason=analysis_reason)
     if len(what) < 45 or len(why) < 35:
-        return reject("incomplete_editorial_analysis", relevance_score=score, threshold=threshold)
+        return reject("incomplete_editorial_analysis", relevance_score=score, threshold=threshold, analysis_reason=analysis_reason)
     if role == "media" and not re.search(r"pulso|la tercera", what, re.I):
         what = f"Según Pulso / La Tercera, {what}"
     scopes = ["Salud laboral"] if role == "mutuality" else (["Sistema de salud"] if role == "media" else ["Prestadores"])
@@ -361,8 +362,8 @@ def process_curated_beta_source(raw, cfg):
         from .editorial_gate import publication_ready
         accepted, reason, quality = publication_ready(row)
         if not accepted:
-            return reject(reason, relevance_score=score, threshold=threshold, quality_score=quality)
-    raw.metadata["editorial_assessment"] = {"decision": "published", "relevance_score": score, "threshold": threshold}
+            return reject(reason, relevance_score=score, threshold=threshold, quality_score=quality, analysis_reason=analysis_reason)
+    raw.metadata["editorial_assessment"] = {"decision": "published", "relevance_score": score, "threshold": threshold, "analysis_reason": analysis_reason}
     return row
 
 
