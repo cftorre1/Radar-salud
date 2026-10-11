@@ -22,7 +22,8 @@ REPAIRED_PROJECTIONS = ('proposed_clinical_condition_colmed', 'regional_health_p
                         'proposed_reproductive_legislative_progress',
                         'medical_insurance_coverage_inquiry', 'provider_judicial_financial_liability',
                         'blocked_essential_dialysis_access', 'reported_compulsory_respiratory_measure',
-                        'damaged_hospital_emergency_funds', 'proposed_minors_mental_health_legislative_urgency')
+                        'damaged_hospital_emergency_funds', 'proposed_minors_mental_health_legislative_urgency',
+                        'reported_national_health_cost_access_measurement')
 
 
 def original_raw(entry):
@@ -212,6 +213,16 @@ def test_original_minors_mental_health_progress_is_proposed_with_an_older_plan_a
     assert 'salud mental de menores de edad' in entry['body']
 
 
+def test_original_national_cost_survey_preserves_age_scope_and_reported_access_barrier():
+    entry = next(row for row in PROJECTIONS if row['name'] == 'reported_national_health_cost_access_measurement')
+    assert entry['publication_date'] == '2026-07-24'
+    assert 'personas de 50 años o más en Chile' in entry['body']
+    assert '700 casos a nivel nacional representativos' in entry['body']
+    assert 'gastos de salud y cuidados' in entry['body']
+    assert 'principal barrera de acceso es el costo (53%)' in entry['body']
+    assert 'Caja Los Andes desarrolló Cincuentímeter' in entry['body']
+
+
 @pytest.mark.parametrize(('title', 'body'), [
     ('Minsal informa sobre salud de personas mayores', 'Los ELEAM necesitan autorización sanitaria. Las familias visitan a sus parientes.'),
     ('Lista de residencias ELEAM', 'Un directorio comercial ofrece un listado de ELEAM con autorización sanitaria, disponible públicamente.'),
@@ -236,6 +247,7 @@ def test_original_minors_mental_health_progress_is_proposed_with_an_older_plan_a
     ('Salud entrega consejos respiratorios', 'La Autoridad Sanitaria recomienda mascarilla para prevenir enfermedades respiratorias, sin resolución obligatoria.'),
     ('Gobierno atiende viviendas', 'La Ley N° 16.282 libera fondos de emergencia tras publicación en el Diario Oficial para reparar viviendas. Los hospitales siguen intactos.'),
     ('Ministra comenta salud mental', 'La ministra quiere conversar sobre salud mental de niños y propone colaborar en un futuro diálogo, sin avance parlamentario concreto.'),
+    ('Vecinos comentan sus gastos', 'Una encuesta informal del barrio comenta gastos de salud y cuidados y una barrera de acceso es el costo, sin medición nacional representativa.'),
 ])
 def test_narrow_registry_and_care_suspension_rules_do_not_admit_generic_directory_or_unadopted_ideas(title, body):
     assert not beta_sources._material('media', title, body)
