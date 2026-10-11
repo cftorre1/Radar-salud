@@ -245,5 +245,54 @@
     ],
     "local_full_suite_latest": "1327PASS/1SKIP/1FAIL new exactSHA retainer test overlap; fix underway",
     "constraints": "No new discovery expansion without demonstrated omission; no new PR/branch; no main/production/merge; issues5/6 remainopen; gate72 unchanged"
-  }
+  },
+  "renewed_capacity_editorial_checkpoint": {
+    "schema_version": 1,
+    "source_id": "pulso_latercera",
+    "applied_at": "2026-10-11T13:51:20.793770+00:00",
+    "applied_code_sha": "0e930bda127e88b0781904f81602f3e8c32b61c1",
+    "original_real_processing_run_id": 38141096276,
+    "original_real_bot_sha": "90e99ad30e6eeaf470480e7847a7a814334a2b7b",
+    "mode": "independent_editorial_correction_of_observed_real_core_outputs_and_actual_offline_feed_export",
+    "verdict": "SCOPED_CORRECTIONS_APPLIED_NOT_SOURCE_ACCEPTANCE",
+    "acceptance": "NOT_ACCEPTED",
+    "ai_calls_during_correction": 0,
+    "original_paid_fast_calls_preserved": 120,
+    "original_dates_body_and_gate_72_preserved": true,
+    "second_application_changes": 0,
+    "history_original_outputs_preserved": 32,
+    "effective_feed_publications": 12,
+    "decisions": {
+      "reject": 12,
+      "group": 8,
+      "accept": 10,
+      "correct": 2
+    },
+    "queue": {
+      "published": 12,
+      "retry": 13,
+      "pending": 1595,
+      "rejected": 127
+    },
+    "unresolved_feed_exclusions": [],
+    "file_sha256": {
+      "data/state/pending_queue.json": "e3bdf1efeb4beb8cc5dd1c7aee42eb8a084337b13382341b2cd71afe275b2f73",
+      "data/history/superintendencia_signals.json": "74d8262b138b04bf665b500ead97cbdf1299f27fc83d75e6e11479aab6b4d8e9",
+      "web/data/radar_today.json": "12efe4fe1718c3158a0cd9ee320853d30839db4780d8447ad0e6b262563ae0c2",
+      "data/ai_usage/2026-10.json": "e79b7c555641b0c3a564fbf4eab1f6997fcea0839eb95733d9198331faf56c99",
+      "data/ai_usage/responses.jsonl": "dde4af6d72f84706442357ba83bf938bb2976ad752cf17059edcd89f7d188997",
+      "data/source_health.json": "f18a159672468e646ec3f06651fa2cf3b92809884b97b8f88c83e64ae07ef781",
+      "data/audits/pulso_first_paid_editorial_corrections_2026_10_11.json": "35e1d8a806f99881b56c5358d904880ca6bf2aa7ddd21e7bdada8a4b740a78d2"
+    },
+    "source_health": {
+      "actual_last_poll_at": "2026-10-11T13:14:04.388798+00:00",
+      "technical_status": "error",
+      "error": "partial_discovery",
+      "published_by_original_model_run_before_independent_correction": 32,
+      "effective_feed_after_review": 12,
+      "next_gate": "Source health must be refreshed by the genuine repaired core, not an offline poll invented by editorial review."
+    },
+    "next_run": "Same branch/PR; genuine full discovery plus113-existing-URL processing selection under unchanged budget; no extra discovery expansion. Then independent semantic review, real second-run idempotence and final-SHA QA/staging."
+  },
+  "acceptance": "NOT_ACCEPTED"
 }
