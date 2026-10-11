@@ -28,6 +28,8 @@ def module(name, relative):
 
 helper = module("revalidated_idempotence_unit_helper", "scripts/pulso_idempotence.py")
 unit = module("revalidated_idempotence_unit_shapes", "tests/test_pulso_idempotence.py")
+independent_qa = module("revalidated_idempotence_independent_qa", "scripts/qa_pulso_recovery.py")
+qa_units = module("revalidated_idempotence_prior_qa_shapes", "tests/test_pulso_idempotence_qa.py")
 NOW = datetime(2026, 10, 11, 23, 2, tzinfo=timezone.utc)
 
 
@@ -258,3 +260,154 @@ def test_changed_independent_lineage_denies_replay_even_if_current_state_is_iden
     reader.verify_final_revalidated_execution = changed
     result = helper.compare(baseline, second_core(context), now=NOW.replace(minute=5))
     assert "original_paid_or_revalidated_execution_lineage_invalid" in {row["code"] for row in result["findings"]}
+
+
+@pytest.fixture
+def independent_replay(tmp_path, monkeypatch):
+    """Full reader integration; only the already-tested composite API is fixed.
+
+    Publisher bodies, the frozen113 cohort, implementation bytes and review
+    files are real. Future outcomes/native rows are openly synthetic. The
+    original paid323 execution, failed QA and telemetry remain immutable real
+    inputs. Nothing here is saved as actual runtime acceptance evidence.
+    """
+    previous = qa_units.replay.__wrapped__(tmp_path)
+    cohort = json.loads((tmp_path / independent_qa.PROCESSING_COHORT_PATH).read_bytes())
+    context, lineage, stock, receipts = unit_revalidated_context()
+    context["selection"] = cohort
+    context["queue"] = deepcopy(previous["queue"])
+    context["report"]["matrix"] = deepcopy(previous["report"]["matrix"])
+    for index in range(5293):
+        context["queue"][f"integration-unit-native-{index}"] = dict(
+            source="integration_unit_native", status="archived", attempts=0,
+            raw=dict(unit_only=True, url=f"https://unit-native.invalid/record/{index}/"))
+    signals = [dict(source_url=f"https://unit-native.invalid/record/{index}/", event_date="2026-10-01",
+                    source_type="official", source_name="Explicit synthetic native unit",
+                    source_record_id=f"unit-native-record-{index}", what_happened="Synthetic contract copy only.")
+               for index in range(897)]
+    context["history"] = {"signals": signals}
+    context["feed"] = {"signals": deepcopy(signals)}
+    execution = context["report"]["last_core_execution"]
+    execution["code_sha"] = "a" * 40
+    selection = execution["processing_selection"]
+    selection.update(sha256=independent_qa.PROCESSING_COHORT_SHA256,
+        file_sha256=independent_qa.PROCESSING_COHORT_SHA256, selected_urls=cohort["urls"],
+        ready_selected_urls=cohort["urls"][:2], skipped_terminal_urls=cohort["urls"][2:])
+    context["observed_files"][helper.DEFAULT_SELECTION] = independent_qa.PROCESSING_COHORT_SHA256
+    context["runtime_fingerprint"] = helper.runtime_fingerprint(tmp_path)
+    context["recorded_core_runtime_fingerprint"] = deepcopy(context["runtime_fingerprint"])
+    execution["runtime_fingerprint"] = deepcopy(context["runtime_fingerprint"])
+    old_models, old_receipts = list(lineage["models"].values()), list(receipts.values())
+    lineage["models"], receipts = {}, {}
+    cohort_items = {row["url"]: row for row in cohort["items"]}
+    for index, url in enumerate(cohort["urls"][:2]):
+        key = cohort_items[url]["queue_fingerprint"]
+        context["queue"][key]["attempts"] = 2
+        row = deepcopy(old_models[index])
+        row["queue_fingerprint"] = key
+        lineage["models"][url] = row
+        receipts[url] = dict(old_receipts[index], current_evaluation_code=execution["code_sha"])
+    references = {cohort["inputs"][key]["path"]: cohort["inputs"][key]["sha256"]
+                  for key in helper.IMMUTABLE_COHORT_INPUTS}
+    for read_proofs in (independent_qa.paid_revalidation_proof_files, independent_qa.current_paid_proof_files,
+                        independent_qa.followup_paid_proof_files, independent_qa.final_paid_proof_files):
+        references.update(read_proofs(ROOT))
+    for relative in references:
+        target = tmp_path / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((ROOT / relative).read_bytes())
+    documents = helper.incremental_proof_files(tmp_path, context["queue"])
+    references.update({relative: helper.digest((tmp_path / relative).read_bytes()) for relative in documents})
+    context["referenced_proof_files"] = references
+    context["incremental_review_files"] = documents
+    context["processing_qa"]["checks"]["processing_selection"].update(sha256=independent_qa.PROCESSING_COHORT_SHA256)
+    current_rows = helper.source_queue(context["queue"])
+    stock.update(commit=execution["code_sha"], preserved_terminal_urls={
+        url: dict(queue_fingerprint=current_rows[url]["fingerprint"],
+                  queue_entry_sha256=helper.digest(context["queue"][current_rows[url]["fingerprint"]]))
+        for url in cohort["urls"][2:]},
+        native_queue_sha256=helper.digest({key: item for key, item in context["queue"].items() if item.get("source") != helper.SOURCE}),
+        native_history_sha256=helper.digest(signals))
+    lineage["authority"] = independent_qa.final_paid_proof_files(tmp_path)
+    qa_units.write_context(tmp_path, context)
+    observed_composite = dict(paid_model_lineage=deepcopy(lineage), launch_stock=deepcopy(stock),
+        current_revalidation_receipts=deepcopy(receipts), evaluation_execution=deepcopy(execution),
+        actual_budget_delta=helper.budget_delta(execution), publication_approved=False)
+    def fixed_composite(*args, **kwargs):
+        assert kwargs["execution"] == observed_composite["evaluation_execution"]
+        return deepcopy(observed_composite)
+    monkeypatch.setattr(independent_qa, "verify_final_revalidated_execution", fixed_composite)
+    partition = dict(terminal_urls=sorted(cohort["urls"]), held_not_due_urls=[])
+    baseline = dict(schema_version=helper.SCHEMA, mode=helper.REVALIDATED_MODE, read_only=True,
+        baseline_execution=deepcopy(execution), runtime_fingerprint=deepcopy(context["runtime_fingerprint"]),
+        revalidated_budget_delta=helper.budget_delta(execution), revalidated_successful_response_ids=[],
+        paid_model_lineage=deepcopy(lineage), launch_stock=deepcopy(stock), current_revalidation_receipts=deepcopy(receipts),
+        selection=dict(path=helper.DEFAULT_SELECTION, sha256=independent_qa.PROCESSING_COHORT_SHA256,
+                       urls=cohort["urls"], count=113, current_partition=partition),
+        processing_qa=deepcopy(context["processing_qa"]), semantic=helper.revalidated_snapshot(context))
+    seal(baseline)
+    helper.validate_baseline(baseline)
+    after = second_core(context)
+    qa_units.write_context(tmp_path, after)
+    proof = dict(schema_version=helper.SCHEMA, mode="after_genuine_core", read_only=True, verdict="PASS", findings=[],
+        baseline_sha256=baseline["payload_sha256"], runtime_fingerprint=deepcopy(context["runtime_fingerprint"]),
+        actual_budget_delta=helper.budget_delta(after["report"]["last_core_execution"]), selected_partition=partition,
+        observed_files=deepcopy(after["observed_files"]))
+    evidence = dict(baseline=baseline, proof=proof, root=tmp_path, report=after["report"], discovery=after["discovery"],
+                    queue=after["queue"], history=after["history"]["signals"], snapshot=after["feed"], telemetry=after["events"])
+    return evidence
+
+
+def test_actual_independent_reader_routes_composite_paid_window_and_final_zero_ai(independent_replay):
+    evidence = independent_replay
+    baseline = evidence["baseline"]
+    checked, findings = independent_qa.verify_genuine_idempotence(**evidence)
+    assert findings == [], findings
+    assert checked["paid_successful_response_ids"] == 2
+    assert checked["actual_ai_calls"] == checked["actual_attempts"] == 0
+    assert baseline["processing_qa"]["checks"]["actual_fast_response_events"] == 0
+    assert baseline["paid_model_lineage"]["original_processing_qa"]["processing_qa"] == "FAIL"
+    assert baseline["paid_model_lineage"]["original_runtime_fingerprint"] != baseline["runtime_fingerprint"]
+    assert baseline["runtime_fingerprint"] == evidence["report"]["last_core_execution"]["runtime_fingerprint"]
+    start = helper.stamp(baseline["baseline_execution"]["started_at"])
+    end = helper.stamp(baseline["baseline_execution"]["finished_at"])
+    assert not [event for event in evidence["telemetry"] if start <= helper.stamp(event["at"]) <= end]
+    assert baseline["paid_model_lineage"]["original_successful_response_ids"] == immutable_paid_failure()["ids"]
+    assert len(baseline["semantic"]["native_queue"]) == 5293
+    assert len(evidence["history"]) == 897
+    assert independent_qa.FINAL_PAID_PATH in baseline["semantic"]["referenced_proof_files"]
+
+
+@pytest.mark.parametrize("attack,reason", [
+    ("paid_fingerprint_retag", "composite_original_paid_or_real_revalidation_proof_changed"),
+    ("original_paid_fail_erased", "composite_original_paid_or_real_revalidation_proof_changed"),
+    ("current_quality_claims_two_ai", "paid_qa_not_bound_to_actual_ledger_and_cohort"),
+    ("current_fingerprint_claims_paid_code", "genuine_paid_and_replay_implementation_or_policy_changed"),
+    ("native_object_changed", "replay_changed_native_connector_queue"),
+    ("final2_reader_bytes_changed", "final_paid_current_semantic_reader_changed"),
+])
+def test_independent_composite_reader_denies_retagged_lineage_and_changed_stocks(independent_replay, attack, reason):
+    evidence = independent_replay
+    baseline = evidence["baseline"]
+    if attack == "paid_fingerprint_retag":
+        baseline["paid_model_lineage"]["original_execution"]["runtime_fingerprint"] = deepcopy(baseline["runtime_fingerprint"])
+    elif attack == "original_paid_fail_erased":
+        baseline["paid_model_lineage"]["original_processing_qa"].update(processing_qa="PASS", verdict="PASS", findings=[])
+    elif attack == "current_quality_claims_two_ai":
+        baseline["processing_qa"]["checks"]["actual_fast_response_events"] = 2
+    elif attack == "current_fingerprint_claims_paid_code":
+        fingerprint = deepcopy(baseline["paid_model_lineage"]["original_runtime_fingerprint"])
+        baseline["runtime_fingerprint"] = fingerprint
+        evidence["proof"]["runtime_fingerprint"] = deepcopy(fingerprint)
+        evidence["report"]["last_core_execution"]["runtime_fingerprint"] = deepcopy(fingerprint)
+    elif attack == "native_object_changed":
+        evidence["queue"]["integration-unit-native-0"]["raw"]["unit_only"] = "changed whole native object"
+    else:
+        manifest = json.loads((evidence["root"] / independent_qa.FINAL_PAID_PATH).read_bytes())
+        path = evidence["root"] / manifest["semantic_references"][0]["path"]
+        path.write_bytes(path.read_bytes() + b" ")
+    seal(baseline)
+    evidence["proof"]["baseline_sha256"] = baseline["payload_sha256"]
+    checked, findings = independent_qa.verify_genuine_idempotence(**evidence)
+    assert checked == {}
+    assert findings[0]["reason"] == reason
