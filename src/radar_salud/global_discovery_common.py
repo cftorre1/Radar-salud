@@ -7,7 +7,9 @@ import re
 import ssl
 import time
 from dataclasses import dataclass, field
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
+from email.utils import parsedate_to_datetime
+from threading import RLock
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.error import HTTPError
@@ -92,6 +94,7 @@ class PublicRedirect(HTTPRedirectHandler):
         self.client = client
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         target = canonical_url(newurl, req.full_url)
+        self.client.check_cooldown(target)
         is_robots = getattr(req, "_global_is_robots", False)
         if is_robots:
             if urlsplit(target).path != "/robots.txt":
@@ -108,10 +111,13 @@ class PublicRedirect(HTTPRedirectHandler):
         return redirected
 
 class CaptureClient:
-    def __init__(self, directory: Path, replay: Path | None = None, delay: float = .25):
+    def __init__(self, directory: Path, replay: Path | None = None, delay: float = 1., cooldown_file: Path | None = None):
         self.directory, self.replay, self.delay = directory, replay, delay
         directory.mkdir(parents=True, exist_ok=True)
         self.records, self.robots, self.network_requests = {}, {}, 0
+        self._live_lock = RLock()
+        self.cooldown_file = cooldown_file
+        self.cooldowns = json.loads(cooldown_file.read_text()) if cooldown_file and cooldown_file.exists() and not replay else {}
         self.opener = build_opener(PublicRedirect(self), HTTPSHandler(context=ssl.create_default_context()))
     def check_robots(self, url):
         origin = urlunsplit((*urlsplit(url)[:2], "", "", ""))
@@ -124,6 +130,20 @@ class CaptureClient:
         if not self.robots[origin].can_fetch(USER_AGENT, url):
             raise ValueError("robots_disallowed: " + url)
     def fetch(self, url: str, *, robots=False):
+        # Serialize requests, including redirects/robots, so a 429 stops queued workers.
+        # Replays reproduce historical bytes, including requests made by older collectors.
+        with self._live_lock:
+            url = canonical_url(url)
+            if url not in self.records: self.check_cooldown(url)
+            return self._fetch(url, robots=robots)
+
+    def check_cooldown(self, url):
+        origin = urlunsplit((*urlsplit(url)[:2], "", "", ""))
+        cooldown = self.cooldowns.get(origin)
+        if not self.replay and cooldown and datetime.now(timezone.utc) < datetime.fromisoformat(cooldown["retry_until"]):
+            raise ValueError("rate_limit_deferred_without_request_until_" + cooldown["retry_until"])
+
+    def _fetch(self, url: str, *, robots=False):
         url = canonical_url(url)
         if url in self.records:
             record = self.records[url]
@@ -169,6 +189,22 @@ class CaptureClient:
         (self.directory / record["body_file"]).write_bytes(data)
         (self.directory / (key + ".json")).write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n")
         self.records[url] = record
+        if record["http_status"] == 429 and not self.replay:
+            observed = datetime.fromisoformat(record["fetched_at"])
+            retry = record["headers"].get("retry-after", "")
+            try:
+                until = observed + timedelta(seconds=int(retry)) if retry.isdigit() else parsedate_to_datetime(retry)
+                if until.tzinfo is None: until = until.replace(tzinfo=timezone.utc)
+                if until <= observed: until = observed + timedelta(hours=1)
+            except (ValueError, TypeError, OverflowError):
+                until = observed + timedelta(hours=1)
+            origin = urlunsplit((*urlsplit(record["final_url"])[:2], "", "", ""))
+            self.cooldowns[origin] = {"http_status":429, "observed_at":record["fetched_at"],
+                "retry_after":retry, "retry_until":until.isoformat(), "requested_url":url,
+                "body_sha256":record["body_sha256"], "behavior":"no_new_requests_until_retry_until"}
+            if self.cooldown_file:
+                self.cooldown_file.parent.mkdir(parents=True,exist_ok=True)
+                self.cooldown_file.write_text(json.dumps(self.cooldowns,indent=2)+"\n")
         if record["http_status"] != 200:
             raise ValueError("http_" + str(record["http_status"]))
         return data, record

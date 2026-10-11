@@ -1,0 +1,74 @@
+name: Isolated Global captured evidence QA
+on:
+  push:
+    branches: [codex/global-intelligence-recurrent-20261011]
+    paths: ['.github/run-global-qa-now']
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: global-source-discovery-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/codex/global-intelligence-recurrent-20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: global-discovery-38145510005
+          run-id: 38145510005
+          github-token: ${{ github.token }}
+          path: work/qa-captured
+      - name: Restore only existing evidence bytes (no source requests)
+        run: |
+          cp -R work/qa-captured/work/global-runtime-captures work/global-runtime-captures
+          cmp data/global_intelligence/discovery.json work/qa-captured/data/global_intelligence/discovery.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Contracts, existing capture replay and independent raw audit
+        run: |
+          pip install -e . pytest
+          python -m pytest -q tests/test_global_source_discovery.py tests/test_global_source_probe_policy.py tests/test_global_intelligence.py --junitxml=work/global-directed-qa.xml
+          python scripts/replay_global_sources.py
+          python scripts/audit_global_captures.py --captures work/global-runtime-captures --inventory data/global_intelligence/discovery.json --output work/independent_capture_audit.json
+      - name: Full deterministic Python QA with inherited baseline separated
+        run: |
+          python -m pytest -q --ignore=tests/test_beta_source_runtime_fast.py --junitxml=work/global-python-qa.xml || code=$?
+          python scripts/check_global_qa_baseline.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Node and Global desktop/mobile QA without deployment
+        run: |
+          npm ci
+          npm test | tee work/global-node-qa.log
+          npx playwright install --with-deps chromium
+          npx playwright test --grep 'Global|global|sources are grouped'
+          python scripts/check_global_browser_qa.py
+      - name: Checkpoint QA on the isolated branch only
+        if: always()
+        run: |
+          git config user.name "alicanto-salud-bot"
+          git config user.email "alicanto-salud-bot@users.noreply.github.com"
+          git add data/audits/global_source_recovery_2026_10_11/runs/38145510005
+          git diff --cached --quiet || git commit -m "audit(global): qualify captured evidence and desktop mobile QA"
+          git push origin HEAD:codex/global-intelligence-recurrent-20261011
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: global-qa-${{ github.run_id }}
+          path: |
+            work/global-directed-qa.xml
+            work/global-python-qa.xml
+            work/global-node-qa.log
+            work/independent_capture_audit.json
+            artifacts/
+            test-results/

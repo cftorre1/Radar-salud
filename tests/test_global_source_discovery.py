@@ -231,3 +231,65 @@ def test_observed_older_date_requires_ordered_boundary_for_window_coverage():
     assert not window_boundary_verified(route,AS_OF,90)
     route['items'].reverse()
     assert not window_boundary_verified(route,AS_OF,30)
+
+
+class RateResponse:
+    def __init__(self,url,code=429,retry='3600'):
+        self.url,self.code,self.headers=url,code,{'Retry-After':retry}
+    def __enter__(self): return self
+    def __exit__(self,*args): pass
+    def read(self,*args): return b'rate limited' if self.code==429 else b'<h1>PAHO</h1>'
+
+class RateOpener:
+    def __init__(self,retry='3600'): self.calls=[];self.retry=retry
+    def open(self,request,**kwargs):
+        self.calls.append(request.full_url)
+        return RateResponse(request.full_url,429 if 'who.int' in request.full_url else 200,self.retry)
+
+def allow_test_hosts(client):
+    policy=RobotFileParser();policy.parse(['User-agent: *','Allow: /'])
+    for origin in ('https://www.who.int','https://www.paho.org'): client.robots[origin]=policy
+
+@pytest.mark.parametrize('retry',['3600','Sun, 11 Oct 2037 16:00:00 GMT','invalid'])
+def test_429_stops_queued_requests_persists_cooldown_and_preserves_other_source(tmp_path,retry):
+    from concurrent.futures import ThreadPoolExecutor
+    from datetime import datetime,timezone
+    state=tmp_path/'cooldown.json';client=CaptureClient(tmp_path/'first',delay=0,cooldown_file=state)
+    allow_test_hosts(client);client.opener=RateOpener(retry)
+    def attempt(n):
+        try: client.fetch('https://www.who.int/news/item/'+str(n))
+        except ValueError as exc: return str(exc)
+    with ThreadPoolExecutor(max_workers=3) as pool: outcomes=list(pool.map(attempt,range(8)))
+    assert outcomes.count('http_429')==1
+    assert sum('deferred_without_request' in value for value in outcomes)==7
+    assert len(client.opener.calls)==1 and client.network_requests==1
+    assert len(list((tmp_path/'first').glob('*.body')))==1
+    persisted=json.loads(state.read_text())['https://www.who.int']
+    assert persisted['retry_after']==retry
+    assert datetime.fromisoformat(persisted['retry_until'])>datetime.now(timezone.utc)
+    client.fetch('https://www.paho.org/en/news')
+    assert client.network_requests==2
+    second=CaptureClient(tmp_path/'second',delay=0,cooldown_file=state);allow_test_hosts(second);second.opener=RateOpener()
+    with pytest.raises(ValueError,match='deferred_without_request'): second.fetch('https://www.who.int/news/item/next')
+    assert second.network_requests==0 and not second.opener.calls
+    request=Request('https://www.paho.org/en/news');request._global_redirect_chain=[]
+    with pytest.raises(ValueError,match='deferred_without_request'):
+        PublicRedirect(second).redirect_request(request,None,302,'Found',{},'https://www.who.int/news/item/next')
+    assert request._global_redirect_chain==[]
+
+def test_expired_cooldown_allows_normal_access_without_rotating_identity(tmp_path):
+    state=tmp_path/'cooldown.json';state.write_text(json.dumps({'https://www.paho.org':{'retry_until':'2020-01-01T00:00:00+00:00'}}))
+    client=CaptureClient(tmp_path/'captures',delay=0,cooldown_file=state);allow_test_hosts(client);client.opener=RateOpener()
+    client.fetch('https://www.paho.org/en/news')
+    assert client.network_requests==1
+
+def test_replay_of_older_429_evidence_never_suppresses_captured_history_or_contacts_network(tmp_path):
+    capture=tmp_path/'old';capture.mkdir()
+    for url,status in [('https://www.who.int/news/first',429),('https://www.who.int/news/second',200)]:
+        key=hashlib.sha256(url.encode()).hexdigest()[:24];raw=b'evidence'
+        record={'requested_url':url,'final_url':url,'http_status':status,'fetched_at':'2026-10-11T14:02:51+00:00','tls_verified':True,'body_file':key+'.body','body_sha256':hashlib.sha256(raw).hexdigest(),'headers':{'retry-after':'3600'}}
+        (capture/(key+'.body')).write_bytes(raw);(capture/(key+'.json')).write_text(json.dumps(record))
+    replay=CaptureClient(tmp_path/'replay',replay=capture,delay=0);allow_test_hosts(replay)
+    with pytest.raises(ValueError,match='http_429'): replay.fetch('https://www.who.int/news/first')
+    assert replay.fetch('https://www.who.int/news/second')[1]['http_status']==200
+    assert replay.network_requests==0 and not replay.cooldowns
