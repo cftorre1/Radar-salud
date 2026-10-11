@@ -331,6 +331,33 @@ def incremental_proof_files(root, queue):
     return documents
 
 
+def paid_revalidation_proof_files(root):
+    """Bind the paid-reuse authority before any admission stamp exists."""
+    from radar_salud.pulso_paid_revalidation import MANIFEST_REF, MANIFEST_SHA256
+    path = root / MANIFEST_REF
+    if not path.is_file():
+        return set()
+    payload = path.read_bytes()
+    require(digest(payload) == MANIFEST_SHA256, "paid_revalidation_manifest_changed")
+    manifest = json.loads(payload)
+    require(manifest.get("schema_version") == "pulso_v5_paid_guard_revalidation_manifest_v1"
+            and manifest.get("source_id") == SOURCE
+            and isinstance(manifest.get("semantic_references"), list)
+            and len(manifest["semantic_references"]) == 2,
+            "paid_revalidation_manifest_invalid")
+    references = {MANIFEST_REF}
+    for proof in manifest["semantic_references"]:
+        relative = proof.get("path") if isinstance(proof, dict) else None
+        require(isinstance(relative, str), "paid_revalidation_semantic_path_invalid")
+        source = (root / relative).resolve()
+        require(source.is_relative_to((root / "data/audits").resolve()) and source.is_file()
+                and digest(source.read_bytes()) == proof.get("sha256"),
+                "paid_revalidation_semantic_reference_changed")
+        references.add(relative)
+    require(len(references) == 3, "paid_revalidation_semantic_reference_repeated")
+    return references
+
+
 def read_context(root, *, selection=DEFAULT_SELECTION, report=DEFAULT_REPORT, qa=DEFAULT_QA):
     paths = dict(selection=selection, report=report, processing_qa=qa,
                  discovery="data/state/discovery_run.json", queue="data/state/pending_queue.json",
@@ -349,7 +376,7 @@ def read_context(root, *, selection=DEFAULT_SELECTION, report=DEFAULT_REPORT, qa
         raw = path.read_bytes()
         ledgers[path.name] = json.loads(raw)
         hashes[str(path.relative_to(root))] = digest(raw)
-    references = set()
+    references = paid_revalidation_proof_files(root)
     inputs = values["selection"].get("inputs", {})
     for key in IMMUTABLE_COHORT_INPUTS:
         value = inputs.get(key)
