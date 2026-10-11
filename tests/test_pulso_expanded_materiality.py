@@ -22,7 +22,7 @@ REPAIRED_PROJECTIONS = ('proposed_clinical_condition_colmed', 'regional_health_p
                         'proposed_reproductive_legislative_progress',
                         'medical_insurance_coverage_inquiry', 'provider_judicial_financial_liability',
                         'blocked_essential_dialysis_access', 'reported_compulsory_respiratory_measure',
-                        'damaged_hospital_emergency_funds')
+                        'damaged_hospital_emergency_funds', 'proposed_minors_mental_health_legislative_urgency')
 
 
 def original_raw(entry):
@@ -202,6 +202,16 @@ def test_original_emergency_funds_do_not_assert_a_specific_health_allocation():
     assert 'monto' not in entry['body']
 
 
+def test_original_minors_mental_health_progress_is_proposed_with_an_older_plan_as_context():
+    entry = next(row for row in PROJECTIONS if row['name'] == 'proposed_minors_mental_health_legislative_urgency')
+    assert entry['publication_date'] == '2026-08-26'
+    assert 'sumo urgencia al proyecto de ley' in entry['body']
+    assert 'primer trámite constitucional' in entry['body']
+    assert 'presentaremos indicaciones' in entry['body']
+    assert 'lanzado el 25 de mayo' in entry['body']
+    assert 'salud mental de menores de edad' in entry['body']
+
+
 @pytest.mark.parametrize(('title', 'body'), [
     ('Minsal informa sobre salud de personas mayores', 'Los ELEAM necesitan autorización sanitaria. Las familias visitan a sus parientes.'),
     ('Lista de residencias ELEAM', 'Un directorio comercial ofrece un listado de ELEAM con autorización sanitaria, disponible públicamente.'),
@@ -225,6 +235,7 @@ def test_original_emergency_funds_do_not_assert_a_specific_health_allocation():
     ('Escuela exige vestimenta', 'Una escuela recomienda uso obligatorio de mascarilla para un ensayo teatral, sin orden sanitaria.'),
     ('Salud entrega consejos respiratorios', 'La Autoridad Sanitaria recomienda mascarilla para prevenir enfermedades respiratorias, sin resolución obligatoria.'),
     ('Gobierno atiende viviendas', 'La Ley N° 16.282 libera fondos de emergencia tras publicación en el Diario Oficial para reparar viviendas. Los hospitales siguen intactos.'),
+    ('Ministra comenta salud mental', 'La ministra quiere conversar sobre salud mental de niños y propone colaborar en un futuro diálogo, sin avance parlamentario concreto.'),
 ])
 def test_narrow_registry_and_care_suspension_rules_do_not_admit_generic_directory_or_unadopted_ideas(title, body):
     assert not beta_sources._material('media', title, body)

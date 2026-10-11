@@ -331,13 +331,16 @@ def _material(role, title, body):
         damaged_hospital_emergency_funds = (bool(re.search(r"ley n[°º]?\s*16\.282", text))
             and "diario oficial" in text and "fondos de emergencia" in text
             and "hospitales con daños en la infraestructura" in text)
+        minors_mental_health_legislative_urgency = ("salud mental" in text
+            and bool(re.search(r"ni[ñn]os|menores", text)) and "sumo urgencia al proyecto de ley" in text
+            and "primer trámite constitucional" in text)
         return (care_obligation or ges_coverage or care_legislation
                 or proposed_clinical_condition or provider_flood_response
                 or authorized_care_registry or clinical_service_suspension
                 or quantified_health_power_impact or modular_care_deployment or mapped_multi_provider_flood
                 or reproductive_legislative_progress or medical_insurance_inquiry or provider_judicial_liability
                 or essential_care_transport_blocked or compulsory_respiratory_health_measure
-                or damaged_hospital_emergency_funds)
+                or damaged_hospital_emergency_funds or minors_mental_health_legislative_urgency)
     return False
 
 
