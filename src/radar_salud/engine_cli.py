@@ -79,7 +79,7 @@ def main():
         try:
             items=discover()
             scout=getattr(discover,"__self__",None)
-            if name == "deis" and scout.catalog is not None:
+            if name == "deis" and getattr(scout, "catalog", None) is not None:
                 atomic_json(root/"data/state/deis_catalog.json", scout.catalog)
             if name in PUBLIC_DATA_SOURCES:
                 discovery_details[name]={"diagnostics":discovery_diagnostics(scout,items)}
@@ -95,7 +95,7 @@ def main():
             discoveries[name]=(0,0,type(exc).__name__)
             if name in PUBLIC_DATA_SOURCES:
                 scout=getattr(discover,"__self__",None)
-                if name == "deis" and scout.catalog is not None:
+                if name == "deis" and getattr(scout, "catalog", None) is not None:
                     atomic_json(root/"data/state/deis_catalog.json", scout.catalog)
                 discovery_details[name]={"error_details":failure_details(exc),
                                          "diagnostics":discovery_diagnostics(scout)}
