@@ -41,7 +41,7 @@ def health(captures, package, *, discovered, unique, recent=0, material=0, publi
     return dict(pages_checked=len(receipts), items_discovered=discovered, unique_items=unique,
                 items_recent=recent, items_material=material, published=published, rejected=rejected,
                 deferred=deferred, parse_errors=errors, coverage_complete=complete, coverage_reason=reason,
-                technical_status='ok' if receipts and all(r['transport_ok'] for r in receipts) else 'degraded',
+                technical_status='error' if errors else 'ok' if receipts and all(r['transport_ok'] for r in receipts) else 'degraded',
                 snapshot_semantics='Data observations; published is news cards, never table rows',
                 recurrence_validated=False, runtime_activation='held_for_core_quality_gate')
 
@@ -274,9 +274,11 @@ def main():
         if args.only not in (name, 'all'): continue
         try: result[name]=collector(captures, args.output_root)
         except Exception as exc:
-            result[name]=health(captures, name, discovered=0, unique=0, errors=1,
+            result[name]=health(captures, name, discovered=None, unique=None, recent=None, errors=1,
                                reason=f'{type(exc).__name__}: {exc}')
-            record_data_adapter(args.output_root, f'market_{name}', result[name])
+            result[name]['outcome']='OPERATIVE_DEGRADED'
+            slug={'isapres':'sis_isapre_universe','cmf':'cmf_health_ecosystem','dipres':'dipres_health_budget'}[name]
+            record_data_adapter(args.output_root, slug, result[name])
     atomic_json(args.output_root/'data/market/collection_result.json', result)
     if args.only=='all' and not any(v['parse_errors'] for v in result.values()):
         from .market_intelligence import export_views

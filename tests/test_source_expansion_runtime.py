@@ -89,3 +89,23 @@ def test_consumers_do_not_compare_parent_results_or_calendar_years(tmp_path):
     assert view['trend']['cmf_same_issuer_results'][0]['pct_change']==20
     assert view['benchmark']['cmf']['cross_entity_ranking'] is False
     assert json.loads((path/'signal_candidates.json').read_text())['candidates']==[]
+
+
+def test_parser_failure_replaces_canonical_health_without_claiming_zero_content(captures,tmp_path,monkeypatch):
+    import sys
+    from radar_salud.market_sources import main
+    capture=tmp_path/'capture';capture.mkdir()
+    r=next(r for r in captures.receipts if r['kind']=='registry')
+    body=capture/r['body_file'];body.parent.mkdir(parents=True);body.write_bytes(captures.body(r))
+    (capture/'receipts.json').write_text(json.dumps({'receipts':[r]}))
+    root=tmp_path/'stock';(root/'data').mkdir(parents=True)
+    (root/'data/source_health.json').write_text(json.dumps({'sources':{'sis_isapre_universe':{'status':'ok'}}}))
+    monkeypatch.setattr(sys,'argv',['market_sources','--capture-dir',str(capture),'--output-root',str(root),'--only','isapres'])
+    with pytest.raises(SystemExit) as exc:main()
+    assert exc.value.code==1
+    sources=json.loads((root/'data/source_health.json').read_text())['sources']
+    assert 'market_isapres' not in sources
+    evidence=sources['sis_isapre_universe']
+    assert evidence['status']=='error' and evidence['technical_status']=='error'
+    assert evidence['parse_errors']==1 and evidence['items_discovered'] is None
+    assert evidence['items_recent'] is None and not evidence['coverage_complete']

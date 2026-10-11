@@ -21,7 +21,7 @@ def record_data_adapter(root: Path, slug: str, evidence: dict) -> None:
     d = _load(root)
     d.setdefault('sources', {})[slug] = {
         **evidence, 'checked_at': datetime.now(timezone.utc).isoformat(),
-        'status': 'ok' if evidence['coverage_complete'] and not evidence['parse_errors'] else 'warning',
+        'status': 'error' if evidence['parse_errors'] else 'ok' if evidence['coverage_complete'] else 'warning',
         'technical_status': evidence.get('technical_status', 'unverified'),
         'coverage_status': 'validated_declared_perimeter' if evidence['coverage_complete'] else 'partial',
         'editorial_outcome': evidence.get('editorial_outcome', 'data_snapshot_no_news_quota'),
