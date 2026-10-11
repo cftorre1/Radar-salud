@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "slug": "red_davila",
+  "as_of": "2026-10-11",
+  "timezone": "America/Santiago",
+  "window_rule": "0 <= as_of - verified publication_date <= 30/90 days inclusive; unknown date is null, never zero",
+  "audit_path": "data/audits/providers_2026_10_11/red_davila.json",
+  "status": "reconciled_with_exact_blockers",
+  "coverage": "partial_90_inventory_visible_30_reviewed",
+  "verification_method": "Original-site web reader on 2026-10-11; local collector transport separately blocked. No full-90 claim where pagination/date inventory is incomplete.",
+  "source_quality_gate": "passed",
+  "market_role": "provider",
+  "surfaces": [
+    {
+      "url": "https://www.davila.cl/novedades",
+      "result": "11 visible dated cards, 2026-10-05 through 2026-08-13. Fast validator checked only first five; Enlace cards were omitted."
+    }
+  ],
+  "blockers": [
+    "runtime_original_http_CONNECT_403",
+    "older_than_visible_listing_90_day_boundary_unverified",
+    "assessment_pending_existing_gates"
+  ],
+  "original_items": [
+    {
+      "title": "Red Dávila se suma al Plan Enlace para reducir listas de espera odontológicas",
+      "url": "https://www.davila.cl/novedades/red-davila-se-suma-al-plan-enlace-para-reducir-listas-de-espera-odontologicas",
+      "publication_date": "2026-08-20",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Convenio Minsal/Sótero del Río: objetivo 500 pacientes, diez jornadas en diez meses, primer operativo planificado de 50 cirugías. Es compromiso anunciado."
+    },
+    {
+      "title": "Operativo médico Sótero del Río",
+      "url": "https://www.davila.cl/novedades/operativo-medico-sotero",
+      "publication_date": "2026-08-24",
+      "date_evidence": "verified_article_header",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "El detalle atribuye 30 cirugías efectivamente realizadas el 22 agosto, cinco pabellones y 18 voluntarios. Actualización del mismo Plan Enlace; no sumar las 50 planificadas a las 30 ejecutadas."
+    }
+  ],
+  "notes": [
+    "Una Red Dávila por slug. Promovida del catálogo beta al motor diario; no otra institución por sede.",
+    "Educación sobre cáncer, chilenidad, campañas y reconocimientos no justifican materialidad. Resonancia/fototerapia quedan sujetas a prueba de nueva capacidad, no palabras clave solas."
+  ],
+  "recovery_checkpoint": {
+    "at": "2026-10-11T04:41:22.718201+00:00",
+    "changes": [
+      {
+        "key": "ba09f70fb16cf82e05c956be5ae9b181f1f77a5fc1c1fd5d11dd36f5ebdf068b",
+        "url": "https://www.davila.cl/novedades/red-davila-se-suma-al-plan-enlace-para-reducir-listas-de-espera-odontologicas",
+        "action": "admit_backfill"
+      },
+      {
+        "key": "c37af1410f6e19197c0f9b67dd2769765a1e3b35c0d71e9076b9059bcbf8a6a4",
+        "url": "https://www.davila.cl/novedades/operativo-medico-sotero",
+        "action": "admit_backfill"
+      }
+    ]
+  },
+  "reconciliation": {
+    "scope": "verified original items; lower bound where inventory is blocked",
+    "material_candidates_30_days": 0,
+    "material_candidates_90_days": 2,
+    "publication_date_unknown": 0,
+    "queue_counts": {
+      "live_pending": 0,
+      "backfill_pending": 2,
+      "rejected": 0,
+      "published": 0
+    },
+    "items": [
+      {
+        "url": "https://www.davila.cl/novedades/red-davila-se-suma-al-plan-enlace-para-reducir-listas-de-espera-odontologicas",
+        "publication_date": "2026-08-20",
+        "in_30_days": false,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "ba09f70fb16cf82e05c956be5ae9b181f1f77a5fc1c1fd5d11dd36f5ebdf068b",
+            "status": "pending",
+            "reason": "audited_recovery_pending_assessment",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      },
+      {
+        "url": "https://www.davila.cl/novedades/operativo-medico-sotero",
+        "publication_date": "2026-08-24",
+        "in_30_days": false,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "c37af1410f6e19197c0f9b67dd2769765a1e3b35c0d71e9076b9059bcbf8a6a4",
+            "status": "pending",
+            "reason": "audited_recovery_pending_assessment",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      }
+    ]
+  }
+}

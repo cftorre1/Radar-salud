@@ -383,16 +383,29 @@
       "new": 0,
       "published": 0,
       "live_pending": 0,
-      "backfill_pending": 0,
-      "pending": 0,
+      "backfill_pending": 2,
+      "pending": 2,
       "deferred": 0,
       "rejected": 0,
-      "status": "ok",
+      "status": "warning",
       "error": null,
       "technical_status": "ok",
-      "coverage_status": "observed",
+      "coverage_status": "unverified",
       "content_freshness": "unknown",
-      "editorial_outcome": "no_new_signals"
+      "editorial_outcome": "not_evaluated",
+      "evaluation_performed": false,
+      "collection_mode": "discovery_only",
+      "provider_audit": {
+        "as_of": "2026-10-11",
+        "path": "data/audits/providers_2026_10_11/red_davila.json",
+        "blockers": [
+          "runtime_original_http_CONNECT_403",
+          "older_than_visible_listing_90_day_boundary_unverified",
+          "assessment_pending_existing_gates"
+        ],
+        "latest_verified_original_at": "2026-08-24",
+        "recovered_pending": 2
+      }
     },
     "andes_salud": {
       "name": "Andes Salud",
