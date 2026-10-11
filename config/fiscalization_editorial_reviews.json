@@ -25,8 +25,37 @@
       ],
       "validity_text": "Inicio operativo informado: 30 de septiembre de 2026",
       "reviewed_at": "2026-10-11",
-      "review_basis": "Official detail, paragraphs 1-3; observed through web tool. Native HTTP unavailable in this environment.",
+      "review_basis": "Official detail, paragraphs 1-3; initial web observation subsequently verified by native GitHub Actions capture in run 38114848030 (TLS verified, HTTP 200).",
       "reason": "Nueva instrucción operativa transversal con obligaciones concretas; clasificada como normativa, no fiscalización."
+    }
+  },
+  "primary_document_reviews": {
+    "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n-7462-emision-23-09-2026": {
+      "source_url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n-7462-emision-23-09-2026",
+      "primary_document_url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/res-exenta-ip-n-7462-clinica-sanatorio-aleman-pas-n-5008485-2023_0001.pdf",
+      "primary_document_sha256": "41e0eb544e1b01de52b74c384c3a2cc9eb2e78408d2b53dc5cba4a3db0b25a52",
+      "emission_date": "2026-09-23",
+      "observed_listing_publication_date": "2025-09-23",
+      "verified_fields": [
+        "emission_date",
+        "regulated_entity",
+        "sanction_amount",
+        "sanction_unit",
+        "effect"
+      ],
+      "regulated_entity": "Clínica Sanatorio Alemán",
+      "legal_entity": "Nuevo Sanatorio Alemán SpA",
+      "sanction_amount": 400,
+      "sanction_unit": "UTM",
+      "fact_date": "2023-05-02",
+      "effect": "sanction",
+      "decision": "publish_fiscalization",
+      "reason": "Multa de 400 UTM por condicionar la atención de salud al pago previo; incumplimiento material del artículo 141 bis del DFL 1/2005.",
+      "validity_text": "Pago dentro de cinco días hábiles desde la notificación; admite reposición y recurso jerárquico. Fecha de notificación y eventual suspensión no acreditadas.",
+      "review_basis": "Native official PDF: visually checked page 1 (23 SEP 2026); page 4 resolves 400 UTM against Nuevo Sanatorio Alemán SpA. Listing publication 2025 is inconsistent and remains observed evidence, not a trusted publication date.",
+      "runtime_run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38114848030",
+      "runtime_sha": "367b3a1965b61b16014ac5a4c0d766d117bc6eb0",
+      "reviewed_at": "2026-10-11"
     }
   }
 }

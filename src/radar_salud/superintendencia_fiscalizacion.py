@@ -167,9 +167,38 @@ class SuperintendenciaFiscalizacionScout:
             raise RuntimeError("No SIS fiscalization surface parsed successfully")
         return sorted(out.values(), key=lambda raw: raw.event_date or "", reverse=True)
 
+def reviewed_primary_act(raw):
+    """Resolve only an exact, documented primary-source review; keep observations."""
+    import json
+    from dataclasses import replace
+    from .paths import project_root
+    path = project_root() / 'config/fiscalization_editorial_reviews.json'
+    reviews = json.loads(path.read_text()) if path.exists() else {}
+    review = reviews.get('primary_document_reviews', {}).get(canonical_url(raw.url))
+    if not review or review.get('decision') != 'publish_fiscalization':
+        return raw
+    documents = {canonical_url(a['url']) for a in raw.metadata.get('attachments', [])}
+    if (canonical_url(review['primary_document_url']) not in documents or
+        not re.fullmatch(r'[a-f0-9]{64}', review.get('primary_document_sha256', '')) or
+        raw.metadata.get('emission_date') != review['emission_date'] or
+        raw.metadata.get('publication_date') != review.get('observed_listing_publication_date')):
+        return raw
+    metadata = {**raw.metadata, 'primary_document_review': review,
+        'observed_listing_publication_date': raw.metadata.get('publication_date'),
+        'observed_date_conflicts': raw.metadata.get('date_conflicts', []),
+        'publication_date': None, 'emission_date': review['emission_date'],
+        'event_date_basis': 'verified_primary_emission', 'date_conflicts': [],
+        'date_reconciliation': 'primary_emission_verified; listing_publication_unreliable',
+        'regulated_entity': review['regulated_entity'], 'actor_evidence': 'verified_primary_document',
+        'sanction_amount': review['sanction_amount'], 'sanction_unit': review['sanction_unit'],
+        'fact_date': review.get('fact_date'), 'validity_text': review.get('validity_text')}
+    return replace(raw, event_date=review['emission_date'], metadata=metadata)
+
+
 def process_fiscalizacion(raw,cfg):
     from .pipeline import build_signal
     from .processing import RejectedProcessing, DeferredProcessing
+    raw = reviewed_primary_act(raw)
     if raw.metadata.get("date_conflicts"):
         raise RejectedProcessing("source_date_conflict_requires_review")
     if not raw.event_date:
@@ -206,5 +235,8 @@ def process_fiscalizacion(raw,cfg):
     row.update(publication_date=raw.metadata.get("publication_date"), emission_date=raw.metadata.get("emission_date"),
         event_date_basis=raw.metadata.get("event_date_basis"), date_conflicts=raw.metadata.get("date_conflicts", []),
         sanction_effect=raw.metadata.get("sanction_effect"),actor_evidence=raw.metadata.get("actor_evidence"))
+    for field in ('observed_listing_publication_date', 'observed_date_conflicts', 'date_reconciliation', 'primary_document_review', 'fact_date', 'validity_text'):
+        if field in raw.metadata:
+            row[field] = raw.metadata[field]
     row["fiscalization_topic"]=topic;row["source_documents"]=raw.metadata.get("attachments",[])
     return row

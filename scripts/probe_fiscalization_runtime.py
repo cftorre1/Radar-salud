@@ -111,6 +111,9 @@ def probe(output, as_of):
         ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html'),
         ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-559470.html'),
         ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-559471.html'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-715128.html'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-814414.html'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-715129.html'),
     ]]
     seeds = list({seed['url']: seed for seed in reversed(seeds)}.values())[::-1]
     receipts=[]; inventory=[]; navigation=[]

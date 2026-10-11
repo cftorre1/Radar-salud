@@ -176,6 +176,26 @@ def test_sis_date_conflict_gets_durable_review_reason_and_appeal_is_not_new_sanc
     assert 'modifica una sanción anterior' in row['why_it_matters']
 
 
+def test_sis_verified_primary_document_recovers_act_without_fictitious_publication():
+    from radar_salud.models import RawItem
+    from radar_salud.superintendencia_fiscalizacion import process_fiscalizacion
+    url='https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n-7462-emision-23-09-2026'
+    raw=RawItem('superintendencia_fiscalizacion','Resolución Exenta IP/N°7462',url,'SIS','official','2026-09-23',raw_text='Multa por condicionar la atención al pago previo.',metadata={
+        'date_conflicts':['publication_precedes_emission'],'publication_date':'2025-09-23','emission_date':'2026-09-23',
+        'scope':'Prestadores','fiscalization_kind':'sanction','attachments':[{'url':'https://www.superdesalud.gob.cl/app/uploads/2026/09/res-exenta-ip-n-7462-clinica-sanatorio-aleman-pas-n-5008485-2023_0001.pdf'}]})
+    row=process_fiscalizacion(raw,{'base_confidence':100})
+    assert row['event_date']==row['emission_date']=='2026-09-23'
+    assert row['publication_date'] is None
+    assert row['observed_listing_publication_date']=='2025-09-23'
+    assert row['observed_date_conflicts']==['publication_precedes_emission']
+    assert row['sanction_amount']==400 and row['sanction_unit']=='UTM'
+    assert row['fact_date']=='2023-05-02'
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('verified_pulse','scripts/export_web_snapshot.py')
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    assert module._sanction_pulses([row])==[row]
+
+
 def test_sanction_pulse_counts_publications_without_changing_act_dates():
     import importlib.util
     from pathlib import Path

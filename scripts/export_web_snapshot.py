@@ -470,6 +470,11 @@ def _sanction_pulses(signals, today=None):
     for s in signals:
         scopes=s.get("scopes") or []
         sector=next((x for x in ("Isapres","Prestadores") if x in scopes),None)
+        if s.get('date_reconciliation') and not s.get('publication_date'):
+            # A verified issuance is visible individually; an inconsistent listing
+            # publication must never become a fictitious new publication pulse.
+            other.append(s)
+            continue
         publication = _d(s.get("publication_date") or s.get("event_date"))
         age=(today-publication).days if publication else 999
         if s.get("event_type")=="SANCTION" and sector:
