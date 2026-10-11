@@ -347,7 +347,7 @@ class DateArchiveClient:
         from datetime import timedelta
         self.calls.append(url);query=dict(parse_qsl(urlsplit(url).query))
         start=query.get('date[min]','');end=query.get('date[max]','')
-        form=f'<form method="get" action="/en/news"><input name="date[min]" value="{start}"><input name="date[max]" value="{end}"></form>'
+        form=f'<form method="get" action="/en/news" id="views-exposed-form-news-news-page" data-drupal-selector="views-exposed-form-news-news-page"><input name="date[min]" value="{start}"><input name="date[max]" value="{end}"></form>'
         if not start: html=form
         elif self.empty: html=form+'<div class="view-empty">No news found.</div>'
         else:
@@ -356,6 +356,7 @@ class DateArchiveClient:
             html=(form if not self.ignore else '')+card
             if self.saturated and (date.fromisoformat(end)-date.fromisoformat(start)).days>5:
                 html+=f'<a rel="last" href="?date%5Bmin%5D={start}&amp;date%5Bmax%5D={end}&amp;page=8">Last</a>'
+        html='<h1>News</h1><div class="news-grid view view-news view-id-news view-display-id-news_page">'+html+'</div>'
         raw=html.encode();return raw,{'http_status':200,'tls_verified':True,'fetched_at':'2026-10-11T14:18:00Z','body_sha256':hashlib.sha256(raw).hexdigest()}
 
 def test_official_date_slices_cover_all_90_days_using_card_dates_not_query_dates():
@@ -381,10 +382,10 @@ def test_native_archive_cap_triggers_bounded_date_subdivision_instead_of_claimin
     limited=collect_route(DateArchiveClient(saturated=True),dict(ROUTE,date_slice_days=7),AS_OF,2)
     assert not limited['archive_complete'] and limited['unvisited_partitions']>0
 
-def test_official_empty_date_partitions_are_explicit_evidence_not_missing_html():
+def test_initial_empty_messages_without_verified_live_protocol_are_unverified():
     result=collect_route(DateArchiveClient(empty=True),dict(ROUTE,date_slice_days=7),AS_OF,100)
-    assert result['archive_complete'] and not result['items']
-    assert all(s['stop_reason']=='date_partition_official_empty' for s in result['date_partitions'])
+    assert not result['archive_complete'] and not result['items']
+    assert all(s['stop_reason']=='date_partition_empty_unverified' for s in result['date_partitions'])
 
 def test_date_query_cannot_operate_if_official_filter_form_disappears():
     with pytest.raises(ValueError,match='form_missing'):
@@ -443,7 +444,7 @@ def test_resume_rechecks_age_when_receipt_is_used_and_never_recaptures_stale_byt
     assert second.network_requests==0 and not second.opener.calls
 
 DATE_BOUNDS={'from':'2026-09-15','to':'2026-09-21','query_from':'2026-09-14','query_to':'2026-09-22'}
-DATE_FORM='<form method="get" action="/en/news" data-drupal-selector="views-exposed-form-news-news-page"><input name="date[min]" value="2026-09-14"><input name="date[max]" value="2026-09-22"></form>'
+DATE_FORM='<form method="get" action="/en/news" id="views-exposed-form-news-news-page" data-drupal-selector="views-exposed-form-news-news-page"><input name="date[min]" value="2026-09-14"><input name="date[max]" value="2026-09-22"></form>'
 def news_view(body):
     return '<h1>News</h1><div class="news-grid view view-news view-id-news view-display-id-news_page">'+DATE_FORM+body+'</div>'
 def terminal_date_route():
@@ -490,3 +491,38 @@ def test_initial_native_empty_is_unverified_without_explicit_empty_message():
 def test_native_empty_end_proof_requires_actual_previous_boundary_not_missing_next_alone(prior):
     result=collect_route(FakeClient([news_view(date_card(0)+native_page_link(1,'last')),prior,news_view('')]),terminal_date_route(),AS_OF,10)
     assert not result['archive_complete']
+
+def test_advertised_native_end_requires_prior_closed_news_scope_not_generic_cards():
+    result=collect_route(FakeClient([news_view(date_card(0)+native_page_link(1,'next')+native_page_link(1,'last')),'<h1>Unrelated listing</h1>'+DATE_FORM+date_card(1),news_view('')]),terminal_date_route(),AS_OF,10)
+    assert not result['archive_complete'] and 'dated_news_view_unverified' in result['stop_reason']
+
+@pytest.mark.parametrize('link',[
+    native_page_link(1,'last').replace('?date','https://www.who.int/en/news?date'),
+    native_page_link(1,'last').replace('&amp;page=1','&amp;c%5B%5D=65&amp;page=1'),
+    native_page_link(1,'last').replace('&amp;page=1','&amp;page=1&amp;page=1'),
+])
+def test_dated_native_last_pager_requires_full_origin_and_query_identity(link):
+    result=collect_route(FakeClient([news_view(date_card(0)+link)]),terminal_date_route(),AS_OF,10)
+    assert not result['archive_complete'] and 'dated_pager_identity_conflict' in result['stop_reason']
+
+def test_empty_error_message_is_not_native_archive_evidence():
+    html='<h1>Unrelated listing</h1>'+DATE_FORM+'<div class="view-empty">Search index unavailable</div>'
+    result=collect_route(FakeClient([html]),terminal_date_route(),AS_OF,10)
+    assert not result['archive_complete']
+
+def test_archive_flag_without_verified_90_day_boundary_cannot_make_source_ready(tmp_path,monkeypatch):
+    from scripts import discover_global_sources as m
+    config=json.loads(Path('config/global_discovery.json').read_text())
+    for relative,payload in [('config/global_discovery.json',config),('data/global/themes.json',{'themes':[]})]+[(p,{'sources':{}}) for p in ('data/source_health.json','web/data/source_health.json','web/data/product.json')]:
+        path=tmp_path/relative;path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(payload))
+    class NoNetwork:
+        def __init__(self,*args,**kwargs):self.records={};self.reused_urls=set();self.network_requests=0
+    routes=[{'route':r,'items':[{'index_published_at':'2026-10-01' if r['source']=='who' else '2026-07-01'}],
+             'pages':[{'native_control':[]}],'archive_complete':True,'date_pending':0,'stop_reason':'empty_native_page'} for r in config['routes']]
+    monkeypatch.setattr(m,'CaptureClient',NoNetwork)
+    monkeypatch.setattr(m,'discover',lambda *args:(routes,[],[]))
+    result=m.run(tmp_path,tmp_path/'captures',AS_OF,'no-network-boundary-regression')
+    who=result['source_health']['who']
+    assert not result['network_requests'] and not result['publication_count']
+    assert who['window_completeness']['90']=='incomplete_lower_bound'
+    assert who['coverage_completeness']=='incomplete' and who['outcome']=='IMPLEMENTED_WITH_DECLARED_COVERAGE_GAPS'

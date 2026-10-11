@@ -20,6 +20,19 @@ def write(root, relative, payload):
 def health_counts(items, as_of):
     return {str(days): sum(row.get("detail_verified", False) and in_window(row["published_at"], as_of, days) for row in items) for days in (30,90)}
 
+def project_inventory_csv(root, payload):
+    destination=root/'data/audits/global_source_recovery_2026_10_11/runs'/payload['run_id']/'inventory.csv'
+    fields=['source','section','url','title','index_published_at','published_at','status','reason','detail_verified',
+            'materiality','discovery_priority','classification_reason','source_aliases','sections','entities','document_links','index_capture_sha256','detail_capture_sha256']
+    with destination.open('w') as handle:
+        writer=csv.DictWriter(handle,fieldnames=fields,extrasaction='ignore');writer.writeheader()
+        for item in payload['items']:
+            row=dict(item,materiality=item['classification']['materiality'],discovery_priority=item['classification']['priority'],classification_reason=item['classification']['reason'],
+                     index_capture_sha256=';'.join(sorted({r['body_sha256'] for r in item['index_evidence']})),
+                     detail_capture_sha256=(item.get('detail_evidence') or {}).get('capture',{}).get('body_sha256',''))
+            for key in ('source_aliases','sections','entities','document_links'):row[key]=json.dumps(item.get(key,[]),ensure_ascii=False)
+            writer.writerow(row)
+
 def new_identity_count(items, prior_items, source):
     previous={alias for old in prior_items if old["source"]==source for alias in old.get("source_aliases",[old["url"]])}
     return sum(not set(item["source_aliases"]) & previous for item in items)
@@ -88,7 +101,7 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
             recalls[str(days)]={"basis":"independent_native_index_control_on_declared_surfaces", "inventory_url_count":len(control_urls), "detected":len(control_urls & detected_urls),"omitted_urls":sorted(control_urls-detected_urls),"recall":len(control_urls&detected_urls)/len(control_urls) if control_urls else None,"whole_source_archive_claim":False}
             expected=len([route for route in config["routes"] if route["source"]==source])
             windows[str(days)]="complete_on_declared_surfaces" if len(source_routes)==expected and not technical and not pending_dates and all(window_boundary_verified(route,as_of,days) for route in source_routes) and not control_urls-detected_urls else "incomplete_lower_bound"
-            if control_urls-detected_urls:complete=False
+            if windows[str(days)]!='complete_on_declared_surfaces':complete=False
         cadence_validated = cadence_is_valid(ledger,source,checked,run_id,complete,config["cadence_seconds"],replay or resume,contract_id)
         source_health[source] = {
             "name": source.upper(), "checked_at": checked, "status": "ok" if complete and cadence_validated else "warning" if source_routes else "error",
@@ -147,9 +160,7 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
     write(root, "data/global_intelligence/discovery.json", payload)
     write(root, "data/global_intelligence/source_health.json", {"sources": source_health})
     write(root, "data/global_intelligence/editorial_candidates.json", {"as_of":as_of.isoformat(),"default_window_days":30,"maximum_topics":10,"topics":topics,"publication_count":0})
-    with (root / evidence / "inventory.csv").open("w") as handle:
-        fields = ["source","section","url","title","index_published_at","published_at","status","reason","detail_verified"]
-        writer = csv.DictWriter(handle, fieldnames=fields,extrasaction="ignore");writer.writeheader();writer.writerows(items)
+    project_inventory_csv(root,payload)
     # Keep only metadata projections publicly. Original bodies are runtime artifacts.
     projection = {}
     for url, record in client.records.items():
@@ -165,8 +176,10 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
     return payload
 
 if __name__ == "__main__":
-    parser=argparse.ArgumentParser();parser.add_argument("--root",type=Path,default=Path(__file__).resolve().parents[1]);parser.add_argument("--captures",type=Path,default=Path("work/global-runtime-captures"));parser.add_argument("--replay",type=Path);parser.add_argument("--resume-captures",action="store_true");parser.add_argument("--mirror-health",action="store_true");parser.add_argument("--as-of",type=date.fromisoformat,default=datetime.now(ZoneInfo("America/Santiago")).date());parser.add_argument("--run-id",default=os.environ.get("GITHUB_RUN_ID") or datetime.now(timezone.utc).strftime("local-%Y%m%dT%H%M%SZ"));args=parser.parse_args()
-    if args.mirror_health:
+    parser=argparse.ArgumentParser();parser.add_argument("--root",type=Path,default=Path(__file__).resolve().parents[1]);parser.add_argument("--captures",type=Path,default=Path("work/global-runtime-captures"));parser.add_argument("--replay",type=Path);parser.add_argument("--resume-captures",action="store_true");parser.add_argument("--mirror-health",action="store_true");parser.add_argument("--project-inventory-csv",action="store_true");parser.add_argument("--as-of",type=date.fromisoformat,default=datetime.now(ZoneInfo("America/Santiago")).date());parser.add_argument("--run-id",default=os.environ.get("GITHUB_RUN_ID") or datetime.now(timezone.utc).strftime("local-%Y%m%dT%H%M%SZ"));args=parser.parse_args()
+    if args.project_inventory_csv:
+        project_inventory_csv(args.root,json.loads((args.root/'data/global_intelligence/discovery.json').read_text()))
+    elif args.mirror_health:
         mirror_health(args.root,json.loads((args.root/"data/global_intelligence/source_health.json").read_text())["sources"])
     else:
         run(args.root,args.captures,args.as_of,args.run_id,args.replay,args.resume_captures)

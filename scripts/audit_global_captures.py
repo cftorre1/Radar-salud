@@ -160,7 +160,8 @@ class NativeHTML(HTMLParser):
             if "views-field-title" in frame["classes"]:
                 links = [(href, title) for href, title in frame["links"] if href and title]
                 times = list(self.stack[-1]["times"]) if self.stack else []
-                self.cards.append({"links": links, "times": times})
+                self.cards.append({"links": links, "times": times,
+                                   "inside_news_view": any(parent.get("news_view") for parent in self.stack)})
 
 
 def independent_index(raw, route, page_url, as_of):
@@ -255,6 +256,8 @@ def native_empty_end_checks(ordered, page_readers, page_rows, single_page=False)
             and not any(forbidden & set(node["attrs"].get("class", "").split()) for node in view["descendants"]),
         "previous_closed_official_news_scope": previous_scope,
         "previous_nonempty_native_cards": bool(page_rows.get(previous_url)),
+        "previous_cards_inside_news_scope": previous is not None and bool(previous.cards)
+            and all(card["inside_news_view"] for card in previous.cards),
         "previous_without_native_next": prior_view is not None and not links_with_rel(prior_view, "next")
             and previous is not None and not any("next" in anchor.get("rel", "").split() for anchor in previous.links),
         "same_query_identity": previous_url is not None and query_identity(previous_url) == query_identity(terminal),
@@ -455,7 +458,7 @@ def audit(captures, inventory_path, output):
                             check(bool(page_bound_checks.get(page_url)), "complete_partition_missing_query_evidence", page_url)
                         terminal = ordered[-1]
                         if part["stop_reason"] == "date_partition_official_empty":
-                            check(not page_rows[terminal] and bool(page_readers[terminal].empty_messages), "partition_native_empty_evidence", terminal)
+                            check(False, "unsupported_empty_message_completion_contract", terminal)
                         elif part["stop_reason"] in {"date_partition_native_empty_after_advertised_end", "date_partition_single_page_native_end_probe"}:
                             proof = native_empty_end_checks(ordered, page_readers, page_rows,
                                                            single_page=part["stop_reason"] == "date_partition_single_page_native_end_probe")
@@ -565,6 +568,23 @@ def audit(captures, inventory_path, output):
         check(recall["whole_source_archive_claim"] is False, "whole_source_archive_claim", source)
         check(health["published"] == 0 and health["publication_activation"] is False, "health_publication_activation", source)
         check(health["pages_checked"] == sum(page["source"] == source for page in pages), "pages_checked_health", source)
+        if health["coverage_completeness"] == "complete" or health["outcome"] == "READY_FOR_INTEGRATION":
+            source_routes = [result for result in inventory["routes"] if result["route"]["source"] == source]
+            for days in (30, 90):
+                boundary = (as_of - timedelta(days=days - 1)).isoformat()
+                for result in source_routes:
+                    if result.get("date_partitions"):
+                        parts = sorted(result["date_partitions"], key=lambda part: part["from"])
+                        valid = (bool(parts) and parts[0]["from"] <= boundary and parts[-1]["to"] >= as_of.isoformat()
+                                 and all(part["archive_complete"] for part in parts) and not result.get("unvisited_partitions")
+                                 and all(date.fromisoformat(a["to"]) + timedelta(days=1) == date.fromisoformat(b["from"]) for a, b in zip(parts, parts[1:])))
+                    else:
+                        dates = [row["published_at"] for page in result["pages"] for row in page_rows.get(official_url(page["url"]), [])]
+                        valid = bool(dates) and all(dates) and dates == sorted(dates, reverse=True) and min(dates) < boundary
+                    check(bool(result["archive_complete"] and valid), "complete_source_missing_independent_window_boundary", source + "/" + result["route"]["section"] + "/" + str(days))
+                check(health["window_completeness"][str(days)] == "complete_on_declared_surfaces", "complete_source_window_health_conflict", source + "/" + str(days))
+            check(all(member.get("detail_verified") and member.get("published_at") for item in source_items for member in (item.get("translation_members") or [item])),
+                  "complete_source_unverified_language_member", source)
         health_summary[source] = {"counts": counts, "native_90_URLs": len(native_90[source]),
                                   "detected_native_90_URLs": len(native_90[source] & detected[source]),
                                   "coverage_completeness": health["coverage_completeness"],
