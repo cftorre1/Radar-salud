@@ -84,18 +84,27 @@ def manifests(artifact, explicit=None):
     return result
 
 
-def discovery_snapshot(artifact, explicit=None):
+def discovery_snapshots(artifact, explicit=None):
     paths = [explicit] if explicit is not None and explicit.exists() else []
     if artifact.exists():
         paths.extend(sorted(artifact.rglob("discovery_run.json")))
     snapshots = []
+    seen = set()
     for path in paths:
+        if path.resolve() in seen:
+            continue
+        seen.add(path.resolve())
         if path != explicit and not path.resolve().is_relative_to(artifact.resolve()):
             raise ValueError("unsafe_artifact_discovery_path")
         payload = path.read_bytes()
         value = json.loads(payload)
         if SOURCE in value.get("source_details", {}):
             snapshots.append((value.get("at") or "", digest(payload), value))
+    return snapshots
+
+
+def discovery_snapshot(artifact, explicit=None):
+    snapshots = discovery_snapshots(artifact, explicit)
     return max(snapshots, key=lambda row: row[0]) if snapshots else (None, None, {})
 
 
@@ -213,7 +222,9 @@ def exceptional_categories(row, window):
     byline_conflict = bool(row.get("visible_byline_day") and native_days
                           and set(native_days) != {row["visible_byline_day"]}
                           and set(chile_days) != {row["visible_byline_day"]})
-    if (row.get("health_related_original") and (byline_conflict or row.get("current_parser", {}).get("reason") == "conflicting_publication_dates")):
+    parser = row.get("current_parser", {})
+    reason = parser.get("reason") or parser.get("metadata", {}).get("publisher_exception_reason")
+    if byline_conflict or reason in {"conflicting_publication_dates", "publisher_conflicting_publication_dates"}:
         categories.append("observed_primary_publication_date_conflict")
     keywords = row.get("keywords")
     keywords = keywords if isinstance(keywords, list) else [keywords]
@@ -247,15 +258,18 @@ def retain_editorial_exceptions(originals, output, window, discovery_hash, disco
               "requests": retained, "unique_urls": len(retained),
               "category_counts": dict(Counter(category for row in retained for category in row["retention_categories"])),
               "status": "OBSERVED_EXCEPTION_ORIGINALS_RETAINED_NOT_SOURCE_ACCEPTANCE" if retained else "EXCEPTION_ORIGINALS_NOT_AVAILABLE",
-              "selection_policy": "Hash-verified URL-bound originals in the observed visible-byline calendar window: healthcare primary date conflicts, EXACT Opinión/Opinion/Columna keywords, EXACT Branded/Publirreportajes sections, and ALL URL-bound VideoObject primary documents. Dates remain observations; neither article paths nor retention grant editorial acceptance."}
+              "selection_policy": "Hash-verified URL-bound originals in the observed visible-byline calendar window: ALL primary publisher date conflicts regardless of topic, EXACT Opinión/Opinion/Columna keywords, EXACT Branded/Publirreportajes sections, and ALL URL-bound VideoObject primary documents. Dates remain observations; neither article paths nor retention grant editorial acceptance."}
     (output / "manifest.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
     return result
 
 
 def audit(artifact, output, thin_output, discovery=None, capture_manifest=None, exception_output=None):
     source_manifests = manifests(artifact, capture_manifest)
-    discovered_at, discovery_hash, snapshot = discovery_snapshot(artifact, discovery)
-    traces = snapshot.get("source_details", {}).get(SOURCE, [])
+    snapshots = discovery_snapshots(artifact, discovery)
+    discovered_at, discovery_hash, snapshot = max(snapshots, key=lambda row: row[0]) if snapshots else (None, None, {})
+    # A successful later parser must not erase the historical cold originals
+    # selected by earlier incomplete-detail observations.
+    traces = [trace for _, _, observed in snapshots for trace in observed.get("source_details", {}).get(SOURCE, [])]
     thin_urls = {normalized_url(row.get("url")) for row in traces if row.get("status") == "detail_error"
                  and row.get("reason") == "incomplete_article_evidence"}
     thin_urls.discard(None)
@@ -321,6 +335,7 @@ def audit(artifact, output, thin_output, discovery=None, capture_manifest=None, 
     thin_manifest = {"schema_version": "1.0", "source": SOURCE,
                      "mode": "exact_offline_retention_of_all_cold_incomplete_detail_originals_no_inventory_injection",
                      "discovery_run_sha256": discovery_hash, "discovery_at": discovered_at,
+                     "observed_discovery_run_sha256s": sorted({digest for _, digest, _ in snapshots}),
                      "expected_unique_incomplete_urls": len(thin_urls), "requests": thin_rows,
                      "status": "ALL_COLD_THIN_ORIGINALS_RETAINED_NOT_SOURCE_ACCEPTANCE" if thin_urls and all(
                          row.get("original_bytes_verified") for row in thin_rows) else "THIN_ORIGINAL_RETENTION_PARTIAL"}
@@ -330,6 +345,7 @@ def audit(artifact, output, thin_output, discovery=None, capture_manifest=None, 
               "mode": "complete_offline_audit_of_retained_original_response_corpus_without_analysis_or_inventory_injection",
               "generated_at": datetime.now(timezone.utc).isoformat(), "network_requests": 0, "ai_calls": 0,
               "discovery_at": discovered_at, "discovery_run_sha256": discovery_hash,
+              "observed_discovery_run_sha256s": sorted({digest for _, digest, _ in snapshots}),
               "capture_manifest_sha256s": [manifest_hash for _, manifest_hash, _ in source_manifests],
               "status": "ALL_RETAINED_ORIGINALS_AUDITED_NOT_SOURCE_ACCEPTANCE" if source_manifests and not raw_counts["original_verification_errors"] else "PRIMARY_CORPUS_AUDIT_PARTIAL",
               "counts": dict(raw_counts, audited_retained_original_identities=len(rows),

@@ -161,6 +161,9 @@ def test_editorial_exception_selection_uses_exact_publisher_taxonomy_and_observe
     assert corpus.exceptional_categories(dict(base, publication_evidence=[{"timestamp": "2026-09-01T12:00:00Z"}]), window) == [
         "observed_primary_publication_date_conflict"]
     assert corpus.exceptional_categories(dict(base, publication_evidence=[{"timestamp": "2026-10-09T00:30:00Z"}]), window) == []
+    assert corpus.exceptional_categories(dict(base, health_related_original=False,
+        current_parser={"status": "verified", "metadata": {"publisher_exception_reason": "publisher_conflicting_publication_dates"}}), window) == [
+        "observed_primary_publication_date_conflict"]
 
 
 def test_editorial_and_all_bound_video_originals_are_retained_exactly_without_adopting_dates(tmp_path):
@@ -221,3 +224,27 @@ def test_standalone_bound_video_is_retained_without_fabricating_an_article(tmp_p
     assert row["current_parser"]["status"] == "error"
     assert gzip.decompress((output / row["gzip_file"]).read_bytes()) == payload
     assert row["visible_byline_day"] == "2026-10-09"
+
+
+def test_union_of_actual_capture_runs_keeps_cold_thin_originals_after_successful_warm_parser(tmp_path):
+    base, captures, manifest, discovery = artifact(tmp_path, [])
+    url = "https://www.latercera.com/paula/noticia/unit-thin-cold-then-warm/"
+    payload = synthetic_unit_html(url, body="La clínica recibe pacientes.")
+    record = captured_record(captures, url, payload)
+    manifest.write_text(json.dumps({"source": "pulso_latercera", "mode": "actual_core_http_observation_no_inventory_injection", "requests": [record]}))
+    cold = json.loads(discovery.read_text())
+    cold["source_details"]["pulso_latercera"] = [{"url": url, "status": "detail_error", "reason": "incomplete_article_evidence"}]
+    discovery.write_text(json.dumps(cold))
+    warm = base / "warm/state/discovery_run.json"
+    warm.parent.mkdir(parents=True)
+    warm.write_text(json.dumps({"at": "2026-10-11T07:40:00Z", "source_details": {"pulso_latercera": [
+        {"url": url, "status": "discovered_metadata_only", "reason": "publisher_video_text_unavailable"}]}}))
+    output = tmp_path / "thin"
+    report = corpus.audit(base, tmp_path / "union.json", output)
+    assert report["discovery_at"] == "2026-10-11T07:40:00Z"
+    assert len(report["observed_discovery_run_sha256s"]) == 2
+    assert report["thin_originals"]["expected_unique_incomplete_urls"] == 1
+    row, = report["thin_originals"]["requests"]
+    assert row["captured_at"] == record["captured_at"]
+    assert row["original_capture_manifest_sha256"] == hashlib.sha256(manifest.read_bytes()).hexdigest()
+    assert gzip.decompress((output / row["gzip_file"]).read_bytes()) == payload
