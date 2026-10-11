@@ -55,3 +55,36 @@ def test_all69_independent_reviews_bind_frozen_complete_inputs_and_models():
     assert audit['editorial_policy']['new_paid_assessment_required'] is True
     assert audit['runtime_state_mutated'] is False and audit['no_ai_calls'] is True
     assert audit['verdict'].startswith('NOT_ACCEPTED_')
+
+
+def test_internal_added_quote_correction_preserves_original_model_and_below_gate_uncertainty():
+    import unicodedata
+    from radar_salud.pulso_editorial_proof import validate_pulso_editorial_proof
+    original_audit = AUDIT.read_bytes()
+    addendum = json.loads((ROOT / 'data/audits/pulso_focus_all69_semantic_addendum_2026_10_11.json').read_bytes())
+    assert addendum['prior_review'] == dict(path=str(AUDIT.relative_to(ROOT)), sha256=digest(original_audit))
+    assert digest(original_audit) == '4aeb33e490eb7fbed45f767e1c5cf6c3c59c5d91f9d69c6b3f4332869a64c9bf'
+    correction, = addendum['records']
+    originals = json.loads(gzip.decompress(FIXTURE.read_bytes()))['rows']
+    source = next(row for row in originals if row['url'] == correction['url'])
+    previous = next(row for row in json.loads(original_audit)['rows'] if row['url'] == correction['url'])
+    assert correction['previous_review_record_sha256'] == canonical(previous)
+    assert correction['model_output_sha256'] == canonical(source['ai'])
+    assert correction['primary_body_sha256'] == digest(source['body'].encode())
+    assert correction['score'] == source['score'] == 68
+    assert correction['novelty_decision'] == source['ai']['pulso_editorial_proof']['novelty_decision'] == 'uncertain'
+    quote = source['ai']['pulso_editorial_proof']['human_health_scope_quote']
+    assert correction['original_scope_quote'] == quote
+    assert correction['original_scope_quote_sha256'] == digest(quote.encode())
+    typography = lambda value: ' '.join(unicodedata.normalize('NFKC', value).translate(str.maketrans({'“':'"', '”':'"'})).split()).casefold()
+    assert typography(quote) not in typography(source['body'])
+    assert not (quote[0] == quote[-1] and quote[0] in '“”"')
+    for cited in correction['source_verbatim_citations']:
+        assert cited in source['body']
+    verdict = validate_pulso_editorial_proof(source['ai'], source['body'])
+    assert verdict['decision'] == 'deferred' and verdict['reason'] == 'pulso_editorial_scope_quote_not_in_input'
+    assert correction['approved_model_rewrite'] is False and correction['publication_approved'] is False
+    assert addendum['runtime_state_mutated'] is False and addendum['no_ai_calls'] is True
+    clarification = addendum['inherited_diagnostic_field_clarification']
+    assert clarification['complete_parent_reviews'] + clarification['complete_child_reviews'] == 69
+    assert clarification['complete_parent_review_field'] == 'semantic_review.independent_first_trigger_review'

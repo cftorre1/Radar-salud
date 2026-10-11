@@ -1,0 +1,65 @@
+{
+  "schema_version": "pulso_all69_semantic_review_addendum_v1",
+  "source": "pulso_latercera",
+  "prior_review": {
+    "path": "data/audits/pulso_focus_all69_independent_semantic_review_2026_10_11.json",
+    "sha256": "4aeb33e490eb7fbed45f767e1c5cf6c3c59c5d91f9d69c6b3f4332869a64c9bf"
+  },
+  "original_checkpoint": "0713ca9a327b4c09932345aff1353c5d87662332",
+  "original_run_id": 38149773071,
+  "review_status": "CORRECTED_EVIDENCE_NOT_RUNTIME_ACCEPTANCE",
+  "inherited_diagnostic_field_clarification": {
+    "field": "semantic_review.independent_semantic_review",
+    "value": "PENDING_CASE_REVIEW",
+    "affected_records": 34,
+    "meaning": "Inherited machine-diagnostic placeholder, superseded by the complete independent_first_trigger_review field in each parent-reviewed record. It is neither the semantic review completion field nor permission to publish.",
+    "complete_parent_review_field": "semantic_review.independent_first_trigger_review",
+    "complete_parent_reviews": 34,
+    "complete_child_reviews": 35
+  },
+  "records": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/ministra-rincon-detalla-que-las-regiones-mas-afectadas-por-cortes-electricos-durante-el-sistema-frontal-son-la-araucania-y-valparaiso/",
+      "publication_date": "2026-07-17",
+      "previous_review_record_sha256": "093dc3aca5f591a64ac1ed06cd5e2d17f86e5ee7cff087e1b3fc1c638ad37f7c",
+      "primary_body_sha256": "fdac2c8ca728e774bf0a27e76dfcf74a5d2f332db3d42f7ef775efa8872629e5",
+      "source_html_sha256": "8d7c80ba6145ca8151c803b3ad7f7e5eb0b055cadd205dd38a0118bcda255e26",
+      "model_output_sha256": "a59d3d09b8f4a3739bd69be3a832accb97184f9bd367e025394e41e3f799c474",
+      "response_id": "resp_08a73baee9f6b79e006acbac780d5887d18f08e4cadbb8080c",
+      "score": 68,
+      "novelty_decision": "uncertain",
+      "superseded_classification": {
+        "classification": "bounded_typography_citation_false_negative_with_uncertainty",
+        "reason": "Actual electrical-outage output/source says92healthcentres and981electrodependents, with equipment stilloperating. Scope literal string matches aftersafe outerquote/case normalization; score68 andnoveltyuncertain remain, so repair is not publication permission."
+      },
+      "corrected_classification": "model_added_internal_punctuation_to_scope_citation",
+      "corrected_reason": "The scope quote starts with Respecto and adds a closing curly quotation mark after 1.800 before omitting the continuation about utility services. It has no removable matching outer pair and does not occur contiguously in the primary input. Case and typography normalization cannot repair the added internal punctuation.",
+      "original_scope_quote": "Respecto a la situación de personas electrodependientes en el país, la autoridad detalló que hay 12.500 registradas en el país, de las cuáles 981 tendrían corte de suministro eléctrico, que por el momento mantendrían sus equipos en operación. “En materia de centros de salud, el total de los afectados son 92 de más de 1.800.”",
+      "original_scope_quote_sha256": "581f2e27c3efeab2b59abafc5d88fd311f5e07aa854c3691a59dc483ed93a648",
+      "v5_quote_matches": false,
+      "source_verbatim_citations": [
+        "Respecto a la situación de personas electrodependientes en el país, la autoridad detalló que hay 12.500 registradas en el país, de las cuáles 981 tendrían corte de suministro eléctrico, que por el momento mantendrían sus equipos en operación.",
+        "“En materia de centros de salud, el total de los afectados son 92 de más de 1.800. Servicios sanitarios con problemas son más de 3.000, y hay 1.068 con corte de suministro, pero con sus equipos funcionando”, detalló sobre la situación en materia de salud."
+      ],
+      "semantic_findings": [
+        "The model extends equipment remaining operational to the92 affected health centres; the source only assigns such equipment statements to electrodependent people and the separate utility-services group.",
+        "The source says981 people tendrían cuts and mantendrían equipment operating; the summary changes this conditional reported status into definite cuts/equipment operation.",
+        "Score68 remains below72 and novelty remains uncertain; these facts do not authorize a publication or a quota-driven score change."
+      ],
+      "approved_model_rewrite": false,
+      "publication_approved": false,
+      "new_actual_assessment_required": true
+    }
+  ],
+  "gate": {
+    "threshold": 72,
+    "changed": false,
+    "publication_quota": false
+  },
+  "no_ai_calls": true,
+  "runtime_state_mutated": false,
+  "limitations": [
+    "Original audit remains immutable; this addendum corrects the named classification and records additional copy defects.",
+    "Every new real model output still requires fresh processing evidence and independent publication review."
+  ]
+}
