@@ -1,6 +1,13 @@
 """Evidence-join tests use synthetic state; they do not certify a live source."""
 import importlib.util
+import gzip
+import hashlib
+import io
+import json
+from email.message import Message
 from pathlib import Path
+
+import pytest
 
 spec = importlib.util.spec_from_file_location("audit_pulso_runtime", Path(__file__).parents[1] / "scripts/audit_pulso_runtime.py")
 audit = importlib.util.module_from_spec(spec)
@@ -126,3 +133,47 @@ def test_interrupted_execution_cannot_reuse_previous_discovery_recall():
     assert old["source_details"][SOURCE][0]["url"] == BASE + "prior/"
     filtered, current = audit.current_execution_discovery(old, "2026-10-11T09:00:00+00:00")
     assert current and filtered is old
+
+
+def test_legacy_unverified_processor_retains_original_and_restores_both_bindings(tmp_path):
+    from radar_salud import beta_sources, pulso_source
+    from radar_salud.models import RawItem
+    from radar_salud.processing import DeferredProcessing
+    url = BASE + "legacy-held/"
+    title = "Clínica suspende operaciones y dispone el traslado de pacientes"
+    body = "La clínica informó el cierre temporal y el traslado de pacientes a otros hospitales de su red. " * 3
+    node = {"@type": "NewsArticle", "url": url, "headline": title, "datePublished": "2026-10-10T15:00:00Z"}
+    payload = (f'<link rel="canonical" href="{url}"><script type="application/ld+json">'
+               f'{json.dumps(node)}</script><article><h1>{title}</h1><p>{body}</p></article>').encode()
+
+    class Response(io.BytesIO):
+        status = 200
+        headers = Message()
+        headers["Content-Type"] = "text/html; charset=utf-8"
+        def geturl(self):
+            return url
+
+    observer = audit.CaptureObserver(tmp_path, opener=lambda request, timeout: Response(payload))
+    originals = pulso_source.fetch_html, beta_sources.fetch_html
+    raw = RawItem(SOURCE, "Título antiguo de la cola", url, "Pulso / La Tercera", "press_high_trust",
+                  metadata={"editorial_hold": "incremental_value_review_required"})
+    with audit.observe_pulso_fetches(observer):
+        assert pulso_source.fetch_html is observer and beta_sources.fetch_html is observer
+        with pytest.raises(DeferredProcessing):
+            beta_sources.process_curated_beta_source(raw, {})
+    observer.flush()
+    assert (pulso_source.fetch_html, beta_sources.fetch_html) == originals
+    assert raw.metadata["article_verified"]
+    assert raw.metadata["editorial_assessment"]["reason"] == "incremental_value_review_required"
+    record = observer.manifest["requests"][0]
+    assert record["sha256"] == hashlib.sha256(payload).hexdigest()
+    assert gzip.decompress((tmp_path / record["gzip_file"]).read_bytes()) == payload
+
+
+def test_recent_history_feed_exclusion_is_flagged_unresolved():
+    row = {"source_url": BASE + "dropped/", "event_date": "2026-10-10", "evidence_maturity": "media_reported",
+           "what_happened": "Según La Tercera, el prestador reportó una ampliación."}
+    report = audit.join_report(discovery([trace("dropped")]), {}, [row], [], control([]))
+    assert report["matrix"][0]["traceability_unresolved"]
+    assert report["unresolved_recent_feed_exclusions"] == [row["source_url"]]
+    assert "specific exclusion is not emitted" in report["matrix"][0]["exact_reason"]

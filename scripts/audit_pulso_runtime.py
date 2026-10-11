@@ -20,6 +20,7 @@ import sys
 import threading
 import time
 from collections import Counter
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
@@ -197,6 +198,21 @@ class CaptureObserver:
             self._flush_unlocked()
 
 
+@contextmanager
+def observe_pulso_fetches(observer):
+    """Capture both discovery and legacy-detail validation in Pulso-only core."""
+    from radar_salud import beta_sources, pulso_source
+    original_discovery = pulso_source.fetch_html
+    original_processing = beta_sources.fetch_html
+    pulso_source.fetch_html = observer
+    beta_sources.fetch_html = observer
+    try:
+        yield
+    finally:
+        pulso_source.fetch_html = original_discovery
+        beta_sources.fetch_html = original_processing
+
+
 def join_report(discovery, queue, history, feed, control, *, baseline=(), captures=None):
     """Pure evidence join. Queue presence never becomes discovery recall."""
     details = discovery.get("source_details", {}).get(SOURCE, [])
@@ -282,9 +298,11 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         comparison = "match" if runtime_day and original.get("publication_date") == runtime_day else (
             "conflict" if runtime_day and original.get("publication_date") else "runtime_original_date_unverified" if original else "no_external_date_control")
         title = verified.get("title") or original.get("title") or (historical or {}).get("title") or next((row["title"] for row in rows if row.get("title")), None)
+        historical_day = (historical or {}).get("publication_date") or (historical or {}).get("event_date")
         matrix.append({"url": url, "title": title,
-            "publication_date": runtime_day or original.get("publication_date"),
-            "publication_date_evidence": "current_verified_detail" if runtime_day else original.get("verification_method") or "unverified",
+            "publication_date": runtime_day or original.get("publication_date") or historical_day,
+            "publication_date_evidence": "current_verified_detail" if runtime_day else original.get("verification_method") or (
+                "recorded_history_date_requires_current_original_verification" if historical_day else "unverified"),
             "publication_timestamp": verified.get("publication_timestamp"),
             "publication_date_source": verified.get("publication_date_source"),
             "section": verified.get("section") or original.get("section") or urlsplit(url).path.split("/")[1],
@@ -294,6 +312,7 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
             "queue_present": bool(rows), "queue": rows, "passed_gate": passed,
             "editorial_outcome": disposition, "exact_reason": reason,
             "history_present": bool(historical), "feed_present": url in feed_urls,
+            "traceability_unresolved": bool(historical and url not in feed_urls),
             "source_attribution": {"evidence_maturity": (historical or {}).get("evidence_maturity"),
                 "attribution_present": bool(re.search(r"pulso|la tercera", (historical or {}).get("what_happened", ""), re.I)),
                 "confirmation_policy": (historical or {}).get("confirmation_policy")},
@@ -326,6 +345,10 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
                                and row["url"] in eligible]}
     attribution_findings = [row["url"] for row in matrix if row["history_present"] and (
         row["source_attribution"]["evidence_maturity"] != "media_reported" or not row["source_attribution"]["attribution_present"])]
+    start = control.get("window_90", {}).get("start")
+    end = control.get("snapshot_date") or control.get("window_90", {}).get("end")
+    unresolved_feed = [row["url"] for row in matrix if row["traceability_unresolved"] and (
+        not row["publication_date"] or not start or not end or start <= row["publication_date"] <= end)]
     return {"source": SOURCE, "verdict": "EVIDENCE_REQUIRES_COVERAGE_AND_EDITORIAL_REVIEW",
         "discovery_run_at": discovery.get("at"), "runtime": discovery.get("runtime"),
         "selected_sources": discovery.get("selected_sources"), "core_source_present": SOURCE in discovery.get("sources", {}),
@@ -333,6 +356,7 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         "core_source": discovery.get("sources", {}).get(SOURCE), "coverage": coverage,
         "baseline_queue": list(baseline), "windows": windows, "matrix": matrix,
         "source_attribution_findings": attribution_findings,
+        "unresolved_recent_feed_exclusions": unresolved_feed,
         "counts": {"current_core_discovered_urls": len(current), "source_queue_urls": len(queued),
                    "external_control_urls": len(controls), "history_urls": len(history_by_url),
                    "published_in_feed": sum(row["history_present"] and row["feed_present"] for row in matrix)},
@@ -395,25 +419,25 @@ def main():
                  "started_at": datetime.now(timezone.utc).isoformat(), "processing_limit": args.limit,
                  "ai_credentials_present": bool(os.environ.get("OPENAI_API_KEY")), "ai_guardrails_modified": False}
     if not args.report_only:
-        from radar_salud import engine_cli, pulso_source
+        from radar_salud import engine_cli
         observer = CaptureObserver(capture_path, {normalized_url(row["url"]) for row in control["articles"]})
-        original_loader, original_argv = pulso_source.fetch_html, sys.argv
+        original_argv = sys.argv
         previous_term = signal.getsignal(signal.SIGTERM)
         def terminate(signum, frame):
             raise KeyboardInterrupt("runtime_terminated_signal_" + str(signum))
         signal.signal(signal.SIGTERM, terminate)
-        pulso_source.fetch_html = observer
         sys.argv = ["engine_cli", "--sources", SOURCE, "--limit", str(args.limit)]
         if args.discovery_only:
             sys.argv.append("--discovery-only")
         try:
             execution["engine_called"] = True
-            engine_cli.main()
+            with observe_pulso_fetches(observer):
+                engine_cli.main()
             execution["engine_completed"] = True
         except (Exception, KeyboardInterrupt) as error:
             execution.update(error_type=type(error).__name__, error=str(error)[:500])
         finally:
-            pulso_source.fetch_html, sys.argv = original_loader, original_argv
+            sys.argv = original_argv
             signal.signal(signal.SIGTERM, previous_term)
             observer.flush()
     discovery = read_json(root / "data/state/discovery_run.json", {})
