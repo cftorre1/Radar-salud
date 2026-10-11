@@ -9,6 +9,7 @@ from .isapre_universe import parse_registry, release_metadata, parse_portfolio, 
 from .pending_queue import atomic_json
 from .source_health import record_data_adapter
 from .cmf_sources import parse_actor, parse_essential_index, financial_documents, financial_results, classify_primary
+from .cmf_sources import parse_shareholders, apply_verified_primary
 from urllib.parse import parse_qs, urlsplit
 
 
@@ -69,8 +70,6 @@ def collect_isapres(captures, root):
 
 def collect_cmf(captures, root):
     from datetime import date, timedelta
-    from pypdf import PdfReader
-    import io
     actor_path=root/'data/entities/cmf_reporting_actors.json'
     actors=json.loads(actor_path.read_text()).get('actors',[]) if actor_path.exists() else []
     documents=[]; statements=[]; observations=[]; actor_coverage=[]
@@ -86,6 +85,14 @@ def collect_cmf(captures, root):
         rut=parse_qs(urlsplit(r['url']).query).get('rut',[None])[0]
         if rut not in by_rut: continue
         actor=by_rut[rut]
+        if r['kind']=='reporting_5':
+            actor['reported_major_shareholders']=parse_shareholders(captures.html(r),source_url=r['url'],sha256=r['sha256'])
+            control=next((owner for owner in actor['reported_major_shareholders'] if owner['ownership_pct']>50),None)
+            actor['control_evidence']=control
+            parent=next((a for a in actors if control and fold_name(a['legal_name'])==fold_name(control['name'])),None)
+            if parent:
+                actor['parent_entity_id']=parent['entity_id']
+                if actor['entity_id'] not in parent['subsidiary_entity_ids']:parent['subsidiary_entity_ids'].append(actor['entity_id'])
         if r['kind']=='essential_90d':
             query=parse_qs(r['request_body'])
             query_start=f"{query['aa'][0]}-{query['mm'][0]}-{query['dd'][0]}"
@@ -97,9 +104,11 @@ def collect_cmf(captures, root):
                 if primary:
                     content=captures.body(primary)
                     if content.startswith(b'%PDF'):
-                        text=' '.join(page.extract_text() or '' for page in PdfReader(io.BytesIO(content)).pages)
+                        from .primary_documents import extract_primary_pdf
+                        text,method=extract_primary_pdf(content)
                         doc.update(primary_sha256=primary['sha256'], primary_verified=True,
-                                   primary_excerpt=' '.join(text.split())[:600], materiality=classify_primary(text))
+                                   primary_excerpt=' '.join(text.split())[:1000], primary_extraction_method=method,
+                                   primary_content_usable=len(text.strip())>=80, materiality=classify_primary(text))
                         doc['disposition']=doc['materiality']['disposition'];doc['reason']=doc['materiality']['reason']
                 documents.append(doc)
         if r['kind']=='financial_period':
@@ -109,10 +118,26 @@ def collect_cmf(captures, root):
     # Preserve first detection across polls and replays; transient CMF token URLs do not identify events.
     old_path=root/'data/market/cmf_disclosures.json'
     old={d['record_id']:d for d in json.loads(old_path.read_text()).get('documents',[])} if old_path.exists() else {}
-    for doc in documents: doc['detected_at']=old.get(doc['record_id'],{}).get('detected_at',as_of)
+    for doc in documents:
+        prior=old.get(doc['record_id'],{})
+        doc['detected_at']=prior.get('detected_at',next(r['completed_at'] for r in receipts if r['kind']=='essential_90d' and 'rut='+doc['issuer_entity_id'].split(':')[-1].split('-')[0]+'&' in r['url']))
+    from .paths import project_root
+    review_path=project_root()/'config/cmf_verified_events_2026_10_11.json'
+    verified={r['official_document_number']:r for r in json.loads(review_path.read_text())['records']} if review_path.exists() else {}
+    for doc in documents:
+        apply_verified_primary(doc,verified.get(doc['official_document_number']))
     merged={**old,**{d['record_id']:d for d in documents}}
     atomic_json(actor_path,{'schema_version':1,'actors':actors})
     atomic_json(old_path,{'schema_version':1,'query_start':start,'query_end':as_of,'documents':list(merged.values()),'actor_coverage':actor_coverage})
+    events={}
+    for doc in merged.values():
+        verified_event=doc.get('verified_event')
+        if not verified_event:continue
+        key=verified_event['event_id'];event=events.setdefault(key,{'event_id':key,'primary_disclosures':[],'publication_status':'deferred','discovery_lane':'BACKFILL'})
+        event['primary_disclosures'].append(doc['record_id'])
+        if not verified_event.get('supporting_update') and (not event.get('event_date') or doc['event_date']>event['event_date']):
+            event.update(verified_event,source_url=doc['source_url'],issuer_entity_id=doc['issuer_entity_id'])
+    atomic_json(root/'data/market/cmf_events.json',{'schema_version':1,'events':list(events.values())})
     fin_path=root/'data/market/cmf_financials.json'
     old_fin=json.loads(fin_path.read_text()) if fin_path.exists() else {}
     statements=list({(d['issuer_entity_id'],d['reporting_period'],d['document_kind']):d for d in old_fin.get('documents',[])+statements}.values())
@@ -122,11 +147,60 @@ def collect_cmf(captures, root):
         recent=sum(d['published_at']>= (date.fromisoformat(as_of)-timedelta(days=29)).isoformat() for d in documents),
         material=sum(d.get('materiality',{}).get('material') is True for d in documents),
         rejected=sum(d['disposition']=='rejected' for d in documents),deferred=sum(d['disposition']=='deferred' for d in documents),
-        reason='Official 90-day issuer queries and accounting statements captured; primary editorial validation, complete health-group/reporting perimeter and separate-cadence recurrence remain pending')
+        reason='Official issuer queries and primary disclosures reconciled; reviewed BACKFILL events held for core/editorial activation; complete health-group reporting perimeter and separate-cadence recurrence remain pending')
     evidence.update(outcome='OPERATIVE_DEGRADED',reporting_actors=len(actors),active_issuers=sum(a['issuer_registration_status']=='Vigente' for a in actors),
                     financial_observations=len(observations),statement_documents=len(statements),primary_documents_verified=sum(d.get('primary_verified',False) for d in documents),
-                    actor_coverage=actor_coverage, transport_failures=[{'url':r['url'],'http':r['network']['http_code'],'reason':r['network'].get('errormsg')} for r in receipts if not r['transport_ok']])
+                    actor_coverage=actor_coverage,material_events=len(events), transport_failures=[{'url':r['url'],'http':r['network']['http_code'],'reason':r['network'].get('errormsg')} for r in receipts if not r['transport_ok']])
     record_data_adapter(root,'cmf_health_ecosystem',evidence)
+    return evidence
+
+
+def fold_name(value):
+    from .official_tables import fold
+    return re.sub(r'[^a-z0-9]','',fold(value))
+
+
+def collect_dipres(captures, root):
+    from .dipres_sources import pdf_text, parse_project, parse_comparative, parse_execution, budget_key, material_variations, canonical_url
+    rows=[]; ledger=[];seen=set()
+    for receipt in captures.receipts:
+        if receipt['package']!='dipres':continue
+        if not any(x in receipt['kind'] for x in ['Proyecto de Ley','Comparativo','Ejecución']):continue
+        if '.pdf' not in receipt['url']:continue
+        url=canonical_url(receipt['url'])
+        if url in seen:continue
+        seen.add(url);entry={'source_url':url,'source_sha256':receipt['sha256'],'kind':receipt['kind'], 'fetched_at':receipt['completed_at']}
+        try:
+            text=pdf_text(captures.body(receipt))
+            parser=parse_comparative if 'Comparativo' in receipt['kind'] else parse_execution if 'Ejecución' in receipt['kind'] else parse_project
+            values=parser(text,source_url=receipt['url'],sha256=receipt['sha256'])
+            rows.extend(values);entry.update(disposition='data_snapshot',observations=len(values),reason='Official total and hierarchy validated; no per-row news')
+        except ValueError as exc:
+            entry.update(disposition='deferred',observations=0,reason=str(exc))
+        ledger.append(entry)
+    # Same metric/state/period can be corroborated by several documents. Keep all provenance.
+    merged={}
+    for row in rows:
+        key=budget_key(row)
+        if key in merged:
+            previous=merged[key]
+            if previous['value']!=row['value']:
+                key+='|version:'+row['source_sha256']
+            else:
+                previous.setdefault('additional_sources',[]).append({'url':row['source_url'],'sha256':row['source_sha256']});continue
+        merged[key]=row
+    candidates=material_variations(rows)
+    payload={'schema_version':1,'records':list(merged.values()),'document_ledger':ledger,'material_variations':candidates,
+             'aggregation_rule':'Do not sum nested fiscal levels or transfer-financed programs. Execution is accumulated, not monthly flow.',
+             'coverage_complete':False,'coverage_reason':'Declared Salud project/execution perimeter parsed; source publication dates, complete fiscal version stock and separated-cadence recurrence remain unverified'}
+    atomic_json(root/'data/market/dipres_health_budget.json',payload)
+    evidence=health(captures,'dipres',discovered=len(ledger),unique=len(seen),material=len(candidates),
+        deferred=sum(d['disposition']=='deferred' for d in ledger)+len(candidates),
+        reason=payload['coverage_reason'])
+    evidence.update(outcome='OPERATIVE_DEGRADED',data_documents=sum(d['disposition']=='data_snapshot' for d in ledger),
+        observations=len(merged),programs=sorted({f"{r['partida']}.{r['chapter']}.{r['program']}" for r in rows if r['program']}),
+        fiscal_years=sorted({r['fiscal_year'] for r in rows}),publication_reason='Tables feed Trend/Benchmark; material changes without verified publication day stay deferred')
+    record_data_adapter(root,'dipres_health_budget',evidence)
     return evidence
 
 
@@ -136,7 +210,7 @@ def main():
     parser.add_argument('--output-root', type=Path, required=True)
     parser.add_argument('--only', choices=['isapres', 'cmf', 'dipres', 'all'], default='all')
     args=parser.parse_args(); captures=Captures(args.capture_dir); result={}
-    collectors={'isapres': collect_isapres, 'cmf': collect_cmf}
+    collectors={'isapres': collect_isapres, 'cmf': collect_cmf, 'dipres': collect_dipres}
     for name, collector in collectors.items():
         if args.only not in (name, 'all'): continue
         try: result[name]=collector(captures, args.output_root)
@@ -145,6 +219,9 @@ def main():
                                reason=f'{type(exc).__name__}: {exc}')
             record_data_adapter(args.output_root, f'market_{name}', result[name])
     atomic_json(args.output_root/'data/market/collection_result.json', result)
+    if args.only=='all' and not any(v['parse_errors'] for v in result.values()):
+        from .market_intelligence import export_views
+        export_views(args.output_root)
     print(json.dumps({k: {'outcome':v.get('outcome','OPERATIVE_DEGRADED'), 'reason':v['coverage_reason']} for k,v in result.items()}, ensure_ascii=False))
     if any(v['parse_errors'] for v in result.values()): raise SystemExit(1)
 
