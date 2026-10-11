@@ -95,16 +95,21 @@ def main():
                     "newest_event_date":max([raw.event_date for raw in items if raw.event_date],default=None)}
         except Exception as exc:
             discoveries[name]=(0,0,type(exc).__name__)
-    atomic_json(root/"data/state/discovery_run.json",{
+    run_path=root/"data/state/discovery_run.json"
+    previous_run=json.loads(run_path.read_text()) if args.source and run_path.exists() else {}
+    run_sources=previous_run.get("sources",{})
+    run_sources.update({name:{"discovered":found,"new":added,"technical_status":"error" if error else "ok","error_type":error,
+                             "checked_at":datetime.now(timezone.utc).isoformat(),**discovery_evidence.get(name,{})}
+                        for name,(found,added,error) in discoveries.items()})
+    atomic_json(run_path,{
         "at":datetime.now(timezone.utc).isoformat(),
-        "sources":{name:{"discovered":found,"new":added,"technical_status":"error" if error else "ok","error_type":error,
-                          **discovery_evidence.get(name,{})}
-                   for name,(found,added,error) in discoveries.items()},
-        "successful_sources":sum(error is None for _,_,error in discoveries.values()),
-        "failed_sources":sum(error is not None for _,_,error in discoveries.values()),
+        "sources":run_sources,
+        "run_scope":list(processors),
+        "successful_sources":sum(row.get("technical_status")!="error" for row in run_sources.values()),
+        "failed_sources":sum(row.get("technical_status")=="error" for row in run_sources.values()),
     })
     produced={name:[] for name in processors}
-    queue.enforce_backfill_horizon()
+    queue.enforce_backfill_horizon(sources=set(processors) if args.source else None)
     ready=[(key,item) for key,item in queue.ready() if item["source"] in processors]
     for index,(key,item) in enumerate(ready):
         if args.limit and index>=args.limit:break
