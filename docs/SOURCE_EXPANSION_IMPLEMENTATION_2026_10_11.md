@@ -7,7 +7,7 @@ Los tres paquetes terminan **OPERATIVE_DEGRADED**. Hay colectores ejecutados, in
 | Paquete | Inventario inicial | Disposición |
 |---|---|---|
 | Isapres | 10 códigos oficiales; 7 abiertas, 3 cerradas; 8 meses y 320 observaciones comparables | Datos para Benchmark/Trend; 0 noticias por fila |
-| CMF | 6 identidades verificadas por RUT; 4 emisores vigentes, 2 históricos no vigentes; 9 hechos esenciales en 90 días y 3 en 30; 24 documentos EEFF y 42 celdas financieras únicas | 5 eventos materiales; 7 documentos diferidos y 2 soportes rechazados como cards adicionales; 0 publicados |
+| CMF | 6 identidades verificadas por RUT; 4 emisores vigentes, 2 históricos no vigentes; 9 hechos esenciales en 90 días y 3 en 30; 24 documentos contables (8 EEFF, 8 análisis razonados y 8 hechos relevantes) y 42 celdas financieras únicas | 5 eventos materiales; 7 documentos diferidos y 2 soportes rechazados como cards adicionales; 0 publicados |
 | DIPRES | 116 documentos de Salud parseados; 408 observaciones; Proyecto 2027 y ejecución acumulada 2026 | 5 cambios de asignación materiales diferidos; 0 noticias por fila |
 
 ## Fuentes y contrato ejecutable
@@ -66,3 +66,5 @@ El Reviewer de cobertura usa parser independiente de filas originales y comproba
 - Activación: siguen vigentes las dependencias Work 4 `source_audit_issue5_iteration1_recovery_2026_10_09` y `source_audit_issue5_iteration2_balance_2026_10_09`. No se elevan a active ni se publica BACKFILL como LIVE.
 
 Queue y PMO conservan estados de otros frentes y las tareas P0 en progreso con outcome OPERATIVE_DEGRADED. PR #16 e issue #5 contienen el checkpoint y el siguiente paso. No existe EXTERNAL_BLOCKER_PROVEN para estos paquetes: GitHub Actions sí accedió a las superficies públicas implementadas.
+
+Calificación de código `a1a3a9c`: [runtime nativo #38146456406](https://github.com/cftorre1/Radar-salud/actions/runs/38146456406), 31 tests dirigidos, adapters/replay/Reviewer PASS (302 comprobaciones). [QA global #38146456378](https://github.com/cftorre1/Radar-salud/actions/runs/38146456378): 980 Python PASS/1 SKIP, 42 Node PASS, 56 browser desktop/mobile PASS, Reviewer sin hallazgos. Los cambios posteriores de checkpoint son documentación y metadata; cada sincronización posterior requiere sus propios checks.
