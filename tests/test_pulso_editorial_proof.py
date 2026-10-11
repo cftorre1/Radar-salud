@@ -340,10 +340,15 @@ def test_llm_adds_only_opt_in_schema_to_the_same_single_fast_call(monkeypatch, s
     schema = calls[0]["text"]["format"]["schema"]
     if strict:
         assert "pulso_editorial_proof" in schema["required"]
+        assert "BACKFILL" in schema["properties"]["what_happened"]["description"]
+        assert "BACKFILL" in schema["properties"]["why_it_matters"]["description"]
+        assert "AMBOS campos" in calls[0]["instructions"]
+        assert "no las corrijas ni inventes un saldo" in calls[0]["instructions"]
         request_sha = hashlib.sha256(calls[0]["input"].encode()).hexdigest()
         assert model_binding_matches(result, source_name="Pulso / La Tercera", input_text_sha256=hashlib.sha256(body.encode()).hexdigest(), request_input_sha256=request_sha)
     else:
         assert schema is llm_analysis.NEWS_SCHEMA and len(schema["required"]) == 4
+        assert "description" not in schema["properties"]["what_happened"]
         assert "_pulso_analysis_meta" not in result
 
 

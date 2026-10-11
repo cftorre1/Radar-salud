@@ -84,6 +84,10 @@ Evita frases genéricas reutilizables. No inventes implicancias."""
         from .pulso_editorial_proof import PROOF_SCHEMA, VERSION
         schema=dict(NEWS_SCHEMA,properties=dict(NEWS_SCHEMA["properties"],pulso_editorial_proof=PROOF_SCHEMA),
                     required=NEWS_SCHEMA["required"]+["pulso_editorial_proof"])
+        schema["properties"]["what_happened"] = {"type": "string", "description":
+            "Hechos atribuidos a la nota, con período de datos y condición actual/futura separados. En BACKFILL, fecha los estados entonces observados con la publicación original; no los declares vigentes a la fecha de revisión."}
+        schema["properties"]["why_it_matters"] = {"type": "string", "description":
+            "Actor y efecto concreto con atribución de prensa. En BACKFILL, fecha explícitamente cualquier estado persistente a la publicación original, también en este campo; no conviertas entonces-pendiente/en-curso en estado verificado hoy."}
         schema_name=VERSION
         instructions+="""
 Para Pulso/La Tercera exige un cambio concreto de salud HUMANA en Chile: actor,
@@ -116,12 +120,26 @@ consequence="durante dos días", consequence_quote igual a esa frase completa.
 El ejemplo NO es evidencia del artículo y NO debes copiarlo como hecho.
 Elige una cita de scope que nombre atención clínica, enfermedad humana, cobertura,
 medicamentos o autoridad sanitaria concreta; «el sector» o «un equipo» no basta.
+El actor debe ser quien REALIZA la acción elegida, no sólo una parte afectada,
+beneficiaria o demandada. Para un fallo, distingue el tribunal que decide de los
+prestadores demandados; para una demanda, distingue al demandante del tribunal.
 Clasifica event_status: actual, proposal, plan, mixed_actual_and_future o
 historical_context. Conserva período y métrica de los datos, estado de investigación
 y condición de propuesta. Un anuncio, proyecto, plan o notificación FNE no es
 aprobación, implementación, adquisición cerrada ni capacidad ya disponible.
 No rejuvenezcas hechos históricos con la fecha de publicación; una auditoría/fallo
 actual sí puede informar hechos de períodos antiguos, claramente separados.
+Usa las fechas de publicación original y revisión entregadas en Tipo de fuente.
+Si la publicación es anterior a la revisión (BACKFILL), fecha explícitamente los
+estados persistentes en AMBOS campos, what_happened y why_it_matters: «Según la
+nota del [fecha original]...» o «Al [fecha original], según la nota...». «Sigue
+pendiente», «en curso», «mantiene alta circulación», «todavía no disponible» o
+«ahora» sólo describen lo observado en esa fecha original, salvo nueva evidencia
+fechada que acredite continuidad. La importancia al ingresar al radar no prueba
+el estado operativo de hoy. Conserva también el período propio de cada métrica.
+Si las cifras publicadas no cuadran, no las corrijas ni inventes un saldo por
+resta. Atribuye las cifras explícitamente a la nota y señala la discrepancia, o
+evita el saldo derivado; no sumes personas, registros, períodos o bases distintas.
 Clasifica novelty_decision: new_material_information, repetition_or_context o
 uncertain, con razón y cita literal; un nuevo artículo sobre un hecho ya conocido
 no es necesariamente nueva señal. Usa el contexto incremental entregado.
