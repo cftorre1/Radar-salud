@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T04:48:29.637107+00:00",
+  "updated_at": "2026-10-11T05:29:24.493912+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -3394,7 +3394,7 @@
     },
     {
       "id": "source_repair_public_data_lane_2026_10_11",
-      "status": "blocked",
+      "status": "in_progress",
       "priority": "critical",
       "owner": "Pele + Public Data Worker",
       "source": "Issue #5 autonomy split",
@@ -3413,20 +3413,21 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T04:36:29.409513+00:00",
-      "current_subfront": "public_sources_transport_verified_external_blocker",
-      "next_action": "Enable the official hosts in supported environment egress configuration; replay python scripts/check_public_sources.py --record-health; require dated primary captures and rerun scoped tests plus independent Reviewer before marking any source operational.",
-      "blocked_by": [
-        "session_proxy_connect_403_before_origin_tls"
-      ],
-      "progress": "Five lanes investigated in parallel. Strict date/detail/document evidence and official redirect transport integrated into daily engine. 112 scoped tests pass. Live direct replay 0/5 operational: enforced session proxy CONNECT403; official alternatives and PDFs evaluated separately by browser. Full-suite pre-existing normative snapshot assertion reproduces on exact staging baseline (11 acts vs >=12). No main/staging/production promotion.",
+      "last_progress_at": "2026-10-11T05:29:24.493912+00:00",
+      "current_subfront": "github_actions_real_runtime_recovery",
+      "next_action": "Read primary GitHub runner artifacts 38114731188; repair each reachable official surface, reconcile 30/90 and native pipeline; prove blocker across both runtimes with official alternatives if still unreachable.",
+      "blocked_by": [],
+      "progress": "Recovery resumed from existing PR #13. Isolated read-only GitHub Action at 2a5668e running real official transport and native scouts. Codex 32/32 proxy CONNECT403 is environment-specific, not final external blocker. 120 scoped tests PASS; Node41 PASS; full372 PASS/1 inherited FAIL/1 SKIP.",
       "evidence": [
         "data/audits/public_sources_c_20261011/runtime_capture.json",
         "data/audits/public_sources_c_20261011/reviewer.json",
-        "docs/PUBLIC_SOURCES_C_2026_10_11.md"
+        "docs/PUBLIC_SOURCES_C_2026_10_11.md",
+        "data/audits/public_sources_c_20261011/recovery/codex-transport.json",
+        "data/audits/public_sources_c_20261011/recovery/stock-baseline.json"
       ],
       "branch": "codex/c-public-sources-20261011",
-      "baseline_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb"
+      "baseline_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+      "github_runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38114731188"
     },
     {
       "id": "source_repair_fiscalization_lane_2026_10_11",
