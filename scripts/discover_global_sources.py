@@ -11,18 +11,41 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from radar_salud.global_discovery_common import CaptureClient
-from radar_salud.global_source_discovery import discover, in_window
+from radar_salud.global_source_discovery import discover, in_window, deduplicate_translations
 from radar_salud.pending_queue import atomic_json
 
 def write(root, relative, payload):
     atomic_json(root / relative, payload)
+
+def health_counts(items, as_of):
+    return {str(days): sum(row.get("detail_verified", False) and in_window(row["published_at"], as_of, days) for row in items) for days in (30,90)}
+
+def cadence_is_valid(ledger, source, checked, run_id, complete, cadence_seconds, replay=False):
+    if replay or not complete or not checked:
+        return False
+    for row in ledger["runs"]:
+        previous = row.get("sources", {}).get(source, {})
+        prior = previous.get("checked_at")
+        if row["run_id"] != run_id and previous.get("coverage_completeness") == "complete" and prior:
+            if (datetime.fromisoformat(checked)-datetime.fromisoformat(prior)).total_seconds() >= cadence_seconds:
+                return True
+    return False
+
+def mirror_health(root, source_health):
+    if set(source_health) != {"who", "paho", "reuters"}:
+        raise ValueError("unexpected owned Global health sources")
+    for path in ("data/source_health.json", "web/data/source_health.json", "web/data/product.json"):
+        health=json.loads((root/path).read_text())
+        for source, row in source_health.items(): health["sources"]["global_"+source]=row
+        write(root,path,health)
 
 def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | None = None):
     config = json.loads((root / "config/global_discovery.json").read_text())
     if config["default_window_days"] != 30 or config["maximum_editorial_topics"] != 10 or config["fill_quota"] or config["paid_ai_calls"] != 0 or config["reuters"]["enabled"]:
         raise ValueError("Global discovery/publication/license contract changed")
     client = CaptureClient(captures, replay=replay)
-    routes, items, failures = discover(config, client, as_of)
+    routes, language_items, failures = discover(config, client, as_of)
+    items=deduplicate_translations(language_items)
     generated = datetime.now(timezone.utc).isoformat()
     evidence = Path("data/audits/global_source_recovery_2026_10_11/runs") / run_id
     source_health = {}
@@ -31,15 +54,19 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
     for source in ("who", "paho"):
         source_items = [item for item in items if item["source"] == source]
         source_routes = [route for route in routes if route["route"]["source"] == source]
-        technical = [f for f in failures if f["route"]["source"] == source] + [{"url": item["url"], "error": item["technical_error"]} for item in source_items if item.get("technical_error")]
+        technical = [f for f in failures if f["route"]["source"] == source] + [{"url": item["url"], "error": item["technical_error"]} for item in language_items if item["source"] == source and item.get("technical_error")]
         pending_dates = [item for item in source_items if not item["published_at"]]
         complete = len(source_routes) == len([r for r in config["routes"] if r["source"] == source]) and all(r["archive_complete"] and not r["date_pending"] for r in source_routes) and not pending_dates and not technical
         dates = [r["fetched_at"] for r in client.records.values() if ("who.int" if source == "who" else "paho.org") in r["requested_url"]]
         checked = max(dates) if dates else None
-        previous = [row["sources"][source].get("checked_at") for row in ledger["runs"] if source in row.get("sources", {}) and row["sources"][source].get("coverage_completeness") == "complete"]
-        cadence_validated = bool(not replay and checked and any(p and (datetime.fromisoformat(checked)-datetime.fromisoformat(p)).total_seconds() >= config["cadence_seconds"] for p in previous))
-        counts = {str(days): sum(in_window(row["published_at"], as_of, days) for row in source_items) for days in (30,90)}
+        counts = health_counts(source_items, as_of)
+        indexed_counts = {str(days): sum(in_window(row["index_published_at"], as_of, days) for row in source_items) for days in (30,90)}
         material = [item for item in source_items if item["classification"]["materiality"] == "candidate" and item["detail_verified"] and item["published_at"]]
+        control_urls={row["url"] for route in source_routes for page in route["pages"] for row in page.get("native_control",[]) if in_window(row["published_at"],as_of,90)}
+        detected_urls={alias for item in source_items for alias in item["source_aliases"]}
+        recall={"basis":"independent_native_index_control_on_declared_surfaces", "inventory_90_url_count":len(control_urls), "detected":len(control_urls & detected_urls),"omitted_urls":sorted(control_urls-detected_urls),"recall":len(control_urls&detected_urls)/len(control_urls) if control_urls else None,"whole_source_archive_claim":False}
+        if control_urls-detected_urls:complete=False
+        cadence_validated = cadence_is_valid(ledger,source,checked,run_id,complete,config["cadence_seconds"],replay)
         source_health[source] = {
             "name": source.upper(), "checked_at": checked, "status": "ok" if complete and cadence_validated else "warning" if source_routes else "error",
             "technical_status": "error" if technical else "ok", "coverage_status": "complete" if complete else "incomplete",
@@ -49,7 +76,10 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
             "coverage_completeness": "complete" if complete else "incomplete", "coverage_window_days": 90,
             "coverage_from": (as_of - __import__('datetime').timedelta(days=89)).isoformat(), "coverage_to": as_of.isoformat(),
             "pages_checked": sum(len(route["pages"]) for route in source_routes), "recent_items": counts["30"],
-            "unique_items": counts["90"], "counts": counts, "material_items": len(material), "published": 0,
+            "discovery_recall_90":recall,"unique_language_urls_90":len([row for row in language_items if row["source"]==source and in_window(row["published_at"],as_of,90)]),
+            "unique_items": counts["90"], "counts": counts, "indexed_counts": indexed_counts,
+            "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
+            "material_items": len(material), "published": 0,
             "rejected": sum(item["status"] == "rejected" for item in source_items),
             "deferred": sum(item["status"] == "pending" for item in source_items), "pending_date_items": len(pending_dates),
             "technical_failures": technical, "discovered": len(source_items), "new": len(source_items),
@@ -101,13 +131,13 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
         ledger["runs"] = [entry for entry in ledger["runs"] if entry["run_id"] != run_id] + [{"run_id":run_id,"generated_at":generated,"as_of":as_of.isoformat(),"sources":source_health,"evidence_ref":str(evidence / "inventory.json")}]
         write(root,"data/global_intelligence/ledger.json",ledger)
         # Preserve every unowned source entry; this is discovery health, not Chile publication.
-        for path in ("data/source_health.json", "web/data/source_health.json", "web/data/product.json"):
-            health=json.loads((root/path).read_text())
-            for source, row in source_health.items(): health["sources"]["global_"+source]=row
-            write(root,path,health)
+        mirror_health(root,source_health)
     print(json.dumps({"run_id":run_id,"items":len(items),"topics":len(topics),"network_requests":client.network_requests,"outcomes":{source:row["outcome"] for source,row in source_health.items()}},ensure_ascii=False))
     return payload
 
 if __name__ == "__main__":
-    parser=argparse.ArgumentParser();parser.add_argument("--root",type=Path,default=Path(__file__).resolve().parents[1]);parser.add_argument("--captures",type=Path,default=Path("work/global-runtime-captures"));parser.add_argument("--replay",type=Path);parser.add_argument("--as-of",type=date.fromisoformat,default=datetime.now(ZoneInfo("America/Santiago")).date());parser.add_argument("--run-id",default=os.environ.get("GITHUB_RUN_ID") or datetime.now(timezone.utc).strftime("local-%Y%m%dT%H%M%SZ"));args=parser.parse_args()
-    run(args.root,args.captures,args.as_of,args.run_id,args.replay)
+    parser=argparse.ArgumentParser();parser.add_argument("--root",type=Path,default=Path(__file__).resolve().parents[1]);parser.add_argument("--captures",type=Path,default=Path("work/global-runtime-captures"));parser.add_argument("--replay",type=Path);parser.add_argument("--mirror-health",action="store_true");parser.add_argument("--as-of",type=date.fromisoformat,default=datetime.now(ZoneInfo("America/Santiago")).date());parser.add_argument("--run-id",default=os.environ.get("GITHUB_RUN_ID") or datetime.now(timezone.utc).strftime("local-%Y%m%dT%H%M%SZ"));args=parser.parse_args()
+    if args.mirror_health:
+        mirror_health(args.root,json.loads((args.root/"data/global_intelligence/source_health.json").read_text())["sources"])
+    else:
+        run(args.root,args.captures,args.as_of,args.run_id,args.replay)

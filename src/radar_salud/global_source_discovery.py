@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import unicodedata
 from html import unescape
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta, timezone
@@ -12,22 +13,23 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from .global_discovery_common import CaptureClient, Document, canonical_url, publication_day
 from .pending_queue import atomic_json
+from .global_native_control import native_control
 
 
 def in_window(day, as_of: date, days: int):
     return bool(day and (as_of - timedelta(days=days-1)).isoformat() <= day <= as_of.isoformat())
 
 def classify(title, section):
-    text = title.casefold()
-    noise = r"\b(welcomes? .{0,30}members|appointed|appointment|elected president|anniversary|webinar|training|celebrates|congratulates)\b"
+    text = ''.join(c for c in unicodedata.normalize('NFKD', title.casefold()) if not unicodedata.combining(c))
+    noise = r"\b(welcomes? .{0,30}members|appointed|appointment|elected president|anniversary|webinar|training|celebrates|congratulates|nombramiento|elegid[oa] presidente|aniversario|capacitacion|seminario web|celebracion|felicita)\b"
     if re.search(noise, text):
         return {"materiality": "routine", "priority": 0, "category": "institutional_routine", "reason": "ceremony_training_or_appointment"}
     rules = [
-        ("emergency", 95, r"alert|outbreak|disease outbreak|epidemiological update|public health emergency|measles|avian influenza|ebola"),
-        ("policy_guidelines", 90, r"guideline|recommendation|regulat|policy|mental health care|community-based|framework|roadmap"),
-        ("financing_systems", 88, r"financ|funding|budget|investment|health system|workforce|health coverage|social protection"),
-        ("epidemiology", 85, r"influenza|respiratory|epidemiolog|surveillance|intelligence|deaths|cases|burden|eliminat|mortality|immuniz|vaccin"),
-        ("technical_document", 75, r"report|strategy|evaluation|technical|research|monitoring|data|survey"),
+        ("emergency", 95, r"alert|outbreak|brote|epidemiological update|actualizacion epidemiologica|public health emergency|emergencia de salud publica|measles|sarampion|avian influenza|influenza aviar|ebola"),
+        ("policy_guidelines", 90, r"guideline|directri|recomend|recommendation|regulat|regulac|normativ|policy|politica|mental health care|salud mental|community-based|framework|marco|roadmap|hoja de ruta|plan .{0,30}salud"),
+        ("financing_systems", 88, r"financ|funding|budget|presupuesto|investment|inversion|health system|sistema.{0,10}salud|workforce|fuerza laboral|health coverage|cobertura.{0,10}salud|social protection|proteccion social"),
+        ("epidemiology", 85, r"influenza|respirator|epidemiolog|surveillance|vigilancia|intelligence|deaths|muertes|cases|casos|burden|carga|elimina|mortali|immuniz|inmuniz|vaccin|vacun"),
+        ("technical_document", 75, r"report|informe|strategy|estrategia|evaluat|evaluac|technical|tecnic|research|investigacion|monitoring|monitoreo|data|datos|survey|encuesta"),
     ]
     if section == "disease_outbreak_news":
         return {"materiality": "candidate", "priority": 95, "category": "emergency", "reason": "official_disease_outbreak_notification"}
@@ -43,7 +45,7 @@ def entities(title, source, section):
                           ("Russian Federation", r"Russian Federation")]:
         if re.search(pattern, title, re.I):
             found.append({"name": name, "kind": "geography", "basis": "publisher_title"})
-    if section == "chile_news" and not any(x["name"] == "Chile" for x in found):
+    if section.startswith("chile_news") and not any(x["name"] == "Chile" for x in found):
         found.append({"name": "Chile", "kind": "taxonomy_scope", "basis": "official_country_filter_c65", "direct_local_effect_verified": False})
     return found
 
@@ -120,6 +122,7 @@ def detail_metadata(html, as_of, url):
                 raw_dates.append(match[1])
     canonical = [node.attrs["href"] for node in document.nodes("link") if node.attrs.get("rel") == "canonical" and node.attrs.get("href")]
     alternates = [node.attrs["href"] for node in document.nodes("link") if node.attrs.get("rel") == "alternate" and node.attrs.get("hreflang") and node.attrs.get("href")]
+    alternates += [node.attrs["href"] for node in document.nodes("a") if node.has_class("language-link") and node.attrs.get("hreflang") and node.attrs.get("href")]
     docs = []
     for node in document.nodes("a"):
         href = node.attrs.get("href", "")
@@ -128,8 +131,9 @@ def detail_metadata(html, as_of, url):
             if urlsplit(absolute).scheme == "https" and urlsplit(absolute).hostname in {"www.who.int", "cdn.who.int", "iris.who.int", "www.paho.org", "iris.paho.org"}:
                 docs.append(absolute)
     return {"title": h1[0], "publication_dates": sorted({day for value in raw_dates if (day := publication_day(value, as_of))}),
-            "raw_publication_dates": raw_dates, "canonical_url": canonical_url(canonical[0], url) if canonical else url,
-            "alternate_language_urls": sorted({canonical_url(value, url) for value in alternates if urlsplit(value).hostname in {"www.who.int", "www.paho.org"}}),
+            "raw_publication_dates": raw_dates, "invalid_or_future_publication_fields": [v for v in raw_dates if not publication_day(v, as_of)],
+            "canonical_url": canonical_url(canonical[0], url) if canonical else url,
+            "alternate_language_urls": sorted({canonical_url(value, url) for value in alternates if urlsplit(__import__('urllib.parse',fromlist=['urljoin']).urljoin(url,value)).hostname in {"www.who.int", "www.paho.org"}}),
             "document_links": sorted(set(docs))}
 
 def collect_route(client, route, as_of, max_pages):
@@ -153,14 +157,22 @@ def collect_route(client, route, as_of, max_pages):
         except Exception as exc:
             stop = "page_fetch_failure: " + type(exc).__name__ + ": " + str(exc)[:200]
             break
-        if route["format"] == "who_api":
-            found = parse_who_index(json.loads(raw), route["section"], as_of); next_url = True
-        else:
-            found, next_url = parse_paho_index(raw.decode(errors="replace"), route["section"], as_of, page_url)
+        control = native_control(raw, route, as_of, page_url)
+        try:
+            if route["format"] == "who_api":
+                found = parse_who_index(json.loads(raw), route["section"], as_of); next_url = True
+            else:
+                found, next_url = parse_paho_index(raw.decode(errors="replace"), route["section"], as_of, page_url)
+        except Exception as exc:
+            pages.append({"url":page_url,"capture":capture,"native_control":control,"native_records":len(control),"items":[]})
+            stop = "page_parse_failure: " + type(exc).__name__ + ": " + str(exc)[:200]
+            break
         ids = tuple(item["url"] for item in found)
         for item in found:
             item["index_evidence"] = [{"listing_url": page_url, "body_sha256": capture["body_sha256"], "fetched_at": capture["fetched_at"], "http_status":capture["http_status"], "tls_verified":capture["tls_verified"]}]
-        pages.append({"url": page_url, "capture": capture, "native_records": len(found), "items": found})
+        pages.append({"url": page_url, "capture": capture, "native_records": len(control), "native_control":control,"items": found})
+        if {x["url"] for x in control} != {x["url"] for x in found}:
+            rows.extend(found); stop="independent_native_control_mismatch"; break
         if not found:
             complete, stop = page > 0, "empty_native_page" if page > 0 else "empty_initial_page_unverified"; break
         if ids in seen:
@@ -170,7 +182,17 @@ def collect_route(client, route, as_of, max_pages):
         if len(dates) == len(found) and dates == sorted(dates, reverse=True) and min(dates) < cutoff:
             complete, stop = True, "verified_older_boundary"; break
         if not next_url:
-            complete, stop = True, "native_archive_exhausted"; break
+            if route["format"] == "paho_html":
+                # Live PAHO advertises page8 as last, but page9 has distinct
+                # records and page10 repeats page9. Probe the observed page
+                # parameter within max_pages; a repeat cannot prove 90 days.
+                parts = urlsplit(page_url)
+                query = parse_qsl(parts.query,keep_blank_values=True)
+                current = int(next((v for k,v in query if k=="page"), "0"))
+                next_url = urlunsplit((*parts[:3],urlencode([(k,v) for k,v in query if k!="page"]+[("page",str(current+1))]),""))
+                pages[-1]["pagination_basis"] = "bounded_probe_of_observed_public_page_parameter_after_advertised_last"
+            else:
+                complete, stop = True, "native_archive_exhausted"; break
         if route["format"] != "who_api":
             url = next_url
     return {"route": route, "pages": pages, "items": rows, "archive_complete": complete,
@@ -181,21 +203,30 @@ def verify_item(client, row, as_of):
     item["source_aliases"] = [row["url"]]; item["sections"] = row.get("discovered_sections", [row["section"]])
     item["publication_ready"] = False; item["content_use"] = "metadata_and_link_only"
     item["classification"] = classify(row["title"], row["section"])
-    item["entities"] = entities(row["title"], row["source"], "chile_news" if "chile_news" in item["sections"] else row["section"])
+    item["entities"] = entities(row["title"], row["source"], "chile_news" if any(s.startswith("chile_news") for s in item["sections"]) else row["section"])
     item["reason"] = row["publication_date_error"]
     item["status"] = "pending" if item["reason"] else "discovered"
     try:
         raw, capture = client.fetch(row["url"])
         metadata = detail_metadata(raw.decode(errors="replace"), as_of, row["url"])
+        item["detail_evidence"] = {"capture": capture, "metadata": metadata}
+        if canonical_url(capture.get("final_url", row["url"])).rstrip("/") != row["url"].rstrip("/"):
+            raise ValueError("detail_final_identity_mismatch")
         normalize = lambda title: re.sub(r"\W+", "", title.casefold())
         if normalize(metadata["title"]) != normalize(row["title"]):
-            raise ValueError("index_detail_title_mismatch")
+            # DON620 live index adds the definite article to an official country.
+            # Restrict this compatibility to the identical geographic suffix.
+            country_title = lambda title: re.sub(r" - (?:the )?Russian Federation$", " - Russian Federation", title)
+            if row["section"] != "disease_outbreak_news" or country_title(metadata["title"]) != country_title(row["title"]):
+                raise ValueError("index_detail_title_mismatch")
+            item["title_match_basis"] = "official_DON_Russian_Federation_definite_article_variation"
         if metadata["canonical_url"].rstrip("/") != row["url"].rstrip("/"):
             raise ValueError("detail_canonical_identity_mismatch")
-        item["detail_evidence"] = {"capture": capture, "metadata": metadata}
         item["document_links"] = sorted(set(row["document_links"] + metadata["document_links"]))
         observed = metadata["publication_dates"]
-        if len(observed) > 1 or (observed and observed[0] != row["index_published_at"]):
+        if metadata["invalid_or_future_publication_fields"]:
+            item.update(published_at=None, status="pending", reason="invalid_or_future_detail_publication_field")
+        elif len(observed) > 1 or (observed and observed[0] != row["index_published_at"]):
             item.update(published_at=None, status="pending", reason="index_detail_publication_conflict")
         elif item["published_at"]:
             material = item["classification"]["materiality"]
@@ -213,7 +244,7 @@ def discover(config, client, as_of):
         try:
             result = collect_route(client, route, as_of, config["max_pages_per_route"])
             routes.append(result)
-            if result["stop_reason"].startswith("page_fetch_failure"):
+            if result["stop_reason"].startswith(("page_fetch_failure", "page_parse_failure", "independent_native_control_mismatch")):
                 failures.append({"route": route, "error": result["stop_reason"]})
             for row in result["items"]:
                 if row["index_published_at"] is None or in_window(row["index_published_at"], as_of, 90):
@@ -230,3 +261,31 @@ def discover(config, client, as_of):
     with ThreadPoolExecutor(max_workers=3) as pool:
         verified = list(pool.map(lambda row: verify_item(client, row, as_of), indexed.values()))
     return routes, verified, failures
+
+def deduplicate_translations(items):
+    """Merge only publisher-declared language aliases; retain conflicting dates."""
+    urls={row["url"]:row for row in items};parents={url:url for url in urls}
+    def root(url):
+        while parents[url] != url: url=parents[url]
+        return url
+    for row in items:
+        aliases=(row.get("detail_evidence") or {}).get("metadata",{}).get("alternate_language_urls",[])
+        for alias in aliases:
+            if alias in urls and urls[alias]["source"]==row["source"]:
+                # Both pages must explicitly declare the relation, not fuzzy title matches.
+                reciprocal=(urls[alias].get("detail_evidence") or {}).get("metadata",{}).get("alternate_language_urls",[])
+                if row["url"] in reciprocal: parents[root(alias)]=root(row["url"])
+    groups={}
+    for row in items: groups.setdefault(root(row["url"]),[]).append(row)
+    result=[]
+    for group in groups.values():
+        group.sort(key=lambda row:(not row["detail_verified"],"/en/" not in row["url"],row["url"]))
+        row=dict(group[0]);row["source_aliases"]=sorted(member["url"] for member in group)
+        row["sections"]=sorted({section for member in group for section in member["sections"]})
+        row["entities"] = list({json.dumps(entity,sort_keys=True):entity for member in group for entity in member["entities"]}.values())
+        if len(group)>1:
+            row["translation_members"]=[{"url":member["url"],"title":member["title"],"published_at":member["published_at"],"index_published_at":member["index_published_at"],"index_evidence":member["index_evidence"],"detail_verified":member["detail_verified"],"technical_error":member.get("technical_error"),"detail_evidence":member.get("detail_evidence")} for member in group]
+        if len({member["published_at"] for member in group})>1:
+            row.update(published_at=None,status="pending",reason="translation_publication_date_conflict")
+        result.append(row)
+    return result

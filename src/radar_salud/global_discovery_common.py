@@ -34,8 +34,10 @@ def canonical_url(url: str, base: str = "") -> str:
 def publication_day(value: str, as_of: date) -> str | None:
     text = str(value or "").strip()
     try:
-        if re.fullmatch(r"\d{4}-\d{2}-\d{2}(?:T[^ ]+)?", text):
-            result = date.fromisoformat(text[:10])
+        if re.fullmatch(r"\d{4}-\d{2}-\d{2}", text):
+            result = date.fromisoformat(text)
+        elif re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:\d{2})?", text):
+            result = datetime.fromisoformat(text.replace("Z", "+00:00")).date()
         else:
             match = re.fullmatch(r"(\d{1,2})\s+(?:de\s+)?([A-Za-z]+)\.?\s+(?:de\s+)?(\d{4})", text)
             if not match or match[2].lower() not in MONTHS:
@@ -86,16 +88,41 @@ class Document(HTMLParser):
         self.current.children.append(value)
 
 class PublicRedirect(HTTPRedirectHandler):
+    def __init__(self, client):
+        self.client = client
     def redirect_request(self, req, fp, code, msg, headers, newurl):
-        canonical_url(newurl)
-        return super().redirect_request(req, fp, code, msg, headers, newurl)
+        target = canonical_url(newurl, req.full_url)
+        is_robots = getattr(req, "_global_is_robots", False)
+        if is_robots:
+            if urlsplit(target).path != "/robots.txt":
+                raise ValueError("robots_redirect_to_content_denied")
+        else:
+            self.client.check_robots(target)
+        chain = getattr(req, "_global_redirect_chain", [])
+        chain.append({"from_url": req.full_url, "http_status": code, "location": target,
+                      "tls_verified": True, "destination_robots_checked": not is_robots})
+        redirected = super().redirect_request(req, fp, code, msg, headers, target)
+        if redirected:
+            redirected._global_is_robots = is_robots
+            redirected._global_redirect_chain = chain
+        return redirected
 
 class CaptureClient:
     def __init__(self, directory: Path, replay: Path | None = None, delay: float = .25):
         self.directory, self.replay, self.delay = directory, replay, delay
         directory.mkdir(parents=True, exist_ok=True)
         self.records, self.robots, self.network_requests = {}, {}, 0
-        self.opener = build_opener(PublicRedirect(), HTTPSHandler(context=ssl.create_default_context()))
+        self.opener = build_opener(PublicRedirect(self), HTTPSHandler(context=ssl.create_default_context()))
+    def check_robots(self, url):
+        origin = urlunsplit((*urlsplit(url)[:2], "", "", ""))
+        if origin not in self.robots:
+            raw, policy = self.fetch(origin + "/robots.txt", robots=True)
+            if policy["http_status"] != 200:
+                raise ValueError("robots_policy_unavailable")
+            parsed = RobotFileParser(); parsed.parse(raw.decode(errors="replace").splitlines())
+            self.robots[origin] = parsed
+        if not self.robots[origin].can_fetch(USER_AGENT, url):
+            raise ValueError("robots_disallowed: " + url)
     def fetch(self, url: str, *, robots=False):
         url = canonical_url(url)
         if url in self.records:
@@ -112,21 +139,19 @@ class CaptureClient:
             if record.get("tls_verified") is not True:
                 raise ValueError("capture TLS not verified")
             canonical_url(record["final_url"])
+            if not robots:
+                for target in [url] + [hop["location"] for hop in record.get("redirect_chain", [])] + [record["final_url"]]:
+                    self.check_robots(canonical_url(target))
         else:
             if not robots:
-                origin = urlunsplit((*urlsplit(url)[:2], "", "", ""))
-                if origin not in self.robots:
-                    raw, policy = self.fetch(origin + "/robots.txt", robots=True)
-                    if policy["http_status"] != 200:
-                        raise ValueError("robots_policy_unavailable")
-                    parsed = RobotFileParser(); parsed.parse(raw.decode(errors="replace").splitlines())
-                    self.robots[origin] = parsed
-                if not self.robots[origin].can_fetch(USER_AGENT, url):
-                    raise ValueError("robots_disallowed")
+                self.check_robots(url)
             time.sleep(self.delay)
             self.network_requests += 1
+            request = Request(url, headers={"User-Agent": USER_AGENT, "Accept": "text/html,application/json,application/xml"})
+            request._global_is_robots = robots
+            request._global_redirect_chain = []
             try:
-                response = self.opener.open(Request(url, headers={"User-Agent": USER_AGENT, "Accept": "text/html,application/json,application/xml"}), timeout=25)
+                response = self.opener.open(request, timeout=25)
             except HTTPError as exc:
                 response = exc
             with response:
@@ -139,7 +164,8 @@ class CaptureClient:
                           "headers": {key.lower(): value for key, value in response.headers.items()
                                       if key.lower() in {"content-type", "last-modified", "date", "server", "retry-after"}},
                           "body_file": key + ".body", "body_sha256": hashlib.sha256(data).hexdigest(),
-                          "body_bytes": len(data), "user_agent": USER_AGENT}
+                          "body_bytes": len(data), "user_agent": USER_AGENT,
+                          "redirect_chain": request._global_redirect_chain}
         (self.directory / record["body_file"]).write_bytes(data)
         (self.directory / (key + ".json")).write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n")
         self.records[url] = record

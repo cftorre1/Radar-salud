@@ -9,6 +9,11 @@ import pytest
 
 from radar_salud.global_discovery_common import CaptureClient, USER_AGENT, canonical_url, publication_day
 from radar_salud.global_source_discovery import classify, collect_route, detail_metadata, in_window, parse_paho_index, parse_who_index, reporting_period, verify_item
+from radar_salud.global_discovery_common import PublicRedirect
+from radar_salud.global_native_control import native_control
+from radar_salud.global_source_discovery import deduplicate_translations
+from scripts.discover_global_sources import cadence_is_valid, health_counts
+from urllib.request import Request
 
 AS_OF = date(2026,10,11)
 PROBES = Path('data/audits/global_source_recovery_2026_10_11/probes')
@@ -126,3 +131,89 @@ def test_replay_rejects_modified_bytes_and_unverified_tls(tmp_path):
     with pytest.raises(ValueError,match='TLS'):CaptureClient(tmp_path/'out',replay=tmp_path).fetch(url)
     record['tls_verified']=True;(tmp_path/(key+'.json')).write_text(json.dumps(record));(tmp_path/(key+'.body')).write_bytes(b'tampered')
     with pytest.raises(ValueError,match='identity/hash'):CaptureClient(tmp_path/'out',replay=tmp_path).fetch(url)
+
+@pytest.mark.parametrize('value',['2026-10-09Tnot-a-time','2026-10-09T25:30:00Z','2026-10-09T12:00:00+99:99'])
+def test_malformed_timestamp_cannot_be_truncated_to_a_valid_day(value):
+    assert publication_day(value,AS_OF) is None
+
+@pytest.mark.parametrize('value',['2026-12-01','2026-10-09Tnot-a-time',''])
+def test_any_invalid_detail_publication_field_keeps_candidate_pending(value):
+    row=parse_paho_index(CARD,'regional_news',AS_OF,ROUTE['url'])[0][0]
+    html=f'<h1>Material guidelines</h1><meta property="article:published_time" content="2026-10-09"><meta name="citation_publication_date" content="{value}">'
+    result=verify_item(FakeClient([html]),row,AS_OF)
+    assert result['published_at'] is None and result['status']=='pending'
+    assert result['reason']=='invalid_or_future_detail_publication_field'
+    assert not health_counts([result],AS_OF)['30']
+
+def test_each_redirect_checks_destination_robots_before_following(tmp_path):
+    client=CaptureClient(tmp_path);policy=RobotFileParser();policy.parse(['User-agent: *','Disallow: /private/'])
+    client.robots['https://www.paho.org']=policy
+    request=Request('https://www.who.int/news');request._global_redirect_chain=[]
+    with pytest.raises(ValueError,match='robots_disallowed'):
+        PublicRedirect(client).redirect_request(request,None,302,'Found',{},'https://www.paho.org/private/item')
+    assert client.network_requests==0 and request._global_redirect_chain==[]
+    result=PublicRedirect(client).redirect_request(request,None,301,'Moved',{},'https://www.paho.org/en/news')
+    assert result.full_url=='https://www.paho.org/en/news'
+    assert result._global_redirect_chain[0]['destination_robots_checked'] is True
+    assert result._global_redirect_chain[0]['http_status']==301
+
+def test_final_capture_identity_must_match_requested_item():
+    row=parse_paho_index(CARD,'regional_news',AS_OF,ROUTE['url'])[0][0]
+    class Redirected(FakeClient):
+        def fetch(self,url):
+            raw,capture=super().fetch(url);capture['final_url']='https://www.who.int/news/item/other';return raw,capture
+    result=verify_item(Redirected(['<h1>Material guidelines</h1>']),row,AS_OF)
+    assert not result['detail_verified'] and 'final_identity' in result['technical_error']
+
+def test_don_live_geography_article_variation_is_narrowly_compatible():
+    payload=json.loads((PROBES/'38141711504/who_emergencies_api.body').read_text())
+    row=parse_who_index(payload,'disease_outbreak_news',AS_OF)[0]
+    h1=json.loads(Path('data/audits/global_source_recovery_2026_10_11/diagnostics/38143343664.json').read_text())[0]['h1'][0]
+    item=verify_item(FakeClient([f'<h1>{h1}</h1><div class="date">10 October 2026</div>']),row,AS_OF)
+    assert item['detail_verified'] and item['published_at']=='2026-10-10'
+    bad=verify_item(FakeClient(['<h1>Different emergency - Russian Federation</h1>']),row,AS_OF)
+    assert not bad['detail_verified']
+
+def test_health_counts_verified_details_separately_from_indexed_dates():
+    row=parse_paho_index(CARD,'regional_news',AS_OF,ROUTE['url'])[0][0]
+    item=verify_item(FakeClient([ValueError('http_403')]),row,AS_OF)
+    assert item['index_published_at']=='2026-10-09' and item['published_at']=='2026-10-09'
+    assert health_counts([item],AS_OF)=={'30':0,'90':0}
+
+def test_cadence_requires_distinct_successful_live_runs_at_the_configured_interval():
+    ledger={'runs':[{'run_id':'prior','sources':{'who':{'coverage_completeness':'complete','checked_at':'2026-10-10T13:00:00+00:00'}}}]}
+    args=(ledger,'who','2026-10-11T13:00:00+00:00','current')
+    assert cadence_is_valid(*args,True,86400)
+    assert not cadence_is_valid(*args,False,86400)
+    assert not cadence_is_valid(*args,True,86400,replay=True)
+    assert not cadence_is_valid(ledger,'who','2026-10-11T13:00:00+00:00','prior',True,86400)
+    assert not cadence_is_valid(ledger,'who','2026-10-11T12:59:59+00:00','current',True,86400)
+
+def test_independent_native_control_measures_real_official_cards_and_detects_omissions(monkeypatch):
+    raw=(PROBES/'38141320771/paho_reports.body').read_bytes()
+    route=dict(ROUTE,section='technical_reports',url='https://www.paho.org/es/informes-tecnicos')
+    control=native_control(raw,route,AS_OF,route['url'])
+    rows,_=parse_paho_index(raw.decode(),route['section'],AS_OF,route['url'])
+    assert len(control)==18 and {r['url'] for r in control}=={r['url'] for r in rows}
+    monkeypatch.setattr('radar_salud.global_source_discovery.parse_paho_index',lambda *args:([],None))
+    result=collect_route(FakeClient([CARD]),ROUTE,AS_OF,10)
+    assert result['stop_reason']=='independent_native_control_mismatch' and not result['archive_complete']
+
+def test_spanish_material_titles_are_discovered_without_automatic_publication():
+    assert classify('Plan Andino de Salud y Cambio Climático 2026–2031','regional_news_es')['materiality']=='candidate'
+    assert classify('Semana de Vacunación en las Américas. Informe final','technical_reports')['materiality']=='candidate'
+    assert classify('Seminario web de capacitación','regional_news_es')['materiality']=='routine'
+
+def test_only_reciprocal_publisher_language_aliases_merge_and_keep_chile_scope():
+    en=parse_paho_index(CARD,'regional_news',AS_OF,ROUTE['url'])[0][0]
+    en['index_evidence']=[]
+    es=dict(en,url=en['url'].replace('/en/','/es/'),section='chile_news_es',title='Directrices materiales')
+    first=verify_item(FakeClient([f'<h1>{en["title"]}</h1><a class="language-link" hreflang="es" href="{es["url"]}">ES</a>']),en,AS_OF)
+    second=verify_item(FakeClient([f'<h1>{es["title"]}</h1><a class="language-link" hreflang="en" href="{en["url"]}">EN</a>']),es,AS_OF)
+    result=deduplicate_translations([first,second]);assert len(result)==1
+    assert len(result[0]['translation_members'])==2
+    assert any(e['name']=='Chile' for e in result[0]['entities'])
+    second['published_at']='2026-10-08'
+    assert deduplicate_translations([first,second])[0]['published_at'] is None
+    second['detail_evidence']['metadata']['alternate_language_urls']=[]
+    assert len(deduplicate_translations([first,second]))==2
