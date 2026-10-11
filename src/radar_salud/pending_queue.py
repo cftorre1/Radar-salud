@@ -119,6 +119,51 @@ def _reviewed_pulso_admission(raw, previous):
     return candidate, evidence, bool(old.get("editorial_hold"))
 
 
+
+def _code_repair_pulso_admission(raw, previous):
+    """Release a pinned failed assessment once for a new model call only."""
+    if previous.get("status") not in {"pending", "retry"}:
+        return None
+    old = previous.get("raw", {}).get("metadata", {})
+    reason = previous.get("reason")
+    assessment = old.get("editorial_assessment")
+    validation = old.get("pulso_editorial_proof_validation")
+    model = old.get("analysis_model_output")
+    old_binding = old.get("primary_item_binding")
+    new_binding = raw.metadata.get("primary_item_binding")
+    if ("editorial_code_repair_admission" in old
+            or not isinstance(assessment, dict) or assessment.get("decision") != "pending"
+            or assessment.get("reason") != reason or assessment.get("threshold") != 72
+            or not isinstance(validation, dict) or validation.get("decision") != "deferred"
+            or validation.get("reason") != reason
+            or assessment.get("proof_version") != validation.get("version")
+            or not isinstance(model, dict)
+            or validation.get("model_response") != model.get("_pulso_analysis_meta")
+            or validation.get("analysis_text_sha256") != old.get("analysis_input_body_sha256")
+            or validation.get("request_input_sha256") != old.get("analysis_request_input_sha256")
+            or validation.get("primary_article_body_sha256") != old.get("article_body_sha256")
+            or not isinstance(old_binding, dict) or old_binding.get("verified") is not True
+            or old_binding.get("raw_url") != raw.url or old_binding.get("primary_canonical_url") != raw.url
+            or old_binding.get("raw_event_date") != raw.event_date
+            or old_binding.get("primary_publication_date") != raw.event_date
+            or old_binding.get("primary_verification_flags") != {
+                "primary_identity_verified": True, "publication_date_verified": True}
+            or ("primary_item_binding" in raw.metadata and (
+                not isinstance(new_binding, dict) or new_binding.get("verified") is not True
+                or new_binding.get("raw_url") != raw.url or new_binding.get("primary_canonical_url") != raw.url
+                or new_binding.get("raw_event_date") != raw.event_date
+                or new_binding.get("primary_publication_date") != raw.event_date))
+            or raw.metadata.get("analysis_input_complete") is False):
+        return None
+    from .pulso_editorial_proof import verified_code_repair_admission
+    from .pulso_source import complete_article_body
+    candidate = deepcopy(raw)
+    candidate.metadata.setdefault("article_body_complete", complete_article_body(candidate.metadata))
+    evidence = verified_code_repair_admission(candidate, previous["raw"], reason)
+    if evidence is None:
+        return None
+    return candidate, evidence
+
 def _same_pulso_model_request(previous_raw, fresh):
     """Retain past processing evidence only for its unchanged primary request."""
     old = previous_raw.get("metadata", {})
@@ -223,6 +268,10 @@ class PendingQueue:
                         if reviewed_release is not None:
                             raw, admission_evidence, _ = reviewed_release
                             metadata = raw.metadata
+                        code_repair = _code_repair_pulso_admission(raw, previous) if factual_verified else None
+                        if code_repair is not None:
+                            raw, code_repair_evidence = code_repair
+                            metadata = raw.metadata
                         publisher_holds = {"publisher_conflicting_publication_dates", "publisher_video_text_unavailable",
                                            "publisher_sponsored_content_review_required", "publisher_opinion_taxonomy",
                                            "publisher_liveblog_entry_dates_unverified", "publisher_sponsored_text_unavailable"}
@@ -241,7 +290,7 @@ class PendingQueue:
                         changed = (old.get("event_date") != raw.event_date
                                    or old.get("title") != raw.title or old_meta.get("page_text") != metadata.get("page_text")
                                    or resolved_publisher_hold
-                                   or admission is not None
+                                   or admission is not None or code_repair is not None
                                    or any(old_meta.get(field) != metadata.get(field) for field in proof_fields))
                         if changed:
                             same_processing_input = factual_verified and _same_pulso_model_request(old, raw)
@@ -249,7 +298,8 @@ class PendingQueue:
                                 at=now.isoformat(), previous_publication_date=old.get("event_date"),
                                 verified_publication_date=raw.event_date, previous_title=old.get("title"),
                                 verified_title=raw.title, previous_capture_method=old_meta.get("capture_method"),
-                                reason=("approved_incremental_review_discovery_admission" if admission is not None
+                                reason=("verified_editorial_code_repair_analysis_admission" if code_repair is not None
+                                        else "approved_incremental_review_discovery_admission" if admission is not None
                                         else "verified_publisher_exception_rediscovery" if publisher_exception
                                         else "verified_article_rediscovery"),
                                 previous_publisher_exception_reason=old_meta.get("publisher_exception_reason"),
@@ -268,7 +318,7 @@ class PendingQueue:
                                 for field,value in old_meta.items():
                                     if field.startswith("analysis_") or field in (
                                             "pulso_editorial_proof_validation", "primary_item_binding",
-                                            "editorial_assessment", "prospective_evidence"):
+                                            "editorial_assessment", "prospective_evidence", "editorial_code_repair_admission"):
                                         previous["raw"]["metadata"][field] = deepcopy(value)
                                 revisions[-1]["retained_processing_input_unchanged"] = True
                             if admission is not None:
@@ -280,6 +330,16 @@ class PendingQueue:
                                     status_preserved=previous["status"], attempts_preserved=previous["attempts"],
                                     detected_at_preserved=previous["detected_at"],
                                     fingerprint_preserved=pulso_urls[url])
+                                previous["retry_at"] = None
+                            if code_repair is not None:
+                                revisions[-1].update(
+                                    code_repair_admission=deepcopy(code_repair_evidence),
+                                    previous_retry_at=previous.get("retry_at"),
+                                    body_completeness_derived_from_verified_hash=body_completeness_derived,
+                                    status_preserved=previous["status"], attempts_preserved=previous["attempts"],
+                                    detected_at_preserved=previous["detected_at"],
+                                    fingerprint_preserved=pulso_urls[url])
+                                previous["raw"]["metadata"]["editorial_code_repair_admission"] = deepcopy(code_repair_evidence)
                                 previous["retry_at"] = None
                             for field in ("editorial_hold", "event_equivalence_review"):
                                 # A newly proven factual primary article can resolve a

@@ -68,6 +68,10 @@ def unit_queue(tmp_path):
     queue = PendingQueue(tmp_path / "queue.json")
     key = fingerprint(RawItem(**observed["raw"]))
     queue.items[key] = deepcopy(observed)
+    # Exercise evidence refresh while an item is actively processing. A code
+    # repair admission is separately tested for pending/retry; this unit status
+    # change never changes the retained observed response fixture or calls AI.
+    queue.items[key]["status"] = "processing"
     queue.save()
     return queue, key, fresh
 
