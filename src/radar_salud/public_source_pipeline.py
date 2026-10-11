@@ -212,7 +212,8 @@ def _health_relevance(title,text):
     return any(x in t for x in health_terms)
 
 def process_df(raw,cfg):
-    raw=enrich(raw)
+    if not raw.event_date or not raw.metadata.get("page_text"):
+        raw=enrich(raw)
     if not raw.event_date:return None
     body=raw.metadata.get("page_text") or raw.raw_text
     if not _health_relevance(raw.title,body):return None
