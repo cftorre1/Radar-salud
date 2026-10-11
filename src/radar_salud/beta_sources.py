@@ -287,7 +287,7 @@ def process_curated_beta_source(raw, cfg):
     from .processing import DeferredProcessing
     from .public_source_pipeline import enrich, _scopes
 
-    from .occupational_sources import SOURCES, materiality, valid_date
+    from .occupational_sources import SOURCES, materiality, valid_date, classify_content_kind, chile_today
     scoped = raw.source_slug in SOURCES
     if scoped and raw.metadata.get("article_extraction") != "occupational_v1":
         raise DeferredProcessing("occupational detail requires verified article extraction")
@@ -319,12 +319,27 @@ def process_curated_beta_source(raw, cfg):
         verify_capture(raw, hosts)
     if not scoped:
         raw = enrich(raw)
-    body = raw.metadata.get("page_text") or raw.raw_text or ""
+    primary_body = raw.metadata.get("page_text") or raw.raw_text or ""
+    body, document_facts = primary_body, ""
+    if scoped:
+        from .occupational_documents import verified_document_text, additional_document_facts, documentary_materiality
+        verified_document = verified_document_text(raw, hosts)
+        document_facts = additional_document_facts(primary_body, verified_document)
+        if document_facts:
+            body += "\n" + document_facts
     role = raw.metadata.get("market_role") or "provider"
-    accepted = materiality(role, raw.title, body)[0] if scoped else _material(role, raw.title, body)
+    if scoped:
+        accepted, material_reason = documentary_materiality(raw, body, verified_document)
+        if (raw.metadata.get("supporting_documents_required") and not accepted
+                and any(document.get("truncated") for document in raw.metadata.get("supporting_documents", []))):
+            raise DeferredProcessing("required_document_materiality_unresolved_bounded_extraction")
+        raw.metadata.update(materiality_accepted=accepted, materiality_reason=material_reason,
+                            content_kind=classify_content_kind(material_reason, raw.title, primary_body))
+    else:
+        accepted = _material(role, raw.title, body)
     if not raw.event_date or len(body) < 160 or not accepted:
         if scoped:
-            raw.metadata["publication_rejection_reason"] = materiality(role, raw.title, body)[1]
+            raw.metadata["publication_rejection_reason"] = material_reason
         return None
     kind = {
         "media": "prensa económica de alta confianza; señal temprana, atribuir y no convertir reporte de prensa en hecho oficial",
@@ -333,7 +348,14 @@ def process_curated_beta_source(raw, cfg):
         "provider_achs_centers": "publicación de centros clínicos Achs Salud; no atribuir sus cambios a las clínicas ni al seguro laboral",
         "provider": "publicación institucional de prestador; priorizar capacidad, convenios, expansión, inversión y M&A",
     }.get(role, "publicación sectorial")
-    ai = analyze_news(title=raw.title, text=body[:10000], source_name=raw.source_name, kind=kind)
+    if scoped:
+        kind += (f". Tipo de contenido: {raw.metadata['content_kind']}. Publicación: {raw.event_date}; "
+                 f"fecha de revisión Chile: {chile_today().isoformat()}. Puede ingresar por BACKFILL. "
+                 "No afirmes que una convocatoria, inscripción o vigencia continúa abierta hoy a partir de una "
+                 "publicación histórica: exige fechas explícitas y diferencia publicación, período de datos y plazo operativo.")
+    ai_text = (primary_body[:3500] + "\n\nHechos adicionales del documento oficial verificado:\n" + document_facts
+               if document_facts else body[:10000])
+    ai = analyze_news(title=raw.title, text=ai_text, source_name=raw.source_name, kind=kind)
     if not ai:
         raise DeferredProcessing("curated beta source pending assessment")
     score = int(ai.get("relevance_score", 0))
@@ -376,6 +398,8 @@ def process_curated_beta_source(raw, cfg):
                    publication_evidence=raw.metadata.get("publication_evidence") or raw.metadata.get("publication_date_evidence"),
                    capture_evidence=raw.metadata.get("capture_evidence"),
                    materiality_reason=raw.metadata["materiality_reason"],
+                   content_kind=raw.metadata["content_kind"],
+                   supporting_documents=raw.metadata.get("supporting_documents", []),
                    source_quality_gate=raw.metadata["source_quality_gate"])
     if role == "media":
         row["evidence_maturity"] = "media_reported"

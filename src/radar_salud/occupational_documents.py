@@ -235,3 +235,67 @@ def verified_document_text(raw, hosts):
             raise DeferredProcessing("supporting_document_extracted_text_mismatch")
         output.append(f"Documento oficial asociado: {document['document_url']}\n{extracted['extracted_text']}")
     return "\n\n".join(output)
+
+
+def additional_document_facts(primary_text, document_text, *, max_chars=1900):
+    """Conservative numeric operational excerpts, preserving adjacent context.
+
+    Covers, years, page labels and repeated infographic values do not create
+    a new editorial input. This is an excerpt selector, not a summary or a
+    claim that all facts in a long report were read.
+    """
+    def number(value):
+        value = value.rstrip("%")
+        if re.fullmatch(r"\d{1,3}(?:[.,]\d{3})+", value):
+            return re.sub(r"[.,]", "", value)
+        return value.replace(",", ".")
+    existing = {number(value) for value in re.findall(r"\b\d+(?:[.,]\d+)*%?", primary_text)}
+    lines = [line.strip() for line in document_text.splitlines() if line.strip()
+             and not line.startswith("Documento oficial asociado:")
+             and not re.fullmatch(r"Página \d+:", line.strip())]
+    operational = (r"\b(?:atenciones?|casos?|accidentes?|siniestralidad|accidentabilidad|trabajadores?|"
+                   r"empleadoras?|cotizaciones?|ingresos?|excedentes?|sesiones?|tratamiento|"
+                   r"evaluaciones?|pacientes?|personas?|reintegro|prestaciones?|espera|camas?|boxes|horas?|capacitacion)\b")
+    units = r"(?:%|mil\b|millones?\b|casos?\b|accidentes?\b|atenciones?\b|evaluaciones?\b|trabajadores?\b|pacientes?\b|personas?\b|sesiones?\b|horas?\b|meses?\b|semanas?\b|camas?\b)"
+    selected, used = [], set()
+    for index, line in enumerate(lines):
+        # Exclude bare page numbers and numbered headings rather than turning
+        # them into measurements through their neighboring text.
+        if (re.fullmatch(r"\d{1,2}", line)
+                or re.match(r"^\d+(?:\.\d+){1,4}\.?\s+[A-Za-zÁÉÍÓÚáéíóú]", line)
+                or re.search(r"\b(?:ley|articulo|proyecto|pagina|capitulo|seccion)\s+(?:n[o°º.]?\s*)?\d", fold(line))
+                or re.fullmatch(r"\d+\s+\d+[.,]\d+\s*%", line)):
+            continue
+        context = " ".join(lines[max(0, index - 1):min(len(lines), index + 2)])
+        if not re.search(operational, fold(context)):
+            continue
+        novel = False
+        for value in re.findall(r"\b\d+(?:[.,]\d+)*%?", line):
+            parsed = number(value)
+            if re.fullmatch(r"(?:19|20)\d{2}", parsed) or parsed in existing:
+                continue
+            following = fold(line + " " + (lines[index + 1] if index + 1 < len(lines) else ""))
+            if not re.search(re.escape(fold(value).rstrip("%")) + r"\s*" + units, following):
+                continue
+            novel = True
+            break
+        if not novel:
+            continue
+        for neighbor in range(max(0, index - 1), min(len(lines), index + 2)):
+            if neighbor not in used:
+                selected.append(lines[neighbor])
+                used.add(neighbor)
+    return "\n".join(selected)[:max_chars]
+
+
+def documentary_materiality(raw, body, verified_text):
+    from .occupational_sources import materiality
+    result = materiality(raw.metadata.get("market_role") or "provider", raw.title, body)
+    if result[0]:
+        return result
+    # The annual dataset is eligible only after actual report values were
+    # captured. Its release date and the 2025 period remain separate fields.
+    if (raw.source_slug == "ist" and raw.url == "https://ist.cl/reporte-sostenibilidad-2025/"
+            and additional_document_facts(raw.metadata.get("page_text", ""), verified_text)):
+        return True, "published_operational_study"
+    return result
