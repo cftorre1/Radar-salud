@@ -1,0 +1,33 @@
+{
+  "checks": {
+    "old_token_finish_rejected": true,
+    "old_worker_did_not_mutate_state": true,
+    "real_heartbeat_grace_elapsed": true,
+    "reclaimed_with_new_generation": true,
+    "stall_fenced_original_token": true,
+    "stalled_detected": true
+  },
+  "context": {
+    "execution_environment": "github_actions",
+    "infrastructure_sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+    "repository": "cftorre1/Radar-salud",
+    "run_attempt": 1,
+    "run_id": 38116123889,
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38116123889"
+  },
+  "counts_as_material_progress": false,
+  "elapsed_real_seconds": 183.402066,
+  "fault_injection": true,
+  "hosted_canary": true,
+  "live_acceptance_evidence": false,
+  "observed_at": "2026-10-11T05:51:45.814918Z",
+  "pinned_infrastructure_sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+  "proof_calls": [
+    "autonomy_engine.reconcile",
+    "autonomy_engine.claim",
+    "autonomy_engine.finish(original_token) -> LeaseError"
+  ],
+  "source_live_evidence": false,
+  "stall_reason": "heartbeat_missing",
+  "task_id": "hosted_canary_lease-heartbeat-v1"
+}

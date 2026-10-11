@@ -1,4 +1,12 @@
 {
+  "checks": {
+    "old_token_finish_rejected": true,
+    "old_worker_did_not_mutate_state": true,
+    "real_heartbeat_grace_elapsed": true,
+    "reclaimed_with_new_generation": true,
+    "stall_fenced_original_token": true,
+    "stalled_detected": true
+  },
   "counts_as_material_progress": false,
   "engine_state": {
     "acceptance": {
@@ -25,6 +33,33 @@
         "owner": "canary-38115967398-1",
         "source_live_evidence": false,
         "task_id": "hosted_canary_lease-heartbeat-v1"
+      },
+      {
+        "at": "2026-10-11T05:51:45.814918Z",
+        "counts_as_material_progress": false,
+        "family": "editorial",
+        "fault_injection": true,
+        "fenced_token": "f8ff5d0b6ed7cab827f6ae3620fc97c045cbfa1d66a13678f7352ee2f36adb36",
+        "hosted_canary": true,
+        "kind": "stalled",
+        "live_acceptance_evidence": false,
+        "reason": "heartbeat_missing",
+        "source_live_evidence": false,
+        "task_id": "hosted_canary_lease-heartbeat-v1"
+      },
+      {
+        "at": "2026-10-11T05:51:45.814918Z",
+        "autonomous": true,
+        "counts_as_material_progress": false,
+        "family": "editorial",
+        "fault_injection": true,
+        "fence": 3,
+        "hosted_canary": true,
+        "kind": "pickup",
+        "live_acceptance_evidence": false,
+        "owner": "canary-recovery-38116123889-1",
+        "source_live_evidence": false,
+        "task_id": "hosted_canary_lease-heartbeat-v1"
       }
     ],
     "live_acceptance_evidence": false,
@@ -35,9 +70,10 @@
     "tasks": {
       "hosted_canary_lease-heartbeat-v1": {
         "approved": true,
-        "attempts": 1,
+        "attempts": 2,
         "audit_counts": {},
         "blocker_signatures": [],
+        "closed_at": "2026-10-11T05:51:45.814918Z",
         "counts_as_material_progress": false,
         "created_at": "2026-10-11T05:48:42.412852Z",
         "depends_on": [],
@@ -46,37 +82,27 @@
         "failure": null,
         "family": "editorial",
         "fault_injection": true,
-        "fence": 1,
+        "fence": 3,
         "hosted_canary": true,
         "id": "hosted_canary_lease-heartbeat-v1",
         "input_fingerprint": "38e47bea68839407e80aa72f67f0ba20f157dd4cc0c4f10def09af7de27ba34e",
         "input_sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
         "last_ready_at": "2026-10-11T05:48:42.412852Z",
-        "lease": {
-          "claimed_at": "2026-10-11T05:48:42.412852Z",
-          "counts_as_material_progress": false,
-          "expires_at": "2026-10-11T05:58:42.412852Z",
-          "fault_injection": true,
-          "fence": 1,
-          "heartbeat_at": "2026-10-11T05:48:42.412852Z",
-          "hosted_canary": true,
-          "live_acceptance_evidence": false,
-          "owner": "canary-38115967398-1",
-          "source_live_evidence": false,
-          "token": "f8ff5d0b6ed7cab827f6ae3620fc97c045cbfa1d66a13678f7352ee2f36adb36"
-        },
+        "lease": null,
         "live_acceptance_evidence": false,
-        "material_watch_started_at": "2026-10-11T05:48:42.412852Z",
+        "material_progress_at": "2026-10-11T05:51:45.814918Z",
+        "material_watch_started_at": "2026-10-11T05:51:45.814918Z",
         "objective": "Bounded infrastructure heartbeat fault injection",
         "pickup_ready_since": "2026-10-11T05:48:42.412852Z",
         "priority": "low",
         "product_input_fingerprint": "38e47bea68839407e80aa72f67f0ba20f157dd4cc0c4f10def09af7de27ba34e",
         "queue_status": "approved",
-        "recovery_episode": "bf85e21b888db408b2ac98979e895a25b0d392666fe3dc6b3acf83337d39b654",
+        "reason": "heartbeat_missing",
+        "recovery_episode": "5a36b6e544a596075de96873c2a8db0ee170a544096224b933668f10b876fb69",
         "recovery_reclaims": 0,
         "source_live_evidence": false,
-        "state_changed_at": "2026-10-11T05:48:42.412852Z",
-        "status": "RUNNING"
+        "state_changed_at": "2026-10-11T05:51:45.814918Z",
+        "status": "CLOSED"
       }
     }
   },
@@ -85,6 +111,7 @@
   "heartbeat_grace_seconds": 180,
   "hosted_canary": true,
   "live_acceptance_evidence": false,
+  "observed_until": "2026-10-11T05:51:45.814918Z",
   "original_fence": 1,
   "original_token": "f8ff5d0b6ed7cab827f6ae3620fc97c045cbfa1d66a13678f7352ee2f36adb36",
   "parent_task_id": "autonomy_architecture_redesign_2026_10_07",
@@ -100,9 +127,12 @@
   "pickup_evidence_sha256": "4d1f9e2108187885dbd470fb36c0b2a323a620af111b0b8457ef85fed9de33f7",
   "pickup_state_parent_sha": "518d5cede5f5d4ed128f6d1743702c77520f196b",
   "pinned_infrastructure_sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+  "result_evidence_path": "data/autopilot/evidence/hosted_canary_lease-heartbeat-v1_result.json",
+  "result_evidence_sha256": "e4af535b0f1bae144b68d1621f8943df26a929e1dc6921e942c8281cf02d1a38",
   "source_live_evidence": false,
+  "stall_reason": "heartbeat_missing",
   "started_at": "2026-10-11T05:48:42.412852Z",
-  "status": "WAITING_HEARTBEAT",
+  "status": "PASS",
   "task_id": "hosted_canary_lease-heartbeat-v1",
   "version": "lease-heartbeat-v1"
 }
