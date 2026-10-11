@@ -1,0 +1,75 @@
+name: Pulso isolated real core recovery
+on:
+  push:
+    branches: [codex/b-pulso-runtime-20261011]
+    paths:
+      - '.github/run-pulso-runtime-now'
+      - '.github/workflows/pulso-runtime-recovery.yml'
+      - 'scripts/audit_pulso_runtime.py'
+permissions:
+  contents: write
+concurrency:
+  group: pulso-isolated-real-core
+  cancel-in-progress: false
+jobs:
+  runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      RADAR_FAST_MODEL: gpt-5.6-luna
+      RADAR_DEEP_MODEL: gpt-5.6-terra
+      RADAR_DEEP_PER_RUN: 15
+      RADAR_FAST_PER_RUN: 120
+      RADAR_DEEP_PER_MONTH: 180
+      RADAR_FAST_PER_MONTH: 1500
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/b-pulso-runtime-20261011
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Assert exclusive isolated branch
+        run: test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
+      - run: pip install -e . pytest
+      - name: Directed source, primary evidence and core checks
+        run: python -m pytest -q tests/test_pulso_source.py tests/test_pulso_archive_discovery.py tests/test_pulso_real_fixtures.py tests/test_pulso_core_runtime.py tests/test_beta_core_handoff.py tests/test_pulso_runtime_audit.py
+      - name: Execute source-scoped core with original HTTP observation
+        run: |
+          python - <<'PY'
+          import json, subprocess
+          phase=json.load(open('.github/run-pulso-runtime-now'))['phase']
+          if phase not in {'discovery_only','process','report_only'}:
+              raise SystemExit('Unsupported recovery phase')
+          command=['timeout','--signal=TERM','--kill-after=45s','75m','python','scripts/audit_pulso_runtime.py','--limit','250']
+          if phase=='discovery_only': command.append('--discovery-only')
+          if phase=='report_only': command.append('--report-only')
+          raise SystemExit(subprocess.call(command))
+          PY
+      - name: Preserve source checkpoints and paid ledgers exclusively on isolated branch
+        if: always()
+        run: |
+          test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
+          git config user.name alicanto-salud-bot
+          git config user.email alicanto-salud-bot@users.noreply.github.com
+          git add data/state data/history data/analysis_cache data/ai_usage data/source_health.json
+          if test -f data/audits/pulso_runtime_2026_10_11.json; then git add data/audits/pulso_runtime_2026_10_11.json; fi
+          if test -f data/audits/pulso_runtime_capture/manifest.json; then git add data/audits/pulso_runtime_capture/manifest.json; fi
+          git diff --cached --quiet || git commit -m "audit(pulso): preserve real core inventory and exact outcomes [skip ci]"
+          git fetch origin codex/b-pulso-runtime-20261011
+          git rebase origin/codex/b-pulso-runtime-20261011
+          git push origin HEAD:codex/b-pulso-runtime-20261011
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pulso-real-core-${{ github.sha }}
+          retention-days: 90
+          path: |
+            data/audits/pulso_runtime_2026_10_11.json
+            data/audits/pulso_runtime_capture/
+            data/state/pulso_discovery_cache.json
+            data/state/discovery_run.json
+            data/source_health.json
+          if-no-files-found: error
