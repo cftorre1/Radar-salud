@@ -53,6 +53,29 @@ def object_digest(value):
     return digest(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode())
 
 
+def idempotence_signal_hashes(signals):
+    """Keep native official records sharing a listing distinct and intact.
+
+    La Tercera article identity remains URL plus date regardless of an injected
+    record identifier or source-type label. Whole signal hashes preserve every
+    original field; this reader neither normalizes nor removes history rows.
+    """
+    rows = {}
+    for signal in signals:
+        url = signal.get("source_url")
+        identity = [url, signal.get("event_date")]
+        record = signal.get("source_record_id")
+        press_host = urlsplit(url or "").hostname in {"latercera.com", "www.latercera.com"}
+        if (not press_host and signal.get("source_type") == "official"
+                and isinstance(record, str) and record.strip()):
+            identity.append(record.strip())
+        key = json.dumps(identity, ensure_ascii=False)
+        if key in rows:
+            raise ValueError("duplicate_effective_signal_identity")
+        rows[key] = object_digest(signal)
+    return rows
+
+
 def verify_incremental_addendum_reference(raw, root):
     """An analysis release keeps both immutable reviews and its exact original.
 
@@ -1134,13 +1157,6 @@ def verify_genuine_idempotence(baseline, proof, *, root, report, discovery, queu
                           if key in {"page_text", "raw_text"} and isinstance(item, str) else compact(item))
                     for key, item in value.items() if key not in {"last_checked_at", "cache_hit"}}
         return [compact(item) for item in value] if isinstance(value, list) else value
-    def signal_hashes(signals):
-        rows = {}
-        for signal in signals:
-            key = json.dumps([signal.get("source_url"), signal.get("event_date")], ensure_ascii=False)
-            require(key not in rows, "duplicate_effective_signal_identity")
-            rows[key] = object_digest(signal)
-        return rows
     try:
         require(isinstance(baseline, dict) and isinstance(proof, dict), "both_baseline_and_actual_replay_proof_required")
         require(baseline.get("schema_version") == "pulso_idempotence_v1"
@@ -1186,7 +1202,7 @@ def verify_genuine_idempotence(baseline, proof, *, root, report, discovery, queu
         required.update("config/" + name for name in ("sources.json", "beta_source_configs.json",
             "source_quality_gate.json", "media_early_signal_gate.json", "model_routing_v1.json", "taxonomy_v2.json",
             "editorial_rules_v2.json", "editorial_copy_overrides_v1.json", "editorial_intelligence_committee_v1.json",
-            "normative_editorial_v2.json"))
+            "normative_editorial_v2.json", "pulso_editorial_repair_admission_2026_10_11.json"))
         require(required <= set(files) and object_digest(files) == fingerprint.get("sha256")
                 and fingerprint.get("git_or_marker_sha_used") is False
                 and all(digest(local_capture_path(root, path).read_bytes()) == sha for path, sha in files.items())
@@ -1216,7 +1232,8 @@ def verify_genuine_idempotence(baseline, proof, *, root, report, discovery, queu
         require([object_digest(row) for row in telemetry] == old["response_event_sha256s"]
                 and [row.get("response_id") for row in telemetry if row.get("success") is True] == old["actual_response_ids"],
                 "replay_response_events_changed")
-        require(signal_hashes(history) == old["history"] and signal_hashes(snapshot.get("signals", [])) == old["feed"],
+        require(idempotence_signal_hashes(history) == old["history"]
+                and idempotence_signal_hashes(snapshot.get("signals", [])) == old["feed"],
                 "replay_changed_effective_history_or_serialized_feed")
         ledgers = {path.name: json.loads(path.read_bytes()) for path in (root / "data/ai_usage").glob("????-??.json")}
         require(ledgers == old["ledgers"] and ledgers[first_end.strftime("%Y-%m") + ".json"] == paid["budget_after"]["month"],
