@@ -353,6 +353,10 @@ def process_curated_beta_source(raw, cfg):
                  f"fecha de revisión Chile: {chile_today().isoformat()}. Puede ingresar por BACKFILL. "
                  "No afirmes que una convocatoria, inscripción o vigencia continúa abierta hoy a partir de una "
                  "publicación histórica: exige fechas explícitas y diferencia publicación, período de datos y plazo operativo.")
+        if raw.url == "https://ist.cl/reporte-sostenibilidad-2025/" and document_facts:
+            kind += (" El informe corresponde al período 2025. Sus tablas comparan ingresos y egresos ordinarios 2025/2024; "
+                     "conserva los encabezados y la categoría ordinarios. No deduzcas déficit ni resultado neto "
+                     "mediante su resta. La afirmación sobre ausencia de excedentes debe atribuirse al informe.")
     ai_text = (primary_body[:3500] + "\n\nHechos adicionales del documento oficial verificado:\n" + document_facts
                if document_facts else body[:10000])
     ai = analyze_news(title=raw.title, text=ai_text, source_name=raw.source_name, kind=kind)

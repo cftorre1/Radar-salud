@@ -27,6 +27,10 @@ DOCUMENTS = {
         ("ist", "2026-07-14", "https://ist.cl/wp-content/uploads/2026/07/Reporte-de-sostenibilidad-2025.pdf"),
 }
 MAX_BYTES, MAX_PAGES, MAX_TEXT = 20_000_000, 40, 30_000
+IST_REPORT_URL = "https://ist.cl/reporte-sostenibilidad-2025/"
+IST_DOCUMENT_URL = DOCUMENTS[IST_REPORT_URL][2]
+IST_FINANCIAL_PROFILE = "ist_2025_financial_context_v1"
+IST_SELECTED_PAGES = tuple(range(53, 61)) + tuple(range(1, 33))
 
 
 class _ArticleLinks(HTMLParser):
@@ -132,8 +136,9 @@ def _binary(evidence, url, hosts):
     return data, suffix
 
 
-def _extract(data, kind):
+def _extract(data, kind, *, document_url=None):
     pages = []
+    financial_profile = kind == "pdf" and document_url == IST_DOCUMENT_URL
     try:
         if kind == "pdf":
             from pypdf import PdfReader
@@ -141,8 +146,16 @@ def _extract(data, kind):
             if reader.is_encrypted:
                 raise ValueError("encrypted PDF")
             count = len(reader.pages)
-            pages = [(index + 1, reader.pages[index].extract_text() or "")
-                     for index in range(min(count, MAX_PAGES))]
+            if financial_profile:
+                # Exact official report only: prioritize financial context while
+                # retaining the same forty-page and thirty-thousand-char limits.
+                numbers = [number for number in IST_SELECTED_PAGES if number <= count]
+                pages = [(number, (reader.pages[number - 1].extract_text(extraction_mode="layout")
+                                  if 53 <= number <= 60 else reader.pages[number - 1].extract_text()) or "")
+                         for number in numbers]
+            else:
+                pages = [(index + 1, reader.pages[index].extract_text() or "")
+                         for index in range(min(count, MAX_PAGES))]
         else:
             with ZipFile(BytesIO(data)) as archive:
                 entries = archive.infolist()
@@ -168,8 +181,14 @@ def _extract(data, kind):
     except Exception as exc:
         raise DeferredProcessing(f"supporting_document_text_unavailable: {type(exc).__name__}: {str(exc)[:200]}") from exc
     bounded = text[:MAX_TEXT]
-    return {"extracted_text": bounded, "text_sha256": hashlib.sha256(bounded.encode()).hexdigest(),
-            "page_count": count, "extracted_pages": len(pages), "truncated": count > MAX_PAGES or len(text) > MAX_TEXT}
+    result = {"extracted_text": bounded, "text_sha256": hashlib.sha256(bounded.encode()).hexdigest(),
+              "page_count": count, "extracted_pages": len(pages), "truncated": count > len(pages) or len(text) > MAX_TEXT}
+    if financial_profile:
+        result.update(extraction_profile=IST_FINANCIAL_PROFILE,
+                      extracted_page_numbers=[number for number, _ in pages],
+                      retained_page_numbers=[int(number) for number in re.findall(r"(?:^|\n)Página (\d+):", bounded)],
+                      selection="financial_pages53_to60_then_first32; bounded40_pages30000_characters")
+    return result
 
 
 def attach_documents(raw, loader):
@@ -197,7 +216,7 @@ def attach_documents(raw, loader):
             "parent_publication_evidence": raw.metadata.get("publication_evidence") or raw.metadata.get("publication_date_evidence"),
             "parent_capture_evidence": dict(raw.metadata["capture_evidence"]),
             "document_url": document_url, "document_publication_date": None,
-            "capture_evidence": evidence, "format": kind, "status": "verified", **_extract(data, kind),
+            "capture_evidence": evidence, "format": kind, "status": "verified", **_extract(data, kind, document_url=document_url),
         })
         raw.metadata["supporting_document_status"] = "verified"
     except Exception as exc:
@@ -230,7 +249,10 @@ def verified_document_text(raw, hosts):
                 or document.get("parent_publication_evidence") != (raw.metadata.get("publication_evidence") or raw.metadata.get("publication_date_evidence"))):
             raise DeferredProcessing("supporting_document_parent_binding_unverified")
         data, kind = _binary(document.get("capture_evidence"), document["document_url"], hosts)
-        extracted = _extract(data, kind)
+        extracted = _extract(data, kind, document_url=document["document_url"])
+        if (document["document_url"] == IST_DOCUMENT_URL
+                and document.get("extraction_profile") != extracted.get("extraction_profile")):
+            raise DeferredProcessing("supporting_document_extraction_profile_outdated")
         if document.get("format") != kind or any(document.get(key) != value for key, value in extracted.items()):
             raise DeferredProcessing("supporting_document_extracted_text_mismatch")
         output.append(f"Documento oficial asociado: {document['document_url']}\n{extracted['extracted_text']}")
@@ -244,6 +266,10 @@ def additional_document_facts(primary_text, document_text, *, max_chars=1900):
     a new editorial input. This is an excerpt selector, not a summary or a
     claim that all facts in a long report were read.
     """
+    if document_text.startswith(f"Documento oficial asociado: {IST_DOCUMENT_URL}\n"):
+        financial = _ist_financial_facts(document_text, max_chars=max_chars)
+        if financial:
+            return financial
     def number(value):
         value = value.rstrip("%")
         if re.fullmatch(r"\d{1,3}(?:[.,]\d{3})+", value):
@@ -288,6 +314,33 @@ def additional_document_facts(primary_text, document_text, *, max_chars=1900):
                 selected.append(lines[neighbor])
                 used.add(neighbor)
     return "\n".join(selected)[:max_chars]
+
+
+def _ist_financial_facts(document_text, *, max_chars):
+    """Literal contextual excerpts; no arithmetic or inferred net result."""
+    matches = list(re.finditer(r"(?:^|\n)Página (\d+):\n", document_text))
+    pages = {int(match[1]): document_text[match.end():matches[index + 1].start() if index + 1 < len(matches) else len(document_text)]
+             for index, match in enumerate(matches)}
+    blocks = []
+    for number, indicator in ((54, "Ingresos ordinarios"), (55, "Egresos ordinarios")):
+        lines = [" ".join(line.split()) for line in pages.get(number, "").splitlines() if line.strip()]
+        heading = next((line for line in lines if line.startswith("Tabla ") and indicator.lower() in line.lower()), None)
+        header = next((line for line in lines if "Indicador Financiero" in line and "2025" in line and "2024" in line), None)
+        row = next((line for line in lines if line.startswith(indicator) and "$" in line and "MM" in line), None)
+        if heading and header and row:
+            blocks.append(f"Página {number}:\n{heading}\n{header}\n{row}")
+    for number, start, width in ((58, "Durante 2025, IST no registr", 2), (59, "Los fondos de reserva de IST", 4)):
+        lines = [" ".join(line.split()) for line in pages.get(number, "").splitlines() if line.strip()]
+        index = next((index for index, line in enumerate(lines) if fold(line).startswith(fold(start))), None)
+        if index is not None:
+            blocks.append(f"Página {number}:\n" + "\n".join(lines[index:index + width]))
+    # Keep every table's periods, heading and values together. Never cut a
+    # financial row away from its column labels to satisfy the context budget.
+    selected = []
+    for block in blocks:
+        if len("\n\n".join(selected + [block])) <= max_chars:
+            selected.append(block)
+    return "\n\n".join(selected)
 
 
 def documentary_materiality(raw, body, verified_text):
