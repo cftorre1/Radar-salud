@@ -355,7 +355,7 @@ class DateArchiveClient:
             card=CARD.replace('2026-10-09',day).replace('9-10-2026-test',day+'-test')
             html=(form if not self.ignore else '')+card
             if self.saturated and (date.fromisoformat(end)-date.fromisoformat(start)).days>5:
-                html+='<a rel="last" href="?page=8">Last</a>'
+                html+=f'<a rel="last" href="?date%5Bmin%5D={start}&amp;date%5Bmax%5D={end}&amp;page=8">Last</a>'
         raw=html.encode();return raw,{'http_status':200,'tls_verified':True,'fetched_at':'2026-10-11T14:18:00Z','body_sha256':hashlib.sha256(raw).hexdigest()}
 
 def test_official_date_slices_cover_all_90_days_using_card_dates_not_query_dates():
@@ -441,3 +441,52 @@ def test_resume_rechecks_age_when_receipt_is_used_and_never_recaptures_stale_byt
     monkeypatch.setattr('radar_salud.global_discovery_common.datetime',Later)
     with pytest.raises(ValueError,match='one-hour bound'): second.fetch(url)
     assert second.network_requests==0 and not second.opener.calls
+
+DATE_BOUNDS={'from':'2026-09-15','to':'2026-09-21','query_from':'2026-09-14','query_to':'2026-09-22'}
+DATE_FORM='<form method="get" action="/en/news" data-drupal-selector="views-exposed-form-news-news-page"><input name="date[min]" value="2026-09-14"><input name="date[max]" value="2026-09-22"></form>'
+def news_view(body):
+    return '<h1>News</h1><div class="news-grid view view-news view-id-news view-display-id-news_page">'+DATE_FORM+body+'</div>'
+def terminal_date_route():
+    return dict(ROUTE,url=ROUTE['url']+'?date%5Bmin%5D=2026-09-14&date%5Bmax%5D=2026-09-22',date_partition=DATE_BOUNDS)
+def native_page_link(number,rel):
+    return f'<a rel="{rel}" href="?date%5Bmin%5D=2026-09-14&amp;date%5Bmax%5D=2026-09-22&amp;page={number}">{rel}</a>'
+def date_card(number):
+    return CARD.replace('2026-10-09','2026-09-17').replace('9-10-2026-test',f'17-9-2026-test-{number}')
+
+@pytest.mark.parametrize('single',[True,False])
+def test_closed_official_empty_end_probe_verifies_dated_native_archive(single):
+    first=news_view(date_card(0))
+    bodies=[first,news_view('')] if single else [news_view(date_card(0)+native_page_link(1,'next')+native_page_link(1,'last')),news_view(date_card(1)),news_view('')]
+    result=collect_route(FakeClient(bodies),terminal_date_route(),AS_OF,10)
+    assert result['archive_complete']
+    assert result['stop_reason']==('date_partition_single_page_native_end_probe' if single else 'date_partition_native_empty_after_advertised_end')
+    assert len(result['items'])==(1 if single else 2)
+    assert not result['pages'][-1]['native_control']
+
+@pytest.mark.parametrize('change',[
+    lambda h:h.replace('</div>',''),
+    lambda h:h.replace('</form>',''),
+    lambda h:h.replace('view-id-news','view-id-unknown'),
+    lambda h:h.replace('news-grid','unrecognized-view'),
+    lambda h:h.replace('>News<','>Access denied<'),
+    lambda h:h.replace('method="get"','method="post"'),
+    lambda h:h.replace('action="/en/news"','action="/en/search"'),
+    lambda h:h.replace('views-exposed-form-news-news-page','unknown-form'),
+    lambda h:h.replace(DATE_FORM,DATE_FORM+DATE_FORM),
+    lambda h:h.replace('</div>','<div class="view-content"></div></div>'),
+    lambda h:h.replace('</div>','<div class="pager">More</div></div>'),
+    lambda h:h.replace('</div>','Service temporarily unavailable</div>'),
+    lambda h:h.replace('</div>',native_page_link(3,'next')+'</div>'),
+])
+def test_native_empty_end_proof_rejects_truncation_errors_changed_templates_and_pagers(change):
+    result=collect_route(FakeClient([news_view(date_card(0)),change(news_view(''))]),terminal_date_route(),AS_OF,10)
+    assert not result['archive_complete']
+
+def test_initial_native_empty_is_unverified_without_explicit_empty_message():
+    result=collect_route(FakeClient([news_view('')]),terminal_date_route(),AS_OF,10)
+    assert not result['archive_complete'] and result['stop_reason']=='date_partition_empty_unverified'
+
+@pytest.mark.parametrize('prior',[news_view(date_card(1)+native_page_link(2,'next')),news_view(date_card(1)+native_page_link(2,'last'))])
+def test_native_empty_end_proof_requires_actual_previous_boundary_not_missing_next_alone(prior):
+    result=collect_route(FakeClient([news_view(date_card(0)+native_page_link(1,'last')),prior,news_view('')]),terminal_date_route(),AS_OF,10)
+    assert not result['archive_complete']

@@ -73,12 +73,18 @@ class NativeHTML(HTMLParser):
         self.cards, self.h1, self.meta_dates, self.visible_dates = [], [], [], []
         self.canonical, self.alternates, self.documents = [], [], []
         self.forms, self.inputs, self.links, self.empty_messages = [], [], [], []
+        self.news_views, self.pager_elements = [], []
         self.feed(raw.decode("utf-8", errors="replace"))
         self.close()
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         classes = set(attrs.get("class", "").split())
+        if any(token == "pager" or token.startswith(("pager__", "js-pager__")) for token in classes):
+            self.pager_elements.append({"tag": tag, "attrs": attrs})
+        for frame in self.stack:
+            if frame.get("news_view"):
+                frame["descendants"].append({"tag": tag, "attrs": attrs})
         if tag == "input":
             self.inputs.append(attrs)
             for frame in self.stack:
@@ -106,7 +112,9 @@ class NativeHTML(HTMLParser):
                 frame["times"].append(attrs.get("datetime", ""))
         if tag not in VOID:
             self.stack.append({"tag": tag, "attrs": attrs, "classes": classes,
-                               "text": [], "links": [], "times": [], "inputs": []})
+                               "text": [], "links": [], "times": [], "inputs": [],
+                               "news_view": tag == "div" and {"news-grid", "view-news", "view-id-news", "view-display-id-news_page"} <= classes,
+                               "descendants": [], "forms": [], "outside_form_text": []})
 
     def handle_startendtag(self, tag, attrs):
         self.handle_starttag(tag, attrs)
@@ -114,19 +122,30 @@ class NativeHTML(HTMLParser):
             self.handle_endtag(tag)
 
     def handle_data(self, text):
-        for frame in self.stack:
+        for position, frame in enumerate(self.stack):
             if frame["tag"] in {"a", "h1"} or frame["classes"] & {"date", "field--name-created", "views-field-title", "view-empty"}:
                 frame["text"].append(text)
+            if frame.get("news_view") and not any(parent["tag"] == "form" for parent in self.stack[position + 1:]):
+                frame["outside_form_text"].append(text)
 
     def handle_endtag(self, tag):
         position = next((n for n in range(len(self.stack)-1, -1, -1) if self.stack[n]["tag"] == tag), None)
         if position is None:
             return
         while len(self.stack) > position:
+            explicitly_closed = len(self.stack) == position + 1
             frame = self.stack.pop()
             text = " ".join(" ".join(frame["text"]).split())
             if frame["tag"] == "form":
-                self.forms.append({"attrs": frame["attrs"], "inputs": frame["inputs"]})
+                form = {"attrs": frame["attrs"], "inputs": frame["inputs"], "explicitly_closed": explicitly_closed}
+                self.forms.append(form)
+                for parent in self.stack:
+                    if parent.get("news_view"):
+                        parent["forms"].append(form)
+            if frame.get("news_view"):
+                self.news_views.append({"attrs": frame["attrs"], "explicitly_closed": explicitly_closed,
+                                       "forms": frame["forms"], "descendants": frame["descendants"],
+                                       "outside_form_text": " ".join(" ".join(frame["outside_form_text"]).split())})
             if "view-empty" in frame["classes"] and text:
                 self.empty_messages.append(text)
             if frame["tag"] == "a":
@@ -172,6 +191,97 @@ def independent_index(raw, route, page_url, as_of):
                          "published_at": calendar_day(card["times"][0], as_of),
                          "event_id": None, "event_date": None})
     return rows
+
+
+def native_empty_end_checks(ordered, page_readers, page_rows, single_page=False):
+    """Rederive the publisher's dated native end probe from the saved pages."""
+    terminal = ordered[-1]
+    current = page_readers[terminal]
+    previous_url = ordered[-2] if len(ordered) > 1 else None
+    previous = page_readers.get(previous_url)
+
+    def query_identity(url):
+        parts = urlsplit(official_url(url))
+        return parts[:3], sorted((k, v) for k, v in parse_qsl(parts.query, keep_blank_values=True) if k != "page")
+
+    def page_number(url):
+        values = [value for key, value in parse_qsl(urlsplit(url).query) if key == "page"]
+        return int(values[0]) if len(values) == 1 else 0 if not values else -1
+
+    def scope(reader, url):
+        if reader is None or len(reader.news_views) != 1:
+            return None, False
+        view = reader.news_views[0]
+        forms = view["forms"]
+        bounds = {key: value for key, value in parse_qsl(urlsplit(url).query) if key in {"date[min]", "date[max]"}}
+        expected_h1 = "News" if urlsplit(url).path == "/en/news" else "Noticias" if urlsplit(url).path == "/es/noticias" else None
+        valid = (view["explicitly_closed"] and reader.h1 == [expected_h1]
+                 and {"news-grid", "view", "view-news", "view-id-news", "view-display-id-news_page"} <= set(view["attrs"].get("class", "").split())
+                 and len(forms) == 1)
+        if len(forms) != 1:
+            return view, False
+        form = forms[0]
+        attrs = form["attrs"]
+        inputs = [node for node in form["inputs"] if node.get("name") in {"date[min]", "date[max]"}]
+        action = official_url(attrs.get("action", ""), url)
+        valid = (valid and form["explicitly_closed"] and attrs.get("method", "").casefold() == "get"
+                 and attrs.get("id") == "views-exposed-form-news-news-page"
+                 and attrs.get("data-drupal-selector") == "views-exposed-form-news-news-page"
+                 and urlsplit(action)[:3] == urlsplit(url)[:3] and not urlsplit(action).query
+                 and set(bounds) == {"date[min]", "date[max]"} and len(inputs) == 2
+                 and {node.get("name"): node.get("value") for node in inputs} == bounds)
+        return view, bool(valid)
+
+    def pager_nodes(view):
+        if view is None:
+            return []
+        return [node for node in view["descendants"]
+                if any(token == "pager" or token.startswith(("pager__", "js-pager__")) for token in node["attrs"].get("class", "").split())
+                or node["tag"] == "a" and set(node["attrs"].get("rel", "").split()) & {"next", "last", "prev", "previous", "first"}]
+
+    def links_with_rel(view, rel):
+        return [node["attrs"] for node in view["descendants"] if node["tag"] == "a" and rel in node["attrs"].get("rel", "").split()] if view else []
+
+    view, current_scope = scope(current, terminal)
+    prior_view, previous_scope = scope(previous, previous_url) if previous_url else (None, False)
+    index = page_number(terminal)
+    forbidden = {"view-content", "views-row", "views-field-title", "views-field-created", "field--name-created"}
+    checks = {
+        "terminal_closed_official_news_scope": current_scope,
+        "terminal_zero_native_cards": not page_rows.get(terminal) and not current.cards,
+        "terminal_only_filter_text": view is not None and not view["outside_form_text"],
+        "terminal_no_content_or_pager": view is not None and not pager_nodes(view)
+            and not current.pager_elements and not any(set(anchor.get("rel", "").split()) & {"next", "last", "prev", "previous", "first"} for anchor in current.links)
+            and not any(forbidden & set(node["attrs"].get("class", "").split()) for node in view["descendants"]),
+        "previous_closed_official_news_scope": previous_scope,
+        "previous_nonempty_native_cards": bool(page_rows.get(previous_url)),
+        "previous_without_native_next": prior_view is not None and not links_with_rel(prior_view, "next")
+            and previous is not None and not any("next" in anchor.get("rel", "").split() for anchor in previous.links),
+        "same_query_identity": previous_url is not None and query_identity(previous_url) == query_identity(terminal),
+        "sequential_positive_probe": previous_url is not None and index > 0 and page_number(previous_url) == index - 1,
+    }
+    last_pages, valid_last_bindings = [], True
+    for old_url in ordered[:-1]:
+        old_view, old_scope = scope(page_readers[old_url], old_url)
+        valid_last_bindings = valid_last_bindings and old_scope and query_identity(old_url) == query_identity(terminal)
+        for anchor in links_with_rel(old_view, "last"):
+            target = official_url(anchor.get("href", ""), old_url)
+            valid_last_bindings = valid_last_bindings and query_identity(target) == query_identity(old_url)
+            last_pages.append(page_number(target))
+    checks["all_native_last_links_bound_to_query"] = valid_last_bindings
+    checks["native_cap_not_reached"] = all(0 <= last < 8 for last in last_pages)
+    bounds = dict(parse_qsl(urlsplit(terminal).query))
+    checks["previous_native_dates_inside_query"] = bool(page_rows.get(previous_url)) and all(
+        row["published_at"] and bounds.get("date[min]", "") <= row["published_at"] <= bounds.get("date[max]", "")
+        for row in page_rows.get(previous_url, []))
+    if single_page:
+        checks["single_page_positive_then_empty_only"] = len(ordered) == 2 and index == 1 and page_number(previous_url) == 0
+        checks["single_page_without_advertised_last_or_pager"] = (not last_pages and prior_view is not None and not pager_nodes(prior_view)
+            and previous is not None and not previous.pager_elements and not any(
+                set(anchor.get("rel", "").split()) & {"next", "last", "prev", "previous", "first"} for anchor in previous.links))
+    else:
+        checks["observed_native_last_equals_previous_page"] = bool(last_pages) and max(last_pages) == index - 1
+    return checks
 
 
 def title_key(value):
@@ -346,6 +456,11 @@ def audit(captures, inventory_path, output):
                         terminal = ordered[-1]
                         if part["stop_reason"] == "date_partition_official_empty":
                             check(not page_rows[terminal] and bool(page_readers[terminal].empty_messages), "partition_native_empty_evidence", terminal)
+                        elif part["stop_reason"] in {"date_partition_native_empty_after_advertised_end", "date_partition_single_page_native_end_probe"}:
+                            proof = native_empty_end_checks(ordered, page_readers, page_rows,
+                                                           single_page=part["stop_reason"] == "date_partition_single_page_native_end_probe")
+                            for code, valid in proof.items():
+                                check(valid, code, terminal)
                         elif part["stop_reason"] == "date_partition_native_archive_exhausted_after_public_end_probe":
                             previous = ordered[:-1]
                             check(bool(page_rows[terminal]) and any(page_rows[old] == page_rows[terminal] for old in previous), "partition_terminal_repeat_dates_and_urls", terminal)

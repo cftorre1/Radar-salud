@@ -55,6 +55,7 @@ class Node:
     attrs: dict = field(default_factory=dict)
     parent: "Node | None" = None
     children: list = field(default_factory=list)
+    closed: bool = False
     def nodes(self, tag=None):
         for child in self.children:
             if isinstance(child, Node):
@@ -83,6 +84,7 @@ class Document(HTMLParser):
         node = self.current
         while node.parent:
             if node.tag == tag:
+                node.closed = True
                 self.current = node.parent
                 break
             node = node.parent

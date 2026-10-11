@@ -136,10 +136,39 @@ def detail_metadata(html, as_of, url):
             "alternate_language_urls": sorted({canonical_url(value, url) for value in alternates if urlsplit(__import__('urllib.parse',fromlist=['urljoin']).urljoin(url,value)).hostname in {"www.who.int", "www.paho.org"}}),
             "document_links": sorted(set(docs))}
 
+def verified_news_view(document, route, bounds, *, empty):
+    """A complete native empty view, never a bare HTTP200 or initial-page proof."""
+    required={'news-grid','view','view-news','view-id-news','view-display-id-news_page'}
+    views=[n for n in document.nodes() if required<=set(n.attrs.get('class','').split())]
+    headings=[n.text() for n in document.nodes('h1')]
+    if len(views)!=1 or not views[0].closed or headings!=['Noticias' if '/es/' in route['url'] else 'News']:
+        return False
+    view=views[0];forms=list(view.nodes('form'))
+    if len(forms)!=1 or not forms[0].closed:
+        return False
+    form=forms[0]
+    if form.attrs.get('method','').lower()!='get' or form.attrs.get('data-drupal-selector')!='views-exposed-form-news-news-page':
+        return False
+    try:
+        if canonical_url(form.attrs.get('action',''),route['url']).split('?')[0]!=route['url'].split('?')[0]:return False
+    except ValueError:
+        return False
+    inputs=[n for n in form.nodes('input') if n.attrs.get('name') in {'date[min]','date[max]'}]
+    if len(inputs)!=2 or {n.attrs.get('name'):n.attrs.get('value') for n in inputs}!={'date[min]':bounds['query_from'],'date[max]':bounds['query_to']}:
+        return False
+    forbidden={'pager'}|({'views-row','view-content','views-field-title','views-field-created'} if empty else set())
+    if any(forbidden&set(n.attrs.get('class','').split()) or any(c.startswith('pager__') for c in n.attrs.get('class','').split()) for n in view.nodes()):
+        return False
+    return (not empty or view.text()==form.text()) and not any({'next','last'}&set(n.attrs.get('rel','').split()) for n in document.nodes('a'))
+
+def verified_empty_news_view(document, route, bounds):
+    return verified_news_view(document,route,bounds,empty=True)
+
 def collect_route(client, route, as_of, max_pages):
     if route.get("date_slice_days"):
         return collect_date_slices(client,route,as_of,max_pages)
     rows, pages, seen = [], [], set()
+    advertised_last=None;previous_without_next=False;previous_single_page_verified=False
     cutoff = (as_of - timedelta(days=89)).isoformat()
     complete, stop = False, "page_limit"
     url = route["url"]
@@ -182,12 +211,25 @@ def collect_route(client, route, as_of, max_pages):
             if echoed != {"date[min]":bounds["query_from"],"date[max]":bounds["query_to"]} or any(not row["index_published_at"] or not bounds["query_from"]<=row["index_published_at"]<=bounds["query_to"] for row in found):
                 rows.extend(found);stop="page_parse_failure: date_filter_not_corroborated";break
             last_links=[a.attrs["href"] for a in document.nodes("a") if "last" in a.attrs.get("rel","").split()]
-            last_pages=[int(dict(parse_qsl(urlsplit(value).query)).get("page",0)) for value in last_links]
+            last_pages=[]
+            for value in last_links:
+                last_url=canonical_url(value,page_url);last_query=dict(parse_qsl(urlsplit(last_url).query))
+                if urlsplit(last_url).path!=urlsplit(page_url).path or {k:last_query.get(k) for k in ('date[min]','date[max]')}!={'date[min]':bounds['query_from'],'date[max]':bounds['query_to']}:
+                    rows.extend(found);stop='page_parse_failure: dated_pager_identity_conflict';break
+                last_pages.append(int(last_query.get('page',0)))
+            if stop.startswith('page_parse_failure'):break
             if last_pages and max(last_pages)>=8:
                 rows.extend(found);stop="date_partition_saturated_native_cap";break
+            if last_pages:advertised_last=max(last_pages)
             if not found:
                 complete=any(n.has_class("view-empty") and n.text() for n in document.nodes())
+                if not complete and page>0 and advertised_last==page-1 and previous_without_next and pages[-2]['items'] and verified_empty_news_view(document,route,bounds):
+                    complete=True;stop='date_partition_native_empty_after_advertised_end';break
+                if not complete and page==1 and advertised_last is None and previous_single_page_verified and verified_empty_news_view(document,route,bounds):
+                    complete=True;stop='date_partition_single_page_native_end_probe';break
                 stop="date_partition_official_empty" if complete else "date_partition_empty_unverified";break
+            previous_without_next=not next_url
+            previous_single_page_verified=page==0 and advertised_last is None and bool(found) and verified_news_view(document,route,bounds,empty=False)
         if not found:
             complete, stop = page > 0, "empty_native_page" if page > 0 else "empty_initial_page_unverified"; break
         if ids in seen:

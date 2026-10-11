@@ -140,7 +140,7 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
     payload = {"schema_version": 1, "as_of": as_of.isoformat(), "generated_at": generated, "run_id": run_id,
                "mode": "projection_replay" if replay else "live_resume" if resume else "live_discovery", "network_requests": client.network_requests,
                "capture_reuse": {"reused_url_count":len(client.reused_urls),"maximum_campaign_capture_age_hours":1,"does_not_prove_cadence":True},
-               "paid_ai_calls": 0, "source_health": source_health, "items": items, "routes": routes, "technical_failures": failures,
+               "paid_ai_calls": 0, "live_capture_budget_seconds":config['live_capture_budget_seconds'], "source_health": source_health, "items": items, "routes": routes, "technical_failures": failures,
                "publication_count": 0, "content_use": "metadata_and_link_only", "default_window_days": 30,
                "maximum_editorial_topics": 10, "editorial_topics": topics, "cadence_is_not_proven_by_back_to_back_runs": True}
     write(root, evidence / "inventory.json", payload)

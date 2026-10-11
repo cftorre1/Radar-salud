@@ -27,7 +27,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 80
+    timeout-minutes: 95
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       RADAR_FAST_MODEL: gpt-5.6-luna
@@ -81,7 +81,7 @@ jobs:
         id: global_discovery
         if: always()
         continue-on-error: true
-        timeout-minutes: 35
+        timeout-minutes: 50
         env:
           OPENAI_API_KEY: ''
         run: python scripts/discover_global_sources.py
