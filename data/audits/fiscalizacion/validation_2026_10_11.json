@@ -1,7 +1,7 @@
 {
-  "candidate_sha": "3d6ed4229aedf7dc2365b26a0c889d35741e527b",
+  "candidate_sha": "58d614d9e2c71b2811bda41a1f618309226d5811",
   "baseline_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
-  "validated_at": "2026-10-11T04:45:53.324678+00:00",
+  "validated_at": "2026-10-11T04:53:10.089244+00:00",
   "acceptance_complete": false,
   "blocking_reasons": [
     "native_original_surface_http_403",
@@ -10,7 +10,7 @@
   ],
   "tests": {
     "command": ".venv/bin/python -m pytest -q",
-    "passed": 285,
+    "passed": 286,
     "skipped": 1,
     "skip_reason": "Beta-source integration requires OPENAI_API_KEY; no LIVE/AI validation claimed.",
     "warnings": [
@@ -667,8 +667,8 @@
   "reviewer": {
     "candidate": {
       "reviewer": "deterministic-reviewer",
-      "candidate_sha": "3d6ed4229aedf7dc2365b26a0c889d35741e527b",
-      "reviewed_at": "2026-10-11T04:43:03.280518+00:00",
+      "candidate_sha": "58d614d9e2c71b2811bda41a1f618309226d5811",
+      "reviewed_at": "2026-10-11T04:49:19.890687+00:00",
       "findings": [
         {
           "category": "statistics",
@@ -823,18 +823,18 @@
       "data/state/pending_queue.json": "356f6e366bd447a83561fb5c46f7657ac7a0dca06c73435171f5bd611b456018",
       "data/state/suseso_seen.json": "5990a0829438ffca133ea764d728bf0e4d34dc8a9ee639885e7f52d7f3e162bd",
       "data/state/suseso_fiscalizacion_seen.json": "b1ee09775b4201cc4f02b95db65c1e4e1901d4f629d6c5c152d5c9106c6c64a2",
-      "data/source_health.json": "ffcd6125e7590759f2c1ea00f0b91abc0d08827c2f46567d381aecb67e0db266",
+      "data/source_health.json": "e7136e6931ff63d885850c06abd2ad627164bb21960cd0eaceb23530221ecb96",
       "web/data/radar_today.json": "581339350ec7c14658a1778ae0196efb2b93819cc10027cd1fde5364e9ba9073",
-      "web/data/source_health.json": "ffcd6125e7590759f2c1ea00f0b91abc0d08827c2f46567d381aecb67e0db266"
+      "web/data/source_health.json": "e7136e6931ff63d885850c06abd2ad627164bb21960cd0eaceb23530221ecb96"
     },
     "after": {
       "data/history/superintendencia_signals.json": "a224ebe345a46ebc7064a4e94111886e6bfa496cda0a7719ddec36dec8fcf452",
       "data/state/pending_queue.json": "356f6e366bd447a83561fb5c46f7657ac7a0dca06c73435171f5bd611b456018",
       "data/state/suseso_seen.json": "5990a0829438ffca133ea764d728bf0e4d34dc8a9ee639885e7f52d7f3e162bd",
       "data/state/suseso_fiscalizacion_seen.json": "b1ee09775b4201cc4f02b95db65c1e4e1901d4f629d6c5c152d5c9106c6c64a2",
-      "data/source_health.json": "ffcd6125e7590759f2c1ea00f0b91abc0d08827c2f46567d381aecb67e0db266",
+      "data/source_health.json": "e7136e6931ff63d885850c06abd2ad627164bb21960cd0eaceb23530221ecb96",
       "web/data/radar_today.json": "581339350ec7c14658a1778ae0196efb2b93819cc10027cd1fde5364e9ba9073",
-      "web/data/source_health.json": "ffcd6125e7590759f2c1ea00f0b91abc0d08827c2f46567d381aecb67e0db266"
+      "web/data/source_health.json": "e7136e6931ff63d885850c06abd2ad627164bb21960cd0eaceb23530221ecb96"
     }
   },
   "scope_preservation": {
@@ -852,5 +852,32 @@
     "Extend dated reconciliation to dynamic/paginated rows and resolve the publication/emission contradiction for IP 7462 from an authoritative correction.",
     "Resolve baseline browser and statistics Reviewer failures on their own scope, then run repository-wide QA and Reviewer on the final integration SHA.",
     "Review remaining SUSESO circular/pronouncement normative value independently; taxonomy membership alone never proves a new enforcement finding."
+  ],
+  "prior_candidate_sha": "3d6ed4229aedf7dc2365b26a0c889d35741e527b",
+  "ci_runs": [
+    {
+      "run_id": 38112653789,
+      "head_sha": "7c401ac3c23fd8aad4af29c242d68d8e6d8e6711",
+      "qa_merge_sha": "2ff070152716ae4ba9ee50d7ece695a8de42ebce",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112653789",
+      "tests": "success",
+      "staging": "failure",
+      "browser": {
+        "passed": 42,
+        "failed": 6,
+        "fiscalization_scoped_checks": "desktop/mobile passed",
+        "failures": "GES statistical cases and Circular 529; all present in local baseline failure set"
+      },
+      "reviewer": "skipped_due_to_staging_dependency",
+      "artifact_id": 11692177917
+    },
+    {
+      "run_id": 38112895740,
+      "head_sha": "58d614d9e2c71b2811bda41a1f618309226d5811",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112895740",
+      "tests": "success",
+      "staging": "in_progress_at_checkpoint",
+      "reviewer": "not_completed_at_checkpoint"
+    }
   ]
 }
