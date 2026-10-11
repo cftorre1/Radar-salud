@@ -9,7 +9,9 @@ permissions:
   contents: read
 concurrency:
   group: provider-exhaustive-${{ github.event.pull_request.number }}
-  cancel-in-progress: false
+  # No AI or mutations: replace obsolete read-only captures with the newest
+  # parser and resumable bounded collector on this same isolated PR.
+  cancel-in-progress: true
 jobs:
   inventory:
     if: startsWith(github.head_ref, 'codex/f-prestadores-gremio-') && github.event.pull_request.head.repo.full_name == github.repository
