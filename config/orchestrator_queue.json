@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T05:49:20.850928+00:00",
+  "updated_at": "2026-10-11T06:01:59.671306+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -2879,9 +2879,9 @@
         "Stage A 4h PASS"
       ],
       "approved_at": "2026-10-07",
-      "progress": "Arquitecto creado; se activa executor real y kickoff automático.",
-      "current_subfront": "activate_real_executor",
-      "next_action": "Habilitar Autonomous Executor, lanzar kickoff y auditar primer pickup.",
+      "progress": "Arquitecto creado; se activa executor real y kickoff automático.\nInfraestructura publicada y corregida en main; seis familias y 12 pickups reales, heartbeats, seis transiciones independientes, CAS y canary STALLED observados. Recovery de transporte SUSESO reparado y verificado hosted. Acceptance 4h NOT_PROVEN; no cierre editorial/fuente ni promoción de producto.",
+      "current_subfront": "hosted_runtime_v2_implemented_acceptance_not_proven",
+      "next_action": "Habilitar Autonomous Executor, lanzar kickoff y auditar primer pickup.\nContinuación de arquitectura: Approved bounded repair/acceptance inputs can resume only the affected family without controller SUCCESS loops, then a complete useful four-hour window with trusted owner telemetry can be evaluated.",
       "independent_review": {
         "reviewer": "Work 3",
         "reviewed_at": "2026-10-11T04:00:00Z",
@@ -2900,6 +2900,15 @@
           "https://github.com/cftorre1/Radar-salud/issues/7"
         ],
         "supplement_finding_ids": []
+      },
+      "last_progress_at": "2026-10-11T06:01:59.671306+00:00",
+      "runtime_v2_evidence": {
+        "artifact": "data/pmo/autonomy_acceptance_2026_10_11.json",
+        "status": "NOT_PROVEN",
+        "main_infrastructure_sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+        "canonical_state_sha": "6412b829e669eae298d40693b3d153fd2fa50904",
+        "owner_infrastructure_main_exception": true,
+        "production_promotion_authorized": false
       }
     },
     {
@@ -2970,6 +2979,24 @@
             7,
             8,
             9
+          ]
+        },
+        {
+          "reviewer": "Work 3",
+          "recorded_at": "2026-10-11T05:55:21.049Z",
+          "reviewed_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T055521Z.json",
+          "verdict": "NEW_P0_SUSESO_SURFACE_MISSING_AUTONOMY_SEMANTICS_PARTIAL_ONLY",
+          "new_finding_ids": [
+            "work3_suseso_medical_licence_sanctions_surface_missing"
+          ],
+          "partial_revalidations": [
+            "autonomy_success_semantics_internal_guard"
+          ],
+          "backlog_issues": [
+            5,
+            7,
+            8
           ]
         }
       ]
@@ -3121,6 +3148,24 @@
             8,
             9
           ]
+        },
+        {
+          "reviewer": "Work 3",
+          "recorded_at": "2026-10-11T05:55:21.049Z",
+          "reviewed_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T055521Z.json",
+          "verdict": "NEW_P0_SUSESO_SURFACE_MISSING_AUTONOMY_SEMANTICS_PARTIAL_ONLY",
+          "new_finding_ids": [
+            "work3_suseso_medical_licence_sanctions_surface_missing"
+          ],
+          "partial_revalidations": [
+            "autonomy_success_semantics_internal_guard"
+          ],
+          "backlog_issues": [
+            5,
+            7,
+            8
+          ]
         }
       ]
     },
@@ -3223,9 +3268,9 @@
       ],
       "approved_at": "2026-10-10",
       "started_at": "2026-10-10",
-      "last_progress_at": "2026-10-10",
-      "current_subfront": "github_native_editorial_executor",
-      "next_action": "Crear Editorial Executor y probar pickup real.",
+      "last_progress_at": "2026-10-11T06:01:59.671306+00:00",
+      "current_subfront": "hosted_runtime_v2_implemented_acceptance_not_proven",
+      "next_action": "Completar transición heartbeat y demostrar reparación mergeada a staging; preservar guardas NOT_PROVEN/BLOCKED y workflow_success_is_progress=false. Ver último independent_review_cuts.\nContinuación de arquitectura: Approved bounded repair/acceptance inputs can resume only the affected family without controller SUCCESS loops, then a complete useful four-hour window with trusted owner telemetry can be evaluated.",
       "independent_review": {
         "reviewer": "Work 3",
         "reviewed_at": "2026-10-11T04:00:00Z",
@@ -3266,8 +3311,35 @@
             8,
             9
           ]
+        },
+        {
+          "reviewer": "Work 3",
+          "recorded_at": "2026-10-11T05:55:21.049Z",
+          "reviewed_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T055521Z.json",
+          "verdict": "NEW_P0_SUSESO_SURFACE_MISSING_AUTONOMY_SEMANTICS_PARTIAL_ONLY",
+          "new_finding_ids": [
+            "work3_suseso_medical_licence_sanctions_surface_missing"
+          ],
+          "partial_revalidations": [
+            "autonomy_success_semantics_internal_guard"
+          ],
+          "backlog_issues": [
+            5,
+            7,
+            8
+          ]
         }
-      ]
+      ],
+      "progress": "Infraestructura publicada y corregida en main; seis familias y 12 pickups reales, heartbeats, seis transiciones independientes, CAS y canary STALLED observados. Recovery de transporte SUSESO reparado y verificado hosted. Acceptance 4h NOT_PROVEN; no cierre editorial/fuente ni promoción de producto.",
+      "runtime_v2_evidence": {
+        "artifact": "data/pmo/autonomy_acceptance_2026_10_11.json",
+        "status": "NOT_PROVEN",
+        "main_infrastructure_sha": "dd2d2067d919d62ed6eda29913a04db0d95e9f63",
+        "canonical_state_sha": "6412b829e669eae298d40693b3d153fd2fa50904",
+        "owner_infrastructure_main_exception": true,
+        "production_promotion_authorized": false
+      }
     },
     {
       "id": "source_audit_issue5_iteration5_expansion_2026_10_09",
@@ -3440,7 +3512,27 @@
       "started_at": "2026-10-11",
       "last_progress_at": "2026-10-11",
       "current_subfront": "sis_suseso_fiscalization",
-      "next_action": "Reconcile 2026 fiscalization surfaces."
+      "next_action": "Integrar y ejecutar en staging el registro SUSESO /609/799701; reconciliar 20 oficios en 30 fechas y 72 en 90 fechas por número de oficio, con fecha de oficio y outcome específico/agrupado. Ver último independent_review_cuts.",
+      "independent_review_cuts": [
+        {
+          "reviewer": "Work 3",
+          "recorded_at": "2026-10-11T05:55:21.049Z",
+          "reviewed_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T055521Z.json",
+          "verdict": "NEW_P0_SUSESO_SURFACE_MISSING_AUTONOMY_SEMANTICS_PARTIAL_ONLY",
+          "new_finding_ids": [
+            "work3_suseso_medical_licence_sanctions_surface_missing"
+          ],
+          "partial_revalidations": [
+            "autonomy_success_semantics_internal_guard"
+          ],
+          "backlog_issues": [
+            5,
+            7,
+            8
+          ]
+        }
+      ]
     },
     {
       "id": "source_repair_mutualities_lane_2026_10_11",
@@ -4137,7 +4229,27 @@
       "started_at": "2026-10-11",
       "last_progress_at": "2026-10-11T04:45:00Z",
       "current_subfront": "reconcile_work_findings_and_codex_prs",
-      "next_action": "Conciliar PRs #10-#13 con issues #5-#9 y queue; no cerrar ninguna fuente hasta merge + QA + runtime."
+      "next_action": "Conciliar PRs #10-#13 con issues #5-#9 y queue; no cerrar ninguna fuente hasta merge + QA + runtime.",
+      "independent_review_cuts": [
+        {
+          "reviewer": "Work 3",
+          "recorded_at": "2026-10-11T05:55:21.049Z",
+          "reviewed_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+          "artifact": "data/audits/work3_adversarial_2026_10_11T055521Z.json",
+          "verdict": "NEW_P0_SUSESO_SURFACE_MISSING_AUTONOMY_SEMANTICS_PARTIAL_ONLY",
+          "new_finding_ids": [
+            "work3_suseso_medical_licence_sanctions_surface_missing"
+          ],
+          "partial_revalidations": [
+            "autonomy_success_semantics_internal_guard"
+          ],
+          "backlog_issues": [
+            5,
+            7,
+            8
+          ]
+        }
+      ]
     },
     {
       "id": "beta_gate5_test_ops_golive_2026_10_11",
