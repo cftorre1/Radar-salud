@@ -71,6 +71,19 @@ def test_three_actual_conditional_copies_are_grounded_without_approval_or_score_
     assert validate_pulso_editorial_proof(ai, row["body"])["reason"] == "pulso_editorial_future_copy_not_grounded"
 
 
+def test_actual_ovalle_coordination_does_not_prove_installed_or_available_capacity():
+    row = next(r for r in ROWS if "instalacion-de-hospital-modular" in r["url"])
+    assert row["body_sha256"] == "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f"
+    correct = validate_pulso_editorial_proof(row["ai"], row["body"])
+    assert correct["decision"] == "ready" and correct["prospective_evidence"] is True
+    bad = copy.deepcopy(row["ai"])
+    bad["what_happened"] = "Según La Tercera, el Minsal ya instaló el hospital modular de Ovalle."
+    bad["why_it_matters"] = "El hospital ya amplió la capacidad disponible para atender pacientes."
+    bad["pulso_editorial_proof"].update(event_status="actual", future_claims=[])
+    verdict = validate_pulso_editorial_proof(bad, row["body"])
+    assert verdict["decision"] == "deferred" and verdict["reason"] == "pulso_editorial_future_status_mismatch"
+
+
 def test_actual_scope_lexical_repairs_leave_seven_insufficient_quotes_held():
     rows = [r for r in ROWS if r["reason"] == "pulso_editorial_scope_not_grounded"]
     assert len(rows) == 20

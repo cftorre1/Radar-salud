@@ -19,7 +19,8 @@ SCOPES = ("human_health_specific", "incidental_health", "non_human_health", "mar
 STATUSES = ("actual", "proposal", "plan", "mixed_actual_and_future", "historical_context")
 NOVELTY = ("new_material_information", "repetition_or_context", "uncertain")
 FUTURE_SOURCE = re.compile(r"\b(?:habr[aá]|permitir[aá]n?|ser[aá]n?|podr[ií]an?|previst[oa]s?|"
-                           r"se prev[eé]|se propone(?:n)?|incorporar[aá]n?|alcanzar[aá]n?|implementar[aá]n?)\b", re.I)
+                           r"se prev[eé]|se propone(?:n)?|incorporar[aá]n?|alcanzar[aá]n?|implementar[aá]n?|"
+                           r"coordinaci(?:ones|[oó]n)\b[^.;!?]{0,160}\bpara instalar)\b", re.I)
 FORMAL_BUDGET_PROJECT = re.compile(r"\bproyecto de (?:ley de )?presupuestos?\b", re.I)
 REFERENCED_BUDGET_PROJECT = re.compile(
     r"\ben (?:el|este) proyecto\b[^.;!?]{0,80}\bpresupuesto\b", re.I)
