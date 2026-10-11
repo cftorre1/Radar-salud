@@ -1,0 +1,2498 @@
+{
+  "acceptance": {
+    "mode": "live",
+    "owner_prompts": [],
+    "owner_restarts": [],
+    "started_at": "2026-10-11T05:29:09.967833+00:00"
+  },
+  "failure_history": {},
+  "global_blocker_signatures": [
+    "a5dc1f1756bdb15afb61613c5e2a8a0f084f984bce74c6414d7433ed569db3ba",
+    "ace5c953c3f070011ed8c1ddc2b05e7a20333e43232c27d28d908b4067f2df09",
+    "b76b31322853f6526b20a18a2efb1facf403d68591de44c0c2ce9f1c2d5994ec",
+    "92f9c8cb376c8b5c85406d2871c3990112e2926c6665777b1364c93916de42ca",
+    "8a12cb3c874d9cfef9d068be96845f6646053eff5b3583d52209b6c8de10d11f",
+    "d35be2e9c551cd0f85811ed06d6f77822741f2bfd40a0eccb06e02f73ad23be0",
+    "8dbccfdbadd59be1a96490071b2da278144804e78978e19ecc8a0927ff5e8329",
+    "67d25e5d812fa76da8d504a19d9c40fd3473f225b43e90231ee0ac1b856b8e7d",
+    "6f43244f428a66c182aeca7b19eafb74b651161d54377faf6dfcd76d580a12a8",
+    "229b4ac3e176f4c1f54f324ab5ba174b4329d16b9eafc93202a4cdd8710f76e9",
+    "1710ee166ab769c470935d020ab9cbc8f21896864fcfa9fea3f665b06ada672a",
+    "9f800ecb75fabded039d89d621adc4f44b386f911e031864d3f9f5ec42794bb4",
+    "7a8ac6344bf01afb5fe301328473bd53a7adc7ff5d75f5b24593778e5aaccb62",
+    "791b979b31195b2c59369836ff0dd46d43156ab8ba331377aa7a23716cf4dd0b",
+    "15b1236d8a1e8f5454d5558cc912bcb043119326898dc52d5cbfd30fa5b1bc11",
+    "1f6ee3501796403db93fd31f92f33ce171b1aafbafd8e861c604a01786dd7a77",
+    "2b045e8118d71dca72f52054bdacd23149261efc7b8886b2cb6e4d3bcd5089fd",
+    "8522fa59cd5e1e0ba9c4f776da3db8eb2548c8202815af4516fe1475a7ddb828",
+    "18a7ea836fb9c9209b2f2a9a3a514d23292d94085ac413f6b6a4abd3bc90e69a",
+    "7e06396d20e716a11e2bee1468d1370218a04a18a9a41ef6d88da36439561f31",
+    "057fb9a8940b8cddc842fb6262e1180dd64d6402bfb70a18697830bbdac19dac",
+    "ae5460e90df86f28e8a3e94dd78103dbb9b3b04d187eefed1256bb1c2fcb4569",
+    "c40cf7c768c21065e13cb4c48dcd2991979afecb055fb33929e02e0ae5ad5a88",
+    "9ce03a1ec4e4033a1f80684af936af49a7525dcef5234c3635aad32f2b8bda04",
+    "ac242e8463d698381836bb646716efff8c53347d2f9667223426f1a8a1503262",
+    "1fa34e475ea7581305118e5675759af7ef85346b6f6dab6fab3ba7891dc569fb",
+    "d376918943783127d5fa995e69312ab0f3c08b1465d0c16b91a463c87cdc6133",
+    "cf2e904b4db2164535400a106a35266a3a3b1506e806303b2f016651755feb1b",
+    "ef8d1b08d14f23323a074cb1de621a35b0a88e53133b7c0d32126988f7fa141c",
+    "355ce5e7bef4a35d9b6350e104cb69a9edbd482151827c6da1c018f01f519e91"
+  ],
+  "lease_events": [],
+  "material_events": [
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "blocked_by": [
+              "autonomy_continuity_acceptance_failed"
+            ],
+            "queue_task_id": "pele_work_activation_2026_09_27"
+          }
+        ],
+        "fingerprint": "queue_blocked_by:05a7024a80c40aba4f08e6eb93c65de7feb3201c430a3a3a856868ac4f2c0f5a",
+        "reason": "Approved task has an unresolved queue policy/dependency blocker."
+      },
+      "family": null,
+      "id": "31239ddfcabb5d5c9f20d52fcdf327161d700857e43631de9c6ec04104b6fb22",
+      "kind": "blocker",
+      "task_id": "pele_work_activation_2026_09_27"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "coverage_balance_sources_epidemiology_v1_2026_09_28",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:coverage_balance_sources_epidemiology_v1_2026_09_28",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "235d32233451d3ca0205c9482095425d51c99916839569eb3a840d4e97545e70",
+      "kind": "blocker",
+      "task_id": "coverage_balance_sources_epidemiology_v1_2026_09_28"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "autonomy_continuity_hardening_v1_1_2026_09_29",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:autonomy_continuity_hardening_v1_1_2026_09_29",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "3b8b4a9552edfcad0f7ccc3724701de0d806fb28ced8805456ae4099b18cd82f",
+      "kind": "blocker",
+      "task_id": "autonomy_continuity_hardening_v1_1_2026_09_29"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "beta_sources_completion_today_2026_09_29",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:beta_sources_completion_today_2026_09_29",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "d2afc5bf9239ebd3911906cfeb680b60eb0aedf6e94d2aeaa4263abdb91204d2",
+      "kind": "blocker",
+      "task_id": "beta_sources_completion_today_2026_09_29"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "source_runtime_audit_2026_10_02",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:source_runtime_audit_2026_10_02",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "b59c31a8e8a6b2198d7fe806538c1c25ffb02035d378bc7223d92b7c3d1c13ea",
+      "kind": "blocker",
+      "task_id": "source_runtime_audit_2026_10_02"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "independent_auditor_and_autonomy_controller_2026_10_07",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:independent_auditor_and_autonomy_controller_2026_10_07",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "6318e081496dbd7ba074f2e97b5af621c29a2ead2f34bff30b7e901bb812b88c",
+      "kind": "blocker",
+      "task_id": "independent_auditor_and_autonomy_controller_2026_10_07"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "autonomy_architecture_redesign_2026_10_07",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:autonomy_architecture_redesign_2026_10_07",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "c61a38ee84cfbed29f3c01e9645a539738f9cc6fed776c2f3884961d85c485fe",
+      "kind": "blocker",
+      "task_id": "autonomy_architecture_redesign_2026_10_07"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "source_audit_issue5_master_2026_10_09",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:source_audit_issue5_master_2026_10_09",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "cf942b0661750d6bcbb1988985499466007e6c247524a9cd82af8ddb304c7f2e",
+      "kind": "blocker",
+      "task_id": "source_audit_issue5_master_2026_10_09"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "source_audit_issue5_iteration1_recovery_2026_10_09",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:source_audit_issue5_iteration1_recovery_2026_10_09",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "9cba6c8204976e15c36b69d578e121a89db6fc6a67c8ba098bbde0b0aac910ea",
+      "kind": "blocker",
+      "task_id": "source_audit_issue5_iteration1_recovery_2026_10_09"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "source_audit_issue5_iteration2_balance_2026_10_09",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:source_audit_issue5_iteration2_balance_2026_10_09",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "5aba57a7f8aa859dc131c182aa0788e655832a4ce02844d3bcbd7982ae470f27",
+      "kind": "blocker",
+      "task_id": "source_audit_issue5_iteration2_balance_2026_10_09"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "source_audit_issue5_iteration4_autonomy_2026_10_09",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:source_audit_issue5_iteration4_autonomy_2026_10_09",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "e6f8a091a339da27663dd924412994424a07128518baafcb1fb103579f3c87b6",
+      "kind": "blocker",
+      "task_id": "source_audit_issue5_iteration4_autonomy_2026_10_09"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "source_audit_issue5_iteration5_expansion_2026_10_09",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:source_audit_issue5_iteration5_expansion_2026_10_09",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "a5062237250f020a1cc78759c343e03042e43ea9f610ff65896f6b3b9edad678",
+      "kind": "blocker",
+      "task_id": "source_audit_issue5_iteration5_expansion_2026_10_09"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_isapres_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_isapres_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "9829f867c40d17863cf83c0460f0f79ab13ef16645d4ff42687637b394670a42",
+      "kind": "blocker",
+      "task_id": "w4_isapres_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_cmf_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_cmf_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "0463f5519e61c2a70c91e3835381d2459badb9bc611e9cdf7031a4d29083ea3d",
+      "kind": "blocker",
+      "task_id": "w4_cmf_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_dipres_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_dipres_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "3d52752d3912d2158b859a5f6d9032d9252427728814d38a5db7de1784b27c6d",
+      "kind": "blocker",
+      "task_id": "w4_dipres_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_fne_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_fne_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "68af68accca1b35c7085744e16ceec5e734566b0bdd1ee17eef0f8f92d948272",
+      "kind": "blocker",
+      "task_id": "w4_fne_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_cenabast_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_cenabast_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "c5295fc453e484870ce34bf6d21bb1e1fc6445ee576af78478dcf3f3f5c8cee1",
+      "kind": "blocker",
+      "task_id": "w4_cenabast_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_procurement_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_procurement_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "a5c013f42eb4035c137fb77738a455455d40a2a3bc590f44179f6cc972399e9b",
+      "kind": "blocker",
+      "task_id": "w4_procurement_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_who_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_who_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "f3f06489347d3384ca04c7f6a54de4912f0d5e43bb1f7ac58fa198fb8f17af6f",
+      "kind": "blocker",
+      "task_id": "w4_who_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_reuters_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_reuters_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "7cdbbf9a9b5d29d58e4606ec1d2fba620a94e74cb1feae5c5ef9679f4c094ed8",
+      "kind": "blocker",
+      "task_id": "w4_reuters_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_paho_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_paho_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "eab01e76913e7dac7572a08788d9f7da2d94ef51aafcb4236cdf247c7e69ae0b",
+      "kind": "blocker",
+      "task_id": "w4_paho_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_legal_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_legal_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "4343ece0dc2180b75aa2462f7d0053848b6355f84c064c495f0e6878992d35cd",
+      "kind": "blocker",
+      "task_id": "w4_legal_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_providers_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_providers_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "2ecb9c9fa89bc9efa7f5b0af6e7fdab5fc9d9a370fc08e80e07a41c415daa1f8",
+      "kind": "blocker",
+      "task_id": "w4_providers_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_provider_data_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_provider_data_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "eabdaed28307ab96f1a2d2dfc3a4c1fa89e73ba635813f86c01992e507688103",
+      "kind": "blocker",
+      "task_id": "w4_provider_data_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_socioeconomic_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_socioeconomic_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "4780ada0e4e927769d2d0a770ddcda3176d2f09ee88f597928c481023fa49829",
+      "kind": "blocker",
+      "task_id": "w4_socioeconomic_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_occupational_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_occupational_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "42395920685debe39cc6ee457a06ba424929e5691a1bc1b5394fad7d7c204a26",
+      "kind": "blocker",
+      "task_id": "w4_occupational_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_innovation_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_innovation_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "e847e78d051b0097e00f9fe93ecb8b8cad1318214feeb8077e171c66f81b66bf",
+      "kind": "blocker",
+      "task_id": "w4_innovation_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "source_recovery_reconciliation_gate_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:source_recovery_reconciliation_gate_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "c8440ecfcb1660f8bf14708fe8ca26771fe76be97aaf50476cf3cea797292ac6",
+      "kind": "blocker",
+      "task_id": "source_recovery_reconciliation_gate_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "beta_gate5_test_ops_golive_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:beta_gate5_test_ops_golive_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "a987a3e8e0275d38970e7987c3adff36f44be1a8b2577aa16ab80da6f538e18d",
+      "kind": "blocker",
+      "task_id": "beta_gate5_test_ops_golive_2026_10_11"
+    },
+    {
+      "at": "2026-10-11T05:29:09.013956Z",
+      "details": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "pulso_latercera_exhaustive_discovery_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:pulso_latercera_exhaustive_discovery_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "family": null,
+      "id": "97acc9e8faa4d2f339b1449aa975e05a62d4ebf3fc3e32c62393f929b5318803",
+      "kind": "blocker",
+      "task_id": "pulso_latercera_exhaustive_discovery_2026_10_11"
+    }
+  ],
+  "pending_transitions": [],
+  "schema_version": 2,
+  "tasks": {
+    "autonomy_architecture_redesign_2026_10_07": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "3d4897c81991ddaecffcdd784890edde74c84c19c679005f6ef315a24dce9253"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "autonomy_architecture_redesign_2026_10_07",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:autonomy_architecture_redesign_2026_10_07",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "8dbccfdbadd59be1a96490071b2da278144804e78978e19ecc8a0927ff5e8329"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "3d4897c81991ddaecffcdd784890edde74c84c19c679005f6ef315a24dce9253",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "autonomy_architecture_redesign_2026_10_07",
+      "input_fingerprint": "3d4897c81991ddaecffcdd784890edde74c84c19c679005f6ef315a24dce9253",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Rediseñar y validar la arquitectura integral de autonomía para que Alicanto avance sin depender de mensajes de Toba.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "recovery_episode": "c61a38ee84cfbed29f3c01e9645a539738f9cc6fed776c2f3884961d85c485fe",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "autonomy_continuity_hardening_v1_1_2026_09_29": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "f64bc243b89062eb8c4042e67d399c5d466fc17b8b45c0d61d4e65cf20e206ce"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "autonomy_continuity_hardening_v1_1_2026_09_29",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:autonomy_continuity_hardening_v1_1_2026_09_29",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "b76b31322853f6526b20a18a2efb1facf403d68591de44c0c2ce9f1c2d5994ec"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [
+        "autopilot_v1_2026_09_27"
+      ],
+      "evidence_revision": "f64bc243b89062eb8c4042e67d399c5d466fc17b8b45c0d61d4e65cf20e206ce",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "autonomy_continuity_hardening_v1_1_2026_09_29",
+      "input_fingerprint": "f64bc243b89062eb8c4042e67d399c5d466fc17b8b45c0d61d4e65cf20e206ce",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Cerrar la brecha entre ejecución puntual y autonomía continua: no-idle, task leases/heartbeats, recuperación automática y validación objetiva de continuidad.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "recovery_episode": "3b8b4a9552edfcad0f7ccc3724701de0d806fb28ced8805456ae4099b18cd82f",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "beta_gate5_test_ops_golive_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "7157228f3e96d2d02421b0eb4d0b47243a648a526c579668747c04861ba7eaba"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "beta_gate5_test_ops_golive_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:beta_gate5_test_ops_golive_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "ef8d1b08d14f23323a074cb1de621a35b0a88e53133b7c0d32126988f7fa141c"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [
+        "source_recovery_reconciliation_gate_2026_10_11"
+      ],
+      "evidence_revision": "7157228f3e96d2d02421b0eb4d0b47243a648a526c579668747c04861ba7eaba",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "beta_gate5_test_ops_golive_2026_10_11",
+      "input_fingerprint": "7157228f3e96d2d02421b0eb4d0b47243a648a526c579668747c04861ba7eaba",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Cerrar testeo operacional, cumplimiento y go-live después del beta atractivo, incluyendo analytics, newsletter, correo, source suggestions, evidencia LIVE y promoción explícita.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "approved",
+      "recovery_episode": "a987a3e8e0275d38970e7987c3adff36f44be1a8b2577aa16ab80da6f538e18d",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "beta_sources_completion_today_2026_09_29": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "3ce1d91f1f92768f6905691ee4e1683f1ed7954d0bb0bf7a2680564d3b2301a0"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "beta_sources_completion_today_2026_09_29",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:beta_sources_completion_today_2026_09_29",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "92f9c8cb376c8b5c85406d2871c3990112e2926c6665777b1364c93916de42ca"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [
+        "autopilot_v1_2026_09_27"
+      ],
+      "evidence_revision": "3ce1d91f1f92768f6905691ee4e1683f1ed7954d0bb0bf7a2680564d3b2301a0",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "beta_sources_completion_today_2026_09_29",
+      "input_fingerprint": "3ce1d91f1f92768f6905691ee4e1683f1ed7954d0bb0bf7a2680564d3b2301a0",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Cerrar hoy todas las fuentes y capacidades de cobertura acordadas para disponer de beta validable mañana, endureciendo autonomía en paralelo sin frenar ejecución.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "recovery_episode": "d2afc5bf9239ebd3911906cfeb680b60eb0aedf6e94d2aeaa4263abdb91204d2",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "coverage_balance_sources_epidemiology_v1_2026_09_28": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "3c092c737554630e4046ae90daf2e6497d6c753128b097067c812148d4e14e1e"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "coverage_balance_sources_epidemiology_v1_2026_09_28",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:coverage_balance_sources_epidemiology_v1_2026_09_28",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "ace5c953c3f070011ed8c1ddc2b05e7a20333e43232c27d28d908b4067f2df09"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [
+        "autopilot_v1_2026_09_27"
+      ],
+      "evidence_revision": "3c092c737554630e4046ae90daf2e6497d6c753128b097067c812148d4e14e1e",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "coverage_balance_sources_epidemiology_v1_2026_09_28",
+      "input_fingerprint": "3c092c737554630e4046ae90daf2e6497d6c753128b097067c812148d4e14e1e",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Reducir la brecha de valor entre Isapres, Prestadores y Fonasa aumentando cobertura útil —no volumen— en Prestadores/Fonasa y promoviendo epidemiología como señal visible de alto valor.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "recovery_episode": "235d32233451d3ca0205c9482095425d51c99916839569eb3a840d4e97545e70",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "editorial_repair_lane_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocker_signatures": [],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "71953bd2a85e80b21e51c619d377b52a8a486e68742a7e0f5667ea921b82714a",
+      "failure": null,
+      "family": "editorial",
+      "fence": 0,
+      "id": "editorial_repair_lane_2026_10_11",
+      "input_fingerprint": "303086a280a1ad3c5642e7fd891a8459dfe67ced08bf55ce5ce14e55e100ee17",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "objective": "Repair existing reviewed editorial artifacts; retain independent parent acceptance.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "status": "READY"
+    },
+    "independent_auditor_and_autonomy_controller_2026_10_07": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "413e1ea5bbc1b89069d4c82e230bd35ba6759ada18633104c560471b39a2edf3"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "independent_auditor_and_autonomy_controller_2026_10_07",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:independent_auditor_and_autonomy_controller_2026_10_07",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "d35be2e9c551cd0f85811ed06d6f77822741f2bfd40a0eccb06e02f73ad23be0"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "413e1ea5bbc1b89069d4c82e230bd35ba6759ada18633104c560471b39a2edf3",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "independent_auditor_and_autonomy_controller_2026_10_07",
+      "input_fingerprint": "413e1ea5bbc1b89069d4c82e230bd35ba6759ada18633104c560471b39a2edf3",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Crear un auditor independiente y un control loop que detecte fuentes falsas-sanas, runtime detenido y autonomía estancada antes de que Toba tenga que preguntar.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "recovery_episode": "6318e081496dbd7ba074f2e97b5af621c29a2ead2f34bff30b7e901bb812b88c",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "pele_work_activation_2026_09_27": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "0f18cf002af64d264e083a42d0864d25d0f957ab91377109e3847317f99a8339"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "blocked_by": [
+              "autonomy_continuity_acceptance_failed"
+            ],
+            "queue_task_id": "pele_work_activation_2026_09_27"
+          }
+        ],
+        "fingerprint": "queue_blocked_by:05a7024a80c40aba4f08e6eb93c65de7feb3201c430a3a3a856868ac4f2c0f5a",
+        "reason": "Approved task has an unresolved queue policy/dependency blocker."
+      },
+      "blocker_signatures": [
+        "a5dc1f1756bdb15afb61613c5e2a8a0f084f984bce74c6414d7433ed569db3ba"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [
+        "autopilot_v1_2026_09_27"
+      ],
+      "evidence_revision": "0f18cf002af64d264e083a42d0864d25d0f957ab91377109e3847317f99a8339",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "pele_work_activation_2026_09_27",
+      "input_fingerprint": "0f18cf002af64d264e083a42d0864d25d0f957ab91377109e3847317f99a8339",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Activar ChatGPT Work como agente autónomo de larga duración usando docs/PELE_WORK_CONTRACT.md sobre el repositorio Alicanto.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "recovery_episode": "31239ddfcabb5d5c9f20d52fcdf327161d700857e43631de9c6ec04104b6fb22",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "pulso_latercera_exhaustive_discovery_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "717c8888b58f663654751bcf3ee7bca1c0c184637e5cdd8c743135f603554d4a"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "pulso_latercera_exhaustive_discovery_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:pulso_latercera_exhaustive_discovery_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "355ce5e7bef4a35d9b6350e104cb69a9edbd482151827c6da1c018f01f519e91"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "717c8888b58f663654751bcf3ee7bca1c0c184637e5cdd8c743135f603554d4a",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "pulso_latercera_exhaustive_discovery_2026_10_11",
+      "input_fingerprint": "717c8888b58f663654751bcf3ee7bca1c0c184637e5cdd8c743135f603554d4a",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Rediseñar discovery de Pulso/La Tercera para cobertura exhaustiva razonable 30/90 días; la muestra actual de 11 candidatos es insuficiente y omite artículos sanitarios recientes verificables.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "recovery_episode": "97acc9e8faa4d2f339b1449aa975e05a62d4ebf3fc3e32c62393f929b5318803",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "source_audit_issue5_iteration1_recovery_2026_10_09": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "360d0734bf51f160fe3b489d84f469e52486948c367784b0d882f2f16e9407a1"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "source_audit_issue5_iteration1_recovery_2026_10_09",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:source_audit_issue5_iteration1_recovery_2026_10_09",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "6f43244f428a66c182aeca7b19eafb74b651161d54377faf6dfcd76d580a12a8"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "360d0734bf51f160fe3b489d84f469e52486948c367784b0d882f2f16e9407a1",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "source_audit_issue5_iteration1_recovery_2026_10_09",
+      "input_fingerprint": "360d0734bf51f160fe3b489d84f469e52486948c367784b0d882f2f16e9407a1",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Recuperar fuentes críticas: Diario Financiero, Pulso/La Tercera, FONASA, ISP, DEIS, SIS fiscalización, SUSESO fiscalización, ACHS y Mutual.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "recovery_episode": "9cba6c8204976e15c36b69d578e121a89db6fc6a67c8ba098bbde0b0aac910ea",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "source_audit_issue5_iteration2_balance_2026_10_09": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "aadaf274c56c6b0c2421640d89e029620433f747c1d9eab2e74a76b18ea96939"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "source_audit_issue5_iteration2_balance_2026_10_09",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:source_audit_issue5_iteration2_balance_2026_10_09",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "229b4ac3e176f4c1f54f324ab5ba174b4329d16b9eafc93202a4cdd8710f76e9"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09"
+      ],
+      "evidence_revision": "aadaf274c56c6b0c2421640d89e029620433f747c1d9eab2e74a76b18ea96939",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "source_audit_issue5_iteration2_balance_2026_10_09",
+      "input_fingerprint": "aadaf274c56c6b0c2421640d89e029620433f747c1d9eab2e74a76b18ea96939",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Aumentar profundidad y equilibrio sectorial sin cuotas artificiales.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "approved",
+      "recovery_episode": "5aba57a7f8aa859dc131c182aa0788e655832a4ce02844d3bcbd7982ae470f27",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "source_audit_issue5_iteration3_editorial_2026_10_09": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "awaiting_dependencies": true,
+      "blocker_signatures": [],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09"
+      ],
+      "evidence_revision": "a1d3dd188823c6f4443950b43afce653523086895ca8d14427aaa3743d4ef53e",
+      "failure": null,
+      "family": "editorial",
+      "fence": 0,
+      "id": "source_audit_issue5_iteration3_editorial_2026_10_09",
+      "input_fingerprint": "303086a280a1ad3c5642e7fd891a8459dfe67ced08bf55ce5ce14e55e100ee17",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "objective": "Reconstruir inteligencia editorial: Insight semanal vigente, relaciones entre señales y análisis estadístico útil.",
+      "pickup_ready_since": null,
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "status": "READY"
+    },
+    "source_audit_issue5_iteration4_autonomy_2026_10_09": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "554e7979670b20f0559e3416452a8aad15b13ae8c8c91e08a1a6f4d620acedef"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "source_audit_issue5_iteration4_autonomy_2026_10_09",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:source_audit_issue5_iteration4_autonomy_2026_10_09",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "1710ee166ab769c470935d020ab9cbc8f21896864fcfa9fea3f665b06ada672a"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "554e7979670b20f0559e3416452a8aad15b13ae8c8c91e08a1a6f4d620acedef",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "source_audit_issue5_iteration4_autonomy_2026_10_09",
+      "input_fingerprint": "554e7979670b20f0559e3416452a8aad15b13ae8c8c91e08a1a6f4d620acedef",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Hacer que la auditoría y recuperación editorial se ejecuten sin intervención recurrente de Toba.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "recovery_episode": "e6f8a091a339da27663dd924412994424a07128518baafcb1fb103579f3c87b6",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "source_audit_issue5_iteration5_expansion_2026_10_09": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "ff39c3973dac215096c2a8ebcd59152bba6a1b0cab62042b7da5de857d533956"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "source_audit_issue5_iteration5_expansion_2026_10_09",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:source_audit_issue5_iteration5_expansion_2026_10_09",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "9f800ecb75fabded039d89d621adc4f44b386f911e031864d3f9f5ec42794bb4"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [
+        "source_audit_issue5_iteration1_recovery_2026_10_09",
+        "source_audit_issue5_iteration2_balance_2026_10_09"
+      ],
+      "evidence_revision": "ff39c3973dac215096c2a8ebcd59152bba6a1b0cab62042b7da5de857d533956",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "source_audit_issue5_iteration5_expansion_2026_10_09",
+      "input_fingerprint": "ff39c3973dac215096c2a8ebcd59152bba6a1b0cab62042b7da5de857d533956",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Expandir inteligencia de mercado con fuentes de alto valor luego de estabilizar cobertura core.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "high",
+      "queue_status": "approved",
+      "recovery_episode": "a5062237250f020a1cc78759c343e03042e43ea9f610ff65896f6b3b9edad678",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "source_audit_issue5_master_2026_10_09": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "f8e7c546a8fc546be06c23b98fdf2c77458890e25862a176d5c7b23efb29438e"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "source_audit_issue5_master_2026_10_09",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:source_audit_issue5_master_2026_10_09",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "67d25e5d812fa76da8d504a19d9c40fd3473f225b43e90231ee0ac1b856b8e7d"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "f8e7c546a8fc546be06c23b98fdf2c77458890e25862a176d5c7b23efb29438e",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "source_audit_issue5_master_2026_10_09",
+      "input_fingerprint": "f8e7c546a8fc546be06c23b98fdf2c77458890e25862a176d5c7b23efb29438e",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Ejecutar la auditoría integral de 27 conectores y recuperación editorial aprobada en issue #5 hasta cerrar cobertura efectiva, vigencia editorial y autonomía sin tocar producción.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "recovery_episode": "cf942b0661750d6bcbb1988985499466007e6c247524a9cd82af8ddb304c7f2e",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "source_recovery_reconciliation_gate_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "54a0143933e979a58303a87df995946205515e7243ba5ee44af917546e49e408"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "source_recovery_reconciliation_gate_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:source_recovery_reconciliation_gate_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "cf2e904b4db2164535400a106a35266a3a3b1506e806303b2f016651755feb1b"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "54a0143933e979a58303a87df995946205515e7243ba5ee44af917546e49e408",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "source_recovery_reconciliation_gate_2026_10_11",
+      "input_fingerprint": "54a0143933e979a58303a87df995946205515e7243ba5ee44af917546e49e408",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Conciliar todo hallazgo, issue, PR Codex, tarea Work y evidencia de fuente para que ningún compromiso quede olvidado ni se cierre sin llegar efectivamente a staging validado.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "recovery_episode": "c8440ecfcb1660f8bf14708fe8ca26771fe76be97aaf50476cf3cea797292ac6",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "source_repair_fiscalization_lane_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocker_signatures": [],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "7a188b738255cf0bcfb353089738606825ca90cb25155b1dc49fcf47114d0642",
+      "failure": null,
+      "family": "fiscalization",
+      "fence": 0,
+      "id": "source_repair_fiscalization_lane_2026_10_11",
+      "input_fingerprint": "078165b18871d2059155a0bddaf72364523df1bb71bd89d08558b6e4ef5367c4",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "objective": "Repair Superintendencia Fiscalización and SUSESO Fiscalización freshness/publication semantics.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "status": "READY"
+    },
+    "source_repair_media_lane_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocker_signatures": [],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "af7a872698958068c39ad84f241eb92f3cfac158bd0c30da4fab3e664a53f873",
+      "failure": null,
+      "family": "media",
+      "fence": 0,
+      "id": "source_repair_media_lane_2026_10_11",
+      "input_fingerprint": "db22389ac0ea0b7aa91b4e267f4252cb1f2fb41e48c498ca99639b54d3c17b77",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "objective": "Repair Diario Financiero and Pulso/La Tercera end-to-end in parallel with other P0 lanes.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "status": "READY"
+    },
+    "source_repair_mutualities_lane_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocker_signatures": [],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "2f2eefab670343cbcb30474cd8ba5671ea698be10c7ebee281584884f9d94025",
+      "failure": null,
+      "family": "mutualities",
+      "fence": 0,
+      "id": "source_repair_mutualities_lane_2026_10_11",
+      "input_fingerprint": "2e3290ad7072100d541e44a68bb7504073a1bfafc853fe40278a33fe84a47c2e",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "objective": "Repair Clínicas ACHS, ACHS Seguro Laboral and Mutual runtime errors independently.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "status": "READY"
+    },
+    "source_repair_public_data_lane_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocker_signatures": [],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "d9294c787602e752a1958658c7d1d6ebee6f786ea49eb167db91c8fc67a00e92",
+      "failure": null,
+      "family": "public_data",
+      "fence": 0,
+      "id": "source_repair_public_data_lane_2026_10_11",
+      "input_fingerprint": "c481d468ac55655c78163a58f9013d8492217b793899cbb9690a6b3ce399b09c",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "objective": "Repair FONASA, FONASA Datos Abiertos, ISP/ANAMED, ISP Surveillance and DEIS independently from media.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "status": "READY"
+    },
+    "source_runtime_audit_2026_10_02": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "087f851b0792898fafe56c4924bf2fd1efa5b1eca576837082500a891e307184"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "in_progress",
+            "queue_task_id": "source_runtime_audit_2026_10_02",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:source_runtime_audit_2026_10_02",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "8a12cb3c874d9cfef9d068be96845f6646053eff5b3583d52209b6c8de10d11f"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "087f851b0792898fafe56c4924bf2fd1efa5b1eca576837082500a891e307184",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "source_runtime_audit_2026_10_02",
+      "input_fingerprint": "087f851b0792898fafe56c4924bf2fd1efa5b1eca576837082500a891e307184",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Corregir brechas entre fuentes conversadas, contenido realmente publicado en la web y señales efectivamente detectadas/seleccionadas/publicadas por Alicanto.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "in_progress",
+      "recovery_episode": "b59c31a8e8a6b2198d7fe806538c1c25ffb02035d378bc7223d92b7c3d1c13ea",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "staging_qa_failed_run_38113830124": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocker_signatures": [],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "c6959d06fa8f3c60afd9f7847aa4b3e1a2db3171c09dab1ab9b067a32fb71ea1",
+      "failure": {
+        "conclusion": "failure",
+        "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+        "head_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "run_id": 38113830124,
+        "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38113830124"
+      },
+      "family": "staging_qa",
+      "fence": 0,
+      "id": "staging_qa_failed_run_38113830124",
+      "input_fingerprint": "b437bd6368446d989c120564a149625360e12cf19044a1f056368f450491c0fd",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "objective": "Recover the demonstrated staging gate; preserve product contracts.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "critical",
+      "queue_status": "approved",
+      "status": "READY"
+    },
+    "w4_cenabast_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "6d43333ad20be58b467ff1e70353e5b27743c41f554bb94e9d3ac0a70f8cd21c"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_cenabast_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_cenabast_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "2b045e8118d71dca72f52054bdacd23149261efc7b8886b2cb6e4d3bcd5089fd"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "6d43333ad20be58b467ff1e70353e5b27743c41f554bb94e9d3ac0a70f8cd21c",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "w4_cenabast_2026_10_11",
+      "input_fingerprint": "6d43333ad20be58b467ff1e70353e5b27743c41f554bb94e9d3ac0a70f8cd21c",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Acceso a medicamentos, canales y adopción tecnológica CENABAST. Una fuente primaria cubre brechas de farmacias, compras, laboratorios y healthtech con menos ruido que numerosos catálogos comerciales.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "medium",
+      "queue_status": "approved",
+      "recovery_episode": "c5295fc453e484870ce34bf6d21bb1e1fc6445ee576af78478dcf3f3f5c8cee1",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "w4_cmf_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "485c5e139c7c9cc6cd8781772d9b38585d6068457406ad0077b03ead2874242b"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_cmf_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_cmf_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "791b979b31195b2c59369836ff0dd46d43156ab8ba331377aa7a23716cf4dd0b"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "485c5e139c7c9cc6cd8781772d9b38585d6068457406ad0077b03ead2874242b",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "w4_cmf_2026_10_11",
+      "input_fingerprint": "485c5e139c7c9cc6cd8781772d9b38585d6068457406ad0077b03ead2874242b",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Financiamiento y hechos esenciales CMF. CLC se declaró compensada por una CMF no conectada; la prensa no completa deuda, capital, propiedad y resultados.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "high",
+      "queue_status": "approved",
+      "recovery_episode": "0463f5519e61c2a70c91e3835381d2459badb9bc611e9cdf7031a4d29083ea3d",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "w4_dipres_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "3624b26fa2fa01fd42ef45530d278d21fc34c90d567a388875216a7a52f3894e"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_dipres_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_dipres_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "15b1236d8a1e8f5454d5558cc912bcb043119326898dc52d5cbfd30fa5b1bc11"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "3624b26fa2fa01fd42ef45530d278d21fc34c90d567a388875216a7a52f3894e",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "w4_dipres_2026_10_11",
+      "input_fingerprint": "3624b26fa2fa01fd42ef45530d278d21fc34c90d567a388875216a7a52f3894e",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Presupuesto y ejecución de salud DIPRES. Un PDF fijo de DIPRES no es un canal de financiamiento recurrente ni reemplaza integralmente FONASA.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "high",
+      "queue_status": "approved",
+      "recovery_episode": "3d52752d3912d2158b859a5f6d9032d9252427728814d38a5db7de1784b27c6d",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "w4_fne_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "9d8d1223d0d6034a053e9f0829c4ef1a10bcc4c11717fec33a6100ea67cab99d"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_fne_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_fne_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "1f6ee3501796403db93fd31f92f33ce171b1aafbafd8e861c604a01786dd7a77"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "9d8d1223d0d6034a053e9f0829c4ef1a10bcc4c11717fec33a6100ea67cab99d",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "w4_fne_2026_10_11",
+      "input_fingerprint": "9d8d1223d0d6034a053e9f0829c4ef1a10bcc4c11717fec33a6100ea67cab99d",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "M&A sanitario desde FNE. Cubre compras de clínicas, farmacias y redes con evidencia regulatoria que los newsrooms y CMF parcial no garantizan.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "medium",
+      "queue_status": "approved",
+      "recovery_episode": "68af68accca1b35c7085744e16ceec5e734566b0bdd1ee17eef0f8f92d948272",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "w4_innovation_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "c36d980502515a4f277d0df2af38f985ad54176b4c87c8665d1656083e2bbd6b"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_innovation_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_innovation_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "d376918943783127d5fa995e69312ab0f3c08b1465d0c16b91a463c87cdc6133"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [
+        "w4_cenabast_2026_10_11"
+      ],
+      "evidence_revision": "c36d980502515a4f277d0df2af38f985ad54176b4c87c8665d1656083e2bbd6b",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "w4_innovation_2026_10_11",
+      "input_fingerprint": "c36d980502515a4f277d0df2af38f985ad54176b4c87c8665d1656083e2bbd6b",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "UDD/DHTAC y CENS: tecnología con evidencia de adopción. Cubren tecnología clínica y evaluación; eventos/promoción requieren filtros más estrictos que el simple dominio de salud.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "medium",
+      "queue_status": "approved",
+      "recovery_episode": "e847e78d051b0097e00f9fe93ecb8b8cad1318214feeb8077e171c66f81b66bf",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "w4_isapres_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "1d677e0713b07a0c7144fe3a193b31af5d058accebdcbc5c09f3ed4f0946e629"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_isapres_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_isapres_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "7a8ac6344bf01afb5fe301328473bd53a7adc7ff5d75f5b24593778e5aaccb62"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "1d677e0713b07a0c7144fe3a193b31af5d058accebdcbc5c09f3ed4f0946e629",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "w4_isapres_2026_10_11",
+      "input_fingerprint": "1d677e0713b07a0c7144fe3a193b31af5d058accebdcbc5c09f3ed4f0946e629",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Cohorte competitiva completa de las 10 Isapres. Hoy los 27 conectores no equivalen a vigilancia competitiva de todas las Isapres; SIS permite cubrir el denominador sin diez feeds promocionales.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "high",
+      "queue_status": "approved",
+      "recovery_episode": "9829f867c40d17863cf83c0460f0f79ab13ef16645d4ff42687637b394670a42",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "w4_legal_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "37ae65534de454df0cdc3bd19344633aebcefc9db39da79f24a6406c8cb13384"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_legal_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_legal_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "ae5460e90df86f28e8a3e94dd78103dbb9b3b04d187eefed1256bb1c2fcb4569"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "37ae65534de454df0cdc3bd19344633aebcefc9db39da79f24a6406c8cb13384",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "w4_legal_2026_10_11",
+      "input_fingerprint": "37ae65534de454df0cdc3bd19344633aebcefc9db39da79f24a6406c8cb13384",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "BCN como resolver normativo y PJUD como factibilidad. DO/SIS no completan texto consolidado y jurisprudencia; el acceso PJUD observado presenta CAPTCHA.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "medium",
+      "queue_status": "approved",
+      "recovery_episode": "4343ece0dc2180b75aa2462f7d0053848b6355f84c064c495f0e6878992d35cd",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "w4_occupational_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "8aaddf40804bcf3c8cc3c5f45d20294cb213a9a397c9223b203b28deaef3c12b"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_occupational_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_occupational_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "1fa34e475ea7581305118e5675759af7ef85346b6f6dab6fab3ba7891dc569fb"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "8aaddf40804bcf3c8cc3c5f45d20294cb213a9a397c9223b203b28deaef3c12b",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "w4_occupational_2026_10_11",
+      "input_fingerprint": "8aaddf40804bcf3c8cc3c5f45d20294cb213a9a397c9223b203b28deaef3c12b",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "ISL agregado y COMPIN a través de canales oficiales existentes. ISL falta en cobertura laboral y COMPIN no necesita acceso a expedientes personales para aportar cambios de sistema.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "medium",
+      "queue_status": "approved",
+      "recovery_episode": "42395920685debe39cc6ee457a06ba424929e5691a1bc1b5394fad7d7c204a26",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "w4_paho_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "047c11feb19e8ad4487e7dfb210b923739d489e0842735e3b964b8db4c037ea9"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_paho_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_paho_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "057fb9a8940b8cddc842fb6262e1180dd64d6402bfb70a18697830bbdac19dac"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "047c11feb19e8ad4487e7dfb210b923739d489e0842735e3b964b8db4c037ea9",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "w4_paho_2026_10_11",
+      "input_fingerprint": "047c11feb19e8ad4487e7dfb210b923739d489e0842735e3b964b8db4c037ea9",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "OPS: resolver acceso público a vigilancia regional. No hay referencias OPS en themes.json ni conector; sí material reciente indexado, con 403 al abrir en esta auditoría.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "medium",
+      "queue_status": "approved",
+      "recovery_episode": "eab01e76913e7dac7572a08788d9f7da2d94ef51aafcb4236cdf247c7e69ae0b",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "w4_procurement_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "25c62c095572efd2c4ad46a44a33247088097239d3d8edfcb305a720922faea3"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_procurement_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_procurement_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "8522fa59cd5e1e0ba9c4f776da3db8eb2548c8202815af4516fe1475a7ddb828"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "25c62c095572efd2c4ad46a44a33247088097239d3d8edfcb305a720922faea3",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "w4_procurement_2026_10_11",
+      "input_fingerprint": "25c62c095572efd2c4ad46a44a33247088097239d3d8edfcb305a720922faea3",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Licitaciones y adjudicaciones sanitarias trazables. Existe cliente Mercado Público no enroutado al runtime; título/cierre no permiten inteligencia transaccional confiable.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "medium",
+      "queue_status": "approved",
+      "recovery_episode": "a5c013f42eb4035c137fb77738a455455d40a2a3bc590f44179f6cc972399e9b",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "w4_provider_data_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "cb4f663115553c942c8d4247307248b56b32e4312e41a6d2a36143830e0f4b13"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_provider_data_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_provider_data_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "9ce03a1ec4e4033a1f80684af936af49a7525dcef5234c3635aad32f2b8bda04"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [
+        "w4_fne_2026_10_11"
+      ],
+      "evidence_revision": "cb4f663115553c942c8d4247307248b56b32e4312e41a6d2a36143830e0f4b13",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "w4_provider_data_2026_10_11",
+      "input_fingerprint": "cb4f663115553c942c8d4247307248b56b32e4312e41a6d2a36143830e0f4b13",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Memorias Interclínica y subcanales regionales de redes existentes. Interclínica posee memorias útiles; cobertura por holding no demuestra que cada sede regional se descubra.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "medium",
+      "queue_status": "approved",
+      "recovery_episode": "eabdaed28307ab96f1a2d2dfc3a4c1fa89e73ba635813f86c01992e507688103",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "w4_providers_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "293732084a1fee4c9ae8f6a90afbb2e3723bea7c13fa53e91a2bf6a0fafad591"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_providers_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_providers_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "c40cf7c768c21065e13cb4c48dcd2991979afecb055fb33929e02e0ae5ad5a88"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "293732084a1fee4c9ae8f6a90afbb2e3723bea7c13fa53e91a2bf6a0fafad591",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "w4_providers_2026_10_11",
+      "input_fingerprint": "293732084a1fee4c9ae8f6a90afbb2e3723bea7c13fa53e91a2bf6a0fafad591",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Pilotos selectivos Alemana, UC CHRISTUS y FALP. Hay superficies fechadas; las muestras comunitarias o exploratorias no bastan para aprobar materialidad estratégica.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "medium",
+      "queue_status": "approved",
+      "recovery_episode": "2ecb9c9fa89bc9efa7f5b0af6e7fdab5fc9d9a370fc08e80e07a41c415daa1f8",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "w4_reuters_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "d46d007e89c4293f0fe0064092a0b5038bab989584672ed43c73e9dbeffb9da1"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_reuters_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_reuters_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "7e06396d20e716a11e2bee1468d1370218a04a18a9a41ef6d88da36439561f31"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "d46d007e89c4293f0fe0064092a0b5038bab989584672ed43c73e9dbeffb9da1",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "w4_reuters_2026_10_11",
+      "input_fingerprint": "d46d007e89c4293f0fe0064092a0b5038bab989584672ed43c73e9dbeffb9da1",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "Reuters: ruta recurrente permitida o hold explícito. Hay funciones de normalización y referencias recientes curadas, pero no conector periódico verificable.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "medium",
+      "queue_status": "approved",
+      "recovery_episode": "7cdbbf9a9b5d29d58e4606ec1d2fba620a94e74cb1feae5c5ef9679f4c094ed8",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "w4_socioeconomic_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "87b04727dcea074ab7d1e9cfcc161190abe412061dd3a95ddc88a8165756d7aa"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_socioeconomic_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_socioeconomic_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "ac242e8463d698381836bb646716efff8c53347d2f9667223426f1a8a1503262"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "87b04727dcea074ab7d1e9cfcc161190abe412061dd3a95ddc88a8165756d7aa",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "w4_socioeconomic_2026_10_11",
+      "input_fingerprint": "87b04727dcea074ab7d1e9cfcc161190abe412061dd3a95ddc88a8165756d7aa",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "INE y CASEN como base comparable de mercado. Permiten interpretar gasto/demanda y segmentación con denominadores; no deben generar noticias diarias artificiales.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "medium",
+      "queue_status": "approved",
+      "recovery_episode": "4780ada0e4e927769d2d0a770ddcda3176d2f09ee88f597928c481023fa49829",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    },
+    "w4_who_2026_10_11": {
+      "approved": true,
+      "attempts": 0,
+      "audit_counts": {},
+      "blocked_revision": [
+        "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "fb1fdb77eed414769e24ae706356263d01e3fa755676cb9f1876ba33a509db57"
+      ],
+      "blocker": {
+        "evidence": [
+          {
+            "queue_status": "approved",
+            "queue_task_id": "w4_who_2026_10_11",
+            "supported_families": [
+              "media",
+              "public_data",
+              "fiscalization",
+              "mutualities",
+              "editorial",
+              "staging_qa"
+            ]
+          }
+        ],
+        "fingerprint": "unsupported_executor:w4_who_2026_10_11",
+        "reason": "No installed executor for this approved task; task remains open."
+      },
+      "blocker_signatures": [
+        "18a7ea836fb9c9209b2f2a9a3a514d23292d94085ac413f6b6a4abd3bc90e69a"
+      ],
+      "created_at": "2026-10-11T05:29:09.013956Z",
+      "depends_on": [],
+      "evidence_revision": "fb1fdb77eed414769e24ae706356263d01e3fa755676cb9f1876ba33a509db57",
+      "failure": null,
+      "family": null,
+      "fence": 0,
+      "id": "w4_who_2026_10_11",
+      "input_fingerprint": "fb1fdb77eed414769e24ae706356263d01e3fa755676cb9f1876ba33a509db57",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "last_ready_at": "2026-10-11T05:29:09.013956Z",
+      "lease": null,
+      "material_progress_at": "2026-10-11T05:29:09.013956Z",
+      "material_watch_started_at": "2026-10-11T05:29:09.013956Z",
+      "objective": "OMS recurrente con señales internacionales materiales. WHO está en la colección curada pero carece de descubrimiento, polling y health propios.",
+      "pickup_ready_since": "2026-10-11T05:29:09.013956Z",
+      "priority": "medium",
+      "queue_status": "approved",
+      "recovery_episode": "f3f06489347d3384ca04c7f6a54de4912f0d5e43bb1f7ac58fa198fb8f17af6f",
+      "recovery_reclaims": 0,
+      "state_changed_at": "2026-10-11T05:29:09.013956Z",
+      "status": "BLOCKED"
+    }
+  }
+}

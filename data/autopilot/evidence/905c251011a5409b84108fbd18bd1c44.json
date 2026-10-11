@@ -1,0 +1,85 @@
+{
+  "acceptance": {
+    "metrics": {
+      "autonomous_pickups": 0,
+      "material_event_count": 0,
+      "max_material_gap_seconds": -0.953877,
+      "mode": "live",
+      "observed_seconds": 0,
+      "owner_observation_verified": false,
+      "owner_restarts": 0
+    },
+    "observed_until": "2026-10-11T05:29:09.013956Z",
+    "reasons": [
+      "four_real_wall_hours_not_observed",
+      "owner_intervention_observation_not_verified",
+      "autonomous_pickup_not_observed",
+      "durable_verified_mutation_not_observed",
+      "real_failure_verified_repair_not_observed",
+      "automatic_independent_transition_not_observed"
+    ],
+    "status": "NOT_PROVEN"
+  },
+  "candidate_reviews": [],
+  "families": {
+    "editorial": {
+      "evidence_revision": "71953bd2a85e80b21e51c619d377b52a8a486e68742a7e0f5667ea921b82714a",
+      "failure": null,
+      "family": "editorial",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "reason": "approved_available",
+      "task_id": "editorial_repair_lane_2026_10_11"
+    },
+    "fiscalization": {
+      "evidence_revision": "7a188b738255cf0bcfb353089738606825ca90cb25155b1dc49fcf47114d0642",
+      "failure": null,
+      "family": "fiscalization",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "reason": "approved_available",
+      "task_id": "source_repair_fiscalization_lane_2026_10_11"
+    },
+    "media": {
+      "evidence_revision": "af7a872698958068c39ad84f241eb92f3cfac158bd0c30da4fab3e664a53f873",
+      "failure": null,
+      "family": "media",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "reason": "approved_available",
+      "task_id": "source_repair_media_lane_2026_10_11"
+    },
+    "mutualities": {
+      "evidence_revision": "2f2eefab670343cbcb30474cd8ba5671ea698be10c7ebee281584884f9d94025",
+      "failure": null,
+      "family": "mutualities",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "reason": "approved_available",
+      "task_id": "source_repair_mutualities_lane_2026_10_11"
+    },
+    "public_data": {
+      "evidence_revision": "d9294c787602e752a1958658c7d1d6ebee6f786ea49eb167db91c8fc67a00e92",
+      "failure": null,
+      "family": "public_data",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "reason": "approved_available",
+      "task_id": "source_repair_public_data_lane_2026_10_11"
+    },
+    "staging_qa": {
+      "evidence_revision": "c6959d06fa8f3c60afd9f7847aa4b3e1a2db3171c09dab1ab9b067a32fb71ea1",
+      "failure": {
+        "conclusion": "failure",
+        "failure_signature": "8948250d29be2971606d4474967b4928a911e87a8635a24ee238f26ea32ff689",
+        "head_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+        "run_id": 38113830124,
+        "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38113830124"
+      },
+      "family": "staging_qa",
+      "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+      "reason": "approved_available",
+      "task_id": "staging_qa_failed_run_38113830124"
+    }
+  },
+  "generated_at": "2026-10-11T05:29:09.013956+00:00",
+  "input_sha": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+  "kind": "controller_observation",
+  "operation_id": "905c251011a5409b84108fbd18bd1c44",
+  "stalled_tasks": []
+}
