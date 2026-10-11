@@ -25,7 +25,7 @@ def test_all_49_routes_preserve_actual_model_primary_and_bookkeeping_pins():
     assert len(selected) == audit['total'] == len(audit['rows']) == 49
     assert {row['queue_fingerprint'] for row in audit['rows']} == set(selected)
     assert Counter(row['runtime_route'] for row in audit['rows']) == audit['runtime_route_counts'] == {
-        'reuse_code_fn': 19, 'reuse_below_gate_reject': 6, 'assess_contract_or_semantic_defect': 24}
+        'reuse_code_fn': 18, 'reuse_below_gate_reject': 6, 'assess_contract_or_semantic_defect': 25}
     for row in audit['rows']:
         entry = selected[row['queue_fingerprint']]
         raw = entry['raw']; meta = raw['metadata']; ai = meta['analysis_model_output']; response = ai['_pulso_analysis_meta']
@@ -70,3 +70,32 @@ def test_two_full_semantic_readers_partition_all49_and_disclose_missing_exact_or
     assert missing == audit['missing_exact_raw_originals']
     assert audit['raw_originals_verified_at_review'] + len(missing) == 49
     assert audit['verdict'] == 'NOT_ACCEPTED_RUNTIME_RECOVERY_REQUIRED'
+
+
+def test_one_novelty_route_revision_binds_real_already_published_source_and_preserves_old_audit():
+    audit = json.loads(PATH.read_bytes())
+    prior = audit['route_revision']['previous_manifest']
+    old_bytes = subprocess.check_output(['git', 'show', prior['commit'] + ':' + prior['path']], cwd=ROOT)
+    assert digest(old_bytes) == prior['sha256']
+    old = {row['url']: row for row in json.loads(old_bytes)['rows']}
+    changed = [row for row in audit['rows'] if row['runtime_route'] != old[row['url']]['runtime_route']]
+    assert len(changed) == 1 and changed[0]['cohort_index'] == 16
+    row = changed[0]; context = row['reassessment_context']
+    assert row['original_semantic_classification'] == old[row['url']]['original_semantic_classification']
+    assert row['runtime_route'] == 'assess_contract_or_semantic_defect'
+    queue = json.loads(subprocess.check_output(['git', 'show', PRODUCER + ':data/state/pending_queue.json'], cwd=ROOT))
+    history = json.loads(subprocess.check_output(['git', 'show', PRODUCER + ':data/history/superintendencia_signals.json'], cwd=ROOT))['signals']
+    target = queue[context['target_queue_fingerprint']]
+    signal = next(signal for signal in history if signal.get('source_url') == context['target_url'])
+    assert target['status'] == 'published' and target['raw']['event_date'] == context['target_publication_date'] == '2026-09-01'
+    assert digest(target) == context['target_queue_entry_sha256'] and digest(target['raw']) == context['target_raw_sha256']
+    assert digest(signal) == context['target_full_original_signal_sha256']
+    assert context['target_full_original_signal'] == signal and signal['evidence_maturity'] == 'media_reported'
+    metadata = target['raw']['metadata']
+    assert context['target_full_primary_body'] == metadata['page_text']
+    assert digest(metadata['page_text'].encode()) == context['target_body_sha256']
+    assert context['target_original_model_output'] == metadata['analysis_model_output']
+    assert context['target_response_id'] == metadata['analysis_model_output']['_pulso_analysis_meta']['response_id']
+    assert all(quote in row['original_full_primary_body'] for quote in context['source_repetition_quotes'])
+    assert all(quote in metadata['page_text'] for quote in context['target_repetition_quotes'])
+    assert context['publication_approved'] is context['rejection_approved'] is False

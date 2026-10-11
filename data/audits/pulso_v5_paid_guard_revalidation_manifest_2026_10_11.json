@@ -52,12 +52,12 @@
     "independent_scope_rejection_proposed": 1
   },
   "runtime_route_counts": {
-    "reuse_code_fn": 19,
-    "assess_contract_or_semantic_defect": 24,
+    "reuse_code_fn": 18,
+    "assess_contract_or_semantic_defect": 25,
     "reuse_below_gate_reject": 6
   },
   "runtime_route_authorization": {
-    "origin": "Root agent instruction on2026-10-11: mixed19 code-onlyFNs+6actualbelow-gate rejections+24targeted realFAST",
+    "origin": "Root agent instruction on2026-10-11: one additional exact novelty finding changes FonasaSep4 to targetedFAST; mixed18 code-onlyFNs+6actualbelow-gate rejections+25targeted realFAST.",
     "publication_approved": false,
     "score_adjustment_allowed": false,
     "terminal_reopening_allowed": false
@@ -10571,8 +10571,8 @@
         "other_gates_still_apply": true
       },
       "original_semantic_classification": "code_only_false_negative",
-      "runtime_route": "reuse_code_fn",
-      "disposition": "reuse_code_fn",
+      "runtime_route": "assess_contract_or_semantic_defect",
+      "disposition": "assess_contract_or_semantic_defect",
       "producer_state_commit": "981b0ff25c226d47785b77944aa53c459053aa21",
       "producer_core_checkout": "03bf998a4bb5840c84da6473666e932fbc5cedd9",
       "producer_runtime_fingerprint_sha256": "4feb04bc17ac24d37bd5cbb07f12893f5e8202de61aa7133b8fb1a8aeb6a4118",
@@ -10590,14 +10590,171 @@
       "novelty_decision": "new_material_information",
       "event_status": "mixed_actual_and_future",
       "runtime_route_is_publication_approval": false,
-      "new_genuine_model_request_required": false,
+      "new_genuine_model_request_required": true,
       "reason": "WHAT material convictions/monetary orders vs otherLosQuilodran futuretrial clearly separated. WHY “próximo juicio ... pendiente ... no acredita ... resultado posterior” adequate but keyword absence fatal.",
-      "runtime_route_reason": "Revalidar exclusivamente el output pagado intacto bajo el guard reparado, con recibo de dos ejecuciones; aplicar después todos los gates normales y revisión semántica independiente. No se aprueba publicación por la ruta.",
+      "runtime_route_reason": "Requiere evaluación nueva con contexto exacto de la publicaciónSep1. La reparación temporal no autoriza repetir la misma sentencia como información nueva.",
       "semantic_reference": {
         "path": "data/audits/pulso_v5_all25_future_holds_independent_review_2026_10_11.json",
         "sha256": "8ab2c4fab23bc63482ce0bed9fde4268e65fa88ec041226fbb55456883482c69",
         "scope_count": 25,
         "reader": "/root/publisher_surfaces/v5_future_holds_reader"
+      },
+      "reassessment_context": {
+        "schema_version": "pulso_exact_published_incremental_comparison_v1",
+        "producer_state_commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+        "previous_manifest": {
+          "commit": "8052637c",
+          "path": "data/audits/pulso_v5_paid_guard_revalidation_manifest_2026_10_11.json",
+          "sha256": "1e2b8ee53e2118dbe8776a9e9ed1535b137c8219899bd3e1ba1a3504931ef88e"
+        },
+        "finding": "The selected tribunal17convictions and26billion civil amount were already published from the primary Sep1 report; the Sep4 description of95klicenses/48billion investigation is historical background. A future LosQuilodran trial and other newlyreported facts must be assessed separately without declaring a new repeated judgment.",
+        "reviewer": "independent_adversarial_review_with_publisher_surfaces_peer",
+        "publication_approved": false,
+        "rejection_approved": false,
+        "source_publication_date": "2026-09-04",
+        "source_body_sha256": "30d8b8f701b0cde06ea6670423804452f43d4b4ee6ab6bb0efe4bc59d25f545f",
+        "source_html_sha256": "d35a148f569f4d52639eac9cb9f5b734c122d871d678feff5dd69a68c6c34255",
+        "source_repetition_quotes": [
+          "El tribunal dictó condenas para 17 personas",
+          "el tribunal los condenó a pagar un total de $ 26 mil millones."
+        ],
+        "target_url": "https://www.latercera.com/nacional/noticia/historica-condena-por-megafraude-a-fonasa-medicos-extranjeros-pagaran-con-carcel-y-mas-de-26-mil-millones-por-emitir-licencias-falsas/",
+        "target_publication_date": "2026-09-01",
+        "target_queue_fingerprint": "6355f13d9cef4772e85ca4516a72b122d4989058aa3e1429febe5e0fc652f69d",
+        "target_queue_entry_sha256": "14c0d60541c052b20d2c202d4516801082ef05771560038caaa09d53a9a07eda",
+        "target_raw_sha256": "fb16652ca54bc20e9c8e82c6ad21eb1e381800a633dd1edd242b2a78b71f628c",
+        "target_body_sha256": "508daa5d5687161f7f7e635a728637ef503d94722e5044a7e02e1df36e04fa0d",
+        "target_html_sha256": "d07eb27a9518c8a4fdffdf540993c00ff02359ff624575c98c821d7fb01101ed",
+        "target_model_output_sha256": "6e6837c1a1e41725d0d67465e8bc9d80598425812dea6af48b0cacb7fe2c578d",
+        "target_response_id": "resp_0feb637bfef36bfd006acbc9334bb887d194d373a8a5fd916e",
+        "target_full_primary_body": "De acuerdo a la investigación del Ministerio Público, entre 2020 y 2022 una organización de médicos de nacionalidad colombiana creó tres entidades con la única finalidad de emitir licencias médicas fraudulentas y obtener así sendos réditos económicos. Con esa intención, bajo las empresas Mitite, Prevenir y Campos se emitieron más de 80 mil licencias médicas fraudulentas, generando un perjuicio estimado de $ 31.571.798.633 para el Fondo Nacional de Salud (Fonasa). Según se pudo establecer en juicio, las licencias eran comercializadas según la cantidad de días de reposo otorgados que iban desde los 11, 15, 21 o 30 días y no correspondían a atenciones médicas reales ni especializadas. Este lunes, el 7° Tribunal Oral en lo Penal de Santiago dio a conocer la sentencia condenatoria contra 17 personas, nueve de ellas, médicos: Samir Rivaldo a 21 años de presidio, Yesica Donado a 21 años de presidio, Lizney de La Hoz a 13 años de presidio, José Gnecco Cervantes a 13 años de presidio, Ana Toncel Peña a 16 años de presidio, Karen Mejía a 13 años de presidio, Obed Urrea a 16 años de presidio, Yainer Olivero Álvarez a 15 años de presidio y Jorge González Guerrero a 12 años de presidio. También el tribunal condenó a captadores: Álvaro Gnecco a 13 años de presidio, Rodrigo Campos a 17 años de presidio y Nancy Verdejo y Javiera Verdejo a 3 años y un día por fraude de subvenciones y 300 días por asociación ilícita. Además de pagar con la privación de libertad, el tribunal acogió la demanda civil del Consejo de Defensa del Estado (CDE) y los condenados deberán pagar cerca de $ 26 mil millones. Rivaldo fue condenado a una multa ascendente a $ 2.566 millones por delito reiterado de fraude de subvenciones. A Donado Alvis se le impuso una multa de $ 1.573 millones, y a Urrea, una de $ 1.447 millones. También se condenó a poco más de cuatro años de presidio a cuatro compradores de licencias. Eso sí, cumplirán sus condenas bajo la modalidad de libertad vigilada intensiva. El fiscal de Alta complejidad Oriente, Álvaro Pérez, explicó que estos últimos no estuvieron disponibles para salidas alternativas y prefirieron irse a juicio. “El tribunal hizo una declaración previa en orden a la relevancia de este juicio y lo que estaba comprometido, que es la confianza pública. Se hizo referencia también al patrimonio fiscal y cómo en definitiva el Fondo Nacional de Salud es patrimonio de todos los chilenos”, dijo el persecutor. En ese sentido, el persecutor añadió que el fallo “destaca también la importancia de la licencia médica como un instrumento de seguridad social y lo que está detrás es el cuidado de los recursos fiscales y cómo a través de este tipo de empresas criminales lo que se ve afectado son las prestaciones que el Fondo Nacional de Salud muchas veces deja de poder financiar dado este tipo de fraude”. De manera excepcional, el tribunal terminó con dos jueces debido a que ad portas del cierre, el juicio vivió un traspié cuando la magistrada Alejandra García decidió voluntariamente inhabilitarse al conocer que es una de las 56 jueces que arriesgan su expulsión del Poder Judicial por haber viajado al extranjero con permiso de salud. Por ello, el proceso continuó en manos de los otros dos jueces, José Pérez y Grace Díaz. Pérez y Díaz hicieron un duro reproche a los imputados y sostuvieron que el hecho no tenía precedentes en nuestro país. “La cuantiosa pérdida de recursos públicos que estas conductas provocaron repercute directa e inevitablemente sobre la calidad, cobertura y suficiencia de las prestaciones sanitarias a que acceden todos los ciudadanos beneficiarios del sistema estatal de salud”, señala la resolución que leyó la jueza Díaz. La resolución del tribunal apuntó a que esas estructuras “configuraron un aprovechamiento sistemático del sistema previsional de salud chileno”. Los jueces advirtieron que las conductas juzgadas fueron desplegadas mayoritariamente por ciudadanos extranjeros de origen colombiano, que prevaliéndose de su calidad de médicos cirujanos de dicha nacionalidad y habilitados para el ejercicio de su profesión en Chile, “manipularon y trastocaron el sistema de subsidios por incapacidad laboral consagrado en la legislación nacional”. En esa línea, la resolución del tribunal recalca que “lejos de honrar la confianza institucional que el Estado de Chile depositó en ellos al franquearles el ejercicio de la profesión médica en su territorio sobre las bases de relaciones internacionales vigentes con su país de origen, los acusados médicos abusaron de las facilidades y prerrogativas conferidas por el ordenamiento jurídico chileno”. “Transgrediendo abiertamente los deberes éticos y legales que emanan del acto médico, junto a los facilitadores no facultativos que se sumaron a esta empresa delictual, participaron, cada uno en el rol y con la aportación funcional que se ha establecido en los considerandos que anteceden, en la emisión y venta sistemática y masiva de licencias médicas ideológicamente falsas, obteniendo por esa vía cifras exorbitantes de dinero de origen ilícito y ocasionando uno de los mayores fraudes al erario fiscal de que se tenga registro en la historia judicial reciente del país”, indicó el tribunal. Los jueces manifiestan que su sanción responde no solo a la estricta aplicación de los marcos penales previstos para los delitos de asociación ilícita, emisión fraudulenta de licencias médicas, fraude de subvenciones y lavado de activos, sino que “expresa además la necesidad político-criminal de reafirmar la vigencia del ordenamiento jurídico frente a un fenómeno delictivo de dimensiones inéditas en el país, cuya reaplicación futura debe ser prevenida mediante una respuesta sancionatoria que resulte proporcional a la extraordinaria gravedad, extensión temporal, sofisticación organizativa y lesividad social de los hechos que se han tenido por acreditados”. El abogado Rodrigo Álvarez Alarcón, litigante del CDE, valoró el resultado obtenido. “Como CDE valoramos la sentencia que determinó condenas históricas para los integrantes de la red criminal responsable de perpetrar el denominado ‘Megafraude Fonasa’, uno de los mayores fraudes al Fisco conocidos en el país. Manifestamos nuestra satisfacción con el resultado judicial, el que acogió las pretensiones que sustentamos durante el proceso”, dijo Álvarez. Álvarez agregó que “el daño provocado por esta organización delictual es enorme, no solo por su masivo impacto presupuestario, sino por el profundo perjuicio social que genera, afectar a Fonasa significa golpear directamente al sistema que atiende al 80% de la población nacional, especialmente a los sectores más vulnerables”. “Desde que detectamos este tipo de delitos, como CDE actuamos con la mayor prontitud, impulsando la instauración de un equipo de trabajo con distintas instituciones del Estado y de manera interna en nuestro servicio, a través de la coordinación nacional de nuestros abogados, de manera de actuar frente a estos delitos masivos de gran afectación al patrimonio fiscal”, agregó Álvarez. La presidenta de la Asociación de Isapres, Melissa Hohmann, también se mostró conforme. Su institución actuó como querellante en el caso. “Las licencias médicas son un derecho de los trabajadores y cumplen el rol fundamental de protegernos cuando una enfermedad nos impide desarrollar nuestra labor. Por eso tenemos que ser muy firmes frente al fraude y las conductas abusivas. Quienes defraudan al sistema no solo comenten un delito, también ponen en riesgo recursos que están destinados a quienes requieren verdadera protección de salud”, dijo Hohmann.",
+        "target_full_original_signal": {
+          "title": "Histórica condena por megafraude a Fonasa: médicos extranjeros pagarán con cárcel y más de $ 26 mil millones por emitir licencias falsas",
+          "source_name": "Pulso / La Tercera",
+          "source_type": "press_high_trust",
+          "source_url": "https://www.latercera.com/nacional/noticia/historica-condena-por-megafraude-a-fonasa-medicos-extranjeros-pagaran-con-carcel-y-mas-de-26-mil-millones-por-emitir-licencias-falsas/",
+          "category": "Aseguramiento",
+          "subcategory": "General",
+          "system_domain": "HEALTH",
+          "what_happened": "Según Pulso / La Tercera, Según la nota del 1 de septiembre de 2026, el 7° Tribunal Oral en lo Penal de Santiago dio a conocer la sentencia condenatoria contra 17 personas por un fraude a Fonasa investigado por hechos ocurridos entre 2020 y 2022. La investigación atribuyó a la organización la emisión de más de 80 mil licencias médicas fraudulentas y un perjuicio estimado de $31.571.798.633 para Fonasa. El tribunal también acogió la demanda civil del CDE y condenó a los responsables a pagar cerca de $26 mil millones; la nota no permite reconciliar ambas cifras. Cuatro compradores de licencias recibieron penas de poco más de cuatro años bajo libertad vigilada intensiva.",
+          "event_date": "2026-09-01",
+          "detected_at": "2026-10-11T07:52:34.224551+00:00",
+          "primary_source_url": null,
+          "event_type": "OTHER",
+          "strategic_theme": [],
+          "institution_types": [],
+          "entity_refs": [],
+          "country": "CL",
+          "topics": [
+            "insurance",
+            "investment_ma",
+            "financing",
+            "regulation",
+            "competition",
+            "public_health"
+          ],
+          "entities": [],
+          "people": [],
+          "geography": [],
+          "key_facts": [],
+          "key_numbers": [],
+          "why_it_matters": "Al 1 de septiembre de 2026, según la nota, el tribunal vinculó la pérdida de recursos públicos con la calidad, cobertura y suficiencia de las prestaciones sanitarias del sistema estatal. El CDE sostuvo que el perjuicio afectaba directamente a Fonasa, institución que —según la declaración citada— atiende al 80% de la población nacional, mientras la Asociación de Isapres destacó el riesgo para recursos destinados a personas que requieren protección de salud. La sentencia constituye una señal judicial de alta relevancia sobre fraude masivo en licencias médicas y el resguardo del financiamiento sanitario, sin que la publicación acredite por sí sola efectos operativos posteriores a esa fecha.",
+          "who_cares": [],
+          "possible_implications": [],
+          "watch_tags": [
+            "pulso_latercera",
+            "media",
+            "fonasa"
+          ],
+          "connection_keys": [],
+          "trend_keys": [],
+          "prospective_evidence": false,
+          "economic_impact_score": 95,
+          "regulatory_impact_score": 55,
+          "scope_score": 96,
+          "novelty_score": 96,
+          "actionability_score": 76,
+          "source_quality_score": 92,
+          "radar_score": 84,
+          "confidence_score": 92,
+          "distribution": "archive",
+          "validation_status": "automatic",
+          "corroboration_status": "unknown",
+          "additional_sources": [],
+          "source_documents": [],
+          "key_points": [],
+          "risk_notes": [],
+          "data_insights": [],
+          "data_insight_meta": {},
+          "validity_text": null,
+          "related_reference_ids": [],
+          "original_language": "es",
+          "display_language": "es",
+          "translation_status": "not_required",
+          "original_title": null,
+          "original_what_happened": null,
+          "original_why_it_matters": null,
+          "signal_types": [
+            "Noticias"
+          ],
+          "scopes": [
+            "Fonasa"
+          ],
+          "editorial_relevance": 96,
+          "source_quality_gate": "passed",
+          "evidence_maturity": "media_reported",
+          "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+          "publication_date": "2026-09-01",
+          "publication_timestamp": "2026-09-01T00:29:22.344Z",
+          "publication_date_source": "visible_article_byline",
+          "editorial_assessment": {
+            "decision": "published",
+            "relevance_score": 96,
+            "threshold": 72,
+            "analysis_reason": "Cambio material para el financiamiento sanitario y la integridad del sistema de licencias médicas: una sentencia penal y civil por un fraude de gran escala contra Fonasa, con impacto atribuido por el tribunal sobre cobertura y prestaciones sanitarias."
+          },
+          "ingestion_mode": "BACKFILL"
+        },
+        "target_full_original_signal_sha256": "c52e67b6a20c1b8cecec7febc5c9aa718b94051200aa3b42ddce2b3348611c61",
+        "target_original_model_output": {
+          "relevance_score": 96,
+          "what_happened": "Según la nota del 1 de septiembre de 2026, el 7° Tribunal Oral en lo Penal de Santiago dio a conocer la sentencia condenatoria contra 17 personas por un fraude a Fonasa investigado por hechos ocurridos entre 2020 y 2022. La investigación atribuyó a la organización la emisión de más de 80 mil licencias médicas fraudulentas y un perjuicio estimado de $31.571.798.633 para Fonasa. El tribunal también acogió la demanda civil del CDE y condenó a los responsables a pagar cerca de $26 mil millones; la nota no permite reconciliar ambas cifras. Cuatro compradores de licencias recibieron penas de poco más de cuatro años bajo libertad vigilada intensiva.",
+          "why_it_matters": "Al 1 de septiembre de 2026, según la nota, el tribunal vinculó la pérdida de recursos públicos con la calidad, cobertura y suficiencia de las prestaciones sanitarias del sistema estatal. El CDE sostuvo que el perjuicio afectaba directamente a Fonasa, institución que —según la declaración citada— atiende al 80% de la población nacional, mientras la Asociación de Isapres destacó el riesgo para recursos destinados a personas que requieren protección de salud. La sentencia constituye una señal judicial de alta relevancia sobre fraude masivo en licencias médicas y el resguardo del financiamiento sanitario, sin que la publicación acredite por sí sola efectos operativos posteriores a esa fecha.",
+          "reason": "Cambio material para el financiamiento sanitario y la integridad del sistema de licencias médicas: una sentencia penal y civil por un fraude de gran escala contra Fonasa, con impacto atribuido por el tribunal sobre cobertura y prestaciones sanitarias.",
+          "pulso_editorial_proof": {
+            "scope_decision": "human_health_specific",
+            "scope_reason": "La nota describe licencias médicas falsas, prestaciones sanitarias y afectación directa del financiamiento de Fonasa, por lo que acredita un vínculo concreto con salud humana y cobertura sanitaria en Chile.",
+            "human_health_scope_quote": "repercute directa e inevitablemente sobre la calidad, cobertura y suficiencia de las prestaciones sanitarias a que acceden todos los ciudadanos beneficiarios del sistema estatal de salud",
+            "actor": "7° Tribunal Oral en lo Penal de Santiago",
+            "action": "dio a conocer la sentencia condenatoria contra 17 personas",
+            "consequence": "repercute directa e inevitablemente sobre la calidad, cobertura y suficiencia de las prestaciones sanitarias",
+            "actor_quote": "el 7° Tribunal Oral en lo Penal de Santiago dio a conocer la sentencia condenatoria contra 17 personas",
+            "action_quote": "el 7° Tribunal Oral en lo Penal de Santiago dio a conocer la sentencia condenatoria contra 17 personas, nueve de ellas, médicos",
+            "consequence_quote": "La cuantiosa pérdida de recursos públicos que estas conductas provocaron repercute directa e inevitablemente sobre la calidad, cobertura y suficiencia de las prestaciones sanitarias",
+            "event_status": "actual",
+            "event_status_quote": "este lunes, el 7° Tribunal Oral en lo Penal de Santiago dio a conocer la sentencia condenatoria",
+            "novelty_decision": "new_material_information",
+            "novelty_reason": "La publicación reporta la sentencia condenatoria y la indemnización civil dictadas contra los integrantes de la red, información material sobre la resolución judicial del caso, aunque los hechos investigados correspondan al período 2020-2022.",
+            "novelty_quote": "Además de pagar con la privación de libertad, el tribunal acogió la demanda civil del Consejo de Defensa del Estado (CDE) y los condenados deberán pagar cerca de $ 26 mil millones.",
+            "future_claims": []
+          },
+          "_pulso_analysis_meta": {
+            "schema_version": "pulso_editorial_proof_v5",
+            "source_name": "Pulso / La Tercera",
+            "model": "gpt-5.6-luna",
+            "response_id": "resp_0feb637bfef36bfd006acbc9334bb887d194d373a8a5fd916e",
+            "analysis_text_sha256": "508daa5d5687161f7f7e635a728637ef503d94722e5044a7e02e1df36e04fa0d",
+            "request_input_sha256": "21f2c20438f981cf33f9be93ec7493db50fa98baff8e28b949f6c6e36081e52f",
+            "raw_model_output_sha256": "30565e74f0f609dde2e36be5efe2cbf04ec5475d00fb476d239330a37954d9e9"
+          }
+        },
+        "target_repetition_quotes": [
+          "dio a conocer la sentencia condenatoria contra 17 personas",
+          "los condenados deberán pagar cerca de $ 26 mil millones."
+        ],
+        "source_and_target_full_primary_bodies_read": true,
+        "target_full_paid_signal_read": true,
+        "context_text": "Contexto incremental ya publicado: La Tercera publicó el 1 de septiembre de 2026 la sentencia del 7° Tribunal Oral en lo Penal de Santiago contra 17 personas y la condena civil cercana a $26 mil millones en el megafraude a Fonasa. Fuente: https://www.latercera.com/nacional/noticia/historica-condena-por-megafraude-a-fonasa-medicos-extranjeros-pagaran-con-carcel-y-mas-de-26-mil-millones-por-emitir-licencias-falsas/. La nota del 4 de septiembre vuelve a esos mismos 17 condenados y $26 mil millones. Los 95 mil registros y $48 mil millones describen la investigación iniciada en 2022; no son una nueva sentencia por sí solos. Evalúa si existe otro incremento material explícito en el artículo, separando cualquier juicio futuro contra Los Quilodrán y sus antecedentes de un resultado ya ocurrido. No fuerces publicación o rechazo; si falta contraste incremental, emite un motivo específico. Mantén media_reported y los períodos de la fuente, sin reconciliar cifras distintas ni certificar un acto oficial."
       }
     },
     {
@@ -12925,5 +13082,19 @@
     "Four exact raw originals of the49 are currently absent locally, with exact prior HTTP manifest records located in run38120291133; no refetch or invented capture times.",
     "Revalidation must preserve original response/model/request/body/date/producer and old validation, with separate repaired validator provenance and genuine current core outcome.",
     "Semantic false claims and nonliteral quote defects cannot receive code-only reuse. All gates72/dedup/media attribution remain mandatory."
-  ]
+  ],
+  "route_revision": {
+    "previous_manifest": {
+      "commit": "8052637c",
+      "path": "data/audits/pulso_v5_paid_guard_revalidation_manifest_2026_10_11.json",
+      "sha256": "1e2b8ee53e2118dbe8776a9e9ed1535b137c8219899bd3e1ba1a3504931ef88e"
+    },
+    "changed_url": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+    "previous_route": "reuse_code_fn",
+    "current_route": "assess_contract_or_semantic_defect",
+    "reason": "Independent full-source comparison identifies repeated tribunal judgment already published in immutable981 state; original semantic classification and paid outputs preserved.",
+    "original_paid_producer_unchanged": true,
+    "editorial_score_unchanged": true,
+    "publication_approved": false
+  }
 }
