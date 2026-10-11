@@ -1,0 +1,83 @@
+{
+  "at": "2026-10-11T12:52:18.984015+00:00",
+  "base_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
+  "branch": "codex/staging-qa-gates-20261011",
+  "status": "IN_PROGRESS",
+  "preview": {
+    "run_id": 38128983053,
+    "job_id": 114439217514,
+    "python": "265passed/1failed/1skip",
+    "browser": "SKIPPED",
+    "reviewer": "SKIPPED"
+  },
+  "local_python": "265passed/1failed/1skip, live beta file excluded by restricted network",
+  "normative": {
+    "observed": 11,
+    "obsolete_minimum": 12,
+    "twelfth_act": "https://www.superdesalud.gob.cl/normativa/circular-if-n529/",
+    "official_date": "2026-07-10",
+    "age_at_2026_10_11": 93,
+    "primary_evidence": "Original SIS detail page explicitly says10July2026; no new publisher date invented",
+    "provisional_cause": "D:rolling90day expectation obsolete; source/history retain the act, exported feed correctly excludes93day-old Circular529"
+  },
+  "statistics_findings": [
+    {
+      "category": "statistics",
+      "code": "invalid_statistical_table",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Every visible statistical row must map to the declared columns",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "methodology_not_collapsed",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Technical traceability must be available in a collapsed layer",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "missing_incremental_value_gate",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Visible blocks need an explicit incremental value decision",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "generic_why_required",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Statistical cards must allow omission of generic impact copy",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "untraceable_statistical_evidence",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Data evidence must link to an official source",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "bulletin_coverage",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "June 2026 audit must include accreditation, mediation, complaints and RNPI",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "bulletin_missing_pdf",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "All four official June 2026 bulletin PDFs must be traceable",
+      "severity": "critical"
+    },
+    {
+      "category": "statistics",
+      "code": "bulletin_stock_flow_confusion",
+      "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "detail": "Stock, cumulative flow and monthly flow must be labelled separately",
+      "severity": "critical"
+    }
+  ],
+  "missing_analysis_file": "data/statistical_analysis_overrides_v1.json is not versioned/present on staging; investigation of CI export overwrite follows",
+  "next_action": "Fix rolling-window tests against verifiable eligible inputs and inspect why CI export drops bulletin analysis; validate original4PDF metrics before persisting analysis."
+}
