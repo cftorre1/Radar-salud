@@ -588,7 +588,7 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
                 raise ValueError("editorial_effective_serialized_feed_presence_changed")
             if present and any(row.get(field) != effective.get(field) for row in present for field in (
                     "what_happened", "why_it_matters", "event_date", "publication_date", "editorial_relevance",
-                    "evidence_maturity", "editorial_review", "editorial_decision", "feed_visibility", "event_status", "prospective_evidence")):
+                    "evidence_maturity", "category", "editorial_review", "editorial_decision", "feed_visibility", "event_status", "prospective_evidence")):
                 raise ValueError("editorial_effective_serialized_feed_copy_changed")
             if provenance["decision"] == "group":
                 target = provenance.get("duplicate_of") or {}
@@ -766,7 +766,7 @@ def verify_bound_editorial_review(queue, history, snapshot, root):
             fail("reviewed_retained_publication_missing_or_duplicated_in_serialized_feed", url=url)
         if present and any(row.get(key) != expected.get(key) for row in present for key in
                            ("what_happened", "why_it_matters", "publication_date", "editorial_relevance",
-                            "evidence_maturity", "editorial_review", "editorial_decision", "feed_visibility")):
+                            "evidence_maturity", "category", "editorial_review", "editorial_decision", "feed_visibility", "event_status", "prospective_evidence")):
             fail("editorial_review_serialized_feed_changed", url=url)
         verified[url] = provenance
     return ({} if findings else verified), findings

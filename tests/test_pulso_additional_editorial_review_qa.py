@@ -81,7 +81,7 @@ def test_all_five_paid_originals_and_exact_plan_predecessor_chain(reviewed):
 
 
 @pytest.mark.parametrize("attack", ["queue_provenance", "history_provenance", "model", "body",
-    "score", "date", "media", "attempt_reset", "feed_lost", "feed_copy", "predecessor", "source_flag", "scalar_proof"])
+    "score", "date", "media", "attempt_reset", "feed_lost", "feed_copy", "feed_category", "feed_prospective", "predecessor", "source_flag", "scalar_proof"])
 def test_current_claims_cannot_replace_paid_original_or_exact_effective_state(reviewed, attack):
     signal = next(row for row in reviewed["history"] if row["editorial_review"]["review_file"] == PLAN)
     item = next(row for row in reviewed["queue"].values() if row["raw"]["url"] == signal["source_url"])
@@ -96,6 +96,10 @@ def test_current_claims_cannot_replace_paid_original_or_exact_effective_state(re
     elif attack == "attempt_reset": item["attempts"] = 0
     elif attack == "feed_lost": reviewed["snapshot"]["signals"] = []
     elif attack == "feed_copy": reviewed["snapshot"]["signals"][0]["why_it_matters"] += " fabricated"
+    elif attack == "feed_category": reviewed["snapshot"]["signals"][0]["category"] = "Unapproved serialized category"
+    elif attack == "feed_prospective":
+        feed = next(row for row in reviewed["snapshot"]["signals"] if row["source_url"] == signal["source_url"])
+        feed["prospective_evidence"] = not signal.get("prospective_evidence", False)
     elif attack == "predecessor": metadata["editorial_review"]["previous_editorial_review"]["decision"] = "reject"
     elif attack == "source_flag": metadata["article_body_complete"] = False
     elif attack == "scalar_proof": metadata["editorial_review"] = "approved"
