@@ -106,15 +106,15 @@ def plan_repair(root, task, failure_log, *, source_slug, source_result, allowed_
     select a broader rewrite/model fallback. Only the canonical known function
     shape can license this one-file transport strategy.
     """
-    if (not isinstance(task, dict) or task.get("id") != TASK
-            or task.get("status") not in {"approved", "in_progress"}
-            or task.get("blocked_by") or task.get("depends_on")):
-        return diagnostic("REJECTED", "Task lacks current unblocked approved mutualities scope", kind="planner_scope_rejected")
     if source_slug not in SLUGS:
         return diagnostic("UNSUPPORTED", "No deterministic strategy is registered for this source/failure")
     request = _matched_request(source_result, source_slug)
     if request is None:
         return diagnostic("UNSUPPORTED", "No bound ACHS ASCII HTTP URI UnicodeEncodeError was demonstrated")
+    if (not isinstance(task, dict) or task.get("id") != TASK
+            or task.get("status") not in {"approved", "in_progress"}
+            or task.get("blocked_by") or task.get("depends_on")):
+        return diagnostic("REJECTED", "Task lacks current unblocked approved mutualities scope", kind="planner_scope_rejected")
     if not isinstance(failure_log, str) or "UnicodeEncodeError" not in failure_log or "ascii" not in failure_log:
         return diagnostic("REJECTED", "Structured failure has no corresponding observed reproduction log", kind="planner_context_rejected")
     if (not isinstance(allowed_paths, (list, tuple, set, frozenset)) or PATH not in allowed_paths

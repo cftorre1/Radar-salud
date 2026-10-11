@@ -166,6 +166,30 @@ class PlannerTests(unittest.TestCase):
                 self.assertEqual(result["status"], "REJECTED")
                 self.assertIsNone(result["plan"])
 
+    def test_approved_qa_and_fiscalization_unknown_cases_are_capability_gaps(self):
+        for task_id, slug, row in (("staging_qa_failed_run_123", None, None),
+                                  ("source_repair_fiscalization_lane_2026_10_11", "suseso_fiscalizacion",
+                                   {"slug": "suseso_fiscalizacion", "error": "HTTPError", "requests": []})):
+            with self.subTest(task_id=task_id):
+                self.task = {"id": task_id, "status": "approved", "input_sha": self.sha}
+                result = self.plan(source_slug=slug, source_result=row)
+                self.assertEqual(result["status"], "UNSUPPORTED")
+                self.assertEqual(result["diagnostic"]["kind"], "executor_capability_missing")
+                self.assertFalse(result["diagnostic"]["human_required"])
+                self.assertIsNone(result["plan"])
+
+    def test_known_source_unknown_error_is_capability_gap_before_authority_guard(self):
+        self.task = {"id": "already_approved_other_task", "status": "approved", "input_sha": self.sha}
+        result = self.plan(source_result={**self.row, "requests": []})
+        self.assertEqual(result["status"], "UNSUPPORTED")
+        self.assertEqual(result["diagnostic"]["kind"], "executor_capability_missing")
+        # Exact recognized ACHS evidence still cannot be repaired under that
+        # unrelated task's authority, even though the task itself is approved.
+        known = self.plan()
+        self.assertEqual(known["status"], "REJECTED")
+        self.assertEqual(known["diagnostic"]["kind"], "planner_scope_rejected")
+        self.assertIsNone(known["plan"])
+
     def test_stale_or_unobserved_or_protected_file_never_has_fallback_plan(self):
         for override in ({"observed_hashes": {planner.PATH: "b" * 64}},
                          {"allowed_paths": {"src/radar_salud/editorial_gate.py"}},
