@@ -6,6 +6,9 @@ from typing import Any
 from urllib.parse import urlparse
 
 from .editorial_committee import weekly_candidate_eligibility
+from .weekly_freshness import freshness_gate, chile_today, reviewed_weekly
+import json
+from pathlib import Path
 
 
 ARCHETYPES = {
@@ -177,12 +180,12 @@ def rank_weekly_candidates(signals: list[dict[str, Any]], history: list[dict[str
     recent_scopes = [x.get("scope") for x in recent]
     recent_sources = [x.get("source_name") for x in recent]
     recent_urls = {x.get("source_url") for x in recent if x.get("source_url")}
-    as_of = as_of or date.today()
+    as_of = as_of or chile_today()
     ranked = []
     for signal in signals:
         event_day = _day(signal.get("event_date"))
         if (not _https(signal.get("source_url")) or not event_day or event_day > as_of
-                or (as_of - event_day).days > 21 or signal.get("source_url") in recent_urls):
+                or not freshness_gate(signal, as_of)["eligible"] or signal.get("source_url") in recent_urls):
             continue
         if signal.get("publication_gate_reason") != "ok":
             continue
@@ -229,9 +232,9 @@ def rank_weekly_candidates(signals: list[dict[str, Any]], history: list[dict[str
 
 
 def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: list[dict[str, Any]] | None = None,
-                     today: date | None = None) -> dict[str, Any]:
+                     today: date | None = None, approved_payload: dict[str, Any] | None = None) -> dict[str, Any]:
     history = history or []
-    today = today or date.today()
+    today = today or chile_today()
     monday = today - timedelta(days=today.weekday())
     week_start = monday.isoformat()
     current = next((x for x in reversed(history) if x.get("week_start") == week_start), None)
@@ -269,38 +272,16 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
             "model_trace": {"mode": "deterministic_existing_evidence", "api_call": False,
                             "model": None, "output_id": theme["id"]},
         }
-    weekly = None
-    signals = snapshot.get("signals") or []
-    ranked = rank_weekly_candidates(signals, prior_history, today)
-    picked = ranked[0] if ranked else None
-    if picked:
-        signal = picked["signal"]
-        support = [
-            *(signal.get("key_points") or []),
-            *(signal.get("data_insights") or []),
-            *(signal.get("affected_processes") or []),
-        ]
-        reproducible = bool(support) and bool(signal.get("source_url")) and signal.get("publication_gate_reason") == "ok"
-        if reproducible:
-            weekly = {
-                "id": f"{week_start}:{signal.get('event_type','OTHER')}:{picked['archetype']}",
-                "title": signal["title"],
-                "insight_title": f"Qué cambia esta semana: {signal['title']}",
-                "summary": signal.get("card_what") or signal.get("what_happened"),
-                "insight_teaser": signal.get("card_why") or signal.get("why_it_matters"),
-                "insight_reading": signal.get("why_it_matters") or signal.get("card_why"),
-                "decision_use": "Revisar impacto, implementación y próximos hitos con la evidencia original.",
-                "source_name": signal["source_name"],
-                "source_url": signal["source_url"],
-                "event_date": signal["event_date"],
-                "scope": picked["scope"],
-                "archetype": picked["archetype"],
-                "weekly_mode": "single_source_deep_dive",
-                "reproducible_analysis": True,
-                "supporting_elements": support[:6],
-                "model_trace": {"mode": "deterministic_existing_evidence", "api_call": False,
-                                "model": None, "output_id": f"weekly:{week_start}:{signal['source_url']}"},
-            }
+    # A summary with key points is not an approved strategic Insight.
+    # Keep the last reviewed piece only while its original evidence is fresh.
+    approved_path = Path(__file__).resolve().parents[2] / "data/weekly_insight/editorial_approved.json"
+    approved = approved_payload
+    if approved is None:
+        try:
+            approved = json.loads(approved_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            approved = {}
+    weekly = reviewed_weekly(approved, today)
     return {
         "generated_at": snapshot.get("generated_at"),
         "status": "available" if teaser and weekly else "partial",
@@ -314,8 +295,9 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
             "strategic_dimensions": ["financial_impact","operational_impact","regulatory_or_competitive_shift","affected_scope","urgency_time_horizon","actionability","evidence_strength","novelty_non_repetition"],
             "penalizes": ["repetition_in_novelty_dimension"],
             "fallback": "hide_without_reproducible_evidence_tied_insight",
-            "weekly_insight_status": "published_single_source_deep_dive" if weekly else "hidden_fail_closed",
+            "weekly_insight_status": "published_editorial_reviewed" if weekly else "hidden_fail_closed",
             "minimum_insight_evidence": "two independent sources, or one high-quality source with reproducible deep analysis and explicit decision use",
             "no_forced_frequency": True,
         },
     }
+

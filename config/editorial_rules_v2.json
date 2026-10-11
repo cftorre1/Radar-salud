@@ -154,7 +154,7 @@
     "status": "approved_for_implementation",
     "principle": "Seleccionar primero la señal de mayor relevancia estratégica, enriquecer evidencia, aplicar deep intelligence, auditar y solo publicar si supera el gate final.",
     "selection": {
-      "window_days": 14,
+      "window_days": 7,
       "dimensions": {
         "financial_impact": 0.16,
         "operational_impact": 0.14,
@@ -180,7 +180,8 @@
       ],
       "principle": "La relevancia estratégica manda. Entre candidatos estratégicamente fuertes, priorizar el que mejor demuestre valor Alicanto y tenga mayor gancho comercial, sin sacrificar evidencia.",
       "refresh_policy": "Reevaluar en cada regeneración; no bloquear el candidato por semana si aparece una señal superior.",
-      "freshness_gate_days": 14
+      "freshness_gate_days": 7,
+      "freshness_semantics": "Siete fechas calendario Chile: edad 0–6; fecha del cambio sustantivo y publicación verificadas; capturar/regenerar/republicar no renueva vigencia."
     },
     "enrichment": {
       "order": [
@@ -196,7 +197,7 @@
     "deep_intelligence": {
       "preferred_engine": "TERRA",
       "required": true,
-      "current_runtime_status": "not_integrated_in_repository",
+      "current_runtime_status": "model_drafts_require_explicit_editorial_business_review",
       "output_requirements": [
         "executive_thesis",
         "what_changed",
@@ -240,8 +241,9 @@
       "requires": [
         "strategic_score_pass",
         "evidence_enrichment_complete",
-        "terra_complete",
-        "editorial_business_audit_pass"
+        "deep_analysis_with_honest_provenance",
+        "editorial_business_audit_pass",
+        "freshness_at_generation_and_presentation"
       ],
       "surfaces": [
         "Ponte al día",

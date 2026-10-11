@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T04:00:00Z",
+  "updated_at": "2026-10-11T04:09:16.638Z",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -3057,7 +3057,7 @@
     },
     {
       "id": "source_audit_issue5_iteration3_editorial_2026_10_09",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "critical",
       "owner": "Pele + Editorial/Data Committee",
       "source": "Dirección / GitHub issue #5",
@@ -3078,7 +3078,7 @@
         "QA editorial y Reviewer PASS"
       ],
       "approved_at": "2026-10-10",
-      "next_action": "Regenerar Insight después del stock de fuentes P0.",
+      "next_action": "QA/Reviewer de commit Work2 y revisión incremental cuando cambien stock o auditorías de recuperación. Corregir hallazgos por fila; mantener gates externos abiertos. El evento DF pendiente se usa en Insight revisado, sin declarar reparada la cola.",
       "independent_review": {
         "reviewer": "Work 3",
         "reviewed_at": "2026-10-11T04:00:00Z",
@@ -3097,7 +3097,16 @@
         "supplement_finding_ids": [
           "work3_public_telemetry_stale"
         ]
-      }
+      },
+      "last_progress_at": "2026-10-11T04:15:58.670488+00:00",
+      "current_subfront": "work2_editorial_stock_and_reviewed_weekly_implemented_pending_qa",
+      "progress": "Work2: 184 unidades iniciales de90 días +1 evento tardío +7 originales del suplemento Work3 (192). Ranking de11 propuestas; UC CHRISTUS San Carlos 89.8 supera Cenabast 85.9 y COMPIN 82.7 tras contraste original. Freshness 7 fechas Chile y bloqueo de modelos/borradores sin revisión; Insight 14-sep archivado. No se cierra cobertura 27/27 ni reparación DF/Pulso.",
+      "evidence": [
+        "data/audits/editorial_stock_90d_2026_10_11.json",
+        "data/audits/weekly_candidates_2026_10_11.json",
+        "data/weekly_insight/editorial_approved.json",
+        "docs/EDITORIAL_SENIOR_REVIEW_2026_10_11.md"
+      ]
     },
     {
       "id": "source_audit_issue5_iteration4_autonomy_2026_10_09",

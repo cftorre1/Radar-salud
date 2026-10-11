@@ -27,16 +27,16 @@ def tea_signal():
 def test_repetition_is_one_dimension_but_does_not_override_strategic_importance():
     regulation = signal("regulación", "REGULATION", 96)
     investment = signal("inversión", "INVESTMENT", 82, "Prestadores", "Fuente económica")
-    first = rank_weekly_candidates([regulation, investment], [])
+    first = rank_weekly_candidates([regulation, investment], [], date(2026, 9, 24))
     assert first[0]["signal"]["title"] == "regulación"
     history = [{"archetype": "cambio_regulatorio", "scope": "Isapres", "source_name": "Fuente oficial"}]
-    ranked = rank_weekly_candidates([regulation, investment], history)
+    ranked = rank_weekly_candidates([regulation, investment], history, date(2026, 9, 24))
     assert ranked[0]["signal"]["title"] == "regulación"
     assert ranked[0]["strategic_dimensions"]["novelty_non_repetition"] < first[0]["strategic_dimensions"]["novelty_non_repetition"]
     assert ranked[0]["selection_score"] <= first[0]["selection_score"]
 
 
-def test_free_value_builds_reproducible_single_source_weekly_and_keeps_verified_global_teaser():
+def test_free_value_keeps_verified_global_without_inventing_weekly_review():
     snapshot = {"generated_at": "2026-09-24T18:00:00Z", "signals": [tea_signal()]}
     themes = {"themes": [{"id": "theme-1", "kind": "global_theme", "title": "Tema global", "global_finding": "Cambió la presión de dotación. Análisis extenso.",
                            "why_it_matters": "Una fracción útil y autosuficiente.",
@@ -47,8 +47,7 @@ def test_free_value_builds_reproducible_single_source_weekly_and_keeps_verified_
                                        {"publisher": "Reuters", "title": "Nota", "url": "https://reuters.com/note",
                                         "published_at": "2026-09-18", "captured_at": "2026-09-24", "evidence": "Hallazgo contrastado"}]}]}
     result = build_free_value(snapshot, themes, today=date(2026, 9, 24))
-    assert result["weekly_insight"]["weekly_mode"] == "single_source_deep_dive"
-    assert result["weekly_insight"]["reproducible_analysis"] is True
+    assert result["weekly_insight"] is None
     assert result["global_teaser"]["premium_href"] == "global.html#theme-theme-1"
     assert result["global_teaser"]["what_changed"] == "Cambió la presión de dotación."
     assert result["global_teaser"]["why_it_matters"] == "Una fracción útil y autosuficiente."
@@ -56,7 +55,7 @@ def test_free_value_builds_reproducible_single_source_weekly_and_keeps_verified_
     assert result["global_teaser"]["chile_hypothesis"] == "Hipótesis para Chile, aún no establecida."
     assert result["global_teaser"]["chile_hypothesis_status"] == "not_established"
     assert result["selection_policy"]["no_forced_frequency"] is True
-    assert result["selection_policy"]["weekly_insight_status"] == "published_single_source_deep_dive"
+    assert result["selection_policy"]["weekly_insight_status"] == "hidden_fail_closed"
     assert "reproducible deep analysis" in result["selection_policy"]["minimum_insight_evidence"]
     assert result["global_teaser"]["published_at"] == "2026-09-18"
     assert result["global_teaser"]["source_label"] == "Reuters · WHO"
@@ -64,26 +63,23 @@ def test_free_value_builds_reproducible_single_source_weekly_and_keeps_verified_
 
 
 def test_no_verified_signal_does_not_force_weekly_content():
-    result = build_free_value({"signals": [{"title": "sin fuente"}]}, {"themes": []})
+    result = build_free_value({"signals": [{"title": "sin fuente"}]}, {"themes": []}, approved_payload={})
     assert result["weekly_insight"] is None
     assert result["status"] == "partial"
 
 
-def test_tea_single_source_becomes_insight_only_with_reproducible_support():
+def test_reproducible_support_alone_is_not_editorial_review():
     row = tea_signal()
     insight = build_free_value({"signals": [row]}, {"themes": []}, today=date(2026, 9, 24))["weekly_insight"]
-    assert insight is not None
-    assert insight["source_url"] == row["source_url"]
-    assert insight["supporting_elements"]
+    assert insight is None
     weak = signal("noticia", "OTHER")
     assert build_free_value({"signals": [weak]}, {"themes": []}, today=date(2026, 9, 24))["weekly_insight"] is None
 
 
-def test_weekly_selects_best_reproducible_candidate_without_forcing_relationship():
+def test_ranked_candidate_does_not_automatically_become_published_insight():
     rows = [tea_signal(), signal("Indicador independiente", "DATA_PULSE", 92)]
     result = build_free_value({"signals": rows}, {"themes": []}, today=date(2026, 9, 24))
-    assert result["weekly_insight"] is not None
-    assert result["weekly_insight"]["source_url"] == tea_signal()["source_url"]
+    assert result["weekly_insight"] is None
 
 
 def test_current_week_is_re_evaluated_when_a_better_candidate_exists():
@@ -92,7 +88,7 @@ def test_current_week_is_re_evaluated_when_a_better_candidate_exists():
     history = [{"week_start": "2026-09-21", "source_url": regulation["source_url"],
                 "archetype": "cambio_regulatorio", "scope": "Isapres", "source_name": "Fuente oficial"}]
     current = build_free_value({"signals": [regulation, investment]}, {"themes": []}, history, date(2026, 9, 24))
-    assert current["weekly_insight"] is not None
+    assert current["weekly_insight"] is None
     assert current["selection_policy"]["current_week_locked"] is False
     assert current["selection_policy"]["selection_method"] == "strategic_relevance_first_then_commercial_hook_v3"
     following = build_free_value({"signals": [regulation, investment]}, {"themes": []}, history, date(2026, 9, 28))
@@ -136,3 +132,4 @@ def test_spoofed_global_source_never_becomes_verified_teaser():
             "sources": [{"publisher": "Unknown", "url": "javascript:alert(1)"}]}
     result = build_free_value({"signals": []}, {"themes": [fake]}, today=date(2026, 9, 24))
     assert result["global_teaser"] is None and result["status"] == "partial"
+

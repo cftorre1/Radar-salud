@@ -142,8 +142,7 @@ test('operations dashboard loads without inventing measurements',async({page})=>
 test('Home V2 places unread Global and Insight in the brief, then retains subdued feed cards',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  const source=await page.request.get('/data/free_value.json'),data=await source.json();
- const ageDays=raw=>{if(!raw)return Infinity;const d=/^\\d{4}-\\d{2}-\\d{2}$/.test(raw)?new Date(raw+'T00:00:00Z'):new Date(raw);const now=new Date(),today=Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate());return Math.max(0,Math.floor((today-d.getTime())/86400000))};
- const hasWeekly=Boolean(data.weekly_insight)&&ageDays(data.weekly_insight.event_date)<=14;
+ const hasWeekly=await page.evaluate(w=>weeklyFresh(w),data.weekly_insight);
  const global=page.locator('.signal.special.global'),weekly=page.locator('.signal.special.weekly');
  await expect(global).toHaveCount(1);await expect(weekly).toHaveCount(hasWeekly?1:0);
  await expect(page.locator('.brief-global')).toHaveCount(1);await expect(page.locator('.brief-weekly')).toHaveCount(hasWeekly?1:0);
@@ -162,14 +161,14 @@ test('Home V2 places unread Global and Insight in the brief, then retains subdue
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-home-v2-final.png`,fullPage:true});
 });
-test('Date-only signals remain inside the 14-day window across UTC midnight',async({page})=>{
- await page.addInitScript(()=>{const NativeDate=Date,fixed=NativeDate.parse('2026-09-28T23:59:00Z');class FixedDate extends NativeDate{constructor(...args){super(...(args.length?args:[fixed]))}static now(){return fixed}}window.Date=FixedDate});
+test('Expired weekly insight stays hidden while its original signal remains in history',async({page})=>{
+ await page.addInitScript(()=>{const NativeDate=Date,fixed=NativeDate.parse('2026-10-11T03:30:00Z');class FixedDate extends NativeDate{constructor(...args){super(...(args.length?args:[fixed]))}static now(){return fixed}}window.Date=FixedDate});
+ await page.route('**/data/free_value.json',async route=>{const response=await route.fetch(),data=await response.json();data.weekly_insight={id:'stale-september',editorial_review_pass:true,event_date:'2026-09-14',freshness_anchor_date:'2026-09-14',title:'Expired',source_url:'https://www.superdesalud.gob.cl/normativa/circular-if-n535/'};await route.fulfill({response,json:data})});
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
- const data=await (await page.request.get('/data/free_value.json')).json();
- expect(data.weekly_insight?.event_date).toBe('2026-09-14');
- await expect(page.locator('#period')).toHaveValue('14');
- await expect(page.locator('.signal.special.weekly')).toHaveCount(1);
- await expect(page.locator('.brief-weekly')).toHaveCount(1);
+ await expect(page.locator('.signal.special.weekly,.brief-weekly')).toHaveCount(0);
+ await page.locator('#period').selectOption('90');
+ await expect(page.locator('.signal.special.weekly,.brief-weekly')).toHaveCount(0);
+ await expect(page.locator('article.signal').filter({hasText:'Circular IF/N°535'})).toHaveCount(1);
 });
 test('Feed-only share uses Web Share and clipboard fallback without analytics',async({page})=>{
  await page.addInitScript(()=>{window.__shared=[];Object.defineProperty(navigator,'share',{configurable:true,value:payload=>{window.__shared.push(payload);return Promise.resolve()}})});
@@ -608,3 +607,4 @@ test('Normative V2.1 puts document, subject and action in each current headline'
   }
  }
 });
+

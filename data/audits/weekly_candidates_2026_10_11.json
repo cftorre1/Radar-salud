@@ -1,0 +1,292 @@
+{
+  "as_of": "2026-10-11",
+  "source_head": "9826b3b727cd7d9f504148072385d4cd37405895",
+  "window_start": "2026-10-05",
+  "window_end": "2026-10-11",
+  "method": "Juicio editorial explícito, ocho dimensiones ponderadas. Gates excluyentes antes de elegir; mayor score elegible. No son mediciones objetivas ni resultados de modelo automático.",
+  "weights": {
+    "financial_impact": 0.16,
+    "operational_impact": 0.14,
+    "regulatory_or_competitive_shift": 0.14,
+    "affected_scope": 0.1,
+    "urgency_time_horizon": 0.1,
+    "actionability": 0.14,
+    "evidence_strength": 0.12,
+    "novelty_non_repetition": 0.1
+  },
+  "minimum_score": 70,
+  "candidates": [
+    {
+      "title": "UC CHRISTUS San Carlos: suspensión y continuidad de red",
+      "url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+      "event_date": "2026-10-10",
+      "incident_date": "2026-10-08",
+      "freshness_anchor_date": "2026-10-10",
+      "score": 89.8,
+      "dimensions": {
+        "financial_impact": 80,
+        "operational_impact": 100,
+        "regulatory_or_competitive_shift": 80,
+        "affected_scope": 75,
+        "urgency_time_horizon": 100,
+        "actionability": 100,
+        "evidence_strength": 90,
+        "novelty_non_repetition": 95
+      },
+      "verdict": "PASS",
+      "reason": "Nueva evidencia Work3 antes del cierre. Suspensión por semanas y traslados concluidos10-oct: decisión inmediata de capacidad, derivación y reprogramación para prestador/aseguradores. Fuente oficial confirma restricción actual; no se conoce magnitud de camas/pacientes/pérdida. Supera a Cenabast por urgencia y accionabilidad, no por volumen mediático.",
+      "provenance": {
+        "discovered_by": "work3_adversarial_2026_10_11",
+        "first_evidence_sha": "645781d2f310fea2bb6b6c7b5385a93ea538c879",
+        "core_pipeline_status": "DF pendiente BACKFILL sin fecha según auditoría Work3; no cierre de reparación",
+        "original_pages_checked": "2026-10-11",
+        "independence": "DF y LT amplifican un mismo comunicado; UC confirma situación operativa. No tres hechos independientes."
+      },
+      "rank": 1
+    },
+    {
+      "title": "Cenabast / Ahumada: escala de acceso y dispensación cercana",
+      "url": "https://www.minsal.cl/farmacias-ahumada-adhiere-a-ley-cenabast-con-mas-de-400-sucursales-a-lo-largo-del-pais/",
+      "event_date": "2026-10-07",
+      "freshness_anchor_date": "2026-10-07",
+      "score": 85.9,
+      "dimensions": {
+        "financial_impact": 80,
+        "operational_impact": 90,
+        "regulatory_or_competitive_shift": 80,
+        "affected_scope": 90,
+        "urgency_time_horizon": 85,
+        "actionability": 90,
+        "evidence_strength": 85,
+        "novelty_non_repetition": 90
+      },
+      "verdict": "PASS_ALTERNATIVE",
+      "reason": "Valor estratégico alto: alcance nacional, canasta y territorios verificables, conexión útil con piloto de dispensación; diferencias oficiales expuestas. Análisis profundo de una familia institucional, no corroboración independiente.",
+      "rank": 2
+    },
+    {
+      "title": "COMPIN: certificación de discapacidad y gestión del rezago",
+      "url": "https://www.minsal.cl/presidente-kast-minsal-y-desarrollo-social-lanzan-plan-que-moderniza-y-agiliza-certificacion-de-discapacidad/",
+      "event_date": "2026-10-06",
+      "freshness_anchor_date": "2026-10-06",
+      "score": 82.7,
+      "dimensions": {
+        "financial_impact": 60,
+        "operational_impact": 90,
+        "regulatory_or_competitive_shift": 85,
+        "affected_scope": 90,
+        "urgency_time_horizon": 90,
+        "actionability": 85,
+        "evidence_strength": 85,
+        "novelty_non_repetition": 85
+      },
+      "verdict": "PASS_SECOND_CHOICE",
+      "reason": "Fuente original contiene 96 mil solicitudes rezagadas, plataforma y contacto durante octubre. El resumen recuperado omitió estos datos. Vigilar ejecución y tiempos; no confundir rezago promedio de nueve meses con plazo para resolverlo.",
+      "rank": 3
+    },
+    {
+      "title": "Presupuesto Salud 2027: asignación y capacidad de ejecución",
+      "url": "https://www.minsal.cl/salud-aumentara-su-presupuesto-en-47-para-2027-ministra-chomali-destaca-foco-en-gestion-eficiencia-y-reduccion-de-listas-de-espera/",
+      "event_date": "2026-10-01",
+      "freshness_anchor_date": "2026-10-01",
+      "score": 80.7,
+      "dimensions": {
+        "financial_impact": 90,
+        "operational_impact": 90,
+        "regulatory_or_competitive_shift": 85,
+        "affected_scope": 95,
+        "urgency_time_horizon": 80,
+        "actionability": 80,
+        "evidence_strength": 55,
+        "novelty_non_repetition": 65
+      },
+      "verdict": "HOLD_STALE_AND_EVIDENCE",
+      "reason": "Material estratégico, pero el anuncio es del 1-oct, fuera de la semana. Nota de La Tercera 5-oct es cobertura del mismo anuncio; recuperar partidas, base nominal/real y condición de proyecto antes de construir nuevo análisis.",
+      "rank": 4
+    },
+    {
+      "title": "Ley Ricarte Soto: crítica gremial al financiamiento",
+      "url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
+      "event_date": "2026-10-08",
+      "freshness_anchor_date": null,
+      "score": 76.7,
+      "dimensions": {
+        "financial_impact": 95,
+        "operational_impact": 80,
+        "regulatory_or_competitive_shift": 90,
+        "affected_scope": 90,
+        "urgency_time_horizon": 70,
+        "actionability": 80,
+        "evidence_strength": 50,
+        "novelty_non_repetition": 45
+      },
+      "verdict": "HOLD_PRIMARY_EVIDENCE_AND_ANCHOR",
+      "reason": "Entrevista a CIF con interés sectorial. El 14,5% es una comparación atribuida a DF; contrastar partida y base presupuestaria. No equivale a retiro de tratamientos. Agrupar con presupuesto y acceso a medicamentos sin equiparar programas.",
+      "provenance": {
+        "supplement_sha": "ce3c62400a9ff1a35a9bbbbd4166f1f9ec12d15e",
+        "original_checked_on": "2026-10-11"
+      },
+      "rank": 5
+    },
+    {
+      "title": "Salud mental en educación: criterios de calificación y prevención",
+      "url": "https://www.suseso.gob.cl/605/w3-article-791372.html",
+      "event_date": "2026-10-05",
+      "freshness_anchor_date": null,
+      "score": 73.3,
+      "dimensions": {
+        "financial_impact": 70,
+        "operational_impact": 85,
+        "regulatory_or_competitive_shift": 75,
+        "affected_scope": 65,
+        "urgency_time_horizon": 65,
+        "actionability": 85,
+        "evidence_strength": 65,
+        "novelty_non_repetition": 70
+      },
+      "verdict": "HOLD",
+      "reason": "Noticia reciente, pero el estudio está catalogado septiembre sin día exacto. No acreditar novedad normativa en octubre ni extrapolar prevalencia de enfermedad desde denuncias o centros evaluados. Comparar norma y estudio completo antes de elevar.",
+      "rank": 6
+    },
+    {
+      "title": "Residencias para mayores: competencia y cuidados",
+      "url": "https://www.latercera.com/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
+      "event_date": "2026-10-10",
+      "freshness_anchor_date": null,
+      "score": 71.2,
+      "dimensions": {
+        "financial_impact": 85,
+        "operational_impact": 75,
+        "regulatory_or_competitive_shift": 85,
+        "affected_scope": 80,
+        "urgency_time_horizon": 50,
+        "actionability": 75,
+        "evidence_strength": 60,
+        "novelty_non_repetition": 45
+      },
+      "verdict": "HOLD_UNVERIFIED_NEW_ANCHOR",
+      "reason": "Mapa material para estrategia de cuidados. La operación citada se notificó5-ago y el estudio inmobiliario es semestral; verificar fecha del nuevo informe INE. No convertir plazas residenciales en camas clínicas ni extender cuotas de mercado sin denominador; texto presenta inconsistencia en número de residencias de San Vicente.",
+      "provenance": {
+        "supplement_sha": "ce3c62400a9ff1a35a9bbbbd4166f1f9ec12d15e",
+        "original_checked_on": "2026-10-11"
+      },
+      "rank": 7
+    },
+    {
+      "title": "Crédito social para gastos de salud: Circular 3928",
+      "url": "https://www.suseso.gob.cl/605/w3-article-791717.html",
+      "event_date": "2026-10-09",
+      "freshness_anchor_date": "2026-10-02",
+      "score": 70.5,
+      "dimensions": {
+        "financial_impact": 65,
+        "operational_impact": 70,
+        "regulatory_or_competitive_shift": 75,
+        "affected_scope": 75,
+        "urgency_time_horizon": 60,
+        "actionability": 75,
+        "evidence_strength": 90,
+        "novelty_non_repetition": 50
+      },
+      "verdict": "HOLD_STALE_ANCHOR",
+      "reason": "La noticia del 9-oct reexplica una circular del 2-oct. Debe fusionarse con la norma; la fecha de difusión no rejuvenece el cambio. Financiamiento no equivale a cobertura sanitaria.",
+      "rank": 8
+    },
+    {
+      "title": "RedSalud Vitacura: primeras50 cirugías robóticas",
+      "url": "https://www.redsalud.cl/noticias/clinica-redsalud-vitacura-alcanza-50-cirugias-roboticas",
+      "event_date": "2026-10-07",
+      "freshness_anchor_date": "2026-10-07",
+      "score": 53.9,
+      "dimensions": {
+        "financial_impact": 55,
+        "operational_impact": 60,
+        "regulatory_or_competitive_shift": 60,
+        "affected_scope": 45,
+        "urgency_time_horizon": 35,
+        "actionability": 50,
+        "evidence_strength": 65,
+        "novelty_non_repetition": 55
+      },
+      "verdict": "HOLD_MATERIALITY",
+      "reason": "Producción declarada por prestador:50 intervenciones, casi80% colorrectales. Complementa primeras experiencias públicas y expansión tecnológica. No prueba superioridad clínica, rentabilidad ni capacidad mensual; pedir período, costos y resultados comparables.",
+      "provenance": {
+        "supplement_sha": "ce3c62400a9ff1a35a9bbbbd4166f1f9ec12d15e",
+        "original_checked_on": "2026-10-11"
+      },
+      "rank": 9
+    },
+    {
+      "title": "Cirugía robótica de mama en la red pública",
+      "url": "https://www.minsal.cl/hospital-clinico-felix-bulnes-realiza-la-primera-cirugia-robotica-de-cancer-de-mama-en-nuestro-pais-junto-a-equipo-medico-del-hospital-barros-luco/",
+      "event_date": "2026-10-07",
+      "freshness_anchor_date": "2026-10-07",
+      "score": 46.0,
+      "dimensions": {
+        "financial_impact": 40,
+        "operational_impact": 50,
+        "regulatory_or_competitive_shift": 45,
+        "affected_scope": 30,
+        "urgency_time_horizon": 35,
+        "actionability": 40,
+        "evidence_strength": 60,
+        "novelty_non_repetition": 70
+      },
+      "verdict": "HOLD_MATERIALITY",
+      "reason": "Un primer caso no demuestra capacidad instalada replicable, productividad, costo ni cobertura; conservar como contexto tecnológico.",
+      "rank": 10
+    },
+    {
+      "title": "Beneficios para familias de acogida",
+      "url": "https://www.suseso.gob.cl/605/w3-article-791541.html",
+      "event_date": "2026-10-07",
+      "freshness_anchor_date": null,
+      "score": 29.9,
+      "dimensions": {
+        "financial_impact": 20,
+        "operational_impact": 30,
+        "regulatory_or_competitive_shift": 20,
+        "affected_scope": 30,
+        "urgency_time_horizon": 20,
+        "actionability": 35,
+        "evidence_strength": 65,
+        "novelty_non_repetition": 20
+      },
+      "verdict": "REJECT_WEEKLY",
+      "reason": "Orientación de acceso sin cambio regulatorio demostrado; contenido útil de servicio, no tesis estratégica semanal.",
+      "rank": 11
+    }
+  ],
+  "selected_url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+  "eligible_with_verified_substantive_change": 3,
+  "primary_verification": {
+    "https://www.minsal.cl/farmacias-ahumada-adhiere-a-ley-cenabast-con-mas-de-400-sucursales-a-lo-largo-del-pais/": {
+      "url": "https://www.minsal.cl/farmacias-ahumada-adhiere-a-ley-cenabast-con-mas-de-400-sucursales-a-lo-largo-del-pais/",
+      "checked_on": "2026-10-11"
+    },
+    "https://www.minsal.cl/presidente-kast-minsal-y-desarrollo-social-lanzan-plan-que-moderniza-y-agiliza-certificacion-de-discapacidad/": {
+      "url": "https://www.minsal.cl/presidente-kast-minsal-y-desarrollo-social-lanzan-plan-que-moderniza-y-agiliza-certificacion-de-discapacidad/",
+      "checked_on": "2026-10-11"
+    },
+    "https://www.suseso.gob.cl/605/w3-article-791372.html": {
+      "url": "https://www.suseso.gob.cl/607/w3-article-790971.html",
+      "checked_on": "2026-10-11"
+    },
+    "https://www.suseso.gob.cl/605/w3-article-791717.html": {
+      "url": "https://www.suseso.gob.cl/612/w3-article-791302.html",
+      "checked_on": "2026-10-11"
+    },
+    "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos": {
+      "url": "https://www.ucchristus.cl/contingencias",
+      "checked_on": "2026-10-11",
+      "dated_announcement_refs": [
+        "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+        "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/"
+      ],
+      "primary_page_date": null,
+      "date_limit": "Página operativa sin fecha; no sustituye fecha de publicación10-oct de las notas."
+    }
+  },
+  "late_evidence_reviewed_sha": "ce3c62400a9ff1a35a9bbbbd4166f1f9ec12d15e",
+  "late_supplement_decision": "Siete originales adicionales revisados; tres propuestas actuales agregadas al ranking. Top3 elegible sin cambios. No asumir que fecha de nota10-oct actualiza operación5-ago o informe semestral."
+}

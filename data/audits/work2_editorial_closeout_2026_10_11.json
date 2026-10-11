@@ -1,0 +1,57 @@
+{
+  "review_id": "work2_editorial_closeout_2026_10_11",
+  "checked_at": "2026-10-11T04:15:58.670488+00:00",
+  "branch": "staging",
+  "initial_head": "9826b3b727cd7d9f504148072385d4cd37405895",
+  "closing_input_head": "ce3c62400a9ff1a35a9bbbbd4166f1f9ec12d15e",
+  "stock_rechecked_before_close": true,
+  "inputs": [
+    {
+      "path": "data/history/superintendencia_signals.json",
+      "initial_blob": "754b4b17ff6012e28f4e6d4d17c60e1f26a2d759",
+      "closing_blob": "754b4b17ff6012e28f4e6d4d17c60e1f26a2d759"
+    },
+    {
+      "path": "web/data/radar_today.json",
+      "initial_blob": "ef5cdd0369afffba5515cba8a8b6d96d06a4baf6",
+      "closing_blob": "ef5cdd0369afffba5515cba8a8b6d96d06a4baf6"
+    },
+    {
+      "path": "data/source_health.json",
+      "initial_blob": "30f09d637642894bf2e9b844200e14f3de87cdb4",
+      "closing_blob": "30f09d637642894bf2e9b844200e14f3de87cdb4"
+    },
+    {
+      "path": "data/state/pending_queue.json",
+      "initial_blob": "d214a7670649f846c5fed504c74d4c92086256dd",
+      "closing_blob": "d214a7670649f846c5fed504c74d4c92086256dd"
+    },
+    {
+      "path": "data/weekly_insight/latest.json",
+      "initial_blob": "132b496bc39da0d4093ef84e5ecfa84d02fc37a6",
+      "closing_blob": "132b496bc39da0d4093ef84e5ecfa84d02fc37a6"
+    }
+  ],
+  "late_evidence": "Work3 audit 645781d incorporated; changed candidate from Cenabast to UC CHRISTUS after direct official/DF/LT verification. Supplement ce3c624: seven more originals verified,11 ranked proposals; eligible top3 unchanged. Preserved concurrent queue review metadata and PMO.",
+  "validation": {
+    "python_direct_test_functions": 16,
+    "python_test_runner": "Direct assertions; pytest absent locally; mocked model boundary, no API call.",
+    "node_targeted_tests": 4,
+    "syntax": "Python compile + Node app/browser-spec PASS",
+    "artifact_reconciliation": "192 items, counts sum192,11 ranked candidates, highest eligible89.8, canonical/web content equal",
+    "browser": "Local Chromium executable unavailable; desktop/mobile visual QA delegated to existing staging CI, not claimed PASS.",
+    "independent_reviewer": "Not completed for this commit. Work3 is evidence input, not reviewer of Work2 output."
+  },
+  "remaining_limits": [
+    "Unprocessed9.59MB pending queue not read end-to-end; no exhaustive published/rejected reconciliation claimed.",
+    "Raw history182 + snapshot-only2 + late recovered event1 + supplement originals7; scope is stock/evidence, not27-source external coverage.",
+    "Work3 recorded pre-existing QA failure11 versus12 normative rows; do not add content to satisfy count.",
+    "Main and production not changed."
+  ],
+  "outputs": [
+    "data/audits/editorial_stock_90d_2026_10_11.json",
+    "data/audits/weekly_candidates_2026_10_11.json",
+    "data/weekly_insight/editorial_approved.json",
+    "docs/EDITORIAL_SENIOR_REVIEW_2026_10_11.md"
+  ]
+}

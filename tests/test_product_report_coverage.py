@@ -1,7 +1,7 @@
 import importlib.util
 import json
 from pathlib import Path
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 
 from radar_salud.models import RawItem
 from radar_salud.pending_queue import PendingQueue
@@ -139,16 +139,21 @@ def test_segment_coverage_reports_live_funnel_published_stock_and_freshness_with
     assert unavailable["Prestadores"]["published_feed"]==2
 
 
-def test_product_report_preserves_persisted_deep_intelligence_weekly_insight(tmp_path):
+def test_product_report_preserves_only_reviewed_fresh_weekly_insight(tmp_path):
     module = load_report_module()
     root = tmp_path
     (root / "data/weekly_insight").mkdir(parents=True)
     persisted = {
         "status": "pass",
+        "audit": {"verdict":"PASS", "editorial_business_review_pass":True},
         "top3": [{"rank": 1, "title": "Circular IF/N°535"}],
         "model": {"name": "gpt-5.6-terra", "fallback_used": False},
         "weekly_insight": {
             "id": "weekly-insight-v2",
+            "event_date":"2026-10-07", "freshness_anchor_date":"2026-10-07",
+            "summary":"Evidence", "insight_reading":["Inference"],
+            "decision_use":["Decision"], "what_to_watch":["Metric"],
+            "uncertainties":["Limit"], "source_refs":["https://example.org/if535"],
             "insight_title": "Insight Terra",
             "source_url": "https://example.org/if535",
             "model_trace": {"api_call": True, "model": "gpt-5.6-terra"}
@@ -161,11 +166,16 @@ def test_product_report_preserves_persisted_deep_intelligence_weekly_insight(tmp
         "weekly_insight": {"insight_title": "Deterministic old"},
         "selection_policy": {"weekly_insight_status": "published_single_source_deep_dive"},
     }
-    merged = module.merge_persisted_weekly_insight(root, deterministic)
+    merged = module.merge_persisted_weekly_insight(root, deterministic, date(2026,10,11))
     assert merged["weekly_insight"]["insight_title"] == "Insight Terra"
-    assert merged["selection_policy"]["weekly_insight_status"] == "published_deep_intelligence"
+    assert merged["selection_policy"]["weekly_insight_status"] == "published_editorial_reviewed"
     assert merged["selection_policy"]["deep_intelligence"]["name"] == "gpt-5.6-terra"
     assert merged["selection_policy"]["top3"][0]["title"] == "Circular IF/N°535"
+    expired = module.merge_persisted_weekly_insight(root, deterministic, date(2026,10,14))
+    assert expired["weekly_insight"] is None
+    persisted["audit"].pop("editorial_business_review_pass")
+    (root / "data/weekly_insight/latest.json").write_text(json.dumps(persisted), encoding="utf-8")
+    assert module.merge_persisted_weekly_insight(root, deterministic, date(2026,10,11))["weekly_insight"] is None
 
 
 def test_product_report_reads_orchestrator_queue_for_executive_status(tmp_path):
@@ -200,3 +210,4 @@ def test_statistics_parser_backlog_marks_ges_parser_ready():
     }])
     assert rows[0]["status"]=="parser_ready"
     assert rows[0]["parser_family"]=="ges"
+

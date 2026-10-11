@@ -4,6 +4,7 @@ from datetime import date
 from .free_value import rank_weekly_candidates
 from .openai_runtime import call_json
 from .editorial_committee import build_committee_artifact
+from .weekly_freshness import freshness_gate, chile_today
 REQUIRED=("headline","executive_thesis","what_changed","why_it_matters","business_implications","decision_use","what_to_watch","uncertainties_and_limits","source_refs")
 
 def _related(candidate,signals):
@@ -28,6 +29,7 @@ def _prompt(p):
     return "Actúa como analista senior de inteligencia de negocio en salud chilena. Usa EXCLUSIVAMENTE la evidencia JSON. No inventes hechos ni causalidad. Devuelve JSON puro con claves: headline, executive_thesis, what_changed, why_it_matters, business_implications, decision_use, what_to_watch, uncertainties_and_limits, source_refs. source_refs solo URLs literales de la evidencia.\\nEVIDENCIA:\\n"+json.dumps(e,ensure_ascii=False)
 
 def run_weekly_pipeline(snapshot,history=None,as_of=None,run_model=True):
+    as_of = as_of or chile_today()
     p=build_evidence_package(snapshot,history,as_of)
     if not p["candidate"]:return {"status":"no_candidate","top3":p["top3"],"weekly_insight":None}
     result={"status":"evidence_ready","top3":p["top3"],"evidence_package":{"candidate_url":p["candidate"].get("source_url"),"related":p["related"],"committee":p["committee"]},"weekly_insight":None}
@@ -38,4 +40,12 @@ def run_weekly_pipeline(snapshot,history=None,as_of=None,run_model=True):
         result.update(status="model_revise",audit={"verdict":"REVISE","missing":missing,"invalid_source_refs":invalid},model={"name":m.model,"fallback_used":m.fallback_used,"cost_usd":m.estimated_cost_usd});return result
     c=p["candidate"]
     result.update(status="pass",audit={"verdict":"PASS"},model={"name":m.model,"fallback_used":m.fallback_used,"cost_usd":m.estimated_cost_usd,"response_id":m.response_id},weekly_insight={"id":"weekly-insight-v2:"+str(c.get("event_date")),"title":o["headline"],"insight_title":o["headline"],"summary":o["executive_thesis"],"insight_teaser":o["why_it_matters"],"insight_reading":o["business_implications"],"decision_use":o["decision_use"],"what_to_watch":o["what_to_watch"],"uncertainties":o["uncertainties_and_limits"],"source_refs":refs,"source_name":c.get("source_name"),"source_url":c.get("source_url"),"event_date":c.get("event_date"),"weekly_mode":"deep_intelligence","engine":m.model,"engine_fallback":m.fallback_used,"model_trace":{"api_call":True,"model":m.model,"response_id":m.response_id,"estimated_cost_usd":m.estimated_cost_usd}})
+    # Structural/model checks do not substitute for the editorial/business review.
+    result["draft_weekly_insight"] = result.pop("weekly_insight")
+    result["weekly_insight"] = None
+    result["status"] = "editorial_review_required"
+    result["freshness_gate"] = freshness_gate(c, as_of)
+    result["audit"] = {"verdict": "HOLD", "editorial_business_review_pass": False,
+                       "reason": "model_structure_pass_requires_evidence_and_business_review"}
     return result
+

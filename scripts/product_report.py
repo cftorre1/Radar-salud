@@ -10,6 +10,7 @@ from radar_salud.pending_queue import PendingQueue, atomic_json
 from radar_salud.isapre_insights import derive as derive_isapre_insights
 from radar_salud.pmo import project as project_pmo
 from radar_salud.free_value import build_free_value
+from radar_salud.weekly_freshness import reviewed_weekly, freshness_gate
 
 def read(path, fallback):
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else fallback
@@ -185,24 +186,21 @@ def statistics_parser_backlog(history):
     return rows
 
 
-def merge_persisted_weekly_insight(root, free_value):
-    """Preserve the reviewed/model-generated weekly insight during QA rebuilds.
-
-    QA may deterministically rebuild FREE value from the current snapshot. A
-    successful Deep Intelligence artifact is the authority for the weekly
-    insight until a newer model run replaces it.
-    """
+def merge_persisted_weekly_insight(root, free_value, as_of=None):
+    """QA rebuilds may preserve only a fresh, explicitly reviewed artifact."""
     latest=read(root / "data/weekly_insight/latest.json", {})
-    if latest.get("status")!="pass" or not isinstance(latest.get("weekly_insight"), dict):
-        return free_value
+    approved=read(root / "data/weekly_insight/editorial_approved.json", {})
+    payload=latest if reviewed_weekly(latest, as_of) else approved
+    weekly=reviewed_weekly(payload, as_of)
     merged=dict(free_value)
-    merged["weekly_insight"]=latest["weekly_insight"]
+    merged["weekly_insight"]=weekly
     policy=dict(merged.get("selection_policy") or {})
-    policy["weekly_insight_status"]="published_deep_intelligence"
-    policy["top3"]=latest.get("top3") or []
-    policy["deep_intelligence"]=latest.get("model") or {}
+    policy["weekly_insight_status"]="published_editorial_reviewed" if weekly else "hidden_fail_closed"
+    policy["top3"]=payload.get("top3") or []
+    policy["deep_intelligence"]=payload.get("model") or {"mode":"editorial_reviewed" if weekly else "unavailable"}
+    policy["freshness_gate"]=freshness_gate(weekly, as_of)
     merged["selection_policy"]=policy
-    merged["status"]="available" if merged.get("global_teaser") else "partial"
+    merged["status"]="available" if weekly and merged.get("global_teaser") else "partial"
     return merged
 
 def feature_observability(responses, month, free_value):
@@ -393,3 +391,4 @@ def build(root, output):
 if __name__ == "__main__":
     parser=argparse.ArgumentParser();parser.add_argument("--root",default=".");parser.add_argument("--output",default="web/data")
     args=parser.parse_args();build(Path(args.root),Path(args.output))
+
