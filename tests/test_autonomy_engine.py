@@ -2,6 +2,8 @@
 
 from copy import deepcopy
 from datetime import datetime, timedelta, timezone
+import hashlib
+import json
 import unittest
 
 from scripts.autonomy_engine import (
@@ -318,6 +320,124 @@ class CapabilityDiagnosticIdentityTests(unittest.TestCase):
                 self.assertIn(events[0]["id"], {e["id"] for e in effective_material_events(corrected)})
                 again = reconcile(corrected, q, BASE + timedelta(minutes=3))
                 self.assertEqual(again["material_event_corrections"], corrected["material_event_corrections"])
+
+
+class SourceDiagnosticOutputTests(unittest.TestCase):
+    def diagnostic(self, *, large=False):
+        # Producer-order transport is intentionally distinct from sorted state
+        # serialization; the non-ASCII title also distinguishes bytes/chars.
+        row = {"slug": "diario_financiero", "technical_status": "error", "error": None,
+            "discovered": 1, "dated": 1, "newest_event_date": "2026-10-11",
+            "samples": [{"source_url": "https://source.example/detail", "title": "Salud pública",
+                         "event_date": "2026-10-11", "content_hash": "c" * 64}],
+            "inventory_hash": "i" * 64,
+            "requests": [{"url": "https://source.example/news", "status": "PASS",
+                          "response_sha256": "r" * 64, "response_bytes": 1024}],
+            "publication_verified": False, "scope": "discovery_only"}
+        if large:
+            row["requests"] += [{"url": "https://source.example/detail/" + str(index),
+                "status": "UNVERIFIED", "error": "bounded_probe_budget: 24 requests per source"}
+                for index in range(300)]
+            row.update(probe_complete=False, probe_budget={"max_requests": 24,
+                "executed_requests": 1, "unexecuted_requests": 300}, failure_origin="instrumentation_limit")
+        raw = json.dumps(row, ensure_ascii=False)
+        captured = "AUTONOMY_SOURCE_JSON=" + raw + "\n"
+        return {"command": ["python", "lane_runner.py", "--diagnose-source", row["slug"]],
+            "returncode": 1, "source_evidence": json.loads(json.dumps(row, sort_keys=True)),
+            "source_evidence_sha256": hashlib.sha256(raw.encode()).hexdigest(),
+            "captured_stdout_sha256": hashlib.sha256(captured.encode()).hexdigest(),
+            "captured_stdout_bytes": len(captured.encode()), "output": captured[-24_000:]}, captured
+
+    def test_single_matching_full_record_is_redundant_even_with_sorted_persisted_row(self):
+        record, _ = self.diagnostic()
+        self.assertEqual(engine._source_problem(record)["output"], "<retained-structured-source-evidence>")
+        self.assertEqual(engine.normalize_source_diagnostic_output(record, record["output"]),
+                         "<retained-structured-source-evidence>")
+
+    def test_independent_prefix_suffix_assertion_url_date_and_arbitrary_output_are_retained(self):
+        record, captured = self.diagnostic()
+        original = deepcopy(record)
+        diagnostics = ("FAILED normative assertion: assert 10 >= 12\n",
+            "Publication date must be 2026-10-11T00:00:00Z\n",
+            "Unexpected response URL https://source.example/changed\n")
+        baseline = engine._source_problem(record)
+        for diagnostic in diagnostics:
+            for output in (diagnostic, diagnostic + captured, captured + diagnostic):
+                with self.subTest(output=output):
+                    changed = deepcopy(record)
+                    changed["output"] = output
+                    self.assertIn(diagnostic.strip(), engine._source_problem(changed)["output"])
+                    self.assertNotEqual(engine._source_problem(changed), baseline)
+        self.assertEqual(record, original)
+
+    def test_malformed_different_or_duplicate_key_json_is_not_erased(self):
+        record, captured = self.diagnostic()
+        changed_row = deepcopy(record["source_evidence"])
+        changed_row["error"] = "FAILED normative assertion: assert 10 >= 12"
+        outputs = ("AUTONOMY_SOURCE_JSON={malformed}\n",
+            "AUTONOMY_SOURCE_JSON=" + json.dumps(changed_row) + "\n",
+            captured.replace('"discovered": 1', '"discovered": true'),
+            captured.replace('"error": null', '"error": "assert 10 >= 12", "error": null'),
+            captured + "AUTONOMY_SOURCE_JSON={malformed}\n")
+        for output in outputs:
+            with self.subTest(output=output):
+                result = engine.normalize_source_diagnostic_output(record, output)
+                self.assertNotEqual(result, "<retained-structured-source-evidence>")
+                if "{malformed}" in output:
+                    self.assertIn("{malformed}", result)
+
+    def test_source_command_without_exact_slug_binding_cannot_erase_output(self):
+        record, _ = self.diagnostic()
+        for command in ([], ["python", "--diagnose-source"], ["python", "--diagnose-source", "fonasa"],
+                        "python --diagnose-source diario_financiero"):
+            with self.subTest(command=command):
+                changed = deepcopy(record)
+                changed["command"] = command
+                self.assertEqual(engine.normalize_source_diagnostic_output(changed, changed["output"]), changed["output"])
+
+    def test_exact_hash_bound_historical_tail_remains_same_problem_as_full_source_record(self):
+        record, captured = self.diagnostic(large=True)
+        self.assertGreater(len(captured), 24_000)
+        self.assertGreater(record["captured_stdout_bytes"], len(captured))
+        self.assertFalse(record["output"].startswith("AUTONOMY_SOURCE_JSON="))
+        full = deepcopy(record)
+        full["output"] = captured
+        self.assertEqual(engine._source_problem(record), engine._source_problem(full))
+        self.assertEqual(engine.normalize_source_diagnostic_output(record, record["output"]),
+                         "<retained-structured-source-evidence>")
+
+    def test_unbound_truncated_hashes_bytes_schema_or_appended_assertion_fail_closed(self):
+        record, _ = self.diagnostic(large=True)
+        changes = (
+            lambda r: r.update(source_evidence_sha256="f" * 64),
+            lambda r: r.update(captured_stdout_sha256="f" * 64),
+            lambda r: r.update(captured_stdout_bytes=r["captured_stdout_bytes"] - 1),
+            lambda r: r.update(captured_stdout_bytes=False),
+            lambda r: r.update(output=r["output"] + "FAILED assert 10 >= 12\n"),
+            lambda r: r.update(output="FAILED assert 10 >= 12\n"),
+            lambda r: r["source_evidence"].update(extra_assertion="assert 10 >= 12"),
+            lambda r: r["source_evidence"]["requests"][0].update(extra_assertion="assert 10 >= 12"),
+            lambda r: r["source_evidence"]["samples"][0].update(extra_assertion="assert 10 >= 12"),
+            lambda r: r["source_evidence"]["probe_budget"].update(extra_assertion="assert 10 >= 12"),
+        )
+        for change in changes:
+            with self.subTest(change=change):
+                changed = deepcopy(record)
+                change(changed)
+                self.assertEqual(engine.normalize_source_diagnostic_output(changed, changed["output"]), changed["output"])
+
+    def test_opaque_output_assertion_change_is_a_new_source_blocker(self):
+        q, report = source_observation()
+        record, _ = self.diagnostic()
+        report["blockers"][0]["evidence"].append(record)
+        state, lease = claim({}, q, "media", "worker", BASE)
+        state = finish(state, MEDIA, lease["token"], report, BASE)
+        q, changed = source_observation("2")
+        next(b for b in changed["blockers"] if b["kind"] == "technical")["evidence"].append(deepcopy(record))
+        next(b for b in changed["blockers"] if b["kind"] == "technical")["evidence"][-1]["output"] = "FAILED assert 10 >= 12\n"
+        state, lease = claim(state, q, "media", "worker", BASE + timedelta(minutes=1))
+        state = finish(state, MEDIA, lease["token"], changed, BASE + timedelta(minutes=1))
+        self.assertEqual(len([event for event in state["material_events"] if event["kind"] == "blocker"]), 2)
 
 
 class SourceMaterialIdentityTests(unittest.TestCase):

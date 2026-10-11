@@ -309,6 +309,90 @@ def source_failure_evidenced(failure, evidence=None):
     return False
 
 
+def _source_worker_record(row):
+    """Reconstruct only the known worker transport, not an arbitrary log.
+
+    Historical display tails lost their JSON marker. Exact serializer ordering
+    plus the record and complete-capture hashes can still bind those tails to
+    the preserved structured row. Unknown schemas cannot establish that proof.
+    """
+    order = ("slug", "technical_status", "error", "discovered", "dated", "newest_event_date",
+             "samples", "inventory_hash", "requests", "publication_verified", "scope",
+             "probe_complete", "probe_budget", "failure_origin")
+    if not _source_row(row) or set(row) - set(order):
+        return None
+    result = {key: row[key] for key in order if key in row}
+    for key, fields in (("requests", ("url", "status", "response_sha256", "response_bytes", "error")),
+                        ("samples", ("source_url", "title", "event_date", "content_hash"))):
+        if not isinstance(row.get(key), list) or any(
+                not isinstance(item, dict) or set(item) - set(fields) for item in row[key]):
+            return None
+        result[key] = [{field: item[field] for field in fields if field in item} for item in row[key]]
+    if "probe_budget" in row:
+        fields = ("max_requests", "executed_requests", "unexecuted_requests")
+        if not isinstance(row["probe_budget"], dict) or set(row["probe_budget"]) - set(fields):
+            return None
+        result["probe_budget"] = {field: row["probe_budget"][field] for field in fields if field in row["probe_budget"]}
+    return json.dumps(result, ensure_ascii=False)
+
+
+def normalize_source_diagnostic_output(record, output):
+    """Remove a proven duplicate source record; retain independent diagnostics.
+
+    A parsed source row does not prove that all stdout is redundant. Full JSON
+    lines must match that row exactly. A truncated historical tail additionally
+    requires an exact known serialization, both raw hashes, and the byte count.
+    """
+    row = record.get("source_evidence")
+    command = record.get("command")
+    if not isinstance(output, str) or not _source_row(row) or not isinstance(command, list):
+        return output
+    if "--diagnose-source" not in command:
+        return output
+    index = command.index("--diagnose-source") + 1
+    if index >= len(command) or command[index] != row["slug"]:
+        return output
+    marker = "AUTONOMY_SOURCE_JSON="
+    placeholder = "<retained-structured-source-evidence>"
+    lines = output.splitlines(keepends=True)
+    normalized = []
+    matches = 0
+    def unique_object(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError("duplicate source record key")
+            result[key] = value
+        return result
+    for line in lines:
+        content = line.rstrip("\r\n")
+        if content.startswith(marker):
+            try:
+                parsed = json.loads(content[len(marker):], object_pairs_hook=unique_object)
+                matched = _hash(parsed) == _hash(row)
+            except (ValueError, TypeError):
+                matched = False
+            if matched:
+                matches += 1
+                line = placeholder + line[len(content):]
+        normalized.append(line)
+    if matches:
+        # Preserve the old identity for the single-record-only transport.
+        return placeholder if len(lines) == 1 else "".join(normalized)
+    raw = _source_worker_record(row)
+    if raw is None:
+        return output
+    captured = marker + raw + "\n"
+    encoded = captured.encode("utf-8")
+    if (type(record.get("captured_stdout_bytes")) is int
+            and record["captured_stdout_bytes"] == len(encoded)
+            and record.get("source_evidence_sha256") == hashlib.sha256(raw.encode("utf-8")).hexdigest()
+            and record.get("captured_stdout_sha256") == hashlib.sha256(encoded).hexdigest()
+            and len(captured) > 24_000 and output == captured[-24_000:]):
+        return placeholder
+    return output
+
+
 def _source_problem(value, *, covered=False, request_capture=False, path=()):
     """Retain parsed source meaning; capture churn alone cannot prove novelty."""
     if isinstance(value, dict):
@@ -337,10 +421,8 @@ def _source_problem(value, *, covered=False, request_capture=False, path=()):
                     and isinstance(value.get("url"), str) and value.get("status")):
                 continue
             if key in {"output", "stdout"} and isinstance(item, str):
-                if _source_row(value.get("source_evidence")) and "--diagnose-source" in value.get("command", []):
-                    item = "<retained-structured-source-evidence>"
-                else:
-                    item = re.sub(r"\bin \d+(?:\.\d+)?s\b", "in <duration>", item)
+                item = normalize_source_diagnostic_output(value, item)
+                item = re.sub(r"\bin \d+(?:\.\d+)?s\b", "in <duration>", item)
             normalized = _source_problem(item, covered=covered,
                 request_capture=request_capture or (key == "requests" and _source_row(value)), path=path + (key,))
             if key in {"requests", "evidence", "source_urls"} and isinstance(normalized, list):
