@@ -49,7 +49,7 @@ def refresh_item(item, raw):
     return changed
 
 
-def reconcile(root, reports, loader, *, apply=False):
+def reconcile(root, reports, loader, *, apply=False, assessment_state=None):
     queue = PendingQueue(root / "data/state/pending_queue.json")
     baseline = copy.deepcopy(queue.items)
     baseline_by_url = {i["raw"]["url"]: i for i in baseline.values() if i.get("source") in SOURCES}
@@ -58,7 +58,7 @@ def reconcile(root, reports, loader, *, apply=False):
     history_rows = history if isinstance(history, list) else history.get("signals", [])
     history_by_url = {r.get("source_url") or r.get("url"): r for r in history_rows}
     totals = Counter()
-    assessment_failures = 0
+    assessment_state = assessment_state if assessment_state is not None else {"failures": 0}
     for slug, report in reports.items():
         raw_items = report.pop("raw_items", [])
         raw_by_url = {raw.url: raw for raw in raw_items}
@@ -116,7 +116,7 @@ def reconcile(root, reports, loader, *, apply=False):
                 continue
             queue.start(key)
             try:
-                if assessment_failures >= 3 and raw.metadata.get("materiality_accepted"):
+                if assessment_state["failures"] >= 3 and raw.metadata.get("materiality_accepted"):
                     raise DeferredProcessing("analysis_failure_limit_reached_after_three_attempts")
                 result = process_curated_beta_source(raw, configs[slug])
                 if raw.metadata.get("editorial_assessment"):
@@ -142,7 +142,7 @@ def reconcile(root, reports, loader, *, apply=False):
                     reason = ("analysis_api_credentials_unavailable" if not os.getenv("OPENAI_API_KEY") else
                               "analysis_budget_capacity_exhausted" if not has_capacity("fast") else reason)
                 if str(exc) == "curated beta source pending assessment":
-                    assessment_failures += 1
+                    assessment_state["failures"] += 1
                 queue.finish(key, "retry", reason)
                 row.update(alicanto_status="deferred", processing_reason=reason)
             except Exception as exc:
@@ -179,6 +179,7 @@ def save_health(root, reports):
                    published=state.get("published", 0), rejected=state.get("rejected", 0), deferred=state.get("deferred", 0),
                    pending=state.get("pending", 0), technical_failures=report.get("errors", []), coverage_completeness=complete,
                    capture_environment="github_actions", capture_run_id=os.getenv("GITHUB_RUN_ID"),
+                   oldest_capture_at=report.get("oldest_capture_at"), latest_capture_at=report.get("capture_checked_at"),
                    discovered=len(report.get("raw_items", [])), new=report.get("newly_discovered", 0),
                    count_basis="unique source items in rolling 90 days; published includes previously reconciled items",
                    error=report.get("errors") or None,
@@ -195,7 +196,7 @@ def save_health(root, reports):
 def commit_source_checkpoint(root, output, slug):
     if os.getenv("GITHUB_REF") != "refs/heads/codex/e-salud-laboral-20261011":
         raise RuntimeError("Source checkpoint commits require the authorized isolated Actions branch")
-    paths = [str(output.relative_to(root)), "data/state/pending_queue.json",
+    paths = [str(output.resolve().relative_to(root.resolve())), "data/state/pending_queue.json",
              "data/history/superintendencia_signals.json", "data/source_health.json",
              "web/data/source_health.json", "data/ai_usage", "data/telemetry"]
     existing = [p for p in paths if (root / p).exists()]
@@ -218,15 +219,9 @@ def main():
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     if args.sync_budget:
-        from radar_salud.ai_budget import _load, _save
+        from radar_salud.occupational_budget import sync_budget
         upstream = json.loads(Path(args.sync_budget).read_text())
-        local = _load()
-        for kind in ("fast", "deep"):
-            if not isinstance(upstream.get(kind), dict):
-                raise ValueError("Upstream AI ledger invalid; no processing authorized")
-            for metric in ("attempted", "successful", "failed"):
-                local[kind][metric] = max(local[kind][metric], int(upstream[kind][metric]))
-        _save(local)
+        sync_budget(upstream)
         return
     if not args.output:
         parser.error("--output is required for inventory")
@@ -239,6 +234,9 @@ def main():
         parser.error("Durable processing requires today's real Chile calendar; historical replay is read-only")
     if args.checkpoint_commits and (not args.apply or os.getenv("GITHUB_REF") != "refs/heads/codex/e-salud-laboral-20261011"):
         parser.error("Checkpoint commits require --apply in the isolated branch workflow")
+    if args.apply:
+        from radar_salud.occupational_budget import remaining_phase_calls
+        os.environ["RADAR_FAST_PER_RUN"] = str(min(int(os.getenv("RADAR_FAST_PER_RUN", "30")), remaining_phase_calls()))
     output = Path(args.output)
     cache = None
     if args.capture_cache_latest:
@@ -250,6 +248,7 @@ def main():
     from radar_salud.ai_budget import status
     before = copy.deepcopy(status())
     totals = Counter()
+    assessment_state = {"failures": 0}
     from radar_salud.occupational_recovery import inventory
     for slug in sorted(SOURCES):
         scout = CuratedBetaSourceScout(slug)
@@ -264,10 +263,12 @@ def main():
         stamps = [loader.records[u]["captured_at"] for u in urls if u in loader.records]
         report["capture_checked_at"] = max(stamps, default=None)
         report["oldest_capture_at"] = min(stamps, default=None)
-        totals.update(reconcile(root, {slug:report}, loader, apply=args.apply))
+        totals.update(reconcile(root, {slug:report}, loader, apply=args.apply, assessment_state=assessment_state))
         atomic_json(output / (slug + "_inventory_checkpoint.json"), report)
         if args.apply:
             save_health(root, {slug:report})
+            from radar_salud.occupational_budget import checkpoint_usage
+            checkpoint_usage()
         if args.checkpoint_commits:
             commit_source_checkpoint(root, output, slug)
         print(json.dumps({"source": slug, "items": len(report["rows"]), "complete": report["coverage_complete"], "stop": report.get("stop_reason")}), flush=True)

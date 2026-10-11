@@ -68,3 +68,28 @@ def test_changed_input_readonly_reports_reassessment_without_mutation(tmp_path):
     assert path.read_bytes()==before
     assert reports['ist']['rows'][0]['alicanto_status']=='pending_reassessment'
     assert reports['ist']['rows'][0]['editorial_score'] is None
+
+
+def test_checkpoint_accepts_workflow_relative_output_and_only_isolated_branch(tmp_path,monkeypatch):
+    from pathlib import Path
+    from scripts.occupational_inventory import commit_source_checkpoint
+    output=tmp_path/'data/audits/source_e_recovery/actions/123/inventory';output.mkdir(parents=True)
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv('GITHUB_REF','refs/heads/codex/e-salud-laboral-20261011')
+    calls=[]
+    monkeypatch.setattr('scripts.occupational_inventory.subprocess.run',lambda args,**kwargs:calls.append(args))
+    commit_source_checkpoint(tmp_path,Path('data/audits/source_e_recovery/actions/123/inventory'),'ist')
+    assert calls[0]==['git','add','--','data/audits/source_e_recovery/actions/123/inventory']
+    assert calls[-1][-1]=='HEAD:codex/e-salud-laboral-20261011'
+
+
+def test_same_assessment_failure_limit_survives_separate_source_checkpoints(tmp_path,monkeypatch):
+    from radar_salud.processing import DeferredProcessing
+    setup(tmp_path,raw(),status='pending');calls=[]
+    def unavailable(*args):
+        calls.append(True);raise DeferredProcessing('curated beta source pending assessment')
+    monkeypatch.setattr('scripts.occupational_inventory.process_curated_beta_source',unavailable)
+    shared={'failures':3}
+    reports=report(raw());reconcile(tmp_path,reports,Loader(),apply=True,assessment_state=shared)
+    assert not calls and shared['failures']==3
+    assert reports['ist']['rows'][0]['processing_reason']=='analysis_failure_limit_reached_after_three_attempts'
