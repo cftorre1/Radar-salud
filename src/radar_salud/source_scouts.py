@@ -119,164 +119,9 @@ class DfHealthScout:
         print(f"DF discovered={len(out)}");return out
 
 
-class FonasaDataHubScout:
-    """Official FONASA Datos Abiertos hubs. Discovery is broad; publication remains fail-closed."""
-    SOURCE_SLUG="fonasa_datos_abiertos";SOURCE_NAME="Fondo Nacional de Salud (FONASA)";SOURCE_TYPE="official"
-    PAGES=[
-        ("Noticias","https://datosabiertos.fonasa.cl/noticias/"),
-        ("Biblioteca / Cuenta Pública","https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/"),
-        ("Boletines estadísticos","https://datosabiertos.fonasa.cl/boletines-estadisticos/"),
-        ("Análisis","https://datosabiertos.fonasa.cl/analysis/"),
-    ]
-    HOSTS=("datosabiertos.fonasa.cl","www.datosabiertos.fonasa.cl")
-    def discover(self):
-        from .public_source_pipeline import _Meta, _date
-        out=[];seen=set()
-        for channel,page in self.PAGES:
-            html=fetch_html(page);p=_A();p.feed(html)
-            for href,title in p.links:
-                if not href or len(title)<12:continue
-                url=urljoin(page,href);parsed=urlparse(url)
-                if parsed.netloc not in self.HOSTS or url in seen:continue
-                if parsed.path.rstrip("/") in ("","/noticias","/biblioteca-cuenta-publica","/boletines-estadisticos","/analysis"):continue
-                if any(x in parsed.path.lower() for x in ("/wp-admin","/wp-login","/author/","/tag/","/category/")):continue
-                seen.add(url);event_date=None;body=""
-                if parsed.path.lower().endswith((".pdf",".xlsx",".xls",".csv")):
-                    event_date=_date(title)
-                else:
-                    try:
-                        meta=_Meta();meta.feed(fetch_html(url));body=" ".join(meta.text)
-                        event_date=_date(meta.published) or _date(body[:5000]) or _date(title)
-                    except Exception:
-                        pass
-                out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
-                                   event_date=event_date,raw_text=body[:1800],
-                                   metadata={"discovered_from":page,"fonasa_channel":channel,"page_text":body[:18000]}))
-        if not out:raise RuntimeError("FONASA Datos Abiertos unavailable or no discoverable items")
-        return out[:80]
-
-
-class FonasaNewsScout:
-    """Direct official newsroom; discovery never fabricates publication dates."""
-    SOURCE_SLUG="fonasa";SOURCE_NAME="FONASA";SOURCE_TYPE="official"
-    PAGE="https://www.fonasa.gob.cl/noticias/"
-    def discover_from_html(self,html):
-        parser=_A();parser.feed(html)
-        out=[];seen=set()
-        for href,title in parser.links:
-            if not href or len(title)<18:continue
-            url=urljoin(self.PAGE,href);parsed=urlparse(url)
-            if parsed.netloc not in ("www.fonasa.gob.cl","fonasa.gob.cl") or not re.fullmatch(r"/noticias/[^/]+/?",parsed.path):continue
-            if parsed.path.rstrip("/")=="/noticias" or url in seen:continue
-            seen.add(url)
-            out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
-                               metadata={"discovered_from":self.PAGE}))
-        return out
-    def discover(self):
-        from .public_source_pipeline import _Meta, _date
-        items=self.discover_from_html(fetch_html(self.PAGE))
-        # A date on the detail page is required to distinguish LIVE from BACKFILL.
-        for item in items[:15]:
-            try:
-                meta=_Meta();meta.feed(fetch_html(item.url))
-                item.event_date=_date(meta.published)
-            except Exception as exc:
-                # A failed detail request is technical failure, not an undated publication.
-                raise RuntimeError(f"FONASA detail unavailable: {type(exc).__name__}") from exc
-        return items[:15]
-
-
-class _TableRows(HTMLParser):
-    def __init__(self):
-        super().__init__(); self.rows=[]; self.row=None; self.cell=None; self.anchor=None
-    def handle_starttag(self,tag,attrs):
-        if tag.lower()=="tr":self.row={"text":[],"links":[],"cells":[]}
-        if self.row is not None and tag.lower() in ("td","th"):self.cell=[]
-        if self.row is not None and tag.lower()=="a":self.anchor=[dict(attrs).get("href"),[]]
-    def handle_data(self,data):
-        if self.row is not None:
-            self.row["text"].append(data)
-            if self.cell is not None:self.cell.append(data)
-            if self.anchor is not None:self.anchor[1].append(data)
-    def handle_endtag(self,tag):
-        if tag.lower()=="a" and self.anchor is not None:
-            self.row["links"].append((self.anchor[0]," ".join(" ".join(self.anchor[1]).split())))
-            self.anchor=None
-        if tag.lower() in ("td","th") and self.cell is not None:
-            self.row["cells"].append(" ".join(" ".join(self.cell).split()));self.cell=None
-        if tag.lower()=="tr" and self.row is not None:
-            self.rows.append(self.row);self.row=None
-
-
-
-class IspSurveillanceScout:
-    """Official ISP laboratory surveillance and respiratory-virus publications."""
-    SOURCE_SLUG="isp_surveillance";SOURCE_NAME="Instituto de Salud Pública de Chile (ISP)";SOURCE_TYPE="official"
-    PAGES=[
-        ("Boletines de vigilancia de laboratorios","https://www.ispch.gob.cl/boletin/"),
-        ("Vigilancia de virus respiratorios","https://www.ispch.gob.cl/virusrespiratorios/"),
-    ]
-    HOSTS=("www.ispch.gob.cl","ispch.gob.cl")
-    def discover(self):
-        from .public_source_pipeline import _Meta, _date
-        out=[];seen=set()
-        for channel,page in self.PAGES:
-            html=fetch_html(page);p=_A();p.feed(html)
-            for href,title in p.links:
-                if not href or len(title)<8:continue
-                url=urljoin(page,href);parsed=urlparse(url)
-                if parsed.netloc not in self.HOSTS or url in seen:continue
-                low=f"{title} {parsed.path}".lower()
-                if not any(k in low for k in ("bolet","vigil","virus","respir","influenza","laboratorio","informe","reporte",".pdf")):continue
-                seen.add(url);event_date=_date(title);body=""
-                if not parsed.path.lower().endswith(".pdf"):
-                    try:
-                        meta=_Meta();meta.feed(fetch_html(url));body=" ".join(meta.text)
-                        event_date=event_date or _date(meta.published) or _date(body[:5000])
-                    except Exception:
-                        pass
-                out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
-                                   event_date=event_date,raw_text=body[:1800],
-                                   metadata={"discovered_from":page,"isp_channel":channel,"page_text":body[:18000]}))
-        if not out:raise RuntimeError("ISP surveillance hubs unavailable or empty")
-        return out[:80]
-
-
-class IspAnamedAlertScout:
-    """Official ANAMED alerts with a verified date in the listing row."""
-    SOURCE_SLUG="isp_anamed";SOURCE_NAME="ISP / ANAMED";SOURCE_TYPE="official"
-    PAGE="https://www.ispch.gob.cl/categorias-alertas/anamed/"
-    def discover_from_html(self,html):
-        # Capture hrefs only within rows; a date on an unrelated page element
-        # must never be attributed to an alert.
-        from .public_source_pipeline import _date
-        parser=_TableRows();parser.feed(html);items=[];seen=set()
-        for row in parser.rows:
-            body=" ".join(" ".join(row["text"]).split())
-            # Only a standalone date cell is a publication date. A date in the
-            # alert description or another document is never a publication date.
-            dates=[c for c in row["cells"] if re.fullmatch(r"\d{1,2}[/-]\d{1,2}[/-]20\d{2}",c)]
-            day=_date(dates[0]) if len(dates)==1 else None
-            try:
-                if day:day=date.fromisoformat(day).isoformat()
-                if day and day>date.today().isoformat():day=None
-            except ValueError:day=None
-            if not day or not re.search(r"retiro del mercado|nota informativa|falsificad|seguridad",body,re.I):continue
-            titles=[cell for cell in row["cells"] if len(cell)>25 and not cell.lower().startswith("publicación isp")]
-            if not titles:continue
-            title=max(titles,key=len)
-            for href,label in row["links"]:
-                if not href or label.lower()!="publicación isp":continue
-                url=urljoin(self.PAGE,href);parsed=urlparse(url)
-                if parsed.netloc not in ("www.ispch.gob.cl","ispch.gob.cl") or not parsed.path.lower().endswith(".pdf") or url in seen:continue
-                seen.add(url)
-                items.append(RawItem(self.SOURCE_SLUG,title[:300],url,self.SOURCE_NAME,self.SOURCE_TYPE,
-                                     event_date=day,metadata={"discovered_from":self.PAGE,"listing_text":body}))
-                break
-        if not items:raise RuntimeError("ANAMED alert listing has no verified publication rows")
-        return items[:20]
-    def discover(self):return self.discover_from_html(fetch_html(self.PAGE))
-
+# Public data source exports use the same strict scouts as the daily runtime.
+from .fonasa_sources import FonasaDataHubScout, FonasaNewsScout
+from .isp_sources import IspSurveillanceScout, IspAnamedAlertScout
 
 
 class ClinicasChileScout:
@@ -285,34 +130,88 @@ class ClinicasChileScout:
     PAGES=[
         ("Noticias","https://www.clinicasdechile.cl/noticias/"),
         ("Memorias","https://www.clinicasdechile.cl/knowledgebase_category/memorias/"),
-        ("Estudios y análisis","https://www.clinicasdechile.cl/knowledgebase_category/estudios-y-analisis/page/3/?mostrar=6"),
+        ("Estudios y análisis","https://www.clinicasdechile.cl/knowledgebase_category/estudios-y-analisis/"),
         ("Documentos","https://www.clinicasdechile.cl/knowledgebase_category/documentos/"),
     ]
     HOSTS=("www.clinicasdechile.cl","clinicasdechile.cl")
+    def discover_from_html(self,html,channel,page):
+        parser=_ClinicasLinks();parser.feed(html);out=[];seen=set()
+        for href,title in parser.links:
+            if not href or len(title)<12:continue
+            url=urljoin(page,href);parsed=urlparse(url)
+            if parsed.scheme!="https" or parsed.netloc not in self.HOSTS or url in seen:continue
+            document=bool(re.fullmatch(r"/wp-content/uploads/.+\.(?:pdf|xlsx?|csv)",parsed.path,re.I))
+            if channel=="Noticias":
+                if (len(title)<25 or document or not re.fullmatch(r"/(?:noticias/)?[^/]+/?",parsed.path)
+                        or parsed.path.rstrip("/") in ("/noticias","/quienes-somos","/asociados","/seminarios","/biblioteca","/contacto","/equipo-de-trabajo","/consejo-medico","/temas-de-coyuntura")):
+                    continue
+            elif not (document and title.casefold().startswith("descargar")):
+                continue
+            seen.add(url)
+            event_date=parser.dates.get(href) if channel=="Noticias" else None
+            out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
+                event_date=event_date,metadata={"discovered_from":page,"clinicas_channel":channel,
+                "publication_date_source":"dated_news_listing" if event_date else "unverified"}))
+        return out
     def discover(self):
-        from .public_source_pipeline import _Meta, _date
-        out=[];seen=set()
+        from .public_source_pipeline import _VisibleArticle, _date
+        out=[];seen=set();self.discovery_errors=[]
         for channel,page in self.PAGES:
-            html=fetch_html(page);p=_A();p.feed(html)
-            for href,title in p.links:
-                if not href or len(title)<12:continue
-                url=urljoin(page,href);parsed=urlparse(url)
-                if parsed.netloc not in self.HOSTS or url in seen:continue
-                rootpaths=("/noticias","/knowledgebase_category/memorias","/knowledgebase_category/estudios-y-analisis","/knowledgebase_category/documentos")
-                if parsed.path.rstrip("/") in rootpaths:continue
-                if any(x in parsed.path.lower() for x in ("/author/","/tag/","/category/","/wp-admin","/page/")) and "knowledgebase" not in parsed.path.lower():continue
-                seen.add(url);event_date=_date(title);body=""
-                if not parsed.path.lower().endswith((".pdf",".xlsx",".xls",".csv")):
-                    try:
-                        meta=_Meta();meta.feed(fetch_html(url));body=" ".join(meta.text)
-                        event_date=event_date or _date(meta.published) or _date(body[:5000])
-                    except Exception:
-                        pass
-                out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
-                                   event_date=event_date,raw_text=body[:1800],
-                                   metadata={"discovered_from":page,"clinicas_channel":channel,"page_text":body[:18000]}))
-        if not out:raise RuntimeError("Clínicas de Chile hubs unavailable or empty")
+            # The library lists 3/3/4 pages. Scan each channel from page 1;
+            # library order is not a verified chronology.
+            count={"Memorias":3,"Estudios y análisis":3,"Documentos":4}.get(channel,1)
+            pages=[page]+[f"{page}page/{n}/?mostrar=6" for n in range(2,count+1)]
+            candidates=[]
+            for listing in pages:
+                try:candidates.extend(self.discover_from_html(fetch_html(listing),channel,listing))
+                except Exception as exc:self.discovery_errors.append(f"{channel}: {listing}: {type(exc).__name__}")
+            for raw in candidates:
+                if raw.url in seen:continue
+                seen.add(raw.url)
+                if channel=="Noticias":
+                    # A detail fetch failure remains retryable, never a date
+                    # borrowed from navigation, legal citations or PDF body text.
+                    try:detail=fetch_html(raw.url)
+                    except Exception as exc:
+                        self.discovery_errors.append(f"{channel}: {raw.url}: {type(exc).__name__}")
+                        out.append(raw);continue
+                    article=_VisibleArticle();article.feed(detail)
+                    stamp=_PublishedMeta();stamp.feed(detail)
+                    # _Meta includes several historical date names; only the
+                    # explicit article property can replace the listing stamp.
+                    verified=_date(stamp.published)
+                    if verified and raw.event_date and verified != raw.event_date:
+                        self.discovery_errors.append(f"{channel}: {raw.url}: publication_date_mismatch")
+                        raw.event_date=None;raw.metadata["publication_date_source"]="conflicting_stamps"
+                    elif verified:
+                        raw.event_date=verified;raw.metadata["publication_date_source"]="article:published_time"
+                    raw.metadata["page_text"]=" ".join(article.text)[:18000]
+                    raw.raw_text=raw.metadata["page_text"][:1800]
+                out.append(raw)
+        if not out:raise RuntimeError("Clínicas de Chile hubs unavailable or empty: "+"; ".join(self.discovery_errors))
         return out[:100]
+
+
+class _ClinicasLinks(_A):
+    """Associate the site's publication stamp with the following news headline."""
+    def __init__(self):super().__init__();self.dates={};self._stamp=None;self._heading=False
+    def handle_starttag(self,tag,attrs):
+        lower=tag.lower()
+        if lower in ("article","nav","footer"):self._stamp=None
+        if lower in ("h2","h3"):self._heading=True
+        super().handle_starttag(tag,attrs)
+    def handle_data(self,data):
+        from .public_source_pipeline import _date
+        if re.fullmatch(r"\s*\d{1,2}:\d{2}\s*[ap]m\s+el\s+\d{1,2}\s+de\s+\w+\s+del\s+20\d{2}\s*",data,re.I):
+            self._stamp=_date(data)
+        super().handle_data(data)
+    def handle_endtag(self,tag):
+        href=self._href
+        super().handle_endtag(tag)
+        if tag.lower()=="a" and href and self._heading and self._stamp:
+            self.dates[href]=self._stamp;self._stamp=None
+        if tag.lower() in ("h2","h3","article"):
+            self._stamp=None;self._heading=False
 
 
 class CorporateNewsroomScout:
@@ -320,7 +219,7 @@ class CorporateNewsroomScout:
     SOURCES={
         "redsalud":("RedSalud","https://www.redsalud.cl/noticias",("www.redsalud.cl","redsalud.cl"),r"/noticias/[^/]+/?"),
         "bupa_chile":("Bupa Chile","https://www.bupa.cl/somos-bupa/sala-de-prensa",("www.bupa.cl","bupa.cl"),
-                      r"/(?:somos-bupa/)?sala-de-prensa/[^/]+/?"),
+                      r"/(?:(?:somos-bupa/)?sala-de-prensa/)?[a-z0-9][a-z0-9-]+/?"),
         "pfizer_chile":("Pfizer Chile","https://www.pfizer.cl/news",("www.pfizer.cl","pfizer.cl"),r"/news/[^/]+/?"),
         "indisa":("Clínica INDISA","https://www.indisa.cl/categoria-blog/novedades-indisa",("www.indisa.cl","indisa.cl"),r"/blog/[^/]+/?"),
     }
@@ -349,9 +248,22 @@ class CorporateNewsroomScout:
                                event_date=published,metadata={"discovered_from":self.PAGE,"listing_date":published,
                                    **({"source_quality_gate":"pending_90_day_audit"} if self.SOURCE_SLUG=="indisa" else {})}))
         if not out:raise RuntimeError(f"{self.SOURCE_NAME} newsroom structure unrecognized")
-        return out[:15]
+        return out[:100]
     def discover(self):
+        self.discovery_errors=[]
         items=self.discover_from_html(fetch_html(self.PAGE))
+        if self.SOURCE_SLUG=="redsalud":
+            # First-page-only polling hides capacity/convenio articles in the
+            # rolling backfill window. Follow same-newsroom pagination, bounded.
+            seen={item.url for item in items}
+            for number in range(1,5):
+                page=f"{self.PAGE}?page={number}"
+                try:page_items=self.discover_from_html(fetch_html(page))
+                except Exception as exc:
+                    self.discovery_errors.append(f"{page}: {type(exc).__name__}");continue
+                for item in page_items:
+                    if item.url not in seen:
+                        seen.add(item.url);item.metadata["discovered_from"]=page;items.append(item)
         if self.SOURCE_SLUG=="indisa":
             from .public_source_pipeline import _IndisaArticle
             verified=[]
@@ -371,7 +283,7 @@ class CorporateNewsroomScout:
             if not verified:
                 raise RuntimeError("INDISA has no dated listing/detail pairs")
             items=verified
-        return items
+        return items[:100]
 
 
 class _IndisaCards(HTMLParser):

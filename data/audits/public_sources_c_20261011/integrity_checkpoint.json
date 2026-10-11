@@ -1,0 +1,9 @@
+{
+  "subfront": "publication_provenance_and_official_transport",
+  "baseline_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+  "acceptance": "regression_pass_live_transport_externally_blocked",
+  "tests": {"command": ".venv/bin/python -m pytest -q tests/test_public_source_integrity.py", "passed": 16},
+  "controls": ["complete publication field parsing", "detail/listing identity binding", "Chile calendar", "HTTPS official redirect allowlist before next request", "final URL validation", "PDF signature and readable capture", "exact HTTP/proxy error cause", "normalized partial and undated diagnostics"],
+  "live_limit": "Official domains denied by enforced session proxy at CONNECT 403 before origin TLS. See per-source transport artifacts.",
+  "next_action": "Integrate source modules and processor provenance, run all scoped and full regression checks, record current source_health and independent reviewer."
+}

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-11T14:20:55.702575+00:00",
+  "generated_at": "2026-10-11T14:55:13.745855+00:00",
   "status": "available",
   "global_teaser": {
     "theme_id": "global-ai-coding-payer-cost-2026",
@@ -158,7 +158,7 @@
         "provenance": {
           "discovered_by": "work3_adversarial_2026_10_11",
           "first_evidence_sha": "645781d2f310fea2bb6b6c7b5385a93ea538c879",
-          "core_pipeline_status": "DF pendiente BACKFILL sin fecha según auditoría Work3; no cierre de reparación",
+          "core_pipeline_status": "DF recovered publication validated in staging916fe2d; current publication stock retained; ongoing coverage degraded",
           "original_pages_checked": "2026-10-11",
           "independence": "DF y LT amplifican un mismo comunicado; UC confirma situación operativa. No tres hechos independientes."
         },
@@ -185,23 +185,35 @@
         "rank": 2
       },
       {
-        "title": "COMPIN: certificación de discapacidad y gestión del rezago",
-        "url": "https://www.minsal.cl/presidente-kast-minsal-y-desarrollo-social-lanzan-plan-que-moderniza-y-agiliza-certificacion-de-discapacidad/",
-        "event_date": "2026-10-06",
-        "freshness_anchor_date": "2026-10-06",
-        "score": 82.7,
+        "title": "Laboratorios: rezago regulatorio y competencia por ensayos clínicos",
+        "url": "https://www.df.cl/senal-df/el-deal/cae-inversion-de-laboratorios-internacionales-en-chile-ante-fuerte-rezago",
+        "event_date": "2026-10-09",
+        "freshness_anchor_date": "2026-10-09",
+        "score": 84.0,
         "dimensions": {
-          "financial_impact": 60,
-          "operational_impact": 90,
-          "regulatory_or_competitive_shift": 85,
+          "financial_impact": 90,
+          "operational_impact": 80,
+          "regulatory_or_competitive_shift": 90,
           "affected_scope": 90,
-          "urgency_time_horizon": 90,
+          "urgency_time_horizon": 75,
           "actionability": 85,
-          "evidence_strength": 85,
-          "novelty_non_repetition": 85
+          "evidence_strength": 70,
+          "novelty_non_repetition": 90
         },
-        "verdict": "PASS_SECOND_CHOICE",
-        "reason": "Fuente original contiene 96 mil solicitudes rezagadas, plataforma y contacto durante octubre. El resumen recuperado omitió estos datos. Vigilar ejecución y tiempos; no confundir rezago promedio de nueve meses con plazo para resolverlo.",
+        "verdict": "PASS_ALTERNATIVE_RECOVERED",
+        "reason": "Reporte DF verificado del9-oct: incumplimiento de hito Selfix del30-sep y rezago de registros/ensayos con implicaciones de acceso e inversión. 1.501 pendientes/413d son diagnóstico a febrero2026;112 vs147 ensayos y pérdida estimada US$20m corresponden a2025 y atribución CIF. No son mediciones nuevas de octubre ni causalidad certificada. Urgencia inferior a capacidad clínica suspendida y evidencia inferior a fuente pública primaria.",
+        "provenance": {
+          "source_kind": "high_trust_press_single_family",
+          "core_pipeline_status": "DF INTEGRATED_DEGRADED; publication accepted92, BACKFILL, publisher date verified",
+          "publication_date_candidates": [
+            "cxenseparse:recs:publishtime",
+            "jsonld:datePublished",
+            "visible:published_label"
+          ],
+          "primary_isp_independent_confirmation": "not_available; public-source ISP transport blocker retained",
+          "source_record": "data/state/pending_queue.json",
+          "publication_timestamp": "2026-10-09T13:22:21Z"
+        },
         "rank": 3
       }
     ],

@@ -1,0 +1,16 @@
+{
+  "channel": "search_service_web_run",
+  "is_live_capture": false,
+  "note": "Search results are indexed evidence, not live HTTP captures. Open results preserve tool-layer failures; those status numbers are not proven origin HTTP statuses.",
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Internal Error ()\n【turn927666view0】 [wordlim: 200] Source: open({\"ref_id\":\"https://ispch.cl/categorias-alertas/anamed/\",\"lineno\":null}); Total lines: 1\nL0: Failed to fetch https://ispch.cl/categorias-alertas/anamed/: (400) Timeout fetching\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn927666view1】 [wordlim: 200] Source: open({\"ref_id\":\"https://ispch.cl/boletin/\",\"lineno\":null}); Total lines: 1\nL0: Failed to fetch https://ispch.cl/boletin/: Timeout fetching\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn927666view2】 [wordlim: 200] Source: open({\"ref_id\":\"https://ispch.cl/virusrespiratorios/\",\"lineno\":null}); Total lines: 1\nL0: Failed to fetch https://ispch.cl/virusrespiratorios/: (502) Bad Gateway\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn927666view3】 [wordlim: 200] Source: open({\"ref_id\":\"https://ispch.cl/documento/semana-39-2026/\",\"lineno\":null}); Total lines: 1\nL0: Failed to fetch https://ispch.cl/documento/semana-39-2026/: (502) Bad Gateway\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn927666view4】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.ispch.cl/feed/\",\"lineno\":null}); Total lines: 1\nL0: URL https://www.ispch.cl/feed/ is not accessible via this tool.\n\n--------------------------------------------------------------------------------\nInternal Error ()\n【turn927666view5】 [wordlim: 200] Source: open({\"ref_id\":\"https://www.ispch.cl/wp-json/wp/v2/\",\"lineno\":null}); Total lines: 1\nL0: URL https://www.ispch.cl/wp-json/wp/v2/ is not accessible via this tool.\n"
+      }
+    ],
+    "isError": false
+  },
+  "saved_at_utc": "2026-10-11T04:24:52.048359+00:00",
+  "tool_observation_timestamp": "not exposed by browser"
+}

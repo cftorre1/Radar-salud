@@ -36,7 +36,7 @@ def test_partial_capture_enters_queue_without_advancing_watermark_or_blocking_ne
     for name in ("SuperintendenciaStatsScout", "SuperintendenciaNormativaScout", "SuperintendenciaFiscalizacionScout",
                  "MinsalNewsScout", "SusesoNormativeScout", "SusesoNewsScout", "SusesoFiscalizacionScout", "DfHealthScout",
                  "FonasaDataHubScout", "FonasaNewsScout", "IspSurveillanceScout", "IspAnamedAlertScout", "ClinicasChileScout",
-                 "DeisResourceScout", "DiarioOficialHealthScout", "CorporateNewsroomScout"):
+                 "DeisDocumentScout", "DiarioOficialHealthScout", "CorporateNewsroomScout"):
         monkeypatch.setattr(engine_cli, name, Null)
     monkeypatch.setattr(engine_cli, "CuratedBetaSourceScout", Scoped)
     monkeypatch.setattr(paths, "project_root", lambda: tmp_path)
@@ -54,4 +54,3 @@ def test_partial_capture_enters_queue_without_advancing_watermark_or_blocking_ne
     assert audit["discovered"] == 1 and audit["technical_status"] == "partial"
     health = json.loads((tmp_path / "data/source_health.json").read_text())["sources"]["mutual_seguridad"]
     assert health["coverage_completeness"] is False and health["recovery_outcome"] == "OPERATIVE_DEGRADED"
-

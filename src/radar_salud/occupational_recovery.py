@@ -161,4 +161,3 @@ def inventory(scout, loader, as_of=None):
         report = _merge(report, discover_clinics_inventory(scout, loader, as_of=as_of))
         report["required_clinic_publishers_checked"] = 9
     return _decorate(report, scout, loader)
-

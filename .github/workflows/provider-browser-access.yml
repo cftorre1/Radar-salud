@@ -1,0 +1,31 @@
+name: Provider ordinary browser access evidence
+on:
+  pull_request:
+    branches: [staging]
+    paths:
+      - 'scripts/provider_browser_access_checkpoint.py'
+      - '.github/workflows/provider-browser-access.yml'
+permissions:
+  contents: read
+jobs:
+  browser-access:
+    if: startsWith(github.head_ref, 'codex/f-prestadores-gremio-') && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e .
+      - name: Navigate denied originals using ordinary native Chrome
+        if: hashFiles('data/audits/provider_browser_access_receipt_2026_10_11.json') == ''
+        run: python scripts/provider_browser_access_checkpoint.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: provider-browser-access-${{ github.event.pull_request.head.sha }}
+          path: data/audits/provider_browser_access_2026_10_11.json
+          retention-days: 30

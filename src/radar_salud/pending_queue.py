@@ -286,7 +286,23 @@ class PendingQueue:
                         'reason': 'historical_office_with_current_suspension_stock_context'})
                     item.update(status='pending', lane='BACKFILL', reason=None, retry_at=None)
                 continue
-            if key in self.items or key in seen or (source in FISCALIZATION_SOURCES and legacy_fingerprint(raw) in seen):
+            if key not in self.items and raw.source_slug in ('redsalud','bupa_chile','indisa','red_davila','andes_salud','clinicas_chile','pfizer_chile','clinicas_achs_salud'):
+                key=next((k for k,v in self.items.items() if v['source']==source and v['raw']['url'].rstrip('/')==raw.url.rstrip('/')),key)
+            if key in self.items:
+                item=self.items[key]
+                # A failed detail fetch may have enqueued an undated news card.
+                # Rediscovery can add its now-verified stamp without changing
+                # queue identity, detection time, lane or source-quality gate.
+                if (raw.source_slug=="clinicas_chile" and item.get("status") in ("pending","retry")
+                        and not item["raw"].get("event_date") and raw.event_date
+                        and raw.metadata.get("publication_date_source") in ("article:published_time","dated_news_listing")):
+                    old_gate=item["raw"].get("metadata",{}).get("source_quality_gate")
+                    item["raw"]["event_date"]=raw.event_date
+                    item["raw"]["metadata"].update(raw.metadata)
+                    if old_gate:item["raw"]["metadata"]["source_quality_gate"]=old_gate
+                    item["retry_at"]=None
+                continue
+            if key in seen or (source in FISCALIZATION_SOURCES and legacy_fingerprint(raw) in seen):
                 continue
             item_lane = lane(raw, now, last_discovered_at)
             archived = item_lane == "BACKFILL" and beyond_backfill_horizon(raw, now)

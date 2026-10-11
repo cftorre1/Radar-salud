@@ -946,6 +946,36 @@
       "production_updated": false,
       "pr_closed": false
     },
+    "public_sources_c_2026_10_11": {
+      "branch": "codex/c-public-sources-20261011",
+      "baseline_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+      "verdict": "branch_runtime_proven_1_degraded_4_external_blockers",
+      "artifacts": [
+        "data/audits/public_sources_c_20261011/recovery/qa/manifest.json",
+        "data/audits/public_sources_c_20261011/recovery/stock-reconciliation.json",
+        "data/audits/public_sources_c_20261011/recovery/fonasa-national-catalog.json",
+        "data/audits/public_sources_c_20261011/recovery/fonasa-financing-alternatives.json",
+        "data/audits/public_sources_c_20261011/recovery/fonasa-checkpoint.json",
+        "data/audits/public_sources_c_20261011/recovery/fonasa_datos_abiertos-checkpoint.json",
+        "data/audits/public_sources_c_20261011/recovery/isp_anamed-checkpoint.json",
+        "data/audits/public_sources_c_20261011/recovery/isp_surveillance-checkpoint.json",
+        "data/audits/public_sources_c_20261011/recovery/deis-checkpoint.json",
+        "docs/PUBLIC_SOURCES_C_2026_10_11.md"
+      ],
+      "source_outcomes": {
+        "fonasa": "EXTERNAL_BLOCKER_PROVEN",
+        "fonasa_datos_abiertos": "EXTERNAL_BLOCKER_PROVEN",
+        "isp_anamed": "EXTERNAL_BLOCKER_PROVEN",
+        "isp_surveillance": "EXTERNAL_BLOCKER_PROVEN",
+        "deis": "OPERATIVE_DEGRADED"
+      },
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117670184",
+      "validated_code_sha": "55e31b1b7266d848b728faba11c9d6dad24c81f7",
+      "staging_merge_sha": null,
+      "postmerge_runtime_verified": false,
+      "global_release_pass": false,
+      "primary_bundle": "data/audits/public_sources_c_20261011/recovery/runs/38117670184/full-primary-evidence.zip"
+    },
     "integration_commander_df_20261011": {
       "issue": [
         5,
@@ -1148,6 +1178,127 @@
       "result": "MERGED_RUNTIME_PENDING",
       "matrix": "data/pmo/integration_release_2026_10_11.json",
       "scope": "staging only; no source closure or autonomy acceptance inferred"
+    },
+    "integration_PR21_2026_10_11": {
+      "kind": "staging_integration",
+      "origin_pr": 13,
+      "integration_pr": 21,
+      "sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "qa_run": 38145944249,
+      "runtime_run": 38146249940,
+      "result": "MERGED_RUNTIME_PENDING",
+      "matrix": "data/pmo/integration_release_2026_10_11.json",
+      "scope": "staging only; no source closure or autonomy acceptance inferred"
+    },
+    "postmerge_achs_seguro_laboral_2026_10_11": {
+      "kind": "actual_two_poll_staging_runtime",
+      "sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "run": 38145632535,
+      "preview": 38145632732,
+      "result": {
+        "achs_seguro_laboral": "INTEGRATED_VALIDATED"
+      },
+      "artifact": "data/audits/integration_20261011/postmerge-achs_seguro_laboral/summary.json",
+      "queue_history_preserved": true
+    },
+    "postmerge_mutual_seguridad_2026_10_11": {
+      "kind": "actual_two_poll_staging_runtime",
+      "sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "run": 38145632535,
+      "preview": 38145632732,
+      "result": {
+        "mutual_seguridad": "INTEGRATED_DEGRADED"
+      },
+      "artifact": "data/audits/integration_20261011/postmerge-mutual_seguridad/summary.json",
+      "queue_history_preserved": true
+    },
+    "postmerge_ist_2026_10_11": {
+      "kind": "actual_two_poll_staging_runtime",
+      "sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "run": 38145632535,
+      "preview": 38145632732,
+      "result": {
+        "ist": "INTEGRATED_DEGRADED"
+      },
+      "artifact": "data/audits/integration_20261011/postmerge-ist/summary.json",
+      "queue_history_preserved": true
+    },
+    "integration_PR23_2026_10_11": {
+      "kind": "staging_integration",
+      "origin_pr": 14,
+      "integration_pr": 23,
+      "sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+      "qa_run": 38146579368,
+      "runtime_run": 38147271657,
+      "result": "MERGED_RUNTIME_PENDING",
+      "matrix": "data/pmo/integration_release_2026_10_11.json",
+      "scope": "staging only; no source closure or autonomy acceptance inferred"
+    },
+    "postmerge_clinicas_achs_salud_2026_10_11": {
+      "kind": "actual_two_poll_staging_runtime",
+      "sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+      "run": 38145632535,
+      "preview": 38145632732,
+      "result": {
+        "clinicas_achs_salud": "INTEGRATED_DEGRADED"
+      },
+      "artifact": "data/audits/integration_20261011/postmerge-clinicas_achs_salud/summary.json",
+      "queue_history_preserved": true
+    },
+    "postmerge_deis_2026_10_11": {
+      "kind": "actual_two_poll_staging_runtime",
+      "sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "run": 38146249940,
+      "preview": 38146250319,
+      "result": {
+        "deis": "INTEGRATED_DEGRADED"
+      },
+      "artifact": "data/audits/integration_20261011/postmerge-deis/summary.json",
+      "queue_history_preserved": true
+    },
+    "postmerge_fonasa_2026_10_11": {
+      "kind": "actual_two_poll_staging_runtime",
+      "sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "run": 38146249940,
+      "preview": 38146250319,
+      "result": {
+        "fonasa": "EXTERNAL_BLOCKER_PROVEN"
+      },
+      "artifact": "data/audits/integration_20261011/postmerge-fonasa/summary.json",
+      "queue_history_preserved": true
+    },
+    "postmerge_fonasa_datos_abiertos_2026_10_11": {
+      "kind": "actual_two_poll_staging_runtime",
+      "sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "run": 38146249940,
+      "preview": 38146250319,
+      "result": {
+        "fonasa_datos_abiertos": "EXTERNAL_BLOCKER_PROVEN"
+      },
+      "artifact": "data/audits/integration_20261011/postmerge-fonasa_datos_abiertos/summary.json",
+      "queue_history_preserved": true
+    },
+    "postmerge_isp_anamed_2026_10_11": {
+      "kind": "actual_two_poll_staging_runtime",
+      "sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "run": 38146249940,
+      "preview": 38146250319,
+      "result": {
+        "isp_anamed": "EXTERNAL_BLOCKER_PROVEN"
+      },
+      "artifact": "data/audits/integration_20261011/postmerge-isp_anamed/summary.json",
+      "queue_history_preserved": true
+    },
+    "postmerge_isp_surveillance_2026_10_11": {
+      "kind": "actual_two_poll_staging_runtime",
+      "sha": "3dd964eb7bbd89e0e01d081079b4c9b6391e551e",
+      "run": 38146249940,
+      "preview": 38146250319,
+      "result": {
+        "isp_surveillance": "EXTERNAL_BLOCKER_PROVEN"
+      },
+      "artifact": "data/audits/integration_20261011/postmerge-isp_surveillance/summary.json",
+      "queue_history_preserved": true
     }
   },
   "blocks": [
@@ -1612,6 +1763,24 @@
       "required_data": "hosting aprobado, volumen durable, remitente, destinatario interno y credenciales seguras",
       "estimated_time": "según decisión y aprovisionamiento del proveedor",
       "beta_impact": "No bloquea Beta cerrada; el CTA permanece fail-closed hasta activar backend autorizado."
+    },
+    {
+      "id": "public_source_official_access_fonasa",
+      "action": "Administrador web de FONASA: revisar el rechazo HTTP403 del frontal AWS ALB para GET público desde GitHub hospedado, habilitar acceso autorizado de monitoreo o entregar export oficial accesible y confirmar rutas canónicas de noticias; luego repetir esta Action.",
+      "provider": "FONASA web/infraestructura",
+      "required_data": "Acceso HTTPS autorizado verificable o export/feed oficial actual con fechas y enlaces de recursos",
+      "estimated_time": "No verificable; depende del propietario oficial",
+      "beta_impact": "Limita cobertura de las fuentes indicadas; no detiene captura DEIS ni certifica release",
+      "evidence": "data/audits/public_sources_c_20261011/recovery/fonasa-checkpoint.json"
+    },
+    {
+      "id": "public_source_official_access_isp_anamed",
+      "action": "Operador de red/hosting de ISP: verificar listener y ruta TCP 443 de www.ispch.cl, ispch.cl, www.ispch.gob.cl e ispch.gob.cl frente al egress de GitHub hospedado, restaurar acceso HTTPS público o entregar un feed/document export oficial accesible; luego repetir esta Action.",
+      "provider": "ISP redes/hosting/web",
+      "required_data": "Acceso HTTPS autorizado verificable o export/feed oficial actual con fechas y enlaces de recursos",
+      "estimated_time": "No verificable; depende del propietario oficial",
+      "beta_impact": "Limita cobertura de las fuentes indicadas; no detiene captura DEIS ni certifica release",
+      "evidence": "data/audits/public_sources_c_20261011/recovery/isp_anamed-checkpoint.json"
     }
   ],
   "changelog": [
@@ -2133,6 +2302,21 @@
       "evidence": [
         "data/audits/work3_adversarial_2026_10_11T072159Z.json"
       ]
+    },
+    {
+      "date": "2026-10-11",
+      "change": "Public-source C isolated lane: explicit publication provenance, official HTTPS redirects, dated DEIS classification documents and ISP publication-column coverage; current health stays error/unverified for exact external proxy403. No staging/main/production promotion.",
+      "evidence": [
+        "public_sources_c_2026_10_11"
+      ]
+    },
+    {
+      "date": "2026-10-11",
+      "change": "Public data C recovery: real GitHub native discovery/PDF/catalógos and official national datasets; DEIS degraded operational, four blockers demonstrated across runtimes with official alternatives and exact owner steps. Stock preserved; no staging/main/production promotion or global QA closure.",
+      "evidence": [
+        "public_sources_c_2026_10_11",
+        "data/audits/public_sources_c_20261011/recovery/stock-reconciliation.json"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -2140,8 +2324,9 @@
     {
       "id": "fonasa_unavailable",
       "severity": "warning",
-      "description": "FONASA oficial discovery 0, technical_status error HTTPError en piloto #23; no validada como fuente activa.",
-      "source": "Daily Radar pilot #21; data/state/discovery_run.json y data/source_health.json"
+      "description": "FONASA direct current coverage EXTERNAL_BLOCKER_PROVEN: GitHub verified TLS followed by awselb/2.0 HTTP403; current listings inaccessible. National publisher catalog complete but historical; official GRD references captured under DIPRES/MINSAL attribution.",
+      "source": "data/audits/public_sources_c_20261011/recovery/fonasa-checkpoint.json",
+      "next_action": "Administrador web de FONASA: revisar el rechazo HTTP403 del frontal AWS ALB para GET público desde GitHub hospedado, habilitar acceso autorizado de monitoreo o entregar export oficial accesible y confirmar rutas canónicas de noticias; luego repetir esta Action."
     },
     {
       "id": "beta_contract_not_gated",
@@ -2158,8 +2343,9 @@
     {
       "id": "isp_anamed_unavailable",
       "severity": "warning",
-      "description": "ISP/ANAMED responde URLError desde GitHub Actions piloto #23: 0 descubierto, 0 publicado, sin evaluación editorial. Conector técnico fail-closed y QA #74 no equivalen a fuente validada.",
-      "source": "data/state/discovery_run.json; data/source_health.json; piloto #23"
+      "description": "ISP/ANAMED EXTERNAL_BLOCKER_PROVEN: DNS resolves four official .cl/.gob.cl aliases but TCP443 times out before TLS from GitHub; Codex independently rejects CONNECT. Recent indexed alert remains primary-capture omission, no publication claimed.",
+      "source": "data/audits/public_sources_c_20261011/recovery/isp_anamed-checkpoint.json",
+      "next_action": "Operador de red/hosting de ISP: verificar listener y ruta TCP 443 de www.ispch.cl, ispch.cl, www.ispch.gob.cl e ispch.gob.cl frente al egress de GitHub hospedado, restaurar acceso HTTPS público o entregar un feed/document export oficial accesible; luego repetir esta Action."
     },
     {
       "id": "pfizer_newsroom_misroute",
@@ -2396,6 +2582,20 @@
         "historical_active_stock": 17,
         "closure_status": "OPEN: isolated candidate repair; staging merge, post-merge core and global gates outstanding",
         "artifact": "data/audits/fiscalizacion/native_reconciliation_2026_10_11.json"
+      }
+    },
+    {
+      "id": "public_data_lane_2026_10_11_proxy_connect",
+      "severity": "warning",
+      "description": "Codex proxy rejection remains environmental, superseded as sole closure cause. Real GitHub captures recover DEIS with exact degradation; FONASA current news/hub/docs are ALB HTTP403 after TLS, ISP four aliases time out on TCP443 before TLS. Official alternatives evaluated; current first-party coverage remains blocked for four sources.",
+      "source": "data/audits/public_sources_c_20261011/recovery/recovery-matrix.json",
+      "next_action": "Integración/Reviewer: revisar PR #13, hacer merge seguro a staging cuando sus gates lo permitan y repetir runtime real de DEIS después del merge. Mantener independientes los blockers FONASA ALB403 e ISP TCP443; sus propietarios oficiales deben habilitar acceso o export actual. No cerrar issue #5 con evidencia sólo de rama.",
+      "source_outcomes": {
+        "fonasa": "EXTERNAL_BLOCKER_PROVEN",
+        "fonasa_datos_abiertos": "EXTERNAL_BLOCKER_PROVEN",
+        "isp_anamed": "EXTERNAL_BLOCKER_PROVEN",
+        "isp_surveillance": "EXTERNAL_BLOCKER_PROVEN",
+        "deis": "OPERATIVE_DEGRADED"
       }
     }
   ],
@@ -2638,15 +2838,6 @@
       "next_check": "Reconcile current candidate after real collector run and cause-specific closure; keep production untouched."
     },
     {
-      "id": "pulso_exhaustive_recovery_2026_10_11",
-      "recorded_at": "2026-10-11T05:33:53.667681+00:00",
-      "branch": "codex/b-pulso-runtime-20261011",
-      "candidate_sha": "dfe53d9c4d45279ce2c0900a890cb77a38ec2ec4",
-      "verdict": "IN_PROGRESS_NOT_ACCEPTED",
-      "note": "Currentstaging73aff5c base;200originalbylinesfrozen; publicglobalarchiveendsAug12/10k. OriginalnetworknowworksActions; not403blocker. Historical90coverage and realcore/editorial outcomes stillpending.",
-      "artifact": "data/audits/pulso_external_control_2026_10_11.json"
-    },
-    {
       "id": "work3_adversarial_final_2026_10_11T091205Z",
       "status": "Monitoring window ended; current staging not validated",
       "description": "Governance-only staging delta revalidated progress accounting as partial. Scheduled */10 controller delivery remains unobserved; autonomy has zero durable product mutations and zero verified source closures. Source repairs remain in open PRs, and staging QA fails 11 >= 12.",
@@ -2705,6 +2896,15 @@
         "browser": "48PASS desktop/mobile",
         "reviewer": "0findings/PASS"
       }
+    },
+    {
+      "id": "pulso_exhaustive_recovery_2026_10_11",
+      "recorded_at": "2026-10-11T05:33:53.667681+00:00",
+      "branch": "codex/b-pulso-runtime-20261011",
+      "candidate_sha": "dfe53d9c4d45279ce2c0900a890cb77a38ec2ec4",
+      "verdict": "IN_PROGRESS_NOT_ACCEPTED",
+      "note": "Currentstaging73aff5c base;200originalbylinesfrozen; publicglobalarchiveendsAug12/10k. OriginalnetworknowworksActions; not403blocker. Historical90coverage and realcore/editorial outcomes stillpending.",
+      "artifact": "data/audits/pulso_external_control_2026_10_11.json"
     }
   ],
   "approved_infrastructure_changes": [
@@ -3742,7 +3942,7 @@
       ]
     }
   ],
-  "updated_at": "2026-10-11T14:05:53.481344+00:00",
+  "updated_at": "2026-10-11T14:34:56.693908+00:00",
   "closed_beta": {
     "status": "pending_validation",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",
@@ -3770,5 +3970,44 @@
       "reason": "Current source coverage is bounded and degraded; global browser/statistical Reviewer gates fail. Historical beta proof does not qualify this isolated candidate."
     },
     "historical_status": "ready"
+  },
+  "provider_recovery_current": {
+    "status": "EXTERNAL_BLOCKER_PROVEN",
+    "owner": "Codex F / Provider Intelligence + Source Engineering",
+    "pr": "https://github.com/cftorre1/Radar-salud/pull/14",
+    "scope": "Eight existing provider/gremio/pharma sources; source count is not coverage",
+    "evidence": [
+      "https://github.com/cftorre1/Radar-salud/pull/14",
+      "data/audits/provider_reconciliation_2026_10_11.json",
+      "data/audits/providers_2026_10_11",
+      "data/audits/provider_qa_2026_10_11/summary.json",
+      "data/audits/provider_inventory_2026_10_11",
+      "data/audits/provider_inventory_capture_2026_10_11",
+      "data/audits/provider_recurrent_checkpoint_2026_10_11.json",
+      "data/audits/provider_followup_checkpoint_2026_10_11.json",
+      "data/audits/provider_piece_reconciliation_2026_10_11.json",
+      "data/audits/provider_editorial_decisions_2026_10_11.json",
+      "data/audits/provider_recovered_outputs_2026_10_11.json",
+      "data/audits/provider_davila_cached_originals_2026_10_11.json",
+      "docs/PROVIDER_RECONCILIATION_HANDOFF_2026_10_11.md"
+    ],
+    "current_subfront": "closed_internal_recovery_external_dependencies_proven",
+    "progress": "1066URLrecords reconciled piece-by-piece;6actualoutputs verified;738priorhistory/59publishedqueue preserved. Dávila639datednews/13recent90 reconciled after640HTTP+228ordinaryChrome+191cachedoriginalheaders; current191archive403 explicitly degraded. Andes26CMScomplete. Bupa/INDISA external publication-date/maintenance dependencies proven.12newfastcalls,deep0;fast51. Real persisted runtime38120086028 bothpolls0new,history/AI/unrelatedqueue unchanged.75focalPASS1skip; providerbrowser4/4, global inherited QA remainsfailed.",
+    "next_action": "IntegrationCommander review PR14draft with exactpublisherdependencies and unchanged sharedgates; normative/dataowners fix inheritedQA before DailyRadar integration. SourceEngineering recheck only materially changed/dated official evidence; never replay unchanged paidterminals.",
+    "gates_relaxed": false,
+    "staging_promoted": false,
+    "issue5_closed": false,
+    "ready_for_integration": false,
+    "merged_staging_sha": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
+    "source_outcomes": {
+      "redsalud": "OPERATIVE_DEGRADED",
+      "bupa_chile": "EXTERNAL_BLOCKER_PROVEN",
+      "indisa": "EXTERNAL_BLOCKER_PROVEN",
+      "red_davila": "OPERATIVE_DEGRADED",
+      "andes_salud": "OPERATIVE_VALIDATED",
+      "clinicas_chile": "OPERATIVE_DEGRADED",
+      "pfizer_chile": "OPERATIVE_DEGRADED",
+      "clinicas_achs_salud": "OPERATIVE_DEGRADED"
+    }
   }
 }

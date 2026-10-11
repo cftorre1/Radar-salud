@@ -16,11 +16,19 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
            pending:int=0,deferred:int=0,rejected:int=0,error:str|None=None,live_pending:int|None=None,backfill_pending:int|None=None,
            discovery_evidence:dict|None=None, observed_rows:list[dict]|None=None,
            surfaces:list[dict]|None=None, published_history:list[dict]|None=None,
-           archived:int=0, rejection_reasons:dict|None=None, source_queue:list[dict]|None=None, error_detail:dict|None=None,inventory:dict|None=None,processed_rejections:int=0)->None:
+           archived:int=0, rejection_reasons:dict|None=None, source_queue:list[dict]|None=None, error_detail:dict|None=None,inventory:dict|None=None,error_details:dict|None=None,diagnostics:dict|None=None,evaluation_performed:bool=True,latest_original_at:str|None=None,processed_rejections:int=0)->None:
     d=_load(root);src=d.setdefault("sources",{});rows=rows or []
     dates=[x.get("event_date") for x in rows if x.get("event_date")]
     prev=src.get(slug) or (src.get("superintendencia_stats",{}) if slug=="superintendencia" else {})
     last_signal=max(dates+[prev.get("last_signal_at") or ""]) if dates else prev.get("last_signal_at")
+    latest_original_at=latest_original_at or prev.get('latest_original_at')
+    provider_stale=False
+    if slug in ('redsalud','bupa_chile','indisa','red_davila','andes_salud','clinicas_chile','pfizer_chile','clinicas_achs_salud') and latest_original_at:
+        try:provider_stale=(datetime.now(timezone.utc).date()-date.fromisoformat(latest_original_at[:10])).days>90
+        except (ValueError,TypeError):pass
+    audited_coverage=prev.get('provider_coverage')
+    incomplete=bool(audited_coverage and audited_coverage.get('coverage_complete') is not True)
+    degraded=bool(audited_coverage and audited_coverage.get('outcome')=='OPERATIVE_DEGRADED')
     fiscal = slug in ("superintendencia_fiscalizacion", "suseso_fiscalizacion")
     if fiscal and published_history is not None:
         last_signal = max((row.get("event_date") or "" for row in published_history), default="") or None
@@ -40,28 +48,37 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
     else:
         coverage = technical = None
     coverage_gap=error is None and discovered==0 and not last_signal
-    status="error" if error else ("warning" if (coverage_gap or (new>0 and published==0 and pending==0)) else "ok")
+    if diagnostics and (diagnostics.get("coverage_status")=="no_verifiable_documents"
+                        or diagnostics.get("verified_publications")==0):
+        coverage_gap=True
+    status="error" if error else ("warning" if (incomplete or degraded or provider_stale or not evaluation_performed or coverage_gap or (new>0 and published==0 and pending==0)) else "ok")
     # Parsed tables prove an observation, not reconciled 30/90-day coverage.
     # Keep the public health warning until independent reconciliation exists.
     if fiscal:
         status = "error" if error else "warning"
+    partial=bool(diagnostics and diagnostics.get("partial_failure"))
+    if partial and not error:status="warning"
     try:
         age=(datetime.now(timezone.utc).date()-date.fromisoformat(str(last_signal)[:10])).days
         freshness="future" if age<0 else ("recent" if age<=7 else "older")
     except (ValueError,TypeError):
         freshness="unknown"
-    editorial="not_evaluated" if error else ("published" if published else
+    editorial="published" if published else "not_evaluated" if error or not evaluation_performed else (
         "rejected" if processed_rejections else "pending" if pending else "no_new_signals")
+    if diagnostics and diagnostics.get("poll_mode")=="discovery_and_document_verification_only":
+        editorial="not_evaluated"
     src[slug]={
         "name":name,"checked_at":datetime.now(timezone.utc).isoformat(),
         "last_signal_at":last_signal,
         "discovered":discovered,"new":new,"published":published,
         "live_pending":live_pending,"backfill_pending":backfill_pending,"pending":pending,"deferred":deferred,"rejected":rejected,
         "status":status,"error":error,
-        "technical_status":technical or ("error" if error else "ok"),
-        "coverage_status":coverage or ("unverified" if error else ("gap" if coverage_gap else "observed")),
-        "content_freshness":freshness,
+        "technical_status":technical or ("error" if error else "degraded" if partial else "ok"),
+        "coverage_status":coverage or ("unverified" if error or incomplete else ("partial" if partial else "gap" if coverage_gap or provider_stale else "observed")),
+        "content_freshness":"stale_external_surface" if provider_stale else freshness,
+        "latest_original_at":latest_original_at,
         "editorial_outcome":editorial,
+        "evaluation_performed":evaluation_performed,
         "processed_rejections":processed_rejections,
         "counts_scope":{"discovered":"this_run","new":"this_run","published":"this_run",
                         "processed_rejections":"this_run","rejected":"cumulative_queue"},
@@ -154,5 +171,15 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
             technical_failures=inventory.get("errors", []) or ([error_detail] if error_detail else []),
             coverage_status="complete" if complete else "partial", coverage_completeness=complete,
             recovery_outcome=outcome, status="ok" if outcome == "OPERATIVE_VALIDATED" else "warning" if discovered or not error else "error")
+    if error_details:src[slug]["error_details"]=error_details
+    if diagnostics:src[slug]["discovery_diagnostics"]=diagnostics
+    if diagnostics and diagnostics.get("poll_mode"):
+        src[slug]["engine_checked_at"]=(src[slug]["checked_at"] if diagnostics["poll_mode"]=="daily_engine"
+                                        else prev.get("engine_checked_at",prev.get("checked_at")))
+        src[slug]["poll_mode"]=diagnostics["poll_mode"]
+    if diagnostics and "latest_verified_publication_date" in diagnostics:
+        src[slug]["latest_verified_publication_at"]=diagnostics["latest_verified_publication_date"]
+    for field in ('provider_audit','audited_assessment','provider_coverage'):
+        if field in prev:src[slug][field]=prev[field]
     d["generated_at"]=datetime.now(timezone.utc).isoformat()
     atomic_json(_path(root),d)

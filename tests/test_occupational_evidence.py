@@ -69,4 +69,3 @@ def test_corrupted_or_unbound_capture_never_consumes_analysis(captured_raw, tamp
     with pytest.raises(DeferredProcessing):
         process_curated_beta_source(raw, {})
     assert calls == []
-

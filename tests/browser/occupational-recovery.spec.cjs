@@ -18,6 +18,8 @@ test('occupational sources expose verified counts and readable source identity o
   expect(health.sources.clinicas_achs_salud.name).toBe('Achs Salud / Clínicas');
   await page.locator('#sourcesOpen').click();
   await expect(page.locator('#sourcesDialog')).toBeVisible();
+  // The source list loads independently from the radar metadata. Wait for its render before inspecting the expansion control.
+  await expect(page.locator('#sourcesList .source-row').first()).toBeVisible();
   if(await page.locator('#sourcesMore').isVisible())await page.locator('#sourcesMore').click();
   for(const slug of lanes){
     const row=page.locator('.source-row').filter({has:page.getByText(health.sources[slug].name,{exact:true})});
