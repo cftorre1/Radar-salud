@@ -1,0 +1,1516 @@
+{
+  "schema": "achs_additional_official_surfaces_v1",
+  "generated_at": "2026-10-11T05:57:00.394123+00:00",
+  "as_of": "2026-10-11",
+  "source_slug": "clinicas_achs_salud",
+  "surface_scope": "ACHS Salud blog/home/clinical directory and observed clinic publishers",
+  "clinical_source_coverage_complete": false,
+  "summary": {
+    "blog_dom_records": 43,
+    "blog_material_current_items": 0,
+    "blog_dated_rejected_30": 3,
+    "blog_dated_rejected_90": 3,
+    "blog_cms_reported_90": 4,
+    "blog_date_conflict_potentially_90": 1,
+    "blog_all_date_conflicts": 25,
+    "current_raw_items": 0,
+    "reason": "Blog advice is inventoried and rejected; undated procurement and other official clinic archives remain pending."
+  },
+  "origin_captures": [
+    {
+      "run_id": "38114830625",
+      "source": "achs_salud",
+      "surface": "robots",
+      "url": "https://www.achssalud.cl/robots.txt",
+      "captured_at": "2026-10-11T05:27:40.504044+00:00",
+      "user_agent": "identified",
+      "http_status": 404,
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/robots.txt",
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "curl_exit": 0,
+      "error": null,
+      "body_file": "data/audits/source_e_recovery/actions/38114830625/9694db95f06011fb2892-0.body",
+      "body_sha256": "74bc47a77e7b515b35f5a74a68d3fec7b57e2f98b5464cad1888308f568530d1"
+    },
+    {
+      "run_id": "38114830625",
+      "source": "achs_salud",
+      "surface": "clinics",
+      "url": "https://www.achssalud.cl/areasdeatencion/clinicas",
+      "captured_at": "2026-10-11T05:27:43.140869+00:00",
+      "user_agent": "identified",
+      "http_status": 200,
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/areasdeatencion/clinicas",
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "curl_exit": 0,
+      "error": null,
+      "body_file": "data/audits/source_e_recovery/actions/38114830625/2fc7dbce36da859aa10d-0.body",
+      "body_sha256": "9bbc09a61154d6ec227545348109683a00b22b84063d309fc88afad22d971ce3"
+    },
+    {
+      "run_id": "38114830625",
+      "source": "achs_salud",
+      "surface": "home",
+      "url": "https://www.achssalud.cl/",
+      "captured_at": "2026-10-11T05:27:45.734043+00:00",
+      "user_agent": "identified",
+      "http_status": 200,
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/",
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "curl_exit": 0,
+      "error": null,
+      "body_file": "data/audits/source_e_recovery/actions/38114830625/49cd0848377ffaa33723-0.body",
+      "body_sha256": "9c551be0b29af73b80f7e8c2a81e3dc1dbfa651ea51be2632d80fa1b35ae9d85"
+    },
+    {
+      "run_id": "38114830625",
+      "source": "achs_salud",
+      "surface": "home",
+      "url": "https://www.achssalud.cl/",
+      "captured_at": "2026-10-11T05:27:48.411323+00:00",
+      "user_agent": "browser_comparison",
+      "http_status": 200,
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/",
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "curl_exit": 0,
+      "error": null,
+      "body_file": "data/audits/source_e_recovery/actions/38114830625/27369f850714aefa8a67-0.body",
+      "body_sha256": "d8c1e17711de1998507c1d6e87a965b24d99da7f5517a8645c6d7fe2d165f604"
+    },
+    {
+      "run_id": "38114830625",
+      "source": "achs_salud",
+      "surface": "sitemap",
+      "url": "https://www.achssalud.cl/sitemap.xml",
+      "captured_at": "2026-10-11T05:27:51.127188+00:00",
+      "user_agent": "identified",
+      "http_status": 404,
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/sitemap.xml",
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "curl_exit": 0,
+      "error": null,
+      "body_file": "data/audits/source_e_recovery/actions/38114830625/d0fabdaae8cbe9d943bc-0.body",
+      "body_sha256": "84b7ae9d06055b6290619b9c568232466367fb09d6d9bd86481df21bb08b3e32"
+    },
+    {
+      "run_id": "38114830625",
+      "source": "achs_clinics",
+      "surface": "robots",
+      "url": "https://www.clinicasachssalud.cl/robots.txt",
+      "captured_at": "2026-10-11T05:27:53.116916+00:00",
+      "user_agent": "identified",
+      "http_status": 0,
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/robots.txt",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+      "body_file": "data/audits/source_e_recovery/actions/38114830625/55dd1de4c3cd0ec02a58-0.body",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "run_id": "38114830625",
+      "source": "achs_clinics",
+      "surface": "home",
+      "url": "https://www.clinicasachssalud.cl/",
+      "captured_at": "2026-10-11T05:28:06.129075+00:00",
+      "user_agent": "identified",
+      "http_status": 0,
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12003 ms: Timeout was reached",
+      "body_file": "data/audits/source_e_recovery/actions/38114830625/6429d8a14cd86b0ba2f9-0.body",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "run_id": "38114830625",
+      "source": "achs_clinics",
+      "surface": "home",
+      "url": "https://www.clinicasachssalud.cl/",
+      "captured_at": "2026-10-11T05:28:19.141412+00:00",
+      "user_agent": "browser_comparison",
+      "http_status": 0,
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+      "body_file": "data/audits/source_e_recovery/actions/38114830625/6d3bac37d4df3ddf6282-0.body",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "run_id": "38114830625",
+      "source": "achs_clinics",
+      "surface": "sitemap",
+      "url": "https://www.clinicasachssalud.cl/sitemap.xml",
+      "captured_at": "2026-10-11T05:28:32.153397+00:00",
+      "user_agent": "identified",
+      "http_status": 0,
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/sitemap.xml",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+      "body_file": "data/audits/source_e_recovery/actions/38114830625/28551ea1133f95470b20-0.body",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "run_id": "38115274609",
+      "source": "achs_salud",
+      "surface": "robots",
+      "url": "https://www.achssalud.cl/robots.txt",
+      "captured_at": "2026-10-11T05:35:45.498863+00:00",
+      "user_agent": "identified",
+      "http_status": 404,
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/robots.txt",
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "curl_exit": 0,
+      "error": null,
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/9694db95f06011fb2892-0.body",
+      "body_sha256": "74bc47a77e7b515b35f5a74a68d3fec7b57e2f98b5464cad1888308f568530d1"
+    },
+    {
+      "run_id": "38115274609",
+      "source": "achs_salud",
+      "surface": "clinics",
+      "url": "https://www.achssalud.cl/areasdeatencion/clinicas",
+      "captured_at": "2026-10-11T05:35:47.376967+00:00",
+      "user_agent": "identified",
+      "http_status": 200,
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/areasdeatencion/clinicas",
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "curl_exit": 0,
+      "error": null,
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/2fc7dbce36da859aa10d-0.body",
+      "body_sha256": "ba8b6aed0e496d09edad90ecc18fb995b0fe93884ed7f022703f7ee05ba86b09"
+    },
+    {
+      "run_id": "38115274609",
+      "source": "achs_salud",
+      "surface": "home",
+      "url": "https://www.achssalud.cl/",
+      "captured_at": "2026-10-11T05:35:49.854085+00:00",
+      "user_agent": "identified",
+      "http_status": 200,
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/",
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "curl_exit": 0,
+      "error": null,
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/49cd0848377ffaa33723-0.body",
+      "body_sha256": "72eb6405e32836d9e0001f6c94d056d26fb9ee8ad9818485db7bdebe99fd4394"
+    },
+    {
+      "run_id": "38115274609",
+      "source": "achs_salud",
+      "surface": "home",
+      "url": "https://www.achssalud.cl/",
+      "captured_at": "2026-10-11T05:35:52.276170+00:00",
+      "user_agent": "browser_comparison",
+      "http_status": 200,
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/",
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "curl_exit": 0,
+      "error": null,
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/27369f850714aefa8a67-0.body",
+      "body_sha256": "e99a3ffc6b36ecb3172cff5c49c31851e6544ef64f99a5b6209576ebd616c5b1"
+    },
+    {
+      "run_id": "38115274609",
+      "source": "achs_salud",
+      "surface": "sitemap",
+      "url": "https://www.achssalud.cl/sitemap.xml",
+      "captured_at": "2026-10-11T05:35:54.583362+00:00",
+      "user_agent": "identified",
+      "http_status": 404,
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/sitemap.xml",
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "curl_exit": 0,
+      "error": null,
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/d0fabdaae8cbe9d943bc-0.body",
+      "body_sha256": "dc4e69ba604eeb3dc392673c862ebd887063a8ec91537552e146d29a5c85fe5c"
+    },
+    {
+      "run_id": "38115274609",
+      "source": "achs_clinics",
+      "surface": "robots",
+      "url": "https://www.clinicasachssalud.cl/robots.txt",
+      "captured_at": "2026-10-11T05:35:56.341817+00:00",
+      "user_agent": "identified",
+      "http_status": 0,
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/robots.txt",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12000 ms: Timeout was reached",
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/55dd1de4c3cd0ec02a58-0.body",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "run_id": "38115274609",
+      "source": "achs_clinics",
+      "surface": "home",
+      "url": "https://www.clinicasachssalud.cl/",
+      "captured_at": "2026-10-11T05:36:09.352258+00:00",
+      "user_agent": "identified",
+      "http_status": 0,
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12001 ms: Timeout was reached",
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/6429d8a14cd86b0ba2f9-0.body",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "run_id": "38115274609",
+      "source": "achs_clinics",
+      "surface": "home",
+      "url": "https://www.clinicasachssalud.cl/",
+      "captured_at": "2026-10-11T05:36:22.363247+00:00",
+      "user_agent": "browser_comparison",
+      "http_status": 0,
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12001 ms: Timeout was reached",
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/6d3bac37d4df3ddf6282-0.body",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "run_id": "38115274609",
+      "source": "achs_clinics",
+      "surface": "sitemap",
+      "url": "https://www.clinicasachssalud.cl/sitemap.xml",
+      "captured_at": "2026-10-11T05:36:35.374528+00:00",
+      "user_agent": "identified",
+      "http_status": 0,
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/sitemap.xml",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12003 ms: Timeout was reached",
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/28551ea1133f95470b20-0.body",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "run_id": "38115274609",
+      "source": "achs_salud",
+      "surface": "blog",
+      "url": "https://www.achssalud.cl/blog",
+      "captured_at": "2026-10-11T05:37:49.823166+00:00",
+      "user_agent": "identified",
+      "http_status": 200,
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/blog",
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "curl_exit": 0,
+      "error": null,
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/820f6e40aa4d4b72408c-0.body",
+      "body_sha256": "3024f5f157482a2c95bb3125403d0fbab2aaf223f2d42a7596437400968f3503"
+    },
+    {
+      "run_id": "38115274609",
+      "source": "achs_clinics",
+      "surface": "feed",
+      "url": "https://www.clinicasachssalud.cl/feed/",
+      "captured_at": "2026-10-11T05:37:51.799248+00:00",
+      "user_agent": "identified",
+      "http_status": 0,
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/feed/",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12001 ms: Timeout was reached",
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/c4e7d1a1fa85aedd97a1-0.body",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "run_id": "38115274609",
+      "source": "achs_clinics",
+      "surface": "home_apex",
+      "url": "https://clinicasachssalud.cl/",
+      "captured_at": "2026-10-11T05:38:04.809669+00:00",
+      "user_agent": "identified",
+      "http_status": 0,
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicasachssalud.cl/",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicasachssalud.cl port 443 after 12001 ms: Timeout was reached",
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/71045117282421aed7b1-0.body",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "run_id": "38115274609",
+      "source": "achs_clinics",
+      "surface": "feed_apex",
+      "url": "https://clinicasachssalud.cl/feed/",
+      "captured_at": "2026-10-11T05:38:17.820090+00:00",
+      "user_agent": "identified",
+      "http_status": 0,
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicasachssalud.cl/feed/",
+      "tls": {
+        "origin_handshake_observed": false,
+        "certificate_verification_result": null,
+        "verified": false
+      },
+      "curl_exit": 28,
+      "error": "curl: (28) Failed to connect to clinicasachssalud.cl port 443 after 12001 ms: Timeout was reached",
+      "body_file": "data/audits/source_e_recovery/actions/38115274609/a49f69db87228a47c38f-0.body",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "blog": {
+    "url": "https://www.achssalud.cl/blog",
+    "body_sha256": "3024f5f157482a2c95bb3125403d0fbab2aaf223f2d42a7596437400968f3503",
+    "inventory_helper": "radar_salud.achs_blog.discover_blog_inventory(scout,loader,as_of=None)",
+    "metrics": {
+      "30": {
+        "start": "2026-09-11",
+        "end": "2026-10-11",
+        "dated_articles": 3,
+        "expected_role": 3,
+        "candidates": 0,
+        "rejected": 3,
+        "excluded_role": 0,
+        "pending": 0,
+        "publisher_reported_articles": 3,
+        "unknown_date_items": 25,
+        "complete": false
+      },
+      "90": {
+        "start": "2026-07-13",
+        "end": "2026-10-11",
+        "dated_articles": 3,
+        "expected_role": 3,
+        "candidates": 0,
+        "rejected": 3,
+        "excluded_role": 0,
+        "pending": 1,
+        "publisher_reported_articles": 4,
+        "unknown_date_items": 25,
+        "complete": false
+      }
+    },
+    "observed_dataset_exhausted": true,
+    "coverage_complete": false,
+    "technical_status": "partial",
+    "stop_reason": "date_or_detail_gaps_in_blog",
+    "rows": [
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/por-qué-volver-a-usar-el-protector-solar",
+        "title": "¿Por qué volver a usar el protector solar?",
+        "publication_date": "2026-10-01",
+        "publisher_reported_date": "2026-10-01",
+        "status": "rejected",
+        "reason": "no_verifiable_material_change",
+        "within_30_days": true,
+        "within_90_days": true,
+        "potentially_within_90_days": true,
+        "PublicationDate": [
+          "oct. 1, 2026, 08:31"
+        ],
+        "sortPublicationDate": [
+          "20261001083113"
+        ],
+        "FechaArticulo": [
+          "oct. 1, 2026, 09:30"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/duelo-perinatal--una-pérdida-muchas-veces-invisible",
+        "title": "Duelo perinatal: una pérdida muchas veces invisible",
+        "publication_date": "2026-09-24",
+        "publisher_reported_date": "2026-09-24",
+        "status": "rejected",
+        "reason": "no_verifiable_material_change",
+        "within_30_days": true,
+        "within_90_days": true,
+        "potentially_within_90_days": true,
+        "PublicationDate": [
+          "sep. 24, 2026, 09:14"
+        ],
+        "sortPublicationDate": [
+          "20260924091437"
+        ],
+        "FechaArticulo": [
+          "sep. 24, 2026, 11:30"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/consejos-para-celebrar-fiestas-patrias-de-forma-segura",
+        "title": "Consejos para celebrar Fiestas Patrias de forma segura",
+        "publication_date": "2026-09-16",
+        "publisher_reported_date": "2026-09-16",
+        "status": "rejected",
+        "reason": "no_verifiable_material_change",
+        "within_30_days": true,
+        "within_90_days": true,
+        "potentially_within_90_days": true,
+        "PublicationDate": [
+          "sep. 16, 2026, 16:14"
+        ],
+        "sortPublicationDate": [
+          "20260916161405"
+        ],
+        "FechaArticulo": [
+          "sep. 16, 2026, 16:30"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad",
+        "title": "Duelo migratorio: qué es y cómo adaptarte a tu nueva ciudad",
+        "publication_date": null,
+        "publisher_reported_date": "2026-09-04",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": true,
+        "PublicationDate": [
+          "sep. 4, 2026, 13:22"
+        ],
+        "sortPublicationDate": [
+          "20260904132221"
+        ],
+        "FechaArticulo": [
+          "abr. 9, 2026, 14:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/duelo-perdida-mascota",
+        "title": "Huellas en el corazón: entendiendo el duelo animal",
+        "publication_date": "2026-02-03",
+        "publisher_reported_date": "2026-02-03",
+        "status": "outside_window",
+        "reason": "outside_90_day_horizon",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "feb. 3, 2026, 09:07"
+        ],
+        "sortPublicationDate": [
+          "20260203090727"
+        ],
+        "FechaArticulo": [
+          "feb. 3, 2026, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/apego-influencia-relaciones-salud-mental",
+        "title": "Apego y su influencia en las relaciones",
+        "publication_date": "2026-01-20",
+        "publisher_reported_date": "2026-01-20",
+        "status": "outside_window",
+        "reason": "outside_90_day_horizon",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ene. 20, 2026, 09:47"
+        ],
+        "sortPublicationDate": [
+          "20260120094700"
+        ],
+        "FechaArticulo": [
+          "ene. 20, 2026, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/camino-a-cultivar-una-relacion-sana-conmigo-misma-o-mismo",
+        "title": "Camino a cultivar una relación sana conmigo misma o mismo",
+        "publication_date": "2025-10-28",
+        "publisher_reported_date": "2025-10-28",
+        "status": "outside_window",
+        "reason": "outside_90_day_horizon",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "oct. 28, 2025, 12:40"
+        ],
+        "sortPublicationDate": [
+          "20251028124054"
+        ],
+        "FechaArticulo": [
+          "oct. 28, 2025, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/y-si-no-es-solo-cansancio-descubre-que-hay-detrás-de-sentirte-sin-animos",
+        "title": "¿Y si no es solo cansancio? Descubre qué hay detrás de sentirte sin ánimos",
+        "publication_date": "2025-09-30",
+        "publisher_reported_date": "2025-09-30",
+        "status": "outside_window",
+        "reason": "outside_90_day_horizon",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "sep. 30, 2025, 18:23"
+        ],
+        "sortPublicationDate": [
+          "20250930182316"
+        ],
+        "FechaArticulo": [
+          "sep. 30, 2025, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/primavera-gris-cuando-el-florecer-externo-no-siempre-refleja-el-animo-interno",
+        "title": "Primavera gris: cuando el florecer externo no siempre refleja el ánimo interno",
+        "publication_date": "2025-09-24",
+        "publisher_reported_date": "2025-09-24",
+        "status": "outside_window",
+        "reason": "outside_90_day_horizon",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "sep. 24, 2025, 12:20"
+        ],
+        "sortPublicationDate": [
+          "20250924122005"
+        ],
+        "FechaArticulo": [
+          "sep. 24, 2025, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/cuando-buscar-una-atención-dermatologica",
+        "title": "¿Cuándo buscar una atención dermatológica?",
+        "publication_date": "2025-08-28",
+        "publisher_reported_date": "2025-08-28",
+        "status": "outside_window",
+        "reason": "outside_90_day_horizon",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 28, 2025, 09:45"
+        ],
+        "sortPublicationDate": [
+          "20250828094549"
+        ],
+        "FechaArticulo": [
+          "ago. 28, 2025, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/como-reconocer-el-estres-universitario-y-cuidarte-en-el-camino",
+        "title": "Cómo reconocer el estrés universitario y cuidarte en el camino",
+        "publication_date": "2025-08-04",
+        "publisher_reported_date": "2025-08-04",
+        "status": "outside_window",
+        "reason": "outside_90_day_horizon",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 4, 2025, 12:50"
+        ],
+        "sortPublicationDate": [
+          "20250804125036"
+        ],
+        "FechaArticulo": [
+          "ago. 4, 2025, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/cuando-la-maternidad-no-es-lo-que-esperabamos-autoestima-exigencias-y-cuidado",
+        "title": "Cuando la maternidad no es lo que esperábamos: autoestima, exigencias y cuidado",
+        "publication_date": "2025-07-01",
+        "publisher_reported_date": "2025-07-01",
+        "status": "outside_window",
+        "reason": "outside_90_day_horizon",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "jul. 1, 2025, 18:30"
+        ],
+        "sortPublicationDate": [
+          "20250701183035"
+        ],
+        "FechaArticulo": [
+          "jul. 1, 2025, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/tienes-fiebre-y-malestar-podría-ser-influenza-y-no-un-resfrio-comun",
+        "title": "¿Tienes fiebre y malestar? Podría ser influenza y no un resfrío común",
+        "publication_date": "2025-06-30",
+        "publisher_reported_date": "2025-06-30",
+        "status": "outside_window",
+        "reason": "outside_90_day_horizon",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "jun. 30, 2025, 10:43"
+        ],
+        "sortPublicationDate": [
+          "20250630104304"
+        ],
+        "FechaArticulo": [
+          "jun. 30, 2025, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/acompañar-en-la-adolescencia--qué-hacer-cuando-no-sabes-cómo-ayudar",
+        "title": "Acompañar en la adolescencia: qué hacer cuando no sabes cómo ayudar",
+        "publication_date": "2025-06-11",
+        "publisher_reported_date": "2025-06-11",
+        "status": "outside_window",
+        "reason": "outside_90_day_horizon",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "jun. 11, 2025, 15:39"
+        ],
+        "sortPublicationDate": [
+          "20250611153954"
+        ],
+        "FechaArticulo": [
+          "jun. 11, 2025, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/que-es-el-resfrio-comun",
+        "title": "¿Qué es el resfrío común?",
+        "publication_date": "2025-05-15",
+        "publisher_reported_date": "2025-05-15",
+        "status": "outside_window",
+        "reason": "outside_90_day_horizon",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "may. 15, 2025, 18:20"
+        ],
+        "sortPublicationDate": [
+          "20250515182045"
+        ],
+        "FechaArticulo": [
+          "may. 15, 2025, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/ansiedad-paso-a-paso-de-la-comprension-a-la-regulacion",
+        "title": "Ansiedad paso a paso: De la comprensión a la regulación",
+        "publication_date": null,
+        "publisher_reported_date": "2025-05-13",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "may. 13, 2025, 15:42"
+        ],
+        "sortPublicationDate": [
+          "20250513154218"
+        ],
+        "FechaArticulo": [
+          "mar. 27, 2025, 01:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/construye-tu-bienestar-paso-a-paso-con-habitos-saludables",
+        "title": "Construye tu bienestar paso a paso con hábitos saludables",
+        "publication_date": null,
+        "publisher_reported_date": "2025-05-06",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "may. 6, 2025, 17:15"
+        ],
+        "sortPublicationDate": [
+          "20250506171548"
+        ],
+        "FechaArticulo": [
+          "mar. 27, 2025, 01:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/cómo-recuperar-la-rutina-de-marzo-siendo-padres",
+        "title": "¿Cómo recuperar la rutina de marzo siendo padres?",
+        "publication_date": "2025-03-27",
+        "publisher_reported_date": "2025-03-27",
+        "status": "outside_window",
+        "reason": "outside_90_day_horizon",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "mar. 27, 2025, 14:07"
+        ],
+        "sortPublicationDate": [
+          "20250327140747"
+        ],
+        "FechaArticulo": [
+          "mar. 27, 2025, 01:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/dolor-en-la-espalda-baja--descubre-las-causas-y-tratamientos-de-la-lumbalgia",
+        "title": "¿Dolor en la espalda baja? Descubre las causas y tratamientos de la Lumbalgia",
+        "publication_date": "2025-03-27",
+        "publisher_reported_date": "2025-03-27",
+        "status": "outside_window",
+        "reason": "outside_90_day_horizon",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "mar. 27, 2025, 13:51"
+        ],
+        "sortPublicationDate": [
+          "20250327135150"
+        ],
+        "FechaArticulo": [
+          "mar. 27, 2025, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/señales-de-alerta-en-el-postparto---cuándo-consultar",
+        "title": "Señales de depresión postparto: ¿Cuándo consultar?",
+        "publication_date": "2025-02-11",
+        "publisher_reported_date": "2025-02-11",
+        "status": "outside_window",
+        "reason": "outside_90_day_horizon",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "feb. 11, 2025, 11:26"
+        ],
+        "sortPublicationDate": [
+          "20250211112623"
+        ],
+        "FechaArticulo": [
+          "feb. 11, 2025, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/cuándo-debes-consultar-a-un-psicólogo",
+        "title": "¿Cuándo debes consultar a un psicólogo?",
+        "publication_date": null,
+        "publisher_reported_date": "2025-01-27",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ene. 27, 2025, 17:06"
+        ],
+        "sortPublicationDate": [
+          "20250127170620"
+        ],
+        "FechaArticulo": [
+          "oct. 14, 2022, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/estrés-postraumático-y-crecimiento",
+        "title": "Estrés postraumático y crecimiento",
+        "publication_date": null,
+        "publisher_reported_date": "2025-01-06",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ene. 6, 2025, 14:57"
+        ],
+        "sortPublicationDate": [
+          "20250106145720"
+        ],
+        "FechaArticulo": [
+          "ene. 3, 2025, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/anda-despacio-que-estás-apurado--ansiedad-y-tiempo-en-el-térmiino-de-año",
+        "title": "Anda despacio que estás apurado: ansiedad y tiempo en el término de año",
+        "publication_date": "2024-12-23",
+        "publisher_reported_date": "2024-12-23",
+        "status": "outside_window",
+        "reason": "outside_90_day_horizon",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "dic. 23, 2024, 12:13"
+        ],
+        "sortPublicationDate": [
+          "20241223121331"
+        ],
+        "FechaArticulo": [
+          "dic. 23, 2024, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/cuando-el-dolor-habla-sin-palabras-la-depresion",
+        "title": "Cuando el dolor habla sin palabras: La depresión",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105829"
+        ],
+        "FechaArticulo": [
+          "ene. 12, 2024, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/tienes-dolor-de-hombro-conoce-las-causas-y-tratamiento-de-las-lesiones-del-manguito-rotador",
+        "title": "¿Tienes dolor de hombro? Conoce las causas y tratamiento de las lesiones del manguito rotador",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105829"
+        ],
+        "FechaArticulo": [
+          "sep. 11, 2020, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/crisis-de-panico-como-regularlas",
+        "title": "Crisis de pánico: ¿Cómo regularlas?",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105829"
+        ],
+        "FechaArticulo": [
+          "sep. 6, 2023, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/el-compromiso-de-la-achs-y-su-servicio-de-traumatologia-con-la-poblacion-chilena",
+        "title": "El compromiso de la Achs y su Servicio de Traumatología con la población chilena",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105829"
+        ],
+        "FechaArticulo": [
+          "may. 22, 2023, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/que-esperar-de-la-primera-sesion-con-tu-psicologo",
+        "title": "¿Qué esperar de la primera sesión con tu psicólogo?",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105829"
+        ],
+        "FechaArticulo": [
+          "sep. 6, 2023, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/para-que-buscar-ayuda-psicologica",
+        "title": "¿Para qué buscar ayuda psicológica?",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105829"
+        ],
+        "FechaArticulo": [
+          "mar. 3, 2023, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/estoy-triste-o-deprimido",
+        "title": "¿Estoy triste o deprimido?",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105828"
+        ],
+        "FechaArticulo": [
+          "oct. 14, 2022, 01:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/como-alguien-como-yo-puede-deprimirse",
+        "title": "¿Cómo alguien como yo puede deprimirse?",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105828"
+        ],
+        "FechaArticulo": [
+          "ene. 10, 2023, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/conoce-nuestro-servicio-de-terapia-fisica",
+        "title": "Conoce nuestro servicio de Kinesiología",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105828"
+        ],
+        "FechaArticulo": [
+          "feb. 20, 2023, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/enfrenta-con-mas-herramientas-el-fin-de-ano",
+        "title": "Enfrenta con más herramientas el fin de año",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105828"
+        ],
+        "FechaArticulo": [
+          "dic. 11, 2023, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/ser-mujer-8m-y-salud-mental",
+        "title": "Ser mujer: 8M y Salud Mental",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105828"
+        ],
+        "FechaArticulo": [
+          "mar. 9, 2022, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/que-es-la-psicoterapia-breve-y-focalizada",
+        "title": "¿Qué es la psicoterapia breve y focalizada?",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105828"
+        ],
+        "FechaArticulo": [
+          "ene. 6, 2022, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/aplicacion-terapeutica-de-frio-y-calor",
+        "title": "Aplicación Terapéutica de Frío y Calor",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105828"
+        ],
+        "FechaArticulo": [
+          "sep. 26, 2023, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/que-es-una-crisis-de-panico",
+        "title": "¿Qué es una crisis de pánico?",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105828"
+        ],
+        "FechaArticulo": [
+          "nov. 11, 2022, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/mindfulness-como-mantenernos-en-el-presente",
+        "title": "Mindfulness, ¿Cómo mantenernos en el presente?",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105828"
+        ],
+        "FechaArticulo": [
+          "abr. 14, 2023, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/mis-hijos-vuelven-a-clases-como-enfrento-el-estres-escolar-de-marzo",
+        "title": "Mis hijos vuelven a clases ¿Cómo enfrento el estrés escolar de marzo?",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105828"
+        ],
+        "FechaArticulo": [
+          "ene. 30, 2023, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/como-manejar-el-estres-en-período-de-examenes",
+        "title": "¿Cómo manejar el estrés en período de exámenes?",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105828"
+        ],
+        "FechaArticulo": [
+          "dic. 9, 2022, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/el-corazon-del-servicio-de-salud-mental-la-cooperacion",
+        "title": "El Corazón del Servicio de Salud Mental: La cooperación",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105827"
+        ],
+        "FechaArticulo": [
+          "nov. 11, 2022, 00:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/que-es-la-ansiedad",
+        "title": "¿Qué es la ansiedad?",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105827"
+        ],
+        "FechaArticulo": [
+          "oct. 14, 2022, 01:00"
+        ]
+      },
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/que-es-el-estres-y-como-manejarlo",
+        "title": "¿Qué es el estrés y cómo manejarlo?",
+        "publication_date": null,
+        "publisher_reported_date": "2024-08-21",
+        "status": "pending",
+        "reason": "publication_editorial_date_conflict",
+        "within_30_days": false,
+        "within_90_days": false,
+        "potentially_within_90_days": false,
+        "PublicationDate": [
+          "ago. 21, 2024, 10:58"
+        ],
+        "sortPublicationDate": [
+          "20240821105827"
+        ],
+        "FechaArticulo": [
+          "dic. 9, 2022, 00:00"
+        ]
+      }
+    ],
+    "date_contract": {
+      "explicit_publication": ".cf_item .PublicationDate",
+      "numeric_cross_check": ".cf_item .sortPublicationDate",
+      "custom_editorial_date": ".cf_item .FechaArticulo",
+      "excluded_as_publication": [
+        "LastModified",
+        "DateCreated",
+        "HTTP Date",
+        "URL upload path",
+        "footer copyright",
+        "data period"
+      ],
+      "field_format": "Spanish abbreviation, day, year, local HH:MM; strict whole-field calendar/time validation",
+      "conflict_rule": "PublicationDate and FechaArticulo must have the same Chile calendar day. Conflict remains pending; inventory retains CMS-reported date separately.",
+      "material_promotion_rule": "Listing date alone never emits RawItem. Only own detail publication evidence with matching date/title, sufficient scoped body and confirmed material change can emit RawItem."
+    },
+    "pagination": {
+      "observed_script": {
+        "record_source": "let _listItems = document.querySelectorAll('.cf_item');",
+        "publication_field": "PublicationDate: element.querySelector(\".PublicationDate\").textContent,",
+        "modified_sort": "listDisplayData.sort(OrderBy(\"sortLastModified\", order));",
+        "client_page_size": "let maxiElemectPage = 9;",
+        "client_page_next": "function GotoNextPage() { GotoPage(paginaActual + 1); }"
+      },
+      "behavior": "Client-side pagination of all cf_item nodes already in HTML, nine per page, sorted by LastModified. No server page URL is observed or synthesized.",
+      "initial_markup_counter": "1 / 10",
+      "actual_serialized_records": 43,
+      "derived_client_pages": 5,
+      "counter_warning": "The static 1/10 markup is not evidence of 10 server archive pages. Runtime script derives ceil(records/9)."
+    },
+    "apis": {
+      "verified_api_urls": [],
+      "unresolved_script_reference": "GetClassificationApi uses _urlClassificationApi, but this capture defines no corresponding base endpoint and GetListItem reads DOM locally. No guessed API request is made."
+    }
+  },
+  "undated_official_surfaces": [
+    {
+      "url": "https://www.achssalud.cl/",
+      "status": "reachable_undated_services",
+      "publication_date": null,
+      "reason": "Home services, pricing and standing SAFED/SEL coverage do not establish publication dates. An April 2026 policy applicability date is not this page publication."
+    },
+    {
+      "url": "https://www.achssalud.cl/areasdeatencion/clinicas",
+      "status": "reachable_undated_directory",
+      "publication_date": null,
+      "observed_clinic_home_links": [
+        "https://www.clinicaportada.cl/",
+        "https://www.clinicaatacama.cl/",
+        "https://www.clinicamaitenes.cl/",
+        "https://www.clinicalircay.cl/",
+        "https://www.clinicalosandes.cl/",
+        "https://www.clinicasur.cl/",
+        "https://www.clinicapuertomontt.cl/"
+      ],
+      "reason": "Seven linked clinic sites in this older directory, while corporate home reports nine clinics. Neither is a dated newsroom article."
+    }
+  ],
+  "browser_findings": [
+    {
+      "url": "https://www.clinicasachssalud.cl/",
+      "retrieved_via": "official_browser_open",
+      "browser_reference": "turn568536view0",
+      "rendered_html_available": true,
+      "origin_http_status_observed": false,
+      "publication_date": null,
+      "data_period": "annual accumulated figures through December 2025",
+      "reason": "Nine-clinic directory and annual indicators; no dated news archive visible. Actions curl28 connect timeout is executor-specific and does not establish an external source outage.",
+      "observed_clinic_links": [
+        "https://www.clinicaportada.cl/",
+        "https://clinicaatacama.cl/",
+        "https://clinicaloscoihues.cl/",
+        "https://www.clinicamaitenes.cl/",
+        "https://www.clinicalircay.cl/",
+        "https://clinicalosandes.cl/",
+        "https://www.clinicasur.cl/",
+        "https://www.clinicapuertomontt.cl/",
+        "https://www.clinica-curico.cl/"
+      ]
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/formulario-licitacion-master-plan-serena/",
+      "linked_from": "https://www.clinicasachssalud.cl/",
+      "browser_reference": "turn826092view0",
+      "type": "procurement_prequalification",
+      "publication_date": null,
+      "status": "pending",
+      "reason": "Observed invitation for Master Plan clinic procurement may be material, but no publication date or deadline is verified. Form fields request supplier details; no form was completed or submitted."
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/wp-content/uploads/2026/08/CAS_-_Poltica_de_Contratacin_de_Parientes.pdf",
+      "browser_reference": "turn826092view1",
+      "type": "official_policy_pdf",
+      "pages": 5,
+      "publication_date": null,
+      "policy_version_period": "June 2026",
+      "effective_date": "2026-06-17",
+      "first_version_date": "2025-12-17",
+      "status": "pending_publication_date",
+      "reason": "Effective/version dates and uploads/2026/08 are distinct from publication. No publication date accepted."
+    },
+    {
+      "url": "https://clinicaloscoihues.cl/noticias",
+      "linked_from": "https://clinicaloscoihues.cl/",
+      "browser_reference": "turn229482view0",
+      "type": "official_clinic_news_archive",
+      "listing_reported_latest_date": "2026-08-12",
+      "status": "pending_raw_publication_fields",
+      "reason": "One recent recognition story and older March/February entries observed; need raw publication selectors/API and archive exhaustion before complete coverage."
+    },
+    {
+      "url": "https://clinica-curico.cl/noticias/",
+      "linked_from": "https://clinica-curico.cl/",
+      "browser_reference": "turn229482view1",
+      "type": "official_clinic_news_archive",
+      "observed_archives": [
+        "August 2026 (1)",
+        "September 2025 (2)"
+      ],
+      "status": "pending_raw_publication_fields",
+      "reason": "Recent award plus historical scanner and MRI equipment stories. Equipment details show September 2025, not current 90-day signals."
+    },
+    {
+      "url": "https://clinica-curico.cl/blog/",
+      "linked_from": "https://clinica-curico.cl/",
+      "browser_reference": "turn229482view2",
+      "type": "official_clinic_blog_archive",
+      "status": "empty_rendered_blog_pending_raw",
+      "reason": "Rendered blog has archive month links but no article cards; browser rendering does not prove empty API or entire archive."
+    }
+  ],
+  "next_observed_routes": [
+    {
+      "url": "https://www.clinicasachssalud.cl/formulario-licitacion-master-plan-serena/",
+      "action": "Capture raw publication metadata only; no submit."
+    },
+    {
+      "url": "https://clinicaloscoihues.cl/noticias",
+      "action": "Capture raw archive metadata, all linked articles, pager and disclosed API/feed links."
+    },
+    {
+      "url": "https://clinica-curico.cl/noticias/",
+      "action": "Capture raw archive/details and disclosed publication fields/API/feed links."
+    },
+    {
+      "url": "https://clinica-curico.cl/blog/",
+      "action": "Capture archive DOM and disclosed API/feed links; evaluate empty rendered state."
+    }
+  ],
+  "validation": {
+    "command": "PYTHONPATH=src .venv/bin/python -m pytest -q tests/test_achs_blog_inventory.py tests/test_occupational_integrity.py tests/test_occupational_inventory.py",
+    "result": "116 passed in 0.43s",
+    "raw_capture_regression": "43 native DOM records, SHA-256 verified, CMS date/modified distinction and conflicting editorial-date classification.",
+    "canonical_state_mutated": false,
+    "queue_mutated": false,
+    "reviewer_status": "pending parent independent review"
+  }
+}
