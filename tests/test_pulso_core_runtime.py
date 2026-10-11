@@ -137,6 +137,27 @@ def test_strategic_changes_are_not_rejected_as_ceremonial_before_analysis(title,
     assert media_gate_accepts(title, body)
 
 
+def test_real_core_discovery_only_does_not_consume_analysis_or_processing_attempts(tmp_path, monkeypatch):
+    state = tmp_path / "data/state"; state.mkdir(parents=True)
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config/sources.json").write_text((ROOT / "config/sources.json").read_text())
+    raw = RawItem("pulso_latercera", "Clínica cierra pabellones y traslada pacientes",
+                  "https://www.latercera.com/pulso/noticia/clinica-cierra/", "Pulso / La Tercera", "press_high_trust",
+                  datetime.now(timezone.utc).date().isoformat(), BODY,
+                  {"page_text": BODY, "article_verified": True, "market_role": "media"})
+    monkeypatch.setattr(CuratedBetaSourceScout, "discover", lambda self: [raw])
+    monkeypatch.setattr(paths, "project_root", lambda: tmp_path)
+    monkeypatch.setattr(engine_cli, "seed_from_history", lambda root: None)
+    def unexpected(**kwargs):
+        raise AssertionError("Discovery must consume zero analysis calls")
+    monkeypatch.setattr(llm_analysis, "analyze_news", unexpected)
+    monkeypatch.setattr(sys, "argv", ["engine_cli", "--sources", "pulso_latercera", "--discovery-only"])
+    engine_cli.main()
+    item = next(iter(PendingQueue(state / "pending_queue.json").items.values()))
+    assert item["status"] == "pending" and item["attempts"] == 0
+    assert json.loads((state / "discovery_run.json").read_text())["runtime"] == "daily_core"
+
+
 def test_pulso_rediscovery_rehydrates_same_url_without_resetting_capture_attempts_or_lane(tmp_path):
     now = datetime.now(timezone.utc)
     url = "https://www.latercera.com/pulso/noticia/clinica-cierre/"

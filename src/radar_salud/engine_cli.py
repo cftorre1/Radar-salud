@@ -28,6 +28,7 @@ def main():
     ap.add_argument("--limit",type=int,default=0,help="Global processing cap; 0 uses AI guardrails only")
     ap.add_argument("--reset-state",action="store_true")
     ap.add_argument("--sources",nargs="+",help="Run selected core source slugs; other queue records remain untouched")
+    ap.add_argument("--discovery-only",action="store_true",help="Persist genuine core discovery without consuming analysis or altering processing attempts")
     args=ap.parse_args()
     if args.reset_state:
         ap.error("Reset disabled: backfill must preserve paid analyses and queue state")
@@ -106,6 +107,8 @@ def main():
     produced={name:[] for name in processors}
     queue.enforce_backfill_horizon(sources=args.sources)
     ready=((key,item) for key,item in queue.ready() if item["source"] in processors)
+    if args.discovery_only:
+        ready=iter(())
     for index,(key,item) in enumerate(ready):
         if args.limit and index>=args.limit:break
         if not has_capacity("fast") and not has_capacity("deep"):break
