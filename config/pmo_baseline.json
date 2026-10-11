@@ -656,6 +656,42 @@
       ],
       "scope": "No certifica inventario INDISA completo de 90 días ni habilitación LIVE. Se revisará tras Actions de staging."
     },
+    "work4_source_expansion_2026_10_11": {
+      "kind": "source_expansion_audit",
+      "sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+      "product_sha": "9826b3b727cd7d9f504148072385d4cd37405895",
+      "date": "2026-10-11",
+      "paths": [
+        "data/audits/source_expansion_matrix_2026_10_11.json",
+        "config/source_expansion_backlog_2026_10_11.json",
+        "docs/SOURCE_EXPANSION_AUDIT_2026_10_11.md"
+      ],
+      "result": "inventory_complete_implementation_pending",
+      "scope": "Universo de familias y 10 Isapres evaluado; 15 paquetes P0/P1. No certifica runtime, salud de fuentes, QA de producto ni readiness/release.",
+      "validated_requirements": [],
+      "validated_blocks": []
+    },
+    "work3_followup_2026_10_11T043452Z": {
+      "recorded_at": "2026-10-11T04:34:52.930386+00:00",
+      "reviewer": "Work 3",
+      "reviewed_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+      "reconciled_staging_sha": "fe3a4f779f43edfdea8edc9df2f2641dd96056c2",
+      "artifact": "data/audits/work3_adversarial_2026_10_11T043452Z.json",
+      "verdict": "PARTIAL_WEEKLY_REVALIDATION_NEW_PROVENANCE_FINDING_CORE_GATES_OPEN",
+      "new_finding_ids": [
+        "work3_weekly_regeneration_provenance_mixed"
+      ],
+      "revalidated": [
+        "weekly_stale_replacement_and_expiry"
+      ],
+      "backlog_issues": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
     "public_sources_c_2026_10_11": {
       "branch": "codex/c-public-sources-20261011",
       "baseline_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
@@ -1616,6 +1652,20 @@
     },
     {
       "date": "2026-10-11",
+      "change": "Work 4: matriz durable de 75 filas y backlog de expansión (3 P0/12 P1). Reuters/WHO sólo curados; PAHO sin referencias/runtime. Se preservan bloqueos y dependencias core; cero activaciones o producción.",
+      "evidence": [
+        "work4_source_expansion_2026_10_11"
+      ]
+    },
+    {
+      "date": "2026-10-11",
+      "change": "Work3: revalidación parcial de Insight vigente/vencimiento; P1 nuevo de atribución al regenerar. No se cierran cobertura, autonomía, QA ni readiness. Se conserva expansión Work4.",
+      "evidence": [
+        "data/audits/work3_adversarial_2026_10_11T043452Z.json"
+      ]
+    },
+    {
+      "date": "2026-10-11",
       "change": "Public-source C isolated lane: explicit publication provenance, official HTTPS redirects, dated DEIS classification documents and ISP publication-column coverage; current health stays error/unverified for exact external proxy403. No staging/main/production promotion.",
       "evidence": [
         "public_sources_c_2026_10_11"
@@ -1838,6 +1888,20 @@
         "Publish a mutually consistent snapshot with explicit generation time and correct source identity mapping.",
         "Separate last-run discovered/published from cumulative queue counts; do not infer coverage rates by dividing unrelated scopes.",
         "Verify displayed source count and source dates against the same snapshot."
+      ]
+    },
+    {
+      "id": "work3_weekly_regeneration_provenance_mixed",
+      "severity": "warning",
+      "priority": "P1",
+      "description": "Regeneration attaches another candidate selection/model evidence to retained reviewed Insight — scripts/run_weekly_insight_v2.py replaces weekly_insight and audit with editorial_approved but retains generator top3, evidence_package and model, then copies top3/model into free.selection_policy. No publication-specific candidate/provenance binding is checked.",
+      "source": "data/audits/work3_adversarial_2026_10_11T043452Z.json",
+      "reviewed_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+      "issue_url": "https://github.com/cftorre1/Radar-salud/issues/9",
+      "closure_criteria": [
+        "Keep published Insight, reviewed top3, evidence package, audit and model trace bound to the same approved artifact/version.",
+        "Store attempted generation and its draft/evidence/model separately and label its outcome distinctly.",
+        "Run a regression with a different candidate and model failure/no_candidate while approved Insight remains fresh; verify attribution, then expiry fail-closed."
       ]
     },
     {
@@ -3102,7 +3166,7 @@
       ]
     }
   ],
-  "updated_at": "2026-10-11T04:37:57.965352+00:00",
+  "updated_at": "2026-10-11T04:44:10.518952+00:00",
   "closed_beta": {
     "status": "ready",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",

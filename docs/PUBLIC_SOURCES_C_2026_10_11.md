@@ -1,7 +1,7 @@
 # Fuentes públicas C — FONASA, ISP y DEIS
 
 Rama aislada: `codex/c-public-sources-20261011`. Base exacta de `staging`:
-`cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb`. Sin promoción a staging, main o producción.
+`cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb`. La rama integra después el avance de staging `365541aa5bbe29674a59d0e90efcf6f0e104afdd` para resolver conflictos de seguimiento; conserva las auditorías Work 3/Work 4. Sin promoción a staging, main o producción.
 
 La ingeniería y la revisión independiente están terminadas. **Ninguna de las cinco fuentes se declara operativa**: la captura directa del motor queda bloqueada por el proxy de este entorno. El replay actual registra `Tunnel connection failed: 403 Forbidden`, antes de negociar TLS con el origen. Los probes HTTP registran `envoy / Domain forbidden`. No se atribuyen estos códigos al servidor sanitario, su certificado, su WAF ni un cambio de HTML.
 
@@ -41,6 +41,8 @@ Los resultados de navegación están separados de los probes de transporte. Una 
 Los artefactos están en `data/audits/public_sources_c_20261011/`, con respuestas de navegación, matrices de UA/método/TLS/host y scripts de replay. El commit de integración completa las dependencias comunes y conserva cada subfrente retomable.
 
 QA final: **112 tests dirigidos aprobados**, replay controlado del motor aprobado y Node aprobado. Suite completa: **364 aprobados, 1 omitido, 1 fallo preexistente**. El fallo `test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review` exige al menos 12 actos pero el snapshot de staging contiene 11; se reprodujo sin cambios en worktree de la base exacta. No se modificó ese contenido ajeno al alcance ni se relajó el test. El Reviewer independiente verificó ese mismo fallo y dejó ingeniería PASS con blockers externos; no certifica captura operativa ni publicación live.
+
+La reconciliación posterior de staging sólo afecta seguimiento y auditoría; código, tests y salud de fuentes conservan la revisión anterior. Los 112 tests dirigidos se repiten con PASS. `qa_merge.json` y `reviewer_merge.json` documentan la conservación de los registros upstream y la revisión de los dos conflictos.
 
 ## Retomar sin reconstruir contexto
 

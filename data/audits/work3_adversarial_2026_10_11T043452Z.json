@@ -1,0 +1,412 @@
+{
+  "schema_version": 1,
+  "reviewer": "Work 3 — Independent Adversarial Reviewer",
+  "recorded_at": "2026-10-11T04:34:52.930386+00:00",
+  "branch": "staging",
+  "reviewed_product_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+  "integration_base_sha": "fe3a4f779f43edfdea8edc9df2f2641dd96056c2",
+  "previous_artifacts": [
+    {
+      "path": "data/audits/work3_adversarial_2026_10_11.json",
+      "commit": "645781d2f310fea2bb6b6c7b5385a93ea538c879"
+    },
+    {
+      "path": "data/audits/work3_adversarial_2026_10_11_supplement.json",
+      "commit": "ce3c62400a9ff1a35a9bbbbd4166f1f9ec12d15e"
+    }
+  ],
+  "verdict": "PARTIAL_WEEKLY_REVALIDATION_NEW_PROVENANCE_FINDING_CORE_GATES_OPEN",
+  "scope": {
+    "staging_only": true,
+    "product_or_evidence_repairs": false,
+    "workflow_dispatch": false,
+    "main_or_production_mutations": false,
+    "local_isolation": "Dedicated clone with pinned remote file overlay, distinct from other executions; local Git HEAD is not represented as remote product SHA.",
+    "reconciliation": "Work4 fe3a4f7 arrived during review; queue/PMO reread at that SHA, preserving its new tasks and expansion inventory. No new runtime repair in that commit.",
+    "not_exhaustive": "Delta audit plus unchanged-input verification; no new claim of complete 27-source 30/90-day inventory."
+  },
+  "delta_commits": [
+    {
+      "sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+      "assessment": "New reviewed UC CHRISTUS weekly, archive, stock matrix and freshness gates; runtime/history/feed unchanged."
+    },
+    {
+      "sha": "fe3a4f779f43edfdea8edc9df2f2641dd96056c2",
+      "assessment": "Work4 source expansion inventory/backlog only; documentation consistency PASS is not runtime activation or coverage approval."
+    }
+  ],
+  "findings": [
+    {
+      "id": "work3_weekly_regeneration_provenance_mixed",
+      "priority": "P1",
+      "severity": "high",
+      "status": "open",
+      "issue": 9,
+      "title": "Regeneration attaches another candidate selection/model evidence to retained reviewed Insight",
+      "cause": "scripts/run_weekly_insight_v2.py replaces weekly_insight and audit with editorial_approved but retains generator top3, evidence_package and model, then copies top3/model into free.selection_policy. No publication-specific candidate/provenance binding is checked.",
+      "reviewed_sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+      "urls": [
+        "https://github.com/cftorre1/Radar-salud/blob/cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb/scripts/run_weekly_insight_v2.py",
+        "https://github.com/cftorre1/Radar-salud/issues/9"
+      ],
+      "evidence_kind": "isolated adversarial reproduction with synthetic different generator result; not an observed production or Actions regeneration",
+      "impact": "The published Insight remains the reviewed item, but latest and free_value can claim its selection/evidence/model trace from an unrelated generated candidate. generation_status is preserved, so this finding does not allege that a new draft was published or that the current checked-in artifact is already mixed.",
+      "closure_criteria": [
+        "Keep published Insight, reviewed top3, evidence package, audit and model trace bound to the same approved artifact/version.",
+        "Store attempted generation and its draft/evidence/model separately and label its outcome distinctly.",
+        "Run a regression with a different candidate and model failure/no_candidate while approved Insight remains fresh; verify attribution, then expiry fail-closed."
+      ]
+    }
+  ],
+  "repairs_revalidated": [
+    {
+      "issue": 9,
+      "id": "weekly_stale_replacement_and_expiry",
+      "status": "partial_revalidated",
+      "old_event": "2026-09-14",
+      "new_event": "2026-10-10",
+      "incident_date": "2026-10-08",
+      "expires_on_exclusive": "2026-10-17",
+      "timezone": "America/Santiago",
+      "evidence": [
+        "approved == latest == free_value weekly_insight",
+        "Python accepts Oct16 and rejects Oct17; archived September object rejected",
+        "Node freshness/invalid/recycled date and evidence-detail tests: 2 passed, 0 failed, 0 skipped"
+      ],
+      "qualification": "Current checked-in Insight and freshness control only, not entire issue9 closure, deployed preview, autonomous generation or media pipeline. Source attribution separates primary operational restrictions from press account of Oct10 communiqué."
+    }
+  ],
+  "originals_rechecked": [
+    {
+      "url": "https://www.ucchristus.cl/contingencias",
+      "publication_date": null,
+      "access_date": "2026-10-11",
+      "assessment": "Primary page confirms ambulatory/urgent restrictions at San Carlos and El Alba and alternatives. Also says hospitalized patients maintain care; undated page alone cannot certify chronology of total transfers. Do not treat access time as publication date.",
+      "short_excerpt": "Pacientes hospitalizados mantienen su atención",
+      "source_scope": "operational status only; not independent proof of all media details"
+    },
+    {
+      "url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+      "publication_date": "2026-10-10",
+      "visible_time": "13:22",
+      "assessment": "Dated story supports suspension for weeks and completed hospital transfers; incident Oct8. No precise reopening, patients/beds or financial loss stated."
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+      "publication_date": "2026-10-10",
+      "assessment": "Same institutional communiqué via second outlet; not independent damage measurement. Supports redistribution and completed transfers."
+    }
+  ],
+  "event_reconciliation": {
+    "uc_christus": {
+      "DF_exact_url_queue": {
+        "queue": [
+          {
+            "fingerprint": "e4c639df46d35cbdccae32c3169949d3984d9b2895396e154c58492e2c9570b0",
+            "status": "pending",
+            "lane": "BACKFILL",
+            "event_date": null,
+            "attempts": 0,
+            "reason": null
+          }
+        ],
+        "history_matches": 0,
+        "feed_matches": 0,
+        "reconciliation_note": "Exact normalized URL matching; cross-source event equivalence assessed separately. No absent seen hash is inferred from absent URL."
+      },
+      "history_or_feed_equivalent_event": "No aluvion closure/transfer event found after title/body inspection of current history/feed; old San Carlos sanctions are different events.",
+      "weekly_equivalent_event": "Now published in checked-in reviewed weekly Insight; do not report event absent everywhere.",
+      "discovered": true,
+      "seen": "No new seen-ledger evidence asserted; do not infer from URL absence.",
+      "pending": true,
+      "rejected": false,
+      "published_core_history_feed": false,
+      "published_weekly_asset": true,
+      "implication": "Manual editorial recovery does not close DF queue/date/core integration."
+    },
+    "other_sources": "Previously reconciled SIS/SUSESO sanctions or grouped events remain present; exact URL absence alone is not a material omission. No coverage repair merged in reviewed delta."
+  },
+  "unchanged_inputs": {
+    "data/source_health.json": {
+      "sha256": "eb7a18536cf7d374fea0ea0c637f0db1c1d63b6591a9181ae81e21180459480e",
+      "unchanged_from_supplement": true
+    },
+    "web/data/source_health.json": {
+      "sha256": "653c3df4908751a8ac2b5c77a17c2d185f4024b2c9dc3744f0e33fe61b35c186",
+      "unchanged_from_supplement": true
+    },
+    "data/state/beta_source_validation.json": {
+      "sha256": "6794ec0bcb1b28356c8f02253358fcdea23041a8c8e95bc4eac4ab299416512b",
+      "unchanged_from_supplement": true
+    },
+    "data/state/discovery_run.json": {
+      "sha256": "b79bdbbb5210dbd31600a6fe298f92d70f2bc27efa76827a96a2c42b5157d2b4",
+      "unchanged_from_supplement": true
+    },
+    "data/state/pending_queue.json": {
+      "sha256": "803ce81e9e4a339783d94ecc7a13140f1b6c5ccc2f657611410e13f565e9ca2d",
+      "unchanged_from_supplement": true
+    },
+    "data/history/superintendencia_signals.json": {
+      "sha256": "0b54ae732b37b79b6e48917fd56b4beb254cdee3f49ee6ceb68a72536fcaade1",
+      "unchanged_from_supplement": true
+    },
+    "web/data/radar_today.json": {
+      "sha256": "cdb2ec7e617c0653cd6f3016d419c227c0ca10101cd7bca7f3969110634427fc",
+      "unchanged_from_supplement": true
+    }
+  },
+  "distribution_exact_calendar_dates": {
+    "history": {
+      "30": {
+        "from_inclusive": "2026-09-12",
+        "to_inclusive": "2026-10-11",
+        "rows": 71,
+        "by_source": {
+          "Superintendencia de Salud": 27,
+          "Ministerio de Salud": 17,
+          "Diario Oficial": 10,
+          "Diario Financiero": 4,
+          "RedSalud": 1,
+          "Superintendencia de Seguridad Social (SUSESO)": 12
+        },
+        "ingestion_modes": {
+          "unspecified": 25,
+          "BACKFILL": 26,
+          "LIVE": 20
+        }
+      },
+      "90": {
+        "from_inclusive": "2026-07-14",
+        "to_inclusive": "2026-10-11",
+        "rows": 182,
+        "by_source": {
+          "Superintendencia de Salud": 50,
+          "Ministerio de Salud": 20,
+          "Diario Oficial": 80,
+          "Diario Financiero": 14,
+          "Bupa Chile": 1,
+          "RedSalud": 1,
+          "Superintendencia de Seguridad Social (SUSESO)": 16
+        },
+        "ingestion_modes": {
+          "unspecified": 129,
+          "BACKFILL": 33,
+          "LIVE": 20
+        }
+      }
+    },
+    "feed": {
+      "30": {
+        "from_inclusive": "2026-09-12",
+        "to_inclusive": "2026-10-11",
+        "rows": 28,
+        "by_source": {
+          "Superintendencia de Seguridad Social (SUSESO)": 9,
+          "Ministerio de Salud": 11,
+          "Superintendencia de Salud": 4,
+          "Diario Financiero": 3,
+          "RedSalud": 1
+        },
+        "ingestion_modes": {
+          "LIVE": 4,
+          "BACKFILL": 17,
+          "unspecified": 7
+        }
+      },
+      "90": {
+        "from_inclusive": "2026-07-14",
+        "to_inclusive": "2026-10-11",
+        "rows": 49,
+        "by_source": {
+          "Superintendencia de Seguridad Social (SUSESO)": 9,
+          "Ministerio de Salud": 11,
+          "Superintendencia de Salud": 14,
+          "Diario Financiero": 13,
+          "RedSalud": 1,
+          "Bupa Chile": 1
+        },
+        "ingestion_modes": {
+          "LIVE": 4,
+          "BACKFILL": 19,
+          "unspecified": 26
+        }
+      }
+    }
+  },
+  "previous_comparable_distribution": {
+    "history": {
+      "30": {
+        "date_from_inclusive": "2026-09-11",
+        "date_to_inclusive": "2026-10-11",
+        "rows": 73,
+        "by_source": {
+          "Superintendencia de Salud": 27,
+          "Ministerio de Salud": 17,
+          "Diario Oficial": 12,
+          "Diario Financiero": 4,
+          "RedSalud": 1,
+          "Superintendencia de Seguridad Social (SUSESO)": 12
+        },
+        "ingestion_mode": {
+          "unspecified": 27,
+          "BACKFILL": 26,
+          "LIVE": 20
+        }
+      },
+      "90": {
+        "date_from_inclusive": "2026-07-13",
+        "date_to_inclusive": "2026-10-11",
+        "rows": 184,
+        "by_source": {
+          "Superintendencia de Salud": 52,
+          "Ministerio de Salud": 20,
+          "Diario Oficial": 80,
+          "Diario Financiero": 14,
+          "Bupa Chile": 1,
+          "RedSalud": 1,
+          "Superintendencia de Seguridad Social (SUSESO)": 16
+        },
+        "ingestion_mode": {
+          "unspecified": 131,
+          "BACKFILL": 33,
+          "LIVE": 20
+        }
+      }
+    },
+    "feed": {
+      "30": {
+        "date_from_inclusive": "2026-09-11",
+        "date_to_inclusive": "2026-10-11",
+        "rows": 28,
+        "by_source": {
+          "Superintendencia de Seguridad Social (SUSESO)": 9,
+          "Ministerio de Salud": 11,
+          "Superintendencia de Salud": 4,
+          "Diario Financiero": 3,
+          "RedSalud": 1
+        },
+        "ingestion_mode": {
+          "LIVE": 4,
+          "BACKFILL": 17,
+          "unspecified": 7
+        }
+      },
+      "90": {
+        "date_from_inclusive": "2026-07-13",
+        "date_to_inclusive": "2026-10-11",
+        "rows": 49,
+        "by_source": {
+          "Superintendencia de Seguridad Social (SUSESO)": 9,
+          "Ministerio de Salud": 11,
+          "Superintendencia de Salud": 14,
+          "Diario Financiero": 13,
+          "RedSalud": 1,
+          "Bupa Chile": 1
+        },
+        "ingestion_mode": {
+          "LIVE": 4,
+          "BACKFILL": 19,
+          "unspecified": 26
+        }
+      }
+    },
+    "counts_note": "Counts use event_date, not crawl date; history is not equivalent to public feed. Health published is last-run; queue states are cumulative. Discovered values cannot be divided by last-run published to infer coverage.",
+    "feed_7d": {
+      "date_from_inclusive": "2026-10-04",
+      "date_to_inclusive": "2026-10-11",
+      "rows": 6,
+      "by_source": {
+        "Superintendencia de Seguridad Social (SUSESO)": 3,
+        "Ministerio de Salud": 3
+      }
+    },
+    "last_30d_public_trio": {
+      "rows": 24,
+      "denominator_feed_rows": 28,
+      "percent": 85.71428571428571
+    },
+    "all_feed_lane_counts": {
+      "LIVE": 4,
+      "BACKFILL": 19,
+      "unspecified": 26
+    }
+  },
+  "window_definition_note": "Prior supplement used today-minus30/90 inclusive, i.e.31/91 calendar dates. Preserve original report; this cut adds exact30/90 dates (Sep12/Jul14 throughOct11) and retains prior definition for like-for-like comparison. Counts are event_date rows, not evidence of full source coverage.",
+  "autonomy_and_actions": [
+    {
+      "issue": 7,
+      "run_id": 38111104896,
+      "job_id": 114386673238,
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38111104896",
+      "observation": "Checkout staging; 1 skipped, 1 warning in 0.03s; LIVE_OUTCOME success. Existing P0 persists, not a new distinct issue."
+    },
+    {
+      "issue": 7,
+      "run_id": 38111096402,
+      "job_id": 114386646808,
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38111096402",
+      "observation": "Checkout staging; corrupt patch at artifacts/recovery/repair.patch:10; repeated recovery failure, no repair progress."
+    },
+    {
+      "issue": 9,
+      "run_id": 38111064979,
+      "job_id": 114386580922,
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38111064979",
+      "observation": "cadb6c2 QA 1failed/265passed/1skipped: normative snapshot assert11>=12. Reviewer and preview skipped; no deployment/release qualification."
+    }
+  ],
+  "open_fronts": {
+    "6": "DF real-page date + existing queue recovery and Pulso Nacional scope remain open; branch comments not staging evidence.",
+    "7": "Skipped LIVE marked success and repeated malformed repair loops remain open. Work4 extra tasks do not demonstrate executor pickup or state transition.",
+    "8": "Andes/Metlife and other recent coverage candidates unresolved; discovery counts/ok health not publication proof. Expansion matrix not implementation.",
+    "9": "Partial weekly freshness/content repair; new regeneration provenance P1; public telemetry/source identity, Bupa tense, modes/diversity and QA remain open."
+  },
+  "editorial_stock_audit": {
+    "units": 192,
+    "qualification": "182 history rows in exact90day window plus 2 snapshot aggregate units + 1 late UC event + 7 supplement originals. Documentary units are not unique events or 192 published signals. Matrix dispositions do not themselves repair feed cards; Bupa is marked REVISE but original public future tense remains unchanged.",
+    "path": "data/audits/editorial_stock_90d_2026_10_11.json"
+  },
+  "probes": {
+    "same_current_insight": true,
+    "eligible_oct16": true,
+    "ineligible_oct17": true,
+    "archived_rejected": true,
+    "synthetic_different_candidate_reproduction": {
+      "published_approved_unchanged": true,
+      "audit_copied_from_approved": true,
+      "status": "pass",
+      "generation_status": "editorial_review_required",
+      "top3": [
+        {
+          "title": "SYNTHETIC DIFFERENT EVENT",
+          "url": "https://example.org/different"
+        }
+      ],
+      "evidence_package": {
+        "candidate": "SYNTHETIC DIFFERENT EVENT"
+      },
+      "model": {
+        "status": "completed",
+        "draft": "SYNTHETIC DIFFERENT EVENT"
+      },
+      "free_selection_top3": [
+        {
+          "title": "SYNTHETIC DIFFERENT EVENT",
+          "url": "https://example.org/different"
+        }
+      ],
+      "free_selection_deep_intelligence": {
+        "status": "completed",
+        "draft": "SYNTHETIC DIFFERENT EVENT"
+      }
+    }
+  },
+  "reproduction_python": "import json,pathlib,sys,tempfile,types,runpy,copy,contextlib,io\nfrom datetime import date\nROOT=pathlib.Path('/workspace/scratch/b9e3eb5734cf/work3-isolated-20261011T0425Z')\nsys.path.insert(0,str(ROOT/'src'))\nimport radar_salud.weekly_freshness as wf\napproved=json.loads((ROOT/'data/weekly_insight/editorial_approved.json').read_text())\nlatest=json.loads((ROOT/'data/weekly_insight/latest.json').read_text())\nfree=json.loads((ROOT/'web/data/free_value.json').read_text())\nchecks={'same_current_insight':approved['weekly_insight']==latest['weekly_insight']==free['weekly_insight'],'eligible_oct16':bool(wf.reviewed_weekly(approved,date(2026,10,16))),'ineligible_oct17':wf.reviewed_weekly(approved,date(2026,10,17)) is None,'archived_rejected':wf.reviewed_weekly(json.loads((ROOT/'data/weekly_insight/archive/2026-09-14.json').read_text()),date(2026,10,11)) is None}\nfake=types.ModuleType('radar_salud.weekly_insight_v2')\nalternative={'status':'editorial_review_required','weekly_insight':None,'top3':[{'title':'SYNTHETIC DIFFERENT EVENT','url':'https://example.org/different'}],'evidence_package':{'candidate':'SYNTHETIC DIFFERENT EVENT'},'model':{'status':'completed','draft':'SYNTHETIC DIFFERENT EVENT'},'audit':{'verdict':'HOLD'}}\nfake.run_weekly_pipeline=lambda *a,**kw:copy.deepcopy(alternative)\nsys.modules[fake.__name__]=fake\nreal_review=wf.reviewed_weekly\nwf.reviewed_weekly=lambda payload:real_review(payload,date(2026,10,11))\nwith tempfile.TemporaryDirectory(prefix='work3-isolated-probe-') as temp:\n p=pathlib.Path(temp)\n for path in ['scripts/run_weekly_insight_v2.py','data/weekly_insight/editorial_approved.json','web/data/radar_today.json','web/data/free_value.json']:\n  dest=p/path;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes((ROOT/path).read_bytes())\n with contextlib.redirect_stdout(io.StringIO()):runpy.run_path(str(p/'scripts/run_weekly_insight_v2.py'))\n result=json.loads((p/'data/weekly_insight/latest.json').read_text());outfree=json.loads((p/'web/data/free_value.json').read_text())\n checks['synthetic_different_candidate_reproduction']={'published_approved_unchanged':result['weekly_insight']==approved['weekly_insight'],'audit_copied_from_approved':result['audit']==approved['audit'],'status':result['status'],'generation_status':result['generation_status'],'top3':result['top3'],'evidence_package':result['evidence_package'],'model':result['model'],'free_selection_top3':outfree['selection_policy']['top3'],'free_selection_deep_intelligence':outfree['selection_policy']['deep_intelligence']}\nassert all(checks[k] for k in ['same_current_insight','eligible_oct16','ineligible_oct17','archived_rejected'])\npathlib.Path('/tmp/work3_0425_probes.json').write_text(json.dumps(checks,indent=2))\nprint(json.dumps(checks,indent=2))\n",
+  "limitations": [
+    "No live AI call, no deployment or full pipeline executed by reviewer. Node and Python isolated tests are not Actions release qualification.",
+    "Synthetic generator injection validates orchestration attribution risk, not actual generation of a different candidate in a production run.",
+    "No claim of genuine absence from missing search results; current cut rechecks originals of the new Insight and preserves unclosed prior source-window work."
+  ],
+  "monitoring_window_complete": false
+}
