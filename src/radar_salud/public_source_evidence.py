@@ -122,6 +122,8 @@ def failure_details(exc: Exception) -> dict:
             row["reason"] = str(current.reason)[:300]
         elif isinstance(current, (TimeoutError, ConnectionError)):
             row["reason"] = str(current)[:300]
+        elif isinstance(current, ValueError):
+            row["reason"] = str(current)[:300]
         chain.append(row)
         current = current.__cause__ or current.__context__
     result={"exception_chain": chain, "failure_signature": " > ".join(

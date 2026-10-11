@@ -5,8 +5,23 @@ import io
 import hashlib
 from datetime import datetime, timezone
 from urllib.request import HTTPRedirectHandler, Request, build_opener
+from urllib.parse import quote, urlsplit, urlunsplit
 
 from .public_source_evidence import official_url
+
+
+def normalized_official_url(url, slug):
+    """Encode the publisher's literal spaces/Unicode without double encoding.
+
+    DEIS currently publishes hrefs with unescaped PDF filenames. Authority is
+    checked before normalization; this never broadens the official allowlist.
+    """
+    if not official_url(url, slug):
+        raise ValueError("Public-source URL must be official HTTPS")
+    parts = urlsplit(url)
+    return urlunsplit((parts.scheme, parts.netloc,
+                      quote(parts.path, safe="/%:@!$&'()*+,;=-._~"),
+                      quote(parts.query, safe="%:@!$&'()*+,;=/?-._~"), ""))
 
 
 class OfficialRedirectHandler(HTTPRedirectHandler):
@@ -17,13 +32,15 @@ class OfficialRedirectHandler(HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         if not official_url(newurl, self.slug):
             raise ValueError("Public-source redirect left the official HTTPS allowlist")
-        return super().redirect_request(req, fp, code, msg, headers, newurl)
+        return super().redirect_request(req, fp, code, msg, headers,
+                                        normalized_official_url(newurl, self.slug))
 
 
 def download_official(url, slug, *, timeout=25, max_bytes=20 * 1024 * 1024, capture_metadata=None):
     if not official_url(url, slug):
         raise ValueError("Public-source URL must be official HTTPS")
-    request = Request(url, headers={"User-Agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+    requested_url = normalized_official_url(url, slug)
+    request = Request(requested_url, headers={"User-Agent": "RadarSaludBot/0.3 (+public-source-monitor)",
                                     "Accept": "text/html,application/pdf,application/xml;q=0.9,*/*;q=0.5"})
     # The default ProxyHandler and HTTPSHandler preserve runtime proxy and CA
     # trust. Redirects are checked before the next HTTP request is issued.
@@ -34,7 +51,7 @@ def download_official(url, slug, *, timeout=25, max_bytes=20 * 1024 * 1024, capt
         if len(body) > max_bytes:
             raise ValueError("Public-source capture exceeds the byte limit")
         if capture_metadata is not None:
-            capture_metadata.update(url=url,final_url=response.geturl(),sha256=hashlib.sha256(body).hexdigest(),
+            capture_metadata.update(url=url,requested_url=requested_url,final_url=response.geturl(),sha256=hashlib.sha256(body).hexdigest(),
                 bytes=len(body),content_type=response.headers.get_content_type(),
                 captured_at=datetime.now(timezone.utc).isoformat())
         return body, response.headers

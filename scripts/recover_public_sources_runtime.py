@@ -16,11 +16,12 @@ from pathlib import Path
 import socket
 import ssl
 import subprocess
+import shutil
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
-from radar_salud.public_source_evidence import HOSTS
+from radar_salud.public_source_evidence import HOSTS, failure_details
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -124,11 +125,52 @@ def main():
     (args.output / "transport.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
     if not args.probe_only:
         from check_public_sources import check
+        from radar_salud import public_source_transport
+        from radar_salud.deis_sources import DeisCatalogScout
+        native_captures = []
+        original_download = public_source_transport.download_official
+        def capture_download(url, slug, **kwargs):
+            metadata = kwargs.get("capture_metadata")
+            capture = metadata if metadata is not None else {}
+            kwargs["capture_metadata"] = capture
+            body, headers = original_download(url, slug, **kwargs)
+            path = args.output / "captures" / (capture["sha256"] + (".pdf" if body.startswith(b"%PDF-") else ".html"))
+            path.write_bytes(body)
+            native_captures.append({"source": slug, **capture, "body_path": str(path.relative_to(args.output))})
+            return body, headers
+        public_source_transport.download_official = capture_download
         # The native scouts use the actual configured HTTPS transport. Their
         # diagnostic runner cannot publish and does not call paid processing.
-        runtime = check(ROOT, record_health=False)
+        isolated_root = args.output / "isolated"
+        (isolated_root / "data").mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / "data/source_health.json", isolated_root / "data/source_health.json")
+        runtime = check(isolated_root, record_health=True)
         (args.output / "native_discovery.json").write_text(json.dumps(runtime, ensure_ascii=False, indent=2) + "\n")
         result["native_operational_sources"] = runtime["operational_sources"]
+        try:
+            catalog = DeisCatalogScout().discover()
+        except Exception as exc:
+            catalog = {"source": "deis", "error": str(exc), "error_details": failure_details(exc)}
+        (args.output / "deis_catalog.json").write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + "\n")
+        (args.output / "native_captures.json").write_text(json.dumps(native_captures, ensure_ascii=False, indent=2) + "\n")
+        # Replay the real durable queue contract against a copy of the existing
+        # stock. This records horizon rejections without inventing paid analysis.
+        from radar_salud.pending_queue import PendingQueue
+        from radar_salud.models import RawItem
+        queue_path = isolated_root / "data/state/pending_queue.json"
+        queue_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / "data/state/pending_queue.json", queue_path)
+        queue = PendingQueue(queue_path)
+        queue_result = {"mode": "isolated_real_queue_discovery_without_paid_processing",
+                        "main_staging_production_mutated": False, "sources": {}}
+        for slug, row in runtime["sources"].items():
+            items = [RawItem(**item) for item in row["items"]]
+            for item in items:
+                item.metadata["source_quality_gate"] = "audit_pending_90_day"
+            added = queue.discover(slug, items)
+            rows = [{"key": key, **value} for key, value in queue.items.items() if value["source"] == slug]
+            queue_result["sources"][slug] = {"added": added, "counts": queue.counts(slug), "records": rows}
+        (args.output / "isolated_queue_replay.json").write_text(json.dumps(queue_result, ensure_ascii=False, indent=2) + "\n")
     summary = {"runtime": result["runtime"], "commit": result["commit"],
                "transport_outcomes": {slug: [
                    {"url": row["url"], "outcome": row["outcome"], "http_status": row["http_status"]}

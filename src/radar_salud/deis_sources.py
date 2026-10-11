@@ -16,6 +16,7 @@ from urllib.parse import urljoin, urlsplit
 from zoneinfo import ZoneInfo
 
 from .models import RawItem
+from .public_source_transport import normalized_official_url
 
 
 DEIS_DOCUMENT_LISTING = "https://deis.minsal.cl/centrofic/"
@@ -164,6 +165,7 @@ class DeisDocumentScout:
                 self.diagnostics["rejected_invalid_date"] += 1
                 continue
             url, title = links[0]
+            url = normalized_official_url(url, self.SOURCE_SLUG)
             if url in seen:
                 continue
             seen.add(url)
@@ -195,3 +197,80 @@ class DeisDocumentScout:
         except Exception as exc:
             self.diagnostics.update(fetch_error=type(exc).__name__, fetch_error_detail=str(exc))
             raise
+
+
+class DeisCatalogScout:
+    """Read the five public Ninja Tables URLs declared in the current homepage.
+
+    Catalog periods and HTTP timestamps do not establish release dates. These
+    resources support indicators/Trend/Benchmark and never enter the feed queue
+    merely because a catalog or file was reachable.
+    """
+    PAGE = "https://deis.minsal.cl/"
+    PURPOSES = {"Estadísticas": "indicator", "Datos Abiertos": "trend_benchmark_dataset",
+                "Publicaciones e Infografías": "report_reference", "Estándares y normativas": "normative_reference",
+                "Tableros DEIS": "indicator_dashboard"}
+
+    @classmethod
+    def surfaces_from_html(cls, html):
+        import json
+        from urllib.parse import parse_qs
+        surfaces = []
+        for match in re.finditer(r"window\['ninja_table_instance_\d+'\]\s*=\s*", html):
+            table, _ = json.JSONDecoder().raw_decode(html[match.end():])
+            title = table.get("title")
+            if title not in cls.PURPOSES:
+                continue
+            url = table.get("init_config", {}).get("data_request_url", "")
+            parsed = urlsplit(url)
+            query = parse_qs(parsed.query)
+            if (not official_deis_url(url) or parsed.hostname != "deis.minsal.cl"
+                    or parsed.path != "/deisajax"
+                    or query.get("action") != ["wp_ajax_ninja_tables_public_action"]
+                    or query.get("target_action") != ["get-all-data"]
+                    or query.get("table_id") != [str(table.get("table_id"))]):
+                raise ValueError("DEIS public table URL does not match its declared identity")
+            surfaces.append({"title": title, "table_id": str(table["table_id"]),
+                             "url": url, "purpose": cls.PURPOSES[title]})
+        if len(surfaces) != len(cls.PURPOSES) or len({x['title'] for x in surfaces}) != len(cls.PURPOSES):
+            raise RuntimeError("DEIS homepage does not declare all five official catalogs")
+        return surfaces
+
+    @staticmethod
+    def resources_from_json(payload, surface):
+        if not isinstance(payload, list):
+            raise ValueError("DEIS public table response must be a row list")
+        resources = []
+        for row in payload:
+            if not isinstance(row, dict):
+                raise ValueError("DEIS catalog row is not an object")
+            name, link = row.get("nombre"), row.get("ver")
+            if not isinstance(name, str) or not isinstance(link, str) or not name.strip():
+                continue
+            parsed = urlsplit(link.strip())
+            if parsed.scheme not in {"http", "https"} or not parsed.hostname or parsed.username or parsed.password:
+                continue
+            resources.append({"source": "deis", "title": name.strip(), "url": link.strip(),
+                              "catalog": surface["title"], "purpose": surface["purpose"],
+                              "format": row.get("formato"), "tags": row.get("tags"),
+                              "period_fields": {k: v for k, v in row.items() if k.startswith("filtro_")},
+                              "publication_date": None, "feed_eligible": False,
+                              "reason": "catalog_period_is_not_publication_date",
+                              "publisher_linked_external_host": parsed.hostname not in DEIS_OFFICIAL_HOSTS})
+        if not resources:
+            raise RuntimeError("DEIS catalog has no usable resource rows")
+        return resources
+
+    def discover(self):
+        import json
+        from .public_source_transport import download_official
+        surfaces = self.surfaces_from_html(_fetch_deis_html(self.PAGE))
+        result = {"source": "deis", "homepage": self.PAGE, "catalogs": [],
+                  "release_inventory_30_90": "not_applicable_to_undated_catalog_resources"}
+        for surface in surfaces:
+            capture = {}
+            body, _ = download_official(surface["url"], "deis", capture_metadata=capture)
+            resources = self.resources_from_json(json.loads(body), surface)
+            result["catalogs"].append({**surface, "capture": capture, "resources": resources,
+                                       "rows": len(resources)})
+        return result
