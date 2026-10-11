@@ -30,3 +30,26 @@ test('occupational sources expose verified counts and readable source identity o
   fs.mkdirSync('artifacts',{recursive:true});
   await page.screenshot({path:`artifacts/${test.info().project.name}-occupational-source-recovery.png`,fullPage:true});
 });
+
+test('occupational backfills retain their publisher and original publication year in the 90-day radar',async({page})=>{
+  await page.goto('/');
+  const snapshot=await (await page.request.get('/data/radar_today.json')).json();
+  const recovered=snapshot.signals.filter(s=>(s.watch_tags||[]).some(t=>lanes.includes(t)));
+  expect(recovered.length).toBeGreaterThanOrEqual(3);
+  await page.locator('#period').selectOption('90');
+  for(const signal of recovered){
+    expect(signal.ingestion_mode).toBe('BACKFILL');
+    expect(signal.event_date).toBe(signal.publication_date);
+    expect(signal.editorial_relevance).toBeGreaterThanOrEqual(75);
+    const card=page.locator('article.signal').filter({has:page.locator('a').filter({hasText:'Fuente original'}).and(page.locator(`a[href=${JSON.stringify(signal.source_url)}]`))});
+    await expect(card).toHaveCount(1);
+    await expect(card.locator('.card-meta')).toContainText(signal.source_name);
+    await expect(card.locator('.card-meta')).toContainText('2026');
+    await expect(card.locator('.card-meta')).not.toContainText('2025');
+    if(signal.market_role==='mutuality')expect(signal.watch_tags).not.toContain('clinicas_achs_salud');
+    await expect(card).not.toContainText('aún está abierta');
+  }
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+  fs.mkdirSync('artifacts',{recursive:true});
+  await page.screenshot({path:`artifacts/${test.info().project.name}-occupational-recovered-backfills.png`,fullPage:true});
+});
