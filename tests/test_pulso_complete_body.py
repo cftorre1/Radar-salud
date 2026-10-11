@@ -18,6 +18,7 @@ from radar_salud.processing import DeferredProcessing
 from radar_salud.pulso_source import (
     _verified_detail, article_body_evidence, complete_article_body, extract_article, health_anchor,
 )
+from pulso_editorial_test_support import valid_assessment
 
 REAL = Path(__file__).parent / 'fixtures/pulso_real'
 URL = 'https://www.latercera.com/pulso/noticia/gobierno-anuncia-nueva-gestion/'
@@ -46,9 +47,17 @@ def actual_model_input(monkeypatch):
     requests = []
     def create(**kwargs):
         requests.append(kwargs)
-        return SimpleNamespace(output_text=json.dumps({
+        assessment = {
             'relevance_score': 71, 'what_happened': '', 'why_it_matters': '',
-            'reason': 'Evaluación bajo el umbral editorial vigente.'}))
+            'reason': 'Evaluación bajo el umbral editorial vigente.'}
+        if kwargs['text']['format']['name'] == 'pulso_editorial_proof_v1':
+            header, body = kwargs['input'].split('Contenido:\n', 1)
+            source_name, title = header.rstrip().split('\n')
+            assessment = valid_assessment(assessment, {
+                'source_name': source_name.removeprefix('Fuente: '),
+                'title': title.removeprefix('Título: '), 'text': body})
+        return SimpleNamespace(output_text=json.dumps(assessment),
+                               id='unit-test-response', model='unit-test-no-paid-call')
     monkeypatch.setattr(llm_analysis, '_client', lambda: SimpleNamespace(responses=SimpleNamespace(create=create)))
     monkeypatch.setattr(llm_analysis, 'allow_call', lambda kind: True)
     monkeypatch.setattr(llm_analysis, 'record_response', lambda *args, **kwargs: None)

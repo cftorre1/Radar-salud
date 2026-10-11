@@ -16,6 +16,7 @@ from radar_salud.beta_sources import CuratedBetaSourceScout, media_gate_accepts
 from radar_salud.history import load_history
 from radar_salud.models import RawItem
 from radar_salud.pending_queue import PendingQueue, fingerprint
+from pulso_editorial_test_support import valid_assessment
 
 ROOT = Path(__file__).resolve().parents[1]
 BODY = "La clínica suspendió operaciones y trasladó sus pacientes a otros establecimientos de su red asistencial. El cierre temporal reduce capacidad y obliga a redistribuir consultas, procedimientos y prestaciones para asegurar continuidad."
@@ -66,9 +67,10 @@ def test_core_pulso_publication_rejection_pending_and_feed_trace(tmp_path, monke
         calls.append(args["title"])
         if args["title"].endswith("pending"):
             return None
-        return dict(relevance_score=71 if args["title"].endswith("below") else 80,
+        return valid_assessment(dict(relevance_score=71 if args["title"].endswith("below") else 80,
                     what_happened="La clínica reporta un cierre temporal y el traslado de pacientes a otros establecimientos de su red.",
-                    why_it_matters="La suspensión reduce capacidad asistencial disponible y redistribuye la demanda entre los centros de la red.")
+                    why_it_matters="La suspensión reduce capacidad asistencial disponible y redistribuye la demanda entre los centros de la red.",
+                    reason="El cierre y traslado afectan capacidad asistencial de la red."), args)
     monkeypatch.setattr(llm_analysis, "analyze_news", analysis)
     monkeypatch.setattr(sys, "argv", ["engine_cli", "--sources", "pulso_latercera"])
     other = RawItem("minsal", "Noticia que debe permanecer intacta", "https://example.org/other", "Minsal", "official",
@@ -129,6 +131,41 @@ def test_generic_finance_excluded_and_strategic_health_prefilter_kept():
                   "Presupuesto de salud y listas de espera",
                   "Clínica anuncia adquisición de control"):
         assert media_gate_accepts(title)
+
+
+@pytest.mark.parametrize("missing,reason", [
+    ("pulso_editorial_proof", "pulso_editorial_proof_missing"),
+    ("_pulso_analysis_meta", "pulso_editorial_model_binding_mismatch"),
+])
+def test_core_pulso_without_proof_or_request_binding_remains_pending(monkeypatch, missing, reason):
+    from radar_salud.beta_sources import process_curated_beta_source
+    from radar_salud.processing import DeferredProcessing
+    raw = RawItem("pulso_latercera", "Clínica suspende operaciones y traslada pacientes",
+                  "https://www.latercera.com/nacional/noticia/clinica-missing-proof/",
+                  "Pulso / La Tercera", "press_high_trust",
+                  datetime.now(timezone.utc).date().isoformat(), BODY,
+                  {"article_verified": True, "page_text": BODY, **BODY_PROOF,
+                   "market_role": "media", "source_quality_gate": "passed"})
+    def analysis(**request):
+        result = valid_assessment({
+            "relevance_score": 80,
+            "what_happened": "La clínica reporta un cierre temporal y traslado de pacientes en su red.",
+            "why_it_matters": "El cierre reduce capacidad y obliga a redistribuir consultas y prestaciones.",
+            "reason": "La interrupción de la red requiere revisar su capacidad asistencial.",
+        }, request)
+        del result[missing]
+        if missing == "pulso_editorial_proof":
+            payload = {key: value for key, value in result.items() if key != "_pulso_analysis_meta"}
+            result["_pulso_analysis_meta"]["raw_model_output_sha256"] = hashlib.sha256(
+                json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        return result
+    monkeypatch.setattr(llm_analysis, "analyze_news", analysis)
+    with pytest.raises(DeferredProcessing, match=reason):
+        process_curated_beta_source(raw, {})
+    assert raw.metadata["editorial_assessment"]["decision"] == "pending"
+    assert raw.metadata["editorial_assessment"]["reason"] == reason
+    assert raw.metadata["editorial_assessment"]["threshold"] == 72
+    assert "rejection_reason" not in raw.metadata
 
 
 @pytest.mark.parametrize("title,body", [

@@ -506,12 +506,33 @@ def process_curated_beta_source(raw, cfg):
                             analysis_request_input_characters=len(request_input))
         if raw.metadata.get("publisher_document_type") == "liveblog":
             raw.metadata["analysis_liveblog_entries_sha256"] = raw.metadata["liveblog_temporal_evidence"]["entries_sha256"]
-        ai = analyze_news(title=raw.title, text=text, source_name=raw.source_name, kind=kind, full_text=True)
+        ai = analyze_news(title=raw.title, text=text, source_name=raw.source_name, kind=kind, full_text=True,
+                          pulso_editorial_proof=True)
     else:
         ai = analyze_news(title=raw.title, text=body[:10000], source_name=raw.source_name, kind=kind)
     if not ai:
         raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": "analysis_unavailable"}
         raise DeferredProcessing("curated beta source pending assessment")
+    if raw.source_slug == "pulso_latercera":
+        from .pulso_editorial_proof import model_binding_matches, validate_pulso_editorial_proof
+        validation=validate_pulso_editorial_proof(ai,text)
+        validation.update(primary_article_body_sha256=raw.metadata["analysis_base_article_body_sha256"],
+                          request_input_sha256=raw.metadata["analysis_request_input_sha256"],
+                          model_response=ai.get("_pulso_analysis_meta") if isinstance(ai,dict) else None)
+        if not model_binding_matches(ai,source_name=raw.source_name,
+                                     input_text_sha256=raw.metadata["analysis_input_body_sha256"],
+                                     request_input_sha256=raw.metadata["analysis_request_input_sha256"]):
+            validation.update(decision="deferred",reason="pulso_editorial_model_binding_mismatch")
+        raw.metadata["pulso_editorial_proof_validation"]=validation
+        raw.metadata["analysis_model_output"]=ai
+        if validation["decision"] == "deferred":
+            raw.metadata["editorial_assessment"]={"decision":"pending","reason":validation["reason"],
+                                                  "threshold":72,"proof_version":validation["version"]}
+            raise DeferredProcessing(validation["reason"])
+        if validation["decision"] == "rejected":
+            return reject(validation["reason"],relevance_score=ai["relevance_score"],threshold=72,
+                          proof_version=validation["version"],analysis_reason=ai.get("reason"))
+        raw.metadata["prospective_evidence"]=validation["prospective_evidence"]
     score = int(ai.get("relevance_score", 0))
     threshold = 72 if role == "media" else 75
     analysis_reason = ai.get("reason") or "analysis_reason_not_supplied"

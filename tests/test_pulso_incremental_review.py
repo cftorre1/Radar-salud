@@ -12,6 +12,7 @@ import pytest
 from radar_salud import pulso_incremental_review as review
 from radar_salud.models import RawItem
 from radar_salud.pending_queue import fingerprint
+from pulso_editorial_test_support import valid_assessment
 
 
 AUDIT = json.loads(review.REVIEW_PATH.read_text(encoding="utf-8"))
@@ -55,8 +56,8 @@ def test_verified_review_enters_real_editorial_processor_with_comparison_and_unc
     calls = []
     def analysis(**kwargs):
         calls.append(kwargs)
-        return {"relevance_score": 71, "what_happened": "", "why_it_matters": "",
-                "reason": "No supera el gate editorial vigente."}
+        return valid_assessment({"relevance_score": 71, "what_happened": "", "why_it_matters": "",
+                "reason": "No supera el gate editorial vigente."}, kwargs)
     monkeypatch.setattr(llm_analysis, "analyze_news", analysis)
     assert process_curated_beta_source(raw, {}) is None
     assert len(calls) == 1
@@ -80,8 +81,8 @@ def test_legacy_detail_verification_records_provenance_before_review_and_analysi
     html = (f'<link rel="canonical" href="{raw.url}">'
             + '<script type="application/ld+json">' + json.dumps(node) + '</script>')
     monkeypatch.setattr(beta_sources, "fetch_html", lambda url: html)
-    monkeypatch.setattr(llm_analysis, "analyze_news", lambda **kwargs: {
-        "relevance_score": 71, "what_happened": "", "why_it_matters": "", "reason": "reviewed"})
+    monkeypatch.setattr(llm_analysis, "analyze_news", lambda **kwargs: valid_assessment({
+        "relevance_score": 71, "what_happened": "", "why_it_matters": "", "reason": "reviewed"}, kwargs))
     assert beta_sources.process_curated_beta_source(raw, {}) is None
     assert raw.metadata["html_sha256"] == hashlib.sha256(html.encode()).hexdigest()
     assert raw.metadata["article_body_sha256"] == hashlib.sha256(" ".join(body.split()).encode()).hexdigest()
@@ -284,8 +285,8 @@ def test_real_midnight_article_still_fails_unchanged_editorial_gate_at_71(monkey
     calls = []
     def analysis(**kwargs):
         calls.append(kwargs)
-        return {"relevance_score": 71, "what_happened": "", "why_it_matters": "",
-                "reason": "El antecedente no agrega un cambio material suficiente."}
+        return valid_assessment({"relevance_score": 71, "what_happened": "", "why_it_matters": "",
+                "reason": "El antecedente no agrega un cambio material suficiente."}, kwargs)
     monkeypatch.setattr(llm_analysis, "analyze_news", analysis)
     assert process_curated_beta_source(raw, {}) is None
     assert len(calls) == 1 and calls[0]["full_text"] is True
