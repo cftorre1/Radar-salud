@@ -1,0 +1,4883 @@
+{
+  "environment": "github_actions",
+  "run_id": "38122998011",
+  "candidate_sha": "230dd41566f4eb10554e32b19bb27b178cc0c649",
+  "captured_at": "2026-10-11T08:07:52.237329+00:00",
+  "public_requests_only": true,
+  "challenge_execution": false,
+  "cookies_sent": false,
+  "headers_allowlisted_no_cookies_or_authorization": true,
+  "records": [
+    {
+      "url": "https://www.achs.cl/robots.txt",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:55:23.360516+00:00",
+      "hops": [
+        {
+          "url": "https://www.achs.cl/robots.txt",
+          "http_status": 404,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 404 ",
+              "date": "Sun, 11 Oct 2026 07:55:25 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "public, max-age=14400",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c4d5fb88c7af1-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 91081,
+          "sha256": "5312fce99eb3d0cf36a77f02f79892c3e92e56c05773b74a0544d5742476ad6c",
+          "waf": null,
+          "error": null,
+          "body_file": "bdafb1260a528af8d6a3-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achs.cl/robots.txt",
+      "http_status": 404,
+      "waf": null,
+      "source": "achs",
+      "surface": "robots"
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:55:26.475205+00:00",
+      "hops": [
+        {
+          "url": "https://www.achs.cl/centro-de-noticias",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:55:27 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "no-cache",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c4d739ef123fd-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 94674,
+          "sha256": "6631b9bc67a700dfe718bea804d6692f2f9f8935ad920c99cd831b50360e2711",
+          "waf": null,
+          "error": null,
+          "body_file": "a968f050d8551217d245-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achs.cl/centro-de-noticias",
+      "http_status": 200,
+      "waf": null,
+      "source": "achs",
+      "surface": "newsroom"
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias",
+      "user_agent": "browser_comparison",
+      "captured_at": "2026-10-11T07:55:28.981662+00:00",
+      "hops": [
+        {
+          "url": "https://www.achs.cl/centro-de-noticias",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:55:29 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "no-cache",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c4d82597e15bc-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 94674,
+          "sha256": "0a5a86c35a10c1409d3eba8af57fa7ef8ae6a6b884c3d8a603d1b1b65e766416",
+          "waf": null,
+          "error": null,
+          "body_file": "3a02f2b5af23526416af-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achs.cl/centro-de-noticias",
+      "http_status": 200,
+      "waf": null,
+      "source": "achs",
+      "surface": "newsroom"
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/2",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:55:30.546849+00:00",
+      "hops": [
+        {
+          "url": "https://www.achs.cl/centro-de-noticias/2",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:55:31 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "no-cache",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c4d8c3e2c945f-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 94786,
+          "sha256": "9f3eeb7cd1000bc6a87dfb5abadaeffc8470f511dd0d06bd8025389c1b1373a3",
+          "waf": null,
+          "error": null,
+          "body_file": "2757c8a9e73250cceda4-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achs.cl/centro-de-noticias/2",
+      "http_status": 200,
+      "waf": null,
+      "source": "achs",
+      "surface": "page_2"
+    },
+    {
+      "url": "https://www.achs.cl/sitemap.xml",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:55:32.047223+00:00",
+      "hops": [
+        {
+          "url": "https://www.achs.cl/sitemap.xml",
+          "http_status": 404,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 404 ",
+              "date": "Sun, 11 Oct 2026 07:55:33 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "no-cache",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c4d958c7c7af1-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 92019,
+          "sha256": "ee0803589101494982d0f46e6e7ff4d6b56d3f4ee0c214024c25523e9447551a",
+          "waf": null,
+          "error": null,
+          "body_file": "0d6a61dabeccfa6e8761-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achs.cl/sitemap.xml",
+      "http_status": 404,
+      "waf": null,
+      "source": "achs",
+      "surface": "sitemap"
+    },
+    {
+      "url": "https://www.achs.cl/feed/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:55:34.649748+00:00",
+      "hops": [
+        {
+          "url": "https://www.achs.cl/feed/",
+          "http_status": 404,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 404 ",
+              "date": "Sun, 11 Oct 2026 07:55:35 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "no-cache",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c4da5bc450b82-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 92019,
+          "sha256": "991fef66df2649c6f6728b51fc026c2835dd6cdc9ea6c4d29e9560dc7c0c2d8b",
+          "waf": null,
+          "error": null,
+          "body_file": "864fe68263849ac95653-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achs.cl/feed/",
+      "http_status": 404,
+      "waf": null,
+      "source": "achs",
+      "surface": "feed_candidate"
+    },
+    {
+      "url": "https://www.achssalud.cl/robots.txt",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:55:37.360154+00:00",
+      "hops": [
+        {
+          "url": "https://www.achssalud.cl/robots.txt",
+          "http_status": 404,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 404 ",
+              "date": "Sun, 11 Oct 2026 07:55:39 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "public, max-age=14400",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c4db7be417b82-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 197503,
+          "sha256": "74bc47a77e7b515b35f5a74a68d3fec7b57e2f98b5464cad1888308f568530d1",
+          "waf": null,
+          "error": null,
+          "body_file": "9694db95f06011fb2892-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/robots.txt",
+      "http_status": 404,
+      "waf": null,
+      "source": "achs_salud",
+      "surface": "robots"
+    },
+    {
+      "url": "https://www.achssalud.cl/areasdeatencion/clinicas",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:55:40.093998+00:00",
+      "hops": [
+        {
+          "url": "https://www.achssalud.cl/areasdeatencion/clinicas",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:55:41 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "no-cache",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c4dc7ba653117-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 235461,
+          "sha256": "956209b16b11566ea18ee6c59d67ac843a24c09058fb50e2fe4bdd9a0116316f",
+          "waf": null,
+          "error": null,
+          "body_file": "2fc7dbce36da859aa10d-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/areasdeatencion/clinicas",
+      "http_status": 200,
+      "waf": null,
+      "source": "achs_salud",
+      "surface": "clinics"
+    },
+    {
+      "url": "https://www.achssalud.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:55:42.618750+00:00",
+      "hops": [
+        {
+          "url": "https://www.achssalud.cl/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:55:42 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "no-cache",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c4dd789465f13-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 246744,
+          "sha256": "cee2b04c2bd00ba2c40f8e585d834cf92ea6514443486d3672075dfec8fe71bf",
+          "waf": null,
+          "error": null,
+          "body_file": "49cd0848377ffaa33723-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/",
+      "http_status": 200,
+      "waf": null,
+      "source": "achs_salud",
+      "surface": "home"
+    },
+    {
+      "url": "https://www.achssalud.cl/",
+      "user_agent": "browser_comparison",
+      "captured_at": "2026-10-11T07:55:44.106499+00:00",
+      "hops": [
+        {
+          "url": "https://www.achssalud.cl/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:55:45 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "no-cache",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c4de0ded725c3-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 246744,
+          "sha256": "a00b05a9fff3254099893b0de457d4ea474060c1acec61aa99c2b5d75f938ed2",
+          "waf": null,
+          "error": null,
+          "body_file": "27369f850714aefa8a67-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/",
+      "http_status": 200,
+      "waf": null,
+      "source": "achs_salud",
+      "surface": "home"
+    },
+    {
+      "url": "https://www.achssalud.cl/sitemap.xml",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:55:46.643610+00:00",
+      "hops": [
+        {
+          "url": "https://www.achssalud.cl/sitemap.xml",
+          "http_status": 404,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 404 ",
+              "date": "Sun, 11 Oct 2026 07:55:46 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "no-cache",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c4df0af717b82-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 198441,
+          "sha256": "3fd0a10d98a19837331898d611ccf922fc9d93b7644602f3ac325de955312b55",
+          "waf": null,
+          "error": null,
+          "body_file": "d0fabdaae8cbe9d943bc-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/sitemap.xml",
+      "http_status": 404,
+      "waf": null,
+      "source": "achs_salud",
+      "surface": "sitemap"
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/robots.txt",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:55:48.429109+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicasachssalud.cl/robots.txt",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "55dd1de4c3cd0ec02a58-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/robots.txt",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinics",
+      "surface": "robots"
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:56:01.440431+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicasachssalud.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "6429d8a14cd86b0ba2f9-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinics",
+      "surface": "home"
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/",
+      "user_agent": "browser_comparison",
+      "captured_at": "2026-10-11T07:56:14.451138+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicasachssalud.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "6d3bac37d4df3ddf6282-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinics",
+      "surface": "home"
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/sitemap.xml",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:56:27.461623+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicasachssalud.cl/sitemap.xml",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "28551ea1133f95470b20-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/sitemap.xml",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinics",
+      "surface": "sitemap"
+    },
+    {
+      "url": "https://www.mutual.cl/robots.txt",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:56:40.470816+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/robots.txt",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:56:40 GMT",
+              "content-type": "text/plain",
+              "content-length": "114",
+              "server": "nginx/1.29.8",
+              "last-modified": "Thu, 24 Jul 2025 21:25:20 GMT",
+              "x-cdn": "Imperva",
+              "x-iinfo": "10-1924-1926 NNNN CT(60 60 0) RT(1791705400779 22) q(0 1 2 0) r(2 2) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/plain",
+          "bytes": 114,
+          "sha256": "87b6033906df9e85edb30e4e64118266d8226d4af3d5bbb3cdcf68b64ad72b75",
+          "waf": null,
+          "error": null,
+          "body_file": "24b36bf097028858ac13-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/robots.txt",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual",
+      "surface": "robots"
+    },
+    {
+      "url": "https://www.mutual.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:56:41.994140+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/",
+          "http_status": 301,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 301 ",
+              "date": "Sun, 11 Oct 2026 07:56:42 GMT",
+              "content-type": "text/html",
+              "content-length": "169",
+              "server": "nginx/1.29.8",
+              "location": "https://www.mutual.cl/portal/publico/home-mutual",
+              "x-cdn": "Imperva",
+              "x-iinfo": "54-292162-292177 NNNN CT(60 59 0) RT(1791705402005 15) q(0 0 1 0) r(1 1) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html",
+          "bytes": 169,
+          "sha256": "cf7421bf8021a6e56b4a9aa5e1a0f5bb5f5b341189e61c7776d15f44b82c1fa3",
+          "waf": null,
+          "error": null,
+          "body_file": "a9b57149d587ff8e20a8-0.body"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/home-mutual",
+          "http_status": 302,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 302 ",
+              "date": "Sun, 11 Oct 2026 07:56:42 GMT",
+              "server": "nginx/1.29.8",
+              "location": "https://www.mutual.cl/portal/publico/home-mutual/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zifQ2djTwsvA18LJxdDQ0Cg0Ldnb2D_YwNfA31w8EKDHAARwP9KGL041EQhd_4cP0oQkoKckMjDNIVFQF4INPN/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+              "cache-control": "no-cache=\"set-cookie, set-cookie2\"",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "52-190214-190217 NNNN CT(72 60 0) RT(1791705402214 16) q(0 0 1 0) r(2 2) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": null,
+          "body_file": "a9b57149d587ff8e20a8-1.body"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/home-mutual/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zifQ2djTwsvA18LJxdDQ0Cg0Ldnb2D_YwNfA31w8EKDHAARwP9KGL041EQhd_4cP0oQkoKckMjDNIVFQF4INPN/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:56:42 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "51-91131-91133 NNNN CT(59 62 0) RT(1791705402450 16) q(0 0 1 0) r(3 3) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 32364,
+          "sha256": "dbf5e96289334c5c570a277eca1dab11e00dd9c530b7cbcbd52109eae3247902",
+          "waf": null,
+          "error": null,
+          "body_file": "a9b57149d587ff8e20a8-2.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/home-mutual/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zifQ2djTwsvA18LJxdDQ0Cg0Ldnb2D_YwNfA31w8EKDHAARwP9KGL041EQhd_4cP0oQkoKckMjDNIVFQF4INPN/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual",
+      "surface": "home"
+    },
+    {
+      "url": "https://www.mutual.cl/",
+      "user_agent": "browser_comparison",
+      "captured_at": "2026-10-11T07:56:43.736832+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/",
+          "http_status": 301,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 301 ",
+              "date": "Sun, 11 Oct 2026 07:56:43 GMT",
+              "content-type": "text/html",
+              "content-length": "169",
+              "server": "nginx/1.29.8",
+              "location": "https://www.mutual.cl/portal/publico/home-mutual",
+              "x-cdn": "Imperva",
+              "x-iinfo": "53-243990-244003 NNNN CT(60 60 0) RT(1791705403753 16) q(0 0 1 0) r(2 2) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html",
+          "bytes": 169,
+          "sha256": "cf7421bf8021a6e56b4a9aa5e1a0f5bb5f5b341189e61c7776d15f44b82c1fa3",
+          "waf": null,
+          "error": null,
+          "body_file": "29b5412bac4e499326da-0.body"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/home-mutual",
+          "http_status": 302,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 302 ",
+              "date": "Sun, 11 Oct 2026 07:56:44 GMT",
+              "server": "nginx/1.29.8",
+              "location": "https://www.mutual.cl/portal/publico/home-mutual/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zifQ2djTwsvA18LJxdDQ0Cg0Ldnb2D_YwNfA31w8EKDHAARwP9KGL041EQhd_4cP0oQkoKckMjDNIVFQF4INPN/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+              "cache-control": "no-cache=\"set-cookie, set-cookie2\"",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "54-292874-292177 PNNN RT(1791705403983 17) q(0 1 1 0) r(1 1) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": null,
+          "body_file": "29b5412bac4e499326da-1.body"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/home-mutual/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zifQ2djTwsvA18LJxdDQ0Cg0Ldnb2D_YwNfA31w8EKDHAARwP9KGL041EQhd_4cP0oQkoKckMjDNIVFQF4INPN/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:56:44 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "47-12374-12377 NNNN CT(60 59 0) RT(1791705404090 16) q(0 1 2 0) r(3 3) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 32364,
+          "sha256": "061e9002900c57627216c89a8d504f663545336e7b42b3c828281a6d2fea6761",
+          "waf": null,
+          "error": null,
+          "body_file": "29b5412bac4e499326da-2.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/home-mutual/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zifQ2djTwsvA18LJxdDQ0Cg0Ldnb2D_YwNfA31w8EKDHAARwP9KGL041EQhd_4cP0oQkoKckMjDNIVFQF4INPN/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual",
+      "surface": "home"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:56:45.368336+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:56:45 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "49-23003-23006 NNNN CT(60 59 0) RT(1791705405377 16) q(0 1 2 0) r(4 4) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 445654,
+          "sha256": "488ed5a9e4d031f3108b84987fa41490d853e7e13224f6aa93ae9c7f70499f55",
+          "waf": null,
+          "error": null,
+          "body_file": "14ab5b96dc76929b4786-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual",
+      "surface": "newsroom"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+      "user_agent": "browser_comparison",
+      "captured_at": "2026-10-11T07:56:46.921773+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:56:47 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "54-293854-292177 PNNN RT(1791705406941 16) q(0 0 0 0) r(2 2) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 445654,
+          "sha256": "0180b16b5158d2ae34d77a66d6f93e9bb6aa25303a993dc924a9a6cd02c301c1",
+          "waf": null,
+          "error": null,
+          "body_file": "e5ffc089f2e3621bdd6e-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual",
+      "surface": "newsroom"
+    },
+    {
+      "url": "https://www.mutual.cl/sitemap.xml",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:56:48.435702+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/sitemap.xml",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:56:48 GMT",
+              "content-type": "application/xml",
+              "content-length": "67680",
+              "server": "nginx/1.29.8",
+              "last-modified": "Thu, 05 Jun 2025 14:31:04 GMT",
+              "x-cdn": "Imperva",
+              "x-iinfo": "51-91786-91133 PNNN RT(1791705408451 16) q(0 0 0 0) r(1 1) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/xml",
+          "bytes": 67680,
+          "sha256": "14cc3d01b48de727503b9d6dffd2424b749aa319cd23adeaccc29121db064cf0",
+          "waf": null,
+          "error": null,
+          "body_file": "5ef07b5f611c28e073f9-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/sitemap.xml",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual",
+      "surface": "sitemap_candidate"
+    },
+    {
+      "url": "https://www.mutual.cl/feed/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:56:49.666167+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/feed/",
+          "http_status": 301,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 301 ",
+              "date": "Sun, 11 Oct 2026 07:56:49 GMT",
+              "content-type": "text/html",
+              "content-length": "169",
+              "server": "nginx/1.29.8",
+              "location": "https://www.mutual.cl/portal/publico/home-mutual",
+              "x-cdn": "Imperva",
+              "x-iinfo": "54-294794-292177 PNNN RT(1791705409683 15) q(0 0 0 0) r(1 1) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html",
+          "bytes": 169,
+          "sha256": "cf7421bf8021a6e56b4a9aa5e1a0f5bb5f5b341189e61c7776d15f44b82c1fa3",
+          "waf": null,
+          "error": null,
+          "body_file": "10caecc9fd89abfb268c-0.body"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/home-mutual",
+          "http_status": 302,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 302 ",
+              "date": "Sun, 11 Oct 2026 07:56:49 GMT",
+              "server": "nginx/1.29.8",
+              "location": "https://www.mutual.cl/portal/publico/home-mutual/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zifQ2djTwsvA18LJxdDQ0Cg0Ldnb2D_YwNfA31w8EKDHAARwP9KGL041EQhd_4cP0oQkoKckMjDNIVFQF4INPN/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+              "cache-control": "no-cache=\"set-cookie, set-cookie2\"",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "54-294828-292177 PNNN RT(1791705409779 16) q(0 0 0 0) r(1 1) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": null,
+          "body_file": "10caecc9fd89abfb268c-1.body"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/home-mutual/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zifQ2djTwsvA18LJxdDQ0Cg0Ldnb2D_YwNfA31w8EKDHAARwP9KGL041EQhd_4cP0oQkoKckMjDNIVFQF4INPN/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:56:49 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "54-294863-292177 PNNN RT(1791705409889 17) q(0 1 1 0) r(2 2) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 32364,
+          "sha256": "01e12b455e034517ef60f36b0a2cd63770e8acd0ca54b55c96485bee3d73b10b",
+          "waf": null,
+          "error": null,
+          "body_file": "10caecc9fd89abfb268c-2.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/home-mutual/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zifQ2djTwsvA18LJxdDQ0Cg0Ldnb2D_YwNfA31w8EKDHAARwP9KGL041EQhd_4cP0oQkoKckMjDNIVFQF4INPN/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual",
+      "surface": "feed_candidate"
+    },
+    {
+      "url": "https://ww2.mutual.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:56:51.108703+00:00",
+      "hops": [
+        {
+          "url": "https://ww2.mutual.cl/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/1.1 200 OK",
+              "cache-control": "private",
+              "content-type": "text/html; charset=iso-8859-1",
+              "server": "Microsoft-IIS/10.0",
+              "date": "Sun, 11 Oct 2026 07:56:52 GMT",
+              "content-length": "56369"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=iso-8859-1",
+          "bytes": 56369,
+          "sha256": "6bfdf9ad95c4e57bc7c204cc08d697fe3c8674367e690fdc0663856171e364bf",
+          "waf": null,
+          "error": null,
+          "body_file": "f75b8169e4dac1d6e45d-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ww2.mutual.cl/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_legacy",
+      "surface": "home"
+    },
+    {
+      "url": "https://ww2.mutual.cl/",
+      "user_agent": "browser_comparison",
+      "captured_at": "2026-10-11T07:56:53.449281+00:00",
+      "hops": [
+        {
+          "url": "https://ww2.mutual.cl/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/1.1 200 OK",
+              "cache-control": "private",
+              "content-type": "text/html; charset=iso-8859-1",
+              "server": "Microsoft-IIS/10.0",
+              "date": "Sun, 11 Oct 2026 07:56:54 GMT",
+              "content-length": "61309"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=iso-8859-1",
+          "bytes": 61309,
+          "sha256": "5783f057e1aed374134a1b523161e72ca1284091819ab6fd538c4c9e0548e10d",
+          "waf": null,
+          "error": null,
+          "body_file": "eed722dafb85aaaa0f87-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ww2.mutual.cl/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_legacy",
+      "surface": "home"
+    },
+    {
+      "url": "https://ist.cl/robots.txt",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:56:55.574760+00:00",
+      "hops": [
+        {
+          "url": "https://ist.cl/robots.txt",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "server": "nginx",
+              "date": "Sun, 11 Oct 2026 07:56:56 GMT",
+              "content-type": "text/plain",
+              "content-length": "434",
+              "last-modified": "Thu, 13 Aug 2026 15:15:36 GMT",
+              "etag": "\"6a7ddf98-1b2\"",
+              "strict-transport-security": "max-age=31536000"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/plain",
+          "bytes": 434,
+          "sha256": "8de4212f1f7f7ea42c2a6faf67a42ab1c8c97148bdb8eae2a78c06da10649c84",
+          "waf": null,
+          "error": null,
+          "body_file": "0d534f29173c65f7781b-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ist.cl/robots.txt",
+      "http_status": 200,
+      "waf": null,
+      "source": "ist",
+      "surface": "robots"
+    },
+    {
+      "url": "https://ist.cl/noticias/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:56:57.436736+00:00",
+      "hops": [
+        {
+          "url": "https://ist.cl/noticias/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "server": "nginx",
+              "date": "Sun, 11 Oct 2026 07:56:58 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "cache-control": "no-store, no-cache, must-revalidate",
+              "link": "<https://ist.cl/?p=564>; rel=shortlink",
+              "strict-transport-security": "max-age=31536000"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 376065,
+          "sha256": "bdbe49bf6c30660e8c1d1aaef3db6c9a1031f49b66e402c071feb1f6587599e5",
+          "waf": null,
+          "error": null,
+          "body_file": "31366e153e8724b3d604-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ist.cl/noticias/",
+      "http_status": 200,
+      "waf": null,
+      "source": "ist",
+      "surface": "newsroom"
+    },
+    {
+      "url": "https://ist.cl/noticias/",
+      "user_agent": "browser_comparison",
+      "captured_at": "2026-10-11T07:57:00.720390+00:00",
+      "hops": [
+        {
+          "url": "https://ist.cl/noticias/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "server": "nginx",
+              "date": "Sun, 11 Oct 2026 07:57:01 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "cache-control": "no-store, no-cache, must-revalidate",
+              "link": "<https://ist.cl/?p=564>; rel=shortlink",
+              "strict-transport-security": "max-age=31536000"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 376065,
+          "sha256": "bdbe49bf6c30660e8c1d1aaef3db6c9a1031f49b66e402c071feb1f6587599e5",
+          "waf": null,
+          "error": null,
+          "body_file": "cc2f08915e7682706710-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ist.cl/noticias/",
+      "http_status": 200,
+      "waf": null,
+      "source": "ist",
+      "surface": "newsroom"
+    },
+    {
+      "url": "https://ist.cl/noticias/page/2/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:04.129532+00:00",
+      "hops": [
+        {
+          "url": "https://ist.cl/noticias/page/2/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "server": "nginx",
+              "date": "Sun, 11 Oct 2026 07:57:05 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "cache-control": "no-store, no-cache, must-revalidate",
+              "link": "<https://ist.cl/?p=564>; rel=shortlink",
+              "strict-transport-security": "max-age=31536000"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 376309,
+          "sha256": "01d8d5362296e86f7129349bbd3b4dc29d463f1996179c6c6607e96022f59f65",
+          "waf": null,
+          "error": null,
+          "body_file": "ede006bb81b40ad69d9a-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ist.cl/noticias/page/2/",
+      "http_status": 200,
+      "waf": null,
+      "source": "ist",
+      "surface": "page_2"
+    },
+    {
+      "url": "https://ist.cl/category/noticias/page/2/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:07.292871+00:00",
+      "hops": [
+        {
+          "url": "https://ist.cl/category/noticias/page/2/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "server": "nginx",
+              "date": "Sun, 11 Oct 2026 07:57:08 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "cache-control": "no-store, no-cache, must-revalidate",
+              "link": "<https://ist.cl/wp-json/wp/v2/categories/14>; rel=\"alternate\"; type=\"application/json\"",
+              "strict-transport-security": "max-age=31536000"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 287088,
+          "sha256": "0fa90d47e64b8395e13f1596beda1aadfad82688e90f97ed8b33c62f02c48ff5",
+          "waf": null,
+          "error": null,
+          "body_file": "e85aa3b5703a2961d5f2-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ist.cl/category/noticias/page/2/",
+      "http_status": 200,
+      "waf": null,
+      "source": "ist",
+      "surface": "category_page_2"
+    },
+    {
+      "url": "https://ist.cl/category/noticias/page/3/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:10.371019+00:00",
+      "hops": [
+        {
+          "url": "https://ist.cl/category/noticias/page/3/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "server": "nginx",
+              "date": "Sun, 11 Oct 2026 07:57:11 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "cache-control": "no-store, no-cache, must-revalidate",
+              "link": "<https://ist.cl/wp-json/wp/v2/categories/14>; rel=\"alternate\"; type=\"application/json\"",
+              "strict-transport-security": "max-age=31536000"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 287005,
+          "sha256": "e264709db35fbad8be140dadd98ce168c3bdc5b66d6ddda7d53034c296aa987b",
+          "waf": null,
+          "error": null,
+          "body_file": "07ede4c1758d221dc6bd-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ist.cl/category/noticias/page/3/",
+      "http_status": 200,
+      "waf": null,
+      "source": "ist",
+      "surface": "category_page_3"
+    },
+    {
+      "url": "https://ist.cl/transparencia/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:13.416796+00:00",
+      "hops": [
+        {
+          "url": "https://ist.cl/transparencia/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "server": "nginx",
+              "date": "Sun, 11 Oct 2026 07:57:14 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "cache-control": "no-store, no-cache, must-revalidate",
+              "link": "<https://ist.cl/?p=4762>; rel=shortlink",
+              "strict-transport-security": "max-age=31536000"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 260271,
+          "sha256": "283759a543786aa9528f9da067cf883d43eaa55cd522927562b5418741b9e42a",
+          "waf": null,
+          "error": null,
+          "body_file": "83a1eadb62d0d93c8e83-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ist.cl/transparencia/",
+      "http_status": 200,
+      "waf": null,
+      "source": "ist",
+      "surface": "transparency"
+    },
+    {
+      "url": "https://ist.cl/feed/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:16.164743+00:00",
+      "hops": [
+        {
+          "url": "https://ist.cl/feed/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "server": "nginx",
+              "date": "Sun, 11 Oct 2026 07:57:17 GMT",
+              "content-type": "application/rss+xml; charset=UTF-8",
+              "cache-control": "no-store, no-cache, must-revalidate",
+              "last-modified": "Fri, 09 Oct 2026 17:04:04 GMT",
+              "etag": "\"02d937c4047702a0e9f3634afab28c5e\"",
+              "link": "<https://ist.cl/wp-json/>; rel=\"https://api.w.org/\"",
+              "strict-transport-security": "max-age=31536000"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/rss+xml; charset=UTF-8",
+          "bytes": 61701,
+          "sha256": "e7174b7a73c552ff9d2d6d171f985d839e4bd84798021f1e6b4d73f5fc7c032a",
+          "waf": null,
+          "error": null,
+          "body_file": "8fdec8ed77304dc20e4e-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ist.cl/feed/",
+      "http_status": 200,
+      "waf": null,
+      "source": "ist",
+      "surface": "feed"
+    },
+    {
+      "url": "https://ist.cl/wp-sitemap.xml",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:18.659954+00:00",
+      "hops": [
+        {
+          "url": "https://ist.cl/wp-sitemap.xml",
+          "http_status": 404,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 404 ",
+              "server": "nginx",
+              "date": "Sun, 11 Oct 2026 07:57:19 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "cache-control": "no-store, no-cache, must-revalidate",
+              "link": "<https://ist.cl/wp-json/>; rel=\"https://api.w.org/\"",
+              "strict-transport-security": "max-age=31536000"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 67708,
+          "sha256": "e19cdb756f4c7c4ce845cdafccaaa1685e902668ebc3ec3262a96360dded8836",
+          "waf": null,
+          "error": null,
+          "body_file": "739b1086ab817a6aa1ad-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ist.cl/wp-sitemap.xml",
+      "http_status": 404,
+      "waf": null,
+      "source": "ist",
+      "surface": "sitemap_candidate"
+    },
+    {
+      "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=1",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:21.156438+00:00",
+      "hops": [
+        {
+          "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=1",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "server": "nginx",
+              "date": "Sun, 11 Oct 2026 07:57:21 GMT",
+              "content-type": "application/json; charset=UTF-8",
+              "cache-control": "no-store, no-cache, must-revalidate",
+              "x-robots-tag": "noindex",
+              "x-wp-total": "1238",
+              "x-wp-totalpages": "1238",
+              "link": "<https://ist.cl/wp-json/wp/v2/posts?per_page=1&page=2>; rel=\"next\"",
+              "strict-transport-security": "max-age=31536000"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/json; charset=UTF-8",
+          "bytes": 6434,
+          "sha256": "129d83ef1f4ecbacee9791314e64335fa3d8c7c389d1df08b6358057128be972",
+          "waf": null,
+          "error": null,
+          "body_file": "882aeae634d8d66757a5-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ist.cl/wp-json/wp/v2/posts?per_page=1",
+      "http_status": 200,
+      "waf": null,
+      "source": "ist",
+      "surface": "api_candidate"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/67eeddbd-d49c-4e55-bbf5-23b32e08c240/memoria-mutual-2024.pdf?MOD=AJPERES",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:23.061872+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/wcm/connect/67eeddbd-d49c-4e55-bbf5-23b32e08c240/memoria-mutual-2024.pdf?MOD=AJPERES",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:57:23 GMT",
+              "content-type": "application/pdf",
+              "content-length": "12636726",
+              "server": "nginx/1.29.8",
+              "cache-control": "public,max-age=86,post-check=43,pre-check=86",
+              "etag": "\"1457915325\"",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "53-254544-254552 NNNN CT(60 63 0) RT(1791705443072 20) q(0 0 2 1) r(3 3) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/pdf",
+          "bytes": 12636726,
+          "sha256": "0dc9ed396f5064558c47a429001f53b1a4468ce597bab676d047eff32fcc66b5",
+          "waf": null,
+          "error": null,
+          "body_file": "da4d6b71f8b9708f6fb5-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/wcm/connect/67eeddbd-d49c-4e55-bbf5-23b32e08c240/memoria-mutual-2024.pdf?MOD=AJPERES",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_alternative",
+      "surface": "annual_report_pdf"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/f8d55034-e8db-44c2-a5cc-f46874de4189/memoria-mutual-2023.pdf?MOD=AJPERES",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:25.130378+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/wcm/connect/f8d55034-e8db-44c2-a5cc-f46874de4189/memoria-mutual-2023.pdf?MOD=AJPERES",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:57:25 GMT",
+              "content-type": "application/pdf",
+              "content-length": "10382271",
+              "server": "nginx/1.29.8",
+              "cache-control": "public,max-age=86,post-check=43,pre-check=86",
+              "etag": "\"-679328714\"",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "52-199605-199612 NNNN CT(59 60 0) RT(1791705445139 30) q(0 0 1 -1) r(3 3) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/pdf",
+          "bytes": 10382271,
+          "sha256": "8a9eeaacf23eccafc2bd47b4bf7a49ba28c056890f86a4c466c2770539b1cb7c",
+          "waf": null,
+          "error": null,
+          "body_file": "8b449432693cf70fe535-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/wcm/connect/f8d55034-e8db-44c2-a5cc-f46874de4189/memoria-mutual-2023.pdf?MOD=AJPERES",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_alternative",
+      "surface": "annual_report_pdf"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/25690125-4ebe-4af7-aa06-3123a6bbb225/informativo-juridico-agosto-2024.pdf?CACHEID=ROOTWORKSPACE-25690125-4ebe-4af7-aa06-3123a6bbb225-p6r12TV&CONVERT_TO=url&MOD=AJPERES",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:27.122208+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/wcm/connect/25690125-4ebe-4af7-aa06-3123a6bbb225/informativo-juridico-agosto-2024.pdf?CACHEID=ROOTWORKSPACE-25690125-4ebe-4af7-aa06-3123a6bbb225-p6r12TV&CONVERT_TO=url&MOD=AJPERES",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:57:27 GMT",
+              "content-type": "application/pdf",
+              "content-length": "822326",
+              "server": "nginx/1.29.8",
+              "cache-control": "public,max-age=86,post-check=43,pre-check=86",
+              "etag": "\"-1694052484\"",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "54-305491-305496 NNNN CT(62 60 0) RT(1791705447130 16) q(0 0 1 -1) r(3 3) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/pdf",
+          "bytes": 822326,
+          "sha256": "b38ded19f463bee80265c5ffa71f3a0b197b017bdbc2260812d894dad514423e",
+          "waf": null,
+          "error": null,
+          "body_file": "3803639d68e6bb3c167e-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/wcm/connect/25690125-4ebe-4af7-aa06-3123a6bbb225/informativo-juridico-agosto-2024.pdf?CACHEID=ROOTWORKSPACE-25690125-4ebe-4af7-aa06-3123a6bbb225-p6r12TV&CONVERT_TO=url&MOD=AJPERES",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_alternative",
+      "surface": "legal_bulletin_pdf"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/ccb10149-a893-4770-ab9b-fcb4db5a2689/preguntas-frecuentes-ds44-v1.pdf?CVID=plO5eJk&MOD=AJPERES",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:28.805636+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/wcm/connect/ccb10149-a893-4770-ab9b-fcb4db5a2689/preguntas-frecuentes-ds44-v1.pdf?CVID=plO5eJk&MOD=AJPERES",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:57:29 GMT",
+              "content-type": "application/pdf",
+              "content-length": "633414",
+              "server": "nginx/1.29.8",
+              "cache-control": "public,max-age=86,post-check=43,pre-check=86",
+              "etag": "\"-1973004609\"",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "50-48762-48764 NNNN CT(60 59 0) RT(1791705448816 16) q(0 0 1 -1) r(2 2) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/pdf",
+          "bytes": 633414,
+          "sha256": "3e337e16a7bda025ee453f727bc906620ca1a5dd0b6a3d8b3e18a81d5746cc92",
+          "waf": null,
+          "error": null,
+          "body_file": "7f687dee89a0f006c1dd-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/wcm/connect/ccb10149-a893-4770-ab9b-fcb4db5a2689/preguntas-frecuentes-ds44-v1.pdf?CVID=plO5eJk&MOD=AJPERES",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_alternative",
+      "surface": "prevention_guidance_pdf"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/7159845f-d4b9-4570-9538-88350dee6314/informativo-02-23-circular-3705-modifica-proceso-inv-acc-graves-y-acrm.pdf?CACHEID=ROOTWORKSPACE-7159845f-d4b9-4570-9538-88350dee6314-oEE6uKd&CONVERT_TO=url&MOD=AJPERES",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:30.458755+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/wcm/connect/7159845f-d4b9-4570-9538-88350dee6314/informativo-02-23-circular-3705-modifica-proceso-inv-acc-graves-y-acrm.pdf?CACHEID=ROOTWORKSPACE-7159845f-d4b9-4570-9538-88350dee6314-oEE6uKd&CONVERT_TO=url&MOD=AJPERES",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:57:30 GMT",
+              "content-type": "application/pdf",
+              "content-length": "681288",
+              "server": "nginx/1.29.8",
+              "cache-control": "public,max-age=86,post-check=43,pre-check=86",
+              "etag": "\"1718498910\"",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "45-9018-9021 NNNN CT(69 60 0) RT(1791705450470 16) q(0 0 2 -1) r(3 3) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/pdf",
+          "bytes": 681288,
+          "sha256": "f6dc09a340f4b4a15f472cd387fdc1ba324e227d52f99d75224b2af62ac81c2a",
+          "waf": null,
+          "error": null,
+          "body_file": "b64eeb221a97648dd572-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/wcm/connect/7159845f-d4b9-4570-9538-88350dee6314/informativo-02-23-circular-3705-modifica-proceso-inv-acc-graves-y-acrm.pdf?CACHEID=ROOTWORKSPACE-7159845f-d4b9-4570-9538-88350dee6314-oEE6uKd&CONVERT_TO=url&MOD=AJPERES",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_alternative",
+      "surface": "official_communication_pdf"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/Carga%20Cron%20Noticias/Noticias/noticias-contenido-cron/cchc-y-mutual-de-seguridad-renuevan-compromiso-con-la-seguridad-y-salud-laboral-para-2025-2026?WCM_PI=1&WCM_Page.e88ea003-7166-4115-b764-08f0dfcbdf99=60",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:32.052870+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/wcm/connect/Carga%20Cron%20Noticias/Noticias/noticias-contenido-cron/cchc-y-mutual-de-seguridad-renuevan-compromiso-con-la-seguridad-y-salud-laboral-para-2025-2026?WCM_PI=1&WCM_Page.e88ea003-7166-4115-b764-08f0dfcbdf99=60",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:57:32 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "etag": "\"-409886020\"",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "53-256736-254552 PNNN RT(1791705452062 15) q(0 0 0 -1) r(2 2) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 16136,
+          "sha256": "eb98f0c85cb444ded6b978efa578eab5c14eedc37c6f70e94834213c446cad6e",
+          "waf": null,
+          "error": null,
+          "body_file": "dbe7e745e5331737e21e-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/wcm/connect/Carga%20Cron%20Noticias/Noticias/noticias-contenido-cron/cchc-y-mutual-de-seguridad-renuevan-compromiso-con-la-seguridad-y-salud-laboral-para-2025-2026?WCM_PI=1&WCM_Page.e88ea003-7166-4115-b764-08f0dfcbdf99=60",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_alternative",
+      "surface": "wcm_rendered_news_alternative"
+    },
+    {
+      "url": "https://ww2.mutual.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:33.271823+00:00",
+      "hops": [
+        {
+          "url": "https://ww2.mutual.cl/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/1.1 200 OK",
+              "cache-control": "private",
+              "content-type": "text/html; charset=iso-8859-1",
+              "server": "Microsoft-IIS/10.0",
+              "date": "Sun, 11 Oct 2026 07:57:33 GMT",
+              "content-length": "56369"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=iso-8859-1",
+          "bytes": 56369,
+          "sha256": "063473f8450598c26228fd6567f8525734b71a6986d47530f629d79e18d47df4",
+          "waf": null,
+          "error": null,
+          "body_file": "f75b8169e4dac1d6e45d-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ww2.mutual.cl/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_alternative",
+      "surface": "official_legacy_subdomain"
+    },
+    {
+      "url": "https://ww2.mutual.cl/memorias.aspx",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:35.367253+00:00",
+      "hops": [
+        {
+          "url": "https://ww2.mutual.cl/memorias.aspx",
+          "http_status": 302,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/1.1 302 Found",
+              "content-type": "text/html; charset=iso-8859-1",
+              "location": "http://ww2.mutual.cl/",
+              "server": "Microsoft-IIS/10.0",
+              "date": "Sun, 11 Oct 2026 07:57:35 GMT",
+              "content-length": "138"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=iso-8859-1",
+          "bytes": 138,
+          "sha256": "9a4c9d3b2dd2336736f9854fb8c4c268f95fd535ad1d15e2b270e4f347c64494",
+          "waf": null,
+          "error": null,
+          "body_file": "bee37ab890d1f16688f7-0.body"
+        }
+      ],
+      "stop_reason": "redirect_outside_official_allowlist",
+      "redirect_destination": "http://ww2.mutual.cl/",
+      "final_url": "https://ww2.mutual.cl/memorias.aspx",
+      "http_status": 302,
+      "waf": null,
+      "source": "mutual_alternative",
+      "surface": "legacy_annual_report_listing"
+    },
+    {
+      "url": "https://ww2.mutual.cl/EstadosFinancieros.aspx",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:36.844513+00:00",
+      "hops": [
+        {
+          "url": "https://ww2.mutual.cl/EstadosFinancieros.aspx",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/1.1 200 OK",
+              "cache-control": "private",
+              "content-type": "text/html; charset=iso-8859-1",
+              "server": "Microsoft-IIS/10.0",
+              "date": "Sun, 11 Oct 2026 07:57:37 GMT",
+              "content-length": "52606"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=iso-8859-1",
+          "bytes": 52606,
+          "sha256": "bfb38116b8d1f435da0b7889689b569b7b992b9a6123cfb558fb842ff47fb8c3",
+          "waf": null,
+          "error": null,
+          "body_file": "a73ab2e4c94170e19320-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ww2.mutual.cl/EstadosFinancieros.aspx",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_alternative",
+      "surface": "legacy_financial_listing"
+    },
+    {
+      "url": "https://www.mutual.cl/prevencion_riesgos/BoletinaccidenteconResultadodeMuerte.aspx",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:38.730608+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/prevencion_riesgos/BoletinaccidenteconResultadodeMuerte.aspx",
+          "http_status": 301,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 301 ",
+              "date": "Sun, 11 Oct 2026 07:57:38 GMT",
+              "content-type": "text/html",
+              "content-length": "169",
+              "server": "nginx/1.29.8",
+              "location": "https://www.mutual.cl/portal/publico/home-mutual",
+              "x-cdn": "Imperva",
+              "x-iinfo": "52-201994-199612 PNNN RT(1791705458739 17) q(0 0 0 -1) r(1 1) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html",
+          "bytes": 169,
+          "sha256": "cf7421bf8021a6e56b4a9aa5e1a0f5bb5f5b341189e61c7776d15f44b82c1fa3",
+          "waf": null,
+          "error": null,
+          "body_file": "f1e8cfb6156cc6d7e6de-0.body"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/home-mutual",
+          "http_status": 302,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 302 ",
+              "date": "Sun, 11 Oct 2026 07:57:38 GMT",
+              "server": "nginx/1.29.8",
+              "location": "https://www.mutual.cl/portal/publico/home-mutual/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zifQ2djTwsvA18LJxdDQ0Cg0Ldnb2D_YwNfA31w8EKDHAARwP9KGL041EQhd_4cP0oQkoKckMjDNIVFQF4INPN/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+              "cache-control": "no-cache=\"set-cookie, set-cookie2\"",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "53-258382-254552 PNNN RT(1791705458838 15) q(0 0 0 -1) r(1 1) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": null,
+          "body_file": "f1e8cfb6156cc6d7e6de-1.body"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/home-mutual/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zifQ2djTwsvA18LJxdDQ0Cg0Ldnb2D_YwNfA31w8EKDHAARwP9KGL041EQhd_4cP0oQkoKckMjDNIVFQF4INPN/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:57:39 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "54-308527-305496 PNNN RT(1791705459010 16) q(0 0 0 -1) r(1 1) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 32364,
+          "sha256": "46c8bf4fee0531e1772a29695f434a62c8f74a899af4ba5cca7e826c6c41c467",
+          "waf": null,
+          "error": null,
+          "body_file": "f1e8cfb6156cc6d7e6de-2.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/home-mutual/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zifQ2djTwsvA18LJxdDQ0Cg0Ldnb2D_YwNfA31w8EKDHAARwP9KGL041EQhd_4cP0oQkoKckMjDNIVFQF4INPN/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_alternative",
+      "surface": "fatal_accident_bulletin_listing"
+    },
+    {
+      "url": "https://ww2.mutual.cl/form_mut/form_mutual_newslewtter.html",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:40.184948+00:00",
+      "hops": [
+        {
+          "url": "https://ww2.mutual.cl/form_mut/form_mutual_newslewtter.html",
+          "http_status": 404,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/1.1 404 Not Found",
+              "content-type": "text/html",
+              "server": "Microsoft-IIS/10.0",
+              "date": "Sun, 11 Oct 2026 07:57:40 GMT",
+              "content-length": "1245"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html",
+          "bytes": 1245,
+          "sha256": "dc1d54dab6ec8c00f70137927504e4f222c8395f10760b6beecfcfa94e08249f",
+          "waf": null,
+          "error": null,
+          "body_file": "575caa32a35c8a6079d5-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ww2.mutual.cl/form_mut/form_mutual_newslewtter.html",
+      "http_status": 404,
+      "waf": null,
+      "source": "mutual_alternative",
+      "surface": "legacy_newsletter_subscription"
+    },
+    {
+      "url": "https://proceso-devolucion-masiva.mutual.cl/proceso.php",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:41.802082+00:00",
+      "hops": [
+        {
+          "url": "https://proceso-devolucion-masiva.mutual.cl/proceso.php",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/1.1 200 OK",
+              "date": "Sun, 11 Oct 2026 07:57:42 GMT",
+              "content-type": "text/html; charset=UTF-8"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 36269,
+          "sha256": "a13b198256f40d0a405403eb7ae8193b502065e9e465302baab6b7ea6635878d",
+          "waf": null,
+          "error": null,
+          "body_file": "0e9e04173dc7f8e9fd0c-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://proceso-devolucion-masiva.mutual.cl/proceso.php",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_alternative",
+      "surface": "official_public_payment_process_notice"
+    },
+    {
+      "url": "https://proceso-devolucion-masiva.mutual.cl/PDF_FORM_ADHERENTES.pdf",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:43.723324+00:00",
+      "hops": [
+        {
+          "url": "https://proceso-devolucion-masiva.mutual.cl/PDF_FORM_ADHERENTES.pdf",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/1.1 200 OK",
+              "date": "Sun, 11 Oct 2026 07:57:44 GMT",
+              "last-modified": "Thu, 11 Apr 2019 13:14:19 GMT",
+              "etag": "\"10172-58640f6bc7887\"",
+              "content-length": "65906",
+              "content-type": "application/pdf"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/pdf",
+          "bytes": 65906,
+          "sha256": "c33c4f41216591d60c695bdf7df28bcc7b3bc7e18c37c798564b61dd96879535",
+          "waf": null,
+          "error": null,
+          "body_file": "6cf5caf010696b7f69dc-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://proceso-devolucion-masiva.mutual.cl/PDF_FORM_ADHERENTES.pdf",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_alternative",
+      "surface": "official_public_blank_form_pdf"
+    },
+    {
+      "url": "https://proceso-devolucion-masiva.mutual.cl/PDF_FORM_Trabajadores.pdf",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:45.683451+00:00",
+      "hops": [
+        {
+          "url": "https://proceso-devolucion-masiva.mutual.cl/PDF_FORM_Trabajadores.pdf",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/1.1 200 OK",
+              "date": "Sun, 11 Oct 2026 07:57:46 GMT",
+              "last-modified": "Thu, 11 Apr 2019 13:14:19 GMT",
+              "etag": "\"fde4-58640f6bd2c37\"",
+              "content-length": "64996",
+              "content-type": "application/pdf"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/pdf",
+          "bytes": 64996,
+          "sha256": "0932dc1c3366a62160a8e5d27bd38602608fe744dbeee64b02b0bc1d5cd9f974",
+          "waf": null,
+          "error": null,
+          "body_file": "c59c5727897adf0b2054-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://proceso-devolucion-masiva.mutual.cl/PDF_FORM_Trabajadores.pdf",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_alternative",
+      "surface": "official_public_blank_form_pdf"
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/3",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:47.458419+00:00",
+      "hops": [
+        {
+          "url": "https://www.achs.cl/centro-de-noticias/3",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:57:48 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "no-cache",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c50e4b9537af1-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 95358,
+          "sha256": "18ec412e39ea192138e580b0bf583a43178c7bc7236c2765d10fd898ee63842e",
+          "waf": null,
+          "error": null,
+          "body_file": "4d079c799279aca6171a-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achs.cl/centro-de-noticias/3",
+      "http_status": 200,
+      "waf": null,
+      "source": "achs",
+      "surface": "archive_boundary"
+    },
+    {
+      "url": "https://www.achssalud.cl/blog",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:50.056768+00:00",
+      "hops": [
+        {
+          "url": "https://www.achssalud.cl/blog",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:57:51 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "no-cache",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c50f40e4b3c79-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 468171,
+          "sha256": "ff21a548ea63c87f29ace307a58883eb7552c8c5e803abe8b7d4b8a8b5dc0d63",
+          "waf": null,
+          "error": null,
+          "body_file": "820f6e40aa4d4b72408c-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/blog",
+      "http_status": 200,
+      "waf": null,
+      "source": "achs_salud",
+      "surface": "blog"
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/feed/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:57:53.181880+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicasachssalud.cl/feed/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "c4e7d1a1fa85aedd97a1-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/feed/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinics",
+      "surface": "feed"
+    },
+    {
+      "url": "https://clinicasachssalud.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:58:06.192972+00:00",
+      "hops": [
+        {
+          "url": "https://clinicasachssalud.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "71045117282421aed7b1-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicasachssalud.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinics",
+      "surface": "home_apex"
+    },
+    {
+      "url": "https://clinicasachssalud.cl/feed/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:58:19.203418+00:00",
+      "hops": [
+        {
+          "url": "https://clinicasachssalud.cl/feed/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicasachssalud.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "a49f69db87228a47c38f-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicasachssalud.cl/feed/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinics",
+      "surface": "feed_apex"
+    },
+    {
+      "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:58:32.214457+00:00",
+      "hops": [
+        {
+          "url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "server": "nginx",
+              "date": "Sun, 11 Oct 2026 07:58:33 GMT",
+              "content-type": "application/json; charset=UTF-8",
+              "cache-control": "no-store, no-cache, must-revalidate",
+              "x-robots-tag": "noindex",
+              "link": "<https://ist.cl/wp-json/>; rel=\"https://api.w.org/\"",
+              "x-wp-total": "21",
+              "x-wp-totalpages": "1",
+              "strict-transport-security": "max-age=31536000"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/json; charset=UTF-8",
+          "bytes": 183705,
+          "sha256": "8d0abf995137f604321fa7955661d7592147e0f6524ac9f9ee62d2e545f2ccf7",
+          "waf": null,
+          "error": null,
+          "body_file": "44f32f4cf767e3ab2022-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-13T00%3A00%3A00&before=2026-10-12T00%3A00%3A00",
+      "http_status": 200,
+      "waf": null,
+      "source": "ist",
+      "surface": "api_90_days"
+    },
+    {
+      "url": "https://ist.cl/noticias/page/3/?et_blog",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:58:35.233771+00:00",
+      "hops": [
+        {
+          "url": "https://ist.cl/noticias/page/3/?et_blog",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "server": "nginx",
+              "date": "Sun, 11 Oct 2026 07:58:36 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "cache-control": "no-store, no-cache, must-revalidate",
+              "link": "<https://ist.cl/?p=564>; rel=shortlink",
+              "strict-transport-security": "max-age=31536000"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 375261,
+          "sha256": "62689a87377ebf6f6470b9d106fa2a64d81d1c4d4f75dbd2cb60eae9a9d22c60",
+          "waf": null,
+          "error": null,
+          "body_file": "cc6c6e7893050874eb3d-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ist.cl/noticias/page/3/?et_blog",
+      "http_status": 200,
+      "waf": null,
+      "source": "ist",
+      "surface": "newsroom_page3"
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:58:38.367330+00:00",
+      "hops": [
+        {
+          "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:58:38 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "no-cache",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c52221efceb36-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 86343,
+          "sha256": "371f59f4c19441047b211bf44875e6de50094adea0c195bc7d683b41b829b8a9",
+          "waf": null,
+          "error": null,
+          "body_file": "62ccf248ac7a8947f703-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+      "http_status": 200,
+      "waf": null,
+      "source": "achs",
+      "surface": "detail_verified"
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:58:39.876644+00:00",
+      "hops": [
+        {
+          "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:58:40 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "no-cache",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c522b689b9e58-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 85289,
+          "sha256": "f878206876420cc595eec85ffbb6863eb5dd034d08b2d88a1a92200e7e9f6fbc",
+          "waf": null,
+          "error": null,
+          "body_file": "ba3624a13de369c3c7df-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+      "http_status": 200,
+      "waf": null,
+      "source": "achs",
+      "surface": "detail_verified"
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:58:41.266836+00:00",
+      "hops": [
+        {
+          "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:58:42 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "no-cache",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c52341e5c2a0c-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 85723,
+          "sha256": "e292394fa0452da1daec5fb523fe3449237c080e88d92a898621f2bd5f3f6a59",
+          "waf": null,
+          "error": null,
+          "body_file": "2f8702b2b7fdab6e7e6c-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+      "http_status": 200,
+      "waf": null,
+      "source": "achs",
+      "surface": "detail_verified"
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:58:43.609574+00:00",
+      "hops": [
+        {
+          "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:58:44 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "no-cache",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c5242e843787f-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 88966,
+          "sha256": "96d2f9218214c1c07c0ee54bcd5ab49ce81e814fb74a2fd7abe2c71e61c73640",
+          "waf": null,
+          "error": null,
+          "body_file": "cf54b0043bc607ec3a8f-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+      "http_status": 200,
+      "waf": null,
+      "source": "achs",
+      "surface": "detail_verified"
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:58:45.954966+00:00",
+      "hops": [
+        {
+          "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:58:46 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "no-cache",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c525189548f74-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 84811,
+          "sha256": "7c24fc68bc32d8380968789ac1d4510225515f5a53228493e1f679be570c49b5",
+          "waf": null,
+          "error": null,
+          "body_file": "873c1f1920ded4aca7bc-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+      "http_status": 200,
+      "waf": null,
+      "source": "achs",
+      "surface": "detail_verified"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fsalud-mental-y-autocuidado-mutual-de-seguridad-impulsa-jornada-en-division-de-salud-del-ejercito",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:58:47.477477+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fsalud-mental-y-autocuidado-mutual-de-seguridad-impulsa-jornada-en-division-de-salud-del-ejercito",
+          "http_status": 302,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 302 ",
+              "date": "Sun, 11 Oct 2026 07:58:47 GMT",
+              "server": "nginx/1.29.8",
+              "location": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/noticias_detalle/salud-mental-y-autocuidado-mutual-de-seguridad-impulsa-jornada-en-division-de-salud-del-ejercito/!ut/p/z1/jVLLisJAEPwWP2DonszTo3HB1xrFMBtnLhJ0lLCbqIso-vVGEMFVx-1bQVV3V3WDgym4Kt8Xq3xXrKv8p8bWyRmjA9ljOoqaw1ihVAnXQn9SHEWQ3RPGaCjKOBkONDLWMxRcQK9lWJ8K_j89vqgWvtN_gY3BbsuP7fTwd5lHty48KwN3P-9JHCFCKtg7Ar8SAlvY2oV67UJBti_8AUy1_i3rE6eXjpt5sQDrF8u5p5KRphSecK8k0QxrKJZKcO-F9hS6CP1gqpevaN8ydRQ2pTGmOpLvSfcUJ6RjWo3GGSqYW34!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+              "cache-control": "no-cache=\"set-cookie, set-cookie2\"",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "51-109043-109047 NNNN CT(59 60 0) RT(1791705527492 15) q(0 0 1 -1) r(1 1) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": null,
+          "body_file": "0373bc415094137b062c-0.body"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/noticias_detalle/salud-mental-y-autocuidado-mutual-de-seguridad-impulsa-jornada-en-division-de-salud-del-ejercito/!ut/p/z1/jVLLisJAEPwWP2DonszTo3HB1xrFMBtnLhJ0lLCbqIso-vVGEMFVx-1bQVV3V3WDgym4Kt8Xq3xXrKv8p8bWyRmjA9ljOoqaw1ihVAnXQn9SHEWQ3RPGaCjKOBkONDLWMxRcQK9lWJ8K_j89vqgWvtN_gY3BbsuP7fTwd5lHty48KwN3P-9JHCFCKtg7Ar8SAlvY2oV67UJBti_8AUy1_i3rE6eXjpt5sQDrF8u5p5KRphSecK8k0QxrKJZKcO-F9hS6CP1gqpevaN8ydRQ2pTGmOpLvSfcUJ6RjWo3GGSqYW34!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:58:47 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "53-276762-276768 NNNN CT(59 59 0) RT(1791705527717 21) q(0 0 1 -1) r(3 3) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 117122,
+          "sha256": "be1d01ac7d15f2e72f49a3db78b6309f60a798420f66fc8ebbae5bb11522a9aa",
+          "waf": null,
+          "error": null,
+          "body_file": "0373bc415094137b062c-1.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/noticias_detalle/salud-mental-y-autocuidado-mutual-de-seguridad-impulsa-jornada-en-division-de-salud-del-ejercito/!ut/p/z1/jVLLisJAEPwWP2DonszTo3HB1xrFMBtnLhJ0lLCbqIso-vVGEMFVx-1bQVV3V3WDgym4Kt8Xq3xXrKv8p8bWyRmjA9ljOoqaw1ihVAnXQn9SHEWQ3RPGaCjKOBkONDLWMxRcQK9lWJ8K_j89vqgWvtN_gY3BbsuP7fTwd5lHty48KwN3P-9JHCFCKtg7Ar8SAlvY2oV67UJBti_8AUy1_i3rE6eXjpt5sQDrF8u5p5KRphSecK8k0QxrKJZKcO-F9hS6CP1gqpevaN8ydRQ2pTGmOpLvSfcUJ6RjWo3GGSqYW34!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual",
+      "surface": "detail_verified"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MK5h3w7g=GB=/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:58:49.143033+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MK5h3w7g=GB=/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:58:49 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "54-328131-328139 NNNN CT(60 60 0) RT(1791705529154 17) q(0 0 1 -1) r(3 3) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 93271,
+          "sha256": "d3997f3b8eae13e624c2f5fdbcbb7ee0f99666d8d9f9a2e78a0ece53af3a35ed",
+          "waf": null,
+          "error": null,
+          "body_file": "52c97d93417e2932036d-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MK5h3w7g=GB=/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual",
+      "surface": "server_page"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/conocenos/memorias/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:58:50.574360+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/conocenos/memorias/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:58:50 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "53-277528-276768 PNNN RT(1791705530582 16) q(0 0 0 -1) r(3 3) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 193487,
+          "sha256": "96ce8feaccfbb9730bc4e5740041b33a983664c9d218113d6031e568cd129e18",
+          "waf": null,
+          "error": null,
+          "body_file": "f7905682407992869589-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/conocenos/memorias/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual",
+      "surface": "memorias"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/informacion-financiera/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:58:51.945630+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/informacion-financiera/",
+          "http_status": 302,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 302 ",
+              "date": "Sun, 11 Oct 2026 07:58:52 GMT",
+              "server": "nginx/1.29.8",
+              "location": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jZBBC4MwDIV_kaS1WrxuO3XOMShlLpcRZGphVhHZYb9-FnZdZg6BwPeSlwcINWCgl-9o8WOg5zrfUN-VLLVRRZpehJNC789VWQiltMrgygE2zwC36MWP2oltegZAfv2RO2CcjAmkc3WoOsCJlj7xoR2hjn0eqFlTSlofKDT-MdPqBlnDpeSBeJAFbK7-AdkXYJ6eBufq96m1xpsPM5ZhpA!!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+              "cache-control": "no-cache=\"set-cookie, set-cookie2\"",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "53-277908-276768 PNNN RT(1791705531954 19) q(0 0 0 -1) r(1 1) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": null,
+          "body_file": "db7f21866aee3dd35ccc-0.body"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jZBBC4MwDIV_kaS1WrxuO3XOMShlLpcRZGphVhHZYb9-FnZdZg6BwPeSlwcINWCgl-9o8WOg5zrfUN-VLLVRRZpehJNC789VWQiltMrgygE2zwC36MWP2oltegZAfv2RO2CcjAmkc3WoOsCJlj7xoR2hjn0eqFlTSlofKDT-MdPqBlnDpeSBeJAFbK7-AdkXYJ6eBufq96m1xpsPM5ZhpA!!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:58:52 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "51-109619-109047 PNNN RT(1791705532079 16) q(0 0 0 -1) r(2 2) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 121021,
+          "sha256": "2216aa7be08f060f3599403c3400af5751d67d91b0907588a7bbc0df506411d1",
+          "waf": null,
+          "error": null,
+          "body_file": "db7f21866aee3dd35ccc-1.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/conocenos/quienes-somos/!ut/p/z1/jZBBC4MwDIV_kaS1WrxuO3XOMShlLpcRZGphVhHZYb9-FnZdZg6BwPeSlwcINWCgl-9o8WOg5zrfUN-VLLVRRZpehJNC789VWQiltMrgygE2zwC36MWP2oltegZAfv2RO2CcjAmkc3WoOsCJlj7xoR2hjn0eqFlTSlofKDT-MdPqBlnDpeSBeJAFbK7-AdkXYJ6eBufq96m1xpsPM5ZhpA!!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual",
+      "surface": "financiera"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MK5h3w7g=GH=/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:58:53.436984+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MK5h3w7g=GH=/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:58:53 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "53-278310-276768 PNNN RT(1791705533448 16) q(0 0 0 -1) r(2 2) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 93271,
+          "sha256": "afb8955891c75e41aa30ef593d2214ae9d69345f47e031caa85c3ad29f0439fe",
+          "waf": null,
+          "error": null,
+          "body_file": "807fcd19ddf9e3f8ffda-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MK5h3w7g=GH=/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_seguridad",
+      "surface": "observed_theme_paging"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MK5h3w7g=GH=/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:58:54.695057+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MK5h3w7g=GH=/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:58:54 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "53-278609-276768 PNNN RT(1791705534706 17) q(0 0 0 -1) r(2 2) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 445846,
+          "sha256": "bb9f880247e10036817a55b0dd46ad149fa31e6caae85f4f69e61d6ae5db661d",
+          "waf": null,
+          "error": null,
+          "body_file": "4298591bc8cc4e692253-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MK5h3w7g=GH=/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_seguridad",
+      "surface": "observed_theme_paging"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/dz/d5/L2dJQSEvUUt3QS80TmxFL1o2XzMxSzZJMzgyMjlNQjcwNjdONDg1OEwxMDg2/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:58:56.210512+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/dz/d5/L2dJQSEvUUt3QS80TmxFL1o2XzMxSzZJMzgyMjlNQjcwNjdONDg1OEwxMDg2/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 07:58:56 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "53-279020-276768 PNNN RT(1791705536222 19) q(0 0 0 -1) r(1 1) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 445654,
+          "sha256": "aa1972489ad51018aadef8f8cc2a91e2b7a40b17abf1a3b5e969fe737739dc5f",
+          "waf": null,
+          "error": null,
+          "body_file": "71a5fd8caff8e929da98-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/dz/d5/L2dJQSEvUUt3QS80TmxFL1o2XzMxSzZJMzgyMjlNQjcwNjdONDg1OEwxMDg2/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_seguridad",
+      "surface": "observed_theme_paging"
+    },
+    {
+      "url": "https://www.clinicaportada.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:58:57.643464+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicaportada.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicaportada.cl port 443 after 12000 ms: Timeout was reached",
+          "body_file": "91614b886b0806eecee4-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicaportada.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "official_home"
+    },
+    {
+      "url": "https://clinicaatacama.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:59:10.651703+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaatacama.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaatacama.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "b81bb8335a01194b6247-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaatacama.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicaloscoihues.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:59:23.662566+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaloscoihues.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaloscoihues.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "41a93e077a4ed61fbf08-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaloscoihues.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://www.clinicamaitenes.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:59:36.673156+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicamaitenes.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicamaitenes.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "56ead295179a5f8e3205-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicamaitenes.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "official_home"
+    },
+    {
+      "url": "https://www.clinicalircay.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T07:59:49.682390+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicalircay.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicalircay.cl port 443 after 12000 ms: Timeout was reached",
+          "body_file": "9a6463327b720c6fd246-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicalircay.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "official_home"
+    },
+    {
+      "url": "https://clinicalosandes.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:00:02.691242+00:00",
+      "hops": [
+        {
+          "url": "https://clinicalosandes.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicalosandes.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "16160fa30c21c40d4d2e-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicalosandes.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "official_home"
+    },
+    {
+      "url": "https://www.clinicasur.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:00:15.701469+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicasur.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicasur.cl port 443 after 12000 ms: Timeout was reached",
+          "body_file": "b35f4eecf46ce3491e18-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasur.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://www.clinicapuertomontt.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:00:28.710658+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicapuertomontt.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicapuertomontt.cl port 443 after 12000 ms: Timeout was reached",
+          "body_file": "efb5be3bbca25b536a81-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicapuertomontt.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "official_home"
+    },
+    {
+      "url": "https://www.clinica-curico.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:00:41.719624+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinica-curico.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinica-curico.cl port 443 after 12000 ms: Timeout was reached",
+          "body_file": "4b222b5469c907ff1854-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinica-curico.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "official_home"
+    },
+    {
+      "url": "https://clinicaloscoihues.cl/noticias",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:00:54.728723+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaloscoihues.cl/noticias",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaloscoihues.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "41319719f94bf5388b9a-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaloscoihues.cl/noticias",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinica-curico.cl/noticias/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:01:07.739497+00:00",
+      "hops": [
+        {
+          "url": "https://clinica-curico.cl/noticias/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "31870bbceec02796634a-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinica-curico.cl/noticias/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinica-curico.cl/blog/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:01:20.750088+00:00",
+      "hops": [
+        {
+          "url": "https://clinica-curico.cl/blog/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "4583b21a9f8d4a7a4976-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinica-curico.cl/blog/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://www.clinicasachssalud.cl/formulario-licitacion-master-plan-serena/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:01:33.759457+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicasachssalud.cl/formulario-licitacion-master-plan-serena/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicasachssalud.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "74a90e3083e771e95d00-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasachssalud.cl/formulario-licitacion-master-plan-serena/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicaportada.cl/noticias/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:01:46.769173+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaportada.cl/noticias/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaportada.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "375059e35dd3f0a86e44-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaportada.cl/noticias/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicaatacama.cl/noticias/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:01:59.778836+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaatacama.cl/noticias/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaatacama.cl port 443 after 12000 ms: Timeout was reached",
+          "body_file": "09c0bd385bd34ee5d56d-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaatacama.cl/noticias/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicamaitenes.cl/noticias/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:02:12.787811+00:00",
+      "hops": [
+        {
+          "url": "https://clinicamaitenes.cl/noticias/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicamaitenes.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "b4df8fff6cf1587b98ab-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicamaitenes.cl/noticias/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicalircay.cl/noticias/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:02:25.797761+00:00",
+      "hops": [
+        {
+          "url": "https://clinicalircay.cl/noticias/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicalircay.cl port 443 after 12000 ms: Timeout was reached",
+          "body_file": "2f62dfbc7916f164031e-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicalircay.cl/noticias/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://www.clinicalosandes.cl/noticias/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:02:38.806930+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicalosandes.cl/noticias/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicalosandes.cl port 443 after 12000 ms: Timeout was reached",
+          "body_file": "9e8f6a4e6430f08484bb-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicalosandes.cl/noticias/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://www.clinicasur.cl/noticias/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:02:51.815952+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicasur.cl/noticias/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicasur.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "3f83214383fbbe0448cd-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasur.cl/noticias/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicapuertomontt.cl/noticias/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:03:04.825479+00:00",
+      "hops": [
+        {
+          "url": "https://clinicapuertomontt.cl/noticias/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicapuertomontt.cl port 443 after 12000 ms: Timeout was reached",
+          "body_file": "4bdd4af4ddb006a645b1-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicapuertomontt.cl/noticias/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicaportada.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:03:17.834438+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaportada.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaportada.cl port 443 after 12000 ms: Timeout was reached",
+          "body_file": "b7321b8ab427c4c258d2-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaportada.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicaportada.cl/blog/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:03:30.843581+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaportada.cl/blog/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaportada.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "a0ebe7174579e633b875-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaportada.cl/blog/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicaatacama.cl/blog/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:03:43.853152+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaatacama.cl/blog/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaatacama.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "d654af682201ab0ab120-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaatacama.cl/blog/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicamaitenes.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:03:56.862953+00:00",
+      "hops": [
+        {
+          "url": "https://clinicamaitenes.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicamaitenes.cl port 443 after 12000 ms: Timeout was reached",
+          "body_file": "c095b7e685abe92a9dc5-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicamaitenes.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicalircay.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:04:09.871827+00:00",
+      "hops": [
+        {
+          "url": "https://clinicalircay.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicalircay.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "29c7582bef7cf82c60bb-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicalircay.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://www.clinicalosandes.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:04:22.881466+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicalosandes.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicalosandes.cl port 443 after 12000 ms: Timeout was reached",
+          "body_file": "80571e4b4055a1f88f13-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicalosandes.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://www.clinicasur.cl/blog-de-kinesiologia/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:04:35.889810+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicasur.cl/blog-de-kinesiologia/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicasur.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "c74fcb65b33c9fb179c1-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicasur.cl/blog-de-kinesiologia/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicapuertomontt.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:04:48.899477+00:00",
+      "hops": [
+        {
+          "url": "https://clinicapuertomontt.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicapuertomontt.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "552bd0ac22bcc34d5f53-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicapuertomontt.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicapuertomontt.cl/blog/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:05:01.909356+00:00",
+      "hops": [
+        {
+          "url": "https://clinicapuertomontt.cl/blog/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicapuertomontt.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "b69e919fa4b6730bafd9-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicapuertomontt.cl/blog/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinica-curico.cl/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:05:14.919250+00:00",
+      "hops": [
+        {
+          "url": "https://clinica-curico.cl/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "c204042afb77af6ed0b3-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinica-curico.cl/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicalircay.cl/2026/09/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:05:27.928997+00:00",
+      "hops": [
+        {
+          "url": "https://clinicalircay.cl/2026/09/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicalircay.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "c9599ae9eaf5b81df96b-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicalircay.cl/2026/09/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicamaitenes.cl/nueva-unidad-de-paciente-critico/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:05:40.938417+00:00",
+      "hops": [
+        {
+          "url": "https://clinicamaitenes.cl/nueva-unidad-de-paciente-critico/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicamaitenes.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "b5d0e60f30a951ce2d28-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicamaitenes.cl/nueva-unidad-de-paciente-critico/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicalircay.cl/modulo-fonasa-talca-lircay/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:05:53.948501+00:00",
+      "hops": [
+        {
+          "url": "https://clinicalircay.cl/modulo-fonasa-talca-lircay/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicalircay.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "828dc87f0fe15e6f487c-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicalircay.cl/modulo-fonasa-talca-lircay/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://www.clinicalosandes.cl/inauguramos-nuestro-nuevo-centro-medico/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:06:06.957912+00:00",
+      "hops": [
+        {
+          "url": "https://www.clinicalosandes.cl/inauguramos-nuestro-nuevo-centro-medico/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to www.clinicalosandes.cl port 443 after 12000 ms: Timeout was reached",
+          "body_file": "84b6ae6639a07d41cd19-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://www.clinicalosandes.cl/inauguramos-nuestro-nuevo-centro-medico/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinica-curico.cl/nuevo-scanner-tac/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:06:19.967010+00:00",
+      "hops": [
+        {
+          "url": "https://clinica-curico.cl/nuevo-scanner-tac/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "2934c383d809772708c3-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinica-curico.cl/nuevo-scanner-tac/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinica-curico.cl/nuevo-resonador-magnetico-signa-creator/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:06:32.977635+00:00",
+      "hops": [
+        {
+          "url": "https://clinica-curico.cl/nuevo-resonador-magnetico-signa-creator/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "58f53ea0c605d6b0ce93-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinica-curico.cl/nuevo-resonador-magnetico-signa-creator/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicamaitenes.cl/mes-del-corazon-salud-cardiaca/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:06:45.987845+00:00",
+      "hops": [
+        {
+          "url": "https://clinicamaitenes.cl/mes-del-corazon-salud-cardiaca/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicamaitenes.cl port 443 after 12002 ms: Timeout was reached",
+          "body_file": "c0435c02d65884e02930-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicamaitenes.cl/mes-del-corazon-salud-cardiaca/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinicaloscoihues.cl/clinicas-achs-salud-primer-lugar-total-brands",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:06:58.998179+00:00",
+      "hops": [
+        {
+          "url": "https://clinicaloscoihues.cl/clinicas-achs-salud-primer-lugar-total-brands",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinicaloscoihues.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "8e04e03d4ef114b1de10-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinicaloscoihues.cl/clinicas-achs-salud-primer-lugar-total-brands",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://clinica-curico.cl/clinicas-achs-salud-primer-lugar-total-brands/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:07:12.008437+00:00",
+      "hops": [
+        {
+          "url": "https://clinica-curico.cl/clinicas-achs-salud-primer-lugar-total-brands/",
+          "http_status": 0,
+          "proxy_connect_status": 0,
+          "curl_exit": 28,
+          "headers": [],
+          "tls": {
+            "origin_handshake_observed": false,
+            "certificate_verification_result": null,
+            "verified": false
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": "curl: (28) Failed to connect to clinica-curico.cl port 443 after 12001 ms: Timeout was reached",
+          "body_file": "ade4f1eb346c6630e995-0.body"
+        }
+      ],
+      "stop_reason": "transport_error",
+      "final_url": "https://clinica-curico.cl/clinicas-achs-salud-primer-lugar-total-brands/",
+      "http_status": 0,
+      "waf": null,
+      "source": "achs_clinic_subsite",
+      "surface": "observed_official_route"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/contenthandler/!ut/p/digest!f9JF9hYd3jYwEFRVwS7mfQ/mashup/ra:collection?themeID=ZJ_31K6I3822P1U106L08KC621004&locale=es&mime-type=text%2Fjavascript&lm=1760391714000&entry=wp_client_main__0.0%3Ahead_js&entry=wp_client_ext__0.0%3Ahead_js&entry=wp_client_logging__0.0%3Ahead_js&entry=wp_client_tracing__0.0%3Ahead_js&entry=wp_modules__0.0%3Ahead_js&entry=wp_photon_dom__0.0%3Ahead_js&entry=wp_toolbar_common__0.0%3Ahead_js&entry=wp_dialog_util__0.0%3Ahead_js&entry=wp_dialog_draggable__0.0%3Ahead_js&entry=wp_dialog_main__0.0%3Ahead_js&entry=wp_a11y__0.0%3Ahead_js&entry=wp_state_page__0.0%3Ahead_js&entry=wp_theme_portal_85__1.2.2%3Ahead_js&entry=wp_theme_utils__0.0%3Ahead_js&entry=wp_toolbar_viewframe_validator__0.0%3Ahead_js&entry=wp_analytics_aggregator__0.0%3Ahead_js",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:07:25.018518+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/contenthandler/!ut/p/digest!f9JF9hYd3jYwEFRVwS7mfQ/mashup/ra:collection?themeID=ZJ_31K6I3822P1U106L08KC621004&locale=es&mime-type=text%2Fjavascript&lm=1760391714000&entry=wp_client_main__0.0%3Ahead_js&entry=wp_client_ext__0.0%3Ahead_js&entry=wp_client_logging__0.0%3Ahead_js&entry=wp_client_tracing__0.0%3Ahead_js&entry=wp_modules__0.0%3Ahead_js&entry=wp_photon_dom__0.0%3Ahead_js&entry=wp_toolbar_common__0.0%3Ahead_js&entry=wp_dialog_util__0.0%3Ahead_js&entry=wp_dialog_draggable__0.0%3Ahead_js&entry=wp_dialog_main__0.0%3Ahead_js&entry=wp_a11y__0.0%3Ahead_js&entry=wp_state_page__0.0%3Ahead_js&entry=wp_theme_portal_85__1.2.2%3Ahead_js&entry=wp_theme_utils__0.0%3Ahead_js&entry=wp_toolbar_viewframe_validator__0.0%3Ahead_js&entry=wp_analytics_aggregator__0.0%3Ahead_js",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 08:07:25 GMT",
+              "content-type": "text/javascript; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "public, max-age=86400",
+              "last-modified": "Mon, 13 Oct 2025 21:41:54 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "54-475696-475708 NNNN CT(61 60 0) RT(1791706045261 16) q(0 0 1 -1) r(3 3) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/javascript; charset=UTF-8",
+          "bytes": 331476,
+          "sha256": "e8afb707953a5337800a1fa807079f04dcc3804668967b72eaafad20b36e8b10",
+          "waf": null,
+          "error": null,
+          "body_file": "c7be48288c8c68b10562-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/contenthandler/!ut/p/digest!f9JF9hYd3jYwEFRVwS7mfQ/mashup/ra:collection?themeID=ZJ_31K6I3822P1U106L08KC621004&locale=es&mime-type=text%2Fjavascript&lm=1760391714000&entry=wp_client_main__0.0%3Ahead_js&entry=wp_client_ext__0.0%3Ahead_js&entry=wp_client_logging__0.0%3Ahead_js&entry=wp_client_tracing__0.0%3Ahead_js&entry=wp_modules__0.0%3Ahead_js&entry=wp_photon_dom__0.0%3Ahead_js&entry=wp_toolbar_common__0.0%3Ahead_js&entry=wp_dialog_util__0.0%3Ahead_js&entry=wp_dialog_draggable__0.0%3Ahead_js&entry=wp_dialog_main__0.0%3Ahead_js&entry=wp_a11y__0.0%3Ahead_js&entry=wp_state_page__0.0%3Ahead_js&entry=wp_theme_portal_85__1.2.2%3Ahead_js&entry=wp_theme_utils__0.0%3Ahead_js&entry=wp_toolbar_viewframe_validator__0.0%3Ahead_js&entry=wp_analytics_aggregator__0.0%3Ahead_js",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_seguridad",
+      "surface": "observed_public_paging_contract"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/28973518-0f53-4887-94fb-4c163aa90de0/memoria-mutual-de-seguridad-2025.pdf?MOD=AJPERES",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:07:26.741959+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/wcm/connect/28973518-0f53-4887-94fb-4c163aa90de0/memoria-mutual-de-seguridad-2025.pdf?MOD=AJPERES",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 08:07:26 GMT",
+              "content-type": "application/pdf",
+              "content-length": "14122462",
+              "server": "nginx/1.29.8",
+              "cache-control": "public,max-age=86,post-check=43,pre-check=86",
+              "etag": "\"-856350435\"",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "54-476148-475708 PNNN RT(1791706046752 16) q(0 0 0 -1) r(1 1) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/pdf",
+          "bytes": 14122462,
+          "sha256": "ec0fccd3e312e8bb792ec337deb844eb6396ecc1156b34a55d0c36ee0353eaf2",
+          "waf": null,
+          "error": null,
+          "body_file": "99f1ab903150aa966bfa-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/wcm/connect/28973518-0f53-4887-94fb-4c163aa90de0/memoria-mutual-de-seguridad-2025.pdf?MOD=AJPERES",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_seguridad",
+      "surface": "observed_official_pdf"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/wcm/connect/d338dbae-1d13-4bbb-b0bc-596d47ea6c4b/diseno-anuario-hospital-mutual-2024-v12.pdf?MOD=AJPERES",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:07:28.759760+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/wcm/connect/d338dbae-1d13-4bbb-b0bc-596d47ea6c4b/diseno-anuario-hospital-mutual-2024-v12.pdf?MOD=AJPERES",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 08:07:28 GMT",
+              "content-type": "application/pdf",
+              "content-length": "11088577",
+              "server": "nginx/1.29.8",
+              "cache-control": "public,max-age=86,post-check=43,pre-check=86",
+              "etag": "\"-1214111440\"",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "54-476668-475708 PNNN RT(1791706048770 17) q(0 0 0 -1) r(1 1) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/pdf",
+          "bytes": 11088577,
+          "sha256": "fefa926d159edc98e270a49904894cbf8bf7cf4d03221bb482d42b8d8a2be9cb",
+          "waf": null,
+          "error": null,
+          "body_file": "da2f822dea22203b7bd0-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/wcm/connect/d338dbae-1d13-4bbb-b0bc-596d47ea6c4b/diseno-anuario-hospital-mutual-2024-v12.pdf?MOD=AJPERES",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_seguridad",
+      "surface": "observed_official_pdf"
+    },
+    {
+      "url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-437334/guia-tratamiento-psicologico.pdf?sfvrsn=fbec0931_1",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:07:30.382957+00:00",
+      "hops": [
+        {
+          "url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-437334/guia-tratamiento-psicologico.pdf?sfvrsn=fbec0931_1",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 08:07:30 GMT",
+              "content-type": "application/pdf",
+              "content-length": "3452909",
+              "cache-control": "public, max-age=76000",
+              "last-modified": "Thu, 24 Sep 2026 12:46:50 GMT",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c5f1f291b679c-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/pdf",
+          "bytes": 3452909,
+          "sha256": "2d68fdc8f3441e374397541d1511dfb1b38ef45c8fa56bf185bb84709af5262c",
+          "waf": null,
+          "error": null,
+          "body_file": "f60e7e752e833a4ed8e8-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-437334/guia-tratamiento-psicologico.pdf?sfvrsn=fbec0931_1",
+      "http_status": 200,
+      "waf": null,
+      "source": "achs_seguro_laboral",
+      "surface": "observed_bound_document"
+    },
+    {
+      "url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-435774/achs-infografia-scooter.pdf?sfvrsn=fe766532_1",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:07:31.667115+00:00",
+      "hops": [
+        {
+          "url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-435774/achs-infografia-scooter.pdf?sfvrsn=fe766532_1",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 08:07:31 GMT",
+              "content-type": "application/pdf",
+              "content-length": "228895",
+              "cache-control": "public, max-age=76000",
+              "last-modified": "Tue, 15 Sep 2026 16:44:28 GMT",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c5f2749a47af1-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/pdf",
+          "bytes": 228895,
+          "sha256": "70ba81cdf10385962882d0a3d37a3f1b7f9244fb05982a4a621149e24933a098",
+          "waf": null,
+          "error": null,
+          "body_file": "38b98681e9187c185e5c-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-435774/achs-infografia-scooter.pdf?sfvrsn=fe766532_1",
+      "http_status": 200,
+      "waf": null,
+      "source": "achs_seguro_laboral",
+      "surface": "observed_bound_document"
+    },
+    {
+      "url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-422711/ppt-lgf.pptx?sfvrsn=7908d12d_1",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:07:32.771715+00:00",
+      "hops": [
+        {
+          "url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-422711/ppt-lgf.pptx?sfvrsn=7908d12d_1",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 08:07:32 GMT",
+              "content-type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+              "content-length": "5752862",
+              "cache-control": "public, max-age=76000",
+              "last-modified": "Wed, 15 Jul 2026 19:19:01 GMT",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c5f2e38a70b82-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+          "bytes": 5752862,
+          "sha256": "fa678a8fe32430d1d3de7336bbfa604c34f613bef94c9e756295f7e397ba3c38",
+          "waf": null,
+          "error": null,
+          "body_file": "6f5efbe4504ffc3a038a-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-422711/ppt-lgf.pptx?sfvrsn=7908d12d_1",
+      "http_status": 200,
+      "waf": null,
+      "source": "achs_seguro_laboral",
+      "surface": "observed_bound_document"
+    },
+    {
+      "url": "https://ist.cl/wp-content/uploads/2026/07/Reporte-de-sostenibilidad-2025.pdf",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:07:33.992671+00:00",
+      "hops": [
+        {
+          "url": "https://ist.cl/wp-content/uploads/2026/07/Reporte-de-sostenibilidad-2025.pdf",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "server": "nginx",
+              "date": "Sun, 11 Oct 2026 08:07:34 GMT",
+              "content-type": "application/pdf",
+              "content-length": "4169202",
+              "last-modified": "Mon, 13 Jul 2026 21:01:59 GMT",
+              "etag": "\"6a555247-3f9df2\"",
+              "strict-transport-security": "max-age=31536000"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/pdf",
+          "bytes": 4169202,
+          "sha256": "acc895136dcfabe0ed8fd7ec2af599f5c0018b0e8288581ecc625e5ac12f53f7",
+          "waf": null,
+          "error": null,
+          "body_file": "1ab8f6434b9953521e51-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ist.cl/wp-content/uploads/2026/07/Reporte-de-sostenibilidad-2025.pdf",
+      "http_status": 200,
+      "waf": null,
+      "source": "ist",
+      "surface": "observed_bound_document"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=Mutual",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:07:38.281647+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=Mutual",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 08:07:38 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "50-92603-92610 NNNN CT(63 61 0) RT(1791706058292 16) q(0 0 1 -1) r(3 3) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 107771,
+          "sha256": "ade5996cb1703093bb8379764b9f71f38ae5dfdd7d2f5a840e12edd9140d2066",
+          "waf": null,
+          "error": null,
+          "body_file": "cc5816e60f195718a7ea-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=Mutual",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_seguridad",
+      "surface": "observed_official_search"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=2026",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:07:39.811619+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=2026",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 08:07:40 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "49-46980-46983 NNNN CT(62 59 0) RT(1791706059822 16) q(0 0 1 -1) r(3 3) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 102222,
+          "sha256": "ed2934f66f85632c2698f70df6e35fc75a1ea494c04568b40ebaa76393fdedf8",
+          "waf": null,
+          "error": null,
+          "body_file": "2c0b76638b356e24d869-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/empresa/search?queryBusqueda=2026",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_seguridad",
+      "surface": "observed_official_search"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/noticias",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:07:41.247619+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/noticias",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 08:07:41 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "51-190890-190893 NNNN CT(60 61 0) RT(1791706061258 16) q(0 0 1 -1) r(4 4) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 422237,
+          "sha256": "e0bb40fc285a4e9598724d741601c136ae67878e9d4ac53000e96751a4694f2c",
+          "waf": null,
+          "error": null,
+          "body_file": "2d94716acee6f004a070-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/noticias",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_seguridad",
+      "surface": "observed_official_search_news_listing"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:07:42.872688+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 08:07:43 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "53-424983-424990 NNNN CT(59 60 0) RT(1791706062882 16) q(0 1 2 -1) r(4 4) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 445653,
+          "sha256": "f094b108af08bb12144e830bb9b2d0cc2920c7cbe38d34324018a07eebf84ef5",
+          "waf": null,
+          "error": null,
+          "body_file": "cefb37c7532d5d3a3a7b-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_seguridad",
+      "surface": "observed_official_search_news_listing"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/noticias/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLI1NnQ3MAsx8jY2MLQwNTAz1C7IdFQFlhTit/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:07:44.545716+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/noticias/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLI1NnQ3MAsx8jY2MLQwNTAz1C7IdFQFlhTit/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 08:07:44 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "cache-control": "no-cache, no-store, must-revalidate",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "51-191485-190893 PNNN RT(1791706064556 21) q(0 0 0 -1) r(2 2) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 421914,
+          "sha256": "714bed9b6ebd30089ee6718a5eb4a86ca4a52be4ed8bc7489eb671cabd645661",
+          "waf": null,
+          "error": null,
+          "body_file": "663b49305ce7da170563-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/noticias/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLI1NnQ3MAsx8jY2MLQwNTAz1C7IdFQFlhTit/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_seguridad",
+      "surface": "observed_official_search_news_listing"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLI1NnQ3MArz9PDy8gw0MAoz1C7IdFQEjM-fw/",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:07:45.994775+00:00",
+      "hops": [
+        {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z0/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLI1NnQ3MArz9PDy8gw0MAoz1C7IdFQEjM-fw/",
+          "http_status": 302,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 302 ",
+              "date": "Sun, 11 Oct 2026 08:07:46 GMT",
+              "server": "nginx/1.29.8",
+              "location": "https://www.mutual.cl/portal/publico/Search/Search%20Center/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8ziDVCAo4FTkJGTsYGBu5mJfjghBVEY0sgKgfqjsChBmOBsjFUBihkFuREGmY6KigCb0h2x/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+              "cache-control": "no-cache=\"set-cookie, set-cookie2\"",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "52-344527-344531 NNNN CT(59 61 0) RT(1791706066004 16) q(0 0 1 -1) r(2 2) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": null,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "waf": null,
+          "error": null,
+          "body_file": "434853f3b633107a3cd2-0.body"
+        },
+        {
+          "url": "https://www.mutual.cl/portal/publico/Search/Search%20Center/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8ziDVCAo4FTkJGTsYGBu5mJfjghBVEY0sgKgfqjsChBmOBsjFUBihkFuREGmY6KigCb0h2x/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 08:07:46 GMT",
+              "content-type": "text/html; charset=UTF-8",
+              "server": "nginx/1.29.8",
+              "last-modified": "Thu, 21 Dec 2023 14:58:05 GMT",
+              "cache-control": "private, max-age=3600, no-cache=set-cookie",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+              "x-cdn": "Imperva",
+              "x-iinfo": "53-426000-424990 PNNN RT(1791706066223 16) q(0 0 0 -1) r(2 2) U24"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=UTF-8",
+          "bytes": 81744,
+          "sha256": "ac1b45fc880a7d1b1f789db5466c68644075a230297013e5a37989b29d56c780",
+          "waf": null,
+          "error": null,
+          "body_file": "434853f3b633107a3cd2-1.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.mutual.cl/portal/publico/Search/Search%20Center/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8ziDVCAo4FTkJGTsYGBu5mJfjghBVEY0sgKgfqjsChBmOBsjFUBihkFuREGmY6KigCb0h2x/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "waf": null,
+      "source": "mutual_seguridad",
+      "surface": "observed_official_search_news_listing"
+    },
+    {
+      "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qu%C3%A9-es-y-c%C3%B3mo-adaptarte-a-tu-nueva-ciudad",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:07:47.462347+00:00",
+      "hops": [
+        {
+          "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qu%C3%A9-es-y-c%C3%B3mo-adaptarte-a-tu-nueva-ciudad",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "date": "Sun, 11 Oct 2026 08:07:48 GMT",
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "no-cache",
+              "server": "cloudflare",
+              "strict-transport-security": "max-age=31536000; includeSubDomains",
+              "cf-ray": "a48c5f89fb853117-SJC"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 217470,
+          "sha256": "a809913e9fe0b729dfa423f56173fa32e7196db5692377281b9b889d3010bbcc",
+          "waf": null,
+          "error": null,
+          "body_file": "1ed054d0056efb3646cb-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qu%C3%A9-es-y-c%C3%B3mo-adaptarte-a-tu-nueva-ciudad",
+      "http_status": 200,
+      "waf": null,
+      "source": "clinicas_achs_salud",
+      "surface": "observed_disputed_publication"
+    },
+    {
+      "url": "https://ist.cl/wp-json/wp/v2/posts/105186",
+      "user_agent": "identified",
+      "captured_at": "2026-10-11T08:07:50.166508+00:00",
+      "hops": [
+        {
+          "url": "https://ist.cl/wp-json/wp/v2/posts/105186",
+          "http_status": 200,
+          "proxy_connect_status": 0,
+          "curl_exit": 0,
+          "headers": [
+            {
+              "status_line": "HTTP/2 200 ",
+              "server": "nginx",
+              "date": "Sun, 11 Oct 2026 08:07:51 GMT",
+              "content-type": "application/json; charset=UTF-8",
+              "cache-control": "no-store, no-cache, must-revalidate",
+              "x-robots-tag": "noindex",
+              "link": "<https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/>; rel=\"alternate\"; type=text/html",
+              "strict-transport-security": "max-age=31536000"
+            }
+          ],
+          "tls": {
+            "origin_handshake_observed": true,
+            "certificate_verification_result": 0,
+            "verified": true
+          },
+          "content_type": "application/json; charset=UTF-8",
+          "bytes": 5730,
+          "sha256": "2a297974139906d6e91ec59ea38618b7885c83d104d686cc6e59caac62f2096d",
+          "waf": null,
+          "error": null,
+          "body_file": "53298e409c24887eb2b2-0.body"
+        }
+      ],
+      "stop_reason": "response_captured",
+      "final_url": "https://ist.cl/wp-json/wp/v2/posts/105186",
+      "http_status": 200,
+      "waf": null,
+      "source": "ist",
+      "surface": "observed_disclosed_post_api"
+    }
+  ]
+}

@@ -108,3 +108,5 @@ test('approved insight detail exposes figures decisions limits and all evidence 
  for(const url of w.source_refs)assert.ok(body.innerHTML.includes(url));
  assert.ok(body.innerHTML.includes('Límites de la evidencia'));
 });
+
+test('enforcement dates display issuance and preserve separately verified publication',()=>{const c=context();const s={signal_types:['Fiscalización'],event_date:'2026-09-23',emission_date:'2026-09-23',publication_date:null,event_date_basis:'verified_primary_emission'};assert.match(c.cardMetadata(s),/Emitido/);assert.match(c.cardMetadata(s),/Publicación no verificada/);assert.doesNotMatch(c.cardMetadata(s),/Publicado/);assert.match(c.cardMetadata({...s,publication_date:'2026-09-25'}),/Publicado.*25.*Emitido.*23/);assert.match(c.sourceBlock([{...s,url:'https://example.org',title:'Acto'}],true),/Emitido/)});

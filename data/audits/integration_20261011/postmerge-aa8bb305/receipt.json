@@ -1,0 +1,364 @@
+{
+  "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+  "run": 38148412191,
+  "job": 114496588689,
+  "job_result": "PASS",
+  "workflow_result": "PASS",
+  "artifact_id": 11705821157,
+  "artifact_sha256": "918568d8b078b2003f5803a4ecfe5853508c4384720f386e3fa99b530650701c",
+  "durable_native_archive": "data/audits/integration_20261011/postmerge-aa8bb305/native-originals.zip",
+  "durable_native_sha256": "9a235c2e0abd3c6de6cff07f7c38a11463a8bef59174090465bc0dfad90682df",
+  "complete_native_historical_comparison": "PASS; cadb6c2 available through fetch-depth0; final reconciliation script completed",
+  "exact_calendar_counts": {
+    "30": {
+      "sis": 14,
+      "suseso": 20
+    },
+    "90": {
+      "sis": 28,
+      "suseso": 74
+    }
+  },
+  "inclusive_age0_to90_counts": {
+    "30": {
+      "sis": 14,
+      "suseso": 20
+    },
+    "90": {
+      "sis": 32,
+      "suseso": 77
+    }
+  },
+  "coverage_complete": false,
+  "limits": [
+    "Bounded dated coverage; daily publication dates of ten reports remain unknown.",
+    "Primary legal readings are explicit editorial reviews with matching native PDF hashes; this script does not certify legal interpretation.",
+    "Global QA and existing product Reviewer remain independent release gates."
+  ],
+  "supersedes_auxiliary_failure": "38145085754 on cb46eea missing cadb6c2; successful source/core substeps of old run remain preserved",
+  "primary_pdf_boundary": "Native archive retains complete HTML/headers/TLS plus primary PDF capture hashes. Raw PDFs use four workflow artifacts and prior durable source originals; no claim that this ZIP contains those PDF bodies.",
+  "all_nine_source_jobs": "PASS",
+  "actual_core_receipts": [
+    {
+      "source": "fonasa",
+      "runtime_run": 38148412191,
+      "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+      "workflow_result": "PASS",
+      "artifact_id": 11706360175,
+      "archive_sha256": "6ca0de6b03c6bf7f2b768f1c8df9bd4bee0e20c640e70d8bfd80773816e12cc8",
+      "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/fonasa/summary.json",
+      "two_fresh_actual_polls": true,
+      "idempotent_published_history_queue_identity": true,
+      "unrelated_stock_preserved": true,
+      "current_editorial_outcome": "not_evaluated",
+      "published_each": 0,
+      "new_each": 0,
+      "paid_calls": 0,
+      "discovered_each": [
+        0,
+        0
+      ],
+      "reviewer": "PASS, zero deterministic findings",
+      "qa": {
+        "run": 38149082710,
+        "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+        "python_passed": 1007,
+        "python_skipped": 1,
+        "node_passed": 42,
+        "browser_passed": 60,
+        "reviewer": "PASS"
+      },
+      "preview": {
+        "run": 38148412444,
+        "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "status": "PASS"
+      }
+    },
+    {
+      "source": "fonasa_datos_abiertos",
+      "runtime_run": 38148412191,
+      "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+      "workflow_result": "PASS",
+      "artifact_id": 11706275303,
+      "archive_sha256": "b6d4348bee13492692a8e6f5e98d177e5bbd66bb5dc6ffd5fdaa8bf5c3f53fa2",
+      "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/fonasa_datos_abiertos/summary.json",
+      "two_fresh_actual_polls": true,
+      "idempotent_published_history_queue_identity": true,
+      "unrelated_stock_preserved": true,
+      "current_editorial_outcome": "not_evaluated",
+      "published_each": 0,
+      "new_each": 0,
+      "paid_calls": 0,
+      "discovered_each": [
+        0,
+        0
+      ],
+      "reviewer": "PASS, zero deterministic findings",
+      "qa": {
+        "run": 38149082710,
+        "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+        "python_passed": 1007,
+        "python_skipped": 1,
+        "node_passed": 42,
+        "browser_passed": 60,
+        "reviewer": "PASS"
+      },
+      "preview": {
+        "run": 38148412444,
+        "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "status": "PASS"
+      }
+    },
+    {
+      "source": "diario_financiero",
+      "runtime_run": 38148412191,
+      "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+      "workflow_result": "PASS",
+      "artifact_id": 11706100211,
+      "archive_sha256": "32c99aaae403a1ec8abcba20d5e12ffe7592f6db04565e5796b226c9274f56e1",
+      "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/diario_financiero/summary.json",
+      "two_fresh_actual_polls": true,
+      "idempotent_published_history_queue_identity": true,
+      "unrelated_stock_preserved": true,
+      "current_editorial_outcome": "not_evaluated",
+      "published_each": 0,
+      "new_each": 0,
+      "paid_calls": 0,
+      "discovered_each": [
+        41,
+        41
+      ],
+      "reviewer": "PASS, zero deterministic findings",
+      "qa": {
+        "run": 38149082710,
+        "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+        "python_passed": 1007,
+        "python_skipped": 1,
+        "node_passed": 42,
+        "browser_passed": 60,
+        "reviewer": "PASS"
+      },
+      "preview": {
+        "run": 38148412444,
+        "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "status": "PASS"
+      }
+    },
+    {
+      "source": "isp_surveillance",
+      "runtime_run": 38148412191,
+      "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+      "workflow_result": "PASS",
+      "artifact_id": 11706091870,
+      "archive_sha256": "3d6bca8e4427f41ba912691ea9e1ff587016f3bce8994eebef00739c37e2bccc",
+      "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/isp_surveillance/summary.json",
+      "two_fresh_actual_polls": true,
+      "idempotent_published_history_queue_identity": true,
+      "unrelated_stock_preserved": true,
+      "current_editorial_outcome": "not_evaluated",
+      "published_each": 0,
+      "new_each": 0,
+      "paid_calls": 0,
+      "discovered_each": [
+        0,
+        0
+      ],
+      "reviewer": "PASS, zero deterministic findings",
+      "qa": {
+        "run": 38149082710,
+        "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+        "python_passed": 1007,
+        "python_skipped": 1,
+        "node_passed": 42,
+        "browser_passed": 60,
+        "reviewer": "PASS"
+      },
+      "preview": {
+        "run": 38148412444,
+        "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "status": "PASS"
+      }
+    },
+    {
+      "source": "deis",
+      "runtime_run": 38148412191,
+      "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+      "workflow_result": "PASS",
+      "artifact_id": 11706085633,
+      "archive_sha256": "be74059fa26881dfce85ed647bea6c96ad9fcd49a1bba0128a08959bc234b26e",
+      "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/deis/summary.json",
+      "two_fresh_actual_polls": true,
+      "idempotent_published_history_queue_identity": true,
+      "unrelated_stock_preserved": true,
+      "current_editorial_outcome": "not_evaluated",
+      "published_each": 0,
+      "new_each": 0,
+      "paid_calls": 0,
+      "discovered_each": [
+        12,
+        12
+      ],
+      "reviewer": "PASS, zero deterministic findings",
+      "qa": {
+        "run": 38149082710,
+        "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+        "python_passed": 1007,
+        "python_skipped": 1,
+        "node_passed": 42,
+        "browser_passed": 60,
+        "reviewer": "PASS"
+      },
+      "preview": {
+        "run": 38148412444,
+        "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "status": "PASS"
+      }
+    },
+    {
+      "source": "superintendencia_fiscalizacion",
+      "runtime_run": 38148412191,
+      "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+      "workflow_result": "PASS",
+      "artifact_id": 11705483811,
+      "archive_sha256": "910ba78f9fba0e51ca767dbb07ae26ef9ba4c762315baeb75dc4cca8fc22d308",
+      "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/superintendencia_fiscalizacion/summary.json",
+      "two_fresh_actual_polls": true,
+      "idempotent_published_history_queue_identity": true,
+      "unrelated_stock_preserved": true,
+      "current_editorial_outcome": "no_new_publications_existing_history",
+      "published_each": 0,
+      "new_each": 0,
+      "paid_calls": 0,
+      "discovered_each": [
+        3343,
+        3343
+      ],
+      "reviewer": "PASS, zero deterministic findings",
+      "qa": {
+        "run": 38149082710,
+        "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+        "python_passed": 1007,
+        "python_skipped": 1,
+        "node_passed": 42,
+        "browser_passed": 60,
+        "reviewer": "PASS"
+      },
+      "preview": {
+        "run": 38148412444,
+        "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "status": "PASS"
+      }
+    },
+    {
+      "source": "isp_anamed",
+      "runtime_run": 38148412191,
+      "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+      "workflow_result": "PASS",
+      "artifact_id": 11705479515,
+      "archive_sha256": "57486cc0cc974eec6808344cbb457ddd3ecfbe60a9120e1652235a7a2c530d5e",
+      "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/isp_anamed/summary.json",
+      "two_fresh_actual_polls": true,
+      "idempotent_published_history_queue_identity": true,
+      "unrelated_stock_preserved": true,
+      "current_editorial_outcome": "not_evaluated",
+      "published_each": 0,
+      "new_each": 0,
+      "paid_calls": 0,
+      "discovered_each": [
+        0,
+        0
+      ],
+      "reviewer": "PASS, zero deterministic findings",
+      "qa": {
+        "run": 38149082710,
+        "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+        "python_passed": 1007,
+        "python_skipped": 1,
+        "node_passed": 42,
+        "browser_passed": 60,
+        "reviewer": "PASS"
+      },
+      "preview": {
+        "run": 38148412444,
+        "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "status": "PASS"
+      }
+    },
+    {
+      "source": "suseso_fiscalizacion",
+      "runtime_run": 38148412191,
+      "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+      "workflow_result": "PASS",
+      "artifact_id": 11705821157,
+      "archive_sha256": "918568d8b078b2003f5803a4ecfe5853508c4384720f386e3fa99b530650701c",
+      "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/suseso_fiscalizacion/summary.json",
+      "two_fresh_actual_polls": true,
+      "idempotent_published_history_queue_identity": true,
+      "unrelated_stock_preserved": true,
+      "current_editorial_outcome": "not_evaluated",
+      "published_each": 0,
+      "new_each": 0,
+      "paid_calls": 0,
+      "discovered_each": [
+        1273,
+        1273
+      ],
+      "reviewer": "PASS, zero deterministic findings",
+      "qa": {
+        "run": 38149082710,
+        "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+        "python_passed": 1007,
+        "python_skipped": 1,
+        "node_passed": 42,
+        "browser_passed": 60,
+        "reviewer": "PASS"
+      },
+      "preview": {
+        "run": 38148412444,
+        "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "status": "PASS"
+      }
+    },
+    {
+      "source": "clinicas_achs_salud",
+      "runtime_run": 38148412191,
+      "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+      "workflow_result": "PASS",
+      "artifact_id": 11705823117,
+      "archive_sha256": "c6c18582c049ecaf66a2715da3f88d773e37a835e225799d6ef3d25599320edd",
+      "receipt": "data/audits/integration_20261011/postmerge-aa8bb305/clinicas_achs_salud/summary.json",
+      "two_fresh_actual_polls": true,
+      "idempotent_published_history_queue_identity": true,
+      "unrelated_stock_preserved": true,
+      "current_editorial_outcome": "not_evaluated",
+      "published_each": 0,
+      "new_each": 0,
+      "paid_calls": 0,
+      "discovered_each": [
+        13,
+        13
+      ],
+      "reviewer": "PASS, zero deterministic findings",
+      "qa": {
+        "run": 38149082710,
+        "head": "d89c687ba77267e1a37324e6e3ece9c6e79deb9d",
+        "python_passed": 1007,
+        "python_skipped": 1,
+        "node_passed": 42,
+        "browser_passed": 60,
+        "reviewer": "PASS"
+      },
+      "preview": {
+        "run": 38148412444,
+        "head": "aa8bb30582786ec31a62b604cb9919770b10e948",
+        "status": "PASS"
+      },
+      "clinical_crosslane_delta19_verified": true,
+      "clinical_publications": 0,
+      "unknown_date_conflicts": 25,
+      "held_pending_count": 1,
+      "boundary": "Partial publisher capture; 19 provider-lane queue additions present in baseline. Current native transport completes; publication/editorial conflicts and undated LaSerena qualification form remain held. No current source-wide443 blocker."
+    }
+  ],
+  "final_reviewed_at": "2026-10-11T15:07:30.832140+00:00"
+}

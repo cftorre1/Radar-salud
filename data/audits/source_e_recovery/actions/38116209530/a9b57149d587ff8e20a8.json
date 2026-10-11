@@ -1,0 +1,98 @@
+{
+  "url": "https://www.mutual.cl/",
+  "user_agent": "identified",
+  "captured_at": "2026-10-11T05:54:05.443044+00:00",
+  "hops": [
+    {
+      "url": "https://www.mutual.cl/",
+      "http_status": 301,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 301 ",
+          "date": "Sun, 11 Oct 2026 05:54:05 GMT",
+          "content-type": "text/html",
+          "content-length": "169",
+          "server": "nginx/1.29.8",
+          "location": "https://www.mutual.cl/portal/publico/home-mutual",
+          "x-cdn": "Imperva",
+          "x-iinfo": "51-88802024-88802131 NNNY CT(54 56 0) RT(1791698045498 21) q(0 2 2 234) r(3 3) U24"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "text/html",
+      "bytes": 169,
+      "sha256": "cf7421bf8021a6e56b4a9aa5e1a0f5bb5f5b341189e61c7776d15f44b82c1fa3",
+      "waf": null,
+      "error": null,
+      "body_file": "a9b57149d587ff8e20a8-0.body"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/home-mutual",
+      "http_status": 302,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 302 ",
+          "date": "Sun, 11 Oct 2026 05:54:05 GMT",
+          "server": "nginx/1.29.8",
+          "location": "https://www.mutual.cl/portal/publico/home-mutual/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zifQ2djTwsvA18LJxdDQ0Cg0Ldnb2D_YwNfA31w8EKDHAARwP9KGL041EQhd_4cP0oQkoKckMjDNIVFQF4INPN/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+          "cache-control": "no-cache=\"set-cookie, set-cookie2\"",
+          "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+          "x-cdn": "Imperva",
+          "x-iinfo": "45-55588000-55588013 NNNY CT(53 55 0) RT(1791698045888 22) q(0 0 0 1) r(0 0) U24"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": null,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "waf": null,
+      "error": null,
+      "body_file": "a9b57149d587ff8e20a8-1.body"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/home-mutual/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zifQ2djTwsvA18LJxdDQ0Cg0Ldnb2D_YwNfA31w8EKDHAARwP9KGL041EQhd_4cP0oQkoKckMjDNIVFQF4INPN/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+      "http_status": 200,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 200 ",
+          "date": "Sun, 11 Oct 2026 05:54:06 GMT",
+          "content-type": "text/html; charset=UTF-8",
+          "server": "nginx/1.29.8",
+          "cache-control": "no-cache, no-store, must-revalidate",
+          "strict-transport-security": "max-age=31536000; includeSubDomains; preload;",
+          "x-cdn": "Imperva",
+          "x-iinfo": "50-84116470-84116475 NNNY CT(53 55 0) RT(1791698046033 21) q(0 0 0 0) r(1 1) U24"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 32364,
+      "sha256": "01e12b455e034517ef60f36b0a2cd63770e8acd0ca54b55c96485bee3d73b10b",
+      "waf": null,
+      "error": null,
+      "body_file": "a9b57149d587ff8e20a8-2.body"
+    }
+  ],
+  "stop_reason": "response_captured",
+  "final_url": "https://www.mutual.cl/portal/publico/home-mutual/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zifQ2djTwsvA18LJxdDQ0Cg0Ldnb2D_YwNfA31w8EKDHAARwP9KGL041EQhd_4cP0oQkoKckMjDNIVFQF4INPN/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+  "http_status": 200,
+  "waf": null
+}

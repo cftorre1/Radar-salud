@@ -44,7 +44,7 @@ STATISTICAL_PARSER_REGISTRY = {
 }
 
 COVERAGE_SEGMENTS = ("Isapres", "Prestadores", "Fonasa / Sistema público", "Transversal")
-_PROVIDER_SOURCES = {"redsalud", "bupa_chile", "indisa", "clinicas_de_chile"}
+_PROVIDER_SOURCES = {"redsalud", "bupa_chile", "indisa", "clinicas_chile", "red_davila", "andes_salud", "clinicas_achs_salud"}
 _PUBLIC_SOURCES = {"minsal", "minsal_respiratory_pressure", "fonasa", "deis", "isp_anamed"}
 _INSURANCE_SOURCES = {"superintendencia", "superintendencia_salud", "superintendencia_normativa",
                       "superintendencia_fiscalizacion"}
@@ -197,7 +197,7 @@ def merge_persisted_weekly_insight(root, free_value, as_of=None):
     policy=dict(merged.get("selection_policy") or {})
     policy["weekly_insight_status"]="published_editorial_reviewed" if weekly else "hidden_fail_closed"
     policy["top3"]=payload.get("top3") or []
-    policy["deep_intelligence"]=payload.get("model") or {"mode":"editorial_reviewed" if weekly else "unavailable"}
+    policy["deep_intelligence"]=payload.get("model") or (weekly or {}).get("model_trace") or {"mode":"editorial_reviewed" if weekly else "unavailable"}
     policy["freshness_gate"]=freshness_gate(weekly, as_of)
     merged["selection_policy"]=policy
     merged["status"]="available" if weekly and merged.get("global_teaser") else "partial"

@@ -1,0 +1,313 @@
+{
+  "version": 3,
+  "slug": "pfizer_chile",
+  "as_of": "2026-10-11",
+  "timezone": "America/Santiago",
+  "window_rule": "0 <= as_of - verified publication_date <= 30/90 days inclusive; unknown date is null, never zero",
+  "audit_path": "data/audits/providers_2026_10_11/pfizer_chile.json",
+  "status": "OPERATIVE_DEGRADED",
+  "coverage": {
+    "outcome": "OPERATIVE_DEGRADED",
+    "coverage_complete": false,
+    "coverage_reason": "All17observed original news URLs inspected with componentH1/body; historical publication headers recovered, broken healthtech/covax links identified. No verified2026news; undated/misrouted/legacy originals and stale newsroom prevent exact recent total.0verified is not proof of zero activity.",
+    "archive_depth": {
+      "official_news_urls": 17,
+      "component_details_checked": 16
+    },
+    "owner": "Publisher Pfizer Chile / Source Engineering",
+    "next_action": "Repair healthtech/covax misroutes and publish current article-level chronology or an official current Chile newsroom/feed. Latest verified2023-01-22; zero verified2026 originals is not a zero-activity claim.",
+    "pages_checked": 35,
+    "latest_original_publication": "2023-01-22",
+    "discovered": 17,
+    "unique": 17,
+    "recent_30d": 0,
+    "recent_90d": 0,
+    "publication_date_unknown": 5,
+    "material_30d": 0,
+    "material_90d": 0,
+    "material_date_unknown": 0,
+    "material": 0,
+    "material_unknown": 5,
+    "published": 0,
+    "rejected": 0,
+    "deferred": 0,
+    "detected_material": 0,
+    "omitted_material": 0,
+    "parse_errors": 1,
+    "access_errors": 14,
+    "inventory": "data/audits/provider_inventory_2026_10_11/pfizer_chile.json",
+    "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+    "relevant_30d_total": null,
+    "relevant_90d_total": null,
+    "publicable_confirmed": 0,
+    "publicable_total": null
+  },
+  "verification_method": "Original-site reader and isolated GitHub Actions fetches on 2026-10-11; outcomes and dates stored durably. Full inventory is claimed only when original dates and boundary are verified.",
+  "source_quality_gate": "passed",
+  "surfaces": [
+    {
+      "url": "https://www.pfizer.cl/news",
+      "result": "Visible original newsroom exposes only 2023 articles. Healthtech card links to depression article; title mismatch."
+    }
+  ],
+  "blockers": [
+    "All17observed original news URLs inspected with componentH1/body; historical publication headers recovered, broken healthtech/covax links identified. No verified2026news; undated/misrouted/legacy originals and stale newsroom prevent exact recent total.0verified is not proof of zero activity."
+  ],
+  "original_items": [
+    {
+      "url": "https://www.pfizer.cl/news/depresion-clinica",
+      "title": "Encuentro de empresas healthtech",
+      "publication_date": null,
+      "event_date": null,
+      "reporting_period": null,
+      "effective_date": null,
+      "date_evidence": "original_publication_unverified_due_to_access_error",
+      "materiality": "unverified_content",
+      "recover": false,
+      "queue_admission_completed": false,
+      "current_reason": "Original detail access denied; publication and materiality cannot be certified. Official archive/feed/CMS alternatives recorded; no zero-activity or marketing inference.",
+      "alicanto": {
+        "materiality": "unverified_content",
+        "reason": "Original detail access denied; publication and materiality cannot be certified. Official archive/feed/CMS alternatives recorded; no zero-activity or marketing inference.",
+        "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+        "related_to": [],
+        "detected": false,
+        "queue": [],
+        "seen_ledger_match": false,
+        "history_count": 0,
+        "feed_count": 0,
+        "related_published_signals": [],
+        "alicanto_status": "not_detected",
+        "omitted": false,
+        "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+        "evidence": {
+          "capture_date": "2026-10-11T06:33:19.673371+00:00",
+          "body_sha256": null,
+          "date_stamps": [],
+          "date_reason": null,
+          "access_error": {
+            "url": "https://www.pfizer.cl/news/depresion-clinica",
+            "kind": "article_detail",
+            "captured_at": "2026-10-11T06:33:20.142345+00:00",
+            "user_agent": "RadarSaludBot/0.1 (+public-source-monitor)",
+            "tls_verified": true,
+            "status": 404,
+            "error_type": "HTTPError",
+            "error": "HTTP Error 404: Not Found",
+            "server": "cloudflare",
+            "response_sha256": "f8906f8cb4fb97796a69583af69253811ea7b13ed3779639acdd15a870192a20",
+            "response_bytes": 6622,
+            "waf_markers": [],
+            "redirects": []
+          }
+        }
+      },
+      "inventory_evidence": "data/audits/provider_inventory_2026_10_11/pfizer_chile.json"
+    }
+  ],
+  "notes": [
+    "Tres URLs históricas ya archivadas en cola. No hay omission fechada 2026 demostrada en el original visible.",
+    "Health técnico ok del poll anterior no implica frescura; se marca stale_external_surface y blocker editorial de enlace equivocado. No se inventa sustituto de prensa."
+  ],
+  "recovery_checkpoint": {
+    "at": "2026-10-11T04:41:25.973085+00:00",
+    "changes": []
+  },
+  "reconciliation": {
+    "scope": "full original inventory with unknown totals explicit",
+    "summary": {
+      "outcome": "OPERATIVE_DEGRADED",
+      "coverage_complete": false,
+      "coverage_reason": "All17observed original news URLs inspected with componentH1/body; historical publication headers recovered, broken healthtech/covax links identified. No verified2026news; undated/misrouted/legacy originals and stale newsroom prevent exact recent total.0verified is not proof of zero activity.",
+      "archive_depth": {
+        "official_news_urls": 17,
+        "component_details_checked": 16
+      },
+      "owner": "Publisher Pfizer Chile / Source Engineering",
+      "next_action": "Repair healthtech/covax misroutes and publish current article-level chronology or an official current Chile newsroom/feed. Latest verified2023-01-22; zero verified2026 originals is not a zero-activity claim.",
+      "pages_checked": 35,
+      "latest_original_publication": "2023-01-22",
+      "discovered": 17,
+      "unique": 17,
+      "recent_30d": 0,
+      "recent_90d": 0,
+      "publication_date_unknown": 5,
+      "material_30d": 0,
+      "material_90d": 0,
+      "material_date_unknown": 0,
+      "material": 0,
+      "material_unknown": 5,
+      "published": 0,
+      "rejected": 0,
+      "deferred": 0,
+      "detected_material": 0,
+      "omitted_material": 0,
+      "parse_errors": 1,
+      "access_errors": 14,
+      "inventory": "data/audits/provider_inventory_2026_10_11/pfizer_chile.json",
+      "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+      "relevant_30d_total": null,
+      "relevant_90d_total": null,
+      "publicable_confirmed": 0,
+      "publicable_total": null
+    },
+    "items": [
+      {
+        "url": "https://www.pfizer.cl/news/depresion-clinica",
+        "title": "Encuentro de empresas healthtech",
+        "publication_date": null,
+        "event_date": null,
+        "reporting_period": null,
+        "effective_date": null,
+        "date_evidence": "original_publication_unverified_due_to_access_error",
+        "materiality": "unverified_content",
+        "recover": false,
+        "queue_admission_completed": false,
+        "current_reason": "Original detail access denied; publication and materiality cannot be certified. Official archive/feed/CMS alternatives recorded; no zero-activity or marketing inference.",
+        "alicanto": {
+          "materiality": "unverified_content",
+          "reason": "Original detail access denied; publication and materiality cannot be certified. Official archive/feed/CMS alternatives recorded; no zero-activity or marketing inference.",
+          "review_method": "original article evidence and scoped independent Reviewer; model diagnostics below are preserved separately",
+          "related_to": [],
+          "detected": false,
+          "queue": [],
+          "seen_ledger_match": false,
+          "history_count": 0,
+          "feed_count": 0,
+          "related_published_signals": [],
+          "alicanto_status": "not_detected",
+          "omitted": false,
+          "publication_count_role": "publisher_piece; aliases and related events are counted separately",
+          "evidence": {
+            "capture_date": "2026-10-11T06:33:19.673371+00:00",
+            "body_sha256": null,
+            "date_stamps": [],
+            "date_reason": null,
+            "access_error": {
+              "url": "https://www.pfizer.cl/news/depresion-clinica",
+              "kind": "article_detail",
+              "captured_at": "2026-10-11T06:33:20.142345+00:00",
+              "user_agent": "RadarSaludBot/0.1 (+public-source-monitor)",
+              "tls_verified": true,
+              "status": 404,
+              "error_type": "HTTPError",
+              "error": "HTTP Error 404: Not Found",
+              "server": "cloudflare",
+              "response_sha256": "f8906f8cb4fb97796a69583af69253811ea7b13ed3779639acdd15a870192a20",
+              "response_bytes": 6622,
+              "waf_markers": [],
+              "redirects": []
+            }
+          }
+        },
+        "inventory_evidence": "data/audits/provider_inventory_2026_10_11/pfizer_chile.json"
+      }
+    ]
+  },
+  "environment_blockers": {
+    "local_original_collector": "CONNECT_403_restricted_original_hosts",
+    "remote_runner": "separate GitHub Actions observation below; local denial is not a remote source failure"
+  },
+  "runtime_checkpoint": {
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38112606335",
+    "probe": {
+      "discovered": 3,
+      "dated": 3,
+      "latest_original_at": "2023-06-08",
+      "technical_status": "ok",
+      "errors": [],
+      "evaluation_performed": false
+    },
+    "promotion": "none"
+  },
+  "assessment_checkpoints": {
+    "results": [],
+    "first": "data/audits/provider_live_checkpoint_2026_10_11.json",
+    "repairs": "data/audits/provider_repair_checkpoint_2026_10_11.json",
+    "repeated_paid_calls": 0
+  },
+  "coverage_claim": "All17observed original news URLs inspected with componentH1/body; historical publication headers recovered, broken healthtech/covax links identified. No verified2026news; undated/misrouted/legacy originals and stale newsroom prevent exact recent total.0verified is not proof of zero activity.",
+  "baseline": {
+    "sha": "cadb6c2d1f3c286a0dbeea3d236f6f10d47df2bb",
+    "queue_states": {
+      "archived": 3
+    },
+    "health": {
+      "technical_status": "ok",
+      "editorial_outcome": "no_new_signals",
+      "last_signal_at": null,
+      "published": 0,
+      "pending": 0,
+      "rejected": 0
+    }
+  },
+  "checkpoint_commit": "8d9f453",
+  "initial_checkpoint_status": "reconciled_with_exact_blockers",
+  "initial_original_items": [
+    {
+      "title": "Encuentro de empresas healthtech",
+      "url": "https://www.pfizer.cl/news/depresion-clinica",
+      "publication_date": "2023-06-08",
+      "date_evidence": "dated_news_listing",
+      "materiality": "outside_window",
+      "recover": false,
+      "evidence": "La tarjeta de 8 junio 2023 lleva al detalle de depresión (2 febrero 2023). Gate de identidad impide publicación."
+    },
+    {
+      "title": "Depresión clínica",
+      "url": "https://www.pfizer.cl/news/depresion-clinica",
+      "publication_date": "2023-02-02",
+      "date_evidence": "verified_article_header",
+      "materiality": "outside_window",
+      "recover": false,
+      "evidence": "Educación clínica histórica, fuera de 90 días. No representa noticia farmacéutica reciente."
+    }
+  ],
+  "blockers_before_exhaustive_audit": [
+    "stale_external_newsroom_latest_2023_06_08",
+    "healthtech_card_links_to_wrong_article"
+  ],
+  "initial_reconciliation": {
+    "scope": "verified original items; lower bound where inventory is blocked",
+    "material_candidates_30_days": 0,
+    "material_candidates_90_days": 0,
+    "publication_date_unknown": 0,
+    "queue_counts": {
+      "live_pending": 0,
+      "backfill_pending": 0,
+      "rejected": 0,
+      "published": 0
+    },
+    "items": [
+      {
+        "url": "https://www.pfizer.cl/news/depresion-clinica",
+        "publication_date": "2023-06-08",
+        "in_30_days": false,
+        "in_90_days": false,
+        "materiality": "outside_window",
+        "queue": [],
+        "history_count": 0,
+        "visible_count": 0
+      },
+      {
+        "url": "https://www.pfizer.cl/news/depresion-clinica",
+        "publication_date": "2023-02-02",
+        "in_30_days": false,
+        "in_90_days": false,
+        "materiality": "outside_window",
+        "queue": [],
+        "history_count": 0,
+        "visible_count": 0
+      }
+    ]
+  },
+  "outcome": "OPERATIVE_DEGRADED",
+  "original_items_role": "Current candidate reconciliation. Initial evidence is preserved separately; terminal results are not replayed.",
+  "latest_original_inventory": "data/audits/provider_inventory_2026_10_11/pfizer_chile.json",
+  "piece_decisions": "data/audits/provider_editorial_decisions_2026_10_11.json",
+  "last_runtime_evidence": "data/audits/provider_recurrent_checkpoint_2026_10_11.json",
+  "next_action": "Repair healthtech/covax misroutes and publish current article-level chronology or an official current Chile newsroom/feed. Latest verified2023-01-22; zero verified2026 originals is not a zero-activity claim.",
+  "blocker_owner": "Publisher Pfizer Chile / Source Engineering",
+  "current_checkpoint_test": "74 passed, 1 skipped; provider/beta/publication/gremio/source-health focal suite on 2026-10-11",
+  "merged_staging_sha": "c4819844e413d31ede792521a2c137392c4ae104"
+}

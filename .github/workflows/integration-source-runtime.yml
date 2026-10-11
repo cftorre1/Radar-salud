@@ -1,0 +1,97 @@
+name: Integration Commander post-merge source runtime
+on:
+  push:
+    branches: [staging]
+    paths: ['config/integration_runtime_targets.json', '.github/run-integration-runtime-now']
+permissions:
+  contents: read
+concurrency:
+  group: integration-commander-source-runtime-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  targets:
+    if: github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    outputs:
+      sources: ${{ steps.targets.outputs.sources }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - id: targets
+        run: python -c 'import json, os; print("sources=" + json.dumps(json.load(open("config/integration_runtime_targets.json"))["sources"]), file=open(os.environ["GITHUB_OUTPUT"], "a"))'
+  runtime:
+    needs: targets
+    strategy:
+      fail-fast: false
+      matrix:
+        source: ${{ fromJSON(needs.targets.outputs.sources) }}
+    if: github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      INTEGRATION_SOURCE: ${{ matrix.source }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      RADAR_FAST_MODEL: gpt-5.6-luna
+      RADAR_DEEP_MODEL: gpt-5.6-terra
+      RADAR_FAST_PER_RUN: 5
+      RADAR_DEEP_PER_RUN: 0
+      RADAR_FAST_PER_MONTH: 1500
+      RADAR_DEEP_PER_MONTH: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e .
+      - name: Execute real collector and core twice, preserving the staging input
+        run: python scripts/integration_runtime.py
+      - name: Reconcile native fiscalization indexes against their original HTML
+        if: matrix.source == 'suseso_fiscalizacion'
+        run: |
+          python scripts/probe_fiscalization_runtime.py --as-of 2026-10-11 --output work/fiscalization-runtime
+          python scripts/replay_fiscalization_runtime.py --captures work/fiscalization-runtime --output work/fiscalization-runtime/isolated-replay
+          python scripts/review_fiscalization_coverage.py --runtime work/fiscalization-runtime --output work/fiscalization-runtime/coverage-review.json
+          python scripts/reconcile_native_fiscalization.py --runtime work/fiscalization-runtime > work/fiscalization-runtime/native-reconciliation-summary.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-source-runtime-${{ github.sha }}-${{ matrix.source }}
+          retention-days: 14
+          path: |
+            work/integration-runtime/
+            work/fiscalization-runtime/
+            !work/fiscalization-runtime/**/*.pdf
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-fiscalization-documents-0-${{ github.sha }}
+          path: work/fiscalization-runtime/captures/documents/0/
+          if-no-files-found: ignore
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-fiscalization-documents-1-${{ github.sha }}
+          path: work/fiscalization-runtime/captures/documents/1/
+          if-no-files-found: ignore
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-fiscalization-documents-2-${{ github.sha }}
+          path: work/fiscalization-runtime/captures/documents/2/
+          if-no-files-found: ignore
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-fiscalization-documents-3-${{ github.sha }}
+          path: work/fiscalization-runtime/captures/documents/3/
+          if-no-files-found: ignore
+          retention-days: 30

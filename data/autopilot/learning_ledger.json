@@ -358,6 +358,95 @@
     "status": "open"
   },
   {
+    "id": "df_date_queue_and_gate_2026_10_11",
+    "recorded_at": "2026-10-11T04:26:19.700737+00:00",
+    "scope": "DF only; Codex A isolated branch",
+    "trigger": "User and independent Work3 identified material omissions missed by green tests",
+    "why_missed": "Only synthetic article:published_time covered; no real publisher metadata, no existing-null-date queue replay, no assertion that Daily DF applied configured Media Early Signal Gate. Generic processor_rejected hid capture defects.",
+    "preventive_controls": [
+      "Recorded cXense and JSON-LD/dateModified/date-conflict tests",
+      "Existing seen/null-date queue recovery tests preserve observations and decisions",
+      "Real DF processor through Daily→history/feed replay, exact rejection reasons and 72 boundary test",
+      "DF all-undated health cannot be healthy; cumulative counters labelled"
+    ],
+    "evidence": "tests/test_df_recovery.py; tests/test_source_health_facets.py; 34 targeted PASS",
+    "remaining": "Original-site runtime and independent semantic review required; replay is not coverage proof",
+    "owner_time_saved": "Future regressions diagnosed by exact reason; no recurring manual date/queue reconstruction required."
+  },
+  {
+    "id": "df_article_recommendation_contamination_2026_10_11",
+    "source": "Codex A real runtime audit",
+    "class": "missed_capture_defect",
+    "finding": "Generic paragraph/article fallback mixed DF primary content with recommendation cards and newsletters; unrelated news acquired health terms and real IA published wrong-story summaries.",
+    "root_cause": "Synthetic markup tested dates but did not reproduce DF CUERPO and article.card siblings. Threshold tests alone cannot certify the evidence used by a real model.",
+    "specific_fix": "Select primary DF body, require a material health consequence in the same statement, trace withdrawal/reassessment of contaminated decisions, and reject non-article URLs.",
+    "preventive_controls": [
+      "deterministic_test",
+      "data_validation_rule",
+      "editorial_rule"
+    ],
+    "evidence": [
+      "Original hash manifest tests/fixtures/df_original_manifest.json",
+      "ebc0db2/d26ee89/e51ce83; 42 focused tests PASS",
+      "Actual primary-body runtime 38113493822 awaiting outcomes review"
+    ],
+    "status": "implemented_runtime_review_open",
+    "owner_time_saved": "No owner intervention requested; runtime discovery and recovery were autonomous."
+  },
+  {
+    "id": "df_withdrawn_history_acknowledgement_2026_10_11",
+    "source": "Codex A runtime review",
+    "class": "recovery_interaction_defect",
+    "finding": "After hiding contaminated DF publications, URL dedupe still treated retained rejected history as published and superseded valid reassessments.",
+    "root_cause": "History crash-safety dedupe lacked a distinction between retained evidence and accepted publication. Existing tests tested each repair separately, not their interaction.",
+    "specific_fix": "Exclude withdrawn body-review records from publication acknowledgements, recover only exact affected superseded records and preserve old history snapshots across successful reassessment.",
+    "preventive_controls": [
+      "deterministic_test",
+      "data_validation_rule"
+    ],
+    "evidence": [
+      "test_retained_withdrawn_history_does_not_acknowledge_reassessment_as_published",
+      "03605e4; 48 targeted regression tests PASS",
+      "Runtime38114333430 pending review"
+    ],
+    "status": "implemented_runtime_review_open"
+  },
+  {
+    "id": "df_primary_care_taxonomy_gap_2026_10_11",
+    "source": "Codex A independent coverage control",
+    "class": "editorial_processing_defect",
+    "finding": "A material CESFAM investment/retender was absent from bounded inventory and rejected by the health/materiality conjunction because CESFAM was missing from healthcare terms.",
+    "root_cause": "Tests used clinic/hospital vocabulary; materiality review did not exercise primary-care facility acronyms.",
+    "specific_fix": "Include CESFAM/CESCOSF healthcare identity, retain unchanged business gate72, reopen only the exact verified affected rejection for real assessment.",
+    "preventive_controls": [
+      "deterministic_test",
+      "independent_original_control"
+    ],
+    "evidence": [
+      "test_cesfam_investment_title_reaches_gate_without_macro_health_contamination",
+      "Runtime38119095016:CESFAM72 BACKFILL published",
+      "data/audits/df_independent_controls_2026_10_11.json"
+    ],
+    "status": "validated_isolated_runtime_pending_integration"
+  },
+  {
+    "id": "df_offline_proof_retention_2026_10_11",
+    "source": "Codex A integration state review",
+    "class": "evidence_preservation_defect",
+    "finding": "Offline audit without local HTML replaced stronger stored original header verification with empty fallback metadata.",
+    "root_cause": "Audit assumed every review had the full cache; previous tests verified primary extraction but not offline review after runtime.",
+    "specific_fix": "Restore exact Actions original-review receipt and retain it offline only when original hash, body hash, date and title match; keep original verification timestamp.",
+    "preventive_controls": [
+      "deterministic_test",
+      "data_validation_rule"
+    ],
+    "evidence": [
+      "test_offline_publication_review_retains_original_proof_only_for_same_body_date_and_identity",
+      "26/26 original body/date/header verified,58testsPASS"
+    ],
+    "status": "validated_pending_integration"
+  },
+  {
     "id": "autonomy_structured_output_truncation_2026_10_11",
     "at": "2026-10-11T06:01:59.671306+00:00",
     "class": "autonomy_recovery_evidence_transport",
@@ -410,5 +499,88 @@
     "source_closed": false,
     "four_hour_acceptance": "NOT_PROVEN",
     "metadata_counts_as_material_progress": false
+  },
+  {
+    "id": "integration_baseline_rolling_cohort_20261011",
+    "at": "2026-10-11T13:18:27Z",
+    "class": "rolling_population_and_inventory_contract",
+    "finding": "Historical twelve-act normative cohort ages out; an inventory-only bulletin cannot claim numerical table analysis. DF cumulative rejections do not describe the latest poll.",
+    "specific_fix": "Frozen original cohort retains threshold twelve; eligible-current-set checks and explicit inventory contract preserve deep numerical checks. Source health separates current poll and cumulative stock.",
+    "status": "superseded_statistical_interpretation; normative_and_poll_fix_valid",
+    "proof_status": "VERIFIED",
+    "evidence": [
+      "data/audits/integration_20261011/baseline-root-cause.json",
+      "data/audits/integration_20261011/df/receipt.json"
+    ],
+    "source_closed": false,
+    "correction": "PR17 primary PDF review proves all eight findings were export/presentation defects, not obsolete expectations. Restore original strict Reviewer; persist reviewed analysis. Preserve this record as historical reasoning."
+  },
+  {
+    "id": "staging_qa_obsolete_inventory_and_ephemeral_analysis_2026_10_11",
+    "at": "2026-10-11T13:14:40.423159+00:00",
+    "scope": "Independent Staging QA Gatekeeper; no source collector changes",
+    "trigger": "User had to separate inherited QA/Reviewer failures blocking multiple unrelated source PRs.",
+    "why_missed": "Snapshot tests treated12reviewed normative acts and3July statistical releases as a permanent live inventory; exports consumed an analysis file generated only in CI and not retained in clean checkouts. Source-specific tests could pass while global gates stalled; new normative rows could mask the wrong count.",
+    "specific_fix": "Verify every eligible reviewed identity and preserve expired history, test90/91boundaries, version four-primary-PDF bulletin analysis, fail on malformed/identity-changing patches, build only eligible release inputs and keep a historical-clock browser fixture. Restore original strict Reviewer after concurrent inventory exemption; negative regression reproduces every inherited finding regardless of value-level label.",
+    "preventive_controls": [
+      "deterministic_test",
+      "browser_qa_assertion",
+      "data_validation_rule"
+    ],
+    "evidence": [
+      "tests/test_web_snapshot.py",
+      "tests/test_statistics_reviewer.py",
+      "tests/browser/statistical-contract.spec.cjs",
+      "config/statistical_analysis_verified_v1.json",
+      "data/audits/staging_qa_gates_2026_10_11.json",
+      "https://github.com/cftorre1/Radar-salud/actions/runs/38141940100",
+      "https://github.com/cftorre1/Radar-salud/actions/runs/38143298390"
+    ],
+    "status": "validated_native_ci_ready_for_integration",
+    "owner_time_saved": "Independent source PRs no longer need owner intervention to diagnose stale fixed-volume gates; no editorial quota or Reviewer weakening.",
+    "validated_at": "2026-10-11T13:31:36.889931+00:00",
+    "validated_implementation_sha": "8339640f43309f908f69edae43b1b34bbbf23d24",
+    "next_check": "Integration Commander post-merge QA; revalidate independent source PRs without inheriting obsolete inventories."
+  },
+  {
+    "id": "integration_strict_statistical_baseline_correction_20261011",
+    "at": "2026-10-11T13:43:00Z",
+    "class": "reviewer_strength_and_durable_primary_analysis",
+    "finding": "An inventory interpretation bypassed existing table/coverage/type gates when the derived analysis file was absent from a clean checkout.",
+    "specific_fix": "Incorporate PR17 with four reviewed primary PDFs, canonical verified analysis and original byte-identical strict Reviewer. Malformed analysis and identity/date patches fail explicitly.",
+    "status": "candidate_under_hosted_validation",
+    "proof_status": "PRIMARY_REVIEW_RECEIVED",
+    "evidence": [
+      "data/audits/staging_qa_gates_2026_10_11.json",
+      "config/statistical_analysis_verified_v1.json"
+    ],
+    "source_closed": false
+  },
+  {
+    "id": "source_integration_collisions_2026_10_11",
+    "source": "Integration Director",
+    "class": "integration_regression_prevented",
+    "finding": "Independent source branches can silently replace source identity or discard paid editorial receipts when merged by text alone. A browser test also queried the expansion control before the independent source fetch rendered.",
+    "root_cause": "Shared slug across source lanes, concurrent state commits, asynchronous product-data loading.",
+    "specific_fix": "One canonical ACHS occupational registration; reject duplicate slugs; preserve terminal receipt objects and alternate review evidence; reconcile independent usage deltas; await source list render before expansion.",
+    "evidence": [
+      "PR20",
+      "PR21",
+      "PR23",
+      "data/audits/integration_20261011/achs-crosslane-review.json"
+    ],
+    "acceptance_boundary": "Only exact-head QA and actual post-merge source receipts support final state; no autonomy4h or coverage-completeness inference."
+  },
+  {
+    "id": "native_runtime_copied_budget_and_queue_progress_20261011",
+    "source": "Integration Commander",
+    "class": "runtime_reconciliation",
+    "finding": "Read-only live runtime can spend budget and advance rejection/archive backlog while accepted stock is idempotent.",
+    "specific_fix": "Preserve peer reviewed32-transition import and actual +1 Fast receipt once; describe accepted-stock idempotence separately from queue status progress.",
+    "evidence": [
+      "data/audits/integration_20261011/independent-reception-review.json",
+      "data/audits/integration_20261011/provider-runtime-cost-reconciliation.json"
+    ],
+    "acceptance_boundary": "Zero new publications does not prove zero model calls or unchanged queue statuses."
   }
 ]

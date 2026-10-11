@@ -1,0 +1,39 @@
+{
+  "url": "https://www.clinicasachssalud.cl/feed/",
+  "user_agent": "identified",
+  "captured_at": "2026-10-11T05:47:12.307088+00:00",
+  "hops": [
+    {
+      "url": "https://www.clinicasachssalud.cl/feed/",
+      "http_status": 503,
+      "proxy_connect_status": 0,
+      "curl_exit": 0,
+      "headers": [
+        {
+          "status_line": "HTTP/2 503 ",
+          "cache-control": "no-cache, must-revalidate, private, max-age=0",
+          "retry-after": "3600",
+          "content-type": "text/html; charset=UTF-8",
+          "date": "Sun, 11 Oct 2026 05:47:14 GMT",
+          "server": "LiteSpeed",
+          "strict-transport-security": "max-age=31536000; includeSubDomains"
+        }
+      ],
+      "tls": {
+        "origin_handshake_observed": true,
+        "certificate_verification_result": 0,
+        "verified": true
+      },
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 18316,
+      "sha256": "5e71768a7e7534cf0a84b0e3a1a0187bef7e00c25a8f7cbffa832a497a9541e5",
+      "waf": null,
+      "error": null,
+      "body_file": "c4e7d1a1fa85aedd97a1-0.body"
+    }
+  ],
+  "stop_reason": "response_captured",
+  "final_url": "https://www.clinicasachssalud.cl/feed/",
+  "http_status": 503,
+  "waf": null
+}

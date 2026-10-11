@@ -1,0 +1,626 @@
+{
+  "reviewer": "independent /root/reviewer",
+  "reviewed_at": "2026-10-11T07:00:08.298240+00:00",
+  "candidate_sha": "e99c252f85e5e1c9357e16601db38290b12a5b4c",
+  "baseline": "ac70ed4",
+  "existing_pr": 12,
+  "branch": "codex/e-salud-laboral-20261011",
+  "verdict": "per_item_review_complete_final_stable_live_gate_pending",
+  "reviewer_network_calls": 0,
+  "reviewer_paid_api_calls": 0,
+  "reviewer_canonical_mutations": 0,
+  "publications": [
+    {
+      "review_id": "karin",
+      "queue_key": "03293c62ff268b64f8d560eaa159c63501fb6c4763bb32784c658c90d3e3489b",
+      "source_slug": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/a-dos-anos-de-la-ley-karin-avances-desafios-y-aprendizajes-para-construir-entornos-laborales-mas-seguros",
+      "title": "A dos años de la Ley Karin: avances, desafíos y aprendizajes para construir entornos laborales más seguros",
+      "market_role": "mutuality",
+      "publication_date": "2026-09-17",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/a-dos-anos-de-la-ley-karin-avances-desafios-y-aprendizajes-para-construir-entornos-laborales-mas-seguros",
+        "value": "17/09/2026",
+        "date": "2026-09-17",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/a-dos-anos-de-la-ley-karin-avances-desafios-y-aprendizajes-para-construir-entornos-laborales-mas-seguros",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/a-dos-anos-de-la-ley-karin-avances-desafios-y-aprendizajes-para-construir-entornos-laborales-mas-seguros",
+        "captured_at": "2026-10-11T05:56:38.696221+00:00",
+        "sha256": "3e1ffa52dc65b8b3552ed53da4462cbae38a8379c95c088891292de1508d5327",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/f7ea1315f5a411c15bcb-0.body",
+        "environment": "github_actions"
+      },
+      "actual_artifact_sha256": "3e1ffa52dc65b8b3552ed53da4462cbae38a8379c95c088891292de1508d5327",
+      "capture_guard": "PASS",
+      "editorial_score": 82,
+      "threshold": 75,
+      "ingestion_mode": "BACKFILL",
+      "prior_revisions": [
+        {
+          "status": "rejected",
+          "reason": "no_verifiable_material_change"
+        }
+      ],
+      "existing_copy": {
+        "what_happened": "A dos años de la entrada en vigor de la Ley Karin, la Achs publicó un informe de seguimiento con datos de agosto de 2024 a junio de 2026. Registró 32.522 requerimientos de Atención Psicológica Temprana vinculados con acoso laboral, acoso sexual y violencia en el trabajo: 81% correspondió a acoso laboral, 16% a violencia y 3% a acoso sexual. Las mujeres concentraron el 73% de las atenciones. El 81,4% de los requerimientos provino de comercio y retail, educación, organismos gubernamentales y municipios, servicios de salud e industria.",
+        "why_it_matters": "El volumen de requerimientos muestra una demanda operacional sostenida de apoyo psicológico y gestión preventiva asociada a la Ley Karin para empresas adheridas a la Achs, especialmente en sectores feminizados y con alta concentración de casos, como educación, servicios de salud, comercio y organismos públicos. Las organizaciones deben sostener capacidades de prevención, investigación, contención y respuesta; la Achs reporta que su sistema de Atención Psicológica Temprana busca responder en un plazo máximo de 48 horas."
+      },
+      "reviewed_copy": {
+        "what_happened": "En una publicación del 17 de septiembre de 2026, la Achs informó que recibió 32.522 requerimientos de Atención Psicológica Temprana asociados a acoso laboral, acoso sexual y violencia en el trabajo entre agosto de 2024 y junio de 2026. Su informe de seguimiento de la Ley Karin atribuye el 81% a acoso laboral, el 16% a violencia en el trabajo y el 3% a acoso sexual; las mujeres concentraron el 73% de las atenciones.",
+        "why_it_matters": "Los requerimientos recibidos por la Achs aportan evidencia sobre la demanda de apoyo psicológico y las necesidades de prevención en sus entidades adheridas. Permiten orientar capacidades de contención y respuesta en los sectores con mayor concentración de requerimientos. Estas cifras describen la actividad reportada por la mutualidad y no una medición nacional de todos los casos."
+      },
+      "recommendation": "ACCEPT_ITEM_EVIDENCE_AND_ATTRIBUTED_COPY",
+      "data_period": "2024-08 through 2026-06",
+      "proof_quotes": [
+        "Entre agosto de 2024 y junio de 2026, la Achs recibió 32.522 requerimientos",
+        "26.392 correspondieron a situaciones de acoso laboral (81%)",
+        "23.771 atenciones (73%) correspondieron a mujeres"
+      ],
+      "risks": [
+        "Requerimientos/atenciones are not necessarily unique people or national incidence.",
+        "The article reports accumulated data; publication_date remains2026-09-17."
+      ],
+      "automatic_gate_on_existing_copy": {
+        "publication_ready": [
+          true,
+          "ok",
+          100
+        ],
+        "committee": "PASS"
+      },
+      "conditions_before_feed": [
+        "Apply exact reviewed copy to queue and history with a durable manual revision, without any API call.",
+        "Preserve primary URL, title, publication date, capture hashes and BACKFILL lane.",
+        "Bind the reviewer-approved copy to the captured input and do not lose it on subsequent unchanged published-item refresh.",
+        "Approve evidence per item; keep source coverage completeness separate, especially Mutual partial coverage."
+      ]
+    },
+    {
+      "review_id": "innovar",
+      "queue_key": "69016c1d5b4438573957b78cae5d4beac456bf9f0716307cdd4015bdaae54410",
+      "source_slug": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/innovar-para-llegar-a-tiempo",
+      "title": "Innovar para llegar a tiempo",
+      "market_role": "mutuality",
+      "publication_date": "2026-08-25",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/innovar-para-llegar-a-tiempo",
+        "value": "25/08/2026",
+        "date": "2026-08-25",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/innovar-para-llegar-a-tiempo",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/innovar-para-llegar-a-tiempo",
+        "captured_at": "2026-10-11T05:56:51.432380+00:00",
+        "sha256": "b3fd147fa5ff69a7f780c88d90fc079401429ffe9f16d0b0ea9eedabb2e14f93",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/a2b95068261acc188842-0.body",
+        "environment": "github_actions"
+      },
+      "actual_artifact_sha256": "b3fd147fa5ff69a7f780c88d90fc079401429ffe9f16d0b0ea9eedabb2e14f93",
+      "capture_guard": "PASS",
+      "editorial_score": 78,
+      "threshold": 75,
+      "ingestion_mode": "BACKFILL",
+      "prior_revisions": [
+        {
+          "status": "rejected",
+          "reason": "no_verifiable_material_change"
+        }
+      ],
+      "existing_copy": {
+        "what_happened": "Achs informó que desarrolló un modelo especializado de salud mental con atención remota, equipos multidisciplinarios, seguimiento de tratamientos y procesos estandarizados para ampliar la cobertura nacional. La mutualidad señaló que sus atenciones de salud mental casi se triplicaron entre 2021 y 2025, desde 28 mil a más de 96 mil. También reportó el uso de BERTAchs para analizar relatos clínicos en más de 200 mil casos de determinación de origen laboral, herramientas de apoyo para estudios imagenológicos y el programa Champions, que capacitó a más de 100 colaboradores en inteligencia artificial y herramientas digitales.",
+        "why_it_matters": "El cambio afecta la operación de las mutualidades y la atención de salud laboral, especialmente en salud mental, donde Achs declara una fuerte expansión de la demanda y una disponibilidad limitada de especialistas. La combinación de atención remota, coordinación multidisciplinaria, estandarización y apoyo tecnológico busca aumentar la capacidad de respuesta y acelerar decisiones clínicas y administrativas. Merece atención ahora porque la mutualidad describe una presión sostenida sobre sus equipos y una reorganización operativa para atenderla a escala nacional."
+      },
+      "reviewed_copy": {
+        "what_happened": "En una publicación del 25 de agosto de 2026, Camila Zacharías, gerenta de la División Operaciones de Salud de la Achs, describió un modelo de salud mental que combina atención remota, equipos multidisciplinarios y seguimiento de tratamientos. Señaló que las atenciones de salud mental de la Achs pasaron de 28 mil a más de 96 mil entre 2021 y 2025, y que BERTAchs ya había analizado relatos clínicos en más de 200 mil casos para apoyar decisiones sobre el origen laboral de accidentes.",
+        "why_it_matters": "La publicación permite conocer cómo la Achs plantea responder al crecimiento de la demanda de salud mental que reporta y a la disponibilidad limitada de especialistas. Describe coordinación asistencial y apoyo tecnológico en la operación de la mutualidad; las cifras corresponden a 2021–2025 y el artículo no establece una nueva fecha de implementación ni una evaluación independiente de su eficacia."
+      },
+      "recommendation": "ACCEPT_AFTER_ATTRIBUTED_HISTORICAL_COPY",
+      "data_period": "2021 through 2025",
+      "proof_quotes": [
+        "Camila Zacharías, gerenta División Operaciones de Salud Achs",
+        "las atenciones asociadas a salud mental prácticamente se triplicaron entre 2021 y 2025, de 28 mil a más de 96 mil",
+        "desarrollamos un modelo especializado de salud mental que combina atención remota, equipos multidisciplinarios, seguimiento de tratamientos",
+        "BERTAchs analiza relatos clínicos y aporta información para determinar si un accidente tiene origen laboral, apoyando la decisión médica. Ya revisó más de 200 mil casos"
+      ],
+      "risks": [
+        "Institutional authored account with self-reported operational data.",
+        "Do not turn the publication date into a new implementation date.",
+        "Report 28k to >96k explicitly; do not independently claim exact tripling or proven clinical efficacy."
+      ],
+      "automatic_gate_on_existing_copy": {
+        "publication_ready": [
+          true,
+          "ok",
+          100
+        ],
+        "committee": "PASS"
+      },
+      "conditions_before_feed": [
+        "Apply exact reviewed copy to queue and history with a durable manual revision, without any API call.",
+        "Preserve primary URL, title, publication date, capture hashes and BACKFILL lane.",
+        "Bind the reviewer-approved copy to the captured input and do not lose it on subsequent unchanged published-item refresh.",
+        "Approve evidence per item; keep source coverage completeness separate, especially Mutual partial coverage."
+      ]
+    },
+    {
+      "review_id": "mutual_tender",
+      "queue_key": "3fe77f04a5ded712770c19d826b94a48567fc16e8d49cae637a47226af465adc",
+      "source_slug": "mutual_seguridad",
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Flicitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc",
+      "title": "Licitación Pública Convenio Marco: Plan Nacional de Construcción Modular para Mutual de Seguridad C.Ch.C.",
+      "market_role": "mutuality",
+      "publication_date": "2026-08-27",
+      "publication_evidence": {
+        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Flicitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc",
+        "kind": "publisher:mutual_detail_fecha",
+        "value": "27 ago. 2026",
+        "date": "2026-08-27"
+      },
+      "capture_evidence": {
+        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Flicitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc",
+        "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/noticias_detalle/licitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc/!ut/p/z1/jVJNTwIxEP0tHDg2M_2aluPWgyCwGjd1bS9mYQ3ZKIUQgtFf75KYGFSKc3vJezPz3gxEeISYmkO3avbdJjWvPQ6RniSf0kRaIUZzZ5BMqay2M463AupTwh16juTK-dSilBPPIWb0lvL6Sqv_6fFMFXhJ_wDBQVgN0aW6-LnNb7sxP6yGeDrwjzxyhErLSwT1RchsEXoX5rwLA_Whe34Dnza7dX_j6thxu-xaCDTium20YhwFMaWEYnbRQylJtot2yY0hGCPcZGM9vsXVd6iRw3btvU_v7OV-_OFKdu2LweATPlUqOQ!!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+        "captured_at": "2026-10-11T06:18:53.278812+00:00",
+        "sha256": "9afeee854770e56970ad2260ce94c3471426c4931d1596ae9e965700edd582d7",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/416dcb2831bc0e60f941-1.body",
+        "environment": "github_actions"
+      },
+      "actual_artifact_sha256": "9afeee854770e56970ad2260ce94c3471426c4931d1596ae9e965700edd582d7",
+      "capture_guard": "PASS",
+      "editorial_score": 78,
+      "threshold": 75,
+      "ingestion_mode": "BACKFILL",
+      "prior_revisions": [
+        {
+          "status": "rejected",
+          "reason": "no_verifiable_material_change"
+        },
+        {
+          "status": "rejected",
+          "reason": "no_verifiable_material_change"
+        }
+      ],
+      "existing_copy": {
+        "what_happened": "Mutual de Seguridad CCh.C. abrió una licitación pública para establecer un convenio marco de cinco años destinado al suministro, despacho e instalación de construcciones modulares en cualquier región de Chile. El proceso incluye una propuesta facultativa para un eventual Centro de Atención Mutual (CAM) piloto en Vallenar, de aproximadamente 850 m².",
+        "why_it_matters": "La licitación puede modificar la capacidad operativa y la cobertura física de Mutual de Seguridad, al habilitar la ejecución estandarizada de proyectos modulares a nivel nacional. Afecta a empresas constructoras con cobertura nacional y merece atención ahora porque aún está abierta la inscripción de oferentes y el mecanismo podría definir futuras ampliaciones o habilitaciones de infraestructura de la mutualidad durante cinco años."
+      },
+      "reviewed_copy": {
+        "what_happened": "En una publicación del 27 de agosto de 2026, Mutual de Seguridad convocó una licitación para un convenio marco de cinco años de suministro, despacho e instalación de construcciones modulares en Chile. Solicitó una propuesta para un eventual Centro de Atención Mutual piloto en Vallenar, de aproximadamente 850 m² y ejecución facultativa. La publicación fijaba el cierre de inscripción para el 3 de septiembre de 2026 a las 18:00 horas.",
+        "why_it_matters": "La convocatoria constituye un antecedente de planificación de infraestructura con alcance nacional y horizonte plurianual. El artículo no acredita una adjudicación ni una obra ejecutada: la materialización del piloto de Vallenar dependía de las ofertas y de la decisión de Mutual. Al incorporarse como antecedente histórico con fecha de publicación original, no debe presentarse como una inscripción vigente al 11 de octubre de 2026."
+      },
+      "recommendation": "HOLD_CURRENT_COPY_ACCEPT_ONLY_REVIEWED_HISTORICAL_BACKFILL",
+      "data_period": null,
+      "proof_quotes": [
+        "Mutual de Seguridad C.CH.C. invita a Empresas del rubro de la Construcción a participar de su proceso de Licitación Pública",
+        "un período de 5 años",
+        "una superficie referencial aproximada de 850 m²",
+        "la ejecución de dicho proyecto tendrá carácter facultativo para Mutual",
+        "las inscripciones podrán realizarse hasta las 18:00 hrs del jueves 03 de septiembre del 2026"
+      ],
+      "risks": [
+        "The existing why says inscription is still open on Oct11, contradicting a Sep3 deadline in the same raw body.",
+        "Call for bids is not an award, confirmed budget, signed agreement or completed capacity expansion.",
+        "Potential CAM pilot is facultative; no present awarded/under-construction claim supported."
+      ],
+      "automatic_gate_on_existing_copy": {
+        "publication_ready": [
+          true,
+          "ok",
+          100
+        ],
+        "committee": "PASS"
+      },
+      "conditions_before_feed": [
+        "Apply exact reviewed copy to queue and history with a durable manual revision, without any API call.",
+        "Preserve primary URL, title, publication date, capture hashes and BACKFILL lane.",
+        "Bind the reviewer-approved copy to the captured input and do not lose it on subsequent unchanged published-item refresh.",
+        "Approve evidence per item; keep source coverage completeness separate, especially Mutual partial coverage."
+      ]
+    }
+  ],
+  "live_runtime": {
+    "path": "data/audits/source_e_recovery/actions/38119024441/inventory/inventory.json",
+    "sha256": "787403ff86aecf242fc0f448b6bab67057bbe731229078c68926f7ad391fe580",
+    "runtime_candidate": "6e9e787303102bdab9d75d3c70f501cd3c1c153e",
+    "run_id": "38119024441",
+    "processing": {
+      "published": 3,
+      "rejected": 34
+    },
+    "editorial_runtime": {
+      "credentials_available": true,
+      "model": "gpt-5.6-luna",
+      "budget_before": {
+        "run": {
+          "deep": {
+            "attempted": 0,
+            "successful": 0,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 0,
+            "successful": 0,
+            "failed": 0
+          }
+        },
+        "month": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 36,
+            "successful": 36,
+            "failed": 0
+          }
+        }
+      },
+      "budget_after": {
+        "run": {
+          "deep": {
+            "attempted": 0,
+            "successful": 0,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 7,
+            "successful": 7,
+            "failed": 0
+          }
+        },
+        "month": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 43,
+            "successful": 43,
+            "failed": 0
+          }
+        }
+      },
+      "same_failure_limit": 3
+    },
+    "qualification": "This run precedes newer parser/document/export changes; actual AI use is proven by persisted 7 successful attempts and 3 accepted results, but it is not the final stable live gate."
+  },
+  "baseline_preservation": {
+    "queue_original_non_scope": 2913,
+    "queue_non_scope_changed_or_deleted": [],
+    "history_original": 733,
+    "history_now": 736,
+    "history_original_lost_or_changed": [],
+    "health_sources": {
+      "data/source_health.json": {
+        "original_non_scope": 23,
+        "changed_or_missing": []
+      },
+      "web/data/source_health.json": {
+        "original_non_scope": 23,
+        "changed_or_missing": []
+      },
+      "web/data/product.json": {
+        "original_non_scope": 7,
+        "changed_or_missing": []
+      }
+    }
+  },
+  "lost_and_recovered": {
+    "baseline_occupational_detections": 0,
+    "baseline_occupational_publications": 0,
+    "live_recovered_publications": 3,
+    "mechanism": "All three had prior deterministic no_verifiable_material_change rejections; revised quantified occupational data and procurement-call rules retained them for actual API assessment without lowering threshold75.",
+    "qualification": "Run9 detected_before counters refer to immediately previous branch state, not ac70ed4 original baseline."
+  },
+  "readonly_replay": {
+    "command": ".venv/bin/python scripts/occupational_inventory.py --output /tmp/reviewer-run9-replay --replay data/audits/source_e_recovery/actions/38119024441/inventory --as-of 2026-10-11",
+    "exit_code": 0,
+    "result_sha256": "1c3ade6640debd81f53e25486524e1e988f812213866ecf54e6d54c88f75eff3",
+    "mode": "read_only_replay",
+    "processing": {},
+    "editorial_runtime": {
+      "credentials_available": false,
+      "model": "gpt-5.6-luna",
+      "budget_before": {
+        "run": {
+          "deep": {
+            "attempted": 0,
+            "successful": 0,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 0,
+            "successful": 0,
+            "failed": 0
+          }
+        },
+        "month": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 43,
+            "successful": 43,
+            "failed": 0
+          }
+        }
+      },
+      "budget_after": {
+        "run": {
+          "deep": {
+            "attempted": 0,
+            "successful": 0,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 0,
+            "successful": 0,
+            "failed": 0
+          }
+        },
+        "month": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 43,
+            "successful": 43,
+            "failed": 0
+          }
+        }
+      },
+      "same_failure_limit": 3
+    },
+    "sources": {
+      "achs_seguro_laboral": {
+        "rows": 40,
+        "coverage_complete": true,
+        "errors": 0,
+        "metrics": {
+          "30": {
+            "start": "2026-09-11",
+            "end": "2026-10-11",
+            "dated_articles": 10,
+            "expected_role": 10,
+            "candidates": 3,
+            "rejected": 7,
+            "excluded_role": 0,
+            "pending": 0,
+            "unknown_date_items": 0,
+            "complete": true
+          },
+          "90": {
+            "start": "2026-07-13",
+            "end": "2026-10-11",
+            "dated_articles": 25,
+            "expected_role": 23,
+            "candidates": 8,
+            "rejected": 15,
+            "excluded_role": 2,
+            "pending": 0,
+            "unknown_date_items": 0,
+            "complete": true
+          }
+        },
+        "reconciliation": {
+          "omitted_before": 0,
+          "material_omitted_before": 0,
+          "states": {
+            "rejected": 21,
+            "published": 2,
+            "excluded": 2,
+            "outside_window": 15
+          },
+          "detected_before": 23
+        }
+      },
+      "clinicas_achs_salud": {
+        "rows": 192,
+        "coverage_complete": false,
+        "errors": 25,
+        "metrics": {
+          "30": {
+            "start": "2026-09-11",
+            "end": "2026-10-11",
+            "dated_articles": 13,
+            "expected_role": 3,
+            "candidates": 0,
+            "rejected": 3,
+            "excluded_role": 10,
+            "pending": 0,
+            "unknown_date_items": 25,
+            "complete": false
+          },
+          "90": {
+            "start": "2026-07-13",
+            "end": "2026-10-11",
+            "dated_articles": 39,
+            "expected_role": 16,
+            "candidates": 2,
+            "rejected": 14,
+            "excluded_role": 23,
+            "pending": 0,
+            "unknown_date_items": 25,
+            "complete": false
+          }
+        },
+        "reconciliation": {
+          "omitted_before": 3,
+          "material_omitted_before": 0,
+          "states": {
+            "excluded": 21,
+            "published": 2,
+            "rejected": 16,
+            "outside_window": 128,
+            "pending": 25
+          },
+          "detected_before": 13
+        }
+      },
+      "ist": {
+        "rows": 37,
+        "coverage_complete": false,
+        "errors": 1,
+        "metrics": {
+          "30": {
+            "start": "2026-09-11",
+            "end": "2026-10-11",
+            "dated_articles": 6,
+            "expected_role": 6,
+            "candidates": 0,
+            "rejected": 6,
+            "excluded_role": 0,
+            "pending": 0,
+            "unknown_date_items": 1,
+            "complete": false
+          },
+          "90": {
+            "start": "2026-07-13",
+            "end": "2026-10-11",
+            "dated_articles": 20,
+            "expected_role": 20,
+            "candidates": 0,
+            "rejected": 20,
+            "excluded_role": 0,
+            "pending": 0,
+            "unknown_date_items": 1,
+            "complete": false
+          }
+        },
+        "reconciliation": {
+          "omitted_before": 0,
+          "material_omitted_before": 0,
+          "states": {
+            "rejected": 20,
+            "pending": 1,
+            "outside_window": 16
+          },
+          "detected_before": 20
+        }
+      },
+      "mutual_seguridad": {
+        "rows": 84,
+        "coverage_complete": false,
+        "errors": 14,
+        "metrics": {
+          "30": {
+            "start": "2026-09-11",
+            "end": "2026-10-11",
+            "dated_articles": 33,
+            "expected_role": 33,
+            "candidates": 0,
+            "rejected": 33,
+            "pending": 0,
+            "excluded_role": 0,
+            "unknown_date_items": 0,
+            "complete": false
+          },
+          "90": {
+            "start": "2026-07-13",
+            "end": "2026-10-11",
+            "dated_articles": 51,
+            "expected_role": 51,
+            "candidates": 2,
+            "rejected": 49,
+            "pending": 0,
+            "excluded_role": 0,
+            "unknown_date_items": 0,
+            "complete": false
+          }
+        },
+        "reconciliation": {
+          "omitted_before": 0,
+          "material_omitted_before": 0,
+          "states": {
+            "rejected": 50,
+            "published": 1,
+            "outside_window": 33
+          },
+          "detected_before": 51
+        }
+      }
+    },
+    "qualification": "CLI imported before new482d148 ownership correction; the old clinical row published2 attribution is flagged and not accepted as two clinical publications."
+  },
+  "tests": [
+    {
+      "command": ".venv/bin/python -m pytest -q tests/test_occupational_evidence.py tests/test_occupational_reconcile.py tests/test_occupational_merge.py tests/test_occupational_documents.py tests/test_achs_clinics.py",
+      "result": "92 passed in4.10s"
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q tests/test_occupational_snapshot.py tests/test_occupational_reconcile.py",
+      "result": "15 passed in0.76s"
+    }
+  ],
+  "incremental_export_findings": [
+    {
+      "id": "published_refresh_loses_reviewed_outputs",
+      "status": "closed_by_e99c252_independently_counterchecked",
+      "evidence": "In-memory copies of all3 published queue items refreshed with equivalent extraction metadata without AI outputs retain statuspublished but what/why becomeNone. Published reconcile skips processing and snapshot requires exact what/why match, so nextapply defers3 and erases manual metadata.",
+      "next_action": "Keep reviewed outputs separately bound to editorial input/capture, or retain them for unchanged input and add replay/apply end-to-end regression.",
+      "resolution_evidence": "17 snapshot/reconcile tests passed; same-input refresh preserves copy on all3 actual published items and paired-role tamper is deferred with snapshot unchanged."
+    },
+    {
+      "id": "paired_role_error_not_bound_to_inventory",
+      "status": "closed_by_e99c252_independently_counterchecked",
+      "evidence": "Temporary snapshot fixture changed both raw and history roles toprovider_achs while rowrolemutuality and sourceachs_seguro_laboral: exportreturnedpublished1 withproviderrole.",
+      "next_action": "Require raw/history role and subtype agree with current inventory and source accepted_roles.",
+      "resolution_evidence": "17 snapshot/reconcile tests passed; same-input refresh preserves copy on all3 actual published items and paired-role tamper is deferred with snapshot unchanged."
+    }
+  ],
+  "remaining_gate": [
+    "Final stable Actions must include newest imports, preserve manual review, export exact reviewed copy and show proper clinical ownership.",
+    "Mutual coverage remains partial with14 missing archive pages; item approval cannot upgrade whole-source coverage.",
+    "IST and nine-clinic inventory errors remain honest until fresh proof validates them.",
+    "No PR closure or production promotion from this incremental report."
+  ],
+  "post_review_supplement": {
+    "reviewed_at": "2026-10-11T07:03:01.796272+00:00",
+    "fix_commit": "e99c252f85e5e1c9357e16601db38290b12a5b4c",
+    "tests": {
+      "command": ".venv/bin/python -m pytest -q tests/test_occupational_snapshot.py tests/test_occupational_reconcile.py",
+      "result": "17 passed in0.97s"
+    },
+    "reviewed_copy_temp_end_to_end": {
+      "published": 3,
+      "deferred": {},
+      "feed_rows": 52,
+      "original_non_scope_preserved": 49,
+      "global_metadata_preserved": true,
+      "idempotent_snapshot": true
+    },
+    "remaining_helper_issue": {
+      "id": "multi_source_feed_owner_counts",
+      "severity": "scoped_metrics",
+      "qualification": "Current CLI exports one source at a time, which avoids this helper issue; all-source helper invocation is still incorrect.",
+      "reproduction": "Temporary export_snapshot with actual four Run9 reports marks ACHS-owned acceptedURLs as published in clinical excluded_role rows too: counts2/2/0/1 rather than2/0/0/1.",
+      "next_action": "Only annotate feed_state for accepted_owner[url]==slug and status!=excluded_role.",
+      "status": "closed_by_8d60e2a_independently_reviewed_and_tested",
+      "resolution": "Accepted URL annotations now require current owner==slug and nonexcluded row. Regression verifies shared ACHS URL produces clinical published0."
+    },
+    "implementation_sha256": {
+      "scripts/occupational_inventory.py": "a374ffa96565b0943059b712dbf7eb6b4ac3684f0aa3b82e3cdd7ad67d1067e3",
+      "src/radar_salud/occupational_snapshot.py": "1959a95fec7f03cfcb13c37434fd38239066d9b4c95c6ece0dacb319f67b553c"
+    },
+    "owner_fix_commit": "8d60e2a35b6c8c02674d362959ef54fdaea436ae",
+    "tests_after_owner_fix": {
+      "command": ".venv/bin/python -m pytest -q tests/test_occupational_snapshot.py tests/test_occupational_reconcile.py",
+      "result": "18 passed in1.08s"
+    }
+  }
+}

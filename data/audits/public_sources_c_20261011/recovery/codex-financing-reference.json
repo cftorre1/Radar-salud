@@ -1,0 +1,97 @@
+{
+  "captured_at": "2026-10-11T06:10:21.177717+00:00",
+  "runtime": "codex",
+  "commit": "3d3a272218fd49a67c585fc901fb1950fb14d4b5",
+  "run_id": null,
+  "probes": [
+    {
+      "source": "fonasa_financing_official_reference",
+      "url": "https://www.dipres.gob.cl/597/articles-387786_doc_pdf.pdf",
+      "host": "www.dipres.gob.cl",
+      "captured_at": "2026-10-11T06:10:16.132366+00:00",
+      "method": "GET",
+      "redirects": [],
+      "http_status": null,
+      "origin_tls_observed": false,
+      "dns": {
+        "error": "[Errno -3] Temporary failure in name resolution"
+      },
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "outcome": "proxy_connect",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "source": "fonasa_financing_official_reference",
+      "url": "https://www.dipres.gob.cl/597/articles-390193_doc_pdf.pdf",
+      "host": "www.dipres.gob.cl",
+      "captured_at": "2026-10-11T06:10:16.132712+00:00",
+      "method": "GET",
+      "redirects": [],
+      "http_status": null,
+      "origin_tls_observed": false,
+      "dns": {
+        "error": "[Errno -3] Temporary failure in name resolution"
+      },
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "outcome": "proxy_connect",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "source": "fonasa_financing_official_reference",
+      "url": "https://www.minsal.cl/wp-content/uploads/2026/07/Cuenta_Publica_2026_lista_publicacion.pdf",
+      "host": "www.minsal.cl",
+      "captured_at": "2026-10-11T06:10:16.133033+00:00",
+      "method": "GET",
+      "redirects": [],
+      "http_status": null,
+      "origin_tls_observed": false,
+      "dns": {
+        "error": "[Errno -3] Temporary failure in name resolution"
+      },
+      "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+      "outcome": "proxy_connect",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    }
+  ],
+  "browser_user_agent_retries": [
+    {
+      "source": "fonasa_financing_official_reference",
+      "url": "https://www.dipres.gob.cl/597/articles-387786_doc_pdf.pdf",
+      "host": "www.dipres.gob.cl",
+      "captured_at": "2026-10-11T06:10:21.165389+00:00",
+      "method": "GET",
+      "redirects": [],
+      "http_status": null,
+      "origin_tls_observed": false,
+      "dns": {
+        "error": "[Errno -3] Temporary failure in name resolution"
+      },
+      "user_agent": "Mozilla/5.0",
+      "outcome": "proxy_connect",
+      "error_type": "URLError",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    }
+  ],
+  "tls_diagnostics": [
+    {
+      "host": "www.dipres.gob.cl",
+      "tcp": "not_attempted",
+      "tls": "not_attempted",
+      "captured_at": "2026-10-11T06:10:21.177233+00:00",
+      "reason": "configured_proxy_preserved_no_direct_socket_attempt"
+    },
+    {
+      "host": "www.minsal.cl",
+      "tcp": "not_attempted",
+      "tls": "not_attempted",
+      "captured_at": "2026-10-11T06:10:21.177359+00:00",
+      "reason": "configured_proxy_preserved_no_direct_socket_attempt"
+    }
+  ],
+  "proxy_configured": true,
+  "ai_calls": 0,
+  "ingestion_state_mutated": false
+}

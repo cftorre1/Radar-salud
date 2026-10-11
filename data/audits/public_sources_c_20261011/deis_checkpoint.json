@@ -1,0 +1,164 @@
+{
+  "source_slug": "deis",
+  "audit_date_chile": "2026-10-11",
+  "checked_at_utc": "2026-10-11T04:26:00.673Z",
+  "baseline": "staging cadb6c2",
+  "branch": "codex/c-public-sources-20261011",
+  "acceptance": "external_runtime_transport_blocker_exact; official_dated_document_fallback_evaluated",
+  "runtime_capture_verified": false,
+  "independent_browser_capture_verified": true,
+  "source_health_recommendation": {
+    "status": "degraded",
+    "coverage_status": "coverage_gap",
+    "reason": "Runner proxy denies DEIS authorities before origin TLS; independent browser reads dated Centro FIC listing and two PDFs. Data hub release dates remain unverified.",
+    "do_not_infer_healthy_from_empty_discovery": true
+  },
+  "blocker": {
+    "owner": "execution_environment_network_policy",
+    "https_error": "URLError: Tunnel connection failed: 403 Forbidden",
+    "http_status": 403,
+    "http_server": "envoy",
+    "http_body": "Domain forbidden",
+    "scope": [
+      "deis.minsal.cl",
+      "repositoriodeis.minsal.cl"
+    ],
+    "user_agents_checked": [
+      "RadarSaludBot/0.1 (+public-source-monitor)",
+      "Mozilla/5.0"
+    ],
+    "tls_origin_negotiated": false,
+    "origin_headers_verified": false,
+    "redirect_chain_verified": false,
+    "next_action": "Allow runner HTTPS access to exact official DEIS authorities, replay deis_probe.py, capture raw Centro FIC HTML and dated PDF with verified TLS and final authority, then run discovery + processing and health audit."
+  },
+  "surfaces": [
+    {
+      "url": "https://deis.minsal.cl/",
+      "observation": "Independent browser fetched official identity and indicator coverage ranges. Search rendering also exposes tables containing year/filter columns and document names but no per-row publication-date field.",
+      "date_rule": "Coverage years 2018–2024, 2002–2023 and campaign 2026 are not publication dates.",
+      "decision": "Hub structure alone cannot establish dated release coverage."
+    },
+    {
+      "url": "https://deis.minsal.cl/noticias/",
+      "observation": "Dated newsroom is largely MINSAL general news; not evidence of DEIS data releases.",
+      "decision": "Do not classify all dated health news as DEIS data publications."
+    },
+    {
+      "url": "https://deis.minsal.cl/centrofic/",
+      "observation": "Independent browser fetched official Documentación y Normativa; per-document Published notices bound to PDF links.",
+      "decision": "New standalone DeisDocumentScout with fail-closed list-item dates; pipeline PDF capture mandatory."
+    },
+    {
+      "url": "https://deis.minsal.cl/feed/",
+      "observation": "Browser reports unsupported application/rss+xml; runner proxy denies access.",
+      "decision": "Tool format limitation, not proof of absent feed; XML entries and date semantics unverified."
+    },
+    {
+      "url": "https://deis.minsal.cl/wp-json/wp/v2/posts?per_page=5&_fields=id,date,modified,title,link",
+      "observation": "Browser says not accessible via this tool; runner CONNECT403.",
+      "decision": "API payload/auth/publication dates not verified; not used as evidence."
+    },
+    {
+      "url": "https://deis.minsal.cl/wp-json/wp/v2/pages?slug=centrofic",
+      "observation": "Browser says not accessible via this tool.",
+      "decision": "Page date/modified would date the container, not each document; do not apply to all PDFs."
+    },
+    {
+      "url": "https://repositoriodeis.minsal.cl/",
+      "observation": "Independent browser returns root 403; two exact linked PDFs succeed.",
+      "decision": "Root listing denial does not mean document URLs are inaccessible."
+    },
+    {
+      "urls": [
+        "https://deis.minsal.cl/datos-abiertos/",
+        "https://deis.minsal.cl/publicaciones-e-infografias/",
+        "https://deis.minsal.cl/estadisticas/",
+        "https://deis.minsal.cl/tableros-deis/"
+      ],
+      "observation": "Guessed paths not accessible via browser. Clicking actual navigation tabs yields homepage URL; likely in-page tabs, raw href/HTTP redirects not captured.",
+      "decision": "Avoid asserting guessed legacy routes or HTTP redirect status."
+    },
+    {
+      "url": "https://app.powerbi.com/view?r=eyJrIjoiYmY1OTI2NWUtZmM1Ny00ZThiLTg0OWEtNGZjYmJlOWYzZDBhIiwidCI6Ijc0NDRkNTdjLTA0YzgtNDJkZS1hMDgxLWRkODk5YWYyOTIyZSIsImMiOjR9",
+      "observation": "Official DEIS home links this Power BI view; browser loads zero extracted text.",
+      "decision": "Dynamic dashboard lacks verified publication date in this capture; do not invent date from refresh or data coverage."
+    }
+  ],
+  "documents": [
+    {
+      "listing": "https://deis.minsal.cl/centrofic/",
+      "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones%20de%20codificaci%C3%B3n%20para%20el%20Cap%C3%ADtulo%20XXI%20junio2026.pdf",
+      "publication_date": "2026-06-25",
+      "notice": "Publicado 25/06/2026",
+      "date_kind": "official_document_listing:published",
+      "browser_pdf_pages": 59,
+      "pdf_edition_period": "Mayo 2026",
+      "pdf_revision_period": "Junio 2026",
+      "upload_path_period": "2021/03",
+      "decision": "Listing date is publication evidence. PDF edition/revision months and upload path do not supersede it; browser confirms substantive Z54 coding correction."
+    },
+    {
+      "listing": "https://deis.minsal.cl/centrofic/",
+      "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Manual%20Cap%C3%ADtulo%20XV%20Embarazo%20Parto%20y%20Puerperio%20180825.pdf",
+      "publication_date": "2025-08-18",
+      "notice": "Publicado 18/08/2025",
+      "date_kind": "official_document_listing:published",
+      "browser_pdf_pages": 54,
+      "decision": "Live official document, historical release date; do not turn capture time into publication."
+    },
+    {
+      "title": "Lista Tabular CIE-10",
+      "notice": "Actualizado agosto/2026",
+      "decision": "Excluded: month only and editorial-only/no content change."
+    },
+    {
+      "title": "Lista Enfermedades de Notificación Obligatoria",
+      "notice": "Actualización 31/08/2026",
+      "decision": "Excluded: listing explicitly says editorial presentation changes without content change; browser PDF click gave internal error without origin diagnosis."
+    },
+    {
+      "title": "Lista de Becker adaptada a Chile Diciembre 2025",
+      "decision": "Excluded: title period is not an explicit publication notice."
+    },
+    {
+      "title": "GES – 90 Problemas de Salud",
+      "notice": "Actualizada 23-07-2026",
+      "decision": "Date alone does not prove substantive update; parser requires explicit substantive change before accepting updated notice."
+    }
+  ],
+  "implementation_contract": {
+    "scout": "radar_salud.deis_sources.DeisDocumentScout(fetcher=None,today=None)",
+    "raw_metadata": {
+      "resource_kind": "dated_data_release",
+      "document_kind": "deis_classification_guidance",
+      "pdf_url": "raw.url",
+      "document_verification": "pending_pipeline",
+      "publication_date_source": "official_document_listing:published or official_document_listing:updated",
+      "publication_date_evidence": {
+        "kind": "same as publication_date_source",
+        "value": "exact explicit publication/update notice",
+        "date": "same YYYY-MM-DD as event_date",
+        "url": "https://deis.minsal.cl/centrofic/"
+      },
+      "listing_sha256": "SHA-256 of fetched HTML"
+    },
+    "required_integration": "Root routes document listing into DEIS discovery, validates explicit listing notice and metadata evidence, captures PDF compulsorily before analysis and keeps processing pending on download/extraction failure. Default fetcher uses scoped public_source_transport.fetch_official_html for redirect authority integrity.",
+    "diagnostics": "listing_recognized, document_blocks, dated_documents, rejection counters, coverage_status, fetch_error/fetch_error_detail. No healthy claim."
+  },
+  "tests": {
+    "command": ".venv/bin/python -m pytest -q tests/test_deis_recovery.py tests/test_deis_source.py",
+    "result": "33 passed in 0.09s",
+    "legacy_test_status": "All three legacy source tests pass after root mandatory-evidence fixture migration.",
+    "fixtures": "Synthetic HTML reconstructed from browser-extracted listing; not falsely presented as captured source HTML."
+  },
+  "evidence_files": [
+    "deis_network_probe.json",
+    "deis_probe.py",
+    "deis_browser_home_and_search.json",
+    "deis_browser_official_surfaces.json",
+    "deis_browser_pdf_checks.json",
+    "deis_browser_fallbacks.json"
+  ],
+  "resume": "Replay transport first; do not reconstruct source context. Root integration + independent QA remains to record final checkpoint."
+}

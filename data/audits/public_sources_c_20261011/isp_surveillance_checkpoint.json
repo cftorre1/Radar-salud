@@ -1,0 +1,59 @@
+{
+  "source_slug": "isp_surveillance",
+  "checkpoint": "Laboratory bulletins and respiratory-virus surveillance",
+  "acceptance": "external_blocker",
+  "live_capture": false,
+  "origin_http_status": null,
+  "origin_headers_observed": false,
+  "origin_redirects_observed": false,
+  "origin_tls_observed": false,
+  "blocker": {
+    "layer": "managed_environment_egress_proxy",
+    "exact": "HTTPS CONNECT denied with HTTP/1.1 403 Forbidden and server: envoy before origin TLS negotiation. Plain HTTP also denied by envoy. Browser opens of current bulletin, report detail and PDF surfaces return tool-layer 502 or timeout.",
+    "scope": "84 GET/HEAD attempts over 14 official or legacy URLs with RadarSaludBot 0.1, RadarSaludBot 0.3 and browser User-Agent; 78 HTTPS CONNECT denials and 6 plain-HTTP proxy denials.",
+    "evidence": "isp_surveillance_transport.json",
+    "runtime_evidence": "isp_runtime_checkpoint.json"
+  },
+  "subfronts": {
+    "laboratory_bulletins": {
+      "status": "blocked",
+      "canonical_listing": "https://www.ispch.cl/boletin/",
+      "official_indexed_evidence": "Official indexed listing explicitly labels Fecha Publicación. Rabia Animal 2025 has publication date 17 junio, 2026; the 2025 title is a data period.",
+      "fallbacks": [
+        {"url": "https://ispch.cl/boletin/", "result": "CONNECT 403; browser timeout"},
+        {"url": "http://www.ispch.cl/boletin/", "result": "Envoy 403; origin redirect unavailable"},
+        {"url": "https://ispch.cl/boletin/informe-de-laboratorio-biomedico-vigilancia-de-rabia-animal-2025/", "result": "CONNECT 403; browser 502; indexed official detail confirms 17 junio, 2026"},
+        {"url": "https://ispch.cl/wp-content/uploads/2026/06/VB-Informe-anual-rabia-animal-2025.pdf", "result": "CONNECT 403; browser 502; PDF bytes not obtained"},
+        {"url": "https://www.ispch.cl/boletines-de-vigilancia-y-laboratorio-al-dia/", "result": "CONNECT 403. Browser rendered historical cached content (Crawled: 7 months ago); rows have no publication dates. Rejected as current dated fallback."},
+        {"url": "https://www.ispch.cl/boletin/feed/", "result": "CONNECT 403; RSS schema not obtained"}
+      ]
+    },
+    "respiratory_viruses": {
+      "status": "blocked",
+      "canonical_listing": "https://www.ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+      "official_indexed_evidence": "Official current-year indexed archive lists Semana 39, 2026. Indexed /documento/semana-39-2026/ displays publication date 7 octubre, 2026 while attachment title contains 06-10-2026. Runtime must use explicit detail publication evidence 2026-10-07, never week or PDF filename 2026-10-06.",
+      "fallbacks": [
+        {"url": "https://ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026", "result": "CONNECT 403; browser 502; current-year indexed official listing available"},
+        {"url": "https://www.ispch.cl/virusrespiratorios/", "result": "CONNECT 403; browser 502; indexed snapshot SE38"},
+        {"url": "https://ispch.cl/virusrespiratorios/", "result": "CONNECT 403; browser 502; indexed snapshot SE39; alias snapshot mismatch cannot prove live state"},
+        {"url": "https://www.ispch.cl/documento/semana-39-2026/", "result": "CONNECT 403; browser 502; indexed official published date 7 octubre, 2026"},
+        {"url": "https://www.ispch.cl/wp-content/uploads/2026/09/Informe-circulacion-virus-respiratorios-SE36-15-09-2026.pdf", "result": "CONNECT 403; browser 502; PDF bytes not obtained"},
+        {"url": "https://www.ispch.cl/virusrespiratorios/feed/", "result": "CONNECT 403; RSS schema not obtained"}
+      ]
+    }
+  },
+  "implemented": [
+    "Use the official ispch.cl laboratory table and explicit current-year respiratory document archive; preserve independent channels when one fails.",
+    "Bind laboratory dates to the header-aligned Fecha Publicación column, including colspan; reject period/vencimiento/modified columns.",
+    "Treat Semana labels as discovery candidates without event_date. Require explicit article:published_time, datePublished metadata, or published time element on the document detail.",
+    "Resolve exactly one official PDF attachment and persist the detail-to-document link evidence. Reject conflicting publication fields and listing/detail date conflicts.",
+    "Use common official HTTPS transport that validates redirects before issuing the redirected request, retains CA verification and proxy settings.",
+    "Keep channel diagnostics and partial_failure visible. Preserve transport exception chains when all alternatives fail.",
+    "Apply reviewer header/date corrections to ANAMED; the previous ANAMED checkpoint's date-cell-only approach is superseded by the header-aligned contract."
+  ],
+  "fixture_provenance": "Regression HTML is synthetic. Table field labels, dates and document period/filename discrepancy come from official indexed content. Explicit metadata/time variants are conservative date-provenance contracts, not assertions that current live ISP HTML uses those tags. No live raw HTML or PDF fixture is claimed.",
+  "tests": {"command": ".venv/bin/python -m pytest tests/test_isp_recovery.py -q", "result": "29 passed"},
+  "runtime": "Real IspAnamedAlertScout and IspSurveillanceScout invocations were blocked with URLError: Tunnel connection failed: 403 Forbidden. Both preserved diagnostics and raised with the transport exception as cause. No items were emitted.",
+  "review": "Parent agent performs independent QA and integrates aliases, shared publication/PDF processing guards, and honest source_health.",
+  "next_action": "Run the durable isp_transport_probe.py in a network environment allowed to reach ispch.cl. Capture current raw listing/detail HTML and PDF bytes with verified origin TLS, headers and redirects, inspect the actual detail publication markup, replay parsers, and only then mark operational. If live markup has no explicit publication field, keep respiratory releases blocked rather than infer from attachment filename or epidemiological week."
+}

@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-10-11T04:49:08.834123+00:00",
+  "reconciled_staging_sha": "24d4c1a8d6a70d73324207b33985378aeff36142",
+  "pull_request": "https://github.com/cftorre1/Radar-salud/pull/13",
+  "upstream_change": "Adds source_recovery_reconciliation_gate_2026_10_11; no runtime or source changes.",
+  "conflict": "config/orchestrator_queue.json",
+  "resolution": "82 upstream tasks retained; only public-data task updated with already reviewed blocked state; updated_at refreshed.",
+  "scoped_tracking_tests": {
+    "passed": 11,
+    "failed": 0,
+    "command": ".venv/bin/python -m pytest -q tests/test_pmo_readiness.py tests/test_orchestrator_liveness.py tests/test_orchestrator_trigger.py"
+  },
+  "runtime_code_and_health_unchanged": true,
+  "recovery_status": "external_capture_blocked_pending_staging_merge_and_post_merge_runtime",
+  "staging_merged_sha": null,
+  "reviewer": "reviewer_reconciliation_gate.json"
+}

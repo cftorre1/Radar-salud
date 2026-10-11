@@ -1,0 +1,1155 @@
+{
+  "audited_at": "2026-10-11T06:34:19.225020+00:00",
+  "run_id": "38116209530",
+  "candidate_sha": "00ec95b593918ea0b95ff7646387584153b580fb",
+  "as_of_chile": "2026-10-11",
+  "mode": "read_only_replay_no_paid_API",
+  "findings": {
+    "successful_assessments": 5,
+    "score_sequence": [
+      72,
+      73,
+      70,
+      72,
+      70
+    ],
+    "threshold": 75,
+    "published_in_run4": 0,
+    "five_candidate_extraction_failures": 0,
+    "body_truncation": {
+      "article": "scooter",
+      "source_chars": 5689,
+      "AI_chars": 5500,
+      "dropped_chars": 189,
+      "impact": "The tail of a quote about rest periods, infographic invitation and oversight footer is omitted. All quantified accident results and coverage discussion are in the delivered text."
+    },
+    "additional_material_candidates_lost_before_AI": 7,
+    "all_checked_material_proof_tokens_present_in_AI_inputs": true
+  },
+  "interpretation": "The deterministic gate identifies concrete source material for editorial assessment. It does not guarantee relevance75. The five below-threshold decisions are successful editorial decisions, including Master Plan where the San Javier opening and the new La Florida service are present. No score override or quota-driven retry is justified by this audit. Separate concrete gate false negatives are repaired and require assessment of revised inputs.",
+  "AI_input_provenance": {
+    "construction": "Snapshot process_curated_beta_source passes body[:10000]; unchanged analyze_news emits body[:5500], plus full title and source_name. Hashes reconstruct that input from captured RawItem; the actual request payload is not retained.",
+    "code": {
+      "src/radar_salud/llm_analysis.py": {
+        "run4_sha256": "f8bb30ff6794ce5f0abe8f3de43d6a0a3c4b26dd4c3e5f52988b93fc0662c26d",
+        "current_sha256": "f8bb30ff6794ce5f0abe8f3de43d6a0a3c4b26dd4c3e5f52988b93fc0662c26d",
+        "same": true
+      },
+      "src/radar_salud/beta_sources.py": {
+        "run4_sha256": "a606ad6288fe5d4bd3ee7a2f5c4ca28c37f2f07703c4932376211f935f52a18f",
+        "current_sha256": "dea30e5d8866cb9e07d1152db738bec0f2d56742b620e32546460b07583c5939",
+        "same": false
+      }
+    },
+    "rejected_response_limit": "Only score and reason are persisted for these five; rejected what_happened/why_it_matters lengths cannot be audited. All five scores below75 are sufficient to reject regardless of summary length."
+  },
+  "five_editorial_candidates": [
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+      "title": "Nueva guía entrega orientaciones basadas en evidencia para el abordaje de la salud mental laboral",
+      "publication_date": "2026-09-24",
+      "market_role": "mutuality",
+      "provider_subtype": null,
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+        "captured_at": "2026-10-11T05:56:34.532949+00:00",
+        "sha256": "f96a9e2d6ec2b47ddae2e3fc97ca0b3392d938af0a0c598940658ce186772b39",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/2f8702b2b7fdab6e7e6c-0.body",
+        "environment": "github_actions"
+      },
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+        "value": "24/09/2026",
+        "date": "2026-09-24",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "full_html_article_extraction_equals_run4": true,
+      "full_scoped_article_body": "24/09/2026 La salud mental laboral se ha convertido en uno de los principales desafíos para los sistemas de seguridad y salud en el trabajo. En este contexto, Achs acompañó y financió el proyecto que dio origen a la Guía de Orientación para el Tratamiento Psicológico de Personas Trabajadoras con Patologías de Salud Mental Laboral , desarrollada en el marco de la Convocatoria 2024 del Fondo de Investigación e Innovación de la Superintendencia de Seguridad Social (Suseso). La iniciativa genera orientaciones prácticas para apoyar el trabajo de los equipos de salud que intervienen en la evaluación, tratamiento y seguimiento de personas con enfermedades de salud mental de origen laboral. Para ello, la investigación integró una revisión sistemática de la literatura científica, análisis de información nacional y entrevistas a profesionales del sistema de salud laboral, permitiendo desarrollar recomendaciones basadas en evidencia y ajustadas a la realidad local. El estudio fue liderado por la investigadora Alemka Tomicic de la Universidad Diego Portales, en colaboración con Achs, el Instituto Milenio para la Investigación en Depresión y Personalidad (MIDAP), el Centro de Estudios en Psicología Clínica y Psicoterapia (CEPPS) y el Programa de Estudios Psicosociales del Trabajo (PEPET). La guía aborda aspectos clave para la atención clínica en salud mental laboral, incluyendo el impacto de los riesgos psicosociales, las características de las enfermedades profesionales de salud mental, el perfil de las personas trabajadoras atendidas en el sistema y orientaciones para desarrollar intervenciones psicológicas y psicoterapéuticas focalizadas en el contexto laboral. Asimismo, incorpora recomendaciones para favorecer procesos de reintegro laboral sostenibles y fortalecer la coordinación entre los distintos actores involucrados en la recuperación de las y los trabajadores. Esta publicación constituye un aporte para fortalecer las capacidades técnicas de los equipos tratantes y contribuir a una atención de mayor calidad en un ámbito que ha adquirido creciente relevancia en los últimos años. Asimismo, refleja el compromiso de Achs con la generación y difusión de conocimiento aplicado que permita mejorar la salud y el bienestar de las personas trabajadoras, poniendo a disposición de las organizaciones herramientas respaldadas por investigación y evidencia científica. Descarga la Guía de Orientación para el Tratamiento Psicológico de Personas Trabajadoras con Patologías de Salud Mental Laboral. Descarga la Guía de Orientación para el Tratamiento Psicológico de Personas Trabajadoras con Patologías de Salud Mental Laboral. Las mutualidades de empleadores son fiscalizadas por la Superintendencia de Seguridad Social ( www.suseso.cl ).",
+      "body_chars": 2759,
+      "AI_content_chars": 2759,
+      "AI_full_text_content_delivered": true,
+      "AI_input_sha256_reconstructed": "65d644ead5d9e3259a265cee14db4d94fc7f14ba2fa9e66511e9e2da5fffbfc7",
+      "AI_truncated_tail": "",
+      "material_proof_in_AI": [
+        {
+          "value": "Guía de Orientación para el Tratamiento Psicológico",
+          "present": true
+        },
+        {
+          "value": "evaluación, tratamiento y seguimiento",
+          "present": true
+        },
+        {
+          "value": "reintegro laboral",
+          "present": true
+        }
+      ],
+      "editorial_assessment": {
+        "score": 72,
+        "reason": "Es un aporte operativo y técnico respaldado por investigación de la Suseso, con potencial utilidad para la atención de enfermedades profesionales de salud mental. Sin embargo, al tratarse de una guía de orientación y no de una modificación normativa, de financiamiento o de cobertura, corresponde a un cambio relevante pero secundario, no a un hito sectorial mayor.",
+        "threshold": 75
+      },
+      "runtime_state": "rejected",
+      "runtime_reason": "editorial_score_or_summary_below_threshold",
+      "primary_cause": "successful_assessment_score_below_75",
+      "documents_not_in_AI": [
+        {
+          "url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-437334/guia-tratamiento-psicologico.pdf?sfvrsn=fbec0931_1",
+          "label": "Descarga la Guía de Orientación para el Tratamiento Psicológico de Personas Trabajadoras con Patologías de Salud Mental Laboral.",
+          "capture_in_index": false,
+          "used_in_ai": false
+        }
+      ]
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+      "title": "Accidentes de trayecto en scooter aumentan cerca de un 37% durante el primer semestre de 2026",
+      "publication_date": "2026-09-15",
+      "market_role": "mutuality",
+      "provider_subtype": null,
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+        "captured_at": "2026-10-11T05:56:44.279728+00:00",
+        "sha256": "a6d86519d4949c1801e22bb7caa3d0c281c81519721471d94c9e58e06e13d66c",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/cf54b0043bc607ec3a8f-0.body",
+        "environment": "github_actions"
+      },
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+        "value": "15/09/2026",
+        "date": "2026-09-15",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "full_html_article_extraction_equals_run4": true,
+      "full_scoped_article_body": "15/09/2026 Entre enero y junio se registraron más de 500 siniestros a nivel nacional. Las mujeres registraron el alza más pronunciada, mientras que el grupo de 18 a 30 años pasó a ser el más afectado Un alza sostenida continúan registrando los accidentes de trayecto, aquellos que ocurren en el camino directo de ida, o regreso, entre la habitación y el lugar de trabajo, de personas a bordo de scooters. De acuerdo con datos de la Achs, entre enero y junio de 2026 se registraron 501 incidentes de este tipo, lo que representa un aumento del 36,9% en comparación con los 366 casos reportados en el mismo periodo de 2025. En promedio, durante los primeros seis meses del año ocurrieron más de 2 accidentes de trayecto al día con participación de este tipo de vehículos. En el desglose por género, aunque los hombres siguen concentrando la mayor proporción de casos (56,2%), las mujeres registraron el incremento más explosivo en la primera mitad del año, con un alza del 52,1% frente al primer semestre de 2025 (versus un 26,6% en hombres). En cuanto a los tramos de edad, los jóvenes de 18 a 30 años pasaron a liderar la accidentabilidad con el 40,6% de los casos (tras crecer un 51,5%), seguidos muy de cerca por el grupo de 31 a 40 años, que acumuló el 39,0% de los eventos. Con el objetivo de visibilizar este fenómeno y promover una conducción más segura, la mutualidad realizó una actividad en el Centro Achs Las Condes junto a especialistas y autoridades vinculadas a la seguridad vial y la salud, en la que participaron Alberto Escobar, secretario ejecutivo de Conaset, Paulina Calfucoy, gerente de Asuntos Corporativos y Sostenibilidad, el Dr. Juan Manuel Breyer, traumatólogo del Hospital del Trabajador Achs Salud y Lilian Padilla, subgerente de Prevención de la Achs, quienes analizaron el impacto y formas de prevenir estos accidentes. “Hay mayor temeridad y una baja percepción de riesgo asociado al uso de scooters, lo que explica en parte estas cifras del primer semestre. Es preocupante que los siniestros viales vayan al alza, por lo que es fundamental el uso de elementos de seguridad. El usuario siempre debe andar con casco, y debe ser mayor de 18 años, tiene que transitar respetando las normas de tránsito al igual que cualquier medio de transporte. Hay un muy bajo conocimiento de las leyes de tránsito”, indicó el secretario ejecutivo de Conaset, Alberto Escobar. Paulina Calfucoy, gerenta de Asuntos Corporativos y Sostenibilidad, enfatiza que \"la Achs no solo previene y atiende accidentes, los registra, los analiza y los pone al servicio de quienes toman decisiones. Los datos del primer semestre de 2026 muestran con claridad dónde ocurren los siniestros, a qué hora y qué perfil de trabajador está más expuesto. Esa información es un activo público que permite focalizar intervenciones, diseñar políticas de movilidad más seguras y anticipar tendencias”. Respecto a la cobertura de atención para estos accidentes, Lilian Padilla, subgerente de Prevención de la Achs, explicó que \"es clave que los trabajadores sepan que ante un evento de este tipo, en los trayectos directos entre el hogar y el lugar de trabajo, el seguro laboral los protege, y por lo tanto, pueden acudir a su mutualidad para ser atendidos sin costos”. La experta también sostiene la importancia de no dejar de lado la prevención para evitar estos incidentes. “Para ello es vital cumplir las normas básicas de convivencia vial, usar la infraestructura adecuada y mantenerse siempre alerta al entorno. Un desplazamiento seguro en scooter es fundamental respetar el límite de velocidad de 25 km/h, transitar por ciclovías o por la derecha de la calzada en el sentido del tránsito, y reducir la velocidad al mínimo en cruces peatonales. Asimismo, es vital evitar distractores como celulares o audífonos, señalizar con anticipación cualquier maniobra y portar siempre elementos de protección como casco certificado, luces (blanca delantera y roja trasera), reflectantes y frenos en buen estado, tal como lo exige la Ley de Convivencia Vial”, dijo. Horarios, zonas más accidentadas y las lesiones más frecuentes Las cifras de la Achs revelan que a nivel territorial, Las Condes se mantuvo como la comuna con mayor concentración de casos en el país, con 69 registros (18,8%), seguida por La Florida con 48 (13,0%), Santiago con 39 (10,6%), Providencia con 33 (9,0%) y Ñuñoa con 19 (5,2%). En relación con las horas de ocurrencia, el bloque de la mañana (07:00 a 11:59 hrs.) sigue siendo el más crítico, acumulando el 57,9% de los siniestros del semestre. Esta concentración en los traslados matinales se refleja en la atención médica. De acuerdo con registros del Hospital del Trabajador Achs Salud, los diagnósticos más habituales frente a este tipo de caídas e impactos continúan concentrándose en lesiones y contusiones en rodillas, manos, muñecas, codos, hombros y caderas. Al respecto, el traumatólogo del Hospital del Trabajador Achs Salud, Dr. Juan Manuel Breyer, abordó el impacto clínico de estos siniestros en los trabajadores: \"en nuestras salas de urgencia vemos que las caídas en scooter generan desde contusiones simples hasta traumas complejos que involucran en ocasiones cirugía y meses de rehabilitación física. Al no contar con una adecuada protección, zonas como rodillas, muñecas, codos y hombros absorben de manera directa el impacto. Por eso insistimos en la consulta temprana: desestimar un dolor inicial tras un accidente de trayecto puede derivar en secuelas articulares y periodos de reposo prolongados\". Revisa esta infografía con los datos más relevantes. Las mutualidades de empleadores son fiscalizadas por la Superintendencia de Seguridad Social ( www.suseso.cl ).",
+      "body_chars": 5689,
+      "AI_content_chars": 5500,
+      "AI_full_text_content_delivered": false,
+      "AI_input_sha256_reconstructed": "a0cabd872104a231306a3f80b06b0d3e32f3802981bd0ce10ad24c88ba5be2dc",
+      "AI_truncated_tail": " de reposo prolongados\". Revisa esta infografía con los datos más relevantes. Las mutualidades de empleadores son fiscalizadas por la Superintendencia de Seguridad Social ( www.suseso.cl ).",
+      "material_proof_in_AI": [
+        {
+          "value": "501 incidentes",
+          "present": true
+        },
+        {
+          "value": "36,9%",
+          "present": true
+        },
+        {
+          "value": "52,1%",
+          "present": true
+        },
+        {
+          "value": "40,6%",
+          "present": true
+        }
+      ],
+      "editorial_assessment": {
+        "score": 73,
+        "reason": "Es un indicador operacional relevante de salud laboral, con un aumento significativo y perfiles definidos de mayor exposición. Sin embargo, corresponde a datos de una mutualidad y no muestra por sí solo un cambio regulatorio, financiero o de capacidad sectorial; por eso se ubica como contexto estratégico secundario y no como un cambio material nacional.",
+        "threshold": 75
+      },
+      "runtime_state": "rejected",
+      "runtime_reason": "editorial_score_or_summary_below_threshold",
+      "primary_cause": "successful_assessment_score_below_75",
+      "documents_not_in_AI": [
+        {
+          "url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-435774/achs-infografia-scooter.pdf?sfvrsn=fe766532_1",
+          "label": "Revisa esta infografía con los datos más relevantes.",
+          "capture_in_index": false,
+          "used_in_ai": false
+        }
+      ]
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+      "title": "Achs Virtual estrena módulo que anticipa accidentes graves y fatales con inteligencia artificial",
+      "publication_date": "2026-07-15",
+      "market_role": "mutuality",
+      "provider_subtype": null,
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+        "captured_at": "2026-10-11T05:57:03.190409+00:00",
+        "sha256": "12cfbb68cefe60f083c451db9bc2a8a7c6917c0b19afd7d8e55afba200eb20bd",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/873c1f1920ded4aca7bc-0.body",
+        "environment": "github_actions"
+      },
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+        "value": "15/07/2026",
+        "date": "2026-07-15",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "full_html_article_extraction_equals_run4": true,
+      "full_scoped_article_body": "15/07/2026 Te presentamos esta herramienta que permite monitorear de forma sencilla y mensual, el nivel de exposición a lesiones graves y fatales en tu organización y así tomar medidas a tiempo para prevenirlos. En Achs Virtual incorporamos un nuevo módulo de Lesiones Graves y/o Fatales (LGF), que trabaja con un modelo predictivo basado en inteligencia artificial, capaz de identificar con anticipación ciertos accidentes de trabajo que podrían derivar en lesiones graves o fatales, entregando a las empresas una herramienta clave para actuar a tiempo. Anticiparse al riesgo El nuevo módulo calcula un índice de exposición a LGF combinando los casos potenciales detectados por el modelo de IA con los casos consumados graves o fatales. A través de esta herramienta las organizaciones podrán: ● Monitorear mensualmente su nivel de exposición ● Comparar data de distintos períodos y descargar el detalle en un archivo Excel. ● Tener información al alcance de la mano disponible en cualquier dispositivo ● Obtener una guía de capacitación, con autoevaluaciones de clima y liderazgo, y planes de acción para reducir casos potenciales ● Acceder a documentos descargables con el detalle de los motivos, precursores y lugares asociados a cada caso. Cómo acceder al módulo Todos los usuarios de Achs Virtual con perfil empresa (administrador o coadministrador) pueden ingresar al módulo siguiendo estos pasos: 1- Ingresar a ACHS Virtual con el perfil empresa y acceder a “Gestión preventiva”. 2- Desplegar el menú “Reportería”. 3- Seleccionar “Lesiones graves y/o fatales” para revisar los indicadores. 4- En ese mismo menú, a la “Guía de LGF” para conocer capacitaciones, autoevaluaciones y herramientas de control según los precursores presentes en tu empresa. Para más detalles, revisa y descarga este documento",
+      "body_chars": 1808,
+      "AI_content_chars": 1808,
+      "AI_full_text_content_delivered": true,
+      "AI_input_sha256_reconstructed": "e0c7d6b5de6686b6c20db0aa5cb6e07ea66af34654eee1e14916d38e6ad4d9fd",
+      "AI_truncated_tail": "",
+      "material_proof_in_AI": [
+        {
+          "value": "inteligencia artificial",
+          "present": true
+        },
+        {
+          "value": "lesiones graves y fatales",
+          "present": true
+        },
+        {
+          "value": "Guía de LGF",
+          "present": true
+        }
+      ],
+      "editorial_assessment": {
+        "score": 70,
+        "reason": "Cambio operativo concreto en salud laboral y prevención de riesgos, pero limitado al ecosistema digital de una mutualidad y presentado como lanzamiento de servicio. No se reportan cambios regulatorios, cobertura, inversión, resultados de seguridad ni evidencia de impacto que justifiquen una prioridad mayor.",
+        "threshold": 75
+      },
+      "runtime_state": "rejected",
+      "runtime_reason": "editorial_score_or_summary_below_threshold",
+      "primary_cause": "successful_assessment_score_below_75",
+      "documents_not_in_AI": [
+        {
+          "url": "https://www.achs.cl/docs/librariesprovider2/2026/achs-422711/ppt-lgf.pptx?sfvrsn=7908d12d_1",
+          "label": "este documento",
+          "capture_in_index": false,
+          "used_in_ai": false
+        }
+      ]
+    },
+    {
+      "source": "clinicas_achs_salud",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+      "title": "Achs se une a iniciativa público-privada para entregar servicios gratuitos a afectados en Atacama y Coquimbo por las lluvias",
+      "publication_date": "2026-08-28",
+      "market_role": "provider_achs",
+      "provider_subtype": "clinicas",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+        "captured_at": "2026-10-11T05:56:48.600020+00:00",
+        "sha256": "36262946d10f4f776d8bc39beb2283c712f534a9a882b4dba0a5b6ff46ee8bd2",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/62ccf248ac7a8947f703-0.body",
+        "environment": "github_actions"
+      },
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+        "value": "28/08/2026",
+        "date": "2026-08-28",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "full_html_article_extraction_equals_run4": true,
+      "full_scoped_article_body": "28/08/2026 A partir del miércoles 19 de agosto, las personas afectadas que cuenten con una Ficha Básica de Emergencia pueden agendar atenciones médicas gratuitas a través del sitio web de Fonasa. En respuesta a las graves afectaciones provocadas por las intensas lluvias en las regiones de Coquimbo y Atacama, la Achs reafirmó su compromiso colaborativo con la salud pública al sumarse, junto con su filial Clínicas Achs Salud, a la activación del Sistema de Atención Fonasa para Emergencias y Desastres (SAFED), articulado bajo el Plan Enlace del Ministerio de Salud. La iniciativa busca asegurar que las familias damnificadas cuenten con acceso continuo, expedito y gratuito a prestaciones de salud ambulatoria, permitiendo al mismo tiempo que la red pública de salud concentre sus capacidades en la atención de urgencias complejas y hospitalizaciones. Al respecto, Ángel Vargas, gerente general corporativo de Clínicas Achs Salud, explicó que “cada vez que la red pública y Fonasa nos necesita, tenemos el deber ético de responder. Por eso ponemos a disposición nuestra Clínica Atacama Achs Salud, donde tenemos un alto nivel de resolutividad para poner al servicio de las personas afectadas\". Un esfuerzo público-privado Para absorber la demanda ambulatoria de las zonas afectadas y disponibilizar más de 4.200 horas y prestaciones médicas, Fonasa articuló un esfuerzo conjunto con prestadores privados con presencia nacional y regional. En este marco, la Achs se suma a la red integral de atención tanto de forma directa con sus centros ambulatorios, como a través de su filial Clínicas Achs Salud. A esta iniciativa también se integran otros prestadores privados. De esta manera, la capacidad dispuesta por la Achs y su filial contempla atenciones ambulatorias en la Clínica Atacama Achs Salud y en los centros ambulatorios de la Achs en las regiones de Coquimbo y Atacama, abarcando consultas médicas de especialidad, atenciones de salud mental, exámenes de laboratorio e imagenología. Alejandro Amaro, gerente Comercial y Desarrollo de Servicios Complementarios de la Achs, enfatizó la preparación de la red asistencial de la organización. \"Frente a una contingencia de esta magnitud, nuestro compromiso operativo es poner a disposición de la comunidad de Atacama y Coquimbo toda nuestra capacidad instalada, incluyendo el Hospital de Trabajador en caso de ser necesario. Estamos preparados con nuestros equipos de salud para recibir a las personas afectadas y brindarles una atención ambulatoria oportuna”, señaló. ¿Cómo solicitar atención? El beneficio está dirigido a todos los afiliados a Fonasa de los tramos A, B, C y D que hayan resultado damnificados por la emergencia y cuenten con la Ficha Básica de Emergencia (FIBE) otorgada por sus respectivos municipios. Las prestaciones comenzarán a operar formalmente a contar del miércoles de agosto. Para agendar atenciones y conocer el detalle paso a paso de los prestadores y horas disponibles, las personas deben ingresar directamente a la plataforma habilitada por la autoridad en https://www.fonasa.gob.cl/safed/ o llamar al 600 360 3000. Las mutualidades de empleadores son fiscalizadas por la Superintendencia de Seguridad Social ( www.suseso.cl ).",
+      "body_chars": 3215,
+      "AI_content_chars": 3215,
+      "AI_full_text_content_delivered": true,
+      "AI_input_sha256_reconstructed": "64919887c256248471a2eeb9a833fb47090dd7178a170f1077052d927d1cfd38",
+      "AI_truncated_tail": "",
+      "material_proof_in_AI": [
+        {
+          "value": "SAFED",
+          "present": true
+        },
+        {
+          "value": "4.200 horas y prestaciones médicas",
+          "present": true
+        },
+        {
+          "value": "Clínica Atacama",
+          "present": true
+        },
+        {
+          "value": "FIBE",
+          "present": true
+        }
+      ],
+      "editorial_assessment": {
+        "score": 72,
+        "reason": "La noticia evidencia una activación concreta de capacidad y coordinación público-privada, con prestaciones y beneficiarios definidos. Sin embargo, corresponde a una respuesta temporal ante una emergencia localizada y no informa una expansión permanente, inversión estructural o cambio regulatorio del sector.",
+        "threshold": 75
+      },
+      "runtime_state": "rejected",
+      "runtime_reason": "editorial_score_or_summary_below_threshold",
+      "primary_cause": "successful_assessment_score_below_75",
+      "documents_not_in_AI": []
+    },
+    {
+      "source": "clinicas_achs_salud",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+      "title": "Master Plan Achs Salud: Modernizamos centros y ampliamos servicios para cuidarte mejor",
+      "publication_date": "2026-08-19",
+      "market_role": "provider_achs_centers",
+      "provider_subtype": "centros",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+        "captured_at": "2026-10-11T05:56:52.897106+00:00",
+        "sha256": "04d0b76f6d6029e8380bd82d0091457fb482b5c8c8e6b9ba9f301321bdec7d16",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/ba3624a13de369c3c7df-0.body",
+        "environment": "github_actions"
+      },
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+        "value": "19/08/2026",
+        "date": "2026-08-19",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "full_html_article_extraction_equals_run4": true,
+      "full_scoped_article_body": "19/08/2026 Revisa tres cambios importantes en nuestra red de centros Achs Salud: el traslado temporal del Centro Linares, la apertura del nuevo Centro San Javier y la puesta en marcha del Servicio de Evaluaciones Laborales en el Centro La Florida. Seguimos avanzando en el Master Plan Achs Salud , el proyecto de renovación de nuestra red de centros, lo que implica actualizaciones en los recintos. Con cada una de estas mejoras buscamos unificar la experiencia de atención a nivel nacional, contar con espacios más cómodos e inclusivos e incorporar infraestructura con altos estándares de sostenibilidad. Centro Linares Achs Salud se traslada temporalmente A partir del lunes 24 de agosto , el Centro Linares Achs Salud trasladará temporalmente sus operaciones mientras avanza su proceso de modernización que contempla salas de espera más amplias, más box de atención, nueva sala de rayos X, entre otras mejoras. Durante este período, puedes atenderte en: ● Centro San Javier Achs Salud Chorrillos 1147, San Javier ● Centro Parral Achs Salud Aníbal Pinto 247, Parral ● Centro Talca Achs Salud 4 Norte 1610, Talca Para atenciones fuera de horario hábil dirígete a la Clínica Lircay Achs Salud (Calle 2 Poniente 1372, Talca). En caso de urgencia vital puedes dirigirte a la misma Clínica Lircay o acudir al Hospital de Linares Achs Salud (Avda. Brasil 753). Ante cualquier emergencia, llama al 1404 . Inauguramos el nuevo Centro San Javier Achs Salud El recinto cuenta con una mayor capacidad de atención, infraestructura moderna y espacios diseñados para una mejor experiencia. Está ubicado en Chorrillos 1147, San Javier, y el horario de atención es de lunes a viernes, de 08:30 a 17:30 horas. Fuera de horario hábil, puedes acudir a la Clínica Lircay Achs Salud (Calle 2 Poniente 1372, Talca). Un nuevo espacio para cuidar a los trabajadores en La Florida El Centro La Florida Achs Salud ya cuenta con su Servicio de Evaluaciones Laborales (SEL), el que cuenta con una renovada sala de espera, sala de audiometría, sala de Rayos X, sala de toma de muestras y box de atención. Puedes acceder a estos servicios en Atahualpa 20, La Florida. La atención es de lunes a jueves de 08:00 a 16:30 horas y los viernes de 08:00 a 15:30 horas. Puedes agendar tu hora en achssalud.cl/sel Las mutualidades de empleadores son fiscalizadas por la Superintendencia de Seguridad Social ( www.suseso.cl ).",
+      "body_chars": 2388,
+      "AI_content_chars": 2388,
+      "AI_full_text_content_delivered": true,
+      "AI_input_sha256_reconstructed": "ca26666c46a3b4841f82d78a9445b326ebdab5f14ae594606376eb34faad7d11",
+      "AI_truncated_tail": "",
+      "material_proof_in_AI": [
+        {
+          "value": "apertura del nuevo Centro San Javier",
+          "present": true
+        },
+        {
+          "value": "Servicio de Evaluaciones Laborales",
+          "present": true
+        },
+        {
+          "value": "sala de audiometría",
+          "present": true
+        },
+        {
+          "value": "sala de Rayos X",
+          "present": true
+        }
+      ],
+      "editorial_assessment": {
+        "score": 70,
+        "reason": "Es un cambio de infraestructura y disponibilidad de servicios en varios centros, pero la publicación no entrega montos de inversión, cifras de capacidad, cobertura adicional ni efectos sectoriales o nacionales. Por eso corresponde a un contexto relevante, aunque secundario, más que a un cambio material del sistema de salud.",
+        "threshold": 75
+      },
+      "runtime_state": "rejected",
+      "runtime_reason": "editorial_score_or_summary_below_threshold",
+      "primary_cause": "successful_assessment_score_below_75",
+      "documents_not_in_AI": []
+    }
+  ],
+  "current_materiality_ledger": [
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral",
+      "title": "Comité Paritario del Contact Center de Banco Itaú obtiene certificación de nivel inicial de Achs Seguro Laboral",
+      "publication_date": "2026-10-05",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral",
+        "value": "05/10/2026",
+        "date": "2026-10-05",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "6abba1d09791ffcf2a16a1bb0b4db9643e774759b3adaa0a952fd7882a7783e7",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/comieé-paritario-del-contact-center-de-banco-itau-obtiene-certificacion-de-nivel-inicial-de-achs-seguro-laboral",
+        "captured_at": "2026-10-11T05:56:31.721103+00:00",
+        "sha256": "59b454fb88c2e487f78e28528868bae3d5035c05bafbe2ee8b71a43492a15cbb",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/294bbb499d219f092e35-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": false,
+      "current_materiality_reason": "no_verifiable_material_change",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad",
+      "title": "Achs Seguro Laboral y MILAB fortalecen su alianza preventiva a través de nueva caminata de la seguridad",
+      "publication_date": "2026-09-28",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad",
+        "value": "28/09/2026",
+        "date": "2026-09-28",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "04a267105e297681bb4d2a76c299159ba1a8471e4409ac8d2dc2b5f3f6a382e7",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-seguro-laboral-y-milab-fortalecen-su-alianza-preventiva-a-traves-de-nueva-caminata-de-la-seguridad",
+        "captured_at": "2026-10-11T05:56:33.107967+00:00",
+        "sha256": "2ee9c2996d1aa343aeefc6a67dfcdd52925ed6a9f715cc13cfdb03fff1374a6a",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/c57a2e1692cd5905d711-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "campaign_event_testimonial_or_recognition",
+      "current_materiality_accepted": false,
+      "current_materiality_reason": "campaign_event_testimonial_or_recognition",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+      "title": "Nueva guía entrega orientaciones basadas en evidencia para el abordaje de la salud mental laboral",
+      "publication_date": "2026-09-24",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+        "value": "24/09/2026",
+        "date": "2026-09-24",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "4c329a82232913a2382314146d9f4aeb91517594f225c89099707d61f4a2ba21",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+        "captured_at": "2026-10-11T05:56:34.532949+00:00",
+        "sha256": "f96a9e2d6ec2b47ddae2e3fc97ca0b3392d938af0a0c598940658ce186772b39",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/2f8702b2b7fdab6e7e6c-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": true,
+      "run4_materiality_reason": "new_operational_tool_or_protocol",
+      "current_materiality_accepted": true,
+      "current_materiality_reason": "new_operational_tool_or_protocol",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion",
+      "title": "La neurociencia como herramienta para fortalecer la prevención",
+      "publication_date": "2026-09-23",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion",
+        "value": "23/09/2026",
+        "date": "2026-09-23",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "1a900226cd525865981aff6098bc975e6e03f0ed581644cc821c0ff1c8ab3519",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-neurociencia-como-herramienta-para-fortalecer-la-prevencion",
+        "captured_at": "2026-10-11T05:56:35.915230+00:00",
+        "sha256": "eaab24d278b45732d83f078457831428e0153a6f64bb7106236c7525bca8b083",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/bb8969273660e9d939b9-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": false,
+      "current_materiality_reason": "no_verifiable_material_change",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias",
+      "title": "El 91% de las personas teme cruzarse con conductores bajo los efectos del alcohol o las drogas en estas Fiestas Patrias",
+      "publication_date": "2026-09-17",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias",
+        "value": "17/09/2026",
+        "date": "2026-09-17",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "4055b8a67e19bfd65e5d3fb5096729ff0537263bd60f4a3cd836f553d248e3b4",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/el-91--de-las-personas-teme-cruzarse-con-conductores-bajo-los-efectos-del-alcohol-o-las-drogas-en-estas-fiestas-patrias",
+        "captured_at": "2026-10-11T05:56:37.279201+00:00",
+        "sha256": "79e1c635de3dae9396684ef5355108be103e215c49df124f82be9aad7ab8d017",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/3cbf829a14cea40a1e60-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": false,
+      "current_materiality_reason": "no_verifiable_material_change",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/a-dos-anos-de-la-ley-karin-avances-desafios-y-aprendizajes-para-construir-entornos-laborales-mas-seguros",
+      "title": "A dos años de la Ley Karin: avances, desafíos y aprendizajes para construir entornos laborales más seguros",
+      "publication_date": "2026-09-17",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/a-dos-anos-de-la-ley-karin-avances-desafios-y-aprendizajes-para-construir-entornos-laborales-mas-seguros",
+        "value": "17/09/2026",
+        "date": "2026-09-17",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "7c59de2af2074ba23977e76df19859a8aedf48f7aef74646107e89e24a96841e",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/a-dos-anos-de-la-ley-karin-avances-desafios-y-aprendizajes-para-construir-entornos-laborales-mas-seguros",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/a-dos-anos-de-la-ley-karin-avances-desafios-y-aprendizajes-para-construir-entornos-laborales-mas-seguros",
+        "captured_at": "2026-10-11T05:56:38.696221+00:00",
+        "sha256": "3e1ffa52dc65b8b3552ed53da4462cbae38a8379c95c088891292de1508d5327",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/f7ea1315f5a411c15bcb-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": true,
+      "current_materiality_reason": "quantified_occupational_data",
+      "materiality_input_changed": true
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/tus-datos-pueden-ayudarte-a-prevenir-descubre-el-modulo-de-reporteria-disponible-en-achs-virtual",
+      "title": "Tus datos pueden ayudarte a prevenir: Descubre el módulo de Reportería disponible en Achs Virtual",
+      "publication_date": "2026-09-15",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/tus-datos-pueden-ayudarte-a-prevenir-descubre-el-modulo-de-reporteria-disponible-en-achs-virtual",
+        "value": "15/09/2026",
+        "date": "2026-09-15",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "8269bd4e87e38465eeff31a1a077796d3e73d95b7c8cd591a2491e9cd382d843",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/tus-datos-pueden-ayudarte-a-prevenir-descubre-el-modulo-de-reporteria-disponible-en-achs-virtual",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/tus-datos-pueden-ayudarte-a-prevenir-descubre-el-modulo-de-reporteria-disponible-en-achs-virtual",
+        "captured_at": "2026-10-11T05:56:40.082434+00:00",
+        "sha256": "de83c3dcdce3e7afc7059abb709127ead0ac4262ac5ebb877bb5d8b453be387c",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/b6ce053ddb03db2cec5a-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": false,
+      "current_materiality_reason": "no_verifiable_material_change",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/fiestas-patrias-seguras-10-recomendaciones-claves-para-prevenir-accidentes-viales",
+      "title": "Fiestas Patrias seguras: 10 recomendaciones claves para prevenir accidentes viales",
+      "publication_date": "2026-09-15",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/fiestas-patrias-seguras-10-recomendaciones-claves-para-prevenir-accidentes-viales",
+        "value": "15/09/2026",
+        "date": "2026-09-15",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "bdb1ee54ca3700d33f4ce0574068b20033e222d95a2230981e37565f5fc12898",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/fiestas-patrias-seguras-10-recomendaciones-claves-para-prevenir-accidentes-viales",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/fiestas-patrias-seguras-10-recomendaciones-claves-para-prevenir-accidentes-viales",
+        "captured_at": "2026-10-11T05:56:41.461110+00:00",
+        "sha256": "ad0d0f0caa2c073dc41df17d29e716229cb7630f5d59ee547985c0edc0d1087c",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/5b7d99132259df2c867b-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": false,
+      "current_materiality_reason": "no_verifiable_material_change",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/mes-de-la-salud-mental-informacion-y-herramientas-para-prevenir-el-suicidio-en-espacios-laborales",
+      "title": "Mes de la salud mental: Información y herramientas para prevenir el suicidio en espacios laborales",
+      "publication_date": "2026-09-15",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/mes-de-la-salud-mental-informacion-y-herramientas-para-prevenir-el-suicidio-en-espacios-laborales",
+        "value": "15/09/2026",
+        "date": "2026-09-15",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "368c779f9798403480cee42b9484c62b8073973e4d8f5ba5f384bbb429bb5a46",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/mes-de-la-salud-mental-informacion-y-herramientas-para-prevenir-el-suicidio-en-espacios-laborales",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/mes-de-la-salud-mental-informacion-y-herramientas-para-prevenir-el-suicidio-en-espacios-laborales",
+        "captured_at": "2026-10-11T05:56:42.862517+00:00",
+        "sha256": "c4c664905dbfcf26d6d5ffdb431bb3b5fa5bac410d837b81698713656441184d",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/d2e4f63914527a610c83-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": false,
+      "current_materiality_reason": "no_verifiable_material_change",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+      "title": "Accidentes de trayecto en scooter aumentan cerca de un 37% durante el primer semestre de 2026",
+      "publication_date": "2026-09-15",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+        "value": "15/09/2026",
+        "date": "2026-09-15",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "5321307063120c13e9b24a04b552f60e85c955515462d18be3dcde3efb09038d",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/accidentes-de-trayecto-en-scooter-aumentan-cerca-de-un-37-durante-el-primer-semestre-de-2026",
+        "captured_at": "2026-10-11T05:56:44.279728+00:00",
+        "sha256": "a6d86519d4949c1801e22bb7caa3d0c281c81519721471d94c9e58e06e13d66c",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/cf54b0043bc607ec3a8f-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": true,
+      "run4_materiality_reason": "quantified_occupational_data",
+      "current_materiality_accepted": true,
+      "current_materiality_reason": "quantified_occupational_data",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/vida-saludable",
+      "title": "Promover entornos laborales saludables también es cuidar a las personas",
+      "publication_date": "2026-09-08",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/vida-saludable",
+        "value": "08/09/2026",
+        "date": "2026-09-08",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "9ea78c3945e4aa63089b75a700eadbd8121ef5eaa73585da93ae0fc23c7a8bbc",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/vida-saludable",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/vida-saludable",
+        "captured_at": "2026-10-11T05:56:45.723204+00:00",
+        "sha256": "0ae4978fa22b46a22f608852245837c151a8f0a44c6a1263f2b6bbac2ece0b4d",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/8d3d831f0322a8631a15-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": false,
+      "current_materiality_reason": "no_verifiable_material_change",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-participa-como-aliado-estrategico-en-el-tercer-encuentro-del-ano-de-la-red-de-seguridad-escolar",
+      "title": "Achs participa como aliado estratégico en el tercer encuentro del año de la Red de Seguridad Escolar",
+      "publication_date": "2026-09-03",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-participa-como-aliado-estrategico-en-el-tercer-encuentro-del-ano-de-la-red-de-seguridad-escolar",
+        "value": "03/09/2026",
+        "date": "2026-09-03",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "68d6252d581ba33c923c81c87cd46048342b3881458824a582caf3d9588b8716",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-participa-como-aliado-estrategico-en-el-tercer-encuentro-del-ano-de-la-red-de-seguridad-escolar",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-participa-como-aliado-estrategico-en-el-tercer-encuentro-del-ano-de-la-red-de-seguridad-escolar",
+        "captured_at": "2026-10-11T05:56:47.168970+00:00",
+        "sha256": "d096cafb1f18d6c16c8e6973dc49992a82a21fda9e5746954cacacde3501b490",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/0b54dfa250afcaabc8a9-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": false,
+      "current_materiality_reason": "no_verifiable_material_change",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/prevencion-de-la-exposicion-a-silice-protege-tu-salud-en-el-trabajo",
+      "title": "Prevención de la exposición a sílice: protege tu salud en el trabajo",
+      "publication_date": "2026-08-25",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/prevencion-de-la-exposicion-a-silice-protege-tu-salud-en-el-trabajo",
+        "value": "25/08/2026",
+        "date": "2026-08-25",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "77ef84c543ccfa2b23354130757f6ba17cf5e727c2569c573ea2e8e94be1649a",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/prevencion-de-la-exposicion-a-silice-protege-tu-salud-en-el-trabajo",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/prevencion-de-la-exposicion-a-silice-protege-tu-salud-en-el-trabajo",
+        "captured_at": "2026-10-11T05:56:50.031883+00:00",
+        "sha256": "53300c298772434743096320a25d7e55a5cd6387937f177b2c9fbf7c48aa08ee",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/02e2b2ddff957583ad61-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": false,
+      "current_materiality_reason": "no_verifiable_material_change",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/innovar-para-llegar-a-tiempo",
+      "title": "Innovar para llegar a tiempo",
+      "publication_date": "2026-08-25",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/innovar-para-llegar-a-tiempo",
+        "value": "25/08/2026",
+        "date": "2026-08-25",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "16dc423dddab5bac966713c96c6260a19dae888d8185091caf8c5b867acc78b3",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/innovar-para-llegar-a-tiempo",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/innovar-para-llegar-a-tiempo",
+        "captured_at": "2026-10-11T05:56:51.432380+00:00",
+        "sha256": "b3fd147fa5ff69a7f780c88d90fc079401429ffe9f16d0b0ea9eedabb2e14f93",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/a2b95068261acc188842-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": true,
+      "current_materiality_reason": "quantified_occupational_data",
+      "materiality_input_changed": true
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/renovado-centro-de-entrenamiento-de-riesgos-mayores-achs-de-antofagasta-vuelve-a-abrir-sus-puertas",
+      "title": "Renovado Centro de Entrenamiento de Riesgos Mayores Achs de Antofagasta vuelve a abrir sus puertas",
+      "publication_date": "2026-08-19",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/renovado-centro-de-entrenamiento-de-riesgos-mayores-achs-de-antofagasta-vuelve-a-abrir-sus-puertas",
+        "value": "19/08/2026",
+        "date": "2026-08-19",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "5ee0f1ffadac4b0a1f32d65d8aafe812bc36de9d1749e3184f5baa3fd086d18c",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/renovado-centro-de-entrenamiento-de-riesgos-mayores-achs-de-antofagasta-vuelve-a-abrir-sus-puertas",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/renovado-centro-de-entrenamiento-de-riesgos-mayores-achs-de-antofagasta-vuelve-a-abrir-sus-puertas",
+        "captured_at": "2026-10-11T05:56:54.326856+00:00",
+        "sha256": "11d74fc05c93ec80e9a65623f5192af7774a816ef2cdcac56c8f78fbdb5f560d",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/871ce85d46290351302b-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": true,
+      "current_materiality_reason": "capacity_or_investment_change",
+      "materiality_input_changed": true
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/vuelve-el-horario-de-verano-como-adaptar-el-descanso-y-resguardar-la-seguridad-en-el-trabajo",
+      "title": "Vuelve el horario de verano: Cómo adaptar el descanso y resguardar la seguridad en el trabajo",
+      "publication_date": "2026-08-19",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/vuelve-el-horario-de-verano-como-adaptar-el-descanso-y-resguardar-la-seguridad-en-el-trabajo",
+        "value": "19/08/2026",
+        "date": "2026-08-19",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "8a77617e1003eb76a551c5b8c164d68f8c51e76e6588c20f7e78655931182060",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/vuelve-el-horario-de-verano-como-adaptar-el-descanso-y-resguardar-la-seguridad-en-el-trabajo",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/vuelve-el-horario-de-verano-como-adaptar-el-descanso-y-resguardar-la-seguridad-en-el-trabajo",
+        "captured_at": "2026-10-11T05:56:55.691530+00:00",
+        "sha256": "4955cccb44bd2d295a5a1bff3e3b7bed087bb8178ac914bdda8cb1e46d6afe21",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/1710396df85d115a8f7e-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": false,
+      "current_materiality_reason": "no_verifiable_material_change",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-pone-a-disposicion-guia-que-promueve-el-buen-trato-y-proteger-la-salud-mental-en-el-sector-publico",
+      "title": "Achs pone a disposición guía que promueve el buen trato y proteger la salud mental en el sector público",
+      "publication_date": "2026-08-17",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-pone-a-disposicion-guia-que-promueve-el-buen-trato-y-proteger-la-salud-mental-en-el-sector-publico",
+        "value": "17/08/2026",
+        "date": "2026-08-17",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "28379b1fc44255f9419fd18964e2b0fb7979a93858b9ec9cc7667e49ac4d012e",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-pone-a-disposicion-guia-que-promueve-el-buen-trato-y-proteger-la-salud-mental-en-el-sector-publico",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-pone-a-disposicion-guia-que-promueve-el-buen-trato-y-proteger-la-salud-mental-en-el-sector-publico",
+        "captured_at": "2026-10-11T05:56:57.142233+00:00",
+        "sha256": "d98f64b5879344fe7afe8a096bf01a142485faeab4090e91ffeda2f350752783",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/e4bd070a7325b054fee1-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": true,
+      "current_materiality_reason": "new_operational_tool_or_protocol",
+      "materiality_input_changed": true
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-entrega-certificacion-al-comite-paritario-de-constructora-excon",
+      "title": "Achs entrega certificación al Comité Paritario de Constructora Excon",
+      "publication_date": "2026-08-04",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-entrega-certificacion-al-comite-paritario-de-constructora-excon",
+        "value": "04/08/2026",
+        "date": "2026-08-04",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "1e89be2509391a9a4ab1438d24446b16e8944a911c50cb1c6d44c2f25f05db5b",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-entrega-certificacion-al-comite-paritario-de-constructora-excon",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-entrega-certificacion-al-comite-paritario-de-constructora-excon",
+        "captured_at": "2026-10-11T05:56:58.623916+00:00",
+        "sha256": "b2c128faec34ac68f98a341b5fd023b11a9d01bf222c705191ced0f0ade0e152",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/65f20ba92e2cae4bfced-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": false,
+      "current_materiality_reason": "no_verifiable_material_change",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-achs-abre-convocatoria-al-premio-inclusion-2026",
+      "title": "La Achs abre convocatoria al Premio Inclusión 2026",
+      "publication_date": "2026-07-27",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-achs-abre-convocatoria-al-premio-inclusion-2026",
+        "value": "27/07/2026",
+        "date": "2026-07-27",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "c8ba26d3c78118250fe3c1d03623cee09edc7d7544cdc8713ada463207513e97",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-achs-abre-convocatoria-al-premio-inclusion-2026",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/la-achs-abre-convocatoria-al-premio-inclusion-2026",
+        "captured_at": "2026-10-11T05:57:01.706086+00:00",
+        "sha256": "3937da81eaf573369918fa426531dddec1eb6ab440351e1448f5036b38009b33",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/636d66b7c695c4935667-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "campaign_event_testimonial_or_recognition",
+      "current_materiality_accepted": false,
+      "current_materiality_reason": "campaign_event_testimonial_or_recognition",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+      "title": "Achs Virtual estrena módulo que anticipa accidentes graves y fatales con inteligencia artificial",
+      "publication_date": "2026-07-15",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+        "value": "15/07/2026",
+        "date": "2026-07-15",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "f38a073bc0faf17019a5a319fbeb0c9d77a3c17303b321df38501448e8a02737",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-estrena-modulo-que-anticipa-accidentes-graves-y-fatales-con-inteligencia-artificial",
+        "captured_at": "2026-10-11T05:57:03.190409+00:00",
+        "sha256": "12cfbb68cefe60f083c451db9bc2a8a7c6917c0b19afd7d8e55afba200eb20bd",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/873c1f1920ded4aca7bc-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": true,
+      "run4_materiality_reason": "new_operational_tool_or_protocol",
+      "current_materiality_accepted": true,
+      "current_materiality_reason": "new_operational_tool_or_protocol",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/trabajadores-expuestos-a-bajas-temperaturas-lo-que-los-empleadores-deben-saber-e-implementar",
+      "title": "Trabajadores expuestos a bajas temperaturas: Lo que los empleadores deben saber e implementar",
+      "publication_date": "2026-07-15",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/trabajadores-expuestos-a-bajas-temperaturas-lo-que-los-empleadores-deben-saber-e-implementar",
+        "value": "15/07/2026",
+        "date": "2026-07-15",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "ac09c81189036b13f1076a08740b088bd4e5948010f59c319b20af8d13b8fc22",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/trabajadores-expuestos-a-bajas-temperaturas-lo-que-los-empleadores-deben-saber-e-implementar",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/trabajadores-expuestos-a-bajas-temperaturas-lo-que-los-empleadores-deben-saber-e-implementar",
+        "captured_at": "2026-10-11T05:57:04.643406+00:00",
+        "sha256": "a2b983cc867fffd2094b9f5f72fa7d3ecbca0d83e168a8709c247398a3f282e4",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/b4ba96a26cc630774897-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": false,
+      "current_materiality_reason": "no_verifiable_material_change",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-conoce-las-actualizaciones-que-permitiran-inscribir-cursos-para-tus-trabajadores-en-simples-pasos",
+      "title": "Achs Virtual: Conoce las actualizaciones que permitirán inscribir cursos para tus trabajadores en simples pasos",
+      "publication_date": "2026-07-15",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-conoce-las-actualizaciones-que-permitiran-inscribir-cursos-para-tus-trabajadores-en-simples-pasos",
+        "value": "15/07/2026",
+        "date": "2026-07-15",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "4523c2eda29e2ae25e2712b6a072d775710f73bc91eda74fd49a630cf2d5485c",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-conoce-las-actualizaciones-que-permitiran-inscribir-cursos-para-tus-trabajadores-en-simples-pasos",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-virtual-conoce-las-actualizaciones-que-permitiran-inscribir-cursos-para-tus-trabajadores-en-simples-pasos",
+        "captured_at": "2026-10-11T05:57:06.087069+00:00",
+        "sha256": "67818a48e0f32bdf1c892b64f457366d8dd30928c446400eab35625945e5a345",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/abffefb0fbe386607dd2-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": true,
+      "current_materiality_reason": "quantified_operational_process_change",
+      "materiality_input_changed": true
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/recomendaciones-preventivas-ante-las-alertas-meteorologicas-vigentes",
+      "title": "Recomendaciones preventivas ante las alertas meteorológicas vigentes",
+      "publication_date": "2026-07-15",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/recomendaciones-preventivas-ante-las-alertas-meteorologicas-vigentes",
+        "value": "15/07/2026",
+        "date": "2026-07-15",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "766d94275ae58fae1adca6882287408439e75e04319fa737eb741051e45fe2a1",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/recomendaciones-preventivas-ante-las-alertas-meteorologicas-vigentes",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/recomendaciones-preventivas-ante-las-alertas-meteorologicas-vigentes",
+        "captured_at": "2026-10-11T05:57:07.482934+00:00",
+        "sha256": "afd54d99370ee7d587a4a8c1a27c2c35f77f11f5df52216aec06eb3d2d8b33f8",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/42b49fc54dd8e71b45d1-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": false,
+      "current_materiality_reason": "no_verifiable_material_change",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "clinicas_achs_salud",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+      "title": "Achs se une a iniciativa público-privada para entregar servicios gratuitos a afectados en Atacama y Coquimbo por las lluvias",
+      "publication_date": "2026-08-28",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+        "value": "28/08/2026",
+        "date": "2026-08-28",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "38df92fd03d2bf369c2db965d4379e08ad1afd9b6e88039b41fdfae70fb06ff4",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/achs-se-une-a-iniciativa-publico-privada-para-entregar-servicios-gratuitos-a-afectados-en-atacama-y-coquimbo-por-las-lluvias",
+        "captured_at": "2026-10-11T05:56:48.600020+00:00",
+        "sha256": "36262946d10f4f776d8bc39beb2283c712f534a9a882b4dba0a5b6ff46ee8bd2",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/62ccf248ac7a8947f703-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": true,
+      "run4_materiality_reason": "public_private_coverage_change",
+      "current_materiality_accepted": true,
+      "current_materiality_reason": "public_private_coverage_change",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "clinicas_achs_salud",
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+      "title": "Master Plan Achs Salud: Modernizamos centros y ampliamos servicios para cuidarte mejor",
+      "publication_date": "2026-08-19",
+      "publication_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+        "value": "19/08/2026",
+        "date": "2026-08-19",
+        "kind": "publisher:achs_div_fecha"
+      },
+      "body_sha256": "4fc8e59a86c195fa1e02ea9a6b31e5cae54da561282f57545722124b1591be3b",
+      "capture_evidence": {
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+        "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/master-plan-achs-salud-modernizamos-centros-y-ampliamos-servicios-para-cuidarte-mejor",
+        "captured_at": "2026-10-11T05:56:52.897106+00:00",
+        "sha256": "04d0b76f6d6029e8380bd82d0091457fb482b5c8c8e6b9ba9f301321bdec7d16",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/ba3624a13de369c3c7df-0.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": true,
+      "run4_materiality_reason": "capacity_or_investment_change",
+      "current_materiality_accepted": true,
+      "current_materiality_reason": "capacity_or_investment_change",
+      "materiality_input_changed": false
+    },
+    {
+      "source": "mutual_seguridad",
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Flicitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc",
+      "title": "Licitación Pública Convenio Marco: Plan Nacional de Construcción Modular para Mutual de Seguridad C.Ch.C.",
+      "publication_date": "2026-08-27",
+      "publication_evidence": {
+        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Flicitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc",
+        "kind": "publisher:mutual_detail_fecha",
+        "value": "27 ago. 2026",
+        "date": "2026-08-27"
+      },
+      "body_sha256": "06b855bc9e08247a0335af173d76d9573b06794f6df6095f7cbfc4349a3cac43",
+      "capture_evidence": {
+        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Flicitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc",
+        "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/noticias_detalle/licitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc/!ut/p/z1/jVJNTwIxEP0tHDg2M_2aluPWgyCwGjd1bS9mYQ3ZKIUQgtFf75KYGFSKc3vJezPz3gxEeISYmkO3avbdJjWvPQ6RniSf0kRaIUZzZ5BMqay2M463AupTwh16juTK-dSilBPPIWb0lvL6Sqv_6fFMFXhJ_wDBQVgN0aW6-LnNb7sxP6yGeDrwjzxyhErLSwT1RchsEXoX5rwLA_Whe34Dnza7dX_j6thxu-xaCDTium20YhwFMaWEYnbRQylJtot2yY0hGCPcZGM9vsXVd6iRw3btvU_v7OV-_OFKdu2LweATPlUqOQ!!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+        "captured_at": "2026-10-11T06:18:53.278812+00:00",
+        "sha256": "9afeee854770e56970ad2260ce94c3471426c4931d1596ae9e965700edd582d7",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/416dcb2831bc0e60f941-1.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": true,
+      "current_materiality_reason": "capacity_procurement_call",
+      "materiality_input_changed": true,
+      "qualifications_preserved": [
+        "Pilot850m² is facultative, tender not award/opening"
+      ]
+    },
+    {
+      "source": "mutual_seguridad",
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fgran-americas-se-incorpora-a-mutual-de-seguridad-para-fortalecer-la-prevencion",
+      "title": "Gran Américas se incorpora a Mutual de Seguridad para fortalecer la prevención",
+      "publication_date": "2026-07-28",
+      "publication_evidence": {
+        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fgran-americas-se-incorpora-a-mutual-de-seguridad-para-fortalecer-la-prevencion",
+        "kind": "publisher:mutual_detail_fecha",
+        "value": "28 jul. 2026",
+        "date": "2026-07-28"
+      },
+      "body_sha256": "7d0e4133c48098810ba6ae24a35cb06a77e145be76b7a08a6c5a66da47840e6d",
+      "capture_evidence": {
+        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fgran-americas-se-incorpora-a-mutual-de-seguridad-para-fortalecer-la-prevencion",
+        "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/noticias_detalle/gran-americas-se-incorpora-a-mutual-de-seguridad-para-fortalecer-la-prevencion/!ut/p/z1/jVLLbsIwEPwWPsDatR0_eiQceARSaOSm9gWFBJAFCQhVIPr1DVJViVIMe1tpZmdndsHBB7imOPp18el3TbFte-vknNNEDrlm7GUSK5QqjbTQY4qvDPJrwBQNRRmnk0Qj50NDwQX4Wob5mYie4-Od6uIj_jvYGOws6dX-9HeZW7curJWDu9b7J44QIBP8ESD6AQS2sK0Ldd-Fgvzolycwze5QtyfOLhP3pa_AVqXmDEtKUAhJokWliOZUELkUixUyKkquYYAwCqZ6-Yreb6aOwr42xjRnsnkbfMUp6Ztup_MNaG3-6w!!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+        "captured_at": "2026-10-11T06:19:05.607585+00:00",
+        "sha256": "751b4e7bce7bad615cd1183435fd3c008c185b92be6c95ba4325134dc94e9cd4",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/1d3d0b1551510cea3a8a-1.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": true,
+      "current_materiality_reason": "quantified_coverage_change",
+      "materiality_input_changed": true,
+      "qualifications_preserved": [
+        "Eight of nine transportation companies; worker headcount not stated"
+      ]
+    },
+    {
+      "source": "mutual_seguridad",
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fservicios-transitorios-mutual-de-seguridad-impulsa-gestion-preventiva-con-manual-grc",
+      "title": "Servicios Transitorios: Mutual de Seguridad impulsa gestión preventiva con manual GRC",
+      "publication_date": "2026-07-17",
+      "publication_evidence": {
+        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fservicios-transitorios-mutual-de-seguridad-impulsa-gestion-preventiva-con-manual-grc",
+        "kind": "publisher:mutual_detail_fecha",
+        "value": "17 jul. 2026",
+        "date": "2026-07-17"
+      },
+      "body_sha256": "dd753b5fa4b2d4dab4da235bfde9d09a2553d09c10aec1e2365db4e1dac6323c",
+      "capture_evidence": {
+        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fservicios-transitorios-mutual-de-seguridad-impulsa-gestion-preventiva-con-manual-grc",
+        "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/noticias_detalle/servicios-transitorios-mutual-de-seguridad-impulsa-gestion-preventiva-con-manual-grc/!ut/p/z1/jVLLTsNADPyWfsDK63hfOTYcmlIaHtESdi9o8xCKoGmFShF8PamEkArtFt8szXg8Y4OHB_BD2PVPYduvh_Ay9s6rR8KFmpNJknSZaa50IYw0V8ivE6gOATfcIldZsVwYTjS3CD7CNyrOL6X4H5-fqCk_x78Hl4HL5Wz7dvt7mb9ufVyrAn-odySOGKCUdA4gvgGRLdzoQp92oaHa9d072GH9uhpPXO4nbpq-BYct1k2KxOo6DUwQITNBNKxLZRsSUrzTCnIOl9FU919x8ZOpR9isrLXDB3u-yz-zgs3sdDL5Am-fiRw!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+        "captured_at": "2026-10-11T06:19:10.366118+00:00",
+        "sha256": "f9ddcaae1f7c18e3db01c03c52aee079cd1e0ff723c0818b1a82ced8c1c57892",
+        "http_status": 200,
+        "tls_verified": true,
+        "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/00a678cb81fc452038eb-1.body",
+        "environment": "github_actions"
+      },
+      "run4_materiality_accepted": false,
+      "run4_materiality_reason": "no_verifiable_material_change",
+      "current_materiality_accepted": false,
+      "current_materiality_reason": "no_verifiable_material_change",
+      "materiality_input_changed": false,
+      "qualifications_preserved": [
+        "Generic governance manual; no specific changed duty, clinical protocol or quantified impact"
+      ]
+    }
+  ],
+  "coverage_limit": "Run4 clinical report covers the shared newsroom and explicitly reports additional clinical surfaces pending; blog, nine clinics, linked PDF/PPTX documents and native IST/API conflicts are not validated by this editorial audit. No broad clinical coverage claim.",
+  "tests": {
+    "command": "PYTHONPATH=src .venv/bin/python -m pytest -q tests/test_occupational_integrity.py tests/test_occupational_sources.py tests/test_occupational_inventory.py tests/test_mutual_recovery.py tests/test_occupational_evidence.py tests/test_occupational_engine_recovery.py tests/test_occupational_reconcile.py",
+    "result": "241 passed"
+  },
+  "ai_calls": 0,
+  "threshold_changed": false,
+  "canonical_state_changed": false,
+  "next_action": "Run parent-reviewed inventory with the current parser/gate, bind changed inputs to new editorial assessments within the approved budget; preserve unchanged below75 decisions. Review linked official PDF/PPTX as distinct uncaptured documents if additional documentary detail is needed."
+}

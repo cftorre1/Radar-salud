@@ -1,0 +1,51 @@
+{
+  "source_slug": "fonasa_datos_abiertos",
+  "checkpoint_at_utc": "2026-10-11T04:28:00Z",
+  "base": "staging cadb6c2",
+  "result": "blocked_live_validation",
+  "current_captures": 0,
+  "verified_publication_dates": 0,
+  "subfronts": [
+    {"channel": "Noticias", "url": "https://datosabiertos.fonasa.cl/noticias/", "head_get": "proxy_CONNECT_403_envoy_before_origin", "independent_navigation": "reports_403", "date_evidence": "none_captured"},
+    {"channel": "Biblioteca / Cuenta Pública", "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/", "head_get": "proxy_CONNECT_403_envoy_before_origin", "independent_navigation": "reports_403", "date_evidence": "none_captured"},
+    {"channel": "Boletines estadísticos", "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/", "head_get": "proxy_CONNECT_403_envoy_before_origin", "independent_navigation": "reports_403", "date_evidence": "none_captured"},
+    {"channel": "Análisis", "url": "https://datosabiertos.fonasa.cl/analysis/", "head_get": "proxy_CONNECT_403_envoy_before_origin", "independent_navigation": "reports_403", "date_evidence": "none_captured"}
+  ],
+  "blocker": {
+    "exact": "Approved environment proxy denies HTTPS CONNECT with HTTP/1.1 403 Forbidden, server envoy, curl exit 56. No origin request or TLS handshake occurs. Independent browser also reports 403 on all four official hubs; it exposes no headers, redirect chain or origin-denial attribution.",
+    "origin_denial_proven": false,
+    "headers_observed": "proxy headers only; content-length 16, content-type text/plain, date, server envoy, connection close",
+    "user_agent_check": "Bot and Mozilla requested: both CONNECT denied before origin UA evaluation",
+    "tls_check": "TLS1.2 and TLS1.3 requested on newsroom: both CONNECT denied; certificate problem is not established",
+    "redirect_check": "HTTP input is normalized to HTTPS by web tool, but actual server chain is not exposed; shell HTTP receives proxy 403",
+    "html_change_check": "No raw HTML captured; no live HTML redesign claim can be made"
+  },
+  "fallbacks_evaluated": [
+    {"url": "https://www.fonasa.cl/sites/fonasa/datos-abiertos", "status": "navigation_reports_403", "enabled": false},
+    {"url": "https://datosabiertos.fonasa.cl/feed/", "status": "shell_proxy_CONNECT_403_and_navigation_tool_inaccessible", "existence_verified": false, "enabled": false},
+    {"url": "https://datosabiertos.fonasa.cl/wp-json/wp/v2/posts?per_page=1", "status": "shell_proxy_CONNECT_403_and_navigation_tool_inaccessible", "existence_verified": false, "enabled": false},
+    {"url": "https://datosabiertos.fonasa.cl/sitemap_index.xml", "status": "navigation_tool_inaccessible_no_origin_status", "existence_verified": false, "enabled": false},
+    {"url": "https://nuevo.fonasa.gob.cl/noticias/", "status": "navigation_reports_403", "enabled": false},
+    {"url": "https://nuevo.fonasa.gob.cl/wp-content/uploads/2025/09/Cuenta-Puiblica-Fonasa-20225-IXrev.pdf", "status": "navigation_reports_403_and_shell_proxy_CONNECT_403", "discovery_provenance": "indexed third-party bibliographic URL hint only; document not captured", "enabled": false},
+    {"url": "https://fonasacl.cloud-qa.fonasa.cl/wp-content/uploads/2024/11/Analysis3.pdf", "status": "navigation_reports_403_and_shell_proxy_CONNECT_403", "eligibility": "QA surface; not a production fallback", "enabled": false},
+    {"url": "https://fonasaweb.fonasa.cl/Trans_Docs/2022/03/Otros/Cuenta%20Publica/2015.pdf", "status": "navigation_tool_inaccessible_and_shell_proxy_CONNECT_403", "eligibility": "historical archive; data period/upload path cannot establish publication date", "enabled": false},
+    {"url": "https://fonasaweb.fonasa.cl/Trans_Docs/2022/02/Otros/Cuenta%20Publica/2016_Resumen.pdf", "status": "navigation_tool_inaccessible_no_origin_status", "eligibility": "historical archive", "enabled": false},
+    {"url": "https://www.dipres.gob.cl/597/articles-279884_doc_pdf.pdf", "status": "official_pdf_content_available_via_navigation_91_pages", "title": "Balance de Gestión Integral AÑO 2021, Ministerio de Salud, Fondo Nacional de Salud", "publication_date_verified": false, "eligibility": "Official alternative hosting of a FONASA document, but historical report period 2021; neither a recent publication nor a direct FONASA hub recovery", "enabled": false}
+  ],
+  "repair": [
+    "Every Datos Abiertos hub is evaluated despite another hub failing; exact listing/detail diagnostics are preserved.",
+    "A failed detail or listing aborts the source as incomplete instead of silently reporting a healthy partial capture.",
+    "PDF/XLSX/XLS/CSV links remain undated unless a captured official item-bound publication record is available; title/report-period/upload-directory dates are never substituted.",
+    "HTML detail metadata records exact publication value, kind, date and official detail URL; root pipeline independently validates this evidence.",
+    "Default transport checks official HTTPS URLs and redirects with runtime CA verification enabled; synthetic fixtures use an explicit injected fetcher."
+  ],
+  "tests": {
+    "command": "PYTHONPATH=src .venv/bin/python -m pytest -q tests/test_fonasa_recovery.py tests/test_fonasa_source.py",
+    "result": "23 passed in 0.09s",
+    "fixture_provenance": "synthetic parser/transport error contracts; no current FONASA HTML capture"
+  },
+  "evidence_files": ["fonasa_browser_probe.json", "fonasa_transport_probe.json", "fonasa_fallback_browser_probe.json", "fonasa_fallback_transport.json"],
+  "source_health_proposal": {"technical_status": "error", "coverage_status": "unverified", "editorial_outcome": "not_evaluated", "error": "Live validation blocked: approved proxy CONNECT 403 before FONASA Datos Abiertos origin on all four hubs; independent navigation also reports 403. No current official capture."},
+  "next_action": "Replay the stored transport commands on an allowed external runner. Capture actual official HEAD/GET status, redirects, TLS/CA outcome and raw listing/detail/PDF bytes. Bind each document to explicit publication date evidence, not data period, before marking a hub operational.",
+  "reviewer": "pending independent root QA"
+}

@@ -1,0 +1,488 @@
+{
+  "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+  "targets": {
+    "sources": [
+      "fonasa_datos_abiertos"
+    ],
+    "origin_prs": [
+      11,
+      15,
+      19,
+      22,
+      13,
+      12,
+      14,
+      23
+    ],
+    "purpose": "Actual two-poll revalidation of DF/SIS/SUSESO, public transports and clinical cross-lane stock on copied staging state; no publication. Provider runtime 38147271657 continues independently.",
+    "expectations": {
+      "redsalud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "bupa_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "indisa": {
+        "allow_external_blocker": true
+      },
+      "red_davila": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "andes_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "pfizer_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_achs_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "mutual_seguridad": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "ist": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "fonasa": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "fonasa_datos_abiertos": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "isp_anamed": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "isp_surveillance": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      }
+    }
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-11T14:45:26.881603+00:00",
+      "finished_at": "2026-10-11T14:45:28.674903+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "fonasa_datos_abiertos": "EXTERNAL_BLOCKER_OBSERVED"
+      },
+      "discovery": {
+        "fonasa_datos_abiertos": {
+          "discovered": 0,
+          "new": 0,
+          "technical_status": "error",
+          "error_type": "FonasaDiscoveryError",
+          "checked_at": "2026-10-11T14:45:28.260950+00:00",
+          "error_details": {
+            "exception_chain": [
+              {
+                "type": "FonasaDiscoveryError"
+              }
+            ],
+            "failure_signature": "FonasaDiscoveryError > HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden",
+            "endpoint_failures": [
+              {
+                "url": "https://datosabiertos.fonasa.cl/noticias/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              },
+              {
+                "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              },
+              {
+                "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              },
+              {
+                "url": "https://datosabiertos.fonasa.cl/analysis/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              }
+            ]
+          },
+          "diagnostics": {
+            "surfaces": [
+              {
+                "stage": "listing",
+                "url": "https://datosabiertos.fonasa.cl/noticias/",
+                "channel": "Noticias",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              },
+              {
+                "stage": "listing",
+                "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+                "channel": "Biblioteca / Cuenta Pública",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              },
+              {
+                "stage": "listing",
+                "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+                "channel": "Boletines estadísticos",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              },
+              {
+                "stage": "listing",
+                "url": "https://datosabiertos.fonasa.cl/analysis/",
+                "channel": "Análisis",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              }
+            ],
+            "partial_failure": true,
+            "poll_mode": "daily_engine"
+          }
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 0,
+      "source_health": {
+        "fonasa_datos_abiertos": {
+          "name": "Fondo Nacional de Salud (FONASA)",
+          "checked_at": "2026-10-11T14:45:28.267861+00:00",
+          "last_signal_at": null,
+          "discovered": 0,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 0,
+          "status": "error",
+          "error": "FonasaDiscoveryError",
+          "technical_status": "error",
+          "coverage_status": "unverified",
+          "content_freshness": "unknown",
+          "latest_original_at": null,
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "error_details": {
+            "exception_chain": [
+              {
+                "type": "FonasaDiscoveryError"
+              }
+            ],
+            "failure_signature": "FonasaDiscoveryError > HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden",
+            "endpoint_failures": [
+              {
+                "url": "https://datosabiertos.fonasa.cl/noticias/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              },
+              {
+                "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              },
+              {
+                "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              },
+              {
+                "url": "https://datosabiertos.fonasa.cl/analysis/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              }
+            ]
+          },
+          "discovery_diagnostics": {
+            "surfaces": [
+              {
+                "stage": "listing",
+                "url": "https://datosabiertos.fonasa.cl/noticias/",
+                "channel": "Noticias",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              },
+              {
+                "stage": "listing",
+                "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+                "channel": "Biblioteca / Cuenta Pública",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              },
+              {
+                "stage": "listing",
+                "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+                "channel": "Boletines estadísticos",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              },
+              {
+                "stage": "listing",
+                "url": "https://datosabiertos.fonasa.cl/analysis/",
+                "channel": "Análisis",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              }
+            ],
+            "partial_failure": true,
+            "poll_mode": "daily_engine"
+          },
+          "engine_checked_at": "2026-10-11T14:45:28.267861+00:00",
+          "poll_mode": "daily_engine"
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-11T14:45:28.714614+00:00",
+      "finished_at": "2026-10-11T14:45:30.981302+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "fonasa_datos_abiertos": "EXTERNAL_BLOCKER_OBSERVED"
+      },
+      "discovery": {
+        "fonasa_datos_abiertos": {
+          "discovered": 0,
+          "new": 0,
+          "technical_status": "error",
+          "error_type": "FonasaDiscoveryError",
+          "checked_at": "2026-10-11T14:45:30.504069+00:00",
+          "error_details": {
+            "exception_chain": [
+              {
+                "type": "FonasaDiscoveryError"
+              }
+            ],
+            "failure_signature": "FonasaDiscoveryError > HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden",
+            "endpoint_failures": [
+              {
+                "url": "https://datosabiertos.fonasa.cl/noticias/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              },
+              {
+                "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              },
+              {
+                "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              },
+              {
+                "url": "https://datosabiertos.fonasa.cl/analysis/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              }
+            ]
+          },
+          "diagnostics": {
+            "surfaces": [
+              {
+                "stage": "listing",
+                "url": "https://datosabiertos.fonasa.cl/noticias/",
+                "channel": "Noticias",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              },
+              {
+                "stage": "listing",
+                "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+                "channel": "Biblioteca / Cuenta Pública",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              },
+              {
+                "stage": "listing",
+                "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+                "channel": "Boletines estadísticos",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              },
+              {
+                "stage": "listing",
+                "url": "https://datosabiertos.fonasa.cl/analysis/",
+                "channel": "Análisis",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              }
+            ],
+            "partial_failure": true,
+            "poll_mode": "daily_engine"
+          }
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 0,
+      "source_health": {
+        "fonasa_datos_abiertos": {
+          "name": "Fondo Nacional de Salud (FONASA)",
+          "checked_at": "2026-10-11T14:45:30.511053+00:00",
+          "last_signal_at": null,
+          "discovered": 0,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 0,
+          "status": "error",
+          "error": "FonasaDiscoveryError",
+          "technical_status": "error",
+          "coverage_status": "unverified",
+          "content_freshness": "unknown",
+          "latest_original_at": null,
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "error_details": {
+            "exception_chain": [
+              {
+                "type": "FonasaDiscoveryError"
+              }
+            ],
+            "failure_signature": "FonasaDiscoveryError > HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden",
+            "endpoint_failures": [
+              {
+                "url": "https://datosabiertos.fonasa.cl/noticias/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              },
+              {
+                "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              },
+              {
+                "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              },
+              {
+                "url": "https://datosabiertos.fonasa.cl/analysis/",
+                "type": "HTTPError",
+                "reason": "HTTP Error 403: Forbidden"
+              }
+            ]
+          },
+          "discovery_diagnostics": {
+            "surfaces": [
+              {
+                "stage": "listing",
+                "url": "https://datosabiertos.fonasa.cl/noticias/",
+                "channel": "Noticias",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              },
+              {
+                "stage": "listing",
+                "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+                "channel": "Biblioteca / Cuenta Pública",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              },
+              {
+                "stage": "listing",
+                "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+                "channel": "Boletines estadísticos",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              },
+              {
+                "stage": "listing",
+                "url": "https://datosabiertos.fonasa.cl/analysis/",
+                "channel": "Análisis",
+                "exception": "HTTPError",
+                "message": "HTTP Error 403: Forbidden",
+                "http_status": 403
+              }
+            ],
+            "partial_failure": true,
+            "poll_mode": "daily_engine"
+          },
+          "engine_checked_at": "2026-10-11T14:45:30.511053+00:00",
+          "poll_mode": "daily_engine"
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+    "reviewed_at": "2026-10-11T14:45:31.331600+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 93
+}

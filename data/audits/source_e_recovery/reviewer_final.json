@@ -1,0 +1,962 @@
+{
+  "schema_version": 1,
+  "reviewer": "independent /root/reviewer",
+  "created_at": "2026-10-11T08:41:26.595930+00:00",
+  "branch": "codex/e-salud-laboral-20261011",
+  "reviewed_head": "02ff4f79428a256d78b94256fd83b469ea92edf1",
+  "runtime_replay_head": "f8c40481183a281422a016416e767110c766d781",
+  "runtime_code_unchanged_since_replay": true,
+  "baseline_sha": "ac70ed4a4554f3363448b06bb570923b6e291212",
+  "existing_PR": 12,
+  "scope": [
+    "achs_seguro_laboral",
+    "clinicas_achs_salud",
+    "ist",
+    "mutual_seguridad"
+  ],
+  "verdict": "PASS_ENGINEERING_WITH_OPERATIVE_DEGRADED_SOURCES",
+  "blocking_engineering_findings": [],
+  "acceptance_limit": "Accept the isolated branch repair and the five reviewed historical backfills. This is not complete source coverage, source-wide outage proof, draft PR closure, staging/main promotion or production deployment.",
+  "initial_zero_publications": {
+    "baseline_detected": 0,
+    "baseline_source_publications": 0,
+    "seven_samples_are_not_an_inventory": true,
+    "first_actual_editorial_scores": [
+      72,
+      73,
+      70,
+      72,
+      70
+    ],
+    "threshold": 75,
+    "first_zero_reason": "All five actual assessments were below the configured threshold; parser/materiality/document omissions then required recovery, rather than lowering that threshold.",
+    "recovered_material_false_negatives": 7
+  },
+  "inventory_summary": {
+    "count_basis": "Unique accepted-role official URLs with exact verified publication dates; title/date grouping is descriptive and mirrored URLs are not distinct editorial events.",
+    "known_current_day_verified_URLs_90": 110,
+    "normalized_title_date_groups_90": 102,
+    "latest_runtime_URLs_90": 99,
+    "retained_prior_capture_clinical_URLs_90": 11,
+    "queue_items": 107,
+    "inventory_only_generic_blog_rejections": 3,
+    "material_candidates": 13,
+    "published": 5,
+    "material_below_threshold_rejections": 8,
+    "total_rejected": 105,
+    "exact_date_pending_all_ages": 26,
+    "potentially_current_90_day_date_conflicts": 2,
+    "window_convention": "Inclusive elapsed windows September 11–October 11 and July 13–October 11 (31 and 91 calendar dates, respectively).",
+    "aggregate": "data/audits/source_e_recovery/reconciliation_final.json",
+    "per_URL_CSV": "data/audits/source_e_recovery/verified_inventory_30_90.csv",
+    "last_replay_omitted_before_is_not_original_baseline": true
+  },
+  "source_acceptance": {
+    "achs_seguro_laboral": {
+      "acceptance": "OPERATIVE_VALIDATED",
+      "engineering_verdict": "PASS",
+      "coverage_complete": true,
+      "verified_official_role_URLs_30": 10,
+      "verified_official_role_URLs_90": 23,
+      "latest_runtime_verified_URLs_30": 10,
+      "latest_runtime_verified_URLs_90": 23,
+      "previous_dated_items_retained_without_current_refresh": 0,
+      "publication_date_pending_all_ages": 0,
+      "material_candidates_90": 8,
+      "published_in_branch_feed": 3,
+      "source_health_snapshot": {
+        "recovery_outcome": "OPERATIVE_VALIDATED",
+        "unique_items": 23,
+        "published": 3,
+        "rejected": 20,
+        "pending": 0,
+        "checked_at": "2026-10-11T07:58:45.954966+00:00",
+        "oldest_capture_at": "2026-10-11T05:56:31.721103+00:00"
+      },
+      "regression_and_live_evidence": "Actual Run14 saved-byte parser/evidence/document verification plus scoped regressions; source counts mirrored exactly in backend/web/product.",
+      "validated_boundary": "Native newsroom reached a verified older boundary; role-filtered 23 of 25 dated URLs in the inclusive 90-day window.",
+      "external_blocker": null,
+      "next_action": "Maintain native listing/detail selectors and supporting-document URL/date/byte binding."
+    },
+    "clinicas_achs_salud": {
+      "acceptance": "OPERATIVE_DEGRADED",
+      "engineering_verdict": "PASS",
+      "coverage_complete": false,
+      "verified_official_role_URLs_30": 3,
+      "verified_official_role_URLs_90": 16,
+      "latest_runtime_verified_URLs_30": 3,
+      "latest_runtime_verified_URLs_90": 5,
+      "previous_dated_items_retained_without_current_refresh": 11,
+      "publication_date_pending_all_ages": 25,
+      "material_candidates_90": 2,
+      "published_in_branch_feed": 0,
+      "source_health_snapshot": {
+        "recovery_outcome": "OPERATIVE_DEGRADED",
+        "unique_items": 5,
+        "published": 0,
+        "rejected": 5,
+        "pending": 25,
+        "checked_at": "2026-10-11T07:58:45.954966+00:00",
+        "oldest_capture_at": "2026-10-11T05:56:31.721103+00:00"
+      },
+      "regression_and_live_evidence": "Actual Run14 saved-byte parser/evidence/document verification plus scoped regressions; source counts mirrored exactly in backend/web/product.",
+      "external_blocker": {
+        "observed": "Connection to configured clinical-network hosts on port 443 timed out before TLS in Run14 and independent diagnostic Run38124717508; cause not established.",
+        "http_status": 0,
+        "curl_exit_code": 28,
+        "diagnostic_requests": 30,
+        "diagnostic_normal_DNS_resolved_hosts": 10,
+        "tls_observed": false,
+        "remote_WAF_observed": false,
+        "source_wide_external_blocker_proven": false
+      },
+      "official_fallback": "Central www.achssalud.cl surfaces remained accessible; five dated accepted-role URLs verified by the latest runtime. Eleven previously verified dated URLs retained with prior Run13 evidence, without claiming fresh capture.",
+      "date_gap": "25 CMS PublicationDate/FechaArticulo conflicts remain pending. One has an alternative date within the 90-day window; both choices are outside it for 24 others. No publication date is selected arbitrarily.",
+      "zero_publications_reason": "Two central-provider candidates have real editorial scores 72 and 70, below threshold 75; other entries are immaterial, mirrored award announcements, role-excluded, outside-window or date-pending. Not a quota failure.",
+      "count_basis": "Sixteen accepted-role URLs correspond to eight normalized title/date groups. Nine clinic URLs mirror one award announcement; groups describe title/date identity, not independently established underlying events.",
+      "next_action": "Retry normal official connectivity, then recapture nine configured newsrooms and reconcile the eleven retained items; resolve publication dates only from authoritative publisher evidence."
+    },
+    "ist": {
+      "acceptance": "OPERATIVE_DEGRADED",
+      "engineering_verdict": "PASS",
+      "coverage_complete": false,
+      "verified_official_role_URLs_30": 6,
+      "verified_official_role_URLs_90": 20,
+      "latest_runtime_verified_URLs_30": 6,
+      "latest_runtime_verified_URLs_90": 20,
+      "previous_dated_items_retained_without_current_refresh": 0,
+      "publication_date_pending_all_ages": 1,
+      "material_candidates_90": 1,
+      "published_in_branch_feed": 1,
+      "source_health_snapshot": {
+        "recovery_outcome": "OPERATIVE_DEGRADED",
+        "unique_items": 20,
+        "published": 1,
+        "rejected": 19,
+        "pending": 1,
+        "checked_at": "2026-10-11T07:56:57.436736+00:00",
+        "oldest_capture_at": "2026-10-11T05:57:37.036246+00:00"
+      },
+      "regression_and_live_evidence": "Actual Run14 saved-byte parser/evidence/document verification plus scoped regressions; source counts mirrored exactly in backend/web/product.",
+      "external_blocker": null,
+      "date_gap": "TPS detail has API/meta August 12 versus an unlabelled visible August 10 header; exact publication date remains pending. Alternate official surfaces and latest-ten RSS evaluated without inventing a tie-break.",
+      "full_document_review": "All 113 pages of the unchanged IST PDF reviewed offline; financial pages 53–60 were absent from the old truncated prompt. New exact PDF profile binds selected page indices/version/SHA and preserves the three ACHS document inputs.",
+      "next_action": "Resolve the TPS publication-date conflict from authoritative publisher evidence; repeat document review if the bound PDF changes."
+    },
+    "mutual_seguridad": {
+      "acceptance": "OPERATIVE_DEGRADED",
+      "engineering_verdict": "PASS",
+      "coverage_complete": false,
+      "verified_official_role_URLs_30": 33,
+      "verified_official_role_URLs_90": 51,
+      "latest_runtime_verified_URLs_30": 33,
+      "latest_runtime_verified_URLs_90": 51,
+      "previous_dated_items_retained_without_current_refresh": 0,
+      "publication_date_pending_all_ages": 0,
+      "material_candidates_90": 2,
+      "published_in_branch_feed": 1,
+      "source_health_snapshot": {
+        "recovery_outcome": "OPERATIVE_DEGRADED",
+        "unique_items": 51,
+        "published": 1,
+        "rejected": 50,
+        "pending": 0,
+        "checked_at": "2026-10-11T08:09:46.882831+00:00",
+        "oldest_capture_at": "2026-10-11T06:17:53.338527+00:00"
+      },
+      "regression_and_live_evidence": "Actual Run14 saved-byte parser/evidence/document verification plus scoped regressions; source counts mirrored exactly in backend/web/product.",
+      "external_blocker": null,
+      "archive_gap": "Current native list has 84 IDs. Four observed official search alternatives added no IDs; fourteen theme continuations repeated the initial listing. Twenty-one literal observed Worker archive links returned institutional destination pages with zero news IDs. Coverage remains incomplete.",
+      "next_action": "Evaluate an observed official archive continuation/feed/API that exposes additional dated items; keep current counts as verified lower bounds and do not guess pagination contracts."
+    }
+  },
+  "live_runs": {
+    "final_all_source": {
+      "artifact": "data/audits/source_e_recovery/actions/38122998011/inventory/inventory.json",
+      "sha256": "6857cd373d68be87d8ab6502e0c92c32f2bd7650bd76da7469a1830d3366e6ec",
+      "run_id": "38122998011",
+      "candidate_sha": "d162cdb52712cf68fe932bbddbf09cecd97c6a03"
+    },
+    "clinical_diagnostic": {
+      "artifact": "data/audits/source_e_recovery/clinic_connectivity_actions/38124717508/report.json",
+      "sha256": "ed77ff2c80b327056ebdb283485d6dbdafcc94625ab59078ddadfe206983a391",
+      "run_id": "38124717508"
+    },
+    "mutual_worker": {
+      "artifact": "data/audits/source_e_recovery/actions/38122111500/mutual_browser_worker/report.json",
+      "sha256": "5a279c0877b65ca6d584d7a3564641e348e58f9578f42c1281e17740da6da3d4",
+      "run_id": "38122111500"
+    }
+  },
+  "independent_real_runtime_gate": {
+    "reviewed_head": "f8c40481183a281422a016416e767110c766d781",
+    "run_id": "38122998011",
+    "actual_inventory_sha256": "6857cd373d68be87d8ab6502e0c92c32f2bd7650bd76da7469a1830d3366e6ec",
+    "preservation": {
+      "data/state/pending_queue.json": {
+        "before": 2913,
+        "after": 3020,
+        "all_original_rows_exact": true
+      },
+      "data/history/superintendencia_signals.json": {
+        "before": 733,
+        "after": 738,
+        "all_original_rows_exact": true
+      },
+      "web/data/radar_today.json": {
+        "before": 49,
+        "after": 54,
+        "all_original_rows_exact": true
+      },
+      "data/source_health.json": {
+        "unrelated_source_rows": 23,
+        "all_unrelated_rows_exact": true
+      },
+      "web/data/source_health.json": {
+        "unrelated_source_rows": 23,
+        "all_unrelated_rows_exact": true
+      },
+      "web/data/product.json": {
+        "unrelated_source_rows": 7,
+        "all_unrelated_rows_exact": true
+      }
+    },
+    "publications": [
+      {
+        "queue_id": "59285e03a42b6dc28393c70cbb2e3defa56d4ce52ec9e9522393fbccf81bcdfb",
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+        "source": "achs_seguro_laboral",
+        "publication_date": "2026-09-24",
+        "score": 82,
+        "title": "Nueva guía entrega orientaciones basadas en evidencia para el abordaje de la salud mental laboral",
+        "display_title": null,
+        "what_happened": "El 24 de septiembre de 2026, la Achs difundió una guía para orientar el tratamiento psicológico de personas trabajadoras con patologías de salud mental de origen laboral. Fue desarrollada en la Convocatoria 2024 del Fondo de Investigación e Innovación de la SUSESO, con participación de la Universidad Diego Portales, MIDAP, CEPPS, PEPET y la Achs. Reúne orientaciones para la evaluación, el tratamiento, el seguimiento y el reintegro laboral. La guía cita datos del Observatorio de la SUSESO sobre enfermedades profesionales de salud mental en las mutualidades, excluyendo casos asociados a COVID-19: la tasa pasó de 42,7 por cada 100.000 personas trabajadoras protegidas en 2019 a 98,1 en 2024.",
+        "why_it_matters": "Ofrece un marco de referencia para los equipos tratantes de los organismos administradores del seguro de la Ley 16.744 y para la coordinación del tratamiento con el reintegro laboral. El documento declara que sus orientaciones apoyan decisiones clínicas adaptadas a cada caso y no constituyen un protocolo prescriptivo. Los datos de 2019–2024 contextualizan la necesidad de atención; no describen resultados de 2026 ni establecen una nueva obligación regulatoria.",
+        "capture_evidence": {
+          "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+          "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+          "captured_at": "2026-10-11T07:58:41.266836+00:00",
+          "sha256": "e292394fa0452da1daec5fb523fe3449237c080e88d92a898621f2bd5f3f6a59",
+          "http_status": 200,
+          "tls_verified": true,
+          "artifact": "data/audits/source_e_recovery/actions/38122998011/2f8702b2b7fdab6e7e6c-0.body",
+          "environment": "github_actions"
+        },
+        "supporting_document_verification": "PASS",
+        "editorial_review": {
+          "decision": "accept",
+          "reviewer": "independent_reviewer",
+          "artifact": "data/audits/source_e_recovery/reviewer_guide_approval.json",
+          "artifact_sha256": "d1c6edf3cb417acb75808e1b4d0ee19ef6d0ff95917dc1aceb7c42e50e9282cd",
+          "reviewed_at": "2026-10-11T07:20:08.502731+00:00",
+          "primary_sha256": "442c14c9592cfb4163fe742b4cc3ca3222e30f4ba946bd8bed43ab21d2cb5691",
+          "copy": {
+            "what_happened": "El 24 de septiembre de 2026, la Achs difundió una guía para orientar el tratamiento psicológico de personas trabajadoras con patologías de salud mental de origen laboral. Fue desarrollada en la Convocatoria 2024 del Fondo de Investigación e Innovación de la SUSESO, con participación de la Universidad Diego Portales, MIDAP, CEPPS, PEPET y la Achs. Reúne orientaciones para la evaluación, el tratamiento, el seguimiento y el reintegro laboral. La guía cita datos del Observatorio de la SUSESO sobre enfermedades profesionales de salud mental en las mutualidades, excluyendo casos asociados a COVID-19: la tasa pasó de 42,7 por cada 100.000 personas trabajadoras protegidas en 2019 a 98,1 en 2024.",
+            "why_it_matters": "Ofrece un marco de referencia para los equipos tratantes de los organismos administradores del seguro de la Ley 16.744 y para la coordinación del tratamiento con el reintegro laboral. El documento declara que sus orientaciones apoyan decisiones clínicas adaptadas a cada caso y no constituyen un protocolo prescriptivo. Los datos de 2019–2024 contextualizan la necesidad de atención; no describen resultados de 2026 ni establecen una nueva obligación regulatoria."
+          }
+        }
+      },
+      {
+        "queue_id": "03293c62ff268b64f8d560eaa159c63501fb6c4763bb32784c658c90d3e3489b",
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/a-dos-anos-de-la-ley-karin-avances-desafios-y-aprendizajes-para-construir-entornos-laborales-mas-seguros",
+        "source": "achs_seguro_laboral",
+        "publication_date": "2026-09-17",
+        "score": 82,
+        "title": "A dos años de la Ley Karin: avances, desafíos y aprendizajes para construir entornos laborales más seguros",
+        "display_title": null,
+        "what_happened": "En una publicación del 17 de septiembre de 2026, la Achs informó que recibió 32.522 requerimientos de Atención Psicológica Temprana asociados a acoso laboral, acoso sexual y violencia en el trabajo entre agosto de 2024 y junio de 2026. Su informe de seguimiento de la Ley Karin atribuye el 81% a acoso laboral, el 16% a violencia en el trabajo y el 3% a acoso sexual; las mujeres concentraron el 73% de las atenciones.",
+        "why_it_matters": "Los requerimientos recibidos por la Achs aportan evidencia sobre la demanda de apoyo psicológico y las necesidades de prevención en sus entidades adheridas. Permiten orientar capacidades de contención y respuesta en los sectores con mayor concentración de requerimientos. Estas cifras describen la actividad reportada por la mutualidad y no una medición nacional de todos los casos.",
+        "capture_evidence": {
+          "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/a-dos-anos-de-la-ley-karin-avances-desafios-y-aprendizajes-para-construir-entornos-laborales-mas-seguros",
+          "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/a-dos-anos-de-la-ley-karin-avances-desafios-y-aprendizajes-para-construir-entornos-laborales-mas-seguros",
+          "captured_at": "2026-10-11T05:56:38.696221+00:00",
+          "sha256": "3e1ffa52dc65b8b3552ed53da4462cbae38a8379c95c088891292de1508d5327",
+          "http_status": 200,
+          "tls_verified": true,
+          "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/f7ea1315f5a411c15bcb-0.body",
+          "environment": "github_actions"
+        },
+        "supporting_document_verification": "no required document",
+        "editorial_review": {
+          "decision": "accept",
+          "reviewer": "independent_reviewer",
+          "artifact": "data/audits/source_e_recovery/reviewer_live_publications.json",
+          "artifact_sha256": "c56bc054d77d5a1bafc14edf4df6b023a2b71193876ef157ca51ff3aa6bfaebc",
+          "reviewed_at": "2026-10-11T07:00:08.298240+00:00",
+          "primary_sha256": "3e1ffa52dc65b8b3552ed53da4462cbae38a8379c95c088891292de1508d5327",
+          "publication_date": "2026-09-17",
+          "score": 82,
+          "copy": {
+            "what_happened": "En una publicación del 17 de septiembre de 2026, la Achs informó que recibió 32.522 requerimientos de Atención Psicológica Temprana asociados a acoso laboral, acoso sexual y violencia en el trabajo entre agosto de 2024 y junio de 2026. Su informe de seguimiento de la Ley Karin atribuye el 81% a acoso laboral, el 16% a violencia en el trabajo y el 3% a acoso sexual; las mujeres concentraron el 73% de las atenciones.",
+            "why_it_matters": "Los requerimientos recibidos por la Achs aportan evidencia sobre la demanda de apoyo psicológico y las necesidades de prevención en sus entidades adheridas. Permiten orientar capacidades de contención y respuesta en los sectores con mayor concentración de requerimientos. Estas cifras describen la actividad reportada por la mutualidad y no una medición nacional de todos los casos."
+          }
+        }
+      },
+      {
+        "queue_id": "69016c1d5b4438573957b78cae5d4beac456bf9f0716307cdd4015bdaae54410",
+        "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/innovar-para-llegar-a-tiempo",
+        "source": "achs_seguro_laboral",
+        "publication_date": "2026-08-25",
+        "score": 78,
+        "title": "Innovar para llegar a tiempo",
+        "display_title": null,
+        "what_happened": "En una publicación del 25 de agosto de 2026, Camila Zacharías, gerenta de la División Operaciones de Salud de la Achs, describió un modelo de salud mental que combina atención remota, equipos multidisciplinarios y seguimiento de tratamientos. Señaló que las atenciones de salud mental de la Achs pasaron de 28 mil a más de 96 mil entre 2021 y 2025, y que BERTAchs ya había analizado relatos clínicos en más de 200 mil casos para apoyar decisiones sobre el origen laboral de accidentes.",
+        "why_it_matters": "La publicación permite conocer cómo la Achs plantea responder al crecimiento de la demanda de salud mental que reporta y a la disponibilidad limitada de especialistas. Describe coordinación asistencial y apoyo tecnológico en la operación de la mutualidad; las cifras corresponden a 2021–2025 y el artículo no establece una nueva fecha de implementación ni una evaluación independiente de su eficacia.",
+        "capture_evidence": {
+          "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/innovar-para-llegar-a-tiempo",
+          "final_url": "https://www.achs.cl/centro-de-noticias/noticia/2026/innovar-para-llegar-a-tiempo",
+          "captured_at": "2026-10-11T05:56:51.432380+00:00",
+          "sha256": "b3fd147fa5ff69a7f780c88d90fc079401429ffe9f16d0b0ea9eedabb2e14f93",
+          "http_status": 200,
+          "tls_verified": true,
+          "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/a2b95068261acc188842-0.body",
+          "environment": "github_actions"
+        },
+        "supporting_document_verification": "no required document",
+        "editorial_review": {
+          "decision": "accept",
+          "reviewer": "independent_reviewer",
+          "artifact": "data/audits/source_e_recovery/reviewer_live_publications.json",
+          "artifact_sha256": "c56bc054d77d5a1bafc14edf4df6b023a2b71193876ef157ca51ff3aa6bfaebc",
+          "reviewed_at": "2026-10-11T07:00:08.298240+00:00",
+          "primary_sha256": "b3fd147fa5ff69a7f780c88d90fc079401429ffe9f16d0b0ea9eedabb2e14f93",
+          "publication_date": "2026-08-25",
+          "score": 78,
+          "copy": {
+            "what_happened": "En una publicación del 25 de agosto de 2026, Camila Zacharías, gerenta de la División Operaciones de Salud de la Achs, describió un modelo de salud mental que combina atención remota, equipos multidisciplinarios y seguimiento de tratamientos. Señaló que las atenciones de salud mental de la Achs pasaron de 28 mil a más de 96 mil entre 2021 y 2025, y que BERTAchs ya había analizado relatos clínicos en más de 200 mil casos para apoyar decisiones sobre el origen laboral de accidentes.",
+            "why_it_matters": "La publicación permite conocer cómo la Achs plantea responder al crecimiento de la demanda de salud mental que reporta y a la disponibilidad limitada de especialistas. Describe coordinación asistencial y apoyo tecnológico en la operación de la mutualidad; las cifras corresponden a 2021–2025 y el artículo no establece una nueva fecha de implementación ni una evaluación independiente de su eficacia."
+          }
+        }
+      },
+      {
+        "queue_id": "3fe77f04a5ded712770c19d826b94a48567fc16e8d49cae637a47226af465adc",
+        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Flicitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc",
+        "source": "mutual_seguridad",
+        "publication_date": "2026-08-27",
+        "score": 78,
+        "title": "Licitación Pública Convenio Marco: Plan Nacional de Construcción Modular para Mutual de Seguridad C.Ch.C.",
+        "display_title": null,
+        "what_happened": "En una publicación del 27 de agosto de 2026, Mutual de Seguridad convocó una licitación para un convenio marco de cinco años de suministro, despacho e instalación de construcciones modulares en Chile. Solicitó una propuesta para un eventual Centro de Atención Mutual piloto en Vallenar, de aproximadamente 850 m² y ejecución facultativa. La publicación fijaba el cierre de inscripción para el 3 de septiembre de 2026 a las 18:00 horas.",
+        "why_it_matters": "La convocatoria constituye un antecedente de planificación de infraestructura con alcance nacional y horizonte plurianual. El artículo no acredita una adjudicación ni una obra ejecutada: la materialización del piloto de Vallenar dependía de las ofertas y de la decisión de Mutual. El plazo de inscripción indicado en esta convocatoria venció el 3 de septiembre de 2026.",
+        "capture_evidence": {
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Flicitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc",
+          "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/noticias_detalle/licitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc/!ut/p/z1/jVJNTwIxEP0tHDg2M_2aluPWgyCwGjd1bS9mYQ3ZKIUQgtFf75KYGFSKc3vJezPz3gxEeISYmkO3avbdJjWvPQ6RniSf0kRaIUZzZ5BMqay2M463AupTwh16juTK-dSilBPPIWb0lvL6Sqv_6fFMFXhJ_wDBQVgN0aW6-LnNb7sxP6yGeDrwjzxyhErLSwT1RchsEXoX5rwLA_Whe34Dnza7dX_j6thxu-xaCDTium20YhwFMaWEYnbRQylJtot2yY0hGCPcZGM9vsXVd6iRw3btvU_v7OV-_OFKdu2LweATPlUqOQ!!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+          "captured_at": "2026-10-11T06:18:53.278812+00:00",
+          "sha256": "9afeee854770e56970ad2260ce94c3471426c4931d1596ae9e965700edd582d7",
+          "http_status": 200,
+          "tls_verified": true,
+          "artifact": "data/audits/source_e_recovery/actions/38116209530/inventory/capture/416dcb2831bc0e60f941-1.body",
+          "environment": "github_actions"
+        },
+        "supporting_document_verification": "no required document",
+        "editorial_review": {
+          "decision": "accept",
+          "reviewer": "independent_reviewer",
+          "artifact": "data/audits/source_e_recovery/reviewer_live_publications.json",
+          "artifact_sha256": "c56bc054d77d5a1bafc14edf4df6b023a2b71193876ef157ca51ff3aa6bfaebc",
+          "reviewed_at": "2026-10-11T07:00:08.298240+00:00",
+          "primary_sha256": "9afeee854770e56970ad2260ce94c3471426c4931d1596ae9e965700edd582d7",
+          "publication_date": "2026-08-27",
+          "score": 78,
+          "copy": {
+            "what_happened": "En una publicación del 27 de agosto de 2026, Mutual de Seguridad convocó una licitación para un convenio marco de cinco años de suministro, despacho e instalación de construcciones modulares en Chile. Solicitó una propuesta para un eventual Centro de Atención Mutual piloto en Vallenar, de aproximadamente 850 m² y ejecución facultativa. La publicación fijaba el cierre de inscripción para el 3 de septiembre de 2026 a las 18:00 horas.",
+            "why_it_matters": "La convocatoria constituye un antecedente de planificación de infraestructura con alcance nacional y horizonte plurianual. El artículo no acredita una adjudicación ni una obra ejecutada: la materialización del piloto de Vallenar dependía de las ofertas y de la decisión de Mutual. El plazo de inscripción indicado en esta convocatoria venció el 3 de septiembre de 2026."
+          }
+        }
+      },
+      {
+        "queue_id": "2b8181bd912960c79b4d60f98210c1d5aedfeded4f4d9faf71b8495f3afb9927",
+        "url": "https://ist.cl/reporte-sostenibilidad-2025/",
+        "source": "ist",
+        "publication_date": "2026-07-14",
+        "score": 78,
+        "title": "Reporte de Sostenibilidad IST 2025",
+        "display_title": "IST reporta ingresos ordinarios de $127.894 millones y ausencia de excedentes en 2025",
+        "what_happened": "El Instituto de Seguridad del Trabajo publicó el 14 de julio de 2026 su Reporte de Sostenibilidad IST 2025, correspondiente al período 2025 y elaborado con indicadores GRI y SASB. En la Tabla 12, “Comparativa de ingresos ordinarios (2024–2025)”, informa ingresos ordinarios por $127.894 millones en 2025, frente a $124.317 millones en 2024. En la Tabla 13, “Comparativa de egresos ordinarios (2024–2025)”, reporta egresos ordinarios por $129.140 millones en 2025, frente a $126.409 millones en 2024. El informe señala que durante 2025 IST no registró excedentes y que destinó la totalidad de sus recursos al financiamiento de las prestaciones, servicios y obligaciones propias de su operación. También informa fondos de reserva superiores a $70.600 millones en 2025, destinados a respaldar obligaciones futuras del Seguro Social de la Ley N° 16.744, incluyendo pensiones y otras contingencias de largo plazo.",
+        "why_it_matters": "Para las mutualidades y otros actores del seguro de accidentes del trabajo, el reporte entrega señales concretas sobre la escala financiera de IST, la evolución de sus ingresos y egresos ordinarios y la disponibilidad de reservas para obligaciones futuras. La ausencia de excedentes, atribuida al propio informe, y el nivel de reservas son elementos relevantes para monitorear su capacidad operacional y el respaldo financiero de prestaciones de largo plazo. Merece atención como antecedente comparativo sectorial, aunque no documenta por sí solo un cambio regulatorio ni una modificación inmediata de cobertura o capacidad.",
+        "capture_evidence": {
+          "url": "https://ist.cl/reporte-sostenibilidad-2025/",
+          "final_url": "https://ist.cl/reporte-sostenibilidad-2025/",
+          "captured_at": "2026-10-11T06:32:01.427609+00:00",
+          "sha256": "bb3e7a4c9f5f0a60b9fe7daf32028b06f571d01a27bd208c75a3fbb5e16237fc",
+          "http_status": 200,
+          "tls_verified": true,
+          "artifact": "data/audits/source_e_recovery/actions/38117675962/inventory/capture/fcf3c6d8b68614862e5b-0.body",
+          "environment": "github_actions"
+        },
+        "supporting_document_verification": "PASS",
+        "editorial_review": {
+          "decision": "accept",
+          "reviewer": "independent_reviewer",
+          "artifact": "data/audits/source_e_recovery/reviewer_ist_financial_approval.json",
+          "artifact_sha256": "f7ae6ee7360ffa46b2560c97581d9060e27971ccc9eb1d9526acdd0485e44730",
+          "reviewed_at": "2026-10-11T08:13:44.557430+00:00",
+          "primary_sha256": "bb3e7a4c9f5f0a60b9fe7daf32028b06f571d01a27bd208c75a3fbb5e16237fc",
+          "publication_date": "2026-07-14",
+          "score": 78,
+          "copy": {
+            "what_happened": "El Instituto de Seguridad del Trabajo publicó el 14 de julio de 2026 su Reporte de Sostenibilidad IST 2025, correspondiente al período 2025 y elaborado con indicadores GRI y SASB. En la Tabla 12, “Comparativa de ingresos ordinarios (2024–2025)”, informa ingresos ordinarios por $127.894 millones en 2025, frente a $124.317 millones en 2024. En la Tabla 13, “Comparativa de egresos ordinarios (2024–2025)”, reporta egresos ordinarios por $129.140 millones en 2025, frente a $126.409 millones en 2024. El informe señala que durante 2025 IST no registró excedentes y que destinó la totalidad de sus recursos al financiamiento de las prestaciones, servicios y obligaciones propias de su operación. También informa fondos de reserva superiores a $70.600 millones en 2025, destinados a respaldar obligaciones futuras del Seguro Social de la Ley N° 16.744, incluyendo pensiones y otras contingencias de largo plazo.",
+            "why_it_matters": "Para las mutualidades y otros actores del seguro de accidentes del trabajo, el reporte entrega señales concretas sobre la escala financiera de IST, la evolución de sus ingresos y egresos ordinarios y la disponibilidad de reservas para obligaciones futuras. La ausencia de excedentes, atribuida al propio informe, y el nivel de reservas son elementos relevantes para monitorear su capacidad operacional y el respaldo financiero de prestaciones de largo plazo. Merece atención como antecedente comparativo sectorial, aunque no documenta por sí solo un cambio regulatorio ni una modificación inmediata de cobertura o capacidad."
+          }
+        }
+      }
+    ],
+    "temporary_export_first": {
+      "published": 5,
+      "deferred": {},
+      "snapshot_changed": false
+    },
+    "temporary_export_second": {
+      "published": 5,
+      "deferred": {},
+      "snapshot_changed": false
+    },
+    "readonly_replay": {
+      "output": "/tmp/reviewer-final-replay-dyjn6rhw",
+      "mode": "read_only_replay",
+      "processing": {},
+      "api_spy_attempts": 0,
+      "canonical_pre_post_equal": true,
+      "canonical_hashes_before": {
+        "data/state/pending_queue.json": "adbb9a1b024911f466016f160d59082667e9b90e41ef6046a0b668291e374e7d",
+        "data/state/occupational_source_discovery.json": "6857cd373d68be87d8ab6502e0c92c32f2bd7650bd76da7469a1830d3366e6ec",
+        "data/history/superintendencia_signals.json": "54f1d9d2f3f5021c142bbf7a28540b7eea44635b1561729220ddf64e37b21fc0",
+        "data/source_health.json": "d5f65e9383a4882d74da8619c9e4cfe9876714a860bbfe94c68559867f8dbf5d",
+        "web/data/source_health.json": "d5640a72e3c17e0dfb64520de70dcdde13a179df6eb79e628bbd558a75e4dcf8",
+        "web/data/product.json": "b40de90d4c482cb0ee4f47c181fafa4c1f308deff676665225ad82c10f7f301d",
+        "web/data/radar_today.json": "d73ecca3af2b5cfe57046a08325e7af8df467e1360f3b845a5a10eb0d47d9f94",
+        "data/ai_usage/2026-10.json": "e94cca10c44d4dedf949d342dfd31939fe891f64796b135ec30dcd7862d3810f",
+        "data/ai_usage/occupational_recovery_2026_10.json": "90c56d1b430ab52aa66023f4378360aabaea5803274b4fc23232bc338d5fd7a8"
+      },
+      "canonical_hashes_after": {
+        "data/state/pending_queue.json": "adbb9a1b024911f466016f160d59082667e9b90e41ef6046a0b668291e374e7d",
+        "data/state/occupational_source_discovery.json": "6857cd373d68be87d8ab6502e0c92c32f2bd7650bd76da7469a1830d3366e6ec",
+        "data/history/superintendencia_signals.json": "54f1d9d2f3f5021c142bbf7a28540b7eea44635b1561729220ddf64e37b21fc0",
+        "data/source_health.json": "d5f65e9383a4882d74da8619c9e4cfe9876714a860bbfe94c68559867f8dbf5d",
+        "web/data/source_health.json": "d5640a72e3c17e0dfb64520de70dcdde13a179df6eb79e628bbd558a75e4dcf8",
+        "web/data/product.json": "b40de90d4c482cb0ee4f47c181fafa4c1f308deff676665225ad82c10f7f301d",
+        "web/data/radar_today.json": "d73ecca3af2b5cfe57046a08325e7af8df467e1360f3b845a5a10eb0d47d9f94",
+        "data/ai_usage/2026-10.json": "e94cca10c44d4dedf949d342dfd31939fe891f64796b135ec30dcd7862d3810f",
+        "data/ai_usage/occupational_recovery_2026_10.json": "90c56d1b430ab52aa66023f4378360aabaea5803274b4fc23232bc338d5fd7a8"
+      },
+      "editorial_runtime": {
+        "credentials_available": false,
+        "model": "gpt-5.6-luna",
+        "budget_before": {
+          "run": {
+            "deep": {
+              "attempted": 0,
+              "successful": 0,
+              "failed": 0
+            },
+            "fast": {
+              "attempted": 0,
+              "successful": 0,
+              "failed": 0
+            }
+          },
+          "month": {
+            "deep": {
+              "attempted": 14,
+              "successful": 14,
+              "failed": 0
+            },
+            "fast": {
+              "attempted": 47,
+              "successful": 47,
+              "failed": 0
+            }
+          }
+        },
+        "budget_after": {
+          "run": {
+            "deep": {
+              "attempted": 0,
+              "successful": 0,
+              "failed": 0
+            },
+            "fast": {
+              "attempted": 0,
+              "successful": 0,
+              "failed": 0
+            }
+          },
+          "month": {
+            "deep": {
+              "attempted": 14,
+              "successful": 14,
+              "failed": 0
+            },
+            "fast": {
+              "attempted": 47,
+              "successful": 47,
+              "failed": 0
+            }
+          }
+        },
+        "same_failure_limit": 3
+      },
+      "source_reports": {
+        "achs_seguro_laboral": {
+          "coverage_complete": true,
+          "metrics": {
+            "30": {
+              "start": "2026-09-11",
+              "end": "2026-10-11",
+              "dated_articles": 10,
+              "expected_role": 10,
+              "candidates": 3,
+              "rejected": 7,
+              "excluded_role": 0,
+              "pending": 0,
+              "unknown_date_items": 0,
+              "complete": true,
+              "content_kinds": {
+                "news": 4,
+                "prevention": 4,
+                "study": 2
+              }
+            },
+            "90": {
+              "start": "2026-07-13",
+              "end": "2026-10-11",
+              "dated_articles": 25,
+              "expected_role": 23,
+              "candidates": 8,
+              "rejected": 15,
+              "excluded_role": 2,
+              "pending": 0,
+              "unknown_date_items": 0,
+              "complete": true,
+              "content_kinds": {
+                "news": 14,
+                "prevention": 8,
+                "study": 3
+              }
+            }
+          },
+          "reconciliation": {
+            "omitted_before": 0,
+            "material_omitted_before": 0,
+            "states": {
+              "rejected": 20,
+              "published": 3,
+              "excluded": 2,
+              "outside_window": 15
+            },
+            "detected_before": 23
+          },
+          "capture_checked_at": "2026-10-11T07:58:45.954966+00:00",
+          "oldest_capture_at": "2026-10-11T05:56:31.721103+00:00"
+        },
+        "clinicas_achs_salud": {
+          "coverage_complete": false,
+          "metrics": {
+            "30": {
+              "start": "2026-09-11",
+              "end": "2026-10-11",
+              "dated_articles": 13,
+              "expected_role": 3,
+              "candidates": 0,
+              "rejected": 3,
+              "excluded_role": 10,
+              "pending": 0,
+              "unknown_date_items": 25,
+              "complete": false,
+              "content_kinds": {
+                "news": 6,
+                "prevention": 5,
+                "study": 2
+              }
+            },
+            "90": {
+              "start": "2026-07-13",
+              "end": "2026-10-11",
+              "dated_articles": 28,
+              "expected_role": 5,
+              "candidates": 2,
+              "rejected": 3,
+              "excluded_role": 23,
+              "pending": 0,
+              "unknown_date_items": 25,
+              "complete": false,
+              "content_kinds": {
+                "news": 17,
+                "prevention": 8,
+                "study": 3
+              }
+            }
+          },
+          "reconciliation": {
+            "omitted_before": 3,
+            "material_omitted_before": 0,
+            "states": {
+              "excluded": 23,
+              "rejected": 5,
+              "outside_window": 30,
+              "pending": 25
+            },
+            "detected_before": 2
+          },
+          "capture_checked_at": "2026-10-11T07:58:45.954966+00:00",
+          "oldest_capture_at": "2026-10-11T05:56:31.721103+00:00"
+        },
+        "ist": {
+          "coverage_complete": false,
+          "metrics": {
+            "30": {
+              "start": "2026-09-11",
+              "end": "2026-10-11",
+              "dated_articles": 6,
+              "expected_role": 6,
+              "candidates": 0,
+              "rejected": 6,
+              "excluded_role": 0,
+              "pending": 0,
+              "unknown_date_items": 1,
+              "complete": false,
+              "content_kinds": {
+                "news": 4,
+                "prevention": 2
+              }
+            },
+            "90": {
+              "start": "2026-07-13",
+              "end": "2026-10-11",
+              "dated_articles": 20,
+              "expected_role": 20,
+              "candidates": 1,
+              "rejected": 19,
+              "excluded_role": 0,
+              "pending": 0,
+              "unknown_date_items": 1,
+              "complete": false,
+              "content_kinds": {
+                "news": 11,
+                "prevention": 8,
+                "study": 1
+              }
+            }
+          },
+          "reconciliation": {
+            "omitted_before": 0,
+            "material_omitted_before": 0,
+            "states": {
+              "rejected": 19,
+              "pending": 1,
+              "outside_window": 16,
+              "published": 1
+            },
+            "detected_before": 20
+          },
+          "capture_checked_at": "2026-10-11T07:56:57.436736+00:00",
+          "oldest_capture_at": "2026-10-11T05:57:37.036246+00:00"
+        },
+        "mutual_seguridad": {
+          "coverage_complete": false,
+          "metrics": {
+            "30": {
+              "start": "2026-09-11",
+              "end": "2026-10-11",
+              "dated_articles": 33,
+              "expected_role": 33,
+              "candidates": 0,
+              "rejected": 33,
+              "pending": 0,
+              "excluded_role": 0,
+              "unknown_date_items": 0,
+              "complete": false,
+              "content_kinds": {
+                "prevention": 22,
+                "news": 10,
+                "study": 1
+              }
+            },
+            "90": {
+              "start": "2026-07-13",
+              "end": "2026-10-11",
+              "dated_articles": 51,
+              "expected_role": 51,
+              "candidates": 2,
+              "rejected": 49,
+              "pending": 0,
+              "excluded_role": 0,
+              "unknown_date_items": 0,
+              "complete": false,
+              "content_kinds": {
+                "prevention": 36,
+                "news": 12,
+                "study": 1,
+                "commercial": 2
+              }
+            }
+          },
+          "reconciliation": {
+            "omitted_before": 0,
+            "material_omitted_before": 0,
+            "states": {
+              "rejected": 50,
+              "published": 1,
+              "outside_window": 33
+            },
+            "detected_before": 51
+          },
+          "capture_checked_at": "2026-10-11T08:09:46.882831+00:00",
+          "oldest_capture_at": "2026-10-11T06:17:53.338527+00:00"
+        }
+      }
+    }
+  },
+  "independent_live_clinical_diagnostic": {
+    "verdict": "PASS bounded diagnostic contract; transport blocker observed from two Actions runners, no global publisher outage inferred",
+    "run_id": "38124717508",
+    "candidate_sha": "94b75125383707cdf692fb82717457168a1905f5",
+    "report_sha256": "ed77ff2c80b327056ebdb283485d6dbdafcc94625ab59078ddadfe206983a391",
+    "normal_dns_resolved_publishers": 10,
+    "exact_configured_scope": true,
+    "records_verified_against_origin_JSON_and_bytes": 30,
+    "curl28_HTTP0_no_TLS_handshake": 30,
+    "listings_skipped_fail_closed_robots": 9,
+    "elapsed_seconds": 219.172,
+    "maximum_concurrency": 2,
+    "AI_calls": 0,
+    "coverage_complete_proven": false,
+    "canonical_delta_since_previous_gate": "Only last_access_diagnostic on clinical source objects in backend/web/product; queue/discovery/history/feed/budget unchanged"
+  },
+  "clinical_diagnostic_contract_review": {
+    "verdict": "PASS",
+    "allowed_hosts": "Only configured CLINICS and NETWORK_IDENTITY_URL.",
+    "normal_DNS": "getaddrinfo observed with eight-second timeout; no DNS override or selected-IP connection.",
+    "transport": "Public GET, normal HTTPS/TLS, comparison User-Agent only on home, robots verified before newsroom, challenge/robots failure fail-closed.",
+    "maximum_concurrency": 2,
+    "request_timeout_seconds": 35,
+    "connect_timeout_seconds": 12,
+    "writes": "Only diagnostic evidence directory on the existing E branch; no canonical queue/history/feed/AI state or secret persistence.",
+    "workflow": "Isolated ubuntu-latest diagnostic, shared alicanto-staging-writer concurrency, evidence-only branch commit.",
+    "job_success_is_not_access_success": true,
+    "clinical_health_delta": "Only last_access_diagnostic added to the clinical object in backend/web/product. Counts, checked_at and runtime capture timestamps are unchanged.",
+    "independent_actual_saved_capture_and_no_network_regressions_passed": 10
+  },
+  "independent_Mutual_worker": {
+    "run": "38122111500",
+    "report_sha256": "5a279c0877b65ca6d584d7a3564641e348e58f9578f42c1281e17740da6da3d4",
+    "response_files_validated": 48,
+    "preflight_validated": 2,
+    "observed_anchors_bound_to_raw": 21,
+    "final_verified200_noIDs": 21,
+    "baselineIDs": 84,
+    "coverage_complete": false,
+    "elapsed_seconds": 8.398487,
+    "verdict": "PASS bounded real diagnostic; archive incomplete; no external blocker"
+  },
+  "independent_semantic_staging_integration": {
+    "merge_commit": "b61249ce80207afadf938e4c5a89959e44a5fab4",
+    "staging_parent": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
+    "upstream_tasks": 84,
+    "only_changed_task": "source_repair_mutualities_lane_2026_10_11",
+    "all_other_tasks_and_queue_metadata_exact": true,
+    "pmo_only_addition": [
+      "/evidence_catalog/occupational_origin_inventory_recovery_2026_10_11"
+    ],
+    "unmerged_index": false,
+    "changed_first_parent_files": [
+      "config/orchestrator_queue.json",
+      "config/pmo_baseline.json",
+      "data/audits/work3_adversarial_2026_10_11T043452Z.json",
+      "data/audits/work3_adversarial_2026_10_11T055521Z.json",
+      "data/audits/work3_adversarial_2026_10_11T072159Z.json",
+      "data/autopilot/learning_ledger.json",
+      "data/pmo/autonomy_acceptance_2026_10_11.json"
+    ],
+    "code_state_health_not_changed_by_merge": true,
+    "verdict": "PASS semantic scoped integration"
+  },
+  "independent_full_IST_document_review": {
+    "report_sha256": "7525b850aedbcced008fdc2c9e09dada441933386b95e0da311dad7c558e722a",
+    "binary_sha256": "acc895136dcfabe0ed8fd7ec2af599f5c0018b0e8288581ecc625e5ac12f53f7",
+    "pages_reextracted": 113,
+    "quotes_and_page_hashes_verified": 15,
+    "empty_text_pages": [
+      113
+    ],
+    "publication_date": "2026-07-14",
+    "data_period": "2025",
+    "new_financial_context_genuine": true,
+    "no_paid_API": true,
+    "canonical_state_mutated": false
+  },
+  "independent_primary_capture_binding_reproduction": [
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/nueva-guia-entrega-orientaciones-basadas-en-evidencia-para-el-abordaje-de-la-salud-mental-laboral",
+      "result": "PASS_REAL_PRIMARY_AND_DOCUMENT_GUARDS",
+      "sha256": "fa70257082ed4913e36d9cd9d208aa4ab812b8fc07f21f0f8956ae7fc26296e6"
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/a-dos-anos-de-la-ley-karin-avances-desafios-y-aprendizajes-para-construir-entornos-laborales-mas-seguros",
+      "result": "PASS_REAL_PRIMARY_AND_DOCUMENT_GUARDS",
+      "sha256": "3e1ffa52dc65b8b3552ed53da4462cbae38a8379c95c088891292de1508d5327"
+    },
+    {
+      "url": "https://www.achs.cl/centro-de-noticias/noticia/2026/innovar-para-llegar-a-tiempo",
+      "result": "PASS_REAL_PRIMARY_AND_DOCUMENT_GUARDS",
+      "sha256": "b3fd147fa5ff69a7f780c88d90fc079401429ffe9f16d0b0ea9eedabb2e14f93"
+    },
+    {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Flicitacion-publica-convenio-marco-plan-nacional-de-construccion-modular-para-mutual-de-seguridad-cchc",
+      "result": "PASS_REAL_PRIMARY_AND_DOCUMENT_GUARDS",
+      "sha256": "9afeee854770e56970ad2260ce94c3471426c4931d1596ae9e965700edd582d7"
+    },
+    {
+      "probe": "unsupported-proof.body",
+      "result": "REJECTED",
+      "reason": "occupational capture artifact unavailable"
+    },
+    {
+      "probe": "2f8702b2b7fdab6e7e6c-0.body",
+      "result": "REJECTED",
+      "reason": "occupational capture saved response unverified"
+    }
+  ],
+  "publication_approval_markers_verified": [
+    {
+      "title": "Nueva guía entrega orientaciones basadas en evidencia para el abordaje de la salud mental laboral",
+      "artifact": "data/audits/source_e_recovery/reviewer_guide_approval.json",
+      "sha256": "d1c6edf3cb417acb75808e1b4d0ee19ef6d0ff95917dc1aceb7c42e50e9282cd",
+      "score": 82
+    },
+    {
+      "title": "A dos años de la Ley Karin: avances, desafíos y aprendizajes para construir entornos laborales más seguros",
+      "artifact": "data/audits/source_e_recovery/reviewer_live_publications.json",
+      "sha256": "c56bc054d77d5a1bafc14edf4df6b023a2b71193876ef157ca51ff3aa6bfaebc",
+      "score": 82
+    },
+    {
+      "title": "Innovar para llegar a tiempo",
+      "artifact": "data/audits/source_e_recovery/reviewer_live_publications.json",
+      "sha256": "c56bc054d77d5a1bafc14edf4df6b023a2b71193876ef157ca51ff3aa6bfaebc",
+      "score": 78
+    },
+    {
+      "title": "Licitación Pública Convenio Marco: Plan Nacional de Construcción Modular para Mutual de Seguridad C.Ch.C.",
+      "artifact": "data/audits/source_e_recovery/reviewer_live_publications.json",
+      "sha256": "c56bc054d77d5a1bafc14edf4df6b023a2b71193876ef157ca51ff3aa6bfaebc",
+      "score": 78
+    },
+    {
+      "title": "Reporte de Sostenibilidad IST 2025",
+      "artifact": "data/audits/source_e_recovery/reviewer_ist_financial_approval.json",
+      "sha256": "f7ae6ee7360ffa46b2560c97581d9060e27971ccc9eb1d9526acdd0485e44730",
+      "score": 78
+    }
+  ],
+  "editorial_claim_limits": {
+    "guide": "Non-prescriptive treatment/reintegration reference; quoted SUSESO mutuality data covers 2019–2024 and excludes COVID cases. Not a new national obligation.",
+    "Karin": "32,522 ACHS support requests August 2024–June 2026; not unique people or national incidence.",
+    "Innovar": "Attributed institutional mental-health-care evolution 2021–2025; not a new 2026 rollout.",
+    "Mutual": "Historical August 27 call for a five-year framework and optional Vallenar pilot. September 3 deadline passed; neither an award nor an open call.",
+    "IST": "Attributed ordinary income/expenses and explicitly no surplus for data period 2025, published July 14 2026. No subtraction to infer net loss, insolvency, a new regulation or a comparative sector ranking."
+  },
+  "IST_final_binary": {
+    "sha256": "acc895136dcfabe0ed8fd7ec2af599f5c0018b0e8288581ecc625e5ac12f53f7",
+    "bytes": 4169202,
+    "pages": 113,
+    "final_Run14_binary_matches_full_review": true,
+    "selected_financial_pages": "53–60; exact profile adds pages 1–32 for forty bound pages",
+    "data_period": 2025,
+    "publication_date": "2026-07-14",
+    "document_independent_publication_date": null,
+    "real_reassessment_score": 78,
+    "old_score_on_incomplete_facts": 72
+  },
+  "paid_AI_accounting": {
+    "isolated_E_fast_attempts": 16,
+    "isolated_E_fast_successes": 16,
+    "isolated_E_fast_failures": 0,
+    "isolated_E_deep_attempts": 0,
+    "phase_fast_limit": 30,
+    "remaining_phase_calls": 14,
+    "upstream_fast_baseline": 31,
+    "month_fast_after": 47,
+    "month_deep_inherited_unchanged": 14,
+    "monthly_fast_limit_unchanged": 1500,
+    "Run14_new_actual_calls": 1,
+    "reviewer_API_calls": 0,
+    "readonly_replay_month_fast_before_after": [
+      47,
+      47
+    ],
+    "ledger": {
+      "artifact": "data/ai_usage/occupational_recovery_2026_10.json",
+      "sha256": "90c56d1b430ab52aa66023f4378360aabaea5803274b4fc23232bc338d5fd7a8"
+    },
+    "shared_writer_lock_limit": "Cooperative configured writers; does not establish a guarantee about unknown external writers."
+  },
+  "QA": {
+    "python_full": {
+      "passed": 731,
+      "skipped": 1,
+      "failed": 1,
+      "artifact": {
+        "artifact": "data/audits/source_e_recovery/python_full_current.txt",
+        "sha256": "81d0f8d77f86cd110e95cf14f9c337b04d095f7732acb0c243ed13910dc51c4c"
+      },
+      "exception": {
+        "test": "tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review",
+        "observed": "11 normative rows versus assert >=12",
+        "baseline_independence": "Baseline ac70ed4 and current have the same eleven normative rows and unchanged test; all original 49 feed rows preserved exactly. This failure predates the E changes.",
+        "full_suite_all_green": false
+      }
+    },
+    "Node": {
+      "passed": 41,
+      "failed": 0,
+      "artifact": {
+        "artifact": "data/audits/source_e_recovery/node_no_isolation_tests.txt",
+        "sha256": "fc630edd58fd9c9e27e4eebbc9c2842593ccc6fe0b64abeada0a1dc33ea06d47"
+      }
+    },
+    "browser": {
+      "passed": 4,
+      "artifact": {
+        "artifact": "data/audits/source_e_recovery/browser_final_current.txt",
+        "sha256": "b320e1639151a68579deb45be4d4de8164827140d9e81d8f452a62484b18f426"
+      },
+      "coverage": "Desktop/mobile, five recovered cards, source and native publication year, degraded health counters and viewport."
+    },
+    "independent_directed_checks": {
+      "clinical_diagnostic": 10,
+      "Mutual_actual_worker_and_source": 85,
+      "IST_financial_docs_and_primary_binding": 54,
+      "counts_overlap_do_not_sum": true
+    }
+  },
+  "integrity_and_maintainability_review": {
+    "verdict": "PASS within the four-source scope",
+    "closed_material_findings": [
+      "Arbitrary .body and validly named orphan capture both now defer; mandatory URL/User-Agent-derived filename and origin JSON/hop/TLS/status/body binding passes actual captures.",
+      "Browser redirects no longer fulfill uninspected destinations; each observed hop has bounded manual public-URL/robots/TLS/WAF/body capture.",
+      "Unchanged editorial input retains published copy and approval; changed input refreshes persisted raw facts and explicit revisions.",
+      "Role ownership must agree with configured/native evidence, including clinical provider subtype; coherent queue/history role forgery is blocked.",
+      "Read-only replay, cache timestamps, retry/archive controls, failure bound and additive existing monthly budget remain explicit.",
+      "Expired Mutual registration wording corrected before export; whole IST PDF review recovered omitted financial facts and triggered one genuine reassessment."
+    ],
+    "original_2913_queue_733_history_49_feed_objects_exact": true,
+    "unrelated_health_objects_exact": true,
+    "upstream_governance_preserved_except_authorized_E_task_and_PMO_key": true
+  },
+  "presentation_and_operational_limits": [
+    "Global generated_at remains inherited September 24 and global published metadata remains 37; current per-source evidence must not be described as a globally fresh collection.",
+    "Coverage is partial for Clinical, IST and Mutual. Diagnostic job SUCCESS records completion of evidence collection, not publisher availability or full source coverage.",
+    "Current-run capture availability includes validated TTL cache reuse; original capture timestamps are retained and do not assert a fresh HTTP download of every item.",
+    "Snapshot export preserves existing entries when new input defers; it is not automatic revocation. All five current E publications pass current evidence and editorial guards.",
+    "Only the current isolated E branch and existing draft PR12 are accepted; no new PR, production update or staging/main promotion performed by Reviewer."
+  ],
+  "reviewer_actions": {
+    "implementation_mutations": 0,
+    "canonical_state_mutations": 0,
+    "paid_API_calls": 0,
+    "new_network_calls": 0,
+    "frozen_prior_approval_reports_changed": false,
+    "output_only": "This independent final report."
+  }
+}

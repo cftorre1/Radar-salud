@@ -1,0 +1,81 @@
+{
+  "sources": [
+    "diario_financiero",
+    "superintendencia_fiscalizacion",
+    "suseso_fiscalizacion",
+    "deis",
+    "fonasa",
+    "fonasa_datos_abiertos",
+    "isp_anamed",
+    "isp_surveillance",
+    "clinicas_achs_salud"
+  ],
+  "origin_prs": [
+    11,
+    15,
+    19,
+    22,
+    13,
+    12,
+    14,
+    23
+  ],
+  "purpose": "Actual two-poll revalidation of DF/SIS/SUSESO, public transports and clinical cross-lane stock on copied staging state; no publication. Provider runtime 38147271657 continues independently.",
+  "expectations": {
+    "redsalud": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    },
+    "bupa_chile": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    },
+    "indisa": {
+      "allow_external_blocker": true
+    },
+    "red_davila": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    },
+    "andes_salud": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    },
+    "clinicas_chile": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    },
+    "pfizer_chile": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    },
+    "clinicas_achs_salud": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    },
+    "mutual_seguridad": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    },
+    "ist": {
+      "allow_partial_capture": true,
+      "minimum_discovered": 1
+    },
+    "fonasa": {
+      "allow_external_blocker": true,
+      "minimum_discovered": 0
+    },
+    "fonasa_datos_abiertos": {
+      "allow_external_blocker": true,
+      "minimum_discovered": 0
+    },
+    "isp_anamed": {
+      "allow_external_blocker": true,
+      "minimum_discovered": 0
+    },
+    "isp_surveillance": {
+      "allow_external_blocker": true,
+      "minimum_discovered": 0
+    }
+  }
+}

@@ -1,0 +1,914 @@
+{
+  "staging_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+  "targets": {
+    "sources": [
+      "deis"
+    ],
+    "origin_prs": [
+      11,
+      15,
+      19,
+      22,
+      13,
+      12,
+      14,
+      23
+    ],
+    "purpose": "Actual two-poll revalidation of DF/SIS/SUSESO, public transports and clinical cross-lane stock on copied staging state; no publication. Provider runtime 38147271657 continues independently.",
+    "expectations": {
+      "redsalud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "bupa_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "indisa": {
+        "allow_external_blocker": true
+      },
+      "red_davila": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "andes_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "pfizer_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_achs_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "mutual_seguridad": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "ist": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "fonasa": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "fonasa_datos_abiertos": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "isp_anamed": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "isp_surveillance": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      }
+    }
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-11T14:45:17.054038+00:00",
+      "finished_at": "2026-10-11T14:45:28.226987+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "deis": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "deis": {
+          "discovered": 12,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:45:27.815422+00:00",
+          "diagnostics": {
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "listing_recognized": true,
+            "document_blocks": 21,
+            "dated_documents": 12,
+            "rejected_missing_date": 7,
+            "rejected_invalid_date": 0,
+            "rejected_ambiguous_date": 0,
+            "rejected_editorial_only": 0,
+            "rejected_unproven_update": 2,
+            "document_verification": "pending_pipeline",
+            "excluded_documents": [
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/EstandaresNormativa/cmd_vigente.pdf",
+                "title": "Modelo del Certificado Médico de defunción y Estadísticas de Mortalidad Fetal (CMD) vigente",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Modelo del Certificado Médico de defunción y Estadísticas de Mortalidad Fetal (CMD) vigente",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/EstandaresNormativa/decreto-460-de-1970.pdf",
+                "title": "Decreto 460 del año 1970 Reglamento sobre la Extensión del Certificado Médico de defunción",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Decreto 460 del año 1970 Reglamento sobre la Extensión del Certificado Médico de defunción",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Volume-1-CIE-10-2016-cha.pdf",
+                "title": "Volumen 1 CIE-10 2016-cha",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "update_without_proven_material_change",
+                "publication_date": null,
+                "listing_notice": "Volumen 1 CIE-10 2016-cha ¡Actualizado 15/12/2017!",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/03/CIE10-2015-Vol-2.pdf",
+                "title": "Volumen 2 Manual de Instrucciones",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Volumen 2 Manual de Instrucciones ¡Agregado el 07/08/2015!",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/03/PAHO-CIE-10_Vol.-3.pdf",
+                "title": "Volumen 3 Índice Alfabético",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "update_without_proven_material_change",
+                "publication_date": null,
+                "listing_notice": "Volumen 3 Índice Alfabético Nota: ¡Actualizado el 01/03/2018!",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2015/03/ActualizacionCatalogoDiagnosticos1.pdf",
+                "title": "Actualización Catalogo Diagnosticos.pdf",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Actualización Catalogo Diagnosticos.pdf ¡Agregado 26/03/2015!",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/deis/rem2008/100408/NormatecnicaCIE10.pdf",
+                "title": "Decreto Norma Técnica sobre Uso de CIE 10",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Decreto Norma Técnica sobre Uso de CIE 10",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Decreto-356-Complementa-Decreto-Uso-de-la-CIE-10.pdf",
+                "title": "Decreto 356 Complementa Decreto Uso de la CIE-10",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Decreto 356 Complementa Decreto Uso de la CIE-10 ¡Agregado 15/12/2017!",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2012/12/DEIS-Centro-FIC.pdf",
+                "title": "Resolución Nº 783: DEIS – Centro de referencia FIC",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Resolución Nº 783: DEIS – Centro de referencia FIC",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              }
+            ],
+            "reference_only_resources": [
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Lista%20tabular%20CIE-10%20-%20agosto%202026.xlsx",
+                "title": "Lista Tabular CIE-10",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Lista Tabular CIE-10 Nota: no contiene las inclusiones de las subcategorías. ¡Actualizado agosto/2026! Actualización editorial: revisión de redacción y ortografía, sin cambios en el contenido de la tabla."
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Topografia_Morfologia_200525.xlsx",
+                "title": "Lista Tabular CIE-O 3.1 Clasificación Internacional de Enfermedades para Oncología Tercera edición",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Lista Tabular CIE-O 3.1 Clasificación Internacional de Enfermedades para Oncología Tercera edición . ¡Publicado 20/05/2025!"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/DEIS-EPI-ENO-Decreto%207%202019%20actualizaci%C3%B3n%20agosto%202026.xlsx",
+                "title": "Lista Enfermedades de Notificación Obligatoria (ENO) según Decreto N° 7/2019– Elaborada por DEIS y Epidemiología",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Lista Enfermedades de Notificación Obligatoria (ENO) según Decreto N° 7/2019 – Elaborada por DEIS y Epidemiología . ¡Actualización 31/08/2026! Actualización editorial: ajuste en la presentación de los códigos CIE-10, sin cambios en el contenido de la lista."
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Lista%20Becker-adaptada%20a%20Chile.xlsx",
+                "title": "Lista de Becker adaptada a Chile Diciembre 2025",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Lista de Becker adaptada a Chile Diciembre 2025 . La Lista de Becker et al., adaptada a Chile, es una estructura derivada de la CIE-10 que organiza las causas de muerte en grupos epidemiológicamente consistentes y comparables. El DEIS la utiliza para realizar el análisis de la mortalidad, identificar tendencias y apoyar la toma de decisiones en salud pública"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/ICDTRANScorresp9-10.xls",
+                "title": "Homologación CIE-9 – CIE-10",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Homologación CIE-9 – CIE-10"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/DatosAbiertos/LRS/Patologias%20Ley%20Ricarte%20Soto.xlsx",
+                "title": "Patologías Ley Ricarte Soto",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Patologías Ley Ricarte Soto"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/GES%2090%20CIE-10%20v1_4.xlsx",
+                "title": "GES – 90 Problemas de Salud",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "GES – 90 Problemas de Salud Actualizada 23-07-2026"
+              }
+            ],
+            "coverage_status": "dated_documents_found",
+            "catalog_summary": {
+              "catalogs": 5,
+              "resources": 572,
+              "national_datasets": 5,
+              "partial_failure": false,
+              "errors": [],
+              "feed_eligible": false
+            },
+            "verified_publications": 12,
+            "latest_verified_publication_date": "2026-06-25",
+            "poll_mode": "daily_engine"
+          }
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 0,
+      "source_health": {
+        "deis": {
+          "name": "Departamento de Estadísticas e Información de Salud",
+          "checked_at": "2026-10-11T14:45:27.820967+00:00",
+          "last_signal_at": null,
+          "discovered": 12,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 0,
+          "status": "warning",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "observed",
+          "content_freshness": "unknown",
+          "latest_original_at": "2026-06-25",
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "discovery_diagnostics": {
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "listing_recognized": true,
+            "document_blocks": 21,
+            "dated_documents": 12,
+            "rejected_missing_date": 7,
+            "rejected_invalid_date": 0,
+            "rejected_ambiguous_date": 0,
+            "rejected_editorial_only": 0,
+            "rejected_unproven_update": 2,
+            "document_verification": "pending_pipeline",
+            "excluded_documents": [
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/EstandaresNormativa/cmd_vigente.pdf",
+                "title": "Modelo del Certificado Médico de defunción y Estadísticas de Mortalidad Fetal (CMD) vigente",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Modelo del Certificado Médico de defunción y Estadísticas de Mortalidad Fetal (CMD) vigente",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/EstandaresNormativa/decreto-460-de-1970.pdf",
+                "title": "Decreto 460 del año 1970 Reglamento sobre la Extensión del Certificado Médico de defunción",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Decreto 460 del año 1970 Reglamento sobre la Extensión del Certificado Médico de defunción",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Volume-1-CIE-10-2016-cha.pdf",
+                "title": "Volumen 1 CIE-10 2016-cha",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "update_without_proven_material_change",
+                "publication_date": null,
+                "listing_notice": "Volumen 1 CIE-10 2016-cha ¡Actualizado 15/12/2017!",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/03/CIE10-2015-Vol-2.pdf",
+                "title": "Volumen 2 Manual de Instrucciones",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Volumen 2 Manual de Instrucciones ¡Agregado el 07/08/2015!",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/03/PAHO-CIE-10_Vol.-3.pdf",
+                "title": "Volumen 3 Índice Alfabético",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "update_without_proven_material_change",
+                "publication_date": null,
+                "listing_notice": "Volumen 3 Índice Alfabético Nota: ¡Actualizado el 01/03/2018!",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2015/03/ActualizacionCatalogoDiagnosticos1.pdf",
+                "title": "Actualización Catalogo Diagnosticos.pdf",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Actualización Catalogo Diagnosticos.pdf ¡Agregado 26/03/2015!",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/deis/rem2008/100408/NormatecnicaCIE10.pdf",
+                "title": "Decreto Norma Técnica sobre Uso de CIE 10",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Decreto Norma Técnica sobre Uso de CIE 10",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Decreto-356-Complementa-Decreto-Uso-de-la-CIE-10.pdf",
+                "title": "Decreto 356 Complementa Decreto Uso de la CIE-10",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Decreto 356 Complementa Decreto Uso de la CIE-10 ¡Agregado 15/12/2017!",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2012/12/DEIS-Centro-FIC.pdf",
+                "title": "Resolución Nº 783: DEIS – Centro de referencia FIC",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Resolución Nº 783: DEIS – Centro de referencia FIC",
+                "listing_sha256": "19ae9125eff0ae2f8b8846f057890d24ce308e1b6996edddc26b300318bab7a2",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              }
+            ],
+            "reference_only_resources": [
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Lista%20tabular%20CIE-10%20-%20agosto%202026.xlsx",
+                "title": "Lista Tabular CIE-10",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Lista Tabular CIE-10 Nota: no contiene las inclusiones de las subcategorías. ¡Actualizado agosto/2026! Actualización editorial: revisión de redacción y ortografía, sin cambios en el contenido de la tabla."
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Topografia_Morfologia_200525.xlsx",
+                "title": "Lista Tabular CIE-O 3.1 Clasificación Internacional de Enfermedades para Oncología Tercera edición",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Lista Tabular CIE-O 3.1 Clasificación Internacional de Enfermedades para Oncología Tercera edición . ¡Publicado 20/05/2025!"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/DEIS-EPI-ENO-Decreto%207%202019%20actualizaci%C3%B3n%20agosto%202026.xlsx",
+                "title": "Lista Enfermedades de Notificación Obligatoria (ENO) según Decreto N° 7/2019– Elaborada por DEIS y Epidemiología",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Lista Enfermedades de Notificación Obligatoria (ENO) según Decreto N° 7/2019 – Elaborada por DEIS y Epidemiología . ¡Actualización 31/08/2026! Actualización editorial: ajuste en la presentación de los códigos CIE-10, sin cambios en el contenido de la lista."
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Lista%20Becker-adaptada%20a%20Chile.xlsx",
+                "title": "Lista de Becker adaptada a Chile Diciembre 2025",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Lista de Becker adaptada a Chile Diciembre 2025 . La Lista de Becker et al., adaptada a Chile, es una estructura derivada de la CIE-10 que organiza las causas de muerte en grupos epidemiológicamente consistentes y comparables. El DEIS la utiliza para realizar el análisis de la mortalidad, identificar tendencias y apoyar la toma de decisiones en salud pública"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/ICDTRANScorresp9-10.xls",
+                "title": "Homologación CIE-9 – CIE-10",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Homologación CIE-9 – CIE-10"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/DatosAbiertos/LRS/Patologias%20Ley%20Ricarte%20Soto.xlsx",
+                "title": "Patologías Ley Ricarte Soto",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Patologías Ley Ricarte Soto"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/GES%2090%20CIE-10%20v1_4.xlsx",
+                "title": "GES – 90 Problemas de Salud",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "GES – 90 Problemas de Salud Actualizada 23-07-2026"
+              }
+            ],
+            "coverage_status": "dated_documents_found",
+            "catalog_summary": {
+              "catalogs": 5,
+              "resources": 572,
+              "national_datasets": 5,
+              "partial_failure": false,
+              "errors": [],
+              "feed_eligible": false
+            },
+            "verified_publications": 12,
+            "latest_verified_publication_date": "2026-06-25",
+            "poll_mode": "daily_engine"
+          },
+          "engine_checked_at": "2026-10-11T14:45:27.820967+00:00",
+          "poll_mode": "daily_engine",
+          "latest_verified_publication_at": "2026-06-25"
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-11T14:45:28.261478+00:00",
+      "finished_at": "2026-10-11T14:45:38.256804+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "deis": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "deis": {
+          "discovered": 12,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:45:37.852730+00:00",
+          "diagnostics": {
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "listing_recognized": true,
+            "document_blocks": 21,
+            "dated_documents": 12,
+            "rejected_missing_date": 7,
+            "rejected_invalid_date": 0,
+            "rejected_ambiguous_date": 0,
+            "rejected_editorial_only": 0,
+            "rejected_unproven_update": 2,
+            "document_verification": "pending_pipeline",
+            "excluded_documents": [
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/EstandaresNormativa/cmd_vigente.pdf",
+                "title": "Modelo del Certificado Médico de defunción y Estadísticas de Mortalidad Fetal (CMD) vigente",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Modelo del Certificado Médico de defunción y Estadísticas de Mortalidad Fetal (CMD) vigente",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/EstandaresNormativa/decreto-460-de-1970.pdf",
+                "title": "Decreto 460 del año 1970 Reglamento sobre la Extensión del Certificado Médico de defunción",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Decreto 460 del año 1970 Reglamento sobre la Extensión del Certificado Médico de defunción",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Volume-1-CIE-10-2016-cha.pdf",
+                "title": "Volumen 1 CIE-10 2016-cha",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "update_without_proven_material_change",
+                "publication_date": null,
+                "listing_notice": "Volumen 1 CIE-10 2016-cha ¡Actualizado 15/12/2017!",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/03/CIE10-2015-Vol-2.pdf",
+                "title": "Volumen 2 Manual de Instrucciones",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Volumen 2 Manual de Instrucciones ¡Agregado el 07/08/2015!",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/03/PAHO-CIE-10_Vol.-3.pdf",
+                "title": "Volumen 3 Índice Alfabético",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "update_without_proven_material_change",
+                "publication_date": null,
+                "listing_notice": "Volumen 3 Índice Alfabético Nota: ¡Actualizado el 01/03/2018!",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2015/03/ActualizacionCatalogoDiagnosticos1.pdf",
+                "title": "Actualización Catalogo Diagnosticos.pdf",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Actualización Catalogo Diagnosticos.pdf ¡Agregado 26/03/2015!",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/deis/rem2008/100408/NormatecnicaCIE10.pdf",
+                "title": "Decreto Norma Técnica sobre Uso de CIE 10",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Decreto Norma Técnica sobre Uso de CIE 10",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Decreto-356-Complementa-Decreto-Uso-de-la-CIE-10.pdf",
+                "title": "Decreto 356 Complementa Decreto Uso de la CIE-10",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Decreto 356 Complementa Decreto Uso de la CIE-10 ¡Agregado 15/12/2017!",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2012/12/DEIS-Centro-FIC.pdf",
+                "title": "Resolución Nº 783: DEIS – Centro de referencia FIC",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Resolución Nº 783: DEIS – Centro de referencia FIC",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              }
+            ],
+            "reference_only_resources": [
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Lista%20tabular%20CIE-10%20-%20agosto%202026.xlsx",
+                "title": "Lista Tabular CIE-10",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Lista Tabular CIE-10 Nota: no contiene las inclusiones de las subcategorías. ¡Actualizado agosto/2026! Actualización editorial: revisión de redacción y ortografía, sin cambios en el contenido de la tabla."
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Topografia_Morfologia_200525.xlsx",
+                "title": "Lista Tabular CIE-O 3.1 Clasificación Internacional de Enfermedades para Oncología Tercera edición",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Lista Tabular CIE-O 3.1 Clasificación Internacional de Enfermedades para Oncología Tercera edición . ¡Publicado 20/05/2025!"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/DEIS-EPI-ENO-Decreto%207%202019%20actualizaci%C3%B3n%20agosto%202026.xlsx",
+                "title": "Lista Enfermedades de Notificación Obligatoria (ENO) según Decreto N° 7/2019– Elaborada por DEIS y Epidemiología",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Lista Enfermedades de Notificación Obligatoria (ENO) según Decreto N° 7/2019 – Elaborada por DEIS y Epidemiología . ¡Actualización 31/08/2026! Actualización editorial: ajuste en la presentación de los códigos CIE-10, sin cambios en el contenido de la lista."
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Lista%20Becker-adaptada%20a%20Chile.xlsx",
+                "title": "Lista de Becker adaptada a Chile Diciembre 2025",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Lista de Becker adaptada a Chile Diciembre 2025 . La Lista de Becker et al., adaptada a Chile, es una estructura derivada de la CIE-10 que organiza las causas de muerte en grupos epidemiológicamente consistentes y comparables. El DEIS la utiliza para realizar el análisis de la mortalidad, identificar tendencias y apoyar la toma de decisiones en salud pública"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/ICDTRANScorresp9-10.xls",
+                "title": "Homologación CIE-9 – CIE-10",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Homologación CIE-9 – CIE-10"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/DatosAbiertos/LRS/Patologias%20Ley%20Ricarte%20Soto.xlsx",
+                "title": "Patologías Ley Ricarte Soto",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Patologías Ley Ricarte Soto"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/GES%2090%20CIE-10%20v1_4.xlsx",
+                "title": "GES – 90 Problemas de Salud",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "GES – 90 Problemas de Salud Actualizada 23-07-2026"
+              }
+            ],
+            "coverage_status": "dated_documents_found",
+            "catalog_summary": {
+              "catalogs": 5,
+              "resources": 572,
+              "national_datasets": 5,
+              "partial_failure": false,
+              "errors": [],
+              "feed_eligible": false
+            },
+            "verified_publications": 12,
+            "latest_verified_publication_date": "2026-06-25",
+            "poll_mode": "daily_engine"
+          }
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 0,
+      "source_health": {
+        "deis": {
+          "name": "Departamento de Estadísticas e Información de Salud",
+          "checked_at": "2026-10-11T14:45:37.858740+00:00",
+          "last_signal_at": null,
+          "discovered": 12,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 0,
+          "status": "warning",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "observed",
+          "content_freshness": "unknown",
+          "latest_original_at": "2026-06-25",
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "discovery_diagnostics": {
+            "listing_url": "https://deis.minsal.cl/centrofic/",
+            "listing_recognized": true,
+            "document_blocks": 21,
+            "dated_documents": 12,
+            "rejected_missing_date": 7,
+            "rejected_invalid_date": 0,
+            "rejected_ambiguous_date": 0,
+            "rejected_editorial_only": 0,
+            "rejected_unproven_update": 2,
+            "document_verification": "pending_pipeline",
+            "excluded_documents": [
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/EstandaresNormativa/cmd_vigente.pdf",
+                "title": "Modelo del Certificado Médico de defunción y Estadísticas de Mortalidad Fetal (CMD) vigente",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Modelo del Certificado Médico de defunción y Estadísticas de Mortalidad Fetal (CMD) vigente",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/EstandaresNormativa/decreto-460-de-1970.pdf",
+                "title": "Decreto 460 del año 1970 Reglamento sobre la Extensión del Certificado Médico de defunción",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Decreto 460 del año 1970 Reglamento sobre la Extensión del Certificado Médico de defunción",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Volume-1-CIE-10-2016-cha.pdf",
+                "title": "Volumen 1 CIE-10 2016-cha",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "update_without_proven_material_change",
+                "publication_date": null,
+                "listing_notice": "Volumen 1 CIE-10 2016-cha ¡Actualizado 15/12/2017!",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/03/CIE10-2015-Vol-2.pdf",
+                "title": "Volumen 2 Manual de Instrucciones",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Volumen 2 Manual de Instrucciones ¡Agregado el 07/08/2015!",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/03/PAHO-CIE-10_Vol.-3.pdf",
+                "title": "Volumen 3 Índice Alfabético",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "update_without_proven_material_change",
+                "publication_date": null,
+                "listing_notice": "Volumen 3 Índice Alfabético Nota: ¡Actualizado el 01/03/2018!",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2015/03/ActualizacionCatalogoDiagnosticos1.pdf",
+                "title": "Actualización Catalogo Diagnosticos.pdf",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Actualización Catalogo Diagnosticos.pdf ¡Agregado 26/03/2015!",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/deis/rem2008/100408/NormatecnicaCIE10.pdf",
+                "title": "Decreto Norma Técnica sobre Uso de CIE 10",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Decreto Norma Técnica sobre Uso de CIE 10",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Decreto-356-Complementa-Decreto-Uso-de-la-CIE-10.pdf",
+                "title": "Decreto 356 Complementa Decreto Uso de la CIE-10",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Decreto 356 Complementa Decreto Uso de la CIE-10 ¡Agregado 15/12/2017!",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2012/12/DEIS-Centro-FIC.pdf",
+                "title": "Resolución Nº 783: DEIS – Centro de referencia FIC",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "reason": "missing_explicit_publication_date",
+                "publication_date": null,
+                "listing_notice": "Resolución Nº 783: DEIS – Centro de referencia FIC",
+                "listing_sha256": "5d6749dd2b5b970d00f8bc2453a14095f4a9cfb83316044000c87d1a47ccdbea",
+                "listing_sha256_kind": "utf8_decoded_listing"
+              }
+            ],
+            "reference_only_resources": [
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Lista%20tabular%20CIE-10%20-%20agosto%202026.xlsx",
+                "title": "Lista Tabular CIE-10",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Lista Tabular CIE-10 Nota: no contiene las inclusiones de las subcategorías. ¡Actualizado agosto/2026! Actualización editorial: revisión de redacción y ortografía, sin cambios en el contenido de la tabla."
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Topografia_Morfologia_200525.xlsx",
+                "title": "Lista Tabular CIE-O 3.1 Clasificación Internacional de Enfermedades para Oncología Tercera edición",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Lista Tabular CIE-O 3.1 Clasificación Internacional de Enfermedades para Oncología Tercera edición . ¡Publicado 20/05/2025!"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/DEIS-EPI-ENO-Decreto%207%202019%20actualizaci%C3%B3n%20agosto%202026.xlsx",
+                "title": "Lista Enfermedades de Notificación Obligatoria (ENO) según Decreto N° 7/2019– Elaborada por DEIS y Epidemiología",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Lista Enfermedades de Notificación Obligatoria (ENO) según Decreto N° 7/2019 – Elaborada por DEIS y Epidemiología . ¡Actualización 31/08/2026! Actualización editorial: ajuste en la presentación de los códigos CIE-10, sin cambios en el contenido de la lista."
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Lista%20Becker-adaptada%20a%20Chile.xlsx",
+                "title": "Lista de Becker adaptada a Chile Diciembre 2025",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Lista de Becker adaptada a Chile Diciembre 2025 . La Lista de Becker et al., adaptada a Chile, es una estructura derivada de la CIE-10 que organiza las causas de muerte en grupos epidemiológicamente consistentes y comparables. El DEIS la utiliza para realizar el análisis de la mortalidad, identificar tendencias y apoyar la toma de decisiones en salud pública"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/ICDTRANScorresp9-10.xls",
+                "title": "Homologación CIE-9 – CIE-10",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Homologación CIE-9 – CIE-10"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/DatosAbiertos/LRS/Patologias%20Ley%20Ricarte%20Soto.xlsx",
+                "title": "Patologías Ley Ricarte Soto",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "Patologías Ley Ricarte Soto"
+              },
+              {
+                "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/GES%2090%20CIE-10%20v1_4.xlsx",
+                "title": "GES – 90 Problemas de Salud",
+                "listing_url": "https://deis.minsal.cl/centrofic/",
+                "publication_date": null,
+                "reason": "non_pdf_reference_outside_dated_document_lane",
+                "listing_notice": "GES – 90 Problemas de Salud Actualizada 23-07-2026"
+              }
+            ],
+            "coverage_status": "dated_documents_found",
+            "catalog_summary": {
+              "catalogs": 5,
+              "resources": 572,
+              "national_datasets": 5,
+              "partial_failure": false,
+              "errors": [],
+              "feed_eligible": false
+            },
+            "verified_publications": 12,
+            "latest_verified_publication_date": "2026-06-25",
+            "poll_mode": "daily_engine"
+          },
+          "engine_checked_at": "2026-10-11T14:45:37.858740+00:00",
+          "poll_mode": "daily_engine",
+          "latest_verified_publication_at": "2026-06-25"
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+    "reviewed_at": "2026-10-11T14:45:38.547723+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 93
+}

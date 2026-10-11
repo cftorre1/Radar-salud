@@ -12,8 +12,20 @@ from pathlib import Path
 def now_utc():
     return datetime.now(timezone.utc)
 
-def fingerprint(raw):
+FISCALIZATION_SOURCES = {"superintendencia_fiscalizacion", "suseso_fiscalizacion"}
+
+
+def legacy_fingerprint(raw):
     return hashlib.sha256(f"{raw.source_slug}|{raw.url}|{raw.title}".encode()).hexdigest()
+
+
+def fingerprint(raw):
+    if raw.source_slug in FISCALIZATION_SOURCES:
+        from .superintendencia_fiscalizacion import canonical_url
+        identity = raw.metadata.get('source_record_id')
+        suffix = f'|record:{identity}' if identity else ''
+        return hashlib.sha256(f"{raw.source_slug}|{canonical_url(raw.url)}{suffix}".encode()).hexdigest()
+    return legacy_fingerprint(raw)
 
 def atomic_json(path, value):
     path = Path(path)
@@ -31,17 +43,37 @@ def lane(raw, now, last_discovered_at=None):
         return "BACKFILL"
     try:
         published = datetime.fromisoformat(raw.event_date[:10]).date()
-        watermark = datetime.fromisoformat(last_discovered_at.replace("Z", "+00:00")).date()
-        return "LIVE" if watermark <= published <= now.date() and (now.date() - published).days <= 7 else "BACKFILL"
+        stamp = datetime.fromisoformat(last_discovered_at.replace("Z", "+00:00"))
+        current_day=now.date()
+        if raw.source_slug=="diario_financiero":
+            from zoneinfo import ZoneInfo
+            # DF publishes Chile calendar days. A UTC midnight watermark must
+            # not turn a still-current Chile article into historical backfill.
+            if stamp.tzinfo:stamp=stamp.astimezone(ZoneInfo("America/Santiago"))
+            if now.tzinfo:current_day=now.astimezone(ZoneInfo("America/Santiago")).date()
+        watermark = stamp.date()
+        return "LIVE" if watermark <= published <= current_day and (current_day - published).days <= 7 else "BACKFILL"
     except (TypeError, ValueError):
         return "BACKFILL"
 
 def beyond_backfill_horizon(raw, now, days=90):
+    if current_sanction_stock(raw, now):
+        return False
     try:
         published = datetime.fromisoformat(raw.event_date[:10]).date()
         return (now.date() - published).days > days
     except (TypeError, ValueError):
+        bound=raw.metadata.get('execution_period_year_upper_bound')
+        if raw.metadata.get('document_class')=='historical_enforcement_report' and bound:
+            try:return (now.date()-datetime.fromisoformat(bound).date()).days>days
+            except (TypeError,ValueError):pass
         return False
+
+def current_sanction_stock(raw, now):
+    from .suseso_fiscalizacion import current_professional_suspension
+    return (raw.source_slug == 'suseso_fiscalizacion'
+        and raw.event_date == raw.metadata.get('emission_date')
+        and current_professional_suspension(raw.url, raw.metadata, now.date()))
 
 class PendingQueue:
     def __init__(self, path):
@@ -53,28 +85,111 @@ class PendingQueue:
     def save(self):
         atomic_json(self.path, self.items)
 
-    def discover(self, source, items, seen=(), now=None, last_discovered_at=None):
+    def discover(self, source, items, seen=(), now=None, last_discovered_at=None, published_urls=()):
         now = now or now_utc()
         added = 0
+        # URL identity is scoped to fiscalization. Legacy hashes remain evidence,
+        # and a verified rediscovery can repair stock without consuming AI twice.
+        from .superintendencia_fiscalizacion import canonical_url
+        from collections import Counter
+        items=list(items)
+        asset_uses=Counter(alias for raw in items for alias in raw.metadata.get('listing_asset_aliases',[]))
+        fiscal_index = {}
+        for old_key, item in self.items.items():
+            if item.get("source") in FISCALIZATION_SOURCES:
+                fiscal_index.setdefault((item["source"], canonical_url(item["raw"]["url"]), item['raw'].get('metadata', {}).get('source_record_id')), []).append(old_key)
         for raw in items:
             key = fingerprint(raw)
-            if key in self.items or key in seen:
+            if source == "diario_financiero":
+                from .df_recovery import reconcile_existing
+                if reconcile_existing(self, raw, now, last_discovered_at, published_urls):
+                    continue
+            identity = raw.metadata.get('source_record_id')
+            aliases = fiscal_index.get((source, canonical_url(raw.url), identity), []) if source in FISCALIZATION_SOURCES else []
+            if source in FISCALIZATION_SOURCES:
+                aliases=list(dict.fromkeys(aliases+[key for asset in raw.metadata.get('listing_asset_aliases',[]) if asset_uses[asset]==1
+                    for key in fiscal_index.get((source,canonical_url(asset),identity),[])]))
+            if aliases:
+                records = [(old_key, self.items.pop(old_key)) for old_key in aliases]
+                rank = {"published": 5, "rejected": 4, "processing": 3, "retry": 2, "pending": 1, "archived": 0}
+                old_key, item = max(records, key=lambda pair: rank.get(pair[1].get("status"), 0))
+                item['detected_at']=min(record['detected_at'] for _,record in records)
+                legacy_keys = set(item.get("legacy_keys", [])) | {alias for alias, _ in records if alias != key}
+                if legacy_keys:
+                    item["legacy_keys"] = sorted(legacy_keys)
+                duplicates = [record for alias, record in records if alias != old_key]
+                if duplicates:
+                    item.setdefault("superseded_records", []).extend(duplicates)
+                self.items[key] = item
+                fiscal_index[(source, canonical_url(raw.url), identity)] = [key]
+                verified_date = raw.event_date and raw.metadata.get("event_date_basis")
+                if verified_date and asdict(raw) != item["raw"]:
+                    item.setdefault("rediscovery_repairs", []).append({
+                        "at": now.isoformat(), "previous_raw": item["raw"],
+                        "previous_lane": item.get("lane"), "previous_status": item["status"],
+                        "previous_reason": item.get("reason"), "reason": "verified_fiscalization_rediscovery"})
+                    item["raw"] = asdict(raw)
+                    if (item['status']=='rejected' and item.get('reason')=='source_date_conflict_requires_review'
+                        and raw.metadata.get('primary_document_review',{}).get('decision')=='publish_fiscalization'
+                        and not raw.metadata.get('date_conflicts')):
+                        item.update(status='pending',lane='BACKFILL',reason=None,retry_at=None)
+                    if item["status"] not in ("published", "rejected"):
+                        item["lane"] = lane(raw, now, last_discovered_at)
+                        archived = item["lane"] == "BACKFILL" and beyond_backfill_horizon(raw, now)
+                        item.update(status="archived" if archived else "pending",
+                            reason="outside_90_day_backfill" if archived else None, retry_at=None)
+                if (item['status'] == 'archived' and item.get('reason') == 'outside_90_day_backfill'
+                    and current_sanction_stock(raw, now)):
+                    item.setdefault('rediscovery_repairs', []).append({
+                        'at': now.isoformat(), 'previous_status': 'archived',
+                        'previous_reason': item['reason'],
+                        'reason': 'historical_office_with_current_suspension_stock_context'})
+                    item.update(status='pending', lane='BACKFILL', reason=None, retry_at=None)
+                continue
+            if key not in self.items and raw.source_slug in ('redsalud','bupa_chile','indisa','red_davila','andes_salud','clinicas_chile','pfizer_chile','clinicas_achs_salud'):
+                key=next((k for k,v in self.items.items() if v['source']==source and v['raw']['url'].rstrip('/')==raw.url.rstrip('/')),key)
+            if key in self.items:
+                item=self.items[key]
+                # A failed detail fetch may have enqueued an undated news card.
+                # Rediscovery can add its now-verified stamp without changing
+                # queue identity, detection time, lane or source-quality gate.
+                if (raw.source_slug=="clinicas_chile" and item.get("status") in ("pending","retry")
+                        and not item["raw"].get("event_date") and raw.event_date
+                        and raw.metadata.get("publication_date_source") in ("article:published_time","dated_news_listing")):
+                    old_gate=item["raw"].get("metadata",{}).get("source_quality_gate")
+                    item["raw"]["event_date"]=raw.event_date
+                    item["raw"]["metadata"].update(raw.metadata)
+                    if old_gate:item["raw"]["metadata"]["source_quality_gate"]=old_gate
+                    item["retry_at"]=None
+                continue
+            if key in seen or (source in FISCALIZATION_SOURCES and legacy_fingerprint(raw) in seen):
                 continue
             item_lane = lane(raw, now, last_discovered_at)
             archived = item_lane == "BACKFILL" and beyond_backfill_horizon(raw, now)
+            already_published=False
+            if source=="diario_financiero":
+                from .df_article import article_url
+                already_published=article_url(raw.url) in {article_url(url) for url in published_urls}
             self.items[key] = dict(raw=asdict(raw), source=source, lane=item_lane,
-                status="archived" if archived else "pending", detected_at=now.isoformat(),
-                attempts=0, reason="outside_90_day_backfill" if archived else None)
+                status="superseded" if already_published else "archived" if archived else "pending", detected_at=now.isoformat(),
+                attempts=0, reason="already_published_in_history" if already_published else "outside_90_day_backfill" if archived else None,
+                classification_watermark=last_discovered_at)
+            if source in FISCALIZATION_SOURCES:
+                fiscal_index[(source, canonical_url(raw.url), identity)] = [key]
             added += 1
         self.save()
         return added
 
-    def enforce_backfill_horizon(self, now=None):
+    def enforce_backfill_horizon(self, now=None, sources=None):
         now = now or now_utc()
         changed = 0
         for item in self.items.values():
+            if sources is not None and item.get("source") not in sources:continue
             if item.get("lane") == "BACKFILL" and item.get("status") in ("pending", "retry", "processing"):
                 raw = item.get("raw", {})
+                from .models import RawItem
+                if raw.get('source_slug') == 'suseso_fiscalizacion' and current_sanction_stock(RawItem(**raw), now):
+                    continue
                 try:
                     published = datetime.fromisoformat(str(raw.get("event_date"))[:10]).date()
                 except (TypeError, ValueError):

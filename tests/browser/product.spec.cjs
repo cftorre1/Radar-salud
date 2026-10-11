@@ -1,5 +1,13 @@
 const {test,expect}=require('@playwright/test');
 const fs=require('node:fs');fs.mkdirSync('artifacts',{recursive:true});
+const qaHistory=JSON.parse(fs.readFileSync('data/history/superintendencia_signals.json','utf8')).signals;
+const qaWindowReference=qaHistory.map(s=>s.event_date).filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(d||'')).sort().at(-1);
+function eligibleInSnapshotWindow(sourceUrl){
+ const original=qaHistory.find(s=>s.source_url===sourceUrl);
+ expect(original,'Original history evidence '+sourceUrl).toBeTruthy();
+ const age=(Date.parse(qaWindowReference+'T00:00:00Z')-Date.parse(original.event_date+'T00:00:00Z'))/86400000;
+ return age>=0&&age<=90;
+}
 test('Home V2 loads, filters persist and compact triage remains stable',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
@@ -430,6 +438,12 @@ test('Pulso Isapre leads with executive table and statistics use the value ladde
    ['Boletín Estadístico Informativo IP','cortes de acreditación, mediación, reclamos y RNPI'],
  ]){
    const signal=radar.signals.find(x=>(x.title||'').includes(needle));
+   const original=qaHistory.find(x=>(x.title||'').includes(needle));
+   expect(original,'Original statistical release '+needle).toBeTruthy();
+   if(!eligibleInSnapshotWindow(original.source_url)){
+     expect(signal,'Expired statistical release '+needle).toBeUndefined();
+     continue;
+   }
    expect(signal,needle+' missing from snapshot').toBeTruthy();
    expect(signal.summary_table?.rows?.length||0,needle+' table').toBeGreaterThan(0);
    const card=page.locator('article[data-card]').filter({hasText:needle});
@@ -559,6 +573,12 @@ test('priority statistical releases use compact tables and collapsed traceabilit
  ];
  for(const [needle,minRows] of cases){
    const s=radar.signals.find(x=>(x.title||'').includes(needle));
+   const original=qaHistory.find(x=>(x.title||'').includes(needle));
+   expect(original,'Original statistical release '+needle).toBeTruthy();
+   if(!eligibleInSnapshotWindow(original.source_url)){
+     expect(s,'Expired statistical release '+needle).toBeUndefined();
+     continue;
+   }
    expect(s,needle+' missing').toBeTruthy();
    expect((s.data_insights||[]).length,needle+' repeated insight list').toBe(0);
    expect(s.summary_table?.rows?.length||0,needle+' table').toBeGreaterThanOrEqual(minRows);
@@ -568,11 +588,15 @@ test('priority statistical releases use compact tables and collapsed traceabilit
    expect(s.data_insight_evidence?.length||0,needle+' evidence').toBeGreaterThan(0);
  }
  const ges=radar.signals.find(x=>(x.title||'').includes('Estadística Trimestral de Casos GES'));
- expect(ges.summary_table.columns).toEqual(['Problema de salud','Fonasa (casos)','Isapre (casos)','Total (casos)','Isapre (%)']);
- expect(ges.summary_table.rows.every(r=>r.cells?.length===5&&!/^\d+$/.test(r.cells[0]))).toBe(true);
+ if(ges){
+   expect(ges.summary_table.columns).toEqual(['Problema de salud','Fonasa (casos)','Isapre (casos)','Total (casos)','Isapre (%)']);
+   expect(ges.summary_table.rows.every(r=>r.cells?.length===5&&!/^\d+$/.test(r.cells[0]))).toBe(true);
+ }
  const series=radar.signals.find(x=>(x.title||'').includes('Series Estadísticas del Sistema ISAPRE'));
- expect(series.summary_table.rows.map(r=>r.cells[0])).toEqual(['Beneficiarios promedio anual','Casos GES']);
- expect(series.summary_table.rows.every(r=>r.cells[3]+r.cells[5]===r.cells[4])).toBe(true);
+ if(series){
+   expect(series.summary_table.rows.map(r=>r.cells[0])).toEqual(['Beneficiarios promedio anual','Casos GES']);
+   expect(series.summary_table.rows.every(r=>r.cells[3]+r.cells[5]===r.cells[4])).toBe(true);
+ }
  const fin=radar.signals.find(x=>(x.title||'').includes('Estadísticas Financieras del Sistema ISAPRE'));
  if(fin){
    expect(fin.summary_table.columns).toEqual(['Isapre','Ingresos (CLP millones)','Resultado operacional (CLP millones)','Utilidad/pérdida neta (CLP millones)']);
@@ -585,15 +609,17 @@ test('priority statistical releases use compact tables and collapsed traceabilit
    await page.locator('#detailDialog [data-close]').click();
  }
  const bulletin=radar.signals.find(x=>(x.title||'').includes('Boletín Estadístico Informativo IP'));
- expect(new Set(bulletin.summary_table.rows.map(r=>r.cells[0]))).toEqual(new Set(['Acreditación','Mediación','Reclamos','RNPI']));
- const bulletinCard=page.locator('article[data-card]').filter({hasText:'Boletín Estadístico Informativo IP'});
- await bulletinCard.locator('[data-detail]').click();
- const detail=page.locator('#detailBody');
- await expect(detail.locator('details.statistical-methodology')).not.toHaveAttribute('open','');
- await expect(detail).not.toContainText('Muestra de datos validada');
- await expect(detail.locator('.source')).toContainText('Fuente original');
- expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
- await page.getByRole('button',{name:'Cerrar resumen'}).click();
+ if(bulletin){
+   expect(new Set(bulletin.summary_table.rows.map(r=>r.cells[0]))).toEqual(new Set(['Acreditación','Mediación','Reclamos','RNPI']));
+   const bulletinCard=page.locator('article[data-card]').filter({hasText:'Boletín Estadístico Informativo IP'});
+   await bulletinCard.locator('[data-detail]').click();
+   const detail=page.locator('#detailBody');
+   await expect(detail.locator('details.statistical-methodology')).not.toHaveAttribute('open','');
+   await expect(detail).not.toContainText('Muestra de datos validada');
+   await expect(detail.locator('.source')).toContainText('Fuente original');
+   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+   await page.getByRole('button',{name:'Cerrar resumen'}).click();
+ }
 });
 
 test('Normative V2.1 puts document, subject and action in each current headline',async({page})=>{
@@ -617,6 +643,12 @@ test('Normative V2.1 puts document, subject and action in each current headline'
  ];
  for(const [number,subject,action] of expected){
   const signal=radar.signals.find(x=>x.source_url?.includes('n'+number)&&x.signal_types?.includes('Normativa'));
+  const original=qaHistory.find(x=>x.source_url?.endsWith('/if-n'+number+'/')||x.source_url?.endsWith('-if-n'+number+'/'));
+  expect(original,'Verified normative input '+number).toBeTruthy();
+  if(!eligibleInSnapshotWindow(original.source_url)){
+   expect(signal,'Expired act must remain outside current feed: '+number).toBeUndefined();
+   continue;
+  }
   expect(signal,number).toBeTruthy();
   const title=signal.display_title;
   expect(title).toContain(signal.normative_document_label||signal.legal_identity);

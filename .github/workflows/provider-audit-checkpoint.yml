@@ -1,0 +1,66 @@
+name: Provider isolated checkpoint
+on:
+  pull_request:
+    branches: [staging]
+    paths:
+      - 'src/radar_salud/**'
+      - 'scripts/reconcile_providers.py'
+      - 'scripts/provider_live_checkpoint.py'
+      - 'scripts/provider_repair_checkpoint.py'
+      - 'scripts/export_provider_checkpoint.py'
+      - 'data/audits/providers_2026_10_11/**'
+      - '.github/workflows/provider-audit-checkpoint.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: provider-audit-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  checkpoint:
+    if: startsWith(github.head_ref, 'codex/f-prestadores-gremio-') && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      RADAR_FAST_MODEL: gpt-5.6-luna
+      RADAR_DEEP_MODEL: gpt-5.6-terra
+      RADAR_FAST_PER_RUN: 12
+      RADAR_DEEP_PER_RUN: 0
+      RADAR_FAST_PER_MONTH: 1500
+      RADAR_DEEP_PER_MONTH: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest
+      - name: Verify audited admission gates
+        run: python -m pytest -q tests/test_provider_audit_intake.py tests/test_provider_newsroom_repairs.py tests/test_clinicas_chile_reconciliation.py tests/test_provider_runtime_reconciliation.py
+      - name: Probe original sites and evaluate only audited candidates
+        if: hashFiles('data/audits/provider_ci_receipt_2026_10_11.json') == ''
+        run: timeout --signal=TERM 10m python scripts/provider_live_checkpoint.py
+      - name: Verify durable original checkpoints without repeating paid analyses
+        if: hashFiles('data/audits/provider_repair_receipt_2026_10_11.json') != ''
+        run: python scripts/export_provider_checkpoint.py --durable
+      - name: Verify two repaired intake records without reassessing previous outcomes
+        if: hashFiles('data/audits/provider_ci_receipt_2026_10_11.json') != '' && hashFiles('data/audits/provider_repair_receipt_2026_10_11.json') == ''
+        env:
+          RADAR_FAST_PER_RUN: 2
+        run: timeout --signal=TERM 5m python scripts/provider_repair_checkpoint.py
+      - name: Preserve resumable isolated checkpoint
+        if: always() && hashFiles('data/audits/provider_ci_receipt_2026_10_11.json') == ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: provider-checkpoint-${{ github.event.pull_request.head.sha }}
+          path: |
+            data/audits/provider_live_checkpoint_2026_10_11.json
+            data/audits/providers_2026_10_11
+            data/state/pending_queue.json
+            data/history/superintendencia_signals.json
+            data/source_health.json
+            data/ai_usage
+            data/analysis_cache
+          retention-days: 14

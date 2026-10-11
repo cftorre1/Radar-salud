@@ -90,8 +90,10 @@ def test_sanctions_become_two_rolling_pulses_without_losing_individual_sources()
     rows.append(dict(rows[0],title="Resolución backfill",source_url="https://x/backfill",event_date="2026-09-21",ingestion_mode="BACKFILL"))
     rows.append(dict(rows[0],title="Resolución antigua",source_url="https://x/old",event_date="2026-08-01"))
     pulses=m._sanction_pulses(rows,date(2026,9,23))
-    assert sorted(x["sanction_count"] for x in pulses if x.get("sanction_count"))==[2,3]
-    assert not [x for x in pulses if x["source_url"]=="https://x/old"]
+    assert sorted(x["sanction_count"] for x in pulses if 'últimos 30 días' in x['title'])==[2,3]
+    older,=[x for x in pulses if 'días 31 a 90' in x['title']]
+    assert older['sanction_count']==1
+    assert older['source_alternatives'][0]['url']=='https://x/old'
     assert {x["source_url"] for x in pulses if x.get("sanction_count")} <= {r["source_url"] for r in rows}
     assert all(len(x["source_alternatives"])==x["sanction_count"] for x in pulses if x.get("sanction_count"))
     assert all(x["ingestion_mode"]=="LIVE" for x in pulses if x.get("sanction_count"))
@@ -200,7 +202,7 @@ def test_all_opaque_normative_acts_get_identity_plus_subject_for_public_title():
         assert row["display_title"] != row["normative_document_label"]
         assert row["normative_document_number"] in row["display_title"]
         assert row["normative_context"] and row["normative_context"].casefold() not in row["display_title"].casefold()
-        check=cfg["records"][row["normative_document_number"].replace("IF/N°","").replace("IP/N°","").replace(".","")]
+        check=cfg.get("source_records",{}).get(row["source_url"]) or cfg["records"][row["normative_document_number"].replace("IF/N°","").replace("IP/N°","").replace(".","")]
         if check.get("resolution_review"):
             for group in ("decision_terms","affected_act_terms","effect_terms"):
                 assert any(term.casefold() in row["display_title"].casefold() for term in check["resolution_review"][group])
@@ -285,11 +287,87 @@ def test_material_statistical_releases_use_value_ladder_instead_of_disappearing(
 
 def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():
     payload=json.loads(Path("web/data/radar_today.json").read_text())
-    rows=[m._normative_contract(s) for s in payload["signals"] if "Normativa" in (s.get("signal_types") or [])]
-    assert len(rows)>=12
+    rows=[s for s in payload["signals"] if "Normativa" in (s.get("signal_types") or [])]
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    cfg=json.loads(Path("config/normative_editorial_v2.json").read_text())
+    anchor=max(m._d(s.get("event_date")) for s in history if m._d(s.get("event_date")))
+    reviewed=[s for s in history if __import__("re").search(r"/(?:circular|resolucion-exenta)-if-n(\d+)/$",s.get("source_url", ""))]
+    reviewed=[s for s in reviewed if s["source_url"].split("if-n")[-1].rstrip("/") in cfg["records"]]
+    assert {s["source_url"].split("if-n")[-1].rstrip("/") for s in reviewed}==set(cfg["records"]), "Reviewed primary acts must remain in history"
+    eligible={s["source_url"] for s in reviewed if 0 <= (anchor-m._d(s["event_date"])).days <= 90}
+    expired={s["source_url"] for s in reviewed if (anchor-m._d(s["event_date"])).days > 90}
+    actual={s["source_url"] for s in rows}
+    assert eligible <= actual, "An eligible reviewed act was lost from the snapshot"
+    assert actual.isdisjoint(expired), "An expired act was resurrected to satisfy a quota"
+    assert len(actual)==len(rows), "Duplicate normative URLs must not inflate coverage"
     assert all(x["normative_editorial"]["plain_language_title"]==x["display_title"] for x in rows)
     assert all(x["normative_editorial"]["legal_identity"]==x["normative_document_label"] for x in rows)
     assert all(x["legal_subtitle"] for x in rows)
-    assert any(x["source_url"].endswith("n9994/") and "Afiliación electrónica" in x["display_title"] and "rechaza" in x["display_title"] and "Circular IF/N°532" in x["display_title"] for x in rows)
+    if any(url.endswith("n9994/") for url in eligible):
+        assert any(x["source_url"].endswith("n9994/") and "Afiliación electrónica" in x["display_title"] and "rechaza" in x["display_title"] and "Circular IF/N°532" in x["display_title"] for x in rows)
     unknown={"event_type":"REGULATION","title":"Circular IF/N°123456","source_title_full":"Circular IF/N°123456","source_url":"https://x/n123456","signal_types":["Normativa"]}
     assert m._normative_contract(unknown)["normative_title_review_required"] is True
+
+
+def test_normative_window_keeps_day90_and_expires_day91_without_losing_history():
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    act=next(s for s in history if s.get("source_url", "").endswith("circular-if-n529/"))
+    assert act["event_date"]=="2026-07-10"  # Verified original SIS date, not a modified/crawl date.
+    for anchor,expected in [("2026-10-08", True),("2026-10-09", False)]:
+        clock=sig("Synthetic window reference",event=anchor,url="https://fixture.example/window-reference")
+        curated=m.curate([act,clock],resolve_external=False)
+        assert any(s["source_url"]==act["source_url"] for s in curated) is expected
+        assert act["event_date"]=="2026-07-10"
+
+
+def test_offline_bulletin_export_preserves_all_reviewed_primary_pdf_analysis(tmp_path):
+    from scripts.statistics_reviewer import review_statistics
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    original=next(s for s in history if "boletin-estadistico-informativo-ip-junio-2026/" in s.get("source_url", ""))
+    missing_runtime=tmp_path/"not-built-in-this-checkout.json"
+    verified=m._statistical_analysis_overrides(path=missing_runtime)
+    patch=verified[original["source_url"]]
+    raw_findings=review_statistics([original])
+    assert len(raw_findings)==8
+    enriched=dict(original,**patch)
+    assert review_statistics([enriched])==[]
+    assert enriched["event_date"]==original["event_date"]=="2026-08-03"
+    assert {e["source_url"] for e in enriched["data_insight_evidence"]}=={d["url"] for d in original["source_documents"]}
+    exported,=m.curate([original],resolve_external=False)
+    assert exported["summary_table"]==patch["summary_table"]
+    assert review_statistics([exported])==[]
+
+
+def test_malformed_statistical_override_fails_instead_of_hiding_findings(tmp_path):
+    import pytest
+    runtime=tmp_path/"runtime.json"
+    runtime.write_text('{"signals": []}')
+    with pytest.raises(ValueError,match="Invalid statistical analysis"):
+        m._statistical_analysis_overrides(path=runtime)
+    runtime.write_text('{"signals": {"https://example.test/release": {"event_date": "2099-01-01"}}}')
+    with pytest.raises(ValueError,match="preserve source identity/date"):
+        m._statistical_analysis_overrides(path=runtime)
+
+def test_normative_original_cohort_ages_out_without_losing_history():
+    cohort=json.loads(Path("tests/fixtures/normative_v2_original_12.json").read_text())["signals"]
+    # The original twelve were in range in September; an October anchor puts
+    # July 10 outside 90 days. Dates and the historical cohort are unchanged.
+    anchor=sig("Recent material health event",event="2026-10-10",url="https://x/anchor")
+    out=m.curate([*cohort,anchor],resolve_external=False)
+    expected={s["source_url"] for s in cohort if s["event_date"]>="2026-07-12"}
+    assert {s["source_url"] for s in out if "Normativa" in s.get("signal_types",[])}==expected
+    july10=next(s for s in cohort if s["source_url"].endswith("circular-if-n529/"))
+    assert july10["event_date"]=="2026-07-10"
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    assert any(s["source_url"]==july10["source_url"] and s["event_date"]==july10["event_date"] for s in history)
+
+
+def test_verified_publication_boundary_retains_old_issuance_without_changing_it():
+    from datetime import date
+    row=sig('Resolución IP/N°4286',event='2026-07-07',url='https://www.superdesalud.gob.cl/normativa/4286')
+    row.update(event_type='SANCTION',signal_types=['Fiscalización'],scopes=['Prestadores'],publication_date='2026-07-13',emission_date='2026-07-07',event_date_basis='emission',regulated_entity='Nueva Cordillera',sanction_amount=50,sanction_unit='UF')
+    pulse,=m.curate([row],resolve_external=False,as_of=date(2026,10,11))
+    assert pulse['source_alternatives'][0]['event_date']=='2026-07-07'
+    assert pulse['source_alternatives'][0]['publication_date']=='2026-07-13'
+    assert 'días 31 a 90' in pulse['title']
+    assert m.curate([{**row,'publication_date':'2026-07-07'}],resolve_external=False,as_of=date(2026,10,11))==[]

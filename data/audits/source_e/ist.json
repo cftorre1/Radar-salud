@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-10-11",
+  "listing": "https://ist.cl/noticias/",
+  "alternative_listing": "https://ist.cl/category/noticias/",
+  "evidence_method": "Original-domain indexed page text and article publication headers through connected web; direct reader intermittently times out. Search crawl time is not publication evidence.",
+  "baseline": {"discovered": 3, "newest_event_date": "2016-11-02", "reported_status": "ok"},
+  "cause": "Single-segment URL regex accepted navigation/history pages. Whole-page date fallback and first-five-anchor runtime cap produced historical items instead of current heading-linked news.",
+  "repair": "Select only H2/H3 news-heading links; exclude navigation and archive routes; parse the detail H1 publication header; preserve but reject dates outside 90 days. Reject campaigns and generic wellbeing before analysis.",
+  "runtime_blocker": "Executor proxy denies ist.cl: URLError, Tunnel connection failed: 403 Forbidden. Connected web direct opens repeatedly time out. Current original-domain indexed detail text is reconciled, but no live HTML replay or complete 90-day inventory is certified.",
+  "windows": {"as_of_chile": "2026-10-11", "30_day_start": "2026-09-11", "90_day_start": "2026-07-13", "inventory_complete": false},
+  "samples": [
+    {"url": "https://ist.cl/mes-de-la-salud-mental-junto-a-uai-realizamos-significativo-encuentro-sobre-su-cuidado/", "publication_date": "2026-10-07", "date_evidence": "WordPress byline Oct 7, 2026 and visible 07/10/2026 agree", "within_30_days": true, "within_90_days": true, "decision": "rejected", "reason": "Educational wellbeing event without a material coverage, capacity or operational change", "published": false},
+    {"url": "https://ist.cl/feria-de-bienestar-2026-promoviendo-el-cuidado-de-la-vida-junto-a-puerto-ventanas/", "publication_date": "2026-09-17", "date_evidence": "WordPress byline Sep 17, 2026 and visible 17/09/2026 agree", "within_30_days": true, "within_90_days": true, "decision": "rejected", "reason": "Wellbeing fair with active breaks, counselling and contests; no material change", "published": false},
+    {"url": "https://ist.cl/damos-la-bienvenida-a-mk-recursos-humanos/", "publication_date": "2026-07-29", "date_evidence": "WordPress byline Jul 29, 2026 and visible 29/07/2026 agree", "within_30_days": false, "within_90_days": true, "decision": "candidate_pending_editorial_analysis", "reason": "New adherent brings over 700 workers into coverage; quantified coverage change", "published": false}
+  ],
+  "handoff": "Replay against actual current HTML after network access is restored. Confirm news-heading selector and WordPress published metadata. Walk bounded pagination to 2026-07-13 and resolve any visible/byline conflicts without substituting event dates. Campaign rejection must remain traceable."
+}

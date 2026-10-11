@@ -1,0 +1,735 @@
+{
+  "checked_at": "2026-10-11T05:26:14.892278+00:00",
+  "mode": "discovery_and_document_verification_only",
+  "sources": {
+    "fonasa": {
+      "checked_at": "2026-10-11T05:26:14.960040+00:00",
+      "technical_status": "error",
+      "discovery_verified": false,
+      "operational": false,
+      "discovered": 0,
+      "error": "FonasaDiscoveryError",
+      "error_details": {
+        "exception_chain": [
+          {
+            "type": "FonasaDiscoveryError"
+          },
+          {
+            "type": "HTTPError",
+            "http_status": 403,
+            "url": "https://www.fonasa.gob.cl/noticias/",
+            "reason": "Forbidden"
+          }
+        ],
+        "failure_signature": "FonasaDiscoveryError > HTTPError:403:Forbidden > HTTPError:HTTP Error 403: Forbidden",
+        "endpoint_failures": [
+          {
+            "url": "https://www.fonasa.gob.cl/noticias/",
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
+          }
+        ]
+      },
+      "diagnostics": {
+        "surfaces": [
+          {
+            "stage": "listing",
+            "url": "https://www.fonasa.gob.cl/noticias/",
+            "channel": "Noticias",
+            "exception": "HTTPError",
+            "message": "HTTP Error 403: Forbidden",
+            "http_status": 403
+          }
+        ],
+        "partial_failure": true,
+        "poll_mode": "discovery_and_document_verification_only",
+        "document_checks": [],
+        "evidence_status": "capture_pending"
+      },
+      "items": []
+    },
+    "fonasa_datos_abiertos": {
+      "checked_at": "2026-10-11T05:26:15.890646+00:00",
+      "technical_status": "error",
+      "discovery_verified": false,
+      "operational": false,
+      "discovered": 0,
+      "error": "FonasaDiscoveryError",
+      "error_details": {
+        "exception_chain": [
+          {
+            "type": "FonasaDiscoveryError"
+          }
+        ],
+        "failure_signature": "FonasaDiscoveryError > HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden",
+        "endpoint_failures": [
+          {
+            "url": "https://datosabiertos.fonasa.cl/noticias/",
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
+          },
+          {
+            "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
+          },
+          {
+            "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
+          },
+          {
+            "url": "https://datosabiertos.fonasa.cl/analysis/",
+            "type": "HTTPError",
+            "reason": "HTTP Error 403: Forbidden"
+          }
+        ]
+      },
+      "diagnostics": {
+        "surfaces": [
+          {
+            "stage": "listing",
+            "url": "https://datosabiertos.fonasa.cl/noticias/",
+            "channel": "Noticias",
+            "exception": "HTTPError",
+            "message": "HTTP Error 403: Forbidden",
+            "http_status": 403
+          },
+          {
+            "stage": "listing",
+            "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
+            "channel": "Biblioteca / Cuenta Pública",
+            "exception": "HTTPError",
+            "message": "HTTP Error 403: Forbidden",
+            "http_status": 403
+          },
+          {
+            "stage": "listing",
+            "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
+            "channel": "Boletines estadísticos",
+            "exception": "HTTPError",
+            "message": "HTTP Error 403: Forbidden",
+            "http_status": 403
+          },
+          {
+            "stage": "listing",
+            "url": "https://datosabiertos.fonasa.cl/analysis/",
+            "channel": "Análisis",
+            "exception": "HTTPError",
+            "message": "HTTP Error 403: Forbidden",
+            "http_status": 403
+          }
+        ],
+        "partial_failure": true,
+        "poll_mode": "discovery_and_document_verification_only",
+        "document_checks": [],
+        "evidence_status": "capture_pending"
+      },
+      "items": []
+    },
+    "isp_anamed": {
+      "checked_at": "2026-10-11T05:27:06.089724+00:00",
+      "technical_status": "error",
+      "discovery_verified": false,
+      "operational": false,
+      "discovered": 0,
+      "error": "RuntimeError",
+      "error_details": {
+        "exception_chain": [
+          {
+            "type": "RuntimeError"
+          },
+          {
+            "type": "URLError",
+            "reason": "timed out"
+          },
+          {
+            "type": "TimeoutError",
+            "reason": "timed out"
+          }
+        ],
+        "failure_signature": "RuntimeError > URLError:timed out > TimeoutError:timed out"
+      },
+      "diagnostics": {
+        "surfaces": [
+          {
+            "channel": "ANAMED",
+            "url": "https://www.ispch.cl/categorias-alertas/anamed/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "ANAMED",
+            "url": "https://ispch.cl/categorias-alertas/anamed/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          }
+        ],
+        "partial_failure": true,
+        "poll_mode": "discovery_and_document_verification_only",
+        "document_checks": [],
+        "evidence_status": "capture_pending"
+      },
+      "items": []
+    },
+    "isp_surveillance": {
+      "checked_at": "2026-10-11T05:28:46.546778+00:00",
+      "technical_status": "error",
+      "discovery_verified": false,
+      "operational": false,
+      "discovered": 0,
+      "error": "RuntimeError",
+      "error_details": {
+        "exception_chain": [
+          {
+            "type": "RuntimeError"
+          },
+          {
+            "type": "URLError",
+            "reason": "timed out"
+          },
+          {
+            "type": "TimeoutError",
+            "reason": "timed out"
+          }
+        ],
+        "failure_signature": "RuntimeError > URLError:timed out > TimeoutError:timed out"
+      },
+      "diagnostics": {
+        "surfaces": [
+          {
+            "channel": "Boletines de vigilancia de laboratorios",
+            "url": "https://www.ispch.cl/boletin/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "Boletines de vigilancia de laboratorios",
+            "url": "https://ispch.cl/boletin/",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "Boletines de vigilancia de laboratorios",
+            "url": "https://www.ispch.cl/boletin/",
+            "status": "blocked",
+            "items": 0
+          },
+          {
+            "channel": "Vigilancia de virus respiratorios",
+            "url": "https://www.ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "Vigilancia de virus respiratorios",
+            "url": "https://ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+            "status": "blocked",
+            "error_type": "URLError",
+            "error": "<urlopen error timed out>"
+          },
+          {
+            "channel": "Vigilancia de virus respiratorios",
+            "url": "https://www.ispch.cl/biomedico/vigilancia-de-laboratorio/ambitos-de-vigilancia/vigilancia-virus-respiratorios/informes-virus-respiratorios/?y=2026",
+            "status": "blocked",
+            "items": 0
+          }
+        ],
+        "partial_failure": true,
+        "poll_mode": "discovery_and_document_verification_only",
+        "document_checks": [],
+        "evidence_status": "capture_pending"
+      },
+      "items": []
+    },
+    "deis": {
+      "checked_at": "2026-10-11T05:29:05.088519+00:00",
+      "technical_status": "degraded",
+      "discovery_verified": true,
+      "operational": false,
+      "discovered": 12,
+      "error": null,
+      "error_details": null,
+      "diagnostics": {
+        "listing_url": "https://deis.minsal.cl/centrofic/",
+        "listing_recognized": true,
+        "document_blocks": 21,
+        "dated_documents": 12,
+        "rejected_missing_date": 7,
+        "rejected_invalid_date": 0,
+        "rejected_ambiguous_date": 0,
+        "rejected_editorial_only": 0,
+        "rejected_unproven_update": 2,
+        "document_verification": "pending_pipeline",
+        "coverage_status": "dated_documents_found",
+        "verified_publications": 12,
+        "latest_verified_publication_date": "2026-06-25",
+        "poll_mode": "discovery_and_document_verification_only",
+        "partial_failure": true,
+        "document_checks": [
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones de codificación para el Capítulo XXI junio2026.pdf",
+            "status": "blocked",
+            "exception_chain": [
+              {
+                "type": "InvalidURL"
+              }
+            ],
+            "failure_signature": "InvalidURL"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Manual Capítulo XV Embarazo Parto y Puerperio 180825.pdf",
+            "status": "blocked",
+            "exception_chain": [
+              {
+                "type": "InvalidURL"
+              }
+            ],
+            "failure_signature": "InvalidURL"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones de codificación para el Capítulo XVIII de la CIE-10.pdf",
+            "status": "blocked",
+            "exception_chain": [
+              {
+                "type": "InvalidURL"
+              }
+            ],
+            "failure_signature": "InvalidURL"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Códigos Post COVID-19 Efecto adverso Vacuna.pdf",
+            "status": "blocked",
+            "exception_chain": [
+              {
+                "type": "InvalidURL"
+              }
+            ],
+            "failure_signature": "InvalidURL"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL1.pdf",
+            "status": "blocked",
+            "exception_chain": [
+              {
+                "type": "ValueError"
+              }
+            ],
+            "failure_signature": "ValueError"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL2.pdf",
+            "status": "captured",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL2.pdf",
+            "sha256": "0012341842f985dc67fb39609c6cc591a76cc27b7dc1796eb07ad3fb48f5a2bf",
+            "bytes": 6186363,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T05:28:52.715676+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL3.pdf",
+            "status": "blocked",
+            "exception_chain": [
+              {
+                "type": "ValueError"
+              }
+            ],
+            "failure_signature": "ValueError"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XV-de-la-CIE-10-.pdf",
+            "status": "captured",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XV-de-la-CIE-10-.pdf",
+            "sha256": "87b092dd8d62026f00801b266941b626e3fac56494b32ea3451a7ad7a6f2c3fc",
+            "bytes": 983571,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T05:28:57.553232+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/09/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XVI-de-la-CIE-10.pdf",
+            "status": "captured",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/09/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XVI-de-la-CIE-10.pdf",
+            "sha256": "3078a003dc028e838581c2ae6093f1a7b288c7772c0968486a8dc024e5668061",
+            "bytes": 604477,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T05:28:59.256234+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/07/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-II-de-la-CIE-10.pdf",
+            "status": "captured",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/07/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-II-de-la-CIE-10.pdf",
+            "sha256": "393fb72ea20f6dcee2be746fe6d2515f29727ee4cbdcbc53644f40a8e9e9ce91",
+            "bytes": 780682,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T05:29:01.087180+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Gu%C3%ADa-para-la-codificaci%C3%B3n-casos-IVE-09-07-2018.pdf",
+            "status": "captured",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Gu%C3%ADa-para-la-codificaci%C3%B3n-casos-IVE-09-07-2018.pdf",
+            "sha256": "f19b11f6cf58b7ec4633dce660f95c5c526fb38319969dffc85871fec7d13287",
+            "bytes": 1039787,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T05:29:02.965391+00:00"
+          },
+          {
+            "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Orientaciones-de-Codificaci%C3%B3n-para-Capitulo-XXI-de-la-CIE-10.pdf",
+            "status": "captured",
+            "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Orientaciones-de-Codificaci%C3%B3n-para-Capitulo-XXI-de-la-CIE-10.pdf",
+            "sha256": "7ae8c085cb8fc65460ef1b1b07637f4449879c355e648c304b5488c7b542fd13",
+            "bytes": 605604,
+            "content_type": "application/pdf",
+            "captured_at": "2026-10-11T05:29:04.686323+00:00"
+          }
+        ],
+        "evidence_status": "capture_pending"
+      },
+      "items": [
+        {
+          "source_slug": "deis",
+          "title": "Orientaciones de codificación para el Capítulo XXI de la CIE-10 – Actualización",
+          "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones de codificación para el Capítulo XXI junio2026.pdf",
+          "source_name": "DEIS",
+          "source_type": "official",
+          "event_date": "2026-06-25",
+          "raw_text": "",
+          "metadata": {
+            "discovered_from": "https://deis.minsal.cl/centrofic/",
+            "resource_kind": "dated_data_release",
+            "document_kind": "deis_classification_guidance",
+            "pdf_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones de codificación para el Capítulo XXI junio2026.pdf",
+            "document_verification": "pending_pipeline",
+            "publication_date_source": "official_document_listing:published",
+            "publication_date_evidence": {
+              "kind": "official_document_listing:published",
+              "value": "Publicado 25/06/2026",
+              "date": "2026-06-25",
+              "url": "https://deis.minsal.cl/centrofic/"
+            },
+            "listing_sha256": "675b8517052fd571ac7caec5a5ebead4695b55b2a489998832a54dc6e76c3ea8"
+          }
+        },
+        {
+          "source_slug": "deis",
+          "title": "Orientaciones de codificación para el Capítulo XV de la CIE-10 – Actualización",
+          "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Manual Capítulo XV Embarazo Parto y Puerperio 180825.pdf",
+          "source_name": "DEIS",
+          "source_type": "official",
+          "event_date": "2025-08-18",
+          "raw_text": "",
+          "metadata": {
+            "discovered_from": "https://deis.minsal.cl/centrofic/",
+            "resource_kind": "dated_data_release",
+            "document_kind": "deis_classification_guidance",
+            "pdf_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Manual Capítulo XV Embarazo Parto y Puerperio 180825.pdf",
+            "document_verification": "pending_pipeline",
+            "publication_date_source": "official_document_listing:published",
+            "publication_date_evidence": {
+              "kind": "official_document_listing:published",
+              "value": "Publicado 18/08/2025",
+              "date": "2025-08-18",
+              "url": "https://deis.minsal.cl/centrofic/"
+            },
+            "listing_sha256": "675b8517052fd571ac7caec5a5ebead4695b55b2a489998832a54dc6e76c3ea8"
+          }
+        },
+        {
+          "source_slug": "deis",
+          "title": "Orientaciones de codificación para el Capítulo XVIII de la CIE-10",
+          "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones de codificación para el Capítulo XVIII de la CIE-10.pdf",
+          "source_name": "DEIS",
+          "source_type": "official",
+          "event_date": "2021-09-07",
+          "raw_text": "",
+          "metadata": {
+            "discovered_from": "https://deis.minsal.cl/centrofic/",
+            "resource_kind": "dated_data_release",
+            "document_kind": "deis_classification_guidance",
+            "pdf_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Orientaciones de codificación para el Capítulo XVIII de la CIE-10.pdf",
+            "document_verification": "pending_pipeline",
+            "publication_date_source": "official_document_listing:published",
+            "publication_date_evidence": {
+              "kind": "official_document_listing:published",
+              "value": "Publicado 07/09/2021",
+              "date": "2021-09-07",
+              "url": "https://deis.minsal.cl/centrofic/"
+            },
+            "listing_sha256": "675b8517052fd571ac7caec5a5ebead4695b55b2a489998832a54dc6e76c3ea8"
+          }
+        },
+        {
+          "source_slug": "deis",
+          "title": "Actualizaciones 3 y 4 para la codificación de COVID-19 en la CIE-10",
+          "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Códigos Post COVID-19 Efecto adverso Vacuna.pdf",
+          "source_name": "DEIS",
+          "source_type": "official",
+          "event_date": "2021-03-25",
+          "raw_text": "",
+          "metadata": {
+            "discovered_from": "https://deis.minsal.cl/centrofic/",
+            "resource_kind": "dated_data_release",
+            "document_kind": "deis_classification_guidance",
+            "pdf_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2021/03/Códigos Post COVID-19 Efecto adverso Vacuna.pdf",
+            "document_verification": "pending_pipeline",
+            "publication_date_source": "official_document_listing:published",
+            "publication_date_evidence": {
+              "kind": "official_document_listing:published",
+              "value": "Publicado 25/03/2021",
+              "date": "2021-03-25",
+              "url": "https://deis.minsal.cl/centrofic/"
+            },
+            "listing_sha256": "675b8517052fd571ac7caec5a5ebead4695b55b2a489998832a54dc6e76c3ea8"
+          }
+        },
+        {
+          "source_slug": "deis",
+          "title": "Volumen 1 Lista Tabular edición 2018",
+          "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL1.pdf",
+          "source_name": "DEIS",
+          "source_type": "official",
+          "event_date": "2020-12-30",
+          "raw_text": "",
+          "metadata": {
+            "discovered_from": "https://deis.minsal.cl/centrofic/",
+            "resource_kind": "dated_data_release",
+            "document_kind": "deis_classification_guidance",
+            "pdf_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL1.pdf",
+            "document_verification": "pending_pipeline",
+            "publication_date_source": "official_document_listing:published",
+            "publication_date_evidence": {
+              "kind": "official_document_listing:published",
+              "value": "Publicado 30/12/2020",
+              "date": "2020-12-30",
+              "url": "https://deis.minsal.cl/centrofic/"
+            },
+            "listing_sha256": "675b8517052fd571ac7caec5a5ebead4695b55b2a489998832a54dc6e76c3ea8"
+          }
+        },
+        {
+          "source_slug": "deis",
+          "title": "Volumen 2 Manual de Instrucciones edición 2018",
+          "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL2.pdf",
+          "source_name": "DEIS",
+          "source_type": "official",
+          "event_date": "2020-12-30",
+          "raw_text": "CIE-1 0Clasificación Estadística Internacional de Enfermedades y Problemas Relacionados con la Salud Décima Revisión Volumen 2 Manual de instrucciones Edición de 2018 Publicación Cientíﬁca No. 554 Material de capacitación. Utilización sin fines de lucro. Derechos reservados a favor de la OPS/OMS\nEdición original en inglés: International Statistical Classification of Diseases and Related Health Problems, 10th Revision, Fifth edition, 2016 © World Health Organization 2015 ISBN: 978-92-4154916-5 Clasificación estadística internacional de enfermedades y problemas relacionados con la salud . 10ª. Revisión. Edición de 2018. (Publicación Científica: 638). Contenido: v.1. Lista de categorías – v. 2. Manual de instrucciones – v.3. Índice alfabético. ISBN: 978-92-75-32020-4 © Organización Panamericana de la Salud 2018 Todos los derechos reservados. Las publicaciones de la Organización Panamericana de la Salud (OPS) están disponibles en su sitio web en (www.paho.org). Las solicitudes de autorización para reproducir o traducir, íntegramente o en parte, alguna de sus publicaciones, deberán dirigirse al Programa de Publicaciones a través de su sitio web (www.paho.org/permissions). Forma de cita propuesta . Organización Panamericana de la Salud. Clasificación estadística internacional de enfermedades y problemas relacionados con la salud. 10ª. Revisión . Edición de 2018. Washington, D.C.: OPS; 2018. Catalogación en la Fuente: Puede consultarse en http://iris.paho.org. Las publicaciones de la Organización Panamericana de la Salud están acogidas a la protección prevista por las disposiciones sobre reproducción de originales del Protocolo 2 de la Convención Universal sobre Derecho de Autor. Reservados todos los derechos. Las denominaciones empleadas en esta publicación y la forma en que aparecen presentados los datos que contiene no implican, por parte de la Secretaría de la Organización Panamericana de la Salud, juicio alguno sobre la condición jurídica de países, territorios, ciudades o zonas, o de sus autoridades, ni respecto del trazado de sus fronteras o límites. La mención de determinadas so ciedades mercantiles o de nombres comerciales de ciertos productos no implica que la Organización Panamericana de la Salud los apruebe o recomiende con preferencia a otros análogos. Salvo error u omisión, las denominaciones de productos patentados llevan en las publicaciones de la OPS letra inicial mayúscula. La Organización Panamericana de la Salud ha adoptado todas las precauciones razonables para verificar la información que figura en la presente publicación, no obstante, lo cual, el material publicado se distribuye sin garantía de ningún tipo, ni explícita ni implícita. El lector es responsable de la interpretación y el uso que haga de ese material, y en ningún caso la Organización Panamericana de la Salud podrá ser consi derada responsable de daño alguno causado por su utilización. La traducción al español fue realizada por el Centro Ven ezolano de Clasificación de Enfermedades, Centro Colaborador de la OMS para la Familia d e Clasificaciones Internacionales en español. Las actualizaciones hasta el 2018 fueron realizadas por el Centro Colaborador para la Familia de Clasificaciones Internacionales de la OPS en México (CEMECE). La revisión técnica fue hecha por la Unidad de Sistemas de Información y Plataformas para la Salud de la OPS. Material de capacitación. Utilización sin fines de lucro. Derechos reservados a favor de la OPS/OMS\nCLASIFICACIÓN INTERNACIONAL DE ENFERMEDADES Contenido 1. Introducción ......................................................................................................... 1 2. Descripción de la Clasificación Estadística Internacional de Enfermedades y Problemas Relacionados con la Salud ....................................... 2 2.1 Propósito y aplicabilidad .............................................................................. 2 2.2. El concepto de una “familia” de clasificaciones de enfermedades y problemas relacionados con la salud ............................................................ 3 Clasificaciones de referencia ............................................................ 4 Clasificaciones derivadas ................................................................. 5 Clasificaciones relacionadas............................................................. 5 2.2.1 Clasificaciones relacionadas con el diagnóstico ............................... 6 Adaptaciones basadas en especialidades .......................................... 6 Oncología ......................................................................................... 6 Dermatología .................................................................................... 7 Odontología y estomatología ........................................................... 7 Neurología ........................................................................................ 7 Reumatología y ortopedia ................................................................ 7 Pediatría............................................................................................ 8 Trastornos mentales .......................................................................... 8 2.2.2 Clasificaciones no diagnósticas ........................................................ 8 Procedimientos en medicina ............................................................ 8 Clasificación Internacional del Funcionamiento, de la Discapacidad y de la Salud (CIF) ............................................ 9 2.2.3. Apoyo de información para la atención primaria de salud ................. 11 2.2.4. Nomenclatura Internacional de Enfermedades ................................... 12 2.2.5. El papel de la OMS ............................................................................. 13 2.3. Principios generales de clasificación de enfermedades ................................ 13 2.4 La estructura básica y los principios de clasificación de la CIE ................... 14 2.4.1. Volúmenes ........................................................................................... 15 2.4.2. Capítulos ............................................................................................. 16 2.4.3. Grupos de categorías ........................................................................... 17 2.4.4. Categorías de tres caracteres ............................................................... 17 2.4.5. Subcategorías de cuatro caracteres ..................................................... 17 2.4.6. Subdivisiones suplementarias para uso a nivel de quinto carácter osubsecuentes ............................................................................................. 18 2.4.7. Uso de los códigos “U” ....................................................................... 18 3. Cómo utilizar la CIE............................................................................................. 19 3.1 Cómo utilizar el Volumen 1 .......................................................................... 19 3.1.1 Introducción ...................................................................................... 19 3.1.2 Uso de la lista tabular de inclusiones y subcategorías de cuatro caracteres .......................................................................................... 19 Términos de inclusión ...................................................................... 19 Términos de exclusión ..................................................................... 20 Material de capacitación. Utilización sin fines de lucro. Derechos reservados a favor de la OPS/OMS\nÍNDICE Descripciones de glosarios ............................................................... 20 3.1.3 Dos códigos para algunas afecciones ............................................... 21 El sistema de “daga y asterisco” (o “cruz y asterisco”) ................... 21 Otras codificaciones dobles opcionales ............................................ 22 3.1.4 Convenciones utilizadas en la lista tabular ....................................... 23 Paréntesis ( ) .................................................................................... 23 Corchetes [ ] ..................................................................................... 24 Dos puntos:....................................................................................... 24 Llave } .............................................................................................. 25 “SAI” ................................................................................................ 25 “No clasificado en otra parte” .......................................................... 25 “Y” en los títulos .............................................................................. 26 Punto y guión .- ................................................................................ 26 3.1.5 Categorías con características comunes ........................................",
+          "metadata": {
+            "discovered_from": "https://deis.minsal.cl/centrofic/",
+            "resource_kind": "dated_data_release",
+            "document_kind": "deis_classification_guidance",
+            "pdf_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL2.pdf",
+            "document_verification": "readable_pdf",
+            "publication_date_source": "official_document_listing:published",
+            "publication_date_evidence": {
+              "kind": "official_document_listing:published",
+              "value": "Publicado 30/12/2020",
+              "date": "2020-12-30",
+              "url": "https://deis.minsal.cl/centrofic/"
+            },
+            "listing_sha256": "675b8517052fd571ac7caec5a5ebead4695b55b2a489998832a54dc6e76c3ea8",
+            "capture_evidence": {
+              "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL2.pdf",
+              "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL2.pdf",
+              "sha256": "0012341842f985dc67fb39609c6cc591a76cc27b7dc1796eb07ad3fb48f5a2bf",
+              "bytes": 6186363,
+              "content_type": "application/pdf",
+              "captured_at": "2026-10-11T05:28:52.715676+00:00"
+            }
+          }
+        },
+        {
+          "source_slug": "deis",
+          "title": "Volumen 3 Índice Alfabético edición 2018",
+          "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL3.pdf",
+          "source_name": "DEIS",
+          "source_type": "official",
+          "event_date": "2020-12-30",
+          "raw_text": "",
+          "metadata": {
+            "discovered_from": "https://deis.minsal.cl/centrofic/",
+            "resource_kind": "dated_data_release",
+            "document_kind": "deis_classification_guidance",
+            "pdf_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2020/12/CIE-10_2018_VOL3.pdf",
+            "document_verification": "pending_pipeline",
+            "publication_date_source": "official_document_listing:published",
+            "publication_date_evidence": {
+              "kind": "official_document_listing:published",
+              "value": "Publicado 30/12/2020",
+              "date": "2020-12-30",
+              "url": "https://deis.minsal.cl/centrofic/"
+            },
+            "listing_sha256": "675b8517052fd571ac7caec5a5ebead4695b55b2a489998832a54dc6e76c3ea8"
+          }
+        },
+        {
+          "source_slug": "deis",
+          "title": "Orientaciones de codificación para el Capítulo XV de la CIE-10",
+          "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XV-de-la-CIE-10-.pdf",
+          "source_name": "DEIS",
+          "source_type": "official",
+          "event_date": "2019-05-17",
+          "raw_text": "Clasificación Estadística Internacional de Enfermedades y Problemas Relacionados con la Salud, CIE-10 Manual de Orientaciones de codificación para Capítulo XV “ Embarazo, parto y puerperio” Para el tipo de Actividad Hospitalización Publicación Nº 4: Grupo de trabajo para clasificaciones estadísticas de salud Ministerio de Salud, Chile Mayo de 2019 Integrantes: Silvana Santander Azar, Unidad GRD MINSAL. Mirza Aguilera Saavedra, Servicio de Salud Araucanía Sur, Consultora GRD MINSAL. Georgina Zepeda Mora, Unidad GRD Hospital Las Higueras, Consultora GRD MINSAL. Daily Piedra Suarez, DEIS, MINSAL. Elisa Aguayo, DEIS MINSAL. Lorena Velozo, DEIS MINSAL. Camila Medina Silva, Departamento GRD, FONASA. María Angélica Chandía Aguilera, División de Contraloría, FONASA. Alejandra Cavallera Rodriguez, División de Contraloría, FONASA. Lorena Camus Bustos, Experta GRD y Codificación CIE. Marianela Chacon Torres, Unidad GRD Hospital Dr. Luis Tisné Brousse. Este documento recoge los aportes de codificadores de la red de hospitales públicos.\nMANUAL CON ORIENTACIONES PARA LA CODIFICACION DEL CAPÍTULO XV DE LA CIE-10 MINISTERIO DE SALUD – MAYO 2019 2 Contenido 1. Introducción ...................................................................................................................................... 3 2. Generalidades y definiciones ............................................................................................................ 3 3. Orientaciones para la correcta codificación en este capítulo ........................................................... 5 3.1. Utilización general de los códigos del capítulo XV: ................................................................. 5 3.2. Aborto ...................................................................................................................................... 7 3.2.1 Embarazo terminado en aborto (O00-O08) ....................................................................................... 7 3.2.2 Instrucciones para la codificación de diagnósticos en el marco de la ley N°21.030 de interrupción voluntaria del embarazo ............................................................................................................................. 8 4. Selección del diagnóstico principal en el embarazo, parto y puerperio ......................................... 10 4.1. Anteparto: Consideraciones de Afecciones preexistentes ................................................... 10 4.2. Parto ...................................................................................................................................... 12 4.3. Puerperio ............................................................................................................................... 16 4.3.1 Afecciones o complicaciones del puerperio ..................................................................................... 16 5. Afecciones Fetales que influyen en el embarazo y parto ............................................................... 17 6. Bibliografía ......................................................................................................................................... 19\nMANUAL CON ORIENTACIONES PARA LA CODIFICACION DEL CAPÍTULO XV DE LA CIE-10 MINISTERIO DE SALUD – MAYO 2019 3 1. Introducción El presente manual entrega orientaciones para la codificación de afecciones relacionadas con el capítulo XV de la CIE-10 edición 2015, y tiene como propósito orientar en la correcta asignación de códigos a través de la entrega de las definiciones básicas utilizadas y la aplicación de reglas de codificación Los códigos incluidos en este capítulo son utilizados para las afecciones relacionadas con el embarazo o agravadas por éste, por el parto y el puerperio (causas maternas o causas obstétricas). Comprende los códigos entre los grupos (O00-O99). Este capítulo contiene los siguientes grupos: O00–O08 Embarazo terminado en aborto O10–O16 Edema, proteinuria y trastornos hipertensivos en el embarazo, el parto y el puerperio O20–O29 Otros trastornos maternos relacionados principalmente con el embarazo O30–O48 Atención materna relacionada con el feto y la cavidad amniótica y con posibles problemas del parto O60–O75 Complicaciones del trabajo de parto y parto O80–O84 Parto O85–O92 Complicaciones principalmente relacionadas con el puerperio O94–O99 Otras afecciones obstétricas no clasificadas en otra parte 2. Generalidades y definiciones Para obtener una correcta y exacta codificación de los diagnósticos presentes en un episodio de hospitalización es de vital importancia utilizar todas las fuentes de información disponibles , a fin de complementar la información y generar mayor especificidad en los diagnósticos. Entre los registros relevantes se debe considerar el ingreso, evoluciones clínicas, protocolo quirúrgico, otros informes como interconsultas, anatomía patológica, radiología y registros de enfermería.\nMANUAL CON ORIENTACIONES PARA LA CODIFICACION DEL CAPÍTULO XV DE LA CIE-10 MINISTERIO DE SALUD – MAYO 2019 4 La secuencia correcta en la selección del diagnóstico principal identificar á siempre la afección o patología de la madre como la causante principal de la necesidad de tratamiento o investigación que tuvo la paciente durante el proceso de atención de salud. Si hay más de una afección así caracterizada, debe seleccionarse la que se considera causante del mayor uso de recursos. Definiciones a utilizar en este capítulo: 1. Embarazo: El embarazo comienza cuando termina la implantación, que es el proceso que comienza cuando se adhiere el blastocito a la pared del útero (unos 5 o 6 días después d e la fecundación) este, atraviesa el endometrio e invade el estroma. El proceso de implantación finaliza cuando el defecto en la superficie del epitelio se cierra y se completa el proceso de nidación, comenzando entonces el embarazo. Esto ocurre entre los días 12 a 16 tras la fecundación. 2. Semanas de gestación: Según la Sociedad Española de Obstetricia y Ginecología, para contabilizar el embarazo de una manera objetiva los ginecólogos / obstetras prefieren calcular el embarazo por semanas, manteniendo que l a duración media del embarazo es de 40 semanas contadas desde el primer día de la última regla. Se contabilizan según los meses lunares que tienen 28 días, igual que el ciclo menstrual de la mujer. El embarazo por tanto tendría una duración de 10 meses lunares que suponen 280 días o 40 semanas. 3. Embarazo Prolongado: Se define como aquel que ha alcanzado las 42 semanas de gestación o 294 días desde la fecha de la última regla. Los embarazos que se extienden entre la 41 + 1 semanas y la 42+0 semanas se denominan Embarazos en vías de Prolongación. 4. Cronología del Embarazo: La duración media del embarazo en la especie humana es de alrededor de 280 días, 9 meses o 40 semanas completas, contadas desde el primer día de la última menstruación. El período de gestación se expresa en semanas.  Pretérmino: Menos de 37 semanas completas (menos de 259 días) de gestación.  De término: De 37 a menos de 42 semanas completas (259 a 293 días) de gestación.  Post término (prolongado): 42 semanas completas o más (294 días o más) de gestación  Primer Trimestre: Desde la semana 1 de gestación hasta la semana 13 menos 1 día  Segundo Trimestre: Desde la semana 14 de gestación hasta la semana 27 menos 1 día\nMANUAL CON ORIENTACIONES PARA LA CODIFICACION DEL CAPÍTULO XV DE LA CIE-10 MINISTERIO DE SALUD – MAYO 2019 5  Tercer Trimestre: Desde la semana 28 de gestación hasta la semana 40 5. Aborto: Término de la gestación antes de que el feto sea viable, hasta la semana 22 o peso del feto < de 500 grs o 25 cms de corona a rabadilla. 6. Parto: Término del embarazo con expulsión del feto, y finaliza con el inicio del alumbramiento. 7. Puerperio: Es el períod o que comprende desde el alumbramiento hasta la normalización de los cambios fisiológicos producidos durante el embarazo, que aproximadamente ocurre a las 6 semanas (42 días). 8. Trabajo de parto activo: Conjunto de los siguientes signos o síntomas: la presencia de 2 o más contracciones en 10 minutos, de 30 o más segundos de duración (palpatoria s), por un período mínimo de una hora acompañadas de modificaciones cervicales: Borramiento >/= 50% y dilatación >/= 1 cm. (del orificio cervical interno . (es necesario destacar la diferenciación con los pródromos previos) 9. Falso trabajo de parto (pródromo) : Condición que aparenta ser estado de trabajo de parto, pero no cumple los requisitos de frecuencia, regularidad e intensidad de las contracciones uterinas de tal f orma que no hay modificaciones cervicales, se caracteriza por contracciones irregulares e imprevisibles, no hay progresión del trabajo de parto. 10. Ruptura Prematura de membranas : Se define como la perdida de la solución de continuidad espontánea de las m embranas ovulares antes del inicio del trabajo de parto , el cuál podría ser antes de las 24 horas del inicio del trabajo de parto activ",
+          "metadata": {
+            "discovered_from": "https://deis.minsal.cl/centrofic/",
+            "resource_kind": "dated_data_release",
+            "document_kind": "deis_classification_guidance",
+            "pdf_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XV-de-la-CIE-10-.pdf",
+            "document_verification": "readable_pdf",
+            "publication_date_source": "official_document_listing:published",
+            "publication_date_evidence": {
+              "kind": "official_document_listing:published",
+              "value": "Publicado 17/05/2019",
+              "date": "2019-05-17",
+              "url": "https://deis.minsal.cl/centrofic/"
+            },
+            "listing_sha256": "675b8517052fd571ac7caec5a5ebead4695b55b2a489998832a54dc6e76c3ea8",
+            "capture_evidence": {
+              "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XV-de-la-CIE-10-.pdf",
+              "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2019/05/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XV-de-la-CIE-10-.pdf",
+              "sha256": "87b092dd8d62026f00801b266941b626e3fac56494b32ea3451a7ad7a6f2c3fc",
+              "bytes": 983571,
+              "content_type": "application/pdf",
+              "captured_at": "2026-10-11T05:28:57.553232+00:00"
+            }
+          }
+        },
+        {
+          "source_slug": "deis",
+          "title": "Orientaciones de codificación para el Capítulo XVI de la CIE-10",
+          "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/09/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XVI-de-la-CIE-10.pdf",
+          "source_name": "DEIS",
+          "source_type": "official",
+          "event_date": "2018-09-07",
+          "raw_text": "Clasificación Estadística Internacional de Enfermedades y Problemas Relacionados con la Salud, CIE-10 Manual con Orientaciones de codificación para Capítulo XVI “ Ciertas afecciones originadas en el período perinatal” Para el tipo de Actividad Hospitalización Publicación Nº 3: Grupo de trabajo para clasificaciones estadísticas de salud Ministerio de Salud, Chile Agosto de 2018 Integrantes: Silvana Santander Azar, Unidad GRD MINSAL. Susana Aros Rojas, Unidad GRD Hospital Luis Calvo Mackenna, Asesora GRD MINSAL. Mirza Aguilera Saavedra, Servicio de Salud Araucanía Sur, Consultora GRD MINSAL. Georgina Zepeda Mora, Unidad GRD Hospital La Higueras, Consultora GRD MINSAL. Daily Piedra Suarez, DEIS, MINSAL. Verónica Rojas, DEIS, MINSAL. Elisa Aguayo, DEIS MINSAL. Lorena Velozo, DEIS MINSAL. Camila Medina Silva, Unidad GRD, FONASA. Lorena Camus Bustos, Experta GRD y Codificación CIE. Este documento recoge los aportes de codificadores de la red de hospitales públicos\nMANUAL CON ORIENTACIONES PARA LA CODIFICACION DEL CAPÍTULO II DE LA CIE-10 MINISTERIO DE SALUD – JUNIO 2018 2 Contenido 1. Introducción .............................................................................................................................................. 3 2. Generalidades y definiciones .................................................................................................................... 4 3. Orientaciones para la correcta codificación en este capítulo ..................................................................... 6 1. Utilización general de los códigos del capítulo XVI: ................................................................................... 6 2. Prematuridad y retraso del crecimiento fetal: ........................................................................................... 8 3. Recién Nacido afectado por una patología materna ................................................................................ 10 4. Infecciones asociadas al periodo Perinatal .............................................................................................. 11 5. Asfixia del nacimiento .............................................................................................................................. 12 6. Síndromes de aspiración neonatal ........................................................................................................... 13 7. Hemorragia intracraneal no traumática del feto y del recién nacido ..................................................... 14 8. Problemas de la ingestión de alimentos del recién nacido ...................................................................... 15 9. Otras consideraciones en el uso de códigos de otros capítulos con el capítulo XVI: ............................... 17 4. Bibliografía .............................................................................................................................................. 18\nMANUAL CON ORIENTACIONES PARA LA CODIFICACION DEL CAPÍTULO II DE LA CIE-10 MINISTERIO DE SALUD – JUNIO 2018 3 1. Introducción El desarrollo de este manual entrega orientaciones para la codificación de afecciones relacionadas con el capítulo XVI de la CIE -10 edición 2015, y tiene como propósito orientar la codificación a través de la entrega de las definiciones básicas utilizadas en el período perinatal y la correcta aplicación de reglas de codificación. Las enfermedades que ocurren en el periodo perinatal aun cuando manifiesten síntomas y sean diagnosticadas dentro del primer año de vida, están contenidas en el grupo de categorías (P00 - P96) e incluye las afecciones o comp licaciones que se han originado en el período perinatal y las causas maternas que originen patologías en el recién nacido. Este capítulo contiene los siguientes grupos: P00–P04 Feto y recién nacido afectados por factores maternos y por complicaciones de l embarazo, del trabajo de parto y del parto. P05–P08 Trastornos relacionados con la duración de la gestación y el crecimiento fetal P10–P15 Traumatismo del nacimiento P20–P29 Trastornos respiratorios y cardiovasculares específicos del período perinatal P35–P39 Infecciones específicas del período perinatal P50–P61 Trastornos hemorrágicos y hematológicos del feto y del recién nacido P70–P74 Trastornos endocrinos y metabólicos transitorios específicos del feto y recién nacido P75–P78 Trastornos del sistema digestivo del feto y del recién nacido P80–P83 Afecciones asociadas con la regulación tegumentaria y la temperatura del feto y del recién nacido P90–P96 Otros trastornos originados en el período perinatal\nMANUAL CON ORIENTACIONES PARA LA CODIFICACION DEL CAPÍTULO II DE LA CIE-10 MINISTERIO DE SALUD – JUNIO 2018 4 2. Generalidades y definiciones Para obtener una correcta y exacta codificación de los diagnósticos presentes en un episodio de hospitalización es de vital importancia utilizar todas las fuentes de información disponibles , a fin de complementar la información y generar mayor especificidad en los diagnósticos. Entre los registros relevantes se debe considerar el ingreso, evoluciones clínicas, protocolo quirúrgico, otros informes como interconsultas, anatomía patológica, radiología y registros de enfermería. La secuencia correcta en la selección del diagnóstico principal identificara siempre la afección o patología neonatal como la causante principal de la necesidad de tratamiento o investigación que tuvo el paciente durante el proceso de atención de salud. Si hay más de una afección así caracterizada, debe seleccionarse la que se considera causante del mayor uso de recursos. La revisión constante de las definiciones relacionadas con este capítulo permite una mejora en el proceso de selección de los diagnósticos. Definiciones a utilizar en este capítulo: Período neonatal: Comienza en el nacimiento y termina 28 días completos después del nacimiento. Período perinatal: Comienza a las 22 semanas completas (154 días) de gestación y termina 7 días completos después del nacimiento. Nacimiento vivo: Es la expulsión o extracción completa del cuerpo de la madre, independiente de la duración del embarazo, de un producto de la concepción que, después de dicha separación, respire o dé cualquier otra señal de vida, como latidos del corazó n, pulsaciones del cordón umbilical o movimientos efectivos de los músculos de contracción voluntaria, tanto si se ha cortado o no el cordón umbilical y esté o no desprendida la placenta. Cada producto de un nacimiento que reúna esas condiciones se considera como un nacido vivo. Defunción fetal (feto muerto, mortinato u óbito fetal): Es la muerte de un producto de la concepción, antes de su expulsión o su extracción completa del cuerpo de su madre, independientemente de la duración del embarazo, edad gestacional o del peso al nacer. La muerte está indicada por el hecho que después de la separación, el feto no respira ni da ninguna otra señal de vida, como latidos del corazón, pulsaciones del cordón umbilical o movimientos efectivos de los músculos de contracción voluntaria.\nMANUAL CON ORIENTACIONES PARA LA CODIFICACION DEL CAPÍTULO II DE LA CIE-10 MINISTERIO DE SALUD – JUNIO 2018 5 Peso al nacer: Es la primera medida del peso del feto o recién nacido hecha después del nacimiento. Para los nacidos vivos, el peso al nacer debe ser medido preferiblemente dentro de la primera hora de vida antes de que ocurra cualquier pérdida significativa de peso. De acuerdo a la CIE-10 las categorías referentes al peso son: Peso bajo al nacer: Menos de 2500 g (hasta 2499 g inclusive). Peso muy bajo al nacer: Menos de 1500 g (hasta 1499 g inclusive). Peso extremadamente bajo al nacer: Menos de 1000 g (hasta 999 g inclusive). De acuerdo a la CIE-10 las categorías referentes a la edad gestacional son: Edad gestacional: La duración de la gestación se mide a partir del primer día del último período menstrual normal. La edad gestacional se expresa en días o en semanas completas. Recién Nacido de Pretérmino: Menos de 37 semanas completas (menos de 259 días) de gestación. Recién nacido de Término: De 37 a menos de 42 semanas completas (259 a 293 días) de gestación. Recién nacido de Postérmino: 42 semanas completas o más (294 días o más) de gestación. Prematurez (Recién Nacido de Pretérmino): Se considera prematuro a un recién nacido vivo antes de que se hayan cumplido 37 semanas de gestación. Los niños prematuros se dividen en subcategorías en función de la edad gestacional:  Prematuros extremos (menos de 28 semanas)  Muy prematuros (28 a 32 semanas)  Prematuros moderados a tardíos (32 a 37 semanas) Recién Nacidos Pequeños para la Edad Gestacional (PEG): Son aquellos cuyos peso y talla de nacimiento son menores que el percentil 10 ó 2 desviaciones estándar bajo el promedio para su edad gestacional.\nMANUAL CON ORIENTACIONES PARA LA CODIFICACION DEL CAPÍTULO II DE LA CIE-10 MINISTERIO DE SALUD – JUNIO 2018 6 3. Orientaciones para la correcta codificación en este capítulo 1. Utilización general de los códigos d",
+          "metadata": {
+            "discovered_from": "https://deis.minsal.cl/centrofic/",
+            "resource_kind": "dated_data_release",
+            "document_kind": "deis_classification_guidance",
+            "pdf_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/09/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XVI-de-la-CIE-10.pdf",
+            "document_verification": "readable_pdf",
+            "publication_date_source": "official_document_listing:published",
+            "publication_date_evidence": {
+              "kind": "official_document_listing:published",
+              "value": "Publicado 07/09/2018",
+              "date": "2018-09-07",
+              "url": "https://deis.minsal.cl/centrofic/"
+            },
+            "listing_sha256": "675b8517052fd571ac7caec5a5ebead4695b55b2a489998832a54dc6e76c3ea8",
+            "capture_evidence": {
+              "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/09/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XVI-de-la-CIE-10.pdf",
+              "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/09/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-XVI-de-la-CIE-10.pdf",
+              "sha256": "3078a003dc028e838581c2ae6093f1a7b288c7772c0968486a8dc024e5668061",
+              "bytes": 604477,
+              "content_type": "application/pdf",
+              "captured_at": "2026-10-11T05:28:59.256234+00:00"
+            }
+          }
+        },
+        {
+          "source_slug": "deis",
+          "title": "Recomendaciones de Codificación para el Capítulo II de la CIE-1",
+          "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/07/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-II-de-la-CIE-10.pdf",
+          "source_name": "DEIS",
+          "source_type": "official",
+          "event_date": "2018-07-11",
+          "raw_text": "Clasificación Estadística Internacional de Enfermedades y Problemas Relacionados con la Salud, CIE-10 Manual con Orientaciones de Codificación para Capítulo II “Tumores [neoplasias]” Para el tipo de Actividad Hospitalización Documento Nº 2: Grupo de trabajo para clasificaciones estadísticas de salud Ministerio de salud, Chile Junio de 2018 Integrantes: Silvana Santander Azar, Unidad GRD MINSAL Susana Aros Rojas, Unidad GRD Hospital Luis Calvo Mackenna, Asesora GRD MINSAL Mirza Aguilera Saavedra, Servicio de Salud Araucanía Sur, Consultora GRD MINSAL Georgina Zepeda Mora, Unidad GRD Hospital La Higueras, Consultora GRD MINSAL Eugenia Guerra Marchant, DEIS, MINSAL Daily Piedra Suarez, DEIS, MINSAL Lorena Durán Caroca, DEIS, MINSAL Camila Medina Silva, Unidad GRD, FONASA Lorena Camus Bustos, Experta GRD y Codificación CIE Colaboradores: Karinna Cuevas Lang, DEIS, MINSAL María Inés Romero, Jefa Dpto. Manejo Integral de Cáncer y Otros Tumores Este documento recoge los aportes de codificadores de la red de hospitales públicos\nMANUAL CON ORIENTACIONES PARA LA CODIFICACION DEL CAPÍTULO II DE LA CIE-10 MINISTERIO DE SALUD – JUNIO 2018 2 Contenido 1. Introducción ............................................................................................................................................. 3 2. Definiciones básicas: ................................................................................................................................ 4 3. Clasificación de las neoplasias .................................................................................................................. 6 1. Metodología de codificación....................................................................................................................... 6 2. Morfología .................................................................................................................................................. 7 4. Orientaciones para la correcta codificación de tumores ........................................................................... 9 1. Tumor primario con tumor secundario, (metástasis) ......................................................................... 9 2. Tumor recidivado................................................................................................................................ 9 3. Tumor secundario con tumor primario de localización no especificado ............................................ 9 4. Tumores primarios de localizaciones múltiples .................................................................................. 9 5. Tumor maligno secundario de sitio no especificado ........................................................................ 10 6. Tumores malignos primarios, de sitios mal definidos, secundarios y de sitios no especificados ..... 10 7. Tumor de localización desconocida .................................................................................................. 10 8. Tumores malignos que sobrepasan sus límites y el uso de la subcategoría .8 (lesión de sitios contiguos)................................................................................................................................................... 10 9. Tumores malignos de tejidos ectópicos ........................................................................................... 11 10. Tumor maligno actual frente a historia personal de tumor maligno ............................................... 11 11. Seguimiento de tumor maligno tratado ........................................................................................... 12 12. Extracción profiláctica de órgano ..................................................................................................... 12 5. Secuenciación de códigos en tumores .................................................................................................... 13 1. Diagnóstico principal ........................................................................................................................ 13 2. Ingreso para estudio diagnóstico o tratamiento del tumor ............................................................. 13 3. Ingreso para la administración de radioterapia, quimioterapia o inmunoterapia ........................... 13 4. Ingreso para braquiterapia ............................................................................................................... 13 5. Ingreso para la administración de radioterapia, quimioterapia o inmunoterapia y el pacien te desarrolla complicaciones propias de dicho tratamiento. ......................................................................... 13 6. Ingreso para la administración de radioterapia, quimioterapia o inmunoterapia con realización de procedimientos diagnósticos para determinar la extensión del tumor ..................................................... 14 7. Ingreso para colocación de vía de acceso vascular .......................................................................... 14 8. Ingreso para manejo de signo o síntoma de tumor metastásico ..................................................... 14 9. Anemia asociada a neoplasia............................................................................................................ 14 10. Ingreso por neutropenia febril posquimioterapia ............................................................................ 15 11. Pancitopenia asociada a quimioterapia ............................................................................................ 15 12. Síndrome de lisis tumoral ................................................................................................................. 15 13. Complicación de un tratamiento quirúrgico previo ......................................................................... 15 14. Actividad funcional ........................................................................................................................... 16 15. Otras condiciones de interés para la codificación de neoplasias malignas ...................................... 16 6. Bibliografía ............................................................................................................................................. 17\nMANUAL CON ORIENTACIONES PARA LA CODIFICACION DEL CAPÍTULO II DE LA CIE-10 MINISTERIO DE SALUD – JUNIO 2018 3 1. Introducción El Capítulo II de la CIE-10 edición 2015 contiene los códigos de las neoplasias malignas y de la mayoría de de los tumores benignos, existiendo algunos de estos que se codifican en otros capítulos. En este capítulo, la clasificación de los tumores o neoplasias se realiza en prioridad en grandes grupos, de acuerdo a la localización a natómica o topografía y a su comportamiento e incluye los códigos comprendidos entre las categorías C00 hasta D48. A continuación se presenta los siguientes grandes grupos de tumores: C00–C75 Tumores malignos, que se declaran o se presumen como primario s, de sitio anatómico especificado, excepto de los tejidos linfático, hematopoyético y similares C00–C14 Labio, cavidad bucal y faringe C15–C26 Órganos digestivos C30–C39 Órganos respiratorios e intratorácicos C40–C41 Huesos y cartílagos articulares C43–C44 Piel C45–C49 Tejidos mesoteliales y tejidos blandos C50 Mama C51–C58 Órganos genitales femeninos C60–C63 Órganos genitales masculinos C64–C68 Vías urinarias C69–C72 Ojo, encéfalo y otras partes del sistema nervioso central C73–C75 Glándula tiroides y otras glándulas endocrinas C76–C80 Tumores malignos de sitios mal definidos, secundarios y de sitios no especificados C81–C96 Tumores malignos (declarados o presuntos como primarios) del tejido linfático, de los órganos hematopoyéticos y de tejidos afines. C97 Tumores malignos (primarios) de sitios múltiples independientes D00–D09 Tumores in situ D10–D36 Tumores benignos D37–D48 Tumores de comportamiento incierto o desconocido\nMANUAL CON ORIENTACIONES PARA LA CODIFICACION DEL CAPÍTULO II DE LA CIE-10 MINISTERIO DE SALUD – JUNIO 2018 4 2. Definiciones básicas: Neoplasia (tumor): Masa anormal de tejido que resulta cuando las células se multiplican más de lo debido o no mueren cuando debieran. Las neoplasias pueden ser benignas (no cancerosas) o malignas (cancerosas). Tumor primario: Término que se usa para describir el tumor original o primero en el cuerpo. Las células cancerosas de un tumor primario se pueden diseminar a otras partes del cuerpo y formar tumores nuevos o secundarios, esto se llama metástasis. Tumor secundario (metástasis): Término que se usa para describir un cáncer que se diseminó (hizo metástasis) desde el lugar de origen a otra parte del cuerpo. Cuando ocurre una metástasis, las células cancerosas se separan del tumor original (primario), viajan a través del sistema sanguíneo o linfático y forman un tumor nuevo en otros órganos o tejidos del cuerpo. El tumor metastásico es el mismo tipo de cáncer que el tumor primario. Carcinoma in situ : Es una neoplasia que está",
+          "metadata": {
+            "discovered_from": "https://deis.minsal.cl/centrofic/",
+            "resource_kind": "dated_data_release",
+            "document_kind": "deis_classification_guidance",
+            "pdf_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/07/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-II-de-la-CIE-10.pdf",
+            "document_verification": "readable_pdf",
+            "publication_date_source": "official_document_listing:published",
+            "publication_date_evidence": {
+              "kind": "official_document_listing:published",
+              "value": "Publicado 11/07/2018",
+              "date": "2018-07-11",
+              "url": "https://deis.minsal.cl/centrofic/"
+            },
+            "listing_sha256": "675b8517052fd571ac7caec5a5ebead4695b55b2a489998832a54dc6e76c3ea8",
+            "capture_evidence": {
+              "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/07/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-II-de-la-CIE-10.pdf",
+              "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2018/07/Orientaciones-de-codificaci%C3%B3n-para-el-Cap%C3%ADtulo-II-de-la-CIE-10.pdf",
+              "sha256": "393fb72ea20f6dcee2be746fe6d2515f29727ee4cbdcbc53644f40a8e9e9ce91",
+              "bytes": 780682,
+              "content_type": "application/pdf",
+              "captured_at": "2026-10-11T05:29:01.087180+00:00"
+            }
+          }
+        },
+        {
+          "source_slug": "deis",
+          "title": "Guía para la Codificación Casos IVE",
+          "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Gu%C3%ADa-para-la-codificaci%C3%B3n-casos-IVE-09-07-2018.pdf",
+          "source_name": "DEIS",
+          "source_type": "official",
+          "event_date": "2018-07-11",
+          "raw_text": "Ministerio de Salud Guía para la Codificación de Diagnósticos, haciendo uso de la CIE 10, en el Marco de la Ley Nº21.030 de Interrupción Voluntaria del Embarazo Departamento de Estadísticas e Información de Salud División de Planificación Sanitaria. Versión 1.0\n1 Colaboradores Daily Piedra Suárez Eugenia Guerra Marchant Jennifer Diaz Loyola Elisa Aguayo Torres Silvana Santander Azar Javiera Burgos Laborde Estefanía Jara López Daniela Vargas Guzmán Lorena Durán Caroca Solange Burgos Estrada Dra. Verónica Rojas Villar Dr. Jorge Neira Miranda\n2 Índice Introducción ..................................................................................................................................... 3 Propósito: ......................................................................................................................................... 4 Objetivo ........................................................................................................................................... 4 Antecedentes generales de Ley Interrupción Voluntaria del Embarazo, en sus tres causales .............. 5 1. Primera causal: La mujer se encuentra en riesgo vital .................................................................... 5  Constitución de la 1º Causal ...................................................................................................................... 5  Algoritmo para la selección de diagnósticos: ............................................................................................ 6 2. Segunda causal: Patología congénita adquirida o genética, incompatible con la vida extrauterina independiente, en todo caso de carácter letal ....................................................................................... 8  Constitución de la 2º Causal ...................................................................................................................... 8  Algoritmo para la selección de diagnósticos: ............................................................................................ 9 3. Tercera causal: Embarazo resultado de una violación. .................................................................. 11  Constitución de la 3º Causal .................................................................................................................... 11  Algoritmo para la selección de diagnósticos: .......................................................................................... 12 Bibliografía ..................................................................................................................................... 13\n3 Introducción La Ley N° 21.030 que regula la despenalización de la interrupción voluntaria del embarazo (IVE) en tres causales, entró en vigencia el 23 de septiembre del año 2017. 1 Su implementación se realiza a través de un modelo de atención integral, que busca entregar atención de calidad a las mujeres que solicitan una interrupción del embarazo por alguna de éstas situaciones: riesgo de la vida de la madre, inviabilidad fetal y embarazo como resultado de una violación. Este modelo contempla dar atención con enfoque biopsicosocial, así como también, un programa de acompañamiento integral respetuoso y personalizado, que procede tanto si ella decide continuar con el embarazo como si desea interrumpirlo. Asimismo, se trata de un proceso continuo que busca brindar acogida y apoyo emocional que le permita a la mujer conocer sus alternativas mediante información clara, oportuna y veraz. Uno de los hitos fundamentales, que permiten realiz ar el monitoreo de la implementación de esta Ley es el registro de los casos, por lo que el presente documento, pretende contribuir a la mejora continua de dicho proceso, por medio de la entrega de recomendaciones para la codificación de los diagnósticos asociados a las causales, tanto para los registros de egresos hospitalarios de estos casos como para las atenciones ambulatorias , haciendo uso de la Clasificación Estadística Internacional de Enfermedades y Problemas Relacionados con la Salud (CIE-10)2 1 LEY NÚM. 21.030, REGULA LA DESPENALIZACIÓN DE LA INTERRUPCIÓN VOLUNTARIA DEL EMBARAZO EN TRES CAUSALES https://www.leychile.cl/Navegar?idNorma=1108237 2 Edición 2015\n4 Propósito: El propósito de este documento es generar criterios comunes para el registro de los diagnósticos de las mujeres que son atendidas bajo el amparo de esta Ley, independiente del tipo de atención (ambulatorio-hospitalizado) y de los registros respectivos. Además, el uso de esta guía y la aplicación de los criterios contenidos contribuyen a promover y vigilar el uso de la CIE-10, de forma homogénea en el sector. Este documento está orientado a los equipos de codificadores, tanto para las unidades de estadística y de GRD en áreas de hospitalización. Para los equipos de atención ambulatoria, se espera que esta guía apoye a los clínicos en el registro de los diagnósticos usando la misma lógica de decisión que se describe par a la actividad cerrada, usando los términos clínicos de uso habitual. Para efectos de la codificación de estos casos usando la CIE -10, estas se realizarán de forma centralizada, en el Centro Nacional de Referencia de la Familia de Clasificaciones Intern acionales (CNR) del Departamento de Estadísticas e Información de Salud, (DEIS) Objetivo Entregar una guía para la codificación, haciendo uso de la CIE -10 edición 2015, de los diagnósticos asociados a la atención de mujeres, que hacen uso de servicios relacionados con la Ley de interrupción del embarazo en sus tres causales.\n5 Antecedentes generales de Ley Interrupción Voluntaria del Embarazo, en sus tres causales 1. Primera causal: La mujer se encuentra en riesgo vital La primera causal despenaliza la interrupción voluntaria del embarazo cuando “La mujer se encuentre en riesgo vital, de modo que la interrupción del embarazo evite un peligro para su vida”.3  Constitución de la 1º Causal La causal se constituye cuando el profesional médico realiza el diagnóstico del riesgo vital, ya sea por un diagnóstico obstétrico o por una patología de base que se ha agravado por el embarazo o ambas situaciones concomitantes. Esta causal puede ocurrir en cualquier momento del embarazo. Constituida la causal, el/a médico/a responsable deberá registrar en la historia clínica, el o los diagnósticos que configuran la condición clínica de riesgo vital (inminente o no inminente) que habilita a la paciente para solicitar la interrupción voluntaria del embarazo por causal 1. Si la mujer opta por interrumpir el embarazo, el equipo clínico deberá decidir la técnica de interrupción considerando: a. Condición de salud de la mujer (con o sin riesgo vital inminente). b. Condiciones obstétricas (trabajo de parto en curso, cicatrices uterinas, presentación fetal, estado de la membrana amnios corial, infección ovular, etc.). c. Las capacidades instaladas en cada establecimiento 3 NORMA TÉCNICA NACIONAL ACOMPAÑAMIENTO Y ATENCIÓN INTEGRAL A LA MUJER QUE SE ENCUENTRA EN ALGUNA DE LAS TRES CAUSALES QUE REGULA LA LEY 21.030, MINISTERIO DE SALUD, Subsecretaría de Salud Pública\n6  Algoritmo para la selección de diagnósticos: Concurre Causal 1 Antes de las 22 semanas Mujer decide interrumpir embarazo Diag. Principal: O04.- Diag. Secundario: Morbilidad asociada Mujer decide continuar embarazo Diag. Principal: Morbilidad asociada Después de las 22 semanas Diag. Principal: Morbilidad Diag. Secundario: Z30.3 Hospitalización Hospitalización\n7 Descripción: Para la co nsignación de los diagnósticos s e distinguen dos enfoques según el escenario clínico de atención cerrada o ambulatoria. Para la atención cerrada los diagnósticos deben codificarse de acuerdo a las reglas de la CIE 10 de morbilidad, ello significa que:  El diagnóstico principal se define como “afección diagnosticada al final del proceso de atención de la salud como la causante primaria de la necesidad de tratamiento o investigación que tuvo el paciente”. Sí hay más de una afección así caracterizada, debe seleccionarse la que se c onsidera causante del mayor consumo de recursos.4 En la causal 1, si la hospitalización se indica por la patología que genera el riesgo vital, éste diagnóstico corresponde al principal, y debe consignarse como embarazo complicado por la morbilidad que genera el riesgo vital. Si la hospitalización se indica directamente para la realización del procedimiento de interrupción del embarazo, el diagnóstico principal será la interrupción:  Si la IVE ocurre hast a las 21 semanas y 6 días el motivo de ingreso será aborto terapéutico, asignando el código O04. - Aborto médico, complementado con el diagnóstico de morbilidad que complica el embarazo y pone en riesgo la vida de la madre.  Si la IVE ocurre después de las 22 semanas el motivo de ingreso será el parto complicado, donde se consigna el diagnóstico que genera el riesgo vital, más el código Z30.3 (Extracción menstrual, Interrupción de embarazo) para diferenciar de los partos que no",
+          "metadata": {
+            "discovered_from": "https://deis.minsal.cl/centrofic/",
+            "resource_kind": "dated_data_release",
+            "document_kind": "deis_classification_guidance",
+            "pdf_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Gu%C3%ADa-para-la-codificaci%C3%B3n-casos-IVE-09-07-2018.pdf",
+            "document_verification": "readable_pdf",
+            "publication_date_source": "official_document_listing:published",
+            "publication_date_evidence": {
+              "kind": "official_document_listing:published",
+              "value": "Publicado 11/07/2018",
+              "date": "2018-07-11",
+              "url": "https://deis.minsal.cl/centrofic/"
+            },
+            "listing_sha256": "675b8517052fd571ac7caec5a5ebead4695b55b2a489998832a54dc6e76c3ea8",
+            "capture_evidence": {
+              "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Gu%C3%ADa-para-la-codificaci%C3%B3n-casos-IVE-09-07-2018.pdf",
+              "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Gu%C3%ADa-para-la-codificaci%C3%B3n-casos-IVE-09-07-2018.pdf",
+              "sha256": "f19b11f6cf58b7ec4633dce660f95c5c526fb38319969dffc85871fec7d13287",
+              "bytes": 1039787,
+              "content_type": "application/pdf",
+              "captured_at": "2026-10-11T05:29:02.965391+00:00"
+            }
+          }
+        },
+        {
+          "source_slug": "deis",
+          "title": "Orientaciones de Codificación para Capitulo XXI de la CIE-10",
+          "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Orientaciones-de-Codificaci%C3%B3n-para-Capitulo-XXI-de-la-CIE-10.pdf",
+          "source_name": "DEIS",
+          "source_type": "official",
+          "event_date": "2018-01-02",
+          "raw_text": "Clasificación Estadística Internacional de Enfermedades y Problemas Relacionados con la Salud, CIE-10 Manual con Orientaciones de Codificación para el Capítulo XXI “Factores que influyen en el estado de salud y contacto con los servicios de salud” Para el tipo de Actividad de Hospitalización Documento Nº 1: Grupo de trabajo para clasificaciones estadísticas de salud Ministerio de salud, Chile diciembre de 2017 Integrantes comisión: Silvana Santander Azar, Unidad GRD MINSAL Susana Aros Rojas, Unidad GRD Hospital Luis Calvo Mackenna, Asesora GRD MINSAL Mirza Aguilera Saavedra, Servicio de Salud Araucanía Sur, Consultora GRD MINSAL Georgina Zepeda Mora, Unidad GRD Hospital La Higueras, Consultora GRD MINSAL Eugenia Guerra Marchant, DEIS, MINSAL Daily Piedra Suárez, DEIS, MINSAL Lorena Durán Caroca, DEIS, MINSAL Camila Medina Silva, Unidad GRD, FONASA Lorena Camus B., Experta GRD y Codificación CIE Colaboradora: Karinna Cuevas Lang, DEIS, MINSAL\nManual con Orientaciones de Codificación para el Capítulo XXI de la CIE 10 Ministerio de Salud-diciembre 2017 2 Índice I. Prólogo ............................................................................................................................................................. 3 II. Introducción ..................................................................................................................................................... 4 III. Objetivos: ......................................................................................................................................................... 4 IV. Factores que influyen en el estado de salud y contacto con los servicios de salud (Capítulo XXI) .................. 5 i. Normas específicas de codificación de los códigos Z .................................................................................. 5 ii. Uso de las categorías de códigos Z como diagnóstico principal o secundario ............................................ 6 V. Categorías de los códigos Z .............................................................................................................................. 8 i. Z00–Z13 Personas en contacto con los servicios de salud para investigación y exámenes ........................ 8 ii. Z20–Z29 Personas con riesgos potenciales para su salud, relacionados con enferm edades transmisibles 9 iii. Z30–Z39 Personas en contacto con los servicios de salud en circunstancias relacionadas con la reproducción ...................................................................................................................................................... 10 iv. Z40–Z54 Personas en contacto con los servicios de salud para procedimientos específicos y cuidados de salud 12 v. Z55–Z65 Personas con riesgos potenciales para su salud, relacionados con circunstancias socioeconómicas y psicosociales. ...................................................................................................................... 15 vi. Z70–Z76 Personas en contacto con servicios de salud por otras circunstancias ...................................... 16 vii. Z80–Z99 Personas con riesgos potenciales para su salud, relacionados con su historia familiar y personal, y algunas condiciones que influyen sobre su estado de salud ........................................................... 16 VI. Clasificación por categorías según términos de localización ......................................................................... 19 VII. Bibliografía ..................................................................................................................................................... 21\nManual con Orientaciones de Codificación para el Capítulo XXI de la CIE 10 Ministerio de Salud-diciembre 2017 3 I. Prólogo Ante la necesidad de contar con documentació n que sirva para aunar criterios de codificación, cuando la CIE-10 no otorga explicitamente orientaciones y/o códigos, este Ministerio determinó conformar un grupo multidisciplinario con experiencia en materia de codificación, cuyos principales objetivos son establecer acuerdos nacionales que den cuenta de nuestra realidad epidemiológica en el ámbito de la hospitalización , es decir para el tipo de actividad de hospitalización y actuar como entidad en la que se centralicen las dudas y se resuelvan las preguntas de los usuarios de la mencionada clasificación. Para iniciar las actividades de este grupo, se consensuó que uno de los capítulos que presenta dificultad al momento de utilizarlo, por las características de las circunstancias donde deben utilizarse sus códigos, es el Capítulo XXI “Factores que in fluyen en el estado de salud y contacto con los servicios de salud” En la presente publicación, se entregan las orientaciones en el sentido de definir las subcategorías a utilizar como afección principal y afección secundaria.\nManual con Orientaciones de Codificación para el Capítulo XXI de la CIE 10 Ministerio de Salud-diciembre 2017 4 II. Introducción El Capítulo XXI “Factores que in fluyen en el estado de salud y contacto con los servicios de salud” provee las categorías del Z00 -Z09 para aquellos casos en que ciertas circunstancias que no son enfermedades, lesiones ni causas externas clasificables en las categorías A00 – Y89, se registran como “diagnósticos” o “problemas”. Esto puede surgir principalmente de dos maneras: a.- Cuando una persona que puede o no estar enferma en ese momento, en tra en contacto con los servicios de salud para algún propósito específico, tal como recibir una atención o servicios limitados por una condición presente, donar un órgano o tejido, recibir una vacuna o discutir un problema que no es por sí mismo una enfermedad o lesión. b.- Cuando existe alguna circunstancia o problema que influye en el estado de salud de una persona, pero no es en sí misma una enfermedad o lesión actual. En ambos casos los códigos Z pueden ser utilizados en cualquier nivel de atención de salud y dependiendo de las circunstancias del contacto, co mo diagnóstico principal o como secundario. III. Objetivos: 1.-Establecer recomendaciones sobre el uso de códigos diagnósticos pertenecientes al Capítulo XXI, ajustado a la realidad de la salud chilena. 2.-Determinar los códigos que podrán ser utilizados como diagnóstico principal y en que circunstancias, como diagnóstico secundario o ambos.\nManual con Orientaciones de Codificación para el Capítulo XXI de la CIE 10 Ministerio de Salud-diciembre 2017 5 IV. Factores que influyen en el estado de salud y contacto con los servicios de salud (Capítulo XXI) Nota: Este capítulo no debe utilizarse para realizar comparaciones internacionales ni para la codificación primaria de mortalidad. Este capítulo contiene los siguientes grupos: Z00–Z13 Personas en contacto con los servicios de salud para investigación y exámenes Z20–Z29 Personas con riesgos potenciales para su salud, relacionados con enfermedades transmisibles Z30–Z39 Personas en contacto con los servicios de salud en circunstancias r elacionadas con la reproducción Z40–Z54 Personas en contacto con los servicios de salud para procedimientos específicos y cuidados de salud Z55–Z65 Personas con riesgos potenciales para su salud, relacionados con circunstancias socioeconómicas y psicosociales Z70–Z76 Personas en contacto con los servicios de salud por otras circunstancias Z80–Z99 Personas con riesgos potenciales para su salud, relacionados con su historia familiar y personal, y algunas condiciones que influyen sobre su estado de salud i. Normas específicas de codificación de los códigos Z Uso de códigos Z en cualquier situación de cuidado de salud - Pueden emplearse como diagnóstico principal o secundario (complementario), dependiendo de las circunstancias del contacto. - En caso de no realización de la atención o procedimiento que en principio d io lugar al contacto, se debe consignar en primer lugar como diagnóstico principal la morbilidad o condición del paciente y luego el código de diagnó stico del procedimiento no realiza do según corresponda ejemplo, Z53. Definiciones a considerar en la asignación de los códigos: Contacto o exposición: pueden ser utilizados como diagnóstico principal para explicar un episodio de tamizaje, ejemplo Z20, o, más frecuentemente como código secundario para identi ficar un potencial riesgo. Estado: representan un a condición de enfermedad o secuela de una enfermedad antigua. Esto incluye algunas condiciones como la presencia de dispositivos protésicos o mecánicos como resultado de algún tratamiento pasado. Este código es informativo ya que esta condición puede afectar la evolución de un tratamiento posterior y sus resultados. Es importante destacar la diferencia con Historia de… ya que el código de historia , se refiere a que el paciente ya no tiene esa condición. Ejemplo el código Z33.1 estado de embarazo incidental debe utilizarse sólo como diagnóstico secundario cuando el embarazo no está complicado y no es la razón de la visita o episodio hospitalario.",
+          "metadata": {
+            "discovered_from": "https://deis.minsal.cl/centrofic/",
+            "resource_kind": "dated_data_release",
+            "document_kind": "deis_classification_guidance",
+            "pdf_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Orientaciones-de-Codificaci%C3%B3n-para-Capitulo-XXI-de-la-CIE-10.pdf",
+            "document_verification": "readable_pdf",
+            "publication_date_source": "official_document_listing:published",
+            "publication_date_evidence": {
+              "kind": "official_document_listing:published",
+              "value": "Publicado 02/01/2018",
+              "date": "2018-01-02",
+              "url": "https://deis.minsal.cl/centrofic/"
+            },
+            "listing_sha256": "675b8517052fd571ac7caec5a5ebead4695b55b2a489998832a54dc6e76c3ea8",
+            "capture_evidence": {
+              "url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Orientaciones-de-Codificaci%C3%B3n-para-Capitulo-XXI-de-la-CIE-10.pdf",
+              "final_url": "https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/uploads/2013/08/Orientaciones-de-Codificaci%C3%B3n-para-Capitulo-XXI-de-la-CIE-10.pdf",
+              "sha256": "7ae8c085cb8fc65460ef1b1b07637f4449879c355e648c304b5488c7b542fd13",
+              "bytes": 605604,
+              "content_type": "application/pdf",
+              "captured_at": "2026-10-11T05:29:04.686323+00:00"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "ai_calls": 0,
+  "ingestion_state_mutated": false,
+  "operational_sources": 0
+}

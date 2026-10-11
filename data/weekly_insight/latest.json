@@ -25,7 +25,7 @@
       "provenance": {
         "discovered_by": "work3_adversarial_2026_10_11",
         "first_evidence_sha": "645781d2f310fea2bb6b6c7b5385a93ea538c879",
-        "core_pipeline_status": "DF pendiente BACKFILL sin fecha según auditoría Work3; no cierre de reparación",
+        "core_pipeline_status": "DF recovered publication validated in staging916fe2d; current publication stock retained; ongoing coverage degraded",
         "original_pages_checked": "2026-10-11",
         "independence": "DF y LT amplifican un mismo comunicado; UC confirma situación operativa. No tres hechos independientes."
       },
@@ -52,23 +52,35 @@
       "rank": 2
     },
     {
-      "title": "COMPIN: certificación de discapacidad y gestión del rezago",
-      "url": "https://www.minsal.cl/presidente-kast-minsal-y-desarrollo-social-lanzan-plan-que-moderniza-y-agiliza-certificacion-de-discapacidad/",
-      "event_date": "2026-10-06",
-      "freshness_anchor_date": "2026-10-06",
-      "score": 82.7,
+      "title": "Laboratorios: rezago regulatorio y competencia por ensayos clínicos",
+      "url": "https://www.df.cl/senal-df/el-deal/cae-inversion-de-laboratorios-internacionales-en-chile-ante-fuerte-rezago",
+      "event_date": "2026-10-09",
+      "freshness_anchor_date": "2026-10-09",
+      "score": 84.0,
       "dimensions": {
-        "financial_impact": 60,
-        "operational_impact": 90,
-        "regulatory_or_competitive_shift": 85,
+        "financial_impact": 90,
+        "operational_impact": 80,
+        "regulatory_or_competitive_shift": 90,
         "affected_scope": 90,
-        "urgency_time_horizon": 90,
+        "urgency_time_horizon": 75,
         "actionability": 85,
-        "evidence_strength": 85,
-        "novelty_non_repetition": 85
+        "evidence_strength": 70,
+        "novelty_non_repetition": 90
       },
-      "verdict": "PASS_SECOND_CHOICE",
-      "reason": "Fuente original contiene 96 mil solicitudes rezagadas, plataforma y contacto durante octubre. El resumen recuperado omitió estos datos. Vigilar ejecución y tiempos; no confundir rezago promedio de nueve meses con plazo para resolverlo.",
+      "verdict": "PASS_ALTERNATIVE_RECOVERED",
+      "reason": "Reporte DF verificado del9-oct: incumplimiento de hito Selfix del30-sep y rezago de registros/ensayos con implicaciones de acceso e inversión. 1.501 pendientes/413d son diagnóstico a febrero2026;112 vs147 ensayos y pérdida estimada US$20m corresponden a2025 y atribución CIF. No son mediciones nuevas de octubre ni causalidad certificada. Urgencia inferior a capacidad clínica suspendida y evidencia inferior a fuente pública primaria.",
+      "provenance": {
+        "source_kind": "high_trust_press_single_family",
+        "core_pipeline_status": "DF INTEGRATED_DEGRADED; publication accepted92, BACKFILL, publisher date verified",
+        "publication_date_candidates": [
+          "cxenseparse:recs:publishtime",
+          "jsonld:datePublished",
+          "visible:published_label"
+        ],
+        "primary_isp_independent_confirmation": "not_available; public-source ISP transport blocker retained",
+        "source_record": "data/state/pending_queue.json",
+        "publication_timestamp": "2026-10-09T13:22:21Z"
+      },
       "rank": 3
     }
   ],
@@ -167,5 +179,179 @@
       "decision_intelligence": "PASS: seguimiento de casos, tiempos, capacidad y reapertura"
     },
     "evidence_artifact": "data/audits/weekly_candidates_2026_10_11.json"
+  },
+  "integration_reassessment": {
+    "at": "2026-10-11T14:00:24.932943+00:00",
+    "staging_sha": "cb46eea750b65937d12a90bd30b3c6e8bef5da18",
+    "artifact": "data/audits/integration_20261011/weekly/reassessment.json",
+    "ranking_revised": true,
+    "insight_content_changed": false
+  },
+  "model": {
+    "mode": "senior_editorial_work_session",
+    "api_call": false,
+    "model": null,
+    "note": "Sesión Work2, evidencia Work3 contrastada directamente; no ejecución TERRA ni segundo revisor del contenido final."
+  },
+  "generation_status": "evidence_ready",
+  "generation_attempt": {
+    "status": "evidence_ready",
+    "top3": [
+      {
+        "rank": 1,
+        "score": 79.7,
+        "dimensions": {
+          "strategic_relevance": 79.34,
+          "commercial_hook": 83.65,
+          "decision_usefulness": 70.0,
+          "financial_impact": 92.0,
+          "operational_impact": 73.0,
+          "regulatory_or_competitive_shift": 92.0,
+          "affected_scope": 70.0,
+          "urgency_time_horizon": 70.0,
+          "actionability": 70.0,
+          "evidence_strength": 93.0,
+          "magnitude": 73.0,
+          "novelty_non_repetition": 100.0
+        },
+        "editorial_gate": {
+          "eligible": true,
+          "reason": "material_signal"
+        },
+        "title": "Cae inversión de laboratorios internacionales en Chile ante fuerte rezago en aprobaciones: se redirigen a Argentina y Brasil",
+        "source": "Diario Financiero",
+        "url": "https://www.df.cl/senal-df/el-deal/cae-inversion-de-laboratorios-internacionales-en-chile-ante-fuerte-rezago",
+        "event_date": "2026-10-09",
+        "what": "Diario Financiero reporta un rezago significativo del ISP en la aprobación de medicamentos: 1.501 solicitudes de registro estaban pendientes, con una espera promedio de 413 días; el 84% superaba el plazo legal y 106 casos llevaban más de dos años sin resolución. El artículo señala que solo el 30% de los registros aprobados entre 2015 y febrero de 2026 fue resuelto dentro del plazo, proporción que cayó a 9,9% en 2024. Entre los casos pendientes figura Selfix, genérico de semaglutida desarrollado por Laboratorio Chile y la argentina Elea. La demora también habría afectado la investigación clínica: los ensayos de laboratorios internacionales bajaron de 147 a 112 en un año, una caída cercana al 24%, con compañías que, según la Cámara de Innovación Farmacéutica, redirigieron estudios hacia Argentina y Brasil.",
+        "why": "El ISP enfrenta un cuello de botella que afecta a laboratorios nacionales e internacionales, retrasa la entrada de genéricos y medicamentos innovadores y puede limitar el acceso a tratamientos a menores precios, incluido el caso de Selfix. Para la industria de innovación, el artículo atribuye al rezago una pérdida estimada de US$20 millones en 2025 y un deterioro de la posición de Chile frente a Argentina y Brasil para captar ensayos clínicos. También compromete una actividad que genera inversión farmacéutica y ahorros estimados para el sistema público, por lo que merece seguimiento regulatorio y competitivo ahora."
+      },
+      {
+        "rank": 2,
+        "score": 78.33,
+        "dimensions": {
+          "strategic_relevance": 77.56,
+          "commercial_hook": 82.1,
+          "decision_usefulness": 70.0,
+          "financial_impact": 88.0,
+          "operational_impact": 72.0,
+          "regulatory_or_competitive_shift": 88.0,
+          "affected_scope": 70.0,
+          "urgency_time_horizon": 70.0,
+          "actionability": 70.0,
+          "evidence_strength": 93.0,
+          "magnitude": 72.0,
+          "novelty_non_repetition": 100.0
+        },
+        "editorial_gate": {
+          "eligible": true,
+          "reason": "material_signal"
+        },
+        "title": "Segunda clínica privada de Antofagasta cierra su unidad de maternidad desde 2025 por fuerte caída de natalidad",
+        "source": "Diario Financiero",
+        "url": "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas",
+        "event_date": "2026-10-05",
+        "what": "Diario Financiero reportó que Clínica Portada, prestador privado ligado a la Asociación Chilena de Seguridad (AChS), inició el cierre de su unidad de maternidad en Antofagasta como parte de una adecuación de su oferta asistencial. Es la segunda clínica de la ciudad que adopta esta medida en los últimos dos años, en un contexto de 6.252 nacimientos regionales en 2025, 19,5% menos que en 2019. La clínica mantendrá sus prestaciones ginecológicas y de salud de la mujer, y anunció un plan de transición para las pacientes vinculadas a maternidad.",
+        "why": "La decisión reduce la oferta privada de atención obstétrica y partos en Antofagasta, afectando directamente a Clínica Portada y a las pacientes que deberán ser orientadas hacia otras alternativas. El cambio merece atención porque ocurre junto con el cierre previo de maternidades privadas y una disminución sostenida de nacimientos, mientras el artículo señala que la mayoría de los nacimientos de madres extranjeras se atiende en el sistema público."
+      },
+      {
+        "rank": 3,
+        "score": 77.56,
+        "dimensions": {
+          "strategic_relevance": 76.58,
+          "commercial_hook": 81.15,
+          "decision_usefulness": 70.0,
+          "financial_impact": 86.0,
+          "operational_impact": 71.0,
+          "regulatory_or_competitive_shift": 86.0,
+          "affected_scope": 70.0,
+          "urgency_time_horizon": 70.0,
+          "actionability": 70.0,
+          "evidence_strength": 93.0,
+          "magnitude": 71.0,
+          "novelty_non_repetition": 100.0
+        },
+        "editorial_gate": {
+          "eligible": true,
+          "reason": "material_signal"
+        },
+        "title": "Después de Rotter & Krauss: los negocios que buscan los Yarur para Empresas SB",
+        "source": "Diario Financiero",
+        "url": "https://www.df.cl/df-mas/por-dentro/despues-de-rotter-krauss-los-negocios-que-buscan-los-yarur-para-empresas",
+        "event_date": "2026-10-10",
+        "what": "Diario Financiero reporta que Empresas SB, holding de la familia Yarur dueño de Salcobrand, Preunic y DBS, concretó la compra de Rotter & Krauss tras la aprobación de la Fiscalía Nacional Económica. La cadena óptica opera 104 tiendas y concentraba entre 30% y 40% de las ventas de productos ópticos en Chile, según los antecedentes citados por el medio. El grupo inició su integración y creó una gerencia de Nuevos Negocios para sumar al menos dos nuevas líneas en dos años, mientras evalúa rubros adyacentes como mascotas, veterinaria y ortopedia.",
+        "why": "La operación incorpora a un actor relevante de farmacia, salud y belleza a un negocio óptico de escala nacional, con potencial para generar eficiencias de compra, integración comercial y mayor diversificación de ingresos. También marca un cambio estratégico para Empresas SB: el holding busca crecer fuera de sus categorías tradicionales, aunque manteniendo negocios vinculados a atención y servicios al cliente. La eventual expansión hacia mascotas y otras categorías de salud podría aumentar la competencia y modificar las estrategias de actores establecidos; por ahora, esas iniciativas aparecen como evaluaciones descritas en el reportaje, no como anuncios confirmados."
+      }
+    ],
+    "evidence_package": {
+      "candidate_url": "https://www.df.cl/senal-df/el-deal/cae-inversion-de-laboratorios-internacionales-en-chile-ante-fuerte-rezago",
+      "related": [
+        {
+          "title": "Mariela Formas, vicepresidenta de la Cámara de Innovación Farmacéutica, y recortes a la Ley Ricarte Soto en Presupuesto: “Es un ahorro mal entendido”",
+          "source": "Diario Financiero",
+          "url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
+          "event_date": "2026-10-08",
+          "what": "Diario Financiero reportó que el Presupuesto 2027 contempla un alza de 4,7% para el Ministerio de Salud y de 4,8% para Fonasa, pero una disminución de 14,5% en el Fondo para Diagnósticos y Tratamientos de Alto Costo de la Ley Ricarte Soto. Mariela Formas, vicepresidenta ejecutiva de la Cámara de Innovación Farmacéutica, cuestionó que el fondo no refleje su gasto ejecutado y advirtió que su diseño limita la incorporación de nuevos medicamentos y terapias. También señaló que sigue pendiente el informe financiero de Dipres para un proyecto de modernización de la ley. La ministra de Salud, May Chomali, indicó que el recorte no dejaría actualmente a pacientes sin financiamiento para sus medicamentos.",
+          "why": "El cambio afecta la trayectoria de financiamiento de la cobertura pública para tratamientos de alto costo y la eventual incorporación de nuevas patologías y terapias. Para Fonasa, pacientes y proveedores farmacéuticos, la falta de expansión ordenada del fondo podría mantener presiones sobre el acceso y la judicialización, que la CIF estimó en torno a $98.000 millones en 2025. Merece atención ahora porque el presupuesto reduce este fondo mientras la modernización de la Ley Ricarte Soto continúa pendiente."
+        },
+        {
+          "title": "Medicamento para bajar de peso deberá advertir por riesgos de malnutrición para comercializarse en Chile",
+          "source": "Diario Financiero",
+          "url": "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion",
+          "event_date": "2026-10-06",
+          "what": "Diario Financiero reportó que el ISP instruyó que Mounjaro y todos los productos farmacéuticos con tirzepatida incorporen folletos para profesionales y pacientes con advertencias sobre casos de malnutrición, incluidos eventos graves y mortales asociados a un uso inadecuado. Los titulares deberán someter los nuevos folletos a aprobación del ISP dentro de un plazo máximo de 90 días hábiles; la exigencia también aplicará a registros sanitarios solicitados o concedidos posteriormente.",
+          "why": "La medida modifica las exigencias regulatorias de comercialización para Eli Lilly y cualquier otro titular de productos con tirzepatida en Chile. También obliga a reforzar la información sobre deficiencias nutricionales, bajo peso, soporte alimentario y eventual interrupción del tratamiento, lo que puede cambiar las advertencias entregadas a médicos y pacientes y exigir ajustes de cumplimiento en los productos afectados."
+        },
+        {
+          "title": "Cámara Baja despacha al Senado proyecto del PDG que compensa la compra de medicamentos y pañales",
+          "source": "Diario Financiero",
+          "url": "https://www.df.cl/economia-y-politica/congreso/camara-baja-despacha-al-senado-proyecto-del-pdg-que-compensa-la-compra-de",
+          "event_date": "2026-09-29",
+          "what": "Según Diario Financiero, la Cámara de Diputadas y Diputados aprobó en primer trámite el proyecto del PDG que crea una compensación fiscal para la compra de medicamentos y pañales, y lo despachó al Senado. La iniciativa contempla a personas dentro del 80% más vulnerable, con requisitos asociados al Registro Social de Hogares, recetas médicas, dependencia y discapacidad. El beneficio tendría un costo fiscal anual máximo de US$100 millones durante los primeros 12 meses, aunque el financiamiento aún no cuenta con acuerdo generalizado y el proyecto no es ley.",
+          "why": "El Senado deberá definir el avance de una medida que podría ampliar el apoyo público al gasto de hogares vulnerables en medicamentos y pañales, afectando el acceso de pacientes, cuidadores y personas con dependencia, además de comprometer recursos fiscales de hasta US$100 millones anuales. Merece atención ahora porque inicia su segundo trámite constitucional, pero su alcance y viabilidad todavía dependen de la discusión legislativa y presupuestaria."
+        },
+        {
+          "title": "Minsal informa que Chile erradicó la transmisión de rabia canina a humanos",
+          "source": "Ministerio de Salud",
+          "url": "https://www.minsal.cl/chile-se-convierte-en-el-primer-pais-de-sudamerica-en-erradicar-la-transmision-de-rabia-de-perros-a-humanos/",
+          "event_date": "2026-09-14",
+          "what": "El Ministerio de Salud informó que Chile erradicó la transmisión de rabia desde perros a humanos, convirtiéndose —según la publicación— en el primer país de Sudamérica en alcanzar este hito.",
+          "why": "Consolida un resultado de alcance nacional en control de zoonosis y elimina la transmisión canina de una enfermedad potencialmente mortal hacia las personas."
+        },
+        {
+          "title": "Mercado Libre y Cruz Verde dan el vamos a un acuerdo que marca un hito en la venta electrónica de medicamentos",
+          "source": "Diario Financiero",
+          "url": "https://www.df.cl/senal-df/el-deal/mercado-libre-y-cruz-verde-dan-el-vamos-a-un-acuerdo-que-marca-un-hito-en",
+          "event_date": "2026-08-28",
+          "what": "Según Diario Financiero, Mercado Libre y Cruz Verde cerraron una alianza para vender medicamentos de venta directa a través de mercadolibre.cl y la aplicación de Mercado Libre. El ISP autorizó la incorporación de 13 locales de Cruz Verde, ubicados en Santiago y regiones, que ofrecerán los productos y realizarán los despachos; Mercado Libre aportará la plataforma tecnológica, pagos y logística. El acuerdo se suma a las siete farmacias independientes que ya vendían medicamentos en el marketplace desde 2025.",
+          "why": "La alianza incorpora por primera vez a una de las grandes cadenas farmacéuticas del país al marketplace de mayor escala regional, abriendo un canal digital adicional para la venta de medicamentos sin receta. Afecta directamente a Cruz Verde, a las farmacias independientes y a otros actores del comercio farmacéutico, que deberán observar la evolución de este modelo bajo la regulación vigente: la venta electrónica es un canal accesorio de una farmacia física autorizada y con dirección técnica farmacéutica, no una operación exclusivamente en línea."
+        }
+      ],
+      "committee": {
+        "committee_version": "1.0",
+        "signal_type": "Noticias",
+        "members": [
+          "editorial_intelligence",
+          "health_business",
+          "evidence_research"
+        ],
+        "materiality_decision": "accept",
+        "public_title": "Cae inversión de laboratorios internacionales en Chile ante fuerte rezago en aprobaciones: se redirigen a Argentina y Brasil",
+        "what_happened": "Diario Financiero reporta un rezago significativo del ISP en la aprobación de medicamentos: 1.501 solicitudes de registro estaban pendientes, con una espera promedio de 413 días; el 84% superaba el plazo legal y 106 casos llevaban más de dos años sin resolución. El artículo señala que solo el 30% de los registros aprobados entre 2015 y febrero de 2026 fue resuelto dentro del plazo, proporción que cayó a 9,9% en 2024. Entre los casos pendientes figura Selfix, genérico de semaglutida desarrollado por Laboratorio Chile y la argentina Elea. La demora también habría afectado la investigación clínica: los ensayos de laboratorios internacionales bajaron de 147 a 112 en un año, una caída cercana al 24%, con compañías que, según la Cámara de Innovación Farmacéutica, redirigieron estudios hacia Argentina y Brasil.",
+        "why_it_matters": "El ISP enfrenta un cuello de botella que afecta a laboratorios nacionales e internacionales, retrasa la entrada de genéricos y medicamentos innovadores y puede limitar el acceso a tratamientos a menores precios, incluido el caso de Selfix. Para la industria de innovación, el artículo atribuye al rezago una pérdida estimada de US$20 millones en 2025 y un deterioro de la posición de Chile frente a Argentina y Brasil para captar ensayos clínicos. También compromete una actividad que genera inversión farmacéutica y ahorros estimados para el sistema público, por lo que merece seguimiento regulatorio y competitivo ahora.",
+        "evidence_map": [
+          {
+            "source": "Diario Financiero",
+            "url": "https://www.df.cl/senal-df/el-deal/cae-inversion-de-laboratorios-internacionales-en-chile-ante-fuerte-rezago"
+          }
+        ],
+        "uncertainties": [],
+        "value_level": null,
+        "publication_decision": "accept",
+        "critical_objections": [],
+        "verdict": "PASS",
+        "parser_or_research_debt_if_any": null
+      }
+    },
+    "weekly_insight": null
   }
 }

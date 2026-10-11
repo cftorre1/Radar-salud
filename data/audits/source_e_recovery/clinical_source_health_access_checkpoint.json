@@ -1,0 +1,49 @@
+{
+  "source": "clinicas_achs_salud",
+  "recovery_outcome": "OPERATIVE_DEGRADED",
+  "latest_runtime_unique_90": 5,
+  "previous_known_verified_90": 16,
+  "historical_items_without_current_refresh": 11,
+  "last_access_diagnostic": {
+    "run_id": "38124717508",
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38124717508",
+    "checked_at": "2026-10-11T08:29:04.162851+00:00",
+    "artifact": "data/audits/source_e_recovery/clinic_connectivity_actions/38124717508/report.json",
+    "artifact_sha256": "ed77ff2c80b327056ebdb283485d6dbdafcc94625ab59078ddadfe206983a391",
+    "publisher_count": 9,
+    "network_hub_count": 1,
+    "requests": 30,
+    "HTTP_0": 30,
+    "curl_exit_28": 30,
+    "origin_tls_observed": false,
+    "waf_observed": false,
+    "DNS_observed_not_selected": true,
+    "newsrooms_skipped_due_robots_unavailable": 9,
+    "latest_runtime_verified_90": 5,
+    "previous_dated_inventory_90": 16,
+    "previous_items_retained_without_current_refresh": 11,
+    "outcome": "partial_clinical_network_connect_timeout_on_two_actions_runs",
+    "source_wide_external_blocker_proven": false,
+    "production_updated": false
+  },
+  "three_health_mirrors_identical": true,
+  "unrelated_source_rows_unchanged": true,
+  "runtime_checked_at_preserved": "2026-10-11T07:58:45.954966+00:00",
+  "health_sha256": {
+    "data/source_health.json": "d5f65e9383a4882d74da8619c9e4cfe9876714a860bbfe94c68559867f8dbf5d",
+    "web/data/source_health.json": "d5640a72e3c17e0dfb64520de70dcdde13a179df6eb79e628bbd558a75e4dcf8",
+    "web/data/product.json": "b40de90d4c482cb0ee4f47c181fafa4c1f308deff676665225ad82c10f7f301d"
+  },
+  "regression_tests": {
+    "python_full": {
+      "passed": 731,
+      "failed_inherited": 1,
+      "skipped": 1
+    },
+    "clinical_directed": 15,
+    "node": 41,
+    "desktop_mobile": 4
+  },
+  "AI_calls": 0,
+  "next_action": "Freeze independent final replay and aggregate known/current inventories; update PR12/issue5/queue/PMO without claiming complete90 or source-wide blocker."
+}
