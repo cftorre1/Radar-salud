@@ -120,6 +120,7 @@ class DfHealthScout:
     SOURCE_SLUG="diario_financiero";SOURCE_NAME="Diario Financiero";SOURCE_TYPE="press_high_trust"
     PAGES=["https://www.df.cl/empresas/dfsalud","https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html"]
     def discover(self):
+        from .public_source_pipeline import _Meta, _date
         out=[];seen=set()
         for page in self.PAGES:
             try:html=fetch_html(page)
@@ -131,7 +132,18 @@ class DfHealthScout:
                 if u.netloc not in ("www.df.cl","df.cl"):continue
                 if any(x in path for x in ("/autor/","/suscripcion","/login","/tag/","/tax/")):continue
                 if path in ("/empresas/dfsalud","/empresas/salud","/noticias/site/tag/port/all/tagport_161_1.html") or path.count("/")<3 or url in seen:continue
-                seen.add(url);out.append(RawItem(self.SOURCE_SLUG,text,url,self.SOURCE_NAME,self.SOURCE_TYPE,raw_text="",metadata={"discovered_from":page}))
+                seen.add(url)
+                event_date=None;body="";description="";fetch_error=None
+                try:
+                    meta=_Meta();meta.feed(fetch_html(url));body=" ".join(meta.text);description=meta.description or ""
+                    event_date=_date(meta.published) or _date(body[:5000])
+                except Exception as exc:
+                    fetch_error=type(exc).__name__
+                metadata={"discovered_from":page}
+                if body:metadata["page_text"]=body[:18000]
+                if fetch_error:metadata["fetch_error"]=fetch_error
+                out.append(RawItem(self.SOURCE_SLUG,text,url,self.SOURCE_NAME,self.SOURCE_TYPE,
+                                   event_date=event_date,raw_text=description or body[:1800],metadata=metadata))
         print(f"DF discovered={len(out)}");return out
 
 
