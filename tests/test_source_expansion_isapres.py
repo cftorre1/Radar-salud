@@ -38,7 +38,7 @@ def test_native_official_registry_and_current_portfolio():
 def test_missing_code_or_changed_schema_does_not_succeed():
     with native() as archive:
         receipts=json.loads(archive.read('receipts.json'))['receipts']; r=next(r for r in receipts if '.xlsx' in r['url'])
-        b=load_workbook(io.BytesIO(archive.read(r['body_file'])))
+        b=load_workbook(io.BytesIO(archive.read(r['body_file'])), data_only=True)
     b['Agosto']['A8']=999
     out=io.BytesIO();b.save(out)
     with pytest.raises(ValueError,match='codes'):
