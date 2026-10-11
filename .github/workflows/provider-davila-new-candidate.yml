@@ -1,0 +1,45 @@
+name: Provider Davila newly recovered dated candidate
+on:
+  pull_request:
+    branches: [staging]
+    paths:
+      - 'scripts/provider_davila_new_candidate.py'
+      - '.github/workflows/provider-davila-new-candidate.yml'
+permissions:
+  contents: read
+concurrency:
+  group: provider-davila-new-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  assess:
+    if: startsWith(github.head_ref, 'codex/f-prestadores-gremio-') && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      RADAR_FAST_MODEL: gpt-5.6-luna
+      RADAR_DEEP_MODEL: gpt-5.6-terra
+      RADAR_FAST_PER_RUN: 1
+      RADAR_DEEP_PER_RUN: 0
+      RADAR_FAST_PER_MONTH: 1500
+      RADAR_DEEP_PER_MONTH: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest
+      - run: python -m pytest -q tests/test_provider_original_reader.py tests/test_provider_newsroom_repairs.py
+      - name: Assess only the newly discovered dated specialty addition
+        if: hashFiles('data/audits/provider_davila_new_candidate_receipt_2026_10_11.json') == ''
+        run: python scripts/provider_davila_new_candidate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: provider-davila-new-${{ github.event.pull_request.head.sha }}
+          path: |
+            data/audits/provider_davila_new_candidate_2026_10_11.json
+            data/ai_usage
+          retention-days: 30

@@ -384,7 +384,8 @@ def process_curated_beta_source(raw, cfg):
     if role.startswith('provider'):
         from .public_source_pipeline import _VisibleArticle
         try:
-            detail=fetch_html(raw.url)
+            from .provider_original_reader import read_provider_detail
+            detail=read_provider_detail(raw.url,fetch_html)
         except Exception as exc:raise DeferredProcessing(f'Provider detail unavailable: {raw.url}: {type(exc).__name__}') from exc
         stamp=_ProviderPublication(raw.url);stamp.feed(detail)
         verified,_=stamp.publication()
