@@ -807,6 +807,11 @@ def process_curated_beta_source(raw, cfg):
                    "la revisión sólo habilita análisis y no aprueba publicación. "
                    "Preserva período, métrica, condición de propuesta y atribución de prensa.")
     if raw.source_slug == "pulso_latercera":
+        kind += (f". Publicación original: {raw.event_date}; fecha de revisión Chile: {chile_today().isoformat()}. "
+                 "Puede ingresar por BACKFILL: describe lo observado o anunciado a la fecha de publicación, "
+                 "y conserva el período de datos. Una emergencia entonces en curso, un reglamento entonces "
+                 "pendiente o una medida temporal no acredita que ese estado siga vigente en la fecha de revisión. "
+                 "Usa atribución temporal explícita y no conviertas el reporte histórico en estado actual.")
         # Keep the source's complete primary text through the model boundary;
         # strategic facts can occur after the general news excerpt limit.
         text = body

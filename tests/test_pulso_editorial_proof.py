@@ -231,6 +231,9 @@ def test_pipeline_keeps_threshold72_original_date_press_maturity_and_single_asse
     monkeypatch.setattr(llm_analysis, "analyze_news", assess)
     row = beta_sources.process_curated_beta_source(raw, {})
     assert len(calls) == 1 and calls[0]["text"] == body and calls[0]["pulso_editorial_proof"] is True
+    assert "Publicación original: 2026-10-10" in calls[0]["kind"]
+    assert "fecha de revisión Chile:" in calls[0]["kind"] and "BACKFILL" in calls[0]["kind"]
+    assert "no acredita que ese estado siga vigente" in calls[0]["kind"]
     assert row["evidence_maturity"] == "media_reported" and row["publication_date"] == "2026-10-10"
     assert row["editorial_relevance"] == 72 and raw.metadata["editorial_assessment"]["threshold"] == 72
     assert raw.metadata["pulso_editorial_proof_validation"]["publication_approved"] is False

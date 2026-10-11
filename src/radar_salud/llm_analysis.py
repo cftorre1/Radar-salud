@@ -101,6 +101,21 @@ son fragmentos literales breves contenidos en sus correspondientes citas,
 que deben explicar el vínculo sanitario directo. Las citas de acción, consecuencia,
 estatus y novedad deben contener la frase completa relevante, sin puntos suspensivos
 ni paráfrasis. Para un scope excluido puedes dejar actor/action/consequence vacíos.
+CONTRATO LITERAL: copia actor (mínimo 3 caracteres) dentro de actor_quote (mínimo 8),
+action dentro de action_quote (mínimo 20), consequence dentro de consequence_quote
+(mínimo 20). No reformules esos tres valores: conserva exactamente las palabras,
+verbos, negaciones y cifras del fragmento citado. Las citas son UN solo fragmento
+CONTIGUO del contenido; nunca unas dos frases separadas, agregues conectores,
+comillas exteriores, puntos suspensivos o citas del título. event_status_quote
+requiere al menos 12 caracteres y novelty_quote/human_health_scope_quote al menos 20.
+Ejemplo de copia, sólo si el contenido realmente dijera «El Hospital del Sur
+suspendió las consultas durante dos días.»: actor="Hospital del Sur",
+actor_quote="El Hospital del Sur suspendió las consultas durante dos días.",
+action="suspendió las consultas", action_quote igual a esa frase completa,
+consequence="durante dos días", consequence_quote igual a esa frase completa.
+El ejemplo NO es evidencia del artículo y NO debes copiarlo como hecho.
+Elige una cita de scope que nombre atención clínica, enfermedad humana, cobertura,
+medicamentos o autoridad sanitaria concreta; «el sector» o «un equipo» no basta.
 Clasifica event_status: actual, proposal, plan, mixed_actual_and_future o
 historical_context. Conserva período y métrica de los datos, estado de investigación
 y condición de propuesta. Un anuncio, proyecto, plan o notificación FNE no es

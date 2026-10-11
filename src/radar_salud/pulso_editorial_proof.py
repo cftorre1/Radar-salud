@@ -11,7 +11,7 @@ import json
 import re
 import unicodedata
 
-VERSION = "pulso_editorial_proof_v4"
+VERSION = "pulso_editorial_proof_v5"
 SCOPES = ("human_health_specific", "incidental_health", "non_human_health", "marketing", "opinion")
 STATUSES = ("actual", "proposal", "plan", "mixed_actual_and_future", "historical_context")
 NOVELTY = ("new_material_information", "repetition_or_context", "uncertain")
@@ -28,9 +28,11 @@ ACTUAL_BUDGET_LEGISLATIVE_STEP = re.compile(
     r"(?:fue|ha sido)\s+(?:aprobado|promulgado)\b", re.I)
 FUTURE_COPY = re.compile(r"\b(?:propuest[oa]s?|propon\w*|proyecto|plan(?:ea|eado)?|prev[eé]|"
                          r"previst[oa]s?|proyect\w*|habr[aá]|permitir[aáí]\w*|"
-                         r"podr[ií]\w*|puede\w*|ser[aá]n?|futur[oa]s?|de aprobarse|"
+                         r"podr(?:[aá]n?|[ií]\w*)|deber[aá]n?|eventual(?:es)?|puede\w*|ser[aá]n?|futur[oa]s?|de aprobarse|"
                          r"incorporar[aá]n?|alcanzar[aá]n?|implementar[aá]n?|ampliar[aá]n?|"
-                         r"si se (?:aprueba|implementa|concreta))\b", re.I)
+                         r"si se (?:aprueba|implementa|concreta)|"
+                         r"a[uú]n (?:est[aá] )?en fase de coordinaci[oó]n|"
+                         r"todav[ií]a no constituye capacidad disponible)\b", re.I)
 ACHIEVED_COPY = re.compile(r"\b(?:ya (?:se )?(?:alcanz\w*|incorpor\w*|aument\w*|ampli\w*|"
                            r"implement\w*|ejecut\w*|concret\w*)|"
                            r"se ejecut[oó]|termin[oó])\b", re.I)
@@ -38,22 +40,42 @@ NON_HUMAN_HEALTH = re.compile(
     r"\b(?:salud|sanidad)\s+(?:animal(?:\s+o\s+vegetal)?|vegetal|veterinari[ao])\b|"
     r"\b(?:cl[ií]nic\w*|hospital\w*|medicin\w*|vacun\w*)\s+veterinari\w*", re.I)
 
+# These clinical terms are present in exact quotes from the first real model
+# cohort but absent from the broader discovery anchor. Keep this check local to
+# editorial proof; generic sector/team/demographic wording is insufficient.
+HUMAN_CLINICAL_SCOPE = re.compile(
+    r"\bminsal\b|\bcolmed\b|\bred asistencial\b|\boncol[oó]g\w*|"
+    r"\bconsultas? de especialidad\b|\bcirug[ií]as? est[eé]ticas?\b|"
+    r"\benfermedades? (?:catastr[oó]ficas?|no transmisibles?)\b|"
+    r"\b(?:listeriosis|sepsis|meningitis|meningoencefalitis|virus respiratorios)\b|"
+    r"\bconsumo humano\b|\bm[eé]dicos\b[^.;!?]{0,180}\binterrupci[oó]n del embarazo\b", re.I)
+
+
+def human_health_scope_anchor(quote):
+    from .pulso_source import health_anchor
+    return health_anchor(quote) or bool(HUMAN_CLINICAL_SCOPE.search(quote))
+
 PROOF_SCHEMA = {
     "type": "object", "properties": {
         "scope_decision": {"type": "string", "enum": list(SCOPES)},
         "scope_reason": {"type": "string"},
-        "human_health_scope_quote": {"type": "string"},
-        **{name: {"type": "string"} for name in (
-            "actor", "actor_quote", "action", "action_quote", "consequence", "consequence_quote")},
+        "human_health_scope_quote": {"type": "string", "description": "Copia un fragmento CONTIGUO literal del contenido (mínimo 20 caracteres) que nombre el vínculo directo de salud humana; no una frase genérica de sector/equipo."},
+        **{name: {"type": "string", "description":
+                 ("Fragmento breve EXACTO copiado dentro de " + name + "_quote (mínimo 3 caracteres). No lo parafrasees, no agregues actores ni cambies verbos o cifras.")}
+           for name in ("actor", "action", "consequence")},
+        **{name + "_quote": {"type": "string", "description":
+                 ("Copia UN fragmento CONTIGUO literal del contenido, mínimo " + str(minimum) + " caracteres, que incluya el valor de " + name + ". Sin comillas exteriores añadidas, elipsis ni unión de fragmentos separados.")}
+           for name, minimum in (("actor", 8), ("action", 20), ("consequence", 20))},
         "event_status": {"type": "string", "enum": list(STATUSES)},
-        "event_status_quote": {"type": "string"},
+        "event_status_quote": {"type": "string", "description": "Cita CONTIGUA literal del contenido, mínimo 12 caracteres. Demuestra estado real/propuesta/plan sin unir frases separadas."},
         "novelty_decision": {"type": "string", "enum": list(NOVELTY)},
         "novelty_reason": {"type": "string"},
-        "novelty_quote": {"type": "string"},
+        "novelty_quote": {"type": "string", "description": "Cita CONTIGUA literal del contenido, mínimo 20 caracteres, que sustente información material nueva; sin elipsis ni paráfrasis."},
         "future_claims": {"type": "array", "items": {
             "type": "object", "properties": {
                 "summary_field": {"type": "string", "enum": ["what_happened", "why_it_matters"]},
-                "summary_quote": {"type": "string"}, "source_quote": {"type": "string"}},
+                "summary_quote": {"type": "string", "description": "Copia TODO el campo what_happened o why_it_matters correspondiente, idéntico, incluyendo todas sus frases. Ambos campos deben distinguir explícitamente futuro/condicional de logros reales."},
+                "source_quote": {"type": "string", "description": "Cita CONTIGUA literal del contenido, mínimo 20 caracteres, que sustenta la medida futura o condicional."}},
             "required": ["summary_field", "summary_quote", "source_quote"], "additionalProperties": False}},
     }, "additionalProperties": False,
 }
@@ -62,6 +84,27 @@ PROOF_SCHEMA["required"] = list(PROOF_SCHEMA["properties"])
 
 def normalized(value):
     return re.sub(r"\s+", " ", unicodedata.normalize("NFKC", value)).strip()
+
+
+def literal_quote_form(value):
+    """Equivalent typography only; retain words, numbers and all punctuation."""
+    return normalized(value).translate(str.maketrans({"“": '"', "”": '"', "‘": "'", "’": "'"})).casefold()
+
+
+def literal_quote_matches(value, body, minimum=20):
+    if not isinstance(value, str):
+        return False
+    quote = literal_quote_form(value)
+    if len(quote) < minimum:
+        return False
+    primary = literal_quote_form(body)
+    if quote in primary:
+        return True
+    # A model-added quotation wrapper has no factual content. Removing exactly
+    # one matching exterior pair still requires the complete inner contiguous
+    # sequence, including punctuation and any negations/numbers, in the source.
+    return (len(quote) >= minimum + 2 and quote[0] == quote[-1] and quote[0] in ('"', "'")
+            and quote[1:-1] in primary)
 
 
 def validate_pulso_editorial_proof(analysis, analysis_text):
@@ -97,27 +140,27 @@ def validate_pulso_editorial_proof(analysis, analysis_text):
         return verdict("deferred", "pulso_editorial_scope_reason_missing")
     body = normalized(analysis_text)
     def quote_matches(value, minimum=20):
-        return isinstance(value, str) and len(normalized(value)) >= minimum and normalized(value) in body
+        return literal_quote_matches(value, body, minimum)
     if not quote_matches(proof["human_health_scope_quote"]):
         return verdict("deferred", "pulso_editorial_scope_quote_not_in_input")
     if proof["scope_decision"] != "human_health_specific":
         return verdict("rejected", "pulso_editorial_" + proof["scope_decision"])
-    from .pulso_source import health_anchor
     scope_quote = proof["human_health_scope_quote"]
     # A generic discovery anchor deliberately admits animal/plant references.
     # They cannot substantiate a human-health editorial assertion on their own.
     # Preserve any independent human-health evidence in the same primary quote,
     # and defer contradictory model labels rather than infer a rejection.
+    from .pulso_source import health_anchor
     if (NON_HUMAN_HEALTH.search(scope_quote)
             and not health_anchor(NON_HUMAN_HEALTH.sub("", scope_quote))):
         return verdict("deferred", "pulso_editorial_human_scope_conflicts_with_non_human_quote")
-    if not health_anchor(scope_quote):
+    if not human_health_scope_anchor(scope_quote):
         return verdict("deferred", "pulso_editorial_scope_not_grounded")
     for field, minimum in (("actor", 8), ("action", 20), ("consequence", 20)):
         quote = proof[field + "_quote"]
         value = proof[field]
         if (not quote_matches(quote, minimum) or len(value.strip()) < 3
-                or normalized(value).casefold() not in normalized(quote).casefold()):
+                or literal_quote_form(value) not in literal_quote_form(quote)):
             return verdict("deferred", "pulso_editorial_" + field + "_not_grounded")
     if (not quote_matches(proof["event_status_quote"], 12)
             or not quote_matches(proof["novelty_quote"])
