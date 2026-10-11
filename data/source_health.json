@@ -554,23 +554,35 @@
       "editorial_outcome": "not_evaluated"
     },
     "clinicas_chile": {
-      "name": "Clinicas Chile",
+      "name": "Clínicas de Chile A.G.",
       "checked_at": "2026-10-10T22:24:44.405016+00:00",
-      "last_signal_at": "2018-02-01",
+      "last_signal_at": null,
       "discovered": 29,
       "new": 0,
       "published": 0,
       "live_pending": 0,
-      "backfill_pending": 19,
-      "pending": 19,
+      "backfill_pending": 22,
+      "pending": 22,
       "deferred": 0,
-      "rejected": 5,
-      "status": "ok",
+      "rejected": 4,
+      "status": "warning",
       "error": null,
       "technical_status": "ok",
-      "coverage_status": "observed",
-      "content_freshness": "older",
-      "editorial_outcome": "pending"
+      "coverage_status": "unverified",
+      "content_freshness": "unknown",
+      "editorial_outcome": "pending",
+      "provider_audit": {
+        "as_of": "2026-10-11",
+        "path": "data/audits/providers_2026_10_11/clinicas_chile.json",
+        "blockers": [
+          "runtime_original_http_CONNECT_403",
+          "library_publication_dates_unverified",
+          "library_pagination_memorias_2_3_estudios_2_3_documentos_2_3_4_unavailable",
+          "assessment_pending_existing_gates"
+        ],
+        "latest_verified_original_at": "2026-10-02",
+        "recovered_pending": 1
+      }
     }
   },
   "generated_at": "2026-10-10T22:25:43.933396+00:00"

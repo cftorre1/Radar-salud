@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "slug": "clinicas_chile",
+  "as_of": "2026-10-11",
+  "timezone": "America/Santiago",
+  "window_rule": "0 <= as_of - verified publication_date <= 30/90 days inclusive; unknown date is null, never zero",
+  "audit_path": "data/audits/providers_2026_10_11/clinicas_chile.json",
+  "status": "reconciled_with_exact_blockers",
+  "coverage": "news_visible_30_and_90_reconciled_libraries_blocked",
+  "verification_method": "Original-site web reader on 2026-10-11; local collector transport separately blocked. No full-90 claim where pagination/date inventory is incomplete.",
+  "source_quality_gate": "passed",
+  "surfaces": [
+    {
+      "url": "https://www.clinicasdechile.cl/noticias/",
+      "result": "6 cards in descending dates: 2026-10-02, 08-28, 07-24, then 06-23/19/09. Visible 90-day boundary reached."
+    },
+    {
+      "url": "https://www.clinicasdechile.cl/knowledgebase_category/memorias/",
+      "result": "6 first-page downloads incl. Memoria2025; pages2–3 inaccessible through web tool; no release dates shown."
+    },
+    {
+      "url": "https://www.clinicasdechile.cl/knowledgebase_category/estudios-y-analisis/",
+      "result": "6 first-page downloads incl. Dimensionamiento2024; pages2–3 inaccessible; dataset years are not release dates."
+    },
+    {
+      "url": "https://www.clinicasdechile.cl/knowledgebase_category/documentos/",
+      "result": "6 first-page downloads; pages2–4 inaccessible; no exact release dates shown."
+    }
+  ],
+  "blockers": [
+    "runtime_original_http_CONNECT_403",
+    "library_publication_dates_unverified",
+    "library_pagination_memorias_2_3_estudios_2_3_documentos_2_3_4_unavailable",
+    "assessment_pending_existing_gates"
+  ],
+  "original_items": [
+    {
+      "title": "Clínicas de Chile y CENS realizan jornada sobre el nuevo marco de la salud digital en Chile",
+      "url": "https://www.clinicasdechile.cl/noticias/clinicas-de-chile-y-cens-realizan-jornada-sobre-el-nuevo-marco-de-la-salud-digital-en-chile/",
+      "publication_date": "2026-10-02",
+      "date_evidence": "dated_news_listing",
+      "materiality": "candidate",
+      "recover": true,
+      "evidence": "Gremio/CENS analiza interoperabilidad, protección de datos y ciberseguridad. Candidato sectorial; un seminario no crea normativa vinculante. Distinguir reglamento pendiente de ley vigente."
+    },
+    {
+      "title": "Memoria Clínicas de Chile 2025",
+      "url": "https://www.clinicasdechile.cl/wp-content/uploads/2026/03/Memoria-clinicas-2025-final.pdf",
+      "publication_date": null,
+      "date_evidence": "unverified",
+      "materiality": "document_date_blocked",
+      "recover": false,
+      "evidence": "52 páginas. 2025 es período y 2026/03 es ruta de carga, ninguno es publicación exacta.",
+      "channel": "Memorias"
+    },
+    {
+      "title": "Dimensionamiento del sector salud en Chile: cifras a 2024",
+      "url": "https://www.clinicasdechile.cl/wp-content/uploads/2025/12/Dimensionamiento-del-Sector-Salud-en-Chile-%E2%80%93-Cifras-a-2024.pdf",
+      "publication_date": null,
+      "date_evidence": "unverified",
+      "materiality": "document_date_blocked",
+      "recover": false,
+      "evidence": "181 páginas. Período 2024 y carpeta 2025/12 no verifican publicación.",
+      "channel": "Estudios y análisis"
+    },
+    {
+      "title": "Memoria 2021",
+      "url": "https://www.clinicasdechile.cl/wp-content/uploads/2022/04/Memoria-2021-IMPRENTA_compressed.pdf",
+      "publication_date": null,
+      "date_evidence": "unverified",
+      "materiality": "quarantine",
+      "recover": false,
+      "evidence": "Historia asignaba 2004-08-31 tomada del contenido. Preservar evidencia histórica, quitar fecha y visibilidad hasta verificar release.",
+      "channel": "Memorias"
+    },
+    {
+      "title": "Informe MLE 2019",
+      "url": "https://www.clinicasdechile.cl/wp-content/uploads/2020/05/INFORME_final.pdf",
+      "publication_date": null,
+      "date_evidence": "unverified",
+      "materiality": "quarantine",
+      "recover": false,
+      "evidence": "Historia asignaba 2018-02-01 tomada del contenido. No equivale a publicación; queda pendiente de fecha.",
+      "channel": "Documentos"
+    }
+  ],
+  "notes": [
+    "Noticias: opinión de envejecimiento (28 agosto) y encuentro de sostenibilidad (24 julio) sin cambio verificable no se promueven; resto ya fuera de 90 días.",
+    "Se revisan las cuatro superficies; descargas sólo de host original, sin menús. Gate70 noticias/75 documentos intacto. No se sustituyen fechas de publicación por años de informe o citas legales."
+  ],
+  "quarantine_unverified_dates": [
+    "https://www.clinicasdechile.cl/wp-content/uploads/2022/04/Memoria-2021-IMPRENTA_compressed.pdf",
+    "https://www.clinicasdechile.cl/wp-content/uploads/2020/05/INFORME_final.pdf"
+  ],
+  "recovery_checkpoint": {
+    "at": "2026-10-11T04:41:25.006221+00:00",
+    "changes": [
+      {
+        "key": "80e59da7785740c1cdc99d3b38b100210a2b9fb7fec685e918cbd05fdec7d605",
+        "url": "https://www.clinicasdechile.cl/noticias/clinicas-de-chile-y-cens-realizan-jornada-sobre-el-nuevo-marco-de-la-salud-digital-en-chile/",
+        "action": "refresh_pending"
+      }
+    ]
+  },
+  "reconciliation": {
+    "scope": "verified original items; lower bound where inventory is blocked",
+    "material_candidates_30_days": 1,
+    "material_candidates_90_days": 1,
+    "publication_date_unknown": 4,
+    "queue_counts": {
+      "live_pending": 0,
+      "backfill_pending": 22,
+      "rejected": 4,
+      "published": 0
+    },
+    "items": [
+      {
+        "url": "https://www.clinicasdechile.cl/noticias/clinicas-de-chile-y-cens-realizan-jornada-sobre-el-nuevo-marco-de-la-salud-digital-en-chile/",
+        "publication_date": "2026-10-02",
+        "in_30_days": true,
+        "in_90_days": true,
+        "materiality": "candidate",
+        "queue": [
+          {
+            "key": "80e59da7785740c1cdc99d3b38b100210a2b9fb7fec685e918cbd05fdec7d605",
+            "status": "pending",
+            "reason": "audited_recovery_pending_assessment",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      },
+      {
+        "url": "https://www.clinicasdechile.cl/wp-content/uploads/2026/03/Memoria-clinicas-2025-final.pdf",
+        "publication_date": null,
+        "in_30_days": null,
+        "in_90_days": null,
+        "materiality": "document_date_blocked",
+        "queue": [
+          {
+            "key": "3d08483661d3e13f2fa0347a6437ea7a12385ba2a8a5129213fc353fd17dbd6e",
+            "status": "retry",
+            "reason": "budget_or_analysis_deferred",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      },
+      {
+        "url": "https://www.clinicasdechile.cl/wp-content/uploads/2025/12/Dimensionamiento-del-Sector-Salud-en-Chile-%E2%80%93-Cifras-a-2024.pdf",
+        "publication_date": null,
+        "in_30_days": null,
+        "in_90_days": null,
+        "materiality": "document_date_blocked",
+        "queue": [],
+        "history_count": 0,
+        "visible_count": 0
+      },
+      {
+        "url": "https://www.clinicasdechile.cl/wp-content/uploads/2022/04/Memoria-2021-IMPRENTA_compressed.pdf",
+        "publication_date": null,
+        "in_30_days": null,
+        "in_90_days": null,
+        "materiality": "quarantine",
+        "queue": [
+          {
+            "key": "89715197ee0f5e9dad3d0f5d0d6c8c1dc1ab32068f929cda36a514586de307b7",
+            "status": "retry",
+            "reason": "unverified_publication_date",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      },
+      {
+        "url": "https://www.clinicasdechile.cl/wp-content/uploads/2020/05/INFORME_final.pdf",
+        "publication_date": null,
+        "in_30_days": null,
+        "in_90_days": null,
+        "materiality": "quarantine",
+        "queue": [
+          {
+            "key": "92ea1ce834d278321dd5b56da1306b1c62582fab25b7a97493226f90384ca0ae",
+            "status": "retry",
+            "reason": "unverified_publication_date",
+            "lane": "BACKFILL"
+          }
+        ],
+        "history_count": 0,
+        "visible_count": 0
+      }
+    ]
+  }
+}
