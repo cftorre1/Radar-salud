@@ -185,14 +185,19 @@ def reviewed_primary_act(raw):
         return raw
     metadata = {**raw.metadata, 'primary_document_review': review,
         'observed_listing_publication_date': raw.metadata.get('publication_date'),
+        'observed_listing_regulated_entity':raw.metadata.get('regulated_entity'),
+        'observed_listing_summary':raw.raw_text,
         'observed_date_conflicts': raw.metadata.get('date_conflicts', []),
-        'publication_date': None, 'emission_date': review['emission_date'],
-        'event_date_basis': 'verified_primary_emission', 'date_conflicts': [],
-        'date_reconciliation': 'primary_emission_verified; listing_publication_unreliable',
+        'publication_date': None if review.get('publication_unreliable', True) else raw.metadata.get('publication_date'), 'emission_date': review['emission_date'],
+        'event_date_basis': 'verified_primary_emission' if review.get('emission_date') else 'publication', 'date_conflicts': [],
+        'date_reconciliation': 'primary_emission_verified; listing_publication_unreliable' if review.get('publication_unreliable',True) else 'primary_actor_effect_verified',
         'regulated_entity': review['regulated_entity'], 'actor_evidence': 'verified_primary_document',
         'sanction_amount': review['sanction_amount'], 'sanction_unit': review['sanction_unit'],
         'fact_date': review.get('fact_date'), 'validity_text': review.get('validity_text')}
-    return replace(raw, event_date=review['emission_date'], metadata=metadata)
+    for field in ('fiscalization_topic','related_entities','replaced_fine_amount','replaced_fine_unit','fact_period','key_points','why_it_matters'):
+        if field in review:metadata[field]=review[field]
+    metadata['sanction_effect']=review.get('effect',metadata.get('sanction_effect'))
+    return replace(raw, event_date=review.get('emission_date') or raw.event_date, raw_text=review.get('what_happened') or raw.raw_text, metadata=metadata)
 
 
 def process_fiscalizacion(raw,cfg):
@@ -220,12 +225,12 @@ def process_fiscalizacion(raw,cfg):
         why = (f"{entity}: la resolución {'modifica una sanción anterior' if effect in ('amendment', 'revocation') else 'documenta una medida de cumplimiento'} "
                f"en {subject}. Permite revisar el incumplimiento y el efecto exacto del acto en la fuente oficial.")
         raw.metadata.update({"what_happened":raw.raw_text or raw.title,"why_it_matters":why,
-          "signal_types":["Fiscalización"],"scopes":[scope],"event_type":{"amendment":"SANCTION_AMENDMENT","revocation":"SANCTION_REVOCATION"}.get(effect,"SANCTION"),
+          "signal_types":["Fiscalización"],"scopes":[scope],"event_type":{"amendment":"SANCTION_AMENDMENT","revocation":"SANCTION_REVOCATION","fine_replaced_by_registration_cancellation":"SANCTION_SUBSTITUTION","registration_cancellation":"REGISTRATION_CANCELLATION","warning":"SANCTION_WARNING"}.get(effect,"SANCTION"),
           "watch_tags":["fiscalización","sanción",scope.lower()]+([topic.lower()] if topic else []),
           "scores":{"economic":65 if amount else 50,"regulatory":88,"scope":72,"novelty":70,"actionability":84}})
     else:
         raw.metadata.update({"what_happened":raw.raw_text or raw.title,
-          "why_it_matters":"Muestra qué materias, procesos o actores está revisando la Superintendencia y qué hallazgos está observando, una señal útil para anticipar focos de cumplimiento.",
+          "why_it_matters":raw.metadata.get('why_it_matters') or "Muestra qué materias, procesos o actores está revisando la Superintendencia y qué hallazgos está observando, una señal útil para anticipar focos de cumplimiento.",
           "signal_types":["Fiscalización"],"scopes":[scope],"event_type":"FISCALIZATION_REPORT",
           "watch_tags":["fiscalización","informe",scope.lower()],
           "scores":{"economic":55,"regulatory":90,"scope":78,"novelty":75,"actionability":88}})
@@ -235,7 +240,7 @@ def process_fiscalizacion(raw,cfg):
     row.update(publication_date=raw.metadata.get("publication_date"), emission_date=raw.metadata.get("emission_date"),
         event_date_basis=raw.metadata.get("event_date_basis"), date_conflicts=raw.metadata.get("date_conflicts", []),
         sanction_effect=raw.metadata.get("sanction_effect"),actor_evidence=raw.metadata.get("actor_evidence"))
-    for field in ('observed_listing_publication_date', 'observed_date_conflicts', 'date_reconciliation', 'primary_document_review', 'fact_date', 'validity_text'):
+    for field in ('observed_listing_publication_date', 'observed_listing_regulated_entity','observed_listing_summary','observed_date_conflicts', 'date_reconciliation', 'primary_document_review', 'fact_date', 'fact_period','validity_text','related_entities','replaced_fine_amount','replaced_fine_unit'):
         if field in raw.metadata:
             row[field] = raw.metadata[field]
     row["fiscalization_topic"]=topic;row["source_documents"]=raw.metadata.get("attachments",[])

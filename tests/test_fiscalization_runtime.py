@@ -61,3 +61,27 @@ def test_official_news_needs_specific_primary_review_even_with_fiscalization_in_
     row=process_enforcement_news(raw,{'base_confidence':100})
     assert row['event_type']=='ENFORCEMENT_BALANCE'
     assert 'no se suman' in row['why_it_matters']
+
+
+def test_primary_agent_review_corrects_misassigned_actor_and_preserves_substitution():
+    import json
+    from radar_salud.models import RawItem
+    from radar_salud.superintendencia_fiscalizacion import process_fiscalizacion
+    reviews=json.loads(Path('config/fiscalization_editorial_reviews.json').read_text())['primary_document_reviews']
+    for number in ('11027','11076'):
+        url=next(url for url in reviews if f'if-n{number}-' in url)
+        review=reviews[url]
+        raw=RawItem('superintendencia_fiscalizacion','Resolución '+number,url,'SIS','official',review['emission_date'],
+            raw_text='Resumen del listado',metadata={'fiscalization_kind':'sanction','scope':'Agentes de ventas',
+                'emission_date':review['emission_date'],'publication_date':review['observed_listing_publication_date'],
+                'regulated_entity':'Actor incorrecto del listado','attachments':[{'url':review['primary_document_url']}],
+                'sanction_effect':'revocation'})
+        row=process_fiscalizacion(raw,{'base_confidence':100})
+        assert row['observed_listing_regulated_entity']=='Actor incorrecto del listado'
+        assert row['publication_date']==review['observed_listing_publication_date']
+        if number=='11027':
+            assert row['regulated_entity']=='Doris del Pilar Alcántara Poblete'
+        else:
+            assert row['event_type']=='SANCTION_SUBSTITUTION'
+            assert row['sanction_amount'] is None and row['replaced_fine_amount']==5
+            assert 'cancelación del registro' in row['what_happened']
