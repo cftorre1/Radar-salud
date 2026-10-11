@@ -44,3 +44,19 @@ def reviewed_weekly(payload, as_of=None):
     if not isinstance(refs, list) or not refs or not all(isinstance(x, str) and x.startswith("https://") for x in refs):
         return None
     return weekly
+
+def reconcile_weekly_publication(generated, approved, as_of=None):
+    """Keep one reviewed publication version; retain new attempts separately."""
+    from copy import deepcopy
+    attempt=deepcopy(generated)
+    current=reviewed_weekly(approved, as_of)
+    if current:
+        result=deepcopy(approved)
+        result.update(status="pass",weekly_insight=deepcopy(current),
+                      model=deepcopy(approved.get("model") or current.get("model_trace")))
+    else:
+        result={"status":"hidden_fail_closed","weekly_insight":None,"top3":[],"model":None,
+                "audit":{"verdict":"HOLD","editorial_business_review_pass":False,
+                         "reason":"no_fresh_reviewed_publication"}}
+    result.update(generation_status=attempt.get("status"),generation_attempt=attempt)
+    return result
