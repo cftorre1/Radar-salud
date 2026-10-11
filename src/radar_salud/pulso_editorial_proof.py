@@ -48,7 +48,10 @@ ACHIEVED_COPY = re.compile(r"\b(?:ya (?:se )?(?:alcanz\w*|incorpor\w*|aument\w*|
                            r"se ejecut[oó]|termin[oó])\b", re.I)
 NON_HUMAN_HEALTH = re.compile(
     r"\b(?:salud|sanidad)\s+(?:animal(?:\s+o\s+vegetal)?|vegetal|veterinari[ao])\b|"
-    r"\b(?:cl[ií]nic\w*|hospital\w*|medicin\w*|vacun\w*)\s+veterinari\w*", re.I)
+    r"\b(?:cl[ií]nic\w*|hospital\w*|medicin\w*|vacun\w*)\s+veterinari\w*|"
+    r"\batenci[oó]n m[eé]dica (?:de|a|para) (?:los |las )?(?:animales|mascotas)\b|"
+    r"\bpacientes? (?:animales|veterinari\w*)\b|"
+    r"\b(?:procedimientos? cl[ií]nicos?|ex[aá]menes? de diagn[oó]stico) veterinari\w*", re.I)
 
 # These clinical terms are present in exact quotes from the first real model
 # cohort but absent from the broader discovery anchor. Keep this check local to
@@ -57,8 +60,13 @@ HUMAN_CLINICAL_SCOPE = re.compile(
     r"\bminsal\b|\bcolmed\b|\bred asistencial\b|\boncol[oó]g\w*|"
     r"\bconsultas? de especialidad\b|\bcirug[ií]as? est[eé]ticas?\b|"
     r"\benfermedades? (?:catastr[oó]ficas?|no transmisibles?)\b|"
-    r"\b(?:listeriosis|sepsis|meningitis|meningoencefalitis|virus respiratorios)\b|"
-    r"\bconsumo humano\b|\bm[eé]dicos\b[^.;!?]{0,180}\binterrupci[oó]n del embarazo\b", re.I)
+    r"\b(?:listeriosis|sepsis|meningitis|meningoencefalitis|virus respiratorios?)\b|"
+    r"\bconsumo humano\b|\bm[eé]dicos\b[^.;!?]{0,180}\binterrupci[oó]n del embarazo\b|"
+    r"\batenci[oó]n (?:de (?:los )?pacientes|m[eé]dica)\b|"
+    r"\bprocedimientos? cl[ií]nicos?\b|\bex[aá]menes? de diagn[oó]stico\b|"
+    r"\bacceder a una consulta, procedimiento o tratamiento\b|"
+    r"\balerta alimentaria\b[^.;!?]{0,120}\blisteria monocytogenes\b|"
+    r"\bpersona presenta s[ií]ntomas\b[^.;!?]{0,180}\bsospechar y testear\b", re.I)
 
 
 def human_health_scope_anchor(quote):
