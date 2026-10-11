@@ -37,7 +37,7 @@
     "candidate_only_failures": [],
     "all_six_remaining_failures_shared_with_baseline": true,
     "evidence": "browser-comparison.json",
-    "runner": "Native Chromium 147 via Playwright; executablePath needed because bundled browser download denied403"
+    "runner": "Chromium 154.0.8037.57 on Debian13 via Playwright; native executable used because bundled-browser download denied403"
   },
   "deterministic_reviewer": {
     "checks": {
@@ -87,9 +87,11 @@
     ]
   },
   "CI": {
-    "provider_no_paid_replay_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38114186014",
-    "critical_QA_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38113838471",
-    "critical_QA_outcome": "FAIL same Normativa cardinality; staging/reviewer jobs skipped",
+    "verified_head_sha": "c7a0f9fe97b4b893663b46453988091f9e50af86",
+    "provider_no_paid_replay_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38114618371",
+    "provider_checkpoint_status": "PASS; original/repair assessment steps skipped; durable verification passed with zero paid calls",
+    "critical_QA_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38114618380",
+    "critical_QA_outcome": "FAIL same Normativa cardinality11>=12;291 passed,1failed,1skip; staging/reviewer jobs skipped",
     "promotion": "none"
   },
   "independent_reviewer": {

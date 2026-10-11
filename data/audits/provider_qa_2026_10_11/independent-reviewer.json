@@ -5,13 +5,23 @@
   "scope_verdict": "PASS",
   "global_acceptance": "BLOCKED",
   "open_scoped_findings": [],
-  "tests_executed": {"focal_passed": 46, "failed": 0, "durable_verification": "PASS", "paid_AI_calls": 0},
+  "tests_executed": {
+    "focal_passed": 46,
+    "failed": 0,
+    "durable_verification": "PASS",
+    "paid_AI_calls": 0
+  },
   "resolved_finding": {
     "severity": "P2",
     "reported_at_sha": "93c8f9705ed5716d244050c4838ee0e382cca7bb",
     "fixed_at_commit": "34f1e2d",
     "description": "Preserve Farma for agreements with named pharmaceutical laboratories while excluding on-site clinical pharmacy/laboratory capacity.",
-    "positive_cases": ["Roche", "Sanofi", "Merck", "Biomed"],
+    "positive_cases": [
+      "Roche",
+      "Sanofi",
+      "Merck",
+      "Biomed"
+    ],
     "negative_case": "Talca hospital pharmacy and diagnostic laboratory"
   },
   "verified": [
@@ -30,5 +40,9 @@
     "Resolve pre-existing global Python/browser/statistics QA without reducing tests",
     "Complete declared original inventory/publication-date/access blockers",
     "Verify recurring staging runtime after permitted merge"
+  ],
+  "fulfilled_after_review": [
+    "Durable package/handoff committed and pushed as c7a0f9f",
+    "PR14 retained draft; source checkpoint CI passed without new paid evaluations"
   ]
 }
