@@ -83739,12 +83739,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-24T10:55:49.416444+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:37.410777+00:00",
-    "retry_at": "2026-10-11T13:15:37.410788+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:43:16.978017+00:00",
@@ -83826,10 +83826,74 @@
           "classification_watermark": "2026-09-24T10:55:49.416444+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "DF al Cierre | Franco Parisi y las condiciones del PDG para apoyar la sala cuna: “Es hora de que se ajuste el cinturón el Estado”",
+            "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-franco-parisi-y-las-condiciones-del-pdg-para-apoyar-la-sala",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-23",
+            "raw_text": "",
+            "metadata": {
+              "page_text": "",
+              "article_title": "DF al Cierre | Franco Parisi y las condiciones del PDG para apoyar la sala cuna: “Es hora de que se ajuste el cinturón el Estado”",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-23T21:50:52Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-23T21:50:52Z",
+                  "day": "2026-09-23"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-23T21:50:52Z",
+                  "day": "2026-09-23"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 23 de septiembre de 2026 a las 18:49 hrs.",
+                  "day": "2026-09-23"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "989aed7572510f65e4acfed4299464a5f6072ca5fcb2d706050c1deb6fe6f08c",
+              "original_captured_at": "2026-10-11T04:31:57.700807+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-24T10:55:49.416444+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:37.410777+00:00",
+          "retry_at": "2026-10-11T13:15:37.410788+00:00",
+          "classification_watermark": "2026-09-24T10:55:49.416444+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-24T10:55:49.416444+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "989aed7572510f65e4acfed4299464a5f6072ca5fcb2d706050c1deb6fe6f08c",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "f8f1b1094a681a3a2ba13c00d57869caa9ae9cbdc986b27e5110663a4794243c": {
     "raw": {
@@ -84331,12 +84395,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-24T10:55:49.416444+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:37.922898+00:00",
-    "retry_at": "2026-10-11T13:15:37.922909+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -84418,10 +84482,74 @@
           "classification_watermark": "2026-09-24T10:55:49.416444+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "DF al Cierre | La dimensión económica del Escudo de las Américas y entrevista con Franco Parisi",
+            "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-las-claves-de-la-jornada-de-este-miercoles-23-de-septiembre",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-23",
+            "raw_text": "En este nuevo episodio de DF al Cierre,la periodista María Gabriela Arteaga analiza en vivo, junto a periodistas del diario, las noticias que marcaron el día y que serán portada este jueves. Además, la entrevista del día será a Franco Parisi, secretario general del PDG, sobre las condiciones que pide su partido para apoyar la sala cuna universal.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "DF al Cierre | La dimensión económica del Escudo de las Américas y entrevista con Franco Parisi",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-23T13:03:46Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-23T13:03:46Z",
+                  "day": "2026-09-23"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-23T13:03:46Z",
+                  "day": "2026-09-23"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 23 de septiembre de 2026 a las 17:00 hrs.",
+                  "day": "2026-09-23"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "d7180b767e5b66e44e12518977d2042745582aa72fa177082158147474381b27",
+              "original_captured_at": "2026-10-11T04:32:02.342518+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-24T10:55:49.416444+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:37.922898+00:00",
+          "retry_at": "2026-10-11T13:15:37.922909+00:00",
+          "classification_watermark": "2026-09-24T10:55:49.416444+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-24T10:55:49.416444+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "d7180b767e5b66e44e12518977d2042745582aa72fa177082158147474381b27",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "2ab73b825eb20fdd9ddffbbaf39f315d0954961c8a5e3e021daa491da8d50697": {
     "raw": {
@@ -84468,12 +84596,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-24T10:55:49.416444+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:38.424352+00:00",
-    "retry_at": "2026-10-11T13:15:38.424363+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -84555,10 +84683,74 @@
           "classification_watermark": "2026-09-24T10:55:49.416444+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Milei ante la ONU cataloga a las Islas Malvinas como “causa nacional” y presiona al Reino Unido para retomar negociaciones",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-milei-ante-la-onu-cataloga-a-las-islas-malvinas-como-causa",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-23",
+            "raw_text": "El presidente de Argentina, Javier Milei, dijo que las autoridades han actuado con las herramientas disponibles para defender su soberanía sobre Las Malvinas, en lo que ha definido como una \"defensa pacífica, práctica y efectiva\".",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Milei ante la ONU cataloga a las Islas Malvinas como “causa nacional” y presiona al Reino Unido para retomar negociaciones",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-23T18:35:12Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-23T18:35:12Z",
+                  "day": "2026-09-23"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-23T18:35:12Z",
+                  "day": "2026-09-23"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 23 de septiembre de 2026 a las 15:32 hrs.",
+                  "day": "2026-09-23"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "c8aa75da1ee17aa085dd34930170361f504d22610496b2ff5f4785f6457a71f8",
+              "original_captured_at": "2026-10-11T04:32:03.246245+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-24T10:55:49.416444+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:38.424352+00:00",
+          "retry_at": "2026-10-11T13:15:38.424363+00:00",
+          "classification_watermark": "2026-09-24T10:55:49.416444+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-24T10:55:49.416444+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "c8aa75da1ee17aa085dd34930170361f504d22610496b2ff5f4785f6457a71f8",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "bcc479b620d50dc1b138632ef237bb05f4d3dc3bf1fce766eaf1d0e21ce7318d": {
     "raw": {
@@ -85972,12 +86164,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-24T15:15:03.457444+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:38.917071+00:00",
-    "retry_at": "2026-10-11T13:15:38.917082+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -86059,10 +86251,74 @@
           "classification_watermark": "2026-09-24T15:15:03.457444+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Kast espera restablecer relaciones diplomáticas con Venezuela “en los próximos meses”",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-kast-espera-restablecer-relaciones-diplomaticas-con-venezuela",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-24",
+            "raw_text": "El Presidente abordó el avance de los vínculos con Venezuela y señaló que el primer paso será fortalecer las relaciones consulares. Además, destacó el retorno de unos 35 mil venezolanos a su país y se refirió al proceso de recuperación institucional, judicial y democrática planteado por las autoridades venezolanas.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Kast espera restablecer relaciones diplomáticas con Venezuela “en los próximos meses”",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-24T14:55:25Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-24T14:55:25Z",
+                  "day": "2026-09-24"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-24T14:55:25Z",
+                  "day": "2026-09-24"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Jueves 24 de septiembre de 2026 a las 11:53 hrs.",
+                  "day": "2026-09-24"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "41685dd3fb662c00f5b325c8d059f15e03f2480cb7ccf6894ddadb36572daed1",
+              "original_captured_at": "2026-10-11T04:32:14.434092+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-24T15:15:03.457444+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:38.917071+00:00",
+          "retry_at": "2026-10-11T13:15:38.917082+00:00",
+          "classification_watermark": "2026-09-24T15:15:03.457444+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-24T15:15:03.457444+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "41685dd3fb662c00f5b325c8d059f15e03f2480cb7ccf6894ddadb36572daed1",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "dfb48ae238a848360b359c787b8f5c0302ba866785083efd36f1ff4c607e706a": {
     "raw": {
@@ -86109,12 +86365,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-24T15:15:03.457444+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:39.432563+00:00",
-    "retry_at": "2026-10-11T13:15:39.432573+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -86196,10 +86452,74 @@
           "classification_watermark": "2026-09-24T15:15:03.457444+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Xi aboga por una relación estable con EEUU a su llegada a Washington para reunirse con Trump",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-xi-aboga-por-una-relacion-estable-con-eeuu-a-su-llegada-a",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-24",
+            "raw_text": "El presiente chino, Xi Jinping, defendió a su llegada a Estados Unidos la necesidad de que Washington y Pekín mantengan una relación basada en la cooperación y el diálogo, momentos antes de su encuentro con el presidente estadounidense, Donald Trump.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Xi aboga por una relación estable con EEUU a su llegada a Washington para reunirse con Trump",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-24T14:40:45Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-24T14:40:45Z",
+                  "day": "2026-09-24"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-24T14:40:45Z",
+                  "day": "2026-09-24"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Jueves 24 de septiembre de 2026 a las 11:38 hrs.",
+                  "day": "2026-09-24"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "46768795967ce2737bc0b02f54a0379dd22c0f89c784b50320a2385fe567400a",
+              "original_captured_at": "2026-10-11T04:32:15.453636+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-24T15:15:03.457444+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:39.432563+00:00",
+          "retry_at": "2026-10-11T13:15:39.432573+00:00",
+          "classification_watermark": "2026-09-24T15:15:03.457444+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-24T15:15:03.457444+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "46768795967ce2737bc0b02f54a0379dd22c0f89c784b50320a2385fe567400a",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "68c7ada9750164a5fd599d5a5fc304664e74341883f6ea9ee73a0a505410ad22": {
     "raw": {
@@ -88414,12 +88734,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-25T14:41:02.935189+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:39.943884+00:00",
-    "retry_at": "2026-10-11T13:15:39.943894+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -88501,10 +88821,74 @@
           "classification_watermark": "2026-09-25T14:41:02.935189+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Primer Click | El petróleo retrocede y devuelve la calma al mercado",
+            "url": "https://www.df.cl/df-stream/podcast/primer-click-el-petroleo-retrocede-y-devuelve-la-calma-al-mercado",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-25",
+            "raw_text": "El precio del petróleo vuelve a caer ante reportes de que Estados Unidos e Irán negocian un acuerdo por fases para reabrir el estrecho de Ormuz, dando un respiro a los mercados globales. El Brent retrocede hacia US$105, mientras bajan el dólar y las tasas de los bonos, aunque los rendimientos de los Treasuries siguen cerca de máximos de dos décadas. Reuters confirma que las conversaciones buscan resolver el problema de quién da el primer paso: Irán reabriendo Ormuz o Washington levantando su bloqueo.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Primer Click | El petróleo retrocede y devuelve la calma al mercado",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-25T12:56:55Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-25T12:56:55Z",
+                  "day": "2026-09-25"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-25T12:56:55Z",
+                  "day": "2026-09-25"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 25 de septiembre de 2026 a las 09:49 hrs.",
+                  "day": "2026-09-25"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "ad7aec3169f46f263d03f83a31e77fe569aa1087c4ecbda1ce9d42df01d04aea",
+              "original_captured_at": "2026-10-11T04:32:24.152924+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-25T14:41:02.935189+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:39.943884+00:00",
+          "retry_at": "2026-10-11T13:15:39.943894+00:00",
+          "classification_watermark": "2026-09-25T14:41:02.935189+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-25T14:41:02.935189+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "ad7aec3169f46f263d03f83a31e77fe569aa1087c4ecbda1ce9d42df01d04aea",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "fe20118d081e64ad3f393d9e7ecb830e4171ca3bf13ceae086af9c1ae2a79812": {
     "raw": {
@@ -88551,12 +88935,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-25T14:41:02.935189+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:40.457364+00:00",
-    "retry_at": "2026-10-11T13:15:40.457375+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -88638,10 +89022,74 @@
           "classification_watermark": "2026-09-25T14:41:02.935189+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Trump y Xi apuestan desde la Casa Blanca por cooperar frente a la \"confrontación\"",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-trump-y-xi-apuestan-desde-la-casa-blanca-por-cooperar-frente",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-25",
+            "raw_text": "El presidente de Estados Unidos, Donald Trump, calificó de \"estupendo\" su encuentro de este jueves con su homólogo chino, Xi Jinping, en el marco de una visita de estado que continuará hasta este viernes y que se produce más de una década de la última visita del mandatario del gigante asiático a la Casa Blanca. Durante la jornada, ambos dirigentes han apostado por cooperar frente a la \"confrontación\".",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Trump y Xi apuestan desde la Casa Blanca por cooperar frente a la &#34;confrontación&#34;",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-25T14:22:09Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-25T14:22:09Z",
+                  "day": "2026-09-25"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-25T14:22:09Z",
+                  "day": "2026-09-25"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 25 de septiembre de 2026 a las 11:16 hrs.",
+                  "day": "2026-09-25"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "c5956069a0dc9537feb8006ecf6004182c8a071a48bd1f15a1331feb8e272fb6",
+              "original_captured_at": "2026-10-11T04:32:25.073799+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-25T14:41:02.935189+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:40.457364+00:00",
+          "retry_at": "2026-10-11T13:15:40.457375+00:00",
+          "classification_watermark": "2026-09-25T14:41:02.935189+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-25T14:41:02.935189+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "c5956069a0dc9537feb8006ecf6004182c8a071a48bd1f15a1331feb8e272fb6",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "1d1c40baebb754b2212358dd559b43a394ac5df82adf98c7ec49aebfc2d42351": {
     "raw": {
@@ -89031,12 +89479,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-25T14:41:02.935189+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:40.968125+00:00",
-    "retry_at": "2026-10-11T13:15:40.968136+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -89118,10 +89566,74 @@
           "classification_watermark": "2026-09-25T14:41:02.935189+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "DF al Cierre | Gonzalo Soto asegura que \"crear un producto viable y sostenerlo” es la principal traba de las startups chilenas para escalar",
+            "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-gonzalo-soto-asegura-que-crear-un-producto-viable-y",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-24",
+            "raw_text": "",
+            "metadata": {
+              "page_text": "",
+              "article_title": "DF al Cierre | Gonzalo Soto asegura que &#34;crear un producto viable y sostenerlo” es la principal traba de las startups chilenas para escalar",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-24T21:27:38Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-24T21:27:38Z",
+                  "day": "2026-09-24"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-24T21:27:38Z",
+                  "day": "2026-09-24"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Jueves 24 de septiembre de 2026 a las 18:21 hrs.",
+                  "day": "2026-09-24"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "af26492f5f73b6d3e3cfc96025cbe47b9b9723434ebcdd2148793117b96ae89b",
+              "original_captured_at": "2026-10-11T04:32:28.546264+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-25T14:41:02.935189+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:40.968125+00:00",
+          "retry_at": "2026-10-11T13:15:40.968136+00:00",
+          "classification_watermark": "2026-09-25T14:41:02.935189+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-25T14:41:02.935189+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "af26492f5f73b6d3e3cfc96025cbe47b9b9723434ebcdd2148793117b96ae89b",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "bb15b826b99f49ffd2524cde65ad90368be34c8520092f0148f70c1c048fe9e8": {
     "raw": {
@@ -90187,12 +90699,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-28T17:45:28.879065+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:41.481870+00:00",
-    "retry_at": "2026-10-11T13:15:41.481882+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -90274,10 +90786,74 @@
           "classification_watermark": "2026-09-28T17:45:28.879065+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | China y EEUU acuerdan recortes arancelarios en productos por un valor de US$ 60.000 millones",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-china-y-eeuu-acuerdan-recortes-arancelarios-en-productos-por",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-28",
+            "raw_text": "Estados Unidos y China avanzan hacia una posible rebaja de sus aranceles. El acuerdo llega poco después de la visita del presidente chino, Xi Jinping, a Estados Unidos, y supone un nuevo paso en el intento de las dos potencias por encauzar su relación comercial. Ambos países han acordado crear un marco para estudiar reducciones arancelarias recíprocas sobre productos por valor de unos US$ 60.000 millones.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | China y EEUU acuerdan recortes arancelarios en productos por un valor de US$ 60.000 millones",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-28T12:41:24Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-28T12:41:24Z",
+                  "day": "2026-09-28"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-28T12:41:24Z",
+                  "day": "2026-09-28"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Lunes 28 de septiembre de 2026 a las 09:40 hrs.",
+                  "day": "2026-09-28"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "edd945dfcf16044dba97fb232ca661689643f67833ffb659afed6b30065a8f3c",
+              "original_captured_at": "2026-10-11T04:32:36.050433+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-28T17:45:28.879065+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:41.481870+00:00",
+          "retry_at": "2026-10-11T13:15:41.481882+00:00",
+          "classification_watermark": "2026-09-28T17:45:28.879065+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-28T17:45:28.879065+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "edd945dfcf16044dba97fb232ca661689643f67833ffb659afed6b30065a8f3c",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "7c7f710533e599e23c491cf33a7d5653f5ed866210b3603d73349904f2d6cd6f": {
     "raw": {
@@ -90324,12 +90900,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-28T17:45:28.879065+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:41.997999+00:00",
-    "retry_at": "2026-10-11T13:15:41.998009+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -90411,10 +90987,74 @@
           "classification_watermark": "2026-09-28T17:45:28.879065+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Asunto de familia | La familia Sanz, dueños del Pinpilinpausha: la historia, lo aprendido y los planes futuros",
+            "url": "https://www.df.cl/df-stream/podcast/asunto-de-familia-la-familia-sanz-duenos-del-pinpilinpausha-la",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-25",
+            "raw_text": "El famoso restaurante español tiene 86 años. Nació en el centro de Santiago, de la mano de un inmigrante vasco. Lo continuó su hijo, Mauricio Sanz Jáuregui; y hoy -ubicado en Isidora Goyenechea- está a cargo de la tercera generación. ¿Cuáles son los principales episodios de su historia? ¿cómo se coordina con el hotel Bidasoa, el otro gran negocio familiar? ¿cuál es el desafío futuro? Carola Sanz y su madre María Elena Raab dan pistas en el podcast Asunto de familia.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Asunto de familia | La familia Sanz, dueños del Pinpilinpausha: la historia, lo aprendido y los planes futuros",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-25T22:39:05Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-25T22:39:05Z",
+                  "day": "2026-09-25"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-25T22:39:05Z",
+                  "day": "2026-09-25"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 25 de septiembre de 2026 a las 21:00 hrs.",
+                  "day": "2026-09-25"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "264d3cae24537b9a804540324f1719dfddcd37dcf484fc90ee01f21ba994d408",
+              "original_captured_at": "2026-10-11T04:32:36.944246+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-28T17:45:28.879065+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:41.997999+00:00",
+          "retry_at": "2026-10-11T13:15:41.998009+00:00",
+          "classification_watermark": "2026-09-28T17:45:28.879065+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-28T17:45:28.879065+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "264d3cae24537b9a804540324f1719dfddcd37dcf484fc90ee01f21ba994d408",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "e0ffecf8ea1c3928e1261aab1d570b2248368bbf7712df46b3d851e683f5c471": {
     "raw": {
@@ -90789,12 +91429,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-28T17:45:28.879065+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:42.567721+00:00",
-    "retry_at": "2026-10-11T13:15:42.567731+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -90876,10 +91516,74 @@
           "classification_watermark": "2026-09-28T17:45:28.879065+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "DF al Cierre | La apuesta por el pistacho de los Del Río Arteaga y la escalada del hard discount en Chile",
+            "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-la-apuesta-por-el-pistacho-de-los-del-rio-arteaga-y-la",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-25",
+            "raw_text": "En este nuevo episodio de DF al Cierre, el director de Diario Financiero, José Tomás Santa María, analiza en vivo, junto a periodistas del diario, las noticias que serán portada este fin de semana en las ediciones de Señal DF y DF MAS.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "DF al Cierre | La apuesta por el pistacho de los Del Río Arteaga y la escalada del hard discount en Chile",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-25T18:11:02Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-25T18:11:02Z",
+                  "day": "2026-09-25"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-25T18:11:02Z",
+                  "day": "2026-09-25"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 25 de septiembre de 2026 a las 17:00 hrs.",
+                  "day": "2026-09-25"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "3ba69d9404365e47cb25eeb9cfd909cc328e36e69672820c52e565a4ecd378ca",
+              "original_captured_at": "2026-10-11T04:32:42.634253+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-28T17:45:28.879065+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:42.567721+00:00",
+          "retry_at": "2026-10-11T13:15:42.567731+00:00",
+          "classification_watermark": "2026-09-28T17:45:28.879065+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-28T17:45:28.879065+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "3ba69d9404365e47cb25eeb9cfd909cc328e36e69672820c52e565a4ecd378ca",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "e356057c18ea2553e5f95d66602327d7dae59a9dcd3f725101d7f65b81efd134": {
     "raw": {
@@ -90926,12 +91630,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-28T17:45:28.879065+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:43.085781+00:00",
-    "retry_at": "2026-10-11T13:15:43.085792+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -91013,10 +91717,74 @@
           "classification_watermark": "2026-09-28T17:45:28.879065+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Ministro Quiroz descarta recortes en el Presupuesto 2027 y anticipa una expansión mesurada del gasto",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-ministro-quiroz-descarta-recortes-en-el-presupuesto-2027-y",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-25",
+            "raw_text": "El ministro Quiroz descartó recortes generales en el Presupuesto y aseguró que habrá una expansión mesurada del gasto, con énfasis en salud, obras públicas, seguridad, defensa e inversión.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Ministro Quiroz descarta recortes en el Presupuesto 2027 y anticipa una expansión mesurada del gasto",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-25T21:18:08Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-25T21:18:08Z",
+                  "day": "2026-09-25"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-25T21:18:08Z",
+                  "day": "2026-09-25"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 25 de septiembre de 2026 a las 18:16 hrs.",
+                  "day": "2026-09-25"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "3edbd26bb55be046061b3bd55bcea93333896094c7388ac16d707487135edada",
+              "original_captured_at": "2026-10-11T04:32:43.537742+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-28T17:45:28.879065+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:43.085781+00:00",
+          "retry_at": "2026-10-11T13:15:43.085792+00:00",
+          "classification_watermark": "2026-09-28T17:45:28.879065+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-28T17:45:28.879065+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "3edbd26bb55be046061b3bd55bcea93333896094c7388ac16d707487135edada",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "4d72e38f77f9d6b83159221e6b2af9509e7008232c1676a4c9bf89db4b20c4e2": {
     "raw": {
@@ -93229,12 +93997,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-29T16:02:10.249575+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:43.576758+00:00",
-    "retry_at": "2026-10-11T13:15:43.576770+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -93316,10 +94084,74 @@
           "classification_watermark": "2026-09-29T16:02:10.249575+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Presidente Kast: “Sabemos que no han sido meses fáciles… pero cuando un país se endeuda en algún momento tiene que pagar”",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-presidente-kast-sabemos-que-no-han-sido-meses-faciles-pero",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-29",
+            "raw_text": "",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Presidente Kast: “Sabemos que no han sido meses fáciles… pero cuando un país se endeuda en algún momento tiene que pagar”",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-29T14:25:56Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-29T14:25:56Z",
+                  "day": "2026-09-29"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-29T14:25:56Z",
+                  "day": "2026-09-29"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Martes 29 de septiembre de 2026 a las 12:00 hrs.",
+                  "day": "2026-09-29"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "61b1504a77a94162b1aac1da49f00ca9d9decad15d50ba862d36221fef42b47c",
+              "original_captured_at": "2026-10-11T04:32:56.215967+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-29T16:02:10.249575+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:43.576758+00:00",
+          "retry_at": "2026-10-11T13:15:43.576770+00:00",
+          "classification_watermark": "2026-09-29T16:02:10.249575+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-29T16:02:10.249575+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "61b1504a77a94162b1aac1da49f00ca9d9decad15d50ba862d36221fef42b47c",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "3399150e5238b77edc5540f2cc113ecdac500ba60851bf002c2f4f1e91a87306": {
     "raw": {
@@ -94173,12 +95005,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-29T16:02:10.249575+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:44.094521+00:00",
-    "retry_at": "2026-10-11T13:15:44.094531+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:43:16.978017+00:00",
@@ -94260,10 +95092,74 @@
           "classification_watermark": "2026-09-29T16:02:10.249575+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "DF al Cierre | María José Abud, de Horizontal, estima que plan de Kast para revertir el alto desempleo solo \"bajaría la tasa en 0,7 puntos\"",
+            "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-maria-jose-abud-de-horizontal-estima-que-plan-de-kast-para",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-28",
+            "raw_text": "",
+            "metadata": {
+              "page_text": "",
+              "article_title": "DF al Cierre | María José Abud, de Horizontal, estima que plan de Kast para revertir el alto desempleo solo &#34;bajaría la tasa en 0,7 puntos&#34;",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-28T21:31:09Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-28T21:31:09Z",
+                  "day": "2026-09-28"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-28T21:31:09Z",
+                  "day": "2026-09-28"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Lunes 28 de septiembre de 2026 a las 18:29 hrs.",
+                  "day": "2026-09-28"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "c6b366041f2070da847ebef05d0e9ba4d16294d0238b03dbe4066085f7e7637d",
+              "original_captured_at": "2026-10-11T04:33:06.052213+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-29T16:02:10.249575+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:44.094521+00:00",
+          "retry_at": "2026-10-11T13:15:44.094531+00:00",
+          "classification_watermark": "2026-09-29T16:02:10.249575+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-29T16:02:10.249575+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "c6b366041f2070da847ebef05d0e9ba4d16294d0238b03dbe4066085f7e7637d",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "316da2390096a9ae91c7a4565bbd9cb71c6deda7ef3b7e827a5ce9029f9e0000": {
     "raw": {
@@ -94310,12 +95206,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-29T16:02:10.249575+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:44.597802+00:00",
-    "retry_at": "2026-10-11T13:15:44.597813+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -94397,10 +95293,74 @@
           "classification_watermark": "2026-09-29T16:02:10.249575+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | El primer ministro de Groenlandia dice que el acuerdo con EEUU es bueno \"también para Europa y la OTAN\"",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-el-primer-ministro-de-groenlandia-dice-que-el-acuerdo-con",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-29",
+            "raw_text": "",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | El primer ministro de Groenlandia dice que el acuerdo con EEUU es bueno &#34;también para Europa y la OTAN&#34;",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-29T13:38:05Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-29T13:38:05Z",
+                  "day": "2026-09-29"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-29T13:38:05Z",
+                  "day": "2026-09-29"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Martes 29 de septiembre de 2026 a las 10:34 hrs.",
+                  "day": "2026-09-29"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "01492471dcb387b83c3a200405257c0f284d0d48c8e6eea10def5cc389c07d36",
+              "original_captured_at": "2026-10-11T04:33:07.046872+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-29T16:02:10.249575+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:44.597802+00:00",
+          "retry_at": "2026-10-11T13:15:44.597813+00:00",
+          "classification_watermark": "2026-09-29T16:02:10.249575+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-29T16:02:10.249575+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "01492471dcb387b83c3a200405257c0f284d0d48c8e6eea10def5cc389c07d36",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "f2c1a3d19c6a23004f09c3718bbef50caf37cf5bde77b8a828fac651f3237808": {
     "raw": {
@@ -94447,12 +95407,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-29T16:02:10.249575+00:00",
     "attempts": 2,
     "reason": "df_publication_date_conflict",
-    "updated_at": "2026-10-11T05:05:34.010257+00:00",
-    "retry_at": "2026-10-11T09:05:34.010267+00:00",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T05:02:41.640667+00:00",
@@ -94480,8 +95440,70 @@
           "updated_at": "2026-09-29T16:05:26.976346+00:00",
           "retry_at": null
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_capture_debt_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "DF Live | TRABAJO 3 X 3 SOFOFA",
+            "url": "https://www.df.cl/df-stream/videos/df-live-trabajo-3-x-3-sofofa",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": null,
+            "raw_text": "Regulación Pro Empleo",
+            "metadata": {
+              "page_text": "",
+              "article_title": "DF Live | TRABAJO 3 X 3 SOFOFA",
+              "article_section": "DF STREAM",
+              "publication_date_source": null,
+              "publication_timestamp": null,
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-22T13:42:36Z",
+                  "day": "2026-09-22"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-22T13:42:36Z",
+                  "day": "2026-09-22"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Martes 29 de septiembre de 2026 a las 07:50 hrs. Sofofa empleo Regulación Pro Empleo Comparte Videos",
+                  "day": "2026-09-29"
+                }
+              ],
+              "publication_date_conflict": true,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "0252cc92ae0987e24ea9601c5745046d62665453c44fd4a3796ee7b011133886",
+              "original_captured_at": "2026-10-11T04:33:08.013513+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-29T16:02:10.249575+00:00",
+          "attempts": 2,
+          "reason": "df_publication_date_conflict",
+          "updated_at": "2026-10-11T05:05:34.010257+00:00",
+          "retry_at": "2026-10-11T09:05:34.010267+00:00"
+        }
       }
-    ]
+    ],
+    "df_resolution": {
+      "state": "RESOLVED_NO_VERIFIABLE_DATE",
+      "reason": "df_publication_date_conflict",
+      "original_sha256": "0252cc92ae0987e24ea9601c5745046d62665453c44fd4a3796ee7b011133886",
+      "next_action": "Resume only with verified publisher publication day and primary text"
+    }
   },
   "633e852292e856f056b2208bca52d9cdba89564b6e40d8baea2aa8a9b0bd67cf": {
     "raw": {
@@ -97727,12 +98749,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-30T16:20:22.173281+00:00",
     "attempts": 2,
     "reason": "df_publication_date_conflict",
-    "updated_at": "2026-10-11T05:05:34.429434+00:00",
-    "retry_at": "2026-10-11T09:05:34.429444+00:00",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T05:02:41.640667+00:00",
@@ -97760,8 +98782,70 @@
           "updated_at": "2026-09-30T16:23:08.006129+00:00",
           "retry_at": null
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_capture_debt_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "IA LAB | Transparencia y ética en la inteligencia artificial",
+            "url": "https://www.df.cl/df-stream/podcast/ia-lab-transparencia-y-etica-en-la-inteligencia-artificial",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": null,
+            "raw_text": "La directora de la Asociación de Ética Empresarial y Organizacional de Chile, Macarena McKay, y la investigadora principal del Centro Nacional de Inteligencia Artificial, Claudia López, abordaron la falta de control y mecanismos de rendición de cuentas de las empresas desarrolladoras frente a agentes de IA que han logrado eludir entornos de prueba, la concentración del poder en unos pocos actores y el rol de Chile y el Sur Global en el escenario geopolítico de esta tecnología.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "IA LAB | Transparencia y ética en la inteligencia artificial",
+              "article_section": "DF STREAM",
+              "publication_date_source": null,
+              "publication_timestamp": null,
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-29T12:47:29Z",
+                  "day": "2026-09-29"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-29T12:47:29Z",
+                  "day": "2026-09-29"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 30 de septiembre de 2026 a las 09:00 hrs. Inteligencia Artificial tecnología ética La dire",
+                  "day": "2026-09-30"
+                }
+              ],
+              "publication_date_conflict": true,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "9666a3cc1e88f4d96ff86abc1c69ac0839231a98ca19c4a6e66fd066e289b74b",
+              "original_captured_at": "2026-10-11T04:33:32.260210+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-30T16:20:22.173281+00:00",
+          "attempts": 2,
+          "reason": "df_publication_date_conflict",
+          "updated_at": "2026-10-11T05:05:34.429434+00:00",
+          "retry_at": "2026-10-11T09:05:34.429444+00:00"
+        }
       }
-    ]
+    ],
+    "df_resolution": {
+      "state": "RESOLVED_NO_VERIFIABLE_DATE",
+      "reason": "df_publication_date_conflict",
+      "original_sha256": "9666a3cc1e88f4d96ff86abc1c69ac0839231a98ca19c4a6e66fd066e289b74b",
+      "next_action": "Resume only with verified publisher publication day and primary text"
+    }
   },
   "ca064cf8611962432f92ea7f6303769da5d9f200b577096c927b3d329c58c0b6": {
     "raw": {
@@ -97808,12 +98892,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-30T16:20:22.173281+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:45.106409+00:00",
-    "retry_at": "2026-10-11T13:15:45.106421+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -97895,10 +98979,74 @@
           "classification_watermark": "2026-09-30T16:20:22.173281+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "DF al Cierre | George Lever advierte que la crisis de empleo presionará al CyberMonday 2026: “El consumidor es más restrictivo”",
+            "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-george-lever-advierte-que-la-crisis-de-empleo-presionara-al",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-29",
+            "raw_text": "",
+            "metadata": {
+              "page_text": "",
+              "article_title": "DF al Cierre | George Lever advierte que la crisis de empleo presionará al CyberMonday 2026: “El consumidor es más restrictivo”",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-29T21:51:20Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-29T21:51:20Z",
+                  "day": "2026-09-29"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-29T21:51:20Z",
+                  "day": "2026-09-29"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Martes 29 de septiembre de 2026 a las 18:49 hrs.",
+                  "day": "2026-09-29"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "c900ab8b24adf6cf2560d7c78388bf7fc7f62981148d15819bce1682e5fd26e9",
+              "original_captured_at": "2026-10-11T04:33:33.168509+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-30T16:20:22.173281+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:45.106409+00:00",
+          "retry_at": "2026-10-11T13:15:45.106421+00:00",
+          "classification_watermark": "2026-09-30T16:20:22.173281+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-30T16:20:22.173281+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "c900ab8b24adf6cf2560d7c78388bf7fc7f62981148d15819bce1682e5fd26e9",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "443cfd35f6d5a4b56485919fad4be00ff46782a186fa134f0f40b9b515a2cb13": {
     "raw": {
@@ -98462,12 +99610,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-30T16:20:22.173281+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:20:38.644033+00:00",
-    "retry_at": "2026-10-11T13:20:38.644042+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -98696,10 +99844,74 @@
           "classification_watermark": "2026-09-30T16:20:22.173281+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Proyecto del PDG que compensa la compra de medicamentos y pañales pasa al Senado",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-proyecto-del-pdg-que-compensa-la-compra-de-medicamentos-y",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-30",
+            "raw_text": "Al beneficio podrán postular quienes pertenezcan al 80% de los hogares más vulnerables, según el Registro Social de Hogares, y cumplan con una serie de otros requisitos.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Proyecto del PDG que compensa la compra de medicamentos y pañales pasa al Senado",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-30T13:26:01Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-30T13:26:01Z",
+                  "day": "2026-09-30"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-30T13:26:01Z",
+                  "day": "2026-09-30"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 30 de septiembre de 2026 a las 10:25 hrs.",
+                  "day": "2026-09-30"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "4f3dd1fdb88a99a33bddc35ae733317d16570c4fb00f26769cccdb65dfa4f98f",
+              "original_captured_at": "2026-10-11T04:33:39.355897+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-30T16:20:22.173281+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:20:38.644033+00:00",
+          "retry_at": "2026-10-11T13:20:38.644042+00:00",
+          "classification_watermark": "2026-09-30T16:20:22.173281+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-30T16:20:22.173281+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "4f3dd1fdb88a99a33bddc35ae733317d16570c4fb00f26769cccdb65dfa4f98f",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "0485294a06a9ff40222b66e5ba420a28aab5af14059f51ae3dabe6d64e49fee1": {
     "raw": {
@@ -100022,12 +101234,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-09-30T19:08:15.331898+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:45.623222+00:00",
-    "retry_at": "2026-10-11T13:15:45.623233+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -100109,10 +101321,74 @@
           "classification_watermark": "2026-09-30T19:08:15.331898+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Gremios del transporte se reúnen con el gobierno: \"Podríamos resolver la incertidumbre\" tras anuncios de EEUU sobre frenar exportaciones de diésel",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-gremios-del-transporte-se-reunen-con-el-gobierno-podriamos",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-30",
+            "raw_text": "El presidente de la Confederación Nacional de Transporte de Carga Terrestre de Chile (CNTC), Sergio Pérez, junto al presidente de la Confederación Nacional de Dueños de Camiones de Chile (CNDC), Juan Araya, se refiere a lo abordado en la reunión con el Ministerio de Economía por el alza de los combustibles.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Gremios del transporte se reúnen con el gobierno: &#34;Podríamos resolver la incertidumbre&#34; tras anuncios de EEUU sobre frenar exportaciones de diésel",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-09-30T17:06:55Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-09-30T17:06:55Z",
+                  "day": "2026-09-30"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-09-30T17:06:55Z",
+                  "day": "2026-09-30"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 30 de septiembre de 2026 a las 14:03 hrs.",
+                  "day": "2026-09-30"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "1ad076d9c70f1fd18ffcb9166a742c1a7e1d1b3bd6484361e71dcc3eea830f12",
+              "original_captured_at": "2026-10-11T04:33:49.408345+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-09-30T19:08:15.331898+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:45.623222+00:00",
+          "retry_at": "2026-10-11T13:15:45.623233+00:00",
+          "classification_watermark": "2026-09-30T19:08:15.331898+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-09-30T19:08:15.331898+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "1ad076d9c70f1fd18ffcb9166a742c1a7e1d1b3bd6484361e71dcc3eea830f12",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "c296b1d76f03faed98d41670bfe433f38b00a759aef71ee3fed1c3ff9bce65ac": {
     "raw": {
@@ -104137,12 +105413,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-08T08:45:10.638681+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:46.137114+00:00",
-    "retry_at": "2026-10-11T13:15:46.137125+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -104224,10 +105500,74 @@
           "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "DF al Cierre | Mariela Formas critica posible reducción de 14,5% a Ley Ricarte Soto: “Es un ahorro mal entendido”",
+            "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-mariela-formas-critica-posible-reduccion-de-14-5-a-ley",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-07",
+            "raw_text": "",
+            "metadata": {
+              "page_text": "",
+              "article_title": "DF al Cierre | Mariela Formas critica posible reducción de 14,5% a Ley Ricarte Soto: “Es un ahorro mal entendido”",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-07T21:14:58Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-07T21:14:58Z",
+                  "day": "2026-10-07"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-07T21:14:58Z",
+                  "day": "2026-10-07"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 7 de octubre de 2026 a las 18:14 hrs.",
+                  "day": "2026-10-07"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "6a623d8bbefa219371908a5e452b62f47cbb348f6d9f318f76abceb6aa9cd7ab",
+              "original_captured_at": "2026-10-11T04:33:56.186569+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-08T08:45:10.638681+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:46.137114+00:00",
+          "retry_at": "2026-10-11T13:15:46.137125+00:00",
+          "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "6a623d8bbefa219371908a5e452b62f47cbb348f6d9f318f76abceb6aa9cd7ab",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "ecba2c72575116602ea7194ece44f87339f4d5a26b3cad110c26b80877d831ad": {
     "raw": {
@@ -104274,12 +105614,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-08T08:45:10.638681+00:00",
     "attempts": 2,
     "reason": "df_publication_date_conflict",
-    "updated_at": "2026-10-11T05:05:35.286802+00:00",
-    "retry_at": "2026-10-11T09:05:35.286812+00:00",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T05:02:41.640667+00:00",
@@ -104307,8 +105647,70 @@
           "updated_at": "2026-10-09T16:32:56.821224+00:00",
           "retry_at": null
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_capture_debt_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "IA LAB | Mito o realidad: ¿Nos reemplazarán los agentes autónomos?",
+            "url": "https://www.df.cl/df-stream/podcast/ia-lab-mito-o-realidad-nos-reemplazaran-los-agentes-autonomos",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": null,
+            "raw_text": "La directora de empresas y experta en IA, María Francisca Yáñez, y la fundadora y CEO de The People Future, Denisse Goldfarb, conversaron sobre cómo los agentes de inteligencia artificial están redefiniendo el tamaño y la estructura de las empresas, el avance de equipos híbridos entre personas y sistemas autónomos, y las nuevas habilidades que deberán desarrollar los trabajadores. También analizaron el impacto en los cargos de entrada, la formación de talento y los desafíos de gobernanza que plantea este escenario.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "IA LAB | Mito o realidad: ¿Nos reemplazarán los agentes autónomos?",
+              "article_section": "DF STREAM",
+              "publication_date_source": null,
+              "publication_timestamp": null,
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-06T13:00:21Z",
+                  "day": "2026-10-06"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-06T13:00:21Z",
+                  "day": "2026-10-06"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 7 de octubre de 2026 a las 09:00 hrs. IA Inteligencia Artificial tecnología La directora d",
+                  "day": "2026-10-07"
+                }
+              ],
+              "publication_date_conflict": true,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "157c6544a3fe688c3a8c63a6f261400730fa970da5d38201d4c76d13bda7ca66",
+              "original_captured_at": "2026-10-11T04:33:57.199239+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-08T08:45:10.638681+00:00",
+          "attempts": 2,
+          "reason": "df_publication_date_conflict",
+          "updated_at": "2026-10-11T05:05:35.286802+00:00",
+          "retry_at": "2026-10-11T09:05:35.286812+00:00"
+        }
       }
-    ]
+    ],
+    "df_resolution": {
+      "state": "RESOLVED_NO_VERIFIABLE_DATE",
+      "reason": "df_publication_date_conflict",
+      "original_sha256": "157c6544a3fe688c3a8c63a6f261400730fa970da5d38201d4c76d13bda7ca66",
+      "next_action": "Resume only with verified publisher publication day and primary text"
+    }
   },
   "f4abfbac23c8cd84c4b9e7640c0a3e5fd997a3e46467df263c7bb9aa23473c46": {
     "raw": {
@@ -105244,12 +106646,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-08T08:45:10.638681+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:46.645575+00:00",
-    "retry_at": "2026-10-11T13:15:46.645586+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -105331,10 +106733,74 @@
           "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "DF al Cierre | Felipe Jaque y Presupuesto 2027: “Se hace cargo de toda la tensión que han tenido las cuentas fiscales en los últimos años”",
+            "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-felipe-jaque-y-presupuesto-2027-se-hace-cargo-de-toda-la",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-06",
+            "raw_text": "",
+            "metadata": {
+              "page_text": "",
+              "article_title": "DF al Cierre | Felipe Jaque y Presupuesto 2027: “Se hace cargo de toda la tensión que han tenido las cuentas fiscales en los últimos años”",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-06T21:30:56Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-06T21:30:56Z",
+                  "day": "2026-10-06"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-06T21:30:56Z",
+                  "day": "2026-10-06"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Martes 6 de octubre de 2026 a las 18:30 hrs.",
+                  "day": "2026-10-06"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "41f0863e7a4c1625c860fad99ed278f0243a49a12c55271638d0f9d8440e905b",
+              "original_captured_at": "2026-10-11T04:34:20.351666+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-08T08:45:10.638681+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:46.645575+00:00",
+          "retry_at": "2026-10-11T13:15:46.645586+00:00",
+          "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "41f0863e7a4c1625c860fad99ed278f0243a49a12c55271638d0f9d8440e905b",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "c4191cc6c6c9bbbcc777336b5efa75a0ed48cd9b84aeea98c5536a137a2936c2": {
     "raw": {
@@ -105381,12 +106847,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-08T08:45:10.638681+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:47.150519+00:00",
-    "retry_at": "2026-10-11T13:15:47.150530+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -105468,10 +106934,74 @@
           "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "DF al Cierre | Los frentes que tensionan a la minería chilena y el fondo E es el que más cae en 2026",
+            "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-las-claves-de-la-jornada-de-este-miercoles-07-de-octubre",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-07",
+            "raw_text": "En este nuevo episodio de DF al Cierre, el director de Diario Financiero, José Tomás Santa María, analiza en vivo, junto a periodistas del diario, las noticias que marcaron el día y que serán portada este jueves. Además, la entrevista del día será a Mariela Formas, vicepresidenta ejecutiva de la Cámara de la Innovación Farmacéutica, quien abordará el impacto de los recortes que contempla el Presupuesto en materia de salud, especialmente en medicamentos y tratamientos de alto costo.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "DF al Cierre | Los frentes que tensionan a la minería chilena y el fondo E es el que más cae en 2026",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-07T18:18:57Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-07T18:18:57Z",
+                  "day": "2026-10-07"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-07T18:18:57Z",
+                  "day": "2026-10-07"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 7 de octubre de 2026 a las 17:00 hrs.",
+                  "day": "2026-10-07"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "a85ba5ee58f6bcfd08e9608970c0892179f13c0481ed958dff6cbb2ca38638ba",
+              "original_captured_at": "2026-10-11T04:34:21.348584+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-08T08:45:10.638681+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:47.150519+00:00",
+          "retry_at": "2026-10-11T13:15:47.150530+00:00",
+          "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "a85ba5ee58f6bcfd08e9608970c0892179f13c0481ed958dff6cbb2ca38638ba",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "a4c027a2c8bf328ed93db04c33697150fb63b26a55f47854ffd69e3f6e1ed0cf": {
     "raw": {
@@ -105518,12 +107048,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-08T08:45:10.638681+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:47.655013+00:00",
-    "retry_at": "2026-10-11T13:15:47.655024+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -105605,10 +107135,74 @@
           "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Walker por eventual candidatura de Bachelet: “El gobierno perdió una oportunidad de hacer política de Estado”",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-walker-por-eventual-candidatura-de-bachelet-el-gobierno",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-07",
+            "raw_text": "El senador Matías Walker vinculó una eventual nueva candidatura presidencial de Michelle Bachelet con la decisión del Gobierno de no respaldar su postulación a la Secretaría General de Naciones Unidas. “Esta es la consecuencia: alimentar una nueva candidata presidencial”, afirmó.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Walker por eventual candidatura de Bachelet: “El gobierno perdió una oportunidad de hacer política de Estado”",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-07T19:21:56Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-07T19:21:56Z",
+                  "day": "2026-10-07"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-07T19:21:56Z",
+                  "day": "2026-10-07"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 7 de octubre de 2026 a las 16:20 hrs.",
+                  "day": "2026-10-07"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "85af775e5b26903cd5a95c7bf3d97063affa862b5ca863af6d1239bc48c5274b",
+              "original_captured_at": "2026-10-11T04:34:22.248233+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-08T08:45:10.638681+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:47.655013+00:00",
+          "retry_at": "2026-10-11T13:15:47.655024+00:00",
+          "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "85af775e5b26903cd5a95c7bf3d97063affa862b5ca863af6d1239bc48c5274b",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "02674ba54f81eb52d8ceaf0f5eff8bf8676433e2f706d67d15ae3d2f471aaf1b": {
     "raw": {
@@ -105655,12 +107249,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-08T08:45:10.638681+00:00",
     "attempts": 3,
-    "reason": "df_insufficient_article_evidence",
-    "updated_at": "2026-10-11T05:15:48.165991+00:00",
-    "retry_at": "2026-10-11T13:15:48.166002+00:00",
+    "reason": "df_media_transcript_unavailable",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -105742,10 +107336,74 @@
           "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
           "classification_basis": "original_detection_day_conservative"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Bachelet aborda eventual tercera candidatura presidencial: “Yo creo que sí”",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-bachelet-aborda-eventual-tercera-candidatura-presidencial",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-07",
+            "raw_text": "La expresidenta Michelle Bachelet abordó la posibilidad de competir por tercera vez por la Presidencia y, ante la pregunta, respondió: “Yo creo que sí”. Además, aseguró que hará “todo lo posible” para buscar la unidad de las fuerzas progresistas y manifestó su preocupación por eventuales retrocesos en derechos alcanzados durante los últimos años.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Bachelet aborda eventual tercera candidatura presidencial: “Yo creo que sí”",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-07T16:49:29Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-07T16:49:29Z",
+                  "day": "2026-10-07"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-07T16:49:29Z",
+                  "day": "2026-10-07"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Miércoles 7 de octubre de 2026 a las 13:47 hrs.",
+                  "day": "2026-10-07"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "b7857000b94d337274c6c9f4d166bc1da40d0815af4bed7af6315d183bb00729",
+              "original_captured_at": "2026-10-11T04:34:23.183967+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-08T08:45:10.638681+00:00",
+          "attempts": 3,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:48.165991+00:00",
+          "retry_at": "2026-10-11T13:15:48.166002+00:00",
+          "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
+          "classification_basis": "original_detection_day_conservative"
+        }
       }
     ],
     "classification_watermark": "2026-10-08T08:45:10.638681+00:00",
-    "classification_basis": "original_detection_day_conservative"
+    "classification_basis": "original_detection_day_conservative",
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "b7857000b94d337274c6c9f4d166bc1da40d0815af4bed7af6315d183bb00729",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "00d79335722f0524ff21c95f2b4c367973eb2e26c31f4154968be0aa944f9987": {
     "raw": {
@@ -110427,10 +112085,10 @@
     },
     "source": "diario_financiero",
     "lane": "LIVE",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-08T16:46:16.111589+00:00",
     "attempts": 2,
-    "reason": "df_insufficient_article_evidence",
+    "reason": "df_media_transcript_unavailable",
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -110509,12 +112167,76 @@
           "classification_basis": "original_detection_day_conservative",
           "retry_at": null
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Donald Trump vuelve a reclamar el Premio Nobel de la Paz y asegura que ha detenido ocho guerras",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-donald-trump-vuelve-a-reclamar-el-premio-nobel-de-la-paz-y",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-08",
+            "raw_text": "El Presidente de Estados Unidos, Donald Trump, volvió a reivindicar su papel en la resolución de conflictos internacionales y aseguró haber detenido ocho guerras desde su regreso a la Casa Blanca. En ese contexto, insistió en que sus gestiones diplomáticas deberían ser reconocidas con el Premio Nobel de la Paz.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Donald Trump vuelve a reclamar el Premio Nobel de la Paz y asegura que ha detenido ocho guerras",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-08T15:49:13Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-08T15:49:13Z",
+                  "day": "2026-10-08"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-08T15:49:13Z",
+                  "day": "2026-10-08"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Jueves 8 de octubre de 2026 a las 12:47 hrs. Trump Premio Nobel guerra Irán El Presidente de Estados",
+                  "day": "2026-10-08"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "b6cf6bd1bcbfdc2bbcc4e44359a38bc957ecba1454cf36add64064ae8993f00d",
+              "original_captured_at": "2026-10-11T04:34:32.441003+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "LIVE",
+          "status": "retry",
+          "detected_at": "2026-10-08T16:46:16.111589+00:00",
+          "attempts": 2,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:05:18.665227+00:00",
+          "classification_watermark": "2026-10-08T16:46:16.111589+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "retry_at": "2026-10-11T09:05:18.665238+00:00"
+        }
       }
     ],
-    "updated_at": "2026-10-11T05:05:18.665227+00:00",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
     "classification_watermark": "2026-10-08T16:46:16.111589+00:00",
     "classification_basis": "original_detection_day_conservative",
-    "retry_at": "2026-10-11T09:05:18.665238+00:00"
+    "retry_at": null,
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "b6cf6bd1bcbfdc2bbcc4e44359a38bc957ecba1454cf36add64064ae8993f00d",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "b37e8f4c67ce08c01b58406f20638fa99aeaf2e4ff94bce2f80c93afb28f665c": {
     "raw": {
@@ -110561,10 +112283,10 @@
     },
     "source": "diario_financiero",
     "lane": "LIVE",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-08T16:46:16.111589+00:00",
     "attempts": 2,
-    "reason": "df_insufficient_article_evidence",
+    "reason": "df_media_transcript_unavailable",
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -110643,12 +112365,76 @@
           "classification_basis": "original_detection_day_conservative",
           "retry_at": null
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Quiroz aborda alza del IPC y llama a tomar medidas monetarias para mantener la inflación a raya",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-quiroz-aborda-alza-del-ipc-y-llama-a-tomar-medidas-monetarias",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-08",
+            "raw_text": "El ministro de Hacienda, Jorge Quiroz, abordó la reciente alza del Índice de Precios al Consumidor (IPC) y reconoció que el escenario inflacionario sigue siendo desafiante. En ese contexto, sostuvo que es necesario adoptar las medidas monetarias que correspondan para mantener la inflación a raya, aunque manifestó su expectativa de que se produzca una desaceleración en el aumento de los precios.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Quiroz aborda alza del IPC y llama a tomar medidas monetarias para mantener la inflación a raya",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-08T15:19:00Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-08T15:19:00Z",
+                  "day": "2026-10-08"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-08T15:19:00Z",
+                  "day": "2026-10-08"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Jueves 8 de octubre de 2026 a las 12:17 hrs. IPC Imacec Hacienda Banco Central Jorge Quiroz El minis",
+                  "day": "2026-10-08"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "1ca87096265d079c4d4335d68ed57010928333f2b6adbb4dd38dded9af0faac9",
+              "original_captured_at": "2026-10-11T04:34:33.342349+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "LIVE",
+          "status": "retry",
+          "detected_at": "2026-10-08T16:46:16.111589+00:00",
+          "attempts": 2,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:05:19.081992+00:00",
+          "classification_watermark": "2026-10-08T16:46:16.111589+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "retry_at": "2026-10-11T09:05:19.082002+00:00"
+        }
       }
     ],
-    "updated_at": "2026-10-11T05:05:19.081992+00:00",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
     "classification_watermark": "2026-10-08T16:46:16.111589+00:00",
     "classification_basis": "original_detection_day_conservative",
-    "retry_at": "2026-10-11T09:05:19.082002+00:00"
+    "retry_at": null,
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "1ca87096265d079c4d4335d68ed57010928333f2b6adbb4dd38dded9af0faac9",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "c2d0d6e280f1d4b98f10d3eca5eb67e0add06ba7c67a0d3c42fe0f2c39cf5ad0": {
     "raw": {
@@ -112807,10 +114593,10 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-09T16:30:14.631735+00:00",
     "attempts": 2,
-    "reason": "df_insufficient_article_evidence",
+    "reason": "df_media_transcript_unavailable",
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -112889,12 +114675,76 @@
           "classification_basis": "original_detection_day_conservative",
           "retry_at": null
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "DF al Cierre | Juan Ortiz por IPC de septiembre: \"Esta inflación llegó para quedarse en 2026\"",
+            "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-juan-ortiz-por-ipc-de-septiembre-esta-inflacion-llego-para",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-08",
+            "raw_text": "",
+            "metadata": {
+              "discovered_from": "https://www.df.cl/empresas/dfsalud",
+              "page_text": "",
+              "article_title": "DF al Cierre | Juan Ortiz por IPC de septiembre: &#34;Esta inflación llegó para quedarse en 2026&#34;",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-08T21:31:08Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-08T21:31:08Z",
+                  "day": "2026-10-08"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-08T21:31:08Z",
+                  "day": "2026-10-08"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Jueves 8 de octubre de 2026 a las 18:29 hrs.",
+                  "day": "2026-10-08"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "original_sha256": "e8638049e9a7b324830b61788f33c5c1d699a76de37cbd82c43a79a0b6e6365d",
+              "original_captured_at": "2026-10-11T04:31:00.925837+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-09T16:30:14.631735+00:00",
+          "attempts": 2,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:28.541830+00:00",
+          "classification_watermark": "2026-10-09T16:30:14.631735+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "retry_at": "2026-10-11T09:15:28.541841+00:00"
+        }
       }
     ],
-    "updated_at": "2026-10-11T05:15:28.541830+00:00",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
     "classification_watermark": "2026-10-09T16:30:14.631735+00:00",
     "classification_basis": "original_detection_day_conservative",
-    "retry_at": "2026-10-11T09:15:28.541841+00:00"
+    "retry_at": null,
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "e8638049e9a7b324830b61788f33c5c1d699a76de37cbd82c43a79a0b6e6365d",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "7518d94f86d9038e82204795d32b186a84d62f849ca3086d7a584c19e9ae5c7a": {
     "raw": {
@@ -112941,10 +114791,10 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-09T16:30:14.631735+00:00",
     "attempts": 2,
-    "reason": "df_insufficient_article_evidence",
+    "reason": "df_media_transcript_unavailable",
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -113023,12 +114873,76 @@
           "classification_basis": "original_detection_day_conservative",
           "retry_at": null
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Aluvión tras fuerte lluvia arrastra vehículos y provoca daños en sector de San Carlos de Apoquindo en Las Condes",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-aluvion-tras-fuerte-lluvia-arrastra-vehiculos-y-provoca-danos",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-08",
+            "raw_text": "El aluvión ocasionó también inundaciones en viviendas, comercio e instituciones, mientras las autoridades evaluaban los daños.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Aluvión tras fuerte lluvia arrastra vehículos y provoca daños en sector de San Carlos de Apoquindo en Las Condes",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-08T20:47:21Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-08T20:47:21Z",
+                  "day": "2026-10-08"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-08T20:47:21Z",
+                  "day": "2026-10-08"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Jueves 8 de octubre de 2026 a las 17:45 hrs.",
+                  "day": "2026-10-08"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "30d7bfbee85a61f1084c2fe0f61142b3c323d11a1f3e40d1146231c9a4737b4b",
+              "original_captured_at": "2026-10-11T04:34:49.471258+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-09T16:30:14.631735+00:00",
+          "attempts": 2,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:29.056465+00:00",
+          "classification_watermark": "2026-10-09T16:30:14.631735+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "retry_at": "2026-10-11T09:15:29.056476+00:00"
+        }
       }
     ],
-    "updated_at": "2026-10-11T05:15:29.056465+00:00",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
     "classification_watermark": "2026-10-09T16:30:14.631735+00:00",
     "classification_basis": "original_detection_day_conservative",
-    "retry_at": "2026-10-11T09:15:29.056476+00:00"
+    "retry_at": null,
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "30d7bfbee85a61f1084c2fe0f61142b3c323d11a1f3e40d1146231c9a4737b4b",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "9fef9e84dc58f7b72dfe2874ac2b9c99c8d51fc7d37308a487153bc4bb9cd9d1": {
     "raw": {
@@ -113501,10 +115415,10 @@
     },
     "source": "diario_financiero",
     "lane": "LIVE",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-09T16:30:14.631735+00:00",
     "attempts": 2,
-    "reason": "df_insufficient_article_evidence",
+    "reason": "df_media_transcript_unavailable",
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -113583,12 +115497,76 @@
           "classification_basis": "original_detection_day_conservative",
           "retry_at": null
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Navi Pillay, Nobel de la Paz 2026 por su labor en favor del derecho internacional y la paz",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-navi-pillay-nobel-de-la-paz-2026-por-su-labor-en-favor-del",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-09",
+            "raw_text": "El Comité Noruego del Nobel reconoció este viernes con el premio Nobel de la Paz a la jurista sudafricana y antigua Alta Comisionada de Naciones Unidas para los Derechos Humanos Navanethem Pillay, conocida como Navi Pillay, quien fuera además jueza del Tribunal Penal Internacional (TPI).",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Navi Pillay, Nobel de la Paz 2026 por su labor en favor del derecho internacional y la paz",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-09T16:16:34Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-09T16:16:34Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-09T16:16:34Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 9 de octubre de 2026 a las 13:15 hrs. Nobel de la Paz El Comité Noruego del Nobel reconoció ",
+                  "day": "2026-10-09"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "f9c3d8e690e686b03586987cafb1c7a0534df14d398237641d0182b615180a1e",
+              "original_captured_at": "2026-10-11T04:34:51.701415+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "LIVE",
+          "status": "retry",
+          "detected_at": "2026-10-09T16:30:14.631735+00:00",
+          "attempts": 2,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:05:19.499129+00:00",
+          "classification_watermark": "2026-10-09T16:30:14.631735+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "retry_at": "2026-10-11T09:05:19.499138+00:00"
+        }
       }
     ],
-    "updated_at": "2026-10-11T05:05:19.499129+00:00",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
     "classification_watermark": "2026-10-09T16:30:14.631735+00:00",
     "classification_basis": "original_detection_day_conservative",
-    "retry_at": "2026-10-11T09:05:19.499138+00:00"
+    "retry_at": null,
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "f9c3d8e690e686b03586987cafb1c7a0534df14d398237641d0182b615180a1e",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "b338f3146d1cc12649083bf43bed64a5c9658283eb0b26db4bc875b2babec584": {
     "raw": {
@@ -113635,10 +115613,10 @@
     },
     "source": "diario_financiero",
     "lane": "LIVE",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-09T16:30:14.631735+00:00",
     "attempts": 2,
-    "reason": "df_insufficient_article_evidence",
+    "reason": "df_media_transcript_unavailable",
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -113717,12 +115695,76 @@
           "classification_basis": "original_detection_day_conservative",
           "retry_at": null
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Especial: Diversificar fuentes de retorno",
+            "url": "https://www.df.cl/podcast/primer-click/especial-diversificar-fuentes-de-retorno",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-09",
+            "raw_text": "OpenAI vuelve a concentrar la atención de los inversionistas, mientras crecen las preguntas sobre el retorno de las enormes inversiones en IA. En el especial de viernes de Primer Click, René Peragallo, de Scotia Wealth Management, nos ayuda a entender qué riesgos enfrenta el rally tecnológico, qué ocurre con las tasas de interés y dónde pueden aparecer oportunidades para diversificar las inversiones. 🎧 Mira la entrevista en el canal de YouTube de Diario Financiero. #PrimerClick #OpenAI #InteligenciaArtificial #Inversiones",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Especial: Diversificar fuentes de retorno",
+              "article_section": "Podcast",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-09T07:41:22Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-09T07:41:22Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-09T07:41:22Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 9 de octubre de 2026 a las 04:40 hrs. mercados internacionales Acciones S&P IA emergentes Co",
+                  "day": "2026-10-09"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "913656d3d655bfd7129f59adf95e429b38e1662113a8da09a4d14321dea4c6e2",
+              "original_captured_at": "2026-10-11T04:34:52.664653+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "LIVE",
+          "status": "retry",
+          "detected_at": "2026-10-09T16:30:14.631735+00:00",
+          "attempts": 2,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:05:19.916318+00:00",
+          "classification_watermark": "2026-10-09T16:30:14.631735+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "retry_at": "2026-10-11T09:05:19.916328+00:00"
+        }
       }
     ],
-    "updated_at": "2026-10-11T05:05:19.916318+00:00",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
     "classification_watermark": "2026-10-09T16:30:14.631735+00:00",
     "classification_basis": "original_detection_day_conservative",
-    "retry_at": "2026-10-11T09:05:19.916328+00:00"
+    "retry_at": null,
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "913656d3d655bfd7129f59adf95e429b38e1662113a8da09a4d14321dea4c6e2",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "f1cb45a41343a9e5205eb40431a2e38cc880cef117954b220ad18916f3772274": {
     "raw": {
@@ -115030,7 +117072,7 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-10T22:23:12.862520+00:00",
     "attempts": 2,
     "reason": "df_image_only_requires_ocr",
@@ -115326,12 +117368,84 @@
           "classification_basis": "original_detection_day_conservative",
           "retry_at": "2026-10-11T09:19:37.664607+00:00"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "El primer Presupuesto de Kast",
+            "url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-09",
+            "raw_text": "El gobierno de José Antonio Kast presentó su primer proyecto de Presupuestos, con un gasto total de $91,18 billones, 1,5% superior en términos reales a la ejecución proyectada de 2026. Salud, Educación y Trabajo concentran la mayor parte de los recursos, mientras la iniciativa inicia ahora su tramitación en el Congreso.",
+            "metadata": {
+              "discovered_from": "https://www.df.cl/empresas/dfsalud",
+              "page_text": "",
+              "article_title": "El primer Presupuesto de Kast: quiénes ganan, quiénes pierden y cómo se reparten $ 91,18 billones",
+              "article_section": "Señal DF",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-09T18:19:03Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-09T18:19:03Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-09T18:19:03Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 9 de octubre de 2026 a las 15:40 hrs.",
+                  "day": "2026-10-09"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "df_primary_images",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "original_sha256": "89a71fca441de8e6d1bb5aeb17ff8d135a22ff4db17706e670ef79faa0e49bc4",
+              "original_captured_at": "2026-10-11T04:30:20.481368+00:00",
+              "df_body_reaudit_version": 1,
+              "primary_image_urls": [
+                "https://www.df.cl/noticias/site/artic/20261009/imag/foto_0000000120261009151903/d.png",
+                "https://www.df.cl/noticias/site/artic/20261009/imag/foto_0000000420261009151903/z.png",
+                "https://www.df.cl/noticias/site/artic/20261009/imag/foto_0000000520261009151903/x.png",
+                "https://www.df.cl/noticias/site/artic/20261009/imag/foto_0000001820261009151903/v.png",
+                "https://www.df.cl/noticias/site/artic/20261009/imag/foto_0000000220261009151903/zc.png"
+              ],
+              "primary_media_urls": []
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-10T22:23:12.862520+00:00",
+          "attempts": 2,
+          "reason": "df_image_only_requires_ocr",
+          "updated_at": "2026-10-11T05:19:37.664598+00:00",
+          "classification_watermark": "2026-10-10T22:23:12.862507+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "retry_at": "2026-10-11T09:19:37.664607+00:00"
+        }
       }
     ],
-    "updated_at": "2026-10-11T05:19:37.664598+00:00",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
     "classification_watermark": "2026-10-10T22:23:12.862507+00:00",
     "classification_basis": "original_detection_day_conservative",
-    "retry_at": "2026-10-11T09:19:37.664607+00:00"
+    "retry_at": null,
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_image_only_requires_ocr",
+      "original_sha256": "89a71fca441de8e6d1bb5aeb17ff8d135a22ff4db17706e670ef79faa0e49bc4",
+      "next_action": "Obtain and verify text from primary publisher images; reassess at unchanged gate"
+    }
   },
   "d1aec19e33e7b5bb2464c62a88188b5743f77e19dadcf31cfc211039e49c12c0": {
     "raw": {
@@ -115427,12 +117541,12 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-10T22:23:12.862520+00:00",
     "attempts": 2,
     "reason": "df_publication_date_conflict",
-    "updated_at": "2026-10-11T05:15:29.562138+00:00",
-    "retry_at": "2026-10-11T09:15:29.562149+00:00",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T05:02:41.640667+00:00",
@@ -115484,8 +117598,70 @@
           "updated_at": "2026-10-11T04:44:12.864122+00:00",
           "retry_at": "2026-10-11T06:44:12.864132+00:00"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_capture_debt_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Asunto de familia | Armin y Alejandro Kunstmann: La sucesión familiar, el pacto con CCU y los próximos pasos",
+            "url": "https://www.df.cl/df-stream/podcast/asunto-de-familia-armin-y-alejandro-kunstmann-la-sucesion-familiar-el",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": null,
+            "raw_text": "El fundador de la cervecería valdiviana traspasó, hace seis años, el control diario a la segunda generación, encabezada por su hijo Alejandro Kunstmann en la gerencia general. Aquí, en un nuevo capítulo del podcast Asunto de familia, ambos cuentan por qué la sucesión no se improvisa y qué hicieron ellos. También cómo trabajan con CCU -sus socios-, sin perder su ADN regional. Y la razón de su apuesta por los productos premium.",
+            "metadata": {
+              "discovered_from": "https://www.df.cl/empresas/dfsalud",
+              "page_text": "",
+              "article_title": "Asunto de familia | Armin y Alejandro Kunstmann: La sucesión familiar, el pacto con CCU y los próximos pasos",
+              "article_section": "DF STREAM",
+              "publication_date_source": null,
+              "publication_timestamp": null,
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-10T14:08:17Z",
+                  "day": "2026-10-10"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-10T14:08:17Z",
+                  "day": "2026-10-10"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 9 de octubre de 2026 a las 21:00 hrs.",
+                  "day": "2026-10-09"
+                }
+              ],
+              "publication_date_conflict": true,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "original_sha256": "23fe314ed5936a5153a6c11079139c495ef908729c2689206c2fddf38b945d3c",
+              "original_captured_at": "2026-10-11T04:30:48.375113+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-10T22:23:12.862520+00:00",
+          "attempts": 2,
+          "reason": "df_publication_date_conflict",
+          "updated_at": "2026-10-11T05:15:29.562138+00:00",
+          "retry_at": "2026-10-11T09:15:29.562149+00:00"
+        }
       }
-    ]
+    ],
+    "df_resolution": {
+      "state": "RESOLVED_NO_VERIFIABLE_DATE",
+      "reason": "df_publication_date_conflict",
+      "original_sha256": "23fe314ed5936a5153a6c11079139c495ef908729c2689206c2fddf38b945d3c",
+      "next_action": "Resume only with verified publisher publication day and primary text"
+    }
   },
   "6cd419c372684a3c26ca41a3a995de54a4a3d99aa56a33fbfca3c70f2cfaf905": {
     "raw": {
@@ -115532,10 +117708,10 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-10T22:23:12.862520+00:00",
     "attempts": 2,
-    "reason": "df_insufficient_article_evidence",
+    "reason": "df_media_transcript_unavailable",
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -115614,12 +117790,76 @@
           "classification_basis": "original_detection_day_conservative",
           "retry_at": null
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "DF al Cierre | La crisis del fondo E y la primavera de Eduardo Fernández León",
+            "url": "https://www.df.cl/df-stream/podcast/df-al-cierre-las-claves-de-la-jornada-de-este-viernes-09-de-octubre",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-09",
+            "raw_text": "En este nuevo episodio de DF al Cierre, el director de Diario Financiero, José Tomás Santa María, analiza en vivo, junto a periodistas del diario, las noticias que serán portada este fin de semana en las ediciones de Señal DF y DF MAS.",
+            "metadata": {
+              "discovered_from": "https://www.df.cl/empresas/dfsalud",
+              "page_text": "",
+              "article_title": "DF al Cierre | La crisis del fondo E y la primavera de Eduardo Fernández León",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-09T17:59:51Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-09T17:59:51Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-09T17:59:51Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 9 de octubre de 2026 a las 17:00 hrs.",
+                  "day": "2026-10-09"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "original_sha256": "0aeb609d354cbcd69d387d9c50a3cbc30000089f07c2eaf4ee4001e28dff6f6c",
+              "original_captured_at": "2026-10-11T04:30:49.362521+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-10T22:23:12.862520+00:00",
+          "attempts": 2,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:30.074265+00:00",
+          "classification_watermark": "2026-10-10T22:23:12.862507+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "retry_at": "2026-10-11T09:15:30.074276+00:00"
+        }
       }
     ],
-    "updated_at": "2026-10-11T05:15:30.074265+00:00",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
     "classification_watermark": "2026-10-10T22:23:12.862507+00:00",
     "classification_basis": "original_detection_day_conservative",
-    "retry_at": "2026-10-11T09:15:30.074276+00:00"
+    "retry_at": null,
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "0aeb609d354cbcd69d387d9c50a3cbc30000089f07c2eaf4ee4001e28dff6f6c",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "1cd533c8bc56b1f8bc0e1ba14084e0f9df2cc7ccac09c12c015b475822fd24bf": {
     "raw": {
@@ -116157,10 +118397,10 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-10T22:23:12.862520+00:00",
     "attempts": 2,
-    "reason": "df_insufficient_article_evidence",
+    "reason": "df_media_transcript_unavailable",
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -116239,12 +118479,76 @@
           "classification_basis": "original_detection_day_conservative",
           "retry_at": null
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Terremoto de magnitud 7,7 sacude Panamá",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-terremoto-de-magnitud-7-7-sacude-panama",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-09",
+            "raw_text": "Panamá fue sacudido este viernes por su terremoto más fuerte en más de siete décadas, obligando a cerrar temporalmente tramos del Metro de Ciudad de Panamá y sintiéndose en Costa Rica. En Chile el Servicio Hidrográfico y Oceanográfico de la Armada de Chile (SHOA) emitió una amenaza de tsunami para Isla de Pascua, con una hora estimada de arribo para las 20:41 de hoy, hora insular.",
+            "metadata": {
+              "discovered_from": "https://www.df.cl/empresas/dfsalud",
+              "page_text": "",
+              "article_title": "Ahora en DF | Terremoto de magnitud 7,7 sacude Panamá",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-09T20:40:39Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-09T20:40:39Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-09T20:40:39Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 9 de octubre de 2026 a las 17:39 hrs.",
+                  "day": "2026-10-09"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "original_sha256": "b5ac9932a40dda2ddd63a38c040592a2471e1e32d12e4eb4b2cccbc9a2a5bdb2",
+              "original_captured_at": "2026-10-11T04:31:01.928629+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-10T22:23:12.862520+00:00",
+          "attempts": 2,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:35.336852+00:00",
+          "classification_watermark": "2026-10-10T22:23:12.862507+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "retry_at": "2026-10-11T09:15:35.336862+00:00"
+        }
       }
     ],
-    "updated_at": "2026-10-11T05:15:35.336852+00:00",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
     "classification_watermark": "2026-10-10T22:23:12.862507+00:00",
     "classification_basis": "original_detection_day_conservative",
-    "retry_at": "2026-10-11T09:15:35.336862+00:00"
+    "retry_at": null,
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "b5ac9932a40dda2ddd63a38c040592a2471e1e32d12e4eb4b2cccbc9a2a5bdb2",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "e024f23230a3007768d80d22b264705113f0bfc0de9c5fc1e1f258bbe1eb6472": {
     "raw": {
@@ -116291,10 +118595,10 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-10T22:23:12.862520+00:00",
     "attempts": 2,
-    "reason": "df_insufficient_article_evidence",
+    "reason": "df_media_transcript_unavailable",
     "recovery_observations": [
       {
         "at": "2026-10-11T04:30:15.404235+00:00",
@@ -116373,12 +118677,76 @@
           "classification_basis": "original_detection_day_conservative",
           "retry_at": null
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Las imágenes que dejó el aluvión en Las Condes",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-las-imagenes-que-dejo-el-aluvion-en-las-condes",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-10-09",
+            "raw_text": "",
+            "metadata": {
+              "discovered_from": "https://www.df.cl/empresas/dfsalud",
+              "page_text": "",
+              "article_title": "Ahora en DF | Las imágenes que dejó el aluvión en Las Condes",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-10-09T18:44:39Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-10-09T18:44:39Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-10-09T18:44:39Z",
+                  "day": "2026-10-09"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 9 de octubre de 2026 a las 15:42 hrs.",
+                  "day": "2026-10-09"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "original_sha256": "703cee83f4fa24e480239891d9a3b108c04b394931984d10c651c7bdce3aed6f",
+              "original_captured_at": "2026-10-11T04:31:02.917669+00:00",
+              "df_body_reaudit_version": 1
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-10T22:23:12.862520+00:00",
+          "attempts": 2,
+          "reason": "df_insufficient_article_evidence",
+          "updated_at": "2026-10-11T05:15:35.851570+00:00",
+          "classification_watermark": "2026-10-10T22:23:12.862507+00:00",
+          "classification_basis": "original_detection_day_conservative",
+          "retry_at": "2026-10-11T09:15:35.851582+00:00"
+        }
       }
     ],
-    "updated_at": "2026-10-11T05:15:35.851570+00:00",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
     "classification_watermark": "2026-10-10T22:23:12.862507+00:00",
     "classification_basis": "original_detection_day_conservative",
-    "retry_at": "2026-10-11T09:15:35.851582+00:00"
+    "retry_at": null,
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "703cee83f4fa24e480239891d9a3b108c04b394931984d10c651c7bdce3aed6f",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "de5c559fd7595e2f6eef05ab170dc19aa3078bb378604ab1d54db69765da6415": {
     "raw": {
@@ -119918,13 +122286,13 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-11T04:30:15.404235+00:00",
     "attempts": 2,
     "reason": "df_media_transcript_unavailable",
     "classification_watermark": "2026-10-10T22:23:12.862507+00:00",
-    "updated_at": "2026-10-11T05:15:36.900924+00:00",
-    "retry_at": "2026-10-11T09:15:36.900934+00:00",
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
     "recovery_observations": [
       {
         "at": "2026-10-11T05:02:41.640667+00:00",
@@ -120043,8 +122411,79 @@
           "updated_at": "2026-10-11T05:15:36.900924+00:00",
           "retry_at": "2026-10-11T09:15:36.900934+00:00"
         }
+      },
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Corazón del Negocio | Carla Mariman y la importancia de la salud mental en las personas que envejecen",
+            "url": "https://www.df.cl/df-stream/videos/corazon-del-negocio-carmen-mariman-y-salud-mental",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-09-01",
+            "raw_text": "La directora ejecutiva y fundadora de PrevenConCiencia advirtió que pese a que hoy estamos más conectados que nunca, al mismo tiempo estamos más solos, y eso se agrava cuando las personas salen del mercado laboral.",
+            "metadata": {
+              "discovered_from": "https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html",
+              "page_text": "",
+              "article_title": "Corazón del Negocio | Carla Mariman y la importancia de la salud mental en las personas que envejecen",
+              "article_section": "DF STREAM",
+              "publication_date_source": "visible:published_label",
+              "publication_timestamp": null,
+              "publication_label": "Martes 1 de septiembre de 2026 a las 09:00 hrs.",
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-08-31T19:15:57Z",
+                  "day": "2026-08-31"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-08-31T19:15:57Z",
+                  "day": "2026-08-31"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Martes 1 de septiembre de 2026 a las 09:00 hrs.",
+                  "day": "2026-09-01"
+                }
+              ],
+              "publication_date_conflict": true,
+              "publication_date_conflict_resolution": {
+                "rule": "primary_header_explicit_publication_label",
+                "selected_visible_day": "2026-09-01",
+                "basis": "DF enc-main header / author__date explicitly labels publication; matching NewsArticle URL and primary CUERPO verified. Metadata timestamps retained; discrepancy cause unknown."
+              },
+              "article_content_source": "df_embedded_media_without_transcript",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "original_sha256": "a77c697d9b6d0185963f972cfcffea0a3976cdd05d30b8624faf535320b5ae3c",
+              "original_captured_at": "2026-10-11T04:31:47.651559+00:00",
+              "df_body_reaudit_version": 1,
+              "primary_image_urls": [],
+              "primary_media_urls": [
+                "https://mdstrm.com/embed/6a904fa97897765c7c70f94e"
+              ]
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-11T04:30:15.404235+00:00",
+          "attempts": 2,
+          "reason": "df_media_transcript_unavailable",
+          "classification_watermark": "2026-10-10T22:23:12.862507+00:00",
+          "updated_at": "2026-10-11T05:15:36.900924+00:00",
+          "retry_at": "2026-10-11T09:15:36.900934+00:00"
+        }
       }
-    ]
+    ],
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "a77c697d9b6d0185963f972cfcffea0a3976cdd05d30b8624faf535320b5ae3c",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "944b3a2d9b8b27af9151fcc5c09e62eed3918d667ed41a65fca8cd8fac2f9323": {
     "raw": {
@@ -120490,13 +122929,77 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-11T05:02:41.640667+00:00",
     "attempts": 1,
-    "reason": "df_insufficient_article_evidence",
+    "reason": "df_media_transcript_unavailable",
     "classification_watermark": "2026-10-11T04:43:38.481388+00:00",
-    "updated_at": "2026-10-11T05:05:20.334200+00:00",
-    "retry_at": "2026-10-11T07:05:20.334210+00:00"
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
+    "recovery_observations": [
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Ministra de Salud valora sentencia en el caso de licencias médicas: \"Esperamos que esto nos lleve a buenos réditos\"",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-ministra-de-salud-valora-sentencia-en-el-caso-de-licencias",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-08-31",
+            "raw_text": "La ministra de Salud, May Chomali, se refiere a la sentencia contra 17 acusados por integrar una presunta organización criminal dedicada a la emisión masiva de licencias médicas fraudulentas.",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Ministra de Salud valora sentencia en el caso de licencias médicas: &#34;Esperamos que esto nos lleve a buenos réditos&#34;",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-08-31T18:30:10Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-08-31T18:30:10Z",
+                  "day": "2026-08-31"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-08-31T18:30:10Z",
+                  "day": "2026-08-31"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Lunes 31 de agosto de 2026 a las 14:23 hrs. Caso licencias médicas Fonasa isapres fraude La ministra",
+                  "day": "2026-08-31"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "e7136ba1d95d9df363da0cd3b7d03d6090cf8a71719052f8e5cdc6111a3f1e24",
+              "original_captured_at": "2026-10-11T05:03:21.879607+00:00"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-11T05:02:41.640667+00:00",
+          "attempts": 1,
+          "reason": "df_insufficient_article_evidence",
+          "classification_watermark": "2026-10-11T04:43:38.481388+00:00",
+          "updated_at": "2026-10-11T05:05:20.334200+00:00",
+          "retry_at": "2026-10-11T07:05:20.334210+00:00"
+        }
+      }
+    ],
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "e7136ba1d95d9df363da0cd3b7d03d6090cf8a71719052f8e5cdc6111a3f1e24",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "86e853158931f41994076ecdfccf6af50c85d5b23c67663bad2ee114fe930e20": {
     "raw": {
@@ -124441,13 +126944,77 @@
     },
     "source": "diario_financiero",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-11T05:09:10.713959+00:00",
     "attempts": 1,
-    "reason": "df_insufficient_article_evidence",
+    "reason": "df_media_transcript_unavailable",
     "classification_watermark": "2026-10-11T05:05:08.728740+00:00",
-    "updated_at": "2026-10-11T05:14:34.434095+00:00",
-    "retry_at": "2026-10-11T07:14:34.434106+00:00"
+    "updated_at": "2026-10-11T06:32:45.904329+00:00",
+    "retry_at": null,
+    "recovery_observations": [
+      {
+        "at": "2026-10-11T06:32:45.904329+00:00",
+        "action": "explicit_nontext_format_disposition",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "Ahora en DF | Kast anuncia convenio entre Minsal, Fonasa y Caja Los Andes para reducir las listas de espera",
+            "url": "https://www.df.cl/df-stream/videos/ahora-en-df-kast-anuncia-convenio-entre-minsal-fonasa-y-caja-los-andes",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-08-14",
+            "raw_text": "El Presidente José Antonio Kast, junto a la ministra de Salud, May Chomali, anunció un convenio entre el Minsal, Fonasa y Caja de los Andes para atender a pacientes en lista de espera",
+            "metadata": {
+              "page_text": "",
+              "article_title": "Ahora en DF | Kast anuncia convenio entre Minsal, Fonasa y Caja Los Andes para reducir las listas de espera",
+              "article_section": "DF STREAM",
+              "publication_date_source": "cxenseparse:recs:publishtime",
+              "publication_timestamp": "2026-08-14T16:30:39Z",
+              "publication_label": null,
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-08-14T16:30:39Z",
+                  "day": "2026-08-14"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-08-14T16:30:39Z",
+                  "day": "2026-08-14"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 14 de agosto de 2026 a las 12:28 hrs.",
+                  "day": "2026-08-14"
+                }
+              ],
+              "publication_date_conflict": false,
+              "publication_date_conflict_resolution": null,
+              "article_content_source": "missing_primary_article",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "discovered_from": "df_30_90_reconciliation",
+              "original_sha256": "55aff031c96320b285eeb5b283430ea9682fee0290399116a121d3e2fd687784",
+              "original_captured_at": "2026-10-11T05:10:19.780884+00:00"
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "BACKFILL",
+          "status": "retry",
+          "detected_at": "2026-10-11T05:09:10.713959+00:00",
+          "attempts": 1,
+          "reason": "df_insufficient_article_evidence",
+          "classification_watermark": "2026-10-11T05:05:08.728740+00:00",
+          "updated_at": "2026-10-11T05:14:34.434095+00:00",
+          "retry_at": "2026-10-11T07:14:34.434106+00:00"
+        }
+      }
+    ],
+    "df_resolution": {
+      "state": "DEFERRED_MULTIMEDIA",
+      "reason": "df_media_transcript_unavailable",
+      "original_sha256": "55aff031c96320b285eeb5b283430ea9682fee0290399116a121d3e2fd687784",
+      "next_action": "Obtain official transcript or associated primary text; reassess at unchanged gate"
+    }
   },
   "79d5a71626e0190648ff88d05a835f05e1ec0b2ead3448f09bd782c639766052": {
     "raw": {

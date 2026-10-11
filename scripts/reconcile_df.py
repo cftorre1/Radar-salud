@@ -297,6 +297,7 @@ def main():
         elif terminal_reject == 'df_not_article': disposition = 'capture_noise_excluded:df_not_article'
         elif terminal_reject: disposition = "editorial_rejected:" + terminal_reject
         elif any(e["status"] == "retry" for e in entries): disposition = "technical_or_analysis_retry:" + str(next(e["reason"] for e in entries if e["status"] == "retry"))
+        elif any(e['status']=='deferred' for e in entries): disposition='explicit_format_or_date_disposition:'+str(next(e['reason'] for e in entries if e['status']=='deferred'))
         elif original.get("fetch") == "error": disposition = "capture_blocked:" + original["error_type"]
         elif any(e["status"] == "pending" for e in entries): disposition = "pending_processing_limit_or_budget; not_editorial_rejection"
         elif any(e['status']=='archived' for e in entries): disposition='archived:'+str(next(e['reason'] for e in entries if e['status']=='archived'))

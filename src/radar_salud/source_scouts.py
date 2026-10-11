@@ -118,7 +118,8 @@ class SusesoFiscalizacionScout:
 
 class DfHealthScout:
     SOURCE_SLUG="diario_financiero";SOURCE_NAME="Diario Financiero";SOURCE_TYPE="press_high_trust"
-    PAGES=["https://www.df.cl/empresas/dfsalud","https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html"]
+    PAGES=["https://www.df.cl/empresas/dfsalud","https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html",
+           "https://www.df.cl/noticias/site/tag/port/all/tagport_2916_1.html"]
     def discover(self):
         from .df_article import bind_df_article
         from .df_inventory import DfListing
