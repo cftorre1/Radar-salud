@@ -94,7 +94,8 @@ def main():
                  "df_biometria_real":"super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera",
                  "df_health_listing_real":"/empresas/dfsalud",
                  "df_health_tag_real":"/tagport_161_1.html"}
-        fixture_manifest={}
+        fixture_path=root/"tests/fixtures/df_original_manifest.json"
+        fixture_manifest=json.loads(fixture_path.read_text()) if fixture_path.exists() else {}
         for name,suffix in samples.items():
             for url,html in cache.items():
                 if url.endswith(suffix):
