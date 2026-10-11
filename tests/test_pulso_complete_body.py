@@ -16,7 +16,7 @@ from radar_salud import beta_sources, llm_analysis
 from radar_salud.models import RawItem
 from radar_salud.processing import DeferredProcessing
 from radar_salud.pulso_source import (
-    _verified_detail, article_body_evidence, complete_article_body, extract_article,
+    _verified_detail, article_body_evidence, complete_article_body, extract_article, health_anchor,
 )
 
 REAL = Path(__file__).parent / 'fixtures/pulso_real'
@@ -70,6 +70,36 @@ def test_real_senior_housing_primary_tail_reaches_actual_response_input_without_
     assert body[-500:] in requests[0]['input']
     assert raw.metadata['analysis_input_body_sha256'] == raw.metadata['article_body_sha256']
     assert raw.metadata['analysis_input_characters'] == len(body)
+    assert raw.metadata['analysis_input_complete'] is True
+    assert raw.metadata['editorial_assessment']['threshold'] == 72
+    assert raw.metadata['rejection_reason'] == 'editorial_relevance_below_threshold'
+
+
+def test_real_generic_aluvion_headline_preserves_clinical_tail_after_5500_in_actual_response_input(monkeypatch):
+    folder = Path(__file__).parent / 'fixtures/pulso_targeted_primary_real'
+    entry = next(entry for entry in json.loads((folder / 'manifest.json').read_text())['requests']
+                 if 'mas-de-2000-viviendas-afectadas' in entry['url'])
+    compressed = (folder / entry['gzip_file']).read_bytes()
+    assert hashlib.sha256(compressed).hexdigest() == entry['gzip_sha256']
+    payload = gzip.decompress(compressed)
+    assert hashlib.sha256(payload).hexdigest() == entry['sha256']
+    raw = raw_from_original(payload.decode('utf-8'), entry['url'])
+    body = raw.metadata['page_text']
+    assert not health_anchor(raw.title)
+    assert raw.event_date == '2026-10-09'
+    assert len(body) == entry['primary_date_and_body_audit']['primary_body_chars'] == 5781
+    assert raw.metadata['article_body_sha256'] == entry['primary_date_and_body_audit']['primary_body_sha256']
+    assert body.index('evacuación horizontal') > 5500
+    assert body.index('La Clínica Las Condes permanece operativa') > 5500
+    assert body.index('Hospital Dipreca') > 5500
+    assert body.index('RedSalud Vitacura') > 5500
+    requests = actual_model_input(monkeypatch)
+    assert beta_sources.process_curated_beta_source(raw, {}) is None
+    assert len(requests) == 1
+    assert requests[0]['input'].split('Contenido:\n', 1)[1] == body
+    assert body[5500:] in requests[0]['input']
+    assert raw.metadata['analysis_input_body_sha256'] == raw.metadata['article_body_sha256']
+    assert raw.metadata['analysis_input_characters'] == 5781
     assert raw.metadata['analysis_input_complete'] is True
     assert raw.metadata['editorial_assessment']['threshold'] == 72
     assert raw.metadata['rejection_reason'] == 'editorial_relevance_below_threshold'
