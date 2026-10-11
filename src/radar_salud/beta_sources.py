@@ -304,9 +304,13 @@ def _material(role, title, body):
         clinical_service_suspension = bool(re.search(r"\bcl[ií]nica\b|\bhospital\b|red de salud", text)) and bool(
             re.search(r"\bsuspend(?:e|er[aá]|id[oa]|ieron|emos)\b[^.!?]{0,100}\batenci[oó]n\b[^.!?]{0,100}"
                       r"(?:urgencias?|consultas? m[eé]dicas|procedimientos? ambulatorios?)", text))
+        quantified_health_power_impact = ("electrodependientes" in text and bool(re.search(
+            r"\bcentros de salud\b[^!?]{0,120}\bafectados\b[^!?]{0,60}\b\d+", text)) and bool(re.search(
+            r"cortes? de (?:suministro(?: el[eé]ctrico)?|electricidad)|sin suministro el[eé]ctrico", text)))
         return (care_obligation or ges_coverage or care_legislation
                 or proposed_clinical_condition or provider_flood_response
-                or authorized_care_registry or clinical_service_suspension)
+                or authorized_care_registry or clinical_service_suspension
+                or quantified_health_power_impact)
     return False
 
 

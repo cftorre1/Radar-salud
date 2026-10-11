@@ -17,7 +17,7 @@ CONTROLS = [row for row in json.loads((REAL / 'manifest.json').read_text())['fix
             if any(part in row['url'] for part in ('minsal-publica-nomina-con-los-eleam',
                        'uc-christus-san-carlos-de-apoquindo-suspende-atencion-de-urgencia'))]
 PROJECTIONS = json.loads((Path(__file__).parent / 'fixtures/pulso_expanded_materiality_real/verified_primary_body_projections.json').read_text())['fixtures']
-REPAIRED_PROJECTIONS = ('proposed_clinical_condition_colmed',)
+REPAIRED_PROJECTIONS = ('proposed_clinical_condition_colmed', 'regional_health_power_interruption')
 
 
 def original_raw(entry):
@@ -112,6 +112,14 @@ def test_original_colmed_is_a_reported_objection_to_a_proposed_clinical_conditio
     assert 'ha sido rechazado desde distintos sectores' in entry['body']
 
 
+def test_original_power_impact_preserves_quantified_risk_and_equipment_still_operating():
+    entry = next(row for row in PROJECTIONS if row['name'] == 'regional_health_power_interruption')
+    assert entry['publication_date'] == '2026-07-17'
+    assert '981 tendrían corte de suministro eléctrico' in entry['body']
+    assert 'por el momento mantendrían sus equipos en operación' in entry['body']
+    assert 'centros de salud, el total de los afectados son 92 de más de 1.800' in entry['body']
+
+
 @pytest.mark.parametrize(('title', 'body'), [
     ('Minsal informa sobre salud de personas mayores', 'Los ELEAM necesitan autorización sanitaria. Las familias visitan a sus parientes.'),
     ('Lista de residencias ELEAM', 'Un directorio comercial ofrece un listado de ELEAM con autorización sanitaria, disponible públicamente.'),
@@ -119,6 +127,8 @@ def test_original_colmed_is_a_reported_objection_to_a_proposed_clinical_conditio
     ('La clínica informa sobre clases', 'El colegio suspendió la atención de clases; la clínica continúa funcionando.'),
     ('Una empresa suspende atención', 'La empresa de transportes suspende la atención de urgencia a clientes; no presta atención de salud.'),
     ('Un hospital estudia ideas', 'La administración evaluará si suspender la atención de urgencia el próximo año, sin medidas adoptadas.'),
+    ('Minsal observa tormenta', 'Hay corte de suministro eléctrico en casas de personas electrodependientes, sin datos de centros asistenciales.'),
+    ('Centros de salud informan situación', 'Los centros de salud afectados son 92, pero el artículo no menciona electricidad ni pacientes electrodependientes.'),
 ])
 def test_narrow_registry_and_care_suspension_rules_do_not_admit_generic_directory_or_unadopted_ideas(title, body):
     assert not beta_sources._material('media', title, body)
