@@ -1,6 +1,6 @@
 {
   "checkpoint": "official_publication_date_alternatives_read_only",
-  "generated_at": "2026-10-11T07:10:45.104986+00:00",
+  "generated_at": "2026-10-11T07:13:36.768052+00:00",
   "as_of": "2026-10-11",
   "window_convention": "Rolling elapsed-day bounds, inclusive: as_of minus 90 days through as_of; no date is selected for an ambiguous record.",
   "origin_capture_workflow": "38119024441",
@@ -1264,20 +1264,30 @@
       "tls_verified": true,
       "artifact": "data/audits/source_e_recovery/actions/38119024441/8fdec8ed77304dc20e4e-0.body",
       "environment": "github_actions"
+    },
+    "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qu%C3%A9-es-y-c%C3%B3mo-adaptarte-a-tu-nueva-ciudad": {
+      "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qu%C3%A9-es-y-c%C3%B3mo-adaptarte-a-tu-nueva-ciudad",
+      "final_url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qu%C3%A9-es-y-c%C3%B3mo-adaptarte-a-tu-nueva-ciudad",
+      "captured_at": "2026-10-11T07:08:48.179403+00:00",
+      "http_status": 200,
+      "tls_verified": true,
+      "sha256": "bc9aa65d5ef20d3167a14bbe8ca6c425d7ad3cef36d028cd3d96c0471b953edf",
+      "artifact": "data/audits/source_e_recovery/actions/38120060930/1ed054d0056efb3646cb-0.body",
+      "environment": "github_actions",
+      "workflow": "38120060930"
+    },
+    "https://ist.cl/wp-json/wp/v2/posts/105186": {
+      "url": "https://ist.cl/wp-json/wp/v2/posts/105186",
+      "final_url": "https://ist.cl/wp-json/wp/v2/posts/105186",
+      "captured_at": "2026-10-11T07:08:50.783944+00:00",
+      "http_status": 200,
+      "tls_verified": true,
+      "sha256": "2a297974139906d6e91ec59ea38618b7885c83d104d686cc6e59caac62f2096d",
+      "artifact": "data/audits/source_e_recovery/actions/38120060930/53298e409c24887eb2b2-0.body",
+      "environment": "github_actions",
+      "workflow": "38120060930"
     }
   },
-  "official_alternatives_next_capture": [
-    {
-      "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qu%C3%A9-es-y-c%C3%B3mo-adaptarte-a-tu-nueva-ciudad",
-      "observed_from": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad",
-      "purpose": "Capture exact detail HTML and declared publisher date metadata; do not infer undocumented Sitefinity endpoints."
-    },
-    {
-      "url": "https://ist.cl/wp-json/wp/v2/posts/105186",
-      "observed_from": "Native post _links.self and detail link rel=alternate application/json",
-      "purpose": "Capture exact current single post native date and rendered body; never use modified or date_gmt to choose publication."
-    }
-  ],
   "browser_observations": [
     {
       "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qu%C3%A9-es-y-c%C3%B3mo-adaptarte-a-tu-nueva-ciudad",
@@ -1298,9 +1308,10 @@
   "acceptance": {
     "duelo_migratorio": {
       "status": "pending",
-      "external_or_publisher_blocker": "Native official listing PublicationDate 2026-09-04 and custom FechaArticulo 2026-04-09 disagree; detail has no visible publication day. Exact detail raw metadata pending next workflow.",
+      "external_or_publisher_blocker": "Official listing PublicationDate 2026-09-04 and custom FechaArticulo 2026-04-09 disagree. Exact current detail HTML HTTP 200 / verified TLS has no semantic publication field, JSON-LD datePublished, visible publication day, or disclosed RSS/API alternate. Publication remains unknown; one unresolved record may fall in the 90-day window.",
       "date_assigned": false,
-      "potentially_current_90_days": true
+      "potentially_current_90_days": true,
+      "blocker_type": "publisher_evidence_ambiguity"
     },
     "other_blog_date_issues": {
       "count": 24,
@@ -1311,14 +1322,55 @@
     },
     "tps": {
       "status": "pending",
-      "external_or_publisher_blocker": "Native date, article:published_time and semantic published header agree on 2026-08-12; unlabelled rendered content date before H1 says 10/08/2026. Publisher does not explicitly identify that content date as an event or publication date. Main official RSS lacks this older item; current HTML has no JSON-LD datePublished. Exact single-post API fallback pending next workflow.",
-      "date_assigned": false
-    }
+      "external_or_publisher_blocker": "Exact current post API date, article:published_time and semantic published header agree on 2026-08-12; unlabelled rendered content date before H1 says 10/08/2026. Publisher provides no explicit event/publication label for that content date. Main official RSS lacks this older item and current HTML has no JSON-LD datePublished. Both official API/listing and exact single-post fallback are evaluated without choosing a date.",
+      "date_assigned": false,
+      "blocker_type": "publisher_evidence_ambiguity"
+    },
+    "network_blocker": false
   },
   "regression_checkpoint": {
     "command": ".venv/bin/python -m pytest -q tests/test_occupational_date_checks.py tests/test_occupational_inventory.py tests/test_achs_blog_inventory.py",
-    "result": "70 passed in 1.98s",
+    "result": "71 passed in 1.89s",
     "exit_code": 0,
-    "new_date_check_tests": 5
+    "new_date_check_tests": 6,
+    "exact_alternative_raw_captures_verified": 2
+  },
+  "alternative_capture_workflow": "38120060930",
+  "official_alternatives_evaluated": [
+    {
+      "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qu%C3%A9-es-y-c%C3%B3mo-adaptarte-a-tu-nueva-ciudad",
+      "observed_from": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad",
+      "purpose": "Capture exact detail HTML and declared publisher date metadata; do not infer undocumented Sitefinity endpoints.",
+      "http_status": 200,
+      "tls_verified": true,
+      "result": "Own exact detail has no semantic publication field, no JSON-LD, and only a canonical link; no official RSS or API alternate is disclosed."
+    },
+    {
+      "url": "https://ist.cl/wp-json/wp/v2/posts/105186",
+      "observed_from": "Native post _links.self and detail link rel=alternate application/json",
+      "purpose": "Capture exact current single post native date and rendered body; never use modified or date_gmt to choose publication.",
+      "http_status": 200,
+      "tls_verified": true,
+      "result": "Exact post native date remains 2026-08-12T11:38:53; rendered content retains unlabelled 10/08/2026 before own H1."
+    }
+  ],
+  "duelo_detail_publication_observations": {
+    "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qu%C3%A9-es-y-c%C3%B3mo-adaptarte-a-tu-nueva-ciudad",
+    "html_publication_fields": [],
+    "jsonld_present": false,
+    "official_disclosed_links": [
+      {
+        "url": "https://www.achssalud.cl/blog/detalle/duelo-migratorio--qué-es-y-cómo-adaptarte-a-tu-nueva-ciudad",
+        "type": null,
+        "rel": "canonical",
+        "title": null
+      }
+    ],
+    "ignored_mutable_date_meta": [],
+    "publication_date": null,
+    "event_date": null,
+    "status": "pending",
+    "reason": "listing_publication_editorial_date_conflict_and_no_detail_publication_evidence",
+    "no_automatic_date_selection": true
   }
 }

@@ -1,10 +1,13 @@
 """Publisher alternatives diagnose ambiguity without choosing a convenient day."""
 from datetime import date
+import hashlib
 import json
 from pathlib import Path
+from urllib.parse import unquote
 
 from radar_salud.occupational_capture import CaptureLoader
-from radar_salud.occupational_date_checks import TPS_URL, blog_publication_date_issues, ist_publication_date_issue
+from radar_salud.occupational_date_checks import TPS_URL, _Disclosures, blog_publication_date_issues, ist_publication_date_issue
+from radar_salud.occupational_sources import Article
 
 AS_OF = date(2026, 10, 11)
 API_URL = 'https://ist.cl/wp-json/wp/v2/posts?per_page=100&after=2026-07-12T23%3A59%3A59&before=2026-10-12T00%3A00%3A00'
@@ -82,3 +85,42 @@ def test_current_run9_origin_captures_bound_the_two_ambiguities_without_automati
     assert not tps['rss']['matching_post_publications']
     assert tps['publication_date'] is None and tps['no_automatic_date_selection']
     assert tps['official_api_self_links'] == [{'href': 'https://ist.cl/wp-json/wp/v2/posts/105186'}]
+
+
+def test_current_exact_official_alternatives_still_do_not_resolve_the_two_date_issues(tmp_path):
+    root = Path(__file__).resolve().parents[1] / 'data/audits/source_e_recovery/actions'
+    base = root / '38120060930'
+    records = json.loads((base / 'report.json').read_text())['records']
+
+    def verified_body(url):
+        record = next(row for row in records if row['url'] == url)
+        hop = record['hops'][-1]
+        body = (base / hop['body_file']).read_bytes()
+        assert record['stop_reason'] == 'response_captured'
+        assert hop['http_status'] == 200 and hop['tls']['verified']
+        assert hashlib.sha256(body).hexdigest() == hop['sha256']
+        return body.decode('utf-8')
+
+    duelo_url = ('https://www.achssalud.cl/blog/detalle/'
+                 'duelo-migratorio--qu%C3%A9-es-y-c%C3%B3mo-adaptarte-a-tu-nueva-ciudad')
+    detail = verified_body(duelo_url)
+    article = Article(url=duelo_url)
+    article.feed(detail)
+    disclosures = _Disclosures(duelo_url)
+    disclosures.feed(detail)
+    assert article.date_candidates == []
+    assert disclosures.jsonld == []
+    canonical = [row['url'] for row in disclosures.links if row['rel'] == 'canonical']
+    assert canonical == [unquote(duelo_url)]
+    assert not any(row['type'] in ('application/rss+xml', 'application/json') for row in disclosures.links)
+
+    loader = CaptureLoader(tmp_path, replay=root / '38119024441/inventory')
+    tps = ist_publication_date_issue(loader(TPS_URL),
+        verified_body('https://ist.cl/wp-json/wp/v2/posts/105186'), loader('https://ist.cl/feed/'), as_of=AS_OF)
+    assert tps['api_native_publication'] == {'value': '2026-08-12T11:38:53',
+        'date': '2026-08-12', 'field': 'date', 'post_id': 105186}
+    assert {row['date'] for row in tps['html_publication_fields']} == {'2026-08-12'}
+    assert tps['unlabelled_content_header_dates'] == [{'kind': 'rendered_content:unlabelled_date_before_h1',
+        'value': '10/08/2026', 'date': '2026-08-10'}]
+    assert tps['publication_date'] is None and tps['event_date'] is None
+    assert tps['status'] == 'pending' and tps['no_automatic_date_selection']
