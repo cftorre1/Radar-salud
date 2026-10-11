@@ -10,6 +10,10 @@ PAGES=[
  ("Informes de fiscalización","https://www.superdesalud.gob.cl/tax-otros-actos-de-la-superintendencia/informes-de-fiscalizacion-5126/","Sistema de salud","report"),
  ("Sanciones a Isapres","https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-isapres-6248/","Isapres","sanction"),
  ("Sanciones a Prestadores","https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-prestadores-6249/","Prestadores","sanction"),
+ ("Resultados: informes de fiscalización","https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/informes-de-fiscalizacion-3218/","Sistema de salud","report"),
+ ("Sanciones a entidades acreditadoras","https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-entidades-acreditadoras-7059/","Entidades acreditadoras","sanction"),
+ ("Sanciones a agentes de ventas","https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-agentes-de-ventas-7441/","Agentes de ventas","sanction"),
+ ("Índice general de sanciones","https://www.superdesalud.gob.cl/tax-otros-actos-de-la-superintendencia/sanciones-aplicadas-5113/","Sistema de salud","sanction"),
 ]
 
 AMOUNT_RE = re.compile(
@@ -63,15 +67,21 @@ def parse_listing(html, page_name, page_url, scope, kind):
     parser.feed(html)
     out = []
     seen = set()
+    columns = {}
     for row in parser.rows:
         cells = [cell.get("text", "") for cell in row]
         if len(cells) < 3:
             continue
+        if 'fecha de publicación' in cells[0].casefold():
+            columns = {name.casefold(): index for index, name in enumerate(cells)}
+            continue
         publication_date = _valid_date(cells[0])
         if not publication_date:
             continue
-        title_cell = row[2] if kind == "sanction" and len(row) >= 5 else row[1]
-        summary = cells[3] if kind == "sanction" and len(row) >= 5 else cells[2]
+        title_index = columns.get('título', 2 if kind == "sanction" and len(row) >= 5 else 1)
+        summary_index = columns.get('resumen y modificaciones', 3 if kind == "sanction" and len(row) >= 5 else 2)
+        title_cell = row[title_index]
+        summary = cells[summary_index]
         title = title_cell.get("text", "")
         pdf = detail = None
         for href, label in title_cell.get("links", []):
@@ -80,10 +90,10 @@ def parse_listing(html, page_name, page_url, scope, kind):
                 continue
             if ".pdf" in absolute.lower():
                 pdf = absolute
-            elif re.search(r"informe|instrucci[oó]n|resoluci[oó]n|resultados", label, re.I):
+            elif re.search(r"informe|instrucci[oó]n|resoluci[oó]n|resultados?", label, re.I):
                 detail = absolute
                 title = label
-        if not (detail or pdf) or not re.search(r"informe|instrucci[oó]n|resoluci[oó]n|resultados", title, re.I):
+        if not (detail or pdf) or not re.search(r"informe|instrucci[oó]n|resoluci[oó]n|resultados?", title, re.I):
             continue
         url = canonical_url(detail or pdf)
         if url in seen:
@@ -97,7 +107,11 @@ def parse_listing(html, page_name, page_url, scope, kind):
             conflicts.append("emission_dates_disagree")
         if emission_date and publication_date < emission_date:
             conflicts.append("publication_precedes_emission")
-        entity = (cells[1].strip() if kind == "sanction" and len(cells) >= 5 else "") or _entity(summary)
+        entity_index = next((index for name, index in columns.items()
+            if any(word in name for word in ('prestador', 'isapre', 'agente', 'acreditadora'))), None)
+        entity_column = cells[entity_index].strip() if entity_index is not None else (
+            cells[1].strip() if kind == "sanction" and len(cells) >= 5 else '')
+        entity = entity_column or _entity(summary)
         item_scope = scope
         if kind == "report":
             low = (title + " " + summary).casefold()
@@ -107,15 +121,16 @@ def parse_listing(html, page_name, page_url, scope, kind):
                 item_scope = "Isapres"
         amount, unit = _amount(summary)
         low = summary.casefold()
-        effect = ("revocation" if "dejando sin efecto" in low or "dejar sin efecto" in low else
+        effect = ("revocation" if any(term in low for term in ('dejando sin efecto', 'dejar sin efecto', 'deja sin efecto')) else
                   "amendment" if "rebajando" in low or "reemplazando" in low else
-                  "warning" if "amonesta" in low else "sanction")
+                  "registration_cancellation" if 'cancél' in low or 'cancel' in low else
+                  "warning" if any(term in low for term in ('amonesta', 'amonsta', 'censúr', 'censure')) else "sanction")
         out.append(RawItem("superintendencia_fiscalizacion", title, url,
             "Superintendencia de Salud", "official", event_date=emission_date or publication_date,
             raw_text=summary, metadata={
                 "listing_url": page_url, "listing_name": page_name, "scope": item_scope,
-                "fiscalization_kind": kind, "fiscalization_topic": cells[-1] if kind == "sanction" else None,
-                "regulated_entity": entity, "actor_evidence": "entity_column" if kind == "sanction" and cells[1].strip() else "summary",
+                "fiscalization_kind": kind, "fiscalization_topic": cells[columns['materia']] if 'materia' in columns else (cells[-1] if kind == "sanction" and len(cells)>=5 else None),
+                "regulated_entity": entity, "actor_evidence": "entity_column" if entity_column else "summary",
                 "sanction_amount": amount, "sanction_unit": unit, "sanction_effect": effect,
                 "publication_date": publication_date, "emission_date": emission_date,
                 "event_date_basis": "emission" if emission_date else "publication", "date_conflicts": conflicts,
@@ -139,7 +154,13 @@ class SuperintendenciaFiscalizacionScout:
                     raise ValueError("Fiscalization table has no identifiable dated documents")
                 self.surface_results.append({"url": page_url, "status": "parsed", "documents": len(items)})
                 for raw in items:
-                    out.setdefault(raw.url, raw)
+                    if raw.url in out:
+                        previous = out[raw.url]
+                        previous.metadata['listing_urls'] = sorted(set(previous.metadata.get('listing_urls', [previous.metadata['listing_url']]) + [page_url]))
+                        if previous.metadata['publication_date'] != raw.metadata['publication_date']:
+                            previous.metadata.setdefault('date_conflicts', []).append('listing_publication_dates_disagree')
+                    else:
+                        out[raw.url] = raw
             except Exception as exc:
                 self.surface_results.append({"url": page_url, "status": "error", "error": type(exc).__name__})
         if not out:

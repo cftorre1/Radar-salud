@@ -45,6 +45,28 @@ def test_sis_invalid_table_date_and_navigation_cannot_prove_discovery():
     assert parse_listing(listing(rows), *PAGES[2]) == []
 
 
+def test_sis_alternative_reports_are_unsorted_and_singular_result_is_kept():
+    html = '<table><tr><th>Fecha de publicación</th><th>Título</th><th>Resumen y modificaciones</th></tr>'
+    html += '<tr><td>28/12/2023</td><td><a href="/fiscalizacion/old">Informe histórico</a></td><td>Histórico</td></tr>'
+    html += '<tr><td>27/07/2026</td><td><a href="/fiscalizacion/new">Resultado primera rendición</a></td><td>Devolución anual de excedentes</td></tr></table>'
+    items = parse_listing(html, *PAGES[3])
+    assert {raw.event_date for raw in items} == {'2023-12-28', '2026-07-27'}
+
+
+def test_sis_agents_and_accreditors_use_actual_column_headers():
+    html = '<table><tr><th>Fecha de publicación</th><th>Título</th><th>Agente</th><th>Resumen y modificaciones</th></tr>'
+    html += '<tr><td>21/09/2026</td><td><a href="/fiscalizacion/agent">Resolución Exenta IF/N°11027- Emisión: 21/09/2026</a></td><td>Agente fiscalizado</td><td>CANCÉLESE su inscripción en el Registro de Agente de Ventas.</td></tr></table>'
+    raw, = parse_listing(html, *PAGES[5])
+    assert raw.metadata['regulated_entity'] == 'Agente fiscalizado'
+    assert raw.metadata['sanction_effect'] == 'registration_cancellation'
+    assert raw.metadata['fiscalization_topic'] is None
+    html = '<table><tr><th>Fecha de publicación</th><th>Título</th><th>Resumen y modificaciones</th><th>Estidad acreditadora</th></tr>'
+    html += '<tr><td>08/04/2026</td><td><a href="/fiscalizacion/accreditor">Resolución Exenta IP/N°2624</a></td><td>Sancionase con una amonstación.</td><td>Acreditadora fiscalizada</td></tr></table>'
+    raw, = parse_listing(html, *PAGES[4])
+    assert raw.metadata['regulated_entity'] == 'Acreditadora fiscalizada'
+    assert raw.metadata['sanction_effect'] == 'warning'
+
+
 def suseso_table(extra=''):
     return '<script>var fake="2020-01-01";</script><table><tr><th>Fecha</th><th>Título</th><th>Temas</th><th>Descriptores</th></tr><tr><td>29/09/2026</td><td><a href="/612/w3-article-791293.html">Dictamen O-02-S-03153-2026</a></td><td>Licencias médicas</td><td>Procedimiento</td></tr>' + extra + '</table>'
 

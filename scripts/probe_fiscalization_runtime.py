@@ -101,7 +101,12 @@ def probe(output, as_of):
         ('superintendencia_fiscalizacion', 'https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-a-entidades-acreditadoras-7059/'),
         ('superintendencia_fiscalizacion', 'https://www.superdesalud.gob.cl/tax-fiscalizacion/resultados-de-la-fiscalizacion-3031/sanciones-aplicadas-5185/sanciones-agentes-de-ventas-7441/'),
         ('superintendencia_fiscalizacion', 'https://www.superdesalud.gob.cl/app/themes/supersalud-bloom/assets/dist/datatables.js'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-10378.html'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyvalue-408634.html'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyname-566.html'),
+        ('suseso_fiscalizacion', 'https://www.suseso.gob.cl/609/w3-propertyname-535.html'),
     ]]
+    seeds = list({seed['url']: seed for seed in reversed(seeds)}.values())[::-1]
     receipts=[]; inventory=[]; navigation=[]
     with ThreadPoolExecutor(max_workers=3) as pool:
         results=list(pool.map(lambda seed: fetch(seed['url'],captures), seeds))
