@@ -931,3 +931,14 @@ def test_full_http_capture_is_indexed_once_without_skipping_failed_or_duplicate_
     # The failed response does not become proof when successful bytes vanish.
     evidence["captures"] = [dict(row, status=503) if original(row["url"]) == key else row for row in records]
     assert "public_api_http_chain_unproven" in codes(evidence)
+
+
+@pytest.mark.parametrize("reason", ["pulso_editorial_proof_schema_invalid",
+    "pulso_editorial_quote_not_in_primary_body", "analysis_unavailable"])
+def test_recent_important_text_cannot_pass_as_retry_with_new_analysis_failure_reason(evidence, reason):
+    process(evidence)
+    item = evidence["queue"]["0"]
+    item.update(status="retry", reason=reason)
+    item["raw"]["metadata"]["editorial_assessment"] = dict(decision="pending", reason=reason)
+    evidence["report"]["matrix"][0].update(exact_reason=reason, editorial_outcome="deferred")
+    assert "recent_important_control_not_editorially_processed" in codes(evidence)

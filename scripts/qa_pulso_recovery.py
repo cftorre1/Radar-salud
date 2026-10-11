@@ -22,6 +22,8 @@ from zoneinfo import ZoneInfo
 SOURCE = "pulso_latercera"
 ROOT = Path(__file__).resolve().parents[1]
 FROZEN_CONTROL_SHA256 = "b9c3ce2aea38107797fc19572581f27884d15611214fd2328d458bd35e906374"
+PROCESSING_COHORT_PATH = "data/audits/pulso_material_recovery_cohort_2026_10_11.json"
+PROCESSING_COHORT_SHA256 = "8ed358f0cd37ecc4b554ab96cd4366048b8e6180ad1c0ee0044fc5d5f6976514"
 WINDOWS = {"30": ("2026-09-11", "2026-10-10", 29), "90": ("2026-07-13", "2026-10-10", 79)}
 REQUIRED_FEEDS = {"section:" + name for name in (
     "pulso", "nacional", "politica", "tendencias", "que-pasa", "paula", "sustentabilidad",
@@ -778,6 +780,127 @@ def count_exhaustion_proven(summary, pages):
     return expected_offset == total
 
 
+def verify_processing_selection(report, discovery, queue, root, enumerated):
+    """A focused run must intersect the immutable body-reviewed core cohort.
+
+    Selection changes processing membership, never discovery or an editorial
+    verdict. Queue snapshots independently expose attempts outside the cohort.
+    """
+    execution = report.get("last_core_execution") or report.get("execution", {})
+    selected = execution.get("processing_selection")
+    recorded = discovery.get("processing_selection")
+    if not selected and not recorded:
+        return {}, []
+    findings, checks = [], {}
+    def fail(code, **evidence):
+        findings.append(dict(domain="processing", code=code, **evidence))
+    if not isinstance(selected, dict) or selected != recorded:
+        fail("processing_selection_not_bound_to_actual_core")
+        return checks, findings
+    if selected.get("validation_error") or selected.get("reason") != "explicit_queue_selection":
+        fail("processing_selection_validation_failed", error=selected.get("validation_error"))
+    try:
+        path = root / PROCESSING_COHORT_PATH
+        raw = path.read_bytes()
+        if digest(raw) != PROCESSING_COHORT_SHA256:
+            raise ValueError("immutable_processing_cohort_hash_mismatch")
+        cohort = json.loads(raw)
+        urls = cohort["urls"]
+        items = {item["url"]: item for item in cohort["items"]}
+        if (len(urls) != 113 or len(set(urls)) != 113 or set(urls) != set(items)
+                or cohort.get("source") != SOURCE
+                or any(normalized_url(url) != url for url in urls)):
+            raise ValueError("immutable_processing_cohort_identity_invalid")
+        # The immutable file cites complete independent reviews, including
+        # negative/uncertain cases; none supplies a publication decision.
+        referenced = {}
+        for key in ("frozen_control", "independent_primary_review", "expanded_negative_review"):
+            reference = cohort["inputs"][key]
+            content = local_capture_path(root, reference["path"]).read_bytes()
+            if digest(content) != reference["sha256"]:
+                raise ValueError("processing_cohort_independent_reference_changed:" + key)
+            referenced[key] = json.loads(content)
+        if cohort["inputs"]["frozen_control"]["sha256"] != FROZEN_CONTROL_SHA256:
+            raise ValueError("processing_cohort_control_not_frozen")
+        primary = {item["url"] for item in referenced["independent_primary_review"]["all_controls"]}
+        negatives = referenced["expanded_negative_review"]["all_287_initial_negative_full_body_semantic_reviews"]
+        material = {item["url"] for item in negatives if item["independent_review_decision"] == "concrete_false_negative_for_editorial_analysis"}
+        uncertain = {item["url"] for item in negatives if item["independent_review_decision"] == "uncertain_requires_editorial_review"}
+        if len(primary) != 79 or len(material) != 20 or len(uncertain) != 17 or set(urls) != primary | material | uncertain:
+            raise ValueError("processing_cohort_independent_groups_changed")
+    except (OSError, ValueError, KeyError, TypeError) as error:
+        fail("processing_selection_immutable_cohort_unverified", error=str(error))
+        return checks, findings
+    if (selected.get("source") != SOURCE or selected.get("sha256") != PROCESSING_COHORT_SHA256
+            or selected.get("file_sha256") != PROCESSING_COHORT_SHA256
+            or selected.get("selected_urls") != urls
+            or type(selected.get("selected_url_count")) is not int or selected["selected_url_count"] != 113
+            or type(selected.get("matched_existing_url_count")) is not int or selected["matched_existing_url_count"] != 113):
+        fail("processing_selection_recorded_manifest_mismatch")
+    if not set(urls) <= enumerated:
+        fail("processing_selection_urls_not_returned_by_current_core", missing=sorted(set(urls) - enumerated))
+    current = {}
+    for key, item in queue.items():
+        if item.get("source") == SOURCE:
+            current.setdefault(normalized_url(item.get("raw", {}).get("url")), []).append((key, item))
+    baseline = {item["url"]: item for item in report.get("baseline_queue", [])}
+    for url in urls:
+        matches = current.get(url, [])
+        if len(matches) != 1 or matches[0][0] != items[url]["queue_fingerprint"]:
+            fail("processing_selection_durable_identity_missing_or_ambiguous", url=url)
+            continue
+        _, item = matches[0]
+        raw, original = item.get("raw", {}), items[url]
+        metadata = raw.get("metadata", {})
+        text = metadata.get("page_text")
+        if (not isinstance(text, str) or digest(text.encode()) != original["body_sha256"]
+                or len(text) != original["body_characters"]
+                or metadata.get("article_body_sha256") != original["body_sha256"]
+                or raw.get("event_date") != original["publication_date"]):
+            fail("processing_selection_reviewed_original_body_or_day_changed", url=url)
+    partition = []
+    for key in ("ready_selected_urls", "skipped_terminal_urls", "skipped_not_due_urls", "skipped_in_progress_urls"):
+        values = selected.get(key)
+        if not isinstance(values, list) or any(not isinstance(url, str) for url in values):
+            fail("processing_selection_ready_partition_invalid", field=key)
+            continue
+        partition.extend(values)
+    if len(partition) != 113 or len(set(partition)) != 113 or set(partition) != set(urls):
+        fail("processing_selection_ready_partition_invalid")
+    terminal_urls = selected.get("skipped_terminal_urls")
+    for url in terminal_urls if isinstance(terminal_urls, list) else []:
+        before = baseline.get(url, {})
+        matches = current.get(url, [])
+        if (before.get("status") not in {"published", "rejected", "archived"} or len(matches) != 1
+                or matches[0][1].get("status") != before.get("status")
+                or matches[0][1].get("attempts", 0) != before.get("attempts", 0)):
+            fail("processing_selection_terminal_reset_or_skip_unproven", url=url)
+    outside_pending = 0
+    matrix = {item.get("url"): item for item in report.get("matrix", [])}
+    for url, matches in current.items():
+        if url in set(urls):
+            continue
+        for key, item in matches:
+            before = baseline.get(url, {})
+            if item.get("attempts", 0) != before.get("attempts", 0):
+                fail("processing_selection_processed_outside_cohort", url=url)
+            if item.get("status") in {"pending", "retry", "processing"}:
+                outside_pending += 1
+            row = matrix.get(url, {})
+            if row.get("exact_reason") == "processing_not_attempted:explicit_queue_selection_excluded":
+                proof = row.get("processing_selection_evidence", {})
+                if proof != dict(sha256=PROCESSING_COHORT_SHA256, selected=False, source=SOURCE):
+                    fail("processing_selection_excluded_reason_without_membership_proof", url=url)
+    if (type(selected.get("outside_selection_pending_url_count")) is not int
+            or selected["outside_selection_pending_url_count"] != outside_pending
+            or selected.get("outside_selection_pending_reason") != "processing_not_attempted:explicit_queue_selection_excluded"):
+        fail("processing_selection_outside_pending_count_or_reason_unproven", observed=outside_pending)
+    checks.update(sha256=PROCESSING_COHORT_SHA256, selected_urls=113, independent_primary_controls=79,
+                  independent_material_cases=20, independent_uncertain_cases=17,
+                  outside_pending_preserved=outside_pending, publication_quota=False)
+    return checks, findings
+
+
 def evaluate(report, control, *, root, discovery, queue, history, snapshot, telemetry=(), control_sha=None, captures=(), phase="auto"):
     findings, checks = [], {}
     def fail(domain, code, **evidence):
@@ -842,6 +965,11 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
     if None in actual | metadata_only or actual & metadata_only:
         fail("discovery", "core_inventory_identity_or_text_metadata_partition_invalid")
     enumerated = actual | metadata_only
+    if processing:
+        selection_checks, selection_findings = verify_processing_selection(report, discovery, queue, root, enumerated)
+        if selection_checks:
+            checks["processing_selection"] = selection_checks
+        findings.extend(selection_findings)
     for key, expected in (("current_core_discovered_urls", len(enumerated)),
                           ("current_core_verified_health_urls", len(actual)), ("metadata_only_candidates", len(metadata_only))):
         if key in report.get("counts", {}) and report["counts"][key] != expected:
@@ -1066,7 +1194,7 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
             if score is not None and assessment.get("threshold") != 72:
                 fail("processing", "media_editorial_threshold_changed", url=url, assessment=assessment)
             if url in controls and controls[url].get("recall_expected") and WINDOWS["30"][0] <= controls[url].get("publication_date", "") <= WINDOWS["30"][1]:
-                if item.get("status") == "pending" or reason in {"analysis_unavailable", "article_verification_failed", "budget_or_analysis_deferred"}:
+                if item.get("status") not in {"published", "rejected"}:
                     fail("processing", "recent_important_control_not_editorially_processed", url=url, reason=reason)
             if item.get("status") == "published":
                 if assessment.get("decision") != "published" or type(score) is not int or score < 72 or not assessment.get("analysis_reason"):
