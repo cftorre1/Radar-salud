@@ -85,6 +85,10 @@ class PendingQueue:
                     if previous["status"] in ("pending", "retry", "processing") and (factual_verified or publisher_exception):
                         old = previous["raw"]
                         old_meta = old.get("metadata", {})
+                        publisher_holds = {"publisher_conflicting_publication_dates", "publisher_video_text_unavailable",
+                                           "publisher_sponsored_content_review_required", "publisher_opinion_taxonomy"}
+                        resolved_publisher_hold = (factual_verified and not metadata.get("editorial_hold")
+                                                   and old_meta.get("editorial_hold") in publisher_holds)
                         proof_fields = ("article_verified", "primary_identity_verified", "publication_date_verified",
                                         "canonical_url", "source_quality_gate", "article_body_complete",
                                         "article_body_sha256", "article_body_characters", "publisher_taxonomy",
@@ -95,6 +99,7 @@ class PendingQueue:
                                         "html_sha256", "publisher_lastmod")
                         changed = (old.get("event_date") != raw.event_date
                                    or old.get("title") != raw.title or old_meta.get("page_text") != metadata.get("page_text")
+                                   or resolved_publisher_hold
                                    or any(old_meta.get(field) != metadata.get(field) for field in proof_fields))
                         if changed:
                             revisions = old_meta.get("evidence_revisions", []) + [dict(
@@ -106,8 +111,6 @@ class PendingQueue:
                                 verified_publisher_exception_reason=metadata.get("publisher_exception_reason"),
                                 lane_preserved=previous["lane"])]
                             previous["raw"] = asdict(raw)
-                            publisher_holds = {"publisher_conflicting_publication_dates", "publisher_video_text_unavailable",
-                                               "publisher_sponsored_content_review_required", "publisher_opinion_taxonomy"}
                             for field in ("editorial_hold", "event_equivalence_review"):
                                 # A newly proven factual primary article can resolve a
                                 # publisher limitation. Incremental/duplicate reviews
