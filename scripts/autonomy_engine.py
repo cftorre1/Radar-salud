@@ -224,13 +224,17 @@ def _source_rows(value):
             yield from _source_rows(item)
 
 
+def _probe_budget_error(value):
+    return bool(re.fullmatch(r"(?:RuntimeError:\s*)?bounded_probe_budget:\s*\d+(?: requests per source)?", str(value or "")))
+
+
 def _source_probe_incomplete(row):
     if not _source_row(row):
         return False
     return (any(request.get("status") == "UNVERIFIED"
-                and "bounded_probe_budget" in str(request.get("error", "")) for request in row["requests"])
+                and _probe_budget_error(request.get("error")) for request in row["requests"])
             and not any(request.get("status") == "FAIL" for request in row["requests"])
-            and not (row.get("error") and "bounded_probe_budget" not in str(row["error"])))
+            and not (row.get("error") and not _probe_budget_error(row["error"])))
 
 
 def source_failure_evidenced(failure, evidence=None):
@@ -244,17 +248,17 @@ def source_failure_evidenced(failure, evidence=None):
     if failure.get("kind") != "source_runtime":
         return True
     if (failure.get("failure_origin") == "instrumentation_limit"
-            or "bounded_probe_budget" in str(failure.get("error", ""))):
+            or _probe_budget_error(failure.get("error"))):
         return False
     rows = [row for row in _source_rows(evidence)
             if row.get("slug") == failure.get("source_slug")]
     if not rows:
         return True
     for row in rows:
-        independent_error = row.get("error") and "bounded_probe_budget" not in str(row["error"])
+        independent_error = row.get("error") and not _probe_budget_error(row["error"])
         if independent_error or any(
                 request.get("status") == "FAIL"
-                and "bounded_probe_budget" not in str(request.get("error", ""))
+                and not _probe_budget_error(request.get("error"))
                 for request in row["requests"] if isinstance(request, dict)):
             return True
     return False

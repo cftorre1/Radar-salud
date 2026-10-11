@@ -349,12 +349,14 @@ class SourceMaterialIdentityTests(unittest.TestCase):
             {"blockers": [newer], "evidence": newer["evidence"]}, "a" * 64, "media"))
 
     def test_mixed_guard_and_real_http_or_parser_failure_is_still_verified(self):
-        for error in ("HTTP 403 Forbidden", "UnicodeEncodeError: URI contains non-ASCII"):
+        for error in ("HTTP 403 Forbidden", "UnicodeEncodeError: URI contains non-ASCII",
+                      "ValueError: parser assertion mentions bounded_probe_budget:24"):
             q, report = source_observation()
             row = report["blockers"][0]["evidence"][1]
             row["requests"].append({"url": "https://source.example/omitted", "status": "UNVERIFIED", "error": "bounded_probe_budget:24"})
             row["error"] = error
             self.assertTrue(engine.source_failure_evidenced(report["real_failure"], report["blockers"]))
+            self.assertFalse(engine._source_probe_incomplete(row))
 
     def test_guard_only_legacy_last_failure_cannot_become_repaired_on_postmerge_closure(self):
         q, report = source_observation()
