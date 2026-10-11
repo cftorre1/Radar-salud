@@ -33,14 +33,17 @@ def build_views(root):
         if any(r['entity_id']==current['entity_id'] and r['metric_id']==current['metric_id']
                and r['period_end'][5:]==current['period_end'][5:] and r['period_end']>current['period_end']
                and r['unit']==current['unit'] and r['reporting_perimeter']==current['reporting_perimeter']
+               and r.get('business_scope')==current.get('business_scope')
                for r in financial['observations']):continue
         peers=[r for r in financial['observations'] if r['entity_id']==current['entity_id'] and r['metric_id']==current['metric_id']
                and r['period_start']==f'{year-1}-01-01' and r['period_end'][5:]==current['period_end'][5:]
                and r['unit']==current['unit'] and r['reporting_perimeter']==current['reporting_perimeter']]
+        peers=[r for r in peers if r.get('business_scope')==current.get('business_scope')]
         if peers and peers[0]['value']:
             financial_results.append({'entity_id':current['entity_id'],'metric_id':'revenue','period_end':current['period_end'],
                 'pct_change':round((current['value']/peers[0]['value']-1)*100,4),'source_url':current['source_url'],
                 'unit':current['unit'],'perimeter':current['reporting_perimeter'],
+                'business_scope':current.get('business_scope'),
                 'caveat':'Same issuer/interval only; parent performance is not subsidiary performance'})
     return {'schema_version':1,'news_generation':'none_per_row','benchmark':{
         'isapres':{'period':period,'open':portfolio_benchmark(records,period=period,cohort='open'),

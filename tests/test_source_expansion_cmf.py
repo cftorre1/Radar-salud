@@ -88,3 +88,31 @@ def test_native_primary_group_table_requires_labelled_identity_not_logo_order():
     assert not consalud['subsidiary_performance_attribution']
     with pytest.raises(ValueError,match='identity'):
         parse_issuer_health_group(html.replace('title="Consalud"','title="RedSalud"'),**meta)
+
+
+def test_native_tickers_preserve_reference_dates_without_implying_live_prices():
+    from radar_salud.cmf_sources import equity_identity
+    from radar_salud.dipres_sources import pdf_text
+    identities=[]
+    with ZipFile(ROOT/'data/audits/source_expansion/equity_identity_fixtures.zip') as z:
+        for r in json.loads(z.read('receipts.json'))['receipts']:
+            content=pdf_text(z.read(r['body_file'])) if r['kind']=='exchange_market_maker' else z.read(r['body_file']).decode()
+            identities.append(equity_identity(content,kind=r['kind'],source_url=r['url'],sha256=r['sha256'],fetched_at=r['completed_at']))
+            if r['kind']=='exchange_equity_clc':
+                with pytest.raises(ValueError,match='RUT'):equity_identity(content.replace('93930000-7','94139000-5'),kind=r['kind'],source_url=r['url'],sha256=r['sha256'],fetched_at=r['completed_at'])
+    assert {d['ticker'] for d in identities}=={'LAS CONDES','ILC','INDISA'}
+    assert next(d for d in identities if d['ticker']=='INDISA')['reference_date']=='2026-10-07'
+    assert all(d['current_price'] is None and not d['current_quote_verified'] for d in identities)
+
+
+def test_holding_revenue_does_not_become_total_health_or_subsidiary_revenue():
+    with ZipFile(ROOT/'data/audits/source_expansion/native_reporting_indexes.zip') as z:
+        r=next(r for r in json.loads(z.read('receipts.json'))['receipts'] if r['kind']=='financial_period' and 'rut=94139000' in r['url'] and 'mm=06' in r['url'])
+        html=z.read(r['body_file']).decode()
+    actor={'entity_id':'cl:rut:94139000-5','rut':'94139000-5'}
+    observations=financial_results(html,actor=actor,source_url=r['url'],sha256=r['sha256'],reporting_period='2026-06')
+    revenue=next(o for o in observations if o['metric_id']=='revenue' and o['period_start']=='2026-01-01')
+    profit=next(o for o in observations if o['metric_id']=='profit_loss' and o['period_start']=='2026-01-01')
+    assert revenue['value']==888848205 and revenue['business_scope']=='non_insurance_non_banking'
+    assert profit['value']==176266627 and profit['business_scope']=='holding_including_insurance_banking'
+    assert all(o['entity_id']==actor['entity_id'] for o in observations)

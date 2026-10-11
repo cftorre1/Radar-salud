@@ -129,6 +129,7 @@ def financial_results(html, *, actor, source_url, sha256, reporting_period):
             intervals.append(dates)
         if not any(end.startswith(reporting_period) for _,end in intervals):
             raise ValueError('Requested period differs from actual financial columns')
+        mixed_holding=any(row and 'negocios no aseguradora y no bancarios' in fold(row[0]) for row in rows)
         for row in rows:
             if not row or fold(row[0]) not in ['ingresos de actividades ordinarias','ganancia (perdida)']: continue
             if len(row)!=len(intervals)+1: raise ValueError('Financial result column count mismatch')
@@ -139,6 +140,7 @@ def financial_results(html, *, actor, source_url, sha256, reporting_period):
                     value=int(value.replace('.','')), period_start=start, period_end=end,
                     reporting_period=reporting_period, currency='CLP', unit='thousand_CLP',
                     reporting_perimeter='consolidated', measurement_basis='nominal', published_at=None,
+                    business_scope=('non_insurance_non_banking' if 'ingresos' in fold(row[0]) else 'holding_including_insurance_banking') if mixed_holding else 'issuer_consolidated_business',
                     source_url=source_url, source_sha256=sha256,
                     comparability='Same reporting entity, interval, perimeter and accounting basis only'))
     return result
@@ -200,3 +202,36 @@ def parse_issuer_health_group(html, *, source_url, sha256, fetched_at):
     if {r['entity_name'] for r in result}!={'Consalud','RedSalud','Vida Cámara'}:
         raise ValueError('Primary company health ownership table incomplete')
     return result
+
+
+def equity_identity(content, *, kind, source_url, sha256, fetched_at):
+    """Observed exchange/issuer identity, never a live quote or guessed ticker."""
+    common=dict(source_url=source_url,source_sha256=sha256,observed_at=fetched_at,
+                current_price=None,current_quote_verified=False)
+    hosts={'exchange_equity_clc':'cibe.bolsadesantiago.com','issuer_equity':'ilcinversiones.cl','exchange_market_maker':'servicioscms.bolsadesantiago.com'}
+    if urlsplit(source_url).hostname!=hosts.get(kind):raise ValueError('Equity identity primary host mismatch')
+    if kind=='exchange_equity_clc':
+        rows=read(content).rows
+        header=next((r for r in rows if 'RUT SOCIEDAD' in r and 'CODIGO BURSÁTIL' in r),None)
+        if not header:raise ValueError('Exchange identity table missing')
+        row=next((r for r in rows if len(r)==len(header) and r[header.index('RUT SOCIEDAD')]=='93930000-7'),None)
+        if not row:raise ValueError('Exchange identity RUT mismatch')
+        ticker=row[header.index('CODIGO BURSÁTIL')]
+        if ticker!='LAS CONDES':raise ValueError('Unexpected CLC ticker')
+        day=re.match(r'(\d{2})-(\d{2})-(\d{4})',row[header.index('FECHA Y HORA DE PUBLICACION')])
+        return dict(common,entity_id='cl:rut:93930000-7',ticker=ticker,
+                    reference_date=f'{day[3]}-{day[2]}-{day[1]}' if day else None,
+                    validity='Historical exchange disclosure; current listing/quote not certified')
+    if kind=='issuer_equity':
+        if 'evolucion precio accion ilc' not in fold(' '.join(read(content).text)):
+            raise ValueError('Issuer equity identity heading missing')
+        return dict(common,entity_id='cl:rut:94139000-5',ticker='ILC',reference_date=None,
+                    validity='Primary issuer identifies its equity; no dated exchange listing/price inferred')
+    if kind=='exchange_market_maker':
+        match=re.search(r'ncg|norma de caracter general',fold(content))
+        day=re.search(r'\((\d{2})-(\d{2})-(20\d{2})\)',content)
+        contracts=[line.strip() for line in content.splitlines() if re.match(r'^\s*INDISA\s+',line)]
+        if not match or not day or not contracts:raise ValueError('Official market-maker identity missing')
+        return dict(common,entity_id='cl:rut:92051000-0',ticker='INDISA',reference_date=f'{day[3]}-{day[2]}-{day[1]}',
+                    contracts=contracts,validity='Exchange market-maker roster; contract dates do not become issuer publication dates')
+    raise ValueError('Unsupported public equity identity surface')

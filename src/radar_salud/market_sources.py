@@ -9,7 +9,7 @@ from .isapre_universe import parse_registry, release_metadata, parse_portfolio, 
 from .pending_queue import atomic_json
 from .source_health import record_data_adapter
 from .cmf_sources import parse_actor, parse_essential_index, financial_documents, financial_results, classify_primary
-from .cmf_sources import parse_shareholders, apply_verified_primary, parse_issuer_health_group
+from .cmf_sources import parse_shareholders, apply_verified_primary, parse_issuer_health_group, equity_identity
 from urllib.parse import parse_qs, urlsplit
 
 
@@ -49,6 +49,13 @@ def health(captures, package, *, discovered, unique, recent=0, material=0, publi
 def collect_isapres(captures, root):
     registry = next(r for r in captures.receipts if r['package']=='isapres' and r['kind']=='registry')
     entities = parse_registry(captures.html(registry), fetched_at=registry['completed_at'], sha256=registry['sha256'])
+    stock_path=root/'data/entities/isapres.json'
+    prior=json.loads(stock_path.read_text()).get('entities',[]) if stock_path.exists() else []
+    for entity in entities:
+        existing=next((old for old in prior if old['canonical_id']==entity['canonical_id']),None)
+        if existing and existing.get('group_control'):
+            entity['group_control']=existing['group_control']
+            entity['group_control_reason']='Retained dated primary ownership observation; registry refresh does not revalidate control'
     atomic_json(root/'data/entities/isapres.json', {'schema_version': 1, 'entities': entities})
     release = next(r for r in captures.receipts if r['package']=='isapres' and r['kind']=='cartera_release')
     meta = release_metadata(captures.html(release))
@@ -60,13 +67,14 @@ def collect_isapres(captures, root):
         raise ValueError('Official release month and workbook latest data disagree')
     atomic_json(root/'data/market/isapre_portfolio.json', {'schema_version': 1, **meta, **portfolio})
     evidence = health(captures, 'isapres', discovered=10, unique=10, recent=None, complete=False,
-        reason='10/10 official codes and January–August portfolio reconcile; group/control, legal form Isalud, networks and separate-cadence recurrence remain unverified',
+        reason='10/10 official codes and January–August portfolio reconcile; complete control perimeter, legal form Isalud, networks and separate-cadence recurrence remain unverified',
         deferred=1)
     evidence.update(inventory_entities=10, open_entities=7, closed_entities=3,
                     observations=len(portfolio['observations']), validated_periods=len(portfolio['coverage']),
                     latest_reporting_period=meta['reporting_period'], latest_release_at=meta['published_at'],
                     recency_reason='Registry validity is observed, not dated publication; release date and data month are separate',
                     inventory_coverage_complete=True, outcome='OPERATIVE_DEGRADED')
+    evidence['entities_with_control_evidence']=sum(bool(e['group_control']) for e in entities)
     record_data_adapter(root, 'sis_isapre_universe', evidence)
     return evidence
 
@@ -83,11 +91,23 @@ def collect_cmf(captures, root):
     start=(date.fromisoformat(as_of)-timedelta(days=89)).isoformat()
     for r in receipts:
         if r['kind']=='1' and r['transport_ok']:
-            actors.append(parse_actor(captures.html(r),source_url=r['url'],sha256=r['sha256'],fetched_at=r['completed_at']))
+            parsed_actor=parse_actor(captures.html(r),source_url=r['url'],sha256=r['sha256'],fetched_at=r['completed_at'])
+            prior=next((a for a in actors if a['entity_id']==parsed_actor['entity_id']),{})
+            for key in ['reported_major_shareholders','control_evidence','parent_entity_id','subsidiary_entity_ids','issuer_reported_health_relationships','ticker','ticker_reason','ticker_evidence']:
+                if key in prior:parsed_actor[key]=prior[key]
+            actors.append(parsed_actor)
     actors=list({a['entity_id']:a for a in actors}.values())
     by_rut={a['rut'].split('-')[0]:a for a in actors}
     group_relationships=[]
     for r in receipts:
+        if r['kind'] in ['issuer_equity','exchange_equity_clc','exchange_market_maker'] and r['transport_ok']:
+            if r['kind']=='exchange_market_maker':
+                from .dipres_sources import pdf_text
+                content=pdf_text(captures.body(r))
+            else:content=captures.html(r)
+            identity=equity_identity(content,kind=r['kind'],source_url=r['url'],sha256=r['sha256'],fetched_at=r['completed_at'])
+            actor=next((a for a in actors if a['entity_id']==identity['entity_id']),None)
+            if actor:actor.update(ticker=identity['ticker'],ticker_evidence=identity,ticker_reason=identity['validity'])
         if r['kind']=='issuer_group_report' and r['transport_ok']:
             group_relationships=parse_issuer_health_group(captures.html(r),source_url=r['url'],sha256=r['sha256'],fetched_at=r['completed_at'])
             ilc=by_rut.get('94139000')
@@ -107,10 +127,14 @@ def collect_cmf(captures, root):
         if rut not in by_rut: continue
         actor=by_rut[rut]
         if r['kind']=='reporting_5':
-            actor['reported_major_shareholders']=parse_shareholders(captures.html(r),source_url=r['url'],sha256=r['sha256'])
+            owners=parse_shareholders(captures.html(r),source_url=r['url'],sha256=r['sha256'])
+            if not owners:
+                actor['shareholder_poll_status']='unrecognized_or_form_only';continue
+            actor['reported_major_shareholders']=owners
             control=next((owner for owner in actor['reported_major_shareholders'] if owner['ownership_pct']>50),None)
             actor['control_evidence']=control
             parent=next((a for a in actors if control and fold_name(a['legal_name'])==fold_name(control['name'])),None)
+            actor['parent_entity_id']=parent['entity_id'] if parent else None
             if parent:
                 actor['parent_entity_id']=parent['entity_id']
                 if actor['entity_id'] not in parent['subsidiary_entity_ids']:parent['subsidiary_entity_ids'].append(actor['entity_id'])
