@@ -348,6 +348,63 @@ class RunnerTests(unittest.TestCase):
         distinct["evidence"] = distinct["blockers"][0]["evidence"] + distinct["blockers"][1]["evidence"]
         self.assertNotEqual(runner.problem_hash(report), runner.problem_hash(distinct))
 
+    def test_correcting_guard_classification_and_skipping_misdirected_repair_is_not_new_problem(self):
+        row = self.source_row()
+        classified = runner.classify_source_probe(row)
+        self.assertEqual(runner.source_problem_hash(row), runner.source_problem_hash(classified))
+        old = {"kind": "technical", "reason": "Scoped live discovery failed: " + row["slug"],
+            "source_urls": ["https://source.test/listing"], "evidence": [
+                {"command": ["python", "runner.py", "--diagnose-source", row["slug"]], "returncode": 1, "status": "FAIL", "failure_hash": "a" * 64},
+                row, {"automated_recovery": {"status": "BLOCKED", "blocker": "Model lane disabled", "evidence": [
+                    {"returncode": 1, "source_evidence": deepcopy(row), "output": "retained raw diagnostic"}]}}]}
+        corrected = deepcopy(old)
+        corrected.update(kind="instrumentation", reason="Scoped coverage INCOMPLETE: internal request budget reached: " + row["slug"])
+        corrected["evidence"][1] = classified
+        corrected["evidence"][2] = {"automated_recovery": {"attempted": False, "reason": "Instrumentation limit is not a demonstrated source failure"}}
+        corrected["evidence"][0]["failure_hash"] = "b" * 64
+        old_report = {"reason": old["reason"], "blockers": [old], "evidence": old["evidence"],
+            "real_failure": {"kind": "source_runtime", "source_slug": row["slug"], "verified": True, "source_url": "https://source.test/listing"}}
+        corrected_report = {"reason": corrected["reason"], "blockers": [corrected], "evidence": corrected["evidence"]}
+        before = deepcopy(old_report)
+        self.assertEqual(runner.problem_hash(old_report), runner.problem_hash(corrected_report))
+        self.assertEqual(old_report, before)
+        normalized = runner.problem_semantic(old_report)
+        self.assertEqual(normalized["blockers"][0]["kind"], "instrumentation")
+        self.assertEqual(normalized["reason"], "Scoped source coverage incomplete: " + row["slug"])
+        self.assertNotIn("real_failure", normalized)
+        self.assertTrue(old_report["real_failure"]["verified"])
+        self.assertEqual(old_report["blockers"][0]["evidence"][0]["returncode"], 1)
+        self.assertEqual(old_report["blockers"][0]["evidence"][0]["status"], "FAIL")
+        unknown_url = deepcopy(old_report)
+        unknown_url["real_failure"]["source_url"] = "https://source.test/independent-new-url"
+        self.assertNotEqual(runner.problem_hash(unknown_url), runner.problem_hash(corrected_report))
+
+    def test_guard_canonicalization_preserves_mixed_failures_and_opaque_independent_repair(self):
+        for actual in ("HTTPError: HTTP Error 403: Forbidden", "UnicodeEncodeError: ascii URL encoding failed",
+                "ValueError: parser assertion date 2026-10-11", "ValueError: parser assertion bounded_probe_budget: 24 requests per source"):
+            row = self.source_row()
+            if actual.startswith("ValueError"):
+                row["error"] = actual
+            else:
+                row["requests"].append({"url": "https://source.test/real-failure", "status": "FAIL", "error": actual})
+            component = {"kind": "technical", "reason": "Real source failure", "evidence": [row,
+                {"automated_recovery": {"status": "BLOCKED", "blocker": "Model disabled"}}]}
+            corrected = deepcopy(component)
+            corrected["evidence"][1] = {"automated_recovery": {"attempted": False, "reason": "Skipped"}}
+            with self.subTest(actual=actual):
+                self.assertFalse(runner.source_probe_incomplete(row))
+                self.assertEqual(runner.classify_source_probe(row)["technical_status"], "error")
+                self.assertNotEqual(runner.problem_hash(component), runner.problem_hash(corrected))
+                status_changed = deepcopy(row)
+                status_changed["technical_status"] = "incomplete"
+                self.assertNotEqual(runner.source_problem_hash(row), runner.source_problem_hash(status_changed))
+        guarded = {"kind": "technical", "reason": "Our guard", "evidence": [self.source_row()]}
+        opaque = {"kind": "technical", "reason": "Independent repair", "evidence": [{"automated_recovery": {"failure_hash": "unknown-a"}}]}
+        report = {"blockers": [guarded, opaque]}
+        changed = deepcopy(report)
+        changed["blockers"][1]["evidence"][0]["automated_recovery"]["failure_hash"] = "unknown-b"
+        self.assertNotEqual(runner.problem_hash(report), runner.problem_hash(changed))
+
     def test_actual_source_worker_enforces_cap_and_records_incomplete_scope(self):
         for mixed in (False, True):
             scouts = SimpleNamespace()

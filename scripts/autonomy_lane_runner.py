@@ -58,9 +58,33 @@ def structured_source_problem(value):
     """Request capture hashes are redundant only alongside scoped source facts."""
     return (isinstance(value, dict) and value.get("slug") in {slug for slugs in FAMILIES.values() for slug in slugs}
         and isinstance(value.get("requests"), list) and "technical_status" in value
-        and "discovered" in value and "dated" in value
-        and ("inventory_hash" in value or isinstance(value.get("samples"), list))
+        and isinstance(value.get("discovered"), int) and isinstance(value.get("dated"), int)
+        and (isinstance(value.get("inventory_hash"), str) or isinstance(value.get("samples"), list))
         and all(isinstance(request, dict) and request.get("url") and request.get("status") for request in value["requests"]))
+
+
+def source_problem_rows(value):
+    if structured_source_problem(value):
+        yield value
+    elif isinstance(value, dict):
+        for item in value.values():
+            yield from source_problem_rows(item)
+    elif isinstance(value, list):
+        for item in value:
+            yield from source_problem_rows(item)
+
+
+def known_probe_budget_error(value):
+    return bool(re.fullmatch(r"(?:RuntimeError:\s*)?bounded_probe_budget:\s*\d+(?: requests per source)?", str(value or "")))
+
+
+def source_probe_incomplete(row):
+    """Canonicalize our guard, without erasing an independent source failure."""
+    return (structured_source_problem(row)
+        and any(request.get("status") == "UNVERIFIED" and known_probe_budget_error(request.get("error"))
+            for request in row["requests"])
+        and not any(request.get("status") == "FAIL" for request in row["requests"])
+        and not (row.get("error") and not known_probe_budget_error(row["error"])))
 
 
 def classify_source_probe(row):
@@ -68,12 +92,12 @@ def classify_source_probe(row):
     result = dict(row)
     requests = row.get("requests") or []
     omitted = [request for request in requests if request.get("status") == "UNVERIFIED"
-        and str(request.get("error", "")).startswith("bounded_probe_budget:")]
+        and known_probe_budget_error(request.get("error"))]
     actual_failures = [request for request in requests if request.get("status") == "FAIL"]
     if omitted:
         result.update(probe_complete=False, probe_budget={"max_requests": MAX_SOURCE_REQUESTS,
             "executed_requests": len(requests) - len(omitted), "unexecuted_requests": len(omitted)})
-        parser_error = bool(row.get("error") and "bounded_probe_budget:" not in str(row["error"]))
+        parser_error = bool(row.get("error") and not known_probe_budget_error(row["error"]))
         if not actual_failures and not parser_error:
             result.update(technical_status="incomplete", failure_origin="instrumentation_limit")
         else:
@@ -120,15 +144,12 @@ def problem_semantic(value, *, task=None, input_sha=None):
     clocks = VOLATILE_KEYS - {"response_sha256", "response_bytes"}
     captures = {"captured_stdout_sha256", "captured_stdout_bytes", "source_evidence_sha256", "failure_sha256", "failure_hash", "fingerprint"}
 
-    def source_facts(item):
-        if structured_source_problem(item):
-            return {item["slug"]}
-        if isinstance(item, dict):
-            return set().union(*(source_facts(child) for child in item.values()))
-        if isinstance(item, list):
-            return set().union(*(source_facts(child) for child in item))
-        return set()
-    known_source = source_facts(value)
+    source_rows = list(source_problem_rows(value))
+    known_source = {row["slug"] for row in source_rows}
+    incomplete_slugs = {slug for slug in known_source
+        if all(source_probe_incomplete(row) for row in source_rows if row["slug"] == slug)}
+    source_urls = {slug: {request["url"] for row in source_rows if row["slug"] == slug for request in row["requests"]}
+        for slug in known_source}
 
     def meaningful(item):
         if isinstance(item, list):
@@ -152,8 +173,11 @@ def problem_semantic(value, *, task=None, input_sha=None):
         if isinstance(item, dict):
             source_row = structured_source_problem(item)
             source_scope = source_scope or source_row
+            incomplete_component = False
             if item.get("kind") and item.get("reason") and isinstance(item.get("evidence"), list):
-                covered_slugs = {row["slug"] for row in item["evidence"] if structured_source_problem(row)}
+                component_rows = list(source_problem_rows(item["evidence"]))
+                covered_slugs = {row["slug"] for row in component_rows}
+                incomplete_component = bool(component_rows) and all(source_probe_incomplete(row) for row in component_rows)
             command = item.get("command")
             covered_probe = False
             if isinstance(command, list) and "--diagnose-source" in command:
@@ -172,12 +196,27 @@ def problem_semantic(value, *, task=None, input_sha=None):
                     or (key == "observed_at" and (source_row or path[-1:] == ("real_failure",)))
                     or (key in {"trace_path", "trace_sha256", "failure_signature"} and item.get("source_slug") in known_source and path[-1:] == ("real_failure",))
                     or (key in {"response_sha256", "response_bytes"} and source_scope and path[-1:] == ("requests",))
+                    or (source_row and key in {"probe_complete", "probe_budget", "failure_origin"})
+                    or (key == "real_failure" and isinstance(child, dict) and child.get("kind") == "source_runtime"
+                        and child.get("source_slug") in incomplete_slugs
+                        and child.get("source_url") in source_urls[child["source_slug"]])
                     or (key == "output" and structured_source_problem(item.get("source_evidence")))
                     or (key == "evidence" and duplicate_evidence)
                     or (key in captures and (actual or covered_probe)) or (key == "fingerprint" and item.get("reason") and "evidence" in item)):
                     continue
-                if key == "reason" and isinstance(item.get("blockers"), list):
-                    child = "; ".join(sorted({row.get("reason", "") for row in item["blockers"] if isinstance(row, dict)}))
+                if key == "technical_status" and source_row and source_probe_incomplete(item):
+                    child = "incomplete"
+                elif incomplete_component and key == "kind":
+                    child = "instrumentation"
+                elif incomplete_component and key == "reason":
+                    child = "Scoped source coverage incomplete: " + ",".join(sorted(covered_slugs))
+                elif incomplete_component and key == "evidence":
+                    # Old parser-repair attempts were misdirected at our own
+                    # guard. Their removal does not establish a new problem.
+                    child = [row for row in child if not (isinstance(row, dict) and "automated_recovery" in row)]
+                elif key == "reason" and isinstance(item.get("blockers"), list):
+                    child = "; ".join(sorted({visit(row, path + ("blockers",)).get("reason", "")
+                        for row in item["blockers"] if isinstance(row, dict)}))
                 elif bound and key == "task_id" and child == task.get("id"):
                     child = "staging_qa_failed_run_<episode>"
                 elif bound and key in {"candidate_sha", "head_sha"} and isinstance(child, str) and child in aliases:
