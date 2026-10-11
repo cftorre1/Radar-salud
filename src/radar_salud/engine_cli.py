@@ -1,5 +1,6 @@
 from __future__ import annotations
 import argparse,hashlib,json
+from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
 from .scouts import SeenStore,SuperintendenciaStatsScout,fetch_html,save_raw_items,MinsalNewsScout
@@ -113,6 +114,8 @@ def main():
             cfg,processor=processors[item["source"]]
             raw=RawItem(**item["raw"])
             row=processor(raw,cfg)
+            if item["source"] == "pulso_latercera":
+                item["raw"] = asdict(raw)
             if row:
                 row.update(detected_at=item["detected_at"],ingestion_mode=item["lane"])
                 # Save output before terminal queue acknowledgement (crash safe replay).
@@ -122,8 +125,14 @@ def main():
             queue.finish(key,"published" if row else "rejected",None if row else reason)
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
         except DeferredProcessing:
-            queue.finish(key,"retry","budget_or_analysis_deferred")
+            reason="budget_or_analysis_deferred"
+            if item["source"] == "pulso_latercera":
+                item["raw"] = asdict(raw)
+                reason=raw.metadata.get("editorial_assessment",{}).get("reason") or reason
+            queue.finish(key,"retry",reason)
         except Exception as exc:
+            if item["source"] == "pulso_latercera":
+                item["raw"] = asdict(raw)
             queue.finish(key,"retry",type(exc).__name__)
     for name,(discovered,new,error) in discoveries.items():
         counts=queue.counts(name)

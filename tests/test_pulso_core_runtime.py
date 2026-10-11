@@ -88,6 +88,7 @@ def test_core_pulso_publication_rejection_pending_and_feed_trace(tmp_path, monke
     assert by_url[urls[1]]["reason"] == "editorial_relevance_below_threshold"
     assert by_url[urls[1]]["raw"]["metadata"]["editorial_assessment"]["threshold"] == 72
     assert by_url[urls[2]]["status"] == "retry"
+    assert by_url[urls[2]]["reason"] == "analysis_unavailable"
     assert by_url[urls[2]]["raw"]["metadata"]["editorial_assessment"]["reason"] == "analysis_unavailable"
     assert by_url[unrelated.url]["reason"] == "media_materiality_prefilter"
     assert unrelated.title not in calls
