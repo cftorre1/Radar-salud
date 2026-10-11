@@ -13,7 +13,8 @@ def _load(root:Path)->dict[str,Any]:
     except Exception:return {"sources":{}}
 
 def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,rows:list[dict]|None=None,
-           pending:int=0,deferred:int=0,rejected:int=0,error:str|None=None,live_pending:int|None=None,backfill_pending:int|None=None)->None:
+           pending:int=0,deferred:int=0,rejected:int=0,error:str|None=None,live_pending:int|None=None,backfill_pending:int|None=None,
+           discovery_evidence:dict|None=None)->None:
     d=_load(root);src=d.setdefault("sources",{});rows=rows or []
     dates=[x.get("event_date") for x in rows if x.get("event_date")]
     prev=src.get(slug) or (src.get("superintendencia_stats",{}) if slug=="superintendencia" else {})
@@ -38,5 +39,22 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
         "content_freshness":freshness,
         "editorial_outcome":editorial,
     }
+    if discovery_evidence is not None:
+        row=src[slug]
+        row.update(discovery_evidence)
+        row["counts_scope"]={"discovered":"this_run","new":"this_run","published":"this_run",
+                             "pending":"cumulative_queue","rejected":"cumulative_queue"}
+        row["coverage_status"]="unverified" if error else "partial_inventory"
+        # An all-undated inventory cannot be healthy merely because HTTP worked.
+        if not error and (discovery_evidence.get("undated",0) or discovery_evidence.get("detail_errors",0)):
+            row.update(status="warning",technical_status="partial",coverage_status="date_or_detail_gap")
+        row["last_signal_at"]=discovery_evidence.get("last_published_event_at")
+        row["last_discovered_event_at"]=discovery_evidence.get("newest_event_date")
+        try:
+            published_day=date.fromisoformat(str(row["last_signal_at"])[:10])
+            age=(datetime.now(timezone.utc).date()-published_day).days
+            row["content_freshness"]="future" if age<0 else "recent" if age<=7 else "older"
+        except (TypeError,ValueError):row["content_freshness"]="unknown"
+        if error:row["editorial_outcome"]="not_evaluated"
     d["generated_at"]=datetime.now(timezone.utc).isoformat()
     atomic_json(_path(root),d)

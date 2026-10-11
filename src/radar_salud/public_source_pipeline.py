@@ -216,19 +216,54 @@ def _health_relevance(title,text):
     return any(x in t for x in health_terms)
 
 def process_df(raw,cfg):
-    if not raw.event_date or not raw.metadata.get("page_text"):
+    from .df_media_gate import policy, exclusion, material
+    from .editorial_gate import publication_ready
+    if not raw.metadata.get("publication_date_source") or not raw.metadata.get("page_text"):
         raw=enrich(raw)
-    if not raw.event_date:return None
+    if raw.metadata.get("fetch_error"):
+        raise DeferredProcessing("DF detail capture failed",reason="df_detail_fetch_failed")
+    if raw.metadata.get("publication_date_conflict"):
+        raise DeferredProcessing("DF publication dates conflict",reason="df_publication_date_conflict")
+    if not raw.event_date:
+        raise DeferredProcessing("DF has no verifiable publication date",reason="df_missing_publication_date")
     body=raw.metadata.get("page_text") or raw.raw_text
-    if not _health_relevance(raw.title,body):return None
-    ai=analyze_news(title=raw.title,text=body,source_name=raw.source_name,kind="prensa económica especializada en salud")
-    if not ai:raise DeferredProcessing("DF pendiente de evaluación IA")
-    if int(ai.get("relevance_score",0))<65:return None
+    if len(body)<160:
+        raise DeferredProcessing("DF has insufficient readable evidence",reason="df_insufficient_article_evidence")
+    raw.metadata.pop("rejection_reason",None)
+    reason=exclusion(raw)
+    if not reason and not _health_relevance(raw.title,body):reason="df_unrelated_to_health"
+    if not reason and not material(raw.title,body):reason="media_no_material_event"
+    if reason:
+        raw.metadata["rejection_reason"]=reason
+        return None
+    ai=analyze_news(title=raw.metadata.get("article_title") or raw.title,text=body,source_name=raw.source_name,
+                    kind="prensa económica especializada en salud; atribuir a Diario Financiero, no convertir reporte en confirmación oficial")
+    if not ai:raise DeferredProcessing("DF pendiente de evaluación IA",reason="df_analysis_deferred")
+    gate=policy();threshold=int(gate["minimum_relevance_score"])
+    raw.metadata["editorial_assessment"]={"score":int(ai.get("relevance_score",0)),"reason":ai.get("reason"),
+                                          "gate":gate["name"],"gate_version":gate["version"],"threshold":threshold}
+    if int(ai.get("relevance_score",0))<threshold:
+        raw.metadata["rejection_reason"]=f"media_score_below_{threshold}"
+        return None
     score=int(ai.get("relevance_score",0));sc=_scopes(f"{raw.title} {raw.raw_text}")
     raw.metadata.update({"what_happened":ai.get("what_happened") or raw.title,"why_it_matters":ai.get("why_it_matters") or "",
       "signal_types":["Noticias"],"scopes":sc,"watch_tags":["df","noticias"]+[x.lower() for x in sc],
       "scores":{"economic":min(95,max(65,score)),"regulatory":30,"scope":70,"novelty":score,"actionability":70}})
-    s=build_signal(raw,cfg);row=s.to_dict();row["signal_types"]=["Noticias"];row["scopes"]=sc;row["editorial_relevance"]=score;return row
+    s=build_signal(raw,cfg);row=s.to_dict();row["signal_types"]=["Noticias"];row["scopes"]=sc;row["editorial_relevance"]=score
+    row["title"]=raw.metadata.get("article_title") or raw.title
+    row["evidence_maturity"]="media_reported"
+    row["confirmation_policy"]="upgrade_same_signal_when_company_or_official_source_confirms"
+    row["editorial_assessment"]=raw.metadata["editorial_assessment"]
+    for key in ("publication_date_source","publication_timestamp","publication_date_candidates","date_semantics"):
+        row[key]=raw.metadata.get(key)
+    if "diario financiero" not in row["what_happened"].lower():
+        row["what_happened"]="Según Diario Financiero, "+row["what_happened"]
+    passed,reason,quality=publication_ready(row)
+    raw.metadata["publication_gate"]={"passed":passed,"reason":reason,"quality":quality}
+    if not passed:
+        raw.metadata["rejection_reason"]=reason
+        return None
+    return row
 
 def process_diario_oficial(raw,cfg):
     text=extract_pdf_text(raw.url,max_pages=10)

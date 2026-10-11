@@ -145,3 +145,104 @@ def test_history_prevents_republishing_and_date_conflict_never_reopens(tmp_path)
     assert queue.items[key]["status"] == "superseded"
     assert queue.items[key]["reason"] == "already_published_in_history"
     assert not queue.ready(NOW)
+
+
+def _analysis(score=90):
+    return {"relevance_score": score,
+            "what_happened": "La Clínica San Carlos suspendió operaciones y trasladó a todos sus pacientes hospitalizados tras el aluvión.",
+            "why_it_matters": "La suspensión reduce capacidad hospitalaria disponible y requiere reorganizar la atención mientras se recuperan las áreas afectadas.",
+            "reason": "Interrupción material de capacidad hospitalaria."}
+
+
+def test_configured_media_threshold_and_attribution(monkeypatch):
+    from radar_salud.public_source_pipeline import process_df
+    from test_press_pipeline import DF_CFG
+    monkeypatch.setattr("radar_salud.public_source_pipeline.analyze_news", lambda **kw: _analysis(71))
+    raw = _raw(dated=True)
+    assert process_df(raw, DF_CFG) is None
+    assert raw.metadata["rejection_reason"] == "media_score_below_72"
+    monkeypatch.setattr("radar_salud.public_source_pipeline.analyze_news", lambda **kw: _analysis(90))
+    result = process_df(_raw(dated=True), DF_CFG)
+    assert result["evidence_maturity"] == "media_reported"
+    assert result["what_happened"].startswith("Según Diario Financiero")
+    assert result["publication_date_source"] == "cxenseparse:recs:publishtime"
+
+
+def test_technical_capture_failure_and_missing_date_are_not_editorial_rejections(monkeypatch):
+    from radar_salud.public_source_pipeline import process_df
+    from radar_salud.processing import DeferredProcessing
+    from test_press_pipeline import DF_CFG
+    monkeypatch.setattr("radar_salud.public_source_pipeline.fetch_html", lambda url: '<article><p>Sin fecha de publicación.</p></article>')
+    with pytest.raises(DeferredProcessing) as error:
+        process_df(_raw(), DF_CFG)
+    assert error.value.reason == "df_missing_publication_date"
+    def blocked(url): raise OSError("CONNECT 403")
+    monkeypatch.setattr("radar_salud.public_source_pipeline.fetch_html", blocked)
+    with pytest.raises(DeferredProcessing) as error:
+        process_df(_raw(), DF_CFG)
+    assert error.value.reason == "df_detail_fetch_failed"
+
+
+def test_opinion_and_unrelated_have_specific_reasons_without_model_call(monkeypatch):
+    from radar_salud.public_source_pipeline import process_df
+    from test_press_pipeline import DF_CFG
+    def unexpected(**kw): raise AssertionError("Excluded content should not consume AI")
+    monkeypatch.setattr("radar_salud.public_source_pipeline.analyze_news", unexpected)
+    opinion = _raw(dated=True)
+    opinion.metadata["article_section"] = "Opinión"
+    assert process_df(opinion, DF_CFG) is None
+    assert opinion.metadata["rejection_reason"] == "media_opinion_or_column"
+    nonhealth = _raw("Terremoto de magnitud 7,7 sacude Panamá", dated=True)
+    nonhealth.raw_text = "El terremoto afectó a Panamá."
+    nonhealth.metadata["page_text"] = nonhealth.raw_text * 12
+    assert process_df(nonhealth, DF_CFG) is None
+    assert nonhealth.metadata["rejection_reason"] == "df_unrelated_to_health"
+
+
+def test_daily_df_replay_real_processor_to_history_feed_and_second_run(tmp_path, monkeypatch):
+    """Real DF scout/parser/queue/processor/exporter; publisher + AI are fixtures."""
+    import importlib.util
+    import shutil
+    import sys
+    from pathlib import Path
+    from radar_salud import engine_cli
+    repo = Path(__file__).resolve().parents[1]
+    (tmp_path / "config").mkdir()
+    shutil.copyfile(repo / "config/sources.json", tmp_path / "config/sources.json")
+    state = tmp_path / "data/state"
+    state.mkdir(parents=True)
+    (state / "discovery_watermarks.json").write_text(json.dumps({"diario_financiero": CAPTURE.isoformat()}))
+    queue = PendingQueue(state / "pending_queue.json")
+    queue.discover("diario_financiero", [_raw()], now=CAPTURE, last_discovered_at="2026-10-09T22:00:00+00:00")
+    unrelated = RawItem("minsal", "Other source pending", "https://example.org/untouched", "MINSAL", "official")
+    queue.discover("minsal", [unrelated], now=CAPTURE)
+    original_key = fingerprint(_raw())
+    low_url = "https://www.df.cl/empresas/salud/inversion-secundaria"
+    listing = f'<a href="{URL}">{_raw().title}</a><a href="{low_url}">Clínica anuncia una inversión secundaria</a>'
+    detail = '<meta name="cXenseParse:recs:publishtime" content="2026-10-10T16:29:59Z"><article><p>' + _raw(dated=True).metadata["page_text"] + '</p></article>'
+    monkeypatch.setattr("radar_salud.source_scouts.fetch_html", lambda url: listing if url in DfHealthScout.PAGES else detail)
+    monkeypatch.setattr("radar_salud.public_source_pipeline.analyze_news", lambda **kw: _analysis(71 if "secundaria" in kw["title"] else 90))
+    monkeypatch.setattr("radar_salud.paths.project_root", lambda: tmp_path)
+    monkeypatch.setattr("radar_salud.pending_queue.now_utc", lambda: NOW)
+    monkeypatch.setattr(sys, "argv", ["engine_cli", "--source", "diario_financiero", "--limit", "5"])
+    engine_cli.main()
+    queue = PendingQueue(queue.path)
+    assert queue.items[original_key]["status"] == "published"
+    assert queue.items[original_key]["lane"] == "LIVE"
+    assert queue.items[fingerprint(unrelated)]["status"] == "pending"
+    rejected = next(v for v in queue.items.values() if v["raw"]["url"] == low_url)
+    assert rejected["reason"] == "media_score_below_72"
+    assert rejected["raw"]["metadata"]["editorial_assessment"]["score"] == 71
+    history = json.loads((tmp_path / "data/history/superintendencia_signals.json").read_text())["signals"]
+    assert len(history) == 1 and history[0]["ingestion_mode"] == "LIVE"
+    spec = importlib.util.spec_from_file_location("df_replay_export", repo / "scripts/export_web_snapshot.py")
+    exporter = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(exporter)
+    feed = exporter.curate(history, resolve_external=False)
+    assert len(feed) == 1 and feed[0]["source_url"] == URL
+    seen = json.loads((state / "diario_financiero_seen.json").read_text())
+    assert original_key in seen
+    engine_cli.main()
+    assert json.loads((state / "discovery_run.json").read_text())["sources"]["diario_financiero"]["new"] == 0
+    assert PendingQueue(queue.path).items[original_key]["attempts"] == 1
+    assert len(json.loads((tmp_path / "data/history/superintendencia_signals.json").read_text())["signals"]) == 1

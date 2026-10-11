@@ -141,6 +141,7 @@ def parse_df_article(html, url):
         "metadata": {
             "page_text": body or description,
             "article_title": node.get("headline") or p.meta.get("og:title") or "",
+            "article_section": node.get("articleSection") or p.meta.get("article:section") or "",
             "publication_date_source": chosen["source"] if chosen else None,
             "publication_timestamp": chosen["value"] if chosen else None,
             "publication_date_candidates": candidates,

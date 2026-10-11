@@ -356,5 +356,21 @@
       "Require each lane to produce mutation, blocker, or explicit no-op evidence before next cycle."
     ],
     "status": "open"
+  },
+  {
+    "id": "df_date_queue_and_gate_2026_10_11",
+    "recorded_at": "2026-10-11T04:26:19.700737+00:00",
+    "scope": "DF only; Codex A isolated branch",
+    "trigger": "User and independent Work3 identified material omissions missed by green tests",
+    "why_missed": "Only synthetic article:published_time covered; no real publisher metadata, no existing-null-date queue replay, no assertion that Daily DF applied configured Media Early Signal Gate. Generic processor_rejected hid capture defects.",
+    "preventive_controls": [
+      "Recorded cXense and JSON-LD/dateModified/date-conflict tests",
+      "Existing seen/null-date queue recovery tests preserve observations and decisions",
+      "Real DF processor through Daily→history/feed replay, exact rejection reasons and 72 boundary test",
+      "DF all-undated health cannot be healthy; cumulative counters labelled"
+    ],
+    "evidence": "tests/test_df_recovery.py; tests/test_source_health_facets.py; 34 targeted PASS",
+    "remaining": "Original-site runtime and independent semantic review required; replay is not coverage proof",
+    "owner_time_saved": "Future regressions diagnosed by exact reason; no recurring manual date/queue reconstruction required."
   }
 ]
