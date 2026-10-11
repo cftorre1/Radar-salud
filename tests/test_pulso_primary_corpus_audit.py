@@ -89,7 +89,7 @@ def test_all_29_unique_thin_originals_are_retained_without_parser_success_requir
     for index in range(29):
         url = f"https://www.latercera.com/paula/noticia/unit-thin-{index}/"
         urls.append(url)
-        records.append(captured_record(captures, url, synthetic_unit_html(url, title="Vivir con TOC")))
+        records.append(captured_record(captures, url, synthetic_unit_html(url, title="Vivir con TOC", body="La clínica recibe pacientes.")))
     manifest.write_text(json.dumps({"source": "pulso_latercera", "mode": "actual_core_http_observation_no_inventory_injection",
                                     "requests": records}))
     value = json.loads(discovery.read_text())
@@ -103,8 +103,8 @@ def test_all_29_unique_thin_originals_are_retained_without_parser_success_requir
     assert thin["status"] == "ALL_COLD_THIN_ORIGINALS_RETAINED_NOT_SOURCE_ACCEPTANCE"
     for row in thin["requests"]:
         assert row["current_parser"]["status"] == "error"
-        assert row["primary_document_diagnosis"] == "url_bound_complete_primary_body_rejected_by_short_headline_length_gate"
-        assert gzip.decompress((output / row["gzip_file"]).read_bytes()) == synthetic_unit_html(row["url"], title="Vivir con TOC")
+        assert row["primary_document_diagnosis"] == "url_bound_primary_article_text_below_160"
+        assert gzip.decompress((output / row["gzip_file"]).read_bytes()) == synthetic_unit_html(row["url"], title="Vivir con TOC", body="La clínica recibe pacientes.")
         assert row["capture_provenance"] == "preserved_original_cold_core_incomplete_detail"
 
 
@@ -144,3 +144,59 @@ def test_empty_or_metadata_only_corpus_cannot_claim_original_full_body_evidence(
     assert report["status"] == "PRIMARY_CORPUS_AUDIT_PARTIAL"
     assert not report["all_health_originals_with_full_body"]
     assert report["thin_originals"]["status"] == "THIN_ORIGINAL_RETENTION_PARTIAL"
+
+
+def test_editorial_exception_selection_uses_exact_publisher_taxonomy_and_observed_dates():
+    base = dict(visible_byline_day="2026-10-09", canonical_matches_requested=True, url_bound_article_nodes=1,
+                health_related_original=True, current_parser={"status": "verified"}, keywords=[], section="Nacional")
+    window = {"start": "2026-07-13", "end": "2026-10-10"}
+    assert corpus.exceptional_categories(dict(base, title="Una opinión sobre salud"), window) == []
+    assert corpus.exceptional_categories(dict(base, keywords=["Opinión"]), window) == ["explicit_opinion_or_column_keyword_under_article_path"]
+    assert corpus.exceptional_categories(dict(base, keywords=["Columna"]), window) == ["explicit_opinion_or_column_keyword_under_article_path"]
+    assert corpus.exceptional_categories(dict(base, section="Branded"), window) == ["explicit_commercial_publisher_section"]
+    assert corpus.exceptional_categories(dict(base, section="Publirreportajes", current_parser={"status": "error", "reason": "conflicting_publication_dates"}), window) == [
+        "observed_primary_publication_date_conflict", "explicit_commercial_publisher_section"]
+    assert corpus.exceptional_categories(dict(base, section="Branded", visible_byline_day="2026-07-12"), window) == []
+    assert corpus.exceptional_categories(dict(base, section="Branded", canonical_matches_requested=False), window) == []
+    assert corpus.exceptional_categories(dict(base, publication_evidence=[{"timestamp": "2026-09-01T12:00:00Z"}]), window) == [
+        "observed_primary_publication_date_conflict"]
+    assert corpus.exceptional_categories(dict(base, publication_evidence=[{"timestamp": "2026-10-09T00:30:00Z"}]), window) == []
+
+
+def test_editorial_and_all_bound_video_originals_are_retained_exactly_without_adopting_dates(tmp_path):
+    base, captures, manifest, _ = artifact(tmp_path, [])
+    rows = []
+    fixtures = {}
+    for index in range(3):
+        url = f"https://www.latercera.com/videos/noticia/unit-video-{index}/"
+        primary = {"@type": "NewsArticle", "url": url, "headline": "Video sanitario original con texto insuficiente",
+                   "articleBody": "Hospital informa operación.", "articleSection": "Videos", "datePublished": "2026-10-09T12:00:00Z"}
+        video = {"@type": "VideoObject", "@id": url+"#video", "url": url, "embedUrl": "https://www.youtube.com/embed/unit"}
+        payload = (f'<html><link rel="canonical" href="{url}"><script type="application/ld+json">{json.dumps([primary,video])}</script>'
+                   '<article><time class="byline-date">9 Octubre 2026</time></article></html>').encode()
+        fixtures[url] = payload
+        rows.append(captured_record(captures, url, payload))
+    url = "https://www.latercera.com/paula/noticia/unit-opinion-conflict/"
+    html = synthetic_unit_html(url).decode().replace('"articleSection": "Nacional"', '"articleSection": "Branded", "keywords": ["Opinión"]')
+    html = html.replace("2026-10-09T12:00:00Z", "2026-09-01T12:00:00Z")
+    fixtures[url] = html.encode()
+    rows.append(captured_record(captures, url, fixtures[url]))
+    manifest.write_text(json.dumps({"source": "pulso_latercera", "mode": "actual_core_http_observation_no_inventory_injection", "requests": rows}))
+    output = tmp_path / "editorial"
+    report = corpus.audit(base, tmp_path / "report.json", tmp_path / "thin", exception_output=output)
+    exceptions = report["editorial_and_video_exception_originals"]
+    assert exceptions["unique_urls"] == 4
+    assert exceptions["category_counts"]["url_bound_primary_video_object"] == 3
+    assert exceptions["category_counts"]["observed_primary_publication_date_conflict"] == 1
+    for row in exceptions["requests"]:
+        compressed = (output / row["gzip_file"]).read_bytes()
+        assert gzip.decompress(compressed) == fixtures[row["url"]]
+        assert hashlib.sha256(compressed).hexdigest() == row["gzip_sha256"]
+        assert row["capture_provenance"] == "preserved_original_cold_core_editorial_or_video_exception"
+        if "url_bound_primary_video_object" in row["retention_categories"]:
+            assert row["gzip_file"].startswith("video/")
+            assert row["url_bound_video_objects"] == 1
+        else:
+            assert row["visible_byline_day"] == "2026-10-09"
+            assert row["publication_evidence"][0]["timestamp"] == "2026-09-01T12:00:00Z"
+            assert row["current_parser"]["reason"] == "conflicting_publication_dates"

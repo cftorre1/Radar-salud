@@ -12,9 +12,10 @@ import hashlib
 import json
 import re
 from collections import Counter
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit, urlunsplit
+from zoneinfo import ZoneInfo
 
 from radar_salud.beta_sources import _material
 from radar_salud.pulso_source import _Article, _nodes, _visible_byline_day, extract_article, health_anchor, publication_day
@@ -103,7 +104,7 @@ def primary_projection(text, url):
     expected = normalized_url(url)
     parser = _Article()
     parser.feed(text)
-    nodes = []
+    nodes, videos = [], []
     for script in parser.scripts:
         try:
             for node in _nodes(json.loads(script)):
@@ -112,8 +113,11 @@ def primary_projection(text, url):
                 link = node.get("url") or node.get("mainEntityOfPage") or node.get("@id")
                 if isinstance(link, dict):
                     link = link.get("@id")
-                if any(kind in {"NewsArticle", "Article"} for kind in kinds) and link and normalized_url(link, url) == expected:
-                    nodes.append(node)
+                if link and normalized_url(link, url) == expected:
+                    if any(kind in {"NewsArticle", "Article", "ReportageNewsArticle"} for kind in kinds):
+                        nodes.append(node)
+                    if "VideoObject" in kinds:
+                        videos.append(node)
         except (ValueError, TypeError):
             continue
     node = nodes[0] if len(nodes) == 1 else {}
@@ -135,6 +139,10 @@ def primary_projection(text, url):
     result = {"title": title, "title_chars": len(title), "canonical": parser.canonical,
               "canonical_matches_requested": normalized_url(parser.canonical) == expected,
               "url_bound_article_nodes": len(nodes), "section": node.get("articleSection") or parser.metas.get("article:section"),
+              "url_bound_video_objects": len(videos),
+              "url_bound_video_evidence": [{key: video.get(key) for key in (
+                  "@type", "@id", "url", "mainEntityOfPage", "name", "description", "uploadDate", "embedUrl")}
+                  for video in videos],
               "visible_byline_text": " ".join(parser.byline_dates), "visible_byline_day": visible,
               "visible_byline_error": visible_error,
               "publication_evidence": [{"source": kind, "timestamp": value, "timestamp_calendar_day": publication_day(value)}
@@ -162,7 +170,8 @@ def primary_projection(text, url):
     if not result["canonical_matches_requested"] or len(nodes) != 1:
         diagnosis = "unbound_or_ambiguous_primary_document_requires_investigation"
     elif len(title) < 18 and len(body) >= 160:
-        diagnosis = "url_bound_complete_primary_body_rejected_by_short_headline_length_gate"
+        diagnosis = ("url_bound_complete_primary_body_with_short_headline" if result["current_parser"]["status"] == "verified"
+                     else "url_bound_complete_primary_body_rejected_by_short_headline_length_gate")
     elif len(body) < 160 and urlsplit(url).path.startswith("/videos/"):
         diagnosis = "publisher_video_route_with_primary_article_text_below_160"
     elif len(body) < 160:
@@ -173,13 +182,84 @@ def primary_projection(text, url):
     return result
 
 
-def audit(artifact, output, thin_output, discovery=None, capture_manifest=None):
+def exceptional_categories(row, window):
+    """Observed taxonomy and parser evidence select retention, never adoption."""
+    observed_day = row.get("visible_byline_day") or row.get("current_parser", {}).get("metadata", {}).get("publication_date")
+    if (not window or not observed_day or not window["start"] <= observed_day <= window["end"]
+            or not row.get("canonical_matches_requested") or row.get("url_bound_article_nodes") != 1):
+        return []
+    categories = []
+    native_days, chile_days = [], []
+    for evidence in row.get("publication_evidence", []):
+        value = evidence.get("timestamp") or ""
+        try:
+            if len(value) == 10:
+                native = chile = datetime.fromisoformat(value).date().isoformat()
+            else:
+                stamp = datetime.fromisoformat(value.replace("Z", "+00:00"))
+                if stamp.tzinfo is None:
+                    continue
+                native = stamp.date().isoformat()
+                chile = stamp.astimezone(ZoneInfo("America/Santiago")).date().isoformat()
+            native_days.append(native)
+            chile_days.append(chile)
+        except (ValueError, TypeError):
+            continue
+    byline_conflict = bool(row.get("visible_byline_day") and native_days
+                          and set(native_days) != {row["visible_byline_day"]}
+                          and set(chile_days) != {row["visible_byline_day"]})
+    if (row.get("health_related_original") and (byline_conflict or row.get("current_parser", {}).get("reason") == "conflicting_publication_dates")):
+        categories.append("observed_primary_publication_date_conflict")
+    keywords = row.get("keywords")
+    keywords = keywords if isinstance(keywords, list) else [keywords]
+    if any(str(value).strip().casefold() in {"opinión", "opinion", "columna"} for value in keywords):
+        categories.append("explicit_opinion_or_column_keyword_under_article_path")
+    if str(row.get("section", "")).strip().casefold() in {"branded", "publirreportajes"}:
+        categories.append("explicit_commercial_publisher_section")
+    if row.get("url_bound_video_objects", 0):
+        categories.append("url_bound_primary_video_object")
+    return categories
+
+
+def retain_editorial_exceptions(originals, output, window, discovery_hash, discovered_at):
+    output.mkdir(parents=True, exist_ok=True)
+    retained = []
+    for url, candidates in sorted(originals.items()):
+        eligible = [(row, compressed, body, exceptional_categories(row, window)) for row, compressed, body in candidates]
+        eligible = [item for item in eligible if item[3]]
+        if not eligible:
+            continue
+        row, compressed, body, categories = max(eligible, key=lambda item: item[0].get("captured_at") or "")
+        video = "url_bound_primary_video_object" in categories
+        relative = (Path("video") if video else Path(".")) / (row["sha256"] + ".html.gz")
+        path = output / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(compressed)
+        retained.append(dict(row, gzip_file=str(relative), full_primary_body=body, retention_categories=categories,
+                             capture_provenance="preserved_original_cold_core_editorial_or_video_exception",
+                             fixture_status="hash_verified_original_retained_without_date_or_editorial_adoption"))
+    result = {"schema_version": "1.0", "source": SOURCE,
+              "mode": "offline_original_editorial_and_video_exception_retention_no_inventory_injection",
+              "window_90": window, "discovery_at": discovered_at, "discovery_run_sha256": discovery_hash,
+              "requests": retained, "unique_urls": len(retained),
+              "category_counts": dict(Counter(category for row in retained for category in row["retention_categories"])),
+              "status": "OBSERVED_EXCEPTION_ORIGINALS_RETAINED_NOT_SOURCE_ACCEPTANCE" if retained else "EXCEPTION_ORIGINALS_NOT_AVAILABLE",
+              "selection_policy": "Hash-verified URL-bound originals in the observed visible-byline calendar window: healthcare primary date conflicts, EXACT Opinión/Opinion/Columna keywords, EXACT Branded/Publirreportajes sections, and ALL URL-bound VideoObject primary documents. Dates remain observations; neither article paths nor retention grant editorial acceptance."}
+    (output / "manifest.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
+    return result
+
+
+def audit(artifact, output, thin_output, discovery=None, capture_manifest=None, exception_output=None):
     source_manifests = manifests(artifact, capture_manifest)
     discovered_at, discovery_hash, snapshot = discovery_snapshot(artifact, discovery)
     traces = snapshot.get("source_details", {}).get(SOURCE, [])
     thin_urls = {normalized_url(row.get("url")) for row in traces if row.get("status") == "detail_error"
                  and row.get("reason") == "incomplete_article_evidence"}
     thin_urls.discard(None)
+    window = None
+    if discovered_at:
+        day = datetime.fromisoformat(discovered_at.replace("Z", "+00:00")).astimezone(ZoneInfo("America/Santiago")).date()
+        window = {"start": (day-timedelta(days=90)).isoformat(), "end": (day-timedelta(days=1)).isoformat()}
     rows, originals, health = [], {}, []
     seen = set()
     raw_counts = Counter()
@@ -242,6 +322,7 @@ def audit(artifact, output, thin_output, discovery=None, capture_manifest=None):
                      "status": "ALL_COLD_THIN_ORIGINALS_RETAINED_NOT_SOURCE_ACCEPTANCE" if thin_urls and all(
                          row.get("original_bytes_verified") for row in thin_rows) else "THIN_ORIGINAL_RETENTION_PARTIAL"}
     (thin_output / "manifest.json").write_text(json.dumps(thin_manifest, ensure_ascii=False, indent=2) + "\n")
+    exception_manifest = retain_editorial_exceptions(originals, exception_output, window, discovery_hash, discovered_at) if exception_output is not None else None
     report = {"schema_version": "1.0", "source": SOURCE,
               "mode": "complete_offline_audit_of_retained_original_response_corpus_without_analysis_or_inventory_injection",
               "generated_at": datetime.now(timezone.utc).isoformat(), "network_requests": 0, "ai_calls": 0,
@@ -252,6 +333,7 @@ def audit(artifact, output, thin_output, discovery=None, capture_manifest=None):
                              health_originals=len(health), health_unique_urls=len({row["url"] for row in health})),
               "original_response_audit": rows, "all_health_originals_with_full_body": health,
               "thin_originals": thin_manifest,
+              "editorial_and_video_exception_originals": exception_manifest,
               "method": "Every gzip_file in every actual core capture manifest is checked against compressed SHA, original bytes SHA/size and returned UTF8 SHA; every retained HTML is parsed without a title filter. Full bodies are copied only from verified original HTML. Metadata-only records never fabricate bodies. _material is observed, never used to publish."}
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
@@ -265,8 +347,9 @@ def main():
     parser.add_argument("--discovery", type=Path)
     parser.add_argument("--output", type=Path, default=ROOT / "data/audits/pulso_primary_corpus_2026_10_11.json")
     parser.add_argument("--thin-output", type=Path, default=ROOT / "tests/fixtures/pulso_thin_primary_real")
+    parser.add_argument("--exception-output", type=Path, default=ROOT / "tests/fixtures/pulso_editorial_exception_real")
     args = parser.parse_args()
-    report = audit(args.capture_artifact, args.output, args.thin_output, args.discovery, args.capture_manifest)
+    report = audit(args.capture_artifact, args.output, args.thin_output, args.discovery, args.capture_manifest, args.exception_output)
     print(json.dumps({"status": report["status"], "counts": report["counts"],
                       "thin_status": report["thin_originals"]["status"], "network_requests": 0, "ai_calls": 0}))
 
