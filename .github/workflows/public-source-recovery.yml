@@ -1,0 +1,40 @@
+name: Public sources isolated runtime
+on:
+  push:
+    branches: [codex/c-public-sources-20261011]
+    paths:
+      - '.github/workflows/public-source-recovery.yml'
+      - 'scripts/recover_public_sources_runtime.py'
+      - 'config/public_source_runtime_endpoints.json'
+      - 'src/radar_salud/*sources.py'
+      - 'src/radar_salud/public_source_*.py'
+      - '.github/run-public-source-recovery'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: public-sources-isolated-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  runtime:
+    if: github.ref == 'refs/heads/codex/c-public-sources-20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest
+      - name: Real official endpoint probes and native discovery
+        run: python scripts/recover_public_sources_runtime.py --output artifacts/public-source-recovery
+      - name: Preserve primary captures and exact diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-source-runtime-${{ github.run_id }}
+          path: artifacts/public-source-recovery/
+          retention-days: 14
