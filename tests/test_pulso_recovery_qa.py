@@ -568,6 +568,17 @@ def test_attribution_requires_an_explicit_report_citation_or_interview(text):
     assert not qa.explicit_media_attribution(text)
 
 
+def test_actual_aps_backfill_citation_names_the_publisher(evidence):
+    text = ("Como BACKFILL, según la nota de Pulso/La Tercera del 25 de agosto de 2026, "
+            "Minsal presentó un programa de detección precoz en las 28 comunas con APS Universal.")
+    publish_first(evidence)
+    for row in (evidence["history"][0], evidence["snapshot"]["signals"][0]):
+        row["what_happened"] = text
+    assert qa.evaluate(**evidence)["processing_qa"] == "PASS"
+    assert not qa.explicit_media_attribution(text.replace("Pulso/La Tercera", "Minsal"))
+    assert not qa.explicit_media_attribution("Según la nota del 25 de agosto, Minsal presentó un programa. Pulso aparece en el pie.")
+
+
 def test_proposed_budget_cannot_be_presented_as_enacted(evidence):
     publish_first(evidence, url=BASE + "presupuesto-salud-2027-rebajas-al-ajuar-del-recien-nacido/")
     evidence["history"][0].update(title="Presupuesto salud 2027", what_happened="Según Pulso / La Tercera, el presupuesto 2027 reduce el fondo de alto costo.")

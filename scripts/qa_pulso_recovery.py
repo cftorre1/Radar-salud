@@ -1477,6 +1477,7 @@ def explicit_media_attribution(value):
     reporting = r"(?:report[aó](?:n|ron)?|inform[aó](?:n|ron)?|public[aó](?:n|ron)?|señal[aó](?:n|ron)?)"
     patterns = (
         r"\bseg[uú]n\s+(?:" + reporting + r"\s+)?" + publisher + r"\b",
+        r"\bseg[uú]n\s+(?:la\s+)?(?:nota|reportaje|publicaci[oó]n)\s+de\s+" + publisher + r"\b",
         publisher + r"\s+" + reporting + r"\b",
         r"\b(?:reportad[oa]s?|citad[oa]s?)\s+por\s+" + publisher + r"\b",
         r"\bentrevista\s+con\s+" + publisher + r"\b",
