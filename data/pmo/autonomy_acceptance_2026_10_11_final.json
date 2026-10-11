@@ -1,0 +1,3773 @@
+{
+  "schema": "autonomy_governance_final_acceptance.v1",
+  "id": "autonomy_runtime_v2_2026_10_11",
+  "recorded_at": "2026-10-11T08:11:43.423338+00:00",
+  "proof_status": "VERIFIED",
+  "status": "NOT_PROVEN",
+  "result": "infrastructure_implemented_acceptance_not_proven",
+  "scope": "Scoped autonomy infrastructure/governance only; no product, source content or promotion",
+  "main_infrastructure_sha": "15416d1dee5b71f5afd4468a4e295fd3efc5ff49",
+  "staging_governance_sha": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
+  "historical_evidence": {
+    "path": "data/pmo/autonomy_acceptance_2026_10_11.json",
+    "sha256": "0e9940d2f0a39841603db6c30aeb0089713bb778bf92a07df41c0efb36f5ce61",
+    "unchanged": true
+  },
+  "local_validation": {
+    "status": "PASS",
+    "autonomy_tests": 338,
+    "seconds": 45.777,
+    "code_sha": "15416d1dee5b71f5afd4468a4e295fd3efc5ff49",
+    "actionlint": "1.7.7 PASS, five workflows",
+    "root_validation_path": "work/live-review/historical-seventh-code-validation.json",
+    "root_validation_sha256": "afb8fe9c68f6914d7c3643b284ad4e75ee202409b150484c1688cff73377534c",
+    "tests_log_sha256": "7d32b8a075c6f419136703db5d07c8afc28371652fc094d9039cbb5441ba554e",
+    "engine_directed_tests": 114,
+    "scope": "local code validation, not hosted acceptance"
+  },
+  "historical_local_validation": [
+    {
+      "status": "PASS",
+      "autonomy_tests": 316,
+      "seconds": 37.305,
+      "code_sha": "ce40f5afaad0efb1efec3a010db86d9eb1e9d676",
+      "actionlint": "1.7.7 PASS, five workflows"
+    }
+  ],
+  "scheduled_controller_observation": {
+    "schema": "github_schedule_delivery_observation.v1",
+    "source": "Read-only GitHub API metadata reported by root on 2026-10-11; no inferred platform cause",
+    "repository_endpoint": "https://api.github.com/repos/cftorre1/Radar-salud",
+    "runs_endpoint": "https://api.github.com/repos/cftorre1/Radar-salud/actions/runs?event=schedule&per_page=50",
+    "default_branch": "main",
+    "archived": false,
+    "scheduled_run_total_count": 33,
+    "configured_controller_cron": "*/10 * * * *",
+    "latest_scheduled_source_audit": {
+      "run_id": 38116700081,
+      "created_at": "2026-10-11T06:01:29Z",
+      "head_sha_prefix": "dd2"
+    },
+    "last_scheduled_controller": {
+      "run_id": 38102304371,
+      "created_at": "2026-10-11T01:34:45Z",
+      "head_sha_prefix": "28b1",
+      "legacy": true
+    },
+    "initial_runtime_publication": {
+      "head_sha_prefix": "b679",
+      "published_minute_utc": "2026-10-11 05:28"
+    },
+    "new_controller_schedule_runs_observed": 0,
+    "delivery_every_ten_minutes_proven": false,
+    "cause": "UNDETERMINED",
+    "workflow_disabled_inferred": false,
+    "missing_owner_approval_inferred": false,
+    "alternate_execution_observed": [
+      "seventh automatic main push controller and observer executed successfully; no new repair claims",
+      "fourth main push dispatched six independent repair families",
+      "Source Audit completion at 06:01 dispatched main"
+    ],
+    "counts_as_material_progress": false,
+    "source_live_evidence": false,
+    "observed_at": "2026-10-11T08:00:34.768Z",
+    "capture_path": "work/live-review/scheduled-controller-delivery-proof.json",
+    "capture_sha256": "796a8639c9cfeb8e8a90bc92115e6a98cab54ecc928fabb8f47ecb4234eabdde",
+    "workflow_success_is_material_progress": false
+  },
+  "historical_scheduled_controller_observation": {
+    "schema": "github_schedule_delivery_observation.v1",
+    "source": "Read-only GitHub API metadata reported by root on 2026-10-11; no inferred platform cause",
+    "repository_endpoint": "https://api.github.com/repos/cftorre1/Radar-salud",
+    "runs_endpoint": "https://api.github.com/repos/cftorre1/Radar-salud/actions/runs?event=schedule&per_page=50",
+    "default_branch": "main",
+    "archived": false,
+    "scheduled_run_total_count": 33,
+    "configured_controller_cron": "*/10 * * * *",
+    "latest_scheduled_source_audit": {
+      "run_id": 38116700081,
+      "created_at": "2026-10-11T06:01:29Z",
+      "head_sha_prefix": "dd2"
+    },
+    "last_scheduled_controller": {
+      "run_id": 38102304371,
+      "created_at": "2026-10-11T01:34:45Z",
+      "head_sha_prefix": "28b1",
+      "legacy": true
+    },
+    "initial_runtime_publication": {
+      "head_sha_prefix": "b679",
+      "published_minute_utc": "2026-10-11 05:28"
+    },
+    "new_controller_schedule_runs_observed": 0,
+    "delivery_every_ten_minutes_proven": false,
+    "cause": "UNDETERMINED",
+    "workflow_disabled_inferred": false,
+    "missing_owner_approval_inferred": false,
+    "alternate_execution_observed": [
+      "sixth push workers executed successfully",
+      "Source Audit completion at 06:01 dispatched main"
+    ],
+    "counts_as_material_progress": false,
+    "source_live_evidence": false
+  },
+  "hosted_latest_review": {
+    "schema": "autonomy_latest_hosted_final_review.v1",
+    "review_status": "VERIFIED",
+    "mode": "live_read_only",
+    "reviewed_at": "2026-10-11T08:06:00Z",
+    "latest_publication": {
+      "main_sha": "15416d1dee5b71f5afd4468a4e295fd3efc5ff49",
+      "previous_main_sha": "fc03cfb5e9106ba985d47b7c4a9db537042449ac",
+      "automatic_run_id": 38123500601,
+      "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38123500601",
+      "event": "push",
+      "run_created_at": "2026-10-11T08:03:57Z",
+      "run_updated_at": "2026-10-11T08:04:40Z",
+      "run_status": "completed",
+      "workflow_conclusion": "success",
+      "published_at_parent_observed": "2026-10-11T08:04:01.906332+00:00"
+    },
+    "first_hosted_plan": {
+      "state_commit": "318adfab420fb6e8ded0eb21e8d8dc5bd339f15c",
+      "parent_state_commit": "8a30c0f6c1d6b71265d5c8db72062f0d3b3dc791",
+      "git_committed_at": "2026-10-11T08:04:18Z",
+      "reducer_at": "2026-10-11T08:04:16.389627+00:00",
+      "input_sha": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
+      "control_git_blob_sha": "a9d3a01a3c9d1b8ce2d6c6453b20dbdaa8f8dc89",
+      "sanitized_snapshot_path": "work/live-review/202610110805-seventh-hosted-plan-318adfab420f.json",
+      "sanitized_snapshot_sha256": "063d0dfd307bac053cf3b722fef2c3ad4f9ae7b490fe7f2bc12778d03c178e25",
+      "raw_events_before": 62,
+      "raw_events_after": 62,
+      "effective_events_before": 55,
+      "effective_events_after": 55,
+      "corrections_before": 7,
+      "corrections_after": 7,
+      "new_corrections": [],
+      "raw62_exact_preserved": true,
+      "five_existing_corrections_exact_preserved": true,
+      "seven_existing_corrections_exact_preserved": true,
+      "bindings8_exact_preserved": true,
+      "whole_lease_history_exact_preserved": true,
+      "first_window_exact_preserved": true,
+      "pickup_count_before_and_after": 25,
+      "transition_count_before_and_after": 12,
+      "family_matrix": {},
+      "candidate_review_matrix": [],
+      "executor_config_fingerprints_unchanged": true
+    },
+    "latest_authoritative_state": {
+      "state_commit": "bf8e94288ed48baf3b52607ec19309385b9d37e9",
+      "parent_state_commit": "318adfab420fb6e8ded0eb21e8d8dc5bd339f15c",
+      "git_committed_at": "2026-10-11T08:04:34Z",
+      "ref_read_at": "2026-10-11 08:06:00 UTC",
+      "changed_paths": [
+        "data/autopilot/evidence/observation-b11fcccd35f64e3e8dcf338c96520090.json",
+        "data/autopilot/pmo_evidence_v2.json",
+        "data/autopilot/queue_projection_v2.json"
+      ],
+      "control_git_blob_sha": "a9d3a01a3c9d1b8ce2d6c6453b20dbdaa8f8dc89",
+      "control_blob_unchanged_after_observer": true,
+      "raw_material_event_count": 62,
+      "effective_material_event_count": 55,
+      "material_event_correction_count": 7,
+      "effective_kind_counts": {
+        "blocker": 43,
+        "transition": 12
+      },
+      "first_durable_pickup": "2026-10-11T05:29:46.231497Z",
+      "autonomous_pickups_recorded": 25,
+      "transitions_recorded": 12,
+      "raw_events_before_first_durable_pickup": 30,
+      "effective_events_in_live_window": 25,
+      "live_window_effective_kind_counts": {
+        "blocker": 13,
+        "transition": 12
+      },
+      "durable_product_mutations": 0,
+      "verified_source_closures": 0,
+      "active_leases": 0,
+      "all55_material_credits_independently_certified": false
+    },
+    "fifth_jobs": [
+      {
+        "id": 114417637889,
+        "name": "control",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113/job/114417637889"
+      },
+      {
+        "id": 114417703292,
+        "name": "observe",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113/job/114417703292"
+      },
+      {
+        "id": 114417703864,
+        "name": "repair",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113/job/114417703864"
+      },
+      {
+        "id": 114417704201,
+        "name": "candidate_review",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113/job/114417704201"
+      }
+    ],
+    "no_new_claims_or_duplicate_audit_loops": {
+      "no_new_family_claims": true,
+      "lease_history_exact": true,
+      "repair_job": "SKIPPED",
+      "candidate_review_job": "SKIPPED",
+      "matrix_empty": true,
+      "new_material_events": 0,
+      "correction_is_material_progress": false,
+      "workflow_success_is_material_progress": false,
+      "producer_diagnostic_signature_authoritative": false,
+      "engine_canonical_problem_identity_owns_material_credit": true
+    },
+    "historical_fourth_episode": {
+      "proof_path": "work/continuity/202610110735-fourth-hosted-episode-review.json",
+      "proof_sha256": "8b6889dde9ff46173cc35e9518c71cd6e1dcbadc27b6deb973848346bc509795",
+      "historical_only": true,
+      "snapshot": {
+        "schema": "autonomy_fourth_hosted_episode_review.v1",
+        "review_status": "VERIFIED",
+        "reviewed_at": "2026-10-11T07:30:30.410878+00:00",
+        "mode": "live_read_only_historical",
+        "latest_publication": {
+          "main_sha": "ce40f5afaad0efb1efec3a010db86d9eb1e9d676",
+          "previous_main_sha": "924434014cf9c642aff3fa9914ebeae6f8291de9",
+          "automatic_run_id": 38120110728,
+          "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728",
+          "event": "push",
+          "run_created_at": "2026-10-11T07:03:52Z",
+          "publication_first_observed_at": "2026-10-11T07:04:16Z"
+        },
+        "first_hosted_plan": {
+          "state_commit": "c58db62d76b5793e8e07280c030d3a25f139d6df",
+          "parent_state_commit": "46fbcc6675f215ffb7f45522065b82afa2a8d26e",
+          "reducer_at": "2026-10-11T07:04:08.198661Z",
+          "control_blob": "9d1ac7eaaf127b3bdbd92051a606faf659bc0b86",
+          "sanitized_snapshot_sha256": "e3473a2b3e553f5d446f3ae74b3aa18fd1cb37a26a882c0e4ae2347bc79f01b0",
+          "raw_events": 58,
+          "effective_events": 53,
+          "corrections": 5,
+          "raw58_prefix_identical": true,
+          "bindings8_identical": true,
+          "pickup_count_before_new_workers": 19,
+          "transitions_before_new_workers": 11
+        },
+        "hosted_latest_state": {
+          "state_commit": "2e7658142e63050c269d7353ace84d37a09548a0",
+          "observed_at": "2026-10-11T07:09:01Z",
+          "control_git_blob_sha": "08a703999a21de2fc466eb7a197dfd0fac0666b6",
+          "sanitized_snapshot_path": "work/live-review/20261011070901Z-fourth-final-state-2e7658142e63.json",
+          "sanitized_snapshot_sha256": "f95d1d4d5a0a10d9a823816bcf0fa81837374c2358d4416c3c4d92447d5b1dc5",
+          "raw_events": 62,
+          "effective_events_at_published_ce40_code": 57,
+          "corrections": 5,
+          "pickup_count": 25,
+          "transition_count": 12,
+          "mutation_count": 0,
+          "closure_count": 0,
+          "first_durable_pickup": "2026-10-11T05:29:46.231497Z",
+          "raw_events_before_first_durable_pickup": 30,
+          "raw_events_in_live_window": 32,
+          "effective57_certified_as_all_material": false
+        },
+        "fourth_raw_delta": [
+          {
+            "id": "62c4fcb1d589045b89d9344288f50765127eeb54d3eae138064e9af04259c01e",
+            "at": "2026-10-11T07:04:51.811962Z",
+            "task_id": "source_repair_fiscalization_lane_2026_10_11",
+            "family": "fiscalization",
+            "kind": "transition",
+            "classification": "verified independent task transition",
+            "valid_material_novelty": true
+          },
+          {
+            "id": "8942850fdeb14c78e5ffca6a78535977aca7545ee5329bd74e603dda46f2766c",
+            "at": "2026-10-11T07:06:00.551910Z",
+            "task_id": "source_repair_mutualities_lane_2026_10_11",
+            "family": "mutualities",
+            "kind": "blocker",
+            "classification": "verified novel executed URI repair attempt with failing LIVE and rollback",
+            "valid_material_novelty": true
+          },
+          {
+            "id": "66c98f5af7fab7981ae34c080e51ce5f36ddfcd8823311d82e6acf76c122c6a8",
+            "at": "2026-10-11T07:06:30.278098Z",
+            "task_id": "staging_qa_failed_run_38116961282",
+            "family": "staging_qa",
+            "kind": "blocker",
+            "classification": "INVALID novelty: only exact unexecuted UNSUPPORTED capability metadata",
+            "valid_material_novelty": false
+          },
+          {
+            "id": "68a6c786fbcd2a2db9ab7e56b6a66b207b6d1cc8af714ce3377fb9976aadea6b",
+            "at": "2026-10-11T07:07:29.743719Z",
+            "task_id": "source_repair_public_data_lane_2026_10_11",
+            "family": "public_data",
+            "kind": "blocker",
+            "classification": "INVALID novelty: only exact unexecuted UNSUPPORTED capability metadata",
+            "valid_material_novelty": false
+          }
+        ],
+        "pending_correction": {
+          "status": "FIXED_LOCALLY_NOT_YET_HOSTED",
+          "projected_raw_events": 62,
+          "projected_effective_events": 55,
+          "projected_corrections": 7,
+          "retracted_ids": [
+            "66c98f5af7fab7981ae34c080e51ce5f36ddfcd8823311d82e6acf76c122c6a8",
+            "68a6c786fbcd2a2db9ab7e56b6a66b207b6d1cc8af714ce3377fb9976aadea6b"
+          ],
+          "historical_raw_events_preserved": true,
+          "five_existing_corrections_preserved": true,
+          "bindings8_preserved": true,
+          "effective55_is_not_blanket_acceptance_certification": true
+        },
+        "independent_lanes": {
+          "all_six_running_state_commit": "8cd7dab23be3bba09e62cf91b6ecf957aca07c0d",
+          "claims": [
+            {
+              "task_id": "editorial_repair_lane_2026_10_11",
+              "family": "editorial",
+              "status": "RUNNING",
+              "owner": "38120110728-1-editorial",
+              "fence": 9,
+              "claimed_at": "2026-10-11T07:05:03.772652Z",
+              "heartbeat_at": "2026-10-11T07:05:03.772652Z",
+              "expires_at": "2026-10-11T07:15:03.772652Z",
+              "token_hash": "c47311b16cc808fa9fc6204fe96490f514d8c94d8681c2c16fa254e9020e2951",
+              "terminal_at": "2026-10-11T07:05:16.528673Z",
+              "terminal_status": "BLOCKED",
+              "lease_cleared": true
+            },
+            {
+              "task_id": "source_repair_fiscalization_lane_2026_10_11",
+              "family": "fiscalization",
+              "status": "RUNNING",
+              "owner": "38120110728-1-fiscalization",
+              "fence": 9,
+              "claimed_at": "2026-10-11T07:04:51.811962Z",
+              "heartbeat_at": "2026-10-11T07:04:51.811962Z",
+              "expires_at": "2026-10-11T07:14:51.811962Z",
+              "token_hash": "37d8dd4461fb665d6c48ae9af46d8b2015789c9b835e8790cca45739502a58a9",
+              "terminal_at": "2026-10-11T07:05:22.488450Z",
+              "terminal_status": "BLOCKED",
+              "lease_cleared": true
+            },
+            {
+              "task_id": "source_repair_media_lane_2026_10_11",
+              "family": "media",
+              "status": "RUNNING",
+              "owner": "38120110728-1-media",
+              "fence": 9,
+              "claimed_at": "2026-10-11T07:04:55.876488Z",
+              "heartbeat_at": "2026-10-11T07:04:55.876488Z",
+              "expires_at": "2026-10-11T07:14:55.876488Z",
+              "token_hash": "105aa8e58d8150d66ed223f6decc8748aa633d11550eeab1c9653506004e2afe",
+              "terminal_at": "2026-10-11T07:05:32.133985Z",
+              "terminal_status": "BLOCKED",
+              "lease_cleared": true
+            },
+            {
+              "task_id": "source_repair_mutualities_lane_2026_10_11",
+              "family": "mutualities",
+              "status": "RUNNING",
+              "owner": "38120110728-1-mutualities",
+              "fence": 9,
+              "claimed_at": "2026-10-11T07:04:56.960108Z",
+              "heartbeat_at": "2026-10-11T07:04:56.960108Z",
+              "expires_at": "2026-10-11T07:14:56.960108Z",
+              "token_hash": "193d138a07d6a5790d831b601b090ae8df3a1edea517053eb8ad8b3d4cb3425a",
+              "terminal_at": "2026-10-11T07:06:00.551910Z",
+              "terminal_status": "BLOCKED",
+              "lease_cleared": true
+            },
+            {
+              "task_id": "source_repair_public_data_lane_2026_10_11",
+              "family": "public_data",
+              "status": "RUNNING",
+              "owner": "38120110728-1-public_data",
+              "fence": 9,
+              "claimed_at": "2026-10-11T07:04:59.263384Z",
+              "heartbeat_at": "2026-10-11T07:04:59.263384Z",
+              "expires_at": "2026-10-11T07:14:59.263384Z",
+              "token_hash": "238bdeba4d777cf11afc2700ee0efeda660a7bc76d29b2e05965224fdc7a3474",
+              "terminal_at": "2026-10-11T07:07:29.743719Z",
+              "terminal_status": "BLOCKED",
+              "lease_cleared": true
+            },
+            {
+              "task_id": "staging_qa_failed_run_38116961282",
+              "family": "staging_qa",
+              "status": "RUNNING",
+              "owner": "38120110728-1-staging_qa",
+              "fence": 6,
+              "claimed_at": "2026-10-11T07:05:00.589490Z",
+              "heartbeat_at": "2026-10-11T07:05:00.589490Z",
+              "expires_at": "2026-10-11T07:15:00.589490Z",
+              "token_hash": "0d980c6b4c40ee2e602586ce94953080614a06bddae2997b6fb4c5189d040358",
+              "terminal_at": "2026-10-11T07:06:30.278098Z",
+              "terminal_status": "BLOCKED",
+              "lease_cleared": true
+            }
+          ],
+          "heartbeats_state_commit": "a4810d63ef7393c2364574ae75c748e27b2de89f",
+          "actual_persisted_heartbeats": [
+            {
+              "task_id": "source_repair_public_data_lane_2026_10_11",
+              "family": "public_data",
+              "owner": "38120110728-1-public_data",
+              "fence": 9,
+              "heartbeat_at": "2026-10-11T07:06:06.777029Z",
+              "expires_at": "2026-10-11T07:14:59.263384Z"
+            },
+            {
+              "task_id": "staging_qa_failed_run_38116961282",
+              "family": "staging_qa",
+              "owner": "38120110728-1-staging_qa",
+              "fence": 6,
+              "heartbeat_at": "2026-10-11T07:06:11.601177Z",
+              "expires_at": "2026-10-11T07:15:00.589490Z"
+            }
+          ],
+          "unique_owners": 6,
+          "unique_fenced_token_hashes": 6,
+          "exactly_one_pickup_per_family_for_fourth_run": true,
+          "terminal_statuses": [
+            "BLOCKED",
+            "BLOCKED",
+            "BLOCKED",
+            "BLOCKED",
+            "BLOCKED",
+            "BLOCKED"
+          ],
+          "leases_cleared": true,
+          "actual_concurrent_linear_cas_writes_preserved": true,
+          "rejected_push_retry_observed": false
+        },
+        "run_jobs": {
+          "fiscalization": {
+            "job_id": 114412966582,
+            "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966582",
+            "workflow_conclusion": "success",
+            "durable_report_status": "BLOCKED"
+          },
+          "editorial": {
+            "job_id": 114412966604,
+            "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966604",
+            "workflow_conclusion": "success",
+            "durable_report_status": "BLOCKED"
+          },
+          "mutualities": {
+            "job_id": 114412966620,
+            "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966620",
+            "workflow_conclusion": "success",
+            "durable_report_status": "BLOCKED"
+          },
+          "media": {
+            "job_id": 114412966630,
+            "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966630",
+            "workflow_conclusion": "success",
+            "durable_report_status": "BLOCKED"
+          },
+          "staging_qa": {
+            "job_id": 114412966660,
+            "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966660",
+            "workflow_conclusion": "success",
+            "durable_report_status": "BLOCKED"
+          },
+          "public_data": {
+            "job_id": 114412966676,
+            "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966676",
+            "workflow_conclusion": "success",
+            "durable_report_status": "BLOCKED"
+          }
+        },
+        "source_outcomes": {
+          "mutualities": {
+            "uri_attempts": [
+              {
+                "slug": "clinicas_achs_salud",
+                "status": "BLOCKED",
+                "planner_status": "PLANNED",
+                "strategy": "achs_ascii_http_uri_utf8_percent_encoding_v1",
+                "paid_calls": 0,
+                "rolled_back": true,
+                "changed_paths": [],
+                "validated": false,
+                "baseline_full_returncode": 1,
+                "candidate_full_returncode": 1,
+                "targeted_returncode": 0,
+                "targeted_summary": "18 passed in 0.29s",
+                "full_summary": "1 failed, 265 passed, 1 skipped, 1 warning in 5.17s",
+                "live_gates": [
+                  {
+                    "returncode": 1,
+                    "technical_status": "error",
+                    "discovered": 0,
+                    "dated": 0,
+                    "request_pass": 5,
+                    "request_fail": 1,
+                    "request_total": 6,
+                    "error": "RuntimeError: Clínicas Achs Salud has no dated, verified detail items"
+                  },
+                  {
+                    "returncode": 1,
+                    "technical_status": "error",
+                    "discovered": 0,
+                    "dated": 0,
+                    "request_pass": 6,
+                    "request_fail": 0,
+                    "request_total": 6,
+                    "error": "RuntimeError: Clínicas Achs Salud has no dated, verified detail items"
+                  }
+                ]
+              },
+              {
+                "slug": "achs_seguro_laboral",
+                "status": "BLOCKED",
+                "planner_status": "PLANNED",
+                "strategy": "achs_ascii_http_uri_utf8_percent_encoding_v1",
+                "paid_calls": 0,
+                "rolled_back": true,
+                "changed_paths": [],
+                "validated": false,
+                "baseline_full_returncode": 1,
+                "candidate_full_returncode": 1,
+                "targeted_returncode": 0,
+                "targeted_summary": "18 passed in 0.26s",
+                "full_summary": "1 failed, 265 passed, 1 skipped, 1 warning in 4.50s",
+                "live_gates": [
+                  {
+                    "returncode": 1,
+                    "technical_status": "error",
+                    "discovered": 0,
+                    "dated": 0,
+                    "request_pass": 5,
+                    "request_fail": 1,
+                    "request_total": 6,
+                    "error": "RuntimeError: Achs Seguro Laboral has no dated, verified detail items"
+                  },
+                  {
+                    "returncode": 1,
+                    "technical_status": "error",
+                    "discovered": 0,
+                    "dated": 0,
+                    "request_pass": 6,
+                    "request_fail": 0,
+                    "request_total": 6,
+                    "error": "RuntimeError: Achs Seguro Laboral has no dated, verified detail items"
+                  }
+                ]
+              },
+              {
+                "slug": "mutual_seguridad",
+                "status": "BLOCKED",
+                "planner_status": "UNSUPPORTED",
+                "strategy": null,
+                "paid_calls": 0,
+                "rolled_back": false,
+                "changed_paths": [],
+                "validated": false,
+                "baseline_full_returncode": 1,
+                "candidate_full_returncode": 1,
+                "targeted_returncode": 0,
+                "targeted_summary": "18 passed in 0.28s",
+                "full_summary": "1 failed, 265 passed, 1 skipped, 1 warning in 4.44s",
+                "live_gates": [
+                  {
+                    "returncode": 1,
+                    "technical_status": "error",
+                    "discovered": 0,
+                    "dated": 0,
+                    "request_pass": 1,
+                    "request_fail": 0,
+                    "request_total": 1,
+                    "error": "RuntimeError: Mutual de Seguridad CChC has no dated, verified detail items"
+                  }
+                ]
+              }
+            ],
+            "actual_new_attempt_blocker_retained": true,
+            "candidate_committed": false,
+            "source_repaired": false,
+            "live_publication_recovered": false
+          },
+          "public_data": {
+            "fonasa_http_403": true,
+            "isp_timeouts": true,
+            "deis_discovered": 0,
+            "deis_dated": 0,
+            "unchanged_failed_problem_unsupported_metadata_is_not_new_blocker": true
+          },
+          "media": {
+            "diario_financiero": "bounded 24-request instrumentation coverage incomplete",
+            "repair_not_attempted_for_coverage_guard": true
+          },
+          "fiscalization": {
+            "suseso": "bounded 24-request instrumentation coverage incomplete",
+            "repair_not_attempted_for_coverage_guard": true
+          },
+          "editorial": {
+            "technical_gates": "PASS",
+            "explicit_acceptance": "MISSING",
+            "parent_task_closed": false
+          },
+          "staging_qa": {
+            "normative_minimum_actual": 11,
+            "normative_minimum_required": 12,
+            "browser_failed_concrete_cases": 14,
+            "independent_review": "FAIL",
+            "acceptance": "MISSING",
+            "unsupported_metadata_only_duplicate_credit": true
+          }
+        },
+        "immutable_evidence": [
+          {
+            "family": "editorial",
+            "path": "data/autopilot/evidence/4364f7c42f1b44e0925c6cd6b05b362f.json",
+            "sha256": "7580ca7722213642b0bda438f619e50cef39a8695c70a8dad493c152179abb18",
+            "git_blob_sha": "55d8a9b1c285ae66bc2acf6f1ac43890fb980938",
+            "state_commit": "b8e4a23ae900210737605aab3e18739c7cdb8a0a",
+            "committed_at": "2026-10-11T07:05:16Z",
+            "raw_sha256_verified": true
+          },
+          {
+            "family": "fiscalization",
+            "path": "data/autopilot/evidence/a37d3513a57349fea083ec44af268847.json",
+            "sha256": "36f1351ea1cf5d093a732c01a928d70fbb8689c992852e8e98c47e64adf930d7",
+            "git_blob_sha": "fef3253e3b4d16e80e8b702f9d293d41f593aa11",
+            "state_commit": "6335a06c629b21cc4f8d8bd553f797da95ecb35b",
+            "committed_at": "2026-10-11T07:05:22Z",
+            "raw_sha256_verified": true
+          },
+          {
+            "family": "media",
+            "path": "data/autopilot/evidence/8c47dc78a902462ca420d79dbade4f2c.json",
+            "sha256": "09f37fc71cec30c443cf09f618c027b9b7dae465ea02cbbe29fac0373071266e",
+            "git_blob_sha": "5df0c74455d2eda6f66f47fc8d2c31ab4da66025",
+            "state_commit": "3eb73803f16b65093a97648fae5f03737da5ad29",
+            "committed_at": "2026-10-11T07:05:32Z",
+            "raw_sha256_verified": true
+          },
+          {
+            "family": "mutualities",
+            "path": "data/autopilot/evidence/a192a952ee224e8f80cd438f8d0dcbcd.json",
+            "sha256": "44bc2bc404e831cfc9c93d67458ef0d0a572eae626c4dcbb497aa00957d43208",
+            "git_blob_sha": "91784e2a8d6fb52ae5172c7c65c6befbc47b48c9",
+            "state_commit": "1522674e10d0165135e1deb9fa68a12f10e3e3da",
+            "committed_at": "2026-10-11T07:06:00Z",
+            "raw_sha256_verified": true
+          },
+          {
+            "family": "public_data",
+            "path": "data/autopilot/evidence/d0e9e60bea3841559dd9e4a56d66dfa0.json",
+            "sha256": "f5643ebb84dfb8c1a6c56c35e36f34a54b8addd0b23c889cd08c478f64ac7cda",
+            "git_blob_sha": "7824ec12e35ecd3b5eecfc65ecd9e08762f8b146",
+            "state_commit": "e6041c8d1a81b17bd934577e17c8027721cc3429",
+            "committed_at": "2026-10-11T07:07:30Z",
+            "raw_sha256_verified": true
+          },
+          {
+            "family": "staging_qa",
+            "path": "data/autopilot/evidence/3fe44229579642b39934cf9d9eefad59.json",
+            "sha256": "c2206c672e4bfca78f2f63a2624893f24d1b65412c2ca547025d5169aade5453",
+            "git_blob_sha": "feec94f89c56781a7014ffb4e06629c764e77fcf",
+            "state_commit": "39444ac8b2be7d535f128ff216ff39d2af74ba19",
+            "committed_at": "2026-10-11T07:06:30Z",
+            "raw_sha256_verified": true
+          }
+        ],
+        "local_validation": {
+          "status": "PASS",
+          "autonomy_tests": 330,
+          "seconds": 28.391,
+          "code_sha": "c4417f1959227444f2f841a0e0c534f25d245e99",
+          "actionlint": "1.7.7 PASS, five workflows",
+          "root_validation_path": "work/live-review/final-code-validation.json",
+          "root_validation_sha256": "4940850e5fe6654284340252a023790c3cace8c73ac7aefb9ef3739782ed1f0b",
+          "tests_log_sha256": "9ccade39a66a7b9822c910ea8bfd4731b0c5e3255f6d274840a17caaf80966e7",
+          "engine_directed_tests": 106,
+          "scope": "local code validation, not hosted acceptance"
+        },
+        "acceptance": {
+          "status": "NOT_PROVEN",
+          "durable_product_mutations": 0,
+          "verified_source_closures": 0,
+          "real_failure_repaired": false,
+          "four_useful_real_hours": false,
+          "owner_intervention_count": null,
+          "owner_observation_verified": false,
+          "owner_history_empty_is_not_zero_interventions_proof": true
+        },
+        "remote_mutations_by_this_observer": false,
+        "next_hypothesis": "Next root-authorized publication should append exactly two corrections with raw62,25pickups,12transitions preserved; executor configuration unchanged means no new family claims."
+      },
+      "two_known_invalid_capability_metadata_credits_now_corrected": true,
+      "actual_mutual_uri_attempt_blocker_retained": true,
+      "qa_11_minimum_and_14_concrete_failure_cases_preserved": true
+    },
+    "canary_observation": {
+      "status": "PASS",
+      "started_at": "2026-10-11T05:48:42.412852Z",
+      "observed_until": "2026-10-11T05:51:45.814918Z",
+      "checks": {
+        "old_token_finish_rejected": true,
+        "old_worker_did_not_mutate_state": true,
+        "real_heartbeat_grace_elapsed": true,
+        "reclaimed_with_new_generation": true,
+        "stall_fenced_original_token": true,
+        "stalled_detected": true
+      },
+      "historical_canary_reused": true,
+      "new_fault_injection_observed_in_fifth_run": false,
+      "remote_changed": false,
+      "counts_as_material_progress": false,
+      "source_live_evidence": false,
+      "live_acceptance": "NOT_APPLICABLE",
+      "new_fault_injection_observed_in_seventh_run": false
+    },
+    "immutable_evidence": [
+      {
+        "family": "editorial",
+        "path": "data/autopilot/evidence/4364f7c42f1b44e0925c6cd6b05b362f.json",
+        "sha256": "7580ca7722213642b0bda438f619e50cef39a8695c70a8dad493c152179abb18",
+        "git_blob_sha": "55d8a9b1c285ae66bc2acf6f1ac43890fb980938",
+        "state_commit": "b8e4a23ae900210737605aab3e18739c7cdb8a0a",
+        "committed_at": "2026-10-11T07:05:16Z",
+        "raw_sha256_verified": true
+      },
+      {
+        "family": "fiscalization",
+        "path": "data/autopilot/evidence/a37d3513a57349fea083ec44af268847.json",
+        "sha256": "36f1351ea1cf5d093a732c01a928d70fbb8689c992852e8e98c47e64adf930d7",
+        "git_blob_sha": "fef3253e3b4d16e80e8b702f9d293d41f593aa11",
+        "state_commit": "6335a06c629b21cc4f8d8bd553f797da95ecb35b",
+        "committed_at": "2026-10-11T07:05:22Z",
+        "raw_sha256_verified": true
+      },
+      {
+        "family": "media",
+        "path": "data/autopilot/evidence/8c47dc78a902462ca420d79dbade4f2c.json",
+        "sha256": "09f37fc71cec30c443cf09f618c027b9b7dae465ea02cbbe29fac0373071266e",
+        "git_blob_sha": "5df0c74455d2eda6f66f47fc8d2c31ab4da66025",
+        "state_commit": "3eb73803f16b65093a97648fae5f03737da5ad29",
+        "committed_at": "2026-10-11T07:05:32Z",
+        "raw_sha256_verified": true
+      },
+      {
+        "family": "mutualities",
+        "path": "data/autopilot/evidence/a192a952ee224e8f80cd438f8d0dcbcd.json",
+        "sha256": "44bc2bc404e831cfc9c93d67458ef0d0a572eae626c4dcbb497aa00957d43208",
+        "git_blob_sha": "91784e2a8d6fb52ae5172c7c65c6befbc47b48c9",
+        "state_commit": "1522674e10d0165135e1deb9fa68a12f10e3e3da",
+        "committed_at": "2026-10-11T07:06:00Z",
+        "raw_sha256_verified": true
+      },
+      {
+        "family": "public_data",
+        "path": "data/autopilot/evidence/d0e9e60bea3841559dd9e4a56d66dfa0.json",
+        "sha256": "f5643ebb84dfb8c1a6c56c35e36f34a54b8addd0b23c889cd08c478f64ac7cda",
+        "git_blob_sha": "7824ec12e35ecd3b5eecfc65ecd9e08762f8b146",
+        "state_commit": "e6041c8d1a81b17bd934577e17c8027721cc3429",
+        "committed_at": "2026-10-11T07:07:30Z",
+        "raw_sha256_verified": true
+      },
+      {
+        "family": "staging_qa",
+        "path": "data/autopilot/evidence/3fe44229579642b39934cf9d9eefad59.json",
+        "sha256": "c2206c672e4bfca78f2f63a2624893f24d1b65412c2ca547025d5169aade5453",
+        "git_blob_sha": "feec94f89c56781a7014ffb4e06629c764e77fcf",
+        "state_commit": "39444ac8b2be7d535f128ff216ff39d2af74ba19",
+        "committed_at": "2026-10-11T07:06:30Z",
+        "raw_sha256_verified": true
+      },
+      {
+        "path": "data/autopilot/evidence/037079be2c9b4fc8ad326caf8a2796b5.json",
+        "sha256": "715ca02f86e62dc573395de95599a4ed542186cef02ee1e03254ef20987ce576",
+        "git_blob_sha": "b0af01ebb05ca3350cdaba8d4887c2ae412761f7",
+        "kind": "controller_observation",
+        "raw_sha256_verified": true
+      },
+      {
+        "path": "data/autopilot/evidence/observation-22aee65f6d6e489aaa64577767128720.json",
+        "sha256": "d22928d5c34e9ded95e20305b672d9459f8ef88d5c2913de1982db39d6496e6c",
+        "git_blob_sha": "9a239302b38481c430ac162828e813465c28f531",
+        "kind": "autonomy_state_observation",
+        "raw_sha256_verified": true
+      },
+      {
+        "path": "data/autopilot/evidence/2f54331ce1ba47898908ee1e7ccf62e3.json",
+        "sha256": "98442d8dacb7468fcfaf9fa01244c9cbe4869a8b197308be7c181fad78fcd091",
+        "git_blob_sha": "1165bc93cd5644c94c32ed38dc6380b3cc1e82b2",
+        "kind": "controller_observation",
+        "raw_sha256_verified": true
+      },
+      {
+        "path": "data/autopilot/evidence/observation-c82b6e8e4a804241a2a3b2b7f3dce1b5.json",
+        "sha256": "4f79f8e0349b3f7be2ac3a32915013c53bc97e6897fb5d02cc76014e71c2d45f",
+        "git_blob_sha": "124a7b123e67393c60449425aff8d8f1c16b56ce",
+        "kind": "autonomy_state_observation",
+        "raw_sha256_verified": true
+      },
+      {
+        "kind": "seventh_controller_plan",
+        "path": "data/autopilot/evidence/2f82f1650f4f4953b0a2608698d76a59.json",
+        "sha256": "e548c7ca55cd97e7d4c3ccf9e0fb5572b5c7beada05a112f26e8b8106c4e5c77",
+        "git_blob_sha": "6a030daff0f913c8bfbc291cb8fea80cea6e527a",
+        "git_blob_verified": true,
+        "pinned_state_commit": "318adfab420fb6e8ded0eb21e8d8dc5bd339f15c"
+      },
+      {
+        "kind": "seventh_observer",
+        "path": "data/autopilot/evidence/observation-b11fcccd35f64e3e8dcf338c96520090.json",
+        "sha256": "b966bbed4d7e53a3ba85431e3132c214c4cc068dcfed659e8cb5d1a787c4210c",
+        "git_blob_sha": "8c5bf02a764620fdaeeeb42727f67c9ac1192dad",
+        "git_blob_verified": true,
+        "pinned_state_commit": "bf8e94288ed48baf3b52607ec19309385b9d37e9"
+      }
+    ],
+    "local_validation": {
+      "status": "PASS",
+      "autonomy_tests": 338,
+      "seconds": 45.777,
+      "code_sha": "15416d1dee5b71f5afd4468a4e295fd3efc5ff49",
+      "actionlint": "1.7.7 PASS, five workflows",
+      "root_validation_path": "work/live-review/historical-seventh-code-validation.json",
+      "root_validation_sha256": "afb8fe9c68f6914d7c3643b284ad4e75ee202409b150484c1688cff73377534c",
+      "tests_log_sha256": "7d32b8a075c6f419136703db5d07c8afc28371652fc094d9039cbb5441ba554e",
+      "engine_directed_tests": 114,
+      "scope": "local code validation, not hosted acceptance"
+    },
+    "hosted_acceptance": {
+      "metrics": {
+        "autonomous_pickups": 25,
+        "material_event_count": 25,
+        "max_material_gap_seconds": 3513.615983,
+        "mode": "live",
+        "observed_seconds": 9287.936396,
+        "original_started_at": "2026-10-11T05:29:46.231497Z",
+        "owner_observation_verified": false,
+        "owner_prompts": 0,
+        "owner_restarts": 0,
+        "total_elapsed_seconds": 9287.936396,
+        "window_started_at": "2026-10-11T05:29:46.231497Z"
+      },
+      "observed_until": "2026-10-11T08:04:34.167893Z",
+      "reasons": [
+        "four_real_wall_hours_not_observed",
+        "owner_intervention_observation_not_verified",
+        "durable_verified_mutation_not_observed",
+        "real_failure_verified_repair_not_observed",
+        "material_progress_gap_exceeded_30m",
+        "owner_prompt_source_not_connected"
+      ],
+      "status": "NOT_PROVEN"
+    },
+    "observer_criteria": {
+      "autonomous_pickup": {
+        "declared_pickups": 25,
+        "reason": "Worker event/actor causality has not been independently verified.",
+        "status": "NOT_PROVEN"
+      },
+      "durable_mutation": {
+        "status": "NOT_OBSERVED"
+      },
+      "failure_repaired": {
+        "event_ids": [],
+        "status": "NOT_OBSERVED"
+      },
+      "failure_repaired_or_evidenced_escalation": {
+        "escalated_task_ids": [
+          "source_repair_mutualities_lane_2026_10_11",
+          "source_repair_public_data_lane_2026_10_11",
+          "staging_qa_failed_run_38113830124",
+          "staging_qa_failed_run_38116961282"
+        ],
+        "repaired_event_ids": [],
+        "satisfies_legacy_stage_a_repair": false,
+        "status": "OBSERVED"
+      },
+      "independent_transition": {
+        "status": "OBSERVED"
+      },
+      "legacy_stage_a": {
+        "metrics": {
+          "autonomous_pickups": 25,
+          "material_event_count": 25,
+          "max_material_gap_seconds": 3513.615983,
+          "mode": "live",
+          "observed_seconds": 9287.936396,
+          "original_started_at": "2026-10-11T05:29:46.231497Z",
+          "owner_observation_verified": false,
+          "owner_prompts": 0,
+          "owner_restarts": 0,
+          "total_elapsed_seconds": 9287.936396,
+          "window_started_at": "2026-10-11T05:29:46.231497Z"
+        },
+        "observed_until": "2026-10-11T08:04:34.167893Z",
+        "reasons": [
+          "four_real_wall_hours_not_observed",
+          "owner_intervention_observation_not_verified",
+          "durable_verified_mutation_not_observed",
+          "real_failure_verified_repair_not_observed",
+          "material_progress_gap_exceeded_30m",
+          "owner_prompt_source_not_connected"
+        ],
+        "status": "NOT_PROVEN"
+      },
+      "owner_followups": {
+        "count": null,
+        "status": "UNKNOWN"
+      },
+      "useful_work_window": {
+        "is_live_proof": false,
+        "metrics": {
+          "autonomous_pickups": 25,
+          "material_event_count": 25,
+          "max_material_gap_seconds": 3513.615983,
+          "mode": "live",
+          "observed_seconds": 9287.936396,
+          "original_started_at": "2026-10-11T05:29:46.231497Z",
+          "owner_observation_verified": false,
+          "owner_prompts": 0,
+          "owner_restarts": 0,
+          "total_elapsed_seconds": 9287.936396,
+          "window_started_at": "2026-10-11T05:29:46.231497Z"
+        }
+      }
+    },
+    "acceptance": "NOT_PROVEN",
+    "limitations": [
+      "No durable product mutation or verified real-failure repair observed.",
+      "No verified source closure after staging merge and runtime acceptance.",
+      "Observed live window is under four real hours and material gap exceeded 30 minutes.",
+      "Owner prompt coverage is unverified; owner intervention count remains null.",
+      "Canonical effective counts are not blanket certification of useful material progress.",
+      "Declared */10 cron delivery has not been observed for the new controller; platform cause remains undetermined. Actual push/completion execution is verified."
+    ],
+    "remote_mutations_by_this_observer": false,
+    "next_hypothesis": "Meaningful approved family inputs or committed executor strategies should resume only their affected lanes; unchanged push/completion audits remain fenced and receive no new material credit. A source repair still needs durable verified mutation and postmerge runtime proof; useful four-hour acceptance needs trusted owner-event observation.",
+    "historical_fifth_episode": {
+      "proof_path": "work/live-review/historical-fifth-hosted-episode-review.json",
+      "proof_sha256": "c1d938304ae008d4adc11c4ceec62fd9b7f47cb49dc779dd07d8bd30804df483",
+      "historical_only": true,
+      "snapshot": {
+        "schema": "autonomy_latest_hosted_final_review.v1",
+        "review_status": "VERIFIED",
+        "mode": "live_read_only",
+        "reviewed_at": "2026-10-11T07:38:05.639706+00:00",
+        "latest_publication": {
+          "main_sha": "c4417f1959227444f2f841a0e0c534f25d245e99",
+          "previous_main_sha": "ce40f5afaad0efb1efec3a010db86d9eb1e9d676",
+          "automatic_run_id": 38121721113,
+          "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113",
+          "event": "push",
+          "run_created_at": "2026-10-11T07:32:35Z",
+          "run_updated_at": "2026-10-11T07:33:20Z",
+          "run_status": "completed",
+          "workflow_conclusion": "success",
+          "published_at_parent_observed": "2026-10-11T07:32:34Z"
+        },
+        "first_hosted_plan": {
+          "state_commit": "a703892e40e56741bdd9cafe1ec5e0d28ecf4f13",
+          "parent_state_commit": "2e7658142e63050c269d7353ace84d37a09548a0",
+          "git_committed_at": "2026-10-11T07:32:54Z",
+          "reducer_at": "2026-10-11T07:32:52.798673+00:00",
+          "control_git_blob_sha": "722a7c5b560068ac4997c3673efbf44898793c7b",
+          "sanitized_snapshot_path": "work/live-review/202610110733-fifth-hosted-plan-a703892e40e5.json",
+          "sanitized_snapshot_sha256": "52f340f47f01ea426d976a614b6ef1c2c563153705f89fc9d378fa67aea2ec92",
+          "raw_events_before": 62,
+          "raw_events_after": 62,
+          "effective_events_before": 57,
+          "effective_events_after": 55,
+          "corrections_before": 5,
+          "corrections_after": 7,
+          "new_corrections": [
+            {
+              "id": "18441d42bc757bdba3a55fdc00e96139471f5005715263cb644d4ab45fb18046",
+              "kind": "duplicate_staging_blocker",
+              "event_id": "66c98f5af7fab7981ae34c080e51ce5f36ddfcd8823311d82e6acf76c122c6a8",
+              "retained_event_id": "6bf8b7ef653aff856c6c1cfa525622b32aa6061219b666b4905b65fc97cee361",
+              "event_sha256": "dbdf8d1db46eb8398338c8eb1b930e84477c46e3d0a8aa35b0a48cb05bf7d78f",
+              "retained_event_sha256": "c4cc241c5713e57723e95216f1bb4a20e647003609b14d3ff72ad6d5b44690e4",
+              "canonical_signature": "b1a473566353505ec588a6edf96f56aa755a3cf646014bc7669e0a0cbc149aea",
+              "at": "2026-10-11T07:32:52.798673Z"
+            },
+            {
+              "id": "d9fb16d65a2410be91e7583cb34181bb901d4906977eddbc57b08444e337ed4b",
+              "kind": "duplicate_source_blocker",
+              "event_id": "68a6c786fbcd2a2db9ab7e56b6a66b207b6d1cc8af714ce3377fb9976aadea6b",
+              "retained_event_id": "925d0100631445e1a44175810614a5befcdf121779b029ae9f46c4fe4a455e0e",
+              "event_sha256": "d90b012be53dff61f9c9e6adbe993201eee12e99ddfe3e7261b8063ac44551c6",
+              "retained_event_sha256": "8c39d5289f76091aad6036ea40de069298ca33dabc492ceb56dddf1b6b4ec1ae",
+              "canonical_signature": "4482d3bd09953e195581a0e16618ab70e9127a5a67541f79ff2e2d1f8bc0e023",
+              "at": "2026-10-11T07:32:52.798673Z"
+            }
+          ],
+          "raw62_exact_preserved": true,
+          "five_existing_corrections_exact_preserved": true,
+          "bindings8_exact_preserved": true,
+          "whole_lease_history_exact_preserved": true,
+          "first_window_exact_preserved": true,
+          "pickup_count_before_and_after": 25,
+          "transition_count_before_and_after": 12,
+          "family_matrix": {},
+          "candidate_review_matrix": [],
+          "executor_config_fingerprints_unchanged": true
+        },
+        "latest_authoritative_state": {
+          "state_commit": "a74953541ef7a37e4406e487379a94f505a1e3a8",
+          "parent_state_commit": "a703892e40e56741bdd9cafe1ec5e0d28ecf4f13",
+          "git_committed_at": "2026-10-11T07:33:15Z",
+          "ref_read_at": "2026-10-11 07:34:40 UTC",
+          "changed_paths": [
+            "data/autopilot/evidence/observation-22aee65f6d6e489aaa64577767128720.json",
+            "data/autopilot/learning_ledger.json",
+            "data/autopilot/pmo_evidence_v2.json",
+            "data/autopilot/queue_projection_v2.json"
+          ],
+          "control_git_blob_sha": "722a7c5b560068ac4997c3673efbf44898793c7b",
+          "control_blob_unchanged_after_observer": true,
+          "raw_material_event_count": 62,
+          "effective_material_event_count": 55,
+          "material_event_correction_count": 7,
+          "effective_kind_counts": {
+            "blocker": 43,
+            "transition": 12
+          },
+          "first_durable_pickup": "2026-10-11T05:29:46.231497Z",
+          "autonomous_pickups_recorded": 25,
+          "transitions_recorded": 12,
+          "raw_events_before_first_durable_pickup": 30,
+          "effective_events_in_live_window": 25,
+          "live_window_effective_kind_counts": {
+            "blocker": 13,
+            "transition": 12
+          },
+          "durable_product_mutations": 0,
+          "verified_source_closures": 0,
+          "active_leases": 0,
+          "all55_material_credits_independently_certified": false
+        },
+        "fifth_jobs": [
+          {
+            "id": 114417637889,
+            "name": "control",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113/job/114417637889"
+          },
+          {
+            "id": 114417703292,
+            "name": "observe",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113/job/114417703292"
+          },
+          {
+            "id": 114417703864,
+            "name": "repair",
+            "status": "completed",
+            "conclusion": "skipped",
+            "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113/job/114417703864"
+          },
+          {
+            "id": 114417704201,
+            "name": "candidate_review",
+            "status": "completed",
+            "conclusion": "skipped",
+            "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113/job/114417704201"
+          }
+        ],
+        "no_new_claims_or_duplicate_audit_loops": {
+          "no_new_family_claims": true,
+          "lease_history_exact": true,
+          "repair_job": "SKIPPED",
+          "candidate_review_job": "SKIPPED",
+          "matrix_empty": true,
+          "new_material_events": 0,
+          "correction_is_material_progress": false,
+          "workflow_success_is_material_progress": false,
+          "producer_diagnostic_signature_authoritative": false,
+          "engine_canonical_problem_identity_owns_material_credit": true
+        },
+        "historical_fourth_episode": {
+          "proof_path": "work/continuity/202610110735-fourth-hosted-episode-review.json",
+          "proof_sha256": "8b6889dde9ff46173cc35e9518c71cd6e1dcbadc27b6deb973848346bc509795",
+          "historical_only": true,
+          "snapshot": {
+            "schema": "autonomy_fourth_hosted_episode_review.v1",
+            "review_status": "VERIFIED",
+            "reviewed_at": "2026-10-11T07:30:30.410878+00:00",
+            "mode": "live_read_only_historical",
+            "latest_publication": {
+              "main_sha": "ce40f5afaad0efb1efec3a010db86d9eb1e9d676",
+              "previous_main_sha": "924434014cf9c642aff3fa9914ebeae6f8291de9",
+              "automatic_run_id": 38120110728,
+              "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728",
+              "event": "push",
+              "run_created_at": "2026-10-11T07:03:52Z",
+              "publication_first_observed_at": "2026-10-11T07:04:16Z"
+            },
+            "first_hosted_plan": {
+              "state_commit": "c58db62d76b5793e8e07280c030d3a25f139d6df",
+              "parent_state_commit": "46fbcc6675f215ffb7f45522065b82afa2a8d26e",
+              "reducer_at": "2026-10-11T07:04:08.198661Z",
+              "control_blob": "9d1ac7eaaf127b3bdbd92051a606faf659bc0b86",
+              "sanitized_snapshot_sha256": "e3473a2b3e553f5d446f3ae74b3aa18fd1cb37a26a882c0e4ae2347bc79f01b0",
+              "raw_events": 58,
+              "effective_events": 53,
+              "corrections": 5,
+              "raw58_prefix_identical": true,
+              "bindings8_identical": true,
+              "pickup_count_before_new_workers": 19,
+              "transitions_before_new_workers": 11
+            },
+            "hosted_latest_state": {
+              "state_commit": "2e7658142e63050c269d7353ace84d37a09548a0",
+              "observed_at": "2026-10-11T07:09:01Z",
+              "control_git_blob_sha": "08a703999a21de2fc466eb7a197dfd0fac0666b6",
+              "sanitized_snapshot_path": "work/live-review/20261011070901Z-fourth-final-state-2e7658142e63.json",
+              "sanitized_snapshot_sha256": "f95d1d4d5a0a10d9a823816bcf0fa81837374c2358d4416c3c4d92447d5b1dc5",
+              "raw_events": 62,
+              "effective_events_at_published_ce40_code": 57,
+              "corrections": 5,
+              "pickup_count": 25,
+              "transition_count": 12,
+              "mutation_count": 0,
+              "closure_count": 0,
+              "first_durable_pickup": "2026-10-11T05:29:46.231497Z",
+              "raw_events_before_first_durable_pickup": 30,
+              "raw_events_in_live_window": 32,
+              "effective57_certified_as_all_material": false
+            },
+            "fourth_raw_delta": [
+              {
+                "id": "62c4fcb1d589045b89d9344288f50765127eeb54d3eae138064e9af04259c01e",
+                "at": "2026-10-11T07:04:51.811962Z",
+                "task_id": "source_repair_fiscalization_lane_2026_10_11",
+                "family": "fiscalization",
+                "kind": "transition",
+                "classification": "verified independent task transition",
+                "valid_material_novelty": true
+              },
+              {
+                "id": "8942850fdeb14c78e5ffca6a78535977aca7545ee5329bd74e603dda46f2766c",
+                "at": "2026-10-11T07:06:00.551910Z",
+                "task_id": "source_repair_mutualities_lane_2026_10_11",
+                "family": "mutualities",
+                "kind": "blocker",
+                "classification": "verified novel executed URI repair attempt with failing LIVE and rollback",
+                "valid_material_novelty": true
+              },
+              {
+                "id": "66c98f5af7fab7981ae34c080e51ce5f36ddfcd8823311d82e6acf76c122c6a8",
+                "at": "2026-10-11T07:06:30.278098Z",
+                "task_id": "staging_qa_failed_run_38116961282",
+                "family": "staging_qa",
+                "kind": "blocker",
+                "classification": "INVALID novelty: only exact unexecuted UNSUPPORTED capability metadata",
+                "valid_material_novelty": false
+              },
+              {
+                "id": "68a6c786fbcd2a2db9ab7e56b6a66b207b6d1cc8af714ce3377fb9976aadea6b",
+                "at": "2026-10-11T07:07:29.743719Z",
+                "task_id": "source_repair_public_data_lane_2026_10_11",
+                "family": "public_data",
+                "kind": "blocker",
+                "classification": "INVALID novelty: only exact unexecuted UNSUPPORTED capability metadata",
+                "valid_material_novelty": false
+              }
+            ],
+            "pending_correction": {
+              "status": "FIXED_LOCALLY_NOT_YET_HOSTED",
+              "projected_raw_events": 62,
+              "projected_effective_events": 55,
+              "projected_corrections": 7,
+              "retracted_ids": [
+                "66c98f5af7fab7981ae34c080e51ce5f36ddfcd8823311d82e6acf76c122c6a8",
+                "68a6c786fbcd2a2db9ab7e56b6a66b207b6d1cc8af714ce3377fb9976aadea6b"
+              ],
+              "historical_raw_events_preserved": true,
+              "five_existing_corrections_preserved": true,
+              "bindings8_preserved": true,
+              "effective55_is_not_blanket_acceptance_certification": true
+            },
+            "independent_lanes": {
+              "all_six_running_state_commit": "8cd7dab23be3bba09e62cf91b6ecf957aca07c0d",
+              "claims": [
+                {
+                  "task_id": "editorial_repair_lane_2026_10_11",
+                  "family": "editorial",
+                  "status": "RUNNING",
+                  "owner": "38120110728-1-editorial",
+                  "fence": 9,
+                  "claimed_at": "2026-10-11T07:05:03.772652Z",
+                  "heartbeat_at": "2026-10-11T07:05:03.772652Z",
+                  "expires_at": "2026-10-11T07:15:03.772652Z",
+                  "token_hash": "c47311b16cc808fa9fc6204fe96490f514d8c94d8681c2c16fa254e9020e2951",
+                  "terminal_at": "2026-10-11T07:05:16.528673Z",
+                  "terminal_status": "BLOCKED",
+                  "lease_cleared": true
+                },
+                {
+                  "task_id": "source_repair_fiscalization_lane_2026_10_11",
+                  "family": "fiscalization",
+                  "status": "RUNNING",
+                  "owner": "38120110728-1-fiscalization",
+                  "fence": 9,
+                  "claimed_at": "2026-10-11T07:04:51.811962Z",
+                  "heartbeat_at": "2026-10-11T07:04:51.811962Z",
+                  "expires_at": "2026-10-11T07:14:51.811962Z",
+                  "token_hash": "37d8dd4461fb665d6c48ae9af46d8b2015789c9b835e8790cca45739502a58a9",
+                  "terminal_at": "2026-10-11T07:05:22.488450Z",
+                  "terminal_status": "BLOCKED",
+                  "lease_cleared": true
+                },
+                {
+                  "task_id": "source_repair_media_lane_2026_10_11",
+                  "family": "media",
+                  "status": "RUNNING",
+                  "owner": "38120110728-1-media",
+                  "fence": 9,
+                  "claimed_at": "2026-10-11T07:04:55.876488Z",
+                  "heartbeat_at": "2026-10-11T07:04:55.876488Z",
+                  "expires_at": "2026-10-11T07:14:55.876488Z",
+                  "token_hash": "105aa8e58d8150d66ed223f6decc8748aa633d11550eeab1c9653506004e2afe",
+                  "terminal_at": "2026-10-11T07:05:32.133985Z",
+                  "terminal_status": "BLOCKED",
+                  "lease_cleared": true
+                },
+                {
+                  "task_id": "source_repair_mutualities_lane_2026_10_11",
+                  "family": "mutualities",
+                  "status": "RUNNING",
+                  "owner": "38120110728-1-mutualities",
+                  "fence": 9,
+                  "claimed_at": "2026-10-11T07:04:56.960108Z",
+                  "heartbeat_at": "2026-10-11T07:04:56.960108Z",
+                  "expires_at": "2026-10-11T07:14:56.960108Z",
+                  "token_hash": "193d138a07d6a5790d831b601b090ae8df3a1edea517053eb8ad8b3d4cb3425a",
+                  "terminal_at": "2026-10-11T07:06:00.551910Z",
+                  "terminal_status": "BLOCKED",
+                  "lease_cleared": true
+                },
+                {
+                  "task_id": "source_repair_public_data_lane_2026_10_11",
+                  "family": "public_data",
+                  "status": "RUNNING",
+                  "owner": "38120110728-1-public_data",
+                  "fence": 9,
+                  "claimed_at": "2026-10-11T07:04:59.263384Z",
+                  "heartbeat_at": "2026-10-11T07:04:59.263384Z",
+                  "expires_at": "2026-10-11T07:14:59.263384Z",
+                  "token_hash": "238bdeba4d777cf11afc2700ee0efeda660a7bc76d29b2e05965224fdc7a3474",
+                  "terminal_at": "2026-10-11T07:07:29.743719Z",
+                  "terminal_status": "BLOCKED",
+                  "lease_cleared": true
+                },
+                {
+                  "task_id": "staging_qa_failed_run_38116961282",
+                  "family": "staging_qa",
+                  "status": "RUNNING",
+                  "owner": "38120110728-1-staging_qa",
+                  "fence": 6,
+                  "claimed_at": "2026-10-11T07:05:00.589490Z",
+                  "heartbeat_at": "2026-10-11T07:05:00.589490Z",
+                  "expires_at": "2026-10-11T07:15:00.589490Z",
+                  "token_hash": "0d980c6b4c40ee2e602586ce94953080614a06bddae2997b6fb4c5189d040358",
+                  "terminal_at": "2026-10-11T07:06:30.278098Z",
+                  "terminal_status": "BLOCKED",
+                  "lease_cleared": true
+                }
+              ],
+              "heartbeats_state_commit": "a4810d63ef7393c2364574ae75c748e27b2de89f",
+              "actual_persisted_heartbeats": [
+                {
+                  "task_id": "source_repair_public_data_lane_2026_10_11",
+                  "family": "public_data",
+                  "owner": "38120110728-1-public_data",
+                  "fence": 9,
+                  "heartbeat_at": "2026-10-11T07:06:06.777029Z",
+                  "expires_at": "2026-10-11T07:14:59.263384Z"
+                },
+                {
+                  "task_id": "staging_qa_failed_run_38116961282",
+                  "family": "staging_qa",
+                  "owner": "38120110728-1-staging_qa",
+                  "fence": 6,
+                  "heartbeat_at": "2026-10-11T07:06:11.601177Z",
+                  "expires_at": "2026-10-11T07:15:00.589490Z"
+                }
+              ],
+              "unique_owners": 6,
+              "unique_fenced_token_hashes": 6,
+              "exactly_one_pickup_per_family_for_fourth_run": true,
+              "terminal_statuses": [
+                "BLOCKED",
+                "BLOCKED",
+                "BLOCKED",
+                "BLOCKED",
+                "BLOCKED",
+                "BLOCKED"
+              ],
+              "leases_cleared": true,
+              "actual_concurrent_linear_cas_writes_preserved": true,
+              "rejected_push_retry_observed": false
+            },
+            "run_jobs": {
+              "fiscalization": {
+                "job_id": 114412966582,
+                "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966582",
+                "workflow_conclusion": "success",
+                "durable_report_status": "BLOCKED"
+              },
+              "editorial": {
+                "job_id": 114412966604,
+                "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966604",
+                "workflow_conclusion": "success",
+                "durable_report_status": "BLOCKED"
+              },
+              "mutualities": {
+                "job_id": 114412966620,
+                "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966620",
+                "workflow_conclusion": "success",
+                "durable_report_status": "BLOCKED"
+              },
+              "media": {
+                "job_id": 114412966630,
+                "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966630",
+                "workflow_conclusion": "success",
+                "durable_report_status": "BLOCKED"
+              },
+              "staging_qa": {
+                "job_id": 114412966660,
+                "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966660",
+                "workflow_conclusion": "success",
+                "durable_report_status": "BLOCKED"
+              },
+              "public_data": {
+                "job_id": 114412966676,
+                "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966676",
+                "workflow_conclusion": "success",
+                "durable_report_status": "BLOCKED"
+              }
+            },
+            "source_outcomes": {
+              "mutualities": {
+                "uri_attempts": [
+                  {
+                    "slug": "clinicas_achs_salud",
+                    "status": "BLOCKED",
+                    "planner_status": "PLANNED",
+                    "strategy": "achs_ascii_http_uri_utf8_percent_encoding_v1",
+                    "paid_calls": 0,
+                    "rolled_back": true,
+                    "changed_paths": [],
+                    "validated": false,
+                    "baseline_full_returncode": 1,
+                    "candidate_full_returncode": 1,
+                    "targeted_returncode": 0,
+                    "targeted_summary": "18 passed in 0.29s",
+                    "full_summary": "1 failed, 265 passed, 1 skipped, 1 warning in 5.17s",
+                    "live_gates": [
+                      {
+                        "returncode": 1,
+                        "technical_status": "error",
+                        "discovered": 0,
+                        "dated": 0,
+                        "request_pass": 5,
+                        "request_fail": 1,
+                        "request_total": 6,
+                        "error": "RuntimeError: Clínicas Achs Salud has no dated, verified detail items"
+                      },
+                      {
+                        "returncode": 1,
+                        "technical_status": "error",
+                        "discovered": 0,
+                        "dated": 0,
+                        "request_pass": 6,
+                        "request_fail": 0,
+                        "request_total": 6,
+                        "error": "RuntimeError: Clínicas Achs Salud has no dated, verified detail items"
+                      }
+                    ]
+                  },
+                  {
+                    "slug": "achs_seguro_laboral",
+                    "status": "BLOCKED",
+                    "planner_status": "PLANNED",
+                    "strategy": "achs_ascii_http_uri_utf8_percent_encoding_v1",
+                    "paid_calls": 0,
+                    "rolled_back": true,
+                    "changed_paths": [],
+                    "validated": false,
+                    "baseline_full_returncode": 1,
+                    "candidate_full_returncode": 1,
+                    "targeted_returncode": 0,
+                    "targeted_summary": "18 passed in 0.26s",
+                    "full_summary": "1 failed, 265 passed, 1 skipped, 1 warning in 4.50s",
+                    "live_gates": [
+                      {
+                        "returncode": 1,
+                        "technical_status": "error",
+                        "discovered": 0,
+                        "dated": 0,
+                        "request_pass": 5,
+                        "request_fail": 1,
+                        "request_total": 6,
+                        "error": "RuntimeError: Achs Seguro Laboral has no dated, verified detail items"
+                      },
+                      {
+                        "returncode": 1,
+                        "technical_status": "error",
+                        "discovered": 0,
+                        "dated": 0,
+                        "request_pass": 6,
+                        "request_fail": 0,
+                        "request_total": 6,
+                        "error": "RuntimeError: Achs Seguro Laboral has no dated, verified detail items"
+                      }
+                    ]
+                  },
+                  {
+                    "slug": "mutual_seguridad",
+                    "status": "BLOCKED",
+                    "planner_status": "UNSUPPORTED",
+                    "strategy": null,
+                    "paid_calls": 0,
+                    "rolled_back": false,
+                    "changed_paths": [],
+                    "validated": false,
+                    "baseline_full_returncode": 1,
+                    "candidate_full_returncode": 1,
+                    "targeted_returncode": 0,
+                    "targeted_summary": "18 passed in 0.28s",
+                    "full_summary": "1 failed, 265 passed, 1 skipped, 1 warning in 4.44s",
+                    "live_gates": [
+                      {
+                        "returncode": 1,
+                        "technical_status": "error",
+                        "discovered": 0,
+                        "dated": 0,
+                        "request_pass": 1,
+                        "request_fail": 0,
+                        "request_total": 1,
+                        "error": "RuntimeError: Mutual de Seguridad CChC has no dated, verified detail items"
+                      }
+                    ]
+                  }
+                ],
+                "actual_new_attempt_blocker_retained": true,
+                "candidate_committed": false,
+                "source_repaired": false,
+                "live_publication_recovered": false
+              },
+              "public_data": {
+                "fonasa_http_403": true,
+                "isp_timeouts": true,
+                "deis_discovered": 0,
+                "deis_dated": 0,
+                "unchanged_failed_problem_unsupported_metadata_is_not_new_blocker": true
+              },
+              "media": {
+                "diario_financiero": "bounded 24-request instrumentation coverage incomplete",
+                "repair_not_attempted_for_coverage_guard": true
+              },
+              "fiscalization": {
+                "suseso": "bounded 24-request instrumentation coverage incomplete",
+                "repair_not_attempted_for_coverage_guard": true
+              },
+              "editorial": {
+                "technical_gates": "PASS",
+                "explicit_acceptance": "MISSING",
+                "parent_task_closed": false
+              },
+              "staging_qa": {
+                "normative_minimum_actual": 11,
+                "normative_minimum_required": 12,
+                "browser_failed_concrete_cases": 14,
+                "independent_review": "FAIL",
+                "acceptance": "MISSING",
+                "unsupported_metadata_only_duplicate_credit": true
+              }
+            },
+            "immutable_evidence": [
+              {
+                "family": "editorial",
+                "path": "data/autopilot/evidence/4364f7c42f1b44e0925c6cd6b05b362f.json",
+                "sha256": "7580ca7722213642b0bda438f619e50cef39a8695c70a8dad493c152179abb18",
+                "git_blob_sha": "55d8a9b1c285ae66bc2acf6f1ac43890fb980938",
+                "state_commit": "b8e4a23ae900210737605aab3e18739c7cdb8a0a",
+                "committed_at": "2026-10-11T07:05:16Z",
+                "raw_sha256_verified": true
+              },
+              {
+                "family": "fiscalization",
+                "path": "data/autopilot/evidence/a37d3513a57349fea083ec44af268847.json",
+                "sha256": "36f1351ea1cf5d093a732c01a928d70fbb8689c992852e8e98c47e64adf930d7",
+                "git_blob_sha": "fef3253e3b4d16e80e8b702f9d293d41f593aa11",
+                "state_commit": "6335a06c629b21cc4f8d8bd553f797da95ecb35b",
+                "committed_at": "2026-10-11T07:05:22Z",
+                "raw_sha256_verified": true
+              },
+              {
+                "family": "media",
+                "path": "data/autopilot/evidence/8c47dc78a902462ca420d79dbade4f2c.json",
+                "sha256": "09f37fc71cec30c443cf09f618c027b9b7dae465ea02cbbe29fac0373071266e",
+                "git_blob_sha": "5df0c74455d2eda6f66f47fc8d2c31ab4da66025",
+                "state_commit": "3eb73803f16b65093a97648fae5f03737da5ad29",
+                "committed_at": "2026-10-11T07:05:32Z",
+                "raw_sha256_verified": true
+              },
+              {
+                "family": "mutualities",
+                "path": "data/autopilot/evidence/a192a952ee224e8f80cd438f8d0dcbcd.json",
+                "sha256": "44bc2bc404e831cfc9c93d67458ef0d0a572eae626c4dcbb497aa00957d43208",
+                "git_blob_sha": "91784e2a8d6fb52ae5172c7c65c6befbc47b48c9",
+                "state_commit": "1522674e10d0165135e1deb9fa68a12f10e3e3da",
+                "committed_at": "2026-10-11T07:06:00Z",
+                "raw_sha256_verified": true
+              },
+              {
+                "family": "public_data",
+                "path": "data/autopilot/evidence/d0e9e60bea3841559dd9e4a56d66dfa0.json",
+                "sha256": "f5643ebb84dfb8c1a6c56c35e36f34a54b8addd0b23c889cd08c478f64ac7cda",
+                "git_blob_sha": "7824ec12e35ecd3b5eecfc65ecd9e08762f8b146",
+                "state_commit": "e6041c8d1a81b17bd934577e17c8027721cc3429",
+                "committed_at": "2026-10-11T07:07:30Z",
+                "raw_sha256_verified": true
+              },
+              {
+                "family": "staging_qa",
+                "path": "data/autopilot/evidence/3fe44229579642b39934cf9d9eefad59.json",
+                "sha256": "c2206c672e4bfca78f2f63a2624893f24d1b65412c2ca547025d5169aade5453",
+                "git_blob_sha": "feec94f89c56781a7014ffb4e06629c764e77fcf",
+                "state_commit": "39444ac8b2be7d535f128ff216ff39d2af74ba19",
+                "committed_at": "2026-10-11T07:06:30Z",
+                "raw_sha256_verified": true
+              }
+            ],
+            "local_validation": {
+              "status": "PASS",
+              "autonomy_tests": 330,
+              "seconds": 28.391,
+              "code_sha": "c4417f1959227444f2f841a0e0c534f25d245e99",
+              "actionlint": "1.7.7 PASS, five workflows",
+              "root_validation_path": "work/live-review/final-code-validation.json",
+              "root_validation_sha256": "4940850e5fe6654284340252a023790c3cace8c73ac7aefb9ef3739782ed1f0b",
+              "tests_log_sha256": "9ccade39a66a7b9822c910ea8bfd4731b0c5e3255f6d274840a17caaf80966e7",
+              "engine_directed_tests": 106,
+              "scope": "local code validation, not hosted acceptance"
+            },
+            "acceptance": {
+              "status": "NOT_PROVEN",
+              "durable_product_mutations": 0,
+              "verified_source_closures": 0,
+              "real_failure_repaired": false,
+              "four_useful_real_hours": false,
+              "owner_intervention_count": null,
+              "owner_observation_verified": false,
+              "owner_history_empty_is_not_zero_interventions_proof": true
+            },
+            "remote_mutations_by_this_observer": false,
+            "next_hypothesis": "Next root-authorized publication should append exactly two corrections with raw62,25pickups,12transitions preserved; executor configuration unchanged means no new family claims."
+          },
+          "two_known_invalid_capability_metadata_credits_now_corrected": true,
+          "actual_mutual_uri_attempt_blocker_retained": true,
+          "qa_11_minimum_and_14_concrete_failure_cases_preserved": true
+        },
+        "canary_observation": {
+          "status": "PASS",
+          "started_at": "2026-10-11T05:48:42.412852Z",
+          "observed_until": "2026-10-11T05:51:45.814918Z",
+          "checks": {
+            "old_token_finish_rejected": true,
+            "old_worker_did_not_mutate_state": true,
+            "real_heartbeat_grace_elapsed": true,
+            "reclaimed_with_new_generation": true,
+            "stall_fenced_original_token": true,
+            "stalled_detected": true
+          },
+          "historical_canary_reused": true,
+          "new_fault_injection_observed_in_fifth_run": false,
+          "remote_changed": false,
+          "counts_as_material_progress": false,
+          "source_live_evidence": false,
+          "live_acceptance": "NOT_APPLICABLE"
+        },
+        "immutable_evidence": [
+          {
+            "family": "editorial",
+            "path": "data/autopilot/evidence/4364f7c42f1b44e0925c6cd6b05b362f.json",
+            "sha256": "7580ca7722213642b0bda438f619e50cef39a8695c70a8dad493c152179abb18",
+            "git_blob_sha": "55d8a9b1c285ae66bc2acf6f1ac43890fb980938",
+            "state_commit": "b8e4a23ae900210737605aab3e18739c7cdb8a0a",
+            "committed_at": "2026-10-11T07:05:16Z",
+            "raw_sha256_verified": true
+          },
+          {
+            "family": "fiscalization",
+            "path": "data/autopilot/evidence/a37d3513a57349fea083ec44af268847.json",
+            "sha256": "36f1351ea1cf5d093a732c01a928d70fbb8689c992852e8e98c47e64adf930d7",
+            "git_blob_sha": "fef3253e3b4d16e80e8b702f9d293d41f593aa11",
+            "state_commit": "6335a06c629b21cc4f8d8bd553f797da95ecb35b",
+            "committed_at": "2026-10-11T07:05:22Z",
+            "raw_sha256_verified": true
+          },
+          {
+            "family": "media",
+            "path": "data/autopilot/evidence/8c47dc78a902462ca420d79dbade4f2c.json",
+            "sha256": "09f37fc71cec30c443cf09f618c027b9b7dae465ea02cbbe29fac0373071266e",
+            "git_blob_sha": "5df0c74455d2eda6f66f47fc8d2c31ab4da66025",
+            "state_commit": "3eb73803f16b65093a97648fae5f03737da5ad29",
+            "committed_at": "2026-10-11T07:05:32Z",
+            "raw_sha256_verified": true
+          },
+          {
+            "family": "mutualities",
+            "path": "data/autopilot/evidence/a192a952ee224e8f80cd438f8d0dcbcd.json",
+            "sha256": "44bc2bc404e831cfc9c93d67458ef0d0a572eae626c4dcbb497aa00957d43208",
+            "git_blob_sha": "91784e2a8d6fb52ae5172c7c65c6befbc47b48c9",
+            "state_commit": "1522674e10d0165135e1deb9fa68a12f10e3e3da",
+            "committed_at": "2026-10-11T07:06:00Z",
+            "raw_sha256_verified": true
+          },
+          {
+            "family": "public_data",
+            "path": "data/autopilot/evidence/d0e9e60bea3841559dd9e4a56d66dfa0.json",
+            "sha256": "f5643ebb84dfb8c1a6c56c35e36f34a54b8addd0b23c889cd08c478f64ac7cda",
+            "git_blob_sha": "7824ec12e35ecd3b5eecfc65ecd9e08762f8b146",
+            "state_commit": "e6041c8d1a81b17bd934577e17c8027721cc3429",
+            "committed_at": "2026-10-11T07:07:30Z",
+            "raw_sha256_verified": true
+          },
+          {
+            "family": "staging_qa",
+            "path": "data/autopilot/evidence/3fe44229579642b39934cf9d9eefad59.json",
+            "sha256": "c2206c672e4bfca78f2f63a2624893f24d1b65412c2ca547025d5169aade5453",
+            "git_blob_sha": "feec94f89c56781a7014ffb4e06629c764e77fcf",
+            "state_commit": "39444ac8b2be7d535f128ff216ff39d2af74ba19",
+            "committed_at": "2026-10-11T07:06:30Z",
+            "raw_sha256_verified": true
+          },
+          {
+            "path": "data/autopilot/evidence/037079be2c9b4fc8ad326caf8a2796b5.json",
+            "sha256": "715ca02f86e62dc573395de95599a4ed542186cef02ee1e03254ef20987ce576",
+            "git_blob_sha": "b0af01ebb05ca3350cdaba8d4887c2ae412761f7",
+            "kind": "controller_observation",
+            "raw_sha256_verified": true
+          },
+          {
+            "path": "data/autopilot/evidence/observation-22aee65f6d6e489aaa64577767128720.json",
+            "sha256": "d22928d5c34e9ded95e20305b672d9459f8ef88d5c2913de1982db39d6496e6c",
+            "git_blob_sha": "9a239302b38481c430ac162828e813465c28f531",
+            "kind": "autonomy_state_observation",
+            "raw_sha256_verified": true
+          }
+        ],
+        "local_validation": {
+          "status": "PASS",
+          "autonomy_tests": 330,
+          "seconds": 28.391,
+          "code_sha": "c4417f1959227444f2f841a0e0c534f25d245e99",
+          "actionlint": "1.7.7 PASS, five workflows",
+          "root_validation_path": "work/live-review/final-code-validation.json",
+          "root_validation_sha256": "4940850e5fe6654284340252a023790c3cace8c73ac7aefb9ef3739782ed1f0b",
+          "tests_log_sha256": "9ccade39a66a7b9822c910ea8bfd4731b0c5e3255f6d274840a17caaf80966e7",
+          "engine_directed_tests": 106,
+          "scope": "local code validation, not hosted acceptance"
+        },
+        "hosted_acceptance": {
+          "metrics": {
+            "autonomous_pickups": 25,
+            "material_event_count": 25,
+            "max_material_gap_seconds": 2216.775938,
+            "mode": "live",
+            "observed_seconds": 7408.454723,
+            "original_started_at": "2026-10-11T05:29:46.231497Z",
+            "owner_observation_verified": false,
+            "owner_prompts": 0,
+            "owner_restarts": 0,
+            "total_elapsed_seconds": 7408.454723,
+            "window_started_at": "2026-10-11T05:29:46.231497Z"
+          },
+          "observed_until": "2026-10-11T07:33:14.686220Z",
+          "reasons": [
+            "four_real_wall_hours_not_observed",
+            "owner_intervention_observation_not_verified",
+            "durable_verified_mutation_not_observed",
+            "real_failure_verified_repair_not_observed",
+            "material_progress_gap_exceeded_30m",
+            "owner_prompt_source_not_connected"
+          ],
+          "status": "NOT_PROVEN"
+        },
+        "observer_criteria": {
+          "autonomous_pickup": {
+            "declared_pickups": 25,
+            "reason": "Worker event/actor causality has not been independently verified.",
+            "status": "NOT_PROVEN"
+          },
+          "durable_mutation": {
+            "status": "NOT_OBSERVED"
+          },
+          "failure_repaired": {
+            "event_ids": [],
+            "status": "NOT_OBSERVED"
+          },
+          "failure_repaired_or_evidenced_escalation": {
+            "escalated_task_ids": [
+              "source_repair_mutualities_lane_2026_10_11",
+              "source_repair_public_data_lane_2026_10_11",
+              "staging_qa_failed_run_38113830124",
+              "staging_qa_failed_run_38116961282"
+            ],
+            "repaired_event_ids": [],
+            "satisfies_legacy_stage_a_repair": false,
+            "status": "OBSERVED"
+          },
+          "independent_transition": {
+            "status": "OBSERVED"
+          },
+          "legacy_stage_a": {
+            "metrics": {
+              "autonomous_pickups": 25,
+              "material_event_count": 25,
+              "max_material_gap_seconds": 2216.775938,
+              "mode": "live",
+              "observed_seconds": 7408.454723,
+              "original_started_at": "2026-10-11T05:29:46.231497Z",
+              "owner_observation_verified": false,
+              "owner_prompts": 0,
+              "owner_restarts": 0,
+              "total_elapsed_seconds": 7408.454723,
+              "window_started_at": "2026-10-11T05:29:46.231497Z"
+            },
+            "observed_until": "2026-10-11T07:33:14.686220Z",
+            "reasons": [
+              "four_real_wall_hours_not_observed",
+              "owner_intervention_observation_not_verified",
+              "durable_verified_mutation_not_observed",
+              "real_failure_verified_repair_not_observed",
+              "material_progress_gap_exceeded_30m",
+              "owner_prompt_source_not_connected"
+            ],
+            "status": "NOT_PROVEN"
+          },
+          "owner_followups": {
+            "count": null,
+            "status": "UNKNOWN"
+          },
+          "useful_work_window": {
+            "is_live_proof": false,
+            "metrics": {
+              "autonomous_pickups": 25,
+              "material_event_count": 25,
+              "max_material_gap_seconds": 2216.775938,
+              "mode": "live",
+              "observed_seconds": 7408.454723,
+              "original_started_at": "2026-10-11T05:29:46.231497Z",
+              "owner_observation_verified": false,
+              "owner_prompts": 0,
+              "owner_restarts": 0,
+              "total_elapsed_seconds": 7408.454723,
+              "window_started_at": "2026-10-11T05:29:46.231497Z"
+            }
+          }
+        },
+        "acceptance": "NOT_PROVEN",
+        "limitations": [
+          "No durable product mutation or verified real-failure repair observed.",
+          "No verified source closure after staging merge and runtime acceptance.",
+          "Observed live window is under four real hours and material gap exceeded 30 minutes.",
+          "Owner prompt coverage is unverified; owner intervention count remains null.",
+          "Canonical effective counts are not blanket certification of useful material progress."
+        ],
+        "remote_mutations_by_this_observer": false,
+        "next_hypothesis": "Future approved repair or acceptance input must trigger only its scoped independent lane; identical blockers and capture-only changes must remain blocked without extra material credit."
+      }
+    },
+    "sixth_jobs": [
+      {
+        "id": 114421009365,
+        "name": "control",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38122862769/job/114421009365"
+      },
+      {
+        "id": 114421079741,
+        "name": "observe",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38122862769/job/114421079741"
+      },
+      {
+        "id": 114421080208,
+        "name": "candidate_review",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38122862769/job/114421080208"
+      },
+      {
+        "id": 114421080443,
+        "name": "repair",
+        "status": "completed",
+        "conclusion": "skipped",
+        "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38122862769/job/114421080443"
+      }
+    ],
+    "latest_jobs": [
+      {
+        "job_id": 114422924328,
+        "name": "control",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "job_id": 114422993461,
+        "name": "observe",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "job_id": 114422993882,
+        "name": "candidate_review",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "job_id": 114422994120,
+        "name": "repair",
+        "status": "completed",
+        "conclusion": "skipped"
+      }
+    ],
+    "historical_sixth_episode": {
+      "schema": "autonomy_latest_hosted_final_review.v1",
+      "review_status": "VERIFIED",
+      "mode": "live_read_only",
+      "reviewed_at": "2026-10-11T08:00:18.833590+00:00",
+      "latest_publication": {
+        "main_sha": "fc03cfb5e9106ba985d47b7c4a9db537042449ac",
+        "previous_main_sha": "c4417f1959227444f2f841a0e0c534f25d245e99",
+        "automatic_run_id": 38122862769,
+        "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38122862769",
+        "event": "push",
+        "run_created_at": "2026-10-11T07:52:49Z",
+        "run_updated_at": "2026-10-11T07:53:44Z",
+        "run_status": "completed",
+        "workflow_conclusion": "success",
+        "published_at_parent_observed": "2026-10-11T07:52:53.771697Z"
+      },
+      "first_hosted_plan": {
+        "state_commit": "aa50989e9e3f64f57b43c4562c52897ee7f6fbde",
+        "parent_state_commit": "a74953541ef7a37e4406e487379a94f505a1e3a8",
+        "git_committed_at": "2026-10-11T07:53:09Z",
+        "reducer_at": "2026-10-11T07:53:07.227053+00:00",
+        "input_sha": "eee5dbb0668b30605a22d86b7355b75b6a340ef6",
+        "control_git_blob_sha": "38d50677b04e19917e960e0a8f3a5f018ce0bf51",
+        "sanitized_snapshot_path": "work/live-review/202610110754-sixth-hosted-plan-aa50989e9e3f.json",
+        "sanitized_snapshot_sha256": "e9067e1da79660aa812334bb715f713262d7f4fbdb24d98ab69214e2dec1d341",
+        "raw_events_before": 62,
+        "raw_events_after": 62,
+        "effective_events_before": 55,
+        "effective_events_after": 55,
+        "corrections_before": 7,
+        "corrections_after": 7,
+        "new_corrections": [],
+        "raw62_exact_preserved": true,
+        "five_existing_corrections_exact_preserved": true,
+        "seven_existing_corrections_exact_preserved": true,
+        "bindings8_exact_preserved": true,
+        "whole_lease_history_exact_preserved": true,
+        "first_window_exact_preserved": true,
+        "pickup_count_before_and_after": 25,
+        "transition_count_before_and_after": 12,
+        "family_matrix": {},
+        "candidate_review_matrix": [],
+        "executor_config_fingerprints_unchanged": true
+      },
+      "latest_authoritative_state": {
+        "state_commit": "8a30c0f6c1d6b71265d5c8db72062f0d3b3dc791",
+        "parent_state_commit": "aa50989e9e3f64f57b43c4562c52897ee7f6fbde",
+        "git_committed_at": "2026-10-11T07:53:36Z",
+        "ref_read_at": "2026-10-11 07:54:18 UTC",
+        "changed_paths": [
+          "data/autopilot/evidence/observation-c82b6e8e4a804241a2a3b2b7f3dce1b5.json",
+          "data/autopilot/pmo_evidence_v2.json",
+          "data/autopilot/queue_projection_v2.json"
+        ],
+        "control_git_blob_sha": "38d50677b04e19917e960e0a8f3a5f018ce0bf51",
+        "control_blob_unchanged_after_observer": true,
+        "raw_material_event_count": 62,
+        "effective_material_event_count": 55,
+        "material_event_correction_count": 7,
+        "effective_kind_counts": {
+          "blocker": 43,
+          "transition": 12
+        },
+        "first_durable_pickup": "2026-10-11T05:29:46.231497Z",
+        "autonomous_pickups_recorded": 25,
+        "transitions_recorded": 12,
+        "raw_events_before_first_durable_pickup": 30,
+        "effective_events_in_live_window": 25,
+        "live_window_effective_kind_counts": {
+          "blocker": 13,
+          "transition": 12
+        },
+        "durable_product_mutations": 0,
+        "verified_source_closures": 0,
+        "active_leases": 0,
+        "all55_material_credits_independently_certified": false
+      },
+      "fifth_jobs": [
+        {
+          "id": 114417637889,
+          "name": "control",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113/job/114417637889"
+        },
+        {
+          "id": 114417703292,
+          "name": "observe",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113/job/114417703292"
+        },
+        {
+          "id": 114417703864,
+          "name": "repair",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113/job/114417703864"
+        },
+        {
+          "id": 114417704201,
+          "name": "candidate_review",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113/job/114417704201"
+        }
+      ],
+      "no_new_claims_or_duplicate_audit_loops": {
+        "no_new_family_claims": true,
+        "lease_history_exact": true,
+        "repair_job": "SKIPPED",
+        "candidate_review_job": "SKIPPED",
+        "matrix_empty": true,
+        "new_material_events": 0,
+        "correction_is_material_progress": false,
+        "workflow_success_is_material_progress": false,
+        "producer_diagnostic_signature_authoritative": false,
+        "engine_canonical_problem_identity_owns_material_credit": true
+      },
+      "historical_fourth_episode": {
+        "proof_path": "work/continuity/202610110735-fourth-hosted-episode-review.json",
+        "proof_sha256": "8b6889dde9ff46173cc35e9518c71cd6e1dcbadc27b6deb973848346bc509795",
+        "historical_only": true,
+        "snapshot": {
+          "schema": "autonomy_fourth_hosted_episode_review.v1",
+          "review_status": "VERIFIED",
+          "reviewed_at": "2026-10-11T07:30:30.410878+00:00",
+          "mode": "live_read_only_historical",
+          "latest_publication": {
+            "main_sha": "ce40f5afaad0efb1efec3a010db86d9eb1e9d676",
+            "previous_main_sha": "924434014cf9c642aff3fa9914ebeae6f8291de9",
+            "automatic_run_id": 38120110728,
+            "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728",
+            "event": "push",
+            "run_created_at": "2026-10-11T07:03:52Z",
+            "publication_first_observed_at": "2026-10-11T07:04:16Z"
+          },
+          "first_hosted_plan": {
+            "state_commit": "c58db62d76b5793e8e07280c030d3a25f139d6df",
+            "parent_state_commit": "46fbcc6675f215ffb7f45522065b82afa2a8d26e",
+            "reducer_at": "2026-10-11T07:04:08.198661Z",
+            "control_blob": "9d1ac7eaaf127b3bdbd92051a606faf659bc0b86",
+            "sanitized_snapshot_sha256": "e3473a2b3e553f5d446f3ae74b3aa18fd1cb37a26a882c0e4ae2347bc79f01b0",
+            "raw_events": 58,
+            "effective_events": 53,
+            "corrections": 5,
+            "raw58_prefix_identical": true,
+            "bindings8_identical": true,
+            "pickup_count_before_new_workers": 19,
+            "transitions_before_new_workers": 11
+          },
+          "hosted_latest_state": {
+            "state_commit": "2e7658142e63050c269d7353ace84d37a09548a0",
+            "observed_at": "2026-10-11T07:09:01Z",
+            "control_git_blob_sha": "08a703999a21de2fc466eb7a197dfd0fac0666b6",
+            "sanitized_snapshot_path": "work/live-review/20261011070901Z-fourth-final-state-2e7658142e63.json",
+            "sanitized_snapshot_sha256": "f95d1d4d5a0a10d9a823816bcf0fa81837374c2358d4416c3c4d92447d5b1dc5",
+            "raw_events": 62,
+            "effective_events_at_published_ce40_code": 57,
+            "corrections": 5,
+            "pickup_count": 25,
+            "transition_count": 12,
+            "mutation_count": 0,
+            "closure_count": 0,
+            "first_durable_pickup": "2026-10-11T05:29:46.231497Z",
+            "raw_events_before_first_durable_pickup": 30,
+            "raw_events_in_live_window": 32,
+            "effective57_certified_as_all_material": false
+          },
+          "fourth_raw_delta": [
+            {
+              "id": "62c4fcb1d589045b89d9344288f50765127eeb54d3eae138064e9af04259c01e",
+              "at": "2026-10-11T07:04:51.811962Z",
+              "task_id": "source_repair_fiscalization_lane_2026_10_11",
+              "family": "fiscalization",
+              "kind": "transition",
+              "classification": "verified independent task transition",
+              "valid_material_novelty": true
+            },
+            {
+              "id": "8942850fdeb14c78e5ffca6a78535977aca7545ee5329bd74e603dda46f2766c",
+              "at": "2026-10-11T07:06:00.551910Z",
+              "task_id": "source_repair_mutualities_lane_2026_10_11",
+              "family": "mutualities",
+              "kind": "blocker",
+              "classification": "verified novel executed URI repair attempt with failing LIVE and rollback",
+              "valid_material_novelty": true
+            },
+            {
+              "id": "66c98f5af7fab7981ae34c080e51ce5f36ddfcd8823311d82e6acf76c122c6a8",
+              "at": "2026-10-11T07:06:30.278098Z",
+              "task_id": "staging_qa_failed_run_38116961282",
+              "family": "staging_qa",
+              "kind": "blocker",
+              "classification": "INVALID novelty: only exact unexecuted UNSUPPORTED capability metadata",
+              "valid_material_novelty": false
+            },
+            {
+              "id": "68a6c786fbcd2a2db9ab7e56b6a66b207b6d1cc8af714ce3377fb9976aadea6b",
+              "at": "2026-10-11T07:07:29.743719Z",
+              "task_id": "source_repair_public_data_lane_2026_10_11",
+              "family": "public_data",
+              "kind": "blocker",
+              "classification": "INVALID novelty: only exact unexecuted UNSUPPORTED capability metadata",
+              "valid_material_novelty": false
+            }
+          ],
+          "pending_correction": {
+            "status": "FIXED_LOCALLY_NOT_YET_HOSTED",
+            "projected_raw_events": 62,
+            "projected_effective_events": 55,
+            "projected_corrections": 7,
+            "retracted_ids": [
+              "66c98f5af7fab7981ae34c080e51ce5f36ddfcd8823311d82e6acf76c122c6a8",
+              "68a6c786fbcd2a2db9ab7e56b6a66b207b6d1cc8af714ce3377fb9976aadea6b"
+            ],
+            "historical_raw_events_preserved": true,
+            "five_existing_corrections_preserved": true,
+            "bindings8_preserved": true,
+            "effective55_is_not_blanket_acceptance_certification": true
+          },
+          "independent_lanes": {
+            "all_six_running_state_commit": "8cd7dab23be3bba09e62cf91b6ecf957aca07c0d",
+            "claims": [
+              {
+                "task_id": "editorial_repair_lane_2026_10_11",
+                "family": "editorial",
+                "status": "RUNNING",
+                "owner": "38120110728-1-editorial",
+                "fence": 9,
+                "claimed_at": "2026-10-11T07:05:03.772652Z",
+                "heartbeat_at": "2026-10-11T07:05:03.772652Z",
+                "expires_at": "2026-10-11T07:15:03.772652Z",
+                "token_hash": "c47311b16cc808fa9fc6204fe96490f514d8c94d8681c2c16fa254e9020e2951",
+                "terminal_at": "2026-10-11T07:05:16.528673Z",
+                "terminal_status": "BLOCKED",
+                "lease_cleared": true
+              },
+              {
+                "task_id": "source_repair_fiscalization_lane_2026_10_11",
+                "family": "fiscalization",
+                "status": "RUNNING",
+                "owner": "38120110728-1-fiscalization",
+                "fence": 9,
+                "claimed_at": "2026-10-11T07:04:51.811962Z",
+                "heartbeat_at": "2026-10-11T07:04:51.811962Z",
+                "expires_at": "2026-10-11T07:14:51.811962Z",
+                "token_hash": "37d8dd4461fb665d6c48ae9af46d8b2015789c9b835e8790cca45739502a58a9",
+                "terminal_at": "2026-10-11T07:05:22.488450Z",
+                "terminal_status": "BLOCKED",
+                "lease_cleared": true
+              },
+              {
+                "task_id": "source_repair_media_lane_2026_10_11",
+                "family": "media",
+                "status": "RUNNING",
+                "owner": "38120110728-1-media",
+                "fence": 9,
+                "claimed_at": "2026-10-11T07:04:55.876488Z",
+                "heartbeat_at": "2026-10-11T07:04:55.876488Z",
+                "expires_at": "2026-10-11T07:14:55.876488Z",
+                "token_hash": "105aa8e58d8150d66ed223f6decc8748aa633d11550eeab1c9653506004e2afe",
+                "terminal_at": "2026-10-11T07:05:32.133985Z",
+                "terminal_status": "BLOCKED",
+                "lease_cleared": true
+              },
+              {
+                "task_id": "source_repair_mutualities_lane_2026_10_11",
+                "family": "mutualities",
+                "status": "RUNNING",
+                "owner": "38120110728-1-mutualities",
+                "fence": 9,
+                "claimed_at": "2026-10-11T07:04:56.960108Z",
+                "heartbeat_at": "2026-10-11T07:04:56.960108Z",
+                "expires_at": "2026-10-11T07:14:56.960108Z",
+                "token_hash": "193d138a07d6a5790d831b601b090ae8df3a1edea517053eb8ad8b3d4cb3425a",
+                "terminal_at": "2026-10-11T07:06:00.551910Z",
+                "terminal_status": "BLOCKED",
+                "lease_cleared": true
+              },
+              {
+                "task_id": "source_repair_public_data_lane_2026_10_11",
+                "family": "public_data",
+                "status": "RUNNING",
+                "owner": "38120110728-1-public_data",
+                "fence": 9,
+                "claimed_at": "2026-10-11T07:04:59.263384Z",
+                "heartbeat_at": "2026-10-11T07:04:59.263384Z",
+                "expires_at": "2026-10-11T07:14:59.263384Z",
+                "token_hash": "238bdeba4d777cf11afc2700ee0efeda660a7bc76d29b2e05965224fdc7a3474",
+                "terminal_at": "2026-10-11T07:07:29.743719Z",
+                "terminal_status": "BLOCKED",
+                "lease_cleared": true
+              },
+              {
+                "task_id": "staging_qa_failed_run_38116961282",
+                "family": "staging_qa",
+                "status": "RUNNING",
+                "owner": "38120110728-1-staging_qa",
+                "fence": 6,
+                "claimed_at": "2026-10-11T07:05:00.589490Z",
+                "heartbeat_at": "2026-10-11T07:05:00.589490Z",
+                "expires_at": "2026-10-11T07:15:00.589490Z",
+                "token_hash": "0d980c6b4c40ee2e602586ce94953080614a06bddae2997b6fb4c5189d040358",
+                "terminal_at": "2026-10-11T07:06:30.278098Z",
+                "terminal_status": "BLOCKED",
+                "lease_cleared": true
+              }
+            ],
+            "heartbeats_state_commit": "a4810d63ef7393c2364574ae75c748e27b2de89f",
+            "actual_persisted_heartbeats": [
+              {
+                "task_id": "source_repair_public_data_lane_2026_10_11",
+                "family": "public_data",
+                "owner": "38120110728-1-public_data",
+                "fence": 9,
+                "heartbeat_at": "2026-10-11T07:06:06.777029Z",
+                "expires_at": "2026-10-11T07:14:59.263384Z"
+              },
+              {
+                "task_id": "staging_qa_failed_run_38116961282",
+                "family": "staging_qa",
+                "owner": "38120110728-1-staging_qa",
+                "fence": 6,
+                "heartbeat_at": "2026-10-11T07:06:11.601177Z",
+                "expires_at": "2026-10-11T07:15:00.589490Z"
+              }
+            ],
+            "unique_owners": 6,
+            "unique_fenced_token_hashes": 6,
+            "exactly_one_pickup_per_family_for_fourth_run": true,
+            "terminal_statuses": [
+              "BLOCKED",
+              "BLOCKED",
+              "BLOCKED",
+              "BLOCKED",
+              "BLOCKED",
+              "BLOCKED"
+            ],
+            "leases_cleared": true,
+            "actual_concurrent_linear_cas_writes_preserved": true,
+            "rejected_push_retry_observed": false
+          },
+          "run_jobs": {
+            "fiscalization": {
+              "job_id": 114412966582,
+              "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966582",
+              "workflow_conclusion": "success",
+              "durable_report_status": "BLOCKED"
+            },
+            "editorial": {
+              "job_id": 114412966604,
+              "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966604",
+              "workflow_conclusion": "success",
+              "durable_report_status": "BLOCKED"
+            },
+            "mutualities": {
+              "job_id": 114412966620,
+              "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966620",
+              "workflow_conclusion": "success",
+              "durable_report_status": "BLOCKED"
+            },
+            "media": {
+              "job_id": 114412966630,
+              "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966630",
+              "workflow_conclusion": "success",
+              "durable_report_status": "BLOCKED"
+            },
+            "staging_qa": {
+              "job_id": 114412966660,
+              "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966660",
+              "workflow_conclusion": "success",
+              "durable_report_status": "BLOCKED"
+            },
+            "public_data": {
+              "job_id": 114412966676,
+              "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966676",
+              "workflow_conclusion": "success",
+              "durable_report_status": "BLOCKED"
+            }
+          },
+          "source_outcomes": {
+            "mutualities": {
+              "uri_attempts": [
+                {
+                  "slug": "clinicas_achs_salud",
+                  "status": "BLOCKED",
+                  "planner_status": "PLANNED",
+                  "strategy": "achs_ascii_http_uri_utf8_percent_encoding_v1",
+                  "paid_calls": 0,
+                  "rolled_back": true,
+                  "changed_paths": [],
+                  "validated": false,
+                  "baseline_full_returncode": 1,
+                  "candidate_full_returncode": 1,
+                  "targeted_returncode": 0,
+                  "targeted_summary": "18 passed in 0.29s",
+                  "full_summary": "1 failed, 265 passed, 1 skipped, 1 warning in 5.17s",
+                  "live_gates": [
+                    {
+                      "returncode": 1,
+                      "technical_status": "error",
+                      "discovered": 0,
+                      "dated": 0,
+                      "request_pass": 5,
+                      "request_fail": 1,
+                      "request_total": 6,
+                      "error": "RuntimeError: Clínicas Achs Salud has no dated, verified detail items"
+                    },
+                    {
+                      "returncode": 1,
+                      "technical_status": "error",
+                      "discovered": 0,
+                      "dated": 0,
+                      "request_pass": 6,
+                      "request_fail": 0,
+                      "request_total": 6,
+                      "error": "RuntimeError: Clínicas Achs Salud has no dated, verified detail items"
+                    }
+                  ]
+                },
+                {
+                  "slug": "achs_seguro_laboral",
+                  "status": "BLOCKED",
+                  "planner_status": "PLANNED",
+                  "strategy": "achs_ascii_http_uri_utf8_percent_encoding_v1",
+                  "paid_calls": 0,
+                  "rolled_back": true,
+                  "changed_paths": [],
+                  "validated": false,
+                  "baseline_full_returncode": 1,
+                  "candidate_full_returncode": 1,
+                  "targeted_returncode": 0,
+                  "targeted_summary": "18 passed in 0.26s",
+                  "full_summary": "1 failed, 265 passed, 1 skipped, 1 warning in 4.50s",
+                  "live_gates": [
+                    {
+                      "returncode": 1,
+                      "technical_status": "error",
+                      "discovered": 0,
+                      "dated": 0,
+                      "request_pass": 5,
+                      "request_fail": 1,
+                      "request_total": 6,
+                      "error": "RuntimeError: Achs Seguro Laboral has no dated, verified detail items"
+                    },
+                    {
+                      "returncode": 1,
+                      "technical_status": "error",
+                      "discovered": 0,
+                      "dated": 0,
+                      "request_pass": 6,
+                      "request_fail": 0,
+                      "request_total": 6,
+                      "error": "RuntimeError: Achs Seguro Laboral has no dated, verified detail items"
+                    }
+                  ]
+                },
+                {
+                  "slug": "mutual_seguridad",
+                  "status": "BLOCKED",
+                  "planner_status": "UNSUPPORTED",
+                  "strategy": null,
+                  "paid_calls": 0,
+                  "rolled_back": false,
+                  "changed_paths": [],
+                  "validated": false,
+                  "baseline_full_returncode": 1,
+                  "candidate_full_returncode": 1,
+                  "targeted_returncode": 0,
+                  "targeted_summary": "18 passed in 0.28s",
+                  "full_summary": "1 failed, 265 passed, 1 skipped, 1 warning in 4.44s",
+                  "live_gates": [
+                    {
+                      "returncode": 1,
+                      "technical_status": "error",
+                      "discovered": 0,
+                      "dated": 0,
+                      "request_pass": 1,
+                      "request_fail": 0,
+                      "request_total": 1,
+                      "error": "RuntimeError: Mutual de Seguridad CChC has no dated, verified detail items"
+                    }
+                  ]
+                }
+              ],
+              "actual_new_attempt_blocker_retained": true,
+              "candidate_committed": false,
+              "source_repaired": false,
+              "live_publication_recovered": false
+            },
+            "public_data": {
+              "fonasa_http_403": true,
+              "isp_timeouts": true,
+              "deis_discovered": 0,
+              "deis_dated": 0,
+              "unchanged_failed_problem_unsupported_metadata_is_not_new_blocker": true
+            },
+            "media": {
+              "diario_financiero": "bounded 24-request instrumentation coverage incomplete",
+              "repair_not_attempted_for_coverage_guard": true
+            },
+            "fiscalization": {
+              "suseso": "bounded 24-request instrumentation coverage incomplete",
+              "repair_not_attempted_for_coverage_guard": true
+            },
+            "editorial": {
+              "technical_gates": "PASS",
+              "explicit_acceptance": "MISSING",
+              "parent_task_closed": false
+            },
+            "staging_qa": {
+              "normative_minimum_actual": 11,
+              "normative_minimum_required": 12,
+              "browser_failed_concrete_cases": 14,
+              "independent_review": "FAIL",
+              "acceptance": "MISSING",
+              "unsupported_metadata_only_duplicate_credit": true
+            }
+          },
+          "immutable_evidence": [
+            {
+              "family": "editorial",
+              "path": "data/autopilot/evidence/4364f7c42f1b44e0925c6cd6b05b362f.json",
+              "sha256": "7580ca7722213642b0bda438f619e50cef39a8695c70a8dad493c152179abb18",
+              "git_blob_sha": "55d8a9b1c285ae66bc2acf6f1ac43890fb980938",
+              "state_commit": "b8e4a23ae900210737605aab3e18739c7cdb8a0a",
+              "committed_at": "2026-10-11T07:05:16Z",
+              "raw_sha256_verified": true
+            },
+            {
+              "family": "fiscalization",
+              "path": "data/autopilot/evidence/a37d3513a57349fea083ec44af268847.json",
+              "sha256": "36f1351ea1cf5d093a732c01a928d70fbb8689c992852e8e98c47e64adf930d7",
+              "git_blob_sha": "fef3253e3b4d16e80e8b702f9d293d41f593aa11",
+              "state_commit": "6335a06c629b21cc4f8d8bd553f797da95ecb35b",
+              "committed_at": "2026-10-11T07:05:22Z",
+              "raw_sha256_verified": true
+            },
+            {
+              "family": "media",
+              "path": "data/autopilot/evidence/8c47dc78a902462ca420d79dbade4f2c.json",
+              "sha256": "09f37fc71cec30c443cf09f618c027b9b7dae465ea02cbbe29fac0373071266e",
+              "git_blob_sha": "5df0c74455d2eda6f66f47fc8d2c31ab4da66025",
+              "state_commit": "3eb73803f16b65093a97648fae5f03737da5ad29",
+              "committed_at": "2026-10-11T07:05:32Z",
+              "raw_sha256_verified": true
+            },
+            {
+              "family": "mutualities",
+              "path": "data/autopilot/evidence/a192a952ee224e8f80cd438f8d0dcbcd.json",
+              "sha256": "44bc2bc404e831cfc9c93d67458ef0d0a572eae626c4dcbb497aa00957d43208",
+              "git_blob_sha": "91784e2a8d6fb52ae5172c7c65c6befbc47b48c9",
+              "state_commit": "1522674e10d0165135e1deb9fa68a12f10e3e3da",
+              "committed_at": "2026-10-11T07:06:00Z",
+              "raw_sha256_verified": true
+            },
+            {
+              "family": "public_data",
+              "path": "data/autopilot/evidence/d0e9e60bea3841559dd9e4a56d66dfa0.json",
+              "sha256": "f5643ebb84dfb8c1a6c56c35e36f34a54b8addd0b23c889cd08c478f64ac7cda",
+              "git_blob_sha": "7824ec12e35ecd3b5eecfc65ecd9e08762f8b146",
+              "state_commit": "e6041c8d1a81b17bd934577e17c8027721cc3429",
+              "committed_at": "2026-10-11T07:07:30Z",
+              "raw_sha256_verified": true
+            },
+            {
+              "family": "staging_qa",
+              "path": "data/autopilot/evidence/3fe44229579642b39934cf9d9eefad59.json",
+              "sha256": "c2206c672e4bfca78f2f63a2624893f24d1b65412c2ca547025d5169aade5453",
+              "git_blob_sha": "feec94f89c56781a7014ffb4e06629c764e77fcf",
+              "state_commit": "39444ac8b2be7d535f128ff216ff39d2af74ba19",
+              "committed_at": "2026-10-11T07:06:30Z",
+              "raw_sha256_verified": true
+            }
+          ],
+          "local_validation": {
+            "status": "PASS",
+            "autonomy_tests": 330,
+            "seconds": 28.391,
+            "code_sha": "c4417f1959227444f2f841a0e0c534f25d245e99",
+            "actionlint": "1.7.7 PASS, five workflows",
+            "root_validation_path": "work/live-review/final-code-validation.json",
+            "root_validation_sha256": "4940850e5fe6654284340252a023790c3cace8c73ac7aefb9ef3739782ed1f0b",
+            "tests_log_sha256": "9ccade39a66a7b9822c910ea8bfd4731b0c5e3255f6d274840a17caaf80966e7",
+            "engine_directed_tests": 106,
+            "scope": "local code validation, not hosted acceptance"
+          },
+          "acceptance": {
+            "status": "NOT_PROVEN",
+            "durable_product_mutations": 0,
+            "verified_source_closures": 0,
+            "real_failure_repaired": false,
+            "four_useful_real_hours": false,
+            "owner_intervention_count": null,
+            "owner_observation_verified": false,
+            "owner_history_empty_is_not_zero_interventions_proof": true
+          },
+          "remote_mutations_by_this_observer": false,
+          "next_hypothesis": "Next root-authorized publication should append exactly two corrections with raw62,25pickups,12transitions preserved; executor configuration unchanged means no new family claims."
+        },
+        "two_known_invalid_capability_metadata_credits_now_corrected": true,
+        "actual_mutual_uri_attempt_blocker_retained": true,
+        "qa_11_minimum_and_14_concrete_failure_cases_preserved": true
+      },
+      "canary_observation": {
+        "status": "PASS",
+        "started_at": "2026-10-11T05:48:42.412852Z",
+        "observed_until": "2026-10-11T05:51:45.814918Z",
+        "checks": {
+          "old_token_finish_rejected": true,
+          "old_worker_did_not_mutate_state": true,
+          "real_heartbeat_grace_elapsed": true,
+          "reclaimed_with_new_generation": true,
+          "stall_fenced_original_token": true,
+          "stalled_detected": true
+        },
+        "historical_canary_reused": true,
+        "new_fault_injection_observed_in_fifth_run": false,
+        "remote_changed": false,
+        "counts_as_material_progress": false,
+        "source_live_evidence": false,
+        "live_acceptance": "NOT_APPLICABLE"
+      },
+      "immutable_evidence": [
+        {
+          "family": "editorial",
+          "path": "data/autopilot/evidence/4364f7c42f1b44e0925c6cd6b05b362f.json",
+          "sha256": "7580ca7722213642b0bda438f619e50cef39a8695c70a8dad493c152179abb18",
+          "git_blob_sha": "55d8a9b1c285ae66bc2acf6f1ac43890fb980938",
+          "state_commit": "b8e4a23ae900210737605aab3e18739c7cdb8a0a",
+          "committed_at": "2026-10-11T07:05:16Z",
+          "raw_sha256_verified": true
+        },
+        {
+          "family": "fiscalization",
+          "path": "data/autopilot/evidence/a37d3513a57349fea083ec44af268847.json",
+          "sha256": "36f1351ea1cf5d093a732c01a928d70fbb8689c992852e8e98c47e64adf930d7",
+          "git_blob_sha": "fef3253e3b4d16e80e8b702f9d293d41f593aa11",
+          "state_commit": "6335a06c629b21cc4f8d8bd553f797da95ecb35b",
+          "committed_at": "2026-10-11T07:05:22Z",
+          "raw_sha256_verified": true
+        },
+        {
+          "family": "media",
+          "path": "data/autopilot/evidence/8c47dc78a902462ca420d79dbade4f2c.json",
+          "sha256": "09f37fc71cec30c443cf09f618c027b9b7dae465ea02cbbe29fac0373071266e",
+          "git_blob_sha": "5df0c74455d2eda6f66f47fc8d2c31ab4da66025",
+          "state_commit": "3eb73803f16b65093a97648fae5f03737da5ad29",
+          "committed_at": "2026-10-11T07:05:32Z",
+          "raw_sha256_verified": true
+        },
+        {
+          "family": "mutualities",
+          "path": "data/autopilot/evidence/a192a952ee224e8f80cd438f8d0dcbcd.json",
+          "sha256": "44bc2bc404e831cfc9c93d67458ef0d0a572eae626c4dcbb497aa00957d43208",
+          "git_blob_sha": "91784e2a8d6fb52ae5172c7c65c6befbc47b48c9",
+          "state_commit": "1522674e10d0165135e1deb9fa68a12f10e3e3da",
+          "committed_at": "2026-10-11T07:06:00Z",
+          "raw_sha256_verified": true
+        },
+        {
+          "family": "public_data",
+          "path": "data/autopilot/evidence/d0e9e60bea3841559dd9e4a56d66dfa0.json",
+          "sha256": "f5643ebb84dfb8c1a6c56c35e36f34a54b8addd0b23c889cd08c478f64ac7cda",
+          "git_blob_sha": "7824ec12e35ecd3b5eecfc65ecd9e08762f8b146",
+          "state_commit": "e6041c8d1a81b17bd934577e17c8027721cc3429",
+          "committed_at": "2026-10-11T07:07:30Z",
+          "raw_sha256_verified": true
+        },
+        {
+          "family": "staging_qa",
+          "path": "data/autopilot/evidence/3fe44229579642b39934cf9d9eefad59.json",
+          "sha256": "c2206c672e4bfca78f2f63a2624893f24d1b65412c2ca547025d5169aade5453",
+          "git_blob_sha": "feec94f89c56781a7014ffb4e06629c764e77fcf",
+          "state_commit": "39444ac8b2be7d535f128ff216ff39d2af74ba19",
+          "committed_at": "2026-10-11T07:06:30Z",
+          "raw_sha256_verified": true
+        },
+        {
+          "path": "data/autopilot/evidence/037079be2c9b4fc8ad326caf8a2796b5.json",
+          "sha256": "715ca02f86e62dc573395de95599a4ed542186cef02ee1e03254ef20987ce576",
+          "git_blob_sha": "b0af01ebb05ca3350cdaba8d4887c2ae412761f7",
+          "kind": "controller_observation",
+          "raw_sha256_verified": true
+        },
+        {
+          "path": "data/autopilot/evidence/observation-22aee65f6d6e489aaa64577767128720.json",
+          "sha256": "d22928d5c34e9ded95e20305b672d9459f8ef88d5c2913de1982db39d6496e6c",
+          "git_blob_sha": "9a239302b38481c430ac162828e813465c28f531",
+          "kind": "autonomy_state_observation",
+          "raw_sha256_verified": true
+        },
+        {
+          "path": "data/autopilot/evidence/2f54331ce1ba47898908ee1e7ccf62e3.json",
+          "sha256": "98442d8dacb7468fcfaf9fa01244c9cbe4869a8b197308be7c181fad78fcd091",
+          "git_blob_sha": "1165bc93cd5644c94c32ed38dc6380b3cc1e82b2",
+          "kind": "controller_observation",
+          "raw_sha256_verified": true
+        },
+        {
+          "path": "data/autopilot/evidence/observation-c82b6e8e4a804241a2a3b2b7f3dce1b5.json",
+          "sha256": "4f79f8e0349b3f7be2ac3a32915013c53bc97e6897fb5d02cc76014e71c2d45f",
+          "git_blob_sha": "124a7b123e67393c60449425aff8d8f1c16b56ce",
+          "kind": "autonomy_state_observation",
+          "raw_sha256_verified": true
+        }
+      ],
+      "local_validation": {
+        "status": "PASS",
+        "autonomy_tests": 336,
+        "seconds": 28.477,
+        "code_sha": "fc03cfb5e9106ba985d47b7c4a9db537042449ac",
+        "actionlint": "1.7.7 PASS, five workflows",
+        "root_validation_path": "work/live-review/historical-sixth-code-validation.json",
+        "root_validation_sha256": "5da1908df228df023ef4d6e9b8cc929f1b4c9e3fd036fc525a54d305ffa720c9",
+        "tests_log_sha256": "4714eb8a02c74f9a5b8bfe542065d790e984afbcb52f8be078ec3623ac631a6c",
+        "engine_directed_tests": 112,
+        "scope": "local code validation, not hosted acceptance"
+      },
+      "hosted_acceptance": {
+        "metrics": {
+          "autonomous_pickups": 25,
+          "material_event_count": 25,
+          "max_material_gap_seconds": 2855.50069,
+          "mode": "live",
+          "observed_seconds": 8629.821103,
+          "original_started_at": "2026-10-11T05:29:46.231497Z",
+          "owner_observation_verified": false,
+          "owner_prompts": 0,
+          "owner_restarts": 0,
+          "total_elapsed_seconds": 8629.821103,
+          "window_started_at": "2026-10-11T05:29:46.231497Z"
+        },
+        "observed_until": "2026-10-11T07:53:36.052600Z",
+        "reasons": [
+          "four_real_wall_hours_not_observed",
+          "owner_intervention_observation_not_verified",
+          "durable_verified_mutation_not_observed",
+          "real_failure_verified_repair_not_observed",
+          "material_progress_gap_exceeded_30m",
+          "owner_prompt_source_not_connected"
+        ],
+        "status": "NOT_PROVEN"
+      },
+      "observer_criteria": {
+        "autonomous_pickup": {
+          "declared_pickups": 25,
+          "reason": "Worker event/actor causality has not been independently verified.",
+          "status": "NOT_PROVEN"
+        },
+        "durable_mutation": {
+          "status": "NOT_OBSERVED"
+        },
+        "failure_repaired": {
+          "event_ids": [],
+          "status": "NOT_OBSERVED"
+        },
+        "failure_repaired_or_evidenced_escalation": {
+          "escalated_task_ids": [
+            "source_repair_mutualities_lane_2026_10_11",
+            "source_repair_public_data_lane_2026_10_11",
+            "staging_qa_failed_run_38113830124",
+            "staging_qa_failed_run_38116961282"
+          ],
+          "repaired_event_ids": [],
+          "satisfies_legacy_stage_a_repair": false,
+          "status": "OBSERVED"
+        },
+        "independent_transition": {
+          "status": "OBSERVED"
+        },
+        "legacy_stage_a": {
+          "metrics": {
+            "autonomous_pickups": 25,
+            "material_event_count": 25,
+            "max_material_gap_seconds": 2855.50069,
+            "mode": "live",
+            "observed_seconds": 8629.821103,
+            "original_started_at": "2026-10-11T05:29:46.231497Z",
+            "owner_observation_verified": false,
+            "owner_prompts": 0,
+            "owner_restarts": 0,
+            "total_elapsed_seconds": 8629.821103,
+            "window_started_at": "2026-10-11T05:29:46.231497Z"
+          },
+          "observed_until": "2026-10-11T07:53:36.052600Z",
+          "reasons": [
+            "four_real_wall_hours_not_observed",
+            "owner_intervention_observation_not_verified",
+            "durable_verified_mutation_not_observed",
+            "real_failure_verified_repair_not_observed",
+            "material_progress_gap_exceeded_30m",
+            "owner_prompt_source_not_connected"
+          ],
+          "status": "NOT_PROVEN"
+        },
+        "owner_followups": {
+          "count": null,
+          "status": "UNKNOWN"
+        },
+        "useful_work_window": {
+          "is_live_proof": false,
+          "metrics": {
+            "autonomous_pickups": 25,
+            "material_event_count": 25,
+            "max_material_gap_seconds": 2855.50069,
+            "mode": "live",
+            "observed_seconds": 8629.821103,
+            "original_started_at": "2026-10-11T05:29:46.231497Z",
+            "owner_observation_verified": false,
+            "owner_prompts": 0,
+            "owner_restarts": 0,
+            "total_elapsed_seconds": 8629.821103,
+            "window_started_at": "2026-10-11T05:29:46.231497Z"
+          }
+        }
+      },
+      "acceptance": "NOT_PROVEN",
+      "limitations": [
+        "No durable product mutation or verified real-failure repair observed.",
+        "No verified source closure after staging merge and runtime acceptance.",
+        "Observed live window is under four real hours and material gap exceeded 30 minutes.",
+        "Owner prompt coverage is unverified; owner intervention count remains null.",
+        "Canonical effective counts are not blanket certification of useful material progress."
+      ],
+      "remote_mutations_by_this_observer": false,
+      "next_hypothesis": "Next published independent-primary binding guard should preserve the same material and lease history while contradictory recovery-generated source rows remain evidenced rather than being discarded.",
+      "historical_fifth_episode": {
+        "proof_path": "work/live-review/historical-fifth-hosted-episode-review.json",
+        "proof_sha256": "c1d938304ae008d4adc11c4ceec62fd9b7f47cb49dc779dd07d8bd30804df483",
+        "historical_only": true,
+        "snapshot": {
+          "schema": "autonomy_latest_hosted_final_review.v1",
+          "review_status": "VERIFIED",
+          "mode": "live_read_only",
+          "reviewed_at": "2026-10-11T07:38:05.639706+00:00",
+          "latest_publication": {
+            "main_sha": "c4417f1959227444f2f841a0e0c534f25d245e99",
+            "previous_main_sha": "ce40f5afaad0efb1efec3a010db86d9eb1e9d676",
+            "automatic_run_id": 38121721113,
+            "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113",
+            "event": "push",
+            "run_created_at": "2026-10-11T07:32:35Z",
+            "run_updated_at": "2026-10-11T07:33:20Z",
+            "run_status": "completed",
+            "workflow_conclusion": "success",
+            "published_at_parent_observed": "2026-10-11T07:32:34Z"
+          },
+          "first_hosted_plan": {
+            "state_commit": "a703892e40e56741bdd9cafe1ec5e0d28ecf4f13",
+            "parent_state_commit": "2e7658142e63050c269d7353ace84d37a09548a0",
+            "git_committed_at": "2026-10-11T07:32:54Z",
+            "reducer_at": "2026-10-11T07:32:52.798673+00:00",
+            "control_git_blob_sha": "722a7c5b560068ac4997c3673efbf44898793c7b",
+            "sanitized_snapshot_path": "work/live-review/202610110733-fifth-hosted-plan-a703892e40e5.json",
+            "sanitized_snapshot_sha256": "52f340f47f01ea426d976a614b6ef1c2c563153705f89fc9d378fa67aea2ec92",
+            "raw_events_before": 62,
+            "raw_events_after": 62,
+            "effective_events_before": 57,
+            "effective_events_after": 55,
+            "corrections_before": 5,
+            "corrections_after": 7,
+            "new_corrections": [
+              {
+                "id": "18441d42bc757bdba3a55fdc00e96139471f5005715263cb644d4ab45fb18046",
+                "kind": "duplicate_staging_blocker",
+                "event_id": "66c98f5af7fab7981ae34c080e51ce5f36ddfcd8823311d82e6acf76c122c6a8",
+                "retained_event_id": "6bf8b7ef653aff856c6c1cfa525622b32aa6061219b666b4905b65fc97cee361",
+                "event_sha256": "dbdf8d1db46eb8398338c8eb1b930e84477c46e3d0a8aa35b0a48cb05bf7d78f",
+                "retained_event_sha256": "c4cc241c5713e57723e95216f1bb4a20e647003609b14d3ff72ad6d5b44690e4",
+                "canonical_signature": "b1a473566353505ec588a6edf96f56aa755a3cf646014bc7669e0a0cbc149aea",
+                "at": "2026-10-11T07:32:52.798673Z"
+              },
+              {
+                "id": "d9fb16d65a2410be91e7583cb34181bb901d4906977eddbc57b08444e337ed4b",
+                "kind": "duplicate_source_blocker",
+                "event_id": "68a6c786fbcd2a2db9ab7e56b6a66b207b6d1cc8af714ce3377fb9976aadea6b",
+                "retained_event_id": "925d0100631445e1a44175810614a5befcdf121779b029ae9f46c4fe4a455e0e",
+                "event_sha256": "d90b012be53dff61f9c9e6adbe993201eee12e99ddfe3e7261b8063ac44551c6",
+                "retained_event_sha256": "8c39d5289f76091aad6036ea40de069298ca33dabc492ceb56dddf1b6b4ec1ae",
+                "canonical_signature": "4482d3bd09953e195581a0e16618ab70e9127a5a67541f79ff2e2d1f8bc0e023",
+                "at": "2026-10-11T07:32:52.798673Z"
+              }
+            ],
+            "raw62_exact_preserved": true,
+            "five_existing_corrections_exact_preserved": true,
+            "bindings8_exact_preserved": true,
+            "whole_lease_history_exact_preserved": true,
+            "first_window_exact_preserved": true,
+            "pickup_count_before_and_after": 25,
+            "transition_count_before_and_after": 12,
+            "family_matrix": {},
+            "candidate_review_matrix": [],
+            "executor_config_fingerprints_unchanged": true
+          },
+          "latest_authoritative_state": {
+            "state_commit": "a74953541ef7a37e4406e487379a94f505a1e3a8",
+            "parent_state_commit": "a703892e40e56741bdd9cafe1ec5e0d28ecf4f13",
+            "git_committed_at": "2026-10-11T07:33:15Z",
+            "ref_read_at": "2026-10-11 07:34:40 UTC",
+            "changed_paths": [
+              "data/autopilot/evidence/observation-22aee65f6d6e489aaa64577767128720.json",
+              "data/autopilot/learning_ledger.json",
+              "data/autopilot/pmo_evidence_v2.json",
+              "data/autopilot/queue_projection_v2.json"
+            ],
+            "control_git_blob_sha": "722a7c5b560068ac4997c3673efbf44898793c7b",
+            "control_blob_unchanged_after_observer": true,
+            "raw_material_event_count": 62,
+            "effective_material_event_count": 55,
+            "material_event_correction_count": 7,
+            "effective_kind_counts": {
+              "blocker": 43,
+              "transition": 12
+            },
+            "first_durable_pickup": "2026-10-11T05:29:46.231497Z",
+            "autonomous_pickups_recorded": 25,
+            "transitions_recorded": 12,
+            "raw_events_before_first_durable_pickup": 30,
+            "effective_events_in_live_window": 25,
+            "live_window_effective_kind_counts": {
+              "blocker": 13,
+              "transition": 12
+            },
+            "durable_product_mutations": 0,
+            "verified_source_closures": 0,
+            "active_leases": 0,
+            "all55_material_credits_independently_certified": false
+          },
+          "fifth_jobs": [
+            {
+              "id": 114417637889,
+              "name": "control",
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113/job/114417637889"
+            },
+            {
+              "id": 114417703292,
+              "name": "observe",
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113/job/114417703292"
+            },
+            {
+              "id": 114417703864,
+              "name": "repair",
+              "status": "completed",
+              "conclusion": "skipped",
+              "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113/job/114417703864"
+            },
+            {
+              "id": 114417704201,
+              "name": "candidate_review",
+              "status": "completed",
+              "conclusion": "skipped",
+              "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121721113/job/114417704201"
+            }
+          ],
+          "no_new_claims_or_duplicate_audit_loops": {
+            "no_new_family_claims": true,
+            "lease_history_exact": true,
+            "repair_job": "SKIPPED",
+            "candidate_review_job": "SKIPPED",
+            "matrix_empty": true,
+            "new_material_events": 0,
+            "correction_is_material_progress": false,
+            "workflow_success_is_material_progress": false,
+            "producer_diagnostic_signature_authoritative": false,
+            "engine_canonical_problem_identity_owns_material_credit": true
+          },
+          "historical_fourth_episode": {
+            "proof_path": "work/continuity/202610110735-fourth-hosted-episode-review.json",
+            "proof_sha256": "8b6889dde9ff46173cc35e9518c71cd6e1dcbadc27b6deb973848346bc509795",
+            "historical_only": true,
+            "snapshot": {
+              "schema": "autonomy_fourth_hosted_episode_review.v1",
+              "review_status": "VERIFIED",
+              "reviewed_at": "2026-10-11T07:30:30.410878+00:00",
+              "mode": "live_read_only_historical",
+              "latest_publication": {
+                "main_sha": "ce40f5afaad0efb1efec3a010db86d9eb1e9d676",
+                "previous_main_sha": "924434014cf9c642aff3fa9914ebeae6f8291de9",
+                "automatic_run_id": 38120110728,
+                "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728",
+                "event": "push",
+                "run_created_at": "2026-10-11T07:03:52Z",
+                "publication_first_observed_at": "2026-10-11T07:04:16Z"
+              },
+              "first_hosted_plan": {
+                "state_commit": "c58db62d76b5793e8e07280c030d3a25f139d6df",
+                "parent_state_commit": "46fbcc6675f215ffb7f45522065b82afa2a8d26e",
+                "reducer_at": "2026-10-11T07:04:08.198661Z",
+                "control_blob": "9d1ac7eaaf127b3bdbd92051a606faf659bc0b86",
+                "sanitized_snapshot_sha256": "e3473a2b3e553f5d446f3ae74b3aa18fd1cb37a26a882c0e4ae2347bc79f01b0",
+                "raw_events": 58,
+                "effective_events": 53,
+                "corrections": 5,
+                "raw58_prefix_identical": true,
+                "bindings8_identical": true,
+                "pickup_count_before_new_workers": 19,
+                "transitions_before_new_workers": 11
+              },
+              "hosted_latest_state": {
+                "state_commit": "2e7658142e63050c269d7353ace84d37a09548a0",
+                "observed_at": "2026-10-11T07:09:01Z",
+                "control_git_blob_sha": "08a703999a21de2fc466eb7a197dfd0fac0666b6",
+                "sanitized_snapshot_path": "work/live-review/20261011070901Z-fourth-final-state-2e7658142e63.json",
+                "sanitized_snapshot_sha256": "f95d1d4d5a0a10d9a823816bcf0fa81837374c2358d4416c3c4d92447d5b1dc5",
+                "raw_events": 62,
+                "effective_events_at_published_ce40_code": 57,
+                "corrections": 5,
+                "pickup_count": 25,
+                "transition_count": 12,
+                "mutation_count": 0,
+                "closure_count": 0,
+                "first_durable_pickup": "2026-10-11T05:29:46.231497Z",
+                "raw_events_before_first_durable_pickup": 30,
+                "raw_events_in_live_window": 32,
+                "effective57_certified_as_all_material": false
+              },
+              "fourth_raw_delta": [
+                {
+                  "id": "62c4fcb1d589045b89d9344288f50765127eeb54d3eae138064e9af04259c01e",
+                  "at": "2026-10-11T07:04:51.811962Z",
+                  "task_id": "source_repair_fiscalization_lane_2026_10_11",
+                  "family": "fiscalization",
+                  "kind": "transition",
+                  "classification": "verified independent task transition",
+                  "valid_material_novelty": true
+                },
+                {
+                  "id": "8942850fdeb14c78e5ffca6a78535977aca7545ee5329bd74e603dda46f2766c",
+                  "at": "2026-10-11T07:06:00.551910Z",
+                  "task_id": "source_repair_mutualities_lane_2026_10_11",
+                  "family": "mutualities",
+                  "kind": "blocker",
+                  "classification": "verified novel executed URI repair attempt with failing LIVE and rollback",
+                  "valid_material_novelty": true
+                },
+                {
+                  "id": "66c98f5af7fab7981ae34c080e51ce5f36ddfcd8823311d82e6acf76c122c6a8",
+                  "at": "2026-10-11T07:06:30.278098Z",
+                  "task_id": "staging_qa_failed_run_38116961282",
+                  "family": "staging_qa",
+                  "kind": "blocker",
+                  "classification": "INVALID novelty: only exact unexecuted UNSUPPORTED capability metadata",
+                  "valid_material_novelty": false
+                },
+                {
+                  "id": "68a6c786fbcd2a2db9ab7e56b6a66b207b6d1cc8af714ce3377fb9976aadea6b",
+                  "at": "2026-10-11T07:07:29.743719Z",
+                  "task_id": "source_repair_public_data_lane_2026_10_11",
+                  "family": "public_data",
+                  "kind": "blocker",
+                  "classification": "INVALID novelty: only exact unexecuted UNSUPPORTED capability metadata",
+                  "valid_material_novelty": false
+                }
+              ],
+              "pending_correction": {
+                "status": "FIXED_LOCALLY_NOT_YET_HOSTED",
+                "projected_raw_events": 62,
+                "projected_effective_events": 55,
+                "projected_corrections": 7,
+                "retracted_ids": [
+                  "66c98f5af7fab7981ae34c080e51ce5f36ddfcd8823311d82e6acf76c122c6a8",
+                  "68a6c786fbcd2a2db9ab7e56b6a66b207b6d1cc8af714ce3377fb9976aadea6b"
+                ],
+                "historical_raw_events_preserved": true,
+                "five_existing_corrections_preserved": true,
+                "bindings8_preserved": true,
+                "effective55_is_not_blanket_acceptance_certification": true
+              },
+              "independent_lanes": {
+                "all_six_running_state_commit": "8cd7dab23be3bba09e62cf91b6ecf957aca07c0d",
+                "claims": [
+                  {
+                    "task_id": "editorial_repair_lane_2026_10_11",
+                    "family": "editorial",
+                    "status": "RUNNING",
+                    "owner": "38120110728-1-editorial",
+                    "fence": 9,
+                    "claimed_at": "2026-10-11T07:05:03.772652Z",
+                    "heartbeat_at": "2026-10-11T07:05:03.772652Z",
+                    "expires_at": "2026-10-11T07:15:03.772652Z",
+                    "token_hash": "c47311b16cc808fa9fc6204fe96490f514d8c94d8681c2c16fa254e9020e2951",
+                    "terminal_at": "2026-10-11T07:05:16.528673Z",
+                    "terminal_status": "BLOCKED",
+                    "lease_cleared": true
+                  },
+                  {
+                    "task_id": "source_repair_fiscalization_lane_2026_10_11",
+                    "family": "fiscalization",
+                    "status": "RUNNING",
+                    "owner": "38120110728-1-fiscalization",
+                    "fence": 9,
+                    "claimed_at": "2026-10-11T07:04:51.811962Z",
+                    "heartbeat_at": "2026-10-11T07:04:51.811962Z",
+                    "expires_at": "2026-10-11T07:14:51.811962Z",
+                    "token_hash": "37d8dd4461fb665d6c48ae9af46d8b2015789c9b835e8790cca45739502a58a9",
+                    "terminal_at": "2026-10-11T07:05:22.488450Z",
+                    "terminal_status": "BLOCKED",
+                    "lease_cleared": true
+                  },
+                  {
+                    "task_id": "source_repair_media_lane_2026_10_11",
+                    "family": "media",
+                    "status": "RUNNING",
+                    "owner": "38120110728-1-media",
+                    "fence": 9,
+                    "claimed_at": "2026-10-11T07:04:55.876488Z",
+                    "heartbeat_at": "2026-10-11T07:04:55.876488Z",
+                    "expires_at": "2026-10-11T07:14:55.876488Z",
+                    "token_hash": "105aa8e58d8150d66ed223f6decc8748aa633d11550eeab1c9653506004e2afe",
+                    "terminal_at": "2026-10-11T07:05:32.133985Z",
+                    "terminal_status": "BLOCKED",
+                    "lease_cleared": true
+                  },
+                  {
+                    "task_id": "source_repair_mutualities_lane_2026_10_11",
+                    "family": "mutualities",
+                    "status": "RUNNING",
+                    "owner": "38120110728-1-mutualities",
+                    "fence": 9,
+                    "claimed_at": "2026-10-11T07:04:56.960108Z",
+                    "heartbeat_at": "2026-10-11T07:04:56.960108Z",
+                    "expires_at": "2026-10-11T07:14:56.960108Z",
+                    "token_hash": "193d138a07d6a5790d831b601b090ae8df3a1edea517053eb8ad8b3d4cb3425a",
+                    "terminal_at": "2026-10-11T07:06:00.551910Z",
+                    "terminal_status": "BLOCKED",
+                    "lease_cleared": true
+                  },
+                  {
+                    "task_id": "source_repair_public_data_lane_2026_10_11",
+                    "family": "public_data",
+                    "status": "RUNNING",
+                    "owner": "38120110728-1-public_data",
+                    "fence": 9,
+                    "claimed_at": "2026-10-11T07:04:59.263384Z",
+                    "heartbeat_at": "2026-10-11T07:04:59.263384Z",
+                    "expires_at": "2026-10-11T07:14:59.263384Z",
+                    "token_hash": "238bdeba4d777cf11afc2700ee0efeda660a7bc76d29b2e05965224fdc7a3474",
+                    "terminal_at": "2026-10-11T07:07:29.743719Z",
+                    "terminal_status": "BLOCKED",
+                    "lease_cleared": true
+                  },
+                  {
+                    "task_id": "staging_qa_failed_run_38116961282",
+                    "family": "staging_qa",
+                    "status": "RUNNING",
+                    "owner": "38120110728-1-staging_qa",
+                    "fence": 6,
+                    "claimed_at": "2026-10-11T07:05:00.589490Z",
+                    "heartbeat_at": "2026-10-11T07:05:00.589490Z",
+                    "expires_at": "2026-10-11T07:15:00.589490Z",
+                    "token_hash": "0d980c6b4c40ee2e602586ce94953080614a06bddae2997b6fb4c5189d040358",
+                    "terminal_at": "2026-10-11T07:06:30.278098Z",
+                    "terminal_status": "BLOCKED",
+                    "lease_cleared": true
+                  }
+                ],
+                "heartbeats_state_commit": "a4810d63ef7393c2364574ae75c748e27b2de89f",
+                "actual_persisted_heartbeats": [
+                  {
+                    "task_id": "source_repair_public_data_lane_2026_10_11",
+                    "family": "public_data",
+                    "owner": "38120110728-1-public_data",
+                    "fence": 9,
+                    "heartbeat_at": "2026-10-11T07:06:06.777029Z",
+                    "expires_at": "2026-10-11T07:14:59.263384Z"
+                  },
+                  {
+                    "task_id": "staging_qa_failed_run_38116961282",
+                    "family": "staging_qa",
+                    "owner": "38120110728-1-staging_qa",
+                    "fence": 6,
+                    "heartbeat_at": "2026-10-11T07:06:11.601177Z",
+                    "expires_at": "2026-10-11T07:15:00.589490Z"
+                  }
+                ],
+                "unique_owners": 6,
+                "unique_fenced_token_hashes": 6,
+                "exactly_one_pickup_per_family_for_fourth_run": true,
+                "terminal_statuses": [
+                  "BLOCKED",
+                  "BLOCKED",
+                  "BLOCKED",
+                  "BLOCKED",
+                  "BLOCKED",
+                  "BLOCKED"
+                ],
+                "leases_cleared": true,
+                "actual_concurrent_linear_cas_writes_preserved": true,
+                "rejected_push_retry_observed": false
+              },
+              "run_jobs": {
+                "fiscalization": {
+                  "job_id": 114412966582,
+                  "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966582",
+                  "workflow_conclusion": "success",
+                  "durable_report_status": "BLOCKED"
+                },
+                "editorial": {
+                  "job_id": 114412966604,
+                  "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966604",
+                  "workflow_conclusion": "success",
+                  "durable_report_status": "BLOCKED"
+                },
+                "mutualities": {
+                  "job_id": 114412966620,
+                  "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966620",
+                  "workflow_conclusion": "success",
+                  "durable_report_status": "BLOCKED"
+                },
+                "media": {
+                  "job_id": 114412966630,
+                  "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966630",
+                  "workflow_conclusion": "success",
+                  "durable_report_status": "BLOCKED"
+                },
+                "staging_qa": {
+                  "job_id": 114412966660,
+                  "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966660",
+                  "workflow_conclusion": "success",
+                  "durable_report_status": "BLOCKED"
+                },
+                "public_data": {
+                  "job_id": 114412966676,
+                  "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120110728/job/114412966676",
+                  "workflow_conclusion": "success",
+                  "durable_report_status": "BLOCKED"
+                }
+              },
+              "source_outcomes": {
+                "mutualities": {
+                  "uri_attempts": [
+                    {
+                      "slug": "clinicas_achs_salud",
+                      "status": "BLOCKED",
+                      "planner_status": "PLANNED",
+                      "strategy": "achs_ascii_http_uri_utf8_percent_encoding_v1",
+                      "paid_calls": 0,
+                      "rolled_back": true,
+                      "changed_paths": [],
+                      "validated": false,
+                      "baseline_full_returncode": 1,
+                      "candidate_full_returncode": 1,
+                      "targeted_returncode": 0,
+                      "targeted_summary": "18 passed in 0.29s",
+                      "full_summary": "1 failed, 265 passed, 1 skipped, 1 warning in 5.17s",
+                      "live_gates": [
+                        {
+                          "returncode": 1,
+                          "technical_status": "error",
+                          "discovered": 0,
+                          "dated": 0,
+                          "request_pass": 5,
+                          "request_fail": 1,
+                          "request_total": 6,
+                          "error": "RuntimeError: Clínicas Achs Salud has no dated, verified detail items"
+                        },
+                        {
+                          "returncode": 1,
+                          "technical_status": "error",
+                          "discovered": 0,
+                          "dated": 0,
+                          "request_pass": 6,
+                          "request_fail": 0,
+                          "request_total": 6,
+                          "error": "RuntimeError: Clínicas Achs Salud has no dated, verified detail items"
+                        }
+                      ]
+                    },
+                    {
+                      "slug": "achs_seguro_laboral",
+                      "status": "BLOCKED",
+                      "planner_status": "PLANNED",
+                      "strategy": "achs_ascii_http_uri_utf8_percent_encoding_v1",
+                      "paid_calls": 0,
+                      "rolled_back": true,
+                      "changed_paths": [],
+                      "validated": false,
+                      "baseline_full_returncode": 1,
+                      "candidate_full_returncode": 1,
+                      "targeted_returncode": 0,
+                      "targeted_summary": "18 passed in 0.26s",
+                      "full_summary": "1 failed, 265 passed, 1 skipped, 1 warning in 4.50s",
+                      "live_gates": [
+                        {
+                          "returncode": 1,
+                          "technical_status": "error",
+                          "discovered": 0,
+                          "dated": 0,
+                          "request_pass": 5,
+                          "request_fail": 1,
+                          "request_total": 6,
+                          "error": "RuntimeError: Achs Seguro Laboral has no dated, verified detail items"
+                        },
+                        {
+                          "returncode": 1,
+                          "technical_status": "error",
+                          "discovered": 0,
+                          "dated": 0,
+                          "request_pass": 6,
+                          "request_fail": 0,
+                          "request_total": 6,
+                          "error": "RuntimeError: Achs Seguro Laboral has no dated, verified detail items"
+                        }
+                      ]
+                    },
+                    {
+                      "slug": "mutual_seguridad",
+                      "status": "BLOCKED",
+                      "planner_status": "UNSUPPORTED",
+                      "strategy": null,
+                      "paid_calls": 0,
+                      "rolled_back": false,
+                      "changed_paths": [],
+                      "validated": false,
+                      "baseline_full_returncode": 1,
+                      "candidate_full_returncode": 1,
+                      "targeted_returncode": 0,
+                      "targeted_summary": "18 passed in 0.28s",
+                      "full_summary": "1 failed, 265 passed, 1 skipped, 1 warning in 4.44s",
+                      "live_gates": [
+                        {
+                          "returncode": 1,
+                          "technical_status": "error",
+                          "discovered": 0,
+                          "dated": 0,
+                          "request_pass": 1,
+                          "request_fail": 0,
+                          "request_total": 1,
+                          "error": "RuntimeError: Mutual de Seguridad CChC has no dated, verified detail items"
+                        }
+                      ]
+                    }
+                  ],
+                  "actual_new_attempt_blocker_retained": true,
+                  "candidate_committed": false,
+                  "source_repaired": false,
+                  "live_publication_recovered": false
+                },
+                "public_data": {
+                  "fonasa_http_403": true,
+                  "isp_timeouts": true,
+                  "deis_discovered": 0,
+                  "deis_dated": 0,
+                  "unchanged_failed_problem_unsupported_metadata_is_not_new_blocker": true
+                },
+                "media": {
+                  "diario_financiero": "bounded 24-request instrumentation coverage incomplete",
+                  "repair_not_attempted_for_coverage_guard": true
+                },
+                "fiscalization": {
+                  "suseso": "bounded 24-request instrumentation coverage incomplete",
+                  "repair_not_attempted_for_coverage_guard": true
+                },
+                "editorial": {
+                  "technical_gates": "PASS",
+                  "explicit_acceptance": "MISSING",
+                  "parent_task_closed": false
+                },
+                "staging_qa": {
+                  "normative_minimum_actual": 11,
+                  "normative_minimum_required": 12,
+                  "browser_failed_concrete_cases": 14,
+                  "independent_review": "FAIL",
+                  "acceptance": "MISSING",
+                  "unsupported_metadata_only_duplicate_credit": true
+                }
+              },
+              "immutable_evidence": [
+                {
+                  "family": "editorial",
+                  "path": "data/autopilot/evidence/4364f7c42f1b44e0925c6cd6b05b362f.json",
+                  "sha256": "7580ca7722213642b0bda438f619e50cef39a8695c70a8dad493c152179abb18",
+                  "git_blob_sha": "55d8a9b1c285ae66bc2acf6f1ac43890fb980938",
+                  "state_commit": "b8e4a23ae900210737605aab3e18739c7cdb8a0a",
+                  "committed_at": "2026-10-11T07:05:16Z",
+                  "raw_sha256_verified": true
+                },
+                {
+                  "family": "fiscalization",
+                  "path": "data/autopilot/evidence/a37d3513a57349fea083ec44af268847.json",
+                  "sha256": "36f1351ea1cf5d093a732c01a928d70fbb8689c992852e8e98c47e64adf930d7",
+                  "git_blob_sha": "fef3253e3b4d16e80e8b702f9d293d41f593aa11",
+                  "state_commit": "6335a06c629b21cc4f8d8bd553f797da95ecb35b",
+                  "committed_at": "2026-10-11T07:05:22Z",
+                  "raw_sha256_verified": true
+                },
+                {
+                  "family": "media",
+                  "path": "data/autopilot/evidence/8c47dc78a902462ca420d79dbade4f2c.json",
+                  "sha256": "09f37fc71cec30c443cf09f618c027b9b7dae465ea02cbbe29fac0373071266e",
+                  "git_blob_sha": "5df0c74455d2eda6f66f47fc8d2c31ab4da66025",
+                  "state_commit": "3eb73803f16b65093a97648fae5f03737da5ad29",
+                  "committed_at": "2026-10-11T07:05:32Z",
+                  "raw_sha256_verified": true
+                },
+                {
+                  "family": "mutualities",
+                  "path": "data/autopilot/evidence/a192a952ee224e8f80cd438f8d0dcbcd.json",
+                  "sha256": "44bc2bc404e831cfc9c93d67458ef0d0a572eae626c4dcbb497aa00957d43208",
+                  "git_blob_sha": "91784e2a8d6fb52ae5172c7c65c6befbc47b48c9",
+                  "state_commit": "1522674e10d0165135e1deb9fa68a12f10e3e3da",
+                  "committed_at": "2026-10-11T07:06:00Z",
+                  "raw_sha256_verified": true
+                },
+                {
+                  "family": "public_data",
+                  "path": "data/autopilot/evidence/d0e9e60bea3841559dd9e4a56d66dfa0.json",
+                  "sha256": "f5643ebb84dfb8c1a6c56c35e36f34a54b8addd0b23c889cd08c478f64ac7cda",
+                  "git_blob_sha": "7824ec12e35ecd3b5eecfc65ecd9e08762f8b146",
+                  "state_commit": "e6041c8d1a81b17bd934577e17c8027721cc3429",
+                  "committed_at": "2026-10-11T07:07:30Z",
+                  "raw_sha256_verified": true
+                },
+                {
+                  "family": "staging_qa",
+                  "path": "data/autopilot/evidence/3fe44229579642b39934cf9d9eefad59.json",
+                  "sha256": "c2206c672e4bfca78f2f63a2624893f24d1b65412c2ca547025d5169aade5453",
+                  "git_blob_sha": "feec94f89c56781a7014ffb4e06629c764e77fcf",
+                  "state_commit": "39444ac8b2be7d535f128ff216ff39d2af74ba19",
+                  "committed_at": "2026-10-11T07:06:30Z",
+                  "raw_sha256_verified": true
+                }
+              ],
+              "local_validation": {
+                "status": "PASS",
+                "autonomy_tests": 330,
+                "seconds": 28.391,
+                "code_sha": "c4417f1959227444f2f841a0e0c534f25d245e99",
+                "actionlint": "1.7.7 PASS, five workflows",
+                "root_validation_path": "work/live-review/final-code-validation.json",
+                "root_validation_sha256": "4940850e5fe6654284340252a023790c3cace8c73ac7aefb9ef3739782ed1f0b",
+                "tests_log_sha256": "9ccade39a66a7b9822c910ea8bfd4731b0c5e3255f6d274840a17caaf80966e7",
+                "engine_directed_tests": 106,
+                "scope": "local code validation, not hosted acceptance"
+              },
+              "acceptance": {
+                "status": "NOT_PROVEN",
+                "durable_product_mutations": 0,
+                "verified_source_closures": 0,
+                "real_failure_repaired": false,
+                "four_useful_real_hours": false,
+                "owner_intervention_count": null,
+                "owner_observation_verified": false,
+                "owner_history_empty_is_not_zero_interventions_proof": true
+              },
+              "remote_mutations_by_this_observer": false,
+              "next_hypothesis": "Next root-authorized publication should append exactly two corrections with raw62,25pickups,12transitions preserved; executor configuration unchanged means no new family claims."
+            },
+            "two_known_invalid_capability_metadata_credits_now_corrected": true,
+            "actual_mutual_uri_attempt_blocker_retained": true,
+            "qa_11_minimum_and_14_concrete_failure_cases_preserved": true
+          },
+          "canary_observation": {
+            "status": "PASS",
+            "started_at": "2026-10-11T05:48:42.412852Z",
+            "observed_until": "2026-10-11T05:51:45.814918Z",
+            "checks": {
+              "old_token_finish_rejected": true,
+              "old_worker_did_not_mutate_state": true,
+              "real_heartbeat_grace_elapsed": true,
+              "reclaimed_with_new_generation": true,
+              "stall_fenced_original_token": true,
+              "stalled_detected": true
+            },
+            "historical_canary_reused": true,
+            "new_fault_injection_observed_in_fifth_run": false,
+            "remote_changed": false,
+            "counts_as_material_progress": false,
+            "source_live_evidence": false,
+            "live_acceptance": "NOT_APPLICABLE"
+          },
+          "immutable_evidence": [
+            {
+              "family": "editorial",
+              "path": "data/autopilot/evidence/4364f7c42f1b44e0925c6cd6b05b362f.json",
+              "sha256": "7580ca7722213642b0bda438f619e50cef39a8695c70a8dad493c152179abb18",
+              "git_blob_sha": "55d8a9b1c285ae66bc2acf6f1ac43890fb980938",
+              "state_commit": "b8e4a23ae900210737605aab3e18739c7cdb8a0a",
+              "committed_at": "2026-10-11T07:05:16Z",
+              "raw_sha256_verified": true
+            },
+            {
+              "family": "fiscalization",
+              "path": "data/autopilot/evidence/a37d3513a57349fea083ec44af268847.json",
+              "sha256": "36f1351ea1cf5d093a732c01a928d70fbb8689c992852e8e98c47e64adf930d7",
+              "git_blob_sha": "fef3253e3b4d16e80e8b702f9d293d41f593aa11",
+              "state_commit": "6335a06c629b21cc4f8d8bd553f797da95ecb35b",
+              "committed_at": "2026-10-11T07:05:22Z",
+              "raw_sha256_verified": true
+            },
+            {
+              "family": "media",
+              "path": "data/autopilot/evidence/8c47dc78a902462ca420d79dbade4f2c.json",
+              "sha256": "09f37fc71cec30c443cf09f618c027b9b7dae465ea02cbbe29fac0373071266e",
+              "git_blob_sha": "5df0c74455d2eda6f66f47fc8d2c31ab4da66025",
+              "state_commit": "3eb73803f16b65093a97648fae5f03737da5ad29",
+              "committed_at": "2026-10-11T07:05:32Z",
+              "raw_sha256_verified": true
+            },
+            {
+              "family": "mutualities",
+              "path": "data/autopilot/evidence/a192a952ee224e8f80cd438f8d0dcbcd.json",
+              "sha256": "44bc2bc404e831cfc9c93d67458ef0d0a572eae626c4dcbb497aa00957d43208",
+              "git_blob_sha": "91784e2a8d6fb52ae5172c7c65c6befbc47b48c9",
+              "state_commit": "1522674e10d0165135e1deb9fa68a12f10e3e3da",
+              "committed_at": "2026-10-11T07:06:00Z",
+              "raw_sha256_verified": true
+            },
+            {
+              "family": "public_data",
+              "path": "data/autopilot/evidence/d0e9e60bea3841559dd9e4a56d66dfa0.json",
+              "sha256": "f5643ebb84dfb8c1a6c56c35e36f34a54b8addd0b23c889cd08c478f64ac7cda",
+              "git_blob_sha": "7824ec12e35ecd3b5eecfc65ecd9e08762f8b146",
+              "state_commit": "e6041c8d1a81b17bd934577e17c8027721cc3429",
+              "committed_at": "2026-10-11T07:07:30Z",
+              "raw_sha256_verified": true
+            },
+            {
+              "family": "staging_qa",
+              "path": "data/autopilot/evidence/3fe44229579642b39934cf9d9eefad59.json",
+              "sha256": "c2206c672e4bfca78f2f63a2624893f24d1b65412c2ca547025d5169aade5453",
+              "git_blob_sha": "feec94f89c56781a7014ffb4e06629c764e77fcf",
+              "state_commit": "39444ac8b2be7d535f128ff216ff39d2af74ba19",
+              "committed_at": "2026-10-11T07:06:30Z",
+              "raw_sha256_verified": true
+            },
+            {
+              "path": "data/autopilot/evidence/037079be2c9b4fc8ad326caf8a2796b5.json",
+              "sha256": "715ca02f86e62dc573395de95599a4ed542186cef02ee1e03254ef20987ce576",
+              "git_blob_sha": "b0af01ebb05ca3350cdaba8d4887c2ae412761f7",
+              "kind": "controller_observation",
+              "raw_sha256_verified": true
+            },
+            {
+              "path": "data/autopilot/evidence/observation-22aee65f6d6e489aaa64577767128720.json",
+              "sha256": "d22928d5c34e9ded95e20305b672d9459f8ef88d5c2913de1982db39d6496e6c",
+              "git_blob_sha": "9a239302b38481c430ac162828e813465c28f531",
+              "kind": "autonomy_state_observation",
+              "raw_sha256_verified": true
+            }
+          ],
+          "local_validation": {
+            "status": "PASS",
+            "autonomy_tests": 330,
+            "seconds": 28.391,
+            "code_sha": "c4417f1959227444f2f841a0e0c534f25d245e99",
+            "actionlint": "1.7.7 PASS, five workflows",
+            "root_validation_path": "work/live-review/final-code-validation.json",
+            "root_validation_sha256": "4940850e5fe6654284340252a023790c3cace8c73ac7aefb9ef3739782ed1f0b",
+            "tests_log_sha256": "9ccade39a66a7b9822c910ea8bfd4731b0c5e3255f6d274840a17caaf80966e7",
+            "engine_directed_tests": 106,
+            "scope": "local code validation, not hosted acceptance"
+          },
+          "hosted_acceptance": {
+            "metrics": {
+              "autonomous_pickups": 25,
+              "material_event_count": 25,
+              "max_material_gap_seconds": 2216.775938,
+              "mode": "live",
+              "observed_seconds": 7408.454723,
+              "original_started_at": "2026-10-11T05:29:46.231497Z",
+              "owner_observation_verified": false,
+              "owner_prompts": 0,
+              "owner_restarts": 0,
+              "total_elapsed_seconds": 7408.454723,
+              "window_started_at": "2026-10-11T05:29:46.231497Z"
+            },
+            "observed_until": "2026-10-11T07:33:14.686220Z",
+            "reasons": [
+              "four_real_wall_hours_not_observed",
+              "owner_intervention_observation_not_verified",
+              "durable_verified_mutation_not_observed",
+              "real_failure_verified_repair_not_observed",
+              "material_progress_gap_exceeded_30m",
+              "owner_prompt_source_not_connected"
+            ],
+            "status": "NOT_PROVEN"
+          },
+          "observer_criteria": {
+            "autonomous_pickup": {
+              "declared_pickups": 25,
+              "reason": "Worker event/actor causality has not been independently verified.",
+              "status": "NOT_PROVEN"
+            },
+            "durable_mutation": {
+              "status": "NOT_OBSERVED"
+            },
+            "failure_repaired": {
+              "event_ids": [],
+              "status": "NOT_OBSERVED"
+            },
+            "failure_repaired_or_evidenced_escalation": {
+              "escalated_task_ids": [
+                "source_repair_mutualities_lane_2026_10_11",
+                "source_repair_public_data_lane_2026_10_11",
+                "staging_qa_failed_run_38113830124",
+                "staging_qa_failed_run_38116961282"
+              ],
+              "repaired_event_ids": [],
+              "satisfies_legacy_stage_a_repair": false,
+              "status": "OBSERVED"
+            },
+            "independent_transition": {
+              "status": "OBSERVED"
+            },
+            "legacy_stage_a": {
+              "metrics": {
+                "autonomous_pickups": 25,
+                "material_event_count": 25,
+                "max_material_gap_seconds": 2216.775938,
+                "mode": "live",
+                "observed_seconds": 7408.454723,
+                "original_started_at": "2026-10-11T05:29:46.231497Z",
+                "owner_observation_verified": false,
+                "owner_prompts": 0,
+                "owner_restarts": 0,
+                "total_elapsed_seconds": 7408.454723,
+                "window_started_at": "2026-10-11T05:29:46.231497Z"
+              },
+              "observed_until": "2026-10-11T07:33:14.686220Z",
+              "reasons": [
+                "four_real_wall_hours_not_observed",
+                "owner_intervention_observation_not_verified",
+                "durable_verified_mutation_not_observed",
+                "real_failure_verified_repair_not_observed",
+                "material_progress_gap_exceeded_30m",
+                "owner_prompt_source_not_connected"
+              ],
+              "status": "NOT_PROVEN"
+            },
+            "owner_followups": {
+              "count": null,
+              "status": "UNKNOWN"
+            },
+            "useful_work_window": {
+              "is_live_proof": false,
+              "metrics": {
+                "autonomous_pickups": 25,
+                "material_event_count": 25,
+                "max_material_gap_seconds": 2216.775938,
+                "mode": "live",
+                "observed_seconds": 7408.454723,
+                "original_started_at": "2026-10-11T05:29:46.231497Z",
+                "owner_observation_verified": false,
+                "owner_prompts": 0,
+                "owner_restarts": 0,
+                "total_elapsed_seconds": 7408.454723,
+                "window_started_at": "2026-10-11T05:29:46.231497Z"
+              }
+            }
+          },
+          "acceptance": "NOT_PROVEN",
+          "limitations": [
+            "No durable product mutation or verified real-failure repair observed.",
+            "No verified source closure after staging merge and runtime acceptance.",
+            "Observed live window is under four real hours and material gap exceeded 30 minutes.",
+            "Owner prompt coverage is unverified; owner intervention count remains null.",
+            "Canonical effective counts are not blanket certification of useful material progress."
+          ],
+          "remote_mutations_by_this_observer": false,
+          "next_hypothesis": "Future approved repair or acceptance input must trigger only its scoped independent lane; identical blockers and capture-only changes must remain blocked without extra material credit."
+        }
+      },
+      "sixth_jobs": [
+        {
+          "id": 114421009365,
+          "name": "control",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38122862769/job/114421009365"
+        },
+        {
+          "id": 114421079741,
+          "name": "observe",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38122862769/job/114421079741"
+        },
+        {
+          "id": 114421080208,
+          "name": "candidate_review",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38122862769/job/114421080208"
+        },
+        {
+          "id": 114421080443,
+          "name": "repair",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38122862769/job/114421080443"
+        }
+      ],
+      "latest_jobs": [
+        {
+          "id": 114421009365,
+          "name": "control",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38122862769/job/114421009365"
+        },
+        {
+          "id": 114421079741,
+          "name": "observe",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38122862769/job/114421079741"
+        },
+        {
+          "id": 114421080208,
+          "name": "candidate_review",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38122862769/job/114421080208"
+        },
+        {
+          "id": 114421080443,
+          "name": "repair",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38122862769/job/114421080443"
+        }
+      ]
+    },
+    "seventh_jobs": [
+      {
+        "job_id": 114422924328,
+        "name": "control",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "job_id": 114422993461,
+        "name": "observe",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "job_id": 114422993882,
+        "name": "candidate_review",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "job_id": 114422994120,
+        "name": "repair",
+        "status": "completed",
+        "conclusion": "skipped"
+      }
+    ],
+    "scheduled_controller_observation": {
+      "schema": "github_schedule_delivery_observation.v1",
+      "source": "Read-only GitHub API metadata reported by root on 2026-10-11; no inferred platform cause",
+      "repository_endpoint": "https://api.github.com/repos/cftorre1/Radar-salud",
+      "runs_endpoint": "https://api.github.com/repos/cftorre1/Radar-salud/actions/runs?event=schedule&per_page=50",
+      "default_branch": "main",
+      "archived": false,
+      "scheduled_run_total_count": 33,
+      "configured_controller_cron": "*/10 * * * *",
+      "latest_scheduled_source_audit": {
+        "run_id": 38116700081,
+        "created_at": "2026-10-11T06:01:29Z",
+        "head_sha_prefix": "dd2"
+      },
+      "last_scheduled_controller": {
+        "run_id": 38102304371,
+        "created_at": "2026-10-11T01:34:45Z",
+        "head_sha_prefix": "28b1",
+        "legacy": true
+      },
+      "initial_runtime_publication": {
+        "head_sha_prefix": "b679",
+        "published_minute_utc": "2026-10-11 05:28"
+      },
+      "new_controller_schedule_runs_observed": 0,
+      "delivery_every_ten_minutes_proven": false,
+      "cause": "UNDETERMINED",
+      "workflow_disabled_inferred": false,
+      "missing_owner_approval_inferred": false,
+      "alternate_execution_observed": [
+        "seventh automatic main push controller and observer executed successfully; no new repair claims",
+        "fourth main push dispatched six independent repair families",
+        "Source Audit completion at 06:01 dispatched main"
+      ],
+      "counts_as_material_progress": false,
+      "source_live_evidence": false,
+      "observed_at": "2026-10-11T08:00:34.768Z",
+      "capture_path": "work/live-review/scheduled-controller-delivery-proof.json",
+      "capture_sha256": "796a8639c9cfeb8e8a90bc92115e6a98cab54ecc928fabb8f47ecb4234eabdde",
+      "workflow_success_is_material_progress": false
+    },
+    "historical_snapshot_hashes": {
+      "fourth": "8b6889dde9ff46173cc35e9518c71cd6e1dcbadc27b6deb973848346bc509795",
+      "fifth": "c1d938304ae008d4adc11c4ceec62fd9b7f47cb49dc779dd07d8bd30804df483",
+      "sixth": "581552800c8604efc5f68078ed090da3d4c5a438b4eba18bbfbd9d64ab18f133"
+    }
+  },
+  "controller_urls": [
+    "https://github.com/cftorre1/Radar-salud/actions/runs/38123500601"
+  ],
+  "canonical_state_sha": "bf8e94288ed48baf3b52607ec19309385b9d37e9",
+  "candidate_mutations": 0,
+  "verified_source_closures": 0,
+  "stage_a_recovery_proven": false,
+  "four_useful_hours_proven": false,
+  "owner_followup_count": null,
+  "owner_prompt_coverage": "UNAVAILABLE",
+  "owner_prompt_count_interpretation": "Raw empty arrays or declared zero metrics do not certify zero owner interventions. No independent owner channel is connected; injecting verified metadata alone never upgrades observer coverage.",
+  "executor_capability": {
+    "known_strategy": "deterministic ACHS Unicode HTTP URI exact-replacement repair",
+    "nonpaid": true,
+    "already_approved_reversible_scope": true,
+    "missing_repair_patch_is_permission_blocker": false,
+    "unsupported_failure": "executor_capability_missing",
+    "unsupported_is_internal": true,
+    "human_required": false,
+    "suseso_probe_cap": 24,
+    "inventory_count": 370,
+    "probe_cap_is_internal_coverage_limit": true,
+    "probe_is_complete_inventory_proof": false,
+    "hosted_repair_outcome": "See explicit reviewed hosted proof"
+  },
+  "real_blockers": [
+    {
+      "id": "useful_four_hour_window_not_proven",
+      "reason": "No verified continuous four-hour useful-progress window; unchanged audits and internal corrections earn no material credit.",
+      "external_permission_required": false
+    },
+    {
+      "id": "owner_prompt_observation_unavailable",
+      "reason": "No independently connected trusted Work/chat owner_prompt_events producer covers the observation window; Actions or metadata injection alone cannot prove no owner intervention.",
+      "required_input": "A trusted immutable event export plus completeness watermark covering the full window, connected to an independent trusted observer producer that validates source provenance and hashes. No fabricated connector, attestation or new secret.",
+      "owner_followup_count": null
+    },
+    {
+      "id": "unchanged_staging_normative_gate",
+      "reason": "Actual 11 >= 12 failure and 14 concrete QA failure cases remain; no invented QA content or weakened gate.",
+      "human_required": false
+    },
+    {
+      "id": "executor_capability_missing",
+      "reason": "Unknown failure shapes require an implemented deterministic strategy within approved scope, not another owner's repair-plan approval.",
+      "internal": true,
+      "human_required": false
+    },
+    {
+      "id": "internal_probe_coverage_limit",
+      "reason": "The bounded 24-item SUSESO probe cannot prove coverage of 370 inventory items; retain explicit unresolved coverage.",
+      "internal": true,
+      "human_required": false
+    },
+    {
+      "id": "scheduled_controller_cadence_not_observed",
+      "reason": "No new scheduled controller delivery was observed after the initial runtime publication despite cron */10. Successful push workers and Source Audit completion dispatches prove alternate execution, not the ten-minute schedule. Delivery cause is unproven.",
+      "evidence": {
+        "schema": "github_schedule_delivery_observation.v1",
+        "source": "Read-only GitHub API metadata reported by root on 2026-10-11; no inferred platform cause",
+        "repository_endpoint": "https://api.github.com/repos/cftorre1/Radar-salud",
+        "runs_endpoint": "https://api.github.com/repos/cftorre1/Radar-salud/actions/runs?event=schedule&per_page=50",
+        "default_branch": "main",
+        "archived": false,
+        "scheduled_run_total_count": 33,
+        "configured_controller_cron": "*/10 * * * *",
+        "latest_scheduled_source_audit": {
+          "run_id": 38116700081,
+          "created_at": "2026-10-11T06:01:29Z",
+          "head_sha_prefix": "dd2"
+        },
+        "last_scheduled_controller": {
+          "run_id": 38102304371,
+          "created_at": "2026-10-11T01:34:45Z",
+          "head_sha_prefix": "28b1",
+          "legacy": true
+        },
+        "initial_runtime_publication": {
+          "head_sha_prefix": "b679",
+          "published_minute_utc": "2026-10-11 05:28"
+        },
+        "new_controller_schedule_runs_observed": 0,
+        "delivery_every_ten_minutes_proven": false,
+        "cause": "UNDETERMINED",
+        "workflow_disabled_inferred": false,
+        "missing_owner_approval_inferred": false,
+        "alternate_execution_observed": [
+          "seventh automatic main push controller and observer executed successfully; no new repair claims",
+          "fourth main push dispatched six independent repair families",
+          "Source Audit completion at 06:01 dispatched main"
+        ],
+        "counts_as_material_progress": false,
+        "source_live_evidence": false,
+        "observed_at": "2026-10-11T08:00:34.768Z",
+        "capture_path": "work/live-review/scheduled-controller-delivery-proof.json",
+        "capture_sha256": "796a8639c9cfeb8e8a90bc92115e6a98cab54ecc928fabb8f47ecb4234eabdde",
+        "workflow_success_is_material_progress": false
+      },
+      "missing_owner_approval": false,
+      "required_next_action": "Inspect reproducible GitHub repository/workflow/run metadata and preserve independent push/completion lanes; do not promise actual ten-minute delivery without runs.",
+      "counts_as_material_progress": false
+    }
+  ],
+  "next_hypothesis": "Existing approved reversible source tasks need no additional repair-plan approval. Use the nonpaid deterministic ACHS URI strategy automatically only for its exact recognized failure and approved scope; unsupported repairs remain executor_capability_missing, an internal executor limitation, with human_required=false. The SUSESO 24-item probe cap is an internal coverage limit, not a publisher failure or complete coverage. Relevant committed strategy/input changes resume affected families independently; identical audits or internal reclassifications earn no progress. Retain full QA/Reviewer/editorial/security gates, the actual 11 >= 12 failure and 14 concrete QA failure cases, NOT_PROVEN four-hour acceptance and unverified owner-event coverage. Scheduled controller delivery every ten minutes has not been observed; use only evidenced push/completion pickups and diagnose delivery from actual metadata without inferring a disabled workflow or missing approval.",
+  "validated_requirements": [],
+  "validated_blocks": [],
+  "human_authored_metadata_counts_as_material_progress": false,
+  "internal_probe_reclassification_counts_as_material_progress": false,
+  "workflow_success_is_progress": false,
+  "production_promoted": false,
+  "original_qa_reviewer_editorial_security_gates_unchanged": true
+}
