@@ -77,7 +77,7 @@ def article_url(value, base=LISTINGS[0]):
 
 def health_anchor(text):
     return bool(re.search(
-        r"\bsalud\b|cl[ií]nica|hospital|isapre|fonasa|prestador|"
+        r"\bsalud\b|\bcesfam\b|cl[ií]nica|hospital|isapre|fonasa|prestador|"
         r"medicamento|farmac|aseguramiento|seguro de salud|"
         r"banm[eé]dica|bupa|redsalud|consalud|colmena|cruz blanca|"
         r"masvida|uc christus|listas? de espera|senior housing|"
