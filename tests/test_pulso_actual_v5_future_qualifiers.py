@@ -9,7 +9,7 @@ import pytest
 
 from radar_salud.pulso_editorial_proof import (
     future_copy_qualified, unqualified_achieved_copy,
-    validate_pulso_editorial_proof,
+    unsupported_clinical_completion, validate_pulso_editorial_proof,
 )
 
 
@@ -62,6 +62,12 @@ def test_demonstrated_conditional_and_dated_nonachievement_phrases(text):
     "El efecto esperado era ampliar la capacidad.",  # no observation-day context
     "La inversión hospitalaria prioritaria y necesaria tiene capacidad disponible.",
     "La atención secundaria unitaria ordinaria y comunitaria fue implementada.",
+    "La cafetería hospitalaria tiene capacidad disponible.",
+    "La peluquería comunitaria está operativa.",
+    "La droguería hospitalaria dispone de nueva capacidad.",
+    "La repostería necesaria fue implementada.",
+    "La joyería ordinaria tiene capacidad instalada.",
+    "La subsecretaría reportó los requerimientos que requerían los equipos.",
     "Al 18 de julio de 2026, la nota no acredita otra medida. El hospital modular ya está instalado.",
     "Al 18 de julio de 2026, la nota no acredita otra medida. El Minsal ya ha ejecutado la instalación.",
     "Al 18 de julio de 2026, la nota no acredita otra medida. El hospital dispone de capacidad clínica disponible.",
@@ -149,3 +155,30 @@ def test_real_ovalle_future_proof_cannot_be_laundered_by_an_unrelated_dated_deni
         if proof["summary_field"] == "what_happened":
             proof["summary_quote"] = ai["what_happened"]
     assert validate_pulso_editorial_proof(ai, row["full_primary_body"])["reason"] == "pulso_editorial_future_copy_not_grounded"
+
+
+@pytest.mark.parametrize("claim", [
+    "El hospital modular ya está instalado y operativo.",
+    "El Minsal ya ha ejecutado la instalación.",
+    "El hospital dispone de capacidad clínica disponible.",
+    "La capacidad fue agregada y el hospital se encuentra operativo.",
+    "El hospital ya cuenta con capacidad instalada.",
+    "El hospital modular ya funciona y atiende pacientes.",
+])
+def test_whole_field_future_clause_does_not_excuse_unsupported_clinical_completion(claim):
+    row = ROWS[24]
+    ai = deepcopy(row["analysis"])
+    ai["what_happened"] = "El plan podría reforzar Ovalle. " + claim
+    for proof in ai["pulso_editorial_proof"]["future_claims"]:
+        if proof["summary_field"] == "what_happened":
+            proof["summary_quote"] = ai["what_happened"]
+    assert validate_pulso_editorial_proof(ai, row["full_primary_body"])["reason"] == "pulso_editorial_future_copy_not_grounded"
+
+
+def test_clinical_completion_requires_positive_same_input_evidence_even_in_mixed_account():
+    # A deliberately small synthetic input tests the boundary independently of
+    # publisher facts: it never claims a captured source, model or publication.
+    statement = "El hospital modular se encuentra operativo"
+    assert not unsupported_clinical_completion(statement, statement + ". La ampliación podría continuar.")
+    assert unsupported_clinical_completion(statement, "No " + statement.lower() + ". La ampliación podría continuar.")
+    assert unsupported_clinical_completion(statement, "Comenzó la coordinación para instalar un hospital modular.")

@@ -23,13 +23,14 @@ NOVELTY = ("new_material_information", "repetition_or_context", "uncertain")
 # 'deberán pagar' can already be an actual binding decision and is not a plan.
 REGULAR_FUTURE_VERB = (
     r"\b(?!deber[aá]n?\b)[a-záéíóúñü]{3,}(?:ar|er|ir)(?:é|ás?|emos|éis|án)\b")
-# Regular conditional inflection is not a completed outcome. Exclude common
-# nouns with the same ending rather than treating 'secretaría' as a proposal.
+# Recognize verbal infinitives, rather than assuming every -aría/-ería noun is
+# a conditional verb. These actions occur in the retained assessments; clear
+# modal/intention qualifiers below remain available for other formulations.
 REGULAR_CONDITIONAL_VERB = (
-    r"\b(?!(?:secretar[ií]a|comisar[ií]a|notar[ií]a|enfermer[ií]a|"
-    r"ingenier[ií]a|miner[ií]a|loter[ií]a|porter[ií]a|guarder[ií]a|"
-    r"panader[ií]a|librer[ií]a|tesorer[ií]a|bater[ií]a|consejer[ií]a)\b)"
-    r"[a-záéíóúñü]{3,}(?:ar|er|ir)ía(?:s|mos|is|n)?\b")
+    r"\b(?:afectar|apelar|asumir|buscar|cambiar|continuar|deber|destinar|"
+    r"eliminar|enfrentar|estar|extender|implementar|ocurrir|permitir|realizar|"
+    r"regir|requerir|revisar|completar|regularizar|modificar|financiar|acceder|"
+    r"suspender|aumentar|ampliar)ía(?:s|mos|is|n)?\b")
 FUTURE_SOURCE = re.compile(REGULAR_FUTURE_VERB + r"|\b(?:habr[aá]|permitir[aá]n?|ser[aá]n?|podr(?:[aá]n?|[ií]an?)|previst[oa]s?|"
                            r"se prev[eé]|se propone(?:n)?|incorporar[aá]n?|alcanzar[aá]n?|implementar[aá]n?|"
                            r"coordinaci(?:ones|[oó]n)\b[^.;!?]{0,160}\bpara instalar|"
@@ -51,10 +52,17 @@ FUTURE_COPY = re.compile(REGULAR_CONDITIONAL_VERB + r"|\b(?:propuest[oa]s?|propo
                          r"si se (?:aprueba|implementa|concreta)|"
                          r"a[uú]n (?:est[aá] )?en fase de coordinaci[oó]n|"
                          r"todav[ií]a no constituye capacidad disponible)\b", re.I)
-ACHIEVED_COPY = re.compile(r"\b(?:ya (?:se )?(?:alcanz\w*|incorpor\w*|aument\w*|ampli\w*|"
+ACHIEVED_COPY = re.compile(r"\b(?:ya (?:se )?(?:(?:ha[n]?|había[n]?) )?(?:alcanz\w*|incorpor\w*|aument\w*|ampli\w*|"
                            r"implement\w*|ejecut\w*|concret\w*|instal\w*|realiz\w*)|"
-                           r"ya (?:tiene|dispone de|cuenta con)\b[^.;!?]{0,80}\bcapacidad disponible|"
+                           r"ya (?:est[aá]n?|se encuentra[n]?) (?:instalad[oa]s?|operativ[oa]s?)|"
+                           r"ya (?:tiene|dispone de|cuenta con)\b[^.;!?]{0,80}\bcapacidad (?:disponible|instalada)|"
                            r"se ejecut[oó]|termin[oó])\b", re.I)
+CLINICAL_COMPLETED_COPY = re.compile(
+    r"\b(?:el hospital(?: modular)?|el recinto|la cl[ií]nica)\b[^.;!?]{0,80}\b"
+    r"(?:(?:ya )?(?:est[aá]|se encuentra) (?:instalad[oa]|operativ[oa])|"
+    r"(?:ya )?(?:dispone de|tiene|cuenta con) capacidad (?:cl[ií]nica )?(?:disponible|instalada)|"
+    r"ya funciona y atiende pacientes)\b|"
+    r"\bla capacidad (?:cl[ií]nica |asistencial )?fue agregada\b", re.I)
 # Actual v5 answers use the past tense to describe an intention or estimate as
 # observed on an earlier publication day. Only accept these narrower phrases
 # with explicit observation-date/publication context in the complete field.
@@ -78,7 +86,8 @@ NEGATED_ACHIEVEMENT_PREFIX = re.compile(
     re.I)
 NON_HUMAN_HEALTH = re.compile(
     r"\b(?:salud|sanidad)\s+(?:animal(?:\s+o\s+vegetal)?|vegetal|veterinari[ao])\b|"
-    r"\b(?:cl[ií]nic\w*|hospital\w*|medicin\w*|vacun\w*)\s+veterinari\w*|"
+    r"\b(?:hospital(?: cl[ií]nico)?|cl[ií]nic\w*|medicin\w*|vacun\w*)\s+veterinari\w*|"
+    r"\becosistema de animales y mascotas\b[^.;!?]{0,1000}|"
     r"\batenci[oó]n m[eé]dica (?:de|a|para) (?:los |las )?(?:animales|mascotas)\b|"
     r"\bpacientes? (?:animales|veterinari\w*)\b|"
     r"\b(?:procedimientos? cl[ií]nicos?|ex[aá]menes? de diagn[oó]stico) veterinari\w*", re.I)
@@ -101,7 +110,11 @@ HUMAN_CLINICAL_SCOPE = re.compile(
 
 def human_health_scope_anchor(quote):
     from .pulso_source import health_anchor
-    return health_anchor(quote) or bool(HUMAN_CLINICAL_SCOPE.search(quote))
+    # Discovery admits housing to open the primary detail; an editorial quote
+    # must establish care/clinical relevance beyond the property-sector label.
+    clinical_quote = re.sub(r"\bsenior housing\b|\bresidencias? (?:para|de) adultos mayores\b",
+                            "", quote, flags=re.I)
+    return health_anchor(clinical_quote) or bool(HUMAN_CLINICAL_SCOPE.search(quote))
 
 PROOF_SCHEMA = {
     "type": "object", "properties": {
@@ -170,6 +183,26 @@ def unqualified_achieved_copy(value):
     return False
 
 
+def unsupported_clinical_completion(value, primary_body):
+    """An additional clause cannot assert availability merely beside a plan.
+
+    A real, positive contiguous publisher statement can substantiate an actual
+    opening in a mixed account. It cannot substantiate a new assertion absent
+    from this same primary input, or a negated publisher statement.
+    """
+    for match in CLINICAL_COMPLETED_COPY.finditer(value):
+        prefix = re.split(r"[.,;:!?]", value[:match.start()])[-1]
+        if NEGATED_ACHIEVEMENT_PREFIX.search(prefix):
+            continue
+        assertion = literal_quote_form(match.group())
+        primary = literal_quote_form(primary_body)
+        locations = [found for found in re.finditer(re.escape(assertion), primary)]
+        if not any(not NEGATED_ACHIEVEMENT_PREFIX.search(
+                re.split(r"[.,;:!?]", primary[:found.start()])[-1]) for found in locations):
+            return True
+    return False
+
+
 def validate_pulso_editorial_proof(analysis, analysis_text):
     """Return ready/rejected/deferred without inventing a score or publication."""
     result = dict(version=VERSION, source="pulso_latercera",
@@ -227,9 +260,8 @@ def validate_pulso_editorial_proof(analysis, analysis_text):
     # They cannot substantiate a human-health editorial assertion on their own.
     # Preserve any independent human-health evidence in the same primary quote,
     # and defer contradictory model labels rather than infer a rejection.
-    from .pulso_source import health_anchor
     if (NON_HUMAN_HEALTH.search(scope_quote)
-            and not health_anchor(NON_HUMAN_HEALTH.sub("", scope_quote))):
+            and not human_health_scope_anchor(NON_HUMAN_HEALTH.sub("", scope_quote))):
         return verdict("deferred", "pulso_editorial_human_scope_conflicts_with_non_human_quote")
     if not human_health_scope_anchor(scope_quote):
         return verdict("deferred", "pulso_editorial_scope_not_grounded")
@@ -271,7 +303,8 @@ def validate_pulso_editorial_proof(analysis, analysis_text):
                 or normalized(claim["summary_quote"]) != normalized(summary)
                 or not quote_matches(claim["source_quote"])
                 or not future_copy_qualified(claim["summary_quote"])
-                or unqualified_achieved_copy(claim["summary_quote"])):
+                or unqualified_achieved_copy(claim["summary_quote"])
+                or unsupported_clinical_completion(claim["summary_quote"], analysis_text)):
             return verdict("deferred", "pulso_editorial_future_copy_not_grounded")
         covered.add(field)
     if future and covered != {"what_happened", "why_it_matters"}:
