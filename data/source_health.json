@@ -196,7 +196,7 @@
     },
     "isp_anamed": {
       "name": "ISP / ANAMED",
-      "checked_at": "2026-10-11T04:35:24.085516+00:00",
+      "checked_at": "2026-10-11T05:46:52.627005+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -219,15 +219,14 @@
           },
           {
             "type": "URLError",
-            "reason": "Tunnel connection failed: 403 Forbidden"
+            "reason": "timed out"
           },
           {
-            "type": "OSError"
+            "type": "TimeoutError",
+            "reason": "timed out"
           }
         ],
-        "failure_signature": "RuntimeError > URLError:Tunnel connection failed: 403 Forbidden > OSError",
-        "transport_stage": "proxy_connect_rejected",
-        "origin_tls_observed": false
+        "failure_signature": "RuntimeError > URLError:timed out > TimeoutError:timed out"
       },
       "discovery_diagnostics": {
         "surfaces": [
@@ -236,14 +235,14 @@
             "url": "https://www.ispch.cl/categorias-alertas/anamed/",
             "status": "blocked",
             "error_type": "URLError",
-            "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+            "error": "<urlopen error timed out>"
           },
           {
             "channel": "ANAMED",
             "url": "https://ispch.cl/categorias-alertas/anamed/",
             "status": "blocked",
             "error_type": "URLError",
-            "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+            "error": "<urlopen error timed out>"
           }
         ],
         "partial_failure": true,
@@ -252,7 +251,15 @@
         "evidence_status": "capture_pending"
       },
       "engine_checked_at": "2026-10-11T04:31:45.221612+00:00",
-      "poll_mode": "discovery_and_document_verification_only"
+      "poll_mode": "discovery_and_document_verification_only",
+      "runtime_outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "runtime_environment": "github_actions",
+      "runtime_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38115490854",
+      "runtime_commit": "52acee50dceff03dc3c26a66ec44588ccc84ac79",
+      "blocker_evidence": "data/audits/public_sources_c_20261011/recovery/isp_anamed-checkpoint.json",
+      "blocking_component": "Destino/ruta TCP443 no responde; no existe respuesta HTTP ni handshake TLS. No es posible atribuir el silencio a un firewall, hosting o regla concreta desde estos síntomas.",
+      "minimum_human_step": "Operador de red/hosting de ISP: verificar listener y ruta TCP 443 de www.ispch.cl, ispch.cl, www.ispch.gob.cl e ispch.gob.cl frente al egress de GitHub hospedado, restaurar acceso HTTPS público o entregar un feed/document export oficial accesible; luego repetir esta Action.",
+      "coverage_complete": false
     },
     "deis": {
       "name": "DEIS",
