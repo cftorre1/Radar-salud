@@ -36,7 +36,7 @@ jobs:
         run: test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
       - run: pip install -e . pytest
       - name: Directed source, primary evidence and core checks
-        run: python -m pytest -q tests/test_pulso_source.py tests/test_pulso_archive_discovery.py tests/test_pulso_real_fixtures.py tests/test_pulso_core_runtime.py tests/test_beta_core_handoff.py tests/test_pulso_runtime_audit.py tests/test_pulso_runtime_fixtures.py tests/test_pulso_recovery_qa.py
+        run: python -m pytest -q tests/test_pulso_source.py tests/test_pulso_archive_discovery.py tests/test_pulso_real_fixtures.py tests/test_pulso_core_runtime.py tests/test_beta_core_handoff.py tests/test_pulso_runtime_audit.py tests/test_pulso_runtime_fixtures.py tests/test_pulso_recovery_qa.py tests/test_pulso_recovery_command.py tests/test_pulso_idempotence.py tests/test_pulso_idempotence_qa.py tests/test_pulso_execution_provenance.py tests/test_pulso_editorial_proof.py
       - name: Read optional prior original capture run
         id: prior_capture
         run: |
@@ -92,6 +92,16 @@ jobs:
         run: python scripts/retain_pulso_runtime_fixtures.py --capture-artifact .scratch/pulso-prior-capture
       - name: Replay preserved original fixtures
         run: python -m pytest -q tests/test_pulso_runtime_fixtures.py
+      - name: Verify paid baseline before an optional genuine zero-call replay
+        run: |
+          python - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          from scripts.pulso_recovery_command import idempotence_command
+          command=idempotence_command(json.load(open('.github/run-pulso-runtime-now')), Path.cwd(), 'preflight')
+          if command:
+              subprocess.run(command, check=True)
+          PY
       - name: Execute source-scoped core with original HTTP observation
         run: |
           python - <<'PY'
@@ -120,12 +130,20 @@ jobs:
         if: always()
         run: |
           python - <<'PY'
-          import json, subprocess, sys
-          phase=json.load(open('.github/run-pulso-runtime-now'))['phase']
-          scope='processing' if phase=='process' else 'discovery'
-          subprocess.run([sys.executable, 'scripts/qa_pulso_recovery.py', '--'+scope,
-                          '--capture-artifact', '.scratch/pulso-prior-capture', '--output',
-                          'data/audits/pulso_directed_'+scope+'_qa_2026_10_11.json'], check=True)
+          import json, subprocess
+          from pathlib import Path
+          from scripts.pulso_recovery_command import directed_qa_command, idempotence_command
+          marker=json.load(open('.github/run-pulso-runtime-now'))
+          command=idempotence_command(marker, Path.cwd(), 'after_core')
+          comparison_status=0
+          if command:
+              comparison_status=subprocess.run(command).returncode
+          qa_status=subprocess.run(directed_qa_command(marker, Path.cwd())).returncode
+          if comparison_status or qa_status:
+              raise SystemExit(comparison_status or qa_status)
+          command=idempotence_command(marker, Path.cwd(), 'after_qa')
+          if command:
+              subprocess.run(command, check=True)
           PY
       - name: Preserve source checkpoints and paid ledgers exclusively on isolated branch
         if: always()
@@ -137,6 +155,8 @@ jobs:
           if test -f data/audits/pulso_runtime_2026_10_11.json; then git add data/audits/pulso_runtime_2026_10_11.json; fi
           if test -f data/audits/pulso_runtime_capture/manifest.json; then git add data/audits/pulso_runtime_capture/manifest.json; fi
           if test -f data/audits/pulso_directed_discovery_qa_2026_10_11.json || test -f data/audits/pulso_directed_processing_qa_2026_10_11.json; then git add 'data/audits/pulso_directed_*_qa_2026_10_11.json'; fi
+          if test -f data/audits/pulso_idempotence_baseline_2026_10_11.json; then git add data/audits/pulso_idempotence_baseline_2026_10_11.json; fi
+          if test -f data/audits/pulso_idempotence_2026_10_11.json; then git add data/audits/pulso_idempotence_2026_10_11.json; fi
           if test -f web/data/radar_today.json; then git add web/data/radar_today.json; fi
           if test -f web/data/source_health.json; then git add web/data/source_health.json; fi
           if test -f web/data/product.json; then git add web/data/product.json; fi
@@ -156,8 +176,13 @@ jobs:
             data/audits/pulso_runtime_2026_10_11.json
             data/audits/pulso_runtime_capture/
             data/audits/pulso_directed_*_qa_2026_10_11.json
+            data/audits/pulso_idempotence_baseline_2026_10_11.json
+            data/audits/pulso_idempotence_2026_10_11.json
             data/state/pulso_discovery_cache.json
             data/state/discovery_run.json
+            data/state/pending_queue.json
+            data/analysis_cache/
+            data/ai_usage/
             data/source_health.json
             data/history/superintendencia_signals.json
             web/data/radar_today.json

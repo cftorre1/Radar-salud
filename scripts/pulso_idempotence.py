@@ -26,7 +26,7 @@ RUNTIME_HELPERS = (
     "scripts/audit_pulso_runtime.py", "scripts/qa_pulso_recovery.py",
     "scripts/retain_pulso_runtime_fixtures.py", "scripts/export_web_snapshot.py",
     "scripts/product_report.py", "scripts/apply_pulso_editorial_review.py",
-    "scripts/pulso_idempotence.py", "pyproject.toml",
+    "scripts/pulso_idempotence.py", "scripts/pulso_recovery_command.py", "pyproject.toml",
     ".github/workflows/daily-radar.yml", ".github/workflows/pulso-runtime-recovery.yml",
 )
 RUNTIME_CONFIGS = (
