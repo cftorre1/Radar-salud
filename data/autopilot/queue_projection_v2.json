@@ -6,8 +6,8 @@
     "queue_blob_sha": "aed727070c39edacab2561c059dbf07d7e47e910",
     "queue_sha256": "d3250320d2a087964e03c08c41f322ff5cc26aeab44784edf2298b470666de02",
     "staging_sha": "fe03b0f34442bb52ed703c9a2047875dc31ba8a0",
-    "state_control_sha256": "081b69320900e2672a944cb5526fb2499d3036fc9547cc14c75cdbf0cbe487bf",
-    "state_sha": "050e0afc59293ba8d487894e50622ec51aaa8a8f"
+    "state_control_sha256": "0316e077c0dc91b1b81522372d7c91b8e462fb8a925660694f058e0a448e8094",
+    "state_sha": "6b80dacfe16530e8e03805cb870ce95618c509cc"
   },
   "canonical_queue_updated": false,
   "derived_runtime_tasks": [
@@ -212,7 +212,7 @@
       "task_id": "staging_qa_failed_run_38128983053"
     },
     {
-      "attempts": 0,
+      "attempts": 1,
       "blocker_evidence_count": 0,
       "blocker_fingerprint": null,
       "candidate_review": {
@@ -225,39 +225,39 @@
         "superseded": null
       },
       "candidate_reviews": {},
-      "canonical_material_progress_at": null,
+      "canonical_material_progress_at": "2026-10-11T14:32:03.833381Z",
       "evidence_revision": "2c52359bdab3a8361e68dd786f054cc95f3c94fe2eb5c1b64ab02c7b5db02e93",
       "failure_signature": "6ca44d1f05e785dab5a2b7a8018c52b9cd789ece773cdbd446cabec139002780",
       "failure_verified": true,
       "family": "staging_qa",
-      "fence": 0,
+      "fence": 1,
       "input_fingerprint": "b553404559785b6b5f8f2d2aa35acef809a437c8e877ff1f21c3935f2d8da4b9",
       "input_sha": "fe03b0f34442bb52ed703c9a2047875dc31ba8a0",
       "last_ready_at": "2026-10-11T14:31:41.077780Z",
       "lease": {
-        "claimed_at": null,
-        "expires_at": null,
-        "fence": null,
-        "heartbeat_at": null,
-        "owner": null,
+        "claimed_at": "2026-10-11T14:32:03.833381Z",
+        "expires_at": "2026-10-11T14:42:03.833381Z",
+        "fence": 1,
+        "heartbeat_at": "2026-10-11T14:32:03.833381Z",
+        "owner": "38147509834-1-staging_qa",
         "recovery_deadline_at": null,
-        "token_sha256": null
+        "token_sha256": "a05b45bb85f3131eddd30c3a8ae3603713f79ace6ea60084cd8a2b8246055752"
       },
-      "material_progress_at": null,
-      "raw_material_progress_at": null,
+      "material_progress_at": "2026-10-11T14:32:03.833381Z",
+      "raw_material_progress_at": "2026-10-11T14:32:03.833381Z",
       "reason": null,
-      "recovery_episode": null,
+      "recovery_episode": "428f3ddf0f4bab77b7c803ad5544cd471796d9137744131c01a4a460b168b0f8",
       "recovery_reclaims": 0,
-      "status": "READY",
+      "status": "RUNNING",
       "task_id": "staging_qa_failed_run_38147271878"
     }
   ],
   "kind": "queue_runtime_projection",
   "observation": {
-    "path": "data/autopilot/evidence/observation-f108efe14ba747a9bb7e50019fc29ca2.json",
-    "sha256": "371929a5ec378c4d56e1f7f533e1a60db22e3e68d35cf8451c2c8c72c5c3c5c3",
+    "path": "data/autopilot/evidence/observation-9d658677fd924d4299f8d2f12c3c0982.json",
+    "sha256": "a6577286ad497fd28fbceb727560a2e3c6ce9edafde4bf1e329ae3b471649f93",
     "staging_sha": "fe03b0f34442bb52ed703c9a2047875dc31ba8a0",
-    "state_sha": "050e0afc59293ba8d487894e50622ec51aaa8a8f"
+    "state_sha": "6b80dacfe16530e8e03805cb870ce95618c509cc"
   },
   "owner_followups": "UNKNOWN",
   "schema_version": 2,
@@ -1611,9 +1611,9 @@
         "last_ready_at": "2026-10-11T14:28:22.948304Z",
         "lease": {
           "claimed_at": "2026-10-11T14:29:27.510886Z",
-          "expires_at": "2026-10-11T14:40:41.781863Z",
+          "expires_at": "2026-10-11T14:41:49.790953Z",
           "fence": 20,
-          "heartbeat_at": "2026-10-11T14:30:41.781863Z",
+          "heartbeat_at": "2026-10-11T14:31:49.790953Z",
           "owner": "38147286266-1-public_data",
           "recovery_deadline_at": null,
           "token_sha256": "22ad44699f2e42aedc196d6c891bb685f3e229eac6a66954fc9666e5f5b5378a"
