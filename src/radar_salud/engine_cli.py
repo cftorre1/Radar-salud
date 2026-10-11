@@ -69,6 +69,7 @@ def main():
       ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial)]
     processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
     discoveries={}
+    discovery_details={}
     # Complete discovery for every source before any budget-consuming processing.
     for name,_,discover,_ in specs:
         try:
@@ -79,15 +80,20 @@ def main():
             added=queue.discover(name,items,seen,last_discovered_at=watermarks.get(name))
             watermarks[name]=checked_at
             atomic_json(watermark_path,watermarks)
-            discoveries[name]=(len(items),added,None)
+            audit=getattr(getattr(discover,"__self__",None),"discovery_audit",[])
+            partial=any(x.get("status") in ("detail_error","listing_error") for x in audit)
+            discoveries[name]=(len(items),added,"partial_discovery" if partial else None)
         except Exception as exc:
             discoveries[name]=(0,0,type(exc).__name__)
+        audit=getattr(getattr(discover,"__self__",None),"discovery_audit",[])
+        if audit:discovery_details[name]=audit
     atomic_json(root/"data/state/discovery_run.json",{
         "at":datetime.now(timezone.utc).isoformat(),
         "sources":{name:{"discovered":found,"new":added,"technical_status":"error" if error else "ok","error_type":error}
                    for name,(found,added,error) in discoveries.items()},
         "successful_sources":sum(error is None for _,_,error in discoveries.values()),
         "failed_sources":sum(error is not None for _,_,error in discoveries.values()),
+        "source_details":discovery_details,
     })
     produced={name:[] for name in processors}
     queue.enforce_backfill_horizon()

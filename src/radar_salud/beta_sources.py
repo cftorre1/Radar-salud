@@ -96,7 +96,7 @@ class CuratedBetaSourceScout:
             "type": "press_high_trust",
             "page": "https://www.latercera.com/canal/pulso/",
             "hosts": ("www.latercera.com", "latercera.com"),
-            "path": r"/pulso/noticia/[^/]+/?",
+            "path": r"/(?:pulso|nacional)/noticia/[^/]+(?:/[A-Za-z0-9]{26})?/?",
             "role": "media",
         },
     }
@@ -106,8 +106,16 @@ class CuratedBetaSourceScout:
             raise ValueError("source has not passed beta Source Quality Gate")
         self.slug = slug
         self.cfg = self.SOURCES[slug]
+        self.discovery_audit = []
 
     def discover_from_html(self, html, detail_loader=fetch_html):
+        if self.slug == "pulso_latercera":
+            from .pulso_source import discover_listing
+            audit = self.discovery_audit = []
+            out = discover_listing(html, self.cfg["page"], detail_loader, audit, set())
+            if not out:
+                raise RuntimeError("Pulso / La Tercera has no verified, dated health articles: " + str(audit))
+            return sorted(out, key=lambda item: item.event_date, reverse=True)
         from .public_source_pipeline import _Meta, _date
 
         parser = _Links()
@@ -161,6 +169,10 @@ class CuratedBetaSourceScout:
         return out[:30]
 
     def discover(self):
+        if self.slug == "pulso_latercera":
+            from .pulso_source import discover_pulso
+            self.discovery_audit = []
+            return discover_pulso(audit=self.discovery_audit)
         return self.discover_from_html(fetch_html(self.cfg["page"]))
 
 
