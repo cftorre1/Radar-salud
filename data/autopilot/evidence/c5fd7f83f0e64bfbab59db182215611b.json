@@ -1,0 +1,1321 @@
+{
+  "at": "2026-10-11T13:21:52.853478+00:00",
+  "kind": "worker_result",
+  "operation_id": "c5fd7f83f0e64bfbab59db182215611b",
+  "report": {
+    "acceptance_proof": [],
+    "after_hash": "c9511b39ca67edca8e456281c2502e56a790474159965643034e2e47c0d1e322",
+    "audit_fingerprint": "ed084695dac3539708691eaece94fc48d31d091511498afac4386d27b59195df",
+    "before_hash": "c9511b39ca67edca8e456281c2502e56a790474159965643034e2e47c0d1e322",
+    "blocker": {
+      "evidence": [
+        {
+          "command": [
+            "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+            "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+            "--diagnose-source",
+            "diario_financiero"
+          ],
+          "failure_hash": "48c341dac7322113509a2c0495798529b8510a471be1cb4eb004228a09dc246b",
+          "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-diario_financiero.log",
+          "log_sha256": "bdbacbf7e82f25fbd50b690746207d1d7e463c88b49c110f8907aec380531d11",
+          "returncode": 1,
+          "source_urls": [
+            "https://www.df.cl/empresas/dfsalud",
+            "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
+            "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion",
+            "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera",
+            "https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no",
+            "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos",
+            "https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion",
+            "https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras",
+            "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes",
+            "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de",
+            "https://www.df.cl/empresas/salud/clinica-las-condes-reduce-perdidas-y-asegura-que-transitan-desde-una-etapa",
+            "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro",
+            "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza",
+            "https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el",
+            "https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con",
+            "https://www.df.cl/empresas/salud/la-isapre-del-grupo-alemana-se-lanza-a-masificar-su-modelo-de-salud",
+            "https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html",
+            "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+            "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se",
+            "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas",
+            "https://www.df.cl/economia-y-politica/laboral-personas/se-deteriora-mas-la-salud-mental-de-los-trabajadores-ante-temor-a-perder",
+            "https://www.df.cl/regiones/antofagasta/cadena-de-gimnasios-smart-fit-queda-con-prohibicion-de-funcionamiento-en",
+            "https://www.df.cl/economia-y-politica/politica/kast-presenta-presupuesto-2027-con-alza-de-1-5-defiende-que-esta",
+            "https://www.df.cl/senal-df/datos-de-sobremesa/el-cambio-de-nombre-e-imagen-de-novo-nordisk",
+            "https://www.df.cl/mercados/fondos-de-inversion/fondo-de-capital-privado-de-larrainvial-inicia-liquidacion-por-orden-de-la",
+            "https://www.df.cl/df-stream/videos/corazon-del-negocio-carmen-mariman-y-salud-mental",
+            "https://www.df.cl/noticias/site/tag/port/all/tagport_2916_1.html"
+          ],
+          "status": "FAIL"
+        },
+        {
+          "dated": 22,
+          "discovered": 24,
+          "error": null,
+          "failure_origin": "instrumentation_limit",
+          "inventory_hash": "8cb20c89b6427454ed97cf36d7752e4a4a97c3c7a4535e19df83100404dee461",
+          "newest_event_date": "2026-10-10",
+          "probe_budget": {
+            "executed_requests": 24,
+            "max_requests": 24,
+            "unexecuted_requests": 3
+          },
+          "probe_complete": false,
+          "publication_verified": false,
+          "requests": [
+            {
+              "response_bytes": 375903,
+              "response_sha256": "351c12dd96c0e62f78578e5ad829b3add1ae3cb5062a7a54d475e4f278a510c6",
+              "status": "PASS",
+              "url": "https://www.df.cl/empresas/dfsalud"
+            },
+            {
+              "response_bytes": 388248,
+              "response_sha256": "1aa971b44e823c07d79fe32594c5c85cd2fc99b24233f513f4b2be8dbbb29558",
+              "status": "PASS",
+              "url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido"
+            },
+            {
+              "response_bytes": 384131,
+              "response_sha256": "00d66143e8efcbd3e3129f4f61b4cc09ba4730287d422dcdd9b59016e91e29da",
+              "status": "PASS",
+              "url": "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion"
+            },
+            {
+              "response_bytes": 383653,
+              "response_sha256": "b7fe567aec4b0a1eb1643cd1183668d69dedf3496a30e434756abb923f7262f0",
+              "status": "PASS",
+              "url": "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera"
+            },
+            {
+              "response_bytes": 383545,
+              "response_sha256": "29e4b695fa2b806b4bdae09f86aca741277dc9cfe645e724420243631596db9e",
+              "status": "PASS",
+              "url": "https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no"
+            },
+            {
+              "response_bytes": 388888,
+              "response_sha256": "39828c15440df8a5406962d6d1bdfe1f62de65fc9bcfee5069b57d559f4905e5",
+              "status": "PASS",
+              "url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos"
+            },
+            {
+              "response_bytes": 392055,
+              "response_sha256": "c8f68894c06b6b0afb23225922ad2aafcc8675d6819325b861b43d121ab22d44",
+              "status": "PASS",
+              "url": "https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion"
+            },
+            {
+              "response_bytes": 396526,
+              "response_sha256": "a65a978dfc5df4b51d274791183433b31c6481fee98360fc1e225566ce5628ae",
+              "status": "PASS",
+              "url": "https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras"
+            },
+            {
+              "response_bytes": 395072,
+              "response_sha256": "6c3cfc03a7286b0532f7c01fc047a523cf15db0bd41bf489454c954f981a690c",
+              "status": "PASS",
+              "url": "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes"
+            },
+            {
+              "response_bytes": 385975,
+              "response_sha256": "e823edd6a35a43382a9db5e372520e9f064975cc384c495c5d146c5d86ed7589",
+              "status": "PASS",
+              "url": "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de"
+            },
+            {
+              "response_bytes": 389398,
+              "response_sha256": "b280f8011b50a5bab12d4a2b2e99a4450c2996064c3ee0831f48172f65fb90e1",
+              "status": "PASS",
+              "url": "https://www.df.cl/empresas/salud/clinica-las-condes-reduce-perdidas-y-asegura-que-transitan-desde-una-etapa"
+            },
+            {
+              "response_bytes": 391888,
+              "response_sha256": "9a4b5b863edee2f33b80e1611148b20bb6eaa1b5cfc3a7209005aec8211bd977",
+              "status": "PASS",
+              "url": "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro"
+            },
+            {
+              "response_bytes": 395583,
+              "response_sha256": "1c2976a1e4348c1f711b4d0e3269ed86173f18e6db49d6682cb50d3c6024bd68",
+              "status": "PASS",
+              "url": "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza"
+            },
+            {
+              "response_bytes": 388799,
+              "response_sha256": "6a25e39263f3274c59e4cb6d4dc16c989b29f857ecf19313c81927bf3e84232c",
+              "status": "PASS",
+              "url": "https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el"
+            },
+            {
+              "response_bytes": 387639,
+              "response_sha256": "0de61d986bc1ed5ba950c71780c21d13634b084b1cb8ec83c660f7596e182179",
+              "status": "PASS",
+              "url": "https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con"
+            },
+            {
+              "response_bytes": 393701,
+              "response_sha256": "ce709d5864269fc5edab11d754fc099deed281c81dfb09a115df01a0a33dbf17",
+              "status": "PASS",
+              "url": "https://www.df.cl/empresas/salud/la-isapre-del-grupo-alemana-se-lanza-a-masificar-su-modelo-de-salud"
+            },
+            {
+              "response_bytes": 377163,
+              "response_sha256": "1ecb5abe6d00ba2b6153351f8c25c9b7ab2dd14da83ae95f53f0b4a47af89d27",
+              "status": "PASS",
+              "url": "https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html"
+            },
+            {
+              "response_bytes": 385382,
+              "response_sha256": "ce9c488440aa359c3a32c2a7c424fe7f71046d85042186fc628b245308e27583",
+              "status": "PASS",
+              "url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos"
+            },
+            {
+              "response_bytes": 384231,
+              "response_sha256": "f9dcab7cda9e0e2bc7efee428077f1bc79c88403df99f16331262e1a1c3c09a3",
+              "status": "PASS",
+              "url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se"
+            },
+            {
+              "response_bytes": 388048,
+              "response_sha256": "e93e9e8be7c938ce1d6458686a70daae00e7af0aadd55d1bd771ce2aabad7d92",
+              "status": "PASS",
+              "url": "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas"
+            },
+            {
+              "response_bytes": 390765,
+              "response_sha256": "4a2412d3d62e62fbdf89371e62eab02111fb743edc64a73b0f19fe8ba41a5a1f",
+              "status": "PASS",
+              "url": "https://www.df.cl/economia-y-politica/laboral-personas/se-deteriora-mas-la-salud-mental-de-los-trabajadores-ante-temor-a-perder"
+            },
+            {
+              "response_bytes": 387588,
+              "response_sha256": "ca7d73d8238dd9ff704d5fec988241dcfe7575f77d4ad7333eb182b7431fa840",
+              "status": "PASS",
+              "url": "https://www.df.cl/regiones/antofagasta/cadena-de-gimnasios-smart-fit-queda-con-prohibicion-de-funcionamiento-en"
+            },
+            {
+              "response_bytes": 400834,
+              "response_sha256": "992866428287e7ade12adde013d33ac30e3de20d216f7e20b30dbfb089bfdb82",
+              "status": "PASS",
+              "url": "https://www.df.cl/economia-y-politica/politica/kast-presenta-presupuesto-2027-con-alza-de-1-5-defiende-que-esta"
+            },
+            {
+              "response_bytes": 385188,
+              "response_sha256": "9e3f388fa0f51475a974bd7189b3ed5fbbee88bccfd920f25f786bc71bcfec40",
+              "status": "PASS",
+              "url": "https://www.df.cl/senal-df/datos-de-sobremesa/el-cambio-de-nombre-e-imagen-de-novo-nordisk"
+            },
+            {
+              "error": "bounded_probe_budget: 24 requests per source",
+              "status": "UNVERIFIED",
+              "url": "https://www.df.cl/mercados/fondos-de-inversion/fondo-de-capital-privado-de-larrainvial-inicia-liquidacion-por-orden-de-la"
+            },
+            {
+              "error": "bounded_probe_budget: 24 requests per source",
+              "status": "UNVERIFIED",
+              "url": "https://www.df.cl/df-stream/videos/corazon-del-negocio-carmen-mariman-y-salud-mental"
+            },
+            {
+              "error": "bounded_probe_budget: 24 requests per source",
+              "status": "UNVERIFIED",
+              "url": "https://www.df.cl/noticias/site/tag/port/all/tagport_2916_1.html"
+            }
+          ],
+          "samples": [
+            {
+              "content_hash": "0acf410bd5b797844024cb4c206341d9fa88890b833843cc09db03493da4cc41",
+              "event_date": "2026-10-10",
+              "source_url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+              "title": "Aluvión en Las Condes obliga a cerrar por semanas la Clínica San Carlos UC Christus completó el traslado de todos los pacientes hospitalizados y condicionó la reapertura a los trabajos de limpieza, despeje y recuperación de las áreas afectadas."
+            },
+            {
+              "content_hash": "5d9301eb44d3d4350de677fd3854b0023fffa72eb32eeaa465a5bbdc893a7399",
+              "event_date": "2026-10-09",
+              "source_url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se",
+              "title": "El primer Presupuesto de Kast: quiénes ganan, quiénes pierden y cómo se reparten $ 91,18 billones"
+            },
+            {
+              "content_hash": "fb040c8353af5714139e671eaa02d36838ad7f05670f011cf8a3579fee38aff2",
+              "event_date": "2026-10-08",
+              "source_url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
+              "title": "Mariela Formas, vicepresidenta de la Cámara de Innovación Farmacéutica, y recortes a la Ley Ricarte Soto en Presupuesto: “Es un ahorro mal entendido” La dirigente de la asociación que agrupa a grandes multinacionales de esta industria en Chile sostuvo que se debe rediseñar el fondo para medicamentos de alto costo para adaptarlo a las realidades del sector salud."
+            },
+            {
+              "content_hash": "256cbca1ced43b707d5fa8e37209041d74cada39add8ae1eefe893f61d73a6aa",
+              "event_date": "2026-10-06",
+              "source_url": "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion",
+              "title": "Medicamento para bajar de peso deberá advertir por riesgos de malnutrición para comercializarse en Chile Se trata de todos los productos que incluyan el principio activo tirzepatida, lo que afecta a Mounjaro, de Eli Lilly."
+            },
+            {
+              "content_hash": "ffb5ca48de267819c23a84253399ab2de6f28e51120690800dad85b8a056c8f6",
+              "event_date": "2026-10-05",
+              "source_url": "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas",
+              "title": "Segunda clínica privada de Antofagasta cierra su unidad de maternidad desde 2025 por fuerte caída de natalidad"
+            },
+            {
+              "content_hash": "9e9597da33ef4152adecfc75c63d9afc9819151e9bb72464f74ae652210a036d",
+              "event_date": "2026-10-04",
+              "source_url": "https://www.df.cl/economia-y-politica/laboral-personas/se-deteriora-mas-la-salud-mental-de-los-trabajadores-ante-temor-a-perder",
+              "title": "El temor a perder el empleo y el estrés por el avance de la IA aumentan el deterioro en la salud mental de los trabajadores en Chile"
+            },
+            {
+              "content_hash": "5666c4914573b2b5d28718571ca9d79ab006a730727be3c826eda5d06c344042",
+              "event_date": "2026-10-02",
+              "source_url": "https://www.df.cl/regiones/antofagasta/cadena-de-gimnasios-smart-fit-queda-con-prohibicion-de-funcionamiento-en",
+              "title": "Cadena de gimnasios Smart Fit queda con prohibición de funcionamiento en Antofagasta y arriesga multa de hasta 1.000 UTM"
+            },
+            {
+              "content_hash": "f3011be3221909ba3b5c5932df2e1ccb1fdde414c9d9a9348ee94a04e523ec47",
+              "event_date": "2026-10-01",
+              "source_url": "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera",
+              "title": "Super de Salud: cuando no se reconoce la huella digital, la isapre deberá emitir el bono igualmente con el carnet de identidad del afiliado \"Buscamos mitigar el riesgo de pérdida de horas médicas, trámites adicionales y dilaciones injustificadas\", dijo el superintendente, Fernando Riveros."
+            },
+            {
+              "content_hash": "5a682d0830721f6ae769a3b8a0ca3367b63a759b3f15c81f0e09c5ae2d95bbb6",
+              "event_date": "2026-09-30",
+              "source_url": "https://www.df.cl/economia-y-politica/politica/kast-presenta-presupuesto-2027-con-alza-de-1-5-defiende-que-esta",
+              "title": "Presupuesto 2027 subirá 1,5%: Kast asegura que no se tocarán beneficios y que se revisará “cada peso” del gasto social"
+            },
+            {
+              "content_hash": "7c0f06f2b9260295a37a5c138b740a36480d1ac8072e608c96c33ba92ed45039",
+              "event_date": "2026-09-29",
+              "source_url": "https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no",
+              "title": "Sernac realiza fiscalización nacional a veterinarias: Siete de cada 10 no mantiene lista de precios visible"
+            },
+            {
+              "content_hash": "b8f560641418db0dc3a1982afdc157fe6d1604bf1afce36dcf5adf5ed509678f",
+              "event_date": "2026-09-21",
+              "source_url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos",
+              "title": "Bupa acelera inversiones en sector oriente de Santiago con tres proyectos por US$ 15 millones"
+            },
+            {
+              "content_hash": "e8a35a6bcc76426bcd260f1a83c149fafbf0e67a9576d34720dbdce1ad73ccdc",
+              "event_date": "2026-09-18",
+              "source_url": "https://www.df.cl/senal-df/datos-de-sobremesa/el-cambio-de-nombre-e-imagen-de-novo-nordisk",
+              "title": "El cambio de nombre e imagen de Novo Nordisk"
+            }
+          ],
+          "scope": "discovery_only",
+          "slug": "diario_financiero",
+          "technical_status": "incomplete"
+        },
+        {
+          "automated_recovery": {
+            "attempted": false,
+            "reason": "Instrumentation limit is not a demonstrated source failure"
+          }
+        }
+      ],
+      "fingerprint": "f41826c1e490270c57a4013bf93d31804dbc4ecc94621eb5977ba5b6dc7df885",
+      "human_required": false,
+      "kind": "instrumentation",
+      "reason": "Scoped coverage INCOMPLETE: internal request budget reached: diario_financiero",
+      "source_urls": [
+        "https://www.df.cl/df-stream/videos/corazon-del-negocio-carmen-mariman-y-salud-mental",
+        "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+        "https://www.df.cl/economia-y-politica/laboral-personas/se-deteriora-mas-la-salud-mental-de-los-trabajadores-ante-temor-a-perder",
+        "https://www.df.cl/economia-y-politica/politica/kast-presenta-presupuesto-2027-con-alza-de-1-5-defiende-que-esta",
+        "https://www.df.cl/empresas/dfsalud",
+        "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos",
+        "https://www.df.cl/empresas/salud/clinica-las-condes-reduce-perdidas-y-asegura-que-transitan-desde-una-etapa",
+        "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro",
+        "https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el",
+        "https://www.df.cl/empresas/salud/la-isapre-del-grupo-alemana-se-lanza-a-masificar-su-modelo-de-salud",
+        "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes",
+        "https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion",
+        "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion",
+        "https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras",
+        "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
+        "https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no",
+        "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera",
+        "https://www.df.cl/mercados/fondos-de-inversion/fondo-de-capital-privado-de-larrainvial-inicia-liquidacion-por-orden-de-la",
+        "https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html",
+        "https://www.df.cl/noticias/site/tag/port/all/tagport_2916_1.html",
+        "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas",
+        "https://www.df.cl/regiones/antofagasta/cadena-de-gimnasios-smart-fit-queda-con-prohibicion-de-funcionamiento-en",
+        "https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con",
+        "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de",
+        "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza",
+        "https://www.df.cl/senal-df/datos-de-sobremesa/el-cambio-de-nombre-e-imagen-de-novo-nordisk",
+        "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se"
+      ]
+    },
+    "blockers": [
+      {
+        "evidence": [
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+              "--diagnose-source",
+              "diario_financiero"
+            ],
+            "failure_hash": "48c341dac7322113509a2c0495798529b8510a471be1cb4eb004228a09dc246b",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-diario_financiero.log",
+            "log_sha256": "bdbacbf7e82f25fbd50b690746207d1d7e463c88b49c110f8907aec380531d11",
+            "returncode": 1,
+            "source_urls": [
+              "https://www.df.cl/empresas/dfsalud",
+              "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
+              "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion",
+              "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera",
+              "https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no",
+              "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos",
+              "https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion",
+              "https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras",
+              "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes",
+              "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de",
+              "https://www.df.cl/empresas/salud/clinica-las-condes-reduce-perdidas-y-asegura-que-transitan-desde-una-etapa",
+              "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro",
+              "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza",
+              "https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el",
+              "https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con",
+              "https://www.df.cl/empresas/salud/la-isapre-del-grupo-alemana-se-lanza-a-masificar-su-modelo-de-salud",
+              "https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html",
+              "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+              "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se",
+              "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas",
+              "https://www.df.cl/economia-y-politica/laboral-personas/se-deteriora-mas-la-salud-mental-de-los-trabajadores-ante-temor-a-perder",
+              "https://www.df.cl/regiones/antofagasta/cadena-de-gimnasios-smart-fit-queda-con-prohibicion-de-funcionamiento-en",
+              "https://www.df.cl/economia-y-politica/politica/kast-presenta-presupuesto-2027-con-alza-de-1-5-defiende-que-esta",
+              "https://www.df.cl/senal-df/datos-de-sobremesa/el-cambio-de-nombre-e-imagen-de-novo-nordisk",
+              "https://www.df.cl/mercados/fondos-de-inversion/fondo-de-capital-privado-de-larrainvial-inicia-liquidacion-por-orden-de-la",
+              "https://www.df.cl/df-stream/videos/corazon-del-negocio-carmen-mariman-y-salud-mental",
+              "https://www.df.cl/noticias/site/tag/port/all/tagport_2916_1.html"
+            ],
+            "status": "FAIL"
+          },
+          {
+            "dated": 22,
+            "discovered": 24,
+            "error": null,
+            "failure_origin": "instrumentation_limit",
+            "inventory_hash": "8cb20c89b6427454ed97cf36d7752e4a4a97c3c7a4535e19df83100404dee461",
+            "newest_event_date": "2026-10-10",
+            "probe_budget": {
+              "executed_requests": 24,
+              "max_requests": 24,
+              "unexecuted_requests": 3
+            },
+            "probe_complete": false,
+            "publication_verified": false,
+            "requests": [
+              {
+                "response_bytes": 375903,
+                "response_sha256": "351c12dd96c0e62f78578e5ad829b3add1ae3cb5062a7a54d475e4f278a510c6",
+                "status": "PASS",
+                "url": "https://www.df.cl/empresas/dfsalud"
+              },
+              {
+                "response_bytes": 388248,
+                "response_sha256": "1aa971b44e823c07d79fe32594c5c85cd2fc99b24233f513f4b2be8dbbb29558",
+                "status": "PASS",
+                "url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido"
+              },
+              {
+                "response_bytes": 384131,
+                "response_sha256": "00d66143e8efcbd3e3129f4f61b4cc09ba4730287d422dcdd9b59016e91e29da",
+                "status": "PASS",
+                "url": "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion"
+              },
+              {
+                "response_bytes": 383653,
+                "response_sha256": "b7fe567aec4b0a1eb1643cd1183668d69dedf3496a30e434756abb923f7262f0",
+                "status": "PASS",
+                "url": "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera"
+              },
+              {
+                "response_bytes": 383545,
+                "response_sha256": "29e4b695fa2b806b4bdae09f86aca741277dc9cfe645e724420243631596db9e",
+                "status": "PASS",
+                "url": "https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no"
+              },
+              {
+                "response_bytes": 388888,
+                "response_sha256": "39828c15440df8a5406962d6d1bdfe1f62de65fc9bcfee5069b57d559f4905e5",
+                "status": "PASS",
+                "url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos"
+              },
+              {
+                "response_bytes": 392055,
+                "response_sha256": "c8f68894c06b6b0afb23225922ad2aafcc8675d6819325b861b43d121ab22d44",
+                "status": "PASS",
+                "url": "https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion"
+              },
+              {
+                "response_bytes": 396526,
+                "response_sha256": "a65a978dfc5df4b51d274791183433b31c6481fee98360fc1e225566ce5628ae",
+                "status": "PASS",
+                "url": "https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras"
+              },
+              {
+                "response_bytes": 395072,
+                "response_sha256": "6c3cfc03a7286b0532f7c01fc047a523cf15db0bd41bf489454c954f981a690c",
+                "status": "PASS",
+                "url": "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes"
+              },
+              {
+                "response_bytes": 385975,
+                "response_sha256": "e823edd6a35a43382a9db5e372520e9f064975cc384c495c5d146c5d86ed7589",
+                "status": "PASS",
+                "url": "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de"
+              },
+              {
+                "response_bytes": 389398,
+                "response_sha256": "b280f8011b50a5bab12d4a2b2e99a4450c2996064c3ee0831f48172f65fb90e1",
+                "status": "PASS",
+                "url": "https://www.df.cl/empresas/salud/clinica-las-condes-reduce-perdidas-y-asegura-que-transitan-desde-una-etapa"
+              },
+              {
+                "response_bytes": 391888,
+                "response_sha256": "9a4b5b863edee2f33b80e1611148b20bb6eaa1b5cfc3a7209005aec8211bd977",
+                "status": "PASS",
+                "url": "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro"
+              },
+              {
+                "response_bytes": 395583,
+                "response_sha256": "1c2976a1e4348c1f711b4d0e3269ed86173f18e6db49d6682cb50d3c6024bd68",
+                "status": "PASS",
+                "url": "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza"
+              },
+              {
+                "response_bytes": 388799,
+                "response_sha256": "6a25e39263f3274c59e4cb6d4dc16c989b29f857ecf19313c81927bf3e84232c",
+                "status": "PASS",
+                "url": "https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el"
+              },
+              {
+                "response_bytes": 387639,
+                "response_sha256": "0de61d986bc1ed5ba950c71780c21d13634b084b1cb8ec83c660f7596e182179",
+                "status": "PASS",
+                "url": "https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con"
+              },
+              {
+                "response_bytes": 393701,
+                "response_sha256": "ce709d5864269fc5edab11d754fc099deed281c81dfb09a115df01a0a33dbf17",
+                "status": "PASS",
+                "url": "https://www.df.cl/empresas/salud/la-isapre-del-grupo-alemana-se-lanza-a-masificar-su-modelo-de-salud"
+              },
+              {
+                "response_bytes": 377163,
+                "response_sha256": "1ecb5abe6d00ba2b6153351f8c25c9b7ab2dd14da83ae95f53f0b4a47af89d27",
+                "status": "PASS",
+                "url": "https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html"
+              },
+              {
+                "response_bytes": 385382,
+                "response_sha256": "ce9c488440aa359c3a32c2a7c424fe7f71046d85042186fc628b245308e27583",
+                "status": "PASS",
+                "url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos"
+              },
+              {
+                "response_bytes": 384231,
+                "response_sha256": "f9dcab7cda9e0e2bc7efee428077f1bc79c88403df99f16331262e1a1c3c09a3",
+                "status": "PASS",
+                "url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se"
+              },
+              {
+                "response_bytes": 388048,
+                "response_sha256": "e93e9e8be7c938ce1d6458686a70daae00e7af0aadd55d1bd771ce2aabad7d92",
+                "status": "PASS",
+                "url": "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas"
+              },
+              {
+                "response_bytes": 390765,
+                "response_sha256": "4a2412d3d62e62fbdf89371e62eab02111fb743edc64a73b0f19fe8ba41a5a1f",
+                "status": "PASS",
+                "url": "https://www.df.cl/economia-y-politica/laboral-personas/se-deteriora-mas-la-salud-mental-de-los-trabajadores-ante-temor-a-perder"
+              },
+              {
+                "response_bytes": 387588,
+                "response_sha256": "ca7d73d8238dd9ff704d5fec988241dcfe7575f77d4ad7333eb182b7431fa840",
+                "status": "PASS",
+                "url": "https://www.df.cl/regiones/antofagasta/cadena-de-gimnasios-smart-fit-queda-con-prohibicion-de-funcionamiento-en"
+              },
+              {
+                "response_bytes": 400834,
+                "response_sha256": "992866428287e7ade12adde013d33ac30e3de20d216f7e20b30dbfb089bfdb82",
+                "status": "PASS",
+                "url": "https://www.df.cl/economia-y-politica/politica/kast-presenta-presupuesto-2027-con-alza-de-1-5-defiende-que-esta"
+              },
+              {
+                "response_bytes": 385188,
+                "response_sha256": "9e3f388fa0f51475a974bd7189b3ed5fbbee88bccfd920f25f786bc71bcfec40",
+                "status": "PASS",
+                "url": "https://www.df.cl/senal-df/datos-de-sobremesa/el-cambio-de-nombre-e-imagen-de-novo-nordisk"
+              },
+              {
+                "error": "bounded_probe_budget: 24 requests per source",
+                "status": "UNVERIFIED",
+                "url": "https://www.df.cl/mercados/fondos-de-inversion/fondo-de-capital-privado-de-larrainvial-inicia-liquidacion-por-orden-de-la"
+              },
+              {
+                "error": "bounded_probe_budget: 24 requests per source",
+                "status": "UNVERIFIED",
+                "url": "https://www.df.cl/df-stream/videos/corazon-del-negocio-carmen-mariman-y-salud-mental"
+              },
+              {
+                "error": "bounded_probe_budget: 24 requests per source",
+                "status": "UNVERIFIED",
+                "url": "https://www.df.cl/noticias/site/tag/port/all/tagport_2916_1.html"
+              }
+            ],
+            "samples": [
+              {
+                "content_hash": "0acf410bd5b797844024cb4c206341d9fa88890b833843cc09db03493da4cc41",
+                "event_date": "2026-10-10",
+                "source_url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+                "title": "Aluvión en Las Condes obliga a cerrar por semanas la Clínica San Carlos UC Christus completó el traslado de todos los pacientes hospitalizados y condicionó la reapertura a los trabajos de limpieza, despeje y recuperación de las áreas afectadas."
+              },
+              {
+                "content_hash": "5d9301eb44d3d4350de677fd3854b0023fffa72eb32eeaa465a5bbdc893a7399",
+                "event_date": "2026-10-09",
+                "source_url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se",
+                "title": "El primer Presupuesto de Kast: quiénes ganan, quiénes pierden y cómo se reparten $ 91,18 billones"
+              },
+              {
+                "content_hash": "fb040c8353af5714139e671eaa02d36838ad7f05670f011cf8a3579fee38aff2",
+                "event_date": "2026-10-08",
+                "source_url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
+                "title": "Mariela Formas, vicepresidenta de la Cámara de Innovación Farmacéutica, y recortes a la Ley Ricarte Soto en Presupuesto: “Es un ahorro mal entendido” La dirigente de la asociación que agrupa a grandes multinacionales de esta industria en Chile sostuvo que se debe rediseñar el fondo para medicamentos de alto costo para adaptarlo a las realidades del sector salud."
+              },
+              {
+                "content_hash": "256cbca1ced43b707d5fa8e37209041d74cada39add8ae1eefe893f61d73a6aa",
+                "event_date": "2026-10-06",
+                "source_url": "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion",
+                "title": "Medicamento para bajar de peso deberá advertir por riesgos de malnutrición para comercializarse en Chile Se trata de todos los productos que incluyan el principio activo tirzepatida, lo que afecta a Mounjaro, de Eli Lilly."
+              },
+              {
+                "content_hash": "ffb5ca48de267819c23a84253399ab2de6f28e51120690800dad85b8a056c8f6",
+                "event_date": "2026-10-05",
+                "source_url": "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas",
+                "title": "Segunda clínica privada de Antofagasta cierra su unidad de maternidad desde 2025 por fuerte caída de natalidad"
+              },
+              {
+                "content_hash": "9e9597da33ef4152adecfc75c63d9afc9819151e9bb72464f74ae652210a036d",
+                "event_date": "2026-10-04",
+                "source_url": "https://www.df.cl/economia-y-politica/laboral-personas/se-deteriora-mas-la-salud-mental-de-los-trabajadores-ante-temor-a-perder",
+                "title": "El temor a perder el empleo y el estrés por el avance de la IA aumentan el deterioro en la salud mental de los trabajadores en Chile"
+              },
+              {
+                "content_hash": "5666c4914573b2b5d28718571ca9d79ab006a730727be3c826eda5d06c344042",
+                "event_date": "2026-10-02",
+                "source_url": "https://www.df.cl/regiones/antofagasta/cadena-de-gimnasios-smart-fit-queda-con-prohibicion-de-funcionamiento-en",
+                "title": "Cadena de gimnasios Smart Fit queda con prohibición de funcionamiento en Antofagasta y arriesga multa de hasta 1.000 UTM"
+              },
+              {
+                "content_hash": "f3011be3221909ba3b5c5932df2e1ccb1fdde414c9d9a9348ee94a04e523ec47",
+                "event_date": "2026-10-01",
+                "source_url": "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera",
+                "title": "Super de Salud: cuando no se reconoce la huella digital, la isapre deberá emitir el bono igualmente con el carnet de identidad del afiliado \"Buscamos mitigar el riesgo de pérdida de horas médicas, trámites adicionales y dilaciones injustificadas\", dijo el superintendente, Fernando Riveros."
+              },
+              {
+                "content_hash": "5a682d0830721f6ae769a3b8a0ca3367b63a759b3f15c81f0e09c5ae2d95bbb6",
+                "event_date": "2026-09-30",
+                "source_url": "https://www.df.cl/economia-y-politica/politica/kast-presenta-presupuesto-2027-con-alza-de-1-5-defiende-que-esta",
+                "title": "Presupuesto 2027 subirá 1,5%: Kast asegura que no se tocarán beneficios y que se revisará “cada peso” del gasto social"
+              },
+              {
+                "content_hash": "7c0f06f2b9260295a37a5c138b740a36480d1ac8072e608c96c33ba92ed45039",
+                "event_date": "2026-09-29",
+                "source_url": "https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no",
+                "title": "Sernac realiza fiscalización nacional a veterinarias: Siete de cada 10 no mantiene lista de precios visible"
+              },
+              {
+                "content_hash": "b8f560641418db0dc3a1982afdc157fe6d1604bf1afce36dcf5adf5ed509678f",
+                "event_date": "2026-09-21",
+                "source_url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos",
+                "title": "Bupa acelera inversiones en sector oriente de Santiago con tres proyectos por US$ 15 millones"
+              },
+              {
+                "content_hash": "e8a35a6bcc76426bcd260f1a83c149fafbf0e67a9576d34720dbdce1ad73ccdc",
+                "event_date": "2026-09-18",
+                "source_url": "https://www.df.cl/senal-df/datos-de-sobremesa/el-cambio-de-nombre-e-imagen-de-novo-nordisk",
+                "title": "El cambio de nombre e imagen de Novo Nordisk"
+              }
+            ],
+            "scope": "discovery_only",
+            "slug": "diario_financiero",
+            "technical_status": "incomplete"
+          },
+          {
+            "automated_recovery": {
+              "attempted": false,
+              "reason": "Instrumentation limit is not a demonstrated source failure"
+            }
+          }
+        ],
+        "fingerprint": "f41826c1e490270c57a4013bf93d31804dbc4ecc94621eb5977ba5b6dc7df885",
+        "human_required": false,
+        "kind": "instrumentation",
+        "reason": "Scoped coverage INCOMPLETE: internal request budget reached: diario_financiero",
+        "source_urls": [
+          "https://www.df.cl/df-stream/videos/corazon-del-negocio-carmen-mariman-y-salud-mental",
+          "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+          "https://www.df.cl/economia-y-politica/laboral-personas/se-deteriora-mas-la-salud-mental-de-los-trabajadores-ante-temor-a-perder",
+          "https://www.df.cl/economia-y-politica/politica/kast-presenta-presupuesto-2027-con-alza-de-1-5-defiende-que-esta",
+          "https://www.df.cl/empresas/dfsalud",
+          "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos",
+          "https://www.df.cl/empresas/salud/clinica-las-condes-reduce-perdidas-y-asegura-que-transitan-desde-una-etapa",
+          "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro",
+          "https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el",
+          "https://www.df.cl/empresas/salud/la-isapre-del-grupo-alemana-se-lanza-a-masificar-su-modelo-de-salud",
+          "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes",
+          "https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion",
+          "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion",
+          "https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras",
+          "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
+          "https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no",
+          "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera",
+          "https://www.df.cl/mercados/fondos-de-inversion/fondo-de-capital-privado-de-larrainvial-inicia-liquidacion-por-orden-de-la",
+          "https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html",
+          "https://www.df.cl/noticias/site/tag/port/all/tagport_2916_1.html",
+          "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas",
+          "https://www.df.cl/regiones/antofagasta/cadena-de-gimnasios-smart-fit-queda-con-prohibicion-de-funcionamiento-en",
+          "https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con",
+          "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de",
+          "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza",
+          "https://www.df.cl/senal-df/datos-de-sobremesa/el-cambio-de-nombre-e-imagen-de-novo-nordisk",
+          "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se"
+        ]
+      },
+      {
+        "evidence": [
+          {
+            "diagnostics_are_acceptance": false,
+            "family": "media",
+            "task_id": "source_repair_media_lane_2026_10_11"
+          }
+        ],
+        "fingerprint": "bb6cda3dce6ddfb1dbd29390b3a943faa6a28bf6332eb5f3e1df6e4bd0c3a889",
+        "human_required": false,
+        "kind": "acceptance",
+        "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+        "source_urls": []
+      }
+    ],
+    "changed_paths": [],
+    "evidence": [
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+          "tests/test_press_pipeline.py",
+          "tests/test_live_evidence_replay.py",
+          "tests/test_beta_source_package.py"
+        ],
+        "failure_hash": null,
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+        "log_sha256": "e9e4f4fe473057cc278eab395f161cc910a738001ba3c578036441c68de023a1",
+        "name": "targeted_deterministic_tests",
+        "pytest": {
+          "cases": [
+            {
+              "name": "tests.test_press_pipeline::test_df_high_trust_without_second_source",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_press_pipeline::test_reuters_is_world_signal",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_press_pipeline::test_df_scout_binds_detail_date_before_queue_classification",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_live_evidence_replay::test_deterministic_live_replay_through_feed_and_coverage",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_all_required_beta_sources_have_gate_disposition",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_every_new_active_gate_source_is_in_beta_catalog",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_media_early_signal_gate_has_lifecycle_and_noise_controls",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_curated_scout_catalog_covers_required_integrations",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_prestadores_data_discovers_current_2026_bulletins_without_fake_publication_date",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_fonasa_grd_compensation_is_official_and_explicit",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_compact_spanish_date_parser_used_by_provider_newsrooms",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_beta_source_surfaces_use_current_newsroom_routes",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_pulso_is_promoted_to_core_daily_source_config",
+              "reason": "",
+              "status": "PASS"
+            }
+          ],
+          "collected": 13,
+          "failed": 0,
+          "passed": 13,
+          "proof": true,
+          "skipped": 0
+        },
+        "returncode": 0,
+        "status": "PASS"
+      },
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+          "--diagnose-source",
+          "diario_financiero"
+        ],
+        "failure_hash": "48c341dac7322113509a2c0495798529b8510a471be1cb4eb004228a09dc246b",
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-diario_financiero.log",
+        "log_sha256": "bdbacbf7e82f25fbd50b690746207d1d7e463c88b49c110f8907aec380531d11",
+        "returncode": 1,
+        "source_urls": [
+          "https://www.df.cl/empresas/dfsalud",
+          "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
+          "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion",
+          "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera",
+          "https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no",
+          "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos",
+          "https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion",
+          "https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras",
+          "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes",
+          "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de",
+          "https://www.df.cl/empresas/salud/clinica-las-condes-reduce-perdidas-y-asegura-que-transitan-desde-una-etapa",
+          "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro",
+          "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza",
+          "https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el",
+          "https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con",
+          "https://www.df.cl/empresas/salud/la-isapre-del-grupo-alemana-se-lanza-a-masificar-su-modelo-de-salud",
+          "https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html",
+          "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+          "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se",
+          "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas",
+          "https://www.df.cl/economia-y-politica/laboral-personas/se-deteriora-mas-la-salud-mental-de-los-trabajadores-ante-temor-a-perder",
+          "https://www.df.cl/regiones/antofagasta/cadena-de-gimnasios-smart-fit-queda-con-prohibicion-de-funcionamiento-en",
+          "https://www.df.cl/economia-y-politica/politica/kast-presenta-presupuesto-2027-con-alza-de-1-5-defiende-que-esta",
+          "https://www.df.cl/senal-df/datos-de-sobremesa/el-cambio-de-nombre-e-imagen-de-novo-nordisk",
+          "https://www.df.cl/mercados/fondos-de-inversion/fondo-de-capital-privado-de-larrainvial-inicia-liquidacion-por-orden-de-la",
+          "https://www.df.cl/df-stream/videos/corazon-del-negocio-carmen-mariman-y-salud-mental",
+          "https://www.df.cl/noticias/site/tag/port/all/tagport_2916_1.html"
+        ],
+        "status": "FAIL"
+      },
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py",
+          "--diagnose-source",
+          "pulso_latercera"
+        ],
+        "failure_hash": null,
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/source-pulso_latercera.log",
+        "log_sha256": "9881e3ebcb0b854658a180eb032e0b0c8d3cb348e62c15d856bd09cf189bd7d2",
+        "returncode": 0,
+        "source_urls": [
+          "https://www.latercera.com/canal/pulso/",
+          "https://www.latercera.com/pulso/noticia/la-bateria-de-proyectos-laborales-que-prepara-el-gobierno-para-combatir-la-crisis-de-empleo/",
+          "https://www.latercera.com/pulso/noticia/la-negociacion-para-bajar-el-precio-del-tag-entra-a-su-ultimo-tramo/",
+          "https://www.latercera.com/pulso/noticia/inversiones-en-luxemburgo-y-suiza-y-acciones-chilenas-el-patrimonio-declarado-por-el-embajador-gabriel-zaliasnik/",
+          "https://www.latercera.com/pulso/noticia/andres-sansone-chile-debe-acostumbrarse-a-una-economia-mundial-mas-volatil-y-disruptiva/",
+          "https://www.latercera.com/pulso/noticia/bancos-interesados-en-compra-de-transbank-presentaran-ofertas-no-vinculantes-este-mes/"
+        ],
+        "status": "PASS"
+      }
+    ],
+    "evidence_revision": "d6a1589cfa52a13691af1a386f035048bf271362c467ca028d24cc6e655749df",
+    "family": "media",
+    "family_live_validated": false,
+    "gates": [
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+          "tests/test_press_pipeline.py",
+          "tests/test_live_evidence_replay.py",
+          "tests/test_beta_source_package.py"
+        ],
+        "failure_hash": null,
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+        "log_sha256": "e9e4f4fe473057cc278eab395f161cc910a738001ba3c578036441c68de023a1",
+        "name": "targeted_deterministic_tests",
+        "pytest": {
+          "cases": [
+            {
+              "name": "tests.test_press_pipeline::test_df_high_trust_without_second_source",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_press_pipeline::test_reuters_is_world_signal",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_press_pipeline::test_df_scout_binds_detail_date_before_queue_classification",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_live_evidence_replay::test_deterministic_live_replay_through_feed_and_coverage",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_all_required_beta_sources_have_gate_disposition",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_every_new_active_gate_source_is_in_beta_catalog",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_media_early_signal_gate_has_lifecycle_and_noise_controls",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_curated_scout_catalog_covers_required_integrations",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_prestadores_data_discovers_current_2026_bulletins_without_fake_publication_date",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_fonasa_grd_compensation_is_official_and_explicit",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_compact_spanish_date_parser_used_by_provider_newsrooms",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_beta_source_surfaces_use_current_newsroom_routes",
+              "reason": "",
+              "status": "PASS"
+            },
+            {
+              "name": "tests.test_beta_source_package::test_pulso_is_promoted_to_core_daily_source_config",
+              "reason": "",
+              "status": "PASS"
+            }
+          ],
+          "collected": 13,
+          "failed": 0,
+          "passed": 13,
+          "proof": true,
+          "skipped": 0
+        },
+        "returncode": 0,
+        "status": "PASS"
+      }
+    ],
+    "generated_at": "2026-10-11T13:21:19.644316+00:00",
+    "ignored_observation_paths": [],
+    "input_sha": "916fe2d4684466577ef86374cff2f4d58c377ef0",
+    "live_validated": false,
+    "material_progress": {
+      "blocker_candidate": true,
+      "mutation_candidate": false,
+      "requires_durable_comparison": true,
+      "verified_closure": false,
+      "workflow_success": false
+    },
+    "raw_after_hash": "8f09448da84aca0d964776f1f6db61ec6cfc10bd9850839240b3586125294215",
+    "raw_before_hash": "8f09448da84aca0d964776f1f6db61ec6cfc10bd9850839240b3586125294215",
+    "raw_changed_paths": [],
+    "run_id": "38142753731-1-media",
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38142753731",
+    "semantic_hash": "ae58154266e26012f7db39a4bef1732bead9f6477426c1cd6fe519defe93c525",
+    "semantic_noop": false,
+    "semantic_unknown_paths": [],
+    "source_results": [
+      {
+        "dated": 22,
+        "discovered": 24,
+        "error": null,
+        "failure_origin": "instrumentation_limit",
+        "inventory_hash": "8cb20c89b6427454ed97cf36d7752e4a4a97c3c7a4535e19df83100404dee461",
+        "newest_event_date": "2026-10-10",
+        "probe_budget": {
+          "executed_requests": 24,
+          "max_requests": 24,
+          "unexecuted_requests": 3
+        },
+        "probe_complete": false,
+        "publication_verified": false,
+        "requests": [
+          {
+            "response_bytes": 375903,
+            "response_sha256": "351c12dd96c0e62f78578e5ad829b3add1ae3cb5062a7a54d475e4f278a510c6",
+            "status": "PASS",
+            "url": "https://www.df.cl/empresas/dfsalud"
+          },
+          {
+            "response_bytes": 388248,
+            "response_sha256": "1aa971b44e823c07d79fe32594c5c85cd2fc99b24233f513f4b2be8dbbb29558",
+            "status": "PASS",
+            "url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido"
+          },
+          {
+            "response_bytes": 384131,
+            "response_sha256": "00d66143e8efcbd3e3129f4f61b4cc09ba4730287d422dcdd9b59016e91e29da",
+            "status": "PASS",
+            "url": "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion"
+          },
+          {
+            "response_bytes": 383653,
+            "response_sha256": "b7fe567aec4b0a1eb1643cd1183668d69dedf3496a30e434756abb923f7262f0",
+            "status": "PASS",
+            "url": "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera"
+          },
+          {
+            "response_bytes": 383545,
+            "response_sha256": "29e4b695fa2b806b4bdae09f86aca741277dc9cfe645e724420243631596db9e",
+            "status": "PASS",
+            "url": "https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no"
+          },
+          {
+            "response_bytes": 388888,
+            "response_sha256": "39828c15440df8a5406962d6d1bdfe1f62de65fc9bcfee5069b57d559f4905e5",
+            "status": "PASS",
+            "url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos"
+          },
+          {
+            "response_bytes": 392055,
+            "response_sha256": "c8f68894c06b6b0afb23225922ad2aafcc8675d6819325b861b43d121ab22d44",
+            "status": "PASS",
+            "url": "https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion"
+          },
+          {
+            "response_bytes": 396526,
+            "response_sha256": "a65a978dfc5df4b51d274791183433b31c6481fee98360fc1e225566ce5628ae",
+            "status": "PASS",
+            "url": "https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras"
+          },
+          {
+            "response_bytes": 395072,
+            "response_sha256": "6c3cfc03a7286b0532f7c01fc047a523cf15db0bd41bf489454c954f981a690c",
+            "status": "PASS",
+            "url": "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes"
+          },
+          {
+            "response_bytes": 385975,
+            "response_sha256": "e823edd6a35a43382a9db5e372520e9f064975cc384c495c5d146c5d86ed7589",
+            "status": "PASS",
+            "url": "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de"
+          },
+          {
+            "response_bytes": 389398,
+            "response_sha256": "b280f8011b50a5bab12d4a2b2e99a4450c2996064c3ee0831f48172f65fb90e1",
+            "status": "PASS",
+            "url": "https://www.df.cl/empresas/salud/clinica-las-condes-reduce-perdidas-y-asegura-que-transitan-desde-una-etapa"
+          },
+          {
+            "response_bytes": 391888,
+            "response_sha256": "9a4b5b863edee2f33b80e1611148b20bb6eaa1b5cfc3a7209005aec8211bd977",
+            "status": "PASS",
+            "url": "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro"
+          },
+          {
+            "response_bytes": 395583,
+            "response_sha256": "1c2976a1e4348c1f711b4d0e3269ed86173f18e6db49d6682cb50d3c6024bd68",
+            "status": "PASS",
+            "url": "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza"
+          },
+          {
+            "response_bytes": 388799,
+            "response_sha256": "6a25e39263f3274c59e4cb6d4dc16c989b29f857ecf19313c81927bf3e84232c",
+            "status": "PASS",
+            "url": "https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el"
+          },
+          {
+            "response_bytes": 387639,
+            "response_sha256": "0de61d986bc1ed5ba950c71780c21d13634b084b1cb8ec83c660f7596e182179",
+            "status": "PASS",
+            "url": "https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con"
+          },
+          {
+            "response_bytes": 393701,
+            "response_sha256": "ce709d5864269fc5edab11d754fc099deed281c81dfb09a115df01a0a33dbf17",
+            "status": "PASS",
+            "url": "https://www.df.cl/empresas/salud/la-isapre-del-grupo-alemana-se-lanza-a-masificar-su-modelo-de-salud"
+          },
+          {
+            "response_bytes": 377163,
+            "response_sha256": "1ecb5abe6d00ba2b6153351f8c25c9b7ab2dd14da83ae95f53f0b4a47af89d27",
+            "status": "PASS",
+            "url": "https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html"
+          },
+          {
+            "response_bytes": 385382,
+            "response_sha256": "ce9c488440aa359c3a32c2a7c424fe7f71046d85042186fc628b245308e27583",
+            "status": "PASS",
+            "url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos"
+          },
+          {
+            "response_bytes": 384231,
+            "response_sha256": "f9dcab7cda9e0e2bc7efee428077f1bc79c88403df99f16331262e1a1c3c09a3",
+            "status": "PASS",
+            "url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se"
+          },
+          {
+            "response_bytes": 388048,
+            "response_sha256": "e93e9e8be7c938ce1d6458686a70daae00e7af0aadd55d1bd771ce2aabad7d92",
+            "status": "PASS",
+            "url": "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas"
+          },
+          {
+            "response_bytes": 390765,
+            "response_sha256": "4a2412d3d62e62fbdf89371e62eab02111fb743edc64a73b0f19fe8ba41a5a1f",
+            "status": "PASS",
+            "url": "https://www.df.cl/economia-y-politica/laboral-personas/se-deteriora-mas-la-salud-mental-de-los-trabajadores-ante-temor-a-perder"
+          },
+          {
+            "response_bytes": 387588,
+            "response_sha256": "ca7d73d8238dd9ff704d5fec988241dcfe7575f77d4ad7333eb182b7431fa840",
+            "status": "PASS",
+            "url": "https://www.df.cl/regiones/antofagasta/cadena-de-gimnasios-smart-fit-queda-con-prohibicion-de-funcionamiento-en"
+          },
+          {
+            "response_bytes": 400834,
+            "response_sha256": "992866428287e7ade12adde013d33ac30e3de20d216f7e20b30dbfb089bfdb82",
+            "status": "PASS",
+            "url": "https://www.df.cl/economia-y-politica/politica/kast-presenta-presupuesto-2027-con-alza-de-1-5-defiende-que-esta"
+          },
+          {
+            "response_bytes": 385188,
+            "response_sha256": "9e3f388fa0f51475a974bd7189b3ed5fbbee88bccfd920f25f786bc71bcfec40",
+            "status": "PASS",
+            "url": "https://www.df.cl/senal-df/datos-de-sobremesa/el-cambio-de-nombre-e-imagen-de-novo-nordisk"
+          },
+          {
+            "error": "bounded_probe_budget: 24 requests per source",
+            "status": "UNVERIFIED",
+            "url": "https://www.df.cl/mercados/fondos-de-inversion/fondo-de-capital-privado-de-larrainvial-inicia-liquidacion-por-orden-de-la"
+          },
+          {
+            "error": "bounded_probe_budget: 24 requests per source",
+            "status": "UNVERIFIED",
+            "url": "https://www.df.cl/df-stream/videos/corazon-del-negocio-carmen-mariman-y-salud-mental"
+          },
+          {
+            "error": "bounded_probe_budget: 24 requests per source",
+            "status": "UNVERIFIED",
+            "url": "https://www.df.cl/noticias/site/tag/port/all/tagport_2916_1.html"
+          }
+        ],
+        "samples": [
+          {
+            "content_hash": "0acf410bd5b797844024cb4c206341d9fa88890b833843cc09db03493da4cc41",
+            "event_date": "2026-10-10",
+            "source_url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+            "title": "Aluvión en Las Condes obliga a cerrar por semanas la Clínica San Carlos UC Christus completó el traslado de todos los pacientes hospitalizados y condicionó la reapertura a los trabajos de limpieza, despeje y recuperación de las áreas afectadas."
+          },
+          {
+            "content_hash": "5d9301eb44d3d4350de677fd3854b0023fffa72eb32eeaa465a5bbdc893a7399",
+            "event_date": "2026-10-09",
+            "source_url": "https://www.df.cl/senal-df/factor-economico/el-primer-presupuesto-de-kast-quienes-ganan-quienes-pierden-y-como-se",
+            "title": "El primer Presupuesto de Kast: quiénes ganan, quiénes pierden y cómo se reparten $ 91,18 billones"
+          },
+          {
+            "content_hash": "fb040c8353af5714139e671eaa02d36838ad7f05670f011cf8a3579fee38aff2",
+            "event_date": "2026-10-08",
+            "source_url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
+            "title": "Mariela Formas, vicepresidenta de la Cámara de Innovación Farmacéutica, y recortes a la Ley Ricarte Soto en Presupuesto: “Es un ahorro mal entendido” La dirigente de la asociación que agrupa a grandes multinacionales de esta industria en Chile sostuvo que se debe rediseñar el fondo para medicamentos de alto costo para adaptarlo a las realidades del sector salud."
+          },
+          {
+            "content_hash": "256cbca1ced43b707d5fa8e37209041d74cada39add8ae1eefe893f61d73a6aa",
+            "event_date": "2026-10-06",
+            "source_url": "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion",
+            "title": "Medicamento para bajar de peso deberá advertir por riesgos de malnutrición para comercializarse en Chile Se trata de todos los productos que incluyan el principio activo tirzepatida, lo que afecta a Mounjaro, de Eli Lilly."
+          },
+          {
+            "content_hash": "ffb5ca48de267819c23a84253399ab2de6f28e51120690800dad85b8a056c8f6",
+            "event_date": "2026-10-05",
+            "source_url": "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas",
+            "title": "Segunda clínica privada de Antofagasta cierra su unidad de maternidad desde 2025 por fuerte caída de natalidad"
+          },
+          {
+            "content_hash": "9e9597da33ef4152adecfc75c63d9afc9819151e9bb72464f74ae652210a036d",
+            "event_date": "2026-10-04",
+            "source_url": "https://www.df.cl/economia-y-politica/laboral-personas/se-deteriora-mas-la-salud-mental-de-los-trabajadores-ante-temor-a-perder",
+            "title": "El temor a perder el empleo y el estrés por el avance de la IA aumentan el deterioro en la salud mental de los trabajadores en Chile"
+          },
+          {
+            "content_hash": "5666c4914573b2b5d28718571ca9d79ab006a730727be3c826eda5d06c344042",
+            "event_date": "2026-10-02",
+            "source_url": "https://www.df.cl/regiones/antofagasta/cadena-de-gimnasios-smart-fit-queda-con-prohibicion-de-funcionamiento-en",
+            "title": "Cadena de gimnasios Smart Fit queda con prohibición de funcionamiento en Antofagasta y arriesga multa de hasta 1.000 UTM"
+          },
+          {
+            "content_hash": "f3011be3221909ba3b5c5932df2e1ccb1fdde414c9d9a9348ee94a04e523ec47",
+            "event_date": "2026-10-01",
+            "source_url": "https://www.df.cl/empresas/salud/super-de-salud-cuando-no-se-reconoce-la-huella-digital-la-isapre-debera",
+            "title": "Super de Salud: cuando no se reconoce la huella digital, la isapre deberá emitir el bono igualmente con el carnet de identidad del afiliado \"Buscamos mitigar el riesgo de pérdida de horas médicas, trámites adicionales y dilaciones injustificadas\", dijo el superintendente, Fernando Riveros."
+          },
+          {
+            "content_hash": "5a682d0830721f6ae769a3b8a0ca3367b63a759b3f15c81f0e09c5ae2d95bbb6",
+            "event_date": "2026-09-30",
+            "source_url": "https://www.df.cl/economia-y-politica/politica/kast-presenta-presupuesto-2027-con-alza-de-1-5-defiende-que-esta",
+            "title": "Presupuesto 2027 subirá 1,5%: Kast asegura que no se tocarán beneficios y que se revisará “cada peso” del gasto social"
+          },
+          {
+            "content_hash": "7c0f06f2b9260295a37a5c138b740a36480d1ac8072e608c96c33ba92ed45039",
+            "event_date": "2026-09-29",
+            "source_url": "https://www.df.cl/empresas/salud/sernac-realiza-fiscalizacion-nacional-a-veterinarias-siete-de-cada-10-no",
+            "title": "Sernac realiza fiscalización nacional a veterinarias: Siete de cada 10 no mantiene lista de precios visible"
+          },
+          {
+            "content_hash": "b8f560641418db0dc3a1982afdc157fe6d1604bf1afce36dcf5adf5ed509678f",
+            "event_date": "2026-09-21",
+            "source_url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos",
+            "title": "Bupa acelera inversiones en sector oriente de Santiago con tres proyectos por US$ 15 millones"
+          },
+          {
+            "content_hash": "e8a35a6bcc76426bcd260f1a83c149fafbf0e67a9576d34720dbdce1ad73ccdc",
+            "event_date": "2026-09-18",
+            "source_url": "https://www.df.cl/senal-df/datos-de-sobremesa/el-cambio-de-nombre-e-imagen-de-novo-nordisk",
+            "title": "El cambio de nombre e imagen de Novo Nordisk"
+          }
+        ],
+        "scope": "discovery_only",
+        "slug": "diario_financiero",
+        "technical_status": "incomplete"
+      },
+      {
+        "dated": 5,
+        "discovered": 5,
+        "error": null,
+        "inventory_hash": "9c49cd393b8813a142379771442b1ef1960025674f7cd22756ab44beecb7b7d2",
+        "newest_event_date": "2026-10-11",
+        "publication_verified": false,
+        "requests": [
+          {
+            "response_bytes": 692410,
+            "response_sha256": "f2a8089d8040e64d52a4bc6e4b6b576c57371d566023184f3a115dabc492d40e",
+            "status": "PASS",
+            "url": "https://www.latercera.com/canal/pulso/"
+          },
+          {
+            "response_bytes": 477634,
+            "response_sha256": "5cb56b69a3db128f701c1f4edfeecf2fd0e41ef8cac0ffa35cf0af6a34a8c619",
+            "status": "PASS",
+            "url": "https://www.latercera.com/pulso/noticia/la-bateria-de-proyectos-laborales-que-prepara-el-gobierno-para-combatir-la-crisis-de-empleo/"
+          },
+          {
+            "response_bytes": 477581,
+            "response_sha256": "f112cc5b6096cf0326edc3a1de2b4495cef025cd67400894092372f9def0feda",
+            "status": "PASS",
+            "url": "https://www.latercera.com/pulso/noticia/la-negociacion-para-bajar-el-precio-del-tag-entra-a-su-ultimo-tramo/"
+          },
+          {
+            "response_bytes": 443447,
+            "response_sha256": "e1abbd3382a112c15e8375dcbbd17e45010c474dc8703ec368f2bcafaef599b8",
+            "status": "PASS",
+            "url": "https://www.latercera.com/pulso/noticia/inversiones-en-luxemburgo-y-suiza-y-acciones-chilenas-el-patrimonio-declarado-por-el-embajador-gabriel-zaliasnik/"
+          },
+          {
+            "response_bytes": 479902,
+            "response_sha256": "02006869582fc0f5fb9646b5eb81ed21e512d3938e899147410b811cb033eaf0",
+            "status": "PASS",
+            "url": "https://www.latercera.com/pulso/noticia/andres-sansone-chile-debe-acostumbrarse-a-una-economia-mundial-mas-volatil-y-disruptiva/"
+          },
+          {
+            "response_bytes": 447528,
+            "response_sha256": "3bda5c7646f1a4a7bcfa83c169997cd9e42aef5c00a90f87e1551c8c33f66646",
+            "status": "PASS",
+            "url": "https://www.latercera.com/pulso/noticia/bancos-interesados-en-compra-de-transbank-presentaran-ofertas-no-vinculantes-este-mes/"
+          }
+        ],
+        "samples": [
+          {
+            "content_hash": "302fb8f0e1a50a1ee29699eb52dce51a37460330183ad43b1626f77813ddf4d9",
+            "event_date": "2026-10-11",
+            "source_url": "https://www.latercera.com/pulso/noticia/la-negociacion-para-bajar-el-precio-del-tag-entra-a-su-ultimo-tramo/",
+            "title": "La negociación para bajar el precio del Tag entra a su último tramo - La Tercera"
+          },
+          {
+            "content_hash": "bb973c177fc73e97d7cf37cf867827e2fa2709b72a33728d2409476a86b26f73",
+            "event_date": "2026-10-11",
+            "source_url": "https://www.latercera.com/pulso/noticia/la-bateria-de-proyectos-laborales-que-prepara-el-gobierno-para-combatir-la-crisis-de-empleo/",
+            "title": "La batería de proyectos laborales que prepara el gobierno para combatir la crisis de empleo - La Tercera"
+          },
+          {
+            "content_hash": "dff710e06c2cbcc02111ce63a648f0620b849264fad980c2f4606dca1a456639",
+            "event_date": "2026-10-11",
+            "source_url": "https://www.latercera.com/pulso/noticia/inversiones-en-luxemburgo-y-suiza-y-acciones-chilenas-el-patrimonio-declarado-por-el-embajador-gabriel-zaliasnik/",
+            "title": "Inversiones en Luxemburgo y Suiza y acciones chilenas: el patrimonio declarado por el embajador Gabriel Zaliasnik - La Tercera"
+          },
+          {
+            "content_hash": "34d6109abad5a693b2927ae020b458db552d842ba652164cd5014fcd20133dec",
+            "event_date": "2026-10-11",
+            "source_url": "https://www.latercera.com/pulso/noticia/bancos-interesados-en-compra-de-transbank-presentaran-ofertas-no-vinculantes-este-mes/",
+            "title": "Bancos interesados en compra de Transbank presentarán ofertas no vinculantes este mes - La Tercera"
+          },
+          {
+            "content_hash": "878678caaf4315b7c01b770d1fc375ec56cb71b70c0b24a353ff30e3a9c03d57",
+            "event_date": "2026-10-11",
+            "source_url": "https://www.latercera.com/pulso/noticia/andres-sansone-chile-debe-acostumbrarse-a-una-economia-mundial-mas-volatil-y-disruptiva/",
+            "title": "Andrés Sansone: “Chile debe acostumbrarse a una economía mundial más volátil y disruptiva” - La Tercera"
+          }
+        ],
+        "scope": "discovery_only",
+        "slug": "pulso_latercera",
+        "technical_status": "ok"
+      }
+    ],
+    "status": "BLOCKED",
+    "targeted_validated": true,
+    "task_id": "source_repair_media_lane_2026_10_11",
+    "validated": false,
+    "version": 1,
+    "workflow_success_is_progress": false
+  }
+}
