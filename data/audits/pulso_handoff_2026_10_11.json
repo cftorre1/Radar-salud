@@ -1,19 +1,26 @@
 {
   "schema_version": "2.0",
-  "recorded_at": "2026-10-11T07:02:41.918128+00:00",
+  "recorded_at": "2026-10-11T07:09:19.647554+00:00",
   "status": "IN_PROGRESS_NOT_ACCEPTED",
   "source": "pulso_latercera",
   "owner": "Codex B / Senior Source Recovery Engineer",
   "branch": "codex/b-pulso-runtime-20261011",
   "base_staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
-  "current_product_candidate": "920bf682d0a4e034da0f31de4c548d33bf5a73ee",
+  "current_product_candidate": "86c3cd1d2697a6f814261eea6a563279b4b062ee",
   "previous_handoff": "Historical pre-exhaustive record is preserved in git. Its CONNECT403 limitation is resolved through authorized GitHub Actions and is not a current source blocker.",
   "pr": "https://github.com/cftorre1/Radar-salud/pull/10",
   "issues_must_remain_open": [
     5,
     6
   ],
-  "active_run": null,
+  "active_run": {
+    "id": 38120291133,
+    "phase": "discovery_only",
+    "code_sha": "86c3cd1d2697a6f814261eea6a563279b4b062ee",
+    "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38120291133",
+    "status_at_checkpoint": "in_progress",
+    "acceptance": "NOT_ACCEPTED_PENDING_ACTUAL_RESULTS"
+  },
   "evidence": [
     "data/audits/pulso_external_control_2026_10_11.json",
     "data/audits/pulso_browser_pagination/manifest.json",
@@ -51,8 +58,8 @@
     }
   },
   "validation": {
-    "directed_tests": "Independent77PASS at bbcbe55; agent15PASS runtime export increment e49f662",
-    "full_python": "553 PASS / 1 SKIP / 1 FAIL at short-headline checkpoint: corpus retention unit incorrectly assumes short headlines still fail; fixture correction assigned. Directed source103, video processing147 and runtime evidence22 PASS. This is not final candidate acceptance.",
+    "directed_tests": "227 PASS before push86c3cd1; real warm source execution in progress",
+    "full_python": "603 PASS / 1 SKIP at pre-push snapshot; later checkpoint units independently verified. Final full-suite SHA verification remains pending.",
     "acceptance": "NOT_RESOLVED_NO_MERGE; actualdatarecall/process/finalReviewer/stagingPASS pending",
     "general_candidate_qa": "Actions38118986971 tests/staging/deterministic Reviewer PASS at e94eeea; newer source repairs and actual source outcomes require fresh final candidate checks."
   },
@@ -152,5 +159,7 @@
     "genuine_publisher_date_conflicts": 4,
     "control_sha256": "b9c3ce2aea38107797fc19572581f27884d15611214fd2328d458bd35e906374",
     "source_acceptance": "NOT_ACCEPTED; fresh warm core and actual editorial outcomes remain required"
-  }
+  },
+  "original_exception_capture_run": 38120291103,
+  "current_general_qa_run": 38120295274
 }
