@@ -58,6 +58,27 @@ def test_legacy_queue_presence_never_counts_as_current_discovery_recall():
     assert row["omission"]["url_level_cause_verified"] is False
 
 
+def test_source_exception_after_detail_traces_never_becomes_successful_core_discovery():
+    failed = discovery([trace("candidate")])
+    failed["sources"][SOURCE] = dict(discovered=0, new=0, technical_status="error", error_type="TypeError")
+    report = audit.join_report(failed, {}, [], [], control([original("candidate")]))
+    row = report["matrix"][0]
+    assert row["source_inventory_candidate"] and not row["current_core_detected"]
+    assert not report["source_inventory_returned_to_core"]
+    assert report["source_inventory_exception"] == "TypeError"
+    assert report["counts"]["source_trace_candidate_urls"] == 1
+    assert report["counts"]["current_core_discovered_urls"] == 0
+    assert report["windows"]["90"]["recall"] == 0
+    assert row["omission"]["reason"] == "source_exception_before_core_registration:TypeError"
+    # Partial enumeration returns actual RawItems to core and keeps its real
+    # detections, while its coverage error remains visible and blocks QA.
+    failed["sources"][SOURCE].update(discovered=1, new=1, error_type="partial_discovery")
+    partial = audit.join_report(failed, {}, [], [], control([original("candidate")]))
+    assert partial["source_inventory_returned_to_core"]
+    assert partial["windows"]["90"]["recall"] == 1
+    assert partial["core_source"]["technical_status"] == "error"
+
+
 def test_published_history_and_actual_feed_have_attribution_and_gate_trace():
     url = BASE + "published/"
     history = [{"source_url": url, "evidence_maturity": "media_reported",

@@ -221,9 +221,14 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         url = normalized_url(detail.get("url"))
         if url:
             traces.setdefault(url, []).append(detail)
-    current = {url for url, rows in traces.items() if any(row.get("status") == "discovered" for row in rows)}
-    metadata_only = {url for url, rows in traces.items() if any(
-        row.get("status") == "discovered_metadata_only" for row in rows)} - current
+    text_candidates = {url for url, rows in traces.items() if any(row.get("status") == "discovered" for row in rows)}
+    metadata_candidates = {url for url, rows in traces.items() if any(
+        row.get("status") == "discovered_metadata_only" for row in rows)} - text_candidates
+    source_result = discovery.get("sources", {}).get(SOURCE, {})
+    source_exception = source_result.get("error_type")
+    returned_to_core = source_exception in (None, "partial_discovery")
+    current = text_candidates if returned_to_core else set()
+    metadata_only = metadata_candidates if returned_to_core else set()
     enumerated = current | metadata_only
     queued = {}
     for fingerprint, item in queue.items():
@@ -266,7 +271,7 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         primary_coverage = next((row for row in reversed(coverage) if row.get("status") == "archive_coverage"), None)
     source_error = discovery.get("audit_discovery_error") or discovery.get("sources", {}).get(SOURCE, {}).get("error_type")
     matrix = []
-    for url in sorted(enumerated | set(queued) | set(controls) | set(history_by_url)):
+    for url in sorted(text_candidates | metadata_candidates | set(queued) | set(controls) | set(history_by_url)):
         observed = traces.get(url, [])
         primary = next((row for row in observed if row.get("status") in {
             "discovered", "discovered_metadata_only", "excluded"}), {})
@@ -305,7 +310,10 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         omission = None
         if url not in enumerated:
             precise = next((row for row in observed if row.get("status") in {"detail_error", "excluded", "excluded_path"}), None)
-            if precise:
+            if not returned_to_core and url in text_candidates | metadata_candidates:
+                omission = dict(status="core_source_exception", reason="source_exception_before_core_registration:" + str(source_exception),
+                                error_type=source_exception, url_level_cause_verified=True)
+            elif precise:
                 omission = {"status": precise["status"], "reason": precise.get("reason") or "reason_not_emitted",
                             "error_type": precise.get("error_type"), "url_level_cause_verified": True}
             else:
@@ -334,6 +342,7 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
             "section": primary.get("section") or original.get("section") or urlsplit(url).path.split("/")[1],
             "topics": primary.get("topics") or ([original["topic"]] if original.get("topic") else []) or next((row["topics"] for row in rows if row.get("topics")), []),
             "current_core_detected": url in enumerated,
+            "source_inventory_candidate": url in text_candidates | metadata_candidates,
             "current_core_verified_health": url in current,
             "metadata_only_candidate": url in metadata_only,
             "publication_date_verified": bool(runtime_day),
@@ -393,6 +402,8 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         "selected_sources": discovery.get("selected_sources"), "core_source_present": SOURCE in discovery.get("sources", {}),
         "audit_discovery_error": discovery.get("audit_discovery_error"),
         "core_source": discovery.get("sources", {}).get(SOURCE), "coverage": coverage,
+        "source_inventory_returned_to_core": returned_to_core,
+        "source_inventory_exception": source_exception if not returned_to_core else None,
         "processing_deferrals": discovery.get("processing_deferrals", {}),
         "primary_coverage": primary_coverage,
         "complementary_archive_limits": [row for row in coverage if row.get("status") == "archive_coverage"],
@@ -401,6 +412,7 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         "unresolved_recent_feed_exclusions": unresolved_feed,
         "counts": {"current_core_discovered_urls": len(enumerated),
                    "current_core_verified_health_urls": len(current),
+                   "source_trace_candidate_urls": len(text_candidates | metadata_candidates),
                    "metadata_only_candidates": len(metadata_only), "source_queue_urls": len(queued),
                    "external_control_urls": len(controls), "history_urls": len(history_by_url),
                    "published_in_feed": sum(row["history_present"] and row["feed_present"] for row in matrix)},
