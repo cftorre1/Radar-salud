@@ -1,0 +1,1860 @@
+{
+  "schema_version": "pulso_focus_complete_prefilter_and_sourcehealth_review_v1",
+  "generated_at": "2026-10-11T16:10:53.868850+00:00",
+  "source_id": "pulso_latercera",
+  "execution_run_id": "38149773071",
+  "execution_code_sha": "81b844a654533891ad0923a40dfedfda03c17fa3",
+  "actual_snapshot": "0713ca9",
+  "review_scope": "All 21 rejected-before-model candidates plus October 5 incremental outcome and full 17-signal SourceHealth reconciliation.",
+  "full_primary_body_read_count": 25,
+  "primary_body_chars_read": 79645,
+  "actual_prefilter_rejections": 21,
+  "fabricated_scores": 0,
+  "numeric_gate_evaluations_for_prefilter": 0,
+  "adjudication_counts": {
+    "strategic_rejection_defensible": 21
+  },
+  "scope_disagreements_preserved": 4,
+  "controls_30": 29,
+  "controls_90": 79,
+  "frozen_control_rewritten": false,
+  "new5_semantic_review_ref": {
+    "path": "data/audits/pulso_focus_new5_semantic_review_2026_10_11.json",
+    "sha256": "773fcc79b87e2a8bfc215f344a87145526f47e947e26a740c8505b7bc8188518",
+    "acceptance_pass": false,
+    "unresolved_temporal_findings": 2
+  },
+  "publication_approved": false,
+  "acceptance_pass": false,
+  "changes_applied": false,
+  "findings": [
+    "69 selected rows remain technical proof deferrals, including October 5 score82; not complete editorial coverage.",
+    "Two new August publications have present-tense temporal copy findings awaiting bounded correction and feed verification.",
+    "SourceHealth last_signal_at must not be interpreted as latest visible publisher publication date."
+  ],
+  "all21_prefilter_full_body_adjudications": [
+    {
+      "matrix_index": 2,
+      "url": "https://www.latercera.com/nacional/noticia/a-dos-anos-de-muerte-de-fabiola-flores-en-grabacion-en-el-colorado-familia-de-realizadora-audiovisual-exige-justicia/",
+      "title": "A dos años de muerte de Fabiola Flores en grabación en El Colorado: familia de realizadora audiovisual exige justicia",
+      "section": "Nacional",
+      "publication_date": "2026-08-29",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/154/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "01d12ee08a9dcc794c086d606f5a3c52dfe2e81e9b9ba9873a20a16ff4683413",
+        "body_characters": 3532,
+        "original_publication_day": "2026-08-29",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "ca699fbea6d1b8959423c691f560984e45e6c63612e6f0a888c7801375cd38e0",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "b",
+            "index": 102,
+            "independent_decision": "uncertain_requires_editorial_review",
+            "reason": "Hay sanciones de Seremi de Salud por seguridad laboral y tres procesos judiciales, pero la nota es un aniversario de la muerte de 2024 y no fecha las multas. Puede merecer revisión ocupacional; no debe convertir sanciones históricas en una nueva medida sanitaria de 2026.",
+            "scope_adjudication": null,
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/154",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "El 29 de agosto de 2024, al término de la última jornada de grabación de la película Soltera, Casada, Viuda, Divorciada 2, en El Colorado, Fabiola Flores -que se desempeñaba como primera asistente de producción- fue trasladada junto a tres integrantes del equipo en una máquina pisa-nieve.",
+        "La Seremi de Salud de la Región Metropolitana sancionó a las empresas con multas de 1.000 UTM cada una.",
+        "Actualmente hay tres procesos judiciales en curso destinados a determinar las responsabilidades correspondientes."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "historical_occupational_accident_anniversary",
+      "body_specific_reason": "La publicación de agosto de 2026 recuerda un accidente y una muerte de 2024. Menciona multas sanitarias y procesos judiciales, pero no fecha las multas ni identifica una nueva medida de salud ocupacional dentro de los 90 días. No corresponde rejuvenecer esos hechos como nueva regulación sanitaria.",
+      "caveats": [
+        "Las multas son hechos reportados, sin fecha de emisión demostrada aquí.",
+        "Los procedimientos pendientes no prueban responsabilidad penal."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": false,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 8,
+      "url": "https://www.latercera.com/nacional/noticia/cardenal-fernando-chomali-entra-a-debate-por-indultos-yo-preferiria-hablar-de-clemencia/",
+      "title": "Cardenal Fernando Chomali entra a debate por indultos: “Yo preferiría hablar de clemencia”",
+      "section": "Nacional",
+      "publication_date": "2026-09-17",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/225/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "3bb13a21b2249ade7c8715e20d5ac45a115cee988957deb35bc677c448ef228d",
+        "body_characters": 3930,
+        "original_publication_day": "2026-09-17",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "fc8a31afb701084e774a6ee55c2e9f014cdcd0c7d762e2dbbfe96152cf4eebae",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "c",
+            "index": 146,
+            "independent_decision": "uncertain_requires_editorial_review",
+            "reason": "The cardinal offersFundaciónLasRosas as a possible placement for terminallyill prisoners within a clemency debate. It is a conditional care-provider offer without implemented admissions, capacity, funding or agreedpolicy; incremental strategic value remains uncertain.",
+            "scope_adjudication": null,
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/225",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "Ojalá que haya arrepentimiento, ojalá que se pida perdón, ojalá que se sepa dónde están los familiares desaparecidos, que haya cumplido parte de su pena, me parece que es tremendamente importante y yo pienso que el concepto más de indulto que podría entenderse como un borrón y cuenta nueva, yo preferiría hablar de clemencia”, manifestó el cardenal.",
+        "Y también nosotros como Iglesia ofrecimos en la Fundación Las Rosas que esas personas podrían estar ahí."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "clemency_debate_conditional_care_offer",
+      "body_specific_reason": "El eje es el debate sobre clemencia para presos terminales. La oferta de la Fundación Las Rosas es condicional; no se acredita convenio, traslado, nuevo programa, financiamiento ni capacidad de cuidados ejecutada. Es una referencia sanitaria real dentro de un debate penal, insuficiente para una señal sectorial nueva.",
+      "caveats": [
+        "Una oferta de alojamiento no equivale a incorporación efectiva de pacientes ni a ampliación de capacidad."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": false,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 17,
+      "url": "https://www.latercera.com/nacional/noticia/con-casi-20-toneladas-de-cargamentos-aterriza-en-colombia-avion-de-la-fach-con-ayuda-humanitaria-tras-terremoto/",
+      "title": "Con 10 toneladas de cargamento: aterriza en Colombia avión de la FACH con ayuda humanitaria tras terremoto",
+      "section": "Nacional",
+      "publication_date": "2026-08-15",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/108/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "0f88da15e09e50e18976fbf3a54671f8b1f5d1ec190a1dc340582dd03dd74bd5",
+        "body_characters": 1953,
+        "original_publication_day": "2026-08-15",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "70f2a79adcc2c0d9ae93ab8b201aa5fff6208ca5fa227bb0ab9fcac67ed0badc",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "b",
+            "index": 74,
+            "independent_decision": "uncertain_requires_editorial_review",
+            "reason": "Entrega efectiva internacional incluye 27.000 unidades de medicamentos privados dentro de 10 toneladas de ayuda. El componente sanitario está cuantificado, pero no se identifican actores o efectos en la red sanitaria chilena; revisión editorial debe resolver su valor estratégico exterior.",
+            "scope_adjudication": null,
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/108",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "Producto del terremoto de magnitud 7.4 que golpeó a Colombia, ya aterrizó en dicho país un avión de la Fuerza Aérea chilena con ayuda humanitaria, con un cargamento de 10 toneladas.",
+        "Según consignó el Ministerio de Relaciones Exteriores de Colombia, el vuelo llegó con 320 kits de alimentación, 200 kits de aseo domiciliario y 346 kits de higiene para hombres, mujeres y niños, además de 27.000 unidades de medicamentos.",
+        "Estos últimos, según precisan desde la Cancillería chilena, corresponden a una donación efectuada por privados."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "external_humanitarian_medication_donation",
+      "body_specific_reason": "La llegada de ayuda a Colombia incluye 27.000 unidades de medicamentos donados por privados no identificados. Es un envío humanitario exterior; no se demuestra impacto en la red, abastecimiento, prestadores o financiamiento sanitario chileno. La donación es real, pero no aporta una consecuencia sectorial local material verificable.",
+      "caveats": [
+        "Diez toneladas corresponden al cargamento mixto, no a medicamentos solamente.",
+        "Comparte la familia de ayuda a Colombia con la publicación del 12 de agosto; no se declara duplicado exacto."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": false,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 24,
+      "url": "https://www.latercera.com/nacional/noticia/detienen-a-alumno-del-instituto-nacional-por-amenaza-de-tiroteo-incautan-municiones-y-morfina/",
+      "title": "Detienen a alumno del Instituto Nacional por amenaza de tiroteo: incautan municiones y morfina",
+      "section": "Nacional",
+      "publication_date": "2026-08-20",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/124/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "6f895c97da31c0e7704dde88fceae4fe659c31c3390d92a27f9282ae44818249",
+        "body_characters": 1834,
+        "original_publication_day": "2026-08-20",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "e74ea407596a9ddabb76ea65c2a7ad963f77ae7116f6f44dbf81860c64bd5fb5",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "b",
+            "index": 85,
+            "independent_decision": "uncertain_requires_editorial_review",
+            "reason": "Se incautan 28 ampollas de morfina y 7 de metoclopramida en una diligencia por amenaza escolar. Los fármacos concretos pueden abrir una cuestión de control o desvío, pero el cuerpo no identifica origen médico o afectación del suministro. Revisar antes de afirmar valor sanitario.",
+            "scope_adjudication": null,
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/124",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "Además, fueron incautadas 28 ampollas de morfina, siete de metoclopramida, 10 panfletos con consignas anarquistas y 14 teléfonos celulares.",
+        "El individuo será puesto a disposición del Ministerio Público."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "criminal_incident_medicines_without_provider_link",
+      "body_specific_reason": "La noticia es una amenaza escolar y una incautación policial. La presencia de morfina y metoclopramida no demuestra origen hospitalario, desvío de existencias clínicas, investigación a un prestador ni alteración de suministro. No basta inferir un caso sanitario a partir de los fármacos incautados.",
+      "caveats": [
+        "No atribuir los fármacos a una red médica ni dar por probado un delito de desvío sanitario."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": false,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 29,
+      "url": "https://www.latercera.com/nacional/noticia/estacion-santa-isabel-del-metro-reabrira-este-martes-tras-incendio-que-obligo-a-suspender-el-servicio/",
+      "title": "Estación Santa Isabel del Metro reabrirá este martes tras incendio que obligó a suspender el servicio",
+      "section": "Nacional",
+      "publication_date": "2026-08-03",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/80/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "1772d5962e47909f9d3a9110de86664ff783f87494b5d1727bae35fb73050607",
+        "body_characters": 1343,
+        "original_publication_day": "2026-08-03",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "f071db4a1a309326f5e30c45de3dc4efbf79236cdab703d2a926ce596383ae60",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "a",
+            "index": 55,
+            "independent_decision": "uncertain_requires_editorial_review",
+            "reason": "El cuerpo sí contiene intervención de Seremi de Salud y laboratorios acreditados para verificar fibras/contaminantes antes de reabrir Metro. Es vigilancia ambiental sanitaria, pero con resultados negativos y sin impacto en red clínica, recursos o nueva regla.",
+            "scope_adjudication": null,
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/80",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "Esos trabajos fueron supervisados por la Seremi de Salud e incluyeron análisis efectuados en laboratorios nacionales e internacionales acreditados.",
+        "“Los resultados de las muestras ambientales determinaron que no se detectaron elementos contaminantes en ninguna de las muestras analizadas, confirmando que las condiciones para el tránsito y permanencia de cualquier persona en la estación son completamente seguras”, indicó la empresa."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "transport_environmental_clearance_without_sector_change",
+      "body_specific_reason": "La Seremi supervisó mediciones ambientales y la empresa comunicó resultados negativos antes de reabrir una estación. Hay actuación de salud ambiental, pero el cuerpo no acredita exposición con daño, nueva regla sanitaria, capacidad asistencial, inversión o impacto en prestadores. El resultado es la habilitación de transporte tras un incidente local.",
+      "caveats": [
+        "No negar la intervención sanitaria ni convertir el control ambiental negativo en un evento clínico."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": false,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 30,
+      "url": "https://www.latercera.com/nacional/noticia/fallece-tripulante-vietnamita-que-recalo-de-emergencia-en-talcahuano-isp-descarto-que-se-tratara-de-ebola/",
+      "title": "Fallece tripulante vietnamita que ingresó de emergencia a hospital de Talcahuano: ISP descarta que sea un caso de ébola",
+      "section": "Nacional",
+      "publication_date": "2026-07-29",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/69/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "05ff25e9e986e355b64d3c884041c5641584bb2e39cd975be4044b0e0aec436a",
+        "body_characters": 1405,
+        "original_publication_day": "2026-07-29",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "e6c97c5a993cb4951063d6a1d360bbeb86193253e596d242ba4ad68391b53e46",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "a",
+            "index": 48,
+            "independent_decision": "concrete_false_negative_for_editorial_analysis",
+            "reason": "Se describe vigilancia sanitaria portuaria y diagnóstico de fiebre hemorrágica por ISP, con restricción a la libre plática hasta aclarar diagnóstico. Es respuesta concreta de Salud Pública, no mera hospitalización incidental.",
+            "scope_adjudication": {
+              "decision": "defensible_prefilter_rejection_with_scope_disagreement",
+              "reviewer": "external_control",
+              "reason": "Full body concerns one imported sailor and routine diagnostic/port-containment response; Ebola ruled out, no confirmed local transmission, network burden or changed policy. Independent reviewer A calls analysis eligible; preserve disagreement and do not imply epidemic/system effect."
+            },
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/69",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "La seremi de Salud de la Región de Biobío, Isabel Rojas, informó esta jornada que el marino mercante vietnamita que ingresó de emergencia el domingo al Hospital Las Higueras, falleció la noche de ayer martes.",
+        "“Se enviaron las muestras del laboratorio del Instituto de Salud Pública (ISP), el cual ya descartó infección por virus ébola, y se espera la confirmación diagnóstica respecto a otras enfermedades en estudio para levantar la libre plática de la embarcación, permitiendo la continuidad de su viaje hacia el próximo puerto\", señaló.",
+        "“Se enviaron las muestras del laboratorio del Instituto de Salud Pública (ISP), el cual ya descartó infección por virus ébola, y se espera la confirmación diagnóstica respecto a otras enfermedades en estudio para levantar la libre plática de la embarcación, permitiendo la continuidad de su viaje hacia el próximo puerto\", señaló."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "single_imported_case_existing_port_health_protocol",
+      "body_specific_reason": "El fallecimiento y la exclusión de ébola son novedades clínicas de un único tripulante importado. El cuerpo no acredita transmisión secundaria, brote, presión material de red ni cambio de la regulación sanitaria existente. Rechazo estratégico coherente con los otros dos artículos de la misma familia, sin negar la hospitalización en Chile.",
+      "caveats": [
+        "No afirmar ébola ni otra etiología todavía pendiente en esta publicación.",
+        "Se conserva el desacuerdo inicial sobre elegibilidad para análisis; este juicio final es de alcance estratégico."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": true,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 31,
+      "url": "https://www.latercera.com/nacional/noticia/funcionarios-del-ejercito-formalizados-en-causa-vinculada-a-investigacion-por-muerte-de-franco-vargas-quedan-con-arraigo/",
+      "title": "Funcionarios del Ejército formalizados en causa vinculada a investigación por muerte de Franco Vargas quedan con arraigo",
+      "section": "Nacional",
+      "publication_date": "2026-09-02",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/170/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "17647e98e934bcc264948bd9eb244a28b431929b2805aebf2ec0538db154ef83",
+        "body_characters": 3627,
+        "original_publication_day": "2026-09-02",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "7ef093188825e33df17448851e2e567df35af16525bdd0cf3835b3e8aa878a48",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "c",
+            "index": 115,
+            "independent_decision": "uncertain_requires_editorial_review",
+            "reason": "Eight soldiers are charged over alleged abuse in2024, including omission of clinical assessment and laterTEPT. The report does not establish a new health-network rule or remedy; clinical-governance relevance is uncertain and accusations remain unproven.",
+            "scope_adjudication": null,
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/170",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "Los hechos investigados se habrían desarrollado en el Cuartel Pacollo de la Brigada Motorizada 24 Huamachuco, en Putre, entre el 15 y el 27 de abril de 2024.",
+        "Las víctimas son tres soldados conscriptos del regimiento."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "criminal_proceeding_historical_military_health_allegations",
+      "body_specific_reason": "La novedad es la formalización penal sobre hechos de abril de 2024. Las omisiones de atención y los daños físicos o psicológicos son relevantes para la investigación, pero el cuerpo no informa una nueva medida de prestadores, cobertura, capacidad o gobernanza clínica general. No se convierte la formalización en culpa probada ni en una reforma sanitaria reciente.",
+      "caveats": [
+        "Las alegaciones de omisión médica y el daño psicológico no se borran; se distingue el proceso penal del cambio sectorial."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": false,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 32,
+      "url": "https://www.latercera.com/nacional/noticia/gobierno-anuncia-medidas-de-apoyo-a-familias-tras-fatal-atropello-en-vina-del-mar/",
+      "title": "Gobierno anuncia medidas de apoyo a familias tras fatal atropello en Viña del Mar",
+      "section": "Nacional",
+      "publication_date": "2026-07-13",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/2/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "318ac9b98f2d0fb0e0e7b5fa6429e6708f00137c2c31585cad945d542b695bc1",
+        "body_characters": 1852,
+        "original_publication_day": "2026-07-13",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "a892643058f6493e2bee958c73616a3282dbabe7de08b9a9a39174b15bae79a1",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "a",
+            "index": 2,
+            "independent_decision": "uncertain_requires_editorial_review",
+            "reason": "Hay oferta pública nueva de apoyo psicológico tras una tragedia, pero para seis víctimas/familias y sin prestador, presupuesto, capacidad o programa sanitario ampliado. Su alcance sectorial debe juzgarse editorialmente.",
+            "scope_adjudication": null,
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/2",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "Según detalló la autoridad, “la ayuda consiste en todos los trámites funerarios”, añadiendo que “también se le está ofreciendo todo lo que tiene que ver con ayuda en salud mental, psicológica y, por supuesto, también de reinserción laboral y todo lo que puedan necesitar.",
+        "Según detalló la autoridad, “la ayuda consiste en todos los trámites funerarios”, añadiendo que “también se le está ofreciendo todo lo que tiene que ver con ayuda en salud mental, psicológica y, por supuesto, también de reinserción laboral y todo lo que puedan necesitar."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "local_crisis_psychological_support_offer",
+      "body_specific_reason": "La autoridad ofrece apoyo funerario, psicológico y laboral tras un atropello. No se identifica programa sanitario nuevo, proveedor, capacidad, presupuesto o atención efectivamente entregada. Es una oferta de asistencia a víctimas de una crisis local, sin una modificación material del sistema de salud demostrada por el artículo.",
+      "caveats": [
+        "Preservar el carácter de oferta; no afirmar terapias ejecutadas o resultados clínicos."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": false,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 34,
+      "url": "https://www.latercera.com/nacional/noticia/gobierno-enviara-este-jueves-40-millones-en-ayuda-humanitaria-a-colombia-tras-devastador-terremoto/",
+      "title": "Gobierno enviará este jueves $40 millones en ayuda humanitaria a Colombia tras devastador terremoto",
+      "section": "Nacional",
+      "publication_date": "2026-08-12",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/104/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "c6cd071ab27da8d655452234e98ba4fd3c0deb654fcdf2b1c001e493d1504306",
+        "body_characters": 2876,
+        "original_publication_day": "2026-08-12",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "96e5aeb1aa826228aa7430c8591f9c81bdfa7082f4a52046a70595dcfcd3781f",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "b",
+            "index": 71,
+            "independent_decision": "uncertain_requires_editorial_review",
+            "reason": "Anuncio de ayuda humanitaria chilena incluye medicamentos privados y un monto global de 40 millones. La respuesta a un desastre exterior es tangible, pero el cuerpo no identifica donantes sanitarios, financiamiento médico o efectos en la capacidad de Chile. Revisar pertinencia sin aprobar publicación.",
+            "scope_adjudication": null,
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/104",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "“Queremos anunciar que el vuelo todavía está en una hora por confirmar, pero que va a concurrir con ayuda humanitaria avaluada en más de 40 millones de pesos, incluyendo kit de alimentación, kit de higiene para hombres y para mujeres, kit de higiene infantil, kit de aseo domiciliario y también hay una donación efectuada por privados de medicamentos”, detalló Pavez.",
+        "“Queremos anunciar que el vuelo todavía está en una hora por confirmar, pero que va a concurrir con ayuda humanitaria avaluada en más de 40 millones de pesos, incluyendo kit de alimentación, kit de higiene para hombres y para mujeres, kit de higiene infantil, kit de aseo domiciliario y también hay una donación efectuada por privados de medicamentos”, detalló Pavez.",
+        "Pavez explicó que, por el momento, ese despliegue no se concretará debido a que Colombia no ha solicitado formalmente este tipo de asistencia."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "external_humanitarian_mixed_aid_announcement",
+      "body_specific_reason": "El anuncio corresponde a ayuda mixta a Colombia y a medicamentos privados no cuantificados económicamente. No demuestra reasignación de presupuesto sanitario chileno ni consecuencias locales de cobertura o capacidad. Los más de $40 millones no son un gasto farmacéutico demostrado y el grupo de rescate no se había activado.",
+      "caveats": [
+        "No convertir el valor del cargamento mixto en financiamiento médico.",
+        "Relacionada con la llegada del 15 de agosto, sin imponer agrupación o duplicado exacto."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": false,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 44,
+      "url": "https://www.latercera.com/nacional/noticia/los-abogados-que-enfrentaran-al-pleno-de-la-suprema-para-defender-a-los-jueces-que-estan-al-borde-de-la-remocion/",
+      "title": "Los abogados que enfrentarán al pleno de la Suprema para defender a los jueces que están al borde de la remoción",
+      "section": "Nacional",
+      "publication_date": "2026-09-01",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/163/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "8c787b6cb2b17331693c1fcf064dd6ba8c07c3c1a588d5c2a35ea71980f760e0",
+        "body_characters": 3142,
+        "original_publication_day": "2026-09-01",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "125af3d0ff87427b6ca6f188c2d555e03ec5490b7d94da4f1eae560e1dbeeeaf",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "b",
+            "index": 109,
+            "independent_decision": "uncertain_requires_editorial_review",
+            "reason": "Remoción disciplinaria de 57 jueces por viajes con licencia médica: existe alcance institucional amplio, pero el nuevo hito son los abogados y el procedimiento judicial, sin efecto descrito en emisión médica, subsidios o aseguradores. Alcance sectorial incierto; requiere revisión editorial.",
+            "scope_adjudication": null,
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/163",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "Una tabla, sin nombre y solo con roles administrativos, de un total de 57 casos, es lo que hay disponible en el pleno Corte Suprema.",
+        "Detrás de cada uno de esos roles hay un juez que cometió una grave falta a la probidad por haber viajado al extranjero con licencia médica y que enfrenta un cuaderno de remoción."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "judiciary_employment_discipline_without_health_financing_change",
+      "body_specific_reason": "El artículo identifica abogados y el procedimiento de remoción de jueces por viajar con licencia. No informa emisores clínicos, pagadores, cuantías de subsidios ni un cambio de fiscalización o normativa de licencias médicas del sector salud. La consecuencia demostrada es disciplinaria dentro del Poder Judicial.",
+      "caveats": [
+        "No confundir estos expedientes laborales con condenas por emisión fraudulenta o con una modificación del aseguramiento."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": false,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 68,
+      "url": "https://www.latercera.com/nacional/noticia/otra-jueza-mas-recurre-al-tc-para-congelar-en-la-suprema-su-cuaderno-de-remocion-por-viajar-fuera-de-chile-con-licencia/",
+      "title": "Otra jueza más recurre al TC para congelar en la Suprema su cuaderno de remoción por viajar fuera de Chile con licencia",
+      "section": "Nacional",
+      "publication_date": "2026-08-05",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/89/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "d1f256cc11a156360e0c6cd6616dbccf543aec5adb76852c71bbc51f346b3a64",
+        "body_characters": 3157,
+        "original_publication_day": "2026-08-05",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "8beea34344f25fc595750a347d3ae9c1d5803e7a6dc740eb63157a0ef2aa4111",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "b",
+            "index": 62,
+            "independent_decision": "uncertain_requires_editorial_review",
+            "reason": "Al menos 56 cuadernos de remoción por viajes con licencia médica y su suspensión judicial muestran un problema institucional. El cuerpo no concreta efectos en aseguradores, subsidios, emisores médicos o autoridad sanitaria; la revisión editorial debe resolver el alcance, sin aprobación automática.",
+            "scope_adjudication": null,
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/89",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "Hasta ahora hay al menos 56 cuadernos de remoción, pero fuentes judiciales comentan que la cifra es mayor ya que luego de la única comunicación al respecto ha habido más aperturas de procesos disciplinarios en función del artículo 80 de la Constitución.",
+        "Esta vez fue el domingo 2 de julio cuando la jueza del 10° Juzgado de Garantía de Santiago, María Verónica Arancibia, recurrió ante el TC contra “artículos 40 y 41 del auto acordado contenido en el Acta 108 sobre procedimiento para investigar la responsabilidad disciplinaria de los integrantes del Poder Judicial”."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "judiciary_constitutional_procedure_without_health_change",
+      "body_specific_reason": "La actuación nueva es un recurso ante el TC para detener una remoción judicial. Las licencias son el antecedente del sumario, no una nueva medida de emisión, financiamiento, cobertura o control sanitario. El artículo trata las reglas del procedimiento disciplinario del Poder Judicial.",
+      "caveats": [
+        "Conservar la fecha de publicación verificada; la referencia interna de día/mes inconsistente no se corrige por inferencia."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": false,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 76,
+      "url": "https://www.latercera.com/nacional/noticia/que-se-sabe-del-tripulante-vietnamita-internado-en-el-hospital-de-talcahuano-con-fiebre-hemorragica/",
+      "title": "Qué se sabe del tripulante vietnamita internado en el Hospital Las Higueras de Talcahuano con fiebre hemorrágica",
+      "section": "Nacional",
+      "publication_date": "2026-07-29",
+      "control_90": true,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+        "body_json_pointer": "/all_controls/52/primary_body_full",
+        "body_file_sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+        "body_sha256": "9cc8248dad87993f6d4d4a0f43e328571c040c1515abbe16e2bb44047b8007b0",
+        "body_characters": 2270,
+        "original_publication_day": "2026-07-29",
+        "independently_retained_visible_bylines": [
+          {
+            "timestamp": "2026-07-29T13:26:30.193Z",
+            "text": "29 JULIO 2026",
+            "visible_day": "2026-07-29"
+          }
+        ],
+        "original_gzip_file": "tests/fixtures/pulso_runtime_real/f186172beaf2e07cf37a207e96b10dd87788f7bbd76980c1534e53598752c0b7.html.gz",
+        "html_sha256": "f186172beaf2e07cf37a207e96b10dd87788f7bbd76980c1534e53598752c0b7",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+            "sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+            "review_index": 53,
+            "expectation_group": "rejection_defensible",
+            "reason": "Un tripulante hospitalizado y una embarcación en cuarentena con diagnóstico por confirmar; discovery sanitario esperado, pero no acredita brote, cambio regulatorio sistémico ni impacto material de red."
+          },
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "prior101",
+            "index": 83,
+            "independent_decision": "uncertain_requires_editorial_review",
+            "reason": "Operational public-health containment is real, but it concerns a single unconfirmed imported case with no confirmed pathogen, secondary cases, broader care burden or changed system-level policy. Borderline eligibility is uncertain; this case does not automatically justify widening the materiality gate.",
+            "scope_adjudication": null,
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/70",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "La jornada del lunes los protocolos sanitarios se activaron en Talcahuano luego de que una embarcación proveniente de Singapur, solicitara de forma excepcional -y bajo el Reglamento Sanitario Internacional que rige en Chile y en el mundo- recalar en el puerto ante una situación de emergencia de un integrante de su tripulación.",
+        "Actualmente el tripulante está en observación en el Hospital Las Higueras, mientras que el resto de la tripulación se encuentra aún dentro del barco en cuarentena, impedidos de seguir su curso.",
+        "“Solicitamos de hecho resguardo policial desde el lunes en la noche, porque hasta que no tengamos la certeza del diagnóstico, no podemos dejar bajar a la gente del barco”, afirmó la subsecretaria."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "single_imported_case_existing_port_health_protocol",
+      "body_specific_reason": "Sí ocurrió una acción sanitaria humana en Chile: hospitalización, cuarentena de una embarcación y resguardo policial ante un diagnóstico pendiente. Es la aplicación del RSI existente a un solo caso importado. No se acredita brote, transmisión secundaria, nueva regla general, ampliación de capacidad o presión material de red. El rechazo estratégico es coherente con la lectura independiente congelada de los 79 controles y con los artículos de fallecimiento y confirmación de malaria de la misma familia.",
+      "caveats": [
+        "No clasificarlo como foreign-only: el hospital y la cuarentena son locales.",
+        "Ébola, Lassa, Marburgo, dengue y malaria eran posibilidades, no diagnósticos confirmados en esta nota.",
+        "La aplicación de un protocolo vigente no prueba una nueva regulación chilena."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_independent_primary_review79",
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": false,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 80,
+      "url": "https://www.latercera.com/nacional/noticia/silva-llanos-y-repetto-los-supremos-que-acusaron-vulneracion-al-debido-proceso-tras-apertura-de-cuadernos-de-remocion/",
+      "title": "Silva, Llanos y Repetto: los supremos que acusaron vulneración al debido proceso tras apertura de cuadernos de remoción",
+      "section": "Nacional",
+      "publication_date": "2026-08-27",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/147/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "db60439126450f592a555c4224e2edd9a48a9c9388b21f5a63a8b817a67c6af5",
+        "body_characters": 5761,
+        "original_publication_day": "2026-08-27",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "48330c57720f2fce99c876380fd335ac0a60a6eef61a762a2a40b4316af366a4",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "b",
+            "index": 99,
+            "independent_decision": "uncertain_requires_editorial_review",
+            "reason": "Procesos disciplinarios sistémicos por viajes con licencia médica afectan a al menos 56 magistrados, pero la novedad es el debido proceso judicial; no se identifica efecto en emisores médicos, subsidios o pagadores sanitarios. Requiere definir alcance editorial sin afirmar materialidad.",
+            "scope_adjudication": null,
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/147",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "Para estos supremos ese era el punto fundamental, es decir, todos los jueces en cuestión ya habían enfrentado procesos disciplinarios en donde se analizó su conducta.",
+        "“Tal sumario, se ordenó e instruyó de acuerdo con el Acta número 108-2020 de esta Corte Suprema, que constituye propiamente un auto acordado dictado en virtud de las facultades directivas y económicas otorgadas a esta máxima instancia judicial por la Constitución y que contiene normas procesales, entre las cuales, se encuentra la disposición del artículo 33, que señala que la resolución que imponga una medida disciplinaria y aquella que absuelva a la persona investigada, será comunicada a la Corte Suprema, dentro de quinto día de quedar ejecutoriada solo para efectos del registro lo que será dispuesto directamente por el presidente, sin que su mérito pueda ser sometido a revisión por el tribunal pleno”, se lee en el voto de minoría.",
+        "Justamente para estos tres sumarios esa última situación es la que se está dando con los cuadernos de remoción por licencias: “Situación que justamente ocurre en este caso, tratándose de sumarios afinados con resoluciones finales ejecutoriadas, de modo que la aplicación de la facultad que otorga a la Corte Suprema el artículo 80 de la Constitución en cuanto se pretende usar para decidir si un juez debe ser removido o no por los mismos hechos que ya fueron materia de un sumario concluido, vulnera normas de un debido proceso, lo que justamente es un principio que la propia Acta 108-2022 en su exposición de motivos se encarga especialmente de resguardar”."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "judiciary_due_process_dispute_without_health_change",
+      "body_specific_reason": "La nueva información son votos disidentes y argumentos sobre debido proceso en remociones judiciales. No se demuestra una nueva norma sanitaria, efecto de financiamiento del subsidio ni una modificación de prestadores o aseguradores. La licencia médica es el antecedente laboral del procedimiento.",
+      "caveats": [
+        "No equiparar remoción administrativa con prueba de fraude clínico."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": false,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 81,
+      "url": "https://www.latercera.com/nacional/noticia/sistema-frontal-en-valparaiso-autoridades-reportan-hasta-15-mil-hogares-sin-luz-y-advierten-lluvias-sobre-200-mm/",
+      "title": "Sistema frontal en Valparaíso: autoridades reportan hasta 15 mil hogares sin luz y advierten lluvias sobre 200 mm",
+      "section": "Nacional",
+      "publication_date": "2026-07-16",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/18/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "5f058be55947abaa1202d0bf73d60756830dc656ad100a754512915f3fd01788",
+        "body_characters": 4163,
+        "original_publication_day": "2026-07-16",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "51479c9e295a156a2bfda0606ca452d5248f6280ba4248726462ce3d967936f8",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "a",
+            "index": 14,
+            "independent_decision": "uncertain_requires_editorial_review",
+            "reason": "El cuerpo reporta priorización explícita de reposición eléctrica para electrodependientes, hospitales y CESFAM. Puede aportar continuidad de atención, pero no cuantifica instalaciones sanitarias interrumpidas o una nueva regla distinta de la respuesta rutinaria.",
+            "scope_adjudication": null,
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/18",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "La autoridad agregó que las empresas reforzaron sus equipos de respuesta, aumentando cuadrillas “hasta nueve veces en algunos sectores”, con prioridad para electrodependientes, hospitales, CESFAM, cárceles, sistemas sanitarios rurales, telecomunicaciones y servicios de emergencia.",
+        "El gobernador Rodrigo Mundaca señaló que, según el informe recibido durante la mañana, existen alrededor de 13.500 hogares sin suministro eléctrico en la región, concentrados principalmente en Quilpué, Casablanca, San Felipe y Cartagena."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "general_weather_restoration_health_priority_incidental",
+      "body_specific_reason": "El balance trata lluvias y cortes eléctricos generales. Hospitales, CESFAM y electrodependientes aparecen como prioridades de reposición, pero no se identifican establecimientos sanitarios inoperativos, atención interrumpida, pacientes afectados o una nueva medida clínica concreta. Los hogares sin luz no son un indicador de pérdida de capacidad hospitalaria.",
+      "caveats": [
+        "No negar la prioridad sanitaria ni atribuir a hospitales el total de hogares o de puntos eléctricos afectados."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": false,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 82,
+      "url": "https://www.latercera.com/nacional/noticia/tenia-malaria-instituto-de-salud-publica-confirma-diagnostico-de-tripulante-vietnamita-que-fallecio-en-talcahuano/",
+      "title": "Tenía malaria: Instituto de Salud Pública revela diagnóstico de tripulante vietnamita que falleció en Talcahuano",
+      "section": "Nacional",
+      "publication_date": "2026-07-29",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/71/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "56f73a8398e1152544992a6839bebb7cd0eacecbc82b3a773d09d341f2871610",
+        "body_characters": 1264,
+        "original_publication_day": "2026-07-29",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "bd98d0850b4b48dff450df705b69fb1a80aba02c599213f19f5974c74c45adfb",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "a",
+            "index": 49,
+            "independent_decision": "concrete_false_negative_for_editorial_analysis",
+            "reason": "La confirmación ISP de malaria y levantamiento de restricción/cuarentena de embarcación es decisión sanitaria verificable reportada, perteneciente a vigilancia de salud pública.",
+            "scope_adjudication": {
+              "decision": "defensible_prefilter_rejection_with_scope_disagreement",
+              "reviewer": "external_control",
+              "reason": "Full body confirms malaria and no risk to crew, lifting vessel restriction; single imported case without changed Chilean health network capacity, payer, market or broader policy. Independent reviewer A calls analysis eligible; retain disagreement, not forced publication."
+            },
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/71",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "Según detalló la autoridad sanitaria, el diagnóstico fue confirmado gracias a las muestras enviadas al Instituto de Salud Pública (ISP).",
+        "Ante esta situación y debido a que no existe riesgo para el resto de la embarcación, Rojas indicó que el barco podrá levantar su cuarentena y continuar su ruta.",
+        "Según explicó la autoridad sanitaria sobre el caso, la enfermedad es “principalmente transmitida mediante la picadura de mosquitos del género Anopheles infectados con el parásito Plasmodium, que no tiene presencia en la Región del Biobío\"."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "single_imported_case_existing_port_health_protocol",
+      "body_specific_reason": "La confirmación de malaria y el levantamiento de cuarentena cierran la gestión de un único caso importado. La Seremi informa ausencia de riesgo para la tripulación; el cuerpo no demuestra transmisión local, brote, nueva regulación, ampliación de capacidad o impacto sectorial sostenido. Rechazo consistente con la misma familia del 29 de julio, sin ocultar el cambio operacional del caso individual.",
+      "caveats": [
+        "No afirmar un brote de malaria ni ébola confirmado.",
+        "Se conserva el desacuerdo inicial sobre elegibilidad para análisis."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": true,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 88,
+      "url": "https://www.latercera.com/politica/noticia/kast-descarta-deslealtad-del-partido-republicano-ante-tensiones-con-el-gobierno-en-los-temas-importantes-vamos-a-tener-siempre-unidad/",
+      "title": "Kast descarta “deslealtad” del Partido Republicano ante tensiones con el gobierno: “En los temas importantes vamos a tener siempre unidad”",
+      "section": "Política",
+      "publication_date": "2026-08-10",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/98/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "6cd6248f6787c2ceefeac22cc027c4fad0263842f50619e4b87a6fb7d0901ab1",
+        "body_characters": 6645,
+        "original_publication_day": "2026-08-10",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "7cc51d0264bb756eb6dfe0222b0ca00ab5b18008442764d591801724a5e8e9fe",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "prior101",
+            "index": 27,
+            "independent_decision": "uncertain_requires_editorial_review",
+            "reason": "Pending mandatory clinical-pathway proposal appears in last paragraph and the President confirms non-advancement. Sectoral content exists, but this broad political interview supplies no implementation and may reiterate August 4 non-priority rather than add material status.",
+            "scope_adjudication": null,
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/98",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "Para cerrar, sobre el proyecto “Escucha su Corazón”, iniciativa oficialista que ha generado controversia en el mundo político, el Presidente zanjó: “Es una iniciativa parlamentaria legítima, pero cuando nosotros planteamos en campaña que nos íbamos a enfocar en un gobierno de emergencia, dijimos que no íbamos a impulsar medidas que generaran una tensión en algunos aspectos de la vida social.",
+        "La diferencia de la moción parlamentaria en Chile es que se puso como obligatoria, y es legítimo que los parlamentarios presenten sus mociones parlamentarias, que se genere un debate en torno a eso, pero nosotros no vamos a avanzar en esa materia”."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "general_political_interview_unenacted_heartbeat_initiative",
+      "body_specific_reason": "El eje es una entrevista política sobre coalición y lealtad. El párrafo final menciona una moción sobre latido obligatorio y una posición del Ejecutivo de no avanzar, pero no acredita regla clínica aprobada, cambio de cobertura o implementación. No basta ese cierre para convertir la entrevista completa en una nueva intervención sanitaria sectorial.",
+      "caveats": [
+        "Conservar moción y postura como propuestas o declaraciones; no presentar obligación clínica vigente.",
+        "No se afirma un duplicado exacto sin comparación adicional."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": false,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 99,
+      "url": "https://www.latercera.com/pulso/noticia/gobierno-nombra-a-lorena-herrera-como-nueva-directora-general-de-concesiones-de-obras-publicas/",
+      "title": "Gobierno nombra a Lorena Herrera como nueva directora general de Concesiones de Obras Públicas",
+      "section": "Pulso",
+      "publication_date": "2026-07-24",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/50/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "9e16d6f799d9111fb42fad4c68f37d2de55d334cf648ce75324527a71c45f9c3",
+        "body_characters": 3070,
+        "original_publication_day": "2026-07-24",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "b65b027f79964552f1fefa19531ef87b20a7f362fad1a485e849943779ef5107",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "a",
+            "index": 36,
+            "independent_decision": "concrete_false_negative_for_editorial_analysis",
+            "reason": "El nombramiento de la jefatura nacional de concesiones afecta una cartera que incluye hospitales; el cuerpo identifica gestión financiera/contractual en Red Maule y los problemas de hospitales Biobío/Antofagasta que contextualizan cambios anteriores. Es gobierno de inversión hospitalaria que debe llegar a evaluación editorial.",
+            "scope_adjudication": {
+              "decision": "defensible_prefilter_rejection",
+              "reviewer": "publisher_surfaces",
+              "reason": "Full-body second review finds current story is a generic concessions-office appointment. Red Maule is employment background; Biobío hospital paralysis refers to earlier Sánchez departure in May2025, not a new current hospital financing, contract or capacity event. No automatic keyword widening."
+            },
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/50",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "También fue gerente en Deloitte Advisory Chile (2017-2020), “asesorando proyectos de infraestructura y asociaciones público-privadas”, y fue subgerente general y gerente de administración y finanzas de la Sociedad Concesionaria Red Maule S.A (2020-2026), “liderando la gestión financiera, contractual y estratégica de importantes proyectos hospitalarios concesionados”.",
+        "Su renuncia fue solicitada en mayo del 2025.",
+        "Según explicó Teletrece en su momento, la salida se dio en medio de la paralización de obras de cuatro hospitales en la Región del Biobío y problemas de infraestructura y administración de la concesionaria en el Hospital Regional de Antofagasta."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "general_concessions_appointment_historical_hospital_context",
+      "body_specific_reason": "El nombramiento es actual, pero los hospitales aparecen en la trayectoria de la designada y en la explicación de una salida de mayo de 2025. No se anuncia nuevo contrato, inversión, financiación o apertura hospitalaria. Tomar la paralización de cuatro hospitales como novedad de julio de 2026 rejuvenecería el antecedente histórico.",
+      "caveats": [
+        "Se conserva el desacuerdo inicial y la adjudicación posterior por lectura completa; el contexto de mayo de 2025 no es un cambio reciente de capacidad."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": true,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 101,
+      "url": "https://www.latercera.com/pulso/noticia/imacec-junio-24-por-ciento-supera-expectativas/",
+      "title": "La economía chilena evita la temida recesión tras el primer Imacec positivo del año",
+      "section": "Pulso",
+      "publication_date": "2026-08-03",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/81/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "405e344ea107e1c5dffb9fa59527fc424fcdf75f351cd43092794ad2af7f419b",
+        "body_characters": 3473,
+        "original_publication_day": "2026-08-03",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "ef9c4af7d1a7dd7c2a37f3b7bee9a840e2c1dd01f2fc238447e409ea438a9ae6",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "a",
+            "index": 56,
+            "independent_decision": "uncertain_requires_editorial_review",
+            "reason": "El Imacec general atribuye crecimiento de servicios personales a salud y educación. La salud es un componente factual en el cuerpo, pero no se desagrega su tasa, operador, inversión o financiación y puede faltar materialidad específica.",
+            "scope_adjudication": null,
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/81",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "El alza de los servicios se explicó por los servicios personales, en particular salud y educación, con una contribución menor de los servicios empresariales."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "macro_activity_health_component_not_disaggregated",
+      "body_specific_reason": "El artículo informa Imacec y actividad macro de junio. Salud y educación integran servicios personales sin crecimiento sanitario desagregado, prestador identificado, presupuesto o acción específica de salud. No se atribuye al sector salud una tasa del agregado ni se convierte el dato macro en cambio de cobertura o capacidad.",
+      "caveats": [
+        "El período medido es junio; la fecha de la nota de agosto no rejuvenece ese período."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": false,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 110,
+      "url": "https://www.latercera.com/pulso/noticia/tras-cinco-anos-de-juicio-odecu-pierde-en-la-suprema-demanda-contra-de-bayer-y-arysta-por-uso-de-herbicida/",
+      "title": "Tras cinco años de juicio, Odecu pierde en la Suprema demanda contra Bayer y Arysta por uso de herbicida",
+      "section": "Pulso",
+      "publication_date": "2026-08-26",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/144/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "d010c9403476438226a73c66a4363193b6e64d58a77b69e315355bfea4edea4a",
+        "body_characters": 3859,
+        "original_publication_day": "2026-08-26",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "ce52acb68309d2ab98170077cfbfe64512378bb2f3ebeafc1df14a0f415f3465",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "b",
+            "index": 96,
+            "independent_decision": "uncertain_requires_editorial_review",
+            "reason": "Una sentencia de la Suprema sobre exposición ocupacional a glifosato y cáncer, junto con pasivos relevantes de Bayer, identifica una cuestión sanitaria y jurisprudencia concretas. El producto agrícola autorizado por SAG no acredita impacto en el negocio farmacéutico o la red asistencial. Revisar pertinencia corporativa y ocupacional sin afirmar toxicidad probada.",
+            "scope_adjudication": null,
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/144",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "El 21 de enero de 2021, Odecu, representada por el abogado Juan Sebastián Reyes del estudio Pérez Donoso, presentó una demanda de acción colectiva bajo la Ley de Protección al Consumidor en contra de las multinacionales de productos agrícolas Bayer y Arysta LifeScience, aduciendo que el herbicida Roundup, con su principio activo glifosato, estaría vinculado al hallazgo del Linfoma no Hodgkin, un tipo de cáncer de sangre, en trabajadores agrícolas.",
+        "Debido a ello, exigía que Bayer y Arysta pagaran indemnizaciones y reparaciones por un monto de $100 millones por daño material y otros $100 millones por daño moral para cada uno de los usuarios afectados por esta mortal enfermedad o de sus herederos, en caso de haber fallecido.",
+        "De hecho, a inicios de este año Bayer ofreció US$7.250 millones para resolver las 52 mil demandas presentadas en su contra en Estados Unidos."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "agricultural_litigation_health_allegation_without_health_sector_change",
+      "body_specific_reason": "La resolución reciente rechaza una demanda colectiva sobre un herbicida agrícola. Las alegaciones de cáncer ocupacional son reales, pero no se identifica cambio en autorización sanitaria de atención humana, prestadores, cobertura, medicamentos o capacidad clínica. Las cifras corresponden a indemnizaciones solicitadas y a contexto global; no a un fallo indemnizatorio chileno o efecto financiero de la división farmacéutica demostrado.",
+      "caveats": [
+        "El rechazo judicial no prueba inocuidad ni ausencia de riesgo ocupacional.",
+        "No presentar indemnizaciones pedidas como montos concedidos."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": false,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 112,
+      "url": "https://www.latercera.com/tendencias/noticia/cientificos-crean-un-polvo-que-detiene-hemorragias-potencialmente-mortales-en-1-segundo/",
+      "title": "Científicos crean un polvo que detiene hemorragias potencialmente mortales en 1 segundo",
+      "section": "Tendencias",
+      "publication_date": "2026-08-30",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/160/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "d8f79ba907050d0fea1e22c4da27d64e1a4b9788d379de82ed30852a64c43181",
+        "body_characters": 3981,
+        "original_publication_day": "2026-08-30",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "0107316c31e6099b018a8fb2ac52f9e49acfb1735cb79462342c1330e6a1b15b",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "b",
+            "index": 106,
+            "independent_decision": "concrete_false_negative_for_editorial_analysis",
+            "reason": "Tecnología hemostática AGCL con uso propuesto en urgencias y cirugía, comparaciones con productos existentes y pruebas preclínicas. Hay una intervención clínica concreta que debe poder llegar al análisis editorial, sin afirmar validación en humanos, aprobación, adopción chilena o cumplimiento del gate de 72.",
+            "scope_adjudication": {
+              "decision": "defensible_prefilter_rejection_with_scope_disagreement",
+              "reviewer": "external_control",
+              "reason": "Full-body second review: AGCL developed at KAIST South Korea, laboratory and animal studies only. Civil emergency/surgical applications are explicitly future; no human validation, approval, Chilean deployment or local investor/provider identified. Independent reviewer B considers analysis eligible; strategic Chile health-sector rejection remains defensible."
+            },
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/160",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "En estudios con animales, el polvo redujo tanto la pérdida de sangre como el tiempo necesario para detener la hemorragia en lesiones hepáticas quirúrgicas.",
+        "Entre sus aplicaciones futuras figuran la atención de emergencias, la respuesta frente a catástrofes, la medicina en países con recursos limitados y el control de hemorragias durante procedimientos quirúrgicos.",
+        "Espero que esta tecnología termine salvando vidas tanto en la defensa nacional como en la medicina civil”, señaló."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "foreign_preclinical_research_without_chilean_sector_change",
+      "body_specific_reason": "El desarrollo coreano aporta resultados de laboratorio y animales; los usos civiles y quirúrgicos son futuros. No acredita ensayo humano, aprobación clínica, compra, adopción, inversión ni prestador chileno. Puede retenerse en discovery como innovación sanitaria, pero no demuestra una señal estratégica actual de cobertura, capacidad o competencia del sistema chileno.",
+      "caveats": [
+        "No convertir resultados animales o in vitro en eficacia clínica humana demostrada.",
+        "Se conserva el desacuerdo inicial de elegibilidad para análisis; no implica una cuota de publicación."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": true,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    },
+    {
+      "matrix_index": 113,
+      "url": "https://www.latercera.com/tendencias/noticia/podemos-cumplir-los-requerimientos-de-vitamina-d-con-la-fortificacion-obligatoria-en-chile/",
+      "title": "¿Podemos cumplir los requerimientos de vitamina D con la fortificación obligatoria en Chile?",
+      "section": "Tendencias",
+      "publication_date": "2026-08-21",
+      "control_90": false,
+      "control_30": false,
+      "primary": {
+        "body_file": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+        "body_json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/128/body",
+        "body_file_sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+        "body_sha256": "deb04e60093e9b43cf4ccb07c87ddec6bb918a093e479d7613d2c84ad1e44ee2",
+        "body_characters": 4009,
+        "original_publication_day": "2026-08-21",
+        "independently_retained_visible_bylines": null,
+        "original_gzip_file": null,
+        "html_sha256": "7baf09b6b50e8926ba1bc971f3077c1c74c49fe42b00ead2cf3d08f4af06fbac",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json",
+            "sha256": "a5470a8ea86c317141f4d3fdac4d8784a53b605cf16780e7021ff08e371ebd07",
+            "origin": "prior101",
+            "index": 76,
+            "independent_decision": "uncertain_requires_editorial_review",
+            "reason": "A real Minsal-adopted public-health obligation exists, but current article provides background/expert expectations rather than a new adoption or measured operational outcome. Importance as an additional current signal is uncertain; do not treat publication date as implementation date.",
+            "scope_adjudication": null,
+            "json_pointer": "/all_287_initial_negative_full_body_semantic_reviews/128",
+            "independent_prepared_review_sha256": "5eb87f3c181d682b30e6626290e791ee5512c62b87b6aad21789fb82c64278b2"
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "exact_quotes": [
+        "La fortificación obligatoria de leche líquida, leche en polvo y harina de trigo con vitamina D comenzó en junio de este año en Chile, como una medida para enfrentar los altos niveles de deficiencia de este nutriente en la población.",
+        "“Si uno consume regularmente lácteos y productos con harina de trigo, va a recibir una cantidad de vitamina D que debiera ser adecuada para que el 90% de la población esté sobre rangos de deficiencia severa”, explica.",
+        "Determinar si la política tendrá efectos sobre enfermedades u otros resultados de salud, en cambio, podría tomar varios años."
+      ],
+      "current_queue_status": "rejected",
+      "actual_runtime_reason": "media_materiality_prefilter",
+      "actual_model_relevance_score": null,
+      "actual_model_response_id": null,
+      "numeric_gate_evaluated": false,
+      "numeric_gate_passed": null,
+      "required_gate_threshold": 72,
+      "independent_scope_adjudication": "strategic_rejection_defensible",
+      "category": "historical_june_policy_expert_forecast_without_new_result",
+      "body_specific_reason": "La fortificación obligatoria comenzó en junio de 2026, antes de la ventana de 90 días. La nota de agosto explica la medida y recoge estimaciones de un experto, pero no anuncia nueva adopción, modificación regulatoria o medición de resultados. El 90% es una expectativa condicional y los efectos sobre enfermedades requerirían años. Rechazar esta novedad evita fechar en agosto una implementación de junio.",
+      "caveats": [
+        "Período del evento: junio de 2026, distinto de la publicación del 21 de agosto.",
+        "No afirmar que 90% de la población ya corrigió la deficiencia.",
+        "No se etiqueta como opinión comercial: se rechaza por novedad histórica y resultados no medidos."
+      ],
+      "previous_independent_evidence_preserved": [
+        "complete_expanded_negative_review287"
+      ],
+      "original_scope_disagreement_preserved": false,
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_assigned": false,
+      "evidence_maturity_required": "media_reported"
+    }
+  ],
+  "oct5_actual_outcome_review": {
+    "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+    "publication_date": "2026-10-05",
+    "primary": {
+      "body_file": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+      "body_json_pointer": "/all_controls/5/primary_body_full",
+      "body_file_sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+      "body_sha256": "0ebfaaf59515c5c7f01f4e150f7a9000e5f5a0888ecfaf48c73c9364378d0131",
+      "body_characters": 2916,
+      "original_publication_day": "2026-10-05",
+      "independently_retained_visible_bylines": [
+        {
+          "timestamp": "2026-10-05T13:00:49.546Z",
+          "text": "5 OCTUBRE 2026",
+          "visible_day": "2026-10-05"
+        }
+      ],
+      "original_gzip_file": "tests/fixtures/pulso_runtime_real/60dd84e90cfdca2702312a13a90f669dbae10ed5de7dc2c71f76461d6115e807.html.gz",
+      "html_sha256": "60dd84e90cfdca2702312a13a90f669dbae10ed5de7dc2c71f76461d6115e807",
+      "independent_review_references": [
+        {
+          "path": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+          "sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+          "review_index": 6,
+          "expectation_group": "material_sector_evaluation_required",
+          "reason": "Declaraciones sobre proyectoPresupuesto2027+4,7%, prioridades estructurales y ahorro vía comprasCenabast/licitaciones. Reconciliar incrementalidad con controles50/51/75/77."
+        }
+      ]
+    },
+    "full_primary_body_read": true,
+    "current_status": "retry",
+    "exact_reason": "pulso_editorial_actor_not_grounded",
+    "model_relevance_score": 82,
+    "model_response_id": "resp_0a9581a22240cab2006acbacea0dfc87d189cb5f39c6f4a91b",
+    "numeric_gate_evaluated": false,
+    "model_score_observed_at_or_above_72": true,
+    "editorial_gate_passed": null,
+    "publication_approved": false,
+    "old_duplicate_hold_released_by_verified_addendum": true,
+    "new_increment_is_analysis_eligible_not_publication_approved": true,
+    "semantic_finding": "Actual prose conserves the 2027 budget proposal and attributes 2026 operational claims to the minister; structured proof fails literal-grounding contract and does not permit publication.",
+    "exact_quotes": [
+      "La ministra de Educación, May Chomali, abordó esta jornada el aumento de recursos contemplado para la cartera en el proyecto de Ley de Presupuestos 2027 presentado el Ejecutivo, así como también las prioridades de la cartera y el avance en materia de listas de espera.",
+      "“En la evaluación del primer semestre llevábamos, digamos, tres meses nomás en el gobierno y teníamos al mismo gasto, más consultas, más cirugía, más procedimiento, más producción,”, explicó.",
+      "“Y esto es porque definitivamente los hospitales han hecho el trabajo de hacer más eficiente el uso de los recursos en aquellas áreas que no tocan a los pacientes”."
+    ],
+    "structured_failure": {
+      "version": "pulso_editorial_proof_v4",
+      "source": "pulso_latercera",
+      "analysis_text_sha256": "0ebfaaf59515c5c7f01f4e150f7a9000e5f5a0888ecfaf48c73c9364378d0131",
+      "quote_validation_is_semantic_approval": false,
+      "publication_approved": false,
+      "model_output_sha256": "137b5a337cbaa6384125557dae632cf4525e30cb98f4b36437ee6084ae59f62d",
+      "proof": {
+        "scope_decision": "human_health_specific",
+        "scope_reason": "El artículo vincula directamente financiamiento sanitario, hospitales, medicamentos, producción asistencial, listas de espera, oncología y atención primaria con la atención de pacientes en Chile.",
+        "human_health_scope_quote": "“Nosotros esperamos realmente reducir los tiempos de espera, pero con cambios estructurales, no con ir a comprar prestaciones afuera -lo hemos dicho muy claramente y siempre-, todo lo que tiene que ver con estructura oncológica, lo que tiene que ver con equipamiento para oncología, atención primaria también viene con un tema importante”",
+        "actor": "Los hospitales y la autoridad de Salud",
+        "actor_quote": "“los hospitales han hecho el trabajo de hacer más eficiente el uso de los recursos en aquellas áreas que no tocan a los pacientes”",
+        "action": "La autoridad reportó un aumento de producción asistencial al mismo nivel de gasto y un mayor uso de mecanismos centralizados y competitivos de adquisición.",
+        "action_quote": "“En esta línea, destacó, han aumentado las compras centralizadas, la intermediación con Cenabast y las licitaciones versus las compras directas, y han disminuido el ausentismo.”",
+        "consequence": "La autoridad vinculó esas medidas con ahorros destinados a preservar recursos para la atención de pacientes, sin cuantificar ahorros agregados ni acreditar una medición independiente.",
+        "consequence_quote": "“Esas son todas formas de hacer más eficientes los recursos. Son ahorros en cosas que no golpean a los pacientes”",
+        "event_status": "mixed_actual_and_future",
+        "event_status_quote": "“en el proyecto tienen ‘un presupuesto aumentado en relación con el 2026 en un 4,7%. Lo que es muy bueno considerando que hay una restricción fiscal general’” y “En la evaluación del primer semestre llevábamos, digamos, tres meses nomás en el gobierno y teníamos al mismo gasto, más consultas, más cirugía, más procedimiento, más producción,”",
+        "novelty_decision": "new_material_information",
+        "novelty_reason": "El aumento presupuestario de 4,7% y las prioridades de espera, oncología y APS repiten el antecedente comparado. El cambio incremental está en las declaraciones reportadas sobre desempeño operacional de 2026 y en los mecanismos concretos de compras y eficiencia hospitalaria; no obstante, su madurez es de declaración de prensa y no de verificación independiente.",
+        "novelty_quote": "“En la evaluación del primer semestre llevábamos, digamos, tres meses nomás en el gobierno y teníamos al mismo gasto, más consultas, más cirugía, más procedimiento, más producción,” y “En esta línea, destacó, han aumentado las compras centralizadas, la intermediación con Cenabast y las licitaciones versus las compras directas, y han disminuido el ausentismo.”",
+        "future_claims": [
+          {
+            "summary_field": "what_happened",
+            "summary_quote": "“en el proyecto tienen ‘un presupuesto aumentado en relación con el 2026 en un 4,7%. Lo que es muy bueno considerando que hay una restricción fiscal general’”",
+            "source_quote": "“en el proyecto tienen “un presupuesto aumentado en relación con el 2026 en un 4,7%. Lo que es muy bueno considerando que hay una restricción fiscal general”."
+          },
+          {
+            "summary_field": "why_it_matters",
+            "summary_quote": "“Nosotros esperamos realmente reducir los tiempos de espera, pero con cambios estructurales, no con ir a comprar prestaciones afuera -lo hemos dicho muy claramente y siempre-, todo lo que tiene que ver con estructura oncológica, lo que tiene que ver con equipamiento para oncología, atención primaria también viene con un tema importante”",
+            "source_quote": "“Nosotros esperamos realmente reducir los tiempos de espera, pero con cambios estructurales, no con ir a comprar prestaciones afuera -lo hemos dicho muy claramente y siempre-, todo lo que tiene que ver con estructura oncológica, lo que tiene que ver con equipamiento para oncología, atención primaria también viene con un tema importante”, señaló."
+          }
+        ]
+      },
+      "decision": "deferred",
+      "reason": "pulso_editorial_actor_not_grounded",
+      "primary_article_body_sha256": "0ebfaaf59515c5c7f01f4e150f7a9000e5f5a0888ecfaf48c73c9364378d0131",
+      "request_input_sha256": "6a9aaaea67dba1b2abb1f228330aed0b574d142fb35b69c47eb658b232fe56c4",
+      "model_response": {
+        "schema_version": "pulso_editorial_proof_v4",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0a9581a22240cab2006acbacea0dfc87d189cb5f39c6f4a91b",
+        "analysis_text_sha256": "0ebfaaf59515c5c7f01f4e150f7a9000e5f5a0888ecfaf48c73c9364378d0131",
+        "request_input_sha256": "6a9aaaea67dba1b2abb1f228330aed0b574d142fb35b69c47eb658b232fe56c4",
+        "raw_model_output_sha256": "84c68a410756bd9836921511313def4e9892418b58dafd0c2dfae15d11465bfe"
+      }
+    },
+    "actual_model_output": {
+      "relevance_score": 82,
+      "what_happened": "La Tercera reportó declaraciones de la autoridad de Salud sobre dos planos distintos: una propuesta de aumento de 4,7% para el presupuesto 2027 y prioridades aún sujetas a discusión legislativa; y resultados operacionales atribuidos a la evaluación del primer semestre de 2026, con más producción al mismo nivel de gasto, junto con mayor uso de compras centralizadas, Cenabast y licitaciones. El artículo agrega además una explicación reportada sobre ineficiencias en stock, compras directas y ausentismo.",
+      "why_it_matters": "El antecedente presupuestario y las prioridades de listas de espera, oncología y APS son principalmente repetidos, pero las declaraciones sobre productividad hospitalaria y mecanismos de compra aportan una señal relevante para prestadores y gestión sanitaria: la autoridad atribuye una mayor producción sin aumento del gasto y un desplazamiento desde compras directas hacia licitaciones y compras centralizadas. Estas afirmaciones siguen siendo declaraciones reportadas por prensa, no resultados auditados ni ahorros agregados verificados.",
+      "reason": "Merece análisis de radar por el componente incremental de gestión de prestadores y compras sanitarias, aunque no corresponde tratar el presupuesto 2027 como aprobado ni las eficiencias como hechos independientemente comprobados. La revisión previa identifica como nueva información las afirmaciones operacionales de 2026; el 4,7% y las prioridades presupuestarias funcionan principalmente como contexto ya conocido.",
+      "pulso_editorial_proof": {
+        "scope_decision": "human_health_specific",
+        "scope_reason": "El artículo vincula directamente financiamiento sanitario, hospitales, medicamentos, producción asistencial, listas de espera, oncología y atención primaria con la atención de pacientes en Chile.",
+        "human_health_scope_quote": "“Nosotros esperamos realmente reducir los tiempos de espera, pero con cambios estructurales, no con ir a comprar prestaciones afuera -lo hemos dicho muy claramente y siempre-, todo lo que tiene que ver con estructura oncológica, lo que tiene que ver con equipamiento para oncología, atención primaria también viene con un tema importante”",
+        "actor": "Los hospitales y la autoridad de Salud",
+        "actor_quote": "“los hospitales han hecho el trabajo de hacer más eficiente el uso de los recursos en aquellas áreas que no tocan a los pacientes”",
+        "action": "La autoridad reportó un aumento de producción asistencial al mismo nivel de gasto y un mayor uso de mecanismos centralizados y competitivos de adquisición.",
+        "action_quote": "“En esta línea, destacó, han aumentado las compras centralizadas, la intermediación con Cenabast y las licitaciones versus las compras directas, y han disminuido el ausentismo.”",
+        "consequence": "La autoridad vinculó esas medidas con ahorros destinados a preservar recursos para la atención de pacientes, sin cuantificar ahorros agregados ni acreditar una medición independiente.",
+        "consequence_quote": "“Esas son todas formas de hacer más eficientes los recursos. Son ahorros en cosas que no golpean a los pacientes”",
+        "event_status": "mixed_actual_and_future",
+        "event_status_quote": "“en el proyecto tienen ‘un presupuesto aumentado en relación con el 2026 en un 4,7%. Lo que es muy bueno considerando que hay una restricción fiscal general’” y “En la evaluación del primer semestre llevábamos, digamos, tres meses nomás en el gobierno y teníamos al mismo gasto, más consultas, más cirugía, más procedimiento, más producción,”",
+        "novelty_decision": "new_material_information",
+        "novelty_reason": "El aumento presupuestario de 4,7% y las prioridades de espera, oncología y APS repiten el antecedente comparado. El cambio incremental está en las declaraciones reportadas sobre desempeño operacional de 2026 y en los mecanismos concretos de compras y eficiencia hospitalaria; no obstante, su madurez es de declaración de prensa y no de verificación independiente.",
+        "novelty_quote": "“En la evaluación del primer semestre llevábamos, digamos, tres meses nomás en el gobierno y teníamos al mismo gasto, más consultas, más cirugía, más procedimiento, más producción,” y “En esta línea, destacó, han aumentado las compras centralizadas, la intermediación con Cenabast y las licitaciones versus las compras directas, y han disminuido el ausentismo.”",
+        "future_claims": [
+          {
+            "summary_field": "what_happened",
+            "summary_quote": "“en el proyecto tienen ‘un presupuesto aumentado en relación con el 2026 en un 4,7%. Lo que es muy bueno considerando que hay una restricción fiscal general’”",
+            "source_quote": "“en el proyecto tienen “un presupuesto aumentado en relación con el 2026 en un 4,7%. Lo que es muy bueno considerando que hay una restricción fiscal general”."
+          },
+          {
+            "summary_field": "why_it_matters",
+            "summary_quote": "“Nosotros esperamos realmente reducir los tiempos de espera, pero con cambios estructurales, no con ir a comprar prestaciones afuera -lo hemos dicho muy claramente y siempre-, todo lo que tiene que ver con estructura oncológica, lo que tiene que ver con equipamiento para oncología, atención primaria también viene con un tema importante”",
+            "source_quote": "“Nosotros esperamos realmente reducir los tiempos de espera, pero con cambios estructurales, no con ir a comprar prestaciones afuera -lo hemos dicho muy claramente y siempre-, todo lo que tiene que ver con estructura oncológica, lo que tiene que ver con equipamiento para oncología, atención primaria también viene con un tema importante”, señaló."
+          }
+        ]
+      },
+      "_pulso_analysis_meta": {
+        "schema_version": "pulso_editorial_proof_v4",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0a9581a22240cab2006acbacea0dfc87d189cb5f39c6f4a91b",
+        "analysis_text_sha256": "0ebfaaf59515c5c7f01f4e150f7a9000e5f5a0888ecfaf48c73c9364378d0131",
+        "request_input_sha256": "6a9aaaea67dba1b2abb1f228330aed0b574d142fb35b69c47eb658b232fe56c4",
+        "raw_model_output_sha256": "84c68a410756bd9836921511313def4e9892418b58dafd0c2dfae15d11465bfe"
+      }
+    },
+    "changes_applied": false
+  },
+  "additional3_actual_model_rejections": [
+    {
+      "matrix_index": 46,
+      "url": "https://www.latercera.com/nacional/noticia/may-chomali-toma-el-microfono-y-llega-a-spotify-ministra-debuta-como-conductora-de-un-podcast-de-salud/",
+      "publication_date": "2026-08-28",
+      "primary": {
+        "body_file": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+        "body_json_pointer": "/all_controls/26/primary_body_full",
+        "body_file_sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+        "body_sha256": "761a765d04eb3e27290f2681aeeaeb657516a26637820d58597d3b960e25ce24",
+        "body_characters": 3804,
+        "original_publication_day": "2026-08-28",
+        "independently_retained_visible_bylines": [
+          {
+            "timestamp": "2026-08-28T17:30:00Z",
+            "text": "28 AGOSTO 2026",
+            "visible_day": "2026-08-28"
+          }
+        ],
+        "original_gzip_file": "tests/fixtures/pulso_runtime_real/5b5627316c003308eb403100f45855f8a16126abf94a72dd7fb69a35c2131748.html.gz",
+        "html_sha256": "5b5627316c003308eb403100f45855f8a16126abf94a72dd7fb69a35c2131748",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+            "sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+            "review_index": 27,
+            "expectation_group": "rejection_defensible",
+            "reason": "Canal comunicacional preventivo de baja escala, sin nueva prestación, cobertura, inversión o mandato; rechazo por falta de materialidad estratégica es defendible."
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "actual_status": "rejected",
+      "actual_reason": "pulso_editorial_marketing",
+      "actual_model_score": 40,
+      "actual_model_response_id": "resp_0dea1c59ee53c155006acba9da64d087d1b80dbbe4c5e2ad48",
+      "actual_model_output_sha256": "4ec19f122acf157bd2f53dcb256638799b1031b8e6d6866283c3ec3a4d93ae64",
+      "actual_model_scope_decision": "marketing",
+      "numeric_gate_evaluated": false,
+      "independent_materiality_adjudication": "strategic_rejection_defensible",
+      "independent_category": "public_health_communication_without_sector_change",
+      "body_specific_reason": "El cuerpo acredita un podcast y programación de comunicación preventiva ministerial, no una nueva prestación, regla, inversión o financiamiento. El rechazo estratégico es defendible. La etiqueta interna marketing no acredita patrocinio comercial del artículo ni elimina su contenido sanitario real.",
+      "exact_quotes": [
+        "La idea del podcast surgió desde el equipo comunicacional de la secretaria de Estado, utilizando un estudio dentro del propio Minsal que estaba en desuso y abriendo así una faceta poco explorada por Chomali.",
+        "En el Minsal, eso sí, ya proyectan replicar la iniciativa con otras autoridades de la cartera."
+      ],
+      "caveats": [
+        "El primer episodio es actual; los próximos episodios eran planes en agosto, no hechos nuevos en octubre."
+      ],
+      "changes_applied": false,
+      "publication_approved": false
+    },
+    {
+      "matrix_index": 49,
+      "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-aterriza-en-washington-para-asumir-la-presidencia-del-consejo-directivo-de-la-ops/",
+      "publication_date": "2026-09-28",
+      "primary": {
+        "body_file": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+        "body_json_pointer": "/all_controls/29/primary_body_full",
+        "body_file_sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+        "body_sha256": "406e249f7e9dfe73e7bf4ca510ce4be6080175aca5da82b8750863a4878446e9",
+        "body_characters": 3597,
+        "original_publication_day": "2026-09-28",
+        "independently_retained_visible_bylines": [
+          {
+            "timestamp": "2026-09-28T12:04:18.135Z",
+            "text": "28 SEPTIEMBRE 2026",
+            "visible_day": "2026-09-28"
+          }
+        ],
+        "original_gzip_file": "tests/fixtures/pulso_runtime_real/f795ae0bd120a19fd183ca8f133e46213bfaf9a2e80cd6de2b287d1eb159115e.html.gz",
+        "html_sha256": "f795ae0bd120a19fd183ca8f133e46213bfaf9a2e80cd6de2b287d1eb159115e",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+            "sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+            "review_index": 30,
+            "expectation_group": "uncertain_or_conditional",
+            "reason": "Presidencia de OPS puede afectar conducción sanitaria regional, pero este original es agenda de representación sin decisión, recursos o efecto doméstico concreto."
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "actual_status": "rejected",
+      "actual_reason": "pulso_editorial_incidental_health",
+      "actual_model_score": 48,
+      "actual_model_response_id": "resp_0c4a42528a67066a006acba7cdb75087d1b3954eba42f5b684",
+      "actual_model_output_sha256": "30a9126556df3bcbd30f937bd828181b0dfb8333f2fa66071c721805e3ce9aff",
+      "actual_model_scope_decision": "incidental_health",
+      "numeric_gate_evaluated": false,
+      "independent_materiality_adjudication": "strategic_rejection_defensible",
+      "independent_category": "international_health_representation_without_new_chilean_commitment",
+      "body_specific_reason": "Es gobernanza sanitaria real, no ausencia de salud. El viaje y la presidencia de sesiones no acreditan decisión vinculante, presupuesto, programa o capacidad nueva para Chile. La elección había sido informada un mes y medio antes y la agenda contiene actividades futuras. El rechazo por falta de cambio sectorial material es defendible.",
+      "exact_quotes": [
+        "La noticia de su elección llegó hace un mes y medio a hasta el Minsal.",
+        "Entre los temas que serán abordados se encuentran la seguridad sanitaria y preparación ante emergencias, resistencia antimicrobiana, enfermedades arbovirales, inocuidad de los alimentos, Reglamento Sanitario Internacional y transformación digital de la salud.",
+        "Y las prioridades del trabajo para la organización, así como el presupuesto para cada programa, son definidos en estas instancias."
+      ],
+      "caveats": [
+        "No tratar una agenda prevista como políticas o presupuestos efectivamente aprobados; incidental_health es una etiqueta reductiva del alcance, no prueba de ausencia de gobernanza sanitaria."
+      ],
+      "changes_applied": false,
+      "publication_approved": false
+    },
+    {
+      "matrix_index": 58,
+      "url": "https://www.latercera.com/nacional/noticia/minsal-designa-a-fernanda-robles-como-la-nueva-seremi-de-la-region-de-los-lagos/",
+      "publication_date": "2026-09-07",
+      "primary": {
+        "body_file": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+        "body_json_pointer": "/all_controls/36/primary_body_full",
+        "body_file_sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+        "body_sha256": "c870e36f6bf98bd9a3b662e92c7aeeb953a874d4627d429f5d23624e11b0b748",
+        "body_characters": 2182,
+        "original_publication_day": "2026-09-07",
+        "independently_retained_visible_bylines": [
+          {
+            "timestamp": "2026-09-07T14:22:43.126Z",
+            "text": "7 SEPTIEMBRE 2026",
+            "visible_day": "2026-09-07"
+          }
+        ],
+        "original_gzip_file": "tests/fixtures/pulso_runtime_real/337ff25cc4b0d0ce486eff289372fa3aacbb4661f5eb1cf3e68c8bd09dd9672c.html.gz",
+        "html_sha256": "337ff25cc4b0d0ce486eff289372fa3aacbb4661f5eb1cf3e68c8bd09dd9672c",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+            "sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+            "review_index": 37,
+            "expectation_group": "uncertain_or_conditional",
+            "reason": "Nombramiento de autoridad sanitaria regional es pertinente pero no especifica política, inversión o impacto de red nuevo; gate puede rechazar noticia de personal rutinaria."
+          }
+        ]
+      },
+      "full_primary_body_read": true,
+      "actual_status": "rejected",
+      "actual_reason": "pulso_editorial_incidental_health",
+      "actual_model_score": 35,
+      "actual_model_response_id": "resp_02039dc19a4964ab006acba8d26dd487d1b3882ab6f3eeb164",
+      "actual_model_output_sha256": "aff46dc75ab76d490621f0cb095a30398e23faa72b72743b9ad460deff3d03ac",
+      "actual_model_scope_decision": "incidental_health",
+      "numeric_gate_evaluated": false,
+      "independent_materiality_adjudication": "strategic_rejection_defensible",
+      "independent_category": "regional_health_appointment_without_program_change",
+      "body_specific_reason": "El nombramiento sanitario es un hecho actual. La noticia describe credenciales y antecedentes laborales, pero no informa decisiones de cobertura, regulación, presupuesto, operación o capacidad nueva. El rechazo de materialidad es defendible; la autoridad sanitaria no debe etiquetarse como asunto ajeno a salud.",
+      "exact_quotes": [
+        "El Ministerio de Salud (Minsal) anunció esta jornada que designó a Fernanda Robles Inostroza, nutricionista y magíster en Salud Pública y en Gerencia Pública, como nueva seremi de Salud de la Región de Los Lagos.",
+        "La designación ocurre a casi un mes de que el Minsal solicitara la renuncia de la anterior seremi, Evelyn Bintrup, quien enfrentaba nueve denuncias por ley Karin durante los cerca de cinco meses que ejerció en el cargo.",
+        "Anteriormente trabajó como profesional de la Seremi de Salud Ñuble, ocupando distintos cargos, como encargada regional de la Unidad de Promoción de la Salud y Participación Ciudadana, encargada regional de la Estrategia Cuadrillas Sanitarias, encargada Regional de la Unidad Estrategia Testeo, Trazabilidad y Aislamiento SARS-CoV-2, y encargada regional del Programa de Salud Cardiovascular, entre otras funciones vinculadas a la gestión GES."
+      ],
+      "caveats": [
+        "Las denuncias ley Karin son antecedentes de la autoridad anterior, sin resolución de responsabilidad demostrada aquí."
+      ],
+      "changes_applied": false,
+      "publication_approved": false
+    }
+  ],
+  "source_health_review": {
+    "primary_snapshot": {
+      "repository_path": "web/data/source_health.json",
+      "git_revision": "0713ca9",
+      "git_blob": "f7dbb89d8310d07d69002bb18c1789603a29cea9",
+      "sha256": "6cc5fb99b1f7cf9e4e8ea8f8defacc192b51312b4826af3b47b7c1583fd9d3a4"
+    },
+    "actual_record": {
+      "name": "Pulso / La Tercera",
+      "checked_at": "2026-10-11T15:36:29.368156+00:00",
+      "last_signal_at": "2026-10-11",
+      "discovered": 1741,
+      "new": 5,
+      "published": 5,
+      "live_pending": 4,
+      "backfill_pending": 1576,
+      "pending": 1580,
+      "deferred": 81,
+      "rejected": 155,
+      "status": "ok",
+      "error": null,
+      "technical_status": "ok",
+      "coverage_status": "observed",
+      "content_freshness": "recent",
+      "latest_original_at": "2026-10-11",
+      "editorial_outcome": "published",
+      "evaluation_performed": true,
+      "processed_rejections": 28,
+      "counts_scope": {
+        "discovered": "this_run",
+        "new": "this_run",
+        "published": "this_run",
+        "processed_rejections": "this_run",
+        "rejected": "cumulative_queue"
+      }
+    },
+    "field_semantics": {
+      "technical_status": "Fetch/core execution status; not editorial acceptance.",
+      "last_signal_at": "Observed value is processing-day freshness; it is not the latest publisher publication date of visible signals.",
+      "latest_original_at": "Latest discovered original publication can legitimately be October 11; distinct from published feed freshness.",
+      "deferred": "Cumulative source queue editorial deferrals; not selected-cohort deferrals only."
+    },
+    "actual_visible_pulso_signals": 17,
+    "selected_cohort_visible": 12,
+    "outside_cohort_visible_legacy": 5,
+    "outside_cohort_visible_all_present_in_previous_actual32": true,
+    "latest_feed_publication_date": "2026-10-10",
+    "latest_feed_event_date": "2026-10-10",
+    "last_signal_at_matches_latest_feed_publication_date": false,
+    "selected_current_technical_retries": 69,
+    "all_source_deferred_pending_retry": 81,
+    "outside_cohort_deferrals": 12,
+    "technical_ok_is_complete_editorial_coverage": false,
+    "current_deferrals_are_not_editorial_rejections": true,
+    "finding": {
+      "code": "source_health_processing_day_must_not_be_interpreted_as_publisher_date",
+      "observed_last_signal_at": "2026-10-11",
+      "actual_latest_visible_publisher_day": "2026-10-10",
+      "status": "OPEN_SEMANTIC_FIELD_INTERPRETATION_REVIEW",
+      "reason": "October 11 is the processing/discovery day; all 17 visible Pulso signals were published on or before October 10. A publisher-freshness display must use publication dates."
+    },
+    "all_visible_signals": [
+      {
+        "url": "https://www.latercera.com/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
+        "publication_date": "2026-10-10",
+        "event_date": "2026-10-10",
+        "editorial_relevance": 90,
+        "evidence_maturity": "media_reported",
+        "in_selected_cohort": true,
+        "first32_legacy": true,
+        "signal_sha256": "b05b11ce144da94a44505aa400adefe9ae725d2bfd07266f4905e10fd319515e"
+      },
+      {
+        "url": "https://www.latercera.com/sustentabilidad/noticia/el-costo-de-no-anticiparse-a-los-riesgos-climaticos-en-el-sistema-de-salud/",
+        "publication_date": "2026-10-10",
+        "event_date": "2026-10-10",
+        "editorial_relevance": 74,
+        "evidence_maturity": "media_reported",
+        "in_selected_cohort": true,
+        "first32_legacy": true,
+        "signal_sha256": "9dcd92ecda7ce7397bc7086553d7b285229b088cab3ba2bb644a4f3f418b8a95"
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+        "publication_date": "2026-10-10",
+        "event_date": "2026-10-10",
+        "editorial_relevance": 72,
+        "evidence_maturity": "media_reported",
+        "in_selected_cohort": true,
+        "first32_legacy": true,
+        "signal_sha256": "5b6bd19503b08dc420a662be84df0694d86dad2d4ade8584480df938c884e13e"
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+        "publication_date": "2026-10-09",
+        "event_date": "2026-10-09",
+        "editorial_relevance": 72,
+        "evidence_maturity": "media_reported",
+        "in_selected_cohort": true,
+        "first32_legacy": true,
+        "signal_sha256": "5c1513064756324d50eb471afb52d058a91f54e74dadcfb34d6b1ddb46701344"
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/medicos-sin-vinculo-con-hospital-de-talagante-emitieron-1045-recetas-por-fentanilo-y-otros-farmacos-controlados/",
+        "publication_date": "2026-10-08",
+        "event_date": "2026-10-08",
+        "editorial_relevance": 84,
+        "evidence_maturity": "media_reported",
+        "in_selected_cohort": true,
+        "first32_legacy": true,
+        "signal_sha256": "a65f353e3541d5bb34d3809ced4d5fa536e26e1d5c52bf7f48af036edfb39437"
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/sigue-en-vivo-aluvion-las-condes-lluvias/",
+        "publication_date": "2026-10-08",
+        "event_date": "2026-10-08",
+        "editorial_relevance": 82,
+        "evidence_maturity": "media_reported",
+        "in_selected_cohort": false,
+        "first32_legacy": true,
+        "signal_sha256": "38e45885c7ac38bcd91c466d68b2ac601f1ab677367b7d33cbbafbe9f020a172"
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/comite-social-salud-y-mideso-destacan-avances-en-certificacion-de-discapacidad-y-ampliacion-de-la-red-de-apoyos-y-cuidados/",
+        "publication_date": "2026-10-08",
+        "event_date": "2026-10-08",
+        "editorial_relevance": 78,
+        "evidence_maturity": "media_reported",
+        "in_selected_cohort": true,
+        "first32_legacy": true,
+        "signal_sha256": "fbade440d7892efc81a1a96903c9e82731e987cb83f61b5f6d457578f2bd0e71"
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/presupuesto-salud-2027-rebajas-al-ajuar-del-recien-nacido-y-a-la-ley-ricarte-soto-y-foco-en-atencion-primaria/",
+        "publication_date": "2026-10-07",
+        "event_date": "2026-10-07",
+        "editorial_relevance": 88,
+        "evidence_maturity": "media_reported",
+        "in_selected_cohort": true,
+        "first32_legacy": true,
+        "signal_sha256": "0ed0254ee7d4169dbae5781c7f083f83b6bc187b99e84b1a3945b5876b2cfa78"
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/presupuesto-2027-minuta-politica-del-gobierno-reporta-alza-del-gasto-distinta-de-la-informada/",
+        "publication_date": "2026-10-06",
+        "event_date": "2026-10-06",
+        "editorial_relevance": 89,
+        "evidence_maturity": "media_reported",
+        "in_selected_cohort": false,
+        "first32_legacy": true,
+        "signal_sha256": "69e5ea87906f3450ff5d0a4d3081a5d2b9cb03907c9b96ffef17a31afbf7830a"
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/cambios-estructurales-no-maquillajes-gobierno-lanza-plan-para-agilizar-proceso-de-certificacion-de-discapacidad/",
+        "publication_date": "2026-10-06",
+        "event_date": "2026-10-06",
+        "editorial_relevance": 86,
+        "evidence_maturity": "media_reported",
+        "in_selected_cohort": false,
+        "first32_legacy": true,
+        "signal_sha256": "065c99ee4c298d308088a7c79072f7080e800b2c88a770d641375830e06a2a1f"
+      },
+      {
+        "url": "https://www.latercera.com/politica/noticia/gobernador-de-valparaiso-revela-detalles-de-tensa-cita-con-quiroz-por-presupuesto-y-su-advertencia-al-titular-de-hacienda/",
+        "publication_date": "2026-10-06",
+        "event_date": "2026-10-06",
+        "editorial_relevance": 84,
+        "evidence_maturity": "media_reported",
+        "in_selected_cohort": false,
+        "first32_legacy": true,
+        "signal_sha256": "08d4f7fba2a0991540ab695f70702630e0e90312358768cf30eceaef2df533c5"
+      },
+      {
+        "url": "https://www.latercera.com/politica/noticia/senadores-de-oposicion-presentan-indicaciones-a-infraestructura-critica-y-marcan-diferencias-con-mociones-del-ejecutivo/",
+        "publication_date": "2026-10-06",
+        "event_date": "2026-10-06",
+        "editorial_relevance": 78,
+        "evidence_maturity": "media_reported",
+        "in_selected_cohort": false,
+        "first32_legacy": true,
+        "signal_sha256": "dd85d8bff98f5bcf5726636282e8c2ee79b8ce9f5793d95e665444a7ac631ed3"
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/chomali-por-listas-de-espera-yo-no-esperaba-que-disminuyeran-lo-que-yo-espero-es-que-disminuyan-los-tiempos/",
+        "publication_date": "2026-09-23",
+        "event_date": "2026-09-23",
+        "editorial_relevance": 84,
+        "evidence_maturity": "media_reported",
+        "in_selected_cohort": true,
+        "first32_legacy": false,
+        "signal_sha256": "13316e668eec6d5fa1f422ad6a36202f9b6d07402edb6561ebf455a923df4073"
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/siete-de-cada-10-hogares-gastan-mas-de-30-mil-al-mes-en-medicamentos/",
+        "publication_date": "2026-08-24",
+        "event_date": "2026-08-24",
+        "editorial_relevance": 88,
+        "evidence_maturity": "media_reported",
+        "in_selected_cohort": true,
+        "first32_legacy": false,
+        "signal_sha256": "17dcd14ed1cd90f88da90471fae70ec523581ee8e3138c5257c74392e0c7055d"
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/minsal-amplia-alerta-sanitaria-a-las-regiones-de-tarapaca-y-antofagasta-tras-afectaciones-por-el-sistema-frontal/",
+        "publication_date": "2026-08-20",
+        "event_date": "2026-08-20",
+        "editorial_relevance": 84,
+        "evidence_maturity": "media_reported",
+        "in_selected_cohort": true,
+        "first32_legacy": false,
+        "signal_sha256": "93b098a26daa5f513b0be157df1c09fbedcdcd04ddac9f3ddccc558c70a5760e"
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/banmedica-y-vida-tres-demandan-al-fisco-por-desfase-en-el-cobro-del-ges-y-exigen-casi-9000-millones/",
+        "publication_date": "2026-08-10",
+        "event_date": "2026-08-10",
+        "editorial_relevance": 87,
+        "evidence_maturity": "media_reported",
+        "in_selected_cohort": true,
+        "first32_legacy": false,
+        "signal_sha256": "e361331fd5fe51f89ce1178f72e763398cda0184c6747a1065d9f10bfa6d779e"
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/posta-central-obtiene-911-en-evaluacion-de-gestion-y-lidera-desempeno-de-hospitales-publicos-mas-de-la-mitad-no-cumplio-la-meta/",
+        "publication_date": "2026-08-04",
+        "event_date": "2026-08-04",
+        "editorial_relevance": 84,
+        "evidence_maturity": "media_reported",
+        "in_selected_cohort": true,
+        "first32_legacy": false,
+        "signal_sha256": "64a420000b87d8e9215f2e704ad50ca739b6a8699644de850da62bd0eeac5b1d"
+      }
+    ],
+    "changes_applied": false
+  }
+}
