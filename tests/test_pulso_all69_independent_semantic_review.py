@@ -59,7 +59,7 @@ def test_all69_independent_reviews_bind_frozen_complete_inputs_and_models():
 
 def test_internal_added_quote_correction_preserves_original_model_and_below_gate_uncertainty():
     import unicodedata
-    from radar_salud.pulso_editorial_proof import validate_pulso_editorial_proof
+    from radar_salud.pulso_editorial_proof import literal_quote_matches, validate_pulso_editorial_proof
     original_audit = AUDIT.read_bytes()
     addendum = json.loads((ROOT / 'data/audits/pulso_focus_all69_semantic_addendum_2026_10_11.json').read_bytes())
     assert addendum['prior_review'] == dict(path=str(AUDIT.relative_to(ROOT)), sha256=digest(original_audit))
@@ -82,7 +82,10 @@ def test_internal_added_quote_correction_preserves_original_model_and_below_gate
     for cited in correction['source_verbatim_citations']:
         assert cited in source['body']
     verdict = validate_pulso_editorial_proof(source['ai'], source['body'])
-    assert verdict['decision'] == 'deferred' and verdict['reason'] == 'pulso_editorial_scope_quote_not_in_input'
+    assert literal_quote_matches(quote, source['body'], 8) is False
+    # The historical citation defect remains recorded. A complete answer
+    # already below72 now terminates conservatively before quote checks.
+    assert verdict['decision'] == 'rejected' and verdict['reason'] == 'editorial_relevance_below_threshold'
     assert correction['approved_model_rewrite'] is False and correction['publication_approved'] is False
     assert addendum['runtime_state_mutated'] is False and addendum['no_ai_calls'] is True
     clarification = addendum['inherited_diagnostic_field_clarification']
