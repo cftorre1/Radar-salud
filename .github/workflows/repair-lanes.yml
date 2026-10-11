@@ -29,7 +29,6 @@ jobs:
       cancel-in-progress: false
     env:
       GH_TOKEN: ${{ github.token }}
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       RADAR_REPAIR_MODEL: ${{ vars.RADAR_REPAIR_MODEL }}
     steps:
       - uses: actions/checkout@v4

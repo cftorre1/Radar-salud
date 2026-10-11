@@ -374,3 +374,29 @@ with 193 tests and five workflows validated. No hosted acceptance is claimed.
 Next hypothesis: approval of the full reviewed payload removes the publication
 blocker; hosted pickup can then be measured while the existing independent
 source/provider Work fronts continue in their isolated branches.
+## 19. Publish approved infrastructure and isolate unused credentials
+
+The owner explicitly authorized public main publication of the complete seventeen
+infrastructure commits and workflow activation. The normal fast-forward push of
+`b6794bf` succeeded at 2026-10-11T05:28:53Z. Controller run `38114913138` started
+from that push and actual canonical state recorded six distinct family claims
+between 05:29:46Z and 05:30:03Z. Existing production deployment remains manual.
+
+The requested pre-push validation repeated all 193 autonomy tests successfully
+with the documented venv (17.550 seconds), actionlint 1.7.7 accepted the five
+workflows, and twelve continuity artifact hashes plus the incremental bundle
+restoration passed. The default interpreter lacks pytest; its separate initial
+failure log is retained and is not represented as a passing environment.
+
+Hosted repair workers no longer inject the unused existing model credential.
+Current policy disables paid model repair. Removing that credential also keeps
+global deterministic validation from enabling unrelated eight-source integration
+tests based only on the presence of an API key. No credential was added or
+revoked, no gate was changed and source-family LIVE probes remain separate.
+
+Directed validation: actionlint for repair-lanes.yml; inspection that the job
+environment has no OPENAI_API_KEY and that original product tests are unchanged.
+Next hypothesis: bounded source evidence must survive log truncation, and a
+corrected executor must automatically retry an infrastructure-blocked task when
+its relevant executor implementation changes. Hosted four-hour acceptance remains
+NOT_PROVEN; the owner prompt-event observer is still unavailable.
