@@ -2,14 +2,88 @@
   "schema_version": "1.0",
   "source": "pulso_latercera",
   "mode": "exact_offline_retention_of_all_cold_incomplete_detail_originals_no_inventory_injection",
-  "discovery_run_sha256": "c9610a1bc0896d2faf115d8419d89c889c7f4cdce13cc648145301bb0ba0127e",
-  "discovery_at": "2026-10-11T07:52:34.781862+00:00",
+  "discovery_run_sha256": "c3e01d43cb2d48cabe733e3920bc9cbe20819472caa771c954683ba7016a98d3",
+  "discovery_at": "2026-10-11T11:07:51.687201+00:00",
   "observed_discovery_run_sha256s": [
     "660f979b34a7ba9025ee0ddfc7d41f5edf89bb145939fb290ae4c37d48b38131",
-    "c9610a1bc0896d2faf115d8419d89c889c7f4cdce13cc648145301bb0ba0127e"
+    "c3e01d43cb2d48cabe733e3920bc9cbe20819472caa771c954683ba7016a98d3"
   ],
-  "expected_unique_incomplete_urls": 29,
+  "expected_unique_incomplete_urls": 30,
   "requests": [
+    {
+      "url": "https://www.latercera.com/branded/noticia/empresas-x-chile-el-movimiento-empresarial-que-busca-fomentar-el-empleo-juvenil-impulsando-practicas-tp/",
+      "status": 200,
+      "captured_at": "2026-10-11T11:07:33.475461+00:00",
+      "sha256": "72fc28c440379065c28441a4a0504baa810c83bbef41d435da4cd5c8610e0377",
+      "gzip_sha256": "2e82525ea0821db46c2eb36b45c499b7c562d40e254b908e27ff4e99540b1042",
+      "bytes": 418163,
+      "charset": "utf-8",
+      "returned_text_utf8_sha256": "72fc28c440379065c28441a4a0504baa810c83bbef41d435da4cd5c8610e0377",
+      "content_type": "text/html; charset=utf-8",
+      "primary_article_error": {
+        "error_type": "ValueError",
+        "reason": "incomplete_article_evidence"
+      },
+      "original_capture_manifest_sha256": "37e23b1f3916e4617538e5a953ccaf06e39d943823a51b925859bf3182491b43",
+      "original_capture_gzip_file": "responses/72fc28c440379065c28441a4a0504baa810c83bbef41d435da4cd5c8610e0377.gz",
+      "original_bytes_verified": true,
+      "response_kind": "html",
+      "title": "“Empresas x Chile”, el movimiento empresarial que busca fomentar el empleo juvenil impulsando prácticas TP",
+      "title_chars": 106,
+      "canonical": "https://www.latercera.com/branded/noticia/empresas-x-chile-el-movimiento-empresarial-que-busca-fomentar-el-empleo-juvenil-impulsando-practicas-tp/",
+      "canonical_matches_requested": true,
+      "url_bound_article_nodes": 1,
+      "section": "Branded",
+      "url_bound_video_objects": 0,
+      "url_bound_video_evidence": [],
+      "visible_byline_text": "11 OCTUBRE 2026",
+      "visible_byline_day": "2026-10-11",
+      "visible_byline_error": null,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-10-11T09:00:00Z",
+          "timestamp_calendar_day": "2026-10-11"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-10-11T09:00:00Z",
+          "timestamp_calendar_day": "2026-10-11"
+        }
+      ],
+      "primary_body_source": "primary_text_missing_in_original",
+      "primary_body_chars": 0,
+      "primary_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "primary_body_available": false,
+      "primary_body_below_160": true,
+      "primary_body_unavailable_reason": "primary_text_missing_in_original",
+      "title_below_18": false,
+      "original_metadata_description": "“Tenemos que recuperar un mercado laboral que está debilitado”, dijo la presidenta de la Confederación de la Producción y del Comercio, Susana Jiménez, durante el primero de los tres capítulos de “Empresas en Acción”, ciclo de conversatorios organizado por La Tercera y Empresas x Chile. En el diálogo también participaron la ministra de Educación, María Paz Arzola, y el gerente general de Banco de Chile, Eduardo Ebensperger, quienes abordaron los desafíos de conectar mejor la educación con el mundo del trabajo y generar más oportunidades para los jóvenes.",
+      "keywords": [
+        "branded-pulso"
+      ],
+      "current_parser": {
+        "status": "error",
+        "error_type": "ValueError",
+        "reason": "incomplete_article_evidence"
+      },
+      "health_anchor_current_source": false,
+      "health_anchor_broad_clinical_audit": false,
+      "health_related_original": false,
+      "materiality_prefilter_observations": {
+        "full_primary_body": false,
+        "body_first_5500": false,
+        "body_first_18000": false
+      },
+      "body_complete_as_original": false,
+      "primary_document_diagnosis": "url_bound_primary_article_text_below_160",
+      "original_article_path": true,
+      "gzip_file": "72fc28c440379065c28441a4a0504baa810c83bbef41d435da4cd5c8610e0377.html.gz",
+      "fixture_status": "original_retained_even_if_current_parser_rejects",
+      "capture_provenance": "preserved_original_cold_core_incomplete_detail",
+      "cold_discovery_reason": "incomplete_article_evidence",
+      "full_primary_body": ""
+    },
     {
       "url": "https://www.latercera.com/finde/noticia/verdadero-elixir/",
       "status": 200,
@@ -56,6 +130,7 @@
       "primary_body_sha256": "e8b7f5cd6f36d897fd5be801f6eae32eb5afee536b0c69bc7ea4dc72bc6b3bbe",
       "primary_body_available": true,
       "primary_body_below_160": false,
+      "primary_body_unavailable_reason": null,
       "title_below_18": true,
       "original_metadata_description": "Verdadero elíxir",
       "keywords": [
@@ -202,6 +277,7 @@
       "primary_body_sha256": "d17814df290f9eaa8c5135c30c41fa1dd94731866ae0c070e67d5af2a3254381",
       "primary_body_available": true,
       "primary_body_below_160": false,
+      "primary_body_unavailable_reason": null,
       "title_below_18": true,
       "original_metadata_description": "Una opción sabrosa y fácil de preparar para compartir. Acompañadas de una salsa cremosa de mostaza, miel y yogur, se transforman en un picoteo perfecto o en una guarnición distinta y llena de sabor.",
       "keywords": [
@@ -330,6 +406,7 @@
       "primary_body_sha256": "f1db846ed45c3a36d0514a384e1575c5906ce3c0f7a80af945b630b7a958e903",
       "primary_body_available": true,
       "primary_body_below_160": false,
+      "primary_body_unavailable_reason": null,
       "title_below_18": true,
       "original_metadata_description": "Una preparación llena de sabor, perfecta para disfrutar un clásico de la cocina chilena en los días más fríos.",
       "keywords": [
@@ -464,6 +541,7 @@
       "primary_body_sha256": "a72d9f4ff37be4c3f1e5f2447ad45c53658be93820cc01359176ca088f4a4f10",
       "primary_body_available": true,
       "primary_body_below_160": false,
+      "primary_body_unavailable_reason": null,
       "title_below_18": true,
       "original_metadata_description": "Con la tradición del 29 de cada mes como excusa y la abundancia como deseo, estos gnocchi de matcha reinterpretan el clásico de cada fin de mes con un giro inesperado. Mantienen la esencia de la receta casera, pero sumando un toque especial con el tradicional ingrediente asiático. Esta versión es perfecta para honrar la costumbre sin caer en lo de siempre.",
       "keywords": [
@@ -592,6 +670,7 @@
       "primary_body_sha256": "c4e29dbf0de82cf4b2765c102aa707c3716995a3a25c09ab93cfa8cc4b1ddf3b",
       "primary_body_available": true,
       "primary_body_below_160": false,
+      "primary_body_unavailable_reason": null,
       "title_below_18": true,
       "original_metadata_description": "Cremoso, fresco y lleno de sabor. Esta versión del hummus mezcla la suavidad de los garbanzos con la cremosidad de la palta, creando un dip perfecto para untar.",
       "keywords": [
@@ -726,6 +805,7 @@
       "primary_body_sha256": "e928380d7f3df0fb914756d8844ee48ceae35a7fe07b291f4e6de1cb26ce28f9",
       "primary_body_available": true,
       "primary_body_below_160": false,
+      "primary_body_unavailable_reason": null,
       "title_below_18": true,
       "original_metadata_description": "Perfecto para la hora de la once o para acompañar un café o té, es una preparación sencilla que invita a disfrutar del sabor de lo hecho en casa.",
       "keywords": [
@@ -857,6 +937,7 @@
       "primary_body_sha256": "b43ccdff4a74b8215c90d374313d16b4c69db3f41f0ce137c800d07fbe875a4d",
       "primary_body_available": true,
       "primary_body_below_160": false,
+      "primary_body_unavailable_reason": null,
       "title_below_18": true,
       "original_metadata_description": "Un clásico infaltable para la hora de la once, ideal para disfrutar recién salido del horno. Esta versión, sencilla y rápida de preparar, demuestra que con pocos ingredientes se puede lograr un pan casero perfecto para compartir.",
       "keywords": [
@@ -985,6 +1066,7 @@
       "primary_body_sha256": "6f85594a1f8ca848e023886829ee4c1c29089d0ee0bfde1168056ab3ce428b58",
       "primary_body_available": true,
       "primary_body_below_160": false,
+      "primary_body_unavailable_reason": null,
       "title_below_18": true,
       "original_metadata_description": "Una infusión aromática y reconfortante. Ideal para los días fríos, hacer una pausa o disfrutar de un momento de calma.",
       "keywords": [
@@ -1113,6 +1195,7 @@
       "primary_body_sha256": "21991e16cf38489dd9f3a2dec30d7a4903bf8f724512242e94495c5b5e2bb84b",
       "primary_body_available": true,
       "primary_body_below_160": false,
+      "primary_body_unavailable_reason": null,
       "title_below_18": true,
       "original_metadata_description": "Fresco, vibrante y con un toque picante, este carpaccio de zapallito italiano es una preparación ligera que resalta sabores intensos con muy pocos ingredientes. Ideal como entrada o acompañamiento en días cálidos.",
       "keywords": [
@@ -1241,6 +1324,7 @@
       "primary_body_sha256": "4e2ad2cb02bbc23e75c70819643bebdd3d67a80a7fea245ac7a954b3e285a583",
       "primary_body_available": true,
       "primary_body_below_160": false,
+      "primary_body_unavailable_reason": null,
       "title_below_18": true,
       "original_metadata_description": "Durante años, el Trastorno Obsesivo Compulsivo ha sido reducido a una caricatura: la persona que ordena, que limpia, que necesita tener todo bajo control. En el lenguaje cotidiano, incluso, se volvió un adjetivo que se usa casi como sinónimo de perfeccionismo. Pero detrás de esa simplificación hay una realidad mucho más compleja, silenciosa y profundamente angustiante. El TOC no se trata de gusto ni de manías, se trata de pensamientos que irrumpen sin permiso y sin cesar.\n",
       "keywords": [
@@ -1375,6 +1459,7 @@
       "primary_body_sha256": "2e9d635af1a6c49a772bfcd0eb3271fa3b8059d243e20c28b437512c405d757a",
       "primary_body_available": true,
       "primary_body_below_160": false,
+      "primary_body_unavailable_reason": null,
       "title_below_18": true,
       "original_metadata_description": "No improvisar",
       "keywords": [
@@ -1460,19 +1545,19 @@
     {
       "url": "https://www.latercera.com/pulso/noticia/nada-es-imposible/",
       "status": 200,
-      "captured_at": "2026-10-11T07:39:33.812371+00:00",
-      "sha256": "003c0d3b7eaaed1bc039d4f3e6a5f9ef35c32a9f31bcffc23f7e2ccecdeb46d9",
-      "gzip_sha256": "cef682c07cff5a9797d106e39316c533e5d83e9935a4fb0c826ac22a60467703",
-      "bytes": 466335,
+      "captured_at": "2026-10-11T05:50:13.610555+00:00",
+      "sha256": "f7a6022a93dcfc521bdf204961a61831e08873fd64543e9c624ee0aa7c5ac324",
+      "gzip_sha256": "306b52f5ae5f49bd6d288f5cadd9f578432a2fcdbcf460e7b5c6d3200604f8fa",
+      "bytes": 466962,
       "charset": "utf-8",
-      "returned_text_utf8_sha256": "003c0d3b7eaaed1bc039d4f3e6a5f9ef35c32a9f31bcffc23f7e2ccecdeb46d9",
+      "returned_text_utf8_sha256": "f7a6022a93dcfc521bdf204961a61831e08873fd64543e9c624ee0aa7c5ac324",
       "content_type": "text/html; charset=utf-8",
       "primary_article_error": {
-        "error_type": "ExcludedArticle",
-        "reason": "publisher_opinion_taxonomy"
+        "error_type": "ValueError",
+        "reason": "incomplete_article_evidence"
       },
-      "original_capture_manifest_sha256": "7a7487d9e552b9705451373f6442610273f6c44b1c59051cde0061ffe5f87a25",
-      "original_capture_gzip_file": "responses/003c0d3b7eaaed1bc039d4f3e6a5f9ef35c32a9f31bcffc23f7e2ccecdeb46d9.gz",
+      "original_capture_manifest_sha256": "59b3bec2a3d2c86a70ecfec32e8620352153cbb54f4fd8e59e29a488e65da06a",
+      "original_capture_gzip_file": "responses/f7a6022a93dcfc521bdf204961a61831e08873fd64543e9c624ee0aa7c5ac324.gz",
       "original_bytes_verified": true,
       "response_kind": "html",
       "title": "Nada es Imposible",
@@ -1503,6 +1588,7 @@
       "primary_body_sha256": "9357b1bc04b7ba3e165e5661301375e178692b38ac47bc15c445c39e0bfe0c2e",
       "primary_body_available": true,
       "primary_body_below_160": false,
+      "primary_body_unavailable_reason": null,
       "title_below_18": true,
       "original_metadata_description": "\"Chile tiene argumentos para competir: país Ocde con ventajas de costo, ahorro institucional de gran escala, administradores sofisticados, buenos profesionales, experiencia regulatoria y una posición privilegiada dentro de América Latina\".",
       "keywords": [
@@ -1528,7 +1614,7 @@
       "body_complete_as_original": true,
       "primary_document_diagnosis": "url_bound_complete_primary_body_rejected_by_short_headline_length_gate",
       "original_article_path": true,
-      "gzip_file": "003c0d3b7eaaed1bc039d4f3e6a5f9ef35c32a9f31bcffc23f7e2ccecdeb46d9.html.gz",
+      "gzip_file": "f7a6022a93dcfc521bdf204961a61831e08873fd64543e9c624ee0aa7c5ac324.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
@@ -1537,19 +1623,19 @@
     {
       "url": "https://www.latercera.com/sustentabilidad/noticia/lo-dijimos/",
       "status": 200,
-      "captured_at": "2026-10-11T07:49:00.762499+00:00",
-      "sha256": "61a21b750f1fdcddabf96b900d8d2673bbc5e3f5849142a8c70fdba063dca338",
-      "gzip_sha256": "7d19c931a9b998d2dbddd5350973cd62b79c1e84fe956857a03ca5f23cb81b5e",
-      "bytes": 468646,
+      "captured_at": "2026-10-11T06:08:37.121022+00:00",
+      "sha256": "dce9ed5886d93c62dbedb5db534324af39d9c3c81c9e37eff86f7636e511990a",
+      "gzip_sha256": "dbcf589b991d84afe594f6fc5db20064b3a31cc48102d99bc6000efbc828e0c0",
+      "bytes": 473374,
       "charset": "utf-8",
-      "returned_text_utf8_sha256": "61a21b750f1fdcddabf96b900d8d2673bbc5e3f5849142a8c70fdba063dca338",
+      "returned_text_utf8_sha256": "dce9ed5886d93c62dbedb5db534324af39d9c3c81c9e37eff86f7636e511990a",
       "content_type": "text/html; charset=utf-8",
       "primary_article_error": {
-        "error_type": "ExcludedArticle",
-        "reason": "publisher_opinion_taxonomy"
+        "error_type": "ValueError",
+        "reason": "incomplete_article_evidence"
       },
-      "original_capture_manifest_sha256": "7a7487d9e552b9705451373f6442610273f6c44b1c59051cde0061ffe5f87a25",
-      "original_capture_gzip_file": "responses/61a21b750f1fdcddabf96b900d8d2673bbc5e3f5849142a8c70fdba063dca338.gz",
+      "original_capture_manifest_sha256": "59b3bec2a3d2c86a70ecfec32e8620352153cbb54f4fd8e59e29a488e65da06a",
+      "original_capture_gzip_file": "responses/dce9ed5886d93c62dbedb5db534324af39d9c3c81c9e37eff86f7636e511990a.gz",
       "original_bytes_verified": true,
       "response_kind": "html",
       "title": "Lo dijimos",
@@ -1580,6 +1666,7 @@
       "primary_body_sha256": "dfd31e343ab79e9e2abc68003400737a00843abd6361ed57da61f4118cc4f500",
       "primary_body_available": true,
       "primary_body_below_160": false,
+      "primary_body_unavailable_reason": null,
       "title_below_18": true,
       "original_metadata_description": "\"Una caída persistente de la natalidad altera toda la estructura de una sociedad: primero envejece la población; luego cambia la composición de la demanda, el mercado del trabajo, las necesidades de vivienda, la estructura de las ciudades, los requerimientos de salud y, finalmente, la sostenibilidad fiscal del Estado\".",
       "keywords": [
@@ -1609,7 +1696,7 @@
       "body_complete_as_original": true,
       "primary_document_diagnosis": "url_bound_complete_primary_body_rejected_by_short_headline_length_gate",
       "original_article_path": true,
-      "gzip_file": "61a21b750f1fdcddabf96b900d8d2673bbc5e3f5849142a8c70fdba063dca338.html.gz",
+      "gzip_file": "dce9ed5886d93c62dbedb5db534324af39d9c3c81c9e37eff86f7636e511990a.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
@@ -1670,11 +1757,12 @@
           "timestamp_calendar_day": "2025-10-09"
         }
       ],
-      "primary_body_source": "article_html",
-      "primary_body_chars": 146,
-      "primary_body_sha256": "1adfdaf01dabe1aea545d7329d3507ab84f47f1431cc87be207d67117e2ddb5f",
-      "primary_body_available": true,
+      "primary_body_source": "primary_text_missing_in_original",
+      "primary_body_chars": 0,
+      "primary_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "primary_body_available": false,
       "primary_body_below_160": true,
+      "primary_body_unavailable_reason": "primary_text_missing_in_original",
       "title_below_18": false,
       "original_metadata_description": "En este nuevo espacio un espacio la experta en finanzas, Catherine Ruz, responderá en vivo las preguntas que todos tenemos sobre ahorro, seguros y planificación financiera. Porque entender tus finanzas es el primer paso para tomar buenas decisiones y construir un futuro más seguro.",
       "keywords": [
@@ -1696,14 +1784,14 @@
         "body_first_5500": true,
         "body_first_18000": true
       },
-      "body_complete_as_original": true,
+      "body_complete_as_original": false,
       "primary_document_diagnosis": "publisher_video_route_with_primary_article_text_below_160",
       "original_article_path": true,
       "gzip_file": "449e039e2125435e6de22d141b9942654d12d5d614057845303d74cdf9fa2cdb.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
-      "full_primary_body": "Por La Tercera TV 9 OCTUBRE 2025 Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios Más sobre: Seguros fonasa isapres seguros de salud"
+      "full_primary_body": ""
     },
     {
       "url": "https://www.latercera.com/videos/noticia/listas-de-espera-cuales-son-los-candidatos-presidenciales-mas-preparados-para-reducirlas/",
@@ -1760,11 +1848,12 @@
           "timestamp_calendar_day": "2025-09-13"
         }
       ],
-      "primary_body_source": "article_html",
-      "primary_body_chars": 150,
-      "primary_body_sha256": "c9efd7737e91968ebe078822bec737458f0d50b2f3e22bc4395b71f98e43fde7",
-      "primary_body_available": true,
+      "primary_body_source": "primary_text_missing_in_original",
+      "primary_body_chars": 0,
+      "primary_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "primary_body_available": false,
       "primary_body_below_160": true,
+      "primary_body_unavailable_reason": "primary_text_missing_in_original",
       "title_below_18": false,
       "original_metadata_description": "Las listas de espera en el sistema público de salud es uno de los temas que más preocupa y que, de hecho, se tomó gran parte del primer debate televisado entre los ochos aspirantes a La Moneda. La encuesta Descifra consultó a los chilenos sobre la gestión del gobierno en esta problemática y quién de los abanderados o abanderadas puede hacerle frente de mejor manera. ",
       "keywords": [
@@ -1786,14 +1875,14 @@
         "body_first_5500": true,
         "body_first_18000": true
       },
-      "body_complete_as_original": true,
+      "body_complete_as_original": false,
       "primary_document_diagnosis": "publisher_video_route_with_primary_article_text_below_160",
       "original_article_path": true,
       "gzip_file": "5442ce68dbc7fd929a2f0a133b03b4819fbeef8fafb01fb15842992bfb9d54ab.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
-      "full_primary_body": "Por Alonso Vatel 13 SEPTIEMBRE 2025 Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios Más sobre: Nacional Descifra Listas de espera Salud"
+      "full_primary_body": ""
     },
     {
       "url": "https://www.latercera.com/videos/noticia/radar-lt-alerta-por-influenza-abre-la-vacunacion-para-toda-la-poblacion/",
@@ -1850,11 +1939,12 @@
           "timestamp_calendar_day": "2026-07-29"
         }
       ],
-      "primary_body_source": "article_html",
-      "primary_body_chars": 151,
-      "primary_body_sha256": "643129213d93dac0fe381eb778dec91ff0557fd02eef45241c5e9bb5810ae4ca",
-      "primary_body_available": true,
+      "primary_body_source": "primary_text_missing_in_original",
+      "primary_body_chars": 0,
+      "primary_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "primary_body_available": false,
       "primary_body_below_160": true,
+      "primary_body_unavailable_reason": "primary_text_missing_in_original",
       "title_below_18": false,
       "original_metadata_description": "En el capítulo de hoy conversaremos con el doctor Pablo González sobre la situación actual de la influenza en nuestro país. ",
       "keywords": [
@@ -1877,14 +1967,14 @@
         "body_first_5500": true,
         "body_first_18000": true
       },
-      "body_complete_as_original": true,
+      "body_complete_as_original": false,
       "primary_document_diagnosis": "publisher_video_route_with_primary_article_text_below_160",
       "original_article_path": true,
       "gzip_file": "b5af86f765f4457e92c6b45d7ae47bdb2de81a76f29c6efadb954c6a4f62f72f.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
-      "full_primary_body": "Por Paula Morales 29 JULIO 2026 Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios Más sobre: Videopodcast Radar LT Ciencia Salud Influenza"
+      "full_primary_body": ""
     },
     {
       "url": "https://www.latercera.com/videos/noticia/radar-lt-alzheimer-cientificos-estudian-el-dano-cerebral-que-comienza-anos-antes-de-los-sintomas/",
@@ -1941,11 +2031,12 @@
           "timestamp_calendar_day": "2026-09-22"
         }
       ],
-      "primary_body_source": "article_html",
-      "primary_body_chars": 156,
-      "primary_body_sha256": "35237a39c92533361cfb150615d1e7561a45a56a5037bb9e5767720637ca75e6",
-      "primary_body_available": true,
+      "primary_body_source": "primary_text_missing_in_original",
+      "primary_body_chars": 0,
+      "primary_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "primary_body_available": false,
       "primary_body_below_160": true,
+      "primary_body_unavailable_reason": "primary_text_missing_in_original",
       "title_below_18": false,
       "original_metadata_description": "La científica chilena Soledad Matus explica los avances en detección temprana del Alzheimer y los desafíos pendientes para desarrollar tratamientos efectivos.",
       "keywords": [
@@ -1968,14 +2059,14 @@
         "body_first_5500": false,
         "body_first_18000": false
       },
-      "body_complete_as_original": true,
+      "body_complete_as_original": false,
       "primary_document_diagnosis": "publisher_video_route_with_primary_article_text_below_160",
       "original_article_path": true,
       "gzip_file": "31123696dd8e06a9ff1126c73fdea4df10d2d9d43a18401728a4abc3827acb0a.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
-      "full_primary_body": "Por La Tercera TV 22 SEPTIEMBRE 2026 Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios Más sobre: Videopodcast Radar LT Ciencia Salud Alzheimer"
+      "full_primary_body": ""
     },
     {
       "url": "https://www.latercera.com/videos/noticia/radar-lt-bacterias-probioticas-producen-monoxido-de-carbono-y-reducen-severidad-de-infecciones/",
@@ -2032,11 +2123,12 @@
           "timestamp_calendar_day": "2026-07-20"
         }
       ],
-      "primary_body_source": "article_html",
-      "primary_body_chars": 138,
-      "primary_body_sha256": "ce5fc949e43b1b3ed8c5f8e8d3cbf38b599757b76e20282755d34f9641f8b0c5",
-      "primary_body_available": true,
+      "primary_body_source": "primary_text_missing_in_original",
+      "primary_body_chars": 0,
+      "primary_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "primary_body_available": false,
       "primary_body_below_160": true,
+      "primary_body_unavailable_reason": "primary_text_missing_in_original",
       "title_below_18": false,
       "original_metadata_description": "En el capítulo de hoy estaremos junto a la doctora Susan Bueno,  Directora Alterna del Instituto Milenio de inmunología e inmunoterapia, quien lidera esta investigación y busca reducir distintas infecciones como el herpes.",
       "keywords": [
@@ -2058,14 +2150,14 @@
         "body_first_5500": false,
         "body_first_18000": false
       },
-      "body_complete_as_original": true,
+      "body_complete_as_original": false,
       "primary_document_diagnosis": "publisher_video_route_with_primary_article_text_below_160",
       "original_article_path": true,
       "gzip_file": "f12be4217dc6c6af6355721e89a5c052ce3c04a1a01ee087533f3cbca9f1be5a.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
-      "full_primary_body": "Por Paula Morales 20 JULIO 2026 Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios Más sobre: Radar LT Ciencia Bacterias Salud"
+      "full_primary_body": ""
     },
     {
       "url": "https://www.latercera.com/videos/noticia/radar-lt-ciencia-contra-el-cancer-esta-investigacion-clinica-nace-de-la-experiencia-de-los-pacientes/",
@@ -2122,11 +2214,12 @@
           "timestamp_calendar_day": "2026-08-19"
         }
       ],
-      "primary_body_source": "article_html",
-      "primary_body_chars": 141,
-      "primary_body_sha256": "c99a884df58838baabbf5063a8cc6a8c4a44451042c301ff379b84d121b4efd7",
-      "primary_body_available": true,
+      "primary_body_source": "primary_text_missing_in_original",
+      "primary_body_chars": 0,
+      "primary_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "primary_body_available": false,
       "primary_body_below_160": true,
+      "primary_body_unavailable_reason": "primary_text_missing_in_original",
       "title_below_18": false,
       "original_metadata_description": "En el capítulo de hoy conversaremos con Evelyn Silva, primera mujer en dirigir el Centro de Investigación e Innovación en Cáncer, institución que se ha consolidado como un referente regional que integra investigación clínica, traslacional, epidemiológica, económica, digital y tecnologías sanitarias. ",
       "keywords": [
@@ -2148,14 +2241,14 @@
         "body_first_5500": false,
         "body_first_18000": false
       },
-      "body_complete_as_original": true,
+      "body_complete_as_original": false,
       "primary_document_diagnosis": "publisher_video_route_with_primary_article_text_below_160",
       "original_article_path": true,
       "gzip_file": "d4b4b4ed3b58a521f274c2feb4d851232df6e70d71c0e28c90dfbc8b4582329e.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
-      "full_primary_body": "Por Paula Morales 19 AGOSTO 2026 Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios Más sobre: Videopodcast Radar LT Cáncer Salud"
+      "full_primary_body": ""
     },
     {
       "url": "https://www.latercera.com/videos/noticia/radar-lt-consorcio-chileno-desarrollara-tecnologia-de-ia-para-tratamiento-de-cancer/",
@@ -2212,11 +2305,12 @@
           "timestamp_calendar_day": "2026-07-08"
         }
       ],
-      "primary_body_source": "article_html",
-      "primary_body_chars": 148,
-      "primary_body_sha256": "2021e24ae6a82172e1392361d2dca80482abe3d6e53e74da976d780c7beeb87a",
-      "primary_body_available": true,
+      "primary_body_source": "primary_text_missing_in_original",
+      "primary_body_chars": 0,
+      "primary_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "primary_body_available": false,
       "primary_body_below_160": true,
+      "primary_body_unavailable_reason": "primary_text_missing_in_original",
       "title_below_18": false,
       "original_metadata_description": "En el programa de hoy conversaremos con Ricardo Armisen, sobre este programa que recibirá financiamiento de Corfo para poder trabajar en el desarrollo de siete tecnologías que ayudarán al tratamiento y diagnóstico del cáncer.",
       "keywords": [
@@ -2240,14 +2334,14 @@
         "body_first_5500": false,
         "body_first_18000": false
       },
-      "body_complete_as_original": true,
+      "body_complete_as_original": false,
       "primary_document_diagnosis": "publisher_video_route_with_primary_article_text_below_160",
       "original_article_path": true,
       "gzip_file": "ee179ca98c6f7989a7eb72c582f3d4c2d5b9a460d22252edbdcbee22922f53d1.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
-      "full_primary_body": "Por Paula Morales 8 JULIO 2026 Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios Más sobre: Radar LT IA Tecnología Salud Ciencia Cáncer"
+      "full_primary_body": ""
     },
     {
       "url": "https://www.latercera.com/videos/noticia/radar-lt-estudio-revela-que-la-forma-de-hablar-puede-entregar-senales-de-envejecimiento-cerebral-y-demencia/",
@@ -2304,11 +2398,12 @@
           "timestamp_calendar_day": "2026-10-08"
         }
       ],
-      "primary_body_source": "article_html",
-      "primary_body_chars": 159,
-      "primary_body_sha256": "6d570cbd3f545bb6bf9330e4c1088564055e9f14125c3af6b4c56a896fc52dd9",
-      "primary_body_available": true,
+      "primary_body_source": "primary_text_missing_in_original",
+      "primary_body_chars": 0,
+      "primary_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "primary_body_available": false,
       "primary_body_below_160": true,
+      "primary_body_unavailable_reason": "primary_text_missing_in_original",
       "title_below_18": false,
       "original_metadata_description": "Un estudio realizado en cinco países latinoamericanos, incluido Chile, desarrolló un modelo de inteligencia artificial que analiza el habla para identificar señales de envejecimiento cerebral, deterioro cognitivo y demencia.",
       "keywords": [
@@ -2332,14 +2427,14 @@
         "body_first_5500": false,
         "body_first_18000": false
       },
-      "body_complete_as_original": true,
+      "body_complete_as_original": false,
       "primary_document_diagnosis": "publisher_video_route_with_primary_article_text_below_160",
       "original_article_path": true,
       "gzip_file": "76e9d1938604d6336eadaeb71e87681d7f5d261eb8c06aaf1f9770553402df48.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
-      "full_primary_body": "Por La Tercera TV 8 OCTUBRE 2026 Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios Más sobre: Videopodcast Radar LT Ciencia Salud Cerebro Demencia"
+      "full_primary_body": ""
     },
     {
       "url": "https://www.latercera.com/videos/noticia/radar-lt-exposoma-la-ciencia-busca-explicar-por-que-algunas-personas-enferman-y-otras-no/",
@@ -2396,11 +2491,12 @@
           "timestamp_calendar_day": "2026-10-07"
         }
       ],
-      "primary_body_source": "article_html",
-      "primary_body_chars": 136,
-      "primary_body_sha256": "ae56c141ac755d3455b390e51bb5da7e1e6a15ac0d0282dca1a8180f9685d1a3",
-      "primary_body_available": true,
+      "primary_body_source": "primary_text_missing_in_original",
+      "primary_body_chars": 0,
+      "primary_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "primary_body_available": false,
       "primary_body_below_160": true,
+      "primary_body_unavailable_reason": "primary_text_missing_in_original",
       "title_below_18": false,
       "original_metadata_description": "Investigadoras de la Universidad de Chile estudian cómo el ambiente, la salud bucal y otros factores no genéticos influyen en la capacidad de las personas para resistir enfermedades.",
       "keywords": [
@@ -2422,14 +2518,14 @@
         "body_first_5500": false,
         "body_first_18000": false
       },
-      "body_complete_as_original": true,
+      "body_complete_as_original": false,
       "primary_document_diagnosis": "publisher_video_route_with_primary_article_text_below_160",
       "original_article_path": true,
       "gzip_file": "5b1953ceb60ee2ead2ac9aeb586ea5262c4f374153f6d7cf655a36bd93ce02c9.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
-      "full_primary_body": "Por La Tercera TV 7 OCTUBRE 2026 Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios Más sobre: Videopodcast LT Ciencia Salud"
+      "full_primary_body": ""
     },
     {
       "url": "https://www.latercera.com/videos/noticia/radar-lt-fortificacion-con-vitamina-d-busca-reducir-el-deficit-en-la-poblacion/",
@@ -2486,11 +2582,12 @@
           "timestamp_calendar_day": "2026-08-11"
         }
       ],
-      "primary_body_source": "article_html",
-      "primary_body_chars": 145,
-      "primary_body_sha256": "18d97c9dbc8271f117da939ab2e89fde7e8b8955c8c59ed273f739f21f44869c",
-      "primary_body_available": true,
+      "primary_body_source": "primary_text_missing_in_original",
+      "primary_body_chars": 0,
+      "primary_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "primary_body_available": false,
       "primary_body_below_160": true,
+      "primary_body_unavailable_reason": "primary_text_missing_in_original",
       "title_below_18": false,
       "original_metadata_description": "En Chile un gran porcentaje de la población mantiene un déficit de Vitamina D, por eso hoy hablaremos con el doctor Andrés Bustamante sobre esta fortificación que busca reducir en un 10% este problema.",
       "keywords": [
@@ -2512,14 +2609,14 @@
         "body_first_5500": false,
         "body_first_18000": false
       },
-      "body_complete_as_original": true,
+      "body_complete_as_original": false,
       "primary_document_diagnosis": "publisher_video_route_with_primary_article_text_below_160",
       "original_article_path": true,
       "gzip_file": "c2b850943c47ad41d4cc8354014f2e143b3ff1a78a55504e90db2af6354dd928.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
-      "full_primary_body": "Por Paula Morales 11 AGOSTO 2026 Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios Más sobre: Videopodcast Radar LT Salud Vitamina D"
+      "full_primary_body": ""
     },
     {
       "url": "https://www.latercera.com/videos/noticia/radar-lt-manual-de-quemaduras-para-profesionales-de-la-salud/",
@@ -2576,11 +2673,12 @@
           "timestamp_calendar_day": "2026-08-17"
         }
       ],
-      "primary_body_source": "article_html",
-      "primary_body_chars": 155,
-      "primary_body_sha256": "75105aeff02888a1751154d3354c9c7485930a6a848230b05501add09069d443",
-      "primary_body_available": true,
+      "primary_body_source": "primary_text_missing_in_original",
+      "primary_body_chars": 0,
+      "primary_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "primary_body_available": false,
       "primary_body_below_160": true,
+      "primary_body_unavailable_reason": "primary_text_missing_in_original",
       "title_below_18": false,
       "original_metadata_description": "En el capítulo de hoy conversaremos con Pilar Troncoso de COANIQUEM, sobre la gira que recorrerá todo el país entregando el manual de quemaduras para que tengan total conocimiento de cómo tratar estas situaciones.\n",
       "keywords": [
@@ -2603,14 +2701,14 @@
         "body_first_5500": false,
         "body_first_18000": false
       },
-      "body_complete_as_original": true,
+      "body_complete_as_original": false,
       "primary_document_diagnosis": "publisher_video_route_with_primary_article_text_below_160",
       "original_article_path": true,
       "gzip_file": "5f5e5e6502ba2708660dda287df730f36c9ada4ebca5f888911a62d8f69abda5.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
-      "full_primary_body": "Por Paula Morales 17 AGOSTO 2026 Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios Más sobre: Videopodcast Radar LT Salud Quemaduras Coaniquem"
+      "full_primary_body": ""
     },
     {
       "url": "https://www.latercera.com/videos/noticia/radar-lt-modelos-computacionales-abren-nuevas-vias-para-desarrollar-terapias-basadas-en-arn/",
@@ -2667,11 +2765,12 @@
           "timestamp_calendar_day": "2026-09-15"
         }
       ],
-      "primary_body_source": "article_html",
-      "primary_body_chars": 159,
-      "primary_body_sha256": "9ec6865d6857504ac9dd3da7669f1ff7274a9ebe31ced723605d6835e0e134e5",
-      "primary_body_available": true,
+      "primary_body_source": "primary_text_missing_in_original",
+      "primary_body_chars": 0,
+      "primary_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "primary_body_available": false,
       "primary_body_below_160": true,
+      "primary_body_unavailable_reason": "primary_text_missing_in_original",
       "title_below_18": false,
       "original_metadata_description": "Investigadores chilenos participan en la competencia internacional CASP17 con modelos que buscan predecir la estructura del ARN, un avance clave para acelerar el desarrollo de nuevas terapias contra el cáncer y otras enfermedades.",
       "keywords": [
@@ -2695,14 +2794,14 @@
         "body_first_5500": false,
         "body_first_18000": false
       },
-      "body_complete_as_original": true,
+      "body_complete_as_original": false,
       "primary_document_diagnosis": "publisher_video_route_with_primary_article_text_below_160",
       "original_article_path": true,
       "gzip_file": "2dd31c19783453c88311c12a75048c2587d3dd8560cc126682c00d34bdcbbdba.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
-      "full_primary_body": "Por Paula Morales 15 SEPTIEMBRE 2026 Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios Más sobre: Videopodcast Radar LT Ciencia Nacional Salud ARN"
+      "full_primary_body": ""
     },
     {
       "url": "https://www.latercera.com/videos/noticia/radar-lt-sarcopenia-la-perdida-muscular-que-puede-comenzar-a-los-40-anos/",
@@ -2759,11 +2858,12 @@
           "timestamp_calendar_day": "2026-10-01"
         }
       ],
-      "primary_body_source": "article_html",
-      "primary_body_chars": 153,
-      "primary_body_sha256": "0009709b0112dfb344e64c2e285d4e3695336f58e6d3def1cb4dd5d5d55a3f2b",
-      "primary_body_available": true,
+      "primary_body_source": "primary_text_missing_in_original",
+      "primary_body_chars": 0,
+      "primary_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "primary_body_available": false,
       "primary_body_below_160": true,
+      "primary_body_unavailable_reason": "primary_text_missing_in_original",
       "title_below_18": false,
       "original_metadata_description": "La pérdida de masa y fuerza muscular puede comenzar desde los 40 años. Especialistas destacan que el ejercicio de fuerza y un consumo adecuado de proteínas son claves para prevenir la sarcopenia y mantener la autonomía durante la vejez.",
       "keywords": [
@@ -2782,18 +2882,18 @@
       "health_anchor_broad_clinical_audit": true,
       "health_related_original": true,
       "materiality_prefilter_observations": {
-        "full_primary_body": true,
-        "body_first_5500": true,
-        "body_first_18000": true
+        "full_primary_body": false,
+        "body_first_5500": false,
+        "body_first_18000": false
       },
-      "body_complete_as_original": true,
+      "body_complete_as_original": false,
       "primary_document_diagnosis": "publisher_video_route_with_primary_article_text_below_160",
       "original_article_path": true,
       "gzip_file": "8217e6b93e293d8c101397c4642f3aed6efd19ad6260851fcd9ad0de8b7ec203.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
-      "full_primary_body": "Por La Tercera TV 1 OCTUBRE 2026 Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios Más sobre: Videopodcast Radar LT Ciencia Salud Sarcopenia"
+      "full_primary_body": ""
     },
     {
       "url": "https://www.latercera.com/videos/noticia/radar-lt-sifilis-se-dispara-en-adultos-mayores-en-chile-casos-en-mujeres-de-60-anos-se-duplican/",
@@ -2850,11 +2950,12 @@
           "timestamp_calendar_day": "2026-08-26"
         }
       ],
-      "primary_body_source": "article_html",
-      "primary_body_chars": 151,
-      "primary_body_sha256": "7ae34cf40d9c54ae613601148a4c5a02cc4ff0f6054398a09294d8cce8f256cc",
-      "primary_body_available": true,
+      "primary_body_source": "primary_text_missing_in_original",
+      "primary_body_chars": 0,
+      "primary_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "primary_body_available": false,
       "primary_body_below_160": true,
+      "primary_body_unavailable_reason": "primary_text_missing_in_original",
       "title_below_18": false,
       "original_metadata_description": "En el capítulo de hoy conversaremos con Francisco Rubio, sobre el nivel histórico que alcanzó la enfermedad en Chile.",
       "keywords": [
@@ -2877,14 +2978,14 @@
         "body_first_5500": false,
         "body_first_18000": false
       },
-      "body_complete_as_original": true,
+      "body_complete_as_original": false,
       "primary_document_diagnosis": "publisher_video_route_with_primary_article_text_below_160",
       "original_article_path": true,
       "gzip_file": "8f5c13c75e360a39a11104f93a5d898e5e41a14c691599ce9c169e8c3a4fda47.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
-      "full_primary_body": "Por Paula Morales 26 AGOSTO 2026 Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios Más sobre: Videopodcast Radar LT Nacional Sífilis Salud"
+      "full_primary_body": ""
     },
     {
       "url": "https://www.latercera.com/videos/noticia/radar-lt-tecnologia-desarrollada-en-chile-avanza-a-su-validacion-medica/",
@@ -2941,11 +3042,12 @@
           "timestamp_calendar_day": "2026-07-13"
         }
       ],
-      "primary_body_source": "article_html",
-      "primary_body_chars": 140,
-      "primary_body_sha256": "d58639e932e25d38cc102d4b88e31113812b27c2c65070b94a6cce01137c33ff",
-      "primary_body_available": true,
+      "primary_body_source": "primary_text_missing_in_original",
+      "primary_body_chars": 0,
+      "primary_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "primary_body_available": false,
       "primary_body_below_160": true,
+      "primary_body_unavailable_reason": "primary_text_missing_in_original",
       "title_below_18": false,
       "original_metadata_description": "En el capítulo de hoy estaremos conversando con Flavio Salazar, parte del equipo de Oncobiomed sobre la inmunoterapia creada en Chile  que busca llegar y validarse en el país asiático.",
       "keywords": [
@@ -2967,14 +3069,14 @@
         "body_first_5500": false,
         "body_first_18000": false
       },
-      "body_complete_as_original": true,
+      "body_complete_as_original": false,
       "primary_document_diagnosis": "publisher_video_route_with_primary_article_text_below_160",
       "original_article_path": true,
       "gzip_file": "7660181f2d2d40779c01ef6e26d56099f5484a668dc4bc01e48e8036e7317ae5.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
-      "full_primary_body": "Por Paula Morales 13 JULIO 2026 Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios Más sobre: Radar LT Tecnología Salud Medicina"
+      "full_primary_body": ""
     },
     {
       "url": "https://www.latercera.com/videos/noticia/radar-lt-terremotos-en-horario-escolar-que-hacer-frente-a-una-catastrofe/",
@@ -3031,11 +3133,12 @@
           "timestamp_calendar_day": "2026-07-10"
         }
       ],
-      "primary_body_source": "article_html",
-      "primary_body_chars": 130,
-      "primary_body_sha256": "e2dde5b82ef268a59d6d5d3160c030b932629e53e065df706045a5c71dc84c43",
-      "primary_body_available": true,
+      "primary_body_source": "primary_text_missing_in_original",
+      "primary_body_chars": 0,
+      "primary_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "primary_body_available": false,
       "primary_body_below_160": true,
+      "primary_body_unavailable_reason": "primary_text_missing_in_original",
       "title_below_18": false,
       "original_metadata_description": "En el programa de hoy conversaremos con Victor Orellana, experto en gestión de desastres sobre qué hacer frente a un sismo en horario escolar y qué pasos seguir frente a una emergencia de esta magnitud.",
       "keywords": [
@@ -3056,14 +3159,14 @@
         "body_first_5500": false,
         "body_first_18000": false
       },
-      "body_complete_as_original": true,
+      "body_complete_as_original": false,
       "primary_document_diagnosis": "publisher_video_route_with_primary_article_text_below_160",
       "original_article_path": true,
       "gzip_file": "ff4d3089c13285b969b6601282d921f6bfc37321226ac0c235b2211be67d7b08.html.gz",
       "fixture_status": "original_retained_even_if_current_parser_rejects",
       "capture_provenance": "preserved_original_cold_core_incomplete_detail",
       "cold_discovery_reason": "incomplete_article_evidence",
-      "full_primary_body": "Por Paula Morales 10 JULIO 2026 Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios Más sobre: Radar LT Salud Terremoto"
+      "full_primary_body": ""
     }
   ],
   "status": "ALL_COLD_THIN_ORIGINALS_RETAINED_NOT_SOURCE_ACCEPTANCE"
