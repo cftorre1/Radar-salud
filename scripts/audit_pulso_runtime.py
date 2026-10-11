@@ -248,7 +248,7 @@ def join_report(discovery, queue, history, feed, control, *, baseline=(), captur
         url = normalized_url(response.get("url"))
         if url:
             captures_by_url.setdefault(url, []).append({key: response.get(key) for key in (
-                "url", "status", "captured_at", "sha256", "returned_text_utf8_sha256", "gzip_file",
+                "url", "status", "captured_at", "sha256", "returned_text_utf8_sha256", "gzip_file", "gzip_sha256", "charset",
                 "retention_reason", "error_type", "error", "primary_article", "primary_article_error",
                 "capture_provenance", "original_capture_manifest_sha256") if response.get(key) is not None})
     coverage = [row for row in details if row.get("status") in {
@@ -554,7 +554,8 @@ def main():
     preserved_requests = []
     for record in preserved.get("requests", []):
         retained = dict(record)
-        retained["gzip_file"] = str(Path("tests/fixtures/pulso_runtime_real") / record["gzip_file"])
+        if record.get("gzip_file"):
+            retained["gzip_file"] = str(Path("tests/fixtures/pulso_runtime_real") / record["gzip_file"])
         preserved_requests.append(retained)
     joined_captures = dict(captures, requests=captures.get("requests", []) + preserved_requests)
     report = join_report(discovery, after, history, feed, control, baseline=baseline, captures=joined_captures)
@@ -576,7 +577,8 @@ def main():
                   capture_manifest=str(capture_path / "manifest.json"),
                   preserved_original_fixture_manifest=str(preserved_path) if preserved_path.exists() else None,
                   preserved_original_fixture_status=preserved.get("status"),
-                  unrelated_queue_unchanged=unrelated_before == digest_json({key: row for key, row in after.items() if row.get("source") != SOURCE}),
+                  unrelated_queue_unchanged=(prior.get("unrelated_queue_unchanged") if args.report_only else
+                      unrelated_before == digest_json({key: row for key, row in after.items() if row.get("source") != SOURCE})),
                   feed_method="actual serialized web/data/radar_today.json; full-history curate(resolve_external=False) eligibility recorded separately; no injected rows",
                   feed_evidence={**feed_evidence, "path": str(snapshot_path),
                       "sha256": hashlib.sha256(snapshot_path.read_bytes()).hexdigest() if snapshot_path.exists() else None})
