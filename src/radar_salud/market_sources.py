@@ -3,10 +3,13 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 from .isapre_universe import parse_registry, release_metadata, parse_portfolio, REGISTRY_URL
 from .pending_queue import atomic_json
 from .source_health import record_data_adapter
+from .cmf_sources import parse_actor, parse_essential_index, financial_documents, financial_results, classify_primary
+from urllib.parse import parse_qs, urlsplit
 
 
 class Captures:
@@ -23,7 +26,10 @@ class Captures:
         return data
 
     def html(self, receipt):
-        return self.body(receipt).decode('utf-8', errors='replace')
+        data=self.body(receipt)
+        charset=re.search(br'charset\s*=\s*["\']?([a-zA-Z0-9_-]+)',data[:1500])
+        encoding=charset[1].decode() if charset else 'utf-8'
+        return data.decode(encoding, errors='replace')
 
 
 def health(captures, package, *, discovered, unique, recent=0, material=0, published=0,
@@ -61,13 +67,76 @@ def collect_isapres(captures, root):
     return evidence
 
 
+def collect_cmf(captures, root):
+    from datetime import date, timedelta
+    from pypdf import PdfReader
+    import io
+    actor_path=root/'data/entities/cmf_reporting_actors.json'
+    actors=json.loads(actor_path.read_text()).get('actors',[]) if actor_path.exists() else []
+    documents=[]; statements=[]; observations=[]; actor_coverage=[]
+    receipts=[r for r in captures.receipts if r['package']=='cmf']
+    as_of=max(r['completed_at'][:10] for r in receipts); start=(date.fromisoformat(as_of)-timedelta(days=89)).isoformat()
+    for r in receipts:
+        if r['kind']=='1' and r['transport_ok']:
+            actors.append(parse_actor(captures.html(r),source_url=r['url'],sha256=r['sha256'],fetched_at=r['completed_at']))
+    actors=list({a['entity_id']:a for a in actors}.values())
+    by_rut={a['rut'].split('-')[0]:a for a in actors}
+    for r in receipts:
+        if not r['transport_ok']: continue
+        rut=parse_qs(urlsplit(r['url']).query).get('rut',[None])[0]
+        if rut not in by_rut: continue
+        actor=by_rut[rut]
+        if r['kind']=='essential_90d':
+            query=parse_qs(r['request_body'])
+            query_start=f"{query['aa'][0]}-{query['mm'][0]}-{query['dd'][0]}"
+            query_end=f"{query['aa2'][0]}-{query['mm2'][0]}-{query['dd2'][0]}"
+            parsed=parse_essential_index(captures.html(r),actor=actor,source_url=r['url'],query_start=query_start,query_end=query_end)
+            actor_coverage.append({'issuer':actor['entity_id'],'registration_status':actor['issuer_registration_status'],**{k:v for k,v in parsed.items() if k!='documents'}})
+            for doc in parsed['documents']:
+                primary=next((x for x in receipts if x['url']==doc['source_url'] and x['transport_ok']),None)
+                if primary:
+                    content=captures.body(primary)
+                    if content.startswith(b'%PDF'):
+                        text=' '.join(page.extract_text() or '' for page in PdfReader(io.BytesIO(content)).pages)
+                        doc.update(primary_sha256=primary['sha256'], primary_verified=True,
+                                   primary_excerpt=' '.join(text.split())[:600], materiality=classify_primary(text))
+                        doc['disposition']=doc['materiality']['disposition'];doc['reason']=doc['materiality']['reason']
+                documents.append(doc)
+        if r['kind']=='financial_period':
+            query=parse_qs(urlsplit(r['url']).query); period=query['aa'][0]+'-'+query['mm'][0]
+            statements.extend(financial_documents(captures.html(r),actor=actor,source_url=r['url'],reporting_period=period,sha256=r['sha256']))
+            observations.extend(financial_results(captures.html(r),actor=actor,source_url=r['url'],sha256=r['sha256'],reporting_period=period))
+    # Preserve first detection across polls and replays; transient CMF token URLs do not identify events.
+    old_path=root/'data/market/cmf_disclosures.json'
+    old={d['record_id']:d for d in json.loads(old_path.read_text()).get('documents',[])} if old_path.exists() else {}
+    for doc in documents: doc['detected_at']=old.get(doc['record_id'],{}).get('detected_at',as_of)
+    merged={**old,**{d['record_id']:d for d in documents}}
+    atomic_json(actor_path,{'schema_version':1,'actors':actors})
+    atomic_json(old_path,{'schema_version':1,'query_start':start,'query_end':as_of,'documents':list(merged.values()),'actor_coverage':actor_coverage})
+    fin_path=root/'data/market/cmf_financials.json'
+    old_fin=json.loads(fin_path.read_text()) if fin_path.exists() else {}
+    statements=list({(d['issuer_entity_id'],d['reporting_period'],d['document_kind']):d for d in old_fin.get('documents',[])+statements}.values())
+    observations=list({(o['entity_id'],o['metric_id'],o['period_start'],o['period_end'],o['reporting_perimeter'],o['unit']):o for o in old_fin.get('observations',[])+observations}.values())
+    atomic_json(fin_path,{'schema_version':1,'documents':statements,'observations':observations})
+    evidence=health(captures,'cmf',discovered=len(documents),unique=len({d['record_id'] for d in documents}),
+        recent=sum(d['published_at']>= (date.fromisoformat(as_of)-timedelta(days=29)).isoformat() for d in documents),
+        material=sum(d.get('materiality',{}).get('material') is True for d in documents),
+        rejected=sum(d['disposition']=='rejected' for d in documents),deferred=sum(d['disposition']=='deferred' for d in documents),
+        reason='Official 90-day issuer queries and accounting statements captured; primary editorial validation, complete health-group/reporting perimeter and separate-cadence recurrence remain pending')
+    evidence.update(outcome='OPERATIVE_DEGRADED',reporting_actors=len(actors),active_issuers=sum(a['issuer_registration_status']=='Vigente' for a in actors),
+                    financial_observations=len(observations),statement_documents=len(statements),primary_documents_verified=sum(d.get('primary_verified',False) for d in documents),
+                    actor_coverage=actor_coverage, transport_failures=[{'url':r['url'],'http':r['network']['http_code'],'reason':r['network'].get('errormsg')} for r in receipts if not r['transport_ok']])
+    record_data_adapter(root,'cmf_health_ecosystem',evidence)
+    return evidence
+
+
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--capture-dir', type=Path, required=True)
     parser.add_argument('--output-root', type=Path, required=True)
     parser.add_argument('--only', choices=['isapres', 'cmf', 'dipres', 'all'], default='all')
     args=parser.parse_args(); captures=Captures(args.capture_dir); result={}
-    collectors={'isapres': collect_isapres}
+    collectors={'isapres': collect_isapres, 'cmf': collect_cmf}
     for name, collector in collectors.items():
         if args.only not in (name, 'all'): continue
         try: result[name]=collector(captures, args.output_root)

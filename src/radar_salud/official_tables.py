@@ -17,7 +17,10 @@ class Tables(HTMLParser):
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         if tag == 'tr': self.row = []
-        if tag in ('td', 'th') and self.row is not None: self.cell = []
+        if tag in ('td', 'th'):
+            # CMF's IFRS tables omit opening <tr> tags for some data rows.
+            if self.row is None: self.row = []
+            self.cell = []
         if tag == 'a': self.href = attrs.get('href'); self.label = []
 
     def handle_data(self, value):

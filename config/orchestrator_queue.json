@@ -3697,7 +3697,7 @@
     },
     {
       "id": "w4_cmf_2026_10_11",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "high",
       "expansion_priority": "P0",
       "owner": "Financial Intelligence + Source Engineering",
@@ -3729,13 +3729,14 @@
         "ruta y runs reales antes de declarar recurrente"
       ],
       "approved_at": "2026-10-11",
-      "next_action": "Crear inventario de emisores/grupos con RUT verificado (comenzar CLC 93930000, ILC, grupos de prestadores e Isapres); documentar filiales fuera del perímetro reportante.",
+      "next_action": "Use exact CMF registration row/vig status and serial queries; continue independent DIPRES parsing",
       "evidence": [
-        "data/audits/source_expansion_matrix_2026_10_11.json",
-        "config/source_expansion_backlog_2026_10_11.json"
+        "data/audits/w4_cmf_2026_10_11.json",
+        "data/audits/source_expansion/native_forms.zip"
       ],
       "external_blockers": [],
-      "progress": "Backlog concreto preparado; implementación no iniciada por Work 4."
+      "progress": "CMF adapter and issuer stock implemented: initial 9 official facts, 5 reporting identities, 24 statement documents and financial cell intervals; intermittent HTTP302 does not erase prior stock",
+      "implementation_status": "OPERATIVE_DEGRADED"
     },
     {
       "id": "w4_dipres_2026_10_11",
