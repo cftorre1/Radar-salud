@@ -71,7 +71,7 @@
   },
   "regression_tests": {
     "command": ".venv/bin/python -m pytest -q tests/test_mutual_recovery.py",
-    "result": "55 passed, including native article scoping and exact query-to-permalink identity",
+    "result": "65 passed, including verified native detail scope, redirect identity and observed script-bound theme pagination base",
     "shared_command": ".venv/bin/python -m pytest -q tests/test_mutual_recovery.py tests/test_occupational_sources.py tests/test_occupational_integrity.py",
     "shared_result": "114 passed, 3 shared-test failures from concurrent materiality and runtime adapter changes; root and common-module owner notified"
   },
@@ -84,7 +84,7 @@
       "All diagnostics distinguish proxy denial from real origin HTTP status"
     ],
     "paging_resolution_routes": "data/audits/source_e_recovery/mutual_paging_routes.json",
-    "known_live_validation_pending": "Targeted parent Actions Run3 must determine actual detail markup and correct observed p0 resolution base"
+    "known_live_validation_pending": "Native detail verified in Run3. Actual theme-base continuation still requires fresh public capture and complete category traversal."
   },
   "next_actions": [
     "Validate alternate theme-base server paging from fresh parent Run4 captures",
@@ -118,5 +118,19 @@
     "reason": "HTML responds as Noticias but contains no native card components; stable-route+p0 is not verified archive continuation",
     "artifact": "data/audits/source_e_recovery/actions/38115788047/52c97d93417e2932036d-0.body",
     "next_action": "Parent Run4 probes exact observed alternate theme base with relative nextPage; do not claim 90-day completeness before verified traversal"
+  },
+  "theme_paging_contract": {
+    "origin_evidence_run_id": "38115788047",
+    "origin_artifact": "data/audits/source_e_recovery/actions/38115788047/14ab5b96dc76929b4786-0.body",
+    "base_evidence": {
+      "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/",
+      "field": "link[rel=\"alternate\"]#YaHLaEuLiYE",
+      "value": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/",
+      "contract": "wpModules.theme.WindowUtils.baseURL.resolve(element.href)"
+    },
+    "observed_next_component_2_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKQCPjPdRw=GH=/",
+    "method": "Only resolve relative observed nextPage href against the observed alternate href explicitly bound by public WindowUtils.baseURL script; no numeric route generation",
+    "opaque_state": "MK token changes between captured listings; every continuation must use the current captured anchor, not a frozen token",
+    "live_status": "Full category continuation/cutoff verification pending parent Run4/Run5; no coverage claim from parser tests alone"
   }
 }

@@ -154,10 +154,34 @@ def same_article_url(requested, final):
             and len(parts) == 2 and (parts[1] == "" or parts[1].startswith("!ut/p/")))
 
 
+def _pagination_base(tree, html, page_url):
+    # The public IBM theme explicitly resolves relative p0 navigation against
+    # this alternate link. Ordinary urljoin(requested_url, href) treats p0 as
+    # content path-info and returns an empty Noticias layout (fresh Run3).
+    pattern = (r"var\s+element\s*=\s*document\.getElementById\(\s*['\"]([^'\"]+)['\"]\s*\)\s*;"
+               r"\s*if\s*\(element\)\s*\{\s*wpModules\.theme\.WindowUtils\.baseURL\.resolve\(element\.href\)")
+    ids = list(dict.fromkeys(re.findall(pattern, html)))
+    if not ids:
+        return page_url, None
+    if len(ids) != 1:
+        raise SourceDiscoveryError("ambiguous_pagination_base", page_url)
+    fields = [node for node in tree.root.walk() if node.tag == "link"
+              and node.attrs.get("rel") == "alternate" and node.attrs.get("id") == ids[0]]
+    if len(fields) != 1 or not fields[0].attrs.get("href"):
+        raise SourceDiscoveryError("pagination_base_field_missing", page_url)
+    base = urljoin(page_url, fields[0].attrs["href"])
+    if not _official(base) or not urlsplit(base).path.startswith(urlsplit(PAGE).path):
+        raise SourceDiscoveryError("pagination_base_outside_official_scope", base)
+    return base, {"url": page_url, "field": f'link[rel="alternate"]#{ids[0]}',
+                  "value": fields[0].attrs["href"],
+                  "contract": "wpModules.theme.WindowUtils.baseURL.resolve(element.href)"}
+
+
 def parse_listing(html, page_url=PAGE, *, as_of=None):
     """Expose observed category cards and next URLs for live capture loaders."""
     assert_not_challenge(html, page_url)
     tree = _Tree(html)
+    pagination_base, base_evidence = _pagination_base(tree, html, page_url)
     branches = {}
     for node in tree.root.walk():
         branch = node.attrs.get("id", "")
@@ -190,7 +214,7 @@ def parse_listing(html, page_url=PAGE, *, as_of=None):
         next_href = next_links[0] if next_links else None
         if (next_links or has_later_page) and not next_href:
             card_errors.append({"reason": "pagination_next_link_missing", "branch": branch, "url": page_url})
-        next_url = urljoin(page_url, next_href) if next_href else None
+        next_url = urljoin(pagination_base, next_href) if next_href else None
         if next_url and not _official(next_url):
             raise SourceDiscoveryError("pagination_outside_official_scope", next_url)
         branches[branch] = {"id": branch, "cards": cards, "next_url": next_url, "errors": card_errors}
@@ -202,7 +226,9 @@ def parse_listing(html, page_url=PAGE, *, as_of=None):
     listing_errors = [{"code": "listed_category_component_missing", "reason": "listed_category_component_missing",
                        "url": page_url, "branch": branch} for branch in sorted(expected - branches.keys())]
     return {"url": page_url, "branches": branches, "sha256": hashlib.sha256(html.encode()).hexdigest(),
-            "errors": listing_errors, "client_union_pagination": "collectUniqueCards" in html and "chunkArray" in html}
+            "errors": listing_errors, "pagination_base_url": pagination_base,
+            "pagination_base_evidence": base_evidence,
+            "client_union_pagination": "collectUniqueCards" in html and "chunkArray" in html}
 
 
 def parse_detail(html, url, *, as_of=None):
@@ -227,9 +253,8 @@ def parse_detail(html, url, *, as_of=None):
         native = [node.text() for node in headers[0].walk() if "fecha-noticia" in node.classes()]
         native_kind = "publisher:mutual_detail_fecha"
     else:
-    # Only a visible header field after the selected H1 and before article body
-    # can complement publisher metadata. Unrelated cards and later event dates
-    # never supply publication evidence.
+        # Only a visible header field after the selected H1 and before article
+        # body can complement publisher metadata. Later event dates never do.
         native, in_header = [], False
         native_kind = "publisher:mutual_div_fecha"
         for node in tree.root.walk():
@@ -323,7 +348,10 @@ class MutualNewsScout:
                 continue
             branches = parsed["branches"] if target is None else {target: parsed["branches"].get(target)}
             errors.extend(parsed["errors"])
-            pages.append({"url": url, "branch": target, "sha256": parsed["sha256"], "client_union_pagination": parsed["client_union_pagination"]})
+            pages.append({"url": url, "branch": target, "sha256": parsed["sha256"],
+                          "pagination_base_url": parsed["pagination_base_url"],
+                          "pagination_base_evidence": parsed["pagination_base_evidence"],
+                          "client_union_pagination": parsed["client_union_pagination"]})
             for branch_id, branch in branches.items():
                 current = state.setdefault(branch_id, {"seen": set(), "done": False, "complete": True,
                                                         "chronology_ok": True, "oldest": None})

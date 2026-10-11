@@ -41,6 +41,12 @@ def listing(*branches):
     return '<html><script>collectUniqueCards; chunkArray;</script><main>' + "".join(branches) + '</main></html>'
 
 
+def theme_base(url, field_id="H_OBSERVED"):
+    return (f'<link id="{field_id}" rel="alternate" href="{escape(url)}">'
+            f'<script>(function() {{ var element = document.getElementById("{field_id}");'
+            'if (element) { wpModules.theme.WindowUtils.baseURL.resolve(element.href); } })();</script>')
+
+
 def detail(published="9 oct. 2026", title=TITLE, body=BODY, *, metadata="", prefix="", suffix=""):
     header_date = f'<div class="fecha">{published}</div>' if published is not None else ""
     return f'<html><head>{metadata}</head><body>{prefix}<article><h1>{title}</h1>{header_date}<p>{body}</p></article>{suffix}</body></html>'
@@ -93,6 +99,48 @@ def test_listing_reads_all_category_components_and_native_full_dates():
     assert list(parsed["branches"]) == ["component-0", "component-1"]
     assert parsed["branches"]["component-1"]["cards"][0]["listing_date"] == "2026-09-16"
     assert parsed["branches"]["component-1"]["next_url"] == urljoin(PAGE, "p0/OBSERVED=GH=/")
+
+
+def test_native_ibm_next_link_uses_exact_alternate_base_bound_by_public_script():
+    base = PAGE + "!ut/p/z1/OBSERVED_STATE/"
+    html = theme_base(base) + listing(branch(0, card("one"), "p0/OBSERVED=GH=/"))
+    parsed = parse_listing(html, as_of=TODAY)
+    assert parsed["branches"]["component-0"]["next_url"] == base + "p0/OBSERVED=GH=/"
+    assert parsed["pagination_base_url"] == base
+    assert parsed["pagination_base_evidence"] == {
+        "url": PAGE, "field": 'link[rel="alternate"]#H_OBSERVED', "value": base,
+        "contract": "wpModules.theme.WindowUtils.baseURL.resolve(element.href)"}
+
+
+def test_each_server_page_resolves_next_against_its_new_observed_theme_state():
+    base = PAGE + "!ut/p/z1/NEXT_STATE/"
+    request_url = PAGE + "!ut/p/z1/PRIOR_STATE/p0/PAGE2=/"
+    parsed = parse_listing(theme_base(base) + listing(branch(0, card("one"), "p0/PAGE3=/")),
+                           request_url, as_of=TODAY)
+    assert parsed["branches"]["component-0"]["next_url"] == base + "p0/PAGE3=/"
+    assert parsed["pagination_base_evidence"]["url"] == request_url
+
+
+@pytest.mark.parametrize("base", [
+    "http://www.mutual.cl/portal/publico/", "https://example.test/state/",
+    "https://www.mutual.cl/portal/privado/state/", "https://www.mutual.cl/portal/Privado/state/",
+    "https://www.mutual.cl/unrelated/state/", "https://www.mutual.cl:444/portal/publico/",
+])
+def test_theme_base_cannot_send_capture_outside_public_official_news_scope(base):
+    with pytest.raises(SourceDiscoveryError, match="pagination_base_outside_official_scope"):
+        parse_listing(theme_base(base) + listing(branch(0, card("one"), "p0/NEXT=/")), as_of=TODAY)
+
+
+def test_unbound_alternate_css_or_navigation_link_does_not_supply_pagination_base():
+    html = f'<link rel="alternate" href="{PAGE}!ut/p/z1/OTHER/">' + listing(branch(0, card("one"), "p0/NEXT=/"))
+    parsed = parse_listing(html, as_of=TODAY)
+    assert parsed["pagination_base_url"] == PAGE and parsed["pagination_base_evidence"] is None
+
+
+def test_missing_script_bound_base_field_cannot_fall_back_silently():
+    html = theme_base(PAGE + "!ut/p/z1/OBSERVED/").replace('rel="alternate"', 'rel="stylesheet"')
+    with pytest.raises(SourceDiscoveryError, match="pagination_base_field_missing"):
+        parse_listing(html + listing(branch(0, card("one"), "p0/NEXT=/")), as_of=TODAY)
 
 
 @pytest.mark.parametrize("published", ["31 sept. 2026", "12 oct. 2026", "Datos del 9 oct. 2026", "oct. 2026", ""])
