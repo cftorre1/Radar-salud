@@ -165,3 +165,25 @@ def test_sanction_pulse_counts_publications_without_changing_act_dates():
     assert pulse['event_date']=='2026-09-15' and pulse['window_basis']=='publication_date'
     assert pulse['source_alternatives'][0]['event_date']=='2026-09-08'
     assert pulse['source_alternatives'][0]['publication_date']=='2026-09-15'
+
+
+def test_reviewed_suseso_material_document_routes_once_to_normative_with_full_identity():
+    from radar_salud.suseso_fiscalizacion import parse_actor_listing, PAGES, reviewed_normative_candidate, process_reviewed_normative
+    raw,=parse_actor_listing(suseso_table(),*PAGES[0])
+    candidate=reviewed_normative_candidate(raw)
+    assert candidate.source_slug=='suseso'
+    row=process_reviewed_normative(candidate,{'base_confidence':100,'default_category':'Regulación & Legal','force_category':True})
+    assert row['signal_types']==['Normativa'] and row['event_type']=='REGULATION'
+    assert row['legal_identity']=='Dictamen O-02-S-03153-2026'
+    assert row['scopes']==['Isapres','COMPIN','Salud laboral']
+    raw.event_date='2025-09-29'
+    assert reviewed_normative_candidate(raw) is None
+
+
+def test_fiscalization_feed_identity_preserves_authority_division_and_distinct_urls():
+    import importlib.util
+    from pathlib import Path
+    spec=importlib.util.spec_from_file_location('fiscal_export_identity',Path('scripts/export_web_snapshot.py'))
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    rows=[{'title':f'Resolución Exenta {division}/N°123','source_url':f'https://example.org/{division}/123','signal_types':['Fiscalización']} for division in ['IF','IP']]
+    assert len(module._merge_duplicates(rows))==2

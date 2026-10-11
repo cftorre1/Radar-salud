@@ -78,3 +78,39 @@ class SusesoFiscalizacionScout:
             raise RuntimeError('No SUSESO actor surface parsed successfully')
         # No arbitrary top-40 cap: all dated rows remain auditable, before queue horizon filtering.
         return sorted(items.values(), key=lambda raw: raw.event_date or '', reverse=True)
+
+
+def reviewed_normative_candidate(raw):
+    """Route a document only when an explicit source/date review exists."""
+    import json
+    from dataclasses import replace
+    from .paths import project_root
+    path = project_root() / 'config/fiscalization_editorial_reviews.json'
+    reviews = json.loads(path.read_text()) if path.exists() else {}
+    review = reviews.get('source_records', {}).get(raw.url)
+    if not review or review.get('decision') != 'publish_normative':
+        return None
+    if raw.event_date != review.get('event_date') or review['legal_identity'] != raw.title:
+        return None
+    return replace(raw, source_slug='suseso', metadata={**raw.metadata,
+        'reviewed_normative': review, 'routed_from': 'suseso_fiscalizacion'})
+
+
+def process_reviewed_normative(raw, cfg):
+    from .pipeline import build_signal
+    from .processing import RejectedProcessing
+    review = raw.metadata['reviewed_normative']
+    if raw.url != review['source_url'] or raw.event_date != review['event_date']:
+        raise RejectedProcessing('reviewed_normative_identity_or_date_mismatch')
+    raw.metadata.update(what_happened=review['what_happened'], why_it_matters=review['why_it_matters'],
+        event_type='REGULATION', key_points=review['key_points'], validity_text=review['validity_text'],
+        watch_tags=['suseso','licencias médicas','isapres','compin'],
+        scores={'economic':65,'regulatory':90,'scope':85,'novelty':80,'actionability':90})
+    row = build_signal(raw, cfg).to_dict()
+    row.update(signal_types=['Normativa'], scopes=['Isapres','COMPIN','Salud laboral'],
+        fiscalized_actors=raw.metadata.get('fiscalized_actors', ['Isapres','COMPIN']),
+        normative_document_label=review['legal_identity'], legal_identity=review['legal_identity'],
+        normative_document_number=review['legal_identity'], normative_context=review['normative_context'],
+        display_title=review['plain_language_title'], editorial_review=review['review_basis'],
+        publication_date=review['event_date'], source_documents=[{'url':raw.url,'label':'Ficha oficial SUSESO'}])
+    return row

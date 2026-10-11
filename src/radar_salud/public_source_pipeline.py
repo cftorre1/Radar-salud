@@ -99,6 +99,9 @@ def _suseso_date(text):
 
 def process_suseso(raw,cfg):
     """Publish SUSESO normative acts with document-specific subject, affected actors and validity."""
+    if raw.metadata.get("reviewed_normative"):
+        from .suseso_fiscalizacion import process_reviewed_normative
+        return process_reviewed_normative(raw, cfg)
     raw=enrich(raw)
     text=raw.metadata.get("page_text") or raw.raw_text
     raw.event_date=_suseso_date(text) or raw.event_date

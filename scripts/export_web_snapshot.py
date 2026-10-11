@@ -193,11 +193,17 @@ def _normative_contract(s):
     title=str(r.get("source_title_full") or r.get("title") or "").strip()
     m=re.search(r"\b(Resolución(?:\s+Exenta)?|Circular|Oficio(?:\s+Ord(?:inario)?)?|Decreto)\s+(?:(IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*([\d\.]+)",title,re.I)
     if not m:m=re.search(r"\b(Resolución(?:\s+Exenta)?|Circular|Oficio(?:\s+Ord(?:inario)?)?|Decreto)\s+(?:(IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*([\d\.]+)",str(r.get("normative_document_label") or ""),re.I)
-    if not m:return r
-    kind=" ".join(m.group(1).split());prefix=(m.group(2) or "").upper();raw_number=m.group(3);number=re.sub(r"\D","",raw_number)
-    label=f"{kind} {prefix+'/' if prefix else ''}N°{raw_number}"
-    r.update({"normative_document_type":kind,"normative_document_number":f"{prefix+'/' if prefix else ''}N°{raw_number}","normative_document_label":label,"legal_identity":label})
-    cfg=_normative_v2_config();record=cfg.get("records",{}).get(number,{})
+    cfg=_normative_v2_config()
+    if not m:
+        record=cfg.get("source_records",{}).get(str(r.get("source_url") or ""),{})
+        label=str(record.get("legal_identity") or "")
+        if not label:return r
+        r.update(normative_document_label=label,legal_identity=label,normative_document_number=label)
+    else:
+        kind=" ".join(m.group(1).split());prefix=(m.group(2) or "").upper();raw_number=m.group(3);number=re.sub(r"\D","",raw_number)
+        label=f"{kind} {prefix+'/' if prefix else ''}N°{raw_number}"
+        r.update({"normative_document_type":kind,"normative_document_number":f"{prefix+'/' if prefix else ''}N°{raw_number}","normative_document_label":label,"legal_identity":label})
+        record=cfg.get("records",{}).get(number,{})
     plain=str(record.get("plain_language_title") or "").strip();context=str(record.get("normative_context") or "").strip()
     subtitle=str(record.get("legal_subtitle") or label).strip()
     norm=lambda x:re.sub(r"[^a-z0-9]+"," ",str(x or "").lower().translate(str.maketrans("áéíóúüñ","aeiouun"))).strip()
@@ -218,6 +224,9 @@ def _normative_contract(s):
     return r
 
 def _doc_key(s):
+    if "Fiscalización" in (s.get("signal_types") or []) and s.get("source_url"):
+        from radar_salud.superintendencia_fiscalizacion import canonical_url
+        return "fiscalization:"+canonical_url(s["source_url"])
     title=s.get("title","") or ""
     m=re.search(r"resoluci[oó]n(?:\s+exenta)?\s+(?:n[uú]mero\s+)?(?:if|ip)?\s*[/\-]?\s*n?[°º]?\s*([\d\.]+)",title,re.I)
     if m:return "res-"+re.sub(r"\D","",m.group(1))

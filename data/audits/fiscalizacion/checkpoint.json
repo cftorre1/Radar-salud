@@ -14,7 +14,8 @@
     "Related circulars/dictamen are rejected from fiscalization before AI expenditure with reason related_normative_not_enforcement; independent normative coverage is audited separately",
     "Fiscalization identity must use source + canonical document URL, not mutable title; replay repairs existing archived dates and merges legacy title aliases while retaining original detection, attempts, raw and terminal decisions",
     "SIS date contradictions must be held with source_date_conflict_requires_review; reductions/revocations must not be counted as fresh imposed sanctions",
-    "Provider pulse is a 30-day publication window: retain each act emission date and expose publication_date separately"
+    "Provider pulse is a 30-day publication window: retain each act emission date and expose publication_date separately",
+    "SUSESO 791293 is a material cross-actor normative instruction, not enforcement; a source/date-specific editorial review routes it to suseso with full alphanumeric legal identity. Fiscal feed dedup preserves IF/IP and distinct document URLs."
   ],
   "source_urls": [
     "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n-7462-emision-23-09-2026/",
@@ -25,5 +26,5 @@
     "https://www.suseso.gob.cl/612/w3-article-790779.html"
   ],
   "acceptance": "in_progress; native live coverage not validated",
-  "next_step": "Persist original-row reconciliation and scoped history corrections; health must distinguish persisted history stock from per-run publications, partial surfaces and unverified native coverage"
+  "next_step": "Apply scoped reconciliation against verified original rows, recover existing SIS history and publish reviewed SUSESO normativa 791293 as BACKFILL; regenerate feed and run full QA/Reviewer with original capture limitations"
 }

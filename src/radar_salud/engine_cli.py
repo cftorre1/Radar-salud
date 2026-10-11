@@ -85,6 +85,12 @@ def main():
                 (name in FISCALIZATION_SOURCES and (store.is_seen(legacy_fingerprint(raw)) or canonical_url(raw.url) in published_urls))}
             checked_at=datetime.now(timezone.utc).isoformat()
             added=queue.discover(name,items,seen,last_discovered_at=watermarks.get(name))
+            if name=="suseso_fiscalizacion":
+                from .suseso_fiscalizacion import reviewed_normative_candidate
+                routed=[candidate for raw in items if (candidate:=reviewed_normative_candidate(raw))]
+                # Existing normative history guards cross-channel rediscovery.
+                routed_seen={fingerprint(raw) for raw in routed if any(row.get("source_url")==raw.url for row in history)}
+                queue.discover("suseso",routed,routed_seen,last_discovered_at=watermarks.get("suseso"))
             watermarks[name]=checked_at
             atomic_json(watermark_path,watermarks)
             discoveries[name]=(len(items),added,None)
@@ -102,7 +108,8 @@ def main():
     queue.enforce_backfill_horizon()
     for index,(key,item) in enumerate(queue.ready()):
         if args.limit and index>=args.limit:break
-        if not has_capacity("fast") and not has_capacity("deep"):break
+        deterministic = item["source"] in FISCALIZATION_SOURCES or item["raw"].get("metadata",{}).get("reviewed_normative")
+        if not deterministic and not has_capacity("fast") and not has_capacity("deep"):continue
         queue.start(key)
         try:
             cfg,processor=processors[item["source"]]
