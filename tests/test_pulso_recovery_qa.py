@@ -201,6 +201,47 @@ def test_three_old_pages_require_real_page_boundary_evidence(evidence):
     assert "three_old_pages_boundary_unproven" in codes(evidence)
 
 
+def old_boundary(data):
+    summary = data["report"]["coverage"][0]
+    feed = summary["feed"]
+    details = data["discovery"]["source_details"][qa.SOURCE]
+    details[:] = [row for row in details if not (row.get("status") == "public_feed_page" and row.get("feed") == feed)]
+    kind, slug = feed.split(":")
+    for index in range(3):
+        offset = index * 24
+        entries = [dict(_id=f"old-{offset + n}", website_url=BASE + f"old-{offset + n}/", first_publish_date="2026-07-10T15:00:00Z") for n in range(24)]
+        query = dict(feedOffset=offset, feedSize=24, fromComponent="result-list")
+        query["includeSections" if kind == "section" else "tagSlug"] = "/" + slug if kind == "section" else slug
+        endpoint = "story-feed-sections-fetch" if kind == "section" else "story-feed-tag-fetch"
+        url = "https://www.latercera.com/pf/api/v3/content/fetch/" + endpoint + "?" + urlencode(dict(query=json.dumps(query)))
+        raw = json.dumps(dict(content_elements=entries, count=10000, next=offset + 24)).encode()
+        compressed = gzip.compress(raw, mtime=0)
+        relative = f"tests/fixtures/pulso_runtime_real/{qa.digest(raw)}.api.json.gz"
+        (data["root"] / relative).write_bytes(compressed)
+        data["captures"].append(dict(url=url, status=200, sha256=qa.digest(raw), returned_text_utf8_sha256=qa.digest(raw),
+                                     gzip_file=relative, gzip_sha256=qa.digest(compressed), captured_at="2026-10-11T10:30:00Z"))
+        details.append(dict(status="public_feed_page", feed=feed, offset=offset, primary_entries=24, count=10000, next=offset + 24,
+                            json_sha256=qa.digest(raw), inventory_day_max="2026-07-10", boundary_pages=index + 1, verified_details=24))
+        for entry in entries:
+            details.append(dict(status="excluded", url=entry["website_url"], publication_date="2026-07-10",
+                                publication_date_source="json_ld_datePublished", html_sha256="a" * 64))
+    summary.update(termination="three_publication_ordered_detail_verified_old_pages", publisher_count=10000, pages_attempted=3)
+
+
+@pytest.mark.parametrize("change", ["recent_final_date", "search_snippet"])
+def test_old_api_first_publication_cannot_override_recent_or_unverified_original_details(evidence, change):
+    old_boundary(evidence)
+    assert qa.evaluate(**evidence)["discovery_qa"] == "PASS"
+    detail = next(row for row in evidence["discovery"]["source_details"][qa.SOURCE] if row.get("url") == BASE + "old-0/")
+    if change == "recent_final_date":
+        detail["publication_date"] = "2026-10-10"
+        expected = "public_api_boundary_detail_dates_not_old"
+    else:
+        detail["publication_date_source"] = "search_snippet"
+        expected = "public_api_boundary_original_detail_date_unverified"
+    assert expected in codes(evidence)
+
+
 def test_internal_complete_summary_cannot_replace_original_api_boundary_json(evidence):
     evidence["captures"] = []
     assert "public_api_http_chain_unproven" in codes(evidence)

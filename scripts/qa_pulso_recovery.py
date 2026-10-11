@@ -16,7 +16,7 @@ import unicodedata
 from datetime import date, datetime, timedelta
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import parse_qs, urlsplit, urlunsplit
+from urllib.parse import parse_qs, urljoin, urlsplit, urlunsplit
 from zoneinfo import ZoneInfo
 
 SOURCE = "pulso_latercera"
@@ -240,7 +240,22 @@ def api_page_key(url):
         return None
 
 
-def verify_api_pages(pages, records, root):
+def factual_api_urls(entries):
+    urls = []
+    for entry in entries:
+        site = entry.get("websites", {}).get("la-tercera", {})
+        candidate = site.get("website_url") or entry.get("website_url") or entry.get("canonical_url")
+        url = normalized_url(urljoin("https://www.latercera.com/", candidate)) if isinstance(candidate, str) else None
+        if not url:
+            continue
+        path = urlsplit(url).path
+        if re.fullmatch(r"/[a-z0-9-]+/noticia/[^/]+(?:/[A-Za-z0-9]{26})?/", path) and path.split("/")[1] not in {
+                "opinion", "editorial", "columnas", "cartas-al-director"}:
+            urls.append(url)
+    return urls
+
+
+def verify_api_pages(pages, records, root, details=()):
     """HTTP hashes for the cursor chain; original JSON for first/boundary pages."""
     failures = []
     proof_offsets = {row.get("offset") for row in pages[:1] + pages[-3:]}
@@ -286,6 +301,20 @@ def verify_api_pages(pages, records, root):
                 days = [publisher_day(entry.get("first_publish_date")) for entry in entries]
                 if page.get("inventory_day_max") and (None in days or max(days) != page["inventory_day_max"]):
                     raise ValueError("raw_api_publication_boundary_disagrees")
+                if page.get("boundary_pages", 0) > 0:
+                    cutoff = (date.fromisoformat(WINDOWS["90"][0]) - timedelta(days=2)).isoformat()
+                    urls = factual_api_urls(entries)
+                    if page.get("verified_details") != len(urls):
+                        failures.append(dict(code="public_api_boundary_factual_details_incomplete", offset=page.get("offset")))
+                    for url in urls:
+                        traces = [row for row in details if normalized_url(row.get("url")) == url
+                                  and row.get("status") in {"discovered", "excluded"}]
+                        if (not traces or any(row.get("publication_date_source") not in PRIMARY_DATE_SOURCES
+                                              or not SHA.fullmatch(str(row.get("html_sha256", "")))
+                                              or not publisher_day(row.get("publication_date")) for row in traces)):
+                            failures.append(dict(code="public_api_boundary_original_detail_date_unverified", offset=page.get("offset"), url=url))
+                        elif len({row["publication_date"] for row in traces}) != 1 or traces[0]["publication_date"] >= cutoff:
+                            failures.append(dict(code="public_api_boundary_detail_dates_not_old", offset=page.get("offset"), url=url))
                 verified = True
                 break
             except (OSError, ValueError, TypeError, KeyError, AttributeError, UnicodeError, EOFError):
@@ -414,7 +443,7 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
         pages = [row for row in details if row.get("status") == "public_feed_page" and row.get("feed") == name]
         if not pages or pages[0].get("offset") != 0 or len(pages) != summary.get("pages_attempted"):
             fail("discovery", "complete_public_api_page_chain_missing", feed=name)
-        for problem in verify_api_pages(pages, captures, root):
+        for problem in verify_api_pages(pages, captures, root, details):
             fail("discovery", problem.pop("code"), feed=name, **problem)
         if not summary.get("coverage_complete") or summary.get("errors") != 0:
             fail("discovery", "feed_incomplete_or_errors", feed=name, summary=summary)
