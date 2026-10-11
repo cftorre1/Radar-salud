@@ -39,6 +39,8 @@ def main():
         rows=[]
         targets=[]
         if slug=='redsalud':targets=[x['url'] for x in capture['items'] if x.get('date_reason')=='conflicting_publication_stamps']
+        if slug=='redsalud':targets+=['https://www.redsalud.cl/noticias/clinica-redsalud-mayor-temuco-avanzamos-hacia-la-excelencia-en-atencion-cardiovascular',
+            'https://www.redsalud.cl/acerca-de-redsalud/noticias/redsalud-teletrombolisis-una-respuesta-ante-acv']
         if slug=='bupa_chile':targets=[x['url'] for x in capture['items'][:7]]
         if slug=='pfizer_chile':targets=[x['url'] for x in capture['items']]
         if slug=='indisa':targets=[inv.page.replace('www.',''),inv.origin+'/blog',inv.origin+'/sitemap-0.xml',inv.origin+'/rss',inv.origin+'/api/noticias']
@@ -71,6 +73,23 @@ def main():
             if text:rows.append({'url':inv.origin+'/kbe_knowledgebase-sitemap.xml','sitemap_locations':re.findall(r'<loc>(.*?)</loc>',text)})
             text=inv.fetch('/?feed=rss2&post_type=kbe_knowledgebase','library_feed_diagnostic')
             if text:rows.append({'url':inv.origin+'/?feed=rss2&post_type=kbe_knowledgebase','feed_publications':re.findall(r'<pubDate>(.*?)</pubDate>',text),'feed_links':re.findall(r'<link>(.*?)</link>',text)})
+        if slug=='clinicas_achs_salud':
+            # The subsidiary's original site is linked by the public group
+            # portal. Keep one configured/visible entity; this is evidence of
+            # its separate original publishing surface, not a new source.
+            inv.origin='https://www.clinicasachssalud.cl';inv.host='clinicasachssalud.cl'
+            for path in ('/','/formulario-licitacion-master-plan-serena/','/robots.txt','/wp-sitemap.xml','/sitemap_index.xml','/feed/','/wp-json/wp/v2/posts?after=2026-07-13T00:00:00&per_page=100','/noticias/'):
+                text=inv.fetch(path,'official_subsidiary_alternative')
+                if not text:continue
+                meta=Metadata();meta.feed(text)
+                row={'url':inv.origin+path,'metadata':{k:v for k,v in meta.meta.items() if re.search(r'date|publish|modified|type|url',k,re.I)},
+                     'article_schemas':[a for value in meta.schemas for a in __import__('provider_inventory').schema_articles(value)],
+                     'feed_publications':re.findall(r'<pubDate>(.*?)</pubDate>',text),'feed_links':re.findall(r'<link>(.*?)</link>',text),
+                     'sitemap_locations':re.findall(r'<loc>(.*?)</loc>',text)}
+                if path.startswith('/wp-json/'):
+                    try:row['cms_posts']=[{k:post.get(k) for k in ('id','date','modified','link','title','status')} for post in json.loads(text)]
+                    except (ValueError,TypeError,AttributeError):row['cms_error']='not_a_posts_array'
+                rows.append(row)
         out['sources'][slug]={'requests':inv.requests,'metadata':rows}
         if slug=='indisa':
             chrome=shutil.which('google-chrome') or shutil.which('chromium')

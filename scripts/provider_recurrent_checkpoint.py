@@ -53,6 +53,12 @@ def main():
         'unrelated_queue_unchanged':True,'editorial_assessment_performed':False,
         'coverage_claim':'recurrent discovery verified; inventory and editorial coverage remain separate',
         'promotion':'none'}
+    selected={k:deepcopy(v) for k,v in after.items() if v['source'] in SLUGS}
+    for row in selected.values():
+        row['raw']['raw_text']='';row['raw'].get('metadata',{}).pop('page_text',None)
+    output.update(recovered_queue=selected,source_health=read('data/source_health.json',{})['sources'],
+        seen_ledgers={slug:read('data/state/'+slug+'_seen.json',[]) for slug in SLUGS},
+        commit=__import__('os').getenv('GITHUB_SHA'))
     atomic_json('data/audits/provider_recurrent_checkpoint_2026_10_11.json',output)
     print('PROVIDER_RECURRENT_JSON '+json.dumps(output,separators=(',',':')))
 
