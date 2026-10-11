@@ -1,5 +1,25 @@
 const {test,expect}=require('@playwright/test');
 const fs=require('node:fs');fs.mkdirSync('artifacts',{recursive:true});
+const path=require('node:path');
+const STATISTICAL_URLS={
+ ges:'https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-a-marzo-2026/',
+ series:'https://www.superdesalud.gob.cl/biblioteca-digital/series-estadisticas-del-sistema-isapre-1990-2025/',
+ bulletin:'https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/',
+};
+let historicalSignals;
+function knownHistoricalSignal(predicate){
+ historicalSignals ||= JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../data/history/superintendencia_signals.json'),'utf8')).signals;
+ const signal=historicalSignals.find(predicate);
+ expect(signal,'Known source document must remain in durable history').toBeTruthy();
+ return signal;
+}
+function withinSnapshotHorizon(radar,source){
+ const days=radar.signals.filter(s=>/^\d{4}-\d{2}-\d{2}$/.test(s.event_date||'')).map(s=>Date.parse(s.event_date+'T00:00:00Z'));
+ expect(days.length,'Snapshot needs a dated source to define the rolling window').toBeGreaterThan(0);
+ expect(source.event_date,'Known source document needs its original publication date').toMatch(/^\d{4}-\d{2}-\d{2}$/);
+ const age=(Math.max(...days)-Date.parse(source.event_date+'T00:00:00Z'))/86400000;
+ return age>=0&&age<=90;
+}
 test('Home V2 loads, filters persist and compact triage remains stable',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
@@ -416,12 +436,17 @@ test('Pulso Isapre leads with executive table and statistics use the value ladde
  await page.locator('#filterDetails summary').click();await page.locator('#period').selectOption('90');
  await expect(page.locator('article[data-card]').filter({hasText:'Resonancia Magnética del Biobío'})).toHaveCount(0);
  const radar=await (await page.request.get('/data/radar_today.json')).json();
- for(const [needle,copy] of [
-   ['Estadística Trimestral de Casos GES','casos GES acumulados por problema de salud'],
-   ['Series Estadísticas del Sistema ISAPRE 1990-2025','promedio anual de beneficiarios Isapre'],
-   ['Boletín Estadístico Informativo IP','cortes de acreditación, mediación, reclamos y RNPI'],
+ for(const [needle,copy,url] of [
+   ['Estadística Trimestral de Casos GES','casos GES acumulados por problema de salud',STATISTICAL_URLS.ges],
+   ['Series Estadísticas del Sistema ISAPRE 1990-2025','promedio anual de beneficiarios Isapre',STATISTICAL_URLS.series],
+   ['Boletín Estadístico Informativo IP','cortes de acreditación, mediación, reclamos y RNPI',STATISTICAL_URLS.bulletin],
  ]){
-   const signal=radar.signals.find(x=>(x.title||'').includes(needle));
+   const signal=radar.signals.find(x=>x.source_url===url);
+   const original=knownHistoricalSignal(x=>x.source_url===url);
+   if(!withinSnapshotHorizon(radar,original)){
+     expect(signal,needle+' must leave the feed when its actual publication date expires').toBeUndefined();
+     continue;
+   }
    expect(signal,needle+' missing from snapshot').toBeTruthy();
    expect(signal.summary_table?.rows?.length||0,needle+' table').toBeGreaterThan(0);
    const card=page.locator('article[data-card]').filter({hasText:needle});
@@ -526,12 +551,17 @@ test('priority statistical releases use compact tables and collapsed traceabilit
  await page.locator('#period').selectOption('90');
  const radar=await (await page.request.get('/data/radar_today.json')).json();
  const cases=[
-  ['Estadística Trimestral de Casos GES',5],
-  ['Series Estadísticas del Sistema ISAPRE',2],
-  ['Boletín Estadístico Informativo IP',6],
+  ['Estadística Trimestral de Casos GES',5,STATISTICAL_URLS.ges],
+  ['Series Estadísticas del Sistema ISAPRE',2,STATISTICAL_URLS.series],
+  ['Boletín Estadístico Informativo IP',6,STATISTICAL_URLS.bulletin],
  ];
- for(const [needle,minRows] of cases){
-   const s=radar.signals.find(x=>(x.title||'').includes(needle));
+ for(const [needle,minRows,url] of cases){
+   const s=radar.signals.find(x=>x.source_url===url);
+   const original=knownHistoricalSignal(x=>x.source_url===url);
+   if(!withinSnapshotHorizon(radar,original)){
+     expect(s,needle+' must leave the feed when its actual publication date expires').toBeUndefined();
+     continue;
+   }
    expect(s,needle+' missing').toBeTruthy();
    expect((s.data_insights||[]).length,needle+' repeated insight list').toBe(0);
    expect(s.summary_table?.rows?.length||0,needle+' table').toBeGreaterThanOrEqual(minRows);
@@ -540,12 +570,16 @@ test('priority statistical releases use compact tables and collapsed traceabilit
    expect(s.incremental_value_gate?.table).toBeTruthy();
    expect(s.data_insight_evidence?.length||0,needle+' evidence').toBeGreaterThan(0);
  }
- const ges=radar.signals.find(x=>(x.title||'').includes('Estadística Trimestral de Casos GES'));
- expect(ges.summary_table.columns).toEqual(['Problema de salud','Fonasa (casos)','Isapre (casos)','Total (casos)','Isapre (%)']);
- expect(ges.summary_table.rows.every(r=>r.cells?.length===5&&!/^\d+$/.test(r.cells[0]))).toBe(true);
- const series=radar.signals.find(x=>(x.title||'').includes('Series Estadísticas del Sistema ISAPRE'));
- expect(series.summary_table.rows.map(r=>r.cells[0])).toEqual(['Beneficiarios promedio anual','Casos GES']);
- expect(series.summary_table.rows.every(r=>r.cells[3]+r.cells[5]===r.cells[4])).toBe(true);
+ const ges=radar.signals.find(x=>x.source_url===STATISTICAL_URLS.ges);
+ if(ges){
+  expect(ges.summary_table.columns).toEqual(['Problema de salud','Fonasa (casos)','Isapre (casos)','Total (casos)','Isapre (%)']);
+  expect(ges.summary_table.rows.every(r=>r.cells?.length===5&&!/^\d+$/.test(r.cells[0]))).toBe(true);
+ }
+ const series=radar.signals.find(x=>x.source_url===STATISTICAL_URLS.series);
+ if(series){
+  expect(series.summary_table.rows.map(r=>r.cells[0])).toEqual(['Beneficiarios promedio anual','Casos GES']);
+  expect(series.summary_table.rows.every(r=>r.cells[3]+r.cells[5]===r.cells[4])).toBe(true);
+ }
  const fin=radar.signals.find(x=>(x.title||'').includes('Estadísticas Financieras del Sistema ISAPRE'));
  if(fin){
    expect(fin.summary_table.columns).toEqual(['Isapre','Ingresos (CLP millones)','Resultado operacional (CLP millones)','Utilidad/pérdida neta (CLP millones)']);
@@ -557,7 +591,7 @@ test('priority statistical releases use compact tables and collapsed traceabilit
    await expect(detail.locator('.summary-table')).toBeVisible();
    await page.locator('#detailDialog [data-close]').click();
  }
- const bulletin=radar.signals.find(x=>(x.title||'').includes('Boletín Estadístico Informativo IP'));
+ const bulletin=radar.signals.find(x=>x.source_url===STATISTICAL_URLS.bulletin);
  expect(new Set(bulletin.summary_table.rows.map(r=>r.cells[0]))).toEqual(new Set(['Acreditación','Mediación','Reclamos','RNPI']));
  const bulletinCard=page.locator('article[data-card]').filter({hasText:'Boletín Estadístico Informativo IP'});
  await bulletinCard.locator('[data-detail]').click();
@@ -589,7 +623,12 @@ test('Normative V2.1 puts document, subject and action in each current headline'
   ['529',/CAEC/i,/vincula|cobertura/i]
  ];
  for(const [number,subject,action] of expected){
-  const signal=radar.signals.find(x=>x.source_url?.includes('n'+number)&&x.signal_types?.includes('Normativa'));
+  const original=knownHistoricalSignal(x=>x.source_url?.endsWith('n'+number+'/')&&x.signal_types?.includes('Normativa'));
+  const signal=radar.signals.find(x=>x.source_url?.endsWith('n'+number+'/')&&x.signal_types?.includes('Normativa'));
+  if(!withinSnapshotHorizon(radar,original)){
+   expect(signal,number+' must leave the feed when its actual publication date expires').toBeUndefined();
+   continue;
+  }
   expect(signal,number).toBeTruthy();
   const title=signal.display_title;
   expect(title).toContain(signal.normative_document_label||signal.legal_identity);

@@ -284,9 +284,30 @@ def test_material_statistical_releases_use_value_ladder_instead_of_disappearing(
 
 
 def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():
+    from datetime import date, timedelta
+    import re
     payload=json.loads(Path("web/data/radar_today.json").read_text())
     rows=[m._normative_contract(s) for s in payload["signals"] if "Normativa" in (s.get("signal_types") or [])]
-    assert len(rows)>=12
+    history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    reviewed=json.loads(Path("config/normative_editorial_v2.json").read_text())["records"]
+    decisions={x["id"]:x.get("decision") for x in json.loads(Path("data/editorial_audit_90d_2026_09_26.json").read_text())["items"]}
+    # Reviewed act identities are an independent oracle. A document leaving
+    # the rolling window must not be republished just to satisfy a fixed count.
+    anchor=max(date.fromisoformat(s["event_date"][:10]) for s in history if s.get("event_date"))
+    cutoff=anchor-timedelta(days=90)
+    known={}
+    for s in history:
+        match=re.search(r"/(?:circular-if|resolucion-exenta-if)-n(\d+)/$",s.get("source_url") or "")
+        if match and match.group(1) in reviewed and "Normativa" in (s.get("signal_types") or []):
+            known[s["source_url"]]=s
+    expected={url for url,s in known.items()
+              if cutoff<=date.fromisoformat(s["event_date"][:10])<=anchor and decisions.get(url)!="reject"}
+    actual={s["source_url"] for s in rows}
+    assert expected<=actual
+    assert all(cutoff<=date.fromisoformat(s["event_date"][:10])<=anchor for s in rows)
+    assert not {url for url,s in known.items() if date.fromisoformat(s["event_date"][:10])<cutoff}&actual
+    c533=next(s for s in rows if s["source_url"].endswith("circular-if-n533/"))
+    assert "Circular IF/N°533" in c533["display_title"] and "SIL" in c533["display_title"] and "actualiza" in c533["display_title"]
     assert all(x["normative_editorial"]["plain_language_title"]==x["display_title"] for x in rows)
     assert all(x["normative_editorial"]["legal_identity"]==x["normative_document_label"] for x in rows)
     assert all(x["legal_subtitle"] for x in rows)
