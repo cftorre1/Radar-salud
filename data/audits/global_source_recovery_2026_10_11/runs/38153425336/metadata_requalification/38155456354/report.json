@@ -1,0 +1,359 @@
+{
+  "result": "PASS_METADATA_ONLY_PROJECTION",
+  "fresh_capture_run_id": "38153425336",
+  "qa_run_id": "38155456354",
+  "projection_code_commit": "a74323b5d69654855cd17dc6f54013f76a4f10da",
+  "projected_at": "2026-10-11T16:27:21.528411+00:00",
+  "network_requests": 0,
+  "paid_ai_calls": 0,
+  "publication_count": 0,
+  "fresh_inventory_preserved": true,
+  "ledger_and_curated_data_preserved": true,
+  "protected_sha256": {
+    "data/global/themes.json": "e2517bf6d5435f899e30dbac6c1fa651cf811613400426dc87490010ef0d5a77",
+    "web/data/global_themes.json": "e2517bf6d5435f899e30dbac6c1fa651cf811613400426dc87490010ef0d5a77",
+    "data/global_intelligence/ledger.json": "d7c9934bf3fb1274be598d5e4d22a8280ae689e7d2a36cdda089237d0c780d2c",
+    "web/data/radar_today.json": "3b894c227803d2d971e6080ce2f572b9053d44eaef79b9ed14c8cd076d9a3b6d",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json": "434dec044c79ade78f82f82271121753685cdf5b4a80888cc1c52831efcff831",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.csv": "199ebc289703e53e6ff81e48b41c196d6352bf1d8b6d11948d5ae3f32dde826d",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/capture_manifest.json": "741ce15f4495f86ec930fe0472bd1ef4b82b098bc4c7cb9b4ee2e540851463a6"
+  },
+  "immutable_checks": "identity, aliases, publication/index dates, routes/control, receipts, HTTP/coverage/cadence/new unchanged",
+  "classification_changes": [
+    {
+      "url": "https://www.paho.org/en/news/24-7-2026-one-month-post-earthquake-paho-supports-transition-emergency-response-long-term",
+      "before": {
+        "materiality": "undetermined",
+        "priority": 0,
+        "category": "context",
+        "reason": "metadata_insufficient_to_establish_business_materiality"
+      },
+      "after": {
+        "materiality": "candidate",
+        "priority": 88,
+        "category": "financing_systems",
+        "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+      },
+      "before_status": "pending",
+      "after_status": "pending",
+      "provenance": [
+        {
+          "url": "https://www.paho.org/en/news/24-7-2026-one-month-post-earthquake-paho-supports-transition-emergency-response-long-term",
+          "title": "One month post-earthquake: PAHO supports transition from emergency response to long-term health recovery",
+          "section": "regional_news",
+          "classification": {
+            "materiality": "undetermined",
+            "priority": 0,
+            "category": "context",
+            "reason": "metadata_insufficient_to_establish_business_materiality"
+          },
+          "detail_verified": true,
+          "published_at": "2026-07-24"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/24-7-2026-mes-terremotos-venezuela-ops-acompana-transicion-respuesta-emergencia-hacia",
+          "title": "A un mes de los terremotos en Venezuela: la OPS acompaña la transición de la respuesta de emergencia hacia la recuperación del sistema de salud",
+          "section": "regional_news_es",
+          "classification": {
+            "materiality": "candidate",
+            "priority": 88,
+            "category": "financing_systems",
+            "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+          },
+          "detail_verified": true,
+          "published_at": "2026-07-24"
+        }
+      ]
+    },
+    {
+      "url": "https://www.paho.org/en/news/23-7-2026-paho-launches-virtual-course-maternal-near-miss-available-spanish",
+      "before": {
+        "materiality": "undetermined",
+        "priority": 0,
+        "category": "context",
+        "reason": "metadata_insufficient_to_establish_business_materiality"
+      },
+      "after": {
+        "materiality": "candidate",
+        "priority": 85,
+        "category": "epidemiology",
+        "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+      },
+      "before_status": "pending",
+      "after_status": "pending",
+      "provenance": [
+        {
+          "url": "https://www.paho.org/en/news/23-7-2026-paho-launches-virtual-course-maternal-near-miss-available-spanish",
+          "title": "PAHO launches virtual course on Maternal Near Miss available in Spanish",
+          "section": "regional_news",
+          "classification": {
+            "materiality": "undetermined",
+            "priority": 0,
+            "category": "context",
+            "reason": "metadata_insufficient_to_establish_business_materiality"
+          },
+          "detail_verified": true,
+          "published_at": "2026-07-23"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/23-7-2026-ops-lanza-curso-virtual-sobre-vigilancia-morbilidad-materna-extrema-gravedad",
+          "title": "OPS lanza un curso virtual sobre Vigilancia de la morbilidad materna de extrema gravedad (Near Miss Materno)",
+          "section": "regional_news_es",
+          "classification": {
+            "materiality": "candidate",
+            "priority": 85,
+            "category": "epidemiology",
+            "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+          },
+          "detail_verified": true,
+          "published_at": "2026-07-23"
+        }
+      ]
+    },
+    {
+      "url": "https://www.paho.org/en/news/23-7-2026-who-launches-seven-strategies-prevent-drowning",
+      "before": {
+        "materiality": "undetermined",
+        "priority": 0,
+        "category": "context",
+        "reason": "metadata_insufficient_to_establish_business_materiality"
+      },
+      "after": {
+        "materiality": "candidate",
+        "priority": 75,
+        "category": "technical_document",
+        "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+      },
+      "before_status": "pending",
+      "after_status": "pending",
+      "provenance": [
+        {
+          "url": "https://www.paho.org/en/news/23-7-2026-who-launches-seven-strategies-prevent-drowning",
+          "title": "WHO launches seven strategies to prevent drowning",
+          "section": "regional_news",
+          "classification": {
+            "materiality": "undetermined",
+            "priority": 0,
+            "category": "context",
+            "reason": "metadata_insufficient_to_establish_business_materiality"
+          },
+          "detail_verified": true,
+          "published_at": "2026-07-23"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/23-7-2026-oms-publica-siete-estrategias-para-prevenir-ahogamientos",
+          "title": "La OMS publica siete estrategias para prevenir los ahogamientos",
+          "section": "regional_news_es",
+          "classification": {
+            "materiality": "candidate",
+            "priority": 75,
+            "category": "technical_document",
+            "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+          },
+          "detail_verified": true,
+          "published_at": "2026-07-23"
+        }
+      ]
+    },
+    {
+      "url": "https://www.paho.org/en/news/28-9-2026-chilean-minister-health-elected-president-pahos-63rd-directing-council",
+      "before": {
+        "materiality": "routine",
+        "priority": 0,
+        "category": "institutional_routine",
+        "reason": "ceremony_training_or_appointment"
+      },
+      "after": {
+        "materiality": "undetermined",
+        "priority": 0,
+        "category": "context",
+        "reason": "metadata_insufficient_to_establish_business_materiality"
+      },
+      "before_status": "rejected",
+      "after_status": "pending",
+      "provenance": [
+        {
+          "url": "https://www.paho.org/en/news/28-9-2026-chilean-minister-health-elected-president-pahos-63rd-directing-council",
+          "title": "Chilean Minister of Health elected President of PAHO’s 63rd Directing Council",
+          "section": "regional_news",
+          "classification": {
+            "materiality": "routine",
+            "priority": 0,
+            "category": "institutional_routine",
+            "reason": "ceremony_training_or_appointment"
+          },
+          "detail_verified": true,
+          "published_at": "2026-09-28"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/28-9-2026-ministra-salud-chile-es-elegida-presidenta-63o-consejo-directivo-ops",
+          "title": "Ministra de Salud de Chile es elegida presidenta del 63.º Consejo Directivo de la OPS",
+          "section": "regional_news_es",
+          "classification": {
+            "materiality": "undetermined",
+            "priority": 0,
+            "category": "context",
+            "reason": "metadata_insufficient_to_establish_business_materiality"
+          },
+          "detail_verified": true,
+          "published_at": "2026-09-28"
+        }
+      ]
+    },
+    {
+      "url": "https://www.paho.org/en/news/25-9-2026-caricom-endorses-new-action-plan-health-and-climate-change-developed-pahowho-support",
+      "before": {
+        "materiality": "undetermined",
+        "priority": 0,
+        "category": "context",
+        "reason": "metadata_insufficient_to_establish_business_materiality"
+      },
+      "after": {
+        "materiality": "candidate",
+        "priority": 90,
+        "category": "policy_guidelines",
+        "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+      },
+      "before_status": "pending",
+      "after_status": "pending",
+      "provenance": [
+        {
+          "url": "https://www.paho.org/en/news/25-9-2026-caricom-endorses-new-action-plan-health-and-climate-change-developed-pahowho-support",
+          "title": "CARICOM endorses new Action Plan on Health and Climate Change developed with PAHO/WHO support",
+          "section": "regional_news",
+          "classification": {
+            "materiality": "undetermined",
+            "priority": 0,
+            "category": "context",
+            "reason": "metadata_insufficient_to_establish_business_materiality"
+          },
+          "detail_verified": true,
+          "published_at": "2026-09-25"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/25-9-2026-caricom-adopta-nuevo-plan-accion-sobre-salud-cambio-climatico-desarrollado-con",
+          "title": "CARICOM adopta nuevo Plan de Acción sobre Salud y Cambio Climático desarrollado con el apoyo de la OPS/OMS",
+          "section": "regional_news_es",
+          "classification": {
+            "materiality": "candidate",
+            "priority": 90,
+            "category": "policy_guidelines",
+            "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+          },
+          "detail_verified": true,
+          "published_at": "2026-09-25"
+        }
+      ]
+    },
+    {
+      "url": "https://www.paho.org/en/news/30-9-2026-paho-oras-conhu-and-andean-countries-launch-plan-protect-health-impacts-climate",
+      "before": {
+        "materiality": "undetermined",
+        "priority": 0,
+        "category": "context",
+        "reason": "metadata_insufficient_to_establish_business_materiality"
+      },
+      "after": {
+        "materiality": "candidate",
+        "priority": 90,
+        "category": "policy_guidelines",
+        "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+      },
+      "before_status": "pending",
+      "after_status": "pending",
+      "provenance": [
+        {
+          "url": "https://www.paho.org/en/news/30-9-2026-paho-oras-conhu-and-andean-countries-launch-plan-protect-health-impacts-climate",
+          "title": "PAHO, ORAS-CONHU and Andean countries launch plan to protect health from the impacts of climate change",
+          "section": "regional_news",
+          "classification": {
+            "materiality": "undetermined",
+            "priority": 0,
+            "category": "context",
+            "reason": "metadata_insufficient_to_establish_business_materiality"
+          },
+          "detail_verified": true,
+          "published_at": "2026-09-30"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/30-9-2026-ops-oras-conhu-paises-andinos-presentan-nuevo-plan-para-proteger-salud-frente",
+          "title": "La OPS, el ORAS-CONHU y los países andinos presentan un nuevo plan para proteger la salud frente a los desafíos del cambio climático",
+          "section": "regional_news_es",
+          "classification": {
+            "materiality": "candidate",
+            "priority": 90,
+            "category": "policy_guidelines",
+            "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+          },
+          "detail_verified": true,
+          "published_at": "2026-09-30"
+        }
+      ]
+    },
+    {
+      "url": "https://www.paho.org/en/news/6-10-2026-inter-american-mental-health-week-calls-intersectoral-action-improve-mental-health",
+      "before": {
+        "materiality": "undetermined",
+        "priority": 0,
+        "category": "context",
+        "reason": "metadata_insufficient_to_establish_business_materiality"
+      },
+      "after": {
+        "materiality": "candidate",
+        "priority": 90,
+        "category": "policy_guidelines",
+        "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+      },
+      "before_status": "pending",
+      "after_status": "pending",
+      "provenance": [
+        {
+          "url": "https://www.paho.org/en/news/6-10-2026-inter-american-mental-health-week-calls-intersectoral-action-improve-mental-health",
+          "title": "Inter-American Mental Health Week calls for intersectoral action to improve mental health in the Americas",
+          "section": "regional_news",
+          "classification": {
+            "materiality": "undetermined",
+            "priority": 0,
+            "category": "context",
+            "reason": "metadata_insufficient_to_establish_business_materiality"
+          },
+          "detail_verified": true,
+          "published_at": "2026-10-06"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/6-10-2026-semana-interamericana-salud-mental-impulsa-accion-intersectorial-para-mejorar",
+          "title": "Semana Interamericana de la Salud Mental impulsa la acción intersectorial para mejorar la salud mental en las Américas",
+          "section": "regional_news_es",
+          "classification": {
+            "materiality": "candidate",
+            "priority": 90,
+            "category": "policy_guidelines",
+            "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+          },
+          "detail_verified": true,
+          "published_at": "2026-10-06"
+        }
+      ]
+    }
+  ],
+  "source_materiality": {
+    "who": {
+      "material_items": 148,
+      "rejected": 4,
+      "deferred": 237
+    },
+    "paho": {
+      "material_items": 229,
+      "rejected": 14,
+      "deferred": 516
+    },
+    "reuters": {
+      "material_items": null,
+      "rejected": 0,
+      "deferred": 0
+    }
+  },
+  "inventory_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json",
+  "inventory_csv_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.csv",
+  "canonical_inventory_sha256": "83fa7e2150d07c0e7ee2d7c2afd9d9e03abcc92d62f90ec0211a456960774063"
+}
