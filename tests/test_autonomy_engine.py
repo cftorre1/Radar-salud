@@ -2010,5 +2010,258 @@ class AcceptanceTests(unittest.TestCase):
         self.assertIn("automatic_independent_transition_not_observed", result["reasons"])
 
 
+class LogicalQaAliasTransitionTests(unittest.TestCase):
+    def setup_episode(self, **declared_work):
+        mutual = next(t for t, f in SOURCE_TASKS.items() if f == "mutualities")
+        qa = {"id": "staging_qa_failed_run_123", "family": "staging_qa", "status": "approved",
+              "failure": {**failure("123"), "failure_signature": "9" * 64},
+              "input_fingerprint": "1" * 64, "product_input_fingerprint": "2" * 64,
+              "executor_fingerprint": "3" * 64}
+        qa.update(deepcopy(declared_work))
+        q = {"input_sha": SHA, "tasks": [qa, {"id": mutual, "status": "approved"}]}
+        state, lease = claim({}, q, "staging_qa", "qa-first", BASE)
+        state = finish(state, lease["task_id"], lease["token"], blocked(), BASE + timedelta(seconds=1))
+        state, lease = claim(state, q, "mutualities", "independent", BASE + timedelta(seconds=2))
+        state = finish(state, mutual, lease["token"], blocked("source failed", "mutual"), BASE + timedelta(seconds=3))
+        alias = {**deepcopy(qa), "id": "staging_qa_failed_run_456",
+                 "failure": {**failure("456"), "failure_signature": "9" * 64}}
+        q["tasks"].append(alias)
+        return state, q, alias
+
+    def test_unchanged_qa_run_alias_is_pickup_without_material_transition_or_terminal_consumption(self):
+        before, q, alias = self.setup_episode()
+        state, lease = claim(before, q, "staging_qa", "qa-alias", BASE + timedelta(seconds=4))
+        self.assertEqual(lease["task_id"], alias["id"])
+        self.assertEqual(state["material_events"], before["material_events"])
+        self.assertEqual(state["pending_transitions"], before["pending_transitions"])
+        self.assertEqual(len(state["lease_events"]), len(before["lease_events"]) + 1)
+        self.assertNotIn("material_progress_at", state["tasks"][alias["id"]])
+        state = finish(state, lease["task_id"], lease["token"], blocked(), BASE + timedelta(seconds=5))
+        self.assertEqual(state["material_events"], before["material_events"])
+        bucket = state["failure_history"][engine._hash(["9" * 64, "1" * 64])]
+        self.assertEqual(bucket["attempts"], 2)
+
+    def test_new_failure_or_relevant_inputs_or_explicit_repair_work_remains_a_real_transition(self):
+        changes = [{"input_fingerprint": "4" * 64}, {"product_input_fingerprint": "4" * 64},
+                   {"executor_fingerprint": "4" * 64},
+                   {"failure": {**failure("456"), "failure_signature": "8" * 64}},
+                   {"repair_patch": {"path": "new-plan.json", "sha256": "4" * 64}},
+                   {"acceptance_artifact": {"path": "acceptance.json", "sha256": "4" * 64}}]
+        for change in changes:
+            with self.subTest(change=change):
+                before, q, alias = self.setup_episode()
+                alias.update(change)
+                state, lease = claim(before, q, "staging_qa", "qa-new-work", BASE + timedelta(seconds=4))
+                self.assertIsNotNone(lease)
+                self.assertEqual(len(state["material_events"]), len(before["material_events"]) + 1)
+                self.assertEqual(state["material_events"][-1]["kind"], "transition")
+                self.assertEqual(state["material_events"][-1]["task_id"], alias["id"])
+
+    def historical_alias(self):
+        before, q, alias = self.setup_episode()
+        state, _ = claim(before, q, "staging_qa", "qa-alias", BASE + timedelta(seconds=4))
+        terminal = next(item for item in state["pending_transitions"] if item["family"] == "mutualities")
+        terminal_event = next(item for item in state["material_events"] if item["id"] == terminal["event_id"])
+        # Persisted pre-fix behavior: task-ID-only comparison minted this event.
+        event = engine._event(state, state["tasks"][alias["id"]], "transition", BASE + timedelta(seconds=4), {
+            "from_task_id": terminal["task_id"], "from_family": terminal["family"],
+            "terminal_event_id": terminal["event_id"], "independent": True})
+        state["pending_transitions"].remove(terminal)
+        prior = before["tasks"]["staging_qa_failed_run_123"]
+        fields = ("family", "failure", "input_fingerprint", "product_input_fingerprint", "executor_fingerprint", "declared_repair_inputs")
+        binding = {"schema_version": 1, "verified": True, "event_sha256": engine._hash(event),
+            "terminal_event_id": terminal_event["id"], "terminal_event_sha256": engine._hash(terminal_event),
+            "prior": {**{key: deepcopy(prior[key]) for key in fields}, "task_id": prior["id"],
+                "completed_at": (BASE + timedelta(seconds=1)).isoformat(), "attempts": 1,
+                "history_key": engine._hash(["9" * 64, "1" * 64])},
+            "destination": {**{key: deepcopy(state["tasks"][alias["id"]][key]) for key in fields}, "task_id": alias["id"]},
+            "proof": {"before_state_commit": "a" * 40, "before_control_sha256": "a" * 64,
+                "claim_state_commit": "b" * 40, "claim_control_sha256": "b" * 64,
+                "evidence": {"path": "data/autopilot/evidence/import-proof.json", "sha256": "c" * 64},
+                "prior_worker_result": {"path": "data/autopilot/evidence/prior-worker.json", "sha256": "d" * 64}}}
+        state["material_event_transition_bindings"] = {event["id"]: binding}
+        return before, state, q, event, binding, terminal_event
+
+    def test_proven_historical_alias_is_corrected_append_only_and_restores_unconsumed_terminal(self):
+        before, state, q, event, binding, terminal = self.historical_alias()
+        raw, leases, registry = deepcopy(state["material_events"]), deepcopy(state["lease_events"]), deepcopy(state["material_event_transition_bindings"])
+        corrected = reconcile(state, q, BASE + timedelta(seconds=5))
+        self.assertEqual(corrected["material_events"], raw)
+        self.assertEqual(corrected["lease_events"], leases)
+        self.assertEqual(corrected["material_event_transition_bindings"], registry)
+        self.assertEqual(effective_material_events(corrected), before["material_events"])
+        self.assertEqual(corrected["pending_transitions"], before["pending_transitions"])
+        self.assertEqual(len(corrected["material_event_corrections"]), 1)
+        self.assertEqual(corrected["material_event_corrections"][0]["kind"], "duplicate_alias_transition")
+        self.assertNotIn("material_progress_at", corrected["tasks"][event["task_id"]])
+        self.assertNotEqual(corrected["tasks"][event["task_id"]]["recovery_episode"], event["id"])
+        replay = reconcile(corrected, q, BASE + timedelta(seconds=6))
+        self.assertEqual(replay["material_event_corrections"], corrected["material_event_corrections"])
+        self.assertEqual(replay["pending_transitions"], corrected["pending_transitions"])
+        for task in replay["tasks"].values():
+            task["input_fingerprint"] = "e" * 64
+            task["product_input_fingerprint"] = "e" * 64
+            task["executor_fingerprint"] = "e" * 64
+        self.assertEqual(effective_material_events(replay), before["material_events"])
+
+    def test_historical_binding_rejects_unknown_or_future_or_changed_episode_proof(self):
+        invalid_changes = [
+            lambda b: b.update(verified=False), lambda b: b.update(event_sha256="0" * 64),
+            lambda b: b.update(terminal_event_sha256="0" * 64),
+            lambda b: b["prior"].update(completed_at=(BASE + timedelta(seconds=8)).isoformat()),
+            lambda b: b["prior"].update(attempts=True), lambda b: b["prior"].update(history_key="0" * 64),
+            lambda b: b["destination"].update(input_fingerprint="0" * 64),
+            lambda b: b["destination"].update(product_input_fingerprint="0" * 64),
+            lambda b: b["destination"].update(executor_fingerprint="0" * 64),
+            lambda b: b["destination"]["failure"].update(failure_signature="0" * 64),
+            lambda b: b["destination"].update(declared_repair_inputs={"repair_patch": "new approved action"}),
+            lambda b: b["proof"]["evidence"].update(path="../../arbitrary.json"),
+            lambda b: b["proof"]["prior_worker_result"].update(sha256="not-hashed"),
+        ]
+        for change in invalid_changes:
+            with self.subTest(change=change):
+                _, state, q, event, binding, _ = self.historical_alias()
+                change(binding)
+                corrected = reconcile(state, q, BASE + timedelta(seconds=5))
+                self.assertIn(event, effective_material_events(corrected))
+                self.assertFalse(corrected["material_event_corrections"])
+        _, state, q, event, _, _ = self.historical_alias()
+        state.pop("material_event_transition_bindings")
+        self.assertIn(event, effective_material_events(reconcile(state, q, BASE + timedelta(seconds=5))))
+
+    def test_historical_correction_does_not_restore_terminal_consumed_by_a_later_real_transition(self):
+        _, state, q, event, _, terminal = self.historical_alias()
+        real = {"id": "later-real-transition", "kind": "transition", "family": "media", "task_id": MEDIA,
+                "at": (BASE + timedelta(seconds=5)).isoformat(), "details": {"independent": True,
+                "from_task_id": terminal["task_id"], "from_family": terminal["family"], "terminal_event_id": terminal["id"]}}
+        state["material_events"].append(real)
+        corrected = reconcile(state, q, BASE + timedelta(seconds=6))
+        self.assertNotIn(event, effective_material_events(corrected))
+        self.assertIn(real, effective_material_events(corrected))
+        self.assertNotIn(terminal["id"], [item["event_id"] for item in corrected["pending_transitions"]])
+
+    def test_unusable_attempt_contexts_do_not_crash_or_infer_a_retry_identity(self):
+        for bad in [None, {}, {"completed_at": "not-a-clock"},
+                    {"completed_at": (BASE + timedelta(seconds=10)).isoformat()}]:
+            before, q, alias = self.setup_episode()
+            history = before["failure_history"][engine._hash(["9" * 64, "1" * 64])]
+            identity = deepcopy(history["attempt_contexts"][0]["identity"])
+            history["attempt_contexts"] = [bad if bad is None else {"identity": identity, **bad}]
+            with self.subTest(context=bad):
+                state, lease = claim(before, q, "staging_qa", "qa-new", BASE + timedelta(seconds=4))
+                self.assertIsNotNone(lease)
+                self.assertEqual(len(state["material_events"]), len(before["material_events"]) + 1)
+        before, q, _ = self.setup_episode()
+        history = before["failure_history"][engine._hash(["9" * 64, "1" * 64])]
+        history.pop("attempt_contexts")
+        history["last_attempt_at"] = "not-a-clock"
+        before["tasks"]["staging_qa_failed_run_123"]["state_changed_at"] = "not-a-clock"
+        state, lease = claim(before, q, "staging_qa", "qa-new", BASE + timedelta(seconds=4))
+        self.assertIsNotNone(lease)
+
+    def test_proof_clocks_reject_boolean_numeric_nonfinite_and_naive_values(self):
+        for value in [True, False, 0, 1, float("inf"), float("nan"), "2026-10-10T00:00:01"]:
+            with self.subTest(clock=value):
+                before, q, _ = self.setup_episode()
+                history = before["failure_history"][engine._hash(["9" * 64, "1" * 64])]
+                history["attempt_contexts"][0]["completed_at"] = value
+                state, lease = claim(before, q, "staging_qa", "qa-new", BASE + timedelta(seconds=4))
+                self.assertIsNotNone(lease)
+                self.assertEqual(len(state["material_events"]), len(before["material_events"]) + 1)
+                _, state, q, event, binding, _ = self.historical_alias()
+                binding["prior"]["completed_at"] = value
+                corrected = reconcile(state, q, BASE + timedelta(seconds=5))
+                self.assertIn(event, effective_material_events(corrected))
+                self.assertFalse(corrected["material_event_corrections"])
+
+    def test_frozen_attempt_context_preserves_alias_identity_after_original_task_inputs_move(self):
+        before, q, alias = self.setup_episode()
+        original = before["tasks"]["staging_qa_failed_run_123"]
+        original.update(input_fingerprint="e" * 64, product_input_fingerprint="e" * 64,
+                        executor_fingerprint="e" * 64, status="CLOSED")
+        q["tasks"] = [task for task in q["tasks"] if task["id"] != original["id"]]
+        state, lease = claim(before, q, "staging_qa", "qa-alias", BASE + timedelta(seconds=4))
+        self.assertEqual(lease["task_id"], alias["id"])
+        self.assertEqual(state["material_events"], before["material_events"])
+        self.assertEqual(state["pending_transitions"], before["pending_transitions"])
+
+    def test_declared_assertion_dates_are_meaningful_but_observation_clocks_are_not(self):
+        first = {"constraints": {"assertion": "effective date must equal 2026-10-10T00:00:00Z"}, "observed_at": BASE.isoformat()}
+        second = deepcopy(first)
+        second["observed_at"] = (BASE + timedelta(seconds=1)).isoformat()
+        self.assertEqual(engine._declared_task_work(first), engine._declared_task_work(second))
+        second["constraints"]["assertion"] = "effective date must equal 2026-10-11T00:00:00Z"
+        self.assertNotEqual(engine._declared_task_work(first), engine._declared_task_work(second))
+
+    def test_named_clocks_inside_declared_assertions_remain_changed_executable_work(self):
+        for key, old, new in [("duration_seconds", 5, 6), ("observed_at", "2026-10-10", "2026-10-11")]:
+            with self.subTest(assertion=key):
+                before, q, alias = self.setup_episode(instructions={"assertions": {key: old}})
+                alias["instructions"]["assertions"][key] = new
+                state, _ = claim(before, q, "staging_qa", "qa-new-assertion", BASE + timedelta(seconds=4))
+                self.assertEqual(len(state["material_events"]), len(before["material_events"]) + 1)
+                self.assertEqual(state["material_events"][-1]["kind"], "transition")
+
+    def test_new_declared_patch_or_acceptance_has_its_own_bounded_failure_episode(self):
+        for key in ("repair_patch", "acceptance_artifact"):
+            with self.subTest(declaration=key):
+                before, q, alias = self.setup_episode()
+                prior_key = engine._hash(["9" * 64, "1" * 64])
+                before["failure_history"][prior_key]["attempts"] = 3
+                alias[key] = {"path": "new-approved-input.json", "sha256": "e" * 64}
+                state, lease = claim(before, q, "staging_qa", "new-approved-work", BASE + timedelta(seconds=4))
+                self.assertIsNotNone(lease)
+                self.assertEqual(state["failure_history"][prior_key]["attempts"], 3)
+                self.assertEqual(state["material_events"][-1]["kind"], "transition")
+                state = finish(state, lease["task_id"], lease["token"], blocked(), BASE + timedelta(seconds=5))
+                self.assertEqual(state["failure_history"][prior_key]["attempts"], 3)
+                self.assertEqual(sorted(bucket["attempts"] for bucket in state["failure_history"].values()), [1, 3])
+                for index in range(2):
+                    follow = deepcopy(alias)
+                    run_id = str(789 + index)
+                    follow.update(id="staging_qa_failed_run_" + run_id,
+                                  failure={**failure(run_id), "failure_signature": "9" * 64})
+                    q["tasks"].append(follow)
+                    at = BASE + timedelta(seconds=6 + 2 * index)
+                    state, lease = claim(state, q, "staging_qa", "same-declared-work", at)
+                    self.assertIsNotNone(lease)
+                    state = finish(state, lease["task_id"], lease["token"], blocked(), at + timedelta(seconds=1))
+                follow = deepcopy(alias)
+                follow.update(id="staging_qa_failed_run_791", failure={**failure("791"), "failure_signature": "9" * 64})
+                q["tasks"].append(follow)
+                state, lease = claim(state, q, "staging_qa", "exhausted", BASE + timedelta(seconds=10))
+                self.assertIsNone(lease)
+                self.assertEqual(sorted(bucket["attempts"] for bucket in state["failure_history"].values()), [3, 3])
+
+    def test_attempt_context_requires_its_recorded_canonical_qa_task(self):
+        for task_id in (None, "unrecorded-task", "staging_qa_failed_run_789"):
+            with self.subTest(task_id=task_id):
+                before, q, _ = self.setup_episode()
+                history = before["failure_history"][engine._hash(["9" * 64, "1" * 64])]
+                history["attempt_contexts"][0]["task_id"] = task_id
+                state, lease = claim(before, q, "staging_qa", "qa-new", BASE + timedelta(seconds=4))
+                self.assertIsNotNone(lease)
+                self.assertEqual(len(state["material_events"]), len(before["material_events"]) + 1)
+
+    def test_retired_terminal_never_authorizes_alias_transition_retirement(self):
+        _, state, q, event, binding, _ = self.historical_alias()
+        legacy = legacy_qa_duplicate_state()
+        legacy = reconcile(legacy, {"input_sha": SHA, "tasks": []}, BASE + timedelta(minutes=2))
+        retired = legacy["material_events"][-1]
+        # Preserve a fully valid earlier duplicate correction alongside this
+        # requested retirement, then bind the alias to its retired terminal.
+        state["material_events"] = deepcopy(legacy["material_events"]) + state["material_events"]
+        state["material_event_corrections"] = deepcopy(legacy["material_event_corrections"])
+        state["tasks"].update(legacy["tasks"])
+        event["at"] = (BASE + timedelta(minutes=3)).isoformat()
+        event["details"].update(terminal_event_id=retired["id"], from_task_id=retired["task_id"], from_family=retired["family"])
+        event["id"] = engine._hash({key: value for key, value in event.items() if key != "id"})
+        binding.update(event_sha256=engine._hash(event), terminal_event_id=retired["id"], terminal_event_sha256=engine._hash(retired))
+        state["material_event_transition_bindings"] = {event["id"]: binding}
+        corrected = reconcile(state, q, BASE + timedelta(minutes=3, seconds=1))
+        self.assertIn(event, effective_material_events(corrected))
+        self.assertFalse(any(item["kind"] == "duplicate_alias_transition" for item in corrected["material_event_corrections"]))
+
+
 if __name__ == "__main__":
     unittest.main()

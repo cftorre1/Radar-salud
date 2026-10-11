@@ -598,6 +598,155 @@ def _bound_blocker_identity(event, binding):
     return _source_blocker_identity(event["details"], binding.get("product_input_fingerprint"), event.get("family"))
 
 
+def _declared_task_work(value):
+    """Known outer observation metadata is not declared executable work.
+
+    Nested instructions/constraints/payloads have no observation schema: their
+    dates, durations and assertions must remain exact, even if named clocks.
+    """
+    if isinstance(value, dict):
+        return {key: deepcopy(item) for key, item in value.items()
+                if key not in {"timestamp", "at", "updated_at", "recorded_at", "generated_at",
+                               "observed_at", "checked_at", "reviewed_at", "duration", "duration_seconds"}}
+    return deepcopy(value)
+
+
+def _proof_time(value):
+    """Persisted proof clocks must be aware ISO strings, never Unix scalars."""
+    if not isinstance(value, str):
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        return parsed.astimezone(timezone.utc) if parsed.tzinfo is not None else None
+    except (TypeError, ValueError, OverflowError):
+        return None
+
+
+def _qa_episode_identity(task):
+    """A GitHub run is an observation of work, not a new repair task."""
+    failure = task.get("failure") or task.get("last_failure") or {}
+    if (task.get("family") != "staging_qa" or not _failure_proof(failure)
+            or failure.get("kind") == "source_runtime" or not failure.get("failure_signature")
+            or task.get("id", task.get("task_id")) != "staging_qa_failed_run_" + str(failure["run_id"])
+            or not task.get("input_fingerprint")):
+        return None
+    return {"family": "staging_qa", "failure_signature": failure["failure_signature"],
+            "input_fingerprint": task["input_fingerprint"],
+            "product_input_fingerprint": task.get("product_input_fingerprint"),
+            "executor_fingerprint": task.get("executor_fingerprint"),
+            "declared_repair_inputs": deepcopy(task.get("declared_repair_inputs", {}))}
+
+
+def _failure_history_key(task, failure_signature):
+    identity = [failure_signature, task["input_fingerprint"]]
+    # An explicitly changed QA patch/acceptance input is a new bounded repair
+    # hypothesis. Empty legacy QA scope and every source-family key stay exact;
+    # introducing descriptors must not reopen unchanged source audit budgets.
+    if task.get("family") == "staging_qa":
+        declared = task.get("declared_repair_inputs") or {}
+        action = {key: declared[key] for key in ("repair_patch", "acceptance_artifact")
+                  if declared.get(key)}
+        if action:
+            identity.append(action)
+    return _hash(identity)
+
+
+def _qa_alias_retry(task, state, now):
+    identity = _qa_episode_identity(task)
+    if not identity:
+        return False
+    key = _failure_history_key(task, identity["failure_signature"])
+    history = state.get("failure_history", {}).get(key, {})
+    if (type(history.get("attempts")) is not int or history["attempts"] <= 0
+            or history.get("failure_signature") != identity["failure_signature"]
+            or history.get("input_fingerprint") != identity["input_fingerprint"]):
+        return False
+    contexts = history.get("attempt_contexts")
+    if contexts is not None:
+        if not isinstance(contexts, list):
+            return False
+        for context in contexts:
+            completed_at = _proof_time(context.get("completed_at")) if isinstance(context, dict) else None
+            task_id = context.get("task_id", "") if isinstance(context, dict) else ""
+            if (completed_at and isinstance(task_id, str)
+                    and re.fullmatch(r"staging_qa_failed_run_[0-9]+", task_id)
+                    and task_id in history.get("task_ids", [])
+                    and context.get("identity") == identity and completed_at < _time(now)):
+                return True
+        return False
+    # Pre-context history is usable only while the original BLOCKED task is
+    # still bound to its completed attempt. Input changes make it READY and
+    # change this clock; future attempts freeze identity directly above.
+    for task_id in history.get("task_ids", []):
+        previous = state.get("tasks", {}).get(task_id, {})
+        completed_at = _proof_time(history.get("last_attempt_at"))
+        if (completed_at and previous.get("status") == "BLOCKED" and _qa_episode_identity(previous) == identity
+                and previous.get("state_changed_at") == history.get("last_attempt_at")
+                and completed_at < _time(now)):
+            return True
+    return False
+
+
+def _valid_alias_transition_binding(event, terminal, binding):
+    """Verify a caller-imported frozen Git/worker proof, never today's tasks.
+
+    The trusted importer reads immutable before/claim Git snapshots and the
+    original worker result. Hash-bound snapshots are necessary for historical
+    transitions, which did not record their relevant inputs when claimed.
+    """
+    if not isinstance(binding, dict) or not isinstance(terminal, dict):
+        return False
+    prior, destination, proof = (binding.get(key) for key in ("prior", "destination", "proof"))
+    if not all(isinstance(value, dict) for value in (prior, destination, proof)):
+        return False
+    identities = [_qa_episode_identity(value) for value in (prior, destination)]
+    details = event.get("details", {})
+    if (binding.get("schema_version") != 1 or binding.get("verified") is not True
+            or event.get("kind") != "transition" or event.get("family") != "staging_qa"
+            or binding.get("event_sha256") != _hash(event)
+            or binding.get("terminal_event_id") != terminal.get("id")
+            or binding.get("terminal_event_sha256") != _hash(terminal)
+            or details.get("terminal_event_id") != terminal.get("id")
+            or details.get("from_task_id") != terminal.get("task_id")
+            or details.get("from_family") != terminal.get("family")
+            or details.get("independent") is not True
+            or terminal.get("kind") not in {"blocker", "closure"}
+            or not identities[0] or identities[0] != identities[1]
+            or destination.get("task_id") != event.get("task_id")
+            or prior.get("task_id") == destination.get("task_id")
+            or type(prior.get("attempts")) is not int or prior["attempts"] <= 0
+            or prior.get("history_key") != _failure_history_key(prior, identities[0]["failure_signature"])
+            or any(not HASH_RE.fullmatch(str(identities[0][key] or "")) for key in (
+                "input_fingerprint", "product_input_fingerprint", "executor_fingerprint"))
+            or any(not SHA_RE.fullmatch(str(value.get("failure", {}).get("head_sha", "")))
+                   for value in (prior, destination))
+            or any(not SHA_RE.fullmatch(str(proof.get(key, ""))) for key in (
+                "before_state_commit", "claim_state_commit"))
+            or any(not HASH_RE.fullmatch(str(proof.get(key, ""))) for key in (
+                "before_control_sha256", "claim_control_sha256"))):
+        return False
+    for key in ("evidence", "prior_worker_result"):
+        artifact = proof.get(key)
+        if (not isinstance(artifact, dict) or not HASH_RE.fullmatch(str(artifact.get("sha256", "")))
+                or not re.fullmatch(r"data/autopilot/evidence/[A-Za-z0-9][A-Za-z0-9_.-]*\.json",
+                                   str(artifact.get("path", "")))):
+            return False
+    completed_at, transition_at, terminal_at = (_proof_time(value) for value in (
+        prior.get("completed_at"), event.get("at"), terminal.get("at")))
+    return bool(completed_at and transition_at and terminal_at
+                and completed_at < transition_at and terminal_at < transition_at)
+
+
+def _alias_transition_binding(event, state):
+    registry = state.get("material_event_transition_bindings", {})
+    if not isinstance(registry, dict):
+        return None
+    binding = registry.get(event.get("id"))
+    terminal = next((item for item in state.get("material_events", [])
+                     if item.get("id") == event.get("details", {}).get("terminal_event_id")), None)
+    return deepcopy(binding) if _valid_alias_transition_binding(event, terminal, binding) else None
+
+
 def effective_material_events(state):
     """Return original events excluding only verifiable append-only corrections."""
     events = state.get("material_events", [])
@@ -642,6 +791,21 @@ def effective_material_events(state):
                 and identities[0].get("failure_signature") == correction.get("failure_signature")
                 and identities[0].get("source_problem_signature") == correction.get("source_problem_signature")):
             removed.add(invalid[1]["id"])
+    for correction in state.get("material_event_corrections", []):
+        if not isinstance(correction, dict) or correction.get("kind") != "duplicate_alias_transition":
+            continue
+        invalid = by_id.get(correction.get("event_id"))
+        terminal = by_id.get(correction.get("terminal_event_id"))
+        binding = correction.get("binding")
+        if (not invalid or not terminal or terminal[1].get("id") in removed
+                or invalid[0] <= terminal[0]
+                or _hash(invalid[1]) != correction.get("event_sha256")
+                or _hash(terminal[1]) != correction.get("terminal_event_sha256")
+                or correction.get("binding_sha256") != _hash(binding)
+                or not _valid_alias_transition_binding(invalid[1], terminal[1], binding)
+                or correction.get("canonical_signature") != _hash(_qa_episode_identity(binding["prior"]))):
+            continue
+        removed.add(invalid[1]["id"])
     return [event for event in events if event.get("id") not in removed]
 
 
@@ -679,10 +843,39 @@ def _correct_duplicate_staging_blockers(state, now):
         correction["id"] = _hash({key: correction[key] for key in ("kind", "event_id", "retained_event_id", "canonical_signature")})
         if not any(item.get("id") == correction["id"] for item in corrections):
             corrections.append(correction)
+    # Historical run aliases need an independently imported before/claim
+    # binding; missing, malformed or mutable-current-task proof stays visible.
+    effective = effective_material_events(state)
+    effective_ids = {event["id"] for event in effective}
+    for event in effective:
+        binding = _alias_transition_binding(event, state)
+        if not binding or binding["terminal_event_id"] not in effective_ids:
+            continue
+        correction = {"kind": "duplicate_alias_transition", "event_id": event["id"],
+            "event_sha256": _hash(event), "terminal_event_id": binding["terminal_event_id"],
+            "terminal_event_sha256": binding["terminal_event_sha256"], "at": _iso(now),
+            "canonical_signature": _hash(_qa_episode_identity(binding["prior"])),
+            "binding": binding, "binding_sha256": _hash(binding),
+            "reason": "A previously attempted unchanged QA failure under a new run ID is a pickup, not new work."}
+        correction["id"] = _hash({key: correction[key] for key in (
+            "kind", "event_id", "terminal_event_id", "canonical_signature")})
+        if not any(item.get("id") == correction["id"] for item in corrections):
+            corrections.append(correction)
     effective = effective_material_events(state)
     invalid_ids = {event.get("id") for event in state.get("material_events", [])} - {event.get("id") for event in effective}
     state["pending_transitions"] = [item for item in state.get("pending_transitions", [])
                                     if item.get("event_id") not in invalid_ids]
+    for correction in corrections:
+        if correction.get("kind") != "duplicate_alias_transition" or correction.get("event_id") not in invalid_ids:
+            continue
+        terminal_id = correction["terminal_event_id"]
+        terminal = next((event for event in effective if event["id"] == terminal_id), None)
+        consumed = any(event.get("kind") == "transition"
+                       and event.get("details", {}).get("terminal_event_id") == terminal_id for event in effective)
+        if (terminal and not consumed
+                and not any(item.get("event_id") == terminal_id for item in state["pending_transitions"])):
+            state["pending_transitions"].append({"task_id": terminal["task_id"], "family": terminal["family"],
+                                               "event_id": terminal_id, "at": terminal["at"]})
     for task in state.get("tasks", {}).values():
         invalid_times = {event["at"] for event in state.get("material_events", [])
                          if event["id"] in invalid_ids and event["task_id"] == task["id"]}
@@ -893,6 +1086,9 @@ def reconcile(state, queue, now):
                      "input_fingerprint": source.get("input_fingerprint", evidence_revision),
                      "product_input_fingerprint": source.get("product_input_fingerprint", source.get("input_fingerprint", evidence_revision)),
                      "executor_fingerprint": source.get("executor_fingerprint"),
+                     "declared_repair_inputs": _declared_task_work({key: source[key] for key in (
+                         "repair_patch", "acceptance_artifact", "instructions", "constraints",
+                         "independent_review", "sources", "source_urls") if key in source}),
                      "approved": True})
         policy_blockers = source.get("blocked_by")
         if policy_blockers:
@@ -1002,7 +1198,7 @@ def plan(state, queue, now):
         known_failure = task.get("failure") or task.get("last_failure") or {}
         failure_signature = known_failure.get("failure_signature")
         if failure_signature:
-            key = _hash([failure_signature, task["input_fingerprint"]])
+            key = _failure_history_key(task, failure_signature)
             history = result["failure_history"].get(key, {})
             if history.get("attempts", 0) >= MAX_IDENTICAL_AUDITS:
                 _block(result, task, {"fingerprint": "failure_budget_exhausted:" + key,
@@ -1053,7 +1249,7 @@ def claim(state, queue, family, owner, now):
         "autonomous": not str(owner).lower().startswith(("owner", "toba", "manual"))})
     # Credit a terminal-to-different-task transition once. Initial fan-out is
     # not a transition, and a retry of the same task cannot manufacture one.
-    for terminal in list(result["pending_transitions"]):
+    for terminal in ([] if _qa_alias_retry(task, result, now) else list(result["pending_transitions"])):
         if terminal["task_id"] == task["id"] or terminal["task_id"] in task["depends_on"]:
             continue
         _event(result, task, "transition", now, {
@@ -1263,7 +1459,7 @@ def finish(state, task_id, token, report, now):
         task["last_failure"] = deepcopy(real_failure)
         if real_failure.get("kind") == "source_runtime":
             task["last_failure_evidence"] = deepcopy(report.get("evidence") or report.get("blockers"))
-        key = _hash([real_failure["failure_signature"], task["input_fingerprint"]])
+        key = _failure_history_key(task, real_failure["failure_signature"])
         history = result.setdefault("failure_history", {}).setdefault(key, {
             "failure_signature": real_failure["failure_signature"],
             "input_fingerprint": task["input_fingerprint"], "attempts": 0,
@@ -1274,6 +1470,10 @@ def finish(state, task_id, token, report, now):
             history["last_attempt_at"] = _iso(now)
             if task_id not in history["task_ids"]:
                 history["task_ids"].append(task_id)
+            identity = _qa_episode_identity(task)
+            if identity:
+                history.setdefault("attempt_contexts", []).append({"task_id": task_id,
+                    "completed_at": _iso(now), "identity": identity})
     status = report.get("status", "SUCCESS").upper()
     blockers = _blockers(report)
     if status == "BLOCKED" and not blockers:
