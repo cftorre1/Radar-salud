@@ -257,4 +257,4 @@ def test_durable_original_api_boundaries_and_http_chain_replay_when_available():
             document = document.get("data", document)
             assert len(document["content_elements"]) == page["primary_entries"]
             assert document["count"] == page["count"]
-            assert document["next"] == page["next"]
+            assert document.get("next") == page["next"]
