@@ -36,6 +36,7 @@ RUNTIME_CONFIGS = (
     "editorial_intelligence_committee_v1.json", "normative_editorial_v2.json",
 )
 TERMINAL = {"published", "rejected", "archived"}
+IMMUTABLE_COHORT_INPUTS = ("frozen_control", "independent_primary_review", "expanded_negative_review")
 TECHNICAL_HOLDS = {"analysis_unavailable", "article_verification_failed", "budget_or_analysis_deferred",
                    "analysis_complete_primary_body_not_proven", "fast_analysis_capacity_exhausted"}
 
@@ -188,9 +189,14 @@ def read_context(root, *, selection=DEFAULT_SELECTION, report=DEFAULT_REPORT, qa
         ledgers[path.name] = json.loads(raw)
         hashes[str(path.relative_to(root))] = digest(raw)
     references = set()
-    for value in values["selection"].get("inputs", {}).values():
-        if isinstance(value, dict) and isinstance(value.get("path"), str):
-            references.add(value["path"])
+    inputs = values["selection"].get("inputs", {})
+    for key in IMMUTABLE_COHORT_INPUTS:
+        value = inputs.get(key)
+        require(isinstance(value, dict) and isinstance(value.get("path"), str), "immutable_cohort_reference_missing:" + key)
+        path = (root / value["path"]).resolve()
+        require(path.is_relative_to(root.resolve()) and digest(path.read_bytes()) == value.get("sha256"),
+                "immutable_cohort_reference_changed:" + key)
+        references.add(value["path"])
     history = values["history"].get("signals", []) if isinstance(values["history"], dict) else values["history"]
     reviewed = [row.get("editorial_review", {}) for row in history]
     reviewed.extend(item.get("raw", {}).get("metadata", {}).get("editorial_review", {}) for item in values["queue"].values())
@@ -205,6 +211,7 @@ def read_context(root, *, selection=DEFAULT_SELECTION, report=DEFAULT_REPORT, qa
     core_execution = values["report"].get("last_core_execution") or values["report"].get("execution", {})
     values.update(events=events, ledgers=ledgers, observed_files=hashes, runtime_fingerprint=fingerprint,
                   referenced_proof_files=proof_files,
+                  cohort_declared_reference_provenance=inputs,
                   recorded_core_runtime_fingerprint=core_checkout_files(root, core_execution.get("code_sha"), fingerprint["files"]))
     return values
 
@@ -316,6 +323,8 @@ def capture_baseline(context, *, now=None):
                   selection=dict(path=DEFAULT_SELECTION, sha256=context["observed_files"][DEFAULT_SELECTION], urls=urls,
                                  count=113, current_partition=partition),
                   observed_files=context["observed_files"], runtime_fingerprint=context["runtime_fingerprint"],
+                  cohort_declared_reference_provenance=context.get("cohort_declared_reference_provenance", {}),
+                  moving_reference_policy="Cohort-declared runtime/queue hashes cite historical observations; current mutable paths are not immutable review files.",
                   processing_qa=dict(verdict=qa["verdict"], discovery_qa="PASS", processing_qa="PASS",
                                      requested_phase=qa["requested_phase"],
                                      acceptance=qa["acceptance"], phase=qa["phase"],

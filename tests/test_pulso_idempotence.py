@@ -98,6 +98,17 @@ def test_real_prior_failed_paid_processing_cannot_become_baseline(tmp_path):
     assert not list(tmp_path.iterdir())
 
 
+def test_real_cohort_historical_observation_references_are_not_live_immutable_proofs():
+    context = audit.read_context(ROOT)
+    inputs = context["selection"]["inputs"]
+    assert context["cohort_declared_reference_provenance"] == inputs
+    assert audit.DEFAULT_REPORT not in context["referenced_proof_files"]
+    assert "data/state/pending_queue.json" not in context["referenced_proof_files"]
+    for key in audit.IMMUTABLE_COHORT_INPUTS:
+        reference = inputs[key]
+        assert context["referenced_proof_files"][reference["path"]] == reference["sha256"]
+
+
 def test_contract_capture_keeps_pending_final_acceptance_and_paid_observation_proofs():
     context = unit_context()
     baseline = audit.capture_baseline(context, now=NOW)
