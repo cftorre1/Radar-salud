@@ -3576,5 +3576,55 @@
     "source": "Autonomy hosted observation",
     "status": "observed_open",
     "task_id": "source_repair_public_data_lane_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "724b21108a091c3f430b8179bf12e5237fff52fc7f39a9fa34ad0c71ae05530c",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-e6b682a9040b489dbf2e140aba50f24e.json",
+        "sha256": "b17c30bb095b876d1012f753e9574e7d2845d65871767b776c624d7637466be2",
+        "staging_sha": "9762a115647994e1c322d9d81174ea74d57bdea7",
+        "state_sha": "9bd2ca76b421f95ed56becda3bb7166a02567701"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: source_repair_fiscalization_lane_2026_10_11",
+    "id": "autonomy_observed_f18bc1f909008251c6e63f219f31537366f6e742f123c766e157e1d067914a80",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_repair_fiscalization_lane_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "d6cdd23264ef86212511f9788b04e5785fbfaf62b2e276ac2084ccf491ac99c1",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-e6b682a9040b489dbf2e140aba50f24e.json",
+        "sha256": "b17c30bb095b876d1012f753e9574e7d2845d65871767b776c624d7637466be2",
+        "staging_sha": "9762a115647994e1c322d9d81174ea74d57bdea7",
+        "state_sha": "9bd2ca76b421f95ed56becda3bb7166a02567701"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: source_repair_media_lane_2026_10_11",
+    "id": "autonomy_observed_f605132e1633970790797a7527a0936ce5c9eed6ee262a03d477b881b025e851",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_repair_media_lane_2026_10_11"
   }
 ]
