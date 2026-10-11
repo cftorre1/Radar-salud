@@ -484,6 +484,125 @@ def test_browser_checks_portal_script_body_before_execution_and_redacts_cookies(
     assert bool(report["errors"]) == expected_abort
 
 
+@pytest.mark.parametrize("final_body,challenge", [(b'<html><h1>Quienes somos</h1></html>', False),
+                                                   (b'<script>_Incapsula_Resource</script>', True)])
+def test_browser_inspects_official_redirect_hop_raw_before_aborting_automatic_execution(tmp_path, final_body, challenge):
+    import asyncio
+    import hashlib
+    from types import SimpleNamespace
+    from scripts.mutual_public_paging_probe import guard_browser_route
+    original = "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/p0/OBSERVED=/"
+    final = "https://www.mutual.cl/portal/publico/trabajador/home/nuestra-mutual/conocenos/quienes-somos/"
+    class Response:
+        def __init__(self, url):
+            self.url = url
+            self.status = 302 if url == original else 200
+            self.headers = {"location": final, "set-cookie": "private"} if self.status == 302 else {"content-type": "text/html"}
+        async def body(self):
+            return b"" if self.status == 302 else final_body
+    class Route:
+        request = SimpleNamespace(url=original, method="GET", resource_type="document")
+        calls = []
+        aborted = fulfilled = False
+        async def fetch(self, **kwargs):
+            assert kwargs["max_redirects"] == 0
+            url = kwargs.get("url", original)
+            self.calls.append(url)
+            return Response(url)
+        async def abort(self): self.aborted = True
+        async def fulfill(self, **kwargs): self.fulfilled = True
+    route, report = Route(), {"responses": [], "errors": []}
+    asyncio.run(guard_browser_route(route, None, tmp_path, report))
+    assert route.calls == [original, final] and route.aborted and not route.fulfilled
+    assert report["redirect_captures"][0]["browser_rendered"] is False
+    raw = report["responses"][-1]
+    assert raw["browser_rendered"] is False and raw["sha256"] == hashlib.sha256(final_body).hexdigest()
+    assert (tmp_path/raw["body_file"]).read_bytes() == final_body
+    assert "set-cookie" not in report["responses"][0]["headers"]
+    assert any(x["reason"] == "browser_redirect_not_followed" for x in report["errors"])
+    assert bool(raw["waf"]) == challenge
+
+
+@pytest.mark.parametrize("destination", ["https://example.test/", "https://www.mutual.cl/portal/privado",
+                                          "https://www.mutual.cl/portal/publico/%2e%2e/privado/"])
+def test_redirect_outside_public_scope_is_never_requested_or_executed(tmp_path, destination):
+    import asyncio
+    from types import SimpleNamespace
+    from scripts.mutual_public_paging_probe import guard_browser_route
+    class Response:
+        url = PAGE
+        status = 302
+        headers = {"location": destination}
+        async def body(self): return b""
+    class Route:
+        request = SimpleNamespace(url=PAGE, method="GET", resource_type="document")
+        calls = 0
+        aborted = False
+        async def fetch(self, **kwargs): self.calls += 1; return Response()
+        async def abort(self): self.aborted = True
+        async def fulfill(self, **kwargs): raise AssertionError("Unverified redirect cannot be executed")
+    route, report = Route(), {"responses": [], "errors": []}
+    asyncio.run(guard_browser_route(route, None, tmp_path, report))
+    assert route.calls == 1 and route.aborted
+    assert any(x["reason"] == "browser_redirect_outside_allowed_scope" for x in report["errors"])
+
+
+def test_archive_inspection_uses_only_deduplicated_observed_hrefs_without_rendering(tmp_path):
+    import asyncio
+    import time
+    from types import SimpleNamespace
+    from scripts.mutual_public_paging_probe import _NewsIdentities, inspect_observed_archives
+    observed = PAGE + "p0/LITERAL_OBSERVED=/"
+    new_id = "wcm:path:/SA_Noticias/SA_Noticias_Detalle/new"
+    body = f'<div id="component-2" class="cards-noticias"><a class="href-button" href="?urile={new_id}">Item</a></div>'.encode()
+    class Response:
+        url = observed
+        status = 200
+        headers = {"content-type": "text/html"}
+        async def body(self): return body
+    class Requests:
+        calls = []
+        async def get(self, url, **kwargs): self.calls.append(url); return Response()
+    requests = Requests()
+    anchors = [{"absolute_href": observed, "href": "p0/LITERAL_OBSERVED=/", "branch": "component-2"}] * 2
+    report = {"responses": [], "errors": []}
+    asyncio.run(inspect_observed_archives(SimpleNamespace(request=requests), anchors, set(), None,
+                                         tmp_path, report, time.monotonic()+10))
+    inventory = report["observed_worker_archive"]
+    assert requests.calls == [observed]
+    assert inventory["observed_links"] == 2 and inventory["inspected_urls"] == 1
+    assert inventory["new_wcm_ids"] == [new_id] and not inventory["coverage_complete"]
+    assert report["responses"][0]["browser_rendered"] is False
+    assert inventory["records"][0]["publication_date_evidence"] is None
+    assert _NewsIdentities('<p>9 oct. 2026</p>').identities == set()
+
+
+@pytest.mark.parametrize("expired,expected_requests", [(True, 0), (False, 21)])
+def test_observed_archive_inspection_has_time_and_url_bounds(tmp_path, expired, expected_requests):
+    import asyncio
+    import time
+    from types import SimpleNamespace
+    from scripts.mutual_public_paging_probe import inspect_observed_archives
+    class Response:
+        status = 200
+        headers = {"content-type": "text/html"}
+        def __init__(self, url): self.url = url
+        async def body(self): return b'<h1>Institutional page without news</h1>'
+    class Requests:
+        calls = []
+        async def get(self, url, **kwargs): self.calls.append(url); return Response(url)
+    requests, report = Requests(), {"responses": [], "errors": []}
+    anchors = [{"absolute_href": PAGE + f"p0/OBSERVED_FIXTURE_{i}=/", "href": f"p0/OBSERVED_FIXTURE_{i}=/"}
+               for i in range(22)]
+    asyncio.run(inspect_observed_archives(SimpleNamespace(request=requests), anchors, set(), None,
+                                         tmp_path, report, time.monotonic()+(-1 if expired else 10)))
+    assert len(requests.calls) == expected_requests
+    assert not report["observed_worker_archive"]["all_observed_urls_attempted"]
+    assert not report["observed_worker_archive"]["coverage_complete"]
+    assert any(x["reason"] == ("diagnostic_time_limit" if expired else "observed_archive_url_limit")
+               for x in report["errors"])
+
+
 def test_failed_category_keeps_other_categories_and_exact_transport_attribution():
     next_url = urljoin(PAGE, "p0/NEXT=/")
     source, calls = scout({PAGE: listing(branch(0, card("one")), branch(1, card("two"), "p0/NEXT=/")),
