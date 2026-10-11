@@ -44,10 +44,9 @@ def test_all11_observed_scope_quotes_seven_clinical_four_generic(row, expected):
 
 
 def test_fixed_scope_does_not_clear_other_actual_contract_or_novelty_findings():
-    # The two budget stories still need literal action/future proof. The virus
+    # The other budget story still needs literal action proof. The virus
     # report explicitly labelled historical_context by its model stays rejected.
     expected = {
-        "chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps": "pulso_editorial_future_copy_not_grounded",
         "presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud": "pulso_editorial_action_not_grounded",
         "virus-respiratorios-positividad-asciende-al-579-la-mas-alta-en-los-ultimos-tres-anos": "pulso_editorial_repetition_or_context",
     }

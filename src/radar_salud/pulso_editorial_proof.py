@@ -23,6 +23,13 @@ NOVELTY = ("new_material_information", "repetition_or_context", "uncertain")
 # 'deberán pagar' can already be an actual binding decision and is not a plan.
 REGULAR_FUTURE_VERB = (
     r"\b(?!deber[aá]n?\b)[a-záéíóúñü]{3,}(?:ar|er|ir)(?:é|ás?|emos|éis|án)\b")
+# Regular conditional inflection is not a completed outcome. Exclude common
+# nouns with the same ending rather than treating 'secretaría' as a proposal.
+REGULAR_CONDITIONAL_VERB = (
+    r"\b(?!(?:secretar[ií]a|comisar[ií]a|notar[ií]a|enfermer[ií]a|"
+    r"ingenier[ií]a|miner[ií]a|loter[ií]a|porter[ií]a|guarder[ií]a|"
+    r"panader[ií]a|librer[ií]a|tesorer[ií]a|bater[ií]a|consejer[ií]a)\b)"
+    r"[a-záéíóúñü]{3,}(?:ar|er|ir)[ií]a(?:s|mos|is|n)?\b")
 FUTURE_SOURCE = re.compile(REGULAR_FUTURE_VERB + r"|\b(?:habr[aá]|permitir[aá]n?|ser[aá]n?|podr(?:[aá]n?|[ií]an?)|previst[oa]s?|"
                            r"se prev[eé]|se propone(?:n)?|incorporar[aá]n?|alcanzar[aá]n?|implementar[aá]n?|"
                            r"coordinaci(?:ones|[oó]n)\b[^.;!?]{0,160}\bpara instalar|"
@@ -36,16 +43,36 @@ ACTUAL_BUDGET_LEGISLATIVE_STEP = re.compile(
     r"\b(?:aprob[oó]|promulg[oó])\s+(?:el\s+)?proyecto de (?:ley de )?presupuestos?\b|"
     r"\bproyecto de (?:ley de )?presupuestos?\b[^.;!?]{0,80}\b"
     r"(?:fue|ha sido)\s+(?:aprobado|promulgado)\b", re.I)
-FUTURE_COPY = re.compile(r"\b(?:propuest[oa]s?|propon\w*|proyecto|plan(?:ea|eado)?|prev[eé]|"
+FUTURE_COPY = re.compile(REGULAR_CONDITIONAL_VERB + r"|\b(?:propuest[oa]s?|propon\w*|proyecto|plan(?:ea|eado)?|prev[eé]|"
                          r"previst[oa]s?|proyect\w*|habr[aá]|permitir[aáí]\w*|"
                          r"podr(?:[aá]n?|[ií]\w*)|deber[aá]n?|eventual(?:es)?|puede\w*|ser[aá]n?|futur[oa]s?|de aprobarse|"
+                         r"(?:habr|tendr|vendr|pondr|saldr|cabr|dir|har|querr|sabr|ser|ir)[ií]a(?:s|mos|is|n)?|"
                          r"incorporar[aá]n?|alcanzar[aá]n?|implementar[aá]n?|ampliar[aá]n?|"
                          r"si se (?:aprueba|implementa|concreta)|"
                          r"a[uú]n (?:est[aá] )?en fase de coordinaci[oó]n|"
                          r"todav[ií]a no constituye capacidad disponible)\b", re.I)
 ACHIEVED_COPY = re.compile(r"\b(?:ya (?:se )?(?:alcanz\w*|incorpor\w*|aument\w*|ampli\w*|"
-                           r"implement\w*|ejecut\w*|concret\w*)|"
+                           r"implement\w*|ejecut\w*|concret\w*|instal\w*|realiz\w*)|"
                            r"se ejecut[oó]|termin[oó])\b", re.I)
+# Actual v5 answers use the past tense to describe an intention or estimate as
+# observed on an earlier publication day. Only accept these narrower phrases
+# with explicit observation-date/publication context in the complete field.
+OBSERVATION_DATE_COPY = re.compile(
+    r"\b\d{4}-\d{2}-\d{2}\b|\b\d{1,2}-\d{2}-\d{4}\b|"
+    r"\b\d{1,2} de (?:enero|febrero|marzo|abril|mayo|junio|julio|agosto|"
+    r"septiembre|octubre|noviembre|diciembre) de \d{4}\b|"
+    r"\ba la fecha de publicaci[oó]n\b", re.I)
+HISTORICAL_FUTURE_COPY = re.compile(
+    r"\b(?:pod[ií]an?|deb[ií]an?|pudiera[n]?|pudiese[n]?|condicionalmente|"
+    r"condicionad[oa]s?|se esperaba|pretend[ií]an?|intenci[oó]n anunciada|"
+    r"posibilidad en evaluaci[oó]n|efecto esperado|capacidad estimada|"
+    r"estimaci[oó]n reportada|actuaci[oó]n posterior|pr[oó]ximo juicio|"
+    r"objetivo era|buscaba[n]?|programad[oa]s?|"
+    r"no acredita|no demuestra|no permite (?:afirmar|verificar))\b", re.I)
+NEGATED_ACHIEVEMENT_PREFIX = re.compile(
+    r"\bno\s*$|\bno como (?:resultados|acciones|medidas|logros)\s*$|"
+    r"\bno (?:deben?|pueden?) (?:entenderse|considerarse|presentarse|tratarse) como\s*$",
+    re.I)
 NON_HUMAN_HEALTH = re.compile(
     r"\b(?:salud|sanidad)\s+(?:animal(?:\s+o\s+vegetal)?|vegetal|veterinari[ao])\b|"
     r"\b(?:cl[ií]nic\w*|hospital\w*|medicin\w*|vacun\w*)\s+veterinari\w*|"
@@ -123,6 +150,21 @@ def literal_quote_matches(value, body, minimum=20):
     # sequence, including punctuation and any negations/numbers, in the source.
     return (len(quote) >= minimum + 2 and quote[0] == quote[-1] and quote[0] in ('"', "'")
             and quote[1:-1] in primary)
+
+
+def future_copy_qualified(value):
+    return bool(FUTURE_COPY.search(value) or (
+        OBSERVATION_DATE_COPY.search(value) and HISTORICAL_FUTURE_COPY.search(value)))
+
+
+def unqualified_achieved_copy(value):
+    """A local explicit denial is not an assertion of completed execution."""
+    for match in ACHIEVED_COPY.finditer(value):
+        # A denial in another clause cannot cancel an achievement assertion.
+        prefix = re.split(r"[.,;:!?]", value[:match.start()])[-1]
+        if not NEGATED_ACHIEVEMENT_PREFIX.search(prefix):
+            return True
+    return False
 
 
 def validate_pulso_editorial_proof(analysis, analysis_text):
@@ -211,8 +253,8 @@ def validate_pulso_editorial_proof(analysis, analysis_text):
                 or not normalized(claim["summary_quote"])
                 or normalized(claim["summary_quote"]) != normalized(summary)
                 or not quote_matches(claim["source_quote"])
-                or not FUTURE_COPY.search(claim["summary_quote"])
-                or ACHIEVED_COPY.search(claim["summary_quote"])):
+                or not future_copy_qualified(claim["summary_quote"])
+                or unqualified_achieved_copy(claim["summary_quote"])):
             return verdict("deferred", "pulso_editorial_future_copy_not_grounded")
         covered.add(field)
     if future and covered != {"what_happened", "why_it_matters"}:

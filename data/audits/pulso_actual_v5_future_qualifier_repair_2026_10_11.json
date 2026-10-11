@@ -1,0 +1,1469 @@
+{
+  "schema_version": "pulso_actual_v5_future_qualifier_repair_review_v1",
+  "scope": "ALL25 genuine actual v5 future_copy holds, complete original bodies and fields read independently. Conditional/historical nonachievement and two explicit local negations repaired; literal quotes and complete summary field binding remain strict.",
+  "producer_run_id": 38159032940,
+  "producer_commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+  "producer_code_sha": "03bf998a4bb5840c84da6473666e932fbc5cedd9",
+  "inputs": {
+    "history": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "f779385fed3eccf96d0e6d95ebfece23d1e79d83d6a0a8675b80615a63c121fa"
+    },
+    "queue": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "4cf450c4e0ab8b1238af11833dcc65b037382bae5b2ff0da93bc5539e1bbbf8f"
+    },
+    "runtime_report": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "c42683a457229a23bf35fbc1a658af5a8617411f615d4dcb0ddcaa5b03c4f43b"
+    },
+    "telemetry": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "d5cbef5b62630ab6f17305c29bfea987f788313e0876d15d6a02c115b2a30c30"
+    }
+  },
+  "fixture": {
+    "path": "tests/fixtures/pulso_actual_v5_future_holds.json.gz",
+    "decoded_sha256": "d82468964f11e913abb441ae8a327c52aca7fd46bd363275ac9a6a5637510106",
+    "gzip_sha256": "dfdd8926b8042dec652cf7f59830844c2ed8a9660ca17115f68343583b4f6a8a"
+  },
+  "independent_readonly_reader": {
+    "path": "/workspace/work/pulso-v5-all25-future-holds-independent-reader.json",
+    "sha256": "8ab2c4fab23bc63482ce0bed9fde4268e65fa88ec041226fbb55456883482c69",
+    "rows": 25,
+    "full_reading": true,
+    "decisions_retained_in_fixture": true
+  },
+  "counts": {
+    "actual_holds_reviewed": 25,
+    "temporal_guard_ready_after": 20,
+    "still_deferred": 5,
+    "independent_semantic_findings_open": 2,
+    "scores_below_unchanged72": 2,
+    "contract_invalid_quotes_or_wholefield": 4,
+    "publications_or_reused_responses": 0
+  },
+  "current_guard_version": "pulso_editorial_proof_v5",
+  "ai_calls": 0,
+  "network_calls": 0,
+  "runtime_state_changed": false,
+  "publication_approved": false,
+  "response_reuse_approved": false,
+  "global_acceptance_claimed": false,
+  "gate": 72,
+  "tests": {
+    "command": "python -m pytest -q tests/test_pulso_actual_v5_future_qualifiers.py tests/test_pulso_actual_v5_clinical_scope.py tests/test_pulso_editorial_proof.py tests/test_pulso_actual_model_grounding_repair.py tests/test_pulso_formal_budget_proposal_guard.py",
+    "result": "119 PASS"
+  },
+  "rows": [
+    {
+      "index": 1,
+      "url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+      "publication_date": "2026-09-29",
+      "title": "Empresas Banmédica ejecuta cambio en su estructura organizacional y designa nuevo gerente general de Clínica Santa María",
+      "primary_body_sha256": "328e72605ee42fc840f0aacfc636a0589da7088885780c95174a70642441ee35",
+      "model_output_sha256": "00c097422049e4ce7246d6ed2131d46774a2b927d99a1b989f43e20ad89d87ef",
+      "response_id": "resp_03408fdc62b34a33006acbc6e70d7887d18d1f29d3d2ca7e63",
+      "actual_score_unchanged": 72,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_future_copy_lexicon",
+        "explanation": "WHY explicitly date-binds the contemplated reorganisation and says “podía modificar”; its announced effect is not asserted as executed. WHAT additionally denies execution/current vigencia.",
+        "exact_summary_evidence": [
+          "el cambio podía modificar las líneas de reporte",
+          "no un cambio acreditado en cobertura, capacidad clínica o resultados asistenciales al 11 de octubre de 2026."
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": false,
+      "eligibility_limit_reason": "human_semantic_review_and_existing_editorial_gates_still_required",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 29 de septiembre de 2026, Empresas Banmédica reportó una reestructuración de su área prestadora que, desde el 1 de octubre de 2026, eliminaría la posición de gerente general de prestadores y haría que los gerentes generales de Clínica Santa María, Clínica Dávila, Omesa e Inverclinsa reportaran directamente al country manager Chile. La nota también informó que José Ignacio Valenzuela asumiría desde esa fecha la gerencia general de Clínica Santa María. Estos eran cambios anunciados y con vigencia futura a la fecha de publicación; la nota no acredita su ejecución ni su vigencia al 11 de octubre de 2026.",
+          "original_source_quote": "desde este jueves 1 de octubre “se eliminará la posición de gerente general de prestadores, pasando los gerentes generales de Clínica Santa María, Clínica Dávila, Omesa e Inverclinsa a reportarme directamente”. En este contexto, anunció que en la misma fecha llegará un nuevo gerente general a Clínica Santa María: José Ignacio Valenzuela, quien desde 2024 y hasta la actualidad se ha desempeñado como gerente general de prestadores de Empresas Banmédica.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Según la nota del 29 de septiembre de 2026, el cambio podía modificar las líneas de reporte y acercar la toma de decisiones a cada negocio dentro de la red prestadora de Empresas Banmédica, incluyendo Clínica Santa María y otras clínicas. Para estos prestadores, el efecto anunciado era una simplificación organizacional y una coordinación directa entre sus gerencias, no un cambio acreditado en cobertura, capacidad clínica o resultados asistenciales al 11 de octubre de 2026.",
+          "original_source_quote": "Cabello argumentó que “estos cambios buscan simplificar nuestra estructura, acercar la toma de decisiones a cada negocio y, al mismo tiempo, mantener una mirada coordinada y colaborativa entre nuestros distintos prestadores”.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 2,
+      "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+      "publication_date": "2026-08-20",
+      "title": "Isapres han pagado en un año y medio el 21% de la deuda que tenían con sus afiliados tras fallo de la Suprema",
+      "primary_body_sha256": "2eb2cfabe7030bef50873ba9722bee3df24acec327e63f85d05655a7b3ccee1e",
+      "model_output_sha256": "8b5287375b69875e8f083681be3a32d2001f721774ac6a2c6e9d5f17efa2a361",
+      "response_id": "resp_0039a4baa29e7964006acbca04c7b087d1888bb0ca29fb87f9",
+      "actual_score_unchanged": 92,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_future_copy_lexicon",
+        "explanation": "WHAT “devoluciones deberían completarse” is an obligation not an achieved repayment. Real June paid amounts/source dates and December2037 horizon retained. Source arithmetic discrepancy is explicitly reported and not repaired.",
+        "exact_summary_evidence": [
+          "las devoluciones deberían completarse hasta diciembre de 2037",
+          "Existe una discrepancia interna entre el total, el monto abonado y el saldo restante informado por la nota; no se corrige aquí."
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": false,
+      "eligibility_limit_reason": "human_semantic_review_and_existing_editorial_gates_still_required",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 20 de agosto de 2026, las isapres abiertas habían abonado $247.170 millones (US$268 millones) a las cuentas individuales de sus afiliados a junio, equivalente al 21% de la deuda total de $1.180.028 millones. La nota reportó que quedaban $932.854 millones por pagar y que las devoluciones deberían completarse hasta diciembre de 2037, conforme a los plazos de la ley. Existe una discrepancia interna entre el total, el monto abonado y el saldo restante informado por la nota; no se corrige aquí.",
+          "original_source_quote": "devolución que deberán completar de aquí a diciembre de 2037, cuando vence el plazo de restitución.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Según la nota del 20 de agosto de 2026, el proceso de restitución afectaba financieramente a todas las isapres abiertas y estaba bajo supervisión de la Superintendencia de Salud. Al momento descrito por la publicación, la ley impedía retirar utilidades o distribuir dividendos mientras la deuda no estuviera íntegramente pagada, por lo que el calendario de devoluciones condicionaba el uso de resultados y la gestión de caja de las aseguradoras. La nota también reportó que algunas isapres estaban adelantando pagos, pero completar la restitución seguía siendo una obligación futura con plazo máximo hasta diciembre de 2037.",
+          "original_source_quote": "mientras la deuda no esté íntegramente pagada, la ley impide a las isapres retirar utilidades o distribuir dividendos",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 3,
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "publication_date": "2026-07-14",
+      "title": "Isapres logran detener la fuga de cotizantes tras 53 meses consecutivos a la baja y se asoma el punto de inflexión",
+      "primary_body_sha256": "35ce3696d5b7b638452ffe3aa8783bfaef251cb7809efae3962f51aac3f2dffb",
+      "model_output_sha256": "026edb37e55619fa02df85d19492c14a21b488ae080cb78d626d95cc97cb9567",
+      "response_id": "resp_0c1636734168e6bf006acbcc31609887d18f3a109b8412460a",
+      "actual_score_unchanged": 84,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "independent_assessment": {
+        "classification": "hold_correct_malformed_literal_source_quote",
+        "explanation": "WHY source_quote words are in the original but publisher closing quotation mark was omitted before the final period; not an exact contiguous literal quote. WHY also lacks FUTURE_COPY despite “debía observarse posteriormente” and “podía influir”. Preserve hold until exact source grounding/assessment, not blanket lexical autoapproval.",
+        "exact_summary_evidence": [
+          "La confirmación debía observarse posteriormente en los cotizantes vigentes",
+          "el dato podía influir en la competencia por afiliados"
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": true,
+      "eligibility_limit_reason": "literal_or_wholefield_proof_still_invalid",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 14 de julio de 2026, en mayo las isapres registraron 17.539 contratos suscritos por cotizantes frente a 17.487 desahucios, equivalentes a 52 suscripciones netas de desafiliaciones y a la primera variación positiva en cuatro años y medio. Al 14 de julio de 2026, el efecto sobre la cartera efectiva todavía se proyectaba para dentro de un par de meses: la nota señaló que la cobertura de un nuevo plan comienza a regir al mes subsiguiente. En mayo, los cotizantes totalizaron 1.513.429, una caída mensual de 0,06% y anual de 1,7%, según las cifras atribuidas a la Superintendencia de Salud.",
+          "original_source_quote": "el efecto registrado en mayo anticipa que la detención de la fuga de cotizantes en la cartera de las isapres debería reflejarse recién en las cifras efectivas de cotizantes totales del sistema dentro de un par de meses.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Al 14 de julio de 2026, según la nota, las isapres enfrentaban una señal de estabilización en nuevas suscripciones, pero mantenían 462 mil cotizantes menos que al inicio de las bajas en octubre de 2019. La confirmación debía observarse posteriormente en los cotizantes vigentes, por lo que el dato podía influir en la competencia por afiliados y en las decisiones de contratación de vendedores, nuevos planes y beneficios, sin acreditar todavía una recuperación sostenida ni un cambio operativo vigente al 11 de octubre de 2026.",
+          "original_source_quote": "Para hablar de cambio de tendencia, el dato tendría que repetirse varios meses y reflejarse luego en cotizantes vigentes.",
+          "whole_field_exact": true,
+          "source_quote_literal": false,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 4,
+      "url": "https://www.latercera.com/nacional/noticia/minsal-prohibe-temporalmente-funcionamiento-de-planta-procesadora-de-lacteos-matthei-tras-reiteradas-muestras-positivas-con-listeria/",
+      "publication_date": "2026-10-02",
+      "title": "Minsal prohíbe temporalmente funcionamiento de planta procesadora de Lácteos Matthei tras reiteradas muestras positivas con listeria",
+      "primary_body_sha256": "efb7ec47cefe1d5c0622915a54436d928f4187bdc6c5e1f1ef762a031b8c2273",
+      "model_output_sha256": "58c088039fc5a31ba48a5addeba8f7cc2c1e6f0095541c54f2f4a30c9edf912c",
+      "response_id": "resp_0cbea8e673068560006acbc67811e487d197f9da213637a810",
+      "actual_score_unchanged": 84,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_future_copy_lexicon",
+        "explanation": "Whole WHAT and WHY distinguish implemented prohibition from conditional future actions. “quedaba condicionada” and “debía ... antes de levantar” adequately prevent claiming correction or lifting as complete. Dates retained.",
+        "exact_summary_evidence": [
+          "la prohibición quedaba condicionada a la implementación de acciones correctivas",
+          "la empresa debía determinar el origen y persistencia de la contaminación y ejecutar medidas correctivas antes de levantar la prohibición."
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": false,
+      "eligibility_limit_reason": "human_semantic_review_and_existing_editorial_gates_still_required",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 2026-10-02, la Seremi de Salud del Biobío determinó prohibir temporalmente el funcionamiento de la planta procesadora de Lácteos Matthei, tras cuatro muestreos realizados en septiembre con resultados positivos a Listeria monocytogenes en lotes específicos. Al 2026-10-02, la medida permitía retener los productos para evitar su comercialización. La nota también reportó que la prohibición quedaba condicionada a la implementación de acciones correctivas y que se solicitaron a la empresa un informe técnico, limpieza intensiva, vigilancia microbiológica, nuevos muestreos y la reevaluación de sus Buenas Prácticas de Manufactura.",
+          "original_source_quote": "hasta lograr implementación de acciones correctivas por parte de la empresa",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Según la nota del 2026-10-02, la Seremi de Salud del Biobío aplicó una medida sanitaria que afectaba la elaboración de la totalidad de los productos de la planta y buscaba impedir su comercialización ante la detección de Listeria monocytogenes. Al 2026-10-02, la autoridad vinculó la decisión con el riesgo de listeriosis grave en embarazadas, recién nacidos, adultos mayores y personas inmunocomprometidas. La nota reportó además que la empresa debía determinar el origen y persistencia de la contaminación y ejecutar medidas correctivas antes de levantar la prohibición.",
+          "original_source_quote": "Además, se solicita a la empresa un informe técnico integral que permita determinar el origen de la contaminación, causas que favorecieron su persistencia y medidas para evitar su ocurrencia.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 5,
+      "url": "https://www.latercera.com/pulso/noticia/gobierno-anuncia-plan-laboral-que-movilizara-recursos-por-unos-us1350-millones-que-apunta-a-crear-mas-de-100-mil-empleos/",
+      "publication_date": "2026-09-28",
+      "title": "Gobierno anuncia plan laboral que movilizará recursos por unos US$1.350 millones que apunta a crear más de 100 mil empleos",
+      "primary_body_sha256": "96a37ca4ba3f88f5d4131d6739e46e3ea602d460bba6eb77b9e9a8de950e4149",
+      "model_output_sha256": "ac823a7107d7945f9f85c93823000efc579be37793aa3182bdd119038d71328c",
+      "response_id": "resp_01d436c358f53739006acbc701386087d19fa5b2e1ff2bdf52",
+      "actual_score_unchanged": 82,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_achieved_copy_negation",
+        "explanation": "Only fatal temporal match is “ya ejecutados” inside explicit denial “no como resultados ya ejecutados”. Whole fields retain announcement/future2026–27 and no execution; real $130mil million sanitary component retained.",
+        "exact_summary_evidence": [
+          "Las medidas de empleo, inversión y pagos fueron anunciadas como acciones para 2026 y 2027, no como resultados ya ejecutados."
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": false,
+      "eligibility_limit_reason": "human_semantic_review_and_existing_editorial_gates_still_required",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 28 de septiembre de 2026, el Gobierno anunció el plan “Chile despega con más pega”, que movilizará $1,3 billones, unos US$1.350 millones, y buscará generar más de 100 mil empleos. Al 28 de septiembre, el anuncio contemplaba adelantar pagos al Minsal por $130 mil millones para regularizar obligaciones con proveedores de Salud; también incluía subsidios de contratación, inversión pública y capitalizaciones de Fogape. Las medidas de empleo, inversión y pagos fueron anunciadas como acciones para 2026 y 2027, no como resultados ya ejecutados.",
+          "original_source_quote": "La propuesta, según se detalló movilizará $1,3 billones, unos US$1.350 millones y buscará generar más de 100 mil empleos.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": true,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Según la nota del 28 de septiembre de 2026, el componente sanitario involucraba al Minsal y a sus proveedores: el adelanto de pagos buscaba regularizar obligaciones y liberar capital de trabajo. Para el sector salud, la medida anunciada podía afectar el financiamiento de proveedores, pero la nota no acredita que los pagos ya se hubieran ejecutado al 11 de octubre de 2026. El resto del plan proyectaba movilizar recursos públicos, ampliar subsidios de contratación y facilitar crédito a empresas.",
+          "original_source_quote": "se liberará capital de trabajo mediante pagos a proveedores del sistema de salud adelantando pagos al Minsal por $130 mil millones para la regularización de obligaciones a proveedores de Salud",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 6,
+      "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+      "publication_date": "2026-09-19",
+      "title": "Julio Montt, subsecretario de Redes Asistenciales: “Ningún hospital va a tener problemas financieros”",
+      "primary_body_sha256": "4af8fea9489b451652e9469649bc3d3871f9241dc5cb86bb80f15ad33321d936",
+      "model_output_sha256": "522164acf9d33d63fea43cbab4ef0e3e63620820a6412f14aa6d674e9720eaf5",
+      "response_id": "resp_000febf19fde3ec1006acbc76d0b1c87d19ae90fab9a548297",
+      "actual_score_unchanged": 89,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_with_independent_numeric_finding",
+        "explanation": "WHAT uses “planteó converger ... cuatro años” and “si ... no pudiera” so prospective plans are explicit despite no FUTURE_COPY match. However WHAT “97% ... equivalente al2,83%” strengthens an ambiguous original relative clause into an unsupported numeric equivalence. Must correct/omit/attribute ambiguity before any publication; lexical repair is not approval.",
+        "exact_summary_evidence": [
+          "la autoridad planteó converger entre presupuesto y gasto en un plazo de cuatro años",
+          "recurrir al sector privado si la red pública no pudiera resolver la demanda",
+          "un 97% de cumplimiento de 2.433.000 garantías GES, equivalente al 2,83%"
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": true,
+      "eligibility_limit_reason": "independent_numeric_or_legislative_scope_finding",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 19 de septiembre de 2026, el subsecretario de Redes Asistenciales reportó que en el segundo trimestre la red alcanzó un 97% de cumplimiento de 2.433.000 garantías GES, equivalente al 2,83%, y una disminución de 0,21 puntos porcentuales frente al mismo período de 2025. También informó una brecha de $2,5 billones entre presupuesto y gasto, la aplicación de ajustes de 2,5% en Redes y 0,5% en Atención Primaria, y medidas de eficiencia para financiar las redes sin deuda de arrastre. La nota reportó además una disminución interanual de 10% en la mediana de espera de consultas de especialidad y de 6,73% en cirugía, aunque consignó que la mediana quirúrgica pasó de 259 a 277 días, una discrepancia que no permite derivar un saldo adicional. A la fecha de publicación, la autoridad planteó converger entre presupuesto y gasto en un plazo de cuatro años, o antes, y recurrir al sector privado si la red pública no pudiera resolver la demanda; también priorizó aumentar el per cápita de Atención Primaria.",
+          "original_source_quote": "lo que queremos es de aquí a cuatro años -ojalá antes- tener una cifra en que converja presupuesto con gasto.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Según la nota del 19 de septiembre de 2026, el Minsal y los servicios de salud enfrentaban una brecha presupuestaria reportada de $2,5 billones y buscaban una convergencia financiera de mediano y largo plazo, mientras Fonasa y la red asistencial atendían una demanda creciente de consultas, cirugías y garantías GES. Al momento de esa publicación, la autoridad sostuvo que los hospitales no tendrían problemas financieros y que los pacientes oncológicos con riesgo de retraso serían derivados al sistema privado mediante Fonasa. La señal merece seguimiento porque vincula el financiamiento de hospitales, el per cápita de APS, la gestión de listas de espera y una eventual compra de prestaciones privadas, pero esas medidas futuras o compromisos no acreditan por sí mismos una implementación vigente al 11 de octubre de 2026.",
+          "original_source_quote": "aquellos pacientes que tienen riesgo de retraso se están derivando al sistema privado a través de Fonasa.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 7,
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "publication_date": "2026-09-01",
+      "title": "Minsal extiende hasta el 30 de septiembre el uso obligatorio de mascarillas en urgencias por alta circulación de virus respiratorios",
+      "primary_body_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+      "model_output_sha256": "c473ca433b221503de847af5a28862ba9d8e5c2428b772de44b260ca95c9439a",
+      "response_id": "resp_0cbfc002cc02e109006acbc91aa9a887d18341edff92b5d480",
+      "actual_score_unchanged": 82,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "independent_assessment": {
+        "classification": "hold_correct_malformed_literal_source_quote",
+        "explanation": "WHY source_quote changes original closing quote/comma into period. Literal contract properly holds. Dates and expiredSep30 horizon are clear; WHO/WHY lack FUTURE_COPY though announced extension and temporal limitation are explicit.",
+        "exact_summary_evidence": [
+          "su vigencia posterior a esa fecha no queda acreditada por este artículo."
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": true,
+      "eligibility_limit_reason": "literal_or_wholefield_proof_still_invalid",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 1 de septiembre de 2026, el Ministerio de Salud reportó que el uso obligatorio de mascarilla estaba vigente desde el 1 de abril y anunció extenderlo hasta el 30 de septiembre en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de las redes pública y privada. La nota atribuyó al reporte de la Campaña de Invierno de la semana epidemiológica 33 (16 al 22 de agosto) una positividad de 56,1%; indicó que el rinovirus concentraba 32,3% de las detecciones, el VRS 26,6% y la Influenza B 14,3%.",
+          "original_source_quote": "Hemos decidido extender hasta el 30 de septiembre el uso obligatorio de mascarillas en los servicios de urgencia, unidades de diálisis y oncohematología, tanto de la red pública como privada.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": false,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Según la nota del 1 de septiembre de 2026, la extensión anunciada por el Ministerio de Salud implicaba que los servicios de urgencia, diálisis y oncohematología de las redes pública y privada debían prepararse para mantener el uso obligatorio de mascarilla hasta el 30 de septiembre, con el objetivo declarado de proteger a pacientes, personas en tratamiento médico, grupos vulnerables y equipos de salud ante la circulación viral reportada. La medida era temporal y su vigencia posterior a esa fecha no queda acreditada por este artículo.",
+          "original_source_quote": "En estos espacios necesitamos reducir las posibilidades de contagio y proteger tanto a los pacientes como a los equipos de salud.",
+          "whole_field_exact": true,
+          "source_quote_literal": false,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 8,
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "publication_date": "2026-08-25",
+      "title": "Minsal presenta programa de detección precoz de cáncer en salud primaria para las 28 comunas con APS Universal",
+      "primary_body_sha256": "5b4257997dd4ba1264324b70ee8e699f76ac249b0f0feb94411e317f078f3742",
+      "model_output_sha256": "7d2ff3c01b670ebd72c231574946fdafc98f31d74cd7d860fe51df9d521bb306",
+      "response_id": "resp_0b1320b6b3e17d6a006acbc9bdd3b887d1a8956b8f92d951f6",
+      "actual_score_unchanged": 91,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_future_copy_lexicon",
+        "explanation": "Both full fields explicitly say implementation/expansion was planned: “se implementaría”, “se esperaba”, “ocurriría”, “anuncios y proyecciones ... no ... verificación”. No deployment achievement asserted for all28/80 municipalities.",
+        "exact_summary_evidence": [
+          "la estrategia se implementaría en esas 28 comunas",
+          "para 2027 se esperaba ampliar el alcance a 80 municipios",
+          "esos eran anuncios y proyecciones a la fecha de publicación"
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": false,
+      "eligibility_limit_reason": "human_semantic_review_and_existing_editorial_gates_still_required",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 25 de agosto de 2026, la ministra de Salud, May Chomali, dio inicio a la Estrategia Universal de Detección Precoz de Cáncer en la APS, con test para cáncer gástrico y colorrectal en las 28 comunas que contaban con APS Universal. Para el segundo semestre de 2026, la nota reportó que la estrategia se implementaría en esas 28 comunas; también informó una asignación cercana a $600 millones a los servicios de salud y que para 2027 se esperaba incorporar 80 municipios más.",
+          "original_source_quote": "durante el segundo semestre de este año la estrategia se implementará en las 28 comunas del país que forman parte del programa de Universalización de la Atención Primaria de Salud",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Según la nota del 25 de agosto de 2026, el Minsal y los servicios de salud buscaban reforzar la capacidad resolutiva de la APS para pesquisar cáncer gástrico y colorrectal, priorizar colonoscopías según resultados del test FIT y activar la garantía GES correspondiente en casos positivos. La nota reportó que la implementación en las 28 comunas ocurriría durante el segundo semestre de 2026 y que para 2027 se esperaba ampliar el alcance a 80 municipios; esos eran anuncios y proyecciones a la fecha de publicación, no una verificación de su estado al 11 de octubre de 2026.",
+          "original_source_quote": "Y para el 2027 se espera incorporar 80 municipios más, indicaron las autoridades.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 9,
+      "url": "https://www.latercera.com/nacional/noticia/ante-baja-vacunacion-en-grupos-de-riesgo-minsal-advierte-aumento-de-consultas-en-urgencias-por-virus-respiratorios/",
+      "publication_date": "2026-08-24",
+      "title": "Ante baja vacunación en grupos de riesgo: Minsal advierte aumento de consultas en urgencias por virus respiratorios",
+      "primary_body_sha256": "d73454ef54ffd65bffab7177c7b942b9e7be139f3f6175178c5f6db50a9df5f0",
+      "model_output_sha256": "9984152db8bcc76783dcd02cfee789dc4a38530c6b1a6fda10f498b72e2ef261",
+      "response_id": "resp_0424465ec1ef12dd006acbc9d8224c87d19bf5301733d090d5",
+      "actual_score_unchanged": 84,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_future_copy_lexicon",
+        "explanation": "Both full fields attribute originalAug24 observed epidemic pressure; rainfall is explicitly conditional and uses “podía/podían”. WHY explicitly denies verified continuationOct11. No current circulation unsupported claim.",
+        "exact_summary_evidence": [
+          "advirtió condicionalmente que, si llegaban las lluvias esa semana, podía aumentar",
+          "las lluvias podían elevar aún más la circulación viral",
+          "no acredita que continuara vigente al 11-10-2026."
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": false,
+      "eligibility_limit_reason": "human_semantic_review_and_existing_editorial_gates_still_required",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 24-08-2026, el último reporte semanal de la Campaña de Invierno 2026 del Minsal registró una positividad de 54,3%, la más alta de lo que iba del año; además, informó que 7 de cada 10 personas fallecidas por influenza no estaban vacunadas y que el 53% de quienes tuvieron casos graves y fueron hospitalizados tampoco lo estaban. Al 24-08-2026, la subsecretaria de Salud Pública reportó un aumento de las consultas de urgencias por virus respiratorios, concentrado en niños y adultos mayores. También advirtió condicionalmente que, si llegaban las lluvias esa semana, podía aumentar aún más la circulación de virus respiratorios.",
+          "original_source_quote": "Si vienen las lluvias esta semana y sabemos que después de las lluvias también aumenta aún más la circulación de virus respiratorios",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Según la nota del 24-08-2026, el Minsal enfrentaba una presión observada sobre las urgencias y hospitalizaciones respiratorias, especialmente en niños y adultos mayores, grupos cuya cobertura de vacunación se situaba entre 62% y 64% en ese momento. La autoridad señaló que la vacunación contra la influenza era gratuita para todas las personas y llamó a reforzarla; la advertencia para esa fecha era que las lluvias podían elevar aún más la circulación viral y, con ello, la presión asistencial. Este estado corresponde a lo reportado el 24-08-2026 y no acredita que continuara vigente al 11-10-2026.",
+          "original_source_quote": "después de las lluvias también aumenta aún más la circulación de virus respiratorios",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 10,
+      "url": "https://www.latercera.com/nacional/noticia/inauguran-el-primer-centro-de-salud-de-alta-resolutividad-sar-para-vina-del-mar-recinto-podra-realizar-65-mil-atenciones-anuales/",
+      "publication_date": "2026-08-19",
+      "title": "Inauguran el primer Centro de Salud de Alta Resolutividad (SAR) para Viña del Mar: recinto podrá realizar 65 mil atenciones anuales",
+      "primary_body_sha256": "b19cf891c76d50a414054e4819e3dc943134c6d5329b5cc1430e7bd4813f3b6b",
+      "model_output_sha256": "29285c6564db4c5c7b38aa5bed77ff3d41e8929180dbed886877e2875ce1f82a",
+      "response_id": "resp_07384e2f0b021ebc006acbca1e78cc87d1884156675106a1f1",
+      "actual_score_unchanged": 76,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_future_copy_lexicon",
+        "explanation": "WHAT correctly says inauguration happened; capacity/65k are estimated. WHY “efecto esperado”/“capacidad estimada ... no un volumen ... ya verificado” distinguishes capacity projection from throughput achievement. No FUTURE_COPY marker in WHY.",
+        "exact_summary_evidence": [
+          "El efecto esperado era ampliar la resolutividad local",
+          "esa capacidad era una estimación reportada y no un volumen de atenciones ya verificado."
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": false,
+      "eligibility_limit_reason": "human_semantic_review_and_existing_editorial_gates_still_required",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 19 de agosto de 2026, la alcaldesa de Viña del Mar, Macarena Ripamonti, junto a la ministra de Salud, May Chomali, inauguraron el SAR Miraflores, financiado por el Ministerio de Salud, ejecutado por el Servicio de Salud Viña del Mar y entregado a la municipalidad para su operación y administración en la atención primaria comunal. La nota reportó una inversión de más de 5 mil millones de pesos y señaló que el recinto permitiría beneficiar a más de 100 mil habitantes, con una capacidad estimada de 65 mil atenciones anuales.",
+          "original_source_quote": "El SAR Miraflores permitirá beneficiar a más de 100 mil habitantes de Viña del Mar y se estima que tendrá una capacidad para realizar 65 mil atenciones al año.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Al 19 de agosto de 2026, según la nota, la municipalidad de Viña del Mar recibió el SAR para operarlo dentro de la red de atención primaria comunal. El efecto esperado era ampliar la resolutividad local y evitar traslados a hospitales, con una capacidad estimada de 65 mil atenciones anuales para más de 100 mil habitantes; esa capacidad era una estimación reportada y no un volumen de atenciones ya verificado.",
+          "original_source_quote": "El SAR Miraflores permitirá beneficiar a más de 100 mil habitantes de Viña del Mar y se estima que tendrá una capacidad para realizar 65 mil atenciones al año.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 11,
+      "url": "https://www.latercera.com/nacional/noticia/sernac-fiscaliza-centros-de-estetica-en-14-regiones-y-pone-foco-en-seguridad-publicidad-y-precios/",
+      "publication_date": "2026-08-08",
+      "title": "Sernac fiscaliza centros de estética en 14 regiones y pone foco en seguridad, publicidad y precios",
+      "primary_body_sha256": "743e751bd4b4b2b9f60f440cc87e903cfe529bb22352548264183780f9827758",
+      "model_output_sha256": "7f23d18ba31b4a9e5ef80413d945ecb6ac0edef420df50e303a62202078bccd5",
+      "response_id": "resp_05d90b3f95397e1b006acbca8b08dc87d198673b4b41600961",
+      "actual_score_unchanged": 82,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_achieved_copy_negation_and_lexicon",
+        "explanation": "ACHIEVED_COPY “ya ejecutadas” occurs under explicit negation “acciones futuras no deben entenderse como ya ejecutadas”. WHY is date-bound control intent and explicitly denies current controls/effects; not future keyword but correct temporal account.",
+        "exact_summary_evidence": [
+          "esas acciones futuras no deben entenderse como ya ejecutadas.",
+          "La nota no permite afirmar que estos efectos o controles se mantengan vigentes al 2026-10-11."
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": false,
+      "eligibility_limit_reason": "human_semantic_review_and_existing_editorial_gates_still_required",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 2026-08-08, el Sernac estaba realizando una fiscalización presencial a centros de estética en 14 regiones, ante el aumento reportado de la demanda de procedimientos estéticos faciales y corporales. La revisión abarcaba seguridad, información y consentimiento, permisos sanitarios, precios, publicidad, promociones, responsables técnicos y productos con registro sanitario. La nota también reportó que el organismo revisaría determinados aspectos durante el despliegue, por lo que esas acciones futuras no deben entenderse como ya ejecutadas. No hay evidencia en el contenido sobre el estado de la fiscalización al 2026-10-11.",
+          "original_source_quote": "Uno de los puntos que serán revisados corresponde a la información y consentimiento.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": true,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Al 2026-08-08, según la nota, la fiscalización del Sernac ponía bajo escrutinio a los centros de estética que ofrecen procedimientos con riesgos para la salud humana, incluidos bótox y ácido hialurónico. Para esos prestadores, el foco estaba en acreditar autorización sanitaria, informar riesgos y obtener consentimiento escrito en procedimientos invasivos; para los consumidores, la medida buscaba reducir exposición a servicios inseguros, publicidad engañosa y productos sin origen o registro sanitario. La nota no permite afirmar que estos efectos o controles se mantengan vigentes al 2026-10-11.",
+          "original_source_quote": "En procedimientos invasivos, como bótox o ácido hialurónico, o aquellos que impliquen un riesgo relevante, el consentimiento informado debe quedar por escrito.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 12,
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "publication_date": "2026-07-29",
+      "title": "El mapa del hanta: residentes rurales de Los Lagos, Ñuble y Biobío enfrentan la mayor amenaza",
+      "primary_body_sha256": "64b7f6c81c0d554942ddd374af52be1ff926acc8ca197284ab52005d9a0bde7e",
+      "model_output_sha256": "72c2bd33f6bf4612322276db463dbf476cb088d0f7281ef01694442f27e5b8d6",
+      "response_id": "resp_0c3d714556da3223006acbcb55c14487d1a11353838a4387a6",
+      "actual_score_unchanged": 95,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "independent_assessment": {
+        "classification": "hold_correct_whole_summary_binding_mismatch",
+        "explanation": "WHAT future_claims summary_quote is a rewritten shortened paragraph (“había decretado ... condición futura”) instead of actual full WHAT. Exact binding guard correctly holds; do not replace prior output. Full WHAT is semantically datebound, but independent WHY broad “alcance nacional” must always be read with explicit Atacama–Magallanes range.",
+        "exact_summary_evidence": [
+          "ese era el horizonte anunciado entonces y no una verificación de vigencia al 11 de octubre de 2026."
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": true,
+      "eligibility_limit_reason": "literal_or_wholefield_proof_still_invalid",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 29 de julio de 2026, el Ministerio de Salud había decretado la alerta por hantavirus; la resolución anunciaba que regiría desde Atacama hasta Magallanes y estaría vigente hasta el 31 de julio de 2027, condición futura al momento de publicación y no verificada aquí al 11 de octubre de 2026.",
+          "original_source_quote": "La resolución regirá desde la Región de Atacama hasta la de Magallanes y estará vigente hasta el 31 de julio de 2027.",
+          "whole_field_exact": false,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Según la nota del 29 de julio de 2026, la alerta del Ministerio de Salud proyectaba una respuesta sanitaria de alcance nacional frente a un aumento de casos de hantavirus y una letalidad reportada de 39%, con especial exposición entre residentes rurales, trabajadores agrícolas y forestales y personas que realizan actividades al aire libre. Para la vigilancia epidemiológica, los prestadores y la prevención en esas poblaciones, el dato relevante al ingresar al radar era que los 46 casos de 2026 ya superaban los 44 registrados durante todo 2025; la continuidad de la alerta anunciada para 2027 no queda verificada a la fecha de revisión.",
+          "original_source_quote": "La resolución regirá desde la Región de Atacama hasta la de Magallanes y estará vigente hasta el 31 de julio de 2027.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 13,
+      "url": "https://www.latercera.com/pulso/noticia/grupo-estatal-chino-es-el-gran-concesionario-de-los-hospitales-publicos-chilenos/",
+      "publication_date": "2026-07-28",
+      "title": "Grupo estatal chino es el gran concesionario de los hospitales públicos chilenos",
+      "primary_body_sha256": "2d0adf9fea9d9eeafb63717224a720710da2517733e3965cdddfab97fa481620",
+      "model_output_sha256": "41925356c99bb2e5924427d9b48d506db47e31473b7dd8a6218ee2912e00bf07",
+      "response_id": "resp_05052c2f0d19eb14006acbcb6de50887d188cd0d25d933de7b",
+      "actual_score_unchanged": 92,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_future_copy_lexicon",
+        "explanation": "WHAT “pretendía adquirir” states prospective transaction; WHY “eventual adquisición” and “no ... aprobación ni ... cierre” prevents completedM&A claims. Numeric denominators correctly bound to network considered, not all national health facilities.",
+        "exact_summary_evidence": [
+          "CRBC Spain Investment Company pretendía adquirir al grupo Puentes.",
+          "la nota no reportó una aprobación ni un cierre de la operación."
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": false,
+      "eligibility_limit_reason": "human_semantic_review_and_existing_editorial_gates_still_required",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 2026-07-28, la Fiscalía Nacional Económica (FNE) elaboró un informe sobre las participaciones en el mercado de concesiones de obras públicas hospitalarias, dentro de una investigación sobre una operación de concentración informada en España. Al 2026-07-28, según datos del MOP citados por la nota, el grupo CRCC se había adjudicado concesiones correspondientes a hospitales y redes hospitalarias que representaban el 19,8% de la inversión, el 17,3% de las camas y el 17% de los subsidios de la red hospitalaria pública considerada. La nota también reportó que, a esa fecha, CRBC Spain Investment Company pretendía adquirir al grupo Puentes.",
+          "original_source_quote": "CRBC Spain Investment Company pretende adquirir a la hispana Puentes y Calzadas Grupo de Empresas (grupo Puentes)",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Al 2026-07-28, según la nota, la participación atribuida al grupo CRCC lo posicionaba como principal actor de las concesiones de obras públicas hospitalarias analizadas por la FNE, con impacto en inversión, camas y subsidios hospitalarios. La FNE investigaba entonces los efectos en libre competencia de la operación informada en España; la eventual adquisición de Puentes podía modificar la composición empresarial considerada en ese análisis, pero la nota no reportó una aprobación ni un cierre de la operación.",
+          "original_source_quote": "enmarcado en una investigación sobre efectos en la libre competencia de la operación de concentración informada en España",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 14,
+      "url": "https://www.latercera.com/nacional/noticia/anuncio-para-hospitales-y-un-plan-maestro-de-listas-de-espera-los-pasos-del-minsal-tras-el-fin-de-la-alerta-oncologica/",
+      "publication_date": "2026-07-15",
+      "title": "Anuncio para hospitales y un plan maestro de listas de espera: los pasos del Minsal tras el fin de la alerta oncológica",
+      "primary_body_sha256": "37a35426bc426f8b62947312cacfec5805bbb3d61f2806adcc163c132d62e33c",
+      "model_output_sha256": "994816d37658c66338618307046daee2b648bd5e363a75991bbad562ed561b93",
+      "response_id": "resp_03387739aec0243c006acbcbf8d11c87d1aaf94fb230804f5d",
+      "actual_score_unchanged": 88,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_future_copy_lexicon",
+        "explanation": "WHAT meets future marker; WHY explicitly says Minsal “planteó”, “intención anunciada, no un resultado verificado”, “en análisis”, “posibles efectos”. Missing FUTURE_COPY keyword despite correct condition/intention.",
+        "exact_summary_evidence": [
+          "seguía siendo una intención anunciada, no un resultado verificado.",
+          "una estrategia estructural para gestionar listas de espera, con posibles efectos"
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": false,
+      "eligibility_limit_reason": "human_semantic_review_and_existing_editorial_gates_still_required",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 15 de julio de 2026, el Ministerio de Salud reportó la atención de 28.681 prestaciones oncológicas que estaban en lista de espera y dio por terminada la alerta sanitaria. Para el período posterior descrito por la nota, el Minsal anticipó un anuncio sobre gestión hospitalaria durante agosto, una reunión del Consejo Nacional de Salud el 30 de julio y una propuesta para acelerar la derivación automática a un segundo prestador cuando los hospitales no puedan cumplir las garantías GES. Estas medidas futuras estaban anunciadas o en análisis a la fecha de publicación, no acreditadas como implementadas.",
+          "original_source_quote": "durante agosto darían un gran anuncio en esta materia.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Según la nota del 15 de julio de 2026, el actor afectado es la red pública y las personas con garantías GES retrasadas: el Minsal planteó acelerar la derivación automática a un segundo prestador cuando un hospital no pueda cumplir, mientras la meta de no tener garantías GES retrasadas a fin de año seguía siendo una intención anunciada, no un resultado verificado. La nota también situó en análisis una estrategia estructural para gestionar listas de espera, con posibles efectos sobre la priorización de pacientes, los horarios de atención y la coordinación entre prestadores.",
+          "original_source_quote": "Nuestra intención como Ministerio de Salud y como gobierno es que de aquí a fin de año no hayan más garantías GES retrasadas.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 15,
+      "url": "https://www.latercera.com/nacional/noticia/centro-medico-de-atacama-tramitaba-bonos-falsos-de-fonasa-fraude-supero-los-260-millones/",
+      "publication_date": "2026-07-13",
+      "title": "Centro médico de Atacama tramitaba bonos falsos de Fonasa: fraude superó los $260 millones",
+      "primary_body_sha256": "cfc69fa4535ee989455c6dce041bf965c4b75e29741ecb2c9e7196331e4b7e16",
+      "model_output_sha256": "a1e122a457ecec485cd02fea70d0782ba864d8eb86701d3a678cba8cdab6ddc6",
+      "response_id": "resp_007958a2b1b18bf6006acbcc5d61fc87d1851350a3a912b6bb",
+      "actual_score_unchanged": 84,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_future_copy_lexicon",
+        "explanation": "WHAT reports arrests/precautionary measures, not convictions; subsequent investigation “continuarían” and no identification certainty. WHY “podía ampliar” and no verificationOct11 retains pending status.",
+        "exact_summary_evidence": [
+          "continuarían las diligencias durante un plazo judicial de tres meses",
+          "la investigación entonces en curso podía ampliar el número de pacientes involucrados"
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": false,
+      "eligibility_limit_reason": "human_semantic_review_and_existing_editorial_gates_still_required",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 13 de julio de 2026, la Fiscalía de Atacama y la PDI reportaron el desbaratamiento de una red en el centro VenNorte de Copiapó, donde funcionarios habrían usado huellas digitales de pacientes para emitir bonos PAD dentales falsos y cobrarlos a Fonasa. La nota atribuyó al fraude un perjuicio estatal superior a $260 millones y señaló que había alrededor de 400 pacientes contabilizados, incluidos algunos menores de edad. Al 13 de julio de 2026, cuatro personas habían sido detenidas; dos quedaron en prisión preventiva y dos con arresto domiciliario nocturno. En esa fecha, la Fiscalía y la PDI continuarían las diligencias durante un plazo judicial de tres meses y no descartaban identificar a más pacientes afectados.",
+          "original_source_quote": "No descartando, identificar a más pacientes afectados",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Al 13 de julio de 2026, según la nota, Fonasa y el Estado enfrentaban un caso reportado de defraudación mediante el uso no autorizado de datos biométricos de pacientes y la tramitación de prestaciones dentales no realizadas. El caso compromete la integridad del financiamiento sanitario y de los controles de bonos, mientras la investigación entonces en curso podía ampliar el número de pacientes involucrados; ese estado de investigación no queda verificado como vigente al 11 de octubre de 2026.",
+          "original_source_quote": "la Fiscalía y la PDI continuarán desarrollando tareas indagatorias que lleven a reunir la totalidad de los medios de prueba",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 16,
+      "url": "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+      "publication_date": "2026-09-28",
+      "title": "Organizaciones piden al Minsal analizar financiamiento de tratamientos para enfermedades poco frecuentes",
+      "primary_body_sha256": "ed54fa46914245816a9143533683db3d8bea1c92064ae5b4157b2dcda46d4788",
+      "model_output_sha256": "f16c6b8411c7f6a375be0c46e51fd70baebb8f967f4c9af7ee0ece6c37398c25",
+      "response_id": "resp_0a8e18c8ba0d4f03006acbc716f52c87d190e26febf5c6148b",
+      "actual_score_unchanged": 84,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_future_copy_lexicon",
+        "explanation": "Actual petition/meeting and attributed participants claim correctly separated: “se habría manifestado”, “posibilidad en evaluación y no ... implementada”. WHY eventual evaluation/podría and no official decision/currentimplementation. No pledge upgraded to official approval.",
+        "exact_summary_evidence": [
+          "se habría manifestado disponibilidad para avanzar hacia una cobertura compartida gradual",
+          "una posibilidad en evaluación y no a una cobertura implementada."
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": false,
+      "eligibility_limit_reason": "human_semantic_review_and_existing_editorial_gates_still_required",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 28 de septiembre de 2026, representantes de organizaciones de pacientes pidieron al Ministerio de Salud evaluar el financiamiento de tratamientos para enfermedades poco frecuentes, en el marco de la discusión del Presupuesto 2027. La reunión con la ministra May Chomali ocurrió el 27 de septiembre. Al 28 de septiembre, la vosoritida tenía registro del ISP, pero no cobertura GES ni de la Ley Ricarte Soto. Según los participantes, durante la reunión se habría manifestado disponibilidad para avanzar hacia una cobertura compartida gradual de estos tratamientos; esto correspondía a una posibilidad en evaluación y no a una cobertura implementada.",
+          "original_source_quote": "Según los participantes, durante la reunión se habría manifestado disponibilidad para avanzar hacia una cobertura compartida gradual de estos tratamientos.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Al 28 de septiembre de 2026, según la nota, las familias enfrentaban un acceso dependiente de recursos de protección y de su capacidad para costear representación legal, con desigualdad entre pacientes. La eventual evaluación de financiamiento por parte del Minsal podría afectar la cobertura y el acceso a tratamientos para enfermedades poco frecuentes, pero la nota no acredita una decisión oficial ni una implementación vigente al 11 de octubre.",
+          "original_source_quote": "La intención de las familias es terminar con la judicialización de casos.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 17,
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "publication_date": "2026-09-21",
+      "title": "Pollo, pañales y papas: Dipres identifica a 28 servicios que concentraron $10 mil millones de sobregasto en compras durante periodo Boric",
+      "primary_body_sha256": "9113e0fd67a716d5a03a5f50bd0dba68dcb391278e16be3e3a900bbc0eebd982",
+      "model_output_sha256": "f679d978db96a2083741a8b8242141de040c3c4697545ca606dea8696f714a22",
+      "response_id": "resp_09bdd026246bf2da006acbc757e5a487d19e9e58c60583e217",
+      "actual_score_unchanged": 84,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "independent_assessment": {
+        "classification": "hold_correct_malformed_literal_source_quote",
+        "explanation": "WHAT source_quote omits publisher closing quotation mark before terminal period. Literal hold is correct independently of no FUTURE_COPY WHAT; summaries retain expenditureyears2022–23/dataApr2025 and no implemented correctives. Not a fabricated whole idea, but malformed exact evidence.",
+        "exact_summary_evidence": [
+          "El informe recomendó una revisión focalizada y medidas correctivas",
+          "la nota no acredita que esas medidas ya se hayan implementado."
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": true,
+      "eligibility_limit_reason": "literal_or_wholefield_proof_still_invalid",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 21 de septiembre de 2026, la Dirección de Presupuestos (Dipres) analizó compras públicas realizadas durante 2022 y 2023 y reportó $10.615 millones de sobregasto en compras de convenio marco. La nota indicó que 28 entidades concentraron el 91,2% del monto, incluyendo al Servicio de Salud Metropolitano Sur, Oriente, Araucanía Sur, Concepción y Metropolitano Norte. Los datos del estudio correspondían a abril de 2025 y sus resultados fueron contemplados para reajustar las asignaciones de los servicios involucrados en la Ley de Presupuesto 2026. El informe recomendó una revisión focalizada y medidas correctivas, pero la nota no acredita que esas medidas ya se hayan implementado.",
+          "original_source_quote": "Este enfoque permitiría maximizar el impacto de eventuales medidas correctivas, optimizando el uso de recursos y fortaleciendo los mecanismos de control y gestión del gasto público.",
+          "whole_field_exact": true,
+          "source_quote_literal": false,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Según la nota del 21 de septiembre de 2026, los servicios de salud aparecen entre las entidades públicas con sobregasto identificado en compras de convenio marco, lo que afecta la eficiencia del financiamiento sanitario y puede gatillar revisiones sobre sus mecanismos de adquisición y control. Al 21 de septiembre de 2026, la nota reportaba recomendaciones y ajustes presupuestarios asociados a los hallazgos, pero no verificaba la ejecución de eventuales medidas correctivas.",
+          "original_source_quote": "se recomienda reforzar los incentivos para evitar la ejecución innecesaria de recursos hacia el cierre del ejercicio presupuestario",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 18,
+      "url": "https://www.latercera.com/nacional/noticia/contraloria-detecta-plantas-de-aguas-servidas-sin-autorizacion-y-deficiencias-en-tres-comunas-de-la-rm/",
+      "publication_date": "2026-09-11",
+      "title": "Contraloría detecta plantas de aguas servidas sin autorización y deficiencias en tres comunas de la RM",
+      "primary_body_sha256": "393cb8c87c93f6a7d24a09f1977c5346f9058973b1f9d9679d7ec416c8e65f17",
+      "model_output_sha256": "07a23fb5f54a39a7cf07e3503fe65bf89b7e9a8a68aa8056ff5ff64fd9ea6c9a",
+      "response_id": "resp_0976fe603ca74c57006acbc7b6336087d1adcf07db99b4c17c",
+      "actual_score_unchanged": 88,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_future_copy_lexicon",
+        "explanation": "Actual announced proceedings vs future responsibility/sanction resolved correctly. WHY “podían determinar ... no constituían todavía una sanción o ... corrección ... acreditada” is prospective/denial without FUTURE_COPY match.",
+        "exact_summary_evidence": [
+          "los procedimientos disciplinarios anunciados podían determinar responsabilidades",
+          "no constituían todavía una sanción o una corrección operativa acreditada."
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": false,
+      "eligibility_limit_reason": "human_semantic_review_and_existing_editorial_gates_still_required",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 11 de septiembre de 2026, una auditoría de la Contraloría General de la República (CGR) detectó irregularidades en cinco plantas de tratamiento de aguas servidas administradas por las municipalidades de María Pinto, Isla de Maipo y Melipilla, en la Región Metropolitana. Al momento reportado por la nota, había instalaciones sin autorización sanitaria, descargas de aguas servidas sin tratamiento, excedencias de parámetros ambientales, deterioro de infraestructura y deficiencias de monitoreo y manejo de lodos. El Informe N°110 de 2026 también cuestionó la actuación de la Seremi de Salud Metropolitana y de la SMA. En la fecha de publicación, Contraloría anunció el inicio de procedimientos disciplinarios para determinar eventuales responsabilidades administrativas.",
+          "original_source_quote": "A raíz de los hallazgos, Contraloría anunció el inicio de un procedimiento disciplinario para determinar eventuales responsabilidades administrativas de funcionarios de la Municipalidad de María Pinto, la Seremi de Salud Metropolitana, la Dirección Regional de Obras Hidráulicas y la SMA.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Según la nota del 11 de septiembre de 2026, los municipios involucrados enfrentaban hallazgos de incumplimiento sanitario y operativo, mientras la Seremi de Salud Metropolitana y la SMA fueron cuestionadas por la oportunidad de sus derivaciones y tramitaciones. La nota reportó que microorganismos patógenos podían afectar un curso de agua usado aguas abajo para regar productos destinados al consumo humano y animal, por lo que el caso vinculaba la fiscalización de plantas municipales con la protección sanitaria de agua y alimentos. En esa fecha de publicación, los procedimientos disciplinarios anunciados podían determinar responsabilidades, pero no constituían todavía una sanción o una corrección operativa acreditada.",
+          "original_source_quote": "Contraloría anunció el inicio de un procedimiento disciplinario para determinar eventuales responsabilidades administrativas de funcionarios de la Municipalidad de María Pinto, la Seremi de Salud Metropolitana, la Dirección Regional de Obras Hidráulicas y la SMA.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 19,
+      "url": "https://www.latercera.com/nacional/noticia/contraloria-revela-que-observaciones-ordenadas-al-hospital-de-chillan-no-se-han-corregido-mas-de-dos-mil-cirugias-preferenciales-a-familiares/",
+      "publication_date": "2026-09-07",
+      "title": "Cirugías preferenciales a familiares: Contraloría revela que persisten irregularidades en Hospital de Chillán",
+      "primary_body_sha256": "4d750336d5a9f67df96cbb2a15c11d4937552be4c62d2dc80e7349282e07a5bd",
+      "model_output_sha256": "2e06a0200a38d48b986e120a059b693d9bbf591db53c28583e0538a16fea8595",
+      "response_id": "resp_011f84ba687e9b1d006acbc8219f2887d1991e262ec0bc0348",
+      "actual_score_unchanged": 84,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_future_copy_lexicon",
+        "explanation": "WHAT distinguishes actual order from prospective proceeding “quedaba como una actuación posterior, no como una sanción ya resuelta”. All data/history period and pending justification boundSept7; no continuanceOct11 inferred.",
+        "exact_summary_evidence": [
+          "esa medida quedaba como una actuación posterior, no como una sanción ya resuelta."
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": false,
+      "eligibility_limit_reason": "human_semantic_review_and_existing_editorial_gates_still_required",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 2026-09-07, la Contraloría informó que persistían irregularidades en las listas de espera quirúrgicas no GES del Hospital Clínico Herminda Martín de Chillán, correspondientes al período 2020-2024. El seguimiento reportó que solo se habían regularizado 352 registros ausentes del sistema central, mientras continuaban diferencias entre las bases local y central —41.996 incidentes frente a 29.021— y 23 pacientes fallecidos seguían figurando en la lista local. Al 2026-09-07, según la nota, la Contraloría ordenó iniciar un procedimiento disciplinario; esa medida quedaba como una actuación posterior, no como una sanción ya resuelta.",
+          "original_source_quote": "Debido al conjunto de observaciones que aún se mantienen, la Contraloría ordenó al servicio iniciar un procedimiento disciplinario para establecer las eventuales responsabilidades administrativas",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Según la nota del 2026-09-07, el HCHM y el Servicio de Salud enfrentaban un problema de integridad de datos y priorización de cirugías que podía afectar la trazabilidad y la equidad de acceso de pacientes no GES. La nota reportó que 3.905 de 21.547 cirugías correspondían a familiares de funcionarios y que 2.442 de ellas se realizaron con una espera inferior a la mediana ministerial, mientras la justificación y los respaldos aún estaban pendientes al 2026-09-07. La orden de iniciar un procedimiento disciplinario hacía relevante seguir la eventual determinación de responsabilidades administrativas, sin que la nota acreditara una resolución posterior ni que esos estados persistieran al 2026-10-11.",
+          "original_source_quote": "Ambos hechos aún se encuentran a la espera de la respectiva justificación y recepción de los respaldos que permitan aclarar cuáles fueron los criterios utilizados para tomar esta decisión en desmedro de demás pacientes de la localidad",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 20,
+      "url": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+      "publication_date": "2026-09-04",
+      "title": "Cómo fue que la Fiscalía Oriente logró detener el fraude más grande contra Fonasa por emisión de licencias médicas falsas",
+      "primary_body_sha256": "30d8b8f701b0cde06ea6670423804452f43d4b4ee6ab6bb0efe4bc59d25f545f",
+      "model_output_sha256": "ffe51c76b40043ae765fa7e069d74e2a008a0b65b59e57ff93bbbfb67f57a6f2",
+      "response_id": "resp_0702e5313576200f006acbc8a6725c87d1845e4bb339334dbe",
+      "actual_score_unchanged": 93,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_future_copy_lexicon",
+        "explanation": "WHAT material convictions/monetary orders vs otherLosQuilodran futuretrial clearly separated. WHY “próximo juicio ... pendiente ... no acredita ... resultado posterior” adequate but keyword absence fatal.",
+        "exact_summary_evidence": [
+          "El próximo juicio contra Los Quilodrán, reportado entonces como pendiente",
+          "la nota no acredita su resultado posterior."
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": false,
+      "eligibility_limit_reason": "human_semantic_review_and_existing_editorial_gates_still_required",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 2026-09-04, la Fiscalía Oriente concluyó una investigación iniciada en 2022 por un fraude de más de $48 mil millones asociado a la emisión de licencias médicas falsas. El tribunal condenó a 17 personas tras un juicio oral de 11 meses y, según el reporte, a algunos les impuso el pago de un total de $26 mil millones. La investigación procesó datos de más de 95 mil licencias y permitió identificar una estructura organizada en tres centros. La nota también informó que el fiscal Álvaro Pérez estaba pronto a iniciar el juicio contra Los Quilodrán, una medida futura respecto de la fecha de publicación.",
+          "original_source_quote": "A su vez, Pérez está pronto a partir el juicio contra Los Quilodrán, la asociación que montó una falsa red para defraudar al Fisco en más de $ 5.600 mil millones mediante licencias médicas falsas.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Al 2026-09-04, según la nota, el fallo atribuido al tribunal estableció condenas penales y sanciones económicas por un fraude que afectó al sistema de licencias médicas, involucrando a médicos, captadores y falsos pacientes. Para Fonasa, Suseso y los organismos persecutores, el caso mostró una capacidad de análisis de grandes bases de licencias, trazabilidad financiera y coordinación investigativa, además de un criterio judicial que la Fiscalía describió como aplicable también a médicos en delitos de fraude de subvenciones. El próximo juicio contra Los Quilodrán, reportado entonces como pendiente, extendía esa especialización a otra investigación de licencias falsas; la nota no acredita su resultado posterior.",
+          "original_source_quote": "A su vez, Pérez está pronto a partir el juicio contra Los Quilodrán, la asociación que montó una falsa red para defraudar al Fisco en más de $ 5.600 mil millones mediante licencias médicas falsas.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 21,
+      "url": "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/",
+      "publication_date": "2026-08-05",
+      "title": "Expertos cuestionan crédito tributario para el financiamiento de enfermedades catastróficas aprobado en la megarreforma",
+      "primary_body_sha256": "586fc0d4835039ec5fb9a4f4e7f151762934d50405343da14a243acc29ba12df",
+      "model_output_sha256": "19c092f75f29b3f89dcc17f91486065eb07718831f4432a21afaf977df84d1e0",
+      "response_id": "resp_01fd1dc5a003342c006acbcac70fec87d1a68e988e06b89741",
+      "actual_score_unchanged": 88,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_with_independent_legislative_scope_finding",
+        "explanation": "Temporal portions correctly distinguish already-approved article from future decree coverage. But WHAT parenthetical “megarreforma —ya aprobada por el Congreso—” overstates the full bill approval; body specifically says article33°quáter already approved. Must narrow approval subject before publication; lexical repair alone insufficient.",
+        "exact_summary_evidence": [
+          "la cobertura específica de enfermedades, diagnósticos y tratamientos aún dependía de un decreto supremo",
+          "el gobierno incluyó en la megarreforma —ya aprobada por el Congreso—"
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": true,
+      "eligibility_limit_reason": "independent_numeric_or_legislative_scope_finding",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 5 de agosto de 2026, el gobierno incluyó en la megarreforma —ya aprobada por el Congreso— un crédito tributario de hasta 150 UTM por trabajador para que empresas financien tratamientos de enfermedades catastróficas no cubiertos por seguros obligatorios o voluntarios. La nota reportó que, según cifras de la OCDE para 2023, el 57% del gasto en salud de las personas en Chile era financiado por Fonasa o isapres, el 35% correspondía a gasto de bolsillo y el 6% a seguros voluntarios; además, consignó una proyección de gasto de bolsillo de aproximadamente 39% para 2024. Al 5 de agosto de 2026, la cobertura específica de enfermedades, diagnósticos y tratamientos aún dependía de un decreto supremo de los ministerios de Hacienda y Salud.",
+          "original_source_quote": "Un decreto supremo suscrito por el Ministerio de Hacienda y el Ministerio de Salud determinará las enfermedades, los diagnósticos y tratamientos que podrán ser cubiertos",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": false,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Al 5 de agosto de 2026, según la nota, las empresas podían acceder a un beneficio tributario para financiar gastos de bolsillo de trabajadores y ciertos familiares, pero el diseño fue cuestionado por expertos por su posible acceso desigual según el empleador, sus riesgos de control y su eventual costo fiscal. La medida podía afectar la forma en que trabajadores, empleadores, Fonasa, isapres y prestadores privados financiaban tratamientos de alto costo, mientras la cobertura concreta todavía dependía del decreto supremo previsto por la norma.",
+          "original_source_quote": "Un decreto supremo suscrito por el Ministerio de Hacienda y el Ministerio de Salud determinará las enfermedades, los diagnósticos y tratamientos que podrán ser cubiertos",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": true,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 22,
+      "url": "https://www.latercera.com/nacional/noticia/por-emanaciones-toxicas-informan-suspension-de-clases-en-quilicura-tras-gigantesco-incendio-en-empresa-de-productos-quimicos/",
+      "publication_date": "2026-08-05",
+      "title": "Por emanaciones tóxicas: informan suspensión de clases en Quilicura tras gigantesco incendio en empresa de productos químicos",
+      "primary_body_sha256": "b190c2b846701c235e961956a22f14c928f3fd87798a0cbd1b5edfdd2dd6a6be",
+      "model_output_sha256": "b0bff7a53d5f433e8c183cf7acea2200b3c0ffb5973ac45a1cbe49baa7e896c9",
+      "response_id": "resp_08df88ad79c21d60006acbcadefd6087d1a330a32388650b50",
+      "actual_score_unchanged": 70,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_future_copy_lexicon_below_unchanged_gate",
+        "explanation": "WHAT “se extendería” and WHY risk “afectara” plus dated expiredemergency prevent current state overclaim. Score70 remains below72 regardless temporal repair; no publication recommendation.",
+        "exact_summary_evidence": [
+          "su combate se extendería por al menos ocho horas",
+          "Esta nota no acredita que la suspensión ni la emergencia continuaran vigentes al 11 de octubre de 2026."
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": true,
+      "eligibility_limit_reason": "score_below_unchanged72",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota publicada el 5 de agosto de 2026, el delegado presidencial de la Región Metropolitana, Germán Codina, informó la suspensión de clases para el miércoles 5 de agosto en todos los establecimientos de Quilicura, tras un análisis de la Seremi de Salud por las emanaciones tóxicas del incendio en Panimex Química. Al momento del reporte, Bomberos había informado que el incendio estaba contenido, pero que su combate se extendería por al menos ocho horas. Esta nota no acredita que la suspensión ni la emergencia continuaran vigentes al 11 de octubre de 2026.",
+          "original_source_quote": "el combate del incendio, aunque se encuentra contenido, se va a extender por al menos 8 horas",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Al 5 de agosto de 2026, según la nota, la autoridad regional y la Seremi de Salud adoptaron una medida de salud poblacional que afectó a establecimientos públicos y privados de Quilicura, debido al riesgo de que el humo tóxico afectara la salud de menores, especialmente durante actividades físicas. La nota merece atención por mostrar una respuesta sanitaria y educacional coordinada ante una emergencia química local, sin acreditar un efecto sectorial permanente ni que la medida siguiera vigente a la fecha de revisión.",
+          "original_source_quote": "que probablemente se va a seguir expandiendo en esta zona durante las próximas horas",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 23,
+      "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+      "publication_date": "2026-07-31",
+      "title": "Ministra Chomali acusa deterioro de la red hospitalaria con sus antecesoras Yarza y Aguilera",
+      "primary_body_sha256": "1d7f55e07ae77e0a3eda89467e2ea0e3b78a1bb990f616f06bcaf3af1f20f9bf",
+      "model_output_sha256": "ef1abf1d609d62f5d0be7e0626469fa206be0bf6467d3123e168d1c30a21b713",
+      "response_id": "resp_02c0d344dc3dcbe0006acbcb2838c087d19d118d1eda771ecb",
+      "actual_score_unchanged": 88,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_future_copy_lexicon",
+        "explanation": "Both dateboundJuly31 initiated workinggroups correctly actual; futureobjectives “cuyo objetivo era”/“buscaba mejorar ... ejecución y resultados ... no ... acreditados” do not assert improvements achieved. Numeric service/hospital periods2021–25 retained and ministry attribution clear.",
+        "exact_summary_evidence": [
+          "cuyo objetivo era fortalecer el seguimiento y corregir incumplimientos.",
+          "su ejecución y resultados posteriores no están acreditados por este contenido."
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": false,
+      "eligibility_limit_reason": "human_semantic_review_and_existing_editorial_gates_still_required",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 31 de julio de 2026, el Minsal reportó que el cumplimiento de los Compromisos de Gestión de los Servicios de Salud descendió de 86,7% en 2021 a 68,6% en 2025. En la evaluación de 62 Establecimientos Autogestionados en Red, 36 quedaron bajo el estándar mínimo de 75%. Al 31 de julio de 2026, según la nota, en el ministerio habían iniciado dos mesas de trabajo sobre eficiencia hospitalaria y gestión de la red, cuyo objetivo era fortalecer el seguimiento y corregir incumplimientos.",
+          "original_source_quote": "El objetivo es fortalecer el seguimiento, corregir oportunamente los incumplimientos y alinear la gestión.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Según la nota del 31 de julio de 2026, los resultados reportados por el Minsal señalaban brechas territoriales y hospitalarias que afectaban la oportunidad de atención, especialmente en garantías GES, listas de espera quirúrgicas y consultas nuevas de especialidad. Para los Servicios de Salud y hospitales públicos, la medida anunciada entonces buscaba mejorar el seguimiento y la gestión de esos incumplimientos; su ejecución y resultados posteriores no están acreditados por este contenido.",
+          "original_source_quote": "El objetivo es fortalecer el seguimiento, corregir oportunamente los incumplimientos y alinear la gestión.",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 24,
+      "url": "https://www.latercera.com/nacional/noticia/gobierno-suspende-clases-para-este-lunes-en-provincia-de-huasco-y-regiones-de-coquimbo-y-valparaiso/",
+      "publication_date": "2026-07-19",
+      "title": "Gobierno suspende clases para este lunes en provincia de Huasco y regiones de Coquimbo y Valparaíso",
+      "primary_body_sha256": "52f7381d02dfa2f44c9ed72ec446324e3f643c321687ac197656e0a96c51afd8",
+      "model_output_sha256": "6b0a6fdf75539f415f126da222f3956e97e99a4d6f1efd6c56aeb74d9c7f6a64",
+      "response_id": "resp_0864d525476c66e9006acbcbb76f3887d1ac6c0f84544e8e1b",
+      "actual_score_unchanged": 68,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_future_copy_lexicon_below_unchanged_gate",
+        "explanation": "Fullfields report actual transport vs expectedarrival/nonverifiedoperationJuly19–20; no installedcurrentcapacityclaim. Score68 remains below72; no publishapproval.",
+        "exact_summary_evidence": [
+          "se esperaba su llegada a la región a primeras horas del 2026-07-20",
+          "la publicación no permite verificar que el hospital haya quedado operativo"
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": true,
+      "eligibility_limit_reason": "score_below_unchanged72",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota del 2026-07-19, el Gobierno anunció el traslado de un hospital modular proporcionado por el Ejército para reforzar la atención de salud en la comuna de Ovalle. Al 2026-07-19, el transporte estaba en desarrollo y se esperaba su llegada a la región a primeras horas del 2026-07-20; la nota no acredita su implementación ni vigencia al 2026-10-11.",
+          "original_source_quote": "ese transporte ya se encuentra en desarrollo y a primeras horas de mañana estaría llegando a la región para la implementación lo más rápido posible",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Según la nota del 2026-07-19, la medida buscaba reforzar temporalmente la atención de salud en Ovalle durante el sistema frontal, mediante capacidad modular proporcionada por el Ejército. Al 2026-07-19, esto constituía un apoyo anunciado para la red local, pero la publicación no permite verificar que el hospital haya quedado operativo o que continuara disponible al 2026-10-11.",
+          "original_source_quote": "para la implementación lo más rápido posible y apoyar la atención de salud en la comuna de Ovalle",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    },
+    {
+      "index": 25,
+      "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+      "publication_date": "2026-07-18",
+      "title": "Minsal coordina instalación de hospital modular para apoyar atención en Ovalle por sistema frontal",
+      "primary_body_sha256": "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f",
+      "model_output_sha256": "4b9f200a6ae2e72feb0597149bcdb34bb45fc064cfafdf5c8eb0e6739f2403d6",
+      "response_id": "resp_0fb90ebcf3cf93e2006acbcbca873487d1854bc3c7526d6c3b",
+      "actual_score_unchanged": 78,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "independent_assessment": {
+        "classification": "validator_false_negative_future_copy_lexicon",
+        "explanation": "FullWHATWHY describe actual coordination and purpose, denyinstalledmodularcapacity and currentOctoberstate. Precise negated accomplishment/coordination language correctly safeguards futureimplementation even without FUTURE_COPY recognizedlexeme.",
+        "exact_summary_evidence": [
+          "El contenido no acredita que el hospital modular haya sido instalado",
+          "el reporte no demuestra que la instalación se hubiera concretado"
+        ],
+        "publication_approved": false,
+        "other_gates_still_apply": true
+      },
+      "not_eligible_for_reuse_or_publication": false,
+      "eligibility_limit_reason": "human_semantic_review_and_existing_editorial_gates_still_required",
+      "claims": [
+        {
+          "field": "what_happened",
+          "complete_summary_quote": "Según la nota publicada el 18 de julio de 2026, el Ministerio de Salud comenzó coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército, con el objetivo de apoyar al Hospital de Ovalle, que había sufrido daños por las lluvias. En esa misma fecha, la cartera reportó que la red asistencial de las regiones afectadas se mantenía mayoritariamente operativa, con interrupciones de conectividad, anegamientos y filtraciones en algunos establecimientos. El contenido no acredita que el hospital modular haya sido instalado ni que esas condiciones operativas se mantuvieran al 11 de octubre de 2026.",
+          "original_source_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        },
+        {
+          "field": "why_it_matters",
+          "complete_summary_quote": "Al 18 de julio de 2026, según la nota, el Ministerio de Salud coordinaba una capacidad asistencial temporal con Defensa para absorber parte de la demanda de un hospital dañado y desplegaba equipos para monitorear la red en varias regiones. Esto era relevante para la continuidad de atención humana durante la emergencia, pero el reporte no demuestra que la instalación se hubiera concretado ni que la red conservara ese estado al 11 de octubre de 2026.",
+          "original_source_quote": "que permita absorber parte de la demanda del Hospital de Ovalle",
+          "whole_field_exact": true,
+          "source_quote_literal": true,
+          "future_qualified_before": false,
+          "future_qualified_after": true,
+          "achieved_match_before": false,
+          "unqualified_achievement_after": false
+        }
+      ],
+      "publication_approved": false,
+      "response_reuse_approved": false
+    }
+  ],
+  "limitations": [
+    "Montt output97% equivalent2.83% remains an independent numeric finding even if technical future proof becomes ready; it is explicitly ineligible for direct reuse/publication.",
+    "Tax output approval of entire megarreforma instead of article33quáter remains an independent legislative scope finding and technical hold.",
+    "No punctuation/words/numbers/negations or source quotes were rewritten. Four malformed literal/fullfield responses remain held.",
+    "Technical ready is neither a new actual runtime outcome nor semantic/editorial publication approval; new calls or source-bound human corrections require a separate authorized path."
+  ]
+}
