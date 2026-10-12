@@ -1382,6 +1382,14 @@
       "review": "data/audits/integration_20261011/independent-reception-review.json",
       "scope": "staging only; per-source postmerge evidence; honest limits, no autonomy4h or production acceptance"
     },
+    "sprint_integration_checkpoint_2026_10_11_13": {
+      "kind": "integration_acceptance_checkpoint",
+      "artifact": "data/pmo/sprint_integration_2026_10_11_13.json",
+      "sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+      "status": "NO_GO_AT_CHECKPOINT",
+      "new_pr_merges": [],
+      "scope": "Governance only; no source activation, runtime or product release."
+    },
     "work4_p0_implementation_2026_10_11": {
       "kind": "native_source_qualification",
       "status": "OPERATIVE_DEGRADED",
@@ -1424,7 +1432,7 @@
       "status": "READY_FOR_INTEGRATION",
       "scope": "Safe non-activated P0 data package only; mandatory final-head CI remains a merge condition",
       "sha": "b832aed3630eca59b8b6a2b536a3ae79eeacb69d",
-      "integration_base_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+      "integration_base_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
       "paths": [
         "data/audits/w4_p0_integration_readiness.json"
       ],

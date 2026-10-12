@@ -1,0 +1,684 @@
+{
+  "checkpoint_at": "2026-10-12T01:36:56.500136+00:00",
+  "sprint": "2026-10-11/2026-10-13 America/Santiago",
+  "status": "CHECKPOINT_NOT_SPRINT_CLOSEOUT",
+  "verified_product_head": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+  "governance_commit": "Resolve from git log for this file; content-only checkpoint, not a product merge.",
+  "main_reference": "54174c5d690daa29f75b6956d6e90c90ee5cd177",
+  "production_stable_reference": "06831243d83705777f6a916fcc86a7896d6522da",
+  "new_pr_merges": [],
+  "previously_merged_prs": [
+    11,
+    12,
+    13,
+    14,
+    15,
+    17,
+    18
+  ],
+  "pr_inventory": [
+    {
+      "pr": 10,
+      "head": "d3c28447b4f113ffb161168f240591bf0f479fc2",
+      "implemented": true,
+      "accepted": false,
+      "merged": false,
+      "runtime_postmerge": false,
+      "qa": "NO_CHECKS_ON_CURRENT_HEAD",
+      "owner": "Codex B",
+      "blockers": [
+        "Explicit NO ACEPTADO / draft",
+        "LIVE9 run38183583899 failed step19 independent original coverage/editorial outcome verification",
+        "Final unchanged-implementation observations and final Reviewer pending"
+      ],
+      "next_action": "Terminal LIVE9 disposition, two genuine zero-call observations under final fingerprint, final-SHA QA/Reviewer, then merge commit preserving producer ancestry."
+    },
+    {
+      "pr": 26,
+      "head": "060c7a810496602c34a706410d33f125bf55c96c",
+      "implemented": true,
+      "technical_acceptance": "PASS_SCOPED_WITH_OPERATIONAL_HOLDS",
+      "accepted": false,
+      "merged": false,
+      "runtime_postmerge": false,
+      "qa": {
+        "run": 38158717599,
+        "tests": "success",
+        "staging": "success",
+        "reviewer": "success",
+        "recurrent": "skipped",
+        "checkpoint": "skipped"
+      },
+      "owner": "Codex C",
+      "blockers": [
+        "Daily hook always invokes hardcoded90-day inventory; incompatible with sprint no-repeat90 rule",
+        "Hook does not enforce unfinished activation_dependencies",
+        "Draft and operational holds remain"
+      ],
+      "next_action": "Separate bounded incremental discovery from frozen qualification or submit code/evidence with hook held; focused QA/Reviewer final SHA. No repeat90.",
+      "comment": "https://github.com/cftorre1/Radar-salud/pull/26#issuecomment-6116190625"
+    },
+    {
+      "pr": 16,
+      "head": "0339dd24ccf16f8f9ec19750a62505b9d5815e04",
+      "implemented": true,
+      "accepted": false,
+      "merged": false,
+      "runtime_postmerge": false,
+      "qa": {
+        "run": 38148940138,
+        "native_runtime": 38148940088,
+        "status": "success_on_candidate"
+      },
+      "owner": "Codex D",
+      "blockers": [
+        "Draft without final acceptance",
+        "Single textual conflict config/pmo_baseline.json evidence_catalog"
+      ],
+      "next_action": "Union new work4_p0_implementation evidence with all staging postmerge receipt entries; preserve semantic queue/health changes; final acceptance without activating sources.",
+      "comment": "https://github.com/cftorre1/Radar-salud/pull/16#issuecomment-6116194487"
+    }
+  ],
+  "source_matrix": [
+    {
+      "source": "superintendencia_normativa",
+      "disposition": "OBSERVED_NOT_EDITORIALLY_REVALIDATED",
+      "technical_status": "ok",
+      "checked_at": "2026-10-10T22:24:44.392712+00:00",
+      "age_hours_at_checkpoint": 27.2,
+      "daily_cycle": "OVER_24H_NO_CURRENT_VALIDATION",
+      "last_signal_at": "2026-10-09",
+      "coverage_status": "observed",
+      "prior_runtime": null,
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "minsal",
+      "disposition": "OBSERVED_NOT_EDITORIALLY_REVALIDATED",
+      "technical_status": "ok",
+      "checked_at": "2026-10-10T22:24:44.395941+00:00",
+      "age_hours_at_checkpoint": 27.2,
+      "daily_cycle": "OVER_24H_NO_CURRENT_VALIDATION",
+      "last_signal_at": "2026-10-07",
+      "coverage_status": "observed",
+      "prior_runtime": null,
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "suseso",
+      "disposition": "OBSERVED_NOT_EDITORIALLY_REVALIDATED",
+      "technical_status": "ok",
+      "checked_at": "2026-10-10T22:24:44.405914+00:00",
+      "age_hours_at_checkpoint": 27.2,
+      "daily_cycle": "OVER_24H_NO_CURRENT_VALIDATION",
+      "last_signal_at": "2026-10-02",
+      "coverage_status": "observed",
+      "prior_runtime": null,
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "diario_financiero",
+      "disposition": "INTEGRATED_DEGRADED",
+      "technical_status": "warning",
+      "checked_at": "2026-10-11T14:47:06.601900+00:00",
+      "age_hours_at_checkpoint": 10.83,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": "2026-10-10",
+      "coverage_status": "format_gap",
+      "prior_runtime": {
+        "run": 38142527704,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/df-postmerge-916fe2d.json"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "diario_oficial",
+      "disposition": "OBSERVED_NOT_EDITORIALLY_REVALIDATED",
+      "technical_status": "ok",
+      "checked_at": "2026-10-10T22:24:44.409615+00:00",
+      "age_hours_at_checkpoint": 27.2,
+      "daily_cycle": "OVER_24H_NO_CURRENT_VALIDATION",
+      "last_signal_at": "2026-10-07",
+      "coverage_status": "observed",
+      "prior_runtime": null,
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "superintendencia_fiscalizacion",
+      "disposition": "INTEGRATED_DEGRADED",
+      "technical_status": "warning",
+      "checked_at": "2026-10-11T14:45:43.472157+00:00",
+      "age_hours_at_checkpoint": 10.85,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": "2026-09-28",
+      "coverage_status": "listed_surface_parsed",
+      "prior_runtime": {
+        "run": 38143952220,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/sis-postmerge-9920e3d.json"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "superintendencia",
+      "disposition": "OBSERVED_NOT_EDITORIALLY_REVALIDATED",
+      "technical_status": "ok",
+      "checked_at": "2026-10-10T22:24:44.391652+00:00",
+      "age_hours_at_checkpoint": 27.2,
+      "daily_cycle": "OVER_24H_NO_CURRENT_VALIDATION",
+      "last_signal_at": "2026-10-02",
+      "coverage_status": "observed",
+      "prior_runtime": null,
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "fonasa",
+      "disposition": "EXTERNAL_BLOCKER_PROVEN",
+      "technical_status": "error",
+      "checked_at": "2026-10-11T14:45:26.442065+00:00",
+      "age_hours_at_checkpoint": 10.86,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": null,
+      "coverage_status": "unverified",
+      "prior_runtime": {
+        "run": 38146249940,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-fonasa/summary.json"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "isp_anamed",
+      "disposition": "EXTERNAL_BLOCKER_PROVEN",
+      "technical_status": "error",
+      "checked_at": "2026-10-11T14:50:26.450101+00:00",
+      "age_hours_at_checkpoint": 10.78,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": null,
+      "coverage_status": "unverified",
+      "prior_runtime": {
+        "run": 38146249940,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-isp_anamed/summary.json"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "deis",
+      "disposition": "INTEGRATED_DEGRADED",
+      "technical_status": "warning",
+      "checked_at": "2026-10-11T14:45:37.858740+00:00",
+      "age_hours_at_checkpoint": 10.86,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": null,
+      "coverage_status": "observed",
+      "prior_runtime": {
+        "run": 38146249940,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-deis/summary.json"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "redsalud",
+      "disposition": "INTEGRATED_DEGRADED",
+      "technical_status": "warning",
+      "checked_at": "2026-10-11T14:33:49.742734+00:00",
+      "age_hours_at_checkpoint": 11.05,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": "2026-09-21",
+      "coverage_status": "unverified",
+      "prior_runtime": {
+        "run": 38147271657,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent_published_history_and_queue_identity": true,
+        "queue_status_progress_allowed": true,
+        "artifact": "data/audits/integration_20261011/postmerge-redsalud/independent-raw-artifact/summary.json",
+        "artifact_id": 11704529405,
+        "archive_sha256": "d58af84464633512e398dda2344acdd50fbca170e4710e0b3f412626630ae16d"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "bupa_chile",
+      "disposition": "EXTERNAL_BLOCKER_PROVEN",
+      "technical_status": "warning",
+      "checked_at": "2026-10-11T14:33:55.005367+00:00",
+      "age_hours_at_checkpoint": 11.05,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": "2026-08-13",
+      "coverage_status": "unverified",
+      "prior_runtime": {
+        "run": 38147271657,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent_published_history_and_queue_identity": true,
+        "queue_status_progress_allowed": true,
+        "artifact": "data/audits/integration_20261011/postmerge-bupa_chile/independent-raw-artifact/summary.json",
+        "artifact_id": 11705139098,
+        "archive_sha256": "64fcde6a7d27c0c894469a1edada0b74167e1718d64d27c7ace2a7da48e89197"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "pfizer_chile",
+      "disposition": "INTEGRATED_DEGRADED",
+      "technical_status": "warning",
+      "checked_at": "2026-10-11T14:33:42.531858+00:00",
+      "age_hours_at_checkpoint": 11.05,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": null,
+      "coverage_status": "unverified",
+      "prior_runtime": {
+        "run": 38147271657,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent_published_history_and_queue_identity": true,
+        "queue_status_progress_allowed": true,
+        "artifact": "data/audits/integration_20261011/postmerge-pfizer_chile/independent-raw-artifact/summary.json",
+        "artifact_id": 11705328505,
+        "archive_sha256": "c9eb52ddacdf9f0fa7d7cafe11652036a1c38482e731363e8dfcca3080c749a6"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "indisa",
+      "disposition": "EXTERNAL_BLOCKER_PROVEN",
+      "technical_status": "error",
+      "checked_at": "2026-10-11T14:33:37.137973+00:00",
+      "age_hours_at_checkpoint": 11.06,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": null,
+      "coverage_status": "unverified",
+      "prior_runtime": {
+        "run": 38147271657,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent_published_history_and_queue_identity": true,
+        "queue_status_progress_allowed": true,
+        "artifact": "data/audits/integration_20261011/postmerge-indisa/independent-raw-artifact/summary.json",
+        "artifact_id": 11704474575,
+        "archive_sha256": "4e4f78999b2c4943fd4c3b7d2ace198af29077ec2e2da58bf97491cd9599c723"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "fonasa_datos_abiertos",
+      "disposition": "EXTERNAL_BLOCKER_PROVEN",
+      "technical_status": "error",
+      "checked_at": "2026-10-11T14:45:30.511053+00:00",
+      "age_hours_at_checkpoint": 10.86,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": null,
+      "coverage_status": "unverified",
+      "prior_runtime": {
+        "run": 38146249940,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-fonasa_datos_abiertos/summary.json"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "suseso_news",
+      "disposition": "OBSERVED_NOT_EDITORIALLY_REVALIDATED",
+      "technical_status": "ok",
+      "checked_at": "2026-10-10T22:24:44.406814+00:00",
+      "age_hours_at_checkpoint": 27.2,
+      "daily_cycle": "OVER_24H_NO_CURRENT_VALIDATION",
+      "last_signal_at": "2026-10-09",
+      "coverage_status": "observed",
+      "prior_runtime": null,
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "suseso_fiscalizacion",
+      "disposition": "INTEGRATED_DEGRADED",
+      "technical_status": "warning",
+      "checked_at": "2026-10-11T14:46:06.019586+00:00",
+      "age_hours_at_checkpoint": 10.85,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": "2026-10-02",
+      "coverage_status": "gap",
+      "prior_runtime": {
+        "run": 38143952220,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/sis-postmerge-9920e3d.json"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "prestadores_data",
+      "disposition": "OBSERVED_NOT_EDITORIALLY_REVALIDATED",
+      "technical_status": "ok",
+      "checked_at": "2026-10-10T22:24:58.258379+00:00",
+      "age_hours_at_checkpoint": 27.2,
+      "daily_cycle": "OVER_24H_NO_CURRENT_VALIDATION",
+      "last_signal_at": null,
+      "coverage_status": "observed",
+      "prior_runtime": null,
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "red_davila",
+      "disposition": "INTEGRATED_DEGRADED",
+      "technical_status": "warning",
+      "checked_at": "2026-10-11T14:34:02.384970+00:00",
+      "age_hours_at_checkpoint": 11.05,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": null,
+      "coverage_status": "observed",
+      "prior_runtime": {
+        "run": 38147271657,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent_published_history_and_queue_identity": true,
+        "queue_status_progress_allowed": true,
+        "artifact": "data/audits/integration_20261011/postmerge-red_davila/independent-raw-artifact/summary.json",
+        "artifact_id": 11705418137,
+        "archive_sha256": "81e0c1459b0ca7d5b47fa9e6bb71db160f8bee63c7f11ca959444399c973a51c"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "andes_salud",
+      "disposition": "INTEGRATED_VALIDATED",
+      "technical_status": "ok",
+      "checked_at": "2026-10-11T14:35:33.402077+00:00",
+      "age_hours_at_checkpoint": 11.02,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": "2026-09-23",
+      "coverage_status": "observed",
+      "prior_runtime": {
+        "run": 38147271657,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent_published_history_and_queue_identity": true,
+        "queue_status_progress_allowed": true,
+        "artifact": "data/audits/integration_20261011/postmerge-andes_salud/independent-raw-artifact/summary.json",
+        "artifact_id": 11705024508,
+        "archive_sha256": "975ca08ee684a621cf09195ce60459b59c0d9a14564957b275a1b0bec57c9cd1"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "clinicas_achs_salud",
+      "disposition": "INTEGRATED_DEGRADED",
+      "technical_status": "warning",
+      "checked_at": "2026-10-11T15:04:16.497535+00:00",
+      "age_hours_at_checkpoint": 10.54,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": null,
+      "coverage_status": "partial",
+      "prior_runtime": {
+        "run": 38145632535,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-clinicas_achs_salud/summary.json"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "achs_seguro_laboral",
+      "disposition": "INTEGRATED_VALIDATED",
+      "technical_status": "ok",
+      "checked_at": "2026-10-11T14:06:26.751135+00:00",
+      "age_hours_at_checkpoint": 11.51,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": "2026-09-24",
+      "coverage_status": "complete",
+      "prior_runtime": {
+        "run": 38145632535,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-achs_seguro_laboral/summary.json"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "mutual_seguridad",
+      "disposition": "INTEGRATED_DEGRADED",
+      "technical_status": "warning",
+      "checked_at": "2026-10-11T14:06:50.991826+00:00",
+      "age_hours_at_checkpoint": 11.5,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": "2026-08-27",
+      "coverage_status": "partial",
+      "prior_runtime": {
+        "run": 38145632535,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-mutual_seguridad/summary.json"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "ist",
+      "disposition": "INTEGRATED_DEGRADED",
+      "technical_status": "warning",
+      "checked_at": "2026-10-11T14:08:13.710504+00:00",
+      "age_hours_at_checkpoint": 11.48,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": "2026-07-14",
+      "coverage_status": "partial",
+      "prior_runtime": {
+        "run": 38145632535,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-ist/summary.json"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "pulso_latercera",
+      "disposition": "NOT_READY",
+      "technical_status": "ok",
+      "checked_at": "2026-10-10T22:25:43.933385+00:00",
+      "age_hours_at_checkpoint": 27.19,
+      "daily_cycle": "OVER_24H_NO_CURRENT_VALIDATION",
+      "last_signal_at": null,
+      "coverage_status": "observed",
+      "prior_runtime": null,
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "isp_surveillance",
+      "disposition": "EXTERNAL_BLOCKER_PROVEN",
+      "technical_status": "error",
+      "checked_at": "2026-10-11T14:55:34.964795+00:00",
+      "age_hours_at_checkpoint": 10.69,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": null,
+      "coverage_status": "unverified",
+      "prior_runtime": {
+        "run": 38146249940,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent": true,
+        "artifact": "data/audits/integration_20261011/postmerge-isp_surveillance/summary.json"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    },
+    {
+      "source": "clinicas_chile",
+      "disposition": "INTEGRATED_DEGRADED",
+      "technical_status": "warning",
+      "checked_at": "2026-10-11T14:34:27.644605+00:00",
+      "age_hours_at_checkpoint": 11.04,
+      "daily_cycle": "RECENT_POLL_NOT_DAILY_CADENCE_PROOF",
+      "last_signal_at": "2026-10-02",
+      "coverage_status": "unverified",
+      "prior_runtime": {
+        "run": 38147271657,
+        "status": "PASS",
+        "polls": 2,
+        "idempotent_published_history_and_queue_identity": true,
+        "queue_status_progress_allowed": true,
+        "artifact": "data/audits/integration_20261011/postmerge-clinicas_chile/independent-raw-artifact/summary.json",
+        "artifact_id": 11704834695,
+        "archive_sha256": "34f56ca8ff329c9eef720485b005253803266c8d0810cbc69dac7664da5f44af"
+      },
+      "scope": "Prior staging receipts retained; no new live source run in this checkpoint."
+    }
+  ],
+  "source_disposition_counts": {
+    "OBSERVED_NOT_EDITORIALLY_REVALIDATED": 7,
+    "INTEGRATED_DEGRADED": 11,
+    "EXTERNAL_BLOCKER_PROVEN": 6,
+    "INTEGRATED_VALIDATED": 2,
+    "NOT_READY": 1
+  },
+  "freshness": {
+    "window30": [
+      "2026-09-12",
+      "2026-10-11"
+    ],
+    "feed_total": 93,
+    "feed_in30": 45,
+    "recent_calendar_dates": [
+      "2026-10-09",
+      "2026-10-11"
+    ],
+    "recent_count": 4,
+    "exact_rolling72h_not_claimed": "Date-only records cannot resolve hour-level boundary.",
+    "recent_items": [
+      {
+        "title": "Después de Rotter & Krauss: los negocios que buscan los Yarur para Empresas SB",
+        "source": "Diario Financiero",
+        "url": "https://www.df.cl/df-mas/por-dentro/despues-de-rotter-krauss-los-negocios-que-buscan-los-yarur-para-empresas",
+        "event_date": "2026-10-10"
+      },
+      {
+        "title": "Aluvión en Las Condes obliga a cerrar por semanas la Clínica San Carlos",
+        "source": "Diario Financiero",
+        "url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+        "event_date": "2026-10-10"
+      },
+      {
+        "title": "Cae inversión de laboratorios internacionales en Chile ante fuerte rezago en aprobaciones: se redirigen a Argentina y Brasil",
+        "source": "Diario Financiero",
+        "url": "https://www.df.cl/senal-df/el-deal/cae-inversion-de-laboratorios-internacionales-en-chile-ante-fuerte-rezago",
+        "event_date": "2026-10-09"
+      },
+      {
+        "title": "Créditos sociales: límite de descuento podrá subir excepcionalmente del 25% al 35% para financiar gastos de salud y emergencias en viviendas",
+        "source": "Superintendencia de Seguridad Social (SUSESO)",
+        "url": "https://www.suseso.gob.cl/605/w3-article-791717.html",
+        "event_date": "2026-10-09"
+      }
+    ],
+    "stale_poll_sources": [
+      "superintendencia_normativa",
+      "minsal",
+      "suseso",
+      "diario_oficial",
+      "superintendencia",
+      "suseso_news",
+      "prestadores_data",
+      "pulso_latercera"
+    ]
+  },
+  "sample_chain": {
+    "url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+    "original_proof": "Retained DF primary body/date/hash receipts in prior runtime audits; no fresh publisher fetch this checkpoint.",
+    "queue_fingerprint": "e4c639df46d35cbdccae32c3169949d3984d9b2895396e154c58492e2c9570b0",
+    "queue_status": "published",
+    "publication_date": "2026-10-10",
+    "incident_date": "2026-10-08",
+    "history": true,
+    "exported_feed": true,
+    "weekly": true,
+    "fresh_browser_render": "Not rerun; use baseline preview38150743498 only."
+  },
+  "work_inputs": [
+    "docs/EDITORIAL_SENIOR_REVIEW_2026_10_11.md",
+    "data/audits/work2_editorial_closeout_2026_10_11.json",
+    "data/audits/integration_20261011/source-matrix.json",
+    "data/audits/integration_20261011/independent-reception-review.json",
+    "issue5 and issues6-9 retained external Work3 findings"
+  ],
+  "work1_limit": "External evidence inherited through source/reception matrices; no new exhaustive27/27 external audit claimed.",
+  "beta": {
+    "decision": "NO_GO_AT_CHECKPOINT",
+    "acceptance_gates_passed": 4,
+    "acceptance_gates_total": 8,
+    "gate_readiness_percent": 50,
+    "method": "Unweighted checklist: four fully supported criteria; partial/pending count zero. Not percentage of implemented MVP or source coverage.",
+    "gates": [
+      {
+        "criterion": "No new critical error introduced",
+        "status": "PASS_BASELINE_REUSED",
+        "basis": "No code/product changes; staging technical preview38150743498 success."
+      },
+      {
+        "criterion": "Active sources with recent operative evidence",
+        "status": "PARTIAL",
+        "basis": "Eight of27 polls older than24h; original coverage not certified by ok status."
+      },
+      {
+        "criterion": "Degraded and held sources explicitly identified",
+        "status": "PASS",
+        "basis": "27-source matrix below plus Reuters rights hold in PR26."
+      },
+      {
+        "criterion": "Weekly Insight current or properly withdrawn",
+        "status": "PASS",
+        "basis": "UC CHRISTUS anchor2026-10-10; expires at start2026-10-17 Chile."
+      },
+      {
+        "criterion": "Global editorially traceable release",
+        "status": "PARTIAL",
+        "basis": "Existing14 curated themes retained; new WHO/PAHO inventory publication disabled, final operational holds."
+      },
+      {
+        "criterion": "Final milestone QA and independent Reviewer",
+        "status": "PENDING",
+        "basis": "Baseline PASS and scoped candidate PASS retained; final sprint milestone not completed."
+      },
+      {
+        "criterion": "Daily cycle observed",
+        "status": "PENDING",
+        "basis": "No 24h consecutive-cycle acceptance; WHO/PAHO need qualifying fresh captures under same contract."
+      },
+      {
+        "criterion": "Main and production protected",
+        "status": "PASS",
+        "basis": "No modifications; recorded main54174c5d and production-stable06831243."
+      }
+    ]
+  },
+  "resources": {
+    "new_paid_api_calls": 0,
+    "codex_reset_used": false,
+    "backfill90_runs": 0,
+    "full_qa_reruns_requested": 0,
+    "new_live_runtime_runs": 0
+  },
+  "next_actions": [
+    "Codex B closes explicit PR10 acceptance blockers.",
+    "Codex C removes repeat90/activation mismatch before integration acceptance.",
+    "Codex D reconciles PMO union and delivers final acceptance.",
+    "Commander merges first accepted safe candidate with merge commit and exact head check, then bounded real runtime on resulting staging SHA.",
+    "Revalidate daily24h and final editorial desktop/mobile milestone before beta."
+  ],
+  "automation": "No new recurring worker or scheduled continuation created by this checkpoint."
+}

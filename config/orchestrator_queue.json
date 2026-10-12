@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-11T15:07:30.832140+00:00",
+  "updated_at": "2026-10-12T01:36:56.500136+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -4634,7 +4634,7 @@
       "validation_code_sha": "82c50e521b4d33a31c6513ab7e502a6a4488de37",
       "integration_status": "READY_FOR_INTEGRATION",
       "ready_for_integration": true,
-      "integration_base_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+      "integration_base_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
       "validated_local_code_sha": "b832aed3630eca59b8b6a2b536a3ae79eeacb69d",
       "deferred_scope": [
         "Isalud Ltda./SpA contradiction and effective legal date remain unproven",
@@ -4693,7 +4693,7 @@
       "validation_code_sha": "82c50e521b4d33a31c6513ab7e502a6a4488de37",
       "integration_status": "READY_FOR_INTEGRATION",
       "ready_for_integration": true,
-      "integration_base_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+      "integration_base_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
       "validated_local_code_sha": "b832aed3630eca59b8b6a2b536a3ae79eeacb69d",
       "deferred_scope": [
         "Complete current health reporting ecosystem and standalone subsidiary figures",
@@ -4752,7 +4752,7 @@
       "validation_code_sha": "82c50e521b4d33a31c6513ab7e502a6a4488de37",
       "integration_status": "READY_FOR_INTEGRATION",
       "ready_for_integration": true,
-      "integration_base_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+      "integration_base_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
       "validated_local_code_sha": "b832aed3630eca59b8b6a2b536a3ae79eeacb69d",
       "deferred_scope": [
         "Complete fiscal version/period stock",
@@ -5303,9 +5303,9 @@
       ],
       "approved_at": "2026-10-11",
       "started_at": "2026-10-11",
-      "last_progress_at": "2026-10-11T15:07:30.832140+00:00",
-      "current_subfront": "all_current_mature_source_fronts_integrated_and_runtime_validated",
-      "next_action": "Pulso#10 only after explicit READY_FOR_INTEGRATION and actual processing acceptance. Continue scoped publisher coverage/date gaps and Work4 recurring Global source expansion; no main/production promotion or autonomy4h closure.",
+      "last_progress_at": "2026-10-12T01:36:56.500136+00:00",
+      "current_subfront": "sprint_candidate_acceptance_blocked_per_sha",
+      "next_action": "PR10 final acceptance; PR26 bounded-daily/activation fix; PR16 PMO evidence union. Merge next safe accepted SHA only; then postmerge real runtime. See data/pmo/sprint_integration_2026_10_11_13.json",
       "independent_review_cuts": [
         {
           "reviewer": "Work 3",
@@ -6221,7 +6221,8 @@
         "status": "PASS",
         "run": 38148412191,
         "evidence": "data/audits/integration_20261011/postmerge-aa8bb305/receipt.json"
-      }
+      },
+      "sprint_checkpoint": "data/pmo/sprint_integration_2026_10_11_13.json"
     },
     {
       "id": "beta_gate5_test_ops_golive_2026_10_11",

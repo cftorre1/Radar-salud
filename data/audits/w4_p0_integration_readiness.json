@@ -5,7 +5,7 @@
   "pr": 16,
   "branch": "codex/w4-market-intelligence-expansion-20261011",
   "validated_local_code_sha": "b832aed3630eca59b8b6a2b536a3ae79eeacb69d",
-  "integration_base_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+  "integration_base_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
   "actual_conflicts": [
     "config/pmo_baseline.json"
   ],
@@ -273,5 +273,6 @@
   "next_action": "Integration Commander: verify final PR16 head, green required checks and no conflicts; merge PR16 into staging with a merge commit and matched head; capture resulting staging SHA and run read-only retained-evidence qualification/QA. Do not activate sources or publish held candidates. Follow deferred source scopes separately.",
   "merge_authority": "Integration Commander; not this agent",
   "activation": "held",
-  "post_merge_runtime": "not_executed"
+  "post_merge_runtime": "not_executed",
+  "subsequent_staging_update": "88979eb changes governance only; no code/data-source changes. Existing focal/replay proof still applies; final CI validates merged candidate."
 }
