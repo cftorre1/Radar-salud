@@ -311,7 +311,8 @@
     "252fd19d8ed661fe6721f4ef2a4ee97587084af85ef8f7847a0c1f3f1da41d22",
     "227e7afde26f88d7a211bbb051b4915df8d0d075a4c637997614212dd5e21edb",
     "0e07aa734c7938fe10dff87fc6e8acbb026e26c8c63724c47b5fb25e83c9e2dc",
-    "2ec80636e2e3d59d161be8ef23c2e8056b3597b84baba5e5d898e3df58e15a56"
+    "2ec80636e2e3d59d161be8ef23c2e8056b3597b84baba5e5d898e3df58e15a56",
+    "d61c2774602ba87ad69e91850de1ec4b2cebd4f170c199adaaec09826363ae6f"
   ],
   "lease_events": [
     {
@@ -85071,12 +85072,53 @@
       "id": "809a4c1b8027b0bb512f20f1542db2bdd13f305787ce5759338366514b88adb4",
       "kind": "blocker",
       "task_id": "source_repair_mutualities_lane_2026_10_11"
+    },
+    {
+      "at": "2026-10-12T04:49:31.340638Z",
+      "details": {
+        "blockers": [
+          {
+            "evidence": [
+              {
+                "error": "TimeoutExpired",
+                "kind": "executor_failure",
+                "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "reason": "Command '['/opt/hostedtoolcache/Python/3.11.17/x64/bin/python', '/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py', '--family', 'mutualities', '--workspace', '/home/runner/work/Radar-salud/Radar-salud/candidate', '--task-json', '/home/runner/work/Radar-salud/Radar-salud/artifacts/task.json', '--input-sha', '515b8809ecc391600c4093ce0435955d7d3685c5', '--report', '/home/runner/work/Radar-salud/Radar-salud/artifacts/worker.json']' timed out after 1080 seconds"
+              }
+            ],
+            "fingerprint": "a12a8f7a3b115ed03ef7e9f8a839661e2b11882ba39b964d5d87273327bf3aa7",
+            "kind": "executor_failure",
+            "reason": "TimeoutExpired: Command '['/opt/hostedtoolcache/Python/3.11.17/x64/bin/python', '/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py', '--family', 'mutualities', '--workspace', '/home/runner/work/Radar-salud/Radar-salud/candidate', '--task-json', '/home/runner/work/Radar-salud/Radar-salud/artifacts/task.json', '--input-sha', '515b8809ecc391600c4093ce0435955d7d3685c5', '--report', '/home/runner/work/Radar-salud/Radar-salud/artifacts/worker.json']' timed out after 1080 seconds"
+          }
+        ],
+        "evidence": [
+          {
+            "error": "TimeoutExpired",
+            "kind": "executor_failure",
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "reason": "Command '['/opt/hostedtoolcache/Python/3.11.17/x64/bin/python', '/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py', '--family', 'mutualities', '--workspace', '/home/runner/work/Radar-salud/Radar-salud/candidate', '--task-json', '/home/runner/work/Radar-salud/Radar-salud/artifacts/task.json', '--input-sha', '515b8809ecc391600c4093ce0435955d7d3685c5', '--report', '/home/runner/work/Radar-salud/Radar-salud/artifacts/worker.json']' timed out after 1080 seconds"
+          }
+        ],
+        "fingerprint": "4ffb14a2d16f992b5d628a1aa1cd318fe84417d30750815fd7e623fd160ef710",
+        "product_input_fingerprint": "51f90ba9343048bff745426e6c1044a3e0d5533783383e51ab2622e9e166ee06",
+        "reason": "TimeoutExpired: Command '['/opt/hostedtoolcache/Python/3.11.17/x64/bin/python', '/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py', '--family', 'mutualities', '--workspace', '/home/runner/work/Radar-salud/Radar-salud/candidate', '--task-json', '/home/runner/work/Radar-salud/Radar-salud/artifacts/task.json', '--input-sha', '515b8809ecc391600c4093ce0435955d7d3685c5', '--report', '/home/runner/work/Radar-salud/Radar-salud/artifacts/worker.json']' timed out after 1080 seconds"
+      },
+      "family": "mutualities",
+      "id": "3529496464bf7e03dcb0484bd4b79be199b1471237df4edbfa18a47c198bb40f",
+      "kind": "blocker",
+      "task_id": "source_repair_mutualities_lane_2026_10_11"
     }
   ],
   "pending_transitions": [
     {
       "at": "2026-10-11T15:44:53.889181Z",
       "event_id": "809a4c1b8027b0bb512f20f1542db2bdd13f305787ce5759338366514b88adb4",
+      "family": "mutualities",
+      "task_id": "source_repair_mutualities_lane_2026_10_11"
+    },
+    {
+      "at": "2026-10-12T04:49:31.340638Z",
+      "event_id": "3529496464bf7e03dcb0484bd4b79be199b1471237df4edbfa18a47c198bb40f",
       "family": "mutualities",
       "task_id": "source_repair_mutualities_lane_2026_10_11"
     }
@@ -87148,81 +87190,44 @@
       "attempts": 8,
       "audit_counts": {},
       "blocked_revision": [
-        "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
-        "a892411287e975a1afce4db3aa80c672eed8c8047f269ef20411b4cf0eea4079"
+        "515b8809ecc391600c4093ce0435955d7d3685c5",
+        "d1d812ed63f6fbc1a7aebd69ebfa6f94f11e2e4a80eb018f1b1312e4f01c70cb"
       ],
       "blocker": {
-        "evidence": [
+        "blockers": [
           {
-            "input_fingerprint": "f43e9ca087fa0107f9c6e882ad625863fbf5c53d3f161d1ddde6e7d9aecf598e",
-            "material_watch_started_at": "2026-10-11T07:06:00.551910Z",
-            "recovery_episode": "8942850fdeb14c78e5ffca6a78535977aca7545ee5329bd74e603dda46f2766c",
-            "recovery_reclaims": 3,
-            "stalled_leases": [
+            "evidence": [
               {
-                "at": "2026-10-11T06:25:47.641878Z",
-                "family": "mutualities",
-                "kind": "stalled",
-                "ready_since": "2026-10-11T06:25:47.641878Z",
-                "reason": "no_material_progress_30m",
-                "task_id": "source_repair_mutualities_lane_2026_10_11"
-              },
-              {
-                "at": "2026-10-11T07:04:08.198661Z",
-                "family": "mutualities",
-                "kind": "stalled",
-                "ready_since": "2026-10-11T07:04:08.198661Z",
-                "reason": "no_material_progress_30m",
-                "task_id": "source_repair_mutualities_lane_2026_10_11"
-              },
-              {
-                "at": "2026-10-11T15:07:18.917675Z",
-                "family": "mutualities",
-                "kind": "stalled",
-                "ready_since": "2026-10-11T15:07:18.917675Z",
-                "reason": "no_material_progress_30m",
-                "task_id": "source_repair_mutualities_lane_2026_10_11"
-              },
-              {
-                "at": "2026-10-11T15:19:32.076672Z",
-                "family": "mutualities",
-                "fenced_token": "89ed3192a8044891ab72c512902fd6701ebf6656463510c2086ab93ffbad3cf7",
-                "kind": "stalled",
-                "reason": "no_material_progress_30m",
-                "task_id": "source_repair_mutualities_lane_2026_10_11"
-              },
-              {
-                "at": "2026-10-11T15:32:11.879839Z",
-                "family": "mutualities",
-                "fenced_token": "0fa0f1f1354afe480cd9d758201fb9198624b8e0d410b8b76f3b4d735d794dd7",
-                "kind": "stalled",
-                "reason": "no_material_progress_30m",
-                "task_id": "source_repair_mutualities_lane_2026_10_11"
-              },
-              {
-                "at": "2026-10-11T15:44:53.889181Z",
-                "family": "mutualities",
-                "fenced_token": "3f5f0127db127fdddf3eaa29619d0d0f127bfa1bac4d5b6e41650fbf2aee7fa9",
-                "kind": "stalled",
-                "reason": "no_material_progress_30m",
-                "task_id": "source_repair_mutualities_lane_2026_10_11"
+                "error": "TimeoutExpired",
+                "kind": "executor_failure",
+                "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "reason": "Command '['/opt/hostedtoolcache/Python/3.11.17/x64/bin/python', '/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py', '--family', 'mutualities', '--workspace', '/home/runner/work/Radar-salud/Radar-salud/candidate', '--task-json', '/home/runner/work/Radar-salud/Radar-salud/artifacts/task.json', '--input-sha', '515b8809ecc391600c4093ce0435955d7d3685c5', '--report', '/home/runner/work/Radar-salud/Radar-salud/artifacts/worker.json']' timed out after 1080 seconds"
               }
             ],
-            "task_id": "source_repair_mutualities_lane_2026_10_11"
+            "fingerprint": "a12a8f7a3b115ed03ef7e9f8a839661e2b11882ba39b964d5d87273327bf3aa7",
+            "kind": "executor_failure",
+            "reason": "TimeoutExpired: Command '['/opt/hostedtoolcache/Python/3.11.17/x64/bin/python', '/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py', '--family', 'mutualities', '--workspace', '/home/runner/work/Radar-salud/Radar-salud/candidate', '--task-json', '/home/runner/work/Radar-salud/Radar-salud/artifacts/task.json', '--input-sha', '515b8809ecc391600c4093ce0435955d7d3685c5', '--report', '/home/runner/work/Radar-salud/Radar-salud/artifacts/worker.json']' timed out after 1080 seconds"
           }
         ],
-        "fingerprint": "recovery_budget_exhausted:84b1be630eb2ce5d647c754073da04f584e9299ce8652133d1cefd164acdb881",
-        "human_required": false,
-        "kind": "stall_recovery_budget",
-        "product_input_fingerprint": "791130c7234d81aee2dd47c85cfcad2aa629000e457043811712e81664f7c67b",
-        "reason": "Three lease recovery pickups without material progress are exhausted."
+        "evidence": [
+          {
+            "error": "TimeoutExpired",
+            "kind": "executor_failure",
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "reason": "Command '['/opt/hostedtoolcache/Python/3.11.17/x64/bin/python', '/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py', '--family', 'mutualities', '--workspace', '/home/runner/work/Radar-salud/Radar-salud/candidate', '--task-json', '/home/runner/work/Radar-salud/Radar-salud/artifacts/task.json', '--input-sha', '515b8809ecc391600c4093ce0435955d7d3685c5', '--report', '/home/runner/work/Radar-salud/Radar-salud/artifacts/worker.json']' timed out after 1080 seconds"
+          }
+        ],
+        "fingerprint": "4ffb14a2d16f992b5d628a1aa1cd318fe84417d30750815fd7e623fd160ef710",
+        "product_input_fingerprint": "51f90ba9343048bff745426e6c1044a3e0d5533783383e51ab2622e9e166ee06",
+        "reason": "TimeoutExpired: Command '['/opt/hostedtoolcache/Python/3.11.17/x64/bin/python', '/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py', '--family', 'mutualities', '--workspace', '/home/runner/work/Radar-salud/Radar-salud/candidate', '--task-json', '/home/runner/work/Radar-salud/Radar-salud/artifacts/task.json', '--input-sha', '515b8809ecc391600c4093ce0435955d7d3685c5', '--report', '/home/runner/work/Radar-salud/Radar-salud/artifacts/worker.json']' timed out after 1080 seconds"
       },
       "blocker_signatures": [
         "61dfd66d4bb555a68be378060a4d3775b09cbf3ce7da40b18b66cb09e64c9b20",
         "a71ffae0bd758c59483eebc78b0db6d1b0572d0375a72d95712b9dc09c8aedfa",
         "9c1f5b82415f08a20a3e0febfdf40e0a194b96d60154fddcff748d1424e9531b",
         "ef7c74e22ce0ee200c0116c47aca7e63677f580d429cb06d247b84c844086cf9",
-        "2ec80636e2e3d59d161be8ef23c2e8056b3597b84baba5e5d898e3df58e15a56"
+        "2ec80636e2e3d59d161be8ef23c2e8056b3597b84baba5e5d898e3df58e15a56",
+        "d61c2774602ba87ad69e91850de1ec4b2cebd4f170c199adaaec09826363ae6f"
       ],
       "created_at": "2026-10-11T05:29:09.013956Z",
       "declared_repair_inputs": {
@@ -88226,16 +88231,9 @@
         }
       ],
       "last_ready_at": "2026-10-12T04:29:52.888203Z",
-      "lease": {
-        "claimed_at": "2026-10-12T04:31:22.699773Z",
-        "expires_at": "2026-10-12T04:58:49.167525Z",
-        "fence": 19,
-        "heartbeat_at": "2026-10-12T04:48:49.167525Z",
-        "owner": "38203963907-1-mutualities",
-        "token": "20f1c6b4d6f48b5005b94e6a6615def0efeee71fc1949bfb69cd4976d102c21a"
-      },
-      "material_progress_at": "2026-10-11T15:44:53.889181Z",
-      "material_watch_started_at": "2026-10-12T04:29:52.888203Z",
+      "lease": null,
+      "material_progress_at": "2026-10-12T04:49:31.340638Z",
+      "material_watch_started_at": "2026-10-12T04:49:31.340638Z",
       "objective": "Recover and reconcile ACHS Salud/Clínicas, ACHS Seguro Laboral, Mutual de Seguridad and IST with live origins and honest 30/90 coverage.",
       "pending_input_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
       "pickup_ready_since": "2026-10-12T04:29:52.888203Z",
@@ -88243,10 +88241,10 @@
       "product_input_fingerprint": "51f90ba9343048bff745426e6c1044a3e0d5533783383e51ab2622e9e166ee06",
       "queue_status": "in_progress",
       "reason": "input_or_evidence_changed",
-      "recovery_episode": "99959c810358709bb659f505fd50abb3813ecb593b8c7af9e9158be626ada882",
+      "recovery_episode": "3529496464bf7e03dcb0484bd4b79be199b1471237df4edbfa18a47c198bb40f",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-12T04:31:22.699773Z",
-      "status": "RUNNING"
+      "state_changed_at": "2026-10-12T04:49:31.340638Z",
+      "status": "BLOCKED"
     },
     "source_repair_public_data_lane_2026_10_11": {
       "approved": true,

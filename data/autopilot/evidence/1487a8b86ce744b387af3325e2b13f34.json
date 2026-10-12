@@ -1,0 +1,39 @@
+{
+  "at": "2026-10-12T04:49:27.612751+00:00",
+  "kind": "worker_result",
+  "operation_id": "1487a8b86ce744b387af3325e2b13f34",
+  "report": {
+    "blockers": [
+      {
+        "evidence": [
+          {
+            "error": "TimeoutExpired",
+            "kind": "executor_failure",
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "reason": "Command '['/opt/hostedtoolcache/Python/3.11.17/x64/bin/python', '/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py', '--family', 'mutualities', '--workspace', '/home/runner/work/Radar-salud/Radar-salud/candidate', '--task-json', '/home/runner/work/Radar-salud/Radar-salud/artifacts/task.json', '--input-sha', '515b8809ecc391600c4093ce0435955d7d3685c5', '--report', '/home/runner/work/Radar-salud/Radar-salud/artifacts/worker.json']' timed out after 1080 seconds"
+          }
+        ],
+        "fingerprint": "a12a8f7a3b115ed03ef7e9f8a839661e2b11882ba39b964d5d87273327bf3aa7",
+        "kind": "executor_failure",
+        "reason": "TimeoutExpired: Command '['/opt/hostedtoolcache/Python/3.11.17/x64/bin/python', '/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py', '--family', 'mutualities', '--workspace', '/home/runner/work/Radar-salud/Radar-salud/candidate', '--task-json', '/home/runner/work/Radar-salud/Radar-salud/artifacts/task.json', '--input-sha', '515b8809ecc391600c4093ce0435955d7d3685c5', '--report', '/home/runner/work/Radar-salud/Radar-salud/artifacts/worker.json']' timed out after 1080 seconds"
+      }
+    ],
+    "changed_paths": [],
+    "evidence": [
+      {
+        "error": "TimeoutExpired",
+        "kind": "executor_failure",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "reason": "Command '['/opt/hostedtoolcache/Python/3.11.17/x64/bin/python', '/home/runner/work/Radar-salud/Radar-salud/infrastructure/scripts/autonomy_lane_runner.py', '--family', 'mutualities', '--workspace', '/home/runner/work/Radar-salud/Radar-salud/candidate', '--task-json', '/home/runner/work/Radar-salud/Radar-salud/artifacts/task.json', '--input-sha', '515b8809ecc391600c4093ce0435955d7d3685c5', '--report', '/home/runner/work/Radar-salud/Radar-salud/artifacts/worker.json']' timed out after 1080 seconds"
+      }
+    ],
+    "family": "mutualities",
+    "input_sha": "515b8809ecc391600c4093ce0435955d7d3685c5",
+    "run_id": "38203963907-1-mutualities",
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38203963907",
+    "semantic_hash": "a12a8f7a3b115ed03ef7e9f8a839661e2b11882ba39b964d5d87273327bf3aa7",
+    "status": "BLOCKED",
+    "task_id": "source_repair_mutualities_lane_2026_10_11",
+    "validated": false
+  }
+}
