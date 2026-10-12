@@ -49,7 +49,10 @@ def publication_ready(r:Dict[str,Any])->Tuple[bool,str,int]:
     review = r.get("editorial_review") or {}
     if isinstance(review, dict) and review.get("schema_version") == "pulso_editorial_review_v1" and review.get("decision") in {"reject", "group"}:
         return False, "pulso_independent_editorial_" + review["decision"], quality_score(r)
-    if invalid_validity(r):r["validity_text"]=None
+    if invalid_validity(r):
+        if str(r.get("editorial_schema_version"))=="3":
+            return False,"editorial_v3_invalid_validity",0
+        r["validity_text"]=None
     if "Normativa" in (r.get("signal_types") or []) and (r.get("event_type")=="REGULATION" or r.get("normative_document_label") or r.get("legal_identity")):
         title=str(r.get("display_title") or r.get("title") or "")
         identity=str(r.get("legal_identity") or r.get("normative_document_label") or "")

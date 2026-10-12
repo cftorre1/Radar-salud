@@ -34,8 +34,9 @@ test('occupational sources expose verified counts and readable source identity o
 });
 
 test('occupational backfills retain their publisher and original publication year in the 90-day radar',async({page})=>{
-  await page.goto('/');
   const snapshot=await (await page.request.get('/data/radar_today.json')).json();
+  await page.clock.install({time:new Date(snapshot.date+'T15:00:00Z')});
+  await page.goto('/');
   const recovered=snapshot.signals.filter(s=>(s.watch_tags||[]).some(t=>lanes.includes(t)));
   expect(recovered.length).toBeGreaterThanOrEqual(4);
   await page.locator('#period').selectOption('90');
@@ -44,6 +45,8 @@ test('occupational backfills retain their publisher and original publication yea
     expect(signal.event_date).toBe(signal.publication_date);
     expect(signal.editorial_relevance).toBeGreaterThanOrEqual(75);
     const card=page.locator('article.signal').filter({has:page.locator('a').filter({hasText:'Fuente original'}).and(page.locator(`a[href=${JSON.stringify(signal.source_url)}]`))});
+    const age=(Date.parse(snapshot.date+'T00:00:00Z')-Date.parse(signal.event_date+'T00:00:00Z'))/86400000;
+    if(age<0||age>=90){await expect(card).toHaveCount(0);continue;}
     await expect(card).toHaveCount(1);
     await expect(card.locator('.card-meta')).toContainText(signal.source_name);
     await expect(card.locator('.card-meta')).toContainText('2026');

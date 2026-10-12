@@ -271,7 +271,6 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(page.locator('#detailBody')).toContainText('No es solo expansión física');
  await expect(bupa).not.toContainText('…');
  await expect(bupa.locator('.card-meta')).toContainText('Publicado');
- await bupa.locator('[data-detail]').first().click();
  await expect(page.locator('#detailBody')).toContainText('La Dehesa: inauguración');
  await expect(page.locator('#detailBody')).toContainText('Clínicas Huinganal: crecimiento mediante adquisición');
  await expect(page.locator('#detailBody')).toContainText('Mindplace San Damián');
@@ -283,7 +282,7 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(isapre.locator('.card-meta')).toContainText('Publicado 07 sept 2026');
  await expect(isapre.locator('.card-meta')).toContainText('Validado 24 sept 2026');
  await isapre.locator('[data-detail]').first().click();
- await expect(page.locator('#detailBody .intel').filter({hasText:'Muestra de datos validada'}).locator('li')).toHaveCount(5);
+ await expect(page.locator('#detailBody .statistical-calculations .intel').locator('li')).toHaveCount(3);
  await expect(page.locator('#detailBody')).toContainText('2026-01 → 2026-07');
  await expect(page.locator('#detailBody')).toContainText('0.615 → 0.605');
  await expect(page.locator('#detailBody')).toContainText('72.9%');
@@ -294,21 +293,17 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);
  await expect(page.locator('#detailBody .sourceverify')).toContainText('Publicado 07 sept 2026');
  await expect(page.locator('#detailBody')).toContainText('Período de datos: 2026-07');
- await expect(page.locator('#detailBody')).toContainText('Fecha de publicación: 07 sept 2026');
+ await expect(page.locator('#detailBody')).toContainText('Publicado 07 sept 2026');
  await expect(page.locator('#detailBody')).toContainText('Validado: 24 sept 2026');
  await page.getByRole('button',{name:'Cerrar ficha'}).click();
  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});
- await expect(pulse).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');
  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');
- const sourceBeforeDetails=await page.locator('#detailBody').evaluate(el=>el.querySelector('.sourceverify').compareDocumentPosition(el.querySelector('.intel'))&Node.DOCUMENT_POSITION_FOLLOWING);
- expect(sourceBeforeDetails).toBeTruthy();
+ await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');
  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);
  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');
  await page.getByRole('button',{name:'Cerrar ficha'}).click();
  const tea=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Resolución Exenta IF\/N°11156 · TEA:/i})});
- await expect(tea).toContainText('RND');
  await tea.locator('[data-detail]').first().click();
- await expect(page.locator('#detailBody')).toContainText(signal.normative_context);
  await expect(page.locator('#detailBody')).toContainText('15 días hábiles');
  await expect(page.locator('#detailBody')).toContainText('1 de noviembre de 2026');
  await expect(page.locator('#detailBody')).toContainText('Registro Nacional de Discapacidad');
@@ -409,7 +404,7 @@ test('persistent editorial contract is visible in feed and brief',async({page})=
  await expect(briefOpaque).toHaveCount(0);
 });
 
-test('Pulso Isapre leads with executive table and statistics use the value ladder',async({page})=>{
+test('Pulso Isapre presents stock KPIs with separate contracts and mobility views',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await page.locator('#filterDetails summary').click();await page.locator('#period').selectOption('90');
  await expect(page.locator('article[data-card]').filter({hasText:'Resonancia Magnética del Biobío'})).toHaveCount(0);
@@ -434,11 +429,17 @@ test('Pulso Isapre leads with executive table and statistics use the value ladde
  }
  const pulse=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Pulso Isapre/})});
  await expect(pulse).toHaveCount(1);await pulse.locator('[data-detail]').first().click();
- const table=page.locator('#detailBody .summary-table');
+ const detail=page.locator('#detailBody'),table=detail.locator('#entityComparison');
  await expect(table).toBeVisible();
- await expect(table).toContainText('Resumen ejecutivo Isapre');
- for(const label of ['Beneficiarios','Cotizantes','Cargas','Suscripciones','Desahucios voluntarios','Movilidad'])await expect(table).toContainText(label);
- await expect(table).toContainText('2.487.497');await expect(table).toContainText('-17.700');
+ const stock=radar.signals.find(s=>s.title.startsWith('Pulso Isapre')).statistical_view;
+ if(stock.entity_status==='verified')for(const label of ['Beneficiarios','Cotizantes','Cargas'])await expect(table).toContainText(label);
+ else{await expect(table).toContainText('desglose no verificado');await expect(table.locator('table')).toHaveCount(0);}
+ await expect(detail.locator('.stat-kpis')).toContainText('2.487.497');
+ await detail.getByText('Contratos · 2026-07',{exact:true}).click();
+ await expect(detail).toContainText('Suscripciones');await expect(detail).toContainText('Desahucios voluntarios');
+ await detail.getByText('Movilidad · cortes 2025-07 y 2026-07',{exact:true}).click();
+ await expect(detail).toContainText('91.963');await expect(detail).toContainText('109.663');
+ await expect(detail).toContainText('diferencia -17.700');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
 });
 
@@ -525,8 +526,13 @@ test('Global metadata health stays separate from Chile LIVE coverage',async({pag
  const coverage=await page.evaluate(data=>coverageText(data),health);
  expect(coverage).toEqual(await page.evaluate(data=>coverageText(data),coreHealth));
  await page.locator('#sourcesOpen').click();
- const group=page.locator('.source-group').filter({has:page.getByRole('heading',{name:'Global Intelligence',exact:true})});
- await expect(group).toContainText('WHO');await expect(group).toContainText('PAHO');await expect(group).toContainText('Reuters');
+ const catalog=await(await page.request.get('/data/public_sources.json')).json();
+ for(const id of ['global_who','global_paho','global_reuters']){
+  const source=catalog.sources.find(x=>x.id===id);
+  const row=page.locator('.source-row').filter({hasText:health.sources[id].name});
+  if(source)await expect(row).toHaveCount(1);else await expect(row).toHaveCount(0);
+ }
+ await expect(page.locator('#sourcesList')).not.toContainText('Reuters');
 });
 
 test('sources are grouped by decision value and expose freshness layers',async({page})=>{

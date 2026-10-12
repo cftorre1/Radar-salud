@@ -27,6 +27,14 @@ def test_v3_support_and_depth_replace_length_and_why_template():
     assert validate_publication_contract(r)['status']=='pass'
     assert 'why_it_matters' not in r
 
+def test_v3_publication_gate_preserves_signed_copy_and_rejects_invalid_validity():
+    r=record();r['validity_text']='schema.org PropertyValue'
+    r['review']['content_version']=content_version(r)
+    before=deepcopy(r)
+    assert validate_depth(r)['ok']
+    assert publication_ready(r)==(False,'editorial_v3_invalid_validity',0)
+    assert r==before and validate_depth(r)['ok']
+
 @pytest.mark.parametrize('mutation,code',[
     (lambda r:r['review'].update(reviewer='writer'),'independent_review_required'),
     (lambda r:r.update(detail_body='Una paráfrasis nueva sin hecho adicional.'),'stale_review'),
@@ -111,6 +119,16 @@ def test_selector_is_adaptive_and_does_not_invent_charts_or_publish_holds():
     out=select_representation({'profile':profile,'finding_candidates':[f]});assert out['modules'][0]['representation']=='text'
     assert select_representation({'profile':profile,'finding_candidates':[]})['publication_status']=='NO_SIGNAL'
     assert not select_representation({'profile':profile,'finding_candidates':[f],'hold_reason':'HOLD_COVERAGE_ESENCIAL'})['modules']
+
+def test_actual_respiratory_se37_contradiction_stays_held_without_cartera_template():
+    import json
+    from pathlib import Path
+    dataset=json.loads(Path('data/epidemiology/respiratory_pressure_2026.json').read_text())
+    assert dataset['epidemiological_week']==37
+    assert '53,7%' in dataset['risk_notes'][0] and '56,7%' in dataset['risk_notes'][0]
+    selected=select_representation({'profile':{'family':'respiratory_positivity','contradictions':[dataset['risk_notes'][0]]},
+                                    'hold_reason':'HOLD_CONTRADICTORY_INDICATOR','finding_candidates':[]})
+    assert selected=={'publication_status':'HOLD','reason':'HOLD_CONTRADICTORY_INDICATOR','modules':[]}
 
 def test_catalog_is_sanitized_and_does_not_accept_bad_future_or_unknown_dates():
     now=datetime(2026,10,12,tzinfo=timezone.utc);r={'name':'Minsal','technical_status':'ok','coverage_status':'observed','checked_at':'2026-10-11T10:00:00Z'}

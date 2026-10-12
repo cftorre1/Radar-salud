@@ -76,7 +76,8 @@ test('recovered registers retain offices, actors, effects and issuance dates in 
  const originalDates=new Map(original.map(s=>[s.source_record_id,s.emission_date]));
  expect([...register.source_alternatives,...register.historical_sanction_context].every(s=>s.emission_date===originalDates.get(s.source_record_id)&&s.event_date===s.emission_date&&s.publication_date===null)).toBe(true);
  await expect(page.locator('#detailBody .historical-sanctions .related-item')).toHaveCount(context.length);
- await expect(page.locator('#detailBody .historical-sanctions summary')).toContainText('anteriores a 90 días');
+ await expect(page.locator('#detailBody .historical-sanctions summary')).toContainText('Suspensiones de oficios históricos');
+ await expect(page.locator('#detailBody')).toContainText('anteriores mantienen suspensiones vigentes');
  await page.locator('#detailBody .sourceverify:not(.historical-sanctions) summary').click();
  await expect(page.locator('#detailBody')).toContainText('O-02-S-03209-2026');
  await expect(page.locator('#detailBody')).toContainText('2027-01-04');
