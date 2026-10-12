@@ -1,3 +1,61 @@
+# Cierre de revisión focal · Complemento estadístico adaptativo
+
+**PASS_SCOPED_DOCUMENTARY — READY_FOR_WORK6**.
+Candidato final SHA256: `9ba5c848d8aa4416b38e5ab07d29a2c8610eb6c6fdd727c8e5858fcd6cc4870f`.
+Archivo: `docs/handoffs/WORK5_PRODUCT_EDITORIAL_2026_10_12.md`.
+
+Releí sólo la corrección adaptativa E3, ampliación de tipos E4, prompt y mandato Work6 E7. El P1 de conciliación con comentario6121281277 queda cerrado. No repetí la aritmética ni V1/V2.
+
+El contrato distingue ahora perfilado, exploración determinística, selección por utilidad/robustez y representación elegida después del hallazgo. Permite texto, módulos opcionales o no tarjeta;2–4KPI queda restringido al ejemplo Pulso. Los tipos incluyen flujo/tasa/proporción además de stock y cortes. Terra/Astra conservan autorización, límites y receipts de V2: ninguna llamada nueva aprobada.
+
+El segundo fixture respiratorio es admisible como prueba negativa de generalización: comprobé que `data/epidemiology/respiratory_pressure_2026.json` registra53,7% actual,56,7% previo y una advertencia explícita de inconsistencia interior del PDF. El delta exige HOLD del indicador conflictivo y prohíbe serie/ranking inventado. No afirma nueva lectura del original ni cobertura FEFI. La prueba con otra familia aprobada queda requerida para Work6/Builder; si no hay evidencia, HOLD/vacío y nunca PASS ficticio de FEFI.
+
+El prompt y Work6 desafían explícitamente el sobreajuste; permanecen pruebas de normativa/noticias/Global, restricciones estadísticas y techo20h. No hay P0/P1 documentales abiertos en este alcance. Los límites anteriores permanecen: no QA visual ejecutado, comprensión medida, despliegue, publicación o aprobación integral Work6.
+
+**Este receipt habilita someter el candidato a Work6; no habilita Codex H ni sustituye aceptación de Dirección.** El REVISE inicial siguiente se conserva como historial y queda sustituido por este cierre vinculado al nuevo hash.
+
+---
+
+# Reviewer independiente · Complemento estadístico E1–E7
+
+Dictamen: **REVISE — un P1 de conciliación con Dirección posterior**.
+Candidato SHA256: `9b0edfa3b0cbf1907949155b67153bebd6dc83bd0e60e55f996d9e9ece067633`.
+Base aprobada declarada: `ef41c9fd3b8fa4724a3b2273d94f40e638c2e813`.
+Scope: sólo complemento estadístico, datos originales locales y compatibilidad de autoridad/presupuesto. No repetí V1/V2 ni QA histórico. No ejecuté código de producción ni llamadas pagadas.
+
+## P1 abierto: contrato sobreajustado a Pulso
+
+Al consultar PR32 leí tanto el mandato6121104768 como el posterior6121281277. Este último establece explícitamente que Pulso es caso de prueba y no plantilla general de KPI+línea+ranking; requiere perfilado, exploración determinística, selección editorial antes de representación y validación con otro conjunto distinto.
+
+E3 actualmente prescribe primera vista2–4KPI y gráfico/tabla, E4 sólo contiene clases de medida stock/contract_events/between_cuts, y la tarea H-Datos queda restringida a Pulso. Es correcto para este caso, pero insuficiente como contrato adaptativo para tasas, proporciones, distribución, epidemiología/finanzas u otras estadísticas. Corregir autoridad y separar contrato general de ejemplo. Añadir decisión editorial que permita visual pertinente o sólo texto/no tarjeta, metodología reproducible y segundo conjunto oficial verificable (FEFI sólo si está acreditado). Work6 debe desafiar sobreajuste. Mantener0 llamadas pagadas y reasignación20h; no prometer ejecución extra sin presupuesto.
+
+## Datos: PASS de comprobación focal
+
+Abrí cartera.xlsx, suscripciones.xlsx y movilidad.xlsx mediante openpyxl data_only y contrasté hashes contra verified.json. Los tres hashes coinciden con E2. Recalculé cotizantes+cargas por las10instituciones, extremos enero/julio, diferencias y porcentajes sin redondear. Reconcilian con2.487.497 beneficiarios y cambio−26.541. Verifiqué los siete totales mensuales originales, todos los códigos/filas de la tabla y bases institucionales. No encontré cifras inventadas ni errores de denominador. Consalud−20 se conserva como caída, sin redondeo a estabilidad.
+
+También contrasté Julio!C20/D20 de suscripciones:19.716/15.172. Movilidad Nacional!A3 y D19/D31/D43: cortesjulio2025/julio2026,109.663salidas,91.963entradas,−17.700diferencia. Leí las notas de los tres libros: beneficios vigentes, provisionalidad, S/I, terminaciones adicionales y comparación de cotizantes presentes entre dos cortes. El complemento distingue correctamente contratos/personas, stock/flujo/comparación entre cortes y no acredita destinoFonasa ni causalidad desde composición.
+
+## Diseño, gates y presupuesto: PASS de especificación focal
+
+- Tableau institucional muestra abiertas/cerradas por separado, total sistema y comparación entre mismos períodos. Orden numérico crudo y límites de cobertura están definidos.
+- Serie completa de siete puntos habilita línea para este caso. Fuente, unidades, límites, texto alternativo y tabla equivalente están especificados; no son QA ejecutado.
+- Mobile prescribe tarjetas/filas desplegables sin truncar columnas esenciales, valores clave visibles, etiquetas y acceso a componentes. Teclado, foco, aria-sort/expanded, contraste y targets definidos.
+- Metodología secundaria conserva fórmulas y provenance, mientras limitaciones sustantivas quedan junto a la cifra. Equivalentes accesibles no se confunden con redundancia editorial.
+- Work6 cubre normativa, noticias, Global y estadísticas, mantiene HOLD y exige SHA final; este Reviewer focal no suplanta auditoría integral ni aceptación de Dirección.
+- TopeH-Datos3h se financia difiriendo H4por2h y reservaH8por1h: total20h, sin doble suma. El diferimiento requiere la priorización Work6/Dirección descrita; no elimina entregables.
+
+## P2 y límites
+
+No medí comprensión ejecutiva ni rendericé una nueva UI: sus umbrales son aceptación futura. No verifiqué nuevamente fecha histórica de publicación7-sep ni actualidad de landing mutable; el texto no la declara revalidada. Las restricciones y cifras revisadas constituyen especificación y fixtures, no señales publicadas.
+
+Fuentes de autoridad leídas directamente: https://github.com/cftorre1/Radar-salud/pull/32#issuecomment-6121104768 y https://github.com/cftorre1/Radar-salud/pull/32#issuecomment-6121281277 . Originales locales bajo `stats-originals`, hashes y celdas en E2/verified.json.
+
+No READY_FOR_WORK6 del candidato actual hasta conciliar el nuevo mandato adaptativo. Una vez corregido, revisar sólo delta y nuevo hash, sin repetir aritmética ya acreditada.
+
+---
+
+# Historial de revisión V2 y V1 preservado
+
 # Reviewer independiente · Addendum Final V2
 
 Fecha: 12 octubre 2026. Dictamen: **PASS_SCOPED_DOCUMENTARY — READY_FOR_WORK6**.

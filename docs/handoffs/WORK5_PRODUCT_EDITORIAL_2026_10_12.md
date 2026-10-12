@@ -730,3 +730,174 @@ sobre diff final y evidencia original. Recibos con hashes, consumo0 pipeline.
 Respeta timeboxes20h; nuevos colectores/benchmarks se difieren, no absorben P0.
 Entrega un PR revisable por tareas, SHA y riesgos a Work3. No merge/publicación.
 ```
+
+
+# COMPLEMENTO FINAL · Estadísticas · 12 octubre 2026
+
+## E1. Autoridad y revisión focal
+
+Mandato: [Dirección, PR32 comentario6121104768](https://github.com/cftorre1/Radar-salud/pull/32#issuecomment-6121104768). Base aprobada `ef41c9fd3b8fa4724a3b2273d94f40e638c2e813`; staging reconsultado `ef8cbe3938623d493872ff5f3e717153f176d1be`. Este complemento añade un contrato especializado de datos a v3 y una tarea estadística a Codex H. Preserva íntegros V1/V2, evidencias, hallazgos abiertos y gates; no repite auditorías de normativa, noticias ni Global. No se modifica código ni contenido publicado.
+
+Caso inspeccionado: `Pulso Isapre · datos a 2026-07` en `web/data/radar_today.json`, `data/excel/validated_series.json`, `isapre_pulse.py`, `isapre_insights.py`, `scripts/validate_isapre_workbooks.py` y proyección `web/app.js`. Diagnóstico focal: `build_pulse` escribe los mismos hechos en what/why, tabla, data_insights y data_insight_evidence. El renderer ofrece fórmulas en primera vista salvo flag de metodología; el registro no tiene `methodology_visibility=collapsed` ni `statistical_value_level=deep_analysis`. Por eso no basta renombrar Ver resumen. La columna «Lectura» vuelve a explicar lo que los indicadores ya dicen. Truncamiento mobile reportado por Dirección; esta revisión no afirma haber ejecutado nuevo browser QA.
+
+## E2. Evidencia original y comparabilidad comprobada
+
+Se descargaron por HTTPS los tres XLSX oficiales referenciados por el pulso, en lectura exclusiva. Sus bytes coinciden con hashes anteriores; no se ejecutó pipeline/publicador ni IA pagada. Validación determinística de totales enero–julio reutiliza funciones read-only del validador existente; además se extrajeron filas por código de isapre, se contrastaron extremos y se verificaron sumas. Leer hojas Notas permitió confirmar provisionalidad, definiciones y límites de movilidad.
+
+|Serie y original|SHA256|Localizadores del caso|
+|---|---|---|
+|[Cartera2026](https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx)|`bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec`|Hojas Enero…Julio: A4 período; A6:E6 encabezados; A8:E14 abiertas; A16:E18 cerradas; C20:E20 sistema. Notas2–6.|
+|[Suscripciones/desahucios2026](https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx)|`dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6`|Julio, C20/D20 totales suscritos/voluntarios; Notas1–5 explican movimientos contractuales y otras causales.|
+|[Movilidadjulio2025–julio2026](https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-movilidad-de-cotizantes-202607.xlsx)|`851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7`|Nacional A3 cortes; D19 salidas, D31 entradas, D43 diferencia; Notas1–8.|
+
+Notas comunes: información provisional, proveniente de archivos maestros enviados por isapres, susceptible de revisión posterior. Cartera mide cotizantes/cargas con beneficios vigentes. Movilidad compara presencia entre dos cortes: no cuenta todos los movimientos ocurridos durante doce meses; entradas y salidas del sistema no equivalen a cambios entre isapres, y no acreditan destino Fonasa. La ficha no debe transformar inferencias de destino en hechos observados.
+
+La [landing actual de cartera](https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/) declara actualización a agosto2026 y publicación2-oct. Se preserva la versión julio del caso y su fecha de publicación7-sep registrada en evidencia previa; esa fecha histórica no queda nuevamente probada por una landing mutable. No llamarla «últimos datos» ni reemplazar archivo, fecha, hash o receipt silenciosamente. La actualización a agosto se deriva al pipeline normal, fuera de este complemento, sin nuevo backfill. Hojas futuras vacías no acreditan serie completa por existir su nombre.
+
+## E3. Contrato editorial estadístico: mostrar relaciones, no repetir frases
+
+El contrato de claims v3 se aplica a números y representaciones. Cada métrica tiene un único cálculo y origen, compartido por KPI, gráfico, tabla accesible y metodología. Repetir un valor para orientación/accesibilidad es necesario; repetir la conclusión en cinco párrafos no añade conocimiento.
+
+|Nivel|Diseño y aporte exigido|
+|---|---|
+|Bandeja|Título factual con período y un hallazgo material. Sin un deck que lo parafrasee. Fecha de publicación separada del período de datos.|
+|Ficha inicial|Representación elegida según hallazgo. Para este Pulso:2–4 KPI coherentes de una misma familia/período, sin rellenar hasta cuatro. En cualquier otra pieza puede bastar un indicador, tabla, anotación/texto o ninguna tarjeta. Gráfico de evolución únicamente con serie completa verificada; tabla alternativa sólo si aporta valor. Valores, unidad, universo y referencia temporal visibles.|
+|Comparación institucional|Tabla/ranking por entidad cuando existan datos comparables y verificados, total sistema separado y cobertura declarada. Añade heterogeneidad que el promedio agregado oculta. No ranking a partir de participaciones supuestas.|
+|Otras familias|Vistas separadas, cada una con período, población/unidad y límite visible propio. Nada de eje común para stocks, contratos y movilidad.|
+|Metodología y fuentes|Panel secundario con fórmulas, celdas, fuente original, hash/versiones, bases, validaciones y definiciones. Cerrado inicialmente, accesible por teclado. Sin volver a narrar cada indicador.|
+
+Eliminar «Hallazgos», «Cálculos» e «Implicancias» como bloques simultáneos que repiten tabla/KPI. Una interpretación sólo permanece si aporta otra comparación o conclusión sustentada, con premisas y límite; no recomendaciones evidentes de seguir datos. Quitar «base de ingresos» inferida desde cotizantes/cargas: esa composición no mide ingreso ni causalidad.
+
+### Regla adaptativa para toda inteligencia estadística
+
+Conciliación focal con [precisión posterior de Dirección6121281277](https://github.com/cftorre1/Radar-salud/pull/32#issuecomment-6121281277), detectada durante Reviewer. Pulso es un caso de prueba, **no plantilla universal de KPI+línea+ranking**. Aplica también a FEFI, licencias, estados financieros, epidemiología, listas de espera y presupuestos; no requiere investigar esas fuentes ahora.
+
+Flujo editorial de Datos/BI/estadística/economía sanitaria, como responsabilidades concretas del editor y revisor existentes:
+
+1. Perfilar fuente, cobertura, periodicidad, unidad, universo, denominador, definición y revisiones. Clasificar stock/flujo/tasa/proporción y cambios metodológicos; conservar nulos y calidad.
+2. Explorar determinísticamente candidatos: tendencias, cambios, brechas por entidad/territorio, composición, anomalías, concentración, ciclos y contradicciones. Cada candidato conserva inputs/fórmula y limitaciones. No automatizar búsqueda irrestricta de patrones ni llamar significativa una anomalía por umbral sin tamaño muestral/metodología. Ciclos requieren historia suficiente; concentración exige universo íntegro; tasa exige denominador válido. Un cambio puede ser revisión administrativa.
+3. Seleccionar por novedad frente a piezas anteriores, materialidad/magnitud, robustez y utilidad concreta. Sin cuota de hallazgos; si ninguno pasa, no publicar tarjeta. Separar observación de interpretación, sin fabricar causas.
+4. Elegir representación después: KPI para magnitud puntual; línea para evolución comparable; barras para brechas; distribución para dispersión con datos individuales/agrupados suficientes; tabla para comparación exacta; anotación o texto para un cambio metodológico. No forzar gráficos, ranking ni2–4KPI en el contrato general. Cero visualizaciones es válido.
+5. Redactar sólo lo que la representación no comunica, separar metodología reproducible y pasar revisión independiente del conjunto.
+
+Agregar `finding_candidates[]` con tipo, input_refs, robustez, materialidad, novelty_refs, selección/motivo; `chosen_representation` opcional con razón de ajuste al hallazgo. Estos campos son internos y no nuevas secciones públicas. El renderer acepta módulos opcionales, no espera siempre KPI/chart/entity_table. Parsers y cálculos determinísticos; Terra/modelo económico sólo síntesis propuesta si disponible y autorizado; Astra sólo complejidad/contradicción/alto impacto conforme V2.2, conservando receipts y presupuesto. Cero llamadas nuevas autorizadas.
+
+Prueba anti-sobreajuste adicional: existen referencias FEFI en history (marzo2026 y períodos2025), pero no se acreditó aquí una serie numérica FEFI verificada; no fabricar gráfico financiero. Usar como segundo fixture estructural el dataset existente `data/epidemiology/respiratory_pressure_2026.json`, SE37: contiene una contradicción documental registrada de positividad53,7% frente a56,7%, además de porcentajes con universos distintos. Resultado esperado del nuevo contrato: HOLD de ese indicador mientras no se resuelva la contradicción, ningún rankingisapres, ningún gráfico longitudinal inventado, ninguna suma de porcentajes heterogéneos. Es prueba negativa de compatibilidad con evidencia histórica, no revalidación del PDF ni nuevo hallazgo publicable. Work6/Builder debe además aplicar el selector a una familia distinta con evidencia aprobada (preferir FEFI si se acredita serie) y registrar representación elegida y razón; si falta evidencia, HOLD y prueba de vacío, no PASS de cobertura FEFI.
+
+### Ejemplo factual de primera vista, sin publicar
+
+**Título:** «Beneficiarios de isapres disminuyen en cada mes de febrero a julio de 2026».
+
+**Etiqueta:** Sistema Isapre · datos provisionales · enero–julio2026. Fuente: Superintendencia de Salud. No lleva párrafo de resumen repetido.
+
+|KPI|Valor|Referencia visible|
+|---|---:|---|
+|Beneficiarios|2.487.497|Julio2026; personas con beneficios vigentes|
+|Cambio desde enero|−26.541|Enero→julio2026; diferencia de stock|
+|Variación desde enero|−1,06%|Base enero2026:2.514.038|
+
+Gráfico de línea «Beneficiarios · enero–julio2026», siete puntos oficiales: enero2.514.038; febrero2.510.385; marzo2.504.837; abril2.498.649; mayo2.493.684; junio2.489.258; julio2.487.497. En esta versión sí hay serie completa verificada; seis comparaciones mensuales negativas no significan siete caídas. EjeY con unidad «personas» o «millones de personas» claramente indicada, ticks y límites visibles; si rango acotado, declarar «eje no inicia en cero», sin exageración gráfica. Sin suavizado, proyección ni doble eje. Leyenda «Beneficiarios»; texto alternativo describe evolución y referencia a tabla accesible de siete observaciones. La tabla equivalente puede estar bajo «Ver datos del gráfico», sin ser otro bloque de conclusiones.
+
+El título comunica continuidad de caída; KPI aportan tamaño/base; el gráfico aporta trayectoria y ritmo; el desglose siguiente añade diferencias institucionales. No volver a escribir esos cuatro aportes en «Por qué importa».
+
+### Desglose verificado: decisión IMPLEMENTABLE, con grupos explícitos
+
+Hay diez códigos coincidentes entre enero y julio: siete abiertas y tres cerradas. Sus conteos reconcilian con totales; no hay filas ausentes en este ejemplo. Comparabilidad contable de stocks sí; equivalencia de mercados/clientelas o calidad de gestión no. Presentar grupos separados, sin ranking competitivo conjunto de abiertas y cerradas. No omitir Isalud ni otras instituciones pequeñas. Mantener todas las filas accesibles sin cuotas editoriales.
+
+Tabla de especificación desktop; no reproducir esta anchura sin adaptación mobile. Δ es beneficiarios julio menos enero; porcentaje usa base de cada entidad en enero, no total sistema.
+
+|Isapre (código)|Cotizantes jul|Cargas jul|Beneficiarios jul|Δ ene→jul|Δ %|
+|---|---:|---:|---:|---:|---:|
+|**Abiertas**||||||
+|Colmena Golden Cross (67)|363.526|201.038|564.564|−9.033|−1,57%|
+|Cruz Blanca (78)|223.084|131.318|354.402|−6.241|−1,73%|
+|Vida Tres (80)|80.285|59.557|139.842|−933|−0,66%|
+|Nueva Masvida (81)|193.635|104.073|297.708|+3.740|+1,27%|
+|Banmédica (99)|322.333|224.599|546.932|−18.549|−3,28%|
+|Consalud (107)|295.872|162.679|458.551|−20|−0,0044%¹|
+|Esencial (108)|34.857|23.728|58.585|+5.712|+10,80%|
+|**Cerradas**||||||
+|Isalud (63)|19.800|19.779|39.579|−911|−2,25%|
+|Fundación (76)|15.970|10.297|26.267|−255|−0,96%|
+|Cruz del Norte (94)|511|556|1.067|−51|−4,56%|
+|**Total sistema**|**1.549.873**|**937.624**|**2.487.497**|**−26.541**|**−1,06%**|
+
+¹ Mayor precisión excepcional para no presentar caída como0,00%. En UI puede rotularse «caída<0,01%» con valor preciso accesible; nunca «sin cambio». Orden inicial por beneficiarios descendente dentro de cada grupo; controles para Δpersonas y Δ%, asc/desc con `aria-sort`. Ordenar por valores crudos, no texto redondeado. Total no participa del ranking, permanece identificado como sistema completo aunque usuario filtre un grupo. Si se muestra subtotal de filtro, nombrarlo explícitamente.
+
+Esta tabla sí añade conocimiento: el descenso agregado no implica descenso en cada institución; Nueva Masvida y Esencial aumentan en esos cortes. No inferir transferencias entre ellas, causalidad comercial, mejores prestaciones, rentabilidad ni flujo de caja. Porcentajes de bases muy distintas no son ranking de desempeño. No sumar porcentajes individuales ni promediar sin ponderación para obtener sistema.
+
+### Vistas adicionales, nunca mezcladas con cartera
+
+- **«Contratos · julio2026»**:19.716 suscripciones y15.172 desahucios voluntarios. Tabla simple indicador/contratos; advertencia visible «Desahucios voluntarios no incluyen todas las terminaciones». La resta+4.544, si se consulta, se llama brecha parcial, nunca saldo neto de cartera. No convertir contratos en personas; no mostrar+19.100 acumulado enero–julio dentro de esta vista mensual.
+- **«Movilidad · cortes julio2025 y julio2026»**:91.963 cotizantes presentes sólo en corte final;109.663 presentes sólo en inicial; diferencia−17.700. Advertencia visible «Comparación entre cortes; no variación mensual ni conteo de todos los movimientos intermedios». No sumar este saldo a cambio enero–julio de beneficiarios. El workbook inspeccionado desagrega por edad/sexo/región, no ofrece ranking por isapre en este cuadro nacional: no fabricarlo.
+- **«Metodología y fuentes»**: definición de stock/flujos/comparación entre cortes, notas provisionales, originales y celdas; cálculos auditables determinísticos. Las limitaciones necesarias para entender una cifra permanecen junto a ella; sólo detalle técnico va al panel.
+
+## E4. Contrato técnico mínimo, sin implementación en este PR
+
+Extensión opcional `statistical_view` de esquema v3 para piezas de Datos, sin cambiar normas/noticias/Global ni derivar tipo desde presencia de tabla:
+
+- `dataset_version`, `family`, `metric_id`, `measure_kind` (`stock`, `flow`, `rate`, `proportion`, `contract_events`, `between_cuts`), `unit`, `population`, `period_start/end`, `comparison_base`, `provisional`, `evidence_refs`.
+- `observations[]`: valor numérico o null, período, código oficial entidad, grupo, localizador hoja/celda y hash de fuente. `system_total` distinto de filas institucionales y subtotales; nunca sumar los tres.
+- `derived_metrics[]`: identificador, fórmula determinística registrada, input_ids, valor sin redondear, display_precision y denominador explícito. Diferencia absoluta=end−start; Δ%=100×(end−start)/start; start0→N/A, no infinito. Cuota de sistema sólo con universo exhaustivo y mismo corte; tasas requieren denominador elegible, no población conveniente.
+- `comparability`: mismos períodos, definiciones, unidad, cobertura, código/identidad, cambios/fusiones revisados, revisión del original, missing_entity_ids, reconciled_totals y reason_codes. El validador actual verifica entidades pero exporta agregados: reutilizar extracción conservando filas y provenance, no lanzar LLM para leer/calc cifras ni inferir filas desde total.
+- `presentation`: KPI references, chart reference, entity table reference, metodología references. No duplicar textos de insight en cada representación; `incremental_review` incluye cada bloque visual y su propósito, exime equivalentes accesibles de duplicación vacía.
+
+Gate institucional: sólo habilitar comparación aprobada tras verificar extremos por código, todas las sumas y notas. Una entidad faltante queda visible como «sin dato» si universo conocido; null no es0. No redistribuir residual entre entidades. Si no hay filas verificadas, suprimir ranking y decir «desglose no verificado»; mantener agregado verificado. Si cobertura parcial, rotularla y no denominarla ranking completo ni suma sistema. Fusiones/cambio de definición rompen comparación hasta armonización documentada. Cifras revisadas crean versión nueva y receipt, no sobrescriben evidencia histórica. Una contradicción en totales bloquea esa comparación, no obliga a rellenarla con estimaciones.
+
+No se exige gráfico adicional por isapre: tabla sortable aporta valor a menor esfuerzo. Gráfico de barras opcional posterior sólo con base cero; línea histórica no une huecos ni interpola datos ausentes. Si falla JS/gráfico, tabla semántica sigue disponible. No dependencia gráfica nueva obligatoria ni imagen raster de tabla.
+
+## E5. QA de aceptación y Reviewer estadístico
+
+|Área|Prueba concreta y salida exigida|
+|---|---|
+|Aritmética y reconciliación|Cotizantes+cargas=beneficiarios por fila y sistema; suma diez instituciones=total sin subtotales duplicados; sumasΔ=−26.541; baseenero2.514.038 produce−1,06%; seis comparaciones negativas verificadas con siete puntos.|
+|Períodos/unidades|Fixtures con contratosjulio, stockene→julio y movilidadjulio2025→julio2026 no comparten saldo/eje. Negativo: rechazar «+4.544 nuevos beneficiarios» y «−17.700 en julio».|
+|Comparabilidad|Fila/código duplicado, entidad faltante, fusión, corte distinto, redefinición, total inconciliable, denominador0, S/I y vacío fallan de manera explícita. No ranking cuando hay sólo totales. Datos provisionales siempre identificados.|
+|Gráficos|Mes omitido/desordenado/hueco impide gráfico de serie completa; no unir puntos ausentes. Unidad, período, leyenda, fuente y límites visibles; barra cero, línea con rango explícito. Tooltip no es único acceso al valor.|
+|Redondeo|Consalud−20 no aparece como estabilidad; porcentajes derivados de valores crudos; diferencia porcentual no se llama puntos porcentuales. Orden no usa cadenas formateadas.|
+|Mobile|390×844,320px y zoom200%: ninguna columna esencial recortada ni overflow horizontal de página/ficha. KPI2×2 o columna según espacio; nombres completos con wrap. Tabla se convierte en filas/tarjetas: nombre+beneficiarios+Δabsoluta/% visibles; cotizantes/cargas y baseenero en expansión con etiqueta/período. Todo accesible sin arrastre horizontal; no reducir letra para hacer caber6columnas.|
+|Accesibilidad|Table caption/th/scope o equivalencia semántica; expansión button/aria-expanded; orden con nombre y aria-sort; foco estable al ordenar/expandir; targets44px; contraste texto4,5:1/gráfico3:1; signo y texto además de color. Texto alternativo y tabla exacta disponibles a lector de pantalla sin leer duplicados decorativos.|
+|Valor incremental|Comparar captura vieja y propuesta: cada bloque explica su dato/comparación nuevos. Ausencia de resumen+hallazgos+implicancias+fórmulas repetidos. Equivalente accesible y evidencia no se penalizan por repetir cifras exactas.|
+|Comprensión ejecutiva|En prueba breve sin guía, identificar período/universo y magnitud en≤20s; distinguir stock de contratos/movilidad y sistema de entidad en≤60s. Umbral propuesto, no medición realizada. Error causal o de período bloquea aunque cumpla tiempo. Registrar participantes, respuestas y tiempo; no inventar mejora porcentual.|
+|Regresión focal|Normativa mantiene identificador/emisor/sujeto/efecto/vigencia; noticias conservan hechos incrementales; Global conserva límites/metodología y HOLD. Renderer especializado no aplica por accidente a tablas normativas. Probar fixtures existentes, sin reauditar originales ya aprobados.|
+
+Reviewer independiente sólo evalúa este delta: originales+valores vs propuesta, comparabilidad/negativos, utilidad frente a ficha vieja y compatibilidad contractual con normativa/noticias/Global. QA visual futuro pertenece al SHA de implementación, no queda acreditado por esta especificación.
+
+## E6. Delta mínimo del backlog y prompt Codex H
+
+Añadir **H-Datos P0** con tope3h dentro de las20h aprobadas: reasignar1h de reservaH8 y diferir2h de H4 overlays históricos ya especificados (sin eliminarlos del backlog ni publicarlos). H4 no ejecutado queda explícitamente posterior, sujeto a priorización Work6/Dirección. H-Datos reutiliza H3 (modelo/refs/gates), H1 (ficha) y H7 (QA); no suma doble presupuesto. H5 normativo y H6catálogo conservan sus topes. H-Datos cubre proyección KPI+serie verificada+tabla institucional+metodología y fixtures; si excede3h, entregar delta y bloqueo preciso, nunca omitir accesibilidad/comparabilidad para declarar DONE. Puede separarse en commits sin crear otro Builder. Benchmark pagado sigue fuera y pipelinecalls=0.
+
+Insertar después de H3 en prompt V2.7, preservando sus prohibiciones y autorización:
+
+```text
+H-Datos P0: aplicar E1–E5 a Pulso Isapre datosjulio2026. Reutilizar originales
+por hash y cálculo determinístico; verificar códigos/definiciones/fechas antes
+de habilitar tabla por isapre. No tratar la landing actualagosto como evidencia
+de publicaciónjulio ni actualizar el pulso por este trabajo.
+Ficha: título+un hallazgo; 2–4KPI coherentes; serie sólo si completa; tabla de
+entidades verificadas separando abiertas/cerradas y total sistema. Enmobile,
+filas responsivas sin recortar columnas esenciales. Métodos/fórmulas en panel
+secundario accesible. Sin reexplicar indicadores en resumen/hallazgos/implicancias.
+Stockene–julio, contratosjulio y movilidadentre cortesjulio2025–2026 se separan.
+No causalidad/ingresos desde composición; no ranking sin datos; null no es0.
+Antes de renderizar, perfila/explora/selecciona hallazgo y elige visual según E3;
+Pulso no es plantilla general. Prueba segunda familia (FEFI sólo si verificada;
+fixture respiratorio contradictorio exige HOLD del indicador), sin inventar series.
+Tests E5+regresión focal normativa/noticias/Global. Datos originales/receipts
+inmutables; ningún cambio a history/feed/latest/approved para publicar.
+Tope H-Datos3h financiado por reserva1h+H4diferido2h, total sigue20h.
+Work6 debe auditar el candidato final incluidas estadísticas; sólo tras su
+aceptación y autorización Dirección ejecutar CodexH en rama aislada.
+```
+
+## E7. Instrucción precisa para Work6
+
+Audita de forma integral e independiente el **SHA final de PR32 comunicado en el cierre de este complemento**, leyendo handoff, evidence y receipts. No uses `ef41c9fd` como candidato final: es la base V2. Confirma HEAD actual y detén aprobación si difiere del candidato revisado hasta conciliar delta. No construyas, publiques ni fusiones.
+
+1. **Normativa:** contrasta IF10670/531, separación reposición/suspensión/jerárquicos y corteoctubre; IF534 captura real/vigencia; títulos especiales y emisión como fecha sancionatoria. Preserva límites de estado posterior no verificado.
+2. **Noticias:** intenta refutar información incremental y atribuciones de las tres correcciones aprobadas; distingue propuesta editorial de publicación, evita párrafos que sólo parafrasean título. Reutiliza evidencias previas y reabre sólo contradicción concreta.
+3. **Global:** comprueba contrato sin secciones obligadas, atribución frente a causalidad, fuentes/metodología, ausencia de extrapolación automática a Chile y mantenimiento de HOLD_SOURCE_METHOD de BCBSA.
+4. **Estadísticas:** contrasta este caso contra XLSX por hash/celda, métricas y tabla diezisapres, totales/grupos/denominadores, períodos separados, provisionalidad, diseño responsivo y negativos E5. Desafía explícitamente sobreajuste a Pulso: una segunda familia debe poder escoger otra representación o HOLD sin exigir KPI+línea+ranking; FEFI sólo con serie acreditada. No certifiques QA visual sin ejecutarlo sobre una implementación; evalúa especificación y exige prueba al futuro Builder.
+5. Cruza los cuatro tipos con navegación directa, sobres/identidad/persistencia, accesibilidad, catálogo activo y presupuesto. Evalúa al lector: qué aprende en cada clic. El Reviewer focal estadístico no sustituye tu auditoría integral.
+
+Entrega PASS/REVISE con P0/P1/P2, evidencia por hallazgo, SHA exacto, pruebas realmente ejecutadas y riesgos abiertos. Sólo después de aceptación de Dirección se habilita Codex H. No cerrar HOLD externos con una nota genérica de PASS.

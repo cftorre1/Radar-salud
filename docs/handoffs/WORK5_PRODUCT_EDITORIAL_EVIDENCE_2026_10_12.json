@@ -25,8 +25,8 @@
   "review_status": "PASS_SCOPED_DOCUMENTARY_READY_FOR_WORK6",
   "independent_review": "docs/handoffs/WORK5_PRODUCT_EDITORIAL_REVIEW_2026_10_12.md",
   "deliverable_sha256": {
-    "docs/handoffs/WORK5_PRODUCT_EDITORIAL_2026_10_12.md": "1c588f68704c3f08e75299b6856c10a8705c475113dfbd383de08ef07175e9ff",
-    "docs/handoffs/WORK5_PRODUCT_EDITORIAL_REVIEW_2026_10_12.md": "7aafb6ab0c2cffe481ec9094a3757346643be5f3f7b6e501d6c2a56ff0e26fd8"
+    "docs/handoffs/WORK5_PRODUCT_EDITORIAL_2026_10_12.md": "9ba5c848d8aa4416b38e5ab07d29a2c8610eb6c6fdd727c8e5858fcd6cc4870f",
+    "docs/handoffs/WORK5_PRODUCT_EDITORIAL_REVIEW_2026_10_12.md": "02ceee1dc247cd7d0f97af9e23e627ce18fb837ecf8eff736146d1adbc1b5a33"
   },
   "v1_review_status": "PASS_SCOPED_DOCUMENTARY",
   "addendum_v2": {
@@ -85,5 +85,326 @@
     "codex_h_authorized": false,
     "reviewed_candidate_sha256": "1c588f68704c3f08e75299b6856c10a8705c475113dfbd383de08ef07175e9ff",
     "reviewer_findings_open_p0_p1": 0
+  },
+  "statistical_complement": {
+    "direction_comment": "https://github.com/cftorre1/Radar-salud/pull/32#issuecomment-6121104768",
+    "base_pr_sha": "ef41c9fd3b8fa4724a3b2273d94f40e638c2e813",
+    "staging_sha": "ef8cbe3938623d493872ff5f3e717153f176d1be",
+    "observed_at_utc": "2026-10-12T09:21:21.704054+00:00",
+    "scope": "statistical contract only; no code/publication",
+    "paid_pipeline_calls": 0,
+    "mobile_qa_executed": false,
+    "source_workbooks": {
+      "families": {
+        "cartera": {
+          "family": "cartera",
+          "status": "validated",
+          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
+          "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
+          "bytes": 3558853,
+          "schema": "monthly_isapre_totals_v2",
+          "series": [
+            {
+              "period": "2026-01",
+              "sheet": "Enero",
+              "isapres": 10,
+              "metrics": {
+                "cotizantes": 1557064,
+                "cargas": 956974,
+                "beneficiarios": 2514038
+              }
+            },
+            {
+              "period": "2026-02",
+              "sheet": "Febrero",
+              "isapres": 10,
+              "metrics": {
+                "cotizantes": 1555751,
+                "cargas": 954634,
+                "beneficiarios": 2510385
+              }
+            },
+            {
+              "period": "2026-03",
+              "sheet": "Marzo",
+              "isapres": 10,
+              "metrics": {
+                "cotizantes": 1553560,
+                "cargas": 951277,
+                "beneficiarios": 2504837
+              }
+            },
+            {
+              "period": "2026-04",
+              "sheet": "Abril",
+              "isapres": 10,
+              "metrics": {
+                "cotizantes": 1550891,
+                "cargas": 947758,
+                "beneficiarios": 2498649
+              }
+            },
+            {
+              "period": "2026-05",
+              "sheet": "Mayo",
+              "isapres": 10,
+              "metrics": {
+                "cotizantes": 1549840,
+                "cargas": 943844,
+                "beneficiarios": 2493684
+              }
+            },
+            {
+              "period": "2026-06",
+              "sheet": "Junio",
+              "isapres": 10,
+              "metrics": {
+                "cotizantes": 1549398,
+                "cargas": 939860,
+                "beneficiarios": 2489258
+              }
+            },
+            {
+              "period": "2026-07",
+              "sheet": "Julio",
+              "isapres": 10,
+              "metrics": {
+                "cotizantes": 1549873,
+                "cargas": 937624,
+                "beneficiarios": 2487497
+              }
+            }
+          ]
+        },
+        "suscripciones": {
+          "family": "suscripciones",
+          "status": "validated",
+          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
+          "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6",
+          "bytes": 242120,
+          "schema": "monthly_isapre_totals_v2",
+          "series": [
+            {
+              "period": "2026-01",
+              "sheet": "Enero",
+              "isapres": 10,
+              "metrics": {
+                "contratos_suscritos": 22619,
+                "desahucios_voluntarios": 21322
+              }
+            },
+            {
+              "period": "2026-02",
+              "sheet": "Febrero",
+              "isapres": 10,
+              "metrics": {
+                "contratos_suscritos": 19452,
+                "desahucios_voluntarios": 18230
+              }
+            },
+            {
+              "period": "2026-03",
+              "sheet": "Marzo",
+              "isapres": 10,
+              "metrics": {
+                "contratos_suscritos": 18274,
+                "desahucios_voluntarios": 16140
+              }
+            },
+            {
+              "period": "2026-04",
+              "sheet": "Abril",
+              "isapres": 10,
+              "metrics": {
+                "contratos_suscritos": 18994,
+                "desahucios_voluntarios": 16305
+              }
+            },
+            {
+              "period": "2026-05",
+              "sheet": "Mayo",
+              "isapres": 10,
+              "metrics": {
+                "contratos_suscritos": 17557,
+                "desahucios_voluntarios": 13948
+              }
+            },
+            {
+              "period": "2026-06",
+              "sheet": "Junio",
+              "isapres": 10,
+              "metrics": {
+                "contratos_suscritos": 18331,
+                "desahucios_voluntarios": 14726
+              }
+            },
+            {
+              "period": "2026-07",
+              "sheet": "Julio",
+              "isapres": 10,
+              "metrics": {
+                "contratos_suscritos": 19716,
+                "desahucios_voluntarios": 15172
+              }
+            }
+          ]
+        },
+        "movilidad": {
+          "family": "movilidad",
+          "status": "validated",
+          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-movilidad-de-cotizantes-202607.xlsx",
+          "sha256": "851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7",
+          "bytes": 393047,
+          "schema": "national_comparison_totals_v2",
+          "series": [
+            {
+              "period_start": "2025-07",
+              "period_end": "2026-07",
+              "period_type": "comparison_between_july_cuts",
+              "sheet": "Nacional",
+              "metrics": {
+                "salidas_intervalo": 109663,
+                "entradas_intervalo": 91963,
+                "diferencia_intervalo": -17700
+              }
+            }
+          ]
+        }
+      },
+      "entity_rows": [
+        {
+          "code": 67,
+          "name": "Colmena Golden Cross S.A.",
+          "group": "abiertas",
+          "cotizantes": 363526,
+          "cargas": 201038,
+          "beneficiarios": 564564,
+          "start_beneficiarios": 573597,
+          "delta": -9033,
+          "delta_pct": -1.5747990313756872,
+          "source_cells": "Enero!A8:E8;Julio!A8:E8"
+        },
+        {
+          "code": 78,
+          "name": "Cruz Blanca S.A.",
+          "group": "abiertas",
+          "cotizantes": 223084,
+          "cargas": 131318,
+          "beneficiarios": 354402,
+          "start_beneficiarios": 360643,
+          "delta": -6241,
+          "delta_pct": -1.7305202097364984,
+          "source_cells": "Enero!A9:E9;Julio!A9:E9"
+        },
+        {
+          "code": 80,
+          "name": "Vida Tres S.A.",
+          "group": "abiertas",
+          "cotizantes": 80285,
+          "cargas": 59557,
+          "beneficiarios": 139842,
+          "start_beneficiarios": 140775,
+          "delta": -933,
+          "delta_pct": -0.6627597229621737,
+          "source_cells": "Enero!A10:E10;Julio!A10:E10"
+        },
+        {
+          "code": 81,
+          "name": "Nueva Masvida S.A.",
+          "group": "abiertas",
+          "cotizantes": 193635,
+          "cargas": 104073,
+          "beneficiarios": 297708,
+          "start_beneficiarios": 293968,
+          "delta": 3740,
+          "delta_pct": 1.272247319436129,
+          "source_cells": "Enero!A11:E11;Julio!A11:E11"
+        },
+        {
+          "code": 99,
+          "name": "Banmédica S.A.",
+          "group": "abiertas",
+          "cotizantes": 322333,
+          "cargas": 224599,
+          "beneficiarios": 546932,
+          "start_beneficiarios": 565481,
+          "delta": -18549,
+          "delta_pct": -3.280216311423372,
+          "source_cells": "Enero!A12:E12;Julio!A12:E12"
+        },
+        {
+          "code": 107,
+          "name": "Consalud S.A.",
+          "group": "abiertas",
+          "cotizantes": 295872,
+          "cargas": 162679,
+          "beneficiarios": 458551,
+          "start_beneficiarios": 458571,
+          "delta": -20,
+          "delta_pct": -0.004361374792562112,
+          "source_cells": "Enero!A13:E13;Julio!A13:E13"
+        },
+        {
+          "code": 108,
+          "name": "Esencial S.A.",
+          "group": "abiertas",
+          "cotizantes": 34857,
+          "cargas": 23728,
+          "beneficiarios": 58585,
+          "start_beneficiarios": 52873,
+          "delta": 5712,
+          "delta_pct": 10.803245512832637,
+          "source_cells": "Enero!A14:E14;Julio!A14:E14"
+        },
+        {
+          "code": 63,
+          "name": "Isalud Ltda.",
+          "group": "cerradas",
+          "cotizantes": 19800,
+          "cargas": 19779,
+          "beneficiarios": 39579,
+          "start_beneficiarios": 40490,
+          "delta": -911,
+          "delta_pct": -2.249938256359595,
+          "source_cells": "Enero!A16:E16;Julio!A16:E16"
+        },
+        {
+          "code": 76,
+          "name": "Fundación",
+          "group": "cerradas",
+          "cotizantes": 15970,
+          "cargas": 10297,
+          "beneficiarios": 26267,
+          "start_beneficiarios": 26522,
+          "delta": -255,
+          "delta_pct": -0.9614659527939069,
+          "source_cells": "Enero!A17:E17;Julio!A17:E17"
+        },
+        {
+          "code": 94,
+          "name": "Cruz Del Norte Ltda.",
+          "group": "cerradas",
+          "cotizantes": 511,
+          "cargas": 556,
+          "beneficiarios": 1067,
+          "start_beneficiarios": 1118,
+          "delta": -51,
+          "delta_pct": -4.561717352415027,
+          "source_cells": "Enero!A18:E18;Julio!A18:E18"
+        }
+      ],
+      "source_notes": "provisional; benefits in force; same entity code and period; open/closed groups separate"
+    },
+    "landing_current_period": "2026-08",
+    "landing_current_publication": "2026-10-02",
+    "case_period_preserved": "2026-07",
+    "historical_publication_reverified": false,
+    "review_status": "PASS_SCOPED_DOCUMENTARY_READY_FOR_WORK6",
+    "later_direction_comment": "https://github.com/cftorre1/Radar-salud/pull/32#issuecomment-6121281277",
+    "adaptive_contract": true,
+    "second_family_negative_fixture": "data/epidemiology/respiratory_pressure_2026.json; contradiction indicator HOLD; no new source revalidation",
+    "fefi_numeric_series_verified": false,
+    "reviewed_candidate_sha256": "9ba5c848d8aa4416b38e5ab07d29a2c8610eb6c6fdd727c8e5858fcd6cc4870f",
+    "p0_p1_open": 0
   }
 }
