@@ -1,0 +1,95 @@
+{
+  "result": "PASS_SCOPED_WEEKLY_TEST_CLOCK_REPAIR",
+  "created_at": "2026-10-12T02:48:56.158780+00:00",
+  "reviewer": "independent /root/reviewer",
+  "reviewed_base_HEAD": "42f60abab0e90c175e54d78170f8668a9af5ba00",
+  "findings": [],
+  "real_CI_contingency": {
+    "second_run": "38196644883",
+    "job": "114640677482",
+    "base_head": "42f60abab0e90c175e54d78170f8668a9af5ba00",
+    "synthetic_merge": "18e3ec3fb882090b99d1e9ef0ca3a2ea12e74f74",
+    "head_tree_verified": "ee45a1652ac66f23d675a556e0616ac1a5104906",
+    "actual_outcome_from_durable_receipt": "1202Python PASS +94subcases +1skip; Node42PASS/1FAIL; browser/automatic Reviewer skipped",
+    "only_failure": "Home V2 specials share read identity and suppress their base signal",
+    "baseline": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+    "baseline_checks": "Specific failing test line and weeklyFresh product clock function byte-identical; saved TAP records same TypeError. Entire baseline test/app files are not claimed identical. Reviewer did not rerun baseline."
+  },
+  "change_review": {
+    "functional_scope": "Tests only; two changed lines in tests/web.test.cjs",
+    "helper": "context(Clock=Date) injects optional VM Date; all callers except affected identity test retain native Date.",
+    "fixture": "Fixed2026-10-12T02:30:00Z equals2026-10-11 Chile, with explicit event/publication day. Supplied constructor arguments preserve parsing and static now is frozen.",
+    "all_original_identity_read_and_base_suppression_assertions_preserved_byte_exact": true,
+    "every_other_test_line_including_future_and_expiration_checks_unchanged": true,
+    "product_weeklyFresh_clock_and_UI_code_unchanged_relative42f60ab": true,
+    "no_product_guard_relaxation": true
+  },
+  "independent_validation": {
+    "command": "node --test --test-isolation=none tests/web.test.cjs",
+    "Node_version": "v24.19.0",
+    "passed": 43,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "duration_ms": 136.839639,
+    "full_affected_shared_VM_file_only": true,
+    "Actions_environment_caveat": "CriticalCI uses Node22 and standard isolation; local43PASS does not certify that exact new CI.",
+    "scoped_diff_check": "PASS",
+    "Python_or_browser_reruns": 0,
+    "publisher_requests": 0
+  },
+  "changed_file_hashes": {
+    "tests/web.test.cjs": {
+      "superseded_42f60ab_sha256": "301836d00a7263d76eb667c9ebe5f5814eea7abd4e8eb95b4068d5d5ee8c5cdc",
+      "reviewed_repair_sha256": "dfee17151933556b09dba6e059e20b6d5f8ebfe6db7fea6f1f5d106e7bb8142e"
+    }
+  },
+  "durable_receipt_hashes": {
+    "data/audits/global_integration_2026_10_11/ci_weekly_node_qa.json": "ae970f6db0b4f0a19d5d07735106173f38092743935435549f987cb3cf7aea9d",
+    "data/audits/global_integration_2026_10_11/ci_baseline_weekly.node.tap": "9978541540d9a99a9b1556530bc18e1e0eddead5c8896b162fd6d09f4dc5a6c4",
+    "data/audits/global_integration_2026_10_11/ci_weekly_node_qa.tap": "20429813bda47bc0fd65afe1daaf91b01125086a71be322faebadbb164009d59",
+    "docs/GLOBAL_INTEGRATION_HANDOFF_2026_10_11.md": "65dbfe39532f170ae7234308df11c95a3d30042b29d47e8cc0e40cb702c974e5"
+  },
+  "preservation": {
+    "all18_signed_Global_source_inventory_UI_health_feed_exporter_hashes_unchanged": true,
+    "original_packet_sha256": "c04e7c79fa5e996b47defcb7fcc43e26d4bd8f0cf871adf0f7100166c7a27545",
+    "original_packet_is_byte_exact_to42f60ab": true,
+    "previous_Python_repair_code_and_test_unchanged": {
+      "scripts/export_web_snapshot.py": "b95e9637c2dbb2b6c8fd72491fd1fe833d280800c63d1071ae5382b4201fe7f3",
+      "tests/test_web_snapshot.py": "86fe2bd85d8739a767a8f254f1588bb5a927155b7af319dbcd85fdeac3fa9eac"
+    },
+    "focused_daily_gate_config_and_workflow_unchanged": true,
+    "14themes_no_cards_and_source_counts_intact": {
+      "who": {
+        "30": 84,
+        "90": 241
+      },
+      "paho": {
+        "30": 185,
+        "90": 530
+      }
+    },
+    "daily_and_Reuters_collection_disabled": true
+  },
+  "evidence_truthfulness": {
+    "handoff_is_append_only_relative42f60ab": true,
+    "two_different_actual_inherited_failures_with_distinct_repairs": true,
+    "no_blind_equivalent_retry_asserted": true,
+    "Node24_none_vs_Actions22_standard_explicit": true,
+    "new_exact_HEAD_CI_still_pending_not_claimed_PASS": true,
+    "old_receipts_not_rewritten_as_new_head_acceptance": true
+  },
+  "conditions": [
+    "Copy this supplement byte-exact to data/audits/global_integration_2026_10_11/ci_weekly_node_reviewer.json; commit reviewed test/evidence delta and push the isolated branch.",
+    "FinalCI approval requires new actual exact-HEAD criticalCI including standard Node22 execution and downstream steps; local43 checks do not replace it.",
+    "Retain reviewed Python fix and original Global packet/captures/ledger/curated UI/data. No live discovery or canonical regeneration is required.",
+    "All paused Daily First30-day runtime/cadence/licensing/editorial/production holds remain separate from PR CI qualification."
+  ],
+  "reviewer_actions": {
+    "new_network_research_or_editorial": 0,
+    "paid_AI_calls": 0,
+    "canonical_or_implementation_edits": 0,
+    "git_index_or_commits": 0,
+    "only_write": "work/reviewer_global_weekly_node.json"
+  }
+}

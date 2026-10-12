@@ -1,0 +1,82 @@
+name: Isolated PAHO dated archive recovery
+on:
+  push:
+    branches: [codex/global-intelligence-recurrent-20261011]
+    paths: ['.github/run-global-paho-recovery-now']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: global-source-discovery-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/codex/global-intelligence-recurrent-20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: global-discovery-38145510005
+          run-id: 38145510005
+          github-token: ${{ github.token }}
+          path: work/qa-captured
+      - name: Resume the bounded capture campaign; retain original timestamps
+        run: cp -R work/qa-captured/work/global-runtime-captures work/global-runtime-captures
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify contracts and resume permitted PAHO date surfaces
+        run: |
+          pip install -e . pytest
+          python -m pytest -q tests/test_global_source_discovery.py tests/test_global_source_probe_policy.py tests/test_global_intelligence.py tests/test_global_capture_audit.py --junitxml=work/global-directed-qa.xml
+          python scripts/discover_global_sources.py --resume-captures
+      - name: Replay and independent evidence audit without network
+        run: |
+          python scripts/replay_global_sources.py
+          python scripts/audit_global_captures.py --captures work/global-runtime-captures --inventory data/global_intelligence/discovery.json --output work/independent_capture_audit.json
+          python -c 'import json,pathlib; p=json.loads(pathlib.Path("work/independent_capture_audit.json").read_text()); d=pathlib.Path("data/audits/global_source_recovery_2026_10_11/runs")/p["run_id"]/"independent_capture_audit.json"; d.write_text(json.dumps(p,ensure_ascii=False,indent=2)+"\n")'
+      - name: Full Python QA with inherited baseline separated
+        run: |
+          python -m pytest -q --ignore=tests/test_beta_source_runtime_fast.py --junitxml=work/global-python-qa.xml || code=$?
+          python scripts/check_global_qa_baseline.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Global Node and desktop/mobile QA without deployment
+        run: |
+          npm ci
+          npm test | tee work/global-node-qa.log
+          npx playwright install --with-deps chromium
+          mkdir -p work/baseline-browser
+          git archive 4ff51cf | tar -x -C work/baseline-browser
+          (cd work/baseline-browser && ../../node_modules/.bin/playwright test --grep 'Global|global|sources are grouped') || baseline_browser_code=$?
+          npx playwright test --grep 'Global|global|sources are grouped'
+          python scripts/check_global_browser_qa.py
+      - name: Checkpoint the isolated branch, including explicit partial outcomes
+        if: always()
+        run: |
+          git config user.name "alicanto-salud-bot"
+          git config user.email "alicanto-salud-bot@users.noreply.github.com"
+          git add data/audits/global_source_recovery_2026_10_11/runs data/global_intelligence data/source_health.json web/data/source_health.json web/data/product.json
+          git diff --cached --quiet || git commit -m "audit(paho): checkpoint official dated inventory and coverage qualification"
+          git push origin HEAD:codex/global-intelligence-recurrent-20261011
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: global-discovery-${{ github.run_id }}
+          path: |
+            work/global-runtime-captures/
+            data/audits/global_source_recovery_2026_10_11/runs/
+            data/global_intelligence/
+            work/global-directed-qa.xml
+            work/global-python-qa.xml
+            work/global-node-qa.log
+            work/independent_capture_audit.json
+            artifacts/
+            test-results/
+            work/baseline-browser/artifacts/browser.json

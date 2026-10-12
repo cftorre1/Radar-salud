@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-12T02:53:15.593790+00:00",
+  "updated_at": "2026-10-12T04:33:22.469945+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -4839,7 +4839,7 @@
     },
     {
       "id": "w4_who_2026_10_11",
-      "status": "approved",
+      "status": "blocked",
       "priority": "medium",
       "expansion_priority": "P1",
       "owner": "Global Intelligence + Source Engineering",
@@ -4871,17 +4871,50 @@
         "ruta y runs reales antes de declarar recurrente"
       ],
       "approved_at": "2026-10-11",
-      "next_action": "Implementar discovery desde WHO news-room y detalle; priorizar guías, emergencias, epidemiología y cambios de política.",
+      "next_action": "Integration Commander receives PR26 with scoped QA/Reviewer and merges only through staging gates. Keep daily_collection_enabled false; qualify an actual narrow 30-day runtime in a bounded change, then first fresh complete staging cycle and another >=86400s under the same new contract. No historical expansion or automatic publication.",
       "evidence": [
         "data/audits/source_expansion_matrix_2026_10_11.json",
-        "config/source_expansion_backlog_2026_10_11.json"
+        "config/source_expansion_backlog_2026_10_11.json",
+        "data/audits/w4_who_2026_10_11.json",
+        "docs/GLOBAL_SOURCE_DISCOVERY_2026_10_11.md",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/report.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/report.json",
+        "data/audits/global_source_recovery_2026_10_11/reviewer_final.json",
+        "docs/GLOBAL_INTEGRATION_HANDOFF_2026_10_11.md",
+        "data/audits/global_integration_2026_10_11/package.json",
+        "data/audits/global_integration_2026_10_11/focused_qa.json",
+        "data/audits/global_integration_2026_10_11/freshness_preintegration.json",
+        "data/audits/global_integration_2026_10_11/alternatives.json",
+        "data/audits/global_integration_2026_10_11/reviewer.json"
       ],
       "external_blockers": [],
-      "progress": "Backlog concreto preparado; implementación no iniciada por Work 4."
+      "progress": "READY_FOR_INTEGRATION source package; WHO verified30/90={'30': 84, '90': 241}; original captures/dates/ledger unchanged. Focused delta33PASS; daily gate off; snapshot observation is not new poll/cadence. Reviewer evidence data/audits/global_integration_2026_10_11/reviewer.json",
+      "started_at": "2026-10-11T12:54:57.247296+00:00",
+      "last_progress_at": "2026-10-12T01:53:03.496744+00:00",
+      "work_branch": "codex/global-intelligence-recurrent-20261011",
+      "current_subfront": "global_source_package_ready_daily_first_activation_paused",
+      "current_hypothesis": "Metadata qualification is separate from approved Global cards and recurrent production acceptance.",
+      "technical_holds": [],
+      "pending_acceptance_gates": [
+        "Two complete fresh live runs at least 86400 seconds apart with identical coverage contract not yet proven; core activation dependencies unresolved.",
+        "Daily First: narrow real 30-day runtime not yet qualified; daily activation is explicitly off. Global7/7 and 24/48h watcher require post-merge actual cycle receipts; fresh contract change resets cadence anchors."
+      ],
+      "integration_packet_status": "READY_FOR_INTEGRATION",
+      "integration_packet_ref": "data/audits/global_integration_2026_10_11/package.json",
+      "daily_collection_enabled": false,
+      "blocks_other_healthy_sources": false
     },
     {
       "id": "w4_reuters_2026_10_11",
-      "status": "approved",
+      "status": "blocked",
       "priority": "medium",
       "expansion_priority": "P1",
       "owner": "Global Intelligence + Source Engineering",
@@ -4913,25 +4946,56 @@
         "ruta y runs reales antes de declarar recurrente"
       ],
       "approved_at": "2026-10-11",
-      "next_action": "Auditar ruta pública/contratada permitida de Reuters; documentar condiciones de uso, estabilidad del índice y derechos de extracción/resumen antes de automatizar.",
+      "next_action": "Keep PAUSED_LICENSE; document written Reuters consent/entitlement before collection. Official alternatives are only conditional pilots/postponed proposals, not licensed operational replacements.",
       "evidence": [
         "data/audits/source_expansion_matrix_2026_10_11.json",
-        "config/source_expansion_backlog_2026_10_11.json"
+        "config/source_expansion_backlog_2026_10_11.json",
+        "data/audits/w4_reuters_2026_10_11.json",
+        "config/global_discovery.json",
+        "docs/GLOBAL_SOURCE_DISCOVERY_2026_10_11.md",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/report.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/report.json",
+        "data/audits/global_source_recovery_2026_10_11/reviewer_final.json",
+        "docs/GLOBAL_INTEGRATION_HANDOFF_2026_10_11.md",
+        "data/audits/global_integration_2026_10_11/package.json",
+        "data/audits/global_integration_2026_10_11/focused_qa.json",
+        "data/audits/global_integration_2026_10_11/freshness_preintegration.json",
+        "data/audits/global_integration_2026_10_11/alternatives.json",
+        "data/audits/global_integration_2026_10_11/reviewer.json"
       ],
       "external_blockers": [
-        "Acceso y derechos para automatización no acreditados en repositorio."
+        "Written Reuters permission and entitled delivery route not configured/documented."
       ],
-      "progress": "Backlog concreto preparado; implementación no iniciada por Work 4."
+      "progress": "EXTERNAL_BLOCKER_PROVEN / PAUSED_LICENSE preserved; counts unmeasured and no Reuters requests. Alternative technical/rights triage completed without new connectors or publication.",
+      "started_at": "2026-10-11T12:54:57.247296+00:00",
+      "last_progress_at": "2026-10-12T01:53:03.496744+00:00",
+      "work_branch": "codex/global-intelligence-recurrent-20261011",
+      "current_subfront": "global_source_package_ready_daily_first_activation_paused",
+      "current_hypothesis": "Metadata qualification is separate from approved Global cards and recurrent production acceptance.",
+      "technical_holds": [],
+      "pending_acceptance_gates": [],
+      "integration_packet_status": "PAUSED_LICENSE",
+      "integration_packet_ref": "data/audits/global_integration_2026_10_11/package.json",
+      "daily_collection_enabled": false,
+      "blocks_other_healthy_sources": false
     },
     {
       "id": "w4_paho_2026_10_11",
-      "status": "approved",
+      "status": "blocked",
       "priority": "medium",
       "expansion_priority": "P1",
       "owner": "Epidemiology Intelligence + Source Engineering",
       "source": "Usuario Work 4 / issue #5 / matriz data/audits/source_expansion_matrix_2026_10_11.json",
       "parent_task_id": "source_audit_issue5_iteration5_expansion_2026_10_09",
-      "objective": "OPS: resolver acceso público a vigilancia regional. No hay referencias OPS en themes.json ni conector; sí material reciente indexado, con 403 al abrir en esta auditoría.",
+      "objective": "OPS recurrente oficial: recuperar noticias Chile/Américas, alertas e informes técnicos; dated archive qualification supersedes the historical executor 403 diagnosis.",
       "depends_on": [],
       "activation_dependencies": [
         "source_audit_issue5_iteration1_recovery_2026_10_09",
@@ -4957,15 +5021,47 @@
         "ruta y runs reales antes de declarar recurrente"
       ],
       "approved_at": "2026-10-11",
-      "next_action": "Probar rutas oficiales públicas documentadas de informes técnicos/influenza y repositorio alternativo oficial; registrar HTTP, fecha y límites.",
+      "next_action": "Integration Commander receives PR26 with scoped QA/Reviewer and merges only through staging gates. Keep daily_collection_enabled false; qualify an actual narrow 30-day runtime in a bounded change, then first fresh complete staging cycle and another >=86400s under the same new contract. No historical expansion or automatic publication.",
       "evidence": [
         "data/audits/source_expansion_matrix_2026_10_11.json",
-        "config/source_expansion_backlog_2026_10_11.json"
+        "config/source_expansion_backlog_2026_10_11.json",
+        "data/audits/w4_paho_2026_10_11.json",
+        "docs/GLOBAL_SOURCE_DISCOVERY_2026_10_11.md",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/report.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/report.json",
+        "data/audits/global_source_recovery_2026_10_11/reviewer_final.json",
+        "docs/GLOBAL_INTEGRATION_HANDOFF_2026_10_11.md",
+        "data/audits/global_integration_2026_10_11/package.json",
+        "data/audits/global_integration_2026_10_11/focused_qa.json",
+        "data/audits/global_integration_2026_10_11/freshness_preintegration.json",
+        "data/audits/global_integration_2026_10_11/alternatives.json",
+        "data/audits/global_integration_2026_10_11/reviewer.json"
       ],
-      "external_blockers": [
-        "403 en listado y PDF desde entorno de consulta."
+      "external_blockers": [],
+      "progress": "READY_FOR_INTEGRATION source package; PAHO verified30/90={'30': 185, '90': 530}; original captures/dates/ledger unchanged. Focused delta33PASS; daily gate off; snapshot observation is not new poll/cadence. Reviewer evidence data/audits/global_integration_2026_10_11/reviewer.json",
+      "started_at": "2026-10-11T12:54:57.247296+00:00",
+      "last_progress_at": "2026-10-12T01:53:03.496744+00:00",
+      "work_branch": "codex/global-intelligence-recurrent-20261011",
+      "current_subfront": "global_source_package_ready_daily_first_activation_paused",
+      "current_hypothesis": "Metadata qualification is separate from approved Global cards and recurrent production acceptance.",
+      "technical_holds": [],
+      "pending_acceptance_gates": [
+        "First complete truly fresh capture under coverage contract4 is pending; captured-byte qualification is not a cadence anchor.",
+        "Two complete fresh live runs at least 86400 seconds apart with identical coverage contract not yet proven; core activation dependencies unresolved.",
+        "Daily First: narrow real 30-day runtime not yet qualified; daily activation is explicitly off. Global7/7 and 24/48h watcher require post-merge actual cycle receipts; fresh contract change resets cadence anchors."
       ],
-      "progress": "Backlog concreto preparado; implementación no iniciada por Work 4."
+      "integration_packet_status": "READY_FOR_INTEGRATION",
+      "integration_packet_ref": "data/audits/global_integration_2026_10_11/package.json",
+      "daily_collection_enabled": false,
+      "blocks_other_healthy_sources": false
     },
     {
       "id": "w4_legal_2026_10_11",
@@ -7695,6 +7791,39 @@
         "clinicas_chile": "OPERATIVE_DEGRADED",
         "pfizer_chile": "OPERATIVE_DEGRADED",
         "clinicas_achs_salud": "OPERATIVE_DEGRADED"
+      }
+    },
+    {
+      "id": "integration_commander_daily_first_2026_10_12",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Integration Commander",
+      "objective": "Integrar PR10/26/16/28 en staging preservando linaje pagado y verificar runtime diario de30dias por SHA.",
+      "constraints": [
+        "main y production-stable intactos",
+        "sin nuevas capturas historicas ni llamadas IA duplicadas",
+        "Global por merito sin cuota; Reuters pausado",
+        "no declarar beta READY por merges/tests"
+      ],
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38202622766",
+        "https://github.com/cftorre1/Radar-salud/issues/5#issuecomment-6117774084"
+      ],
+      "checkpoint": {
+        "staging_sha": "515b8809ecc391600c4093ce0435955d7d3685c5",
+        "merged_prs": [
+          10
+        ],
+        "pending_prs": [
+          26,
+          16,
+          28,
+          30
+        ],
+        "postmerge_preview": "PASS",
+        "postmerge_live_collection": "PENDING",
+        "blocker": "Pulso historical exact-code fixture coupled to current integration tree; fix isolated by accepted SHA, live validator unchanged",
+        "daily_first_public_sources_owner": "PR29 / Codex"
       }
     }
   ],

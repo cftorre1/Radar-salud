@@ -1,0 +1,48 @@
+{
+  "result": "PASS_INHERITED_WEEKLY_TEST_CLOCK_PENDING_NEW_HEAD_CI",
+  "observed_at": "2026-10-12T02:44:28.094507+00:00",
+  "second_automatic_CI": {
+    "run_id": 38196644883,
+    "job_id": 114640677482,
+    "head": "42f60abab0e90c175e54d78170f8668a9af5ba00",
+    "test_merge_sha": "18e3ec3fb882090b99d1e9ef0ca3a2ea12e74f74",
+    "tested_merge_and_head_tree": "ee45a1652ac66f23d675a556e0616ac1a5104906",
+    "python_pass": 1202,
+    "python_failed": 0,
+    "python_skipped": 1,
+    "subcases_pass": 94,
+    "node_pass": 42,
+    "node_failed": 1,
+    "only_failure": "Home V2 specials share read identity and suppress their base signal",
+    "browser_and_automatic_reviewer": "skipped"
+  },
+  "independent_baseline": {
+    "sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+    "same_focused_node_failure": true,
+    "failing_test_and_product_clock_code_identical": true,
+    "baseline_tap_ref": "data/audits/global_integration_2026_10_11/ci_baseline_weekly.node.tap",
+    "baseline_tap_sha256": "9978541540d9a99a9b1556530bc18e1e0eddead5c8896b162fd6d09f4dc5a6c4"
+  },
+  "root_cause": "Test fixture uses UTC calendar today, while the correct weeklyFresh guard uses America/Santiago; between UTC and Chile midnight fixture is future dated and excluded. Product guard is correct.",
+  "fix": "Only tests/web.test.cjs: injectable Clock in existing VM helper, fixed Oct12 02:30UTC and original fixture publication Oct11 Chile. All identity/suppression assertions retained.",
+  "targeted_QA": {
+    "node_pass": 43,
+    "failed": 0,
+    "suite": "tests/web.test.cjs; full shared-VM test file affected by injectable helper",
+    "node_version": "24.19.0; GitHub criticalCI runs22",
+    "test_runner_isolation": "none locally because sandbox test child-process reporter fails; standard Node tests unmodified on Actions",
+    "tap_ref": "data/audits/global_integration_2026_10_11/ci_weekly_node_qa.tap",
+    "tap_sha256": "20429813bda47bc0fd65afe1daaf91b01125086a71be322faebadbb164009d59",
+    "tested_file_sha256": "dfee17151933556b09dba6e059e20b6d5f8ebfe6db7fea6f1f5d106e7bb8142e"
+  },
+  "Global_protected18_hashes_unchanged": true,
+  "product_web_app_renderer_and_data_unchanged": true,
+  "paid_AI_API_calls": 0,
+  "publisher_requests": 0,
+  "manual_browser_runs": 0,
+  "manual_full_product_suite_runs": 0,
+  "equivalent_failed_CI_retries": 0,
+  "stop_loss_note": "No blind retry: firstCI had inherited Python anchor defect, secondCI passed Python and exposed a different inherited Node fixture timezone defect. ThirdCI follows an actual distinct tested repair.",
+  "reviewer_ref": "data/audits/global_integration_2026_10_11/ci_weekly_node_reviewer.json",
+  "new_automatic_CI_result_location": "PR26 and issue5, exact pushed HEAD"
+}

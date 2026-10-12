@@ -620,7 +620,7 @@ def curate(signals,resolve_external=True,as_of=None):
     # -> central finding -> useful publication inventory.
     recent=_apply_statistical_analysis(recent)
     recent=[_statistical_value_ladder(s) for s in recent]
-    recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent);recent=_related_context(recent,resolve_external);recent=_resolution_relation_titles(recent)
+    recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent,today=as_of);recent=_related_context(recent,resolve_external);recent=_resolution_relation_titles(recent)
     # An explicitly reviewed DF corroboration yields to its official event when
     # that counterpart is present. Keep both source records in durable history.
     counterpart_urls={s.get('source_url') for s in recent}

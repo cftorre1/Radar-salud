@@ -1389,6 +1389,61 @@
       "status": "NO_GO_AT_CHECKPOINT",
       "new_pr_merges": [],
       "scope": "Governance only; no source activation, runtime or product release."
+    },
+    "global_official_discovery_qualification_2026_10_11": {
+      "kind": "github_actions",
+      "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38153425336",
+      "qa_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38156977778",
+      "result": "qualified_with_explicit_source_holds",
+      "scope": "Isolated official metadata discovery and 30/90 reconciliation. Does not certify daily recurrence, richer research UI, licensing, editorial publication, core promotion or production.",
+      "checks": [
+        "184 directed Python + 94 adversarial subcases",
+        "1178 deterministic Python PASS; 0 failures in Actions",
+        "43 Node",
+        "12 desktop/mobile",
+        "PASS independent raw audit",
+        "PASS zero-network replay"
+      ],
+      "validated_requirements": [],
+      "evidence": [
+        "data/audits/w4_who_2026_10_11.json",
+        "data/audits/w4_paho_2026_10_11.json",
+        "data/audits/w4_reuters_2026_10_11.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/report.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/report.json",
+        "data/audits/global_source_recovery_2026_10_11/reviewer_final.json"
+      ],
+      "fresh_capture_sha": "f7de051a645e21e293b6d1439341e508e5b0c403",
+      "tested_commit": "aee4ed3dff0c6cd900751e89a219548b261308a1",
+      "sha": "f7de051a645e21e293b6d1439341e508e5b0c403"
+    },
+    "global_daily_first_integration_packet_2026_10_11": {
+      "kind": "deterministic_scoped_delta",
+      "sha": "a1a0e655b848c146b60762f87f60e71ea1e0db69",
+      "result": "focused_delta_PASS_with_operational_holds",
+      "scope": "Isolated WHO/PAHO integration packet and read-only24/48h snapshot observation; daily gate disabled, no new source poll, publication, cadence, staging runtime or commercial rights acceptance.",
+      "checks": [
+        "33 focused tests",
+        "preserved source/data/coverage contract hashes",
+        "no new full suite or browser run"
+      ],
+      "validated_requirements": [],
+      "evidence": [
+        "docs/GLOBAL_INTEGRATION_HANDOFF_2026_10_11.md",
+        "data/audits/global_integration_2026_10_11/package.json",
+        "data/audits/global_integration_2026_10_11/focused_qa.json",
+        "data/audits/global_integration_2026_10_11/freshness_preintegration.json",
+        "data/audits/global_integration_2026_10_11/alternatives.json",
+        "data/audits/global_integration_2026_10_11/reviewer.json"
+      ]
     }
   },
   "blocks": [
@@ -1551,15 +1606,18 @@
       "critical": true,
       "evidence": [
         "global_intelligence_lite_qa",
-        "mvp_product_refinements_global_editorial_qa"
+        "mvp_product_refinements_global_editorial_qa",
+        "global_official_discovery_qualification_2026_10_11",
+        "global_daily_first_integration_packet_2026_10_11"
       ],
       "dependencies": [
         "fuentes internacionales con acceso público",
         "separación Global Theme/Trend Chile"
       ],
       "missing": [
-        "Monitoreo recurrente de fuentes internacionales para operación continua.",
-        "Auth/pricing/pagos solo para etapa comercial; no bloquean Beta cerrada."
+        "Auth/pricing/pagos solo para etapa comercial; no bloquean Beta cerrada.",
+        "Daily source operation requires two complete fresh captures separated by 24h, core recovery/balance acceptance and remaining technical/rights holds. Isolated resume is not cadence proof.",
+        "Daily First: qualify real30-day polling without enlarging retained90-day evidence; Commander must observe staging7/7 cycles and24/48h freshness. Integration package readiness does not enable collection or prove cadence."
       ],
       "requirements": [
         {
@@ -1576,7 +1634,31 @@
           "label": "Capa PREMIUM distinguible de Trend Chile",
           "status": "Implementado"
         }
-      ]
+      ],
+      "source_qualification": {
+        "branch": "codex/global-intelligence-recurrent-20261011",
+        "run_id": "38153425336",
+        "outcomes": {
+          "who": "READY_FOR_INTEGRATION",
+          "paho": "READY_FOR_INTEGRATION",
+          "reuters": "EXTERNAL_BLOCKER_PROVEN"
+        },
+        "source_activation": false,
+        "cadence_proven": false,
+        "new_cards": 0
+      },
+      "integration_packet": {
+        "PR": 26,
+        "branch": "codex/global-intelligence-recurrent-20261011",
+        "source_package_outcome": "READY_FOR_INTEGRATION",
+        "source_as_of": "2026-10-11",
+        "daily_collection_enabled": false,
+        "cadence_proven": false,
+        "post_merge_runtime_proven": false,
+        "new_connectors": 0,
+        "new_cards": 0,
+        "evidence": "data/audits/global_integration_2026_10_11/package.json"
+      }
     },
     {
       "id": "coverage",
@@ -2407,6 +2489,46 @@
         "public_sources_c_2026_10_11",
         "data/audits/public_sources_c_20261011/recovery/stock-reconciliation.json"
       ]
+    },
+    {
+      "date": "2026-10-11",
+      "change": "Global source qualification on isolated branch: official discovery, dated archive reconciliation and rights blocker; Global block remains Implementado, not operationally validated or promoted.",
+      "evidence": [
+        "data/audits/w4_who_2026_10_11.json",
+        "data/audits/w4_paho_2026_10_11.json",
+        "data/audits/w4_reuters_2026_10_11.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/python_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/browser_qa.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/replay.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/independent_capture_audit.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/report.json",
+        "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/report.json",
+        "data/audits/global_source_recovery_2026_10_11/reviewer_final.json"
+      ]
+    },
+    {
+      "date": "2026-10-11",
+      "change": "Codex C closes scoped WHO/PAHO candidate package for Integration Commander; daily gate off and snapshot freshness observer added. Reuters remains paused; six alternatives conditional, zero additional connectors; Global remains Implementado.",
+      "evidence": [
+        "docs/GLOBAL_INTEGRATION_HANDOFF_2026_10_11.md",
+        "data/audits/global_integration_2026_10_11/package.json",
+        "data/audits/global_integration_2026_10_11/focused_qa.json",
+        "data/audits/global_integration_2026_10_11/freshness_preintegration.json",
+        "data/audits/global_integration_2026_10_11/alternatives.json",
+        "data/audits/global_integration_2026_10_11/reviewer.json"
+      ]
+    },
+    {
+      "date": "2026-10-12",
+      "change": "Commander integrates Pulso PR10 with paid ancestry. Exact-SHA preview PASS; remaining integration and fresh source runtime pending. Historical exact-code tests must not certify later source modules.",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38202622766",
+        "tests/test_pulso_terminal_followthrough_qa.py"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -3076,7 +3198,7 @@
     }
   ],
   "current_main_workflows_sha": "083d2f761e829de49ddd5ef9bc41bbeb494aaad4",
-  "current_staging_candidate_sha": "44e544a8827f3c03c43866404ae83a2a8dd7645b",
+  "current_staging_candidate_sha": "515b8809ecc391600c4093ce0435955d7d3685c5",
   "product_qa_notes": [
     {
       "id": "home_ux_data_visibility_followup_2026_09_24",
@@ -4032,7 +4154,7 @@
       ]
     }
   ],
-  "updated_at": "2026-10-11T14:40:23.112019+00:00",
+  "updated_at": "2026-10-12T04:33:22.469945+00:00",
   "closed_beta": {
     "status": "pending_validation",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",
@@ -4099,5 +4221,23 @@
       "pfizer_chile": "OPERATIVE_DEGRADED",
       "clinicas_achs_salud": "OPERATIVE_DEGRADED"
     }
+  },
+  "integration_commander_checkpoint": {
+    "recorded_at": "2026-10-12T04:33:22.469945+00:00",
+    "staging_sha": "515b8809ecc391600c4093ce0435955d7d3685c5",
+    "merged_prs": [
+      10
+    ],
+    "pending_prs": [
+      26,
+      16,
+      28,
+      30
+    ],
+    "preview_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38202622766",
+    "postmerge_live_collection": "PENDING",
+    "readiness": "NO_GO_PENDING_RUNTIME_AND_INDEPENDENT_REVIEW",
+    "operational_readiness_percent": null,
+    "source_statuses_not_promoted": true
   }
 }

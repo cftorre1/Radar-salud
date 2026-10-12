@@ -211,7 +211,15 @@ test('Global read state is shared across Home and the research page',async({page
  await page.locator('.signal.special.global [data-special-open]').click();
  await expect(page).toHaveURL(/global\.html#theme-/);
  await page.locator('#globalPeriod').selectOption('all');
- await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(visibleCount-1);
+ // The Home teaser can fall outside the ten themes selected for the all-period view.
+ // Filter its publisher explicitly to test persisted read state independently of rank.
+ const teaser=globalData.themes.find(t=>t.id===teaserId);
+ const publisher=teaser.sources.map(s=>s.publisher).sort((a,b)=>globalData.themes.filter(t=>t.sources.some(s=>s.publisher===a)).length-globalData.themes.filter(t=>t.sources.some(s=>s.publisher===b)).length)[0];
+ await page.locator('#globalFilters summary').click();
+ await page.locator('#globalPublisher').selectOption(publisher);
+ const publisherCount=globalData.themes.filter(t=>t.sources.some(s=>s.publisher===publisher)).length;
+ expect(publisherCount).toBeLessThanOrEqual(10);
+ await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(publisherCount-1);
  const theme=page.locator(`#theme-${teaserId}`);
  await expect(theme).toHaveClass(/read/);
  await theme.locator('[data-read]').click();await expect(theme).not.toHaveClass(/read/);
@@ -341,16 +349,16 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await expect(page.locator('#globalPublisher')).toBeVisible();
  await expect(page.locator('#globalSort')).toBeVisible();
  await page.locator('#globalPeriod').selectOption('all');
- await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${visibleCount-1}`);
  await expect(page.locator('.theme')).toHaveCount(visibleCount);
+ const initialUnread=visibleCount-await page.locator('.theme.read').count();
+ await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${initialUnread}`);
  await page.locator('[data-open]').first().click();
- await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${visibleCount-2}`);
+ await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${initialUnread-1}`);
  const opened=page.locator('.theme').filter({has:page.locator('details[open]')});
  await expect(opened).toContainText('Qué mirar en Chile');
  await expect(opened).toContainText('Lectura estratégica');
- await expect(opened).toContainText('Resumen ejecutivo');
- await expect(opened).toContainText('Hallazgos clave');
- await expect(opened).toContainText('Metodología y alcance');
+ await expect(opened).toContainText('Qué encontró:');
+ await expect(opened).toContainText('Fuentes del tema');
  await expect(opened).toContainText('Hipótesis Chile');
  await expect(opened).toContainText('señales locales compatibles verificadas: 0');
  await expect(opened.getByRole('button',{name:'Volver a Ponte al día ↑'})).toBeVisible();
@@ -530,6 +538,25 @@ test('conversion surfaces lead with value and hide internal implementation statu
  await page.locator('#newsletterOpen').click();
  await expect(page.locator('#newsletterDialog')).toContainText('Lo importante de la semana, directo a tu correo.');
  await expect(page.locator('#newsletterDialog')).not.toContainText('proveedor');
+});
+
+test('Global metadata health stays separate from Chile LIVE coverage',async({page})=>{
+ const health=await(await page.request.get('/data/source_health.json')).json();
+ const product=await(await page.request.get('/data/product.json')).json();
+ for(const key of ['global_who','global_paho','global_reuters']){
+  const row=health.sources[key];expect(row.discovery_scope).toBe('global_intelligence');
+  expect(row.publication_activation).toBe(false);expect(row.published).toBe(0);
+  expect(product.sources[key]).toEqual(row);
+ }
+ expect(health.sources.global_reuters.counts).toEqual({'30':null,'90':null});
+ expect(health.sources.global_reuters.technical_status).toBe('not_polled_license_hold');
+ await page.goto('/');
+ const coreHealth={...health,sources:Object.fromEntries(Object.entries(health.sources).filter(([key,s])=>s.discovery_scope!=='global_intelligence'))};
+ const coverage=await page.evaluate(data=>coverageText(data),health);
+ expect(coverage).toEqual(await page.evaluate(data=>coverageText(data),coreHealth));
+ await page.locator('#sourcesOpen').click();
+ const group=page.locator('.source-group').filter({has:page.getByRole('heading',{name:'Global Intelligence',exact:true})});
+ await expect(group).toContainText('WHO');await expect(group).toContainText('PAHO');await expect(group).toContainText('Reuters');
 });
 
 test('sources are grouped by decision value and expose freshness layers',async({page})=>{
