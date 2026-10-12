@@ -8,7 +8,8 @@ permissions:
 jobs:
   tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # The integrated suite includes immutable paid-history replays (3800+ cases).
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:

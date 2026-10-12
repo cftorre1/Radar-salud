@@ -2521,6 +2521,14 @@
         "data/audits/global_integration_2026_10_11/alternatives.json",
         "data/audits/global_integration_2026_10_11/reviewer.json"
       ]
+    },
+    {
+      "date": "2026-10-12",
+      "change": "Commander integrates Pulso PR10 with paid ancestry. Exact-SHA preview PASS; remaining integration and fresh source runtime pending. Historical exact-code tests must not certify later source modules.",
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38202622766",
+        "tests/test_pulso_terminal_followthrough_qa.py"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -3190,7 +3198,7 @@
     }
   ],
   "current_main_workflows_sha": "083d2f761e829de49ddd5ef9bc41bbeb494aaad4",
-  "current_staging_candidate_sha": "44e544a8827f3c03c43866404ae83a2a8dd7645b",
+  "current_staging_candidate_sha": "515b8809ecc391600c4093ce0435955d7d3685c5",
   "product_qa_notes": [
     {
       "id": "home_ux_data_visibility_followup_2026_09_24",
@@ -4146,7 +4154,7 @@
       ]
     }
   ],
-  "updated_at": "2026-10-11T14:40:23.112019+00:00",
+  "updated_at": "2026-10-12T04:33:22.469945+00:00",
   "closed_beta": {
     "status": "pending_validation",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",
@@ -4213,5 +4221,23 @@
       "pfizer_chile": "OPERATIVE_DEGRADED",
       "clinicas_achs_salud": "OPERATIVE_DEGRADED"
     }
+  },
+  "integration_commander_checkpoint": {
+    "recorded_at": "2026-10-12T04:33:22.469945+00:00",
+    "staging_sha": "515b8809ecc391600c4093ce0435955d7d3685c5",
+    "merged_prs": [
+      10
+    ],
+    "pending_prs": [
+      26,
+      16,
+      28,
+      30
+    ],
+    "preview_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38202622766",
+    "postmerge_live_collection": "PENDING",
+    "readiness": "NO_GO_PENDING_RUNTIME_AND_INDEPENDENT_REVIEW",
+    "operational_readiness_percent": null,
+    "source_statuses_not_promoted": true
   }
 }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-12T02:53:15.593790+00:00",
+  "updated_at": "2026-10-12T04:33:22.469945+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -7791,6 +7791,39 @@
         "clinicas_chile": "OPERATIVE_DEGRADED",
         "pfizer_chile": "OPERATIVE_DEGRADED",
         "clinicas_achs_salud": "OPERATIVE_DEGRADED"
+      }
+    },
+    {
+      "id": "integration_commander_daily_first_2026_10_12",
+      "status": "in_progress",
+      "priority": "critical",
+      "owner": "Integration Commander",
+      "objective": "Integrar PR10/26/16/28 en staging preservando linaje pagado y verificar runtime diario de30dias por SHA.",
+      "constraints": [
+        "main y production-stable intactos",
+        "sin nuevas capturas historicas ni llamadas IA duplicadas",
+        "Global por merito sin cuota; Reuters pausado",
+        "no declarar beta READY por merges/tests"
+      ],
+      "evidence": [
+        "https://github.com/cftorre1/Radar-salud/actions/runs/38202622766",
+        "https://github.com/cftorre1/Radar-salud/issues/5#issuecomment-6117774084"
+      ],
+      "checkpoint": {
+        "staging_sha": "515b8809ecc391600c4093ce0435955d7d3685c5",
+        "merged_prs": [
+          10
+        ],
+        "pending_prs": [
+          26,
+          16,
+          28,
+          30
+        ],
+        "postmerge_preview": "PASS",
+        "postmerge_live_collection": "PENDING",
+        "blocker": "Pulso historical exact-code fixture coupled to current integration tree; fix isolated by accepted SHA, live validator unchanged",
+        "daily_first_public_sources_owner": "PR29 / Codex"
       }
     }
   ],
