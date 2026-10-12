@@ -1414,7 +1414,29 @@
       "validated_requirements": [],
       "validated_blocks": [],
       "qa_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38148318249",
-      "qa_merge_sha": "0de65d29b200f79b567387bdb10962f742286a0f"
+      "qa_merge_sha": "0de65d29b200f79b567387bdb10962f742286a0f",
+      "integration_status": "READY_FOR_INTEGRATION",
+      "integration_readiness_path": "data/audits/w4_p0_integration_readiness.json",
+      "activation": "held"
+    },
+    "work4_p0_integration_candidate": {
+      "kind": "isolated_integration_qualification",
+      "status": "READY_FOR_INTEGRATION",
+      "scope": "Safe non-activated P0 data package only; mandatory final-head CI remains a merge condition",
+      "sha": "b832aed3630eca59b8b6a2b536a3ae79eeacb69d",
+      "integration_base_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+      "paths": [
+        "data/audits/w4_p0_integration_readiness.json"
+      ],
+      "url": "https://github.com/cftorre1/Radar-salud/pull/16",
+      "checks": [
+        "45 focused tests PASS",
+        "Retained-evidence adapters/replay/independent Reviewer PASS (264 checks)",
+        "Initial inventory byte-identical to 0339dd2; unrelated current staging health/tasks/PMO preserved",
+        "Final head required CI is a merge condition; source outcomes remain OPERATIVE_DEGRADED"
+      ],
+      "validated_requirements": [],
+      "validated_blocks": []
     }
   },
   "blocks": [
@@ -2445,6 +2467,13 @@
       "date": "2026-10-11",
       "source": "Work 4 P0 / PR #16",
       "change": "Final source-code qualification on 82c50e5: native adapters/replay/independent Reviewer and global QA PASS; preserve three OPERATIVE_DEGRADED outcomes and exact unresolved scope/cadence/publication gaps"
+    },
+    {
+      "date": "2026-10-11",
+      "change": "PR16 integration conflict reconciled against bc723e0; safe P0 package qualified with retained evidence, 45 focused tests/replay/Reviewer. Deferred recurrence/legal/perimeter/publication scopes do not authorize source activation; merge reserved to Integration Commander.",
+      "evidence": [
+        "work4_p0_integration_candidate"
+      ]
     }
   ],
   "scope_deviations": [],

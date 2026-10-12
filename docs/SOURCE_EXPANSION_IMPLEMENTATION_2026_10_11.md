@@ -71,3 +71,18 @@ Calificación de código `a1a3a9c`: [runtime nativo #38146456406](https://github
 
 
 Última calificación de código `82c50e5`: [runtime nativo #38148318253](https://github.com/cftorre1/Radar-salud/actions/runs/38148318253), **32 tests dirigidos PASS**, tres adapters, replay idempotente y **Reviewer de cobertura PASS (302 comprobaciones)**. [QA global #38148318249](https://github.com/cftorre1/Radar-salud/actions/runs/38148318249), merge de PR `0de65d2`: **1.039 Python PASS/1 SKIP, 42 Node PASS, 60 browser desktop/mobile PASS y Reviewer findings=[]**. Cero fallos introducidos observados; el warning de marca pytest no registrada pertenece al test rápido heredado. ZIP finales de runtime e índices verificados por SHA-256 y preservados, junto a los primarios iniciales, en `data/audits/source_expansion/`. La calificación de estos inventarios mantiene las tres fuentes OPERATIVE_DEGRADED y no certifica recurrencia de 24 horas.
+
+
+## Integración acotada · PR #16
+
+El paquete seguro queda **READY_FOR_INTEGRATION**, separado de los tres estados de fuente **OPERATIVE_DEGRADED**. Se reconcilió staging `bc723e0` mediante merge dentro de la rama del PR. El único conflicto explícito era `config/pmo_baseline.json`: se conserva íntegro el PMO de staging y se agregan exclusivamente la evidencia/changelog P0 propios. Queue y health se combinaban automáticamente y se verificaron por registro. Los inventarios `data/entities` y `data/market` permanecen byte por byte iguales al HEAD `0339dd2`; las fechas ambiguas siguen sin resolución inventada.
+
+Calificación local: **45 tests focales PASS**, adapters sobre capturas conservadas, **replay idempotente y Reviewer separado PASS, 264 comprobaciones/9 hechos CMF**. El replay reconstruye los inputs necesarios por hash desde archivos versionados; los 38 PDFs contables/corporativos auxiliares no conservados en esos ZIP se enumeran explícitamente y no se presentan como verificados de nuevo. Los estados/celdas financieras se sustentan en HTML oficial retenido; los 9 primarios CMF y 116 documentos presupuestarios usados sí están presentes. El runtime nativo y QA del HEAD `0339dd2` siguen siendo evidencia histórica, no nueva captura.
+
+Los PRs reutilizan evidencia guardada por defecto. Una captura nueva sólo es posible mediante workflow_dispatch con `capture_fresh=true`; no se solicitó en este frente. Los gates globales y el Reviewer existente no cambian. La CI obligatoria debe pasar sobre el HEAD final antes de fusionar; su recibo final se registra en PR #16 e issue #5.
+
+Presupuesto adicional de recuperación: **0 solicitudes a fuentes, 0 llamadas pagadas del pipeline, 0 auditorías nuevas, 0 credenciales/servicios**. Los archivos de uso AI y cola editorial son idénticos a staging; no se declara un importe monetario de Actions o del chat que no está disponible. Evidencia y hashes: `data/audits/w4_p0_integration_readiness.json`.
+
+Recurrencia ≥24 horas, forma legal efectiva Isalud, control/redes, perímetro CMF/filiales y versiones/fechas DIPRES se posponen como subalcances explícitos. Mantienen las fuentes degradadas y los candidatos diferidos, sin bloquear la integración del paquete de datos seguro ni elevar el readiness global.
+
+Acción exclusiva del Integration Commander: comprobar HEAD de PR #16, base staging, checks obligatorios verdes y ausencia de conflictos; efectuar **merge commit con HEAD coincidente**, registrar SHA real de staging y verificar allí el replay/QA sin activar fuentes. Esta sesión no ejecuta merge, runtime post-merge ni promoción.
