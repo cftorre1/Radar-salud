@@ -1,0 +1,55 @@
+{
+  "approved_contract": {
+    "pr": "https://github.com/cftorre1/Radar-salud/pull/32",
+    "sha": "a3e254d9ada6d2750787b416d7a9ee2253c08334"
+  },
+  "staging": {
+    "sha": "74da1c6d33b9e5746e79e0f481be3057f33d45df",
+    "tree": "0fc1e985abef68dcf2a09d45e97f154ceda98859"
+  },
+  "preexisting_implementation_pr": "https://github.com/cftorre1/Radar-salud/pull/33",
+  "inherited_ci": {
+    "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38272609619",
+    "head_sha": "74da1c6d33b9e5746e79e0f481be3057f33d45df",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "bootstrap",
+        "conclusion": "success",
+        "id": 114890285264
+      },
+      {
+        "name": "qa / tests",
+        "conclusion": "success",
+        "id": 114890519007
+      },
+      {
+        "name": "qa / staging",
+        "conclusion": "success",
+        "id": 114896759959
+      },
+      {
+        "name": "qa / reviewer",
+        "conclusion": "success",
+        "id": 114897936185
+      },
+      {
+        "name": "preview",
+        "conclusion": "success",
+        "id": 114898292798
+      },
+      {
+        "name": "rollback",
+        "conclusion": "skipped",
+        "id": 114898632020
+      }
+    ]
+  },
+  "commander_close": [
+    {
+      "url": "https://github.com/cftorre1/Radar-salud/pull/33#issuecomment-6128047167",
+      "body": "CIERRE Integration Commander — PR33 integrado exclusivamente a staging.\n\nHEAD final: 74da1c6d33b9e5746e79e0f481be3057f33d45df.\nMerge commit conservado: c7b0ecb7c02fd51985a32b0aa9a31876258060f5, padres ef8cbe3938623d493872ff5f3e717153f176d1be + 7ea73fba922ae95efcea1d66e86aa4ff0f768651. Autorización6127164163, handoff y gates premerge revisados; toma exclusiva6127217425.\n\nPASS técnico final — Actions https://github.com/cftorre1/Radar-salud/actions/runs/38272609619 : QA3892 Python+94subtests (1skip existente),49Node; browser94/94,0skip/0flaky/0unexpected; Reviewer determinista0findings candidate_sha exacto; preview+smoke SUCCESS. release.json real confirma el HEAD. Primer postmerge c7b0ecb7 también pasó run38269649153.\n\nQA real: sobres y sincronización bidireccional entre pestañas/Home–Global; persistencia de no leído; título/Más info misma ficha directa; Radar/Global compactos; Volver arriba/foco; filtros;14fuentes públicas; Pulso y sus vistas de contratos/movilidad. Corrección puntual de navegación pegada en catálogo: solo CSS scoped y prueba desktop/mobile. Recheck desplegado: flex,gap14px,targets44px. Capturas desktop reales y pruebas móviles390×844 documentadas; fixtures se identifican expresamente, sin fingir publicación.\n\nIntegridad PASS:5673archivos protegidos sin cambios (blob+SHA256);164señales compiladas y catálogo idénticos entre merge y corrección. HOLD,history,paid receipts,presupuestos,queue/PMO de staging y decisiones intactos. Main54174c5d y production-stable06831243 sin cambios. Autopilot-state tuvo observación independiente de Alicanto Autonomy2bd3cdc2, no alterada por esta sesión.0nuevas llamadas pagadas del pipeline.\n\nREVISE editorial / beta NO GO: IF10670 live conserva copy heredado de 'reporte de octubre' y pendencia actual; candidato revisado corrige ambos, pero sigue fixture según decisión previa. IF534 conserva vigencia futura1dic2026; redundancia legacy pendiente. Pulso conserva julio/provisional/desglose no verificado. FEFI/Esencial permanece HOLD sin ranking ni agregado financiero; no se levanta BCBSA método,Reuters licencia,SE37,PR29,preflight ni beta. No se publicaron overlays: requieren proceso autorizado y gate editorial/operativo. Reviewer determinista no certifica semántica/legalidad.\n\nEvidencia final: staging artifact11757954143 SHA256 b0efbe167f468c34499b61ee90e2ee087a0e1c4aaf20499bbbe847d3dd2f1b74; reviewer11758008245 SHA256 3bac775f7b548963359e0a5454096e4f373a6d35e0c0de7d4400d63829887db0. Paquete seleccionado43archivos con capturas/logs/manifests, SHA256 d8858488826c0b0fc2ae61c8896e0a99925109512e65efc2c887860b2268e0d3, entregado a Dirección.\n\nSesión de integración cerrada; sin integrador de esta sesión activo. No autorización de beta ni producción."
+    }
+  ]
+}
