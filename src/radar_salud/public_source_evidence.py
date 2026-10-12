@@ -13,6 +13,7 @@ from zoneinfo import ZoneInfo
 
 
 HOSTS = {
+    "minsal": {"www.minsal.cl"},
     "fonasa": {"www.fonasa.gob.cl", "fonasa.gob.cl", "www.fonasa.cl", "fonasa.cl"},
     "fonasa_datos_abiertos": {"datosabiertos.fonasa.cl", "www.datosabiertos.fonasa.cl"},
     "isp_anamed": {"www.ispch.gob.cl", "ispch.gob.cl", "www.ispch.cl", "ispch.cl"},
