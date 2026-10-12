@@ -1,0 +1,80 @@
+{
+  "result": "PASS_BOTH_NATIVE_REGISTERS_AND_FOCAL_DESKTOP_MOBILE_PENDING_FINAL_CI",
+  "observed_at": "2026-10-12T03:33:56.621863+00:00",
+  "fourth_CI": {
+    "run": 38198581790,
+    "head": "05e0f78fc5e0b494a35c8ae01bc35d2e40c9a2a2",
+    "merge": "b781c43b508bbb1783793f9d304ab4d4eef48e0b",
+    "python_pass": 1202,
+    "subcases_pass": 94,
+    "skip": 1,
+    "node_pass": 43,
+    "browser_pass": 60,
+    "browser_failed": 2,
+    "failed_case": "same register UI case reached later SIS assertion: expected18 vs actual16, originalJul13 substitute2 agedout",
+    "automatic_reviewer": "skipped",
+    "artifact_id": 11723828741,
+    "artifact_sha256": "ea9e40be9cdf3c21470243dff7c5f24244162e02fdc64b4a00513b52b575f4a5"
+  },
+  "stop_loss": {
+    "two_failed_full_CI_register_case_executions": true,
+    "full_CI_repetition_stopped_before_another_push": true,
+    "changed_strategy": "Complete BOTH native register controls, execute ONLY affected desktop/mobile case locally first; no mandatory QA changes",
+    "partial_fix_acknowledged": "Prior control repaired SUSESO but retained fixed SIS18/4 expectations. Whole case now covered.",
+    "GH_CLI_workflow_route": "Two equivalent GETinspection attempts Forbidden; stopped. No dispatch attempted; optional workflow change completely reverted.",
+    "chromium_download_route": "One HEADCONNECT403; no retries or download. Existing /usr/bin/chromium discovered and used."
+  },
+  "repair": {
+    "test_only": "tests/browser/fiscalization.spec.cjs",
+    "scope": "SIS original18cohort exactURL/date controls, rollingcount16, currently2substitutions from original metadata; all actor/effect/navigation/layout assertions retained.",
+    "historical_screenshot_guard": "Use testInfo.outputPath to preserve original data/audits/fiscalizacion PNG qualification evidence.",
+    "test_sha256": "dc8e989691ab73c9f7441674bc82e7a6b29fea111e05e87cba0c496abe470e4f"
+  },
+  "focal_QA": {
+    "exact_nonDOM_valid_snapshots": 3,
+    "negative_mutations_rejected": 7,
+    "assertion_receipt": "data/audits/global_integration_2026_10_11/ci_both_register_control_assertions.json",
+    "assertion_sha256": "9808c5464358e49f63aeeb00aa2bafbc770463bb57e8ceb61d943326d10388a5",
+    "real_desktop_mobile_pass": 2,
+    "browser_cases_failed": 0,
+    "duration_seconds": 6.5,
+    "node_version": "24.19.0",
+    "system_chromium": "154.0.8037.57",
+    "playwright_package": "1.56.1; existing parentpackage readonly",
+    "ephemeral_web": "work/focal-ui/web; copied approved assets + actual offline95signal snapshot; source files untouched",
+    "runtime_date": "2026-10-12",
+    "browser_report_ref": "data/audits/global_integration_2026_10_11/ci_register_focal_browser.json",
+    "browser_report_sha256": "975fa7298330dbba560f1555d7092170a4e82f5ab09c0d6a916c66cccc484909",
+    "screenshot_sha256": {
+      "data/audits/global_integration_2026_10_11/ci_register_focal_desktop.png": "6964419d769d8a51ef6c3398583039db4e4d71cfd78716e52a5161a6b4c14dcc",
+      "data/audits/global_integration_2026_10_11/ci_register_focal_mobile.png": "c3a277cbc228814392303ba91f297d7b59975192c6b15a0732d87ef5e6b4356d"
+    },
+    "setup_attempt_note": "First local server attempt404 before any tests: relative directory resolved against config inwork. Corrected absolute directory, then2PASS. No application failure or equivalenttest retry.",
+    "browser_run_test_sha256": "13eb207519e79ec91eac84d507913174a3e63b8a00373177e6ce5dd71a3b998d"
+  },
+  "all18_Global_hashes_preserved": true,
+  "original_Fiscalizacion_images_preserved": true,
+  "QA_workflows_unchanged": true,
+  "source_UI_data_or_original_dates_modified": false,
+  "publisher_polls": 0,
+  "paid_AI_API_calls": 0,
+  "manual_full_product_suite_runs": 0,
+  "manual_browser_full_suite_runs": 0,
+  "manual_targeted_browser_runs": 1,
+  "reviewer_ref": "data/audits/global_integration_2026_10_11/ci_both_register_control_reviewer.json",
+  "final_candidate_CI": "Only after local whole case2PASS and Reviewer; exact SHA/result recorded in PR26/issue5",
+  "reviewer_numeric_finding": {
+    "finding": "substring2alsoaccepts12; control tightened to integer boundary, without modifying product or DOM",
+    "fixed": true,
+    "test_file_sha256_after_matcher_fix": "dc8e989691ab73c9f7441674bc82e7a6b29fea111e05e87cba0c496abe470e4f",
+    "final_nonDOM_valid_snapshots": 3,
+    "negative_mutations_rejected": 9,
+    "new_negatives": [
+      "12effects",
+      "2.2effects"
+    ],
+    "receipt_ref": "data/audits/global_integration_2026_10_11/ci_register_effect_boundary.json",
+    "receipt_sha256": "b471493ab4b92347cac803adeacd2cdedfaf1477fc5ef05e6624b0a203b13b54",
+    "browser_2PASS_attribution": "Prior exact browser test hash retained; no extra browser run for assertion-only matcher change; mandatoryCI must exercise final testhash"
+  }
+}
