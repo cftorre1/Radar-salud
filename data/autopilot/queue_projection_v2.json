@@ -6,8 +6,8 @@
     "queue_blob_sha": "d8c48ce04af1bad68cfb56082159b54f1e9a3e31",
     "queue_sha256": "bfd21d20e1e8b6c318a2b100f1210264baad431ed5a548eb68b062b3a9cf615f",
     "staging_sha": "515b8809ecc391600c4093ce0435955d7d3685c5",
-    "state_control_sha256": "3d8138181d98059c43654e1b5ae1d259de5674a8b93c502e21f0ecbed4fbbbe1",
-    "state_sha": "9668b813a298f151d375650d69c4d870880bca47"
+    "state_control_sha256": "e86ef7226e2abd571b03436f2be7cbff19923543e6ee71b1d4d844864b05b220",
+    "state_sha": "37569bd48444eb5b933d7b48784dc4da9ed793d8"
   },
   "canonical_queue_updated": false,
   "derived_runtime_tasks": [
@@ -254,10 +254,10 @@
   ],
   "kind": "queue_runtime_projection",
   "observation": {
-    "path": "data/autopilot/evidence/observation-1f00adf667344411b0a583e3addfa3bd.json",
-    "sha256": "d4c5c019bd1459a283a3addd125a3a9241f3a0b4e24417d42a07b4b9f0c65260",
+    "path": "data/autopilot/evidence/observation-50e9937335e64030bd572b03a17e6410.json",
+    "sha256": "432e80440ee4fb3748d8e4a5c2ff8a4e9f3a05089161fe2e312565192a3dd37d",
     "staging_sha": "515b8809ecc391600c4093ce0435955d7d3685c5",
-    "state_sha": "9668b813a298f151d375650d69c4d870880bca47"
+    "state_sha": "37569bd48444eb5b933d7b48784dc4da9ed793d8"
   },
   "owner_followups": "UNKNOWN",
   "schema_version": 2,
@@ -1685,7 +1685,7 @@
       "runtime": {
         "attempts": 8,
         "blocker_evidence_count": 1,
-        "blocker_fingerprint": "recovery_budget_exhausted:84b1be630eb2ce5d647c754073da04f584e9299ce8652133d1cefd164acdb881",
+        "blocker_fingerprint": "4ffb14a2d16f992b5d628a1aa1cd318fe84417d30750815fd7e623fd160ef710",
         "candidate_review": {
           "candidate_branch": null,
           "candidate_commit": null,
@@ -1696,7 +1696,7 @@
           "superseded": null
         },
         "candidate_reviews": {},
-        "canonical_material_progress_at": "2026-10-11T15:44:53.889181Z",
+        "canonical_material_progress_at": "2026-10-12T04:49:31.340638Z",
         "evidence_revision": "d1d812ed63f6fbc1a7aebd69ebfa6f94f11e2e4a80eb018f1b1312e4f01c70cb",
         "failure_signature": "2e1711ae92e4fa6ad4208c85a0931a781a450d387b26709550de273b401d909a",
         "failure_verified": true,
@@ -1706,20 +1706,20 @@
         "input_sha": "515b8809ecc391600c4093ce0435955d7d3685c5",
         "last_ready_at": "2026-10-12T04:29:52.888203Z",
         "lease": {
-          "claimed_at": "2026-10-12T04:31:22.699773Z",
-          "expires_at": "2026-10-12T04:41:22.699773Z",
-          "fence": 19,
-          "heartbeat_at": "2026-10-12T04:31:22.699773Z",
-          "owner": "38203963907-1-mutualities",
+          "claimed_at": null,
+          "expires_at": null,
+          "fence": null,
+          "heartbeat_at": null,
+          "owner": null,
           "recovery_deadline_at": null,
-          "token_sha256": "a2da010b0c33b41b4babc64f4b198d6cf36a0b9105be79d7bd9e58dc44ba3e3b"
+          "token_sha256": null
         },
-        "material_progress_at": "2026-10-11T15:44:53.889181Z",
-        "raw_material_progress_at": "2026-10-11T15:44:53.889181Z",
+        "material_progress_at": "2026-10-12T04:49:31.340638Z",
+        "raw_material_progress_at": "2026-10-12T04:49:31.340638Z",
         "reason": "input_or_evidence_changed",
-        "recovery_episode": "99959c810358709bb659f505fd50abb3813ecb593b8c7af9e9158be626ada882",
+        "recovery_episode": "3529496464bf7e03dcb0484bd4b79be199b1471237df4edbfa18a47c198bb40f",
         "recovery_reclaims": 0,
-        "status": "RUNNING",
+        "status": "BLOCKED",
         "task_id": "source_repair_mutualities_lane_2026_10_11"
       },
       "task_id": "source_repair_mutualities_lane_2026_10_11"

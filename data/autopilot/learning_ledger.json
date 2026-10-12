@@ -3934,5 +3934,30 @@
     "source": "Autonomy hosted observation",
     "status": "observed_open",
     "task_id": "pulso_latercera_exhaustive_discovery_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "4ffb14a2d16f992b5d628a1aa1cd318fe84417d30750815fd7e623fd160ef710",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-50e9937335e64030bd572b03a17e6410.json",
+        "sha256": "432e80440ee4fb3748d8e4a5c2ff8a4e9f3a05089161fe2e312565192a3dd37d",
+        "staging_sha": "515b8809ecc391600c4093ce0435955d7d3685c5",
+        "state_sha": "37569bd48444eb5b933d7b48784dc4da9ed793d8"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: source_repair_mutualities_lane_2026_10_11",
+    "id": "autonomy_observed_e91df339346cda41ed3491327283edd8cb13e6f126ea6bd2b08fec785f4fc835",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "source_repair_mutualities_lane_2026_10_11"
   }
 ]
