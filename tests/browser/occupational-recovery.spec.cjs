@@ -21,11 +21,11 @@ test('occupational sources expose verified counts and readable source identity o
   // The source list loads independently from the radar metadata. Wait for its render before inspecting the expansion control.
   await expect(page.locator('#sourcesList .source-row').first()).toBeVisible();
   if(await page.locator('#sourcesMore').isVisible())await page.locator('#sourcesMore').click();
+  const catalog=await (await page.request.get('/data/public_sources.json')).json();
   for(const slug of lanes){
-    const row=page.locator('.source-row').filter({has:page.getByText(health.sources[slug].name,{exact:true})});
-    await expect(row).toHaveCount(1);
-    await expect(row).toContainText('Última consulta');
-    await expect(row).not.toContainText('2016');
+    const listed=catalog.sources.find(x=>x.id===slug),row=page.locator('.source-row').filter({hasText:health.sources[slug].name});
+    await expect(row).toHaveCount(listed?1:0);
+    if(listed)await expect(row).not.toContainText(/Última consulta|2016/);
   }
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
   expect(errors).toEqual([]);

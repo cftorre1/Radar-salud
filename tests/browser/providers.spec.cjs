@@ -10,14 +10,9 @@ test('audited providers retain one visible institution and truthful freshness',a
  await page.goto('/');
  await page.locator('#sourcesOpen').click();
  await expect(page.locator('#sourcesList .source-row')).not.toHaveCount(0);
- await page.locator('#sourcesMore').click();
- for(const name of names){
-  const row=page.locator('#sourcesList .source-row').filter({has:page.getByText(name,{exact:true})});
-  await expect(row).toHaveCount(1);
-  await expect(row).toContainText('Última consulta');
-  await expect(row).toContainText('Última señal detectada');
-  await expect(row).toContainText('Última seleccionada');
- }
+ await expect(page.locator('#sourcesMore')).toBeHidden();
+ const catalog=await (await page.request.get('/data/public_sources.json')).json();
+ for(const name of names){const listed=catalog.sources.some(x=>x.name===name),row=page.locator('#sourcesList .source-row').filter({hasText:name});await expect(row).toHaveCount(listed?1:0);if(listed)await expect(row).not.toContainText(/Última consulta|Última señal detectada|Última seleccionada/);}
  const health=await (await page.request.get('/data/source_health.json')).json();
  expect(health.sources.pfizer_chile.content_freshness).toBe('stale_external_surface');
  expect(health.sources.indisa.coverage_status).toBe('unverified');
