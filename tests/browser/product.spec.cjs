@@ -205,20 +205,19 @@ test('Feed-only share uses Web Share and clipboard fallback without analytics',a
  await page.goto('/#%E0%A4%A');await expect(page.locator('#meta')).toContainText('Última actualización:');await expect(page.locator('article').first()).toBeVisible();
 });
 test('Global read state is shared across Home and the research page',async({page})=>{
- const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,visibleCount=Math.min(themeCount,10);
+ const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,visibleCount=themeCount;
  await page.goto('/');await expect(page.locator('.brief-global')).toHaveCount(1);
  const free=await (await page.request.get('/data/free_value.json')).json(),teaserId=free.global_teaser.theme_id;
  await page.locator('.signal.special.global [data-special-open]').click();
  await expect(page).toHaveURL(/global\.html#theme-/);
  await page.locator('#globalPeriod').selectOption('all');
- // The Home teaser can fall outside the ten themes selected for the all-period view.
- // Filter its publisher explicitly to test persisted read state independently of rank.
+ // Filter its publisher to verify read-state persistence independently of rank.
  const teaser=globalData.themes.find(t=>t.id===teaserId);
  const publisher=teaser.sources.map(s=>s.publisher).sort((a,b)=>globalData.themes.filter(t=>t.sources.some(s=>s.publisher===a)).length-globalData.themes.filter(t=>t.sources.some(s=>s.publisher===b)).length)[0];
  await page.locator('#globalFilters summary').click();
  await page.locator('#globalPublisher').selectOption(publisher);
  const publisherCount=globalData.themes.filter(t=>t.sources.some(s=>s.publisher===publisher)).length;
- expect(publisherCount).toBeLessThanOrEqual(10);
+ await expect(page.locator('.theme')).toHaveCount(publisherCount);
  await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(publisherCount-1);
  const theme=page.locator(`#theme-${teaserId}`);
  await expect(theme).toHaveClass(/read/);
@@ -338,7 +337,7 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await page.screenshot({path:`artifacts/${test.info().project.name}-cards-v2.png`,fullPage:true});
 });
 test('Global Intelligence mirrors Home while keeping global facts and Chile hypotheses distinct',async({page})=>{
- const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,visibleCount=Math.min(themeCount,10);
+ const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,visibleCount=themeCount;
  await page.goto('/');
  await expect(page.locator('.signal.special.global [data-special-open]')).toBeVisible();
  await page.locator('.signal.special.global [data-special-open]').click();
