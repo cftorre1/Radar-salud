@@ -1,0 +1,24 @@
+{
+  "result": "PASS_SCOPED_STAGING_RECONCILIATION",
+  "observed_at": "2026-10-12T02:17:20.425098+00:00",
+  "source_delivery_before_merge": "5f0a2875e6cb1f76a188b9c556ab8ac06d13aa66",
+  "actual_upstream_staging": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+  "isolated_merge_commit": "704d2076a92b20dfce250e04943f5377c1103613",
+  "staging_written_by_C": false,
+  "conflict": "config/pmo_baseline.json evidence_catalog concurrent append; JSON union resolved; all incoming keys preserved",
+  "incoming_code_or_UI_delta": false,
+  "unowned_queue_tasks_preserved": 83,
+  "incoming_PMO_catalog_changelog_prefix_and_nonGlobal_blocks_preserved": true,
+  "incoming_files_byte_exact": [
+    "data/autopilot/learning_ledger.json",
+    "data/pmo/integration_release_2026_10_11.json",
+    "data/pmo/sprint_integration_2026_10_11_13.json",
+    "docs/INTEGRATION_SPRINT_CHECKPOINT_2026_10_11.md"
+  ],
+  "all18_original_canonical_and_source_definition_hashes_still_match": true,
+  "daily_and_reuters_enabled": false,
+  "source_definition_QA_not_rerun": "Unchanged source/technical/UI files; reuse approved source1178 and focal33 receipts; only the actual governance conflict was revalidated.",
+  "only_revalidation": "7 PMO tests PASS after conflict resolution plus semantic ownership/hash assertions",
+  "new_publisher_runs_or_history_expansion": 0,
+  "reviewer_supplement_ref": "data/audits/global_integration_2026_10_11/staging_reviewer_88979eb.json"
+}
