@@ -3,6 +3,12 @@ on:
   pull_request:
     branches: [staging]
   workflow_dispatch:
+    inputs:
+      capture_fresh:
+        description: 'Explicit fresh public capture; PRs always reuse retained evidence'
+        type: boolean
+        required: false
+        default: false
 permissions:
   contents: read
 jobs:
@@ -24,14 +30,20 @@ jobs:
       - name: Public scanned issuer documents
         run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils tesseract-ocr
       - name: Capture official public surfaces with verified TLS
+        if: github.event_name == 'workflow_dispatch' && inputs.capture_fresh
         run: python scripts/probe_source_expansion.py --output artifacts/expansion
+      - name: Reuse hash-verified official captures without source requests
+        if: github.event_name != 'workflow_dispatch' || !inputs.capture_fresh
+        run: python scripts/prepare_market_source_replay.py --output artifacts/expansion
       - name: Execute adapters, replay retained stock and reconcile originals independently
         run: python scripts/validate_market_source_runtime.py --capture-dir artifacts/expansion --output artifacts/qualification
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: expansion-runtime-review
-          path: artifacts/qualification
+          path: |
+            artifacts/qualification
+            artifacts/replay_preparation.json
           retention-days: 14
       - uses: actions/upload-artifact@v4
         if: always()
