@@ -140,6 +140,7 @@ test('source panel never equates transport errors or absent telemetry with no ne
  assert.match(c.sourceCaptureLabel({technical_status:'error',checked_at:'2026-10-12T00:00:00Z'}),/no se puede confirmar si hay novedades/);
  assert.match(c.sourceCaptureLabel({coverage_status:'blocked'}),/Captura con error/);
  assert.match(c.sourceCaptureLabel({technical_status:'held'}),/pausada/);
+ assert.equal(c.sourceCaptureLabel({technical_status:'not_polled_license_hold',status:'error',coverage_status:'not_permitted'}),'Captura pausada por licencia');
  assert.match(c.sourceCaptureLabel({technical_status:'partial'}),/parcial/);
  assert.match(c.sourceCaptureLabel({checked_at:'2026-10-12T00:00:00Z',technical_status:'ok'}),/no acredita cobertura completa/);
  assert.equal(c.sourceCaptureLabel({}),'Sin consulta verificable');

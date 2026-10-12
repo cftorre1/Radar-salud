@@ -55,6 +55,7 @@ function rel(score){const n=Number(score||0);if(n>=85)return{label:'Esencial',cl
 function canonicalSource(name){const n=String(name||'').toLowerCase();if(n.includes('suseso')||n.includes('superintendencia de seguridad social'))return'SUSESO';if(n.includes('superintendencia'))return'Superintendencia de Salud';if(n==='minsal'||n.includes('ministerio'))return'Ministerio de Salud';if(/^(?:pulso(?:\s*\/\s*la tercera|\s+latercera)?|la tercera)$/.test(n))return'Pulso / La Tercera';return name}
 function sourceCaptureLabel(x){
  const technical=String(x.technical_status||'').toLowerCase(),status=String(x.status||'').toLowerCase(),coverage=String(x.coverage_status||'').toLowerCase();
+ if(technical.includes('license_hold')||coverage==='not_permitted')return'Captura pausada por licencia';
  if(technical.includes('paused')||status.includes('paused')||technical==='held')return'Captura pausada';
  if(technical==='error'||status==='error'||x.error_type||coverage==='blocked')return'Captura con error · no se puede confirmar si hay novedades';
  if(technical==='partial'||status==='warning'||['partial','gap','format_gap','unverified'].includes(coverage))return'Cobertura parcial o pendiente de validación';
