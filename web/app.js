@@ -52,6 +52,15 @@ function publicationContractOk(s){const types=new Set(arr(s.signal_types).map(x=
 function individualCardAllowed(s){const verdict=String(s.editorial_committee?.verdict||'PASS').toUpperCase();return s.feed_visibility!==false&&publicationContractOk(s)&&!['HOLD','REJECT'].includes(verdict)}
 function typeTags(s){return arr(s.signal_types)} function scopeTags(s){return arr(s.scopes)}
 function rel(score){const n=Number(score||0);if(n>=85)return{label:'Esencial',cls:'essential'};if(n>=65)return{label:'Relevante',cls:'relevant'};return{label:'Contexto',cls:'context'}}
+function canonicalSource(name){const n=String(name||'').toLowerCase();if(n.includes('suseso')||n.includes('superintendencia de seguridad social'))return'SUSESO';if(n.includes('superintendencia'))return'Superintendencia de Salud';if(n==='minsal'||n.includes('ministerio'))return'Ministerio de Salud';if(/^(?:pulso(?:\s*\/\s*la tercera|\s+latercera)?|la tercera)$/.test(n))return'Pulso / La Tercera';return name}
+function sourceCaptureLabel(x){
+ const technical=String(x.technical_status||'').toLowerCase(),status=String(x.status||'').toLowerCase(),coverage=String(x.coverage_status||'').toLowerCase();
+ if(technical.includes('license_hold')||coverage==='not_permitted')return'Captura pausada por licencia';
+ if(technical.includes('paused')||status.includes('paused')||technical==='held')return'Captura pausada';
+ if(technical==='error'||status==='error'||x.error_type||coverage==='blocked')return'Captura con error · no se puede confirmar si hay novedades';
+ if(technical==='partial'||status==='warning'||['partial','gap','format_gap','unverified'].includes(coverage))return'Cobertura parcial o pendiente de validación';
+ return x.checked_at?'Consulta registrada · no acredita cobertura completa':'Sin consulta verificable';
+}
 function fmtDate(raw){if(!raw)return'';const d=new Date(/^\d{4}-\d{2}-\d{2}$/.test(raw)?raw+'T12:00:00Z':raw);if(Number.isNaN(d.getTime()))return esc(raw);return new Intl.DateTimeFormat('es-CL',{day:'2-digit',month:'short',year:'numeric',timeZone:'America/Santiago'}).format(d)}
 function fmtBriefDate(raw){if(!raw)return'';const d=new Date(/^\d{4}-\d{2}-\d{2}$/.test(raw)?raw+'T12:00:00Z':raw);if(Number.isNaN(d.getTime()))return String(raw);return new Intl.DateTimeFormat('es-CL',{day:'numeric',month:'short',timeZone:'America/Santiago'}).format(d).replace(/^(\d{1,2})-(?=\p{L})/u,'$1 ').replace(/\.$/,'')}
 function briefSource(x){return x.kind==='weekly'&&x.source==='Superintendencia de Salud'?'SIS':String(x.source||'').replace(/\s*[·+]\s*/g,' + ')}
@@ -167,12 +176,11 @@ Promise.all([
  fetch('data/radar_today.json',{cache:'no-store'}).then(r=>r.ok?r.json():({signals:[]}))
 ]).then(([d,radar])=>{
  const host=document.getElementById('sourcesList'),more=document.getElementById('sourcesMore'),signals=Array.isArray(radar.signals)?radar.signals:[];
- const canonicalSource=name=>{const n=String(name||'').toLowerCase();if(n.includes('superintendencia'))return'Superintendencia de Salud';if(n==='minsal'||n.includes('ministerio'))return'Ministerio de Salud';if(n.includes('suseso'))return'SUSESO';if(/^(?:pulso(?:\s*\/\s*la tercera|\s+latercera)?|la tercera)$/.test(n))return'Pulso / La Tercera';return name};
  const selectedDate=x=>{const target=canonicalSource(x.name);return signals.filter(s=>canonicalSource(s.source_name)===target).map(s=>s.event_date).filter(Boolean).sort().at(-1)||null};
  const groupFor=name=>{const n=String(name||'').toLowerCase();if(/superintendencia|minsal|ministerio|suseso|diario oficial|fonasa|isp|anamed|deis|estadísticas e información/.test(n))return['Organismos públicos y reguladores',0];if(/bupa|redsalud|pfizer|clínica|clinica|prestador/.test(n))return['Prestadores e industria de salud',1];if(/diario financiero|reuters|noticia|medio|pulso|la tercera/.test(n))return['Noticias y mercado',2];return['Otras fuentes relevantes',3]};
  const rows=Object.values(d.sources||{}).filter(x=>x&&x.name).map(x=>({...x,last_selected_at:selectedDate(x),group:x.discovery_scope==='global_intelligence'?['Global Intelligence',3]:groupFor(x.name)})).sort((a,b)=>a.group[1]-b.group[1]||String(b.last_selected_at||b.last_signal_at||b.checked_at||'').localeCompare(String(a.last_selected_at||a.last_signal_at||a.checked_at||''))||String(a.name).localeCompare(String(b.name),'es'));
  let expanded=false;
- const sourceRow=x=>`<div class="source-row"><strong>${esc(x.name)}</strong><div class="source-meta"><span><b>Última consulta</b> · ${x.checked_at?fmtDate(x.checked_at):'sin dato'}</span><span><b>Última señal detectada</b> · ${(x.latest_detected_at||x.last_signal_at)?fmtDate(x.latest_detected_at||x.last_signal_at):'sin señal reciente'}</span><span><b>Última seleccionada</b> · ${x.last_selected_at?fmtDate(x.last_selected_at):'aún no visible'}</span></div></div>`;
+ const sourceRow=x=>`<div class="source-row"><strong>${esc(x.name)}</strong><div class="source-meta"><span class="source-capture-state">${esc(sourceCaptureLabel(x))}</span><span><b>Última consulta</b> · ${x.checked_at?fmtDate(x.checked_at):'sin dato'}</span><span><b>Última señal detectada</b> · ${(x.latest_detected_at||x.last_signal_at)?fmtDate(x.latest_detected_at||x.last_signal_at):'sin detección verificada'}</span><span><b>Última seleccionada</b> · ${x.last_selected_at?fmtDate(x.last_selected_at):'aún no visible'}</span></div></div>`;
  const render=()=>{
   const groups=new Map();
   for(const x of rows){const label=x.group[0];if(!groups.has(label))groups.set(label,[]);groups.get(label).push(x)}
