@@ -23,7 +23,7 @@ function withinSnapshotHorizon(radar,source){
 test('Home V2 loads, filters persist and compact triage remains stable',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
- await expect(page.locator('#period')).toHaveValue('14');await expect(page.locator('#sort')).toHaveValue('date');
+ await expect(page.locator('#period')).toHaveValue('30');await expect(page.locator('#sort')).toHaveValue('date');
  await expect(page.getByRole('heading',{name:'Encuentra lo que importa',exact:true})).toBeVisible();
  expect(await page.getByRole('heading',{name:'Encuentra lo que importa',exact:true}).evaluate(el=>el.getBoundingClientRect().height/parseFloat(getComputedStyle(el).lineHeight))).toBeLessThan(1.1);
  await expect(page.locator('#filterDetails')).not.toHaveAttribute('open','');
@@ -503,9 +503,9 @@ test('period is visible outside filters, persisted without duplicating metric co
  await expect(page.locator('#radarMetrics')).not.toContainText('período');
  await page.locator('#filterDetails summary').click();
  await page.locator('#resetFilters').click();
- await expect(period).toHaveValue('14');
+ await expect(period).toHaveValue('30');
  await expect(page.locator('#sort')).toHaveValue('date');
- await expect(page.locator('#radarMetrics')).not.toContainText('14 días');
+ await expect(page.locator('#radarMetrics')).not.toContainText('30 días');
  const box=await period.boundingBox();expect(box.width).toBeLessThanOrEqual(test.info().project.name==='mobile'?110:150);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
 });

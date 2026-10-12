@@ -1371,7 +1371,7 @@ def _verified_detail(entry, loader, cached, audit=None):
 
 
 def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
-                     max_pages=250, boundary_pages=3, use_rss=True):
+                     max_pages=250, boundary_pages=3, use_rss=True, window_days=90):
     """Traverse the official archive and verify every factual article in detail.
 
     The advertised index currently exposes only 10,000 stories. Its own offset
@@ -1380,7 +1380,9 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
     """
     from .pending_queue import atomic_json
     today = today or datetime.now(ZoneInfo("America/Santiago")).date()
-    cutoff = today - timedelta(days=90)
+    if window_days not in (30, 60, 90):
+        raise ValueError("Unsupported discovery window")
+    cutoff = today - timedelta(days=window_days)
     cache = _load_cache(cache_path)
     articles = cache["articles"]
     visited, out, primary = set(), [], {}
@@ -1495,7 +1497,7 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
             trace = dict(_primary_trace(metadata), url=result["url"], listing=url, status=status, reason=reason,
                          title=result["title"], publisher_lastmod=entry.get("lastmod", ""),
                          cache_hit=result["cache_hit"], in_complete_30_days=bool(day and today - timedelta(days=30) <= day < today),
-                         in_complete_90_days=bool(day and cutoff <= day < today), current_day_slice=day == today)
+                         in_complete_90_days=bool(window_days == 90 and day and cutoff <= day < today), current_day_slice=day == today)
             audit.append(trace)
             if status in ("discovered", "discovered_metadata_only"):
                 out.append(RawItem("pulso_latercera", result["title"], result["url"], "Pulso / La Tercera",
@@ -1542,7 +1544,9 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
                    rss_inventory_day_min=min(rss_inventory_days) if rss_inventory_days else None,
                    rss_inventory_day_max=max(rss_inventory_days) if rss_inventory_days else None,
                    complete_30_days=dict(start=(today - timedelta(days=30)).isoformat(), end=(today - timedelta(days=1)).isoformat()),
-                   complete_90_days=dict(start=cutoff.isoformat(), end=(today - timedelta(days=1)).isoformat()),
+                   window_days=window_days,
+                   observed_window=dict(start=cutoff.isoformat(), end=(today - timedelta(days=1)).isoformat()),
+                   complete_90_days=(dict(start=cutoff.isoformat(), end=(today - timedelta(days=1)).isoformat()) if window_days == 90 else None),
                    current_day_slice=today.isoformat(), verified_publication_day_min=min(verified_days).isoformat() if verified_days else None,
                    boundary_is_observed_not_global_completeness_proof=True)
     audit.append(summary)
@@ -1612,14 +1616,16 @@ def _checkpoint_feed_cache(path, cache, last_saved, *, force=False):
 
 
 def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None,
-                          workers=4, feeds=None, max_feed_pages=250):
+                          workers=4, feeds=None, max_feed_pages=250, window_days=90):
     """Recover the 90-day horizon through ordinary public frontend pagination.
 
     All new factual URLs are opened in detail. API first_publish_date is only
     chronology corroboration; final publication remains the primary byline.
     """
     today = today or datetime.now(ZoneInfo("America/Santiago")).date()
-    cutoff = today - timedelta(days=90)
+    if window_days not in (30, 60, 90):
+        raise ValueError("Unsupported discovery window")
+    cutoff = today - timedelta(days=window_days)
     cache = _load_cache(cache_path)
     articles = cache["articles"]
     last_saved = None
@@ -1721,7 +1727,7 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                                   title=result["title"], cache_hit=result["cache_hit"],
                                   first_publish_date=entry.get("first_publish_date"), duplicate_inventory_url=was_seen,
                                   in_complete_30_days=bool(day and today - timedelta(days=30) <= day < today),
-                                  in_complete_90_days=bool(day and cutoff <= day < today), current_day_slice=day == today))
+                                  in_complete_90_days=bool(window_days == 90 and day and cutoff <= day < today), current_day_slice=day == today))
                 if status in ("discovered", "discovered_metadata_only") and not was_seen:
                     out.append(RawItem("pulso_latercera", result["title"], result["url"], "Pulso / La Tercera", "press_high_trust",
                                        event_date=metadata["publication_date"], raw_text=result["body"], metadata=metadata))
@@ -1785,7 +1791,9 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                    publication_date_coverage_complete=complete and all(item["publication_date_coverage_complete"] for item in summaries),
                    article_content_coverage_complete=complete and all(item["article_content_coverage_complete"] for item in summaries),
                    complete_30_days=dict(start=(today - timedelta(days=30)).isoformat(), end=(today - timedelta(days=1)).isoformat()),
-                   complete_90_days=dict(start=cutoff.isoformat(), end=(today - timedelta(days=1)).isoformat()),
+                   window_days=window_days,
+                   observed_window=dict(start=cutoff.isoformat(), end=(today - timedelta(days=1)).isoformat()),
+                   complete_90_days=(dict(start=cutoff.isoformat(), end=(today - timedelta(days=1)).isoformat()) if window_days == 90 else None),
                    current_day_slice=today.isoformat(), new_inventory_urls=len(out),
                    new_health_urls=sum(not item.metadata.get("publisher_exception_reason")
                                        and not item.metadata.get("source_content_unavailable_reason") for item in out),
@@ -1800,7 +1808,9 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
 
 def discover_pulso(detail_loader=None, audit=None, *, cache_path=None, today=None, workers=4,
                    max_pages=3, include_listings=True, include_public_feeds=True, feeds=None, max_feed_pages=250):
-    """Normal daily source hook: historical inventory first, live surfaces second."""
+    """Discover the requested window while retaining previously verified cache."""
+    from .daily_window import requested_window_days
+    window_days = requested_window_days()
     from pathlib import Path
     from .paths import project_root
     detail_loader = detail_loader or fetch_html
@@ -1810,12 +1820,12 @@ def discover_pulso(detail_loader=None, audit=None, *, cache_path=None, today=Non
     public_coverage = dict(coverage_complete=False)
     if include_public_feeds:
         out, public_coverage = discover_public_feeds(detail_loader, audit, cache_path, visited=visited,
-                                                     today=today, workers=workers, feeds=feeds, max_feed_pages=max_feed_pages)
+                                                     today=today, workers=workers, feeds=feeds, max_feed_pages=max_feed_pages, window_days=window_days)
     # The historical section/taxonomy traversal is primary. A bounded global
     # RSS/sitemap slice supplies current cross-section discoveries without
     # delaying the 90-day recovery behind unrelated historical sports/culture.
     extra, archive_visited, coverage = discover_archive(detail_loader, audit, cache_path, today=today,
-                                                        workers=workers, max_pages=max_pages)
+                                                        workers=workers, max_pages=max_pages, window_days=window_days)
     out.extend(extra)
     visited.update(archive_visited)
     if include_public_feeds:
@@ -1840,7 +1850,11 @@ def discover_pulso(detail_loader=None, audit=None, *, cache_path=None, today=Non
                 audit.append(dict(listing=listing, status="surface_error", reason=str(exc), error_type=type(exc).__name__))
                 continue
             out.extend(discover_listing(html, listing, detail_loader, audit, visited))
-    if not out:
+    if window_days != 90:
+        anchor = today or datetime.now(ZoneInfo("America/Santiago")).date()
+        cutoff = (anchor - timedelta(days=window_days)).isoformat()
+        out = [item for item in out if not item.event_date or cutoff <= item.event_date <= anchor.isoformat()]
+    if not out and window_days == 90:
         raise RuntimeError("Pulso / La Tercera has no verified, dated health articles")
     unique = {}
     for item in out:

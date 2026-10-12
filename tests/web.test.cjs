@@ -4,7 +4,7 @@ function context(Clock=Date){const c={localStorage:{getItem:()=>null,setItem:()=
 test('full card IDs do not collide for long URLs',()=>{const c=context();assert.notEqual(c.idFor({source_url:'https://example.org/'+ 'a'.repeat(160)+'1'}),c.idFor({source_url:'https://example.org/'+ 'a'.repeat(160)+'2'}))});
 test('date-only publication keeps calendar date in Chile',()=>{const c=context();assert.match(c.fmtDate('2026-09-23'),/23/)});
 test('update label is direct and does not overstate source review',()=>{const c=context();assert.match(c.fmtUpdated('2026-09-24T12:00:00Z'),/^Última actualización:/);assert.doesNotMatch(c.fmtUpdated('2026-09-24T12:00:00Z'),/Portada generada|revisión de las fuentes/)});
-test('Signal Density defaults and fiscalizacion',()=>{const c=context();assert.equal(vm.runInContext('periodMode',c),'14');assert.equal(vm.runInContext('sortMode',c),'date');assert.match(source,/Fiscalización/);assert.match(fs.readFileSync('web/index.html','utf8'),/<option value="14" selected>14 días<\/option>/)});
+test('Signal Density defaults and fiscalizacion',()=>{const c=context();assert.equal(vm.runInContext('periodMode',c),'30');assert.equal(vm.runInContext('sortMode',c),'date');assert.match(source,/Fiscalización/);assert.match(fs.readFileSync('web/index.html','utf8'),/<option value="30" selected>30 días<\/option>/)});
 test('BACKFILL never counts as new since visit',()=>{const c=context();vm.runInContext("periodMode='last';previousVisit='2026-09-22T00:00:00Z'",c);assert.equal(c.inPeriod({ingestion_mode:'BACKFILL',event_date:'2026-09-23',detected_at:'2026-09-23T12:00:00Z'}),false);assert.equal(c.inPeriod({ingestion_mode:'LIVE',event_date:'2026-09-23',detected_at:'2026-09-23T12:00:00Z'}),true)});
 
 test('coverage counts never invent LIVE or BACKFILL when queue has not run',()=>{const c=context();const msg=c.coverageText({sources:{one:{}},queue:null,queue_status:'awaiting_first_global_discovery'});assert.match(msg,/sin medición global/);assert.doesNotMatch(msg,/0 LIVE/)});
@@ -125,3 +125,12 @@ test('approved insight detail exposes figures decisions limits and all evidence 
 });
 
 test('enforcement dates display issuance and preserve separately verified publication',()=>{const c=context();const s={signal_types:['Fiscalización'],event_date:'2026-09-23',emission_date:'2026-09-23',publication_date:null,event_date_basis:'verified_primary_emission'};assert.match(c.cardMetadata(s),/Emitido/);assert.match(c.cardMetadata(s),/Publicación no verificada/);assert.doesNotMatch(c.cardMetadata(s),/Publicado/);assert.match(c.cardMetadata({...s,publication_date:'2026-09-25'}),/Publicado.*25.*Emitido.*23/);assert.match(c.sourceBlock([{...s,url:'https://example.org',title:'Acto'}],true),/Emitido/)});
+
+test('Global keeps every eligible theme beyond ten while preserving publisher filters',()=>{
+ const c={localStorage:{getItem:()=>null,setItem:()=>{}},Date,Intl,Set,Map};vm.createContext(c);
+ vm.runInContext(fs.readFileSync('web/global.js','utf8').split('function bullets(')[0],c);
+ c.input=Array.from({length:14},(_,i)=>({id:String(i),sources:[{publisher:i%2?'WHO':'OECD',published_at:'2026-10-10'}]}));
+ vm.runInContext("themes=input;periodMode='all'",c);
+ assert.equal(c.visibleThemes().length,14);
+ vm.runInContext("publisherMode='OECD'",c);assert.equal(c.visibleThemes().length,7);
+});

@@ -794,10 +794,10 @@ def audit(captures, inventory_path, output):
           and reuters["recurrent_operation_proven"] is False,
           "reuters_license_hold", "reuters")
     check(inventory["paid_ai_calls"] == 0 and inventory["publication_count"] == 0 and inventory["default_window_days"] == 30
-          and inventory["maximum_editorial_topics"] == 10 and inventory["content_use"] == "metadata_and_link_only",
+          and inventory["maximum_editorial_topics"] in (10, None) and inventory["content_use"] == "metadata_and_link_only",
           "global_contract", "inventory")
     topics = inventory["editorial_topics"]
-    check(len(topics) <= 10, "topic_limit", "topics")
+    check(inventory["maximum_editorial_topics"] is None or len(topics) <= inventory["maximum_editorial_topics"], "declared_historical_topic_limit", "topics")
     item_by_url = {item["url"]: item for item in inventory["items"]}
     for topic in topics:
         item = item_by_url.get(topic["representative_url"])
