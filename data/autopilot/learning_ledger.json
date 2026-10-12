@@ -4102,5 +4102,49 @@
     "source": "Autonomy hosted observation",
     "status": "observed_open",
     "task_id": "integration_commander_daily_first_2026_10_12"
+  },
+  {
+    "evidence": [
+      "data/audits/integration_commander_2026_10_12/paid_runtime_delta.json",
+      "scripts/import_commander_runtime.py",
+      "data/audits/integration_commander_2026_10_12/ui_postmerge_reviewer.json"
+    ],
+    "finding": "Two immediate isolated polls prove identity/publication stability, not zero processing, zero spend or daily recurrence. Pulso advanced pending decisions and used6FAST; DF second capture had1detail error despite technical_status ok.",
+    "id": "commander_paid_runtime_isolation_2026_10_12",
+    "preventive_controls": [
+      "Preserve6response_id and paid raw outputs before another run",
+      "Add monthly counters only for absent response IDs; retain PR29 MINSAL4FAST independently",
+      "Conflict-guarded source-scoped import; no feed/history writes",
+      "Display capture errors separately from no verified detection",
+      "Require actual elapsed24h/48h cadence and semantic reviewer independently"
+    ],
+    "recorded_at": "2026-10-12T05:19:57.812665+00:00",
+    "source": "Integration Commander",
+    "status": "durably_imported_hosted_replay_zero_original_terminal_decisions_preserved"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:integration_commander_daily_first_2026_10_12",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-2c684aa8992d46209be3d12ee118fa9c.json",
+        "sha256": "0d703d9411c52b228269bdbaf9a13bf073e36ee011c3fdab1869592379eb30bb",
+        "staging_sha": "bd7fd0d82d8e991d9b8825cc96549c4b9152cacc",
+        "state_sha": "9e02ce35a0eab676f6607cfd654a0863a7a58470"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: integration_commander_daily_first_2026_10_12",
+    "id": "autonomy_observed_45ed316236db231e9e12b111fd55e49d971943f3c377db1feb612bc61ad02951",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "integration_commander_daily_first_2026_10_12"
   }
 ]
