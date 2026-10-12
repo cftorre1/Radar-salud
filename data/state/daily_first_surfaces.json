@@ -1,0 +1,86 @@
+{
+  "10481b1ae7041abcab4ffb8625a4f16c6a3acdb327f94762a7ceccc0a5317108": {
+    "source": "fonasa",
+    "url": "https://www.fonasa.gob.cl/noticias/",
+    "last_attempt_at": "2026-10-12T04:14:22.317724+00:00",
+    "outcome": "failed",
+    "failure_signature": "HTTPError:403:Forbidden",
+    "equivalent_failures": 2,
+    "retry_after": "2026-10-13T04:14:22.317724+00:00",
+    "last_successful_capture_at": null,
+    "equivalent_failure_evidence": [
+      "data/audits/integration_20261011/postmerge-aa8bb305/fonasa/summary.json",
+      "data/audits/daily_first_20261012/initial-primary-capture.zip"
+    ]
+  },
+  "3ecd54b6cd06c1e2f5d50c38436305d255989104a873a3f5755f3886d3a34245": {
+    "source": "fonasa_datos_abiertos",
+    "url": "https://datosabiertos.fonasa.cl/noticias/",
+    "last_attempt_at": "2026-10-12T04:14:22.318142+00:00",
+    "outcome": "failed",
+    "failure_signature": "HTTPError:403:Forbidden",
+    "equivalent_failures": 2,
+    "retry_after": "2026-10-13T04:14:22.318142+00:00",
+    "last_successful_capture_at": null,
+    "equivalent_failure_evidence": [
+      "data/audits/integration_20261011/postmerge-aa8bb305/fonasa_datos_abiertos/summary.json",
+      "data/audits/daily_first_20261012/initial-primary-capture.zip"
+    ]
+  },
+  "f767395bddde2bd734d9cddeb2d8d53bb9afb809868a1f4e36e6ce4edc10f3e3": {
+    "source": "isp_anamed",
+    "url": "https://www.ispch.cl/categorias-alertas/anamed/",
+    "last_attempt_at": "2026-10-12T04:14:22.318392+00:00",
+    "outcome": "failed",
+    "failure_signature": "URLError:[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)",
+    "equivalent_failures": 1,
+    "retry_after": "2026-10-13T04:14:22.318392+00:00",
+    "last_successful_capture_at": null,
+    "equivalent_failure_evidence": [
+      "data/audits/daily_first_20261012/initial-primary-capture.zip"
+    ],
+    "hold_reason": "official_aliases_also_fail_tls_chain; awaiting_publisher_repair"
+  },
+  "df1f85fd73da0551db7a70f35cb761bb7e5d18f90f45b109a8131c077c54ec95": {
+    "source": "isp_anamed",
+    "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/",
+    "last_attempt_at": "2026-10-12T04:41:41.136843+00:00",
+    "outcome": "failed",
+    "failure_signature": "URLError:[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)",
+    "equivalent_failures": 2,
+    "retry_after": "2026-10-13T04:41:41.136843+00:00",
+    "last_successful_capture_at": null,
+    "equivalent_failure_evidence": [
+      "data/audits/daily_first_20261012/failed-rss-mime-runtime.zip",
+      "data/audits/daily_first_20261012/verified-native-runtime.zip"
+    ]
+  },
+  "514f3b5477c5ff1df9d39ecb9fcc6c127ed192fc2022a4f4baa84c1a9b814424": {
+    "source": "isp_surveillance",
+    "url": "https://www.ispch.cl/boletin/",
+    "last_attempt_at": "2026-10-12T04:14:22.318626+00:00",
+    "outcome": "failed",
+    "failure_signature": "URLError:[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)",
+    "equivalent_failures": 1,
+    "retry_after": "2026-10-13T04:14:22.318626+00:00",
+    "last_successful_capture_at": null,
+    "equivalent_failure_evidence": [
+      "data/audits/daily_first_20261012/initial-primary-capture.zip"
+    ],
+    "hold_reason": "official_aliases_also_fail_tls_chain; awaiting_publisher_repair"
+  },
+  "3db0d4ee4acce00fe59735662a4aba5edaff3645a865ac58234ae33f12b00cd7": {
+    "source": "isp_surveillance",
+    "url": "https://www.ispch.gob.cl/boletin/",
+    "last_attempt_at": "2026-10-12T04:41:41.137149+00:00",
+    "outcome": "failed",
+    "failure_signature": "URLError:[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)",
+    "equivalent_failures": 2,
+    "retry_after": "2026-10-13T04:41:41.137149+00:00",
+    "last_successful_capture_at": null,
+    "equivalent_failure_evidence": [
+      "data/audits/daily_first_20261012/failed-rss-mime-runtime.zip",
+      "data/audits/daily_first_20261012/verified-native-runtime.zip"
+    ]
+  }
+}
