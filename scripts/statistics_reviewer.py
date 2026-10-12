@@ -31,6 +31,13 @@ def review_statistics(signals):
         table = signal.get("summary_table") or {}
         columns = table.get("columns") or []
         rows = table.get("rows") or []
+        view=signal.get('statistical_view') or {}
+        if view.get('publication_status')=='HOLD':
+            if not view.get('hold_reason') or not view.get('limitations'):
+                fail('unexplained_statistical_hold',url,'Held inventory must preserve its explicit reason and limitations')
+            if rows or view.get('kpis') or view.get('series') or view.get('entities'):
+                fail('held_comparison_published',url,'No dependent comparisons/rankings/charts while coverage is held')
+            continue
         if urlparse(url).scheme != "https" or urlparse(url).netloc != OFFICIAL_HOST:
             fail("nonofficial_statistical_source", url, "Primary statistical page must use HTTPS on Superintendencia de Salud")
         if not rows or not columns or any(len(row.get("cells") or []) != len(columns) for row in rows):

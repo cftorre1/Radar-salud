@@ -1,5 +1,5 @@
 from __future__ import annotations
-import argparse,json,re,shutil
+import argparse,json,re,shutil,base64
 from collections import defaultdict
 from datetime import datetime,timezone,date
 from pathlib import Path
@@ -318,6 +318,16 @@ def _apply_statistical_analysis(signals):
         if isinstance(patch,dict):
             for key,value in patch.items():
                 r[key]=value
+        if 'estadisticas-financieras-del-sistema-isapre-a-marzo-2026/' in str(r.get('source_url') or ''):
+            # Preserve the historical analysis as evidence; conflicting coverage
+            # must never be upgraded by a successful arithmetic/table parser.
+            r['legacy_statistical_analysis']={key:r.get(key) for key in ('summary_table','data_insights','data_insight_evidence','statistical_conclusion')}
+            r['statistical_view']={'family':'fefi','publication_status':'HOLD','hold_reason':'HOLD_COVERAGE_ESENCIAL',
+                'limitations':['La nota de cobertura contradice cifras institucionales de Esencial; comparaciones y agregados afectados pendientes de aclaración.'],
+                'source_url':r.get('source_url')}
+            r['summary_table']={'columns':[],'rows':[]};r['data_insights']=[];r['data_insight_evidence']=[];r['statistical_conclusion']=''
+            r['statistical_value_level']='publication_inventory'
+            r['incremental_value_gate']={'limited_inventory':'Original accesible; comparación retenida por contradicción de cobertura.'}
         out.append(r)
     return out
 
@@ -600,12 +610,38 @@ def _sanction_pulses(signals, today=None):
     return other
 
 def curate(signals,resolve_external=True,as_of=None):
+    # Version3 is already reviewed as a complete public artifact. Legacy copy
+    # transforms must never rewrite it after its receipt was signed.
+    from radar_salud.editorial_v3 import validate_depth
+    v3=[]
+    all_dates=[_d(s.get('event_date')) for s in signals if _d(s.get('event_date'))]
+    v3_reference=as_of or max(all_dates or [date.today()])
+    for source in signals:
+        if str(source.get("editorial_schema_version"))!="3":continue
+        record=dict(source)
+        ok,reason,score=publication_ready(record)
+        if ok and record.get("feed_visibility") is not False and _d(record.get("event_date")) and 0<=(v3_reference-_d(record["event_date"])).days<90:
+            record["depth_gate"]=validate_depth(record)
+            record["publication_gate_reason"]=reason
+            record["publication_ready_score"]=score
+            v3.append(record)
+    # Same piece, same canonical card. Related analyses keep their own IDs.
+    def piece_id(s):
+        return s.get("piece_id") or base64.b64encode((str(s.get("source_url") or "")+'|'+str(s.get("event_date") or "")+'|'+str(s.get("event_type") or "OTHER")).encode()).decode()
+    approved={};conflicts=set()
+    for record in v3:
+        identity=piece_id(record)
+        if identity in approved and approved[identity]["depth_gate"]["content_version"]!=record["depth_gate"]["content_version"]:conflicts.add(identity)
+        else:approved[identity]=record
+    v3=[r for identity,r in approved.items() if identity not in conflicts]
+    replacements={piece_id(r) for r in v3}|{alias for r in v3 for alias in r.get("read_aliases",[])}
+    signals=[s for s in signals if str(s.get("editorial_schema_version"))!="3" and piece_id(s) not in replacements]
     normalized=[]
     for s in signals:
         r=_normative_contract(_suseso_normative_upgrade(_editorial_enrichment(_card_micro(_separate_df_deck(_normalize_scopes(_normalize_type(s)))))))
         ok,reason,q=publication_ready(r);r["publication_ready_score"]=q;r["publication_gate_reason"]=reason
         if ok:normalized.append(r)
-    if not normalized:return []
+    if not normalized:return v3
     latest=as_of or max([_d(x.get("event_date")) for x in normalized if _d(x.get("event_date"))] or [date.today()])
     def within_window(s):
         from radar_salud.suseso_fiscalizacion import current_professional_suspension
@@ -629,7 +665,13 @@ def curate(signals,resolve_external=True,as_of=None):
     recent=_apply_persistent_editorial_decisions(recent)
     recent=[_normative_contract(s) if s.get("event_type")=="REGULATION" or "Normativa" in (s.get("signal_types") or []) else s for s in recent]
     recent=[s for s in recent if s.get("feed_visibility") is not False]
+    recent.extend(v3)
     recent.sort(key=lambda s:(_d(s.get("event_date")) or date.min,s.get("radar_score",0)),reverse=True);return recent
+
+def preserve_v3_copy(signals):
+    legacy=iter(apply_reviewed_copy([s for s in signals if str(s.get("editorial_schema_version"))!="3"]))
+    return [s if str(s.get("editorial_schema_version"))=="3" else next(legacy) for s in signals]
+
 
 def main():
     ap=argparse.ArgumentParser();ap.add_argument("--input",required=True);ap.add_argument("--output",default="web/data/radar_today.json");ap.add_argument("--offline",action="store_true",help="Rebuild only from recorded evidence");args=ap.parse_args()
@@ -647,9 +689,11 @@ def main():
             signals=add_material_epidemiology(signals,epidemiology)
         except (OSError,ValueError,TypeError):
             pass
-    payload={"date":date.today().isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"signals":apply_reviewed_copy(curate(signals,resolve_external=not args.offline))}
+    payload={"date":date.today().isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"signals":preserve_v3_copy(curate(signals,resolve_external=not args.offline))}
     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
     health=Path("data/source_health.json")
     if health.exists():shutil.copyfile(health,out.parent/"source_health.json")
+    from scripts.export_public_sources import export_public_sources
+    if health.exists():export_public_sources(health,out.parent/"public_sources.json")
     print(f"snapshot={out} signals={len(payload['signals'])}")
 if __name__=="__main__":main()
