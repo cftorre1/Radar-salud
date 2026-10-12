@@ -3959,5 +3959,123 @@
     "source": "Autonomy hosted observation",
     "status": "observed_open",
     "task_id": "source_repair_mutualities_lane_2026_10_11"
+  },
+  {
+    "class": "integration_contract_mismatch",
+    "evidence": [
+      "https://github.com/cftorre1/Radar-salud/actions/runs/38202982071",
+      "tests/test_pulso_terminal_followthrough_qa.py"
+    ],
+    "finding": "A historical exact-code runtime receipt cannot contain modules introduced by later integrations. The global/P0 candidate CI failed38 fixture setups, not38 independent regressions.",
+    "id": "historical_runtime_receipt_not_current_integration_2026_10_12",
+    "preventive_controls": [
+      "immutable_producer_checkout",
+      "negative_unrecorded_module_test",
+      "postmerge_runtime_by_sha"
+    ],
+    "recorded_at": "2026-10-12T04:33:22.469945+00:00",
+    "source": "Integration Commander",
+    "specific_fix": "Replay strict historical contract at accepted515b8809 tree with current validator; retain all negative checks and explicitly reject an unrecorded module. New integration requires a new runtime receipt.",
+    "status": "repair_pending_exact_head_ci"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:integration_commander_daily_first_2026_10_12",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-9af2b7b89d904359b1346725b78c79ab.json",
+        "sha256": "8fabc98b76253a107cacb04c110543b4acb473bb96c9f98bf0985d4716cabcec",
+        "staging_sha": "edbedf86b728e44bf3942c4c9a41495aa75818d1",
+        "state_sha": "443cfb915d3911604d4b0ea63932c397ca0075fc"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: integration_commander_daily_first_2026_10_12",
+    "id": "autonomy_observed_614b75dbbcf71fad091b4a1a4837659fa055e041e36997d175f5af0286cf8740",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "integration_commander_daily_first_2026_10_12"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_cmf_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-9af2b7b89d904359b1346725b78c79ab.json",
+        "sha256": "8fabc98b76253a107cacb04c110543b4acb473bb96c9f98bf0985d4716cabcec",
+        "staging_sha": "edbedf86b728e44bf3942c4c9a41495aa75818d1",
+        "state_sha": "443cfb915d3911604d4b0ea63932c397ca0075fc"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_cmf_2026_10_11",
+    "id": "autonomy_observed_d1030fc3c82b461f43c199fda6362e3bdfe1bf4dd934119534e446cd4d075676",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_cmf_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_dipres_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-9af2b7b89d904359b1346725b78c79ab.json",
+        "sha256": "8fabc98b76253a107cacb04c110543b4acb473bb96c9f98bf0985d4716cabcec",
+        "staging_sha": "edbedf86b728e44bf3942c4c9a41495aa75818d1",
+        "state_sha": "443cfb915d3911604d4b0ea63932c397ca0075fc"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_dipres_2026_10_11",
+    "id": "autonomy_observed_525e8b057cc5fa5f4f7dbcd64eedd2cf55285c35bd35e9732169c796279e05b1",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_dipres_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:w4_isapres_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-9af2b7b89d904359b1346725b78c79ab.json",
+        "sha256": "8fabc98b76253a107cacb04c110543b4acb473bb96c9f98bf0985d4716cabcec",
+        "staging_sha": "edbedf86b728e44bf3942c4c9a41495aa75818d1",
+        "state_sha": "443cfb915d3911604d4b0ea63932c397ca0075fc"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: w4_isapres_2026_10_11",
+    "id": "autonomy_observed_8a613883bb5c1f70951a4d07c7ac6e69738e0514d6a22232adb4d6dd40f78223",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "w4_isapres_2026_10_11"
   }
 ]
