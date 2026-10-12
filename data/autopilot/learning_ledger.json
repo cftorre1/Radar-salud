@@ -4146,5 +4146,17 @@
     "source": "Autonomy hosted observation",
     "status": "observed_open",
     "task_id": "integration_commander_daily_first_2026_10_12"
+  },
+  {
+    "evidence": [
+      "data/audits/integration_commander_2026_10_12/paid_import_receipt.json",
+      "web/data/source_health.json"
+    ],
+    "finding": "An isolated runtime import updates canonical data/source_health but product_report does not copy the public source_health mirror. Preview otherwise displays an older successful observation.",
+    "id": "commander_source_health_web_mirror_2026_10_12",
+    "recorded_at": "2026-10-12T05:33:50.970563+00:00",
+    "source": "Integration Commander",
+    "specific_fix": "Copy the actual canonical source-health snapshot to web/data/source_health.json after import; preserve per-source capture timestamps and partial/error states. No new capture or publication.",
+    "status": "mirror_reconciled"
   }
 ]
