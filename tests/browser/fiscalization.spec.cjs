@@ -1,4 +1,8 @@
 const {test,expect}=require('@playwright/test');
+const history=JSON.parse(require('node:fs').readFileSync('data/history/superintendencia_signals.json','utf8')).signals;
+const ageAt=(row,asOf)=>(Date.parse(asOf+'T00:00:00Z')-Date.parse(row.emission_date+'T00:00:00Z'))/86400000;
+const recentAt=(rows,asOf,days)=>rows.filter(row=>ageAt(row,asOf)>=0&&ageAt(row,asOf)<=days);
+const sortedIds=rows=>rows.map(row=>row.source_record_id).sort();
 
 test('fiscalization reconciliation preserves act dates and separates reviewed normativa',async({page})=>{
  const errors=[];page.on('pageerror',error=>errors.push(error.message));
@@ -48,16 +52,22 @@ test('recovered registers retain offices, actors, effects and issuance dates in 
  await page.locator('#filterDetails summary').click();await page.locator('#period').selectOption('90');
  const radar=await (await page.request.get('/data/radar_today.json')).json();
  const register=radar.signals.find(s=>s.source_record_id==='suseso_emisores:rolling90');
- expect(register.counts).toEqual({'30':20,'90':75});expect(register.publication_date).toBeNull();
- expect(new Set(register.source_alternatives.map(s=>s.source_record_id)).size).toBe(75);
+ const original=history.filter(s=>s.document_class==='enforcement_sanction'&&s.source_record_id);
+ expect(new Set(sortedIds(original)).size).toBe(92);
+ expect(original.every(s=>s.actor_evidence==='official_sanction_register'&&(!s.date_conflicts||(Array.isArray(s.date_conflicts)&&s.date_conflicts.length===0)))).toBe(true);
+ const current=recentAt(original,radar.date,90),recent30=recentAt(original,radar.date,30);
+ const historical=original.filter(s=>ageAt(s,radar.date)>90&&s.suspension_start<=radar.date&&radar.date<=s.suspension_end);
+ expect(register.counts).toEqual({'30':recent30.length,'90':current.length});expect(register.publication_date).toBeNull();
+ expect(sortedIds(register.source_alternatives)).toEqual(sortedIds(current));
+ expect(new Set(sortedIds(register.source_alternatives)).size).toBe(current.length);
  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});
- await expect(card).toContainText('20 oficios');await expect(card.locator('.card-meta')).toContainText('Emitido');
+ await expect(card).toContainText(`${recent30.length} oficios`);await expect(card.locator('.card-meta')).toContainText('Emitido');
  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');
  await card.locator('[data-detail]').click();
- await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(75);
- expect(register.historical_sanction_context).toHaveLength(17);
- expect(register.historical_sanction_context.every(s=>s.emission_date<'2026-07-13'&&s.publication_date===null)).toBe(true);
- await expect(page.locator('#detailBody .historical-sanctions .related-item')).toHaveCount(17);
+ await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(current.length);
+ expect(sortedIds(register.historical_sanction_context)).toEqual(sortedIds(historical));
+ expect(register.historical_sanction_context.every(s=>ageAt(s,radar.date)>90&&s.publication_date===null)).toBe(true);
+ await expect(page.locator('#detailBody .historical-sanctions .related-item')).toHaveCount(historical.length);
  await expect(page.locator('#detailBody .historical-sanctions summary')).toContainText('anteriores a 90 días');
  await page.locator('#detailBody .sourceverify:not(.historical-sanctions) summary').click();
  await expect(page.locator('#detailBody')).toContainText('O-02-S-03209-2026');
@@ -66,11 +76,15 @@ test('recovered registers retain offices, actors, effects and issuance dates in 
  await page.screenshot({path:`data/audits/fiscalizacion/native-register-${testInfo.project.name}.png`});
  await page.getByRole('button',{name:'Cerrar resumen'}).click();
  const agents=radar.signals.find(s=>s.source_record_id==='sis_agentes:rolling90');
- expect(agents.counts).toEqual({'30':10,'90':18});
+ const originalAgents=history.filter(s=>s.scopes?.length===1&&s.scopes[0]==='Agentes de ventas');
+ expect(originalAgents).toHaveLength(18);
+ const currentAgents=recentAt(originalAgents,radar.date,90),recentAgents30=recentAt(originalAgents,radar.date,30);
+ expect(agents.counts).toEqual({'30':recentAgents30.length,'90':currentAgents.length});
+ expect(agents.source_alternatives.map(s=>s.url).sort()).toEqual(currentAgents.map(s=>s.source_url).sort());
  expect(agents.source_alternatives.some(s=>s.material.includes('Doris del Pilar Alcántara Poblete'))).toBe(true);
- expect(agents.what_happened).toContain('4 multas impagas sustituidas');
+ expect(agents.what_happened).toContain(`${currentAgents.filter(s=>s.event_type==='SANCTION_SUBSTITUTION').length} multas impagas sustituidas`);
  const agentCard=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:agents.title,exact:true})});
- await agentCard.locator('[data-detail]').click();await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(18);
+ await agentCard.locator('[data-detail]').click();await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(currentAgents.length);
  await page.getByRole('button',{name:'Cerrar resumen'}).click();
  const report=radar.signals.find(s=>s.event_type==='FISCALIZATION_REPORT'&&s.source_url.includes('superdesalud'));
  expect(report.what_happened).toContain('93.070');expect(report.fact_period).toContain('30 de abril de 2026');
