@@ -107,6 +107,40 @@ def test_new_zero_core_shape_retains_both_historical_failures_and_actual_settled
     assert len(proof["preserved_final_receipts"]) == 2
 
 
+def rollover_snapshot(actual):
+    audit = json.loads((ROOT / "data/audits/pulso_inherited_native_feed_clock_rollover_2026_10_12.json").read_bytes())
+    rows = {row["source_url"]: row for row in actual["settlement"]["snapshot"]["signals"]}
+    rows.update({row["url"]: row["after"] for row in audit["changes"]})
+    return dict(date=audit["current_date"], signals=[rows[url] for url in audit["current_signal_order"]])
+
+
+def test_only_exact_inherited_native_rollover_keeps_all70_source_signals(zero_shape):
+    current = dict(zero_shape, snapshot=rollover_snapshot(zero_shape["origin"]))
+    proof = qa.verify_terminal_followthrough_execution(**current)
+    rollover = proof["inherited_native_feed_clock_rollover"]
+    assert rollover["pulso_70_signals_unchanged"] is True
+    assert rollover["global_feed_unchanged"] is False
+    assert rollover["exact_native_changes"] == 5
+    assert proof["launch_stock"]["feed_signal_count"] == 165
+    assert proof["launch_stock"]["history_signal_count"] == 992
+
+
+@pytest.mark.parametrize("mutation", ["source", "native", "drop", "duplicate", "date", "execution_day"])
+def test_native_clock_rollover_never_waives_any_other_feed_change(zero_shape, mutation):
+    current = dict(zero_shape, snapshot=copy.deepcopy(rollover_snapshot(zero_shape["origin"])))
+    if mutation in {"source", "native"}:
+        row = next(row for row in current["snapshot"]["signals"]
+                   if bool(qa.normalized_url(row.get("source_url"))) == (mutation == "source"))
+        row["what_happened"] += " altered substantive fact"
+    elif mutation == "drop": current["snapshot"]["signals"].pop()
+    elif mutation == "duplicate": current["snapshot"]["signals"].append(current["snapshot"]["signals"][0])
+    elif mutation == "date": current["snapshot"]["date"] = "2026-10-13"
+    else:
+        current["execution"] = dict(current["execution"], started_at="2026-10-13T00:10:00Z", finished_at="2026-10-13T00:20:00Z")
+    with pytest.raises(ValueError, match="terminal_followthrough"):
+        qa.verify_terminal_followthrough_execution(**current)
+
+
 @pytest.mark.parametrize("mutation",["ledger_old516","attempt","call","pending_body","terminal_receipt","source_policy","delete_unselected","delete_live9","live9_body_summary","pending_body_summary","raw_body_summary"])
 def test_zero_core_never_waives_processing_or_primary_state_changes(zero_shape,mutation):
     current = dict(zero_shape); current["execution"] = copy.deepcopy(current["execution"])

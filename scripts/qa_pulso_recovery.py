@@ -1935,6 +1935,34 @@ def terminal_source_semantic(value):
     return [terminal_source_semantic(item) for item in value] if isinstance(value,list) else value
 
 
+def terminal_feed_clock_rollover(root, snapshot, settlement, execution):
+    """Recognize only the retained staging UTC rollover; Source feed stays exact."""
+    previous = settlement["snapshot"]
+    if snapshot.get("signals") == previous.get("signals"):
+        return None
+    path = "data/audits/pulso_inherited_native_feed_clock_rollover_2026_10_12.json"
+    expected = "3a4bdf5e3ed55357b3e1cd6f5492360c9c77bc6b60eb75a543fd66846e9f5e48"
+    raw = local_capture_path(root, path).read_bytes()
+    if digest(raw) != expected:
+        raise ValueError("terminal_followthrough_native_clock_evidence_changed")
+    audit = json.loads(raw)
+    begin, end = stamp(execution.get("started_at")), stamp(execution.get("finished_at"))
+    source = lambda rows: [row for row in rows if normalized_url(row.get("source_url"))]
+    if (previous.get("date") != audit["prior_date"] or snapshot.get("date") != audit["current_date"]
+            or not begin or not end or begin.date().isoformat() != audit["current_date"]
+            or end.date() != begin.date()
+            or object_digest(previous["signals"]) != audit["old_feed_signals_sha256"]
+            or object_digest(snapshot["signals"]) != audit["current_feed_signals_sha256"]
+            or source(snapshot["signals"]) != source(previous["signals"])
+            or len(source(snapshot["signals"])) != 70
+            or digest(local_capture_path(root, "scripts/export_web_snapshot.py").read_bytes()) != audit["exporter_file_sha256"]):
+        raise ValueError("terminal_followthrough_effective_history_feed_or_native_stock_changed")
+    return dict(path=path, sha256=expected, prior_date=audit["prior_date"], current_date=audit["current_date"],
+        classification=audit["classification"], exact_native_changes=len(audit["changes"]),
+        old_feed_signals_sha256=audit["old_feed_signals_sha256"], current_feed_signals_sha256=audit["current_feed_signals_sha256"],
+        pulso_70_signals_unchanged=True, global_feed_unchanged=False, AI_calls=0)
+
+
 def verify_terminal_followthrough_execution(root, *, report, queue, history, snapshot, telemetry,
                                             execution=None, origin=None):
     """Observe a new inert core without relabelling the earlier evaluator or AI."""
@@ -1990,8 +2018,8 @@ def verify_terminal_followthrough_execution(root, *, report, queue, history, sna
         raise ValueError("terminal_followthrough_selected113_proof_or_status_changed")
     native_queue = {key:item for key,item in queue.items() if item.get("source") != SOURCE}
     native_original = {key:item for key,item in settlement["queue"].items() if item.get("source") != SOURCE}
+    native_clock_rollover = terminal_feed_clock_rollover(root, snapshot, settlement, execution)
     if (native_queue != native_original or len(native_queue) != 5293 or history != settlement["history"]
-            or snapshot.get("signals") != settlement["snapshot"].get("signals")
             or len([row for row in history if not normalized_url(row.get("source_url"))]) != 897):
         raise ValueError("terminal_followthrough_effective_history_feed_or_native_stock_changed")
     for url, (key,item) in current.items():
@@ -2021,7 +2049,8 @@ def verify_terminal_followthrough_execution(root, *, report, queue, history, sna
         settlement_execution=settlement["execution"],settlement_processing_qa=settlement["processing_qa"],
         settlement_live9=settlement["rows"],settlement_response_events=settlement["events"],
         settlement_budget_delta=settlement["budget_delta"],settlement_telemetry_prefix=settlement["telemetry_prefix"],
-        launch_stock=stock, preserved_final_receipts=origin["evaluation"]["current_revalidation_receipts"],
+        launch_stock=stock, inherited_native_feed_clock_rollover=native_clock_rollover,
+        preserved_final_receipts=origin["evaluation"]["current_revalidation_receipts"],
         actual_budget_delta=delta, publication_approved=False)
 
 
