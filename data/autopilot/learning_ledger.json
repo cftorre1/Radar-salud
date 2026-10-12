@@ -584,6 +584,20 @@
     "acceptance_boundary": "Zero new publications does not prove zero model calls or unchanged queue statuses."
   },
   {
+    "id": "daily_first_release_contract_2026_10_11",
+    "at": "2026-10-12T01:36:56.500136+00:00",
+    "source": "Integration Commander",
+    "class": "integration_contract_mismatch",
+    "finding": "Green technical checks do not establish compatibility with a later Daily First scope: Global UI30 still invokes a hardcoded90-day collector with no activation dependency gate; PR body may lag actual failed runtime or newer CI.",
+    "specific_fix": "Hold acceptance until bounded daily path/explicit disabled hook; read actual run/job and exact-head checks; preserve historical qualification receipts.",
+    "status": "OPEN_ACTIONABLE",
+    "evidence": [
+      "data/pmo/sprint_integration_2026_10_11_13.json",
+      "https://github.com/cftorre1/Radar-salud/pull/26#issuecomment-6116190625"
+    ],
+    "source_closed": false
+  },
+  {
     "id": "pulso_core_promotion_unverified_2026_10_11",
     "source": "Issue #5 / Work3 / Codex B",
     "classification": "missed_agent_finding",
