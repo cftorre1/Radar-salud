@@ -76,6 +76,17 @@ def test_http_200_does_not_certify_coverage_and_holds_do_not_refresh_poll_time(t
     assert row['technical_status']=='held'
 
 
+def test_known_external_blocker_is_preserved_during_hold(tmp_path):
+    prior={'checked_at':NOW.isoformat(),'recovery_outcome':'EXTERNAL_BLOCKER_PROVEN'}
+    path=tmp_path/'data/source_health.json'
+    atomic_json(path,{'sources':{'fonasa':dict(prior,published=0)}})
+    annotate_health(tmp_path,'fonasa',previous=prior,monitor={'requests':[],'held':[{'url':URL}]},items=[],error='SurfaceHeld',now=NOW)
+    row=json.loads(path.read_text())['sources']['fonasa']
+    assert row['recovery_outcome']=='EXTERNAL_BLOCKER_PROVEN'
+    assert row['checked_at']==prior['checked_at']
+    assert row['items_recent'] is None
+
+
 @pytest.mark.parametrize('hours,expected',[(0,'checked_within_24h'),(24,'overdue_24h'),(48,'stale_48h'),(-1,'invalid_future')])
 def test_daily_freshness_boundaries(hours,expected):
     assert freshness({'checked_at':(NOW-timedelta(hours=hours)).isoformat()},now=NOW)['daily_check_state']==expected

@@ -46,7 +46,7 @@ def lane(raw, now, last_discovered_at=None):
         published = datetime.fromisoformat(raw.event_date[:10]).date()
         stamp = datetime.fromisoformat(last_discovered_at.replace("Z", "+00:00"))
         current_day=now.date()
-        if raw.source_slug=="diario_financiero":
+        if raw.source_slug in ("diario_financiero", "minsal"):
             from zoneinfo import ZoneInfo
             # DF publishes Chile calendar days. A UTC midnight watermark must
             # not turn a still-current Chile article into historical backfill.

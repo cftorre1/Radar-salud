@@ -399,7 +399,7 @@ def main():
             latest_original_at=original_dates.get(name),evaluation_performed=evaluated[name]>0)
         if name in DAILY_FIRST_SOURCES:
             annotate_health(root,name,previous=previous_health.get(name,{}),monitor=daily_monitors.get(name,{}),
-                            items=observed.get(name,[]),inventory=getattr(next(s[2].__self__ for s in specs if s[0]==name),'inventory',{}),error=error)
+                            items=observed.get(name,[]),inventory=getattr(next(s[2].__self__ for s in specs if s[0]==name),'inventory',{}),error=error,source_queue=source_items)
     print({"queue":queue.counts(),"budget":ai_budget_status()})
 
 if __name__=="__main__":main()

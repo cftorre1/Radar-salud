@@ -9,7 +9,8 @@ import pytest
 
 from radar_salud.models import RawItem
 from radar_salud.minsal_news import bind_minsal, rss_candidates
-from radar_salud.pending_queue import PendingQueue, fingerprint
+from radar_salud.pending_queue import PendingQueue, fingerprint, lane
+from radar_salud.public_source_evidence import verified_publication
 from radar_salud.processing import DeferredProcessing
 from radar_salud.scouts import MinsalNewsScout
 from radar_salud import public_source_pipeline as pipeline
@@ -91,6 +92,15 @@ def test_rss_stamp_bound_to_detail_and_maximum_window():
     raw = candidates[0]; raw.metadata['rss_published_at'] = '2026-10-08T20:48:24+00:00'
     with pytest.raises(DeferredProcessing):bind_minsal(raw,data[raw.url],now=NOW)
     with pytest.raises(ValueError):rss_candidates(feed,now=NOW,days=90)
+
+
+def test_minsal_midnight_uses_publisher_chile_day_without_rejuvenating_stock():
+    raw,html=article()
+    html=html.replace('2026-10-09T20:48:24+00:00','2026-10-12T01:00:00+00:00')
+    bind_minsal(raw,html,now=NOW)
+    assert raw.event_date=='2026-10-11'
+    assert verified_publication(raw,today=NOW.date())
+    assert lane(raw,datetime(2026,10,12,2,tzinfo=timezone.utc),'2026-10-12T00:30:00+00:00')=='LIVE'
 
 
 def test_rediscovery_preserves_key_detection_backfill_and_terminal_decisions(tmp_path):

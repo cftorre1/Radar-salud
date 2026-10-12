@@ -100,6 +100,10 @@ def verified_publication(raw, *, today: date | None = None) -> bool:
     try:
         day = date.fromisoformat(raw.event_date)
         declared = publication_field_date(evidence["value"], kind)
+        if raw.source_slug == 'minsal' and kind == 'article:published_time':
+            stamp = datetime.fromisoformat(evidence['value'].replace('Z','+00:00'))
+            if stamp.tzinfo is None:return False
+            declared = stamp.astimezone(ZoneInfo('America/Santiago')).date().isoformat()
         return (declared == raw.event_date and day.isoformat() == raw.event_date
                 and day <= (today or chile_today()))
     except (TypeError, ValueError):

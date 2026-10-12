@@ -103,6 +103,11 @@ def replay_core(output, captures, *, live=False, assess=False):
     assert {k:v for k,v in before_queue.items() if v['source']!='minsal'}=={k:v for k,v in second.items() if v['source']!='minsal'}
     # A retained replay cannot refresh the actual network poll timestamp.
     after_health=first_health
+    if not captured:
+        previous=before_health['sources']['minsal']
+        for key in ('checked_at','engine_checked_at','last_attempt_at','last_successful_capture_at','last_verified_discovery_at'):
+            after_health['sources']['minsal'][key]=previous.get(key)
+        after_health['sources']['minsal']['poll_mode']='retained_replay_not_a_fresh_poll'
     assert {k:v for k,v in before_health['sources'].items() if k!='minsal'}=={k:v for k,v in after_health['sources'].items() if k!='minsal'}
     delta={k:v for k,v in first.items() if before_queue.get(k)!=v}
     for k,v in delta.items():
@@ -132,6 +137,21 @@ def main():
     if args.replay:
         rows=json.loads((args.output/'native-captures.json').read_text())
         replay_core(args.output,rows)
+        return
+    verified=ROOT/'data/audits/daily_first_20261012/verified-native-runtime.zip'
+    if verified.exists():
+        # Recovery stop-loss: subsequent branch QA reuses the verified native input.
+        # No source retries, paid reevaluation or renewed native timestamps.
+        assert hashlib.sha256(verified.read_bytes()).hexdigest()=='f55065b15fa709aba48c831618a1cef0c2b0067fce584a98ba485dccd2c5669a'
+        with zipfile.ZipFile(verified) as z:
+            assert all(not Path(n).is_absolute() and '..' not in Path(n).parts for n in z.namelist())
+            z.extractall(args.output)
+        rows=json.loads((args.output/'native-captures.json').read_text())
+        replay_core(args.output,rows)
+        (args.output/'current-replay.json').write_text(json.dumps(dict(
+            candidate_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+            native_producer_sha='6b6ef2c6a83d8244b0338598b393760709ef0dae',
+            mode='retained_exact_primary_replay',new_network_requests=0,new_ai_calls=0),indent=2))
         return
     # Existing failed surface captures remain evidence; do not repeat FONASA's equivalent403.
     with zipfile.ZipFile(ROOT/'data/audits/daily_first_20261012/initial-primary-capture.zip') as z:
