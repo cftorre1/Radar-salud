@@ -1,3 +1,44 @@
+# Reviewer independiente · W6-01 exclusivamente
+
+**PASS_SCOPED_P1 — READY_FOR_WORK6_RECHECK**.
+Candidato: `docs/handoffs/WORK5_PRODUCT_EDITORIAL_2026_10_12.md`.
+SHA256: `259bdf1421368e4c9176497a0d0b51113d23d08b1d0d775b7f1178dcf473d365`.
+Base declarada de PR32: `4bb075e`. Fecha:12oct2026.
+
+## Alcance y criterio
+
+Leí W6-01 del informe Work6 en commit469b491c y el comentario PR32/6123589624 directamente mediante GitHub. Revisé únicamente E4.P1, E5.P1, sustitución de fórmula general y aceptación del prompt Codex H. No reabrí auditoría integral ni traté de cerrar W6-02/03/04. No hubo modificaciones de producto, publicación ni llamadas pagadas.
+
+## Resultado de la revisión documental
+
+No hay P0/P1 abiertos en esta corrección focal. La regla deja de extrapolar porcentajes de stocks positivos a resultados financieros con signo. Exige base positiva, dominio y proporcionalidad aprobados, comparabilidad de unidades/períodos/universos/versiones y denominadores válidos. También bloquea porcentaje en utilidad→pérdida pese a base positiva. Prohíbe el arreglo universal abs(base).
+
+Negativo→negativo, cero, cruces de signo y valores faltantes tienen salidas diferenciadas y motivo de N/A; no se confunden0, faltante o porcentaje no aplicable. El delta absoluto se bloquea cuando la comparación no es válida. Dirección numérica no equivale a favorabilidad. Tasas conservan su unidad, proporciones/márgenes distinguen puntos porcentuales y relativa, y las bases revisadas exigen extremos armonizados y trazabilidad. La revisión de un mismo período no se denomina crecimiento.
+
+El prompt recoge esos gates y ambos casos reales; demanda recheck Work6 y aceptación de Dirección antes de Codex H. El estado de cobertura Esencial permanece HOLD incluso cuando la aritmética del fixture financiero pasa. No se declara resuelto el P2 de tolerancias por normalizar un fixture decimal.
+
+## Comprobación numérica independiente
+
+Abrí los originales locales con xlrd/openpyxl, sin ejecutar publicador ni pipeline:
+
+- FEFI XLS SHA256 `e3c4f7b3cfee9a6e4a3122aef4d0c65a26d41630e482c16ec4345b8a804db065` coincide. Hoja `Result. Financieros comparados` confirma períodoenero–marzo, años2025/2026, millones de pesos y B16/D16/F16. Normalizando exclusivamente el fixture a0,001millones:−273,285→34.090,653 produce+34.363,938millones. La fórmula ingenua produce un porcentaje negativo sin interpretación ordinaria; salida aceptable es N/A y transición pérdida→utilidad.
+- Leí `Notas Explicativas!A18`: Esencial no presenta cifras a marzo2026 por revisión. El handoff no transforma esa carencia en publicación validada; conserva HOLD de cobertura/comparaciones afectadas.
+- Cartera Enero!E20/Julio!E20 conserva2.514.038→2.487.497:−26.541personas y−1,055711966…%, con base inicial. No repetí auditoría de sus diez instituciones.
+
+Leí el probe temporal de37casos y3mutaciones, pero no utilicé sus expectativas como único oráculo. Cargué únicamente su función evaluate, sin ejecutar su generador de resultados, y comprobé15contraejemplos independientes: cruce financiero cerca de cero; pérdida menor; cruce positivo→negativo; stock0→positivo y positivo→0; proporción0,8→0,4; margen negativo→0 y margen superior a100%; tasa20→5; versiones incompatibles, denominador inválido, comparabilidad falsa, índice no proporcional, conteo negativo y NaN. Los quince checks seleccionados pasaron las expectativas numéricas y de bloqueo correspondientes.
+
+Este ensayo contrasta la política especificada; no certifica que todos los validadores, metadatos, estados, etiquetas o UI estén implementados. Los37casos/3mutaciones siguen siendo evidencia del autor del probe; mis15checks son la corroboración independiente adicional.
+
+## Límites y salida
+
+El QA390/320px, zoom200%, motivo de N/A accesible, extremos/períodos visibles y ranking sin tratar null como0 está especificado, no ejecutado sobre producto. Los P2 de Work6 y HOLD previos permanecen abiertos según su dueño. No emito Work6 finalPASS, no certifico beta y no autorizo Codex H, gasto, publicación ni merge.
+
+**Siguiente paso permitido por este receipt: recheck focal Work6 sobre el nuevo SHA de PR32 que contenga este candidato y sus evidencias.** Cualquier cambio posterior al hash requiere conciliar su delta.
+
+---
+
+# Historial preservado: Reviewer estadístico, V2 y V1
+
 # Cierre de revisión focal · Complemento estadístico adaptativo
 
 **PASS_SCOPED_DOCUMENTARY — READY_FOR_WORK6**.

@@ -22,11 +22,11 @@
   "source_capture_runtime_executed": false,
   "queue_pmo_contract_mutations": false,
   "document": "docs/handoffs/WORK5_PRODUCT_EDITORIAL_2026_10_12.md",
-  "review_status": "PASS_SCOPED_DOCUMENTARY_READY_FOR_WORK6",
+  "review_status": "PASS_SCOPED_P1_READY_FOR_WORK6_RECHECK",
   "independent_review": "docs/handoffs/WORK5_PRODUCT_EDITORIAL_REVIEW_2026_10_12.md",
   "deliverable_sha256": {
-    "docs/handoffs/WORK5_PRODUCT_EDITORIAL_2026_10_12.md": "9ba5c848d8aa4416b38e5ab07d29a2c8610eb6c6fdd727c8e5858fcd6cc4870f",
-    "docs/handoffs/WORK5_PRODUCT_EDITORIAL_REVIEW_2026_10_12.md": "02ceee1dc247cd7d0f97af9e23e627ce18fb837ecf8eff736146d1adbc1b5a33"
+    "docs/handoffs/WORK5_PRODUCT_EDITORIAL_2026_10_12.md": "259bdf1421368e4c9176497a0d0b51113d23d08b1d0d775b7f1178dcf473d365",
+    "docs/handoffs/WORK5_PRODUCT_EDITORIAL_REVIEW_2026_10_12.md": "e169fb89d7114a80a53e822c51c4f9303e151a6b7860d391c08c1c16251de0ef"
   },
   "v1_review_status": "PASS_SCOPED_DOCUMENTARY",
   "addendum_v2": {
@@ -406,5 +406,947 @@
     "fefi_numeric_series_verified": false,
     "reviewed_candidate_sha256": "9ba5c848d8aa4416b38e5ab07d29a2c8610eb6c6fdd727c8e5858fcd6cc4870f",
     "p0_p1_open": 0
+  },
+  "w6_01_correction": {
+    "scope": "W6-01 only; preserve other decisions, P2 and HOLD",
+    "base_pr_sha": "4bb075eda97413d0c4423848c2ad8f7d8f0ceb91",
+    "work6_audit_sha": "469b491caba94b281f4ab31844d4e8eb827ff594",
+    "direction_comment": "https://github.com/cftorre1/Radar-salud/pull/32#issuecomment-6123589624",
+    "observed_at_utc": "2026-10-12T11:53:22.034424+00:00",
+    "test_results": {
+      "scope": "disposable deterministic specification probe; not tests of implemented product",
+      "result": "PASS",
+      "case_count": 37,
+      "cases": [
+        {
+          "id": "F1",
+          "inputs": [
+            "-273.285",
+            "34090.653"
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "34363.938",
+            "pct": null,
+            "pp": null,
+            "transition": "loss_to_profit",
+            "reason": "sign_change"
+          },
+          "expected_numeric": {
+            "delta": "34363.938",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "official_numeric_counterexample"
+        },
+        {
+          "id": "F2",
+          "inputs": [
+            -100,
+            -40
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "60",
+            "pct": null,
+            "pp": null,
+            "transition": "smaller_loss",
+            "reason": "negative_base"
+          },
+          "expected_numeric": {
+            "delta": "60",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F3",
+          "inputs": [
+            -100,
+            -160
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "-60",
+            "pct": null,
+            "pp": null,
+            "transition": "larger_loss",
+            "reason": "negative_base"
+          },
+          "expected_numeric": {
+            "delta": "-60",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F4",
+          "inputs": [
+            -100,
+            -100
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "0",
+            "pct": null,
+            "pp": null,
+            "transition": "unchanged_loss",
+            "reason": "negative_base"
+          },
+          "expected_numeric": {
+            "delta": "0",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F5",
+          "inputs": [
+            -100,
+            0
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "100",
+            "pct": null,
+            "pp": null,
+            "transition": "loss_to_zero",
+            "reason": "negative_base"
+          },
+          "expected_numeric": {
+            "delta": "100",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F6",
+          "inputs": [
+            0,
+            40
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "40",
+            "pct": null,
+            "pp": null,
+            "transition": "zero_to_profit",
+            "reason": "zero_base"
+          },
+          "expected_numeric": {
+            "delta": "40",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F7",
+          "inputs": [
+            0,
+            -40
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "-40",
+            "pct": null,
+            "pp": null,
+            "transition": "zero_to_loss",
+            "reason": "zero_base"
+          },
+          "expected_numeric": {
+            "delta": "-40",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F8",
+          "inputs": [
+            0,
+            0
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "0",
+            "pct": null,
+            "pp": null,
+            "transition": "zero_unchanged",
+            "reason": "zero_base"
+          },
+          "expected_numeric": {
+            "delta": "0",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F9",
+          "inputs": [
+            100,
+            -20
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "-120",
+            "pct": null,
+            "pp": null,
+            "transition": "profit_to_loss",
+            "reason": "sign_change"
+          },
+          "expected_numeric": {
+            "delta": "-120",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F10",
+          "inputs": [
+            100,
+            0
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "-100",
+            "pct": "-100",
+            "pp": null,
+            "transition": null,
+            "reason": null
+          },
+          "expected_numeric": {
+            "delta": "-100",
+            "pct": "-100",
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F11",
+          "inputs": [
+            100,
+            150
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "50",
+            "pct": "50",
+            "pp": null,
+            "transition": null,
+            "reason": null
+          },
+          "expected_numeric": {
+            "delta": "50",
+            "pct": "50",
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "C1",
+          "inputs": [
+            2514038,
+            2487497
+          ],
+          "policy": {
+            "kind": "count"
+          },
+          "actual": {
+            "delta": "-26541",
+            "pct": "-1.055711966167575828209438362",
+            "pp": null,
+            "transition": null,
+            "reason": null
+          },
+          "expected_numeric": {
+            "delta": "-26541",
+            "pct": "-1.055711966167575828209438362",
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "official_stock_regression"
+        },
+        {
+          "id": "C2",
+          "inputs": [
+            100,
+            -1
+          ],
+          "policy": {
+            "kind": "count"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "invalid_domain"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_None_0",
+          "inputs": [
+            null,
+            10
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_None_1",
+          "inputs": [
+            10,
+            null
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_S/I_0",
+          "inputs": [
+            "S/I",
+            10
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_S/I_1",
+          "inputs": [
+            10,
+            "S/I"
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_NA_0",
+          "inputs": [
+            "NA",
+            10
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_NA_1",
+          "inputs": [
+            10,
+            "NA"
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_NaN_0",
+          "inputs": [
+            "NaN",
+            10
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_NaN_1",
+          "inputs": [
+            10,
+            "NaN"
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_Infinity_0",
+          "inputs": [
+            "Infinity",
+            10
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_Infinity_1",
+          "inputs": [
+            10,
+            "Infinity"
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "R1",
+          "inputs": [
+            120,
+            150
+          ],
+          "policy": {
+            "kind": "count"
+          },
+          "actual": {
+            "delta": "30",
+            "pct": "25",
+            "pp": null,
+            "transition": null,
+            "reason": null
+          },
+          "expected_numeric": {
+            "delta": "30",
+            "pct": "25",
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "R2",
+          "inputs": [
+            120,
+            150
+          ],
+          "policy": {
+            "kind": "result",
+            "revised_ok": false
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "HOLD_REVISED_BASE"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "R3",
+          "inputs": [
+            -20,
+            40
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "60",
+            "pct": null,
+            "pp": null,
+            "transition": "loss_to_profit",
+            "reason": "sign_change"
+          },
+          "expected_numeric": {
+            "delta": "60",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "P1",
+          "inputs": [
+            ".20",
+            ".30"
+          ],
+          "policy": {
+            "kind": "proportion"
+          },
+          "actual": {
+            "delta": "0.10",
+            "pct": "50",
+            "pp": "10.00",
+            "transition": null,
+            "reason": null
+          },
+          "expected_numeric": {
+            "delta": "0.10",
+            "pct": "50",
+            "pp": "10"
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "P2",
+          "inputs": [
+            0,
+            ".30"
+          ],
+          "policy": {
+            "kind": "proportion"
+          },
+          "actual": {
+            "delta": "0.30",
+            "pct": null,
+            "pp": "30.00",
+            "transition": null,
+            "reason": "zero_base"
+          },
+          "expected_numeric": {
+            "delta": "0.30",
+            "pct": null,
+            "pp": "30"
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "P3_den",
+          "inputs": [
+            ".2",
+            ".3"
+          ],
+          "policy": {
+            "kind": "proportion",
+            "denominator_ok": false
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "invalid_denominator"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "P3_domain",
+          "inputs": [
+            ".2",
+            "1.2"
+          ],
+          "policy": {
+            "kind": "proportion"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "invalid_domain"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "G1",
+          "inputs": [
+            "-.05",
+            ".03"
+          ],
+          "policy": {
+            "kind": "margin"
+          },
+          "actual": {
+            "delta": "0.08",
+            "pct": null,
+            "pp": "8.00",
+            "transition": null,
+            "reason": "sign_change"
+          },
+          "expected_numeric": {
+            "delta": "0.08",
+            "pct": null,
+            "pp": "8"
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "G2",
+          "inputs": [
+            ".05",
+            "-.03"
+          ],
+          "policy": {
+            "kind": "margin"
+          },
+          "actual": {
+            "delta": "-0.08",
+            "pct": null,
+            "pp": "-8.00",
+            "transition": null,
+            "reason": "sign_change"
+          },
+          "expected_numeric": {
+            "delta": "-0.08",
+            "pct": null,
+            "pp": "-8"
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "G3",
+          "inputs": [
+            "-.05",
+            "-.02"
+          ],
+          "policy": {
+            "kind": "margin"
+          },
+          "actual": {
+            "delta": "0.03",
+            "pct": null,
+            "pp": "3.00",
+            "transition": null,
+            "reason": "negative_base"
+          },
+          "expected_numeric": {
+            "delta": "0.03",
+            "pct": null,
+            "pp": "3"
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "T1",
+          "inputs": [
+            10,
+            15
+          ],
+          "policy": {
+            "kind": "rate"
+          },
+          "actual": {
+            "delta": "5",
+            "pct": "50",
+            "pp": null,
+            "transition": null,
+            "reason": null
+          },
+          "expected_numeric": {
+            "delta": "5",
+            "pct": "50",
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "T2",
+          "inputs": [
+            10,
+            15
+          ],
+          "policy": {
+            "kind": "rate",
+            "denominator_ok": false
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "invalid_denominator"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "U1",
+          "inputs": [
+            100,
+            120
+          ],
+          "policy": {
+            "kind": "result",
+            "comparable": false
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "incomparable"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "I1",
+          "inputs": [
+            100,
+            120
+          ],
+          "policy": {
+            "kind": "index",
+            "proportional": false
+          },
+          "actual": {
+            "delta": "20",
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "nonproportional"
+          },
+          "expected_numeric": {
+            "delta": "20",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        }
+      ],
+      "mutations_detected": [
+        "negative_base_naive_pct",
+        "absolute_base_universal_fix",
+        "stock_end_denominator"
+      ],
+      "fefi_raw_cells": [
+        -273.28500000000076,
+        34090.65299999999,
+        34363.937999999995
+      ],
+      "fefi_publication_status": "HOLD_COVERAGE_ESENCIAL",
+      "mobile_executed": false,
+      "source_harness_sha256": "d0414a12611807dd8d85ae9fb508e9dedc91ee395a53a3738b5da8876c4a5978"
+    },
+    "originals": [
+      {
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/07/finan_ifrs_mar_2026_web_v2.xls",
+        "sha256": "e3c4f7b3cfee9a6e4a3122aef4d0c65a26d41630e482c16ec4345b8a804db065",
+        "cells": "Result. Financieros comparados!B16,D16,F16; A4/B5/D5/A8 period/unit; Notas Explicativas!A18 coverage conflict",
+        "status": "HOLD_COVERAGE_ESENCIAL; valid numerical counterexample only"
+      },
+      {
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
+        "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
+        "cells": "Enero!E20,Julio!E20",
+        "status": "numeric regression only; no update or publication"
+      }
+    ],
+    "review_status": "PASS_SCOPED_P1",
+    "paid_pipeline_calls": 0,
+    "product_code_changed": false,
+    "work6_recheck_required": true,
+    "codex_h_authorized": false,
+    "reviewed_candidate_sha256": "259bdf1421368e4c9176497a0d0b51113d23d08b1d0d775b7f1178dcf473d365",
+    "independent_additional_checks": 15,
+    "open_p0_p1_in_focal_delta": 0
   }
 }

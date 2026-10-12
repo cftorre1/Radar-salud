@@ -838,13 +838,93 @@ Extensión opcional `statistical_view` de esquema v3 para piezas de Datos, sin c
 
 - `dataset_version`, `family`, `metric_id`, `measure_kind` (`stock`, `flow`, `rate`, `proportion`, `contract_events`, `between_cuts`), `unit`, `population`, `period_start/end`, `comparison_base`, `provisional`, `evidence_refs`.
 - `observations[]`: valor numérico o null, período, código oficial entidad, grupo, localizador hoja/celda y hash de fuente. `system_total` distinto de filas institucionales y subtotales; nunca sumar los tres.
-- `derived_metrics[]`: identificador, fórmula determinística registrada, input_ids, valor sin redondear, display_precision y denominador explícito. Diferencia absoluta=end−start; Δ%=100×(end−start)/start; start0→N/A, no infinito. Cuota de sistema sólo con universo exhaustivo y mismo corte; tasas requieren denominador elegible, no población conveniente.
+- `derived_metrics[]`: identificador, fórmula determinística registrada, input_ids, valor sin redondear, display_precision y denominador explícito. Diferencia absoluta y variación relativa sujetas al dominio, comparabilidad y política explícita de E4.P1; no existe fórmula porcentual universal. Cuota de sistema sólo con universo exhaustivo y mismo corte; tasas requieren denominador elegible, no población conveniente.
 - `comparability`: mismos períodos, definiciones, unidad, cobertura, código/identidad, cambios/fusiones revisados, revisión del original, missing_entity_ids, reconciled_totals y reason_codes. El validador actual verifica entidades pero exporta agregados: reutilizar extracción conservando filas y provenance, no lanzar LLM para leer/calc cifras ni inferir filas desde total.
 - `presentation`: KPI references, chart reference, entity table reference, metodología references. No duplicar textos de insight en cada representación; `incremental_review` incluye cada bloque visual y su propósito, exime equivalentes accesibles de duplicación vacía.
 
 Gate institucional: sólo habilitar comparación aprobada tras verificar extremos por código, todas las sumas y notas. Una entidad faltante queda visible como «sin dato» si universo conocido; null no es0. No redistribuir residual entre entidades. Si no hay filas verificadas, suprimir ranking y decir «desglose no verificado»; mantener agregado verificado. Si cobertura parcial, rotularla y no denominarla ranking completo ni suma sistema. Fusiones/cambio de definición rompen comparación hasta armonización documentada. Cifras revisadas crean versión nueva y receipt, no sobrescriben evidencia histórica. Una contradicción en totales bloquea esa comparación, no obliga a rellenarla con estimaciones.
 
 No se exige gráfico adicional por isapre: tabla sortable aporta valor a menor esfuerzo. Gráfico de barras opcional posterior sólo con base cero; línea histórica no une huecos ni interpola datos ausentes. Si falla JS/gráfico, tabla semántica sigue disponible. No dependencia gráfica nueva obligatoria ni imagen raster de tabla.
+
+
+### E4.P1 — Dominio de variaciones y cambios de signo (sustituye la fórmula general)
+
+Corrección exclusiva **W6-01** del [dictamen Work6, commit469b491c](https://github.com/cftorre1/Radar-salud/blob/469b491caba94b281f4ab31844d4e8eb827ff594/docs/handoffs/WORK6_PRODUCT_AUDIT_2026_10_12.md), siguiendo [comentario6123589624](https://github.com/cftorre1/Radar-salud/pull/32#issuecomment-6123589624). La aprobación scoped previa se conserva como historial, no como cierre del REVISE posterior. Esta corrección solicita **READY_FOR_WORK6_RECHECK**, no autorización de Codex H. Los P2 de Work6 no se declaran corregidos en este delta; restantes decisiones, presupuestos y HOLD permanecen.
+
+**Regla:** la fórmula ordinaria `100×(fin−inicio)/inicio` sólo se permite si `inicio>0`, la métrica admite interpretación proporcional, ambos valores cumplen su dominio y son comparables, y no existe transición financiera de utilidad a pérdida. Positividad del denominador es necesaria, no suficiente. Prohibido aplicar `abs(inicio)` como arreglo universal. Un porcentaje publicado por la fuente tampoco elude el gate; se conserva como dato de origen con advertencia si su interpretación es improcedente.
+
+Antes de cualquier cálculo comprobar unidad/escala, períodos de igual alcance, universo, definición y versión compatible. Datos faltantes, S/I, no finitos, denominadores fuente inválidos y revisiones no conciliadas producen null con motivo; no cero. Si falla comparabilidad, **también** se bloquea delta absoluto, aunque pueda restarse numéricamente. `raw_arithmetic` aislado de auditoría nunca habilita salida editorial.
+
+Registrar por métrica `value_domain` (no negativo o con signo), `comparison_policy` (proporcional, resultado financiero con signo, tasa, proporción, margen), `proportional_change_allowed`, `unit/scale`, períodos, versión de cada extremo, denominadores fuente si corresponde y su dominio. Salida determinística: `absolute_delta`, `relative_pct` nullable, `point_delta` nullable, `transition`, `reason_code`, `comparison_status`, `publication_status`, `base_version_used`. No usar signo porcentual para decidir «mejora»: `direction` numérica y `favorability` son distintas; favorable/desfavorable requiere semántica y evidencia, no colores automáticos.
+
+|Dominio y transición|Salida pública permitida si comparable|Porcentaje ordinario|
+|---|---|---|
+|Resultado negativo→positivo|«Pasa de pérdida a utilidad», ambos importes/períodos y delta monetario positivo|N/A `loss_to_profit`|
+|Resultado positivo→negativo|«Pasa de utilidad a pérdida», extremos y delta monetario negativo|N/A `profit_to_loss`, aunque base sea positiva|
+|Negativo→negativo, fin menos negativo|«Pérdida menor», reducción absoluta de pérdida o delta firmado con unidades|N/A `negative_base`; no llamar caída al resultado por el signo del cociente|
+|Negativo→negativo, fin más negativo|«Pérdida mayor», aumento absoluto de pérdida o delta firmado|N/A `negative_base`|
+|Negativo→mismo negativo|«Pérdida sin cambio», delta0|N/A `negative_base`, no0% calculado|
+|Negativo→cero|«Pasa de pérdida a resultado cero», delta positivo|N/A `negative_base`|
+|Cero→positivo/negativo|«De resultado cero a utilidad/pérdida»; delta con unidades|N/A `zero_base`, ni infinito ni100%|
+|Cero→cero|«Sin cambio, ambos valores cero»|N/A `zero_base`, no confundir con observación faltante|
+|Positivo→cero|«Llega a cero», delta=−inicio|−100% si política proporcional válida; no afirmar mejora automáticamente|
+|Positivo→positivo|Niveles, delta y porcentaje con base explícita|Permitido bajo gate|
+|Conteo no negativo con extremo negativo|Valor fuera del dominio, HOLD|N/A `invalid_domain`; no etiquetar pérdida/utilidad|
+
+No se calcula por defecto «reducción porcentual de la pérdida». Puede diseñarse posteriormente una métrica explícita de magnitud de pérdida con definición, nombre, unidad y aprobación propios; no reutilizar silenciosamente el porcentaje de resultados ni levantar gates mediante cambio de signo.
+
+**Tasas, proporciones y márgenes mantienen su semántica:**
+
+- Proporción0,20→0,30 equivale a20%→30%: cambio **+10 puntos porcentuales**, variación relativa **+50%** sólo si se justifica, etiquetada como relativa y con poblaciones/definiciones comparables. No+10%. Con base0 sólo cambio en puntos; relativa N/A. Numerador/denominador y escala declarados; proporciones fuera[0,1] o denominador fuente≤0 son inválidos.
+- Margen−5%→+3%: **+8 puntos porcentuales**, «margen pasa de negativo a positivo»; relativa N/A. Margen+5%→−3%:−8pp, relativa N/A. Margen−5%→−2%:+3pp, relativa N/A. No aplicar dominio[0,1] a todo margen financiero: su dominio con signo debe estar definido y su denominador económico ser válido. Márgenes positivos comparables pueden admitir relativa, pero puntos son presentación primaria.
+- Tasa10→15 por100.000: **+5 por100.000**; relativa+50% si misma definición, exposición y estandarización comparables. No5pp. Cambiar unidad por1.000/por100.000 exige conversión trazable antes de comparar; tasa con población expuesta0 no se convierte en cero. Un conteo puede ser0 aunque su tasa no sea calculable.
+- Umbrales, índices con origen arbitrario, razones con signo o medidas sin interpretación proporcional: sólo cambio en su unidad cuando tenga sentido; no autorizar relativos porque la base sea positiva. Una disminución de tasa puede ser favorable o desfavorable según qué mide; no se deduce de la aritmética.
+
+**Bases revisadas:** conservar versión original y revisada, fecha/motivo/fuente y revisar compatibilidad de ambos extremos. Comparación temporal usa par armonizado y `base_version_used`; revisión de un mismo período es otro delta, no crecimiento. Ejemplo de prueba: base publicada100, base revisada120 y fin150 comparables→delta temporal+30/+25%; revisión de base+20 separada. Nunca publicar+50% mezclando versión antigua. Si no hay puente/versiones compatibles, `HOLD_REVISED_BASE` para delta y porcentaje, mostrando sólo niveles claramente separados. Si revisión cambia base a0/negativa, reevaluar el dominio; un PASS anterior no se conserva. No usar último hash sin comprobar que ambas columnas fueron armonizadas.
+
+**FEFI genuino, prueba matemática con HOLD editorial:** [XLS oficial v2](https://www.superdesalud.gob.cl/app/uploads/2026/07/finan_ifrs_mar_2026_web_v2.xls), SHA256 `e3c4f7b3cfee9a6e4a3122aef4d0c65a26d41630e482c16ec4345b8a804db065`, leído nuevamente con xlrd. `Result. Financieros comparados`: A4 enero–marzo; B5/D5 años2025/2026; A8 millones de pesos; B16−273,285, D16+34.090,653; F16+34.363,938. Oráculo correcto: «De pérdida de273,285 millones en enero–marzo2025 a utilidad de34.090,653 millones en enero–marzo2026; diferencia+34.363,938 millones». Porcentaje **N/A, transición pérdida→utilidad**. La fórmula anterior arroja−12.574,395960…%, que nunca debe renderizarse como caída ni entrar a rankings/colores/alt-text.
+
+Este texto es **fixture, no ficha aprobada**: `Notas Explicativas!A18` contradice la cobertura Esencial de las filas institucionales; continúa HOLD de cobertura/comparaciones afectadas, incluidos agregados dependientes. `calculation_policy_pass` no implica `publication_pass`. Se retienen los floats originales; para reproducir estos importes se usan los literales decimales anteriores y se registra normalización a0,001millones sólo en el fixture, sin inventar una tolerancia general ni cerrar W6-02.
+
+**Otra familia real:** stock de beneficiarios, [Cartera2026](https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx), SHA `bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec`, Enero!E20=2.514.038, Julio!E20=2.487.497. Conserva delta−26.541personas y relativa−1,055711966…% (display−1,06%). No nuevo backfill ni reauditoría de instituciones.
+
+### E5.P1 — Fixtures determinísticos obligatorios y salida esperada
+
+Los casos reales F1/C1 conservan URL, hash, celdas, períodos y unidades. Los restantes son **sintéticos**, exclusivamente pruebas de dominio: no cifras atribuidas a FEFI, entidades o fuentes sanitarias. Ningún LLM calcula ni decide habilitación porcentual.
+
+|ID|Entrada y política|Delta esperado|Relativa esperada / estado|
+|---|---|---:|---|
+|F1|FEFI real−273,285→34.090,653millones|+34.363,938|N/A pérdida→utilidad; publicación HOLD|
+|F2|Resultado−100→−40|+60|N/A pérdida menor|
+|F3|Resultado−100→−160|−60|N/A pérdida mayor|
+|F4|Resultado−100→−100|0|N/A pérdida sin cambio|
+|F5|Resultado−100→0|+100|N/A pérdida→cero|
+|F6|Resultado0→40|+40|N/A cero→utilidad|
+|F7|Resultado0→−40|−40|N/A cero→pérdida|
+|F8|Resultado0→0|0|N/A base cero|
+|F9|Resultado100→−20|−120|N/A utilidad→pérdida|
+|F10|Resultado100→0|−100|−100%, política proporcional habilitada|
+|F11|Resultado100→150|+50|+50%, misma política|
+|C1|Cartera real2.514.038→2.487.497personas|−26.541|−1,055711966…%|
+|C2|Conteo100→−1|null|HOLD dominio inválido|
+|M1|Faltante/S/I/NA/no finito en cualquiera de los extremos|null|N/A missing_or_invalid; no cero|
+|R1|Base100revisada120, fin150 armonizado|+30|+25%; revisión+20 separada|
+|R2|Base revisada pero versión fin no conciliada|null|HOLD_REVISED_BASE|
+|R3|Base revisada de100 a−20, fin40; resultado armonizado|+60|N/A pérdida→utilidad; no reaplicar+50%|
+|P1|Proporción0,20→0,30|+0,10; +10pp|+50% relativa permitida|
+|P2|Proporción0→0,30|+0,30; +30pp|N/A base cero|
+|P3|Proporción con denominador fuente0, o valor1,20|null|HOLD denominador/dominio|
+|G1|Margen−0,05→0,03|+0,08; +8pp|N/A cambio de signo|
+|G2|Margen0,05→−0,03|−0,08; −8pp|N/A cambio de signo|
+|G3|Margen−0,05→−0,02|+0,03; +3pp|N/A base negativa|
+|T1|Tasa10→15 por100.000|+5 por100.000|+50%; no pp|
+|T2|Tasa con denominador fuente0|null|HOLD, no tasa0|
+|U1|Unidades/períodos/universos incompatibles|null|HOLD comparabilidad|
+|I1|Índice100→120, proporcional no autorizada|+20puntos de índice|N/A política no proporcional|
+
+Además: ensayo negativo de mutación aplica fórmula antigua aF1 y debe fallar; aplicar valor absoluto a su base también debe fallar porque sigue exponiendo un porcentaje improcedente. Cambiar denominador de Pulso a valor final debe fallar contra C1. Orden porcentual excluye N/A del ranking numérico, conserva fila con motivo y permite ordenar por cambio absoluto sólo entre medidas/unidades comparables; null no se ordena como0. No calcular dirección/favorabilidad desde string de display.
+
+QA mobile del delta:390px/320px/zoom200%, mostrar transición, extremos con períodos/unidades, delta y «No aplica: cambio de signo/base cero/base negativa» sin recortes ni tooltip exclusivo. N/A no oculta la pieza ni convierte valor en cero; razón accesible para lector de pantalla. Fórmulas/normalización/versiones permanecen bajo Metodología; información esencial de transición está visible. Este es criterio futuro de implementación, no QA visual ejecutado.
 
 ## E5. QA de aceptación y Reviewer estadístico
 
@@ -880,6 +960,13 @@ filas responsivas sin recortar columnas esenciales. Métodos/fórmulas en panel
 secundario accesible. Sin reexplicar indicadores en resumen/hallazgos/implicancias.
 Stockene–julio, contratosjulio y movilidadentre cortesjulio2025–2026 se separan.
 No causalidad/ingresos desde composición; no ranking sin datos; null no es0.
+W6-01: implementar dominio determinístico E4.P1 y fixtures E5.P1. Porcentaje
+sólo con base positiva y política interpretable; pérdidas/utilidades/cruces,
+basecero/negativa y revisiones incompatibles usan N/A con motivo. No abs(base).
+Conservar pp/tasas/márgenes y sus denominadores; distinguir cálculo y publicación.
+FEFI real debe dar+34.363,938millones y N/A, manteniendo HOLD coberturaEsencial;
+Cartera real mantiene−26.541 y−1,055711966…%. Adjuntar resultados del delta.
+Work6 recheck focal del nuevo SHA y aceptación Dirección obligatorios antesH.
 Antes de renderizar, perfila/explora/selecciona hallazgo y elige visual según E3;
 Pulso no es plantilla general. Prueba segunda familia (FEFI sólo si verificada;
 fixture respiratorio contradictorio exige HOLD del indicador), sin inventar series.
