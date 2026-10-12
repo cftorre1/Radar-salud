@@ -1,0 +1,40 @@
+name: Preserve reviewed Integration Commander paid runtime
+on:
+  push:
+    branches: [staging]
+    paths: ['data/audits/integration_commander_2026_10_12/paid_runtime_delta.json']
+permissions:
+  contents: write
+concurrency:
+  group: alicanto-staging-writer
+  cancel-in-progress: false
+jobs:
+  preserve:
+    if: github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Apply reviewed paid outputs with conflict guards and no external calls
+        run: |
+          python scripts/import_commander_runtime.py --apply > /tmp/import-first.json
+          python scripts/import_commander_runtime.py --apply > /tmp/import-second.json
+          python -c 'import json; d=json.load(open("/tmp/import-second.json")); assert d["queue_updates"]==0 and d["new_paid_receipts"]==0'
+          cat /tmp/import-first.json /tmp/import-second.json
+      - name: Persist only reviewed source state and additive usage to staging
+        run: |
+          git config user.name 'alicanto-salud-bot'
+          git config user.email 'alicanto-salud-bot@users.noreply.github.com'
+          git add data/state/pending_queue.json data/ai_usage/2026-10.json data/ai_usage/responses.jsonl data/source_health.json
+          git diff --cached --quiet || git commit -m 'chore: preserve six paid Pulso outputs and actual source health'
+          git push origin HEAD:staging
+      - uses: actions/upload-artifact@v4
+        with:
+          name: commander-paid-import-${{ github.sha }}
+          path: /tmp/import-*.json

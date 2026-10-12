@@ -1,0 +1,357 @@
+{
+  "staging_sha": "c10f67812face5a62a30623d6eb418418ab0994b",
+  "targets": {
+    "sources": [
+      "pulso_latercera"
+    ],
+    "origin_prs": [
+      10,
+      30
+    ],
+    "purpose": "Exact-SHA post-merge30-day live collector and core on copied stock for Pulso/DF. Two polls verify idempotence; existing paid cache retained, no state publication. PR29 owns FONASA/ISP/MINSAL; historical stock is preserved.",
+    "expectations": {
+      "redsalud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "bupa_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "indisa": {
+        "allow_external_blocker": true
+      },
+      "red_davila": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "andes_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "pfizer_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_achs_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "mutual_seguridad": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "ist": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "fonasa": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "fonasa_datos_abiertos": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "isp_anamed": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "isp_surveillance": {
+        "allow_external_blocker": true,
+        "minimum_discovered": 0
+      },
+      "pulso_latercera": {
+        "minimum_discovered": 0
+      }
+    }
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-12T05:03:18.733546+00:00",
+      "finished_at": "2026-10-12T05:06:10.411728+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "pulso_latercera": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "pulso_latercera": {
+          "discovered": 555,
+          "new": 3,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-12T05:05:35.981677+00:00"
+        }
+      },
+      "queue_identity_sha256": "2b21496dceca2abab9f4787e2308a970dc52bf727619ac5727f3d0d22323c2b6",
+      "published_queue_keys": [
+        "020e3bc472e9edb9e3aff783b1d559a528babe1eb8dd9a2eb4509d08d72b2919",
+        "0caefeb6bac75b19e65f6d97bfb0d34c301416a3d69fbd930c6617574e2894c3",
+        "0ccbd53626b2dbe20f75018e39fbb7bc83d2893c816953e2274dce397a5916af",
+        "1450af273f52735ff5e964b2b027dfa75cd8e678f51def9691444b1070ba9d41",
+        "17a3eda8d5775f13bc511f25725813e49446800571ec056701976ea03dd8081c",
+        "1b8b5573a478b5a45316874e5eb141a02edfebb1ebb2c4339df8f13bce7ea339",
+        "1ef20f88fc50555a857cd4c1bf77773958da7fd5f6323b7d044e95805db02c0f",
+        "23b226e5d66287ac1f78b768350e36ad164104d54cbe369661e796eed11b49e2",
+        "246feb53db9d486e260fc32c96d9d49d7c3c1f002cca663ee00c5b2788ccf5ab",
+        "25321e9564266b6e70a53d1bdca4b20d2e6bce6268385995080c33ddce7c4718",
+        "2e51eb84243dc17726d73f4658fe46002e8ed6f26f7ca15dddffa45c63d2e18b",
+        "3d6a05578166fa9d4cc4b0c24ca93823067193ef2ca75ecfb90f50587f3dd466",
+        "3f253c66ac67240f68c3303af2f9195ce62444094a9238d77c237181d674f3d6",
+        "3fb0666a8febe4a5ba0c2b78ebe13a7666fccb6e9f30170808c915dc5a80047c",
+        "408feee32795820c2f061d8d60e5b1bf682c9162f40311834691bace777033ac",
+        "4253ceb9ffdc3a75a20c1f4b9a9902900cc3e97134aef098183a298f8cb0be4d",
+        "427b7c13dabdc9c484eab3c5a196190dc0c187da84e9f33fa60d3b2c1de73eb6",
+        "4a24900ccf2f1fc422f6c471e338a105479922616ea878901d7b37861b43b7c3",
+        "4a2ebf24c4b12276479f532bef551f5a60b2ca8fde566bd3a1d19f3d83a1745b",
+        "4b5bd2cd3017dca1a917a0713cff5f56dbae00f47b711b9ce859a5444f7e0b16",
+        "5142ffda34fa626c06fb77c2942785ebdc606ef917b775306ef411c4c9997d5b",
+        "53ac4ff498e51cfefc12ae2e2244ebfa586d2b8c094ffcced41ac988fc50ba8e",
+        "56c1ab7c19c6b75df7798521df103cbccbfe3c74cdf092d55c9068b2e50ee05d",
+        "58b92308a8d749f97c1e97468ba7eb33ad73f6c0de505ecfa50e7c83cc9a429d",
+        "5a33112224b37df460c6e252a2d37b272ead8678d8bcafd3f329ac309be1609e",
+        "5af2b9cee6d18a213d387ab1d23676beb4e26e69e3f45391f3dcd940e84971d2",
+        "5b2acd2e8e966d0862ab87d8b294e9e634f4b80d365c47a214fe06da3a13fa5f",
+        "5bb4865f79a21048ac0ce116be901107d88d265db3706d98d1193eb1effaa2b9",
+        "5bf3ab8e3e319ebef7141033c4bb0ff061ca0da02eb0c76dc70746b7cc6c6742",
+        "5d98184f9464920d03dbd44b7cd1c8e87280f1fcdeb019015ee78775557ad725",
+        "6355f13d9cef4772e85ca4516a72b122d4989058aa3e1429febe5e0fc652f69d",
+        "6c8838693ed4e6db986608fca7efae2032665ddf078b0941fa100996a259ecb9",
+        "70dc99f1a3a2700d62cbc827e26e960fa2a48b1a7498d0285bc24705585b6672",
+        "7bfc4ad998061775d555d47d72f51fd34f9eddaf51181d339f55b90a79ea011f",
+        "841718ee5b9515734765c356d6dcd50987a5b2f79bf5c2f6a6233a173ceeaa38",
+        "852ddd50090ff6545524605d36658ae4751aebbd46d7796f728c9a6793485846",
+        "86ae67008d2c8e151f6335330e8737603e6209825b9a92492df291415002e6f9",
+        "8a15801e62a1244894dbcc469567a54e09c2639f976505683f31dea2695ed266",
+        "915fcc637868dafe3256e2274c4377cf43347d7c9b7ce275946c3c51ef1183b8",
+        "928190db6324d9228a52eb0b9842d576ec95410a1c678779f774c5079a1909c0",
+        "94fb0abfec81247bf9c1f96c79fe43ccc9527c2957d4eab6b62e7bed3ec49290",
+        "9686027619832daaa60ad35ddf03a4288dd4bae6eb4b803a13d6a932efd45fef",
+        "98a42cd2443e7222352800338ccc7cf0101ffdb1707cca9705e5815c1234958c",
+        "9b917c3de8622cb06d990272061f50b51f486676765f117627d063077af87ef9",
+        "9d37cd817777cd42bc125746b504a58fdb78a6cd84c150d119838bd71d8c98e1",
+        "9d3dfcc1f530d1a63e7a27133c3b0fd19c12d2fcf9d518282a955b98d84c5834",
+        "9ef49466ed04fc6efb62134a0fb204a0d246709716d9f14e9761122290a153e7",
+        "a365d046c7331eb87f979e548a174970a72eebd03db28d727dfe14d826bee580",
+        "a4015ab337b336d71751d1afa686c722c7ce267e5bcdc02e901d951f615a6732",
+        "a49c7cfc0296a8182f23d2782c242648acc5b8c5d0fb9cb6b09155c698d11462",
+        "a58988d996549164f9ef27cf474ed8c4a30ff07e212b4fc59c03d8e3bb1d7004",
+        "a8fb4287b0840616650de424b367845dfe72d1e97606e5a164d69aa56c2b4f60",
+        "aeb39b2baf730d97e3b368b0b37062507899facea7c028a41459e2160f395008",
+        "afdbdd25888f8e326609a30c24e8a2d5d44dc4cb35fc9c8b52f9f42ef9197abb",
+        "b2ad52c4b0bc300bba9d63b86165a18e56f551fcc8fa9b4990611a68772f7114",
+        "be6903074ea87d3db588878f9eeb9791c348829e7a4b36b3d681093fd1b52d09",
+        "c00adf82ec71bd6c7ba4a5e4edec082fbbad18509df8948a03d3b3cb36c20c19",
+        "c0513552aef9295829e8537ec1bcce03c43ea053c45a1905656d80502b08a80c",
+        "c670f94578b33beee724ab15570f664702be673272547ae7bf8d144658c47fb9",
+        "c70ab1ae56415c6a4398dbcc1d7feae37dd3d72c86ae5136d46dea5a7b182bd0",
+        "caeb73f191be7f378087e623540042508f73bd4d33aca08a45b738e0cfb23164",
+        "d3d8d90cddfdc6eeb87b4fee44087c559681e1bf9bb26a277f9918a133cf9af0",
+        "dcc083acad14e88d79111f4435560be08d992737c23ab87021685f376c62a422",
+        "deb7e5812add5ab98f2b5501093e829710c190738a58f4f5bf7fc81e13143eff",
+        "e58373c6c331cf89c5cb9e2a08619c85c1a2f17350ba12fd8b1b64e35d13d7c0",
+        "e9ccb3667a6211bca8580e3b512d8a862658ee55d54892b2fc0760af4344e904",
+        "ea56ce4e6cc6fcdf3dea9dc124620a0c6b4df46cf90ad4c719466e2cb7a92f91",
+        "ee071f62af588481e9f79f99d97d43e3cf2b9c64fa382c114255a3a91786eec2",
+        "f6452437b7a9a85ed286ed014c1c3b200798bc64e766b4b0ca6ad32e589a3461",
+        "f937f812facbb93fff24db3f1f77ff1de6a487c92619285789f3a194255d0418"
+      ],
+      "history_sha256": "1d571c6a3bdddd42446da50fd7fe36b2c07582f8dd7c22918350e41eeb8a8bd5",
+      "history_count": 992,
+      "history_selected_unique": 95,
+      "source_health": {
+        "pulso_latercera": {
+          "name": "Pulso / La Tercera",
+          "checked_at": "2026-10-12T05:06:09.129966+00:00",
+          "last_signal_at": "2026-10-10",
+          "discovered": 555,
+          "new": 3,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 1485,
+          "pending": 1485,
+          "deferred": 13,
+          "rejected": 184,
+          "status": "ok",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "observed",
+          "content_freshness": "recent",
+          "latest_original_at": "2026-10-12",
+          "editorial_outcome": "rejected",
+          "evaluation_performed": true,
+          "processed_rejections": 4,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue",
+            "published_total": "effective_persisted_source_history"
+          },
+          "published_total": 70,
+          "last_signal_at_basis": "effective_verified_published_history"
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-12T05:06:10.459992+00:00",
+      "finished_at": "2026-10-12T05:09:03.401214+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "pulso_latercera": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "pulso_latercera": {
+          "discovered": 555,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-12T05:07:04.673663+00:00"
+        }
+      },
+      "queue_identity_sha256": "2b21496dceca2abab9f4787e2308a970dc52bf727619ac5727f3d0d22323c2b6",
+      "published_queue_keys": [
+        "020e3bc472e9edb9e3aff783b1d559a528babe1eb8dd9a2eb4509d08d72b2919",
+        "0caefeb6bac75b19e65f6d97bfb0d34c301416a3d69fbd930c6617574e2894c3",
+        "0ccbd53626b2dbe20f75018e39fbb7bc83d2893c816953e2274dce397a5916af",
+        "1450af273f52735ff5e964b2b027dfa75cd8e678f51def9691444b1070ba9d41",
+        "17a3eda8d5775f13bc511f25725813e49446800571ec056701976ea03dd8081c",
+        "1b8b5573a478b5a45316874e5eb141a02edfebb1ebb2c4339df8f13bce7ea339",
+        "1ef20f88fc50555a857cd4c1bf77773958da7fd5f6323b7d044e95805db02c0f",
+        "23b226e5d66287ac1f78b768350e36ad164104d54cbe369661e796eed11b49e2",
+        "246feb53db9d486e260fc32c96d9d49d7c3c1f002cca663ee00c5b2788ccf5ab",
+        "25321e9564266b6e70a53d1bdca4b20d2e6bce6268385995080c33ddce7c4718",
+        "2e51eb84243dc17726d73f4658fe46002e8ed6f26f7ca15dddffa45c63d2e18b",
+        "3d6a05578166fa9d4cc4b0c24ca93823067193ef2ca75ecfb90f50587f3dd466",
+        "3f253c66ac67240f68c3303af2f9195ce62444094a9238d77c237181d674f3d6",
+        "3fb0666a8febe4a5ba0c2b78ebe13a7666fccb6e9f30170808c915dc5a80047c",
+        "408feee32795820c2f061d8d60e5b1bf682c9162f40311834691bace777033ac",
+        "4253ceb9ffdc3a75a20c1f4b9a9902900cc3e97134aef098183a298f8cb0be4d",
+        "427b7c13dabdc9c484eab3c5a196190dc0c187da84e9f33fa60d3b2c1de73eb6",
+        "4a24900ccf2f1fc422f6c471e338a105479922616ea878901d7b37861b43b7c3",
+        "4a2ebf24c4b12276479f532bef551f5a60b2ca8fde566bd3a1d19f3d83a1745b",
+        "4b5bd2cd3017dca1a917a0713cff5f56dbae00f47b711b9ce859a5444f7e0b16",
+        "5142ffda34fa626c06fb77c2942785ebdc606ef917b775306ef411c4c9997d5b",
+        "53ac4ff498e51cfefc12ae2e2244ebfa586d2b8c094ffcced41ac988fc50ba8e",
+        "56c1ab7c19c6b75df7798521df103cbccbfe3c74cdf092d55c9068b2e50ee05d",
+        "58b92308a8d749f97c1e97468ba7eb33ad73f6c0de505ecfa50e7c83cc9a429d",
+        "5a33112224b37df460c6e252a2d37b272ead8678d8bcafd3f329ac309be1609e",
+        "5af2b9cee6d18a213d387ab1d23676beb4e26e69e3f45391f3dcd940e84971d2",
+        "5b2acd2e8e966d0862ab87d8b294e9e634f4b80d365c47a214fe06da3a13fa5f",
+        "5bb4865f79a21048ac0ce116be901107d88d265db3706d98d1193eb1effaa2b9",
+        "5bf3ab8e3e319ebef7141033c4bb0ff061ca0da02eb0c76dc70746b7cc6c6742",
+        "5d98184f9464920d03dbd44b7cd1c8e87280f1fcdeb019015ee78775557ad725",
+        "6355f13d9cef4772e85ca4516a72b122d4989058aa3e1429febe5e0fc652f69d",
+        "6c8838693ed4e6db986608fca7efae2032665ddf078b0941fa100996a259ecb9",
+        "70dc99f1a3a2700d62cbc827e26e960fa2a48b1a7498d0285bc24705585b6672",
+        "7bfc4ad998061775d555d47d72f51fd34f9eddaf51181d339f55b90a79ea011f",
+        "841718ee5b9515734765c356d6dcd50987a5b2f79bf5c2f6a6233a173ceeaa38",
+        "852ddd50090ff6545524605d36658ae4751aebbd46d7796f728c9a6793485846",
+        "86ae67008d2c8e151f6335330e8737603e6209825b9a92492df291415002e6f9",
+        "8a15801e62a1244894dbcc469567a54e09c2639f976505683f31dea2695ed266",
+        "915fcc637868dafe3256e2274c4377cf43347d7c9b7ce275946c3c51ef1183b8",
+        "928190db6324d9228a52eb0b9842d576ec95410a1c678779f774c5079a1909c0",
+        "94fb0abfec81247bf9c1f96c79fe43ccc9527c2957d4eab6b62e7bed3ec49290",
+        "9686027619832daaa60ad35ddf03a4288dd4bae6eb4b803a13d6a932efd45fef",
+        "98a42cd2443e7222352800338ccc7cf0101ffdb1707cca9705e5815c1234958c",
+        "9b917c3de8622cb06d990272061f50b51f486676765f117627d063077af87ef9",
+        "9d37cd817777cd42bc125746b504a58fdb78a6cd84c150d119838bd71d8c98e1",
+        "9d3dfcc1f530d1a63e7a27133c3b0fd19c12d2fcf9d518282a955b98d84c5834",
+        "9ef49466ed04fc6efb62134a0fb204a0d246709716d9f14e9761122290a153e7",
+        "a365d046c7331eb87f979e548a174970a72eebd03db28d727dfe14d826bee580",
+        "a4015ab337b336d71751d1afa686c722c7ce267e5bcdc02e901d951f615a6732",
+        "a49c7cfc0296a8182f23d2782c242648acc5b8c5d0fb9cb6b09155c698d11462",
+        "a58988d996549164f9ef27cf474ed8c4a30ff07e212b4fc59c03d8e3bb1d7004",
+        "a8fb4287b0840616650de424b367845dfe72d1e97606e5a164d69aa56c2b4f60",
+        "aeb39b2baf730d97e3b368b0b37062507899facea7c028a41459e2160f395008",
+        "afdbdd25888f8e326609a30c24e8a2d5d44dc4cb35fc9c8b52f9f42ef9197abb",
+        "b2ad52c4b0bc300bba9d63b86165a18e56f551fcc8fa9b4990611a68772f7114",
+        "be6903074ea87d3db588878f9eeb9791c348829e7a4b36b3d681093fd1b52d09",
+        "c00adf82ec71bd6c7ba4a5e4edec082fbbad18509df8948a03d3b3cb36c20c19",
+        "c0513552aef9295829e8537ec1bcce03c43ea053c45a1905656d80502b08a80c",
+        "c670f94578b33beee724ab15570f664702be673272547ae7bf8d144658c47fb9",
+        "c70ab1ae56415c6a4398dbcc1d7feae37dd3d72c86ae5136d46dea5a7b182bd0",
+        "caeb73f191be7f378087e623540042508f73bd4d33aca08a45b738e0cfb23164",
+        "d3d8d90cddfdc6eeb87b4fee44087c559681e1bf9bb26a277f9918a133cf9af0",
+        "dcc083acad14e88d79111f4435560be08d992737c23ab87021685f376c62a422",
+        "deb7e5812add5ab98f2b5501093e829710c190738a58f4f5bf7fc81e13143eff",
+        "e58373c6c331cf89c5cb9e2a08619c85c1a2f17350ba12fd8b1b64e35d13d7c0",
+        "e9ccb3667a6211bca8580e3b512d8a862658ee55d54892b2fc0760af4344e904",
+        "ea56ce4e6cc6fcdf3dea9dc124620a0c6b4df46cf90ad4c719466e2cb7a92f91",
+        "ee071f62af588481e9f79f99d97d43e3cf2b9c64fa382c114255a3a91786eec2",
+        "f6452437b7a9a85ed286ed014c1c3b200798bc64e766b4b0ca6ad32e589a3461",
+        "f937f812facbb93fff24db3f1f77ff1de6a487c92619285789f3a194255d0418"
+      ],
+      "history_sha256": "1d571c6a3bdddd42446da50fd7fe36b2c07582f8dd7c22918350e41eeb8a8bd5",
+      "history_count": 992,
+      "history_selected_unique": 95,
+      "source_health": {
+        "pulso_latercera": {
+          "name": "Pulso / La Tercera",
+          "checked_at": "2026-10-12T05:09:01.943985+00:00",
+          "last_signal_at": "2026-10-10",
+          "discovered": 555,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 1481,
+          "pending": 1481,
+          "deferred": 14,
+          "rejected": 188,
+          "status": "ok",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "observed",
+          "content_freshness": "recent",
+          "latest_original_at": "2026-10-12",
+          "editorial_outcome": "rejected",
+          "evaluation_performed": true,
+          "processed_rejections": 4,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue",
+            "published_total": "effective_persisted_source_history"
+          },
+          "published_total": 70,
+          "last_signal_at_basis": "effective_verified_published_history"
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "c10f67812face5a62a30623d6eb418418ab0994b",
+    "reviewed_at": "2026-10-12T05:09:03.806878+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 165
+}

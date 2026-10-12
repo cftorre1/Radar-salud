@@ -1,0 +1,49 @@
+{
+  "recorded_at": "2026-10-12T05:19:57.812665+00:00",
+  "staging_sha": "76778fd7cb09f1f366b0f271e9a800e56f3a90d6",
+  "merged_prs": [
+    10,
+    26,
+    16,
+    28,
+    30,
+    31
+  ],
+  "pending_prs": [
+    29
+  ],
+  "postmerge_live_runtime": {
+    "sha": "c10f67812face5a62a30623d6eb418418ab0994b",
+    "run_id": 38206184256,
+    "result": "PASS",
+    "scope": [
+      "pulso_latercera",
+      "diario_financiero"
+    ],
+    "new_publications": 0,
+    "new_fast_calls": 6,
+    "new_deep_calls": 0,
+    "tokens": 33275,
+    "cost_usd": null,
+    "cost_status": "pricing_not_configured",
+    "paid_state_import": "prepared_verified_pending_hosted_commit"
+  },
+  "postmerge_ui_reviewer": "data/audits/integration_commander_2026_10_12/ui_postmerge_reviewer.json",
+  "readiness": "NO_GO_PENDING_DAILY_RECURRENCE_ESSENTIAL_FRESHNESS_AND_INDEPENDENT_SEMANTIC_REVIEW",
+  "operational_readiness_percent": null,
+  "source_statuses_not_promoted": true,
+  "constraints": [
+    "Reuters PAUSED_LICENSE; WHO/PAHO historical candidates not automatically published",
+    "Isapres/CMF/DIPRES OPERATIVE_DEGRADED; recurrence not demonstrated",
+    "INDISA/Pfizer pause is recommendation not implementation",
+    "FONASA/ISP external blockers; PR29 owns recovery evidence",
+    "main weekday shallow scheduled workflow unchanged; staging YAML does not activate corrected default-branch schedule",
+    "24h/48h recurrence cannot be proved by two immediate polls"
+  ],
+  "resource_limits": {
+    "weekly_remaining_percent_current": null,
+    "last_user_report_percent": 88,
+    "reserve_reset_used": false,
+    "chat_capacity_usage_not_exposed": true
+  }
+}
