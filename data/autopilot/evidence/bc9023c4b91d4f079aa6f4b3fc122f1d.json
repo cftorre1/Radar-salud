@@ -1,0 +1,43 @@
+{
+  "acceptance": {
+    "metrics": {
+      "autonomous_pickups": 0,
+      "material_event_count": 0,
+      "max_material_gap_seconds": 14400.0,
+      "mode": "live",
+      "observed_seconds": 14400.0,
+      "original_started_at": "2026-10-11T05:29:46.231497Z",
+      "owner_observation_verified": false,
+      "owner_prompts": 0,
+      "owner_restarts": 0,
+      "total_elapsed_seconds": 82806.656706,
+      "window_started_at": "2026-10-12T00:29:52.888203Z"
+    },
+    "observed_until": "2026-10-12T04:29:52.888203Z",
+    "reasons": [
+      "owner_intervention_observation_not_verified",
+      "autonomous_pickup_not_observed",
+      "durable_verified_mutation_not_observed",
+      "real_failure_verified_repair_not_observed",
+      "automatic_independent_transition_not_observed",
+      "material_progress_gap_exceeded_30m"
+    ],
+    "status": "NOT_PROVEN"
+  },
+  "candidate_reviews": [],
+  "families": {
+    "mutualities": {
+      "evidence_revision": "d1d812ed63f6fbc1a7aebd69ebfa6f94f11e2e4a80eb018f1b1312e4f01c70cb",
+      "failure": null,
+      "family": "mutualities",
+      "input_sha": "515b8809ecc391600c4093ce0435955d7d3685c5",
+      "reason": "input_or_evidence_changed",
+      "task_id": "source_repair_mutualities_lane_2026_10_11"
+    }
+  },
+  "generated_at": "2026-10-12T04:29:52.888203+00:00",
+  "input_sha": "515b8809ecc391600c4093ce0435955d7d3685c5",
+  "kind": "controller_observation",
+  "operation_id": "bc9023c4b91d4f079aa6f4b3fc122f1d",
+  "stalled_tasks": []
+}
