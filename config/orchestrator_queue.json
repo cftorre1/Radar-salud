@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-10-12T02:53:15.593790+00:00",
+  "updated_at": "2026-10-12T04:56:08.462889+00:00",
   "policy": "Only tasks explicitly approved by Dirección may be executed. main/production remain protected unless a task explicitly grants a narrow exception.",
   "tasks": [
     {
@@ -7696,6 +7696,59 @@
         "pfizer_chile": "OPERATIVE_DEGRADED",
         "clinicas_achs_salud": "OPERATIVE_DEGRADED"
       }
+    },
+    {
+      "id": "daily_first_public_recovery_2026_10_12",
+      "title": "Daily First FONASA, ISP/ANAMED y MINSAL: recuperación acotada72h/30d",
+      "owner": "Daily First Recovery Engineer",
+      "status": "in_progress",
+      "lifecycle": "Implemented",
+      "priority": "P0",
+      "branch": "codex/daily-first-fonasa-isp-minsal-20261012",
+      "pr": 29,
+      "target": "staging",
+      "base_sha": "515b8809ecc391600c4093ce0435955d7d3685c5",
+      "package_status": "SCOPED_VERIFIED_PENDING_FINAL_HEAD_QA",
+      "source_outcomes": {
+        "minsal": "OPERATIVE_DEGRADED",
+        "fonasa": "EXTERNAL_BLOCKER_PROVEN",
+        "fonasa_datos_abiertos": "EXTERNAL_BLOCKER_PROVEN",
+        "isp_anamed": "EXTERNAL_BLOCKER_PROVEN",
+        "isp_surveillance": "EXTERNAL_BLOCKER_PROVEN"
+      },
+      "runtime": {
+        "run": 38204748188,
+        "code_sha": "6b6ef2c6a83d8244b0338598b393760709ef0dae",
+        "native_minsal_items": 10,
+        "recent_72h": 3,
+        "recovered_pending": 4,
+        "published_backfill": 3,
+        "rejected": 1,
+        "deferred": 0,
+        "published_live": 0,
+        "coverage30_complete": false,
+        "recurrence24h_proven": false,
+        "replay": "PASS",
+        "reviewer": "PASS scoped"
+      },
+      "consumption": {
+        "fast_calls": 4,
+        "deep_calls": 0,
+        "api_tokens": 4867,
+        "cost_usd": null,
+        "cost_reason": "pricing_not_configured"
+      },
+      "evidence": [
+        "data/audits/daily_first_20261012/verified-native-runtime.zip",
+        "data/audits/daily_first_20261012/editorial-ledger.json",
+        "docs/DAILY_FIRST_RECOVERY_HANDOFF_2026_10_12.md"
+      ],
+      "next_action": "Integration Commander: verify final PR29 head/CI; merge safely to staging only; run restricted postmerge core and daily freshness observer. Keep MINSAL degraded until separate daily observations prove cadence. Publisher FONASA must habilitate officialGET/export; ISP must repair trustedTLS chain. No equivalent probes before cooldown; no90d audit.",
+      "depends_on": [],
+      "blocked_by": [
+        "final_head_QA_and_Integration_Commander_merge"
+      ],
+      "activated": false
     }
   ],
   "execution_policy": {
