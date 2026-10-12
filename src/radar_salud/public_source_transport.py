@@ -71,6 +71,13 @@ def fetch_official_html(url, slug, *, timeout=25):
     return body.decode(headers.get_content_charset() or "utf-8", errors="replace")
 
 
+def fetch_official_feed(url, slug, *, timeout=15):
+    body, headers = download_official(url, slug, timeout=timeout, max_bytes=2 * 1024 * 1024)
+    if headers.get_content_type() not in {'application/rss+xml','application/xml','text/xml'}:
+        raise ValueError('Official RSS has an unexpected content type')
+    return body.decode(headers.get_content_charset() or 'utf-8', errors='replace')
+
+
 def extract_public_source_pdf(url, slug, *, max_pages=12, capture_metadata=None):
     from pypdf import PdfReader
     body, headers = download_official(url, slug, capture_metadata=capture_metadata)

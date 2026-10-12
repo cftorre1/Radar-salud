@@ -204,8 +204,8 @@ class MinsalNewsScout:
     DEFAULT_URL = "https://www.minsal.cl/category/noticias/"
 
     def __init__(self, fetcher=None, now=None):
-        from .public_source_transport import fetch_official_html
-        self.fetcher = fetcher or (lambda url: fetch_official_html(url, 'minsal', timeout=15))
+        from .public_source_transport import fetch_official_html, fetch_official_feed
+        self.fetcher = fetcher or (lambda url: (fetch_official_feed if url.endswith('/feed/') else fetch_official_html)(url, 'minsal', timeout=15))
         self.now = now
         self.discovery_audit = []
         self.inventory = {}
@@ -236,9 +236,13 @@ class MinsalNewsScout:
             self.discovery_audit.append(dict(url=feed, status='parsed'))
         except Exception as exc:
             self.discovery_audit.append(dict(url=feed, status='listing_error', error=type(exc).__name__))
-            target = url or self.DEFAULT_URL
-            candidates = self.discover_from_html(self.fetcher(target), target)[:10]
-            self.discovery_audit.append(dict(url=target, status='parsed'))
+            # Category HTML contains institutional navigation and a dynamic grid.
+            # Recover independently known pending detail URLs, never its first ten anchors.
+            from .paths import project_root
+            path = project_root()/'data/state/pending_queue.json'
+            stock = json.loads(path.read_text()) if path.exists() else {}
+            candidates = [RawItem(**v['raw']) for v in stock.values()
+                          if v.get('source') == 'minsal' and v.get('status') in ('pending','retry')][:4]
         items = []
         for raw in candidates:
             try:

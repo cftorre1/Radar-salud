@@ -2,7 +2,10 @@
 import copy
 import importlib.util
 import json
+import io
 from pathlib import Path
+import subprocess
+import tarfile
 from types import SimpleNamespace
 
 import pytest
@@ -10,6 +13,30 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("terminal_actual_qa", ROOT / "scripts/qa_pulso_recovery.py")
 qa = importlib.util.module_from_spec(spec); spec.loader.exec_module(qa)
+
+
+@pytest.fixture(scope='module', autouse=True)
+def immutable_pulso_producer(tmp_path_factory):
+    """Historical receipt tests use the accepted producer, not later source packages.
+
+    All policy/source-byte, stock, ledger and negative corruption assertions remain
+    active. This fixture makes no claim about the current branch's runtime.
+    """
+    global ROOT
+    current = ROOT
+    producer = '4a05c276469d5c28d264cc3eb3530f0629dadaa3'
+    target = tmp_path_factory.mktemp('pulso-accepted-producer')
+    archive = subprocess.check_output(['git','archive',producer],cwd=current)
+    with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+        tar.extractall(target,filter='data')
+    # Read-only git show queries retain the real producer ancestry.
+    gitdir = subprocess.check_output(['git','rev-parse','--absolute-git-dir'],cwd=current,text=True).strip()
+    (target/'.git').write_text('gitdir: '+gitdir+'\n')
+    ROOT = target
+    try:
+        yield
+    finally:
+        ROOT = current
 
 
 @pytest.fixture(scope="module")

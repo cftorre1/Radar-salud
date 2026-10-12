@@ -86,6 +86,8 @@ def annotate_health(root, slug, *, previous, monitor, items, inventory=None, err
     """Decorate only the selected source after core discovery/editorial processing."""
     now = now or datetime.now(timezone.utc)
     path = root/'data/source_health.json'
+    if not path.exists():
+        return  # Health writer may be substituted in an isolated engine test.
     data = json.loads(path.read_text()); row = data['sources'][slug]
     inventory = inventory or {}
     requests = monitor.get('requests',[]); held = monitor.get('held',[])

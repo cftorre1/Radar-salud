@@ -53,7 +53,8 @@ def replay_core(output, captures, *, live=False, assess=False):
         row=next(r for r in captures if r['url']==url)
         body=(output/row['body_path']).read_bytes()
         if hashlib.sha256(body).hexdigest()!=row['sha256']:raise ValueError('Capture hash mismatch')
-        headers=Message();headers['Content-Type']='text/html; charset=utf-8'
+        content_type=row.get('content_type') or next((v for k,v in row.get('headers',{}).items() if k.lower()=='content-type'),'text/html; charset=utf-8')
+        headers=Message();headers['Content-Type']=content_type
         return body,headers
     transport._download_official=download
     old_argv=sys.argv; old_root=os.environ.get('RADAR_ROOT')

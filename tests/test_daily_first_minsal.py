@@ -13,6 +13,8 @@ from radar_salud.pending_queue import PendingQueue, fingerprint
 from radar_salud.processing import DeferredProcessing
 from radar_salud.scouts import MinsalNewsScout
 from radar_salud import public_source_pipeline as pipeline
+from radar_salud import public_source_transport as transport
+from email.message import Message
 
 NOW = datetime(2026,10,12,4,14,tzinfo=timezone.utc)
 ARCHIVE = Path(__file__).parents[1]/'data/audits/daily_first_20261012/initial-primary-capture.zip'
@@ -40,6 +42,19 @@ def test_real_capture_recovers_four_pending_bodies_and_three_recent_stamps():
     assert scout.inventory['parse_errors'] == 6  # Six detail bodies not in this initial capture.
     assert all(len(r.metadata['page_text']) > 1800 for r in items)
     assert all(r.metadata['publication_date_evidence']['url'] == r.url for r in items)
+
+
+def test_native_rss_xml_mime_is_accepted_but_html_cannot_impersonate_a_feed(monkeypatch):
+    data=bodies()
+    def download(url,slug,**kwargs):
+        headers=Message();headers['Content-Type']='application/rss+xml' if url.endswith('/feed/') else 'text/html'
+        return data[url].encode(),headers
+    monkeypatch.setattr(transport,'download_official',download)
+    scout=MinsalNewsScout(now=NOW)
+    assert len(scout.discover())==4
+    assert scout.discovery_audit[0]['status']=='parsed'
+    with pytest.raises(ValueError,match='unexpected content type'):
+        transport.fetch_official_feed(next(u for u in data if 'acelerador-lineal' in u),'minsal')
 
 
 @pytest.mark.parametrize('mutation', ['wrong_identity','no_body','only_modified','date_conflict','future'])
