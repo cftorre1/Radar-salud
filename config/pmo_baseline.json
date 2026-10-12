@@ -1390,6 +1390,122 @@
       "new_pr_merges": [],
       "scope": "Governance only; no source activation, runtime or product release."
     },
+    "work4_p0_implementation_2026_10_11": {
+      "kind": "native_source_qualification",
+      "status": "OPERATIVE_DEGRADED",
+      "sha": "82c50e521b4d33a31c6513ab7e502a6a4488de37",
+      "integration_base_sha": "ac6b31a974b5709cf96f4bb04f272b29ef8d126c",
+      "date": "2026-10-11",
+      "paths": [
+        "docs/SOURCE_EXPANSION_IMPLEMENTATION_2026_10_11.md",
+        "data/audits/source_expansion_runtime_review_2026_10_11.json",
+        "data/audits/w4_isapres_2026_10_11.json",
+        "data/audits/w4_cmf_2026_10_11.json",
+        "data/audits/w4_dipres_2026_10_11.json"
+      ],
+      "url": "https://github.com/cftorre1/Radar-salud/pull/16",
+      "runtime_runs": [
+        38144418936,
+        38145221551,
+        38146456406,
+        38148318253
+      ],
+      "checks": [
+        "32 directed tests PASS",
+        "Native adapters/stock replay/independent coverage Reviewer PASS on 82c50e5",
+        "1039 Python PASS/1 SKIP; 42 Node PASS",
+        "60 desktop/mobile browser tests PASS; global Reviewer findings=[] on PR merge 0de65d2",
+        "Parser failures replace canonical health and retain prior validated stock without masking the failed poll"
+      ],
+      "result": "real_initial_inventory_qualified_recurring_activation_pending",
+      "scope": "Three executable P0 data packages and retained editorial candidates; no full ecosystem coverage, recurrence, activation, deploy or release claim",
+      "validated_requirements": [],
+      "validated_blocks": [],
+      "qa_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38148318249",
+      "qa_merge_sha": "0de65d29b200f79b567387bdb10962f742286a0f",
+      "integration_status": "READY_FOR_INTEGRATION",
+      "integration_readiness_path": "data/audits/w4_p0_integration_readiness.json",
+      "activation": "held"
+    },
+    "work4_p0_integration_candidate": {
+      "kind": "isolated_integration_qualification",
+      "status": "READY_FOR_INTEGRATION",
+      "scope": "Safe non-activated P0 data package only; mandatory final-head CI remains a merge condition",
+      "sha": "9dc4c20932796eb815f5d81d84421b2aad70a8ce",
+      "integration_base_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+      "paths": [
+        "data/audits/w4_p0_integration_readiness.json"
+      ],
+      "url": "https://github.com/cftorre1/Radar-salud/pull/16",
+      "checks": [
+        "75 focused source/health/web-snapshot tests PASS",
+        "Retained-evidence adapters/replay/independent Reviewer PASS (264 checks)",
+        "Initial inventory byte-identical to 0339dd2; unrelated current staging health/tasks/PMO preserved",
+        "Final head required CI is a merge condition; source outcomes remain OPERATIVE_DEGRADED",
+        "42 Node tests PASS with pinned Chile clock; product JS and freshness thresholds unchanged",
+        "2 focused desktop/mobile browser tests PASS; exact rolling ID sets and original history preserved"
+      ],
+      "validated_requirements": [],
+      "validated_blocks": [],
+      "inherited_clock_failure": {
+        "run_id": 38193068526,
+        "head_sha": "b7306cde668e59c08a3efbc6efea741d06d7bb1f",
+        "python_passed": 1038,
+        "python_failed": 1,
+        "python_skipped": 1,
+        "test": "tests/test_web_snapshot.py::test_verified_publication_boundary_retains_old_issuance_without_changing_it",
+        "classification": "inherited_baseline_clock_defect",
+        "baseline_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+        "baseline_reproduction": "same failure in isolated baseline worktree",
+        "baseline_script_sha256": "e91c5b247fa855e16b6cf82057608880181f6568ae77aae3e5d6b08aeb157f96",
+        "reason": "curate(as_of=2026-10-11) filtered on the requested cutoff but sanction aggregation used the 2026-10-12 host clock",
+        "fix": "Pass today=as_of into sanction aggregation; None keeps existing real-clock behavior. Test host pinned to October12 checks inclusion on October11 and exclusion on October12 without changing original dates.",
+        "introduced_failure": false
+      },
+      "inherited_fixture_failure": {
+        "run_id": 38193520581,
+        "head_sha": "3c552fc113b7fbc7dd62cd907fe50277a416b32e",
+        "python_passed": 1039,
+        "python_skipped": 1,
+        "node_passed": 41,
+        "node_failed": 1,
+        "test": "Home V2 specials share read identity and suppress their base signal",
+        "classification": "distinct_inherited_baseline_fixture_clock_defect",
+        "baseline_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+        "baseline_reproduction": "Direct node baseline suite: 41 PASS/1 FAIL, same undefined weekly special",
+        "reason": "Fixture publication used UTC October12 while the Chile freshness gate correctly saw October11 and rejected a future date",
+        "fix": "Test-only clock fixed to 2026-10-12T01:30Z with fixture publication 2026-10-11; retain all identity/suppression assertions and explicitly reject 2026-10-12 as future. Product JS unchanged.",
+        "introduced_failure": false
+      },
+      "inherited_browser_failure": {
+        "run_id": 38194114552,
+        "head_sha": "7cc2521b88c022d1e8fb6d4f04f9224914806f6f",
+        "python_passed": 1039,
+        "python_skipped": 1,
+        "node_passed": 42,
+        "browser_passed": 58,
+        "browser_failed": 2,
+        "test": "recovered registers retain offices, actors, effects and issuance dates in grouped details",
+        "classification": "distinct_inherited_baseline_static_rolling_inventory_expectations",
+        "baseline_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+        "baseline_reproduction": "Unchanged baseline exporter gives 72 recent +20 historical SUSESO records on Oct12; old browser expects 75 +17. SIS rolling agents become16 vs18.",
+        "fix": "Browser test computes exact current and active historical ID sets from immutable source history and snapshot date. Preserve 92 unique issuer records and 18 original agent records; assert counts, membership, effects and rendered detail rows. No minimum/gate reductions or production JS changes.",
+        "fixed_date_checks": {
+          "2026-10-11": {
+            "suseso_recent": 75,
+            "suseso_historical": 17,
+            "sis_agents_recent": 18
+          },
+          "2026-10-12": {
+            "suseso_recent": 72,
+            "suseso_historical": 20,
+            "sis_agents_recent": 16
+          }
+        },
+        "local_browser_passed": 2,
+        "introduced_failure": false
+      }
+    },
     "global_official_discovery_qualification_2026_10_11": {
       "kind": "github_actions",
       "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38153425336",
@@ -2488,6 +2604,25 @@
       "evidence": [
         "public_sources_c_2026_10_11",
         "data/audits/public_sources_c_20261011/recovery/stock-reconciliation.json"
+      ]
+    },
+    {
+      "date": "2026-10-11",
+      "change": "Work4 P0 implementados: inventarios Isapres/CMF/DIPRES y runtime nativo calificados. Tres OPERATIVE_DEGRADED por brechas específicas/cadencia; sin activación ni aumento de readiness global.",
+      "evidence": [
+        "work4_p0_implementation_2026_10_11"
+      ]
+    },
+    {
+      "date": "2026-10-11",
+      "source": "Work 4 P0 / PR #16",
+      "change": "Final source-code qualification on 82c50e5: native adapters/replay/independent Reviewer and global QA PASS; preserve three OPERATIVE_DEGRADED outcomes and exact unresolved scope/cadence/publication gaps"
+    },
+    {
+      "date": "2026-10-11",
+      "change": "PR16 integration conflict reconciled against bc723e0; safe P0 package qualified with retained evidence, 45 focused tests/replay/Reviewer. Deferred recurrence/legal/perimeter/publication scopes do not authorize source activation; merge reserved to Integration Commander.",
+      "evidence": [
+        "work4_p0_integration_candidate"
       ]
     },
     {

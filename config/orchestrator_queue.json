@@ -4585,7 +4585,7 @@
     },
     {
       "id": "w4_isapres_2026_10_11",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "high",
       "expansion_priority": "P0",
       "owner": "Data Intelligence + Market Intelligence",
@@ -4617,17 +4617,34 @@
         "ruta y runs reales antes de declarar recurrente"
       ],
       "approved_at": "2026-10-11",
-      "next_action": "Extraer registro oficial de Isapres y fijar códigos 63,67,76,78,80,81,94,99,107,108, tipo abierta/cerrada, alias, grupo y vigencia.",
+      "next_action": "Integration Commander: verify final PR16 head, green required checks and no conflicts; merge PR16 into staging with a merge commit and matched head; capture resulting staging SHA and run read-only retained-evidence qualification/QA. Do not activate sources or publish held candidates. Follow deferred source scopes separately.",
       "evidence": [
-        "data/audits/source_expansion_matrix_2026_10_11.json",
-        "config/source_expansion_backlog_2026_10_11.json"
+        "data/audits/w4_isapres_2026_10_11.json",
+        "data/audits/source_expansion_runtime_review_2026_10_11.json",
+        "docs/SOURCE_EXPANSION_IMPLEMENTATION_2026_10_11.md",
+        "data/audits/w4_p0_integration_readiness.json"
       ],
       "external_blockers": [],
-      "progress": "Backlog concreto preparado; implementación no iniciada por Work 4."
+      "progress": "Implemented and natively qualified: 10 official codes (7 open/3 closed), 8 months/320 observations, canonical EntityRefs, one demonstrated ILC–Consalud ownership relation; no row-to-news generation",
+      "implementation_status": "OPERATIVE_DEGRADED",
+      "checkpoint_at": "2026-10-11T22:39:28.512653-03:00",
+      "runtime_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38148318253",
+      "recurrence_validated": false,
+      "human_blocker": null,
+      "validation_code_sha": "82c50e521b4d33a31c6513ab7e502a6a4488de37",
+      "integration_status": "READY_FOR_INTEGRATION",
+      "ready_for_integration": true,
+      "integration_base_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+      "validated_local_code_sha": "9dc4c20932796eb815f5d81d84421b2aad70a8ce",
+      "deferred_scope": [
+        "Isalud Ltda./SpA contradiction and effective legal date remain unproven",
+        "Remaining demonstrable control and network/plan perimeter",
+        "Qualified public polls separated by at least 24 hours"
+      ]
     },
     {
       "id": "w4_cmf_2026_10_11",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "high",
       "expansion_priority": "P0",
       "owner": "Financial Intelligence + Source Engineering",
@@ -4659,17 +4676,34 @@
         "ruta y runs reales antes de declarar recurrente"
       ],
       "approved_at": "2026-10-11",
-      "next_action": "Crear inventario de emisores/grupos con RUT verificado (comenzar CLC 93930000, ILC, grupos de prestadores e Isapres); documentar filiales fuera del perímetro reportante.",
+      "next_action": "Integration Commander: verify final PR16 head, green required checks and no conflicts; merge PR16 into staging with a merge commit and matched head; capture resulting staging SHA and run read-only retained-evidence qualification/QA. Do not activate sources or publish held candidates. Follow deferred source scopes separately.",
       "evidence": [
-        "data/audits/source_expansion_matrix_2026_10_11.json",
-        "config/source_expansion_backlog_2026_10_11.json"
+        "data/audits/w4_cmf_2026_10_11.json",
+        "data/audits/source_expansion_runtime_review_2026_10_11.json",
+        "docs/SOURCE_EXPANSION_IMPLEMENTATION_2026_10_11.md",
+        "data/audits/w4_p0_integration_readiness.json"
       ],
       "external_blockers": [],
-      "progress": "Backlog concreto preparado; implementación no iniciada por Work 4."
+      "progress": "Implemented and natively qualified: 6 RUT identities (4 current/2 historical), 9 official disclosures (3 in 30 dates), 5 material events, 7 deferred/2 supporting rejections, 24 accounting links (8 statements, 8 analyses, 8 relevant-facts documents)/42 financial observations; public ticker references and issuer scope preserved",
+      "implementation_status": "OPERATIVE_DEGRADED",
+      "checkpoint_at": "2026-10-11T22:39:28.512653-03:00",
+      "runtime_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38148318253",
+      "recurrence_validated": false,
+      "human_blocker": null,
+      "validation_code_sha": "82c50e521b4d33a31c6513ab7e502a6a4488de37",
+      "integration_status": "READY_FOR_INTEGRATION",
+      "ready_for_integration": true,
+      "integration_base_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+      "validated_local_code_sha": "9dc4c20932796eb815f5d81d84421b2aad70a8ce",
+      "deferred_scope": [
+        "Complete current health reporting ecosystem and standalone subsidiary figures",
+        "Historical ticker references do not prove current listings/quotes",
+        "Qualified public polls separated by at least 24 hours; core/editorial activation gates"
+      ]
     },
     {
       "id": "w4_dipres_2026_10_11",
-      "status": "approved",
+      "status": "in_progress",
       "priority": "high",
       "expansion_priority": "P0",
       "owner": "Public Finance + Data Intelligence",
@@ -4701,13 +4735,30 @@
         "ruta y runs reales antes de declarar recurrente"
       ],
       "approved_at": "2026-10-11",
-      "next_action": "Descubrir proyecto 2027 y series de ejecución por Partida/Capítulo/Programa de Salud y FONASA; extraer URL de cada archivo desde índice oficial.",
+      "next_action": "Integration Commander: verify final PR16 head, green required checks and no conflicts; merge PR16 into staging with a merge commit and matched head; capture resulting staging SHA and run read-only retained-evidence qualification/QA. Do not activate sources or publish held candidates. Follow deferred source scopes separately.",
       "evidence": [
-        "data/audits/source_expansion_matrix_2026_10_11.json",
-        "config/source_expansion_backlog_2026_10_11.json"
+        "data/audits/w4_dipres_2026_10_11.json",
+        "data/audits/source_expansion_runtime_review_2026_10_11.json",
+        "docs/SOURCE_EXPANSION_IMPLEMENTATION_2026_10_11.md",
+        "data/audits/w4_p0_integration_readiness.json"
       ],
       "external_blockers": [],
-      "progress": "Backlog concreto preparado; implementación no iniciada por Work 4."
+      "progress": "Implemented and natively qualified: 116 official Salud PDFs, 408 fiscal observations, 5 compatible-price-base material project candidates; hierarchy, accrued cutoff, unit and budget state preserved",
+      "implementation_status": "OPERATIVE_DEGRADED",
+      "checkpoint_at": "2026-10-11T22:39:28.512653-03:00",
+      "runtime_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38148318253",
+      "recurrence_validated": false,
+      "human_blocker": null,
+      "validation_code_sha": "82c50e521b4d33a31c6513ab7e502a6a4488de37",
+      "integration_status": "READY_FOR_INTEGRATION",
+      "ready_for_integration": true,
+      "integration_base_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+      "validated_local_code_sha": "9dc4c20932796eb815f5d81d84421b2aad70a8ce",
+      "deferred_scope": [
+        "Complete fiscal version/period stock",
+        "Verified official publication day bound to each material candidate",
+        "Qualified public polls separated by at least 24 hours; core/editorial activation gates"
+      ]
     },
     {
       "id": "w4_fne_2026_10_11",
