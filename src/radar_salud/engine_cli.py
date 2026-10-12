@@ -2,7 +2,7 @@ from __future__ import annotations
 import argparse,hashlib,json
 from dataclasses import asdict
 from copy import deepcopy
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from .scouts import SeenStore,SuperintendenciaStatsScout,fetch_html,save_raw_items,MinsalNewsScout
 from .sources import load_sources,source_index
@@ -27,6 +27,36 @@ from .public_source_evidence import failure_details, discovery_diagnostics, HOST
 from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
 from .occupational_sources import SOURCES as OCCUPATIONAL_SOURCES
 
+def _prioritize_pulso_ready(ready):
+    """Order publisher dates only inside Pulso's existing scheduling slots.
+
+    Other sources keep their exact positions; LIVE/BACKFILL and attempt groups
+    keep the queue's precedence. This changes an execution view, never records.
+    """
+    ordered = list(ready)
+    slots = {}
+    for index, (_, item) in enumerate(ordered):
+        if item["source"] == "pulso_latercera":
+            slots.setdefault((item.get("lane"), item.get("attempts")), []).append(index)
+
+    def publication_priority(pair):
+        value = pair[1].get("raw", {}).get("event_date")
+        try:
+            if not isinstance(value, str) or len(value) != 10:
+                return 0
+            day = date.fromisoformat(value)
+            return day.toordinal() if day.isoformat() == value else 0
+        except ValueError:
+            return 0
+
+    for indexes in slots.values():
+        # Python's stable sort retains ties and unknown-date relative order.
+        rows = sorted((ordered[index] for index in indexes),
+                      key=publication_priority, reverse=True)
+        for index, row in zip(indexes, rows):
+            ordered[index] = row
+    return ordered
+
 def main():
     from .models import RawItem
     from .pending_queue import PendingQueue, fingerprint, legacy_fingerprint, FISCALIZATION_SOURCES, atomic_json
@@ -35,10 +65,22 @@ def main():
     ap.add_argument("--limit",type=int,default=0,help="Global processing cap; 0 uses AI guardrails only")
     ap.add_argument("--source","--only-source",dest="source",action="append",help="Process only the named source(s); default is all core sources")
     ap.add_argument("--reset-state",action="store_true")
-    ap.add_argument('--discovery-only',action='store_true',help='Persist real discovery without attempting editorial assessment')
+    ap.add_argument("--sources",nargs="+",help="Run selected core source slugs; other queue records remain untouched")
+    ap.add_argument("--discovery-only",action="store_true",help="Persist genuine core discovery without consuming analysis or altering processing attempts")
+    ap.add_argument("--queue-selection",type=Path,help="Process only canonical URLs already present in the selected Pulso queue; discovery remains complete")
     args=ap.parse_args()
+    if args.sources and args.source:
+        ap.error("Use either --sources or --source, not both")
+    selected_sources=args.sources or args.source
     if args.reset_state:
         ap.error("Reset disabled: backfill must preserve paid analyses and queue state")
+    selection=None
+    if args.queue_selection:
+        from .queue_selection import load_queue_selection
+        try:
+            selection=load_queue_selection(args.queue_selection,selected_sources)
+        except (OSError,ValueError) as exc:
+            ap.error(str(exc))
     root=project_root()
     cfgs=source_index(load_sources(root/"config"/"sources.json"))
     queue=PendingQueue(root/"data/state/pending_queue.json")
@@ -77,22 +119,23 @@ def main():
       ("pulso_latercera","pulso_latercera",CuratedBetaSourceScout("pulso_latercera").discover,process_curated_beta_source),
       ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial)]
     specs += [(slug,slug,CuratedBetaSourceScout(slug).discover,process_curated_beta_source)
-              for slug in sorted(OCCUPATIONAL_SOURCES)]
+              for slug in sorted(OCCUPATIONAL_SOURCES) if not selected_sources or slug in selected_sources]
     specs.extend((slug,slug,CuratedBetaSourceScout(slug).discover,process_curated_beta_source)
-                 for slug in ("red_davila","andes_salud") if slug in cfgs)
-    if args.source:
-        unknown=set(args.source)-{name for name,_,_,_ in specs}
+                 for slug in ("red_davila","andes_salud")
+                 if slug in cfgs and (not selected_sources or slug in selected_sources))
+    if selected_sources:
+        unknown=set(selected_sources)-{name for name,_,_,_ in specs}
         if unknown:ap.error("Unknown source(s): "+", ".join(sorted(unknown)))
-        specs=[spec for spec in specs if spec[0] in args.source]
+        specs=[spec for spec in specs if spec[0] in selected_sources]
     processors={name:(cfgs[cfg],processor) for name,cfg,_,processor in specs}
     if 'suseso_fiscalizacion' in processors:
         processors.setdefault('suseso',(cfgs['suseso'],process_suseso))
     discoveries={}
+    discovery_details={}
     discovery_evidence={}
     observed={}
     surfaces={}
     occupational_audit={}
-    discovery_details={}
     original_dates={}
     # Complete discovery for every source before any budget-consuming processing.
     for name,_,discover,_ in specs:
@@ -128,10 +171,14 @@ def main():
                 # Existing normative history guards cross-channel rediscovery.
                 routed_seen={fingerprint(raw) for raw in routed if any(row.get("source_url")==raw.url for row in history)}
                 queue.discover("suseso",routed,routed_seen,last_discovered_at=watermarks.get("suseso"))
-            if not partial_errors:
+            audit=getattr(owner,"discovery_audit",[])
+            partial=any(x.get("status") in ("detail_error","listing_error") for x in audit)
+            if not partial_errors and not partial:
                 watermarks[name]=checked_at
                 atomic_json(watermark_path,watermarks)
-            discoveries[name]=(len(items),added,"partial_discovery: "+"; ".join(partial_errors) if partial_errors else None)
+            error=("partial_discovery: "+"; ".join(partial_errors) if partial_errors
+                   else "partial_discovery" if partial else None)
+            discoveries[name]=(len(items),added,error)
             if name=="diario_financiero":
                 discovery_evidence[name]={"dated":sum(bool(raw.event_date) for raw in items),
                     "undated":sum(not raw.event_date for raw in items),
@@ -167,35 +214,76 @@ def main():
                 discovery_details[name]={"error_details":failure_details(exc),
                     "diagnostics":discovery_diagnostics(scout)}
                 discovery_details[name]["diagnostics"]["poll_mode"]="daily_engine"
+        if name not in PUBLIC_DATA_SOURCES:
+            # Pulso/DF retain their complete list of per-URL source traces;
+            # public data sources retain the structured native diagnostics.
+            discovery_details[name]=getattr(owner,"discovery_audit",[])
     if occupational_audit:
         audit_path=root/'data/state/occupational_source_discovery.json'
         previous_audit=json.loads(audit_path.read_text()) if audit_path.exists() else {}
         previous_audit.update(occupational_audit)
         atomic_json(audit_path,previous_audit)
     run_path=root/"data/state/discovery_run.json"
-    previous_run=json.loads(run_path.read_text()) if args.source and run_path.exists() else {}
+    previous_run=json.loads(run_path.read_text()) if selected_sources and run_path.exists() else {}
     run_sources=previous_run.get("sources",{})
-    run_sources.update({name:{"discovered":found,"new":added,"technical_status":"error" if error else "degraded" if (discovery_details.get(name,{}).get("diagnostics") or {}).get("partial_failure") else "ok","error_type":error,
-                             "checked_at":datetime.now(timezone.utc).isoformat(),**discovery_evidence.get(name,{}),**discovery_details.get(name,{})}
+    diagnostic_details={name:details for name,details in discovery_details.items() if isinstance(details,dict)}
+    run_sources.update({name:{"discovered":found,"new":added,"technical_status":"error" if error else "degraded" if (diagnostic_details.get(name,{}).get("diagnostics") or {}).get("partial_failure") else "ok","error_type":error,
+                             "checked_at":datetime.now(timezone.utc).isoformat(),**discovery_evidence.get(name,{}),**diagnostic_details.get(name,{})}
                         for name,(found,added,error) in discoveries.items()})
+    run_details=previous_run.get("source_details",{})
+    run_details.update(discovery_details)
     atomic_json(run_path,{
         "at":datetime.now(timezone.utc).isoformat(),
         "sources":run_sources,
         "run_scope":list(processors),
+        "source_details":run_details,
+        "runtime":"daily_core",
+        "selected_sources":selected_sources,
         "successful_sources":sum(row.get("technical_status")!="error" for row in run_sources.values()),
         "failed_sources":sum(row.get("technical_status")=="error" for row in run_sources.values()),
     })
     produced={name:[] for name in processors}
     processed_rejections={name:0 for name in processors}
-    queue.enforce_backfill_horizon(sources=set(args.source) if args.source else None)
-    ready=[] if args.discovery_only else [(key,item) for key,item in queue.ready() if item['source'] in processors and (not args.source or
-        item['source'] in args.source or ('suseso_fiscalizacion' in args.source and item['raw'].get('metadata',{}).get('routed_from')=='suseso_fiscalizacion'))]
+    queue.enforce_backfill_horizon(sources=set(selected_sources) if selected_sources else None)
+    ready=((key,item) for key,item in _prioritize_pulso_ready(queue.ready())
+           if item['source'] in processors and
+           (not selected_sources or item['source'] in selected_sources or
+            ('suseso_fiscalizacion' in selected_sources and item['raw'].get('metadata',{}).get('routed_from')=='suseso_fiscalizacion')))
+    if selection is not None:
+        from .queue_selection import select_ready
+        discovery_run=json.loads((root/"data/state/discovery_run.json").read_text())
+        try:
+            ready,selection_audit=select_ready(selection,queue.items,ready)
+        except ValueError as exc:
+            discovery_run.update(processing_attempts=0,processing_selection=dict(
+                source="pulso_latercera",path=selection.path,sha256=selection.sha256,
+                file_sha256=selection.sha256,selected_urls=list(selection.urls),
+                selected_url_count=len(selection.urls),validation_error=str(exc),
+                reason="explicit_queue_selection_invalid"))
+            atomic_json(root/"data/state/discovery_run.json",discovery_run)
+            ap.error(str(exc))
+        discovery_run["processing_selection"]=selection_audit
+        atomic_json(root/"data/state/discovery_run.json",discovery_run)
+    if args.discovery_only:
+        ready=iter(())
     evaluated={name:0 for name in processors}
-    for index,(key,item) in enumerate(ready):
-        if args.limit and index>=args.limit:break
+    processed_count=0
+    processing_deferrals={}
+    for key,item in ready:
+        if args.limit and processed_count>=args.limit:break
+        fast_available=has_capacity("fast")
+        if item["source"] == "pulso_latercera" and not fast_available:
+            # Pulso uses fast analysis; capacity exhaustion is not an attempt.
+            processing_deferrals["pulso_latercera"]={
+                "reason":"fast_analysis_capacity_exhausted","required_tier":"fast",
+                "before_queue_start":True,
+            }
+            if set(processors)=={"pulso_latercera"}:break
+            continue
         deterministic = item["source"] in FISCALIZATION_SOURCES or item["raw"].get("metadata",{}).get("reviewed_normative")
-        if not deterministic and not has_capacity("fast") and not has_capacity("deep"):continue
+        if not deterministic and not fast_available and not has_capacity("deep"):continue
         queue.start(key)
+        processed_count+=1
         processing_raw=RawItem(**deepcopy(item["raw"]))
         prior_assessment=deepcopy(processing_raw.metadata.get('editorial_assessment'))
         try:
@@ -228,6 +316,7 @@ def main():
             if not row:processed_rejections[item['source']]+=1
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
         except RejectedProcessing as exc:
+            item["raw"]=asdict(processing_raw)
             queue.finish(key,"rejected",str(exc))
             processed_rejections[item['source']]+=1
             SeenStore(root/"data/state"/f"{item['source']}_seen.json").add_many([key])
@@ -257,12 +346,20 @@ def main():
             elif item['source']=='diario_financiero' and defer_format(item, exc.reason, datetime.now(timezone.utc)):
                 queue.save()
             else:
-                queue.finish(key,"retry",exc.reason or str(exc) or "budget_or_analysis_deferred")
+                reason=exc.reason or str(exc) or "budget_or_analysis_deferred"
+                if item["source"] == "pulso_latercera":
+                    reason=processing_raw.metadata.get("editorial_assessment",{}).get("reason") or reason
+                queue.finish(key,"retry",reason)
         except Exception as exc:
+            if item["source"] == "pulso_latercera":
+                item["raw"]=asdict(processing_raw)
             queue.finish(key,"retry",type(exc).__name__)
         finally:
             item['raw']=asdict(processing_raw)
             queue.save()
+    discovery_run=json.loads(run_path.read_text())
+    discovery_run.update(processing_deferrals=processing_deferrals,processing_attempts=processed_count)
+    atomic_json(run_path,discovery_run)
     for name,(discovered,new,error) in discoveries.items():
         counts=queue.counts(name)
         df_evidence=({**discovery_evidence.get(name,{}),
@@ -286,12 +383,13 @@ def main():
             deferred=sum(i.get('source')==name and i['status'] in ('retry','deferred') for i in queue.items.values()),
             rejected=counts["rejected"],rows=produced[name],error=error,
             live_pending=counts["live_pending"],backfill_pending=counts["backfill_pending"], discovery_evidence=df_evidence, observed_rows=observed.get(name),surfaces=surfaces.get(name),
-            published_history=fiscal_history if name in FISCALIZATION_SOURCES else None,
-            source_queue=source_items if name in FISCALIZATION_SOURCES else None,
+            published_history=(history if name == "pulso_latercera"
+                               else fiscal_history if name in FISCALIZATION_SOURCES else None),
+            source_queue=source_items if name in FISCALIZATION_SOURCES or name == "pulso_latercera" else None,
             archived=sum(item.get("status")=="archived" for item in source_items),
             rejection_reasons=dict(Counter(item.get("reason") for item in source_items if item.get("status")=="rejected")),
             **({"error_detail":occupational_audit[name].get("error"), "inventory":occupational_audit[name].get("inventory", {})} if name in OCCUPATIONAL_SOURCES else {}),
-            **{k:v for k,v in discovery_details.get(name,{}).items() if v},
+            **{k:v for k,v in diagnostic_details.get(name,{}).items() if v},
             latest_original_at=original_dates.get(name),evaluation_performed=evaluated[name]>0)
     print({"queue":queue.counts(),"budget":ai_budget_status()})
 

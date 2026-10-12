@@ -1,0 +1,1222 @@
+{
+  "schema_version": "pulso_mixed18_independent_second_semantic_peer_v1",
+  "source_id": "pulso_latercera",
+  "reviewer": "external_control_independent_second_fullbody_reader",
+  "generated_at": "2026-10-11T19:55:31.269272+00:00",
+  "producer_state_commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+  "producer_run_id": "38166157093",
+  "inputs": {
+    "history": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "bd7e32dd341348f44cfacdb0140247c5f957c417f6bed625fdcf9762a4d0f4ca"
+    },
+    "queue": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202"
+    },
+    "runtime_report": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "eb420d6e3b74b9a2274598adc5b2ae7f2f5f7e9635e1fc34f60968c896a95bd3"
+    },
+    "telemetry": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "d421299b6f6fbe440c166bb13ad686ba0896ccfc0cbfeda400f49932c9781037"
+    }
+  },
+  "primary_reader": {
+    "path": "data/audits/pulso_mixed_reused18_independent_semantic_review_2026_10_11.json",
+    "sha256": "44d4724fb667a6fd4dece6a0ec12a45f985e6eea1b53c8d2651b55421cdde0cb"
+  },
+  "application_template": {
+    "path": "data/audits/pulso_mixed_reused18_editorial_corrections_2026_10_11.json",
+    "sha256": "35b584e4b29212a3b84b61ed1b1dc1bdedd0e5eebca8051ed6528edf45f5a1fa"
+  },
+  "scope": "Only ALL18 actual reused publications, not the six below72 rejections or12technicalholds. Full source body, genuine retained paid model and actual current signal read; repeated future summaries and model-identical published prose mechanically checked, not treated as fresh semantic facts.",
+  "rows": [
+    {
+      "cohort_index": 4,
+      "url": "https://www.latercera.com/nacional/noticia/ante-baja-vacunacion-en-grupos-de-riesgo-minsal-advierte-aumento-de-consultas-en-urgencias-por-virus-respiratorios/",
+      "publication_date": "2026-08-24",
+      "queue_fingerprint": "e9ccb3667a6211bca8580e3b512d8a862658ee55d54892b2fc0760af4344e904",
+      "queue_entry_sha256": "3bb2fc6ed3ad963b868b098b43a4701492f79e7115b47478f3bfbaa47dfe64d2",
+      "source_body_original_sha256": "d73454ef54ffd65bffab7177c7b942b9e7be139f3f6175178c5f6db50a9df5f0",
+      "source_html_original_sha256": "f23cbb3d5a932986b3877d2afafa16f9d916096f392433f2349c0433b996a03c",
+      "source_original_full_body_characters": 2995,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "9984152db8bcc76783dcd02cfee789dc4a38530c6b1a6fda10f498b72e2ef261",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0424465ec1ef12dd006acbc9d8224c87d19bf5301733d090d5",
+        "analysis_text_sha256": "d73454ef54ffd65bffab7177c7b942b9e7be139f3f6175178c5f6db50a9df5f0",
+        "request_input_sha256": "7dd172a3ecb0eda0eb36f76767305f1a6f45a157c5e9068f9101314e1ad85754",
+        "raw_model_output_sha256": "68e8a37e66a660793f548da2fd0fbef2eadeb65e4fe13949ab66c4b9f474824a"
+      },
+      "signal_sha256": "9784ef9638aa04581e3f828f85593063adffd0c0a05782142795b757d2ca4142",
+      "primary_reader_record_sha256": "860969c490d74c27bc815f17f8203d043e1466ecc04addf1d431931caeadba07",
+      "application_record_sha256": "176e724a41e22daee5a0dfd07fbc6c534166233f0cd7a6ec8bd8d4eb06b55ff2",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/e9ccb3667a6211bca8580e3b512d8a862658ee55d54892b2fc0760af4344e904/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/e9ccb3667a6211bca8580e3b512d8a862658ee55d54892b2fc0760af4344e904/raw/metadata/analysis_model_output"
+      },
+      "decision": "accept",
+      "independent_peer_reason": "Positividad54,3% y vacunación de fallecidos/casosgraves se mantienen como balance24agosto. Riesgo de lluvia es condicional de esa semana, no emergencia vigenteOct11 ni eficacia causal inferida. Es presión asistencial/vacunación humana concreta.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "se registró la positividad más alta de lo que va del año, alcanzando el 54,3% de las muestras.",
+          "start": 108,
+          "end": 202
+        },
+        {
+          "origin": "original",
+          "text": "Si vienen las lluvias esta semana y sabemos que después de las lluvias también aumenta aún más la circulación de virus respiratorios",
+          "start": 1337,
+          "end": 1469
+        }
+      ],
+      "exact_proposed_copy_and_category": null,
+      "exact_group_target": null,
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0
+    },
+    {
+      "cohort_index": 5,
+      "url": "https://www.latercera.com/nacional/noticia/anuncio-para-hospitales-y-un-plan-maestro-de-listas-de-espera-los-pasos-del-minsal-tras-el-fin-de-la-alerta-oncologica/",
+      "publication_date": "2026-07-15",
+      "queue_fingerprint": "5142ffda34fa626c06fb77c2942785ebdc606ef917b775306ef411c4c9997d5b",
+      "queue_entry_sha256": "543a8bf4b02c8d85d0ccc7b827c34b030e7354f2f3e82f219bc79916e2c30aef",
+      "source_body_original_sha256": "37a35426bc426f8b62947312cacfec5805bbb3d61f2806adcc163c132d62e33c",
+      "source_html_original_sha256": "70156981a0ff3981f5af248c2ac5b34031a607e23ec4285c7dcb886ecf777787",
+      "source_original_full_body_characters": 4125,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "994816d37658c66338618307046daee2b648bd5e363a75991bbad562ed561b93",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_03387739aec0243c006acbcbf8d11c87d1aaf94fb230804f5d",
+        "analysis_text_sha256": "37a35426bc426f8b62947312cacfec5805bbb3d61f2806adcc163c132d62e33c",
+        "request_input_sha256": "16ab765c88c79c8490c18af4e4a442f9ee1ebbd2b51c25de65ad7831b2093026",
+        "raw_model_output_sha256": "2038d95e00d925b48d10b8250def2f72e3c7fb90efba1c551039d06cf9f2b6a6"
+      },
+      "signal_sha256": "27e3ceacbd92a1298826daa0353177532e7230d8a160b862839f71a6e202d06e",
+      "primary_reader_record_sha256": "598249a28918c8b02547a2103aa35b29929de5ab839c8b43070925330286c99c",
+      "application_record_sha256": "da6037c856f5af82eaa13fe2338a9f2e13b84ba6ccb08a7aef74a3a85e8c3fe2",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/5142ffda34fa626c06fb77c2942785ebdc606ef917b775306ef411c4c9997d5b/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/5142ffda34fa626c06fb77c2942785ebdc606ef917b775306ef411c4c9997d5b/raw/metadata/analysis_model_output"
+      },
+      "decision": "accept",
+      "independent_peer_reason": "28.681 prestaciones oncológicas no son28.681personas. Alerta finalizada reportadaJul15 y planesagosto/Consejo30julio/segundoprestador/finaño son anuncios y metas, no ausencia actual de GESatrasado ni programa ejecutadoOct11.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "la atención de 28.681 prestaciones oncológicas que estaban en la lista de espera.",
+          "start": 85,
+          "end": 166
+        },
+        {
+          "origin": "original",
+          "text": "Nuestra intención como Ministerio de Salud y como gobierno es que de aquí a fin de año no hayan más garantías GES retrasadas.",
+          "start": 2611,
+          "end": 2736
+        }
+      ],
+      "exact_proposed_copy_and_category": null,
+      "exact_group_target": null,
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0
+    },
+    {
+      "cohort_index": 9,
+      "url": "https://www.latercera.com/nacional/noticia/centro-medico-de-atacama-tramitaba-bonos-falsos-de-fonasa-fraude-supero-los-260-millones/",
+      "publication_date": "2026-07-13",
+      "queue_fingerprint": "a365d046c7331eb87f979e548a174970a72eebd03db28d727dfe14d826bee580",
+      "queue_entry_sha256": "9793a801942ca68180f5be51b2eba9e68ca037d0d854b2c163f0c29e47b18628",
+      "source_body_original_sha256": "cfc69fa4535ee989455c6dce041bf965c4b75e29741ecb2c9e7196331e4b7e16",
+      "source_html_original_sha256": "cf6a3df7f981f30aae08820cd96c95bb2a8b8402d029db2f2d111c58eeb3b0a5",
+      "source_original_full_body_characters": 3806,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "a1e122a457ecec485cd02fea70d0782ba864d8eb86701d3a678cba8cdab6ddc6",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_007958a2b1b18bf6006acbcc5d61fc87d1851350a3a912b6bb",
+        "analysis_text_sha256": "cfc69fa4535ee989455c6dce041bf965c4b75e29741ecb2c9e7196331e4b7e16",
+        "request_input_sha256": "da09d767ef88b08d097f139759ece6148b1c16e395ac568e98d0718251e5e025",
+        "raw_model_output_sha256": "523e9a6a6402404678f229a8a79daea1f912d2ff1cfc3a993163a9c4fd0a737d"
+      },
+      "signal_sha256": "c8c20b019d200e8c52d919762f340a9e7323e23a0ed54a8fb8ef9708f6804a26",
+      "primary_reader_record_sha256": "1b7497cbfa5ad53c0b6f4d2b77985032fa2fd8a8bf5f21180b4090378c6c99fb",
+      "application_record_sha256": "e747b36d086f2760763d96b49075158ac10e7ac61a89cb813d4acec81917fb4b",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/a365d046c7331eb87f979e548a174970a72eebd03db28d727dfe14d826bee580/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/a365d046c7331eb87f979e548a174970a72eebd03db28d727dfe14d826bee580/raw/metadata/analysis_model_output"
+      },
+      "decision": "accept",
+      "independent_peer_reason": "FraudePAD/Fonasa+datosbiométricos afecta financiamiento clínico. Desbaratamiento, detenciones y cautelares son actos reportados; habríanusadohuellas/alrededor400pacientes/$260millones atribuidos e investigaciónJul13 no condena final criminal ni continuidad probadaOct11.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "para tramitar bonos PAD de atención dental que luego eran cobrados a Fonasa, a pesar de que dichos procedimientos nunca se realizaron.",
+          "start": 1175,
+          "end": 1309
+        },
+        {
+          "origin": "original",
+          "text": "El Tribunal fijó tres meses de plazo para el desarrollo de las diligencias pendientes en este caso",
+          "start": 3481,
+          "end": 3579
+        }
+      ],
+      "exact_proposed_copy_and_category": null,
+      "exact_group_target": null,
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0
+    },
+    {
+      "cohort_index": 10,
+      "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+      "publication_date": "2026-10-05",
+      "queue_fingerprint": "a58988d996549164f9ef27cf474ed8c4a30ff07e212b4fc59c03d8e3bb1d7004",
+      "queue_entry_sha256": "62c54ed9c65292f76a7f4f9d8d3e2c9e3492ed79c0a9189a39d0852cabd4a9b0",
+      "source_body_original_sha256": "0ebfaaf59515c5c7f01f4e150f7a9000e5f5a0888ecfaf48c73c9364378d0131",
+      "source_html_original_sha256": "60dd84e90cfdca2702312a13a90f669dbae10ed5de7dc2c71f76461d6115e807",
+      "source_original_full_body_characters": 2916,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "d0453091652609bbadbc0ceeeed8c9e2469bcdf3a891df43f05dfbb4f656c688",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0bab386418ef423b006acbcc74083c87d19617444b47cb03c8",
+        "analysis_text_sha256": "0ebfaaf59515c5c7f01f4e150f7a9000e5f5a0888ecfaf48c73c9364378d0131",
+        "request_input_sha256": "6a9aaaea67dba1b2abb1f228330aed0b574d142fb35b69c47eb658b232fe56c4",
+        "raw_model_output_sha256": "499dc0264a2e5fbab7f31c1dbd6b9dc969eb2c7eaadec1a813622a86b52e0c2e"
+      },
+      "signal_sha256": "61a669a80e98ed4747cbda6638a864ba62d3ea28fd3a016738afce36cd7267e1",
+      "primary_reader_record_sha256": "adcf2d3e4354c51be37b9b1f479b94af7f81c54decbf58248ad8a229f6bb39fe",
+      "application_record_sha256": "81e1d093016186149b75f27a33a4cf9a000b6b432d1aa9ec0565a42a9307060f",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/a58988d996549164f9ef27cf474ed8c4a30ff07e212b4fc59c03d8e3bb1d7004/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/a58988d996549164f9ef27cf474ed8c4a30ff07e212b4fc59c03d8e3bb1d7004/raw/metadata/analysis_model_output"
+      },
+      "decision": "accept",
+      "independent_peer_reason": "Productividad del primer semestre2026 es declaración de la autoridad, no ahorro auditado. El4,7% es propuesta2027. Compras/Cenabast/licitaciones/ausentismo añaden información operacional frente al anuncio genéricoOct1; no se declara desplegado el presupuesto ni capacidadOct11.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "En la evaluación del primer semestre llevábamos, digamos, tres meses nomás en el gobierno y teníamos al mismo gasto, más consultas, más cirugía, más procedimiento, más producción,",
+          "start": 1714,
+          "end": 1893
+        },
+        {
+          "origin": "original",
+          "text": "han aumentado las compras centralizadas, la intermediación con Cenabast y las licitaciones versus las compras directas, y han disminuido el ausentismo.",
+          "start": 2642,
+          "end": 2793
+        }
+      ],
+      "exact_proposed_copy_and_category": null,
+      "exact_group_target": null,
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0
+    },
+    {
+      "cohort_index": 18,
+      "url": "https://www.latercera.com/nacional/noticia/contraloria-detecta-plantas-de-aguas-servidas-sin-autorizacion-y-deficiencias-en-tres-comunas-de-la-rm/",
+      "publication_date": "2026-09-11",
+      "queue_fingerprint": "4b5bd2cd3017dca1a917a0713cff5f56dbae00f47b711b9ce859a5444f7e0b16",
+      "queue_entry_sha256": "ebf5693f00d1151d678252e00b581bb43db45909fc020f0ba6c937f811c5134c",
+      "source_body_original_sha256": "393cb8c87c93f6a7d24a09f1977c5346f9058973b1f9d9679d7ec416c8e65f17",
+      "source_html_original_sha256": "21b4be8ed3da4c52aa2c4ea808f7e660f5f14210c33563c672ce76cc68d09a95",
+      "source_original_full_body_characters": 3504,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "07a23fb5f54a39a7cf07e3503fe65bf89b7e9a8a68aa8056ff5ff64fd9ea6c9a",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0976fe603ca74c57006acbc7b6336087d1adcf07db99b4c17c",
+        "analysis_text_sha256": "393cb8c87c93f6a7d24a09f1977c5346f9058973b1f9d9679d7ec416c8e65f17",
+        "request_input_sha256": "d46deaffe36e12bc1016965a394cd0887147bad8b28577e228dec4dc5981bcd2",
+        "raw_model_output_sha256": "bfca57ab2b6812ead506ba3ed287b619e414fbdd839439e9559efd5773f538ba"
+      },
+      "signal_sha256": "9e044edf18624595e22d364ca5f4a5b61e9001de526559de8ec6552f97d617bd",
+      "primary_reader_record_sha256": "95f135ed253a2ce936380e8d3ed07179e1c6b8c1a61429152db45ea190349ada",
+      "application_record_sha256": "44e0e3981070dc140bf0fdac171a7c6eeacea91c3a3424481dffdd3125209897",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/4b5bd2cd3017dca1a917a0713cff5f56dbae00f47b711b9ce859a5444f7e0b16/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/4b5bd2cd3017dca1a917a0713cff5f56dbae00f47b711b9ce859a5444f7e0b16/raw/metadata/analysis_model_output"
+      },
+      "decision": "accept",
+      "independent_peer_reason": "Auditoría2026sobreplantas y aviso municipal2024 de patógenos permanecen atribuidos. Disciplina anunciada no sanción firme/correcciónreal. Riesgo a agua para consumo humano y operación sinautorización es público-sanitario concreto, no sólo asuntoanimal.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "Un informe ambiental municipal de 2024 ya había alertado sobre la presencia de microorganismos patógenos",
+          "start": 1331,
+          "end": 1435
+        },
+        {
+          "origin": "original",
+          "text": "Contraloría anunció el inicio de un procedimiento disciplinario para determinar eventuales responsabilidades administrativas",
+          "start": 3241,
+          "end": 3365
+        }
+      ],
+      "exact_proposed_copy_and_category": null,
+      "exact_group_target": null,
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0
+    },
+    {
+      "cohort_index": 20,
+      "url": "https://www.latercera.com/nacional/noticia/contraloria-revela-que-observaciones-ordenadas-al-hospital-de-chillan-no-se-han-corregido-mas-de-dos-mil-cirugias-preferenciales-a-familiares/",
+      "publication_date": "2026-09-07",
+      "queue_fingerprint": "e58373c6c331cf89c5cb9e2a08619c85c1a2f17350ba12fd8b1b64e35d13d7c0",
+      "queue_entry_sha256": "a6fea3cc9069098ac059af8b6f8d18e5c66539816ff591846106b35046afaafd",
+      "source_body_original_sha256": "4d750336d5a9f67df96cbb2a15c11d4937552be4c62d2dc80e7349282e07a5bd",
+      "source_html_original_sha256": "2c5f62ed54c05e822d39d04a184475b69be9b56ecb7348acf4c016e75075686d",
+      "source_original_full_body_characters": 2087,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "2e06a0200a38d48b986e120a059b693d9bbf591db53c28583e0538a16fea8595",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_011f84ba687e9b1d006acbc8219f2887d1991e262ec0bc0348",
+        "analysis_text_sha256": "4d750336d5a9f67df96cbb2a15c11d4937552be4c62d2dc80e7349282e07a5bd",
+        "request_input_sha256": "5d9b897ab77af63e9d89527771b74b5cf80ce46678ad12f9e76ee0b44a0c4355",
+        "raw_model_output_sha256": "5755ea1fd691f462e065855f750bae38b1e1402d6a27699c6e70c4ac09d6a481"
+      },
+      "signal_sha256": "3fa74199a7f43b61053cedc3a25581247f74249e4c3b6d00d9913d25d6e6fb7f",
+      "primary_reader_record_sha256": "daae061921160cab2677085bda49e9116ea16632cbd77a9c676be4f7e5f58ce9",
+      "application_record_sha256": "722f14edf1b6b5461c0975a2378a80b4d9272a4abf13f42bf37a2bdfd212d1aa",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/e58373c6c331cf89c5cb9e2a08619c85c1a2f17350ba12fd8b1b64e35d13d7c0/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/e58373c6c331cf89c5cb9e2a08619c85c1a2f17350ba12fd8b1b64e35d13d7c0/raw/metadata/analysis_model_output"
+      },
+      "decision": "accept",
+      "independent_peer_reason": "SeguimientoactualSep7 con hechosquirúrgicos2020-2024/352registroscorregidos y pendientesjustificación está distinguido de acusaciónnueva2026. No declararprivilegiodefinitivamentedelitoni sanciónresuelta; preserva21.547/3.905/2.442 cirugías y discrepanciabases.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "El documento era relativo a las listas de espera quirúrgicas no GES entre 2020 y 2024.",
+          "start": 337,
+          "end": 423
+        },
+        {
+          "origin": "original",
+          "text": "el informe de seguimiento verificó que solo se han regularizado 352 registros que no estaban en el sistema central.",
+          "start": 1347,
+          "end": 1462
+        }
+      ],
+      "exact_proposed_copy_and_category": null,
+      "exact_group_target": null,
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0
+    },
+    {
+      "cohort_index": 27,
+      "url": "https://www.latercera.com/nacional/noticia/ejercito-despliega-hospital-modular-en-ovalle-tras-inutilizacion-de-cinco-pabellones-por-lluvias/",
+      "publication_date": "2026-07-19",
+      "queue_fingerprint": "928190db6324d9228a52eb0b9842d576ec95410a1c678779f774c5079a1909c0",
+      "queue_entry_sha256": "0f6d3a14c910c67900dda4e2b9da7d46ab9e4b046c18214816dba51cafa46e02",
+      "source_body_original_sha256": "c160a47a49949f6fd69fa6e7007b01314b7c0e37e142b2bb64cd6ad8b58c6a75",
+      "source_html_original_sha256": "7a713806abddad6e3d20a15842f633925c11ace935f47de9c0c23f8337c8d584",
+      "source_original_full_body_characters": 3982,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "bd4b42a612974f12e8834bc8cbd5459aa0d21fd881240939c5a6ffd1bb8d9d57",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0e4bbfef1704c7b1006acbcba1bbd487d1b832daedbbbf0046",
+        "analysis_text_sha256": "c160a47a49949f6fd69fa6e7007b01314b7c0e37e142b2bb64cd6ad8b58c6a75",
+        "request_input_sha256": "db46ea7e034ae9c03a45b569323c7262e0d2ab4646e5291e88fd3a52da466449",
+        "raw_model_output_sha256": "acf350c193b172275783f7b74d271d37bd8a32371dddb83c831c7ec864474daa"
+      },
+      "signal_sha256": "db493b44f3f61e24cbfbf514fd58d2bde6a1f605a175cf5abd66e62a008ff1af",
+      "primary_reader_record_sha256": "81b7fd3f24bbe8f2c092bfa9a960e1a60b534a44f8f063e5e2631750e5026dc7",
+      "application_record_sha256": "7d3aaf624b9adca2de52fa03eeea08b09c6554aa79e5a70c7280fbc5f5d48f6e",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/928190db6324d9228a52eb0b9842d576ec95410a1c678779f774c5079a1909c0/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/928190db6324d9228a52eb0b9842d576ec95410a1c678779f774c5079a1909c0/raw/metadata/analysis_model_output"
+      },
+      "decision": "accept",
+      "independent_peer_reason": "Jul19documenta avance efectivo del mismo episodioOvalle: primera llegada de módulos y segundacolumna,5de7pabellonesinutilizados. Trespabellonesapoyo proyectados no abiertos ya; reparación1-2mesesestimación y extensiónCoquimboAtacamaevaluada. Sobrevivealagrupamiento57confechas/estados preservados.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "el hospital local quedara con cinco de sus siete pabellones quirúrgicos inutilizados",
+          "start": 114,
+          "end": 198
+        },
+        {
+          "origin": "original",
+          "text": "Parte de ellas ya viajaron el día de ayer durante la tarde, llegaron alrededor de las 2 de la mañana a la ciudad de Ovalle",
+          "start": 1728,
+          "end": 1850
+        },
+        {
+          "origin": "original",
+          "text": "la recuperación de los pabellones podría requerir entre uno y dos meses",
+          "start": 2576,
+          "end": 2647
+        }
+      ],
+      "exact_proposed_copy_and_category": null,
+      "exact_group_target": null,
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0
+    },
+    {
+      "cohort_index": 37,
+      "url": "https://www.latercera.com/nacional/noticia/inauguran-el-primer-centro-de-salud-de-alta-resolutividad-sar-para-vina-del-mar-recinto-podra-realizar-65-mil-atenciones-anuales/",
+      "publication_date": "2026-08-19",
+      "queue_fingerprint": "1450af273f52735ff5e964b2b027dfa75cd8e678f51def9691444b1070ba9d41",
+      "queue_entry_sha256": "3782daa4a7cbae6dd8b0610a8bb78407de84bbf8031dc749cfdb12c2ef2b12be",
+      "source_body_original_sha256": "b19cf891c76d50a414054e4819e3dc943134c6d5329b5cc1430e7bd4813f3b6b",
+      "source_html_original_sha256": "db4b65a84cbf489c97a53567e0c6e2b8f6a2ac29461d8415ef7c6e6198d0ba34",
+      "source_original_full_body_characters": 2912,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "29285c6564db4c5c7b38aa5bed77ff3d41e8929180dbed886877e2875ce1f82a",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_07384e2f0b021ebc006acbca1e78cc87d1884156675106a1f1",
+        "analysis_text_sha256": "b19cf891c76d50a414054e4819e3dc943134c6d5329b5cc1430e7bd4813f3b6b",
+        "request_input_sha256": "2a5ba4d7293781643fd3f56137d1698762112f5d1b9b7e936a6f4dc2d304d6c7",
+        "raw_model_output_sha256": "3d8cbb79704fe6dd7d7c6264a38f84fe1987a77f1a886a778cd4e1f0136c6ad8"
+      },
+      "signal_sha256": "fbc4da62b4aa0cf269136baa369d7696a59a6f3ba2501e300539639d496ccc6c",
+      "primary_reader_record_sha256": "54547f620b64f6eae4ab6bdcdba094e82ad12d61620a81da95754872cab74dc8",
+      "application_record_sha256": "8b48701a0bb19df470d8fd6645485d2590aa9b38ecd8aa50dfe20ef724195fbe",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/1450af273f52735ff5e964b2b027dfa75cd8e678f51def9691444b1070ba9d41/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/1450af273f52735ff5e964b2b027dfa75cd8e678f51def9691444b1070ba9d41/raw/metadata/analysis_model_output"
+      },
+      "decision": "accept",
+      "independent_peer_reason": "InauguraciónSAR19agosto/inversión>5mil millones es hecho reportado;65mil son atenciones anuales estimadas, más100mil habitantes es población beneficiaria, no personas tratadas. No convierte capacidadestimada en producción lograda.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "inauguraron el primer Centro de Salud de Alta Resolutividad (SAR) de la comuna.",
+          "start": 106,
+          "end": 185
+        },
+        {
+          "origin": "original",
+          "text": "El SAR Miraflores permitirá beneficiar a más de 100 mil habitantes de Viña del Mar y se estima que tendrá una capacidad para realizar 65 mil atenciones al año.",
+          "start": 1226,
+          "end": 1385
+        }
+      ],
+      "exact_proposed_copy_and_category": null,
+      "exact_group_target": null,
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0
+    },
+    {
+      "cohort_index": 48,
+      "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+      "publication_date": "2026-07-31",
+      "queue_fingerprint": "f937f812facbb93fff24db3f1f77ff1de6a487c92619285789f3a194255d0418",
+      "queue_entry_sha256": "872b7077657bf015e35ca137edbb7a436584a503d48fd8f9bd496fe46b24987a",
+      "source_body_original_sha256": "1d7f55e07ae77e0a3eda89467e2ea0e3b78a1bb990f616f06bcaf3af1f20f9bf",
+      "source_html_original_sha256": "300ea9e459641e05a2a87fc468aea4febd74f442a4d90a84d61be05da0b442d8",
+      "source_original_full_body_characters": 3607,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "ef1abf1d609d62f5d0be7e0626469fa206be0bf6467d3123e168d1c30a21b713",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_02c0d344dc3dcbe0006acbcb2838c087d19d118d1eda771ecb",
+        "analysis_text_sha256": "1d7f55e07ae77e0a3eda89467e2ea0e3b78a1bb990f616f06bcaf3af1f20f9bf",
+        "request_input_sha256": "30ad09eb79e14f8c0df7c867baa69fbf213d87c72108c1e8f69629d1fc04ddd9",
+        "raw_model_output_sha256": "b0b53c7bed94b62d758162f86945c0b718925bfdc9816734ae69b92671d2aae1"
+      },
+      "signal_sha256": "418cd606db1e2709479b35797c0b50126699dd9fba56260548ba46b4740acdae",
+      "primary_reader_record_sha256": "0ddb4da307cc8733ad5609bc416792ad78dd801de7e9c1d632535b2d7da5aeaf",
+      "application_record_sha256": "f655e62b4d34b087f4d6ef9218652385309e623af466e84878c9fb4d993505d1",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/f937f812facbb93fff24db3f1f77ff1de6a487c92619285789f3a194255d0418/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/f937f812facbb93fff24db3f1f77ff1de6a487c92619285789f3a194255d0418/raw/metadata/analysis_model_output"
+      },
+      "decision": "accept",
+      "independent_peer_reason": "Comges2021-2025de86,7a68,6 y EAR36/62bajo75% son períodos/muestras separados. Dosmesas iniciadas constituyen respuestagestión, objetivosposteriores no resultados probados. Alegaciones aexministrasatribuidas, noresponsabilidadcriminalprobada.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "En la evaluación se observó a 62 Establecimientos Autogestionados en Red",
+          "start": 2132,
+          "end": 2204
+        },
+        {
+          "origin": "original",
+          "text": "solo 26 alcanzaron un puntaje igual o superior al 75% en el Balance Score Card -estándar mínimo- y 36 quedaron bajo ese guarismo.",
+          "start": 2342,
+          "end": 2471
+        },
+        {
+          "origin": "original",
+          "text": "Frente a esto, en el ministerio destacan que iniciaron dos mesas de trabajo: eficiencia hospitalaria y gestión de la red.",
+          "start": 3243,
+          "end": 3364
+        }
+      ],
+      "exact_proposed_copy_and_category": null,
+      "exact_group_target": null,
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0
+    },
+    {
+      "cohort_index": 57,
+      "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+      "publication_date": "2026-07-18",
+      "queue_fingerprint": "795199488ecf9afc7c4264507fd1f680b2e2c8af641365552b649a29f95653bb",
+      "queue_entry_sha256": "d030c2b4069f1beeab91aa980c5744d14663ddaaeca5b83d5f8d3f4ffd65f052",
+      "source_body_original_sha256": "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f",
+      "source_html_original_sha256": "41815587b7eec6e3817f24177fc6e9afe15fa382ea39ca7b80a809debcf3c6a4",
+      "source_original_full_body_characters": 2790,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "4b9f200a6ae2e72feb0597149bcdb34bb45fc064cfafdf5c8eb0e6739f2403d6",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0fb90ebcf3cf93e2006acbcbca873487d1854bc3c7526d6c3b",
+        "analysis_text_sha256": "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f",
+        "request_input_sha256": "5860d4786bf896f31b2ed5911d2dfd3e52ef7454930aefde7dcbd81e2eead382",
+        "raw_model_output_sha256": "a2326a202db4ea4d1a2a8e2617eee563844956320d043281431aff6d2698f567"
+      },
+      "signal_sha256": "7ca7ac707dc560da74b6b3abf5f1e2886b4692daee19b3a1c17188b1622fa620",
+      "primary_reader_record_sha256": "e6e879b26737881dbb7391bd55a1ed0625af0c693c508721cae09eca4070e652",
+      "application_record_sha256": "c557778c73640f07245a760112dc80affb9093e0fe4c3b0e4bfaaf79641cb8ca",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/795199488ecf9afc7c4264507fd1f680b2e2c8af641365552b649a29f95653bb/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/795199488ecf9afc7c4264507fd1f680b2e2c8af641365552b649a29f95653bb/raw/metadata/analysis_model_output"
+      },
+      "decision": "group",
+      "independent_peer_reason": "Mismo núcleo factualOvalle/hospitaldañado/DefensaMinsal/apoyomodular. Jul18describe coordinación yJul19avancedespliegue específico; consolidarvisibilidad bajo27preserva ambosoriginales, etapa previa ybalanceRegional. No esduplicado literal del artículo entero ni obliga a declarar instalación terminada. No hay otra operaciónfinanciera/contrato/ampliaciónpermanente en57.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle",
+          "start": 0,
+          "end": 200
+        },
+        {
+          "origin": "original",
+          "text": "la red de salud de las regiones afectadas se mantiene mayoritariamente operativa",
+          "start": 590,
+          "end": 670
+        }
+      ],
+      "exact_proposed_copy_and_category": null,
+      "exact_group_target": {
+        "url": "https://www.latercera.com/nacional/noticia/ejercito-despliega-hospital-modular-en-ovalle-tras-inutilizacion-de-cinco-pabellones-por-lluvias/",
+        "event_date": "2026-07-19"
+      },
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0,
+      "group_survivor_full_original_body_also_read": true,
+      "group_survivor_original_body_sha256": "c160a47a49949f6fd69fa6e7007b01314b7c0e37e142b2bb64cd6ad8b58c6a75",
+      "group_survivor_current_signal_sha256": "db493b44f3f61e24cbfbf514fd58d2bde6a1f605a175cf5abd66e62a008ff1af",
+      "group_is_entire_article_literal_duplicate": false
+    },
+    {
+      "cohort_index": 61,
+      "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+      "publication_date": "2026-08-08",
+      "queue_fingerprint": "4a2ebf24c4b12276479f532bef551f5a60b2ca8fde566bd3a1d19f3d83a1745b",
+      "queue_entry_sha256": "a4a1a8260794dc5b4c2a1abfad2c1cce35c6d0bdb022f4e52eccb55858c83a63",
+      "source_body_original_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+      "source_html_original_sha256": "e6bbfa96147cc5e6fb6dc851e8f265776943438a5198c0972af13053fe73f3c5",
+      "source_original_full_body_characters": 2197,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "472ff5490dc44982765c9aca2906ec268f77df1b33aad47c8530baba73fa7bd1",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_06d55302e3760f78006acbca9c84dc87d1b9e5af7a2cbc5fd3",
+        "analysis_text_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+        "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+        "raw_model_output_sha256": "2a1a003074ff07a48cd563b4bde0fc3eea7c676f94b6897330c165b807886e70"
+      },
+      "signal_sha256": "62c3718dc383373b8f8c197aa83a035ab80808ebed5eda31992579b11bbbebc4",
+      "primary_reader_record_sha256": "6dc09178437c34e77472ab01060a387f74419cf4cabd3e2f1bd6e1eefcc1de8d",
+      "application_record_sha256": "939b4272c1aba68b415bda0509fdfa9fb96b06510a7b22348ba03c7d025bd15e",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/4a2ebf24c4b12276479f532bef551f5a60b2ca8fde566bd3a1d19f3d83a1745b/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/4a2ebf24c4b12276479f532bef551f5a60b2ca8fde566bd3a1d19f3d83a1745b/raw/metadata/analysis_model_output"
+      },
+      "decision": "accept",
+      "independent_peer_reason": "Incorporaciónhantavirus aalertazoónica es saludhumanaexplícita/testeo/establecimientos; no asumir acto sóloveterinario. Copia8agosto preserva anuncio y efectospermitiríavigilancia, sin vigenciaoperativaOct11 demostrada.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente.",
+          "start": 788,
+          "end": 948
+        },
+        {
+          "origin": "original",
+          "text": "la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”",
+          "start": 495,
+          "end": 692
+        }
+      ],
+      "exact_proposed_copy_and_category": null,
+      "exact_group_target": null,
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0
+    },
+    {
+      "cohort_index": 67,
+      "url": "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+      "publication_date": "2026-09-28",
+      "queue_fingerprint": "86ae67008d2c8e151f6335330e8737603e6209825b9a92492df291415002e6f9",
+      "queue_entry_sha256": "365c9d700df8b898835b36ca88608804cd8ccea87f56414125bbbd9ff9158103",
+      "source_body_original_sha256": "ed54fa46914245816a9143533683db3d8bea1c92064ae5b4157b2dcda46d4788",
+      "source_html_original_sha256": "7cd960198df6ea6b83584ffc9a5366a1db4ccc447dcb1c63d9ccc0b8fa155729",
+      "source_original_full_body_characters": 2274,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "f16c6b8411c7f6a375be0c46e51fd70baebb8f967f4c9af7ee0ece6c37398c25",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0a8e18c8ba0d4f03006acbc716f52c87d190e26febf5c6148b",
+        "analysis_text_sha256": "ed54fa46914245816a9143533683db3d8bea1c92064ae5b4157b2dcda46d4788",
+        "request_input_sha256": "352a20692b2e87743ade55f958d508bd7c863e73f4aefb47764ba3888d5decde",
+        "raw_model_output_sha256": "92282b14e3a9aa085892c3e6be19f682e0f81f7c1d04c2dc3711a50221e450c0"
+      },
+      "signal_sha256": "ed2f80ac8bbde9b269a6a7f139258ddd17a8d29319e2dfa0086adc165d594d1f",
+      "primary_reader_record_sha256": "03f54929e42e4c045872a0edd173ba6951f39f1ef630ebc9cbb095e8dbd762a3",
+      "application_record_sha256": "a8f6f316230b28238c83edbeb8ce316e1d7cb6658ab001e0895588863e0e4ea0",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/86ae67008d2c8e151f6335330e8737603e6209825b9a92492df291415002e6f9/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/86ae67008d2c8e151f6335330e8737603e6209825b9a92492df291415002e6f9/raw/metadata/analysis_model_output"
+      },
+      "decision": "accept",
+      "independent_peer_reason": "Petición y reunión27septiembre/nota28septiembre son actos actuales; disponibilidad segúnparticipantes «se habría» para coberturacompartida no decisiónministerial ni cobertura vigente. RegistroISP no equivale a GES/LeyRicarteSoto. No borrar estado de incertidumbre.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "Este fármaco cuenta con registro ante el Instituto de Salud Pública (ISP), pero no tiene cobertura del GES ni de la Ley Ricarte Soto.",
+          "start": 1065,
+          "end": 1198
+        },
+        {
+          "origin": "original",
+          "text": "Según los participantes, durante la reunión se habría manifestado disponibilidad para avanzar hacia una cobertura compartida gradual de estos tratamientos.",
+          "start": 1199,
+          "end": 1354
+        }
+      ],
+      "exact_proposed_copy_and_category": null,
+      "exact_group_target": null,
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0
+    },
+    {
+      "cohort_index": 78,
+      "url": "https://www.latercera.com/nacional/noticia/sernac-fiscaliza-centros-de-estetica-en-14-regiones-y-pone-foco-en-seguridad-publicidad-y-precios/",
+      "publication_date": "2026-08-08",
+      "queue_fingerprint": "caeb73f191be7f378087e623540042508f73bd4d33aca08a45b738e0cfb23164",
+      "queue_entry_sha256": "e021d39b744b94a923530d7adc69140705c6e9c6a73aec18d4612e5647155db6",
+      "source_body_original_sha256": "743e751bd4b4b2b9f60f440cc87e903cfe529bb22352548264183780f9827758",
+      "source_html_original_sha256": "6b3e517705c044967c6c32610019168e762802635ee34ae7fbbbbdbd81443a8c",
+      "source_original_full_body_characters": 2674,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "7f23d18ba31b4a9e5ef80413d945ecb6ac0edef420df50e303a62202078bccd5",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_05d90b3f95397e1b006acbca8b08dc87d198673b4b41600961",
+        "analysis_text_sha256": "743e751bd4b4b2b9f60f440cc87e903cfe529bb22352548264183780f9827758",
+        "request_input_sha256": "24b4d4e561022c2b74afd162909c8c881bbe1211b75087f8241d64e0b13e0118",
+        "raw_model_output_sha256": "6ab67eb51ceeae314038892a4586bde1deb3afd55c34e90c388b3c853ce0ddc8"
+      },
+      "signal_sha256": "395d0db339df67355f4604f1803f21e1fcaeb58c75d20b386b7a9e299c4ac9b9",
+      "primary_reader_record_sha256": "ecc5513211f3d1d23d71205b51afde51baab9d21eb5245cde0518c92c12d10c8",
+      "application_record_sha256": "ee32757b2d4fc3e60acdfb8a8dbd5d1884aed4296467580b69fa1fcbbaaf60c8",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/caeb73f191be7f378087e623540042508f73bd4d33aca08a45b738e0cfb23164/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/caeb73f191be7f378087e623540042508f73bd4d33aca08a45b738e0cfb23164/raw/metadata/analysis_model_output"
+      },
+      "decision": "correct",
+      "independent_peer_reason": "Sernacfiscaliza autorizaciones/consentimiento/publicidad/productos en14regiones: Regulación&Legal es categoría pertinente, Aseguramiento no describe ese acto. Coincido en modificar sólo categoría y mantener WHAT/WHY, score82, mixedactual/future, fecha8agosto, no sanciones inventadas.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "El Servicio Nacional del Consumidor (Sernac) está realizando una fiscalización presencial a centros de estética a nivel nacional",
+          "start": 0,
+          "end": 128
+        },
+        {
+          "origin": "original",
+          "text": "En procedimientos invasivos, como bótox o ácido hialurónico, o aquellos que impliquen un riesgo relevante, el consentimiento informado debe quedar por escrito.",
+          "start": 977,
+          "end": 1136
+        }
+      ],
+      "exact_proposed_copy_and_category": {
+        "what_happened": "Según Pulso / La Tercera, Según la nota del 2026-08-08, el Sernac estaba realizando una fiscalización presencial a centros de estética en 14 regiones, ante el aumento reportado de la demanda de procedimientos estéticos faciales y corporales. La revisión abarcaba seguridad, información y consentimiento, permisos sanitarios, precios, publicidad, promociones, responsables técnicos y productos con registro sanitario. La nota también reportó que el organismo revisaría determinados aspectos durante el despliegue, por lo que esas acciones futuras no deben entenderse como ya ejecutadas. No hay evidencia en el contenido sobre el estado de la fiscalización al 2026-10-11.",
+        "why_it_matters": "Al 2026-08-08, según la nota, la fiscalización del Sernac ponía bajo escrutinio a los centros de estética que ofrecen procedimientos con riesgos para la salud humana, incluidos bótox y ácido hialurónico. Para esos prestadores, el foco estaba en acreditar autorización sanitaria, informar riesgos y obtener consentimiento escrito en procedimientos invasivos; para los consumidores, la medida buscaba reducir exposición a servicios inseguros, publicidad engañosa y productos sin origen o registro sanitario. La nota no permite afirmar que estos efectos o controles se mantengan vigentes al 2026-10-11.",
+        "category": "Regulación & Legal"
+      },
+      "exact_group_target": null,
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0
+    },
+    {
+      "cohort_index": 90,
+      "url": "https://www.latercera.com/pulso/noticia/agencia-de-ciberseguridad-refuta-a-uc-christus-y-defiende-incorporarla-a-listado-un-ransomware-puede-tener-alcances-catastroficos/",
+      "publication_date": "2026-09-08",
+      "queue_fingerprint": "5bb4865f79a21048ac0ce116be901107d88d265db3706d98d1193eb1effaa2b9",
+      "queue_entry_sha256": "648e97fd950abbcf4757384196fd55522d927087f6e409bcbc2f4433c3395f4e",
+      "source_body_original_sha256": "d9ebb4a4ec84cfc09b90146e0bdb16cea16ff9d1293e9f3d8d84b6fcd32c685c",
+      "source_html_original_sha256": "c4e1df1107ec75873e9f1179e9fb64989d0532faaf070b9663c9429f11a17f5d",
+      "source_original_full_body_characters": 5341,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "ee5f38a3f790c1d778a7167fcad09db72e14248847a1635a2c6df4f9ad2cbce9",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_00ff8ce1db14ac0c006acbc7edf79087d19408303dff742ab1",
+        "analysis_text_sha256": "d9ebb4a4ec84cfc09b90146e0bdb16cea16ff9d1293e9f3d8d84b6fcd32c685c",
+        "request_input_sha256": "db0d57082cd77bc6ec3b0601c72e60539867705ff357b0c60d2e00a6e1295391",
+        "raw_model_output_sha256": "8c7e322c859c4ce7a37fcbc1ce87ce9b05669005b6c9ba154016111b4fff20ea"
+      },
+      "signal_sha256": "bc12452f3897a6d0d5bd0010e92f0012d22793272980b60055cb81cb93759871",
+      "primary_reader_record_sha256": "bc7d1b6ff6b358d84179e0620f46f659b70223b1b5d887320846cf0a142f9ca3",
+      "application_record_sha256": "0c4f1671ed5af943aa6ad591f8a3b15be296d55d900c2d46f246aec05e2d46f0",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/5bb4865f79a21048ac0ce116be901107d88d265db3706d98d1193eb1effaa2b9/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/5bb4865f79a21048ac0ce116be901107d88d265db3706d98d1193eb1effaa2b9/raw/metadata/analysis_model_output"
+      },
+      "decision": "accept",
+      "independent_peer_reason": "InformeANCI en disputa judicial es acto actual agosto, riesgosransomware son potenciales. No declaraataque ocurrido, calificación firme ni obligación definitivamente consolidadaOct11. PrestadoresUCC/ClínicaSanCarlos identificados y seguridadclínica explícita.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "a fines de agosto, el organismo presentó un informe en su disputa contra la UC",
+          "start": 432,
+          "end": 510
+        },
+        {
+          "origin": "original",
+          "text": "la cancelación de procedimientos clínicos programados, la demora significativa en el procesamiento de exámenes de diagnóstico",
+          "start": 1817,
+          "end": 1942
+        },
+        {
+          "origin": "original",
+          "text": "La UC había dicho que el organismo “no explicitó criterio ni antecedente alguno que justificara la inclusión de un operador determinado”",
+          "start": 4508,
+          "end": 4644
+        }
+      ],
+      "exact_proposed_copy_and_category": null,
+      "exact_group_target": null,
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0
+    },
+    {
+      "cohort_index": 95,
+      "url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+      "publication_date": "2026-09-29",
+      "queue_fingerprint": "9d3dfcc1f530d1a63e7a27133c3b0fd19c12d2fcf9d518282a955b98d84c5834",
+      "queue_entry_sha256": "d84087dbf83d42a51a5b40ff1c88becd9b8b5ae6319965ad3951a81d3fca07b2",
+      "source_body_original_sha256": "328e72605ee42fc840f0aacfc636a0589da7088885780c95174a70642441ee35",
+      "source_html_original_sha256": "0e7d9c3cebdd35c591c55174ef85a26b76b3a92f33fcde90a2da43b73b441fd5",
+      "source_original_full_body_characters": 2261,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "00c097422049e4ce7246d6ed2131d46774a2b927d99a1b989f43e20ad89d87ef",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_03408fdc62b34a33006acbc6e70d7887d18d1f29d3d2ca7e63",
+        "analysis_text_sha256": "328e72605ee42fc840f0aacfc636a0589da7088885780c95174a70642441ee35",
+        "request_input_sha256": "64b01bacf9b7c870523fe24b9c3d09303d625936a9df2efef80d26ebc84dcb75",
+        "raw_model_output_sha256": "548567aa7cf36f821ad45354627eefc45e2d9e7d8be896a18ec5d0fad2974527"
+      },
+      "signal_sha256": "4cb44cdaf83a0a4559fbae59208a528b525f6fe1e3ae64cc860785c82058d05e",
+      "primary_reader_record_sha256": "d3c123d7972fa6125fe39c73dab866f8da102234faf82ef3f87d8ae9ad12a332",
+      "application_record_sha256": "27be08f5771456a4fee8cbab9f69be92e6031d8e28ae290991adc63ff6300ee2",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/9d3dfcc1f530d1a63e7a27133c3b0fd19c12d2fcf9d518282a955b98d84c5834/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/9d3dfcc1f530d1a63e7a27133c3b0fd19c12d2fcf9d518282a955b98d84c5834/raw/metadata/analysis_model_output"
+      },
+      "decision": "accept",
+      "independent_peer_reason": "Cambio de línea de reporte y gerencia de clínicas es específico de prestadores. La copia fecha29septiembre y describe vigencia anunciada1octubre, sin acreditar ejecución ni cierre de la venta del controlador; no infiere expansión clínica.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "desde este jueves 1 de octubre “se eliminará la posición de gerente general de prestadores, pasando los gerentes generales de Clínica Santa María, Clínica Dávila, Omesa e Inverclinsa a reportarme directamente”",
+          "start": 589,
+          "end": 798
+        },
+        {
+          "origin": "original",
+          "text": "anunció que en la misma fecha llegará un nuevo gerente general a Clínica Santa María: José Ignacio Valenzuela",
+          "start": 818,
+          "end": 927
+        }
+      ],
+      "exact_proposed_copy_and_category": null,
+      "exact_group_target": null,
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0
+    },
+    {
+      "cohort_index": 98,
+      "url": "https://www.latercera.com/pulso/noticia/gobierno-anuncia-plan-laboral-que-movilizara-recursos-por-unos-us1350-millones-que-apunta-a-crear-mas-de-100-mil-empleos/",
+      "publication_date": "2026-09-28",
+      "queue_fingerprint": "be6903074ea87d3db588878f9eeb9791c348829e7a4b36b3d681093fd1b52d09",
+      "queue_entry_sha256": "fe556c31ddf69d062cdf2361a8b59f7d29f3b25722cbcaf1ec6cd97a77fdc818",
+      "source_body_original_sha256": "96a37ca4ba3f88f5d4131d6739e46e3ea602d460bba6eb77b9e9a8de950e4149",
+      "source_html_original_sha256": "e53440de05b88243894ec504f8eff187655b0184e3b1f88839a1cf28e05a69da",
+      "source_original_full_body_characters": 6640,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "ac823a7107d7945f9f85c93823000efc579be37793aa3182bdd119038d71328c",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_01d436c358f53739006acbc701386087d19fa5b2e1ff2bdf52",
+        "analysis_text_sha256": "96a37ca4ba3f88f5d4131d6739e46e3ea602d460bba6eb77b9e9a8de950e4149",
+        "request_input_sha256": "dcb5278c579fc82c1b0ba408e168b62c3073c9afe47229347d02c4dffc2b260f",
+        "raw_model_output_sha256": "dc78f46211b94fcf855787f9d19de9b50601227f7a9d087c06febb39f54daa8b"
+      },
+      "signal_sha256": "a90cc33d1970e2dc535428c3a5824eeb8dae9c11cf8f472df041257cd6513f13",
+      "primary_reader_record_sha256": "a1aeb08dfa1e4208aebba4372f2311499de8041ff8957dd5ad8cddd1d0b49082",
+      "application_record_sha256": "032de60ae0510a3f8d63216fce9e11582e2123014ff2a48e4c947e4f3515f553",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/be6903074ea87d3db588878f9eeb9791c348829e7a4b36b3d681093fd1b52d09/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/be6903074ea87d3db588878f9eeb9791c348829e7a4b36b3d681093fd1b52d09/raw/metadata/analysis_model_output"
+      },
+      "decision": "accept",
+      "independent_peer_reason": "Plan macro sí tiene componente sanitario directo130mil millones de adelanto de pagos a proveedoresMinsal. La copia mantiene anuncios2026/2027 y no afirma pagos ejecutados;1,3billones/100mil empleos es escala del plan completo, no partida íntegramente sanitaria.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "El tercer eje es recuperar liquidez para empresas y proveedores.",
+          "start": 4683,
+          "end": 4747
+        },
+        {
+          "origin": "original",
+          "text": "adelantando pagos al Minsal por $130 mil millones para la regularización de obligaciones a proveedores de Salud",
+          "start": 4839,
+          "end": 4950
+        }
+      ],
+      "exact_proposed_copy_and_category": null,
+      "exact_group_target": null,
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0
+    },
+    {
+      "cohort_index": 100,
+      "url": "https://www.latercera.com/pulso/noticia/grupo-estatal-chino-es-el-gran-concesionario-de-los-hospitales-publicos-chilenos/",
+      "publication_date": "2026-07-28",
+      "queue_fingerprint": "98a42cd2443e7222352800338ccc7cf0101ffdb1707cca9705e5815c1234958c",
+      "queue_entry_sha256": "db6af1338536bb1e4bdc34a0ece80f3b0ebf4daafcac0c96218df02cf2e34216",
+      "source_body_original_sha256": "2d0adf9fea9d9eeafb63717224a720710da2517733e3965cdddfab97fa481620",
+      "source_html_original_sha256": "d799d0f6e1250d48b19f22e0bc93ce5da04bfc2027b20aa108cdfef2f9881deb",
+      "source_original_full_body_characters": 4675,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "41925356c99bb2e5924427d9b48d506db47e31473b7dd8a6218ee2912e00bf07",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_05052c2f0d19eb14006acbcb6de50887d188cd0d25d933de7b",
+        "analysis_text_sha256": "2d0adf9fea9d9eeafb63717224a720710da2517733e3965cdddfab97fa481620",
+        "request_input_sha256": "341a9465d6a63befdc8388d01634ba085e65afcb5c666c0ed266dd8de7a5a25f",
+        "raw_model_output_sha256": "37ba0b7c4de9d020b2a609c09f54dd4941ed8ab9d28467ca3e1b297180c6836e"
+      },
+      "signal_sha256": "42cbbce656b5723c1d118ef1e0dbf144ca48602d63a8b5818fe5b21528db4d0d",
+      "primary_reader_record_sha256": "b83a9143190f9feba5547b283c243327a2cc6421ed3499cf43deba96a1a2bc8b",
+      "application_record_sha256": "33f1169003ce3a6b094e0034f792add5b94cc017a11c206623cc41c628791c18",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/98a42cd2443e7222352800338ccc7cf0101ffdb1707cca9705e5815c1234958c/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/98a42cd2443e7222352800338ccc7cf0101ffdb1707cca9705e5815c1234958c/raw/metadata/analysis_model_output"
+      },
+      "decision": "correct",
+      "independent_peer_reason": "Se deben separar CRCCsolo19,8/17,3/17 de CRCC+Consorcio28,7/23,3/24,4 y limitar universo a concesiones estudiadas. No sumar/redondear/corregir cifras fuente por cuenta propia. SASACagrupación es tesis FNE; compraPuentesintención investigada, no cierre/aprobación. Coincido con WHAT/WHY propuestos completos.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "Como tesis de trabajo, la FNE considera que forman parte de un mismo grupo empresarial todas las empresas controladas por la Sasac",
+          "start": 1149,
+          "end": 1279
+        },
+        {
+          "origin": "original",
+          "text": "La inversión global que consideran las concesiones incorporadas en el estudio alcanza a US$3.367 millones.",
+          "start": 2141,
+          "end": 2247
+        },
+        {
+          "origin": "original",
+          "text": "ambas en conjunto representan el 28,7% de la inversión total en concesiones hospitalarias, el 23,3% de las camas y el 24,4% de los subsidios.",
+          "start": 2635,
+          "end": 2776
+        }
+      ],
+      "exact_proposed_copy_and_category": {
+        "what_happened": "Según Pulso / La Tercera del 28 de julio de 2026, un informe de la FNE elaborado dentro de una investigación de concentración atribuyó al grupo CRCC y al Consorcio Iberoasiático (CRCC junto a Puentes), en conjunto, 28,7% de la inversión, 23,3% de las camas y 24,4% de los subsidios de las concesiones hospitalarias estudiadas. La nota distinguió las participaciones de CRCC por separado: 19,8% de inversión, 17,3% de camas y 17% de subsidios. Reportó además la tesis de trabajo de la FNE de considerar un mismo grupo a las empresas controladas por SASAC y la intención de CRBC Spain Investment Company de adquirir al grupo Puentes; no informó autorización ni cierre de la operación.",
+        "why_it_matters": "Al 28 de julio de 2026, según Pulso / La Tercera, las participaciones publicadas describían concentración de inversión, camas y subsidios dentro de las concesiones hospitalarias analizadas, no de toda la capacidad hospitalaria pública. La combinación de CRCC con el Consorcio Iberoasiático era relevante para competencia e infraestructura sanitaria. La agrupación empresarial bajo SASAC seguía siendo una tesis de trabajo de la FNE y la adquisición en España una operación pretendida e investigada; la nota no acreditaba aprobación, cierre ni efectos competitivos ya realizados."
+      },
+      "exact_group_target": null,
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0
+    },
+    {
+      "cohort_index": 103,
+      "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+      "publication_date": "2026-08-20",
+      "queue_fingerprint": "aeb39b2baf730d97e3b368b0b37062507899facea7c028a41459e2160f395008",
+      "queue_entry_sha256": "05b085e0c74847eea0bc3e692e35b835578be309b0e6423740804e2aeb5422cc",
+      "source_body_original_sha256": "2eb2cfabe7030bef50873ba9722bee3df24acec327e63f85d05655a7b3ccee1e",
+      "source_html_original_sha256": "c66d21c6db835bc3267f0c474a901fd760ff487ff4bdeabdfc5c9a08450caca9",
+      "source_original_full_body_characters": 6698,
+      "source_original_full_body_read": true,
+      "full_actual_model_output_read": true,
+      "full_actual_signal_prose_and_nonempty_fields_read": true,
+      "model_output_semantic_sha256": "8b5287375b69875e8f083681be3a32d2001f721774ac6a2c6e9d5f17efa2a361",
+      "model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0039a4baa29e7964006acbca04c7b087d1888bb0ca29fb87f9",
+        "analysis_text_sha256": "2eb2cfabe7030bef50873ba9722bee3df24acec327e63f85d05655a7b3ccee1e",
+        "request_input_sha256": "dae65223ab5162b52ec31791e6edb387de43dc4e7dcd980be0f47b94efc673ed",
+        "raw_model_output_sha256": "4ec673d422d2a61d44fdae14851acf60155b7fa6fbdc3f0483bb1a4136214b1e"
+      },
+      "signal_sha256": "ad05f45070f9b0b8650c9402644868ee23f7cc88c8f9fdb14f0ce3b8198952d2",
+      "primary_reader_record_sha256": "b476520fc55af0fcce78a0fde7dbc1b5842426f9af2b2ccadd5725b6d5e7c4ec",
+      "application_record_sha256": "5321006341df3b35c5077dee627bcb357920ab4d4ea4310de2badcef35a1c508",
+      "primary_body_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/aeb39b2baf730d97e3b368b0b37062507899facea7c028a41459e2160f395008/raw/metadata/page_text"
+      },
+      "primary_model_exact_immutable_producer_reference": {
+        "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+        "path": "data/state/pending_queue.json",
+        "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202",
+        "json_pointer": "/aeb39b2baf730d97e3b368b0b37062507899facea7c028a41459e2160f395008/raw/metadata/analysis_model_output"
+      },
+      "decision": "accept",
+      "independent_peer_reason": "Deuda247.170/total1.180.028/restante932.854 preservada como cifras atribuidas y discrepancia interna expresamente señalada. Junio2026 es corte del balance, agosto20 publicación y2037 plazo futuro; no afirmar resultadoOct11 o deuda liquidada.",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "las isapres abiertas ya han abonado $247.170 millones (US$268 millones) a las cuentas individuales de sus afiliados, según cifras de la Superintendencia de Salud a junio.",
+          "start": 1547,
+          "end": 1717
+        },
+        {
+          "origin": "original",
+          "text": "devolución que deberán completar de aquí a diciembre de 2037",
+          "start": 1838,
+          "end": 1898
+        },
+        {
+          "origin": "original",
+          "text": "mientras la deuda no esté íntegramente pagada, la ley impide a las isapres retirar utilidades o distribuir dividendos",
+          "start": 2672,
+          "end": 2789
+        }
+      ],
+      "exact_proposed_copy_and_category": null,
+      "exact_group_target": null,
+      "stored_unknown_corroboration_is_official_confirmation": false,
+      "independent_official_corroboration_verified": false,
+      "publication_before_new_semantic_review": true,
+      "score_or_output_mutated": false,
+      "peer_state_mutations": 0,
+      "peer_AI_calls": 0
+    }
+  ],
+  "summary": {
+    "full_original_bodies_read": 18,
+    "full_retained_models_read": 18,
+    "full_actual_published_signals_read": 18,
+    "primary_record_and_proposed_decision_exact_match": 18,
+    "accept": 15,
+    "correct": 2,
+    "group": 1,
+    "original_body_characters_read": 65484,
+    "findings_resolved_on_actual_state": 0
+  },
+  "global_acceptance": false,
+  "actual_editorial_application_performed": false,
+  "AI_calls": 0,
+  "state_mutations": 0,
+  "limits": [
+    "Two proposed copy/category corrections and one grouping are independently substantiated but remain pending actual audited application.",
+    "No numeric threshold/score/date/model changes or publication of deferred items.",
+    "Only two publisher originals establish the Ovalle same-event grouping; topical similarity is not independent corroboration.",
+    "Current runtime65visible/60cohort and12technicalholds are unchanged by this peer."
+  ]
+}

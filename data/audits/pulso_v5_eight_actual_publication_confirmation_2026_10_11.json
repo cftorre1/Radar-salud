@@ -1,0 +1,238 @@
+{
+  "schema_version": "pulso_v5_eight_actual_publication_confirmation_v1",
+  "source_id": "pulso_latercera",
+  "scope": "Read-only confirmation ALL8 producer981 new publications from cohort1–40 after root applied independent review; no new AI or publication. Named press prefix only in ChomaliWHAT, sameWHY and prospective flag.",
+  "producer_commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+  "producer_inputs": {
+    "history": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "f779385fed3eccf96d0e6d95ebfece23d1e79d83d6a0a8675b80615a63c121fa"
+    },
+    "queue": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "4cf450c4e0ab8b1238af11833dcc65b037382bae5b2ff0da93bc5539e1bbbf8f"
+    },
+    "runtime_report": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "c42683a457229a23bf35fbc1a658af5a8617411f615d4dcb0ddcaa5b03c4f43b"
+    },
+    "telemetry": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "d5cbef5b62630ab6f17305c29bfea987f788313e0876d15d6a02c115b2a30c30"
+    }
+  },
+  "actual_observed_inputs": {
+    "data/history/superintendencia_signals.json": "e9ef884d2ae5723c3d35bb011759a08492983e696399e9a9993f62adeebbac09",
+    "data/state/pending_queue.json": "4eded8dcb18995309a217cfbb1c0d7f6cf8f73d7bba1ca94f3a86e7465749596",
+    "data/audits/pulso_runtime_2026_10_11.json": "4499fe00824c3069bc76c4d6e3c6f28273fb576f35e8706cd89266c48eb71e71",
+    "data/ai_usage/responses.jsonl": "d5cbef5b62630ab6f17305c29bfea987f788313e0876d15d6a02c115b2a30c30",
+    "web/data/radar_today.json": "873af3297f8b7315cba8094f57baeb286531bcdf592f52150c3a5077ad363710",
+    "web/data/product.json": "ef1ccb03f7eced6c24262ab79296141058ce72a5ccbdc200b0efa514385b1dd4"
+  },
+  "actual_verified8history8queue8feed": true,
+  "independent_consumer_proofs": 8,
+  "independent_consumer_findings": [],
+  "AI_calls": 0,
+  "state_mutated": false,
+  "publication_approved_by_confirmation": false,
+  "strict_raw_date_reparse_count": 6,
+  "two_originals_retained_firstwarm_but_local_bytes_pending": true,
+  "rows": [
+    {
+      "cohort_index": 6,
+      "url": "https://www.latercera.com/nacional/noticia/arrau-confirma-investigacion-por-cirugias-esteticas-de-esposa-del-general-director-de-carabineros-cubiertas-por-dipreca/",
+      "publication_date": "2026-07-30",
+      "original_body_sha256": "1984513bed0372453cb79b906d072f975e9ef1286a2dcf1691a6995201d34a0b",
+      "original_model_response": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_01d1da03e340d2a4006acbcb41146c87d1b834a57c62e8728b",
+        "analysis_text_sha256": "1984513bed0372453cb79b906d072f975e9ef1286a2dcf1691a6995201d34a0b",
+        "request_input_sha256": "054b93a06df2d285beb959bb4260fba2305a9e48ad7c61c74199e136b3dd6836",
+        "raw_model_output_sha256": "b18ea8b2049c926a5349d935cda720e1dc1873b248f26c0dd5f44768fa803086"
+      },
+      "original_model_output_sha256": "68c6b851e22f3b5a931dbd8a1f5c42c39332ea14631b191c45b030b72b2116e2",
+      "actual_effective_signal_sha256": "ca72380e75c409dc7f98afb918a9aaecfbfe9353e3ba33507774697ba6b8510b",
+      "actual_queue_entry_sha256": "57b0b53219a4d93e3eb294ab07d3591486f292952f63751e8d3fecd9b4fc39fc",
+      "actual_feed_signal_sha256": "4fb971255cd8a45cf6bf422dd609ce291ded26a417711cacd7769d34f54c21db",
+      "actual_score": 78,
+      "actual_status": "published",
+      "independent_review_sha256": "c363e514752d850b0eefbd14873dd666f98a9f067146def30763f0fffbd09545",
+      "new_correction_attribution_only": false,
+      "body_day_raw_model_score_unchanged": true
+    },
+    {
+      "cohort_index": 13,
+      "url": "https://www.latercera.com/nacional/noticia/colmed-santiago-y-expertos-ponen-panos-frios-al-optimismo-del-minsal-por-avances-en-listas-de-espera/",
+      "publication_date": "2026-09-22",
+      "original_body_sha256": "433dcee97df8c5e18c2fb88a1b592ce7c8e4ebd16b0118192a1ab525a789c425",
+      "original_model_response": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0ffe484956ce83d5006acbc737454887d18578bcdd1a9b049a",
+        "analysis_text_sha256": "433dcee97df8c5e18c2fb88a1b592ce7c8e4ebd16b0118192a1ab525a789c425",
+        "request_input_sha256": "6049baadbb6600d6aff6f3b7f56155654bc6c1b2d33833b4d8eed1729852ed8c",
+        "raw_model_output_sha256": "6a4e5defd3b9e26685821827d7ee330e85c7b3d4be02ba0da5fe43500146f885"
+      },
+      "original_model_output_sha256": "29d5444956b1ad6cc71043f046317943dbd9583344332b5923c8e8cf870be7ed",
+      "actual_effective_signal_sha256": "3f7dd34e2c1a7804d5dc5d792c951136d886029052cd3fa6543bb9b97a2caa09",
+      "actual_queue_entry_sha256": "8eacf95b0b1f9b190ead3b49971bd61254409150da9717c0f3a3a4b675bf2ed8",
+      "actual_feed_signal_sha256": "faa6b2b87c565b0a74ff4953fc07fc8c65c85b2d91c13faffc90b958940132c0",
+      "actual_score": 92,
+      "actual_status": "published",
+      "independent_review_sha256": "c363e514752d850b0eefbd14873dd666f98a9f067146def30763f0fffbd09545",
+      "new_correction_attribution_only": false,
+      "body_day_raw_model_score_unchanged": true
+    },
+    {
+      "cohort_index": 21,
+      "url": "https://www.latercera.com/nacional/noticia/corte-de-apelaciones-antofagasta-condena-a-hospital-de-calama-y-servicio-de-salud-por-muerte-de-paciente-durante-parto/",
+      "publication_date": "2026-09-02",
+      "original_body_sha256": "6422dfe7e78299a9c6f9f54d5fe04701badabc7e2cc2ebd79d9e33706643f01e",
+      "original_model_response": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0534b57398615a57006acbc8eabc7487d1bda6d6a8e4c4118a",
+        "analysis_text_sha256": "6422dfe7e78299a9c6f9f54d5fe04701badabc7e2cc2ebd79d9e33706643f01e",
+        "request_input_sha256": "164ea12eeabe0d8a023223a7ec0fa6d115672db1fc6aa672f7dbb5205efec252",
+        "raw_model_output_sha256": "71841f23b9bada2703e8975c7af4ec21615eed65f34c57a476fb93542fa845ea"
+      },
+      "original_model_output_sha256": "554cc56cf51d46a80f6faaa587ef20e5dc6000f82bd237df5a7fbcb7f4a6f474",
+      "actual_effective_signal_sha256": "10e2edc4d4837b6491969b2ca03cad3b561ea05ec1b04f369c6d89d1b9cf5106",
+      "actual_queue_entry_sha256": "2c368fc651c8c434e122aab6258575d70075409e8dcd5b7b6b37e82d7dc0dd7a",
+      "actual_feed_signal_sha256": "679647802eca54c5c73b0af4426eac69f74787a3a19b3407e6672467489f6d60",
+      "actual_score": 78,
+      "actual_status": "published",
+      "independent_review_sha256": "c363e514752d850b0eefbd14873dd666f98a9f067146def30763f0fffbd09545",
+      "new_correction_attribution_only": false,
+      "body_day_raw_model_score_unchanged": true
+    },
+    {
+      "cohort_index": 22,
+      "url": "https://www.latercera.com/nacional/noticia/corte-ordena-reincorporar-a-exdirectora-del-hospital-de-san-antonio-tras-declarar-ilegal-su-remocion/",
+      "publication_date": "2026-08-01",
+      "original_body_sha256": "a753f8aa30055d8429f820fa9cd09d5f5440de57e2195045fcaec549073f236d",
+      "original_model_response": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0882fdfef10fba54006acbcb0eab1087d1bdbde66ea00d2a32",
+        "analysis_text_sha256": "a753f8aa30055d8429f820fa9cd09d5f5440de57e2195045fcaec549073f236d",
+        "request_input_sha256": "6803928c0889279f4f7406faf9af4e0afcb2538ee77ce221291203e45d07ac5f",
+        "raw_model_output_sha256": "71b3a1bdfeb9605f0c537862cb893e282273f93a83fd38e85335de3d546022c0"
+      },
+      "original_model_output_sha256": "668d42a3db223e4cc11a1268f5f0affd16eaa1f59f2c2ff08c307bfa9b4bd9b6",
+      "actual_effective_signal_sha256": "7e196c54b87bb053b8d2ca33c817ebedc200306304c951170724f6d59a99294b",
+      "actual_queue_entry_sha256": "f0ae5cbbd80643196ea4047519376267b868f72db3164fb3f22ce946419569ae",
+      "actual_feed_signal_sha256": "4a4213173e53769023db46dbe80431922819a48e5733b47fc4344653f6349fa5",
+      "actual_score": 82,
+      "actual_status": "published",
+      "independent_review_sha256": "c363e514752d850b0eefbd14873dd666f98a9f067146def30763f0fffbd09545",
+      "new_correction_attribution_only": false,
+      "body_day_raw_model_score_unchanged": true
+    },
+    {
+      "cohort_index": 23,
+      "url": "https://www.latercera.com/nacional/noticia/de-may-chomali-a-exautoridades-la-cita-que-reunio-a-un-centenar-de-personas-para-discutir-cambios-al-sistema-de-salud/",
+      "publication_date": "2026-08-11",
+      "original_body_sha256": "8d710c9fcf859219a898daad526ebf6ccf870273e99cba731cdc3d4187796812",
+      "original_model_response": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0a90418fb7433e9d006acbca70d5b487d1a47004ae6207b987",
+        "analysis_text_sha256": "8d710c9fcf859219a898daad526ebf6ccf870273e99cba731cdc3d4187796812",
+        "request_input_sha256": "5e2aba5409a8c5127a140a9563391f90d9c6d320266d5b3738369e1e742f0930",
+        "raw_model_output_sha256": "bdf4fbf4972788f560677110e25a4c9ee780086594f40442d18061d29a243c89"
+      },
+      "original_model_output_sha256": "8777cd0766493e05ac774de233f8dd39eaac7c4a6e57581f745e74bd7f72db6a",
+      "actual_effective_signal_sha256": "7d9daf391efed860679c3ec16361cca43791629ea7c0fcaa2617971f395cd9bf",
+      "actual_queue_entry_sha256": "276559f4e529f47571c241d045e4fa0263881fc4bd8538450c7a4733afac246a",
+      "actual_feed_signal_sha256": "585f80a5d3d157da211f20c3fe54427d3fd42032227dbdbb1c5c0eea018ac008",
+      "actual_score": 72,
+      "actual_status": "published",
+      "independent_review_sha256": "c363e514752d850b0eefbd14873dd666f98a9f067146def30763f0fffbd09545",
+      "new_correction_attribution_only": true,
+      "body_day_raw_model_score_unchanged": true
+    },
+    {
+      "cohort_index": 26,
+      "url": "https://www.latercera.com/nacional/noticia/diputados-avanzan-para-materializar-comision-investigadora-por-irregularidades-detectadas-en-gestion-de-vacunas-en-2024/",
+      "publication_date": "2026-09-08",
+      "original_body_sha256": "a743a4957ca4b20cfeef2a56e3ee294bdd9bd00cd3560cd77a207f19cdb64cca",
+      "original_model_response": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_00d4da119708ae10006acbc80a97c887d196ad84b1f796f232",
+        "analysis_text_sha256": "a743a4957ca4b20cfeef2a56e3ee294bdd9bd00cd3560cd77a207f19cdb64cca",
+        "request_input_sha256": "5cdcac676172286c6fa1b5c450b83063c325bfba4a9875605f04327e6d12ca0a",
+        "raw_model_output_sha256": "80f535cab29d11d41616be9d51121c88b9cde02d19866d68b97242593d28cd84"
+      },
+      "original_model_output_sha256": "2299ce1329eae2a0e6c8575f5ad953a5fa79b11343e2ddb1a14c5239439ffefa",
+      "actual_effective_signal_sha256": "61a8e8bd0382dad4bbdf736cddfe1d27f0705ccdd30d58a2099ac03c1ed438a7",
+      "actual_queue_entry_sha256": "2109b6c87307dfe89cc1430954e0083637c18d326351c37fce79273b38d80969",
+      "actual_feed_signal_sha256": "28d546fa4ec062e1ff6b46a394bd9574c6f40fcf26301ca5847b91e11198f721",
+      "actual_score": 92,
+      "actual_status": "published",
+      "independent_review_sha256": "c363e514752d850b0eefbd14873dd666f98a9f067146def30763f0fffbd09545",
+      "new_correction_attribution_only": false,
+      "body_day_raw_model_score_unchanged": true
+    },
+    {
+      "cohort_index": 36,
+      "url": "https://www.latercera.com/nacional/noticia/historica-condena-por-megafraude-a-fonasa-medicos-extranjeros-pagaran-con-carcel-y-mas-de-26-mil-millones-por-emitir-licencias-falsas/",
+      "publication_date": "2026-09-01",
+      "original_body_sha256": "508daa5d5687161f7f7e635a728637ef503d94722e5044a7e02e1df36e04fa0d",
+      "original_model_response": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0feb637bfef36bfd006acbc9334bb887d194d373a8a5fd916e",
+        "analysis_text_sha256": "508daa5d5687161f7f7e635a728637ef503d94722e5044a7e02e1df36e04fa0d",
+        "request_input_sha256": "21f2c20438f981cf33f9be93ec7493db50fa98baff8e28b949f6c6e36081e52f",
+        "raw_model_output_sha256": "30565e74f0f609dde2e36be5efe2cbf04ec5475d00fb476d239330a37954d9e9"
+      },
+      "original_model_output_sha256": "6e6837c1a1e41725d0d67465e8bc9d80598425812dea6af48b0cacb7fe2c578d",
+      "actual_effective_signal_sha256": "98e553672432e518f77198e432ece82b57ffe40391c37d36752435c09746d0be",
+      "actual_queue_entry_sha256": "bb7f1392db1033fa5c480fcb9a34b36f62b0f3065081c3344d2e9a86a3ce7781",
+      "actual_feed_signal_sha256": "73f4e1db6940a968dd8ee3ee9bed7f0f77038196f06559c0f8500a125d9e29c5",
+      "actual_score": 96,
+      "actual_status": "published",
+      "independent_review_sha256": "c363e514752d850b0eefbd14873dd666f98a9f067146def30763f0fffbd09545",
+      "new_correction_attribution_only": false,
+      "body_day_raw_model_score_unchanged": true
+    },
+    {
+      "cohort_index": 40,
+      "url": "https://www.latercera.com/nacional/noticia/la-agenda-legislativa-del-minsal-desde-cambios-a-cenabast-a-nuevas-condiciones-para-la-devolucion-de-becas-formativas/",
+      "publication_date": "2026-09-01",
+      "original_body_sha256": "15bf435f8e53e0c2d70f84241061f479f7b726012f9610f6555de091feacb61d",
+      "original_model_response": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_04e5f69fa516e867006acbc908742487d1b1d4c02700878707",
+        "analysis_text_sha256": "15bf435f8e53e0c2d70f84241061f479f7b726012f9610f6555de091feacb61d",
+        "request_input_sha256": "6ebacd99a4cd59b3162c28a402e1360f7a9a7104b7f4edb5dba46d86cde53589",
+        "raw_model_output_sha256": "f9d4b18b653dd707ef352dd5c48e971e2854d18a9ec3bdf92fdbf0ddf75033f1"
+      },
+      "original_model_output_sha256": "f847222e4b1d0b3b3ca77b2cfa31bf655a2f861208c5ca18166dc6564a4307e1",
+      "actual_effective_signal_sha256": "22c08d7ae209c58b4ee931c27116257f5452a21eccc2242852c59e992e515f05",
+      "actual_queue_entry_sha256": "57bb15e3606bba2d5e6849804242a1c0d807162424c6c7dea3a53f04516fe0ff",
+      "actual_feed_signal_sha256": "10eab314ad44a24bf9b649647cdaa863f0b62199b2d6f13c2b1a0ffe0697c16d",
+      "actual_score": 88,
+      "actual_status": "published",
+      "independent_review_sha256": "c363e514752d850b0eefbd14873dd666f98a9f067146def30763f0fffbd09545",
+      "new_correction_attribution_only": false,
+      "body_day_raw_model_score_unchanged": true
+    }
+  ]
+}

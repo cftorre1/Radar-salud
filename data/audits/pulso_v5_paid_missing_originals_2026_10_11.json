@@ -1,0 +1,326 @@
+{
+  "schema": "pulso_v5_paid_missing_original_retention_pins_v1",
+  "source": "pulso_latercera",
+  "mode": "retention_only_no_refetch_no_state_restore_no_editorial_acceptance",
+  "paid_producer": "981b0ff25c226d47785b77944aa53c459053aa21",
+  "producer_references": {
+    "queue": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "4cf450c4e0ab8b1238af11833dcc65b037382bae5b2ff0da93bc5539e1bbbf8f"
+    },
+    "runtime_report": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "c42683a457229a23bf35fbc1a658af5a8617411f615d4dcb0ddcaa5b03c4f43b"
+    },
+    "telemetry": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "d5cbef5b62630ab6f17305c29bfea987f788313e0876d15d6a02c115b2a30c30"
+    }
+  },
+  "original_capture": {
+    "source_manifest_git_ref": "8e2f2172f5ea083c2af217947ebbffe986f56dc3",
+    "source_manifest_git_path": "data/audits/pulso_runtime_capture/manifest.json",
+    "source_manifest_sha256": "905da0ee7c1d4bd4cf882b723554df60192534a07b0d7ae0567be4f40f7b28be",
+    "run_id": 38120291133,
+    "artifact_id": 11694919583,
+    "artifact_name": "pulso-real-core-86c3cd1d2697a6f814261eea6a563279b4b062ee",
+    "artifact_digest": "sha256:ce8bfd97c549e3f57458e04513109a202e3bb8c1f91969206f44d312ae51e627",
+    "workflow_head_sha": "86c3cd1d2697a6f814261eea6a563279b4b062ee"
+  },
+  "local_search_evidence_sha256": "be079702ac7590e361f4896d465e91fac73990b596172fd6ccd3e435acab63fc",
+  "required_original_count": 9,
+  "acceptance_note": "The first warm core run failed with a SourceTypeError. This contract claims only nine previously observed HTTP 200 responses, exact paid input pins and verifiable primary bytes. Artifact availability is not original retention, date verification or editorial acceptance.",
+  "articles": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/corte-de-apelaciones-antofagasta-condena-a-hospital-de-calama-y-servicio-de-salud-por-muerte-de-paciente-durante-parto/",
+      "producer_queue_key": "5a33112224b37df460c6e252a2d37b272ead8678d8bcafd3f329ac309be1609e",
+      "publication_date": "2026-09-02",
+      "primary_body_sha256": "6422dfe7e78299a9c6f9f54d5fe04701badabc7e2cc2ebd79d9e33706643f01e",
+      "primary_body_characters": 2868,
+      "current_primary_html_sha256": "f015f2aff5f25077049dd27d55a5f666e223086d538062573b5ba1f243eb1253",
+      "producer_outcome_observed": "published",
+      "original_http": {
+        "url": "https://www.latercera.com/nacional/noticia/corte-de-apelaciones-antofagasta-condena-a-hospital-de-calama-y-servicio-de-salud-por-muerte-de-paciente-durante-parto/",
+        "requested_at": "2026-10-11T07:17:39.232801+00:00",
+        "status": 200,
+        "final_url": "https://www.latercera.com/nacional/noticia/corte-de-apelaciones-antofagasta-condena-a-hospital-de-calama-y-servicio-de-salud-por-muerte-de-paciente-durante-parto/",
+        "content_type": "text/html; charset=utf-8",
+        "charset": "utf-8",
+        "captured_at": "2026-10-11T07:17:39.967036+00:00",
+        "bytes": 456107,
+        "sha256": "f015f2aff5f25077049dd27d55a5f666e223086d538062573b5ba1f243eb1253",
+        "returned_text_utf8_sha256": "f015f2aff5f25077049dd27d55a5f666e223086d538062573b5ba1f243eb1253",
+        "primary_article": {
+          "title": "Corte de Apelaciones Antofagasta condena a hospital de Calama y Servicio de Salud por muerte de paciente durante parto",
+          "publication_date": "2026-09-02",
+          "publication_timestamp": "2026-09-02T14:13:43.244Z",
+          "publication_date_source": "visible_article_byline",
+          "section": "Nacional",
+          "health_relevant": true
+        },
+        "gzip_file": "responses/f015f2aff5f25077049dd27d55a5f666e223086d538062573b5ba1f243eb1253.gz",
+        "gzip_sha256": "cf9a701ca162cdbc116480d05079e925689c6906352d71d5d9395e4af177b01a",
+        "retention_reason": "verified_primary_health_article"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/ministra-wulf-y-acuerdo-de-meta-por-demandas-sobre-salud-mental-de-ninos-las-companias-deben-ofrecer-productos-seguros/",
+      "producer_queue_key": "408feee32795820c2f061d8d60e5b1bf682c9162f40311834691bace777033ac",
+      "publication_date": "2026-08-26",
+      "primary_body_sha256": "e821ed58405cc9c4cc35f9cb48efb90461c4ca41775bec5757e24081c6dfbdac",
+      "primary_body_characters": 2006,
+      "current_primary_html_sha256": "173972b263f5e5b171a258fc431a3521120cd9953f8b68c6f801dce0b1c91d50",
+      "producer_outcome_observed": "published",
+      "original_http": {
+        "url": "https://www.latercera.com/nacional/noticia/ministra-wulf-y-acuerdo-de-meta-por-demandas-sobre-salud-mental-de-ninos-las-companias-deben-ofrecer-productos-seguros/",
+        "requested_at": "2026-10-11T07:18:29.962956+00:00",
+        "status": 200,
+        "final_url": "https://www.latercera.com/nacional/noticia/ministra-wulf-y-acuerdo-de-meta-por-demandas-sobre-salud-mental-de-ninos-las-companias-deben-ofrecer-productos-seguros/",
+        "content_type": "text/html; charset=utf-8",
+        "charset": "utf-8",
+        "captured_at": "2026-10-11T07:18:30.704094+00:00",
+        "bytes": 454759,
+        "sha256": "173972b263f5e5b171a258fc431a3521120cd9953f8b68c6f801dce0b1c91d50",
+        "returned_text_utf8_sha256": "173972b263f5e5b171a258fc431a3521120cd9953f8b68c6f801dce0b1c91d50",
+        "primary_article": {
+          "title": "Ministra Wulf y acuerdo de Meta por demandas sobre salud mental de niños: “Las compañías deben ofrecer productos seguros”",
+          "publication_date": "2026-08-26",
+          "publication_timestamp": "2026-08-26T16:36:36.164Z",
+          "publication_date_source": "visible_article_byline",
+          "section": "Nacional",
+          "health_relevant": true
+        },
+        "gzip_file": "responses/173972b263f5e5b171a258fc431a3521120cd9953f8b68c6f801dce0b1c91d50.gz",
+        "gzip_sha256": "3b0bb4f6d93ec99694cded106d68980a3227dbc859bee1dc00f3e1f6f3e4ef4b",
+        "retention_reason": "verified_primary_health_article"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/calisto-entra-a-la-batalla-por-causa-junaeb-defensa-buscara-limitar-acceso-al-contenido-de-celular-incautado-por-la-pdi/",
+      "producer_queue_key": "06daf509a9827c996bca05eb1dccd000062472ee6c116298b29bbac104ea8bf4",
+      "publication_date": "2026-08-21",
+      "primary_body_sha256": "b1135ab4c5315ed8c1af7d18ae77a2e9c7b983ae1cdd9e2e41e6ded6a3b67c1d",
+      "primary_body_characters": 4025,
+      "current_primary_html_sha256": "01f769067bf00d3757180e6c78f32d5f35e2ea5d20196baf026822b5d16f2e39",
+      "producer_outcome_observed": "retry",
+      "original_http": {
+        "url": "https://www.latercera.com/nacional/noticia/calisto-entra-a-la-batalla-por-causa-junaeb-defensa-buscara-limitar-acceso-al-contenido-de-celular-incautado-por-la-pdi/",
+        "requested_at": "2026-10-11T07:19:12.660330+00:00",
+        "status": 200,
+        "final_url": "https://www.latercera.com/nacional/noticia/calisto-entra-a-la-batalla-por-causa-junaeb-defensa-buscara-limitar-acceso-al-contenido-de-celular-incautado-por-la-pdi/",
+        "content_type": "text/html; charset=utf-8",
+        "charset": "utf-8",
+        "captured_at": "2026-10-11T07:19:13.484047+00:00",
+        "bytes": 463826,
+        "sha256": "01f769067bf00d3757180e6c78f32d5f35e2ea5d20196baf026822b5d16f2e39",
+        "returned_text_utf8_sha256": "01f769067bf00d3757180e6c78f32d5f35e2ea5d20196baf026822b5d16f2e39",
+        "primary_article": {
+          "title": "Calisto entra a la batalla por causa Junaeb: defensa buscará limitar acceso al contenido de celular incautado por la PDI",
+          "publication_date": "2026-08-21",
+          "publication_timestamp": "2026-08-21T17:30:00Z",
+          "publication_date_source": "visible_article_byline",
+          "section": "Nacional",
+          "health_relevant": true
+        },
+        "gzip_file": "responses/01f769067bf00d3757180e6c78f32d5f35e2ea5d20196baf026822b5d16f2e39.gz",
+        "gzip_sha256": "f99b07ee50de4068e183f5f492fb814cc13261068895b1111cda422fcc09bd8a",
+        "retention_reason": "verified_primary_health_article"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/marin-cita-a-relatora-de-la-onu-y-apunta-a-prohibir-la-gestacion-subrogada-va-de-la-mano-con-la-comercializacion-de-los-cuerpos/",
+      "producer_queue_key": "0ccbd53626b2dbe20f75018e39fbb7bc83d2893c816953e2274dce397a5916af",
+      "publication_date": "2026-08-13",
+      "primary_body_sha256": "e819133f13cb094509e20eb58d55494cd089d8e1ef92334dc981e4b174d32c68",
+      "primary_body_characters": 2146,
+      "current_primary_html_sha256": "166449238c2c2ba0a5c45991f583c5d95156adf27fe8557ee4c16e6f6331508b",
+      "producer_outcome_observed": "published",
+      "original_http": {
+        "url": "https://www.latercera.com/nacional/noticia/marin-cita-a-relatora-de-la-onu-y-apunta-a-prohibir-la-gestacion-subrogada-va-de-la-mano-con-la-comercializacion-de-los-cuerpos/",
+        "requested_at": "2026-10-11T07:20:27.623627+00:00",
+        "status": 200,
+        "final_url": "https://www.latercera.com/nacional/noticia/marin-cita-a-relatora-de-la-onu-y-apunta-a-prohibir-la-gestacion-subrogada-va-de-la-mano-con-la-comercializacion-de-los-cuerpos/",
+        "content_type": "text/html; charset=utf-8",
+        "charset": "utf-8",
+        "captured_at": "2026-10-11T07:20:28.279918+00:00",
+        "bytes": 457593,
+        "sha256": "166449238c2c2ba0a5c45991f583c5d95156adf27fe8557ee4c16e6f6331508b",
+        "returned_text_utf8_sha256": "166449238c2c2ba0a5c45991f583c5d95156adf27fe8557ee4c16e6f6331508b",
+        "primary_article": {
+          "title": "Marín cita a relatora de la ONU y apunta a “prohibir” la gestación subrogada: “Va de la mano con la comercialización de los cuerpos”",
+          "publication_date": "2026-08-13",
+          "publication_timestamp": "2026-08-13T13:18:54.036Z",
+          "publication_date_source": "visible_article_byline",
+          "section": "Nacional",
+          "health_relevant": true
+        },
+        "gzip_file": "responses/166449238c2c2ba0a5c45991f583c5d95156adf27fe8557ee4c16e6f6331508b.gz",
+        "gzip_sha256": "914054bcda57525d0045b85301cb62d9d8cdcc05d3f5012cc0101ca0415c7ba7",
+        "retention_reason": "verified_primary_health_article"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/por-emanaciones-toxicas-informan-suspension-de-clases-en-quilicura-tras-gigantesco-incendio-en-empresa-de-productos-quimicos/",
+      "producer_queue_key": "64e93fedcc7f2ee3b21a54cad26e305f27e94dd96585ba5028d0bf609b9cb5bf",
+      "publication_date": "2026-08-05",
+      "primary_body_sha256": "b190c2b846701c235e961956a22f14c928f3fd87798a0cbd1b5edfdd2dd6a6be",
+      "primary_body_characters": 1847,
+      "current_primary_html_sha256": "c3e2d747d4d5eb034700ec85480721cf6f95f3c00c75ae6ebccc749627bd46d6",
+      "producer_outcome_observed": "retry",
+      "original_http": {
+        "url": "https://www.latercera.com/nacional/noticia/por-emanaciones-toxicas-informan-suspension-de-clases-en-quilicura-tras-gigantesco-incendio-en-empresa-de-productos-quimicos/",
+        "requested_at": "2026-10-11T07:21:39.190620+00:00",
+        "status": 200,
+        "final_url": "https://www.latercera.com/nacional/noticia/por-emanaciones-toxicas-informan-suspension-de-clases-en-quilicura-tras-gigantesco-incendio-en-empresa-de-productos-quimicos/",
+        "content_type": "text/html; charset=utf-8",
+        "charset": "utf-8",
+        "captured_at": "2026-10-11T07:21:40.032088+00:00",
+        "bytes": 454386,
+        "sha256": "c3e2d747d4d5eb034700ec85480721cf6f95f3c00c75ae6ebccc749627bd46d6",
+        "returned_text_utf8_sha256": "c3e2d747d4d5eb034700ec85480721cf6f95f3c00c75ae6ebccc749627bd46d6",
+        "primary_article": {
+          "title": "Por emanaciones tóxicas: informan suspensión de clases en Quilicura tras gigantesco incendio en empresa de productos químicos",
+          "publication_date": "2026-08-05",
+          "publication_timestamp": "2026-08-05T05:05:22.395Z",
+          "publication_date_source": "visible_article_byline",
+          "section": "Nacional",
+          "health_relevant": true
+        },
+        "gzip_file": "responses/c3e2d747d4d5eb034700ec85480721cf6f95f3c00c75ae6ebccc749627bd46d6.gz",
+        "gzip_sha256": "b60a6ec840253fee21af8b86ae13abe3ccdf84a112e7c3fe68c0a5c25bc09981",
+        "retention_reason": "verified_primary_health_article"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/arrau-confirma-investigacion-por-cirugias-esteticas-de-esposa-del-general-director-de-carabineros-cubiertas-por-dipreca/",
+      "producer_queue_key": "70dc99f1a3a2700d62cbc827e26e960fa2a48b1a7498d0285bc24705585b6672",
+      "publication_date": "2026-07-30",
+      "primary_body_sha256": "1984513bed0372453cb79b906d072f975e9ef1286a2dcf1691a6995201d34a0b",
+      "primary_body_characters": 2144,
+      "current_primary_html_sha256": "a3974a5179611c4502ccc8e6bcf3c0c24152a881f2aaf9894afd1a35f905a508",
+      "producer_outcome_observed": "published",
+      "original_http": {
+        "url": "https://www.latercera.com/nacional/noticia/arrau-confirma-investigacion-por-cirugias-esteticas-de-esposa-del-general-director-de-carabineros-cubiertas-por-dipreca/",
+        "requested_at": "2026-10-11T07:22:33.393380+00:00",
+        "status": 200,
+        "final_url": "https://www.latercera.com/nacional/noticia/arrau-confirma-investigacion-por-cirugias-esteticas-de-esposa-del-general-director-de-carabineros-cubiertas-por-dipreca/",
+        "content_type": "text/html; charset=utf-8",
+        "charset": "utf-8",
+        "captured_at": "2026-10-11T07:22:34.002049+00:00",
+        "bytes": 455837,
+        "sha256": "a3974a5179611c4502ccc8e6bcf3c0c24152a881f2aaf9894afd1a35f905a508",
+        "returned_text_utf8_sha256": "a3974a5179611c4502ccc8e6bcf3c0c24152a881f2aaf9894afd1a35f905a508",
+        "primary_article": {
+          "title": "Arrau confirma investigación por cirugías estéticas de esposa del general director de Carabineros cubiertas por Dipreca",
+          "publication_date": "2026-07-30",
+          "publication_timestamp": "2026-07-30T15:52:15.779Z",
+          "publication_date_source": "visible_article_byline",
+          "section": "Nacional",
+          "health_relevant": true
+        },
+        "gzip_file": "responses/a3974a5179611c4502ccc8e6bcf3c0c24152a881f2aaf9894afd1a35f905a508.gz",
+        "gzip_sha256": "6c825ec4385eb9482b514a3c83161c6723b4777d76314b43649a825fe5981550",
+        "retention_reason": "verified_primary_health_article"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/gobierno-suspende-clases-para-este-lunes-en-provincia-de-huasco-y-regiones-de-coquimbo-y-valparaiso/",
+      "producer_queue_key": "252882da6d6e23d08e138d33d6b1d66aa23a57cf7fe15bd2f8820b2234ac1b31",
+      "publication_date": "2026-07-19",
+      "primary_body_sha256": "52f7381d02dfa2f44c9ed72ec446324e3f643c321687ac197656e0a96c51afd8",
+      "primary_body_characters": 3725,
+      "current_primary_html_sha256": "23f32579ff28f6c07a816af0cd7c1686c76ec38ee74678eaf228ebf89bd65c2c",
+      "producer_outcome_observed": "retry",
+      "original_http": {
+        "url": "https://www.latercera.com/nacional/noticia/gobierno-suspende-clases-para-este-lunes-en-provincia-de-huasco-y-regiones-de-coquimbo-y-valparaiso/",
+        "requested_at": "2026-10-11T07:24:25.204484+00:00",
+        "status": 200,
+        "final_url": "https://www.latercera.com/nacional/noticia/gobierno-suspende-clases-para-este-lunes-en-provincia-de-huasco-y-regiones-de-coquimbo-y-valparaiso/",
+        "content_type": "text/html; charset=utf-8",
+        "charset": "utf-8",
+        "captured_at": "2026-10-11T07:24:25.936330+00:00",
+        "bytes": 458431,
+        "sha256": "23f32579ff28f6c07a816af0cd7c1686c76ec38ee74678eaf228ebf89bd65c2c",
+        "returned_text_utf8_sha256": "23f32579ff28f6c07a816af0cd7c1686c76ec38ee74678eaf228ebf89bd65c2c",
+        "primary_article": {
+          "title": "Gobierno suspende clases para este lunes en provincia de Huasco y regiones de Coquimbo y Valparaíso",
+          "publication_date": "2026-07-19",
+          "publication_timestamp": "2026-07-19T01:34:48.436Z",
+          "publication_date_source": "visible_article_byline",
+          "section": "Nacional",
+          "health_relevant": true
+        },
+        "gzip_file": "responses/23f32579ff28f6c07a816af0cd7c1686c76ec38ee74678eaf228ebf89bd65c2c.gz",
+        "gzip_sha256": "76ab4695d1495dc406eeaf34bf1ab9176ef703bf817fc95cf7ab8ee0f76274ae",
+        "retention_reason": "verified_primary_health_article"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/ministra-rincon-detalla-que-las-regiones-mas-afectadas-por-cortes-electricos-durante-el-sistema-frontal-son-la-araucania-y-valparaiso/",
+      "producer_queue_key": "42389212d62d2d31e3a7021256941491424eea59a5db7e598e18345e7772ccd1",
+      "publication_date": "2026-07-17",
+      "primary_body_sha256": "fdac2c8ca728e774bf0a27e76dfcf74a5d2f332db3d42f7ef775efa8872629e5",
+      "primary_body_characters": 2151,
+      "current_primary_html_sha256": "8d7c80ba6145ca8151c803b3ad7f7e5eb0b055cadd205dd38a0118bcda255e26",
+      "producer_outcome_observed": "rejected",
+      "original_http": {
+        "url": "https://www.latercera.com/nacional/noticia/ministra-rincon-detalla-que-las-regiones-mas-afectadas-por-cortes-electricos-durante-el-sistema-frontal-son-la-araucania-y-valparaiso/",
+        "requested_at": "2026-10-11T07:24:45.462853+00:00",
+        "status": 200,
+        "final_url": "https://www.latercera.com/nacional/noticia/ministra-rincon-detalla-que-las-regiones-mas-afectadas-por-cortes-electricos-durante-el-sistema-frontal-son-la-araucania-y-valparaiso/",
+        "content_type": "text/html; charset=utf-8",
+        "charset": "utf-8",
+        "captured_at": "2026-10-11T07:24:46.250274+00:00",
+        "bytes": 456057,
+        "sha256": "8d7c80ba6145ca8151c803b3ad7f7e5eb0b055cadd205dd38a0118bcda255e26",
+        "returned_text_utf8_sha256": "8d7c80ba6145ca8151c803b3ad7f7e5eb0b055cadd205dd38a0118bcda255e26",
+        "primary_article": {
+          "title": "Ministra Rincón detalla que las regiones más afectadas por cortes eléctricos durante el sistema frontal son La Araucanía y Valparaíso",
+          "publication_date": "2026-07-17",
+          "publication_timestamp": "2026-07-17T15:08:07.909Z",
+          "publication_date_source": "visible_article_byline",
+          "section": "Nacional",
+          "health_relevant": true
+        },
+        "gzip_file": "responses/8d7c80ba6145ca8151c803b3ad7f7e5eb0b055cadd205dd38a0118bcda255e26.gz",
+        "gzip_sha256": "378889c3c9bdd558dd13c27ef49bfb64ab8476f6657a63a2512ea8f64e2396d8",
+        "retention_reason": "verified_primary_health_article"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+      "producer_queue_key": "17a3eda8d5775f13bc511f25725813e49446800571ec056701976ea03dd8081c",
+      "publication_date": "2026-07-15",
+      "primary_body_sha256": "498322790b34aff91b51dd1768968c41a53ac050657007091f75181bdbb30356",
+      "primary_body_characters": 2984,
+      "current_primary_html_sha256": "619fd197fd910a46c6ec6811c1356b01392dc95ee9f5c7b86f5d5f6e1c020817",
+      "producer_outcome_observed": "retry",
+      "original_http": {
+        "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+        "requested_at": "2026-10-11T07:25:03.759309+00:00",
+        "status": 200,
+        "final_url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+        "content_type": "text/html; charset=utf-8",
+        "charset": "utf-8",
+        "captured_at": "2026-10-11T07:25:04.296576+00:00",
+        "bytes": 459100,
+        "sha256": "619fd197fd910a46c6ec6811c1356b01392dc95ee9f5c7b86f5d5f6e1c020817",
+        "returned_text_utf8_sha256": "619fd197fd910a46c6ec6811c1356b01392dc95ee9f5c7b86f5d5f6e1c020817",
+        "primary_article": {
+          "title": "Colmed se suma a las críticas contra proyecto “Escucha su corazón” y defiende que exista un consentimiento informado libre de coerción",
+          "publication_date": "2026-07-15",
+          "publication_timestamp": "2026-07-15T17:41:09.828Z",
+          "publication_date_source": "visible_article_byline",
+          "section": "Nacional",
+          "health_relevant": true
+        },
+        "gzip_file": "responses/619fd197fd910a46c6ec6811c1356b01392dc95ee9f5c7b86f5d5f6e1c020817.gz",
+        "gzip_sha256": "1c1c12bb0b96ec6e5ce591c32ff7df3191f23d3efd21b3d7cc84c1f64725277d",
+        "retention_reason": "verified_primary_health_article"
+      }
+    }
+  ]
+}

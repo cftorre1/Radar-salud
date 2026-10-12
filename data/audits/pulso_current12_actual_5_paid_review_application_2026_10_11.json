@@ -1,0 +1,102 @@
+{
+  "schema_version": "pulso_actual_paid_review_application_v1",
+  "observed_at": "2026-10-11T21:05:25.563518+00:00",
+  "producer_commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+  "reviewed_urls": [
+    "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+    "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+    "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+    "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+    "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/"
+  ],
+  "reviews": [
+    {
+      "review": {
+        "review_file": "data/audits/pulso_current12_deficit_paid_editorial_correction_2026_10_11.json",
+        "review_sha256": "6c7dcaffe808063c6ea6430cfe0dbaa2d039d694518ea510030df4aae87ff70b",
+        "independent_review_file": "data/audits/pulso_current12_own5_independent_semantic_review_2026_10_11.json",
+        "independent_review_sha256": "ddfe81db23bc03cf8f5baab0ca0e818908d19103008010ff90eae941ec965745"
+      },
+      "application": {
+        "review_id": "pulso_current12_deficit_actual_paid_publication_2026_10_11",
+        "review_sha256": "6c7dcaffe808063c6ea6430cfe0dbaa2d039d694518ea510030df4aae87ff70b",
+        "reviewed_count": 1,
+        "applied_count": 1,
+        "unchanged_on_replay": 0,
+        "decisions": {
+          "accept": 0,
+          "reject": 0,
+          "group": 0,
+          "correct": 1
+        },
+        "ai_calls": 0,
+        "primary_evidence_mutations": 0,
+        "queue_attempt_resets": 0
+      },
+      "immediate_reapplication": {
+        "review_id": "pulso_current12_deficit_actual_paid_publication_2026_10_11",
+        "review_sha256": "6c7dcaffe808063c6ea6430cfe0dbaa2d039d694518ea510030df4aae87ff70b",
+        "reviewed_count": 1,
+        "applied_count": 0,
+        "unchanged_on_replay": 1,
+        "decisions": {
+          "accept": 0,
+          "reject": 0,
+          "group": 0,
+          "correct": 1
+        },
+        "ai_calls": 0,
+        "primary_evidence_mutations": 0,
+        "queue_attempt_resets": 0
+      }
+    },
+    {
+      "review": {
+        "review_file": "data/audits/pulso_actual_final12_assigned7_editorial_corrections_2026_10_11.json",
+        "review_sha256": "1a08eeb947162a921756546f82a704db18371c066a2065b31042222ac69a544c",
+        "independent_review_file": "data/audits/pulso_actual_final12_assigned7_independent_semantic_review_2026_10_11.json",
+        "independent_review_sha256": "128ddb2296591847f30576c1613fab2984995ada459c2f7b3f7b94e164a64b4a"
+      },
+      "application": {
+        "review_id": "pulso_actual_final12_assigned7_published_review_2026_10_11",
+        "review_sha256": "1a08eeb947162a921756546f82a704db18371c066a2065b31042222ac69a544c",
+        "reviewed_count": 4,
+        "applied_count": 4,
+        "unchanged_on_replay": 0,
+        "decisions": {
+          "accept": 1,
+          "reject": 0,
+          "group": 0,
+          "correct": 3
+        },
+        "ai_calls": 0,
+        "primary_evidence_mutations": 0,
+        "queue_attempt_resets": 0
+      },
+      "immediate_reapplication": {
+        "review_id": "pulso_actual_final12_assigned7_published_review_2026_10_11",
+        "review_sha256": "1a08eeb947162a921756546f82a704db18371c066a2065b31042222ac69a544c",
+        "reviewed_count": 4,
+        "applied_count": 0,
+        "unchanged_on_replay": 4,
+        "decisions": {
+          "accept": 1,
+          "reject": 0,
+          "group": 0,
+          "correct": 3
+        },
+        "ai_calls": 0,
+        "primary_evidence_mutations": 0,
+        "queue_attempt_resets": 0
+      }
+    }
+  ],
+  "all_paid_models_and_original_bodies_unchanged": true,
+  "all_attempts_lanes_dates_unchanged": true,
+  "native5293_queue_entries_unchanged": true,
+  "native897_history_rows_unchanged": true,
+  "all_unreviewed_queue_entries_unchanged": true,
+  "all_cost_ledgers_and_response_events_unchanged": true,
+  "AI_calls": 0,
+  "global_acceptance": false
+}

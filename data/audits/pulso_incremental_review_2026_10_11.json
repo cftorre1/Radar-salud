@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "source_id": "pulso_latercera",
+  "review_date": "2026-10-11",
+  "reviewer": "independent_external_control_agent",
+  "verdict": "PASS_INCREMENTAL_TRIAGE_NOT_PUBLICATION_APPROVAL",
+  "baseline": {
+    "reviewed_commit": "8290d041c3f8a4cfd433ba5932eb9a9c8afb79af",
+    "files": {
+      "data/state/pending_queue.json": {
+        "sha256": "47351e139b31b311ef94e902460df7e866ce79dedd6acf5e0824f0eb7ebbfe97",
+        "bytes": 9611386
+      },
+      "data/history/superintendencia_signals.json": {
+        "sha256": "0b54ae732b37b79b6e48917fd56b4beb254cdee3f49ee6ceb68a72536fcaade1",
+        "bytes": 2660713
+      },
+      "web/data/radar_today.json": {
+        "sha256": "cdb2ec7e617c0653cd6f3016d419c227c0ca10101cd7bca7f3969110634427fc",
+        "bytes": 334520
+      }
+    },
+    "queue_rows": [
+      {
+        "fingerprint": "f6452437b7a9a85ed286ed014c1c3b200798bc64e766b4b0ca6ad32e589a3461",
+        "source_url": "https://www.latercera.com/nacional/noticia/presupuesto-salud-2027-rebajas-al-ajuar-del-recien-nacido-y-a-la-ley-ricarte-soto-y-foco-en-atencion-primaria/",
+        "publication_date": "2026-10-07",
+        "status": "pending",
+        "lane": "BACKFILL",
+        "detected_at": "2026-10-11T04:36:44.044688+00:00",
+        "attempts": 0,
+        "editorial_hold": "possible_duplicate_requires_incremental_review"
+      },
+      {
+        "fingerprint": "a58988d996549164f9ef27cf474ed8c4a30ff07e212b4fc59c03d8e3bb1d7004",
+        "source_url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+        "publication_date": "2026-10-05",
+        "status": "pending",
+        "lane": "BACKFILL",
+        "detected_at": "2026-10-11T04:36:44.044688+00:00",
+        "attempts": 0,
+        "editorial_hold": "possible_duplicate_requires_incremental_review"
+      },
+      {
+        "fingerprint": "ccd805b80c41f550102629fb84b7fb64e177dba298fa11f34679c88faa4b8b8b",
+        "source_url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+        "publication_date": "2026-07-14",
+        "status": "pending",
+        "lane": "BACKFILL",
+        "detected_at": "2026-10-11T04:36:44.044688+00:00",
+        "attempts": 0,
+        "editorial_hold": "possible_duplicate_requires_incremental_review"
+      }
+    ],
+    "history_rows": [
+      {
+        "title": "Las isapres logran el punto de inflexión y registran aumento de cotizantes por primera vez en 53 meses",
+        "source_name": "Diario Financiero",
+        "source_url": "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes",
+        "event_date": "2026-09-09",
+        "detected_at": null,
+        "evidence_maturity": "media_reported",
+        "editorial_relevance": 82,
+        "distribution": "archive"
+      },
+      {
+        "title": "Salud aumentará su presupuesto en 4,7% para 2027: Ministra Chomali destaca foco en gestión, eficiencia y reducción de listas de espera",
+        "source_name": "Ministerio de Salud",
+        "source_url": "https://www.minsal.cl/salud-aumentara-su-presupuesto-en-47-para-2027-ministra-chomali-destaca-foco-en-gestion-eficiencia-y-reduccion-de-listas-de-espera/",
+        "event_date": "2026-10-01",
+        "detected_at": "2026-10-08T08:36:38.723606+00:00",
+        "evidence_maturity": null,
+        "editorial_relevance": 92,
+        "distribution": "archive"
+      }
+    ]
+  },
+  "editorial_policy": {
+    "media_materiality_threshold": 72,
+    "threshold_changed": false,
+    "publication_approved": false,
+    "required_evidence_maturity": "media_reported",
+    "publication_requirements": [
+      "Genuine core detail re-verification",
+      "Existing AI editorial analysis and >=72 materiality",
+      "Existing publication-ready evidence gate",
+      "Incremental value and event context explicitly evaluated"
+    ]
+  },
+  "limitations": [
+    "MINSAL original rendered web fetch returned Internal Error. The actual current history/feed announcement was reviewed; absence of details in that signal does not prove absence in the official original.",
+    "No queue/history/feed state was changed by this independent read-only review.",
+    "Media numbers remain publisher-reported until separately corroborated with official data.",
+    "Release recommendations only remove a mechanical duplicate-review hold for existing editorial analysis; they do not authorize a second publication or set its score."
+  ],
+  "reviews": [
+    {
+      "source_url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+      "publication_date": "2026-10-05",
+      "date_verification": {
+        "method": "publisher_original_visible_byline",
+        "author": "Daniela Silva",
+        "display": "5 OCTUBRE 2026",
+        "line": 123
+      },
+      "reference_period": "Proposed fiscal-year 2027 budget; interview publication Oct5",
+      "event_status": "budget_proposal_not_enacted",
+      "compared_signal": {
+        "source_url": "https://www.minsal.cl/salud-aumentara-su-presupuesto-en-47-para-2027-ministra-chomali-destaca-foco-en-gestion-eficiencia-y-reduccion-de-listas-de-espera/",
+        "publication_date": "2026-10-01",
+        "date_verification": "existing_history_and_feed_event_date_only",
+        "current_history_content": "General 4.7% budget increase, efficiency and waiting-list priorities; no budget-line allocation amounts."
+      },
+      "relationship": "Same overall budget announcement and priorities; later interview adds unconfirmed efficiency assertions.",
+      "incremental_observations": [
+        {
+          "field": "minister_efficiency_assertion",
+          "description": "Minister says 2026 spending will stay flat while output rises; article supplies no comparable production series or budget line."
+        },
+        {
+          "field": "procurement_assertion",
+          "description": "Interview gives generic stock-waste and direct-purchase premium examples, without a new implemented decision or quantified institution-level change."
+        }
+      ],
+      "decision": "keep_hold",
+      "reason": "duplicate_budget_announcement_no_verified_material_increment",
+      "recommended_hold": "possible_duplicate_requires_incremental_review",
+      "editorial_outcome": "deferred_duplicate_incremental_value_not_demonstrated",
+      "publication_approved": false,
+      "allowed_action": "Record reviewed deferral and reasons; retain current hold, lane, detected_at, attempts and pending status. Reassess only on demonstrable new material evidence."
+    },
+    {
+      "source_url": "https://www.latercera.com/nacional/noticia/presupuesto-salud-2027-rebajas-al-ajuar-del-recien-nacido-y-a-la-ley-ricarte-soto-y-foco-en-atencion-primaria/",
+      "publication_date": "2026-10-07",
+      "date_verification": {
+        "method": "publisher_original_visible_byline",
+        "authors": [
+          "Roberto Gálvez",
+          "Ignacia Canales"
+        ],
+        "display": "7 OCTUBRE 2026",
+        "line": 123
+      },
+      "reference_period": "Proposed fiscal-year 2027 vs 2026 budget",
+      "event_status": "budget_proposal_not_enacted",
+      "compared_signal": {
+        "source_url": "https://www.minsal.cl/salud-aumentara-su-presupuesto-en-47-para-2027-ministra-chomali-destaca-foco-en-gestion-eficiencia-y-reduccion-de-listas-de-espera/",
+        "publication_date": "2026-10-01",
+        "date_verification": "existing_history_and_feed_event_date_only",
+        "current_history_content": "General 4.7% budget increase; no figures for APS, Ricarte Soto, newborn support or contingency reallocations."
+      },
+      "relationship": "Shared budget process, but a materially different program-level allocation and policy-risk signal.",
+      "new_incremental_fields": [
+        {
+          "field": "aps_budget",
+          "unit": "CLP million",
+          "base_2026": 3595710,
+          "proposed_2027": 3960097,
+          "reported_change_pct": 6.8,
+          "change_basis": "real",
+          "publisher_lines": [
+            131,
+            143
+          ]
+        },
+        {
+          "field": "ricarte_soto_high_cost_fund",
+          "unit": "CLP million",
+          "base_2026": 189696,
+          "proposed_2027": 166951,
+          "reported_change_pct": -14.6,
+          "change_basis": "real",
+          "publisher_line": 145
+        },
+        {
+          "field": "newborn_support_program",
+          "unit": "CLP million_rounded",
+          "base_2026": 17600,
+          "proposed_2027": 16200,
+          "reported_change_pct": -10.7,
+          "change_basis": "real",
+          "publisher_line": 154
+        },
+        {
+          "field": "aps_contingencies",
+          "unit": "CLP million",
+          "base_2026": 97798,
+          "proposed_2027": 241067,
+          "reported_change_pct": 139.1,
+          "change_basis": "real",
+          "publisher_line": 134
+        },
+        {
+          "field": "hospital_grd_contingencies",
+          "unit": "CLP million",
+          "base_2026": 329730,
+          "proposed_2027": 27291,
+          "reported_change_pct": -91.7,
+          "change_basis": "nominal",
+          "publisher_line": 135
+        },
+        {
+          "field": "medical_services_provision",
+          "unit": "CLP million",
+          "base_2026": 703765,
+          "proposed_2027": 985515,
+          "reported_change_pct": 35.8,
+          "change_basis": "real",
+          "publisher_line": 144
+        }
+      ],
+      "interpretation_constraints": [
+        "Article frames contingency changes as internal redistribution toward APS, not wholly additional expenditure.",
+        "Budget proposal and parliamentary discussion are not enacted appropriations.",
+        "Ministry response quoted in article disputes any reduction of existing Ricarte Soto patient guarantees and says continuity is protected; do not infer withdrawn coverage from the proposed fund reduction.",
+        "Real and nominal percentage changes must remain labeled separately.",
+        "Dates for photographed prior events, including Aug14 image, are not publication dates."
+      ],
+      "decision": "release_hold_for_editorial_analysis",
+      "reason": "program_level_budget_reallocation_and_reductions_incremental_to_current_signal",
+      "recommended_hold": null,
+      "editorial_outcome": "pending_editorial_analysis_not_published",
+      "publication_approved": false,
+      "allowed_action": "After genuine article verification, preserve the queue fingerprint/lane/detected_at/attempts and append this reviewed resolution. Remove only the obsolete mechanical hold; existing >=72 materiality, incremental-value and publication gates still decide."
+    },
+    {
+      "source_url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "publication_date": "2026-07-14",
+      "date_verification": {
+        "method": "publisher_original_visible_byline",
+        "author": "Mariana Marusic",
+        "display": "14 JULIO 2026",
+        "line": 123
+      },
+      "reference_period": "May 2026 contract signings and cancellations",
+      "event_status": "historical_reported_measurement_not_current_october_event",
+      "compared_signal": {
+        "source_url": "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes",
+        "publication_date": "2026-09-09",
+        "date_verification": {
+          "method": "publisher_original_visible_publication_header",
+          "display": "Publicado: Miércoles 9 de septiembre de 2026 a las 17:04 hrs.",
+          "line": 358
+        },
+        "reference_period": "July 2026 effective contributor stock; linked May contract-signing turning point",
+        "current_history_content": "Generic reported contributor inflection, no figures or method; visible DF item is editorially degraded to58 in current feed."
+      },
+      "relationship": "Related competitive inflection story, but different measurement, reference month and publication date. DF explicitly connects July stock to earlier May signings; they are not independent corroboration of the same numeric count.",
+      "metric_comparison": {
+        "pulso": {
+          "metric": "net_contract_signings",
+          "reference_month": "2026-05",
+          "contracts_signed": 17539,
+          "cancellations": 17487,
+          "net_contracts": 52,
+          "effective_contributor_stock_change": null,
+          "publisher_lines": [
+            121,
+            127,
+            128
+          ]
+        },
+        "df": {
+          "metric": "effective_contributor_stock",
+          "reference_month": "2026-07",
+          "stock_change": 525,
+          "contributor_stock": 1513592,
+          "beneficiary_stock": 2420584,
+          "publisher_lines": [
+            368,
+            383,
+            384
+          ]
+        }
+      },
+      "new_incremental_fields": [
+        "Explicit May contract-flow counts and arithmetic, absent from the currently stored DF signal.",
+        "Clear leading-indicator/effective-stock distinction and the publication/reporting lag."
+      ],
+      "interpretation_constraints": [
+        "52 net signings are not 525 effective-stock additions, and neither number demonstrates an increase in May effective stock.",
+        "DF body says July stock, not May stock; May is the underlying earlier signing turning point.",
+        "Publication remains Jul14 historical backfill; discovery Oct11 must not make the event fresh.",
+        "Existing DF coverage must be provided as related context to analysis; if no standalone incremental decision value remains, reject or defer rather than publish a second inflection headline.",
+        "Do not upgrade media-reported measurements to official confirmation merely because publisher cites Superintendencia."
+      ],
+      "decision": "release_hold_for_editorial_analysis",
+      "reason": "distinct_net_signings_metric_and_reference_period_with_shared_event_context",
+      "recommended_hold": null,
+      "editorial_outcome": "pending_editorial_analysis_not_published",
+      "publication_approved": false,
+      "allowed_action": "After article verification, resolve the exact-duplicate uncertainty and allow unchanged editorial analysis with both metric definitions and existing DF context. Preserve lane, captured dates, attempt count and terminal state; publication approval remains false."
+    }
+  ]
+}

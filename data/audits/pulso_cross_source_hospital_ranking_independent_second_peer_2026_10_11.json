@@ -1,0 +1,445 @@
+{
+  "schema_version": "pulso_cross_source_hospital_ranking_second_peer_v1",
+  "source_id": "pulso_latercera",
+  "reviewer": "publisher_surfaces_independent",
+  "curated_state_commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+  "inputs": {
+    "history": {
+      "commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "b3ccf5c31b217c724c80e83c086c32f96841bd449bd42866e29459453cca802c"
+    },
+    "queue": {
+      "commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "6dcab92748d759058c6eabb7df78bda5d364a03f8bcbcf9201ed3f73de8fa2e8"
+    },
+    "runtime_report": {
+      "commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "ff26065428145782896016a9a406e1adda09956ec512f34f209de05c2f866cab"
+    },
+    "telemetry": {
+      "commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "f5d5f4ba51d3c510997e2750d97e43d3e1d4c05196b3f2cdcb8eb5b18aec6a1b"
+    }
+  },
+  "first_primary_cross_source_reader": {
+    "scratch_path": "/workspace/work/pulso_cross_source_waiting_provider_peer.json",
+    "sha256": "ed12c225050d3b8e09d3c50bf2643cc803490589fcfd34296c9eafd842a3bb3c"
+  },
+  "all_signals": [
+    {
+      "focus": "Ranking hospitalario / evaluación de gestión 2025 / publicación 4-5 de agosto",
+      "decision": "group",
+      "exact_reason": "Same annual 2025 management evaluation of 62 hospitals, 29 indicators and the 75% baseline. The actual Pulso WHAT does contain the 15 and 21 bins and Posta Central 91.1%, absent from the effective DF WHAT. These are a minor disaggregation and leader of the same evaluated set, not another evaluation, policy, contracted capacity, resource commitment or later operational result. The DF primary already reports Posta Central 91.1% and a more detailed regional distribution; its effective signal retains 26 meeting /36 missing the threshold, the same management gap and planned corrective support. Pulso WHY adds no independent strategic action. Preserve the bins and original source in grouped history/primary without recalculating >75 versus >=75 or the unreported 69–69.9 interval.",
+      "target": {
+        "url": "https://www.latercera.com/nacional/noticia/posta-central-obtiene-911-en-evaluacion-de-gestion-y-lidera-desempeno-de-hospitales-publicos-mas-de-la-mitad-no-cumplio-la-meta/",
+        "publication_date": "2026-08-04",
+        "source_slug": "pulso_latercera",
+        "source_name": "Pulso / La Tercera",
+        "source_type": "press_high_trust",
+        "queue_fingerprint": "52e7781894d04131908e7dd27c979ce874016088c469fdf6ec538d06889f3923",
+        "full_primary_retained_content": "La ministra de Salud, May Chomali, junto al subsecretario de Redes Asistenciales, Julio Montt, dieron a conocer los resultados de la gestión hospitalaria de 2025, la que concluye que más de la mitad no cumplió la meta mínima. La evaluación del desempeño de los hospitales autogestionados del país se realiza mediante una herramienta llamada Balanced Score Card, la cual cuenta con 29 indicadores, y su exigencia de cumplimiento mínimo es de 75%. Al respecto, el subsecretario Montt indicó que de los 62 establecimientos autogestionados en la red “26 tuvieron un cumplimiento sobre el 75% que está definido como la línea base”. En tanto, 15 hospitales logaron entre el 70% y 74,9% de los indicadores, mientras que 21 hospitales de la red tuvieron resultados bajo el 69%. Es decir, más de la mitad de los hospitales no cumplió la meta de desempeño. En ese sentido, el subsecretario apuntó a que el objetivo de esta medición es identificar y acompañar a los equipos desde las Subsecretarias de Redes Asistenciales para así “mejorar, fortalecer su desempeño, finalmente buscando beneficiar a los pacientes”. En cuanto a los resultados, el subsecretario destacó la labor del equipo del Hospital de Asistencia Pública HUAP (Posta Central), establecimiento que logró obtener en esta medición un 91,1%, superando ampliamente sus resultados, ya que hace diez años figuraba entre los establecimientos de peor desempeño del país. Sobre el punto, la ministra Chomali destacó la trayectoria del establecimiento, recordando que “desde el año 2020, que la Posta Central está sobre lo esperado, que es un 75%”. Y esto, sostuvo, “no es casualidad”. “No es que del 2019 al 2020 haya ocurrido un milagro, sino que efectivamente es un trabajo sostenido, sin prisa, pero sin pausa, para llegar a tener un 91,1% como es este año”, destacó. “Y esto habla de los liderazgos: de los liderazgos de la dirección de servicio, de la dirección del hospital, de los jefes de cada una de las unidades, de las jefaturas de compra, todo el gobierno hospitalario”. “Solo felicitar a todo el equipo directivo de la Posta Central y felicitar a los equipos clínicos, porque sin la respuesta de los equipos clínicos, nada puede hacer el gobierno del hospital”, celebró la titular de la cartera de Salud. Por su parte el director del establecimiento indicó que este resultado “no se explica por las acciones de solamente un año, sino de que llevamos una década trabajando, buscando la mejora de nuestros procesos para así ponerlo a servicio de la ciudadanía”. “Los hospitales públicos nos debemos a la persona que se atiende en los hospitales. En ese sentido, el buen uso de los recursos públicos y trabajar con eficiencia finalmente beneficia a todas las personas que se encuentran dentro del Fonsa y en general a la ciudadanía del país”, señaló. En esta línea, apuntó, “actuar no solamente con eficiencia clínica, sino que también con eficiencia administrativa, vigilando los procesos de compra, de mantención de infraestructura, de participación ciudadana, de procesos jurídicos, todos ellos contribuyen a mejorar los resultados del hospital, trabajar con eficiencia y finalmente beneficiar a la persona que busca ayuda en nuestro establecimiento”. Consultado sobre la mejora sostenida que han tenido en el tiempo, el director del establecimiento apuntó a que la pandemia ayudó a que tuviesen que optimizarse, y tras esto, velar por mantener estas mejoras hasta hoy. “La pandemia puso a prueba a nuestra institución”, sostuvo. “En ese momento (la Posta Central) fue considerada el corazón del manejo de la pandemia y eso nos obligó a complejizar lo que estábamos haciendo como hospital”. Así, indicó, durante la pandemia hubo que mejorar los procesos de compra, los procesos de gestión interna, los procesos de control. “Y eso, una vez que acaba la pandemia, el gran desafío nuestro es cómo lo mantenemos”, señaló. “Hemos logrado mantenernos de forma bastante pareja en los diferentes años y eso se explica por el compromiso de los funcionarios de la puesta central, quienes dentro de equipos organizados están llevando a cabo las diferentes acciones que explica la eficiencia operacional de nuestra institución”, concluyó.",
+        "retained_content_sha256": "2178d42717fb7d9e584b6f3bb99ba96441124f5ad4d644dae43b02ce63b39493",
+        "primary_html_sha256": "ffe26e72ca1fff91059252c9703e21a1c3a235b4e59f7a3eefabe0dbf065cb62",
+        "native_original_html_sha256": null,
+        "full_effective_signal": {
+          "title": "Posta Central obtiene 91,1% en evaluación de gestión y lidera ranking de desempeño de hospitales: más de la mitad no cumplió la meta",
+          "source_name": "Pulso / La Tercera",
+          "source_type": "press_high_trust",
+          "source_url": "https://www.latercera.com/nacional/noticia/posta-central-obtiene-911-en-evaluacion-de-gestion-y-lidera-desempeno-de-hospitales-publicos-mas-de-la-mitad-no-cumplio-la-meta/",
+          "category": "Prestadores",
+          "subcategory": "General",
+          "system_domain": "HEALTH",
+          "what_happened": "La evaluación de gestión hospitalaria de 2025 reportada por Pulso/La Tercera muestra que solo 26 de 62 hospitales autogestionados superaron la línea base de 75%; 21 quedaron bajo 69% y 15 entre 70% y 74,9%. La Posta Central lideró con 91,1%.",
+          "event_date": "2026-08-04",
+          "detected_at": "2026-10-11T07:52:34.224551+00:00",
+          "primary_source_url": null,
+          "event_type": "OTHER",
+          "strategic_theme": [],
+          "institution_types": [],
+          "entity_refs": [],
+          "country": "CL",
+          "topics": [
+            "providers",
+            "investment_ma",
+            "financing"
+          ],
+          "entities": [],
+          "people": [],
+          "geography": [],
+          "key_facts": [],
+          "key_numbers": [],
+          "why_it_matters": "La Subsecretaría de Redes Asistenciales dispone de una señal comparable sobre el desempeño de la red hospitalaria pública: más de la mitad de los establecimientos autogestionados quedó bajo la meta mínima, lo que identifica una brecha de gestión con potencial efecto sobre la eficiencia operacional y la atención de pacientes.",
+          "who_cares": [],
+          "possible_implications": [],
+          "watch_tags": [
+            "pulso_latercera",
+            "media",
+            "prestadores"
+          ],
+          "connection_keys": [],
+          "trend_keys": [],
+          "prospective_evidence": false,
+          "economic_impact_score": 84,
+          "regulatory_impact_score": 55,
+          "scope_score": 84,
+          "novelty_score": 84,
+          "actionability_score": 76,
+          "source_quality_score": 92,
+          "radar_score": 78,
+          "confidence_score": 92,
+          "distribution": "archive",
+          "validation_status": "automatic",
+          "corroboration_status": "unknown",
+          "additional_sources": [],
+          "source_documents": [],
+          "key_points": [],
+          "risk_notes": [],
+          "data_insights": [],
+          "data_insight_meta": {},
+          "validity_text": null,
+          "related_reference_ids": [],
+          "original_language": "es",
+          "display_language": "es",
+          "translation_status": "not_required",
+          "original_title": null,
+          "original_what_happened": null,
+          "original_why_it_matters": null,
+          "signal_types": [
+            "Noticias"
+          ],
+          "scopes": [
+            "Prestadores"
+          ],
+          "editorial_relevance": 84,
+          "source_quality_gate": "passed",
+          "evidence_maturity": "media_reported",
+          "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+          "publication_date": "2026-08-04",
+          "publication_timestamp": "2026-08-04T17:29:54.404Z",
+          "publication_date_source": "visible_article_byline",
+          "editorial_assessment": {
+            "decision": "published",
+            "relevance_score": 84,
+            "threshold": 72,
+            "analysis_reason": "Es una señal sectorial relevante y cuantificada sobre resultados de gestión de hospitales públicos, con alcance nacional y consecuencias para la conducción de la red. La información debe atribuirse a lo reportado por la prensa y no interpretarse como una evaluación independiente adicional."
+          },
+          "ingestion_mode": "BACKFILL",
+          "editorial_review": {
+            "schema_version": "pulso_editorial_review_v1",
+            "review_id": "pulso_focus_38149773071_backfill_time_binding",
+            "review_file": "data/audits/pulso_focus_new5_editorial_corrections_2026_10_11.json",
+            "review_sha256": "c49022c8f81c4d45d654bac2f675ffb341bd2f6e288316f544b82a99dab3c530",
+            "record_sha256": "40803fb15baad80dc56dbecd85d76ba16ef6c093971bbd6c0018cde7a1d4c235",
+            "original_signal_sha256": "b7287ec9c066b9c578c0e8dff5c9a409b6dd2ab4d0e20f20f82daef38744d07a",
+            "original_body_sha256": "2178d42717fb7d9e584b6f3bb99ba96441124f5ad4d644dae43b02ce63b39493",
+            "publication_date": "2026-08-04",
+            "decision": "accept",
+            "reason": "La publicación distingue evaluación hospitalaria 2025 de fecha del artículo 2026.26 de 62 sobre 75%,15entre70y74.9%,21bajo69% y91.1% Posta coinciden con el original. Es resultado reportado de gestión, no verificación propia de calidad clínica ni causa demostrada en pacientes.",
+            "evidence_quotes": [
+              "dieron a conocer los resultados de la gestión hospitalaria de 2025",
+              "26 tuvieron un cumplimiento sobre el 75% que está definido como la línea base",
+              "establecimiento que logró obtener en esta medición un 91,1%"
+            ],
+            "original_terminal_status": "published",
+            "original_model_assessment": {
+              "decision": "published",
+              "relevance_score": 84,
+              "threshold": 72,
+              "analysis_reason": "Es una señal sectorial relevante y cuantificada sobre resultados de gestión de hospitales públicos, con alcance nacional y consecuencias para la conducción de la red. La información debe atribuirse a lo reportado por la prensa y no interpretarse como una evaluación independiente adicional."
+            },
+            "original_model_what_happened": "La evaluación de gestión hospitalaria de 2025 reportada por Pulso/La Tercera muestra que solo 26 de 62 hospitales autogestionados superaron la línea base de 75%; 21 quedaron bajo 69% y 15 entre 70% y 74,9%. La Posta Central lideró con 91,1%.",
+            "original_model_why_it_matters": "La Subsecretaría de Redes Asistenciales dispone de una señal comparable sobre el desempeño de la red hospitalaria pública: más de la mitad de los establecimientos autogestionados quedó bajo la meta mínima, lo que identifica una brecha de gestión con potencial efecto sobre la eficiencia operacional y la atención de pacientes."
+          },
+          "editorial_decision": "accept",
+          "editorial_review_reason": "La publicación distingue evaluación hospitalaria 2025 de fecha del artículo 2026.26 de 62 sobre 75%,15entre70y74.9%,21bajo69% y91.1% Posta coinciden con el original. Es resultado reportado de gestión, no verificación propia de calidad clínica ni causa demostrada en pacientes.",
+          "feed_visibility": true
+        },
+        "effective_signal_sha256": "f46be9ec753eae0f952ff62803fae4b6f67b2a69604314221ad82bcdaf8c23e0",
+        "full_retained_model_output": {
+          "relevance_score": 84,
+          "what_happened": "La evaluación de gestión hospitalaria de 2025 reportada por Pulso/La Tercera muestra que solo 26 de 62 hospitales autogestionados superaron la línea base de 75%; 21 quedaron bajo 69% y 15 entre 70% y 74,9%. La Posta Central lideró con 91,1%.",
+          "why_it_matters": "La Subsecretaría de Redes Asistenciales dispone de una señal comparable sobre el desempeño de la red hospitalaria pública: más de la mitad de los establecimientos autogestionados quedó bajo la meta mínima, lo que identifica una brecha de gestión con potencial efecto sobre la eficiencia operacional y la atención de pacientes.",
+          "reason": "Es una señal sectorial relevante y cuantificada sobre resultados de gestión de hospitales públicos, con alcance nacional y consecuencias para la conducción de la red. La información debe atribuirse a lo reportado por la prensa y no interpretarse como una evaluación independiente adicional.",
+          "pulso_editorial_proof": {
+            "scope_decision": "human_health_specific",
+            "scope_reason": "El contenido aborda directamente el desempeño de hospitales públicos, sus procesos de gestión y el beneficio esperado para pacientes y personas atendidas en la red.",
+            "human_health_scope_quote": "La evaluación del desempeño de los hospitales autogestionados del país se realiza mediante una herramienta llamada Balanced Score Card, la cual cuenta con 29 indicadores, y su exigencia de cumplimiento mínimo es de 75%.",
+            "actor": "los 62 establecimientos autogestionados en la red",
+            "actor_quote": "de los 62 establecimientos autogestionados en la red “26 tuvieron un cumplimiento sobre el 75% que está definido como la línea base”",
+            "action": "la evaluación del desempeño de los hospitales autogestionados del país",
+            "action_quote": "La evaluación del desempeño de los hospitales autogestionados del país se realiza mediante una herramienta llamada Balanced Score Card, la cual cuenta con 29 indicadores, y su exigencia de cumplimiento mínimo es de 75%.",
+            "consequence": "más de la mitad de los hospitales no cumplió la meta de desempeño",
+            "consequence_quote": "Es decir, más de la mitad de los hospitales no cumplió la meta de desempeño.",
+            "event_status": "actual",
+            "event_status_quote": "La ministra de Salud, May Chomali, junto al subsecretario de Redes Asistenciales, Julio Montt, dieron a conocer los resultados de la gestión hospitalaria de 2025, la que concluye que más de la mitad no cumplió la meta mínima.",
+            "novelty_decision": "new_material_information",
+            "novelty_reason": "La nota entrega resultados agregados de la evaluación de gestión hospitalaria de 2025, con distribución de establecimientos por nivel de cumplimiento y el resultado de 91,1% de la Posta Central. No se proporciona contexto previo que indique que estos datos ya hubieran sido reportados.",
+            "novelty_quote": "En tanto, 15 hospitales logaron entre el 70% y 74,9% de los indicadores, mientras que 21 hospitales de la red tuvieron resultados bajo el 69%.",
+            "future_claims": []
+          },
+          "_pulso_analysis_meta": {
+            "schema_version": "pulso_editorial_proof_v4",
+            "source_name": "Pulso / La Tercera",
+            "model": "gpt-5.6-luna",
+            "response_id": "resp_0dd7ff93cc7230e5006acbab89676487d1a849c88d89c9c87b",
+            "analysis_text_sha256": "2178d42717fb7d9e584b6f3bb99ba96441124f5ad4d644dae43b02ce63b39493",
+            "request_input_sha256": "8cd008766ca764d8d57e520dac83cd0564fd4513efae49daf1b6ddbbe71890f2",
+            "raw_model_output_sha256": "30fd1636aeb88d55f71e8db22d479644dab94abf507bdc1f6da6693e51814cd9"
+          }
+        },
+        "retained_model_output_sha256": "80392ccf2c38cd46ecd9f01b54375c583709263b9e27bceea850532013c33b39",
+        "retained_response_id": "resp_0dd7ff93cc7230e5006acbab89676487d1a849c88d89c9c87b",
+        "actual_editorial_assessment": {
+          "decision": "published",
+          "relevance_score": 84,
+          "threshold": 72,
+          "analysis_reason": "Es una señal sectorial relevante y cuantificada sobre resultados de gestión de hospitales públicos, con alcance nacional y consecuencias para la conducción de la red. La información debe atribuirse a lo reportado por la prensa y no interpretarse como una evaluación independiente adicional."
+        },
+        "previous_editorial_review": {
+          "schema_version": "pulso_editorial_review_v1",
+          "review_id": "pulso_focus_38149773071_backfill_time_binding",
+          "review_file": "data/audits/pulso_focus_new5_editorial_corrections_2026_10_11.json",
+          "review_sha256": "c49022c8f81c4d45d654bac2f675ffb341bd2f6e288316f544b82a99dab3c530",
+          "record_sha256": "40803fb15baad80dc56dbecd85d76ba16ef6c093971bbd6c0018cde7a1d4c235",
+          "original_signal_sha256": "b7287ec9c066b9c578c0e8dff5c9a409b6dd2ab4d0e20f20f82daef38744d07a",
+          "original_body_sha256": "2178d42717fb7d9e584b6f3bb99ba96441124f5ad4d644dae43b02ce63b39493",
+          "publication_date": "2026-08-04",
+          "decision": "accept",
+          "reason": "La publicación distingue evaluación hospitalaria 2025 de fecha del artículo 2026.26 de 62 sobre 75%,15entre70y74.9%,21bajo69% y91.1% Posta coinciden con el original. Es resultado reportado de gestión, no verificación propia de calidad clínica ni causa demostrada en pacientes.",
+          "evidence_quotes": [
+            "dieron a conocer los resultados de la gestión hospitalaria de 2025",
+            "26 tuvieron un cumplimiento sobre el 75% que está definido como la línea base",
+            "establecimiento que logró obtener en esta medición un 91,1%"
+          ],
+          "original_terminal_status": "published",
+          "original_model_assessment": {
+            "decision": "published",
+            "relevance_score": 84,
+            "threshold": 72,
+            "analysis_reason": "Es una señal sectorial relevante y cuantificada sobre resultados de gestión de hospitales públicos, con alcance nacional y consecuencias para la conducción de la red. La información debe atribuirse a lo reportado por la prensa y no interpretarse como una evaluación independiente adicional."
+          },
+          "original_model_what_happened": "La evaluación de gestión hospitalaria de 2025 reportada por Pulso/La Tercera muestra que solo 26 de 62 hospitales autogestionados superaron la línea base de 75%; 21 quedaron bajo 69% y 15 entre 70% y 74,9%. La Posta Central lideró con 91,1%.",
+          "original_model_why_it_matters": "La Subsecretaría de Redes Asistenciales dispone de una señal comparable sobre el desempeño de la red hospitalaria pública: más de la mitad de los establecimientos autogestionados quedó bajo la meta mínima, lo que identifica una brecha de gestión con potencial efecto sobre la eficiencia operacional y la atención de pacientes."
+        },
+        "previous_editorial_review_sha256": "fef21333ce555aa0f85c0539648fe8d04f5bf0516f4d06250ff2135263a7e7c2",
+        "queue_raw_sha256": "21a391bb15b2dd83b1f170a42fd2fa3c15d77a878667e98d6fcfa8bb88a6197e",
+        "full_actual_queue_entry_sha256": "d90971d6f4316d1a04320f3fa2941c87acbdb0b7e7eeab41c03c4bedc61f3098",
+        "full_primary_retained_content_read": true,
+        "full_effective_signal_read": true,
+        "full_retained_model_output_read": true,
+        "raw_model_output_available": true,
+        "raw_model_limit": null,
+        "body_capture_limits": [],
+        "date_evidence": {
+          "publication_date_source": "visible_article_byline",
+          "publication_timestamp": "2026-08-04T17:29:54.404Z",
+          "visible_publication_date": "2026-08-04",
+          "publication_label": null
+        }
+      },
+      "survivor": {
+        "url": "https://www.df.cl/regiones/arica-y-parinacota/arica-entra-al-top-ten-y-la-serena-queda-ultima-en-ranking-nacional-de",
+        "publication_date": "2026-08-05",
+        "source_slug": "diario_financiero",
+        "source_name": "Diario Financiero",
+        "source_type": "press_high_trust",
+        "queue_fingerprint": "cf3410ec414808970332e18eaebe0fd0d2896b45996fce879f28a7078dd70808",
+        "full_primary_retained_content": "El ranking nacional de gestión hospitalaria de 2025 dejó resultados dispares entre los principales recintos de regiones. Mientras e l Hospital Regional de Arica Dr. Juan Noé Crevani ingresó al grupo de los 10 mejor evaluados del país, el Hospital San Juan de Dios de La Serena cerró el listado de 62 establecimientos autogestionados. La medición fue elaborada por la Subsecretaría de Redes Asistenciales mediante el sistema de balance score cards , instrumento que considera 29 indicadores relacionados con sustentabilidad financiera, eficiencia operacional, gestión asistencial en red y calidad de la atención. El Hospital de Arica obtuvo un cumplimiento de 84,4% y ocupó el 10° lugar nacional, compartiendo posición con el Hospital Padre Alberto Hurtado . La cifra superó en casi 10 puntos porcentuales el estándar mínimo de 75% establecido para los establecimientos autogestionados. En La Serena, el resultado llegó a 58,8%, el más bajo del país y 16,2 puntos porcentuales por debajo de la meta. El recinto quedó detrás del Hospital Clínico San Borja Arriarán, que alcanzó 61,1%, y del Hospital Dr. Leonardo Guzmán de Antofagasta, que registró 61,2%. Solo 26 hospitales superaron el corte De los 62 establecimientos evaluados, 26 alcanzaron un cumplimiento igual o superior a 75%, equivalentes a 42% del total. Los otros 36 hospitales, cerca de 58%, no lograron el nivel mínimo requerido. El promedio general de los establecimientos autogestionados llegó a 74,7%, también por debajo del estándar. La evaluación considera materias como los tiempos de espera GES y no GES, la resolución quirúrgica de listas de espera, el exceso de días de hospitalización y las mermas de medicamentos. También mide la programación de profesionales médicos y odontólogos, la compra de medicamentos mediante Cenabast, el mantenimiento preventivo de equipos e infraestructura, la contratación de horas médicas y la recuperación de recursos vinculados a licencias. Desde la Subsecretaría de Redes Asistenciales plantearon que el objetivo de la medición es detectar las áreas que requieren apoyo y no solamente ordenar a los establecimientos según sus resultados “La medición... es una oportunidad para identificarlos y acompañarlos con equipos técnicos especializados de la Subsecretaría de Redes Asistenciales para fortalecer su desempeño y beneficiar al paciente”, señaló el subsecretario de Redes Asistenciales, Julio Montt. Brechas en hospitales del norte El desempeño de Arica contrastó con el registrado en buena parte de los hospitales ubicados entre Tarapacá y Coquimbo. El Hospital Dr. Ernesto Torres Galdames de Iquique obtuvo 66,5% y quedó en el lugar 50. En la Región de Antofagasta, el Hospital Dr. Carlos Cisternas de Calama registró 68% y apareció en la posición 47, mientras el Hospital Dr. Leonardo Guzmán alcanzó 61,2% y quedó en el puesto 60. El Hospital Regional de Copiapó San José del Carmen llegó a 68,4% y ocupó el lugar 46. En Coquimbo, ninguno de los tres establecimientos incluidos en el ranking superó el estándar. Además del último lugar de La Serena, el Hospital San Pablo de Coquimbo obtuvo 67,8% y quedó en la posición 48. El Hospital Provincial de Ovalle Dr. Antonio Tirado Lanas registró 64,5% y se ubicó en el puesto 55. Con estos resultados, siete de los ocho hospitales evaluados entre Arica y Coquimbo quedaron bajo 70%. Valparaíso también bajo el estándar Los principales hospitales evaluados en la Región de Valparaíso tampoco lograron alcanzar la meta. El Hospital de Quilpué fue el recinto regional más cercano al estándar, con 74,2% y el puesto 30. Más atrás quedó el Hospital Biprovincial Quillota Petorca, con 72,1%, seguido por el Hospital Dr. Eduardo Pereira Ramírez de Valparaíso, con 69,1%. El Hospital Claudio Vicuña de San Antonio obtuvo 66,2%, mientras el Hospital Carlos Van Buren llegó a 63% y el Hospital Dr. Gustavo Fricke de Viña del Mar alcanzó 62,9%. Estos dos últimos establecimientos quedaron entre los seis resultados más bajos del país. El Gustavo Fricke apareció en el puesto 58 y el Carlos Van Buren en el lugar 57. Osorno y Chillán entre los mejores de regiones Fuera de la Región Metropolitana, algunos de los mejores resultados se concentraron en establecimientos del sur y de la zona centro . El Hospital Base San José de Osorno obtuvo 81,9% y quedó en el puesto 15. El Hospital Clínico Herminda Martín de Chillán registró 78%, mientras el Hospital Las Higueras de Talcahuano llegó a 77,8%. También superaron el estándar el Hospital San José de Coronel, con 88,3%, el Hospital de Lota, con 83,6%, y el Hospital San Juan de Dios de Curicó, con 76,2%. En cambio, el Hospital Clínico de Magallanes quedó bajo la meta por menos de un punto, con 74,1%. Más al norte, el Hospital Regional de Coyhaique obtuvo 69,8%, mientras los hospitales de Puerto Montt y Castro registraron 65,4% cada uno. Posta Central lidera medición del Minsal El primer lugar nacional fue ocupado por el Hospital de Urgencia Asistencia Pública Dr. Alejandro del Río, conocido como la Posta Central, con 91,1% . El segundo puesto correspondió al Instituto de Neurocirugía Dr. Alfonso Asenjo, con 90,5%, y el tercero al Hospital San José de Melipilla, con 89,8%. Los hospitales que quedaron bajo 75% deberán elaborar planes de ajuste y contingencia , con un diagnóstico de las causas del incumplimiento, metas específicas y medidas correctivas. El acompañamiento del Minsal se concentrará en las brechas financieras, clínicas y de tiempos de espera. Los Servicios de Salud asumirán la supervisión de los avances de cada establecimiento. Entre las medidas previstas aparecen la optimización de compras y licitaciones, un mayor uso de mecanismos centralizados como Cenabast, la revisión de contratos de servicios generales y apoyo clínico, y un uso más eficiente de la infraestructura.",
+        "retained_content_sha256": "9b4433a65a207990a5223975630c8d11dd239bd9761571cf24f6ede6fff10324",
+        "primary_html_sha256": null,
+        "native_original_html_sha256": "cc5b8d075cb3266c305bb8365039115a148c0298924633ae197023d1af82a630",
+        "full_effective_signal": {
+          "title": "Arica entra al Top 10 y La Serena queda última en el nuevo ranking nacional de gestión hospitalaria",
+          "source_name": "Diario Financiero",
+          "source_type": "press_high_trust",
+          "source_url": "https://www.df.cl/regiones/arica-y-parinacota/arica-entra-al-top-ten-y-la-serena-queda-ultima-en-ranking-nacional-de",
+          "category": "Prestadores",
+          "subcategory": "General",
+          "system_domain": "HEALTH",
+          "what_happened": "Diario Financiero reportó los resultados del ranking 2025 de gestión de 62 hospitales autogestionados, elaborado mediante un balance scorecard de 29 indicadores. Solo 26 recintos alcanzaron el estándar de 75%, mientras que 36 quedaron bajo esa meta y el promedio nacional fue de 74,7%. El Hospital Regional de Arica obtuvo 84,4% y entró al Top 10; el Hospital de La Serena registró 58,8%, el resultado más bajo. Los establecimientos bajo el estándar deberán preparar planes de ajuste y contingencia, con apoyo técnico de la Subsecretaría de Redes Asistenciales y de los Servicios de Salud.",
+          "event_date": "2026-08-05",
+          "detected_at": "2026-10-11T05:09:10.713959+00:00",
+          "primary_source_url": null,
+          "event_type": "OTHER",
+          "strategic_theme": [],
+          "institution_types": [],
+          "entity_refs": [],
+          "country": "CL",
+          "topics": [],
+          "entities": [],
+          "people": [],
+          "geography": [],
+          "key_facts": [],
+          "key_numbers": [],
+          "why_it_matters": "El resultado identifica una brecha amplia de desempeño en la red hospitalaria pública, con efectos concretos en tiempos de espera, resolución de listas quirúrgicas, días de hospitalización, disponibilidad de medicamentos, mantenimiento y gestión financiera. La Subsecretaría de Redes Asistenciales y los Servicios de Salud deberán focalizar apoyo y medidas correctivas en 36 hospitales, mientras recintos como La Serena, Carlos Van Buren, Gustavo Fricke y varios hospitales del norte enfrentan un desempeño particularmente rezagado. Merece atención ahora porque el ranking activa diagnósticos, metas y planes de contingencia para una parte mayoritaria de los establecimientos evaluados.",
+          "who_cares": [],
+          "possible_implications": [],
+          "watch_tags": [
+            "df",
+            "noticias",
+            "prestadores"
+          ],
+          "connection_keys": [],
+          "trend_keys": [],
+          "prospective_evidence": false,
+          "economic_impact_score": 84,
+          "regulatory_impact_score": 30,
+          "scope_score": 70,
+          "novelty_score": 84,
+          "actionability_score": 70,
+          "source_quality_score": 93,
+          "radar_score": 70,
+          "confidence_score": 93,
+          "distribution": "archive",
+          "validation_status": "automatic",
+          "corroboration_status": "unknown",
+          "additional_sources": [],
+          "source_documents": [],
+          "key_points": [],
+          "risk_notes": [],
+          "data_insights": [],
+          "data_insight_meta": {},
+          "validity_text": null,
+          "related_reference_ids": [],
+          "original_language": "es",
+          "display_language": "es",
+          "translation_status": "not_required",
+          "original_title": null,
+          "original_what_happened": null,
+          "original_why_it_matters": null,
+          "signal_types": [
+            "Noticias"
+          ],
+          "scopes": [
+            "Prestadores"
+          ],
+          "editorial_relevance": 84,
+          "evidence_maturity": "media_reported",
+          "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+          "editorial_assessment": {
+            "score": 84,
+            "reason": "Es una señal sectorial relevante de capacidad y gestión hospitalaria a escala nacional: el 58% de los hospitales autogestionados quedó bajo el estándar y se contempla intervención técnica y planes correctivos. La evaluación y sus resultados son reportados por Diario Financiero a partir de la medición de la Subsecretaría; no constituyen por sí solos una confirmación independiente adicional.",
+            "gate": "Media Early Signal Gate",
+            "gate_version": "1.0.0",
+            "threshold": 72
+          },
+          "publication_date_source": "cxenseparse:recs:publishtime",
+          "publication_timestamp": "2026-08-05T19:27:45Z",
+          "publication_label": null,
+          "publication_date_candidates": [
+            {
+              "source": "cxenseparse:recs:publishtime",
+              "value": "2026-08-05T19:27:45Z",
+              "day": "2026-08-05"
+            },
+            {
+              "source": "jsonld:datePublished",
+              "value": "2026-08-05T19:27:45Z",
+              "day": "2026-08-05"
+            },
+            {
+              "source": "visible:published_label",
+              "value": "Miércoles 5 de agosto de 2026 a las 17:50 hrs.",
+              "day": "2026-08-05"
+            }
+          ],
+          "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+          "publication_date_conflict": false,
+          "publication_date_conflict_resolution": null,
+          "article_content_source": "df_primary_body",
+          "original_sha256": "cc5b8d075cb3266c305bb8365039115a148c0298924633ae197023d1af82a630",
+          "original_captured_at": "2026-10-11T05:10:43.296975+00:00",
+          "ingestion_mode": "BACKFILL"
+        },
+        "effective_signal_sha256": "23c14fae03041f6c7f98d25e98f65cd467c13f7ce6cbffe63f5a964f42d595e6",
+        "full_retained_model_output": null,
+        "retained_model_output_sha256": null,
+        "retained_response_id": null,
+        "actual_editorial_assessment": {
+          "score": 84,
+          "reason": "Es una señal sectorial relevante de capacidad y gestión hospitalaria a escala nacional: el 58% de los hospitales autogestionados quedó bajo el estándar y se contempla intervención técnica y planes correctivos. La evaluación y sus resultados son reportados por Diario Financiero a partir de la medición de la Subsecretaría; no constituyen por sí solos una confirmación independiente adicional.",
+          "gate": "Media Early Signal Gate",
+          "gate_version": "1.0.0",
+          "threshold": 72
+        },
+        "previous_editorial_review": null,
+        "previous_editorial_review_sha256": null,
+        "queue_raw_sha256": "403c6d6c057d09da4eac228d9d40a3fefd9410ebae032051baa14f3a6cb2010b",
+        "full_actual_queue_entry_sha256": "65f4c0d9df80ae1294d22da31dc1f2996de9a314905e29b23844b849eefe1d3f",
+        "full_primary_retained_content_read": true,
+        "full_effective_signal_read": true,
+        "full_retained_model_output_read": false,
+        "raw_model_output_available": false,
+        "raw_model_limit": "Legacy response not retained; effective published signal and observed assessment are preserved. No fabricated response ID or attribution to a new paid producer.",
+        "body_capture_limits": [],
+        "date_evidence": {
+          "publication_date_source": "cxenseparse:recs:publishtime",
+          "publication_timestamp": "2026-08-05T19:27:45Z",
+          "visible_publication_date": null,
+          "publication_label": null
+        }
+      },
+      "immutable_cross_source_event_pair_pin": {
+        "target_url": "https://www.latercera.com/nacional/noticia/posta-central-obtiene-911-en-evaluacion-de-gestion-y-lidera-desempeno-de-hospitales-publicos-mas-de-la-mitad-no-cumplio-la-meta/",
+        "target_day": "2026-08-04",
+        "target_body_sha256": "2178d42717fb7d9e584b6f3bb99ba96441124f5ad4d644dae43b02ce63b39493",
+        "target_signal_sha256": "f46be9ec753eae0f952ff62803fae4b6f67b2a69604314221ad82bcdaf8c23e0",
+        "target_previous_review_sha256": "fef21333ce555aa0f85c0539648fe8d04f5bf0516f4d06250ff2135263a7e7c2",
+        "survivor_url": "https://www.df.cl/regiones/arica-y-parinacota/arica-entra-al-top-ten-y-la-serena-queda-ultima-en-ranking-nacional-de",
+        "survivor_day": "2026-08-05",
+        "survivor_source_slug": "diario_financiero",
+        "survivor_queue_fingerprint": "cf3410ec414808970332e18eaebe0fd0d2896b45996fce879f28a7078dd70808",
+        "survivor_body_sha256": "9b4433a65a207990a5223975630c8d11dd239bd9761571cf24f6ede6fff10324",
+        "survivor_signal_sha256": "23c14fae03041f6c7f98d25e98f65cd467c13f7ce6cbffe63f5a964f42d595e6"
+      },
+      "immutable_cross_source_event_pair_pin_sha256": "7384834d45d029623894ec79c3c1e84a1cbee2a3aff8af7ee6a5af9ca100492b",
+      "literal_primary_event_comparison_quotes": [
+        {
+          "source": "Pulso",
+          "quote": "15 hospitales logaron entre el 70% y 74,9% de los indicadores, mientras que 21 hospitales de la red tuvieron resultados bajo el 69%"
+        },
+        {
+          "source": "DF",
+          "quote": "De los 62 establecimientos evaluados, 26 alcanzaron un cumplimiento igual o superior a 75%, equivalentes a 42% del total."
+        },
+        {
+          "source": "DF",
+          "quote": "conocido como la Posta Central, con 91,1%"
+        }
+      ],
+      "survivor_same_url_date_queue_candidates": [
+        {
+          "queue_fingerprint": "cf3410ec414808970332e18eaebe0fd0d2896b45996fce879f28a7078dd70808",
+          "source_slug": "diario_financiero",
+          "status": "published",
+          "raw_sha256": "403c6d6c057d09da4eac228d9d40a3fefd9410ebae032051baa14f3a6cb2010b"
+        }
+      ],
+      "application_performed": false,
+      "only_target_pulso_may_be_grouped": true,
+      "native_survivor_mutation_authorized": false,
+      "media_reported_preserved_for_target": true
+    }
+  ],
+  "summary": {
+    "compared_primary_documents": 2,
+    "compared_effective_signals": 2,
+    "group_pulso": 1,
+    "performance_dataset_year": 2025,
+    "minor_disaggregation_present_in_target_effective_copy": true,
+    "original_metrics_preserved_in_grouped_history": true
+  },
+  "reviewer_AI_calls": 0,
+  "state_mutated": false,
+  "source_edits": 0,
+  "scores_changed": false,
+  "dates_changed": false,
+  "survivor_mutations": 0,
+  "publication_approved": false,
+  "scope_verdict": "PASS_ANNUAL_RANKING_SINGLE_EVENT_ADJUDICATION",
+  "global_acceptance": "NOT_ACCEPTED_PENDING_ACTUAL_GROUP_APPLICATION_REPLAY_FINAL_QA"
+}

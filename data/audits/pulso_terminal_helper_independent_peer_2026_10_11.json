@@ -1,0 +1,389 @@
+{
+  "schema_version": "pulso_terminal_helper_independent_code_peer_v1",
+  "status": "SCOPED_TERMINAL_HELPER_CONSUMER_PASS",
+  "inspected_head": "3b5c6755fba7c5e6d61255abbe2ad1f48c4b48a9",
+  "file_sha256s": {
+    "scripts/pulso_idempotence.py": "066139f80576fef6b15e48567a14a9dc6d9c7646cd60a0de57921c1ae0b483c8",
+    "scripts/qa_pulso_recovery.py": "17fc905e4c4f203f61b597dfba8e5aed2b760aa71a237cf8c4b6b0143d3a25d7",
+    "scripts/pulso_recovery_command.py": "8baa45f6e6817a0bade586167f377fd254b57d5c462ab0a6e884f764170d505c",
+    ".github/workflows/pulso-runtime-recovery.yml": "0cebd763b648aa42fba0fa80f17aaa9c90752147268d414691aafa3065b152f1"
+  },
+  "actual_evaluator_and_actual_helper_api": true,
+  "composite_outcome_mocked": false,
+  "synthetic_future_windows_and_future_qa_context": true,
+  "virtual_future_file_transport": [
+    "data/audits/pulso_runtime_2026_10_11.json",
+    "data/state/discovery_run.json"
+  ],
+  "runtime_core_execution_performed": false,
+  "new_model_requests": 0,
+  "acceptance_approved": false,
+  "immutable_originals": {
+    "paid323_failed_findings": 9,
+    "final123_failed_findings": 24,
+    "live9_failed_findings": 1477,
+    "live9_actual_response_events": 4,
+    "live9_unchanged_rows": 9
+  },
+  "preserved_stock": {
+    "terminal_selected": 113,
+    "final_receipts": 2,
+    "native_queue": 5293,
+    "native_history": 897,
+    "source_queue_rows": 1758,
+    "history": 992,
+    "feed": 163
+  },
+  "future_same_fingerprint_composite_contract": "PASS_SYNTHETIC_ONLY",
+  "independent_consumer_checks": {
+    "baseline_sha256": "c39391dd618c2a71c97343ad6461e498a457a1ea54bce5160b74aa92cd8b6299",
+    "paid_successful_response_ids": 2,
+    "selected_urls": 113,
+    "actual_attempts": 0,
+    "actual_ai_calls": 0,
+    "unchanged_history_and_feed": true,
+    "unchanged_existing_queue": true,
+    "additional_unselected_discovery": 0
+  },
+  "attacks": [
+    {
+      "attack": "erase_final_receipts",
+      "result": "DENY",
+      "reason": "terminal_followthrough_original_paid_or_final_receipts_erased"
+    },
+    {
+      "attack": "forge_same_count_final_receipts",
+      "result": "DENY",
+      "reason": "immutable_archived_final_or_terminal_followthrough_provenance_changed"
+    },
+    {
+      "attack": "promote_paid323_qa",
+      "result": "DENY",
+      "reason": "terminal_followthrough_original_paid_or_final_receipts_erased"
+    },
+    {
+      "attack": "promote_final123_qa",
+      "result": "DENY",
+      "reason": "terminal_followthrough_archived_real_evaluation_or_failure_changed"
+    },
+    {
+      "attack": "promote_live9_qa",
+      "result": "DENY",
+      "reason": "terminal_followthrough_settlement_execution_or_usage_changed"
+    },
+    {
+      "attack": "retag_zero_as_paid",
+      "result": "DENY",
+      "reason": "terminal_followthrough_retagged_as_paid_or_revalidation"
+    },
+    {
+      "attack": "drop_live9_stock",
+      "result": "DENY",
+      "reason": "terminal_followthrough_existing_source_semantics_changed"
+    },
+    {
+      "attack": "drop_native_stock",
+      "result": "DENY",
+      "reason": "terminal_followthrough_full113_or_native_stock_missing"
+    },
+    {
+      "attack": "replace_original_source_runtime",
+      "result": "DENY",
+      "reason": "terminal_followthrough_runtime_changed_outside_bound_consumers"
+    },
+    {
+      "attack": "drop_source9",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "archived_final_or_terminal_followthrough_provenance_invalid",
+          "reason": "terminal_followthrough_selected113_proof_or_status_changed"
+        },
+        {
+          "code": "changed_existing_source_queue",
+          "missing": [
+            "https://www.latercera.com/nacional/noticia/fallece-juan-pablo-cardenas-premio-nacional-de-periodismo-2005/"
+          ],
+          "changed": []
+        }
+      ]
+    },
+    {
+      "attack": "erase_existing_selected",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "archived_final_or_terminal_followthrough_provenance_invalid",
+          "reason": "terminal_followthrough_selected113_proof_or_status_changed"
+        },
+        {
+          "code": "genuine_second_core_proof_invalid",
+          "reason": "immutable_selected_queue_fingerprint_changed:https://www.latercera.com/horizontes/noticia/pablo-gonzalez-de-ilc-chile-envejece-mas-rapido-y-con-menos-recursos-que-otros-paises/"
+        },
+        {
+          "code": "changed_existing_source_queue",
+          "missing": [
+            "https://www.latercera.com/horizontes/noticia/pablo-gonzalez-de-ilc-chile-envejece-mas-rapido-y-con-menos-recursos-que-otros-paises/"
+          ],
+          "changed": []
+        }
+      ]
+    },
+    {
+      "attack": "modify_rejected_source9_reason",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "archived_final_or_terminal_followthrough_provenance_invalid",
+          "reason": "terminal_followthrough_unselected_processing_changed"
+        },
+        {
+          "code": "changed_existing_source_queue",
+          "missing": [],
+          "changed": [
+            "https://www.latercera.com/nacional/noticia/fallece-juan-pablo-cardenas-premio-nacional-de-periodismo-2005/"
+          ]
+        }
+      ]
+    },
+    {
+      "attack": "erase_final_queue_receipt",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "archived_final_or_terminal_followthrough_provenance_invalid",
+          "reason": "terminal_followthrough_selected113_proof_or_status_changed"
+        },
+        {
+          "code": "changed_existing_source_queue",
+          "missing": [],
+          "changed": [
+            "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/"
+          ]
+        }
+      ]
+    },
+    {
+      "attack": "mutate_native_queue",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "archived_final_or_terminal_followthrough_provenance_invalid",
+          "reason": "terminal_followthrough_effective_history_feed_or_native_stock_changed"
+        },
+        {
+          "code": "changed_native_queue"
+        }
+      ]
+    },
+    {
+      "attack": "mutate_history",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "archived_final_or_terminal_followthrough_provenance_invalid",
+          "reason": "terminal_followthrough_effective_history_feed_or_native_stock_changed"
+        },
+        {
+          "code": "changed_history"
+        }
+      ]
+    },
+    {
+      "attack": "mutate_feed",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "archived_final_or_terminal_followthrough_provenance_invalid",
+          "reason": "terminal_followthrough_effective_history_feed_or_native_stock_changed"
+        },
+        {
+          "code": "changed_feed"
+        }
+      ]
+    },
+    {
+      "attack": "forge_actual_response_id",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "archived_final_or_terminal_followthrough_provenance_invalid",
+          "reason": "terminal_followthrough_not_fresh_genuine_zero_api_zero_attempts"
+        },
+        {
+          "code": "changed_response_event_sha256s"
+        },
+        {
+          "code": "changed_actual_response_ids"
+        }
+      ]
+    },
+    {
+      "attack": "hide_actual_response_event",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "archived_final_or_terminal_followthrough_provenance_invalid",
+          "reason": "terminal_followthrough_not_fresh_genuine_zero_api_zero_attempts"
+        },
+        {
+          "code": "changed_response_event_sha256s"
+        },
+        {
+          "code": "changed_actual_response_ids"
+        }
+      ]
+    },
+    {
+      "attack": "fake_month_ledger",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "genuine_second_core_proof_invalid",
+          "reason": "actual_persisted_month_ledger_mismatch"
+        },
+        {
+          "code": "changed_ledgers"
+        }
+      ]
+    },
+    {
+      "attack": "change_source_primary_inventory",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "changed_existing_source_primary",
+          "missing": [],
+          "changed": [
+            "https://www.latercera.com/branded/noticia/atencion-medica-domiciliaria-cuando-conviene-llamar-a-un-medico-a-casa-en-lugar-de-ir-a-urgencias/"
+          ]
+        }
+      ]
+    },
+    {
+      "attack": "same_old_window",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "second_actual_core_not_fresh"
+        }
+      ]
+    },
+    {
+      "attack": "different_new_consumer_fp",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "runtime_implementation_or_policy_changed"
+        }
+      ]
+    },
+    {
+      "attack": "new_unselected_processed",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "archived_final_or_terminal_followthrough_provenance_invalid",
+          "reason": "terminal_followthrough_new_unselected_candidate_processed"
+        },
+        {
+          "code": "new_unselected_discovery_was_processed"
+        }
+      ]
+    },
+    {
+      "attack": "new_model_response_in_zero_window",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "archived_final_or_terminal_followthrough_provenance_invalid",
+          "reason": "terminal_followthrough_not_fresh_genuine_zero_api_zero_attempts"
+        },
+        {
+          "code": "genuine_second_core_proof_invalid",
+          "reason": "actual_response_events_ledger_mismatch"
+        },
+        {
+          "code": "changed_response_event_sha256s"
+        },
+        {
+          "code": "changed_actual_response_ids"
+        }
+      ]
+    },
+    {
+      "attack": "body_alias_live9",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "archived_final_or_terminal_followthrough_provenance_invalid",
+          "reason": "terminal_followthrough_unselected_processing_changed"
+        },
+        {
+          "code": "changed_existing_source_queue",
+          "missing": [],
+          "changed": [
+            "https://www.latercera.com/nacional/noticia/fallece-juan-pablo-cardenas-premio-nacional-de-periodismo-2005/"
+          ]
+        }
+      ]
+    },
+    {
+      "attack": "typed_body_alias_live9",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "archived_final_or_terminal_followthrough_provenance_invalid",
+          "reason": "terminal_followthrough_unselected_processing_changed"
+        },
+        {
+          "code": "changed_existing_source_queue",
+          "missing": [],
+          "changed": [
+            "https://www.latercera.com/nacional/noticia/fallece-juan-pablo-cardenas-premio-nacional-de-periodismo-2005/"
+          ]
+        }
+      ]
+    },
+    {
+      "attack": "body_alias_prior_pending",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "archived_final_or_terminal_followthrough_provenance_invalid",
+          "reason": "terminal_followthrough_unselected_processing_changed"
+        },
+        {
+          "code": "changed_existing_source_queue",
+          "missing": [],
+          "changed": [
+            "https://www.latercera.com/pulso/noticia/oscar-herencia-la-apuesta-de-metlife-por-chile-es-gigante-somos-la-cuarta-operacion-del-mundo/"
+          ]
+        }
+      ]
+    },
+    {
+      "attack": "typed_body_alias_prior_pending",
+      "result": "DENY",
+      "findings": [
+        {
+          "code": "archived_final_or_terminal_followthrough_provenance_invalid",
+          "reason": "terminal_followthrough_unselected_processing_changed"
+        },
+        {
+          "code": "changed_existing_source_queue",
+          "missing": [],
+          "changed": [
+            "https://www.latercera.com/pulso/noticia/oscar-herencia-la-apuesta-de-metlife-por-chile-es-gigante-somos-la-cuarta-operacion-del-mundo/"
+          ]
+        }
+      ]
+    }
+  ],
+  "attack_count": 28,
+  "existing_tests": {
+    "command": "pytest -q tests/test_pulso_terminal_followthrough_idempotence.py tests/test_pulso_recovery_command.py tests/test_pulso_compact_body_type_domain.py",
+    "result_file": "/workspace/work/pulso_terminal_helper_domain_tests.txt"
+  },
+  "findings": []
+}

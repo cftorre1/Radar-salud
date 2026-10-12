@@ -1,0 +1,945 @@
+{
+  "schema_version": "pulso_cross_source_two_events_second_peer_v1",
+  "source_id": "pulso_latercera",
+  "reviewer": "publisher_surfaces_independent",
+  "curated_state_commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+  "inputs": {
+    "history": {
+      "commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "b3ccf5c31b217c724c80e83c086c32f96841bd449bd42866e29459453cca802c"
+    },
+    "queue": {
+      "commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "6dcab92748d759058c6eabb7df78bda5d364a03f8bcbcf9201ed3f73de8fa2e8"
+    },
+    "runtime_report": {
+      "commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "ff26065428145782896016a9a406e1adda09956ec512f34f209de05c2f866cab"
+    },
+    "telemetry": {
+      "commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "f5d5f4ba51d3c510997e2750d97e43d3e1d4c05196b3f2cdcb8eb5b18aec6a1b"
+    }
+  },
+  "first_primary_cross_source_reader": {
+    "scratch_path": "/workspace/work/pulso_cross_source_waiting_provider_peer.json",
+    "sha256": "d5eb9a5b45c97b9bb9d676b4d0ba55bb87c231428f95b95d8716f7982084283d"
+  },
+  "all_signals": [
+    {
+      "focus": "UC Christus / Clínica San Carlos / cierre 10 de octubre",
+      "decision": "group",
+      "exact_reason": "Same October 10 operational update after the October 8 flood: completed transfer of every hospitalized patient, closure for some weeks, support services below normal capacity and redistribution of scheduled care from Clínica San Carlos/El Alba within UC Christus. Pulso adds no subsequent operational state, reopening date, new destination, patient/bed count or funding amount beyond the surviving DF article. This is distinct from October 8 initial-disruption observations but duplicates DF October 10.",
+      "target": {
+        "url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+        "publication_date": "2026-10-10",
+        "source_slug": "pulso_latercera",
+        "source_name": "Pulso / La Tercera",
+        "source_type": "press_high_trust",
+        "queue_fingerprint": "94214f41868a2bdb4052f5954bce686ee3a87aa60d008b2d7ebba1ceca199d1b",
+        "full_primary_retained_content": "Tras el aluvión que afectó el jueves 8 de octubre al sector de San Carlos de Apoquindo, en la comuna de Las Condes, Clínica UC Christus dio a conocer el último balance del estado de su situación, correspondiente a las 13.00 horas de este sábado. La entidad dijo que “si bien logramos mantener la actividad hospitalaria mediante traslados preventivos al Hospital Clínico UC y altas médicas de pacientes cuya condición lo permitía, las actuales condiciones no permiten contar con todos los servicios de apoyo operando a su capacidad habitual, requisito indispensable para garantizar una atención segura y acorde con los estándares que caracterizan a nuestra institución”. Por ello indicó que “dada esta situación, y con el fin de garantizar una atención segura y de calidad para quienes permanecían hospitalizados, hemos decidido trasladar a todos los pacientes, proceso que concluyó durante esta jornada, y suspender las operaciones durante algunas semanas mientras se realizan los trabajos de despeje, limpieza y recuperación de las áreas afectadas. Esto nos permitirá concentrar todos nuestros esfuerzos en rehabilitar la clínica a la brevedad y retomar las atenciones con el estándar UC Christus”. Precisó que los pacientes serán contactados para redistribuir en los diversos centros médicos y hospitalarios de UC Christus las consultas, exámenes y procedimientos que estaban agendados en Clínica San Carlos de Apoquindo y Centro Médico El Alba. Asimismo indicó que continuará informando sobre la evolución de la situación y la reanudación de los servicios a través de los canales oficiales de UC Christus.",
+        "retained_content_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "primary_html_sha256": "e7d3de316f5d8afa1d4be08e75b639e64a6d43a293a2b18e5e4542400a02e4a3",
+        "native_original_html_sha256": null,
+        "full_effective_signal": {
+          "title": "Clínica UC Christus de San Carlos de Apoquindo termina traslado de pacientes ante suspensión de operaciones por aluvión",
+          "source_name": "Pulso / La Tercera",
+          "source_type": "press_high_trust",
+          "source_url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+          "category": "Prestadores",
+          "subcategory": "General",
+          "system_domain": "HEALTH",
+          "what_happened": "Según Pulso / La Tercera, Clínica UC Christus informó que completó el traslado de todos los pacientes hospitalizados tras el aluvión que afectó San Carlos de Apoquindo. La clínica suspenderá sus operaciones durante algunas semanas, mientras realiza labores de despeje, limpieza y recuperación, debido a que sus servicios de apoyo no están funcionando a capacidad habitual. Las consultas, exámenes y procedimientos agendados serán redistribuidos entre otros centros de UC Christus.",
+          "event_date": "2026-10-10",
+          "detected_at": "2026-10-11T04:36:44.044688+00:00",
+          "primary_source_url": null,
+          "event_type": "OTHER",
+          "strategic_theme": [],
+          "institution_types": [],
+          "entity_refs": [],
+          "country": "CL",
+          "topics": [
+            "providers"
+          ],
+          "entities": [],
+          "people": [],
+          "geography": [],
+          "key_facts": [],
+          "key_numbers": [],
+          "why_it_matters": "Afecta temporalmente la capacidad de atención de una clínica relevante de UC Christus y obliga a redistribuir pacientes y prestaciones dentro de su red. Merece atención por el impacto operativo y de acceso durante las próximas semanas, aunque el alcance informado es local y transitorio.",
+          "who_cares": [],
+          "possible_implications": [],
+          "watch_tags": [
+            "pulso_latercera",
+            "media",
+            "prestadores"
+          ],
+          "connection_keys": [],
+          "trend_keys": [],
+          "prospective_evidence": false,
+          "economic_impact_score": 72,
+          "regulatory_impact_score": 55,
+          "scope_score": 72,
+          "novelty_score": 72,
+          "actionability_score": 76,
+          "source_quality_score": 92,
+          "radar_score": 71,
+          "confidence_score": 92,
+          "distribution": "archive",
+          "validation_status": "automatic",
+          "corroboration_status": "unknown",
+          "additional_sources": [],
+          "source_documents": [],
+          "key_points": [],
+          "risk_notes": [],
+          "data_insights": [],
+          "data_insight_meta": {},
+          "validity_text": null,
+          "related_reference_ids": [],
+          "original_language": "es",
+          "display_language": "es",
+          "translation_status": "not_required",
+          "original_title": null,
+          "original_what_happened": null,
+          "original_why_it_matters": null,
+          "signal_types": [
+            "Noticias"
+          ],
+          "scopes": [
+            "Prestadores"
+          ],
+          "editorial_relevance": 72,
+          "source_quality_gate": "passed",
+          "evidence_maturity": "media_reported",
+          "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+          "publication_date": "2026-10-10",
+          "publication_timestamp": "2026-10-10T16:38:08.831Z",
+          "publication_date_source": "visible_article_byline",
+          "ingestion_mode": "BACKFILL",
+          "editorial_review": {
+            "schema_version": "pulso_editorial_review_v1",
+            "review_id": "pulso-first-paid-all32-independent-original-body-review-2026-10-11",
+            "review_file": "data/audits/pulso_first_paid_editorial_corrections_2026_10_11.json",
+            "review_sha256": "35e1d8a806f99881b56c5358d904880ca6bf2aa7ddd21e7bdada8a4b740a78d2",
+            "record_sha256": "6d9c3537dfce3fccce480971f56327851782308755fbd4efe952ae1ba87b563d",
+            "original_signal_sha256": "75d0f98af73f79d8767f6075b09ebfd4080de52cd2899c12fd952d5e798f33cf",
+            "original_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+            "publication_date": "2026-10-10",
+            "decision": "accept",
+            "reason": "Incremento operativo distinto del aluvión inicial: traslado concluido de todos pacientes, cierre por algunas semanas y redistribución de consultas/exámenes. No recuento inventado de camas/pacientes.",
+            "evidence_quotes": [
+              "hemos decidido trasladar a todos los pacientes, proceso que concluyó durante esta jornada, y suspender las operaciones durante algunas semanas",
+              "las consultas, exámenes y procedimientos que estaban agendados en Clínica San Carlos de Apoquindo y Centro Médico El Alba."
+            ],
+            "original_terminal_status": "published",
+            "original_model_assessment": {
+              "decision": "published",
+              "relevance_score": 72,
+              "threshold": 72,
+              "analysis_reason": "Es una interrupción material de capacidad hospitalaria y ambulatoria causada por un evento climático, con traslado de pacientes y suspensión temporal de operaciones. Sin embargo, no se informa daño estructural definitivo, impacto financiero ni una modificación permanente de la oferta sanitaria, por lo que corresponde a una señal relevante pero secundaria."
+            },
+            "original_model_what_happened": "Según Pulso / La Tercera, Clínica UC Christus informó que completó el traslado de todos los pacientes hospitalizados tras el aluvión que afectó San Carlos de Apoquindo. La clínica suspenderá sus operaciones durante algunas semanas, mientras realiza labores de despeje, limpieza y recuperación, debido a que sus servicios de apoyo no están funcionando a capacidad habitual. Las consultas, exámenes y procedimientos agendados serán redistribuidos entre otros centros de UC Christus.",
+            "original_model_why_it_matters": "Afecta temporalmente la capacidad de atención de una clínica relevante de UC Christus y obliga a redistribuir pacientes y prestaciones dentro de su red. Merece atención por el impacto operativo y de acceso durante las próximas semanas, aunque el alcance informado es local y transitorio."
+          },
+          "editorial_decision": "accept",
+          "editorial_review_reason": "Incremento operativo distinto del aluvión inicial: traslado concluido de todos pacientes, cierre por algunas semanas y redistribución de consultas/exámenes. No recuento inventado de camas/pacientes.",
+          "feed_visibility": true
+        },
+        "effective_signal_sha256": "588958150acc3d0a72febfb6c82727b9272905a2d39b319c1178b239bd596fcd",
+        "full_retained_model_output": null,
+        "retained_model_output_sha256": null,
+        "retained_response_id": null,
+        "actual_editorial_assessment": {
+          "decision": "published",
+          "relevance_score": 72,
+          "threshold": 72,
+          "analysis_reason": "Es una interrupción material de capacidad hospitalaria y ambulatoria causada por un evento climático, con traslado de pacientes y suspensión temporal de operaciones. Sin embargo, no se informa daño estructural definitivo, impacto financiero ni una modificación permanente de la oferta sanitaria, por lo que corresponde a una señal relevante pero secundaria."
+        },
+        "previous_editorial_review": {
+          "schema_version": "pulso_editorial_review_v1",
+          "review_id": "pulso-first-paid-all32-independent-original-body-review-2026-10-11",
+          "review_file": "data/audits/pulso_first_paid_editorial_corrections_2026_10_11.json",
+          "review_sha256": "35e1d8a806f99881b56c5358d904880ca6bf2aa7ddd21e7bdada8a4b740a78d2",
+          "record_sha256": "6d9c3537dfce3fccce480971f56327851782308755fbd4efe952ae1ba87b563d",
+          "original_signal_sha256": "75d0f98af73f79d8767f6075b09ebfd4080de52cd2899c12fd952d5e798f33cf",
+          "original_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+          "publication_date": "2026-10-10",
+          "decision": "accept",
+          "reason": "Incremento operativo distinto del aluvión inicial: traslado concluido de todos pacientes, cierre por algunas semanas y redistribución de consultas/exámenes. No recuento inventado de camas/pacientes.",
+          "evidence_quotes": [
+            "hemos decidido trasladar a todos los pacientes, proceso que concluyó durante esta jornada, y suspender las operaciones durante algunas semanas",
+            "las consultas, exámenes y procedimientos que estaban agendados en Clínica San Carlos de Apoquindo y Centro Médico El Alba."
+          ],
+          "original_terminal_status": "published",
+          "original_model_assessment": {
+            "decision": "published",
+            "relevance_score": 72,
+            "threshold": 72,
+            "analysis_reason": "Es una interrupción material de capacidad hospitalaria y ambulatoria causada por un evento climático, con traslado de pacientes y suspensión temporal de operaciones. Sin embargo, no se informa daño estructural definitivo, impacto financiero ni una modificación permanente de la oferta sanitaria, por lo que corresponde a una señal relevante pero secundaria."
+          },
+          "original_model_what_happened": "Según Pulso / La Tercera, Clínica UC Christus informó que completó el traslado de todos los pacientes hospitalizados tras el aluvión que afectó San Carlos de Apoquindo. La clínica suspenderá sus operaciones durante algunas semanas, mientras realiza labores de despeje, limpieza y recuperación, debido a que sus servicios de apoyo no están funcionando a capacidad habitual. Las consultas, exámenes y procedimientos agendados serán redistribuidos entre otros centros de UC Christus.",
+          "original_model_why_it_matters": "Afecta temporalmente la capacidad de atención de una clínica relevante de UC Christus y obliga a redistribuir pacientes y prestaciones dentro de su red. Merece atención por el impacto operativo y de acceso durante las próximas semanas, aunque el alcance informado es local y transitorio."
+        },
+        "previous_editorial_review_sha256": "1fa94432bf7374d1eeda5c000316b128283338ef5df74c175af61499429e2380",
+        "queue_raw_sha256": "a9a8955837cb89e56653f1f7e32b95ef8e348c5827a39c51efddd238abf75d07",
+        "full_actual_queue_entry_sha256": "17bd724a679685b6e75234be3b18fbddf7dda081c1ce70b9f3b26bcd9ac67fef",
+        "full_primary_retained_content_read": true,
+        "full_effective_signal_read": true,
+        "full_retained_model_output_read": false,
+        "raw_model_output_available": false,
+        "raw_model_limit": "Legacy response not retained; effective published signal and observed assessment are preserved. No fabricated response ID or attribution to a new paid producer.",
+        "body_capture_limits": [],
+        "date_evidence": {
+          "publication_date_source": "visible_article_byline",
+          "publication_timestamp": "2026-10-10T16:38:08.831Z",
+          "visible_publication_date": "2026-10-10",
+          "publication_label": null
+        }
+      },
+      "survivor": {
+        "url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+        "publication_date": "2026-10-10",
+        "source_slug": "diario_financiero",
+        "source_name": "Diario Financiero",
+        "source_type": "press_high_trust",
+        "queue_fingerprint": "e4c639df46d35cbdccae32c3169949d3984d9b2895396e154c58492e2c9570b0",
+        "full_primary_retained_content": "La Clínica San Carlos de Apoquindo permanecerá cerrada durante algunas semanas debido a los daños provocados por el aluvión que afectó el jueves 8 de octubre al sector de San Carlos de Apoquindo, en la comuna de Las Condes. UC Christus informó que concluyó el traslado de todos los pacientes hospitalizados, luego de adoptar medidas preventivas para mantener la continuidad de la atención durante la emergencia. La institución explicó que las condiciones actuales de las instalaciones no permiten que todos los servicios de apoyo funcionen a su capacidad habitual , lo que impide garantizar la atención bajo los estándares de seguridad requeridos. El proceso de recuperación contempla labores de despeje, limpieza y rehabilitación de los sectores dañados. La entidad no informó el monto de inversión previsto para estas obras ni una fecha específica para retomar las operaciones. En paralelo, los pacientes que tenían consultas, exámenes y procedimientos programados en la Clínica San Carlos de Apoquindo y el Centro Médico El Alba serán contactados para coordinar su atención en otros establecimientos de la red UC Christus. La institución señaló que la suspensión temporal busca concentrar los trabajos en la recuperación de las instalaciones y permitir el restablecimiento de los servicios. Asimismo, agradeció la colaboración de los equipos clínicos y de las instituciones que participaron en la emergencia y recibieron a los pacientes durante los traslados. UC Christus indicó que comunicará las novedades sobre la reanudación de las atenciones a través de sus canales oficiales.",
+        "retained_content_sha256": "463b2ec3d0af62abd21ea7452b71497e66b5694d954834c12fb1d183cfaa7492",
+        "primary_html_sha256": null,
+        "native_original_html_sha256": "8a27c67823e6b51aac800dbd572d15f787879075a7856cbec38df956fbf4f4cd",
+        "full_effective_signal": {
+          "title": "Aluvión en Las Condes obliga a cerrar por semanas la Clínica San Carlos",
+          "source_name": "Diario Financiero",
+          "source_type": "press_high_trust",
+          "source_url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+          "category": "Prestadores",
+          "subcategory": "General",
+          "system_domain": "HEALTH",
+          "what_happened": "Según Diario Financiero, UC Christus cerrará durante algunas semanas la Clínica San Carlos de Apoquindo tras los daños causados por un aluvión. La institución trasladó a todos los pacientes hospitalizados y derivará consultas, exámenes y procedimientos programados a otros establecimientos de su red. La reapertura aún no tiene fecha específica y la entidad no informó el monto de inversión para la recuperación.",
+          "event_date": "2026-10-10",
+          "detected_at": "2026-10-10T22:23:12.862520+00:00",
+          "primary_source_url": null,
+          "event_type": "OTHER",
+          "strategic_theme": [],
+          "institution_types": [],
+          "entity_refs": [],
+          "country": "CL",
+          "topics": [],
+          "entities": [],
+          "people": [],
+          "geography": [],
+          "key_facts": [],
+          "key_numbers": [],
+          "why_it_matters": "La medida reduce temporalmente la capacidad operativa de un prestador relevante y obliga a redistribuir pacientes y atenciones dentro de la red UC Christus. El impacto inmediato se concentra en la continuidad de servicios, la disponibilidad de infraestructura y la planificación de recuperación, mientras la duración del cierre y los recursos requeridos siguen sin definirse.",
+          "who_cares": [],
+          "possible_implications": [],
+          "watch_tags": [
+            "df",
+            "noticias",
+            "prestadores"
+          ],
+          "connection_keys": [],
+          "trend_keys": [],
+          "prospective_evidence": false,
+          "economic_impact_score": 82,
+          "regulatory_impact_score": 30,
+          "scope_score": 70,
+          "novelty_score": 82,
+          "actionability_score": 70,
+          "source_quality_score": 93,
+          "radar_score": 69,
+          "confidence_score": 93,
+          "distribution": "archive",
+          "validation_status": "automatic",
+          "corroboration_status": "unknown",
+          "additional_sources": [],
+          "source_documents": [],
+          "key_points": [],
+          "risk_notes": [],
+          "data_insights": [],
+          "data_insight_meta": {},
+          "validity_text": null,
+          "related_reference_ids": [],
+          "original_language": "es",
+          "display_language": "es",
+          "translation_status": "not_required",
+          "original_title": null,
+          "original_what_happened": null,
+          "original_why_it_matters": null,
+          "signal_types": [
+            "Noticias"
+          ],
+          "scopes": [
+            "Prestadores"
+          ],
+          "editorial_relevance": 82,
+          "evidence_maturity": "media_reported",
+          "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+          "editorial_assessment": {
+            "score": 82,
+            "reason": "Es un cambio material y verificable en la capacidad de atención de un actor importante del sector salud, provocado por daños de infraestructura y con efectos operativos durante varias semanas. No corresponde a una confirmación adicional más allá de lo reportado por Diario Financiero.",
+            "gate": "Media Early Signal Gate",
+            "gate_version": "1.0.0",
+            "threshold": 72
+          },
+          "publication_date_source": "cxenseparse:recs:publishtime",
+          "publication_timestamp": "2026-10-10T16:29:59Z",
+          "publication_label": null,
+          "publication_date_candidates": [
+            {
+              "source": "cxenseparse:recs:publishtime",
+              "value": "2026-10-10T16:29:59Z",
+              "day": "2026-10-10"
+            },
+            {
+              "source": "jsonld:datePublished",
+              "value": "2026-10-10T16:29:59Z",
+              "day": "2026-10-10"
+            },
+            {
+              "source": "visible:published_label",
+              "value": "Sábado 10 de octubre de 2026 a las 13:22 hrs.",
+              "day": "2026-10-10"
+            }
+          ],
+          "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+          "publication_date_conflict": false,
+          "publication_date_conflict_resolution": null,
+          "article_content_source": "df_primary_body",
+          "original_sha256": "8a27c67823e6b51aac800dbd572d15f787879075a7856cbec38df956fbf4f4cd",
+          "original_captured_at": "2026-10-11T04:31:36.492140+00:00",
+          "ingestion_mode": "LIVE",
+          "df_body_reaudit_observations": [
+            {
+              "at": "2026-10-11T05:02:41.640667+00:00",
+              "before": {
+                "title": "Aluvión en Las Condes obliga a cerrar por semanas la Clínica San Carlos",
+                "source_name": "Diario Financiero",
+                "source_type": "press_high_trust",
+                "source_url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+                "category": "Prestadores",
+                "subcategory": "General",
+                "system_domain": "HEALTH",
+                "what_happened": "Diario Financiero reporta que la Clínica San Carlos de Apoquindo permanecerá cerrada durante algunas semanas tras los daños causados por un aluvión. UC Christus informó que trasladó a todos los pacientes hospitalizados y que derivará consultas, exámenes y procedimientos programados a otros establecimientos de su red. La recuperación contempla despeje, limpieza y rehabilitación, pero aún no tiene monto de inversión ni fecha definida de reapertura.",
+                "event_date": "2026-10-10",
+                "detected_at": "2026-10-10T22:23:12.862520+00:00",
+                "primary_source_url": null,
+                "event_type": "OTHER",
+                "strategic_theme": [],
+                "institution_types": [],
+                "entity_refs": [],
+                "country": "CL",
+                "topics": [],
+                "entities": [],
+                "people": [],
+                "geography": [],
+                "key_facts": [],
+                "key_numbers": [],
+                "why_it_matters": "La suspensión afecta temporalmente la capacidad operativa de UC Christus y obliga a redistribuir pacientes y prestaciones hacia otros centros de la red, con posibles efectos sobre disponibilidad y continuidad de atención en Las Condes. Merece atención ahora porque la duración del cierre, el costo de rehabilitación y la fecha de retorno siguen abiertos.",
+                "who_cares": [],
+                "possible_implications": [],
+                "watch_tags": [
+                  "df",
+                  "noticias",
+                  "prestadores"
+                ],
+                "connection_keys": [],
+                "trend_keys": [],
+                "prospective_evidence": false,
+                "economic_impact_score": 72,
+                "regulatory_impact_score": 30,
+                "scope_score": 70,
+                "novelty_score": 72,
+                "actionability_score": 70,
+                "source_quality_score": 93,
+                "radar_score": 65,
+                "confidence_score": 93,
+                "distribution": "archive",
+                "validation_status": "automatic",
+                "corroboration_status": "unknown",
+                "additional_sources": [],
+                "source_documents": [],
+                "key_points": [],
+                "risk_notes": [],
+                "data_insights": [],
+                "data_insight_meta": {},
+                "validity_text": null,
+                "related_reference_ids": [],
+                "original_language": "es",
+                "display_language": "es",
+                "translation_status": "not_required",
+                "original_title": null,
+                "original_what_happened": null,
+                "original_why_it_matters": null,
+                "signal_types": [
+                  "Noticias"
+                ],
+                "scopes": [
+                  "Prestadores"
+                ],
+                "editorial_relevance": 72,
+                "evidence_maturity": "media_reported",
+                "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+                "editorial_assessment": {
+                  "score": 72,
+                  "reason": "Es una interrupción relevante de infraestructura asistencial y de capacidad de atención, aunque acotada a un establecimiento y originada por una emergencia local. Diario Financiero atribuye la información a UC Christus; el reporte no constituye por sí solo una confirmación independiente ni entrega todavía impactos financieros o sectoriales más amplios.",
+                  "gate": "Media Early Signal Gate",
+                  "gate_version": "1.0.0",
+                  "threshold": 72
+                },
+                "publication_date_source": "cxenseparse:recs:publishtime",
+                "publication_timestamp": "2026-10-10T16:29:59Z",
+                "publication_date_candidates": [
+                  {
+                    "source": "cxenseparse:recs:publishtime",
+                    "value": "2026-10-10T16:29:59Z",
+                    "day": "2026-10-10"
+                  },
+                  {
+                    "source": "jsonld:datePublished",
+                    "value": "2026-10-10T16:29:59Z",
+                    "day": "2026-10-10"
+                  },
+                  {
+                    "source": "visible:published_label",
+                    "value": "Sábado 10 de octubre de 2026 a las 13:22 hrs. aluvión Las Condes salud hospital Noticias destacadas ",
+                    "day": "2026-10-10"
+                  }
+                ],
+                "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+                "ingestion_mode": "LIVE",
+                "recovery_trace": {
+                  "run_id": "38111768459",
+                  "basis": "Actual paid assessment and article evidence from failed checkpoint artifact; no new model call"
+                }
+              }
+            }
+          ],
+          "df_body_reaudit_status": "published_after_primary_body_reassessment",
+          "editorial_decision": "accept"
+        },
+        "effective_signal_sha256": "412b7057e2f9b0b0ab66eed0779d0081c514767c38acd017fd1e11db551d56df",
+        "full_retained_model_output": null,
+        "retained_model_output_sha256": null,
+        "retained_response_id": null,
+        "actual_editorial_assessment": {
+          "score": 82,
+          "reason": "Es un cambio material y verificable en la capacidad de atención de un actor importante del sector salud, provocado por daños de infraestructura y con efectos operativos durante varias semanas. No corresponde a una confirmación adicional más allá de lo reportado por Diario Financiero.",
+          "gate": "Media Early Signal Gate",
+          "gate_version": "1.0.0",
+          "threshold": 72
+        },
+        "previous_editorial_review": null,
+        "previous_editorial_review_sha256": null,
+        "queue_raw_sha256": "9d651cb1f406c0cac47ad3e9fcc1822327d0e63055df334171798b9da3e084cb",
+        "full_actual_queue_entry_sha256": "d926590787ff5f606cf626ebef8cb2ab32c2b5339687835409fe7f284008e464",
+        "full_primary_retained_content_read": true,
+        "full_effective_signal_read": true,
+        "full_retained_model_output_read": false,
+        "raw_model_output_available": false,
+        "raw_model_limit": "Legacy response not retained; effective published signal and observed assessment are preserved. No fabricated response ID or attribution to a new paid producer.",
+        "body_capture_limits": [],
+        "date_evidence": {
+          "publication_date_source": "cxenseparse:recs:publishtime",
+          "publication_timestamp": "2026-10-10T16:29:59Z",
+          "visible_publication_date": null,
+          "publication_label": null
+        }
+      },
+      "immutable_cross_source_event_pair_pin": {
+        "target_url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+        "target_day": "2026-10-10",
+        "target_body_sha256": "0aba6146c0418bdaa739ad290336499fd237c19cf90aaa689dc42ea2fbdc5405",
+        "target_signal_sha256": "588958150acc3d0a72febfb6c82727b9272905a2d39b319c1178b239bd596fcd",
+        "target_previous_review_sha256": "1fa94432bf7374d1eeda5c000316b128283338ef5df74c175af61499429e2380",
+        "survivor_url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+        "survivor_day": "2026-10-10",
+        "survivor_source_slug": "diario_financiero",
+        "survivor_queue_fingerprint": "e4c639df46d35cbdccae32c3169949d3984d9b2895396e154c58492e2c9570b0",
+        "survivor_body_sha256": "463b2ec3d0af62abd21ea7452b71497e66b5694d954834c12fb1d183cfaa7492",
+        "survivor_signal_sha256": "412b7057e2f9b0b0ab66eed0779d0081c514767c38acd017fd1e11db551d56df"
+      },
+      "immutable_cross_source_event_pair_pin_sha256": "35b31abd2795298f2188887b4e2a7ca06117dcf1ac0d792b7f25c4661511876d",
+      "literal_primary_event_comparison_quotes": [
+        {
+          "source": "Pulso",
+          "quote": "hemos decidido trasladar a todos los pacientes, proceso que concluyó durante esta jornada, y suspender las operaciones durante algunas semanas"
+        },
+        {
+          "source": "DF",
+          "quote": "UC Christus informó que concluyó el traslado de todos los pacientes hospitalizados"
+        },
+        {
+          "source": "DF",
+          "quote": "los pacientes que tenían consultas, exámenes y procedimientos programados en la Clínica San Carlos de Apoquindo y el Centro Médico El Alba serán contactados para coordinar su atención en otros establecimientos de la red UC Christus."
+        }
+      ],
+      "survivor_same_url_date_queue_candidates": [
+        {
+          "queue_fingerprint": "e4c639df46d35cbdccae32c3169949d3984d9b2895396e154c58492e2c9570b0",
+          "source_slug": "diario_financiero",
+          "status": "published",
+          "raw_sha256": "9d651cb1f406c0cac47ad3e9fcc1822327d0e63055df334171798b9da3e084cb"
+        }
+      ],
+      "application_performed": false,
+      "only_target_pulso_may_be_grouped": true,
+      "native_survivor_mutation_authorized": false,
+      "media_reported_preserved_for_target": true
+    },
+    {
+      "focus": "Plan Enlace / otras tres cajas / firma 23 de septiembre",
+      "decision": "group",
+      "exact_reason": "Same September 23 signed Plan Enlace arrangement with Los Héroes, 18 de Septiembre and La Araucana, covering affiliates also in Fonasa B/C/D awaiting No GES care. SUSESO already describes the signed arrangement and permanent public/private coordination. Pulso adds conditional possible later surgery and a then-undefined 2027 budget discussion, neither a funded resource nor an executed new procedure. Its effective WHAT/WHY foreground this same signature; general ministerial comments elsewhere in its body are not a separately published material action. Keep Caja Los Andes August 14 separate.",
+      "target": {
+        "url": "https://www.latercera.com/nacional/noticia/chomali-por-listas-de-espera-yo-no-esperaba-que-disminuyeran-lo-que-yo-espero-es-que-disminuyan-los-tiempos/",
+        "publication_date": "2026-09-23",
+        "source_slug": "pulso_latercera",
+        "source_name": "Pulso / La Tercera",
+        "source_type": "press_high_trust",
+        "queue_fingerprint": "3f432d78c49713a8cf9d3e5e1a6675dbdd56bc006dfac9abda8eca7d23aaff54",
+        "full_primary_retained_content": "Ante los paños fríos puestos por expertos y por el Colegio Médico de la Región Metropolitana respecto de la persistencia de las listas de espera, la ministra de Salud, May Chomali, sostuvo que el foco de su gestión no está puesto exclusivamente en disminuir el número de personas que integran estas listas, sino en reducir el tiempo que los pacientes deben esperar para recibir atención. “Yo no esperaba que disminuyeran, lo que yo espero es que disminuyan los tiempos de espera”, afirmó la ministra, quien cuestionó que se evalúe el avance de las medidas implementadas durante un período de solo tres meses. En ese sentido, señaló que el gobierno ha observado una disminución de los tiempos de espera en patologías oncológicas y de las garantías vencidas. Chomali también planteó que un aumento de la capacidad de atención puede generar inicialmente un incremento en la cantidad de personas registradas en espera, debido a que al ampliar las consultas pueden aparecer nuevas necesidades quirúrgicas que permanecían ocultas mientras los pacientes no accedían a una evaluación médica. “Por lo tanto, es esperable que aumente el número de personas que estén esperando, porque hay una forma muy simple de reducir las listas de espera. Yo cierro la puerta, pero no es eso lo que nosotros queremos”, señaló. La ministra insistió en que el problema requiere modificaciones de carácter estructural y no solo inyecciones extraordinarias de recursos. Como antecedente, sostuvo que experiencias anteriores mostraron reducciones temporales de las listas durante los períodos en que se aumentó el financiamiento, para luego volver a crecer. “Este es un problema estructural. Esto no es un problema que se resuelve con más recursos”, afirmó Chomali, agregando que el Ministerio está implementando cambios junto con la Subsecretaría de Redes Asistenciales y directamente en los hospitales. En otro punto de la actividad, Chomali fue consultada por las negociaciones presupuestarias con el Ministerio de Hacienda y por las cifras que se han planteado para el financiamiento de salud durante el próximo año. La ministra confirmó que ha sostenido múltiples reuniones con el ministro de Hacienda, Jorge Quiroz, y con los equipos técnicos de ambas carteras. Sin embargo, evitó entregar una cifra concreta respecto del eventual aumento presupuestario. “Hemos tenido múltiples reuniones y conversaciones con el ministro Quiroz y sobre todo con los equipos técnicos. Esperemos llegar a buen puerto”, señaló Chomali. Consultada nuevamente por las cifras que se han mencionado, entre ellas un eventual aumento de 4% o 5%, la ministra respondió que todavía no existe un monto definido. “No tenemos cifras. Lo importante es que estamos teniendo y las comunicaciones siguen abiertas”, afirmó. Finalmente, ante la pregunta sobre si espera un incremento del presupuesto de su cartera para el próximo año, Chomali evitó anticipar una cifra y recalcó que las conversaciones entre Salud y Hacienda continúan abiertas. “Prefiero no decir lo que le puedo decir, que todavía están los canales muy bien abiertos entre el Ministerio de Salud y el Ministerio de Hacienda”, sostuvo. En paralelo, el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración en el marco del Plan Enlace, iniciativa que busca incorporar capacidad del sector privado a la resolución de las listas de espera No GES. La alianza contempla identificar a afiliados de las cajas que también sean beneficiarios de Fonasa y que permanezcan esperando una atención de especialidad. La ministra explicó que el objetivo es avanzar hacia una atención integral y no limitar el convenio a la entrega de consultas médicas. El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, dependiendo de las necesidades de los pacientes. “Esto no es un piloto, no es un programa que va a durar tres meses. Esto es permanente en el tiempo”, sostuvo Chomali, quien definió la colaboración con las cajas como parte de un cambio estructural en la forma de abordar los tiempos de espera. Desde Cajas de Chile, su presidente, Marcelo Forni, valoró la incorporación de las instituciones al Plan Enlace y señaló que las cajas cuentan con redes y prestaciones que pueden contribuir a enfrentar las necesidades de sus afiliados. “Alinear las capacidades del sector privado con las prioridades sociales del país”, planteó.",
+        "retained_content_sha256": "30fa3965a37a4b4c63c9500b5be1a0ec6f1e58c40acc8af01a05f4029072bf25",
+        "primary_html_sha256": "f2a058862e76ee3404f9c7474478cd17033c8624f744c1b4cad3530ea6936632",
+        "native_original_html_sha256": null,
+        "full_effective_signal": {
+          "title": "Chomali por listas de espera: “Yo no esperaba que disminuyeran, lo que yo espero es que disminuyan los tiempos”",
+          "source_name": "Pulso / La Tercera",
+          "source_type": "press_high_trust",
+          "source_url": "https://www.latercera.com/nacional/noticia/chomali-por-listas-de-espera-yo-no-esperaba-que-disminuyeran-lo-que-yo-espero-es-que-disminuyan-los-tiempos/",
+          "category": "Regulación & Legal",
+          "subcategory": "General",
+          "system_domain": "HEALTH",
+          "what_happened": "Según reportó Pulso/La Tercera, el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración para incorporar capacidad privada a la resolución de listas de espera No GES. La iniciativa contempla identificar a afiliados de las cajas que también sean beneficiarios de Fonasa y que estén esperando atención de especialidad. El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, según las necesidades de los pacientes.",
+          "event_date": "2026-09-23",
+          "detected_at": "2026-10-11T04:36:44.044688+00:00",
+          "primary_source_url": null,
+          "event_type": "OTHER",
+          "strategic_theme": [],
+          "institution_types": [],
+          "entity_refs": [],
+          "country": "CL",
+          "topics": [
+            "insurance",
+            "providers",
+            "financing",
+            "waiting_lists",
+            "competition"
+          ],
+          "entities": [],
+          "people": [],
+          "geography": [],
+          "key_facts": [],
+          "key_numbers": [],
+          "why_it_matters": "El convenio crea una coordinación concreta entre Fonasa, el Ministerio de Salud y tres cajas de compensación para abordar listas de espera No GES, con potencial de ampliar el acceso de beneficiarios Fonasa a consultas y, eventualmente, a cirugías y otras prestaciones. Sin embargo, la capacidad adicional futura todavía depende de su implementación y de las necesidades identificadas; además, según la nota del 23 de septiembre de 2026, la negociación presupuestaria para 2027 todavía no tenía un monto definido a esa fecha.",
+          "who_cares": [],
+          "possible_implications": [],
+          "watch_tags": [
+            "pulso_latercera",
+            "media",
+            "prestadores"
+          ],
+          "connection_keys": [],
+          "trend_keys": [],
+          "prospective_evidence": false,
+          "economic_impact_score": 84,
+          "regulatory_impact_score": 55,
+          "scope_score": 84,
+          "novelty_score": 84,
+          "actionability_score": 76,
+          "source_quality_score": 92,
+          "radar_score": 78,
+          "confidence_score": 92,
+          "distribution": "archive",
+          "validation_status": "automatic",
+          "corroboration_status": "unknown",
+          "additional_sources": [],
+          "source_documents": [],
+          "key_points": [],
+          "risk_notes": [],
+          "data_insights": [],
+          "data_insight_meta": {},
+          "validity_text": null,
+          "related_reference_ids": [],
+          "original_language": "es",
+          "display_language": "es",
+          "translation_status": "not_required",
+          "original_title": null,
+          "original_what_happened": null,
+          "original_why_it_matters": null,
+          "signal_types": [
+            "Noticias"
+          ],
+          "scopes": [
+            "Prestadores"
+          ],
+          "editorial_relevance": 84,
+          "source_quality_gate": "passed",
+          "evidence_maturity": "media_reported",
+          "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+          "publication_date": "2026-09-23",
+          "publication_timestamp": "2026-09-23T17:13:17.198Z",
+          "publication_date_source": "visible_article_byline",
+          "editorial_assessment": {
+            "decision": "published",
+            "relevance_score": 84,
+            "threshold": 72,
+            "analysis_reason": "Merece radar porque reporta un acuerdo sanitario concreto que articula al seguro público con redes privadas para atender listas de espera No GES. La firma es un hecho actual, mientras que la incorporación de cirugías y otras prestaciones es una posibilidad futura, no capacidad ya disponible. La discusión presupuestaria aporta contexto, pero no contiene una cifra acordada."
+          },
+          "ingestion_mode": "BACKFILL",
+          "editorial_review": {
+            "schema_version": "pulso_editorial_review_v1",
+            "review_id": "pulso_focus_38149773071_plan_enlace_observation_date_addendum",
+            "review_file": "data/audits/pulso_plan_enlace_temporal_correction_2026_10_11.json",
+            "review_sha256": "c9310df3284fdfffc90710a72645a9eb582db81be4f3f350b9bf099141d2c60f",
+            "record_sha256": "7f689963da4707f51b78c68b1f2d6ea931d288f7f354c899000ba8435b8ff0bc",
+            "original_signal_sha256": "b106201594e6226629041db120bd16dd612f2cbf0d5df793bc441ec3ab828c7c",
+            "original_body_sha256": "30fa3965a37a4b4c63c9500b5be1a0ec6f1e58c40acc8af01a05f4029072bf25",
+            "publication_date": "2026-09-23",
+            "decision": "correct",
+            "reason": "La cláusula sigue sin monto definido expresa un estado que el original sólo acredita al 23 de septiembre. El 11 de octubre no hay una observación primaria nueva que permita conservar el presente; tampoco se infiere que la negociación esté cerrada o aprobada. Fechar la cláusula al reporte original mantiene intactos la firma del convenio, las prestaciones potenciales y la atribución de prensa.",
+            "evidence_quotes": [
+              "Consultada nuevamente por las cifras que se han mencionado, entre ellas un eventual aumento de 4% o 5%, la ministra respondió que todavía no existe un monto definido.",
+              "No tenemos cifras. Lo importante es que estamos teniendo y las comunicaciones siguen abiertas"
+            ],
+            "original_terminal_status": "published",
+            "original_model_assessment": {
+              "decision": "published",
+              "relevance_score": 84,
+              "threshold": 72,
+              "analysis_reason": "Merece radar porque reporta un acuerdo sanitario concreto que articula al seguro público con redes privadas para atender listas de espera No GES. La firma es un hecho actual, mientras que la incorporación de cirugías y otras prestaciones es una posibilidad futura, no capacidad ya disponible. La discusión presupuestaria aporta contexto, pero no contiene una cifra acordada."
+            },
+            "original_model_what_happened": "Según reportó Pulso/La Tercera, el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración para incorporar capacidad privada a la resolución de listas de espera No GES. La iniciativa contempla identificar a afiliados de las cajas que también sean beneficiarios de Fonasa y que estén esperando atención de especialidad. El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, según las necesidades de los pacientes.",
+            "original_model_why_it_matters": "El convenio crea una coordinación concreta entre Fonasa, el Ministerio de Salud y tres cajas de compensación para abordar listas de espera No GES, con potencial de ampliar el acceso de beneficiarios Fonasa a consultas y, eventualmente, a cirugías y otras prestaciones. Sin embargo, la capacidad adicional futura todavía depende de su implementación y de las necesidades identificadas; además, la negociación presupuestaria para el próximo año sigue sin monto definido.",
+            "previous_editorial_review": {
+              "schema_version": "pulso_editorial_review_v1",
+              "review_id": "pulso_focus_38149773071_backfill_time_binding",
+              "review_file": "data/audits/pulso_focus_new5_editorial_corrections_2026_10_11.json",
+              "review_sha256": "c49022c8f81c4d45d654bac2f675ffb341bd2f6e288316f544b82a99dab3c530",
+              "record_sha256": "3ca84dc9e714581831d49bb6de09ab9aad1e548d3ef0be3256e74363901fe936",
+              "original_signal_sha256": "3480b812667ef5eaaf05027ed98dd40d83ef478c1148645cd0639ea1853738b4",
+              "original_body_sha256": "30fa3965a37a4b4c63c9500b5be1a0ec6f1e58c40acc8af01a05f4029072bf25",
+              "publication_date": "2026-09-23",
+              "decision": "accept",
+              "reason": "El original informa una firma concreta entre Minsal/Fonasa y tres cajas; consultas de nueva especialidad iniciales, cirugías sólo potenciales y negociación presupuestaria sin monto. La copia publicada conserva exactamente esas modalidades.",
+              "evidence_quotes": [
+                "el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración",
+                "El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, dependiendo de las necesidades de los pacientes."
+              ],
+              "original_terminal_status": "published",
+              "original_model_assessment": {
+                "decision": "published",
+                "relevance_score": 84,
+                "threshold": 72,
+                "analysis_reason": "Merece radar porque reporta un acuerdo sanitario concreto que articula al seguro público con redes privadas para atender listas de espera No GES. La firma es un hecho actual, mientras que la incorporación de cirugías y otras prestaciones es una posibilidad futura, no capacidad ya disponible. La discusión presupuestaria aporta contexto, pero no contiene una cifra acordada."
+              },
+              "original_model_what_happened": "Según reportó Pulso/La Tercera, el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración para incorporar capacidad privada a la resolución de listas de espera No GES. La iniciativa contempla identificar a afiliados de las cajas que también sean beneficiarios de Fonasa y que estén esperando atención de especialidad. El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, según las necesidades de los pacientes.",
+              "original_model_why_it_matters": "El convenio crea una coordinación concreta entre Fonasa, el Ministerio de Salud y tres cajas de compensación para abordar listas de espera No GES, con potencial de ampliar el acceso de beneficiarios Fonasa a consultas y, eventualmente, a cirugías y otras prestaciones. Sin embargo, la capacidad adicional futura todavía depende de su implementación y de las necesidades identificadas; además, la negociación presupuestaria para el próximo año sigue sin monto definido."
+            }
+          },
+          "editorial_decision": "accept",
+          "editorial_review_reason": "La cláusula sigue sin monto definido expresa un estado que el original sólo acredita al 23 de septiembre. El 11 de octubre no hay una observación primaria nueva que permita conservar el presente; tampoco se infiere que la negociación esté cerrada o aprobada. Fechar la cláusula al reporte original mantiene intactos la firma del convenio, las prestaciones potenciales y la atribución de prensa.",
+          "feed_visibility": true,
+          "event_status": "historical"
+        },
+        "effective_signal_sha256": "0abd116281756cfe371216a87a4f830cca352e5f0818da6d98aee392d9319f1a",
+        "full_retained_model_output": {
+          "relevance_score": 84,
+          "what_happened": "Según reportó Pulso/La Tercera, el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración para incorporar capacidad privada a la resolución de listas de espera No GES. La iniciativa contempla identificar a afiliados de las cajas que también sean beneficiarios de Fonasa y que estén esperando atención de especialidad. El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, según las necesidades de los pacientes.",
+          "why_it_matters": "El convenio crea una coordinación concreta entre Fonasa, el Ministerio de Salud y tres cajas de compensación para abordar listas de espera No GES, con potencial de ampliar el acceso de beneficiarios Fonasa a consultas y, eventualmente, a cirugías y otras prestaciones. Sin embargo, la capacidad adicional futura todavía depende de su implementación y de las necesidades identificadas; además, la negociación presupuestaria para el próximo año sigue sin monto definido.",
+          "reason": "Merece radar porque reporta un acuerdo sanitario concreto que articula al seguro público con redes privadas para atender listas de espera No GES. La firma es un hecho actual, mientras que la incorporación de cirugías y otras prestaciones es una posibilidad futura, no capacidad ya disponible. La discusión presupuestaria aporta contexto, pero no contiene una cifra acordada.",
+          "pulso_editorial_proof": {
+            "scope_decision": "human_health_specific",
+            "scope_reason": "El contenido describe una medida de salud humana en Chile que involucra a Fonasa, hospitales, atención de especialidad y listas de espera No GES, con efectos potenciales sobre el acceso y la capacidad de prestadores.",
+            "human_health_scope_quote": "En paralelo, el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración en el marco del Plan Enlace, iniciativa que busca incorporar capacidad del sector privado a la resolución de las listas de espera No GES.",
+            "actor": "El Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes",
+            "actor_quote": "el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración",
+            "action": "firmaron un convenio de colaboración en el marco del Plan Enlace",
+            "action_quote": "firmaron un convenio de colaboración en el marco del Plan Enlace, iniciativa que busca incorporar capacidad del sector privado a la resolución de las listas de espera No GES.",
+            "consequence": "identificar a afiliados de las cajas que también sean beneficiarios de Fonasa y que permanezcan esperando una atención de especialidad",
+            "consequence_quote": "La alianza contempla identificar a afiliados de las cajas que también sean beneficiarios de Fonasa y que permanezcan esperando una atención de especialidad.",
+            "event_status": "mixed_actual_and_future",
+            "event_status_quote": "El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, dependiendo de las necesidades de los pacientes.",
+            "novelty_decision": "new_material_information",
+            "novelty_reason": "El contenido reporta la firma de un convenio específico entre Fonasa, el Ministerio de Salud y tres cajas de compensación; no se entrega contexto que indique que este acuerdo ya hubiera sido informado previamente.",
+            "novelty_quote": "En paralelo, el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración en el marco del Plan Enlace, iniciativa que busca incorporar capacidad del sector privado a la resolución de las listas de espera No GES.",
+            "future_claims": [
+              {
+                "summary_field": "what_happened",
+                "summary_quote": "Según reportó Pulso/La Tercera, el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración para incorporar capacidad privada a la resolución de listas de espera No GES. La iniciativa contempla identificar a afiliados de las cajas que también sean beneficiarios de Fonasa y que estén esperando atención de especialidad. El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, según las necesidades de los pacientes.",
+                "source_quote": "El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, dependiendo de las necesidades de los pacientes."
+              },
+              {
+                "summary_field": "why_it_matters",
+                "summary_quote": "El convenio crea una coordinación concreta entre Fonasa, el Ministerio de Salud y tres cajas de compensación para abordar listas de espera No GES, con potencial de ampliar el acceso de beneficiarios Fonasa a consultas y, eventualmente, a cirugías y otras prestaciones. Sin embargo, la capacidad adicional futura todavía depende de su implementación y de las necesidades identificadas; además, la negociación presupuestaria para el próximo año sigue sin monto definido.",
+                "source_quote": "El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, dependiendo de las necesidades de los pacientes."
+              }
+            ]
+          },
+          "_pulso_analysis_meta": {
+            "schema_version": "pulso_editorial_proof_v4",
+            "source_name": "Pulso / La Tercera",
+            "model": "gpt-5.6-luna",
+            "response_id": "resp_0978a4d6216a505f006acba7fe5b3487d19f50386ee9140a18",
+            "analysis_text_sha256": "30fa3965a37a4b4c63c9500b5be1a0ec6f1e58c40acc8af01a05f4029072bf25",
+            "request_input_sha256": "095dbd610bccd67d2804d66abeff6c94d0d77fd7cba8182e6f5165a2405a287b",
+            "raw_model_output_sha256": "378e504d5753b81acf3d7d12248e61b1ec4ac81f30869b6d7308759bc0a65e75"
+          }
+        },
+        "retained_model_output_sha256": "15c6a9800003c87367b3cbecbdea62d4d5a806999451228bc6c7c8e3f25ca73a",
+        "retained_response_id": "resp_0978a4d6216a505f006acba7fe5b3487d19f50386ee9140a18",
+        "actual_editorial_assessment": {
+          "decision": "published",
+          "reason": "independent_editorial_copy_corrected",
+          "relevance_score": 84,
+          "threshold": 72,
+          "original_model_assessment": {
+            "decision": "published",
+            "relevance_score": 84,
+            "threshold": 72,
+            "analysis_reason": "Merece radar porque reporta un acuerdo sanitario concreto que articula al seguro público con redes privadas para atender listas de espera No GES. La firma es un hecho actual, mientras que la incorporación de cirugías y otras prestaciones es una posibilidad futura, no capacidad ya disponible. La discusión presupuestaria aporta contexto, pero no contiene una cifra acordada."
+          },
+          "review_sha256": "c9310df3284fdfffc90710a72645a9eb582db81be4f3f350b9bf099141d2c60f"
+        },
+        "previous_editorial_review": {
+          "schema_version": "pulso_editorial_review_v1",
+          "review_id": "pulso_focus_38149773071_plan_enlace_observation_date_addendum",
+          "review_file": "data/audits/pulso_plan_enlace_temporal_correction_2026_10_11.json",
+          "review_sha256": "c9310df3284fdfffc90710a72645a9eb582db81be4f3f350b9bf099141d2c60f",
+          "record_sha256": "7f689963da4707f51b78c68b1f2d6ea931d288f7f354c899000ba8435b8ff0bc",
+          "original_signal_sha256": "b106201594e6226629041db120bd16dd612f2cbf0d5df793bc441ec3ab828c7c",
+          "original_body_sha256": "30fa3965a37a4b4c63c9500b5be1a0ec6f1e58c40acc8af01a05f4029072bf25",
+          "publication_date": "2026-09-23",
+          "decision": "correct",
+          "reason": "La cláusula sigue sin monto definido expresa un estado que el original sólo acredita al 23 de septiembre. El 11 de octubre no hay una observación primaria nueva que permita conservar el presente; tampoco se infiere que la negociación esté cerrada o aprobada. Fechar la cláusula al reporte original mantiene intactos la firma del convenio, las prestaciones potenciales y la atribución de prensa.",
+          "evidence_quotes": [
+            "Consultada nuevamente por las cifras que se han mencionado, entre ellas un eventual aumento de 4% o 5%, la ministra respondió que todavía no existe un monto definido.",
+            "No tenemos cifras. Lo importante es que estamos teniendo y las comunicaciones siguen abiertas"
+          ],
+          "original_terminal_status": "published",
+          "original_model_assessment": {
+            "decision": "published",
+            "relevance_score": 84,
+            "threshold": 72,
+            "analysis_reason": "Merece radar porque reporta un acuerdo sanitario concreto que articula al seguro público con redes privadas para atender listas de espera No GES. La firma es un hecho actual, mientras que la incorporación de cirugías y otras prestaciones es una posibilidad futura, no capacidad ya disponible. La discusión presupuestaria aporta contexto, pero no contiene una cifra acordada."
+          },
+          "original_model_what_happened": "Según reportó Pulso/La Tercera, el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración para incorporar capacidad privada a la resolución de listas de espera No GES. La iniciativa contempla identificar a afiliados de las cajas que también sean beneficiarios de Fonasa y que estén esperando atención de especialidad. El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, según las necesidades de los pacientes.",
+          "original_model_why_it_matters": "El convenio crea una coordinación concreta entre Fonasa, el Ministerio de Salud y tres cajas de compensación para abordar listas de espera No GES, con potencial de ampliar el acceso de beneficiarios Fonasa a consultas y, eventualmente, a cirugías y otras prestaciones. Sin embargo, la capacidad adicional futura todavía depende de su implementación y de las necesidades identificadas; además, la negociación presupuestaria para el próximo año sigue sin monto definido.",
+          "previous_editorial_review": {
+            "schema_version": "pulso_editorial_review_v1",
+            "review_id": "pulso_focus_38149773071_backfill_time_binding",
+            "review_file": "data/audits/pulso_focus_new5_editorial_corrections_2026_10_11.json",
+            "review_sha256": "c49022c8f81c4d45d654bac2f675ffb341bd2f6e288316f544b82a99dab3c530",
+            "record_sha256": "3ca84dc9e714581831d49bb6de09ab9aad1e548d3ef0be3256e74363901fe936",
+            "original_signal_sha256": "3480b812667ef5eaaf05027ed98dd40d83ef478c1148645cd0639ea1853738b4",
+            "original_body_sha256": "30fa3965a37a4b4c63c9500b5be1a0ec6f1e58c40acc8af01a05f4029072bf25",
+            "publication_date": "2026-09-23",
+            "decision": "accept",
+            "reason": "El original informa una firma concreta entre Minsal/Fonasa y tres cajas; consultas de nueva especialidad iniciales, cirugías sólo potenciales y negociación presupuestaria sin monto. La copia publicada conserva exactamente esas modalidades.",
+            "evidence_quotes": [
+              "el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración",
+              "El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, dependiendo de las necesidades de los pacientes."
+            ],
+            "original_terminal_status": "published",
+            "original_model_assessment": {
+              "decision": "published",
+              "relevance_score": 84,
+              "threshold": 72,
+              "analysis_reason": "Merece radar porque reporta un acuerdo sanitario concreto que articula al seguro público con redes privadas para atender listas de espera No GES. La firma es un hecho actual, mientras que la incorporación de cirugías y otras prestaciones es una posibilidad futura, no capacidad ya disponible. La discusión presupuestaria aporta contexto, pero no contiene una cifra acordada."
+            },
+            "original_model_what_happened": "Según reportó Pulso/La Tercera, el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración para incorporar capacidad privada a la resolución de listas de espera No GES. La iniciativa contempla identificar a afiliados de las cajas que también sean beneficiarios de Fonasa y que estén esperando atención de especialidad. El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, según las necesidades de los pacientes.",
+            "original_model_why_it_matters": "El convenio crea una coordinación concreta entre Fonasa, el Ministerio de Salud y tres cajas de compensación para abordar listas de espera No GES, con potencial de ampliar el acceso de beneficiarios Fonasa a consultas y, eventualmente, a cirugías y otras prestaciones. Sin embargo, la capacidad adicional futura todavía depende de su implementación y de las necesidades identificadas; además, la negociación presupuestaria para el próximo año sigue sin monto definido."
+          }
+        },
+        "previous_editorial_review_sha256": "855090795eb7dfdb20435ac85fbd4d9ff56ccfe53803f19dd36e1bc3fc546bce",
+        "queue_raw_sha256": "73bb2d214ebe8a4d3f6093de42f1607beb4a48c5c3f192526ab37c45fa58ddd8",
+        "full_actual_queue_entry_sha256": "537a15e2c96a264e3fca7c1f1d9cc18046b88231c83a22be82100bc3948359d1",
+        "full_primary_retained_content_read": true,
+        "full_effective_signal_read": true,
+        "full_retained_model_output_read": true,
+        "raw_model_output_available": true,
+        "raw_model_limit": null,
+        "body_capture_limits": [],
+        "date_evidence": {
+          "publication_date_source": "visible_article_byline",
+          "publication_timestamp": "2026-09-23T17:13:17.198Z",
+          "visible_publication_date": "2026-09-23",
+          "publication_label": null
+        }
+      },
+      "survivor": {
+        "url": "https://www.suseso.gob.cl/605/w3-article-790601.html",
+        "publication_date": "2026-09-23",
+        "source_slug": "suseso_news",
+        "source_name": "Superintendencia de Seguridad Social (SUSESO)",
+        "source_type": "official",
+        "queue_fingerprint": "3d540685334273d17a5bcfaef2fc4fe3495dae0c7039f6b9f9ac55227f896846",
+        "full_primary_retained_content": "SUSESO: Noticias - Minsal y cajas de compensación firman convenio para reducir tiempos de espera de las listas No GES para beneficiarios de Fonasa <!-- var __aid = '790601'; var __cid = '505'; var __iid = '605'; var __pnid = Array('500', '536', '545'); var __pvid = Array('501', '10356', '10359', '843134'); var ntg_properties = { \"500\": \"Tipo de contenido\", \"536\": \"Noticias\", \"545\": \"Período\" }; var ntg_propertyvalues = { \"501\": { \"name\":\"Noticia\", \"pnid\":500 }, \"10356\": { \"name\":\"Noticias\", \"pnid\":536 }, \"10359\": { \"name\":\"Archivo\", \"pnid\":536 }, \"843134\": { \"name\":\"2026\", \"pnid\":545 } }; --> <!-- // GTAB init window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-C9KC1CJ3T6'); --> Ir al contenido principal Mi portal Toggle navigation Superintendencia de Seguridad Social (SUSESO) - Gobierno de Chile Inicio La Suseso Atención usuarios/as Normativa y jurisprudencia Fiscalización Publicaciones Estadísticas Noticias Mi Portal Buscar Buscar buscar Compartir icono compartir Inicio Noticias icono Ver más Noticias Noticias Archivo Minsal y cajas de compensación firman convenio para reducir tiempos de espera de las listas No GES para beneficiarios de Fonasa El acuerdo permitirá sumar las capacidades y redes de atención de las cajas de compensación a los esfuerzos público-privados para reducir los tiempos de espera de personas afiliadas a Fonasa, luego de que la Suseso impulsara el acercamiento entre las Cajas y el ministerio de Salud para su participación en el Plan Enlace. - Imprimir 23 de septiembre de 2026 Un nuevo hito en el marco del Plan Enlace se concretó con la firma de un convenio de colaboración entre el Ministerio de Salud y las cajas de compensación Los Héroes, 18 de Septiembre y La Araucana , agrupadas en Cajas de Chile. La alianza considera la identificación de personas que se encuentren registradas en espera de una atención No GES, afiliadas a alguna de las cajas de compensación y pertenezcan a los grupos B, C o D de Fonasa. El objetivo es que estas personas puedan acceder a atenciones de salud con prestadores en convenio sin costo adicional para los beneficiarios . \"Para nosotros y para mí en lo particular, esta relación con las cajas de compensación es un cambio estructural, o sea, los pacientes que son beneficiarios de vuestras cajas van a tener una solución cuando la necesiten y eso, definitivamente, va a ser un cambio (…). Por lo tanto, aquí todos nos beneficiamos, se beneficia el paciente, el Ministerio de Salud, los servicios de salud y se benefician también las cajas de compensación\", aseguró la ministra de Salud, May Chomali. A la fecha existen cerca de 3 millones de personas en Lista de Espera No Ges, una realidad de la que el Plan Enlace busca hacerse cargo potenciando y gestionando la colaboración público- privada para reducir los tiempos de esta espera. \"Desde la Suseso hemos cumplido un rol articulador para que las Cajas de Compensación puedan sumarse a este esfuerzo, considerando que tienen entre sus facultades entregar prestaciones adicionales a sus afiliados, y este convenio es una expresión concreta de cómo esas capacidades pueden contribuir a resolver una necesidad tan importante como la atención de salud. Con la firma de este convenio las Cajas de Compensación reafirman su rol en el sistema de seguridad social de nuestro país\", indicó la superintendenta (s) de Seguridad Social, Patricia Soto. Marcelo Forni, presidente de Cajas de Chile, valoró la colaboración en el marco del Plan Enlace y aseguró que \"estamos seguros de que el trabajo conjunto con la autoridad de salud nos permitirá identificar aquellos beneficios y prestaciones que otorgamos las Cajas que se alinean con el objetivo de reducir las listas de espera de nuestros afiliados. Este será nuestro aporte a esta importante tarea y esperamos que contribuya a que cada vez menos personas esperen por una atención de salud más allá del tiempo razonable\". Por su parte el director de Fonasa, César Oyarzo, dijo sobre este convenio que \"con la incorporación de Cajas de Chile a este esfuerzo público-privado ampliamos la red de atención para quienes hoy están esperando, reduciendo su incertidumbre y mejorando su calidad de vida. Nuestro compromiso es que ese tiempo se transforme en diagnóstico y tratamiento, para resolver su problema de salud de manera integral\". La ministra Chomali agregó que el objetivo de estos convenios es prolongar la estrategia que impulsa la colaboración público-privada para resolver oportunamente las necesidades de salud de las personas que pertenecen a cada una de las cajas y son beneficiarios de Fonasa. \"Aquí lo que tenemos que alinear es la capacidad que tiene el sistema de resolver con las necesidades y darle ese enfoque sanitario al aporte que tiene la sociedad civil, más que yo voy a hacer lo que yo quiero hacer o lo que el paciente quiere que yo haga, versus la necesidad que tiene el paciente (...) Esto no es un piloto, no es un programa que va a durar tres meses. Esto es permanente en el tiempo y nosotros esperamos muy sinceramente que cada uno, con lo que va a aportar, va a hacer un cambio en la forma en que vamos a abordar el tema de los tiempos de espera en una forma definitiva y no por pilotos, por operativos o por emergencias sanitarias\", dijo la autoridad. Galería Subir Preguntas frecuentes Mapa del sitio ¿Dónde estamos? oficinadepartes@suseso.cl Verifica tu documento Condiciones de uso RSS Síguenos en redes sociales Instagram/susesochile Linkedin/Superintendencia de Seguridad Social Sitios relacionados Chileatiende MiLicencia.cl <!-- $(function(){ $('.link_youtube a, a.link_youtube').ntg_link_video({ \"youtubeTemplate\": '<div class=\"ratio ratio-16x9\">' + ' <iframe title=\"video player youtube\" class=\"\" ' + ' src=\"https://www.youtube.com/embed/{{videoid}}?enablejsapi=1&origin=https://www.suseso.gob.cl/\" frameborder=\"0\" allowfullscreen>No iframes'+ ' </iframe>' + '</div>' }); $(\".link_youtube a[href^='https://soundcloud.com']\").each(function(i,a){ var href= $(a).attr(\"href\"); var jqXHR = $.ajax({ type: \"POST\", url: \"https://soundcloud.com/oembed\", data: { \"format\":\"json\", \"url\":href }, dataType: \"json\", success: function(data,textStatus, jqXHR){ console.log(data); if(textStatus == \"success\"){ $(jqXHR.data.a).replaceWith(data.html); } } }); jqXHR.data = { a:a}; }); }); --> <!-- $(document).ready(function(){$('.externo>a:not([class]),.social-tools>a:not([class])').click(function(){window.open(this.href,'_blank','resizable=1,menubar=1,location=1,status=1,scrollbars=1,toolbar=1,width=,height=');return false});}); --> <!-- $(document).ready(function(){$('a.facebook,a.twitter,a.googleplus').click(function(){window.open(this.href,'_blank','resizable=1,menubar=1,location=1,status=1,scrollbars=1,toolbar=1,width=,height=');return false});}); --> <!-- /** * Similar to the Date (dd/mm/YY) data sorting plug-in, this plug-in offers * additional flexibility with support for spaces between the values and * either . or / notation for the separators. * * Please note that this plug-in is **deprecated*. The * [datetime](//datatables.net/blog/2014-12-18) plug-in provides enhanced * functionality and flexibility. * * @name Date (dd . mm[ . YYYY]) * @summary Sort dates in the format `dd/mm/YY[YY]` (with optional spaces) * @author [Robert Sedovšek](http://galjot.si/) * @deprecated * * @example * $('#example').dataTable( { * columnDefs: [ * { type: 'date-eu', targets: 0 } * ] * } ); */ jQuery.extend( jQuery.fn.dataTableExt.oSort, { \"date-eu-pre\": function ( date ) { date = date.replace(\" \", \"\"); if ( ! date ) { return 0; } var year; var eu_date = date.split(/[\\.\\-\\/]/); /*year (optional)*/ if ( eu_date[2] ) { year = eu_date[2]; } else { year = 0; } /*month*/ var month = eu_date[1]; if ( month.length == 1 ) { month = 0+month; } /*day*/ var day = eu_date[0]; if ( day.length == 1 ) { day = 0+day; } return (year + month + day) * 1; }, \"date-eu-asc\": function ( a, b ) { return ((a < b) ? -1 : ((a > b) ? 1 : 0)); }, \"date-eu-desc\": function ( a, b ) { return ((a < b) ? 1 : ((a > b) ? -1 : 0)); } } ); --> +a Agrandar texto -a Achicar texto <!-- $(function(){ $(\"#main .panel-articulo,#main .articulo\").ntg_hlsearch({ \"wordCookieName\": 'hl_words', \"phraseCookieName\": 'hl_phrase', debug:false }); }); -->",
+        "retained_content_sha256": "982bc8a1b1380246c7a87e076ac4abab3d44024f14af42902d14d88ca43fae4a",
+        "primary_html_sha256": null,
+        "native_original_html_sha256": null,
+        "full_effective_signal": {
+          "title": "Minsal y cajas de compensación firman convenio para reducir tiempos de espera de las listas No GES para beneficiarios de Fonasa",
+          "source_name": "Superintendencia de Seguridad Social (SUSESO)",
+          "source_type": "official",
+          "source_url": "https://www.suseso.gob.cl/605/w3-article-790601.html",
+          "category": "Aseguramiento",
+          "subcategory": "General",
+          "system_domain": "OCCUPATIONAL_HEALTH",
+          "what_happened": "El Minsal y las cajas de compensación Los Héroes, 18 de Septiembre y La Araucana firmaron un convenio para incorporar sus redes de prestadores al Plan Enlace. La iniciativa identificará a afiliados de las cajas pertenecientes a los grupos B, C y D de Fonasa que esperan atenciones No GES y les permitirá acceder a prestaciones en convenio sin costo adicional. SUSESO impulsó la articulación del acuerdo, que se plantea como una estrategia permanente para enfrentar una lista cercana a 3 millones de personas.",
+          "event_date": "2026-09-23",
+          "detected_at": "2026-09-30T16:14:13.470548+00:00",
+          "primary_source_url": null,
+          "event_type": "OTHER",
+          "strategic_theme": [],
+          "institution_types": [],
+          "entity_refs": [],
+          "country": "CL",
+          "topics": [],
+          "entities": [],
+          "people": [],
+          "geography": [],
+          "key_facts": [],
+          "key_numbers": [],
+          "why_it_matters": "Amplía la capacidad de atención disponible para beneficiarios de Fonasa en listas No GES y formaliza un rol sanitario más activo para las cajas de compensación. El Minsal, Fonasa, los servicios de salud y los prestadores privados deberán coordinar la identificación y derivación de pacientes, mientras las cajas pueden canalizar prestaciones adicionales hacia una prioridad pública concreta. Merece atención ahora porque el acuerdo busca pasar de pilotos u operativos puntuales a un mecanismo permanente de colaboración público-privada.",
+          "who_cares": [],
+          "possible_implications": [],
+          "watch_tags": [
+            "suseso",
+            "salud laboral",
+            "seguridad social"
+          ],
+          "connection_keys": [],
+          "trend_keys": [],
+          "prospective_evidence": false,
+          "economic_impact_score": 50,
+          "regulatory_impact_score": 60,
+          "scope_score": 86,
+          "novelty_score": 86,
+          "actionability_score": 68,
+          "source_quality_score": 100,
+          "radar_score": 70,
+          "confidence_score": 100,
+          "distribution": "archive",
+          "validation_status": "automatic",
+          "corroboration_status": "unknown",
+          "additional_sources": [],
+          "source_documents": [],
+          "key_points": [],
+          "risk_notes": [],
+          "data_insights": [],
+          "data_insight_meta": {},
+          "validity_text": null,
+          "related_reference_ids": [],
+          "original_language": "es",
+          "display_language": "es",
+          "translation_status": "not_required",
+          "original_title": null,
+          "original_what_happened": null,
+          "original_why_it_matters": null,
+          "signal_types": [
+            "Noticias"
+          ],
+          "scopes": [
+            "Salud laboral",
+            "Fonasa"
+          ],
+          "editorial_relevance": 86,
+          "ingestion_mode": "BACKFILL"
+        },
+        "effective_signal_sha256": "0eeedead10fe360198f76f59cf8e25714332777223e3e6c18644f9708c0321da",
+        "full_retained_model_output": null,
+        "retained_model_output_sha256": null,
+        "retained_response_id": null,
+        "actual_editorial_assessment": null,
+        "previous_editorial_review": null,
+        "previous_editorial_review_sha256": null,
+        "queue_raw_sha256": "70b790ccbdee3e3b53b6096ec463a1f467eb826ce800f19a9839bf9cb3611851",
+        "full_actual_queue_entry_sha256": "b47266450c9b4908dda2d3bf1661c7f5e2b74587b43ab797f33fa84ac9c92962",
+        "full_primary_retained_content_read": true,
+        "full_effective_signal_read": true,
+        "full_retained_model_output_read": false,
+        "raw_model_output_available": false,
+        "raw_model_limit": "Legacy response not retained; effective published signal and observed assessment are preserved. No fabricated response ID or attribution to a new paid producer.",
+        "body_capture_limits": [
+          "El page_text retenido contiene navegación/scripts junto con el artículo completo visible; no hay HTML original ni SHA del publisher registrado. El hash calculado identifica el texto retenido, no certifica una captura externa nueva."
+        ],
+        "date_evidence": {
+          "publication_date_source": null,
+          "publication_timestamp": null,
+          "visible_publication_date": null,
+          "publication_label": null
+        }
+      },
+      "immutable_cross_source_event_pair_pin": {
+        "target_url": "https://www.latercera.com/nacional/noticia/chomali-por-listas-de-espera-yo-no-esperaba-que-disminuyeran-lo-que-yo-espero-es-que-disminuyan-los-tiempos/",
+        "target_day": "2026-09-23",
+        "target_body_sha256": "30fa3965a37a4b4c63c9500b5be1a0ec6f1e58c40acc8af01a05f4029072bf25",
+        "target_signal_sha256": "0abd116281756cfe371216a87a4f830cca352e5f0818da6d98aee392d9319f1a",
+        "target_previous_review_sha256": "855090795eb7dfdb20435ac85fbd4d9ff56ccfe53803f19dd36e1bc3fc546bce",
+        "survivor_url": "https://www.suseso.gob.cl/605/w3-article-790601.html",
+        "survivor_day": "2026-09-23",
+        "survivor_source_slug": "suseso_news",
+        "survivor_queue_fingerprint": "3d540685334273d17a5bcfaef2fc4fe3495dae0c7039f6b9f9ac55227f896846",
+        "survivor_body_sha256": "982bc8a1b1380246c7a87e076ac4abab3d44024f14af42902d14d88ca43fae4a",
+        "survivor_signal_sha256": "0eeedead10fe360198f76f59cf8e25714332777223e3e6c18644f9708c0321da"
+      },
+      "immutable_cross_source_event_pair_pin_sha256": "299ac163b399a33724d673d8b0ec23daebb600e20e12ac336e7cbf83a0d7323d",
+      "literal_primary_event_comparison_quotes": [
+        {
+          "source": "Pulso",
+          "quote": "el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración en el marco del Plan Enlace"
+        },
+        {
+          "source": "SUSESO",
+          "quote": "Un nuevo hito en el marco del Plan Enlace se concretó con la firma de un convenio de colaboración entre el Ministerio de Salud y las cajas de compensación Los Héroes, 18 de Septiembre y La Araucana"
+        },
+        {
+          "source": "SUSESO",
+          "quote": "pertenezcan a los grupos B, C o D de Fonasa"
+        },
+        {
+          "source": "Pulso",
+          "quote": "posteriormente podría incorporar cirugías y otras prestaciones, dependiendo de las necesidades de los pacientes."
+        }
+      ],
+      "survivor_same_url_date_queue_candidates": [
+        {
+          "queue_fingerprint": "3d540685334273d17a5bcfaef2fc4fe3495dae0c7039f6b9f9ac55227f896846",
+          "source_slug": "suseso_news",
+          "status": "published",
+          "raw_sha256": "70b790ccbdee3e3b53b6096ec463a1f467eb826ce800f19a9839bf9cb3611851"
+        },
+        {
+          "queue_fingerprint": "caade3f796fb6c111e397248448381f04afa12f46132f5ea2029cdf39c2c8f81",
+          "source_slug": "suseso_fiscalizacion",
+          "status": "rejected",
+          "raw_sha256": "1b7a233bd79823227b039e64c665f2392f72074811a1b4eaf401004cbc22172f"
+        }
+      ],
+      "application_performed": false,
+      "only_target_pulso_may_be_grouped": true,
+      "native_survivor_mutation_authorized": false,
+      "media_reported_preserved_for_target": true
+    }
+  ],
+  "summary": {
+    "compared_primary_documents": 4,
+    "compared_effective_signals": 4,
+    "group_pulso": 2,
+    "keep_distinct_caja_los_andes_aug14": true
+  },
+  "reviewer_AI_calls": 0,
+  "state_mutated": false,
+  "source_edits": 0,
+  "scores_changed": false,
+  "dates_changed": false,
+  "survivor_mutations": 0,
+  "publication_approved": false,
+  "scope_verdict": "PASS_TWO_SOURCE_EVENT_DUPLICATE_ADJUDICATION",
+  "global_acceptance": "NOT_ACCEPTED_PENDING_ACTUAL_GROUP_APPLICATION_REPLAY_FINAL_QA"
+}

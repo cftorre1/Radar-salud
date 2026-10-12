@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import re
 from datetime import date
 from html.parser import HTMLParser
@@ -103,7 +104,7 @@ class CuratedBetaSourceScout:
             "type": "press_high_trust",
             "page": "https://www.latercera.com/canal/pulso/",
             "hosts": ("www.latercera.com", "latercera.com"),
-            "path": r"/pulso/noticia/[^/]+/?",
+            "path": r"/(?:pulso|nacional)/noticia/[^/]+(?:/[A-Za-z0-9]{26})?/?",
             "role": "media",
         },
     }
@@ -113,9 +114,17 @@ class CuratedBetaSourceScout:
             raise ValueError("source has not passed beta Source Quality Gate")
         self.slug = slug
         self.cfg = self.SOURCES[slug]
+        self.discovery_audit = []
 
     def discover_from_html(self, html, detail_loader=None):
         detail_loader = detail_loader or fetch_html
+        if self.slug == "pulso_latercera":
+            from .pulso_source import discover_listing
+            audit = self.discovery_audit = []
+            out = discover_listing(html, self.cfg["page"], detail_loader, audit, set())
+            if not out:
+                raise RuntimeError("Pulso / La Tercera has no verified, dated health articles: " + str(audit))
+            return sorted(out, key=lambda item: item.event_date, reverse=True)
         from .occupational_sources import SOURCES, discover_items
         if self.slug in SOURCES:
             return discover_items(self, html, detail_loader)
@@ -184,6 +193,10 @@ class CuratedBetaSourceScout:
         return out[:30]
 
     def discover(self):
+        if self.slug == "pulso_latercera":
+            from .pulso_source import discover_pulso
+            self.discovery_audit = []
+            return discover_pulso(audit=self.discovery_audit)
         from .occupational_sources import SOURCES, SourceDiscoveryError
         if self.slug in SOURCES:
             from .occupational_capture import CaptureLoader
@@ -381,6 +394,11 @@ _MEDIA_TERMS = _PROVIDER_TERMS + (
     "utilidad", "pérdida", "perdida", "capital", "bonos", "financiamiento", "fusión", "fusion",
     "participación", "participacion", "licitación", "licitacion", "tarifa", "precio", "planes",
     "cotizantes", "beneficiarios", "licencias médicas", "licencias medicas", "regulación", "regulacion",
+    "presupuesto", "deuda", "fuerza de ventas", "estructura organizacional", "suspensión de operaciones",
+    "suspende operaciones", "cierre", "traslado de pacientes", "residencias para adultos mayores",
+    "reforma", "norma", "acreditación", "acreditacion", "auditor", "fiscaliza",
+    "certificación", "certificacion", "recorte", "trasplante", "ficha clínica", "ficha clinica",
+    "vacunación", "vacunacion", "alerta", "oncol", "aseguramiento", "cenabast",
 )
 _NOISE = (
     "seminario", "feria de bienestar", "premio", "reconoc", "conmemor", "campeonato", "charla",
@@ -390,16 +408,119 @@ _NOISE = (
 
 def _material(role, title, body):
     text = f"{title} {body}".lower()
-    if any(x in text for x in _NOISE) and not any(x in text for x in ("inversión", "fonasa", "isapre", "adquiere", "capital", "lista de espera")):
+    if role == "media":
+        from .pulso_source import health_anchor
+        if not health_anchor(text):
+            return False
+    consequential = ("inversión", "fonasa", "isapre", "adquiere", "capital", "lista de espera",
+                     "cierre", "suspende", "suspensión", "traslado", "recorte", "presupuesto",
+                     "reforma", "norma", "auditor", "fiscaliza", "capacidad", "trasplante", "financiamiento")
+    noise_text = title.lower() if role == "media" else text
+    exceptions = consequential if role == "media" else ("inversión", "fonasa", "isapre", "adquiere", "capital", "lista de espera")
+    if any(x in noise_text for x in _NOISE) and not any(x in text for x in exceptions):
         return False
     terms = _MEDIA_TERMS if role == "media" else _MUTUAL_TERMS if role == "mutuality" else _PROVIDER_TERMS
     if role == "provider_achs" and "clínicas achs salud" not in text and "clinicas achs salud" not in text:
         return False
-    return any(x in text for x in terms)
+    if any(x in text for x in terms):
+        return True
+    if role == "media":
+        # Primary reports of care-network obligations and GES coverage changes
+        # must reach editorial analysis even without a finance/provider keyword.
+        # These matches only permit analysis; relevance/publication gates follow.
+        care_obligation = "uso obligatorio" in text and bool(re.search(
+            r"servicios? de urgencia|unidades? de di[aá]lisis|oncohematolog|"
+            r"red p[uú]blica(?: y privada)?|red privada", text))
+        ges_coverage = bool(re.search(r"\bges\b|garant[ií]as? expl[ií]citas? de salud", text)) and bool(
+            re.search(r"\bcobertura\b|incorpor", text))
+        care_legislation = bool(re.search(r"c[oó]digo sanitario", text)) and bool(
+            re.search(r"proyecto|modific|tramit", text)) and bool(re.search(
+                r"\bprestaci[oó]n\b|atenci[oó]n|interrupci[oó]n(?: voluntaria)? del embarazo", text))
+        proposed_clinical_condition = bool(re.search(r"escucha su coraz[oó]n", text)) and bool(
+            re.search(r"proyecto|propuesta|iniciativa", text)) and bool(re.search(
+                r"aborto|abortar|interrupci[oó]n (?:legal |voluntaria )?del embarazo|ley de tres causales", text)) and bool(
+            re.search(r"mujeres?[^.!?]{0,100}\bdeban escuchar\b[^.!?]{0,100}\blatidos?\b|"
+                      r"m[eé]dico[^.!?]{0,120}\bnegarse a (?:realizar|practicar)\b[^.!?]{0,50}(?:procedimiento|interrupci[oó]n)|"
+                      r"\bcondicion(?:ando|a|ar)[^.!?]{0,70}(?:realizaci[oó]n|prestaci[oó]n)[^.!?]{0,70}"
+                      r"(?:procedimiento|interrupci[oó]n)[^.!?]{0,70}(?:aceptaci[oó]n|escuchar)", text))
+        provider_flood_response = bool(re.search(
+            r"\b(?:cl[ií]nica|hospital)\b[^.!?]{0,100}\binundad[oa]s?\b", text)) and bool(
+            re.search(r"ministerio de salud|\bminsal\b|autoridad sanitaria", text)) and bool(
+            re.search(r"monitore|protecci[oó]n de los pacientes|resguard", text))
+        authorized_care_registry = all(re.search(pattern, text) for pattern in (
+            r"\beleam\b|establecimientos? de larga estad[ií]a",
+            r"\bminsal\b|ministerio de salud|autoridad sanitaria",
+            r"autorizaci[oó]n sanitaria", r"\bn[oó]mina\b|\blistado\b|\bregistro\b|\blista\b|\bcatastro\b",
+            r"disponible p[uú]blicamente|listado publicado esta jornada|lista ser[aá] actualizada semanalmente|"
+            r"public(?:a|ó|ado|ada|ar)\b[^.!?]{0,90}(?:n[oó]mina|listado|registro|catastro)"))
+        clinical_service_suspension = bool(re.search(r"\bcl[ií]nica\b|\bhospital\b|red de salud", text)) and bool(
+            re.search(r"\bsuspend(?:e|er[aá]|id[oa]|ieron|emos)\b[^.!?]{0,100}\batenci[oó]n\b[^.!?]{0,100}"
+                      r"(?:urgencias?|consultas? m[eé]dicas|procedimientos? ambulatorios?)", text))
+        quantified_health_power_impact = ("electrodependientes" in text and bool(re.search(
+            r"\bcentros de salud\b[^!?]{0,120}\bafectados\b[^!?]{0,60}\b\d+", text)) and bool(re.search(
+            r"cortes? de (?:suministro(?: el[eé]ctrico)?|electricidad)|sin suministro el[eé]ctrico", text)))
+        modular_care_deployment = ("hospital modular" in text and bool(re.search(
+            r"\btraslad[oa]|\bimplementaci[oó]n\b", text)) and bool(re.search(r"reforzar|apoyar", text))
+            and "atención de salud" in text)
+        mapped_multi_provider_flood = (bool(re.search(r"cl[ií]nicas inundadas", text))
+            and "recintos asistenciales afectados" in text and "carabineros" in text
+            and bool(re.search(r"dron|monitoreo", text)))
+        reproductive_legislative_progress = (bool(re.search(r"comisi[oó]n de salud", text))
+            and bool(re.search(r"inici[oó] la discusi[oó]n del proyecto de ley", text))
+            and "gestación subrogada" in text)
+        medical_insurance_inquiry = ("dipreca" in text and bool(re.search(
+            r"cirug[ií]as (?:est[eé]ticas|reconstructivas)", text)) and bool(re.search(
+            r"investigaci[oó]n en curso|\bsumario\b", text)) and bool(re.search(r"cubiertas|cobertura", text)))
+        provider_judicial_liability = ("hospital" in text and "servicio de salud" in text
+            and "corte de apelaciones" in text and bool(re.search(r"conden[oó][^!?]{0,160}\bpagar\b", text))
+            and "indemnización" in text and "falta de servicio" in text)
+        essential_care_transport_blocked = ("necesitaban dializarse" in text
+            and bool(re.search(r"aislad[oa]s?|bloquead[oa]s?", text))
+            and "no permitía que los helicópteros pudiesen volar para evacuarlos" in text)
+        compulsory_respiratory_health_measure = ("uso obligatorio de mascarilla" in text
+            and "autoridad sanitaria" in text and "resolución exenta" in text
+            and bool(re.search(r"prev(?:enir|enci[oó]n)[^.!?]{0,80}enfermedades respiratorias", text)))
+        damaged_hospital_emergency_funds = (bool(re.search(r"ley n[°º]?\s*16\.282", text))
+            and "diario oficial" in text and "fondos de emergencia" in text
+            and "hospitales con daños en la infraestructura" in text)
+        minors_mental_health_legislative_urgency = ("salud mental" in text
+            and bool(re.search(r"ni[ñn]os|menores", text)) and "sumo urgencia al proyecto de ley" in text
+            and "primer trámite constitucional" in text)
+        national_health_cost_access_measurement = ("encuesta" in text
+            and "casos a nivel nacional representativos" in text and "gastos de salud y cuidados" in text
+            and "barrera de acceso es el costo" in text and "psicólogo o psiquiatra" in text)
+        territorial_toxic_exposure_health_order = ("suspensión de clases" in text
+            and "seremi de salud" in text and "toxicidad del humo" in text
+            and bool(re.search(r"todos los (?:colegios|establecimientos) de la comuna", text)))
+        institutional_food_health_investigation = ("junaeb" in text and "fiscal" in text
+            and "delitos contra la salud pública" in text and "distribución de comida contaminada" in text
+            and "incautación" in text)
+        return (care_obligation or ges_coverage or care_legislation
+                or proposed_clinical_condition or provider_flood_response
+                or authorized_care_registry or clinical_service_suspension
+                or quantified_health_power_impact or modular_care_deployment or mapped_multi_provider_flood
+                or reproductive_legislative_progress or medical_insurance_inquiry or provider_judicial_liability
+                or essential_care_transport_blocked or compulsory_respiratory_health_measure
+                or damaged_hospital_emergency_funds or minors_mental_health_legislative_urgency
+                or national_health_cost_access_measurement or territorial_toxic_exposure_health_order
+                or institutional_food_health_investigation)
+    return False
+
+
+def _attribute_pulso_what(what):
+    """Attribute a dated generic note at its start, preserving the Model copy."""
+    if not what:
+        return what
+    publisher = r"pulso|la tercera"
+    generic_note_intro = re.match(r"^seg[uú]n\s+la\s+nota\b", what, re.I)
+    named_intro = re.search(publisher, what.split(",", 1)[0], re.I)
+    if re.search(publisher, what, re.I) and (not generic_note_intro or named_intro):
+        return what
+    return f"Según Pulso / La Tercera, {what}"
 
 
 def process_curated_beta_source(raw, cfg):
-    from .llm_analysis import analyze_news
+    from .llm_analysis import analyze_news, news_analysis_input
     from .pipeline import build_signal
     from .processing import DeferredProcessing
     from .public_source_pipeline import enrich, _scopes
@@ -436,7 +557,148 @@ def process_curated_beta_source(raw, cfg):
         verify_capture(raw, hosts)
     role = raw.metadata.get("market_role") or "provider"
     from .provider_assessment import assessed, prefilter_rejected
-    if not scoped:
+    if raw.source_slug == "pulso_latercera":
+        from .pulso_source import (ConflictingPublicationArticle, ExcludedArticle,
+                                   SponsoredArticle, TextUnavailableArticle,
+                                   article_body_evidence, article_url, complete_article_body,
+                                   extract_article, liveblog_analysis_text, liveblog_requires_revalidation,
+                                   publisher_taxonomy_requires_revalidation, verified_liveblog_temporal_evidence,
+                                   verified_publication_date_conflict, verified_sponsored_content,
+                                   verified_sponsored_without_text, verified_video_without_text)
+
+        def defer_verified_publisher_limitation():
+            if article_url(raw.url) != raw.metadata.get("canonical_url"):
+                return
+            reason = None
+            if verified_publication_date_conflict(raw.metadata) and raw.event_date is None:
+                # Preserve both primary days; no retry or model can choose one.
+                reason = "publisher_conflicting_publication_dates"
+            elif raw.event_date and raw.event_date == raw.metadata.get("publication_date"):
+                if verified_video_without_text(raw.metadata):
+                    reason = "publisher_video_text_unavailable"
+                elif verified_sponsored_content(raw.metadata):
+                    reason = "publisher_sponsored_content_review_required"
+                elif verified_sponsored_without_text(raw.metadata):
+                    reason = "publisher_sponsored_text_unavailable"
+            if reason:
+                raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": reason}
+                raise DeferredProcessing(reason)
+
+        defer_verified_publisher_limitation()
+        sponsor_flag = (raw.metadata.get("publisher_content_classification") == "sponsored"
+                        or raw.metadata.get("publisher_exception_reason") == "publisher_sponsored_content_review_required")
+        taxonomy = raw.metadata.get("publisher_taxonomy", {})
+        opinion_flag = isinstance(taxonomy, dict) and taxonomy.get("classification") == "opinion"
+        # The earlier video parser hashed its wrapper as if it were a complete
+        # article. A matching legacy hash cannot establish a transcript.
+        legacy_video = (urlparse(raw.url).path.startswith("/videos/")
+                        and raw.metadata.get("video_identity_verified") is not True)
+        if (sponsor_flag or opinion_flag or legacy_video or publisher_taxonomy_requires_revalidation(raw.metadata)
+                or liveblog_requires_revalidation(raw.metadata)
+                or not (raw.metadata.get("article_verified") and complete_article_body(raw.metadata) and raw.event_date)):
+            try:
+                from datetime import datetime, timezone
+                html = fetch_html(raw.url)
+                def save_primary(title, body, evidence, quality):
+                    raw.title, raw.event_date, raw.raw_text = title, evidence["publication_date"], body[:1800]
+                    taxonomy = evidence.get("publisher_taxonomy", {})
+                    if isinstance(taxonomy, dict) and taxonomy.get("classification") in {"factual", "opinion", "sponsored"}:
+                        # A fresh primary classification replaces old publisher
+                        # exceptions, while reviewed duplicate holds remain.
+                        publisher_reasons = {"publisher_conflicting_publication_dates", "publisher_video_text_unavailable",
+                                             "publisher_sponsored_content_review_required", "publisher_opinion_taxonomy",
+                                             "publisher_liveblog_entry_dates_unverified", "publisher_sponsored_text_unavailable"}
+                        for key in ("publisher_exception_reason", "source_content_unavailable_reason",
+                                    "publisher_exclusion_reason", "editorial_hold"):
+                            if key not in evidence and raw.metadata.get(key) in publisher_reasons:
+                                raw.metadata.pop(key)
+                    if raw.metadata.get("publisher_document_type") == "liveblog" and evidence.get("publisher_document_type") != "liveblog":
+                        for key in ("publisher_document_type", "liveblog_temporal_evidence", "liveblog_temporal_evidence_verified"):
+                            raw.metadata.pop(key, None)
+                    raw.metadata.update(evidence, **article_body_evidence(body), market_role="media",
+                                        source_quality_gate=quality,
+                                        html_sha256=hashlib.sha256(html.encode("utf-8")).hexdigest(),
+                                        captured_at=datetime.now(timezone.utc).isoformat())
+                try:
+                    title, body, evidence = extract_article(html, raw.url)
+                except (ConflictingPublicationArticle, TextUnavailableArticle, SponsoredArticle, ExcludedArticle) as exc:
+                    quality = ("deferred_publication_date" if isinstance(exc, ConflictingPublicationArticle) else
+                               ("deferred_sponsored_text" if str(exc) == "publisher_sponsored_text_unavailable"
+                                else "deferred_video_text") if isinstance(exc, TextUnavailableArticle) else
+                               "deferred_sponsored_content_review" if isinstance(exc, SponsoredArticle) else
+                               "excluded_publisher_opinion")
+                    save_primary(exc.title, exc.body, exc.metadata, quality)
+                    if isinstance(exc, ExcludedArticle):
+                        if not (str(exc) in {"publisher_opinion_taxonomy", "excluded_opinion_content"}
+                                and article_url(raw.url) == raw.metadata.get("canonical_url")
+                                and raw.metadata.get("primary_identity_verified") is True
+                                and raw.metadata.get("publication_date_verified") is True
+                                and raw.event_date):
+                            raise ValueError("unproven_publisher_opinion_exclusion") from exc
+                        raw.metadata["article_body_complete"] = complete_article_body(raw.metadata)
+                        raw.metadata["rejection_reason"] = str(exc)
+                        raw.metadata["editorial_assessment"] = {"decision": "rejected", "reason": str(exc)}
+                        return None
+                    defer_verified_publisher_limitation()
+                    raise ValueError("unproven_publisher_limitation") from exc
+                save_primary(title, body, evidence, "passed")
+            except DeferredProcessing:
+                raise
+            except Exception as exc:
+                raw.metadata["article_body_complete"] = False
+                raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": "article_verification_failed", "error_type": type(exc).__name__}
+                raise DeferredProcessing("Pulso article verification failed") from exc
+        raw.metadata["article_body_complete"] = True
+        if raw.metadata.get("publisher_document_type") == "liveblog" and not verified_liveblog_temporal_evidence(raw.metadata):
+            raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": "publisher_liveblog_entry_dates_unverified"}
+            raise DeferredProcessing("publisher_liveblog_entry_dates_unverified")
+        # Complete publisher evidence must belong to this queue item. Binding
+        # the model request to a body does not bind the eventual signal URL/day.
+        # Never repair either identity silently from another item's metadata.
+        if (article_url(raw.url) != raw.metadata.get("canonical_url")
+                or raw.event_date != raw.metadata.get("publication_date")):
+            reason = "pulso_primary_item_identity_or_date_mismatch"
+            raw.metadata["primary_item_binding"] = {
+                "verified": False, "reason": reason, "raw_url": raw.url,
+                "normalized_raw_url": article_url(raw.url),
+                "primary_canonical_url": raw.metadata.get("canonical_url"),
+                "raw_event_date": raw.event_date,
+                "primary_publication_date": raw.metadata.get("publication_date"),
+                "model_calls_permitted": False,
+            }
+            raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": reason}
+            raise DeferredProcessing(reason)
+        flags = {name: raw.metadata.get(name) for name in (
+            "primary_identity_verified", "publication_date_verified")}
+        if any(value is not True for value in flags.values()):
+            reason = "pulso_primary_verification_flags_missing_or_false"
+            raw.metadata["primary_item_binding"] = {
+                "verified": False, "reason": reason,
+                "raw_url": raw.url, "primary_canonical_url": raw.metadata.get("canonical_url"),
+                "raw_event_date": raw.event_date,
+                "primary_publication_date": raw.metadata.get("publication_date"),
+                "primary_verification_flags": flags, "model_calls_permitted": False,
+            }
+            raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": reason}
+            raise DeferredProcessing(reason)
+        previous_binding = raw.metadata.get("primary_item_binding")
+        if isinstance(previous_binding, dict) and previous_binding.get("verified") is False:
+            from copy import deepcopy
+            prior = raw.metadata.setdefault("primary_item_binding_prior_deferrals", [])
+            if previous_binding not in prior:
+                prior.append(deepcopy(previous_binding))
+        raw.metadata["primary_item_binding"] = {
+            "verified": True, "reason": "pulso_primary_item_identity_and_date_verified",
+            "raw_url": raw.url, "primary_canonical_url": raw.metadata["canonical_url"],
+            "raw_event_date": raw.event_date,
+            "primary_publication_date": raw.metadata["publication_date"],
+            "primary_verification_flags": flags,
+            "model_calls_permitted": True, "other_editorial_and_budget_gates_still_apply": True,
+            "publication_approved": False,
+        }
+        from .pulso_incremental_review import apply_incremental_review
+        apply_incremental_review(raw)
+    elif not scoped:
         if role.startswith('provider'):
             gate=raw.metadata.get('source_quality_gate')
             if gate and gate!='passed':
@@ -474,6 +736,13 @@ def process_curated_beta_source(raw, cfg):
         if document_facts:
             body += "\n" + document_facts
     role = raw.metadata.get("market_role") or "provider"
+    if raw.metadata.get("editorial_hold"):
+        raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": raw.metadata["editorial_hold"]}
+        raise DeferredProcessing("Pulso pending incremental-value review")
+    def reject(reason, **evidence):
+        raw.metadata["rejection_reason"] = reason
+        raw.metadata["editorial_assessment"] = dict(decision="rejected", reason=reason, **evidence)
+        return None
     if scoped:
         accepted, material_reason = documentary_materiality(raw, body, verified_document)
         if (raw.metadata.get("supporting_documents_required") and not accepted
@@ -481,16 +750,28 @@ def process_curated_beta_source(raw, cfg):
             raise DeferredProcessing("required_document_materiality_unresolved_bounded_extraction")
         raw.metadata.update(materiality_accepted=accepted, materiality_reason=material_reason,
                             content_kind=classify_content_kind(material_reason, raw.title, primary_body))
-    else:
-        accepted = _material(role, raw.title, body)
-    if not raw.event_date or len(body) < 160 or not accepted:
-        if scoped:
+    if raw.source_slug == "pulso_latercera":
+        if scoped and (not raw.event_date or len(body) < 160 or not accepted):
             raw.metadata["publication_rejection_reason"] = material_reason
-        else:
-            prefilter_rejected(raw,"publication_date_missing" if not raw.event_date else "insufficient_readable_body" if len(body)<160 else "no_material_change_under_provider_prefilter")
-        return None
+            return None
+        if not raw.event_date:
+            return reject("missing_publication_date")
+        if len(body) < 160:
+            return reject("incomplete_article_evidence")
+        if not scoped and not _material(role, raw.title, body):
+            return reject("media_materiality_prefilter" if role == "media" else "source_materiality_prefilter")
+    else:
+        if not scoped:
+            accepted = _material(role, raw.title, body)
+        if not raw.event_date or len(body) < 160 or not accepted:
+            if scoped:
+                raw.metadata["publication_rejection_reason"] = material_reason
+            else:
+                prefilter_rejected(raw,"publication_date_missing" if not raw.event_date else "insufficient_readable_body" if len(body)<160 else "no_material_change_under_provider_prefilter")
+            return None
     supporting=[]
-    for evidence in (raw.metadata.get('supporting_official_sources') or [])[:1]:
+    for evidence in ([] if raw.source_slug == 'pulso_latercera' else
+                     (raw.metadata.get('supporting_official_sources') or [])[:1]):
         target=urlparse(evidence.get('url') or '')
         source=CuratedBetaSourceScout.SOURCES.get(raw.source_slug,{})
         if (target.scheme!='https' or target.netloc not in source.get('hosts',())
@@ -530,22 +811,216 @@ def process_curated_beta_source(raw, cfg):
             kind += (" El informe corresponde al período 2025. Sus tablas comparan ingresos y egresos ordinarios 2025/2024; "
                      "conserva los encabezados y la categoría ordinarios. No deduzcas déficit ni resultado neto "
                      "mediante su resta. La afirmación sobre ausencia de excedentes debe atribuirse al informe.")
-    ai_text = (primary_body[:3500] + "\n\nHechos adicionales del documento oficial verificado:\n" + document_facts
-               if document_facts else body[:10000])
-    ai = analyze_news(title=raw.title, text=ai_text, source_name=raw.source_name, kind=kind)
+    if role == "media" and raw.metadata.get("editorial_review_context"):
+        import json
+        kind += (". Revisión previa de valor incremental: "
+                 + json.dumps(raw.metadata["editorial_review_context"], ensure_ascii=False)
+                 + ". Evalúa si el artículo agrega un cambio material a ese antecedente; "
+                   "la revisión sólo habilita análisis y no aprueba publicación. "
+                   "Preserva período, métrica, condición de propuesta y atribución de prensa.")
+    if raw.source_slug == "pulso_latercera":
+        kind += (f". Publicación original: {raw.event_date}; fecha de revisión Chile: {chile_today().isoformat()}. "
+                 "Puede ingresar por BACKFILL: describe lo observado o anunciado a la fecha de publicación, "
+                 "y conserva el período de datos. Una emergencia entonces en curso, un reglamento entonces "
+                 "pendiente o una medida temporal no acredita que ese estado siga vigente en la fecha de revisión. "
+                 "Usa atribución temporal explícita y no conviertas el reporte histórico en estado actual.")
+        # Keep the source's complete primary text through the model boundary;
+        # strategic facts can occur after the general news excerpt limit.
+        text = body
+        input_format = "full_primary_article_body"
+        if raw.metadata.get("publisher_document_type") == "liveblog":
+            text = liveblog_analysis_text(raw.metadata)
+            input_format = "full_primary_body_with_verified_liveblog_entry_timeline_v1"
+            kind += ". Cobertura en vivo: usa las fechas verificadas de cada entrada, separadas de la fecha del documento; conserva condiciones y no sumes balances repetidos."
+        request_input = news_analysis_input(title=raw.title, text=text, source_name=raw.source_name, full_text=True)
+        raw.metadata.update(analysis_base_article_body_sha256=hashlib.sha256(body.encode("utf-8")).hexdigest(),
+                            analysis_base_article_body_characters=len(body), analysis_input_format=input_format,
+                            analysis_input_body_sha256=hashlib.sha256(text.encode("utf-8")).hexdigest(),
+                            analysis_input_characters=len(text), analysis_input_complete=True,
+                            analysis_request_input_sha256=hashlib.sha256(request_input.encode("utf-8")).hexdigest(),
+                            analysis_request_input_characters=len(request_input))
+        if raw.metadata.get("publisher_document_type") == "liveblog":
+            raw.metadata["analysis_liveblog_entries_sha256"] = raw.metadata["liveblog_temporal_evidence"]["entries_sha256"]
+        paid_revalidation = None
+        current_paid_revalidation = None
+        followup_paid_revalidation = None
+        final_paid_revalidation = None
+        from . import pulso_final_paid_revalidation as final_paid
+        from . import pulso_followup_paid_revalidation as followup_paid
+        from . import pulso_current_paid_revalidation as current_paid
+        if final_paid.has_claim(raw.metadata) or final_paid.known_original_candidate(raw):
+            try:
+                final_paid_revalidation, _ = final_paid.verified_processing_mode(raw)
+                ai = final_paid.unchanged_output(raw)
+            except (OSError, ValueError, KeyError, TypeError, StopIteration) as exc:
+                raw.metadata["editorial_assessment"] = {"decision":"pending", "threshold":72,
+                    "reason":"pulso_paid_revalidation_evidence_unverified", "evidence_error":str(exc)}
+                raise DeferredProcessing("pulso_paid_revalidation_evidence_unverified") from exc
+        elif followup_paid.has_claim(raw.metadata) or followup_paid.known_original_candidate(raw):
+            try:
+                followup_paid_revalidation, _ = followup_paid.verified_processing_mode(raw)
+                context = followup_paid.reassessment_context(raw)
+                if context is not None:
+                    kind += (". Revisión del contrato y de la novedad sobre este mismo cuerpo completo; "
+                             "las citas sugeridas son literales y no aprueban publicación: " + context["context_text"])
+                ai = (analyze_news(title=raw.title, text=text, source_name=raw.source_name, kind=kind,
+                                   full_text=True, pulso_editorial_proof=True)
+                      if followup_paid_revalidation["new_model_request"] else followup_paid.unchanged_output(raw))
+            except (OSError, ValueError, KeyError, TypeError, StopIteration) as exc:
+                raw.metadata["editorial_assessment"] = {"decision":"pending", "threshold":72,
+                    "reason":"pulso_paid_revalidation_evidence_unverified", "evidence_error":str(exc)}
+                raise DeferredProcessing("pulso_paid_revalidation_evidence_unverified") from exc
+        elif current_paid.has_claim(raw.metadata):
+            from .pulso_paid_revalidation import verified_paid_processing_mode
+            try:
+                current_paid_revalidation, _ = current_paid.verified_processing_mode(raw)
+                # The earlier 981 admission remains a distinct, mandatory
+                # history. A current repair never relabels its new29731 answer.
+                paid_revalidation, _ = verified_paid_processing_mode(raw)
+                context = current_paid.reassessment_context(raw)
+                if context is not None:
+                    kind += (". Revisión del contrato editorial sobre este mismo artículo completo: "
+                             + context["context_text"])
+                ai = (analyze_news(title=raw.title, text=text, source_name=raw.source_name, kind=kind,
+                                   full_text=True, pulso_editorial_proof=True)
+                      if current_paid_revalidation["new_model_request"] else current_paid.unchanged_output(raw))
+            except (OSError, ValueError, KeyError, TypeError, StopIteration) as exc:
+                raw.metadata["editorial_assessment"] = {"decision":"pending", "threshold":72,
+                    "reason":"pulso_paid_revalidation_evidence_unverified", "evidence_error":str(exc)}
+                raise DeferredProcessing("pulso_paid_revalidation_evidence_unverified") from exc
+        elif raw.metadata.get("paid_guard_revalidation_admission") is not None:
+            from .pulso_paid_revalidation import (verified_paid_processing_mode, unchanged_paid_output,
+                                                  verified_reassessment_context)
+            try:
+                paid_revalidation, _ = verified_paid_processing_mode(raw)
+                context = verified_reassessment_context(raw)
+                if context is not None:
+                    kind += (". Contexto incremental de una publicación previa, verificado contra su cuerpo completo: "
+                             + context["context_text"])
+                ai = (analyze_news(title=raw.title, text=text, source_name=raw.source_name, kind=kind,
+                                   full_text=True, pulso_editorial_proof=True)
+                      if paid_revalidation["new_model_request"] else unchanged_paid_output(raw))
+            except (OSError, ValueError, KeyError, TypeError, StopIteration) as exc:
+                raw.metadata["editorial_assessment"] = {"decision":"pending", "threshold":72,
+                    "reason":"pulso_paid_revalidation_evidence_unverified", "evidence_error":str(exc)}
+                raise DeferredProcessing("pulso_paid_revalidation_evidence_unverified") from exc
+        else:
+            ai = analyze_news(title=raw.title, text=text, source_name=raw.source_name, kind=kind, full_text=True,
+                              pulso_editorial_proof=True)
+    else:
+        ai_text = (primary_body[:3500] + "\n\nHechos adicionales del documento oficial verificado:\n" + document_facts
+                   if document_facts else body[:10000])
+        ai = analyze_news(title=raw.title, text=ai_text, source_name=raw.source_name, kind=kind)
     if not ai:
+        raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": "analysis_unavailable"}
         raise DeferredProcessing("curated beta source pending assessment")
+    if raw.source_slug == "pulso_latercera":
+        from .pulso_editorial_proof import model_binding_matches, validate_pulso_editorial_proof
+        validation=validate_pulso_editorial_proof(ai,text)
+        validation.update(primary_article_body_sha256=raw.metadata["analysis_base_article_body_sha256"],
+                          request_input_sha256=raw.metadata["analysis_request_input_sha256"],
+                          model_response=ai.get("_pulso_analysis_meta") if isinstance(ai,dict) else None)
+        if not model_binding_matches(ai,source_name=raw.source_name,
+                                     input_text_sha256=raw.metadata["analysis_input_body_sha256"],
+                                     request_input_sha256=raw.metadata["analysis_request_input_sha256"]):
+            validation.update(decision="deferred",reason="pulso_editorial_model_binding_mismatch")
+        if final_paid_revalidation is not None:
+            try:
+                raw.metadata[final_paid.RECEIPT] = final_paid.revalidation_receipt(raw, ai, validation)
+            except (OSError, ValueError, KeyError, TypeError, StopIteration) as exc:
+                raw.metadata["editorial_assessment"] = {"decision":"pending", "threshold":72,
+                    "reason":"pulso_paid_revalidation_evidence_unverified", "evidence_error":str(exc)}
+                raise DeferredProcessing("pulso_paid_revalidation_evidence_unverified") from exc
+        elif followup_paid_revalidation is not None:
+            try:
+                if followup_paid_revalidation["new_model_request"]:
+                    from . import pulso_paid_revalidation as original_paid
+                    followup_receipt = followup_paid.new_fast_attempt_receipt(raw, ai, validation)
+                    current_receipt = current_paid.new_fast_attempt_receipt(raw, ai, validation)
+                    legacy_receipt = original_paid.new_fast_attempt_receipt(raw, ai, validation)
+                    raw.metadata.setdefault(followup_paid.NEW_FAST_RECEIPTS, []).append(followup_receipt)
+                    raw.metadata.setdefault(current_paid.NEW_FAST_RECEIPTS, []).append(current_receipt)
+                    raw.metadata.setdefault(original_paid.NEW_FAST_RECEIPTS, []).append(legacy_receipt)
+                else:
+                    raw.metadata[followup_paid.RECEIPT] = followup_paid.revalidation_receipt(raw, ai, validation)
+            except (OSError, ValueError, KeyError, TypeError, StopIteration) as exc:
+                raw.metadata["analysis_model_output"] = ai
+                raw.metadata["pulso_editorial_proof_validation"] = validation
+                raw.metadata["editorial_assessment"] = {"decision":"pending", "threshold":72,
+                    "reason":"pulso_paid_revalidation_evidence_unverified", "evidence_error":str(exc)}
+                raise DeferredProcessing("pulso_paid_revalidation_evidence_unverified") from exc
+        elif current_paid_revalidation is not None:
+            from . import pulso_current_paid_revalidation as current_paid
+            try:
+                if current_paid_revalidation["new_model_request"]:
+                    from .pulso_paid_revalidation import NEW_FAST_RECEIPTS, new_fast_attempt_receipt
+                    current_receipt = current_paid.new_fast_attempt_receipt(raw, ai, validation)
+                    legacy_receipt = new_fast_attempt_receipt(raw, ai, validation)
+                    raw.metadata.setdefault(current_paid.NEW_FAST_RECEIPTS, []).append(current_receipt)
+                    raw.metadata.setdefault(NEW_FAST_RECEIPTS, []).append(legacy_receipt)
+                else:
+                    raw.metadata[current_paid.RECEIPT] = current_paid.revalidation_receipt(raw, ai, validation)
+            except (OSError, ValueError, KeyError, TypeError, StopIteration) as exc:
+                raw.metadata["analysis_model_output"] = ai
+                raw.metadata["pulso_editorial_proof_validation"] = validation
+                raw.metadata["editorial_assessment"] = {"decision":"pending", "threshold":72,
+                    "reason":"pulso_paid_revalidation_evidence_unverified", "evidence_error":str(exc)}
+                raise DeferredProcessing("pulso_paid_revalidation_evidence_unverified") from exc
+        elif paid_revalidation is not None and not paid_revalidation["new_model_request"]:
+            from .pulso_paid_revalidation import revalidation_receipt
+            try:
+                raw.metadata["paid_guard_revalidation_receipt"] = revalidation_receipt(raw, ai, validation)
+            except (OSError, ValueError, KeyError, TypeError, StopIteration) as exc:
+                raw.metadata["editorial_assessment"] = {"decision":"pending", "threshold":72,
+                    "reason":"pulso_paid_revalidation_evidence_unverified", "evidence_error":str(exc)}
+                raise DeferredProcessing("pulso_paid_revalidation_evidence_unverified") from exc
+        elif paid_revalidation is not None:
+            from .pulso_paid_revalidation import NEW_FAST_RECEIPTS, new_fast_attempt_receipt
+            try:
+                receipt = new_fast_attempt_receipt(raw, ai, validation)
+                raw.metadata.setdefault(NEW_FAST_RECEIPTS, []).append(receipt)
+            except (OSError, ValueError, KeyError, TypeError, StopIteration) as exc:
+                # Preserve even an unbound paid response for diagnosis. It is
+                # not eligible for automatic revalidation or publication.
+                raw.metadata["analysis_model_output"] = ai
+                raw.metadata["pulso_editorial_proof_validation"] = validation
+                raw.metadata["editorial_assessment"] = {"decision":"pending", "threshold":72,
+                    "reason":"pulso_paid_revalidation_evidence_unverified", "evidence_error":str(exc)}
+                raise DeferredProcessing("pulso_paid_revalidation_evidence_unverified") from exc
+        raw.metadata["pulso_editorial_proof_validation"]=validation
+        raw.metadata["analysis_model_output"]=ai
+        if validation["decision"] == "deferred":
+            raw.metadata["editorial_assessment"]={"decision":"pending","reason":validation["reason"],
+                                                  "threshold":72,"proof_version":validation["version"]}
+            raise DeferredProcessing(validation["reason"])
+        if validation["decision"] == "rejected":
+            return reject(validation["reason"],relevance_score=ai["relevance_score"],threshold=72,
+                          proof_version=validation["version"],analysis_reason=ai.get("reason"))
+        raw.metadata["prospective_evidence"]=validation["prospective_evidence"]
     score = int(ai.get("relevance_score", 0))
     if scoped:
         raw.metadata["editorial_assessment"] = {"score": score, "reason": ai.get("reason"), "threshold": 75}
     threshold = 72 if role == "media" else 75
+    analysis_reason = ai.get("reason") or "analysis_reason_not_supplied"
     what = (ai.get("what_happened") or "").strip()
     why = (ai.get("why_it_matters") or "").strip()
-    if (score < threshold or len(what) < 45 or len(why) < 35) if scoped else not assessed(raw,ai,threshold):
-        if scoped:
+    if raw.source_slug == "pulso_latercera":
+        if scoped and (score < threshold or len(what) < 45 or len(why) < 35):
             raw.metadata["publication_rejection_reason"] = "editorial_score_or_summary_below_threshold"
+            return None
+        if score < threshold:
+            return reject("editorial_relevance_below_threshold", relevance_score=score, threshold=threshold, analysis_reason=analysis_reason)
+        if len(what) < 45 or len(why) < 35:
+            return reject("incomplete_editorial_analysis", relevance_score=score, threshold=threshold, analysis_reason=analysis_reason)
+        if role == "media":
+            what = _attribute_pulso_what(what)
+    elif scoped:
+        if score < threshold or len(what) < 45 or len(why) < 35:
+            raw.metadata["publication_rejection_reason"] = "editorial_score_or_summary_below_threshold"
+            return None
+    elif not assessed(raw, ai, threshold):
         return None
-    scopes = ["Salud laboral"] if role == "mutuality" else (["Isapres", "Prestadores"] if role == "media" else ["Prestadores"])
+    scopes = ["Salud laboral"] if role == "mutuality" else (["Sistema de salud"] if role == "media" else ["Prestadores"])
     scope_text=f"{raw.title} {body[:2500]}"
     named_pharma=(re.search(r'\b(?:pfizer|roche|sanofi|merck|novartis|astrazeneca|bayer|gsk|abbott)\b',scope_text,re.I)
         or re.search(r'\b(?:[Ll]aboratorios?|[Ff]armacias?)\s+(?!(?:[Cc]l[ií]nic[oa]s?|[Cc]entral|[Dd]e|[Dd]el)\b)[A-ZÁÉÍÓÚ][\wÁÉÍÓÚáéíóúñÑ-]+',scope_text))
@@ -557,6 +1032,8 @@ def process_curated_beta_source(raw, cfg):
     for scope in inferred:
         if scope != "Sistema de salud" and scope not in scopes:
             scopes.append(scope)
+    if role == "media" and len(scopes) > 1:
+        scopes.remove("Sistema de salud")
     raw.metadata.update({
         "what_happened": what,
         "why_it_matters": why,
@@ -575,7 +1052,8 @@ def process_curated_beta_source(raw, cfg):
     row["signal_types"] = ["Noticias"]
     row["scopes"] = scopes
     row["editorial_relevance"] = score
-    row['editorial_assessment']=raw.metadata['editorial_assessment']
+    if raw.source_slug != 'pulso_latercera':
+        row['editorial_assessment']=raw.metadata['editorial_assessment']
     row["source_quality_gate"] = "passed"
     if scoped:
         row.update(source_slug=raw.source_slug, market_role=role,
@@ -592,6 +1070,16 @@ def process_curated_beta_source(raw, cfg):
     if role == "media":
         row["evidence_maturity"] = "media_reported"
         row["confirmation_policy"] = "upgrade_same_signal_when_company_or_official_source_confirms"
+        row["publication_date"] = raw.metadata.get("publication_date") or raw.event_date
+        row["publication_timestamp"] = raw.metadata.get("publication_timestamp")
+        row["publication_date_source"] = raw.metadata.get("publication_date_source")
+        from .editorial_gate import publication_ready
+        accepted, reason, quality = publication_ready(row)
+        if not accepted:
+            return reject(reason, relevance_score=score, threshold=threshold, quality_score=quality, analysis_reason=analysis_reason)
+    if raw.source_slug == "pulso_latercera":
+        raw.metadata["editorial_assessment"] = {"decision": "published", "relevance_score": score, "threshold": threshold, "analysis_reason": analysis_reason}
+        row["editorial_assessment"] = raw.metadata["editorial_assessment"]
     return row
 
 

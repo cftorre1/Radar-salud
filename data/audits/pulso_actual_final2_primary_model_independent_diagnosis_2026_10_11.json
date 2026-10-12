@@ -1,0 +1,1324 @@
+{
+  "schema_version": "pulso_actual_final2_primary_model_independent_diagnosis_v1",
+  "producer_commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+  "producer_core_checkout": "c2db17141fd55cbacbcda5b53805341aa4dfa86f",
+  "producer_runtime_fingerprint_sha256": "c960999eea01aed6e578d0ca1354cb5f45b8720ae8832993d609d0db540b0406",
+  "producer_files": {
+    "data/audits/pulso_runtime_2026_10_11.json": "c746b44864dceb465c2d72889ed48e15510fcb7286f8d0840545f584afe6793e",
+    "data/audits/pulso_directed_processing_qa_2026_10_11.json": "3bb88f9be0976f4d62ddb965276e2d45cbbd659b4867fffba5002c373ceb0346",
+    "data/state/pending_queue.json": "b5fb262284e5ce28e6b9664703f2a94996ad7abef128a7f1c679fc0a83b26481",
+    "data/history/superintendencia_signals.json": "39e63cc84af25227fc7cf916ab42867ab8a84a085cb6fffb3b920aa2ba0ed11a",
+    "web/data/radar_today.json": "98017dfff63f2a50e16f6bd99ed1d128a7fa1bb3fb379937665d7e49e0d210bf",
+    "data/ai_usage/responses.jsonl": "19bb3e6b2ae1e15c623a97eb08ae6b3f323b1c11cec6fa74aad359f3ca04cfad",
+    "data/ai_usage/2026-10.json": "aec8ca63b045c2d44c28ebfddcfd4474651ae5bfc27efbc1247f4171a18e9ca9",
+    "data/state/discovery_run.json": "6b357b1610a25f4aa4b5067ef89c3938b0c6ef195de8f947f2de9218643b6bb4",
+    "data/source_health.json": "0e82b0aa2394965c73e4b96a0a41638a86b6a0a4198a247a16c224b60e2e6ace"
+  },
+  "full_reading_scope": "ALL2 new genuinely paid Model outputs and full primary bodies; ALL3 unchanged reused Model/output chains inspected separately in the technical companion.",
+  "method": "Read full primary bodies, exact complete Model outputs/quotes and original producer queue/runtime/Response event ledgers. Hanta is compared against full already-published August8 body and actual signal. No altered Model, manual pending publication, budget reset or runtime injection.",
+  "technical_companion": {
+    "path": "data/audits/pulso_followup5_actual323_independent_runtime_review_2026_10_11.json",
+    "sha256": "6c9cc6213f4dd7830dc3b7a75cc8b53f3a84028918abb740d9fa4ee42b19a349"
+  },
+  "actual_budget_delta": {
+    "fast": {
+      "attempted": 2,
+      "successful": 2,
+      "failed": 0
+    },
+    "deep": {
+      "attempted": 0,
+      "successful": 0,
+      "failed": 0
+    }
+  },
+  "actual_distinct_response_ids": [
+    "resp_002f5b0446570472006acc05e1534887d0987e282ef36da3b9",
+    "resp_06ee18158a24b956006acc05c1f19c87d09f13899818b114c3"
+  ],
+  "previous108_terminals_byte_equal": true,
+  "native5293_queue_byte_equal": true,
+  "native897_history_byte_equal": true,
+  "current_processing_qa": "FAIL",
+  "current_processing_findings": {
+    "published_media_attribution_or_real_date_invalid": 1,
+    "code_repair_actual_paid_validation_deferred": 2,
+    "followup_paid_actual_validation_deferred": 2,
+    "selected_reviewed_text_processing_evidence_unresolved": 2,
+    "important_control_not_editorially_processed": 2
+  },
+  "discovery_companion": {
+    "path": "data/audits/pulso_followup5_actual323_independent_discovery_review_2026_10_11.json",
+    "sha256": "8387b37d343edb1abf11bc5b1efe5bfca5a52473e4b2b0455746b815ba284ef0"
+  },
+  "verdict": "MODEL_AND_PRIMARY_BINDINGS_VERIFIED; SOURCE_GROUNDED_GUARD_FALSE_NEGATIVES_REQUIRE_REAL_ENGINE_REVALIDATION",
+  "overall_acceptance": "WITHHELD",
+  "publication_approved": false,
+  "rows": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "queue_fingerprint": "3fb0666a8febe4a5ba0c2b78ebe13a7666fccb6e9f30170808c915dc5a80047c",
+      "actual_queue_status": "retry",
+      "actual_attempts": 5,
+      "original_full_primary_body": "Durante la jornada del martes el Ministerio de Salud decretó una nueva alerta sanitaria, esta vez, por hantavirus. ¿La razón? Primero, porque la letalidad en Chile ha aumentando: de acuerdo a las cifras que maneja el Minsal, hasta la semana pasada se registraban 46 contagios y 18 fallecidos, lo que representa una letalidad del 39%. Segundo, porque hay una situación de “multiamenaza sanitaria” al presentarse simultáneamente con otros riesgos como arbovirosis (enfermedades transmitidas por zancudos como el dengue o fiebre amarilla), y la influenza aviar. La medida adoptada es inédita: es la primera vez que se decreta una alerta sanitaria por hantavirus en el país. La resolución regirá desde la Región de Atacama hasta la de Magallanes y estará vigente hasta el 31 de julio de 2027. De acuerdo con el último informe del Minsal, la Región de Los Lagos concentra la mayor cantidad de casos de hantavirus, con siete confirmados hasta la semana pasada. Esos contagios igualaron los que la región tuvo sumando todo 2024 y 2025. Eso sí, en ese informe no aparece el reciente contagio con resultado de muerte de una mujer en Palena, también de Los Lagos. Le siguen O’Higgins y Ñuble, con seis casos cada una, y el Maule, con cinco. Valparaíso, la RM, Biobío, La Araucanía, Los Ríos y Aysén son las otras regiones que han registrado casos, mientras que Arica y Parinacota, Tarapacá, Antofagasta, Atacama, Coquimbo y Magallanes no han tenido en 2026. “El grupo que claramente se ve más afectado corresponde a los trabajadores agrícolas, quienes históricamente han constituido la principal población de riesgo”, dice Álvaro Llancaqueo, infectólogo del Sanatorio Alemán de Concepción, quien advierte que a estas alturas del año “ya registramos un número de casos inusualmente alto en comparación con lo observado en años anteriores. Una de las causas principales de este incremento podría ser que la baja incidencia previa haya provocado un relajamiento en la población, así como un menor alcance en las campañas de prevención estival”. Cristóbal Kripper, coordinador transversal de los Servicios de Urgencia de RedSalud, explica que esta distribución se relaciona principalmente “con las características ambientales y con una mayor exposición de las personas al hábitat del roedor silvestre que transmite el virus. En sectores rurales existe más contacto con áreas de vegetación, bosques, matorrales, bodegas, leñeras o construcciones que han permanecido cerradas, donde pueden encontrarse roedores y sus excretas”. Y es que de acuerdo a las pesquisas de las instituciones encargadas, durante este año los principales factores de exposición asociados al contagio de hantavirus fueron, precisamente, residir en sectores rurales (31 casos), realizar excursiones o actividades al aire libre (9), y desempeñarse como trabajador agrícola o forestal (4). Una misma persona pudo haber estado expuesta a más de uno de estos factores. “El contagio ocurre principalmente al inhalar partículas contaminadas con orina, deposiciones o saliva de roedores infectados, especialmente cuando se remueve polvo en lugares cerrados o poco ventilados. Por eso, más que vivir en una determinada región, lo que aumenta el riesgo es la exposición a estos ambientes y determinadas actividades rurales, agrícolas, forestales o recreativas”, agrega el especialista de RedSalud. Los 46 casos de 2026 ya superaron los 44 de todo el año pasado, y de los últimos diez años aún se sitúan por debajo de los 54 de 2023, los 70 de 2019 y los 91 de 2017. El hanta suele comenzar con síntomas parecidos a un estado gripal, como fiebre alta, escalofríos, dolores musculares intensos, dolor de cabeza, fatiga y malestar general. También pueden aparecer molestias gastrointestinales, como vómitos, diarrea o dolor abdominal. Según los expertos, en un corto tiempo la enfermedad puede agravarse, marcada por dificultad respiratoria, tos que puede pasar de seca a secreciones, acumulación de líquido en los pulmones, presión arterial baja y alteraciones en la frecuencia cardíaca. En ese sentido, los especialistas recalcan que, aunque es una enfermedad poco frecuente, puede evolucionar rápidamente y producir un cuadro grave, por lo que la prevención y consulta precoz son fundamentales. Cecilia Vial, experta en hantavirus y directora alterna de Sentinet, centro de investigación científico dedicado a la vigilancia epidemiológica, explica que “el aumento de la letalidad que se observa en algunos periodos es un fenómeno que debemos analizar con cautela, porque la gravedad del hantavirus depende de múltiples factores: las características del virus, las condiciones de los pacientes, el momento en que se realiza el diagnóstico y la capacidad de respuesta del sistema de salud”. Y detalla que “actualmente no tenemos una única explicación para este incremento, pero existen hipótesis que apuntan a entender mejor qué ocurre en el organismo de las personas que desarrollan cuadros más severos”. En ese contexto, los expertos recalcan que lo principal es disminuir el contacto con roedores y evitar exponerse a ambientes potencialmente contaminados. En ese contexto, autoridades y expertos recomiendan ventilar adecuadamente casas, bodegas o galpones que hayan permanecido cerrados por un tiempo antes de ingresar a ellos, además de evitar barrer o levantar polvo en seco. Si se detectan signos de presencia de roedores, la limpieza debe realizarse humedeciendo previamente las superficies con una solución clorada y utilizando elementos de protección personal, como guantes y mascarilla. “En cuanto a las medidas de prevención, especialmente para quienes viven en sectores rurales o zonas de mayor riesgo, las recomendaciones se enfocan en los trabajadores agrícolas, forestales y en aquellos excursionistas que visitan estas áreas en la época estival. El llamado principal es a no bajar la guardia”, cierra Llancaqueo.",
+      "original_full_model_output": {
+        "relevance_score": 78,
+        "what_happened": "Según la nota del 29 de julio de 2026, el Ministerio de Salud había decretado una alerta sanitaria por hantavirus. Hasta la semana previa a esa publicación, la nota reportó 46 contagios, 18 fallecidos y una letalidad atribuida al Minsal de 39%. La resolución anunciaba vigencia desde Atacama hasta Magallanes hasta el 31 de julio de 2027; ese alcance y esa vigencia futura no se verifican como estados actuales al 11 de octubre de 2026.",
+        "why_it_matters": "Según la nota del 29 de julio de 2026, la alerta involucraba al Minsal, a las autoridades sanitarias y a los prestadores que atienden casos de hantavirus, al situar el riesgo en un contexto de multiamenaza y orientar la prevención hacia residentes rurales, trabajadores agrícolas y forestales y personas que realizan actividades al aire libre. El corte epidemiológico y los factores de exposición aportaban información para focalizar vigilancia y prevención, pero el contenido no acredita que la alerta ni sus efectos siguieran vigentes al 11 de octubre de 2026.",
+        "reason": "Merece radar como señal temprana de salud poblacional por el aumento reportado de casos y fallecimientos, el alcance nacional-regional anunciado de la alerta y la identificación de factores de exposición. Sin embargo, la alerta como hecho central ya aparece en la publicación comparadora del 8 de agosto de 2026; la novedad material adicional está en el corte epidemiológico, la distribución regional y la cuantificación de exposiciones, no en un nuevo decreto ni en resultados de implementación.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La nota aborda una enfermedad infecciosa humana, su letalidad, síntomas, factores de contagio y medidas de prevención, además de una alerta sanitaria decretada por el Ministerio de Salud.",
+          "human_health_scope_quote": "El hanta suele comenzar con síntomas parecidos a un estado gripal, como fiebre alta, escalofríos, dolores musculares intensos, dolor de cabeza, fatiga y malestar general.",
+          "actor": "Ministerio de Salud",
+          "action": "decretó una nueva alerta sanitaria",
+          "consequence": "La resolución regirá desde la Región de Atacama hasta la de Magallanes y estará vigente hasta el 31 de julio de 2027.",
+          "actor_quote": "Durante la jornada del martes el Ministerio de Salud decretó una nueva alerta sanitaria, esta vez, por hantavirus.",
+          "action_quote": "Durante la jornada del martes el Ministerio de Salud decretó una nueva alerta sanitaria, esta vez, por hantavirus.",
+          "consequence_quote": "La resolución regirá desde la Región de Atacama hasta la de Magallanes y estará vigente hasta el 31 de julio de 2027.",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "La resolución regirá desde la Región de Atacama hasta la de Magallanes y estará vigente hasta el 31 de julio de 2027.",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "Frente a la publicación comparadora del 8 de agosto, que ya mencionaba la alerta Atacama–Magallanes, esta nota aporta un corte epidemiológico cuantificado, una distribución regional de casos y factores de exposición asociados al contagio. Es información incremental material, aunque no acredita una nueva medida ni resultados posteriores.",
+          "novelty_quote": "Y es que de acuerdo a las pesquisas de las instituciones encargadas, durante este año los principales factores de exposición asociados al contagio de hantavirus fueron, precisamente, residir en sectores rurales (31 casos), realizar excursiones o actividades al aire libre (9), y desempeñarse como trabajador agrícola o forestal (4).",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Según la nota del 29 de julio de 2026, el Ministerio de Salud había decretado una alerta sanitaria por hantavirus. Hasta la semana previa a esa publicación, la nota reportó 46 contagios, 18 fallecidos y una letalidad atribuida al Minsal de 39%. La resolución anunciaba vigencia desde Atacama hasta Magallanes hasta el 31 de julio de 2027; ese alcance y esa vigencia futura no se verifican como estados actuales al 11 de octubre de 2026.",
+              "source_quote": "La resolución regirá desde la Región de Atacama hasta la de Magallanes y estará vigente hasta el 31 de julio de 2027."
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Según la nota del 29 de julio de 2026, la alerta involucraba al Minsal, a las autoridades sanitarias y a los prestadores que atienden casos de hantavirus, al situar el riesgo en un contexto de multiamenaza y orientar la prevención hacia residentes rurales, trabajadores agrícolas y forestales y personas que realizan actividades al aire libre. El corte epidemiológico y los factores de exposición aportaban información para focalizar vigilancia y prevención, pero el contenido no acredita que la alerta ni sus efectos siguieran vigentes al 11 de octubre de 2026.",
+              "source_quote": "En ese contexto, los expertos recalcan que lo principal es disminuir el contacto con roedores y evitar exponerse a ambientes potencialmente contaminados."
+            }
+          ]
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_002f5b0446570472006acc05e1534887d0987e282ef36da3b9",
+          "analysis_text_sha256": "64b7f6c81c0d554942ddd374af52be1ff926acc8ca197284ab52005d9a0bde7e",
+          "request_input_sha256": "e8b0f5e994f6a1e5bb006147a293382eb49504c5de12479660fd98b73a6fd1b3",
+          "raw_model_output_sha256": "aca7ccec6b1c3f78168c108f1cb4c4b126425679e8ed905775ac062ac4ea8d92"
+        }
+      },
+      "actual_pulso_validation": {
+        "version": "pulso_editorial_proof_v5",
+        "source": "pulso_latercera",
+        "analysis_text_sha256": "64b7f6c81c0d554942ddd374af52be1ff926acc8ca197284ab52005d9a0bde7e",
+        "quote_validation_is_semantic_approval": false,
+        "publication_approved": false,
+        "model_output_sha256": "4091e5c48baeb8f9eb5259dfce742a4567b69523de318f3b30bcd8cee6ff114b",
+        "proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La nota aborda una enfermedad infecciosa humana, su letalidad, síntomas, factores de contagio y medidas de prevención, además de una alerta sanitaria decretada por el Ministerio de Salud.",
+          "human_health_scope_quote": "El hanta suele comenzar con síntomas parecidos a un estado gripal, como fiebre alta, escalofríos, dolores musculares intensos, dolor de cabeza, fatiga y malestar general.",
+          "actor": "Ministerio de Salud",
+          "action": "decretó una nueva alerta sanitaria",
+          "consequence": "La resolución regirá desde la Región de Atacama hasta la de Magallanes y estará vigente hasta el 31 de julio de 2027.",
+          "actor_quote": "Durante la jornada del martes el Ministerio de Salud decretó una nueva alerta sanitaria, esta vez, por hantavirus.",
+          "action_quote": "Durante la jornada del martes el Ministerio de Salud decretó una nueva alerta sanitaria, esta vez, por hantavirus.",
+          "consequence_quote": "La resolución regirá desde la Región de Atacama hasta la de Magallanes y estará vigente hasta el 31 de julio de 2027.",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "La resolución regirá desde la Región de Atacama hasta la de Magallanes y estará vigente hasta el 31 de julio de 2027.",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "Frente a la publicación comparadora del 8 de agosto, que ya mencionaba la alerta Atacama–Magallanes, esta nota aporta un corte epidemiológico cuantificado, una distribución regional de casos y factores de exposición asociados al contagio. Es información incremental material, aunque no acredita una nueva medida ni resultados posteriores.",
+          "novelty_quote": "Y es que de acuerdo a las pesquisas de las instituciones encargadas, durante este año los principales factores de exposición asociados al contagio de hantavirus fueron, precisamente, residir en sectores rurales (31 casos), realizar excursiones o actividades al aire libre (9), y desempeñarse como trabajador agrícola o forestal (4).",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Según la nota del 29 de julio de 2026, el Ministerio de Salud había decretado una alerta sanitaria por hantavirus. Hasta la semana previa a esa publicación, la nota reportó 46 contagios, 18 fallecidos y una letalidad atribuida al Minsal de 39%. La resolución anunciaba vigencia desde Atacama hasta Magallanes hasta el 31 de julio de 2027; ese alcance y esa vigencia futura no se verifican como estados actuales al 11 de octubre de 2026.",
+              "source_quote": "La resolución regirá desde la Región de Atacama hasta la de Magallanes y estará vigente hasta el 31 de julio de 2027."
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Según la nota del 29 de julio de 2026, la alerta involucraba al Minsal, a las autoridades sanitarias y a los prestadores que atienden casos de hantavirus, al situar el riesgo en un contexto de multiamenaza y orientar la prevención hacia residentes rurales, trabajadores agrícolas y forestales y personas que realizan actividades al aire libre. El corte epidemiológico y los factores de exposición aportaban información para focalizar vigilancia y prevención, pero el contenido no acredita que la alerta ni sus efectos siguieran vigentes al 11 de octubre de 2026.",
+              "source_quote": "En ese contexto, los expertos recalcan que lo principal es disminuir el contacto con roedores y evitar exponerse a ambientes potencialmente contaminados."
+            }
+          ]
+        },
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_not_grounded",
+        "primary_article_body_sha256": "64b7f6c81c0d554942ddd374af52be1ff926acc8ca197284ab52005d9a0bde7e",
+        "request_input_sha256": "e8b0f5e994f6a1e5bb006147a293382eb49504c5de12479660fd98b73a6fd1b3",
+        "model_response": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_002f5b0446570472006acc05e1534887d0987e282ef36da3b9",
+          "analysis_text_sha256": "64b7f6c81c0d554942ddd374af52be1ff926acc8ca197284ab52005d9a0bde7e",
+          "request_input_sha256": "e8b0f5e994f6a1e5bb006147a293382eb49504c5de12479660fd98b73a6fd1b3",
+          "raw_model_output_sha256": "aca7ccec6b1c3f78168c108f1cb4c4b126425679e8ed905775ac062ac4ea8d92"
+        }
+      },
+      "actual_reason": "pulso_editorial_scope_not_grounded",
+      "actual_queue_entry_sha256": "48a381bfbe8baf9c03d1076949ab6df4e8a39d5c5fa6c3b1eff7153189afcd5e",
+      "original_raw_sha256": "753e8eb83d228495dc3745af6487c45127c26fed46d8853dc0bf45d7035a1ba7",
+      "original_metadata_sha256": "48ace8481448d3312808c0f8752925f4fbf6e5687a2d6f59dbede57234b8c99f",
+      "original_model_output_sha256": "4091e5c48baeb8f9eb5259dfce742a4567b69523de318f3b30bcd8cee6ff114b",
+      "original_validation_sha256": "f65045d7c4fe7910b82f74e64f7c62274391ec7480bd675fc52c4471a50a3710",
+      "original_response_id": "resp_002f5b0446570472006acc05e1534887d0987e282ef36da3b9",
+      "original_body_sha256": "64b7f6c81c0d554942ddd374af52be1ff926acc8ca197284ab52005d9a0bde7e",
+      "original_html_sha256": "4d68fc88d91acb5b3eeee0a1f98f7b2e4210689c1c5897be6a99426fb92313a4",
+      "original_request_input_sha256": "e8b0f5e994f6a1e5bb006147a293382eb49504c5de12479660fd98b73a6fd1b3",
+      "publication_date": "2026-07-29",
+      "proposed_runtime_route": "reuse_code_fn",
+      "publication_approved": false,
+      "semantic_diagnosis": "Human infectious disease scope quote is an exact hanta symptom statement; full source establishes human epidemiology. The model explicitly dates the July29 decree/cut and disclaims October11 continuing validity. Its increment versus the already-published August8 article is the quantified46/18/39% cut and31/9/4 exposure facts, not another decree.",
+      "primary_evidence_quotes": [
+        "El hanta suele comenzar con síntomas parecidos a un estado gripal, como fiebre alta, escalofríos, dolores musculares intensos, dolor de cabeza, fatiga y malestar general.",
+        "hasta la semana pasada se registraban 46 contagios y 18 fallecidos",
+        "residir en sectores rurales (31 casos), realizar excursiones o actividades al aire libre (9), y desempeñarse como trabajador agrícola o forestal (4)"
+      ],
+      "guard_false_negative_details": {
+        "scope": "The clinical quote says hanta, while existing exact health evidence lexicon does not recognize that alias.",
+        "future_why": "The complete field explicitly denies evidence of continuing alert/effects on October11; future_copy_qualified returnsFalse while literal/fullfield and achievement safeguards pass."
+      },
+      "materiality_score": 78,
+      "gate_threshold": 72,
+      "comparative_published_context": {
+        "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+        "event_date": "2026-08-08",
+        "queue_fingerprint": "4a2ebf24c4b12276479f532bef551f5a60b2ca8fde566bd3a1d19f3d83a1745b",
+        "full_queue_entry": {
+          "raw": {
+            "source_slug": "pulso_latercera",
+            "title": "Minsal incorpora hantavirus a alerta sanitaria vigente para enfermedades zoonóticas ante aumento de casos y letalidad",
+            "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+            "source_name": "Pulso / La Tercera",
+            "source_type": "press_high_trust",
+            "event_date": "2026-08-08",
+            "raw_text": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país. Según la subsecretaria de Salud Pública, Alejandra Pizarro, la enfermedad ha experimentado un cambio en el patrón epidemiológico, debido a la aparición de casos durante distintas estaciones del año y una mayor presencia en sectores rurales y semirrurales. Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”. “Estamos haciendo un llamado a todos los equipos de salud a reforzar la sospecha diagnóstica. Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente. En este escenario, es mejor testear de más que de menos”, enfatizó Pizarro en el marco de una visita al Hospital de Niños Dr. Roberto del Río. En específico, la alerta zoonótica es declarada por la entidad de salud cuando aumenta el riesgo o la presencia de enfermedades transmitidas de animales a seres humanos (zoonosis), como el hantavirus, la rabia o la gripe aviar. Es así que la subsecretaria lamentó los recientes fallecimientos y apuntó que la cartera de Salud continuará “intensificando las medidas para disminuir los contagios y mejorar la detección precoz”. En ese sentido, Pizarro hizo un llamado a mantener medidas preventivas. “Los temporales no son una causa directa del hantavirus, pero el movimiento de escombros puede desplazar a los roedores y aumentar la posibilidad de contacto. Por eso es fundamental actuar con precaución y mant",
+            "metadata": {
+              "section": "Nacional",
+              "keywords": [
+                "Minsal",
+                "Hantavirus",
+                "Ministerio de Salud",
+                "May Chomali"
+              ],
+              "description": "La subsecretaria de Salud precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.\n",
+              "body_source": "url_bound_json_ld_articleBody",
+              "publication_date": "2026-08-08",
+              "publication_timestamp": "2026-08-08T18:03:09.74Z",
+              "publication_date_source": "visible_article_byline",
+              "visible_publication_date": "2026-08-08",
+              "publisher_date_convention": "calendar_agreement",
+              "publication_evidence": [
+                {
+                  "source": "json_ld_datePublished",
+                  "timestamp": "2026-08-08T18:03:09.74Z",
+                  "publisher_day": "2026-08-08",
+                  "timestamp_calendar_day": "2026-08-08",
+                  "america_santiago_day": "2026-08-08"
+                },
+                {
+                  "source": "article_published_time",
+                  "timestamp": "2026-08-08T18:03:09.74Z",
+                  "publisher_day": "2026-08-08",
+                  "timestamp_calendar_day": "2026-08-08",
+                  "america_santiago_day": "2026-08-08"
+                }
+              ],
+              "canonical_url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+              "primary_identity_verified": true,
+              "publication_date_verified": true,
+              "article_verified": true,
+              "page_text": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país. Según la subsecretaria de Salud Pública, Alejandra Pizarro, la enfermedad ha experimentado un cambio en el patrón epidemiológico, debido a la aparición de casos durante distintas estaciones del año y una mayor presencia en sectores rurales y semirrurales. Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”. “Estamos haciendo un llamado a todos los equipos de salud a reforzar la sospecha diagnóstica. Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente. En este escenario, es mejor testear de más que de menos”, enfatizó Pizarro en el marco de una visita al Hospital de Niños Dr. Roberto del Río. En específico, la alerta zoonótica es declarada por la entidad de salud cuando aumenta el riesgo o la presencia de enfermedades transmitidas de animales a seres humanos (zoonosis), como el hantavirus, la rabia o la gripe aviar. Es así que la subsecretaria lamentó los recientes fallecimientos y apuntó que la cartera de Salud continuará “intensificando las medidas para disminuir los contagios y mejorar la detección precoz”. En ese sentido, Pizarro hizo un llamado a mantener medidas preventivas. “Los temporales no son una causa directa del hantavirus, pero el movimiento de escombros puede desplazar a los roedores y aumentar la posibilidad de contacto. Por eso es fundamental actuar con precaución y mantener las medidas de prevención”, concluyó. Previamente, el Minsal había decretado alerta sanitaria por hantavirus desde las regiones de Atacama hasta la de Magallanes por una situación de “multiamenaza sanitaria” al presentarse simultáneamente con otros riesgos como arbovirosis (enfermedades transmitidas por zancudos como el dengue, zika, chikungunya y la fiebre amarilla); y la influenza aviar.",
+              "article_body_characters": 2197,
+              "article_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+              "discovered_from": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A2256%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fnacional%22%7D&_website=la-tercera&d=1284",
+              "market_role": "media",
+              "source_quality_gate": "passed",
+              "captured_at": "2026-10-11T07:21:07.544676+00:00",
+              "html_sha256": "e6bbfa96147cc5e6fb6dc851e8f265776943438a5198c0972af13053fe73f3c5",
+              "publisher_lastmod": "2026-08-08T18:04:11.418Z",
+              "topics": [
+                "providers",
+                "public_health"
+              ],
+              "article_body_complete": true,
+              "primary_item_binding": {
+                "verified": true,
+                "reason": "pulso_primary_item_identity_and_date_verified",
+                "raw_url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+                "primary_canonical_url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+                "raw_event_date": "2026-08-08",
+                "primary_publication_date": "2026-08-08",
+                "primary_verification_flags": {
+                  "primary_identity_verified": true,
+                  "publication_date_verified": true
+                },
+                "model_calls_permitted": true,
+                "other_editorial_and_budget_gates_still_apply": true,
+                "publication_approved": false
+              },
+              "analysis_base_article_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+              "analysis_base_article_body_characters": 2197,
+              "analysis_input_format": "full_primary_article_body",
+              "analysis_input_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+              "analysis_input_characters": 2197,
+              "analysis_input_complete": true,
+              "analysis_request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+              "analysis_request_input_characters": 2361,
+              "pulso_editorial_proof_validation": {
+                "version": "pulso_editorial_proof_v5",
+                "source": "pulso_latercera",
+                "analysis_text_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                "quote_validation_is_semantic_approval": false,
+                "publication_approved": false,
+                "model_output_sha256": "472ff5490dc44982765c9aca2906ec268f77df1b33aad47c8530baba73fa7bd1",
+                "proof": {
+                  "scope_decision": "human_health_specific",
+                  "scope_reason": "La nota describe una medida del Minsal dirigida a la vigilancia, sospecha diagnóstica y testeo de personas con síntomas compatibles con hantavirus, además de la respuesta de establecimientos asistenciales.",
+                  "human_health_scope_quote": "Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente.",
+                  "actor": "Minsal",
+                  "action": "anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas",
+                  "consequence": "fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales",
+                  "actor_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                  "action_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                  "consequence_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.",
+                  "event_status": "mixed_actual_and_future",
+                  "event_status_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente",
+                  "novelty_decision": "new_material_information",
+                  "novelty_reason": "La nota reporta una acción sanitaria concreta del Minsal —la incorporación del hantavirus a una alerta sanitaria— y detalla capacidades asistenciales y de vigilancia que la medida permitiría reforzar. No se entregó contexto incremental que permita clasificarla como repetición.",
+                  "novelty_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                  "future_claims": [
+                    {
+                      "summary_field": "what_happened",
+                      "summary_quote": "Según la nota del 8 de agosto de 2026, el Ministerio de Salud anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas, ante el aumento de casos y letalidad reportado durante los últimos meses en Chile. La nota señala que la medida permitiría fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta asistencial; no acredita por sí sola su vigencia operativa al 11 de octubre de 2026.",
+                      "source_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”."
+                    },
+                    {
+                      "summary_field": "why_it_matters",
+                      "summary_quote": "Según la nota del 8 de agosto de 2026, la medida del Minsal buscaba reforzar la detección y respuesta de los establecimientos asistenciales frente a un cambio reportado en el patrón epidemiológico del hantavirus, incluyendo casos en distintas estaciones y en sectores rurales y semirrurales. Su relevancia para el radar está en la coordinación de vigilancia, diagnóstico oportuno y respuesta sanitaria; la publicación no permite verificar que ese estado continúe vigente al 11 de octubre de 2026.",
+                      "source_quote": "la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”."
+                    }
+                  ]
+                },
+                "decision": "ready",
+                "reason": "pulso_editorial_grounded_assessment",
+                "prospective_evidence": true,
+                "primary_article_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                "model_response": {
+                  "schema_version": "pulso_editorial_proof_v5",
+                  "source_name": "Pulso / La Tercera",
+                  "model": "gpt-5.6-luna",
+                  "response_id": "resp_06d55302e3760f78006acbca9c84dc87d1b9e5af7a2cbc5fd3",
+                  "analysis_text_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                  "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                  "raw_model_output_sha256": "2a1a003074ff07a48cd563b4bde0fc3eea7c676f94b6897330c165b807886e70"
+                }
+              },
+              "analysis_model_output": {
+                "relevance_score": 86,
+                "what_happened": "Según la nota del 8 de agosto de 2026, el Ministerio de Salud anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas, ante el aumento de casos y letalidad reportado durante los últimos meses en Chile. La nota señala que la medida permitiría fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta asistencial; no acredita por sí sola su vigencia operativa al 11 de octubre de 2026.",
+                "why_it_matters": "Según la nota del 8 de agosto de 2026, la medida del Minsal buscaba reforzar la detección y respuesta de los establecimientos asistenciales frente a un cambio reportado en el patrón epidemiológico del hantavirus, incluyendo casos en distintas estaciones y en sectores rurales y semirrurales. Su relevancia para el radar está en la coordinación de vigilancia, diagnóstico oportuno y respuesta sanitaria; la publicación no permite verificar que ese estado continúe vigente al 11 de octubre de 2026.",
+                "reason": "Es una señal concreta de política sanitaria nacional frente a un aumento reportado de casos y letalidad de una enfermedad humana, con efectos esperados sobre vigilancia epidemiológica, sospecha diagnóstica, testeo y capacidad de respuesta de los establecimientos asistenciales. Ingresa como BACKFILL porque la publicación es anterior a la fecha de revisión.",
+                "pulso_editorial_proof": {
+                  "scope_decision": "human_health_specific",
+                  "scope_reason": "La nota describe una medida del Minsal dirigida a la vigilancia, sospecha diagnóstica y testeo de personas con síntomas compatibles con hantavirus, además de la respuesta de establecimientos asistenciales.",
+                  "human_health_scope_quote": "Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente.",
+                  "actor": "Minsal",
+                  "action": "anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas",
+                  "consequence": "fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales",
+                  "actor_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                  "action_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                  "consequence_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.",
+                  "event_status": "mixed_actual_and_future",
+                  "event_status_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente",
+                  "novelty_decision": "new_material_information",
+                  "novelty_reason": "La nota reporta una acción sanitaria concreta del Minsal —la incorporación del hantavirus a una alerta sanitaria— y detalla capacidades asistenciales y de vigilancia que la medida permitiría reforzar. No se entregó contexto incremental que permita clasificarla como repetición.",
+                  "novelty_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                  "future_claims": [
+                    {
+                      "summary_field": "what_happened",
+                      "summary_quote": "Según la nota del 8 de agosto de 2026, el Ministerio de Salud anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas, ante el aumento de casos y letalidad reportado durante los últimos meses en Chile. La nota señala que la medida permitiría fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta asistencial; no acredita por sí sola su vigencia operativa al 11 de octubre de 2026.",
+                      "source_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”."
+                    },
+                    {
+                      "summary_field": "why_it_matters",
+                      "summary_quote": "Según la nota del 8 de agosto de 2026, la medida del Minsal buscaba reforzar la detección y respuesta de los establecimientos asistenciales frente a un cambio reportado en el patrón epidemiológico del hantavirus, incluyendo casos en distintas estaciones y en sectores rurales y semirrurales. Su relevancia para el radar está en la coordinación de vigilancia, diagnóstico oportuno y respuesta sanitaria; la publicación no permite verificar que ese estado continúe vigente al 11 de octubre de 2026.",
+                      "source_quote": "la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”."
+                    }
+                  ]
+                },
+                "_pulso_analysis_meta": {
+                  "schema_version": "pulso_editorial_proof_v5",
+                  "source_name": "Pulso / La Tercera",
+                  "model": "gpt-5.6-luna",
+                  "response_id": "resp_06d55302e3760f78006acbca9c84dc87d1b9e5af7a2cbc5fd3",
+                  "analysis_text_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                  "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                  "raw_model_output_sha256": "2a1a003074ff07a48cd563b4bde0fc3eea7c676f94b6897330c165b807886e70"
+                }
+              },
+              "editorial_assessment": {
+                "decision": "published",
+                "relevance_score": 86,
+                "threshold": 72,
+                "analysis_reason": "Es una señal concreta de política sanitaria nacional frente a un aumento reportado de casos y letalidad de una enfermedad humana, con efectos esperados sobre vigilancia epidemiológica, sospecha diagnóstica, testeo y capacidad de respuesta de los establecimientos asistenciales. Ingresa como BACKFILL porque la publicación es anterior a la fecha de revisión."
+              },
+              "editorial_code_repair_admission": {
+                "repair_version": "pulso_editorial_proof_v5",
+                "admission_id": "d30b6a7db6dbf6601d7032d9e2f019a5391dd768c311df1bc9931ad10e3fcf51",
+                "pins_sha256": "7f915bf1f8b4ee14d6426a41541cf3b6c319ad2e2acd384b8cc9fefa53224731",
+                "cohort_sha256": "8ed358f0cd37ecc4b554ab96cd4366048b8e6180ad1c0ee0044fc5d5f6976514",
+                "producer_run_id": 38149773071,
+                "previous_response_id": "resp_065a291989a09159006acbab3953fc87d1a73957f25e54f0c3",
+                "previous_model_output_sha256": "f6da863d1d2144f98b763c6b4c444d0f42c6be9b5a12cea6298adf2736b5ec71",
+                "previous_reason": "pulso_editorial_status_or_novelty_not_grounded",
+                "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+                "publication_date": "2026-08-08",
+                "article_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                "html_sha256": "e6bbfa96147cc5e6fb6dc851e8f265776943438a5198c0972af13053fe73f3c5",
+                "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                "new_assessment_required": true,
+                "old_response_reuse": false,
+                "publication_approved": false,
+                "other_editorial_and_budget_gates_still_apply": true
+              },
+              "paid_guard_revalidation_admission": {
+                "schema_version": "pulso_paid_guard_revalidation_admission_v1",
+                "manifest_ref": "data/audits/pulso_v5_paid_guard_revalidation_manifest_2026_10_11.json",
+                "manifest_sha256": "3645971793d5803c53b3a9f0f5bcb1b8e8f91ef5638b186aeaab4073645a48ff",
+                "producer_state_commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+                "producer_core_checkout": "03bf998a4bb5840c84da6473666e932fbc5cedd9",
+                "producer_runtime_fingerprint_sha256": "4feb04bc17ac24d37bd5cbb07f12893f5e8202de61aa7133b8fb1a8aeb6a4118",
+                "disposition": "reuse_code_fn",
+                "publication_approved": false,
+                "new_model_request": false,
+                "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+                "queue_fingerprint": "4a2ebf24c4b12276479f532bef551f5a60b2ca8fde566bd3a1d19f3d83a1745b",
+                "publication_date": "2026-08-08",
+                "source_type": "press_high_trust",
+                "original_html_sha256": "e6bbfa96147cc5e6fb6dc851e8f265776943438a5198c0972af13053fe73f3c5",
+                "body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                "body_characters": 2197,
+                "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                "analysis_input_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                "original_response_id": "resp_06d55302e3760f78006acbca9c84dc87d1b9e5af7a2cbc5fd3",
+                "model_output_sha256": "472ff5490dc44982765c9aca2906ec268f77df1b33aad47c8530baba73fa7bd1",
+                "raw_model_output_sha256": "2a1a003074ff07a48cd563b4bde0fc3eea7c676f94b6897330c165b807886e70",
+                "previous_validation_sha256": "0937c24b9de6f9af65d202648577048851d55eaa3dd36172e329218abd305bf6",
+                "previous_reason": "pulso_editorial_scope_not_grounded",
+                "original_paid_raw_sha256": "d1baf6abd9e7c59f7b803c677709131419939f76f18607f00b39279cc40db94b",
+                "original_attempts": 2,
+                "admission_id": "120c7de24c90577bf119e9bd37196e25f62bdba30c2d4e47a9353d4449c8f138"
+              },
+              "evidence_revisions": [
+                {
+                  "at": "2026-10-11T17:24:45.274833+00:00",
+                  "previous_publication_date": "2026-08-08",
+                  "verified_publication_date": "2026-08-08",
+                  "previous_title": "Minsal incorpora hantavirus a alerta sanitaria vigente para enfermedades zoonóticas ante aumento de casos y letalidad",
+                  "verified_title": "Minsal incorpora hantavirus a alerta sanitaria vigente para enfermedades zoonóticas ante aumento de casos y letalidad",
+                  "previous_capture_method": null,
+                  "reason": "verified_editorial_code_repair_analysis_admission",
+                  "previous_publisher_exception_reason": null,
+                  "verified_publisher_exception_reason": null,
+                  "lane_preserved": "BACKFILL",
+                  "previous_processing_raw": {
+                    "source_slug": "pulso_latercera",
+                    "title": "Minsal incorpora hantavirus a alerta sanitaria vigente para enfermedades zoonóticas ante aumento de casos y letalidad",
+                    "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+                    "source_name": "Pulso / La Tercera",
+                    "source_type": "press_high_trust",
+                    "event_date": "2026-08-08",
+                    "raw_text": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país. Según la subsecretaria de Salud Pública, Alejandra Pizarro, la enfermedad ha experimentado un cambio en el patrón epidemiológico, debido a la aparición de casos durante distintas estaciones del año y una mayor presencia en sectores rurales y semirrurales. Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”. “Estamos haciendo un llamado a todos los equipos de salud a reforzar la sospecha diagnóstica. Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente. En este escenario, es mejor testear de más que de menos”, enfatizó Pizarro en el marco de una visita al Hospital de Niños Dr. Roberto del Río. En específico, la alerta zoonótica es declarada por la entidad de salud cuando aumenta el riesgo o la presencia de enfermedades transmitidas de animales a seres humanos (zoonosis), como el hantavirus, la rabia o la gripe aviar. Es así que la subsecretaria lamentó los recientes fallecimientos y apuntó que la cartera de Salud continuará “intensificando las medidas para disminuir los contagios y mejorar la detección precoz”. En ese sentido, Pizarro hizo un llamado a mantener medidas preventivas. “Los temporales no son una causa directa del hantavirus, pero el movimiento de escombros puede desplazar a los roedores y aumentar la posibilidad de contacto. Por eso es fundamental actuar con precaución y mant",
+                    "metadata": {
+                      "section": "Nacional",
+                      "keywords": [
+                        "Minsal",
+                        "Hantavirus",
+                        "Ministerio de Salud",
+                        "May Chomali"
+                      ],
+                      "description": "La subsecretaria de Salud precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.\n",
+                      "body_source": "url_bound_json_ld_articleBody",
+                      "publication_date": "2026-08-08",
+                      "publication_timestamp": "2026-08-08T18:03:09.74Z",
+                      "publication_date_source": "visible_article_byline",
+                      "visible_publication_date": "2026-08-08",
+                      "publisher_date_convention": "calendar_agreement",
+                      "publication_evidence": [
+                        {
+                          "source": "json_ld_datePublished",
+                          "timestamp": "2026-08-08T18:03:09.74Z",
+                          "publisher_day": "2026-08-08",
+                          "timestamp_calendar_day": "2026-08-08",
+                          "america_santiago_day": "2026-08-08"
+                        },
+                        {
+                          "source": "article_published_time",
+                          "timestamp": "2026-08-08T18:03:09.74Z",
+                          "publisher_day": "2026-08-08",
+                          "timestamp_calendar_day": "2026-08-08",
+                          "america_santiago_day": "2026-08-08"
+                        }
+                      ],
+                      "canonical_url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+                      "primary_identity_verified": true,
+                      "publication_date_verified": true,
+                      "article_verified": true,
+                      "page_text": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país. Según la subsecretaria de Salud Pública, Alejandra Pizarro, la enfermedad ha experimentado un cambio en el patrón epidemiológico, debido a la aparición de casos durante distintas estaciones del año y una mayor presencia en sectores rurales y semirrurales. Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”. “Estamos haciendo un llamado a todos los equipos de salud a reforzar la sospecha diagnóstica. Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente. En este escenario, es mejor testear de más que de menos”, enfatizó Pizarro en el marco de una visita al Hospital de Niños Dr. Roberto del Río. En específico, la alerta zoonótica es declarada por la entidad de salud cuando aumenta el riesgo o la presencia de enfermedades transmitidas de animales a seres humanos (zoonosis), como el hantavirus, la rabia o la gripe aviar. Es así que la subsecretaria lamentó los recientes fallecimientos y apuntó que la cartera de Salud continuará “intensificando las medidas para disminuir los contagios y mejorar la detección precoz”. En ese sentido, Pizarro hizo un llamado a mantener medidas preventivas. “Los temporales no son una causa directa del hantavirus, pero el movimiento de escombros puede desplazar a los roedores y aumentar la posibilidad de contacto. Por eso es fundamental actuar con precaución y mantener las medidas de prevención”, concluyó. Previamente, el Minsal había decretado alerta sanitaria por hantavirus desde las regiones de Atacama hasta la de Magallanes por una situación de “multiamenaza sanitaria” al presentarse simultáneamente con otros riesgos como arbovirosis (enfermedades transmitidas por zancudos como el dengue, zika, chikungunya y la fiebre amarilla); y la influenza aviar.",
+                      "article_body_characters": 2197,
+                      "article_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                      "discovered_from": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A2256%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fnacional%22%7D&_website=la-tercera&d=1284",
+                      "market_role": "media",
+                      "source_quality_gate": "passed",
+                      "captured_at": "2026-10-11T07:21:07.544676+00:00",
+                      "html_sha256": "e6bbfa96147cc5e6fb6dc851e8f265776943438a5198c0972af13053fe73f3c5",
+                      "publisher_lastmod": "2026-08-08T18:04:11.418Z",
+                      "topics": [
+                        "providers",
+                        "public_health"
+                      ],
+                      "article_body_complete": true,
+                      "primary_item_binding": {
+                        "verified": true,
+                        "reason": "pulso_primary_item_identity_and_date_verified",
+                        "raw_url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+                        "primary_canonical_url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+                        "raw_event_date": "2026-08-08",
+                        "primary_publication_date": "2026-08-08",
+                        "primary_verification_flags": {
+                          "primary_identity_verified": true,
+                          "publication_date_verified": true
+                        },
+                        "model_calls_permitted": true,
+                        "other_editorial_and_budget_gates_still_apply": true,
+                        "publication_approved": false
+                      },
+                      "analysis_base_article_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                      "analysis_base_article_body_characters": 2197,
+                      "analysis_input_format": "full_primary_article_body",
+                      "analysis_input_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                      "analysis_input_characters": 2197,
+                      "analysis_input_complete": true,
+                      "analysis_request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                      "analysis_request_input_characters": 2361,
+                      "pulso_editorial_proof_validation": {
+                        "version": "pulso_editorial_proof_v4",
+                        "source": "pulso_latercera",
+                        "analysis_text_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                        "quote_validation_is_semantic_approval": false,
+                        "publication_approved": false,
+                        "model_output_sha256": "f6da863d1d2144f98b763c6b4c444d0f42c6be9b5a12cea6298adf2736b5ec71",
+                        "proof": {
+                          "scope_decision": "human_health_specific",
+                          "scope_reason": "La alerta se refiere a una enfermedad transmitida a seres humanos y activa medidas concretas para vigilancia, diagnóstico y respuesta de establecimientos asistenciales en Chile.",
+                          "human_health_scope_quote": "la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.",
+                          "actor": "El Ministerio de Salud (Minsal)",
+                          "actor_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                          "action": "anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas",
+                          "action_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                          "consequence": "fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales",
+                          "consequence_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.",
+                          "event_status": "mixed_actual_and_future",
+                          "event_status_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país. Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.",
+                          "novelty_decision": "new_material_information",
+                          "novelty_reason": "El contenido reporta una incorporación específica del hantavirus a una alerta sanitaria vigente, junto con un cambio en el patrón epidemiológico; el antecedente de una alerta previa por hantavirus aparece como contexto y no como el hecho nuevo principal.",
+                          "novelty_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país. Previamente, el Minsal había decretado alerta sanitaria por hantavirus desde las regiones de Atacama hasta la de Magallanes por una situación de “multiamenaza sanitaria” al presentarse simultáneamente con otros riesgos como arbovirosis (enfermedades transmitidas por zancudos como el dengue, zika, chikungunya y la fiebre amarilla); y la influenza aviar.",
+                          "future_claims": [
+                            {
+                              "summary_field": "what_happened",
+                              "summary_quote": "El Minsal anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas; según la subsecretaria, la medida permitirá fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales.",
+                              "source_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”."
+                            },
+                            {
+                              "summary_field": "why_it_matters",
+                              "summary_quote": "Para los equipos de salud y los establecimientos asistenciales, la medida permitirá reforzar la sospecha diagnóstica y la respuesta ante casos que aparecen durante distintas estaciones y en sectores rurales y semirrurales, en un contexto de aumento de casos y letalidad.",
+                              "source_quote": "“Estamos haciendo un llamado a todos los equipos de salud a reforzar la sospecha diagnóstica. Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente. En este escenario, es mejor testear de más que de menos”"
+                            }
+                          ]
+                        },
+                        "decision": "deferred",
+                        "reason": "pulso_editorial_status_or_novelty_not_grounded",
+                        "primary_article_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                        "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                        "model_response": {
+                          "schema_version": "pulso_editorial_proof_v4",
+                          "source_name": "Pulso / La Tercera",
+                          "model": "gpt-5.6-luna",
+                          "response_id": "resp_065a291989a09159006acbab3953fc87d1a73957f25e54f0c3",
+                          "analysis_text_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                          "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                          "raw_model_output_sha256": "8d60930b62498412ba6b1b2145068aa3ef635713cde2eba5384c66c09369f9e9"
+                        }
+                      },
+                      "analysis_model_output": {
+                        "relevance_score": 86,
+                        "what_happened": "El Minsal anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas; según la subsecretaria, la medida permitirá fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales.",
+                        "why_it_matters": "Para los equipos de salud y los establecimientos asistenciales, la medida permitirá reforzar la sospecha diagnóstica y la respuesta ante casos que aparecen durante distintas estaciones y en sectores rurales y semirrurales, en un contexto de aumento de casos y letalidad.",
+                        "reason": "Es una acción sanitaria nacional con efecto directo sobre vigilancia epidemiológica, diagnóstico oportuno y capacidad de respuesta de prestadores frente a una enfermedad humana. La nota reporta un anuncio del Minsal; no equivale por sí sola a una evaluación independiente de la alerta ni de sus resultados.",
+                        "pulso_editorial_proof": {
+                          "scope_decision": "human_health_specific",
+                          "scope_reason": "La alerta se refiere a una enfermedad transmitida a seres humanos y activa medidas concretas para vigilancia, diagnóstico y respuesta de establecimientos asistenciales en Chile.",
+                          "human_health_scope_quote": "la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.",
+                          "actor": "El Ministerio de Salud (Minsal)",
+                          "actor_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                          "action": "anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas",
+                          "action_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                          "consequence": "fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales",
+                          "consequence_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.",
+                          "event_status": "mixed_actual_and_future",
+                          "event_status_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país. Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.",
+                          "novelty_decision": "new_material_information",
+                          "novelty_reason": "El contenido reporta una incorporación específica del hantavirus a una alerta sanitaria vigente, junto con un cambio en el patrón epidemiológico; el antecedente de una alerta previa por hantavirus aparece como contexto y no como el hecho nuevo principal.",
+                          "novelty_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país. Previamente, el Minsal había decretado alerta sanitaria por hantavirus desde las regiones de Atacama hasta la de Magallanes por una situación de “multiamenaza sanitaria” al presentarse simultáneamente con otros riesgos como arbovirosis (enfermedades transmitidas por zancudos como el dengue, zika, chikungunya y la fiebre amarilla); y la influenza aviar.",
+                          "future_claims": [
+                            {
+                              "summary_field": "what_happened",
+                              "summary_quote": "El Minsal anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas; según la subsecretaria, la medida permitirá fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales.",
+                              "source_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”."
+                            },
+                            {
+                              "summary_field": "why_it_matters",
+                              "summary_quote": "Para los equipos de salud y los establecimientos asistenciales, la medida permitirá reforzar la sospecha diagnóstica y la respuesta ante casos que aparecen durante distintas estaciones y en sectores rurales y semirrurales, en un contexto de aumento de casos y letalidad.",
+                              "source_quote": "“Estamos haciendo un llamado a todos los equipos de salud a reforzar la sospecha diagnóstica. Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente. En este escenario, es mejor testear de más que de menos”"
+                            }
+                          ]
+                        },
+                        "_pulso_analysis_meta": {
+                          "schema_version": "pulso_editorial_proof_v4",
+                          "source_name": "Pulso / La Tercera",
+                          "model": "gpt-5.6-luna",
+                          "response_id": "resp_065a291989a09159006acbab3953fc87d1a73957f25e54f0c3",
+                          "analysis_text_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                          "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                          "raw_model_output_sha256": "8d60930b62498412ba6b1b2145068aa3ef635713cde2eba5384c66c09369f9e9"
+                        }
+                      },
+                      "editorial_assessment": {
+                        "decision": "pending",
+                        "reason": "pulso_editorial_status_or_novelty_not_grounded",
+                        "threshold": 72,
+                        "proof_version": "pulso_editorial_proof_v4"
+                      }
+                    }
+                  },
+                  "retained_processing_input_unchanged": true,
+                  "code_repair_admission": {
+                    "repair_version": "pulso_editorial_proof_v5",
+                    "admission_id": "d30b6a7db6dbf6601d7032d9e2f019a5391dd768c311df1bc9931ad10e3fcf51",
+                    "pins_sha256": "7f915bf1f8b4ee14d6426a41541cf3b6c319ad2e2acd384b8cc9fefa53224731",
+                    "cohort_sha256": "8ed358f0cd37ecc4b554ab96cd4366048b8e6180ad1c0ee0044fc5d5f6976514",
+                    "producer_run_id": 38149773071,
+                    "previous_response_id": "resp_065a291989a09159006acbab3953fc87d1a73957f25e54f0c3",
+                    "previous_model_output_sha256": "f6da863d1d2144f98b763c6b4c444d0f42c6be9b5a12cea6298adf2736b5ec71",
+                    "previous_reason": "pulso_editorial_status_or_novelty_not_grounded",
+                    "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+                    "publication_date": "2026-08-08",
+                    "article_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                    "html_sha256": "e6bbfa96147cc5e6fb6dc851e8f265776943438a5198c0972af13053fe73f3c5",
+                    "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                    "new_assessment_required": true,
+                    "old_response_reuse": false,
+                    "publication_approved": false,
+                    "other_editorial_and_budget_gates_still_apply": true
+                  },
+                  "previous_retry_at": "2026-10-11T17:29:13.394775+00:00",
+                  "body_completeness_derived_from_verified_hash": false,
+                  "status_preserved": "retry",
+                  "attempts_preserved": 1,
+                  "detected_at_preserved": "2026-10-11T07:52:34.224551+00:00",
+                  "fingerprint_preserved": "4a2ebf24c4b12276479f532bef551f5a60b2ca8fde566bd3a1d19f3d83a1745b"
+                },
+                {
+                  "at": "2026-10-11T19:08:41.596108+00:00",
+                  "previous_publication_date": "2026-08-08",
+                  "verified_publication_date": "2026-08-08",
+                  "previous_title": "Minsal incorpora hantavirus a alerta sanitaria vigente para enfermedades zoonóticas ante aumento de casos y letalidad",
+                  "verified_title": "Minsal incorpora hantavirus a alerta sanitaria vigente para enfermedades zoonóticas ante aumento de casos y letalidad",
+                  "previous_capture_method": null,
+                  "reason": "verified_paid_guard_revalidation_admission",
+                  "previous_publisher_exception_reason": null,
+                  "verified_publisher_exception_reason": null,
+                  "lane_preserved": "BACKFILL",
+                  "previous_processing_raw": {
+                    "source_slug": "pulso_latercera",
+                    "title": "Minsal incorpora hantavirus a alerta sanitaria vigente para enfermedades zoonóticas ante aumento de casos y letalidad",
+                    "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+                    "source_name": "Pulso / La Tercera",
+                    "source_type": "press_high_trust",
+                    "event_date": "2026-08-08",
+                    "raw_text": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país. Según la subsecretaria de Salud Pública, Alejandra Pizarro, la enfermedad ha experimentado un cambio en el patrón epidemiológico, debido a la aparición de casos durante distintas estaciones del año y una mayor presencia en sectores rurales y semirrurales. Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”. “Estamos haciendo un llamado a todos los equipos de salud a reforzar la sospecha diagnóstica. Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente. En este escenario, es mejor testear de más que de menos”, enfatizó Pizarro en el marco de una visita al Hospital de Niños Dr. Roberto del Río. En específico, la alerta zoonótica es declarada por la entidad de salud cuando aumenta el riesgo o la presencia de enfermedades transmitidas de animales a seres humanos (zoonosis), como el hantavirus, la rabia o la gripe aviar. Es así que la subsecretaria lamentó los recientes fallecimientos y apuntó que la cartera de Salud continuará “intensificando las medidas para disminuir los contagios y mejorar la detección precoz”. En ese sentido, Pizarro hizo un llamado a mantener medidas preventivas. “Los temporales no son una causa directa del hantavirus, pero el movimiento de escombros puede desplazar a los roedores y aumentar la posibilidad de contacto. Por eso es fundamental actuar con precaución y mant",
+                    "metadata": {
+                      "section": "Nacional",
+                      "keywords": [
+                        "Minsal",
+                        "Hantavirus",
+                        "Ministerio de Salud",
+                        "May Chomali"
+                      ],
+                      "description": "La subsecretaria de Salud precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.\n",
+                      "body_source": "url_bound_json_ld_articleBody",
+                      "publication_date": "2026-08-08",
+                      "publication_timestamp": "2026-08-08T18:03:09.74Z",
+                      "publication_date_source": "visible_article_byline",
+                      "visible_publication_date": "2026-08-08",
+                      "publisher_date_convention": "calendar_agreement",
+                      "publication_evidence": [
+                        {
+                          "source": "json_ld_datePublished",
+                          "timestamp": "2026-08-08T18:03:09.74Z",
+                          "publisher_day": "2026-08-08",
+                          "timestamp_calendar_day": "2026-08-08",
+                          "america_santiago_day": "2026-08-08"
+                        },
+                        {
+                          "source": "article_published_time",
+                          "timestamp": "2026-08-08T18:03:09.74Z",
+                          "publisher_day": "2026-08-08",
+                          "timestamp_calendar_day": "2026-08-08",
+                          "america_santiago_day": "2026-08-08"
+                        }
+                      ],
+                      "canonical_url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+                      "primary_identity_verified": true,
+                      "publication_date_verified": true,
+                      "article_verified": true,
+                      "page_text": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país. Según la subsecretaria de Salud Pública, Alejandra Pizarro, la enfermedad ha experimentado un cambio en el patrón epidemiológico, debido a la aparición de casos durante distintas estaciones del año y una mayor presencia en sectores rurales y semirrurales. Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”. “Estamos haciendo un llamado a todos los equipos de salud a reforzar la sospecha diagnóstica. Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente. En este escenario, es mejor testear de más que de menos”, enfatizó Pizarro en el marco de una visita al Hospital de Niños Dr. Roberto del Río. En específico, la alerta zoonótica es declarada por la entidad de salud cuando aumenta el riesgo o la presencia de enfermedades transmitidas de animales a seres humanos (zoonosis), como el hantavirus, la rabia o la gripe aviar. Es así que la subsecretaria lamentó los recientes fallecimientos y apuntó que la cartera de Salud continuará “intensificando las medidas para disminuir los contagios y mejorar la detección precoz”. En ese sentido, Pizarro hizo un llamado a mantener medidas preventivas. “Los temporales no son una causa directa del hantavirus, pero el movimiento de escombros puede desplazar a los roedores y aumentar la posibilidad de contacto. Por eso es fundamental actuar con precaución y mantener las medidas de prevención”, concluyó. Previamente, el Minsal había decretado alerta sanitaria por hantavirus desde las regiones de Atacama hasta la de Magallanes por una situación de “multiamenaza sanitaria” al presentarse simultáneamente con otros riesgos como arbovirosis (enfermedades transmitidas por zancudos como el dengue, zika, chikungunya y la fiebre amarilla); y la influenza aviar.",
+                      "article_body_characters": 2197,
+                      "article_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                      "discovered_from": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A2256%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fnacional%22%7D&_website=la-tercera&d=1284",
+                      "market_role": "media",
+                      "source_quality_gate": "passed",
+                      "captured_at": "2026-10-11T07:21:07.544676+00:00",
+                      "html_sha256": "e6bbfa96147cc5e6fb6dc851e8f265776943438a5198c0972af13053fe73f3c5",
+                      "publisher_lastmod": "2026-08-08T18:04:11.418Z",
+                      "topics": [
+                        "providers",
+                        "public_health"
+                      ],
+                      "article_body_complete": true,
+                      "primary_item_binding": {
+                        "verified": true,
+                        "reason": "pulso_primary_item_identity_and_date_verified",
+                        "raw_url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+                        "primary_canonical_url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+                        "raw_event_date": "2026-08-08",
+                        "primary_publication_date": "2026-08-08",
+                        "primary_verification_flags": {
+                          "primary_identity_verified": true,
+                          "publication_date_verified": true
+                        },
+                        "model_calls_permitted": true,
+                        "other_editorial_and_budget_gates_still_apply": true,
+                        "publication_approved": false
+                      },
+                      "analysis_base_article_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                      "analysis_base_article_body_characters": 2197,
+                      "analysis_input_format": "full_primary_article_body",
+                      "analysis_input_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                      "analysis_input_characters": 2197,
+                      "analysis_input_complete": true,
+                      "analysis_request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                      "analysis_request_input_characters": 2361,
+                      "pulso_editorial_proof_validation": {
+                        "version": "pulso_editorial_proof_v5",
+                        "source": "pulso_latercera",
+                        "analysis_text_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                        "quote_validation_is_semantic_approval": false,
+                        "publication_approved": false,
+                        "model_output_sha256": "472ff5490dc44982765c9aca2906ec268f77df1b33aad47c8530baba73fa7bd1",
+                        "proof": {
+                          "scope_decision": "human_health_specific",
+                          "scope_reason": "La nota describe una medida del Minsal dirigida a la vigilancia, sospecha diagnóstica y testeo de personas con síntomas compatibles con hantavirus, además de la respuesta de establecimientos asistenciales.",
+                          "human_health_scope_quote": "Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente.",
+                          "actor": "Minsal",
+                          "action": "anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas",
+                          "consequence": "fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales",
+                          "actor_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                          "action_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                          "consequence_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.",
+                          "event_status": "mixed_actual_and_future",
+                          "event_status_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente",
+                          "novelty_decision": "new_material_information",
+                          "novelty_reason": "La nota reporta una acción sanitaria concreta del Minsal —la incorporación del hantavirus a una alerta sanitaria— y detalla capacidades asistenciales y de vigilancia que la medida permitiría reforzar. No se entregó contexto incremental que permita clasificarla como repetición.",
+                          "novelty_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                          "future_claims": [
+                            {
+                              "summary_field": "what_happened",
+                              "summary_quote": "Según la nota del 8 de agosto de 2026, el Ministerio de Salud anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas, ante el aumento de casos y letalidad reportado durante los últimos meses en Chile. La nota señala que la medida permitiría fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta asistencial; no acredita por sí sola su vigencia operativa al 11 de octubre de 2026.",
+                              "source_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”."
+                            },
+                            {
+                              "summary_field": "why_it_matters",
+                              "summary_quote": "Según la nota del 8 de agosto de 2026, la medida del Minsal buscaba reforzar la detección y respuesta de los establecimientos asistenciales frente a un cambio reportado en el patrón epidemiológico del hantavirus, incluyendo casos en distintas estaciones y en sectores rurales y semirrurales. Su relevancia para el radar está en la coordinación de vigilancia, diagnóstico oportuno y respuesta sanitaria; la publicación no permite verificar que ese estado continúe vigente al 11 de octubre de 2026.",
+                              "source_quote": "la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”."
+                            }
+                          ]
+                        },
+                        "decision": "deferred",
+                        "reason": "pulso_editorial_scope_not_grounded",
+                        "primary_article_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                        "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                        "model_response": {
+                          "schema_version": "pulso_editorial_proof_v5",
+                          "source_name": "Pulso / La Tercera",
+                          "model": "gpt-5.6-luna",
+                          "response_id": "resp_06d55302e3760f78006acbca9c84dc87d1b9e5af7a2cbc5fd3",
+                          "analysis_text_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                          "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                          "raw_model_output_sha256": "2a1a003074ff07a48cd563b4bde0fc3eea7c676f94b6897330c165b807886e70"
+                        }
+                      },
+                      "analysis_model_output": {
+                        "relevance_score": 86,
+                        "what_happened": "Según la nota del 8 de agosto de 2026, el Ministerio de Salud anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas, ante el aumento de casos y letalidad reportado durante los últimos meses en Chile. La nota señala que la medida permitiría fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta asistencial; no acredita por sí sola su vigencia operativa al 11 de octubre de 2026.",
+                        "why_it_matters": "Según la nota del 8 de agosto de 2026, la medida del Minsal buscaba reforzar la detección y respuesta de los establecimientos asistenciales frente a un cambio reportado en el patrón epidemiológico del hantavirus, incluyendo casos en distintas estaciones y en sectores rurales y semirrurales. Su relevancia para el radar está en la coordinación de vigilancia, diagnóstico oportuno y respuesta sanitaria; la publicación no permite verificar que ese estado continúe vigente al 11 de octubre de 2026.",
+                        "reason": "Es una señal concreta de política sanitaria nacional frente a un aumento reportado de casos y letalidad de una enfermedad humana, con efectos esperados sobre vigilancia epidemiológica, sospecha diagnóstica, testeo y capacidad de respuesta de los establecimientos asistenciales. Ingresa como BACKFILL porque la publicación es anterior a la fecha de revisión.",
+                        "pulso_editorial_proof": {
+                          "scope_decision": "human_health_specific",
+                          "scope_reason": "La nota describe una medida del Minsal dirigida a la vigilancia, sospecha diagnóstica y testeo de personas con síntomas compatibles con hantavirus, además de la respuesta de establecimientos asistenciales.",
+                          "human_health_scope_quote": "Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente.",
+                          "actor": "Minsal",
+                          "action": "anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas",
+                          "consequence": "fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales",
+                          "actor_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                          "action_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                          "consequence_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.",
+                          "event_status": "mixed_actual_and_future",
+                          "event_status_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente",
+                          "novelty_decision": "new_material_information",
+                          "novelty_reason": "La nota reporta una acción sanitaria concreta del Minsal —la incorporación del hantavirus a una alerta sanitaria— y detalla capacidades asistenciales y de vigilancia que la medida permitiría reforzar. No se entregó contexto incremental que permita clasificarla como repetición.",
+                          "novelty_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                          "future_claims": [
+                            {
+                              "summary_field": "what_happened",
+                              "summary_quote": "Según la nota del 8 de agosto de 2026, el Ministerio de Salud anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas, ante el aumento de casos y letalidad reportado durante los últimos meses en Chile. La nota señala que la medida permitiría fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta asistencial; no acredita por sí sola su vigencia operativa al 11 de octubre de 2026.",
+                              "source_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”."
+                            },
+                            {
+                              "summary_field": "why_it_matters",
+                              "summary_quote": "Según la nota del 8 de agosto de 2026, la medida del Minsal buscaba reforzar la detección y respuesta de los establecimientos asistenciales frente a un cambio reportado en el patrón epidemiológico del hantavirus, incluyendo casos en distintas estaciones y en sectores rurales y semirrurales. Su relevancia para el radar está en la coordinación de vigilancia, diagnóstico oportuno y respuesta sanitaria; la publicación no permite verificar que ese estado continúe vigente al 11 de octubre de 2026.",
+                              "source_quote": "la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”."
+                            }
+                          ]
+                        },
+                        "_pulso_analysis_meta": {
+                          "schema_version": "pulso_editorial_proof_v5",
+                          "source_name": "Pulso / La Tercera",
+                          "model": "gpt-5.6-luna",
+                          "response_id": "resp_06d55302e3760f78006acbca9c84dc87d1b9e5af7a2cbc5fd3",
+                          "analysis_text_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                          "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                          "raw_model_output_sha256": "2a1a003074ff07a48cd563b4bde0fc3eea7c676f94b6897330c165b807886e70"
+                        }
+                      },
+                      "editorial_assessment": {
+                        "decision": "pending",
+                        "reason": "pulso_editorial_scope_not_grounded",
+                        "threshold": 72,
+                        "proof_version": "pulso_editorial_proof_v5"
+                      },
+                      "editorial_code_repair_admission": {
+                        "repair_version": "pulso_editorial_proof_v5",
+                        "admission_id": "d30b6a7db6dbf6601d7032d9e2f019a5391dd768c311df1bc9931ad10e3fcf51",
+                        "pins_sha256": "7f915bf1f8b4ee14d6426a41541cf3b6c319ad2e2acd384b8cc9fefa53224731",
+                        "cohort_sha256": "8ed358f0cd37ecc4b554ab96cd4366048b8e6180ad1c0ee0044fc5d5f6976514",
+                        "producer_run_id": 38149773071,
+                        "previous_response_id": "resp_065a291989a09159006acbab3953fc87d1a73957f25e54f0c3",
+                        "previous_model_output_sha256": "f6da863d1d2144f98b763c6b4c444d0f42c6be9b5a12cea6298adf2736b5ec71",
+                        "previous_reason": "pulso_editorial_status_or_novelty_not_grounded",
+                        "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+                        "publication_date": "2026-08-08",
+                        "article_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                        "html_sha256": "e6bbfa96147cc5e6fb6dc851e8f265776943438a5198c0972af13053fe73f3c5",
+                        "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                        "new_assessment_required": true,
+                        "old_response_reuse": false,
+                        "publication_approved": false,
+                        "other_editorial_and_budget_gates_still_apply": true
+                      },
+                      "queue_identity_fingerprint": "4a2ebf24c4b12276479f532bef551f5a60b2ca8fde566bd3a1d19f3d83a1745b"
+                    }
+                  },
+                  "retained_processing_input_unchanged": true,
+                  "paid_guard_revalidation_admission": {
+                    "schema_version": "pulso_paid_guard_revalidation_admission_v1",
+                    "manifest_ref": "data/audits/pulso_v5_paid_guard_revalidation_manifest_2026_10_11.json",
+                    "manifest_sha256": "3645971793d5803c53b3a9f0f5bcb1b8e8f91ef5638b186aeaab4073645a48ff",
+                    "producer_state_commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+                    "producer_core_checkout": "03bf998a4bb5840c84da6473666e932fbc5cedd9",
+                    "producer_runtime_fingerprint_sha256": "4feb04bc17ac24d37bd5cbb07f12893f5e8202de61aa7133b8fb1a8aeb6a4118",
+                    "disposition": "reuse_code_fn",
+                    "publication_approved": false,
+                    "new_model_request": false,
+                    "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+                    "queue_fingerprint": "4a2ebf24c4b12276479f532bef551f5a60b2ca8fde566bd3a1d19f3d83a1745b",
+                    "publication_date": "2026-08-08",
+                    "source_type": "press_high_trust",
+                    "original_html_sha256": "e6bbfa96147cc5e6fb6dc851e8f265776943438a5198c0972af13053fe73f3c5",
+                    "body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                    "body_characters": 2197,
+                    "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                    "analysis_input_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                    "original_response_id": "resp_06d55302e3760f78006acbca9c84dc87d1b9e5af7a2cbc5fd3",
+                    "model_output_sha256": "472ff5490dc44982765c9aca2906ec268f77df1b33aad47c8530baba73fa7bd1",
+                    "raw_model_output_sha256": "2a1a003074ff07a48cd563b4bde0fc3eea7c676f94b6897330c165b807886e70",
+                    "previous_validation_sha256": "0937c24b9de6f9af65d202648577048851d55eaa3dd36172e329218abd305bf6",
+                    "previous_reason": "pulso_editorial_scope_not_grounded",
+                    "original_paid_raw_sha256": "d1baf6abd9e7c59f7b803c677709131419939f76f18607f00b39279cc40db94b",
+                    "original_attempts": 2,
+                    "admission_id": "120c7de24c90577bf119e9bd37196e25f62bdba30c2d4e47a9353d4449c8f138"
+                  },
+                  "previous_retry_at": "2026-10-11T21:43:09.366935+00:00",
+                  "body_completeness_derived_from_verified_hash": false,
+                  "status_preserved": "retry",
+                  "attempts_preserved": 2,
+                  "detected_at_preserved": "2026-10-11T07:52:34.224551+00:00",
+                  "fingerprint_preserved": "4a2ebf24c4b12276479f532bef551f5a60b2ca8fde566bd3a1d19f3d83a1745b"
+                }
+              ],
+              "queue_identity_fingerprint": "4a2ebf24c4b12276479f532bef551f5a60b2ca8fde566bd3a1d19f3d83a1745b",
+              "paid_guard_revalidation_receipt": {
+                "schema_version": "pulso_paid_guard_revalidation_receipt_v1",
+                "admission": {
+                  "schema_version": "pulso_paid_guard_revalidation_admission_v1",
+                  "manifest_ref": "data/audits/pulso_v5_paid_guard_revalidation_manifest_2026_10_11.json",
+                  "manifest_sha256": "3645971793d5803c53b3a9f0f5bcb1b8e8f91ef5638b186aeaab4073645a48ff",
+                  "producer_state_commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+                  "producer_core_checkout": "03bf998a4bb5840c84da6473666e932fbc5cedd9",
+                  "producer_runtime_fingerprint_sha256": "4feb04bc17ac24d37bd5cbb07f12893f5e8202de61aa7133b8fb1a8aeb6a4118",
+                  "disposition": "reuse_code_fn",
+                  "publication_approved": false,
+                  "new_model_request": false,
+                  "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+                  "queue_fingerprint": "4a2ebf24c4b12276479f532bef551f5a60b2ca8fde566bd3a1d19f3d83a1745b",
+                  "publication_date": "2026-08-08",
+                  "source_type": "press_high_trust",
+                  "original_html_sha256": "e6bbfa96147cc5e6fb6dc851e8f265776943438a5198c0972af13053fe73f3c5",
+                  "body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                  "body_characters": 2197,
+                  "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                  "analysis_input_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                  "original_response_id": "resp_06d55302e3760f78006acbca9c84dc87d1b9e5af7a2cbc5fd3",
+                  "model_output_sha256": "472ff5490dc44982765c9aca2906ec268f77df1b33aad47c8530baba73fa7bd1",
+                  "raw_model_output_sha256": "2a1a003074ff07a48cd563b4bde0fc3eea7c676f94b6897330c165b807886e70",
+                  "previous_validation_sha256": "0937c24b9de6f9af65d202648577048851d55eaa3dd36172e329218abd305bf6",
+                  "previous_reason": "pulso_editorial_scope_not_grounded",
+                  "original_paid_raw_sha256": "d1baf6abd9e7c59f7b803c677709131419939f76f18607f00b39279cc40db94b",
+                  "original_attempts": 2,
+                  "admission_id": "120c7de24c90577bf119e9bd37196e25f62bdba30c2d4e47a9353d4449c8f138"
+                },
+                "producer_core_checkout": "03bf998a4bb5840c84da6473666e932fbc5cedd9",
+                "producer_state_commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+                "producer_runtime_fingerprint_sha256": "4feb04bc17ac24d37bd5cbb07f12893f5e8202de61aa7133b8fb1a8aeb6a4118",
+                "original_response_id": "resp_06d55302e3760f78006acbca9c84dc87d1b9e5af7a2cbc5fd3",
+                "original_model_output_sha256": "472ff5490dc44982765c9aca2906ec268f77df1b33aad47c8530baba73fa7bd1",
+                "original_raw_model_output_sha256": "2a1a003074ff07a48cd563b4bde0fc3eea7c676f94b6897330c165b807886e70",
+                "previous_validation": {
+                  "version": "pulso_editorial_proof_v5",
+                  "source": "pulso_latercera",
+                  "analysis_text_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                  "quote_validation_is_semantic_approval": false,
+                  "publication_approved": false,
+                  "model_output_sha256": "472ff5490dc44982765c9aca2906ec268f77df1b33aad47c8530baba73fa7bd1",
+                  "proof": {
+                    "scope_decision": "human_health_specific",
+                    "scope_reason": "La nota describe una medida del Minsal dirigida a la vigilancia, sospecha diagnóstica y testeo de personas con síntomas compatibles con hantavirus, además de la respuesta de establecimientos asistenciales.",
+                    "human_health_scope_quote": "Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente.",
+                    "actor": "Minsal",
+                    "action": "anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas",
+                    "consequence": "fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales",
+                    "actor_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                    "action_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                    "consequence_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.",
+                    "event_status": "mixed_actual_and_future",
+                    "event_status_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente",
+                    "novelty_decision": "new_material_information",
+                    "novelty_reason": "La nota reporta una acción sanitaria concreta del Minsal —la incorporación del hantavirus a una alerta sanitaria— y detalla capacidades asistenciales y de vigilancia que la medida permitiría reforzar. No se entregó contexto incremental que permita clasificarla como repetición.",
+                    "novelty_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                    "future_claims": [
+                      {
+                        "summary_field": "what_happened",
+                        "summary_quote": "Según la nota del 8 de agosto de 2026, el Ministerio de Salud anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas, ante el aumento de casos y letalidad reportado durante los últimos meses en Chile. La nota señala que la medida permitiría fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta asistencial; no acredita por sí sola su vigencia operativa al 11 de octubre de 2026.",
+                        "source_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”."
+                      },
+                      {
+                        "summary_field": "why_it_matters",
+                        "summary_quote": "Según la nota del 8 de agosto de 2026, la medida del Minsal buscaba reforzar la detección y respuesta de los establecimientos asistenciales frente a un cambio reportado en el patrón epidemiológico del hantavirus, incluyendo casos en distintas estaciones y en sectores rurales y semirrurales. Su relevancia para el radar está en la coordinación de vigilancia, diagnóstico oportuno y respuesta sanitaria; la publicación no permite verificar que ese estado continúe vigente al 11 de octubre de 2026.",
+                        "source_quote": "la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”."
+                      }
+                    ]
+                  },
+                  "decision": "deferred",
+                  "reason": "pulso_editorial_scope_not_grounded",
+                  "primary_article_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                  "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                  "model_response": {
+                    "schema_version": "pulso_editorial_proof_v5",
+                    "source_name": "Pulso / La Tercera",
+                    "model": "gpt-5.6-luna",
+                    "response_id": "resp_06d55302e3760f78006acbca9c84dc87d1b9e5af7a2cbc5fd3",
+                    "analysis_text_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                    "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                    "raw_model_output_sha256": "2a1a003074ff07a48cd563b4bde0fc3eea7c676f94b6897330c165b807886e70"
+                  }
+                },
+                "previous_validation_sha256": "0937c24b9de6f9af65d202648577048851d55eaa3dd36172e329218abd305bf6",
+                "validator_guard_sha256": "a4ee60f71325df003ae0f1842480093e63446f7ae221139f8c970e79c83ce4ec",
+                "validator_version": "pulso_editorial_proof_v5",
+                "revalidated_at": "2026-10-11T19:16:22.331388+00:00",
+                "new_validation": {
+                  "version": "pulso_editorial_proof_v5",
+                  "source": "pulso_latercera",
+                  "analysis_text_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                  "quote_validation_is_semantic_approval": false,
+                  "publication_approved": false,
+                  "model_output_sha256": "472ff5490dc44982765c9aca2906ec268f77df1b33aad47c8530baba73fa7bd1",
+                  "proof": {
+                    "scope_decision": "human_health_specific",
+                    "scope_reason": "La nota describe una medida del Minsal dirigida a la vigilancia, sospecha diagnóstica y testeo de personas con síntomas compatibles con hantavirus, además de la respuesta de establecimientos asistenciales.",
+                    "human_health_scope_quote": "Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente.",
+                    "actor": "Minsal",
+                    "action": "anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas",
+                    "consequence": "fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales",
+                    "actor_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                    "action_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                    "consequence_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.",
+                    "event_status": "mixed_actual_and_future",
+                    "event_status_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente",
+                    "novelty_decision": "new_material_information",
+                    "novelty_reason": "La nota reporta una acción sanitaria concreta del Minsal —la incorporación del hantavirus a una alerta sanitaria— y detalla capacidades asistenciales y de vigilancia que la medida permitiría reforzar. No se entregó contexto incremental que permita clasificarla como repetición.",
+                    "novelty_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+                    "future_claims": [
+                      {
+                        "summary_field": "what_happened",
+                        "summary_quote": "Según la nota del 8 de agosto de 2026, el Ministerio de Salud anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas, ante el aumento de casos y letalidad reportado durante los últimos meses en Chile. La nota señala que la medida permitiría fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta asistencial; no acredita por sí sola su vigencia operativa al 11 de octubre de 2026.",
+                        "source_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”."
+                      },
+                      {
+                        "summary_field": "why_it_matters",
+                        "summary_quote": "Según la nota del 8 de agosto de 2026, la medida del Minsal buscaba reforzar la detección y respuesta de los establecimientos asistenciales frente a un cambio reportado en el patrón epidemiológico del hantavirus, incluyendo casos en distintas estaciones y en sectores rurales y semirrurales. Su relevancia para el radar está en la coordinación de vigilancia, diagnóstico oportuno y respuesta sanitaria; la publicación no permite verificar que ese estado continúe vigente al 11 de octubre de 2026.",
+                        "source_quote": "la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”."
+                      }
+                    ]
+                  },
+                  "decision": "ready",
+                  "reason": "pulso_editorial_grounded_assessment",
+                  "prospective_evidence": true,
+                  "primary_article_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                  "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                  "model_response": {
+                    "schema_version": "pulso_editorial_proof_v5",
+                    "source_name": "Pulso / La Tercera",
+                    "model": "gpt-5.6-luna",
+                    "response_id": "resp_06d55302e3760f78006acbca9c84dc87d1b9e5af7a2cbc5fd3",
+                    "analysis_text_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                    "request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+                    "raw_model_output_sha256": "2a1a003074ff07a48cd563b4bde0fc3eea7c676f94b6897330c165b807886e70"
+                  }
+                },
+                "new_validation_sha256": "13b8973337b93e91dd3f39f385a1101ef27e23d040ac86fc9933e7f751fb7a9d",
+                "new_model_request": false,
+                "original_model_output_unchanged": true,
+                "publication_approved": false,
+                "quote_validation_is_semantic_approval": false
+              },
+              "prospective_evidence": true,
+              "what_happened": "Según Pulso / La Tercera, Según la nota del 8 de agosto de 2026, el Ministerio de Salud anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas, ante el aumento de casos y letalidad reportado durante los últimos meses en Chile. La nota señala que la medida permitiría fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta asistencial; no acredita por sí sola su vigencia operativa al 11 de octubre de 2026.",
+              "why_it_matters": "Según la nota del 8 de agosto de 2026, la medida del Minsal buscaba reforzar la detección y respuesta de los establecimientos asistenciales frente a un cambio reportado en el patrón epidemiológico del hantavirus, incluyendo casos en distintas estaciones y en sectores rurales y semirrurales. Su relevancia para el radar está en la coordinación de vigilancia, diagnóstico oportuno y respuesta sanitaria; la publicación no permite verificar que ese estado continúe vigente al 11 de octubre de 2026.",
+              "signal_types": [
+                "Noticias"
+              ],
+              "scopes": [
+                "Prestadores"
+              ],
+              "watch_tags": [
+                "pulso_latercera",
+                "media",
+                "prestadores"
+              ],
+              "scores": {
+                "economic": 86,
+                "regulatory": 55,
+                "scope": 86,
+                "novelty": 86,
+                "actionability": 76
+              },
+              "editorial_review": {
+                "schema_version": "pulso_editorial_review_v1",
+                "review_id": "pulso_mixed_reused18_independent_semantic_2026_10_11",
+                "review_file": "data/audits/pulso_mixed_reused18_editorial_corrections_2026_10_11.json",
+                "review_sha256": "35b584e4b29212a3b84b61ed1b1dc1bdedd0e5eebca8051ed6528edf45f5a1fa",
+                "record_sha256": "939b4272c1aba68b415bda0509fdfa9fb96b06510a7b22348ba03c7d025bd15e",
+                "original_signal_sha256": "62c3718dc383373b8f8c197aa83a035ab80808ebed5eda31992579b11bbbebc4",
+                "original_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+                "publication_date": "2026-08-08",
+                "decision": "accept",
+                "reason": "La extensión de alerta sanitaria para hantavirus es una medida humana concreta reportada el 8 de agosto. Cifras de casos/letalidad y la alerta quedan atribuidas a esa fecha; la copia no afirma situación epidemiológica, vigencia o efectos preventivos actuales al 11 de octubre.",
+                "evidence_quotes": [
+                  "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país. Según la subsecretaria de Salud Pública, Alejandra Pizarro, la enfermedad ha experimentado un cambio en el patrón epidemiológico, debido a la aparición de casos durante distintas estaciones del año y una mayor presencia en sectores rurales y semirrurales. Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”. “Estam"
+                ],
+                "original_terminal_status": "published",
+                "original_model_assessment": {
+                  "decision": "published",
+                  "relevance_score": 86,
+                  "threshold": 72,
+                  "analysis_reason": "Es una señal concreta de política sanitaria nacional frente a un aumento reportado de casos y letalidad de una enfermedad humana, con efectos esperados sobre vigilancia epidemiológica, sospecha diagnóstica, testeo y capacidad de respuesta de los establecimientos asistenciales. Ingresa como BACKFILL porque la publicación es anterior a la fecha de revisión."
+                },
+                "original_model_what_happened": "Según Pulso / La Tercera, Según la nota del 8 de agosto de 2026, el Ministerio de Salud anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas, ante el aumento de casos y letalidad reportado durante los últimos meses en Chile. La nota señala que la medida permitiría fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta asistencial; no acredita por sí sola su vigencia operativa al 11 de octubre de 2026.",
+                "original_model_why_it_matters": "Según la nota del 8 de agosto de 2026, la medida del Minsal buscaba reforzar la detección y respuesta de los establecimientos asistenciales frente a un cambio reportado en el patrón epidemiológico del hantavirus, incluyendo casos en distintas estaciones y en sectores rurales y semirrurales. Su relevancia para el radar está en la coordinación de vigilancia, diagnóstico oportuno y respuesta sanitaria; la publicación no permite verificar que ese estado continúe vigente al 11 de octubre de 2026."
+              }
+            }
+          },
+          "source": "pulso_latercera",
+          "lane": "BACKFILL",
+          "status": "published",
+          "detected_at": "2026-10-11T07:52:34.224551+00:00",
+          "attempts": 3,
+          "reason": null,
+          "deferred_detail": "pulso_editorial_scope_not_grounded",
+          "updated_at": "2026-10-11T19:16:22.385413+00:00",
+          "retry_at": null
+        },
+        "queue_entry_sha256": "d3bc8905db017f1ea424786cb4c1f0a0e398489355a2122d785aa31d25cce189",
+        "full_original_primary_body": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país. Según la subsecretaria de Salud Pública, Alejandra Pizarro, la enfermedad ha experimentado un cambio en el patrón epidemiológico, debido a la aparición de casos durante distintas estaciones del año y una mayor presencia en sectores rurales y semirrurales. Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”. “Estamos haciendo un llamado a todos los equipos de salud a reforzar la sospecha diagnóstica. Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente. En este escenario, es mejor testear de más que de menos”, enfatizó Pizarro en el marco de una visita al Hospital de Niños Dr. Roberto del Río. En específico, la alerta zoonótica es declarada por la entidad de salud cuando aumenta el riesgo o la presencia de enfermedades transmitidas de animales a seres humanos (zoonosis), como el hantavirus, la rabia o la gripe aviar. Es así que la subsecretaria lamentó los recientes fallecimientos y apuntó que la cartera de Salud continuará “intensificando las medidas para disminuir los contagios y mejorar la detección precoz”. En ese sentido, Pizarro hizo un llamado a mantener medidas preventivas. “Los temporales no son una causa directa del hantavirus, pero el movimiento de escombros puede desplazar a los roedores y aumentar la posibilidad de contacto. Por eso es fundamental actuar con precaución y mantener las medidas de prevención”, concluyó. Previamente, el Minsal había decretado alerta sanitaria por hantavirus desde las regiones de Atacama hasta la de Magallanes por una situación de “multiamenaza sanitaria” al presentarse simultáneamente con otros riesgos como arbovirosis (enfermedades transmitidas por zancudos como el dengue, zika, chikungunya y la fiebre amarilla); y la influenza aviar.",
+        "body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+        "full_signal": {
+          "title": "Minsal incorpora hantavirus a alerta sanitaria vigente para enfermedades zoonóticas ante aumento de casos y letalidad",
+          "source_name": "Pulso / La Tercera",
+          "source_type": "press_high_trust",
+          "source_url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+          "category": "Prestadores",
+          "subcategory": "General",
+          "system_domain": "HEALTH",
+          "what_happened": "Según Pulso / La Tercera, Según la nota del 8 de agosto de 2026, el Ministerio de Salud anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas, ante el aumento de casos y letalidad reportado durante los últimos meses en Chile. La nota señala que la medida permitiría fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta asistencial; no acredita por sí sola su vigencia operativa al 11 de octubre de 2026.",
+          "event_date": "2026-08-08",
+          "detected_at": "2026-10-11T07:52:34.224551+00:00",
+          "primary_source_url": null,
+          "event_type": "OTHER",
+          "strategic_theme": [],
+          "institution_types": [],
+          "entity_refs": [],
+          "country": "CL",
+          "topics": [
+            "providers",
+            "public_health"
+          ],
+          "entities": [],
+          "people": [],
+          "geography": [],
+          "key_facts": [],
+          "key_numbers": [],
+          "why_it_matters": "Según la nota del 8 de agosto de 2026, la medida del Minsal buscaba reforzar la detección y respuesta de los establecimientos asistenciales frente a un cambio reportado en el patrón epidemiológico del hantavirus, incluyendo casos en distintas estaciones y en sectores rurales y semirrurales. Su relevancia para el radar está en la coordinación de vigilancia, diagnóstico oportuno y respuesta sanitaria; la publicación no permite verificar que ese estado continúe vigente al 11 de octubre de 2026.",
+          "who_cares": [],
+          "possible_implications": [],
+          "watch_tags": [
+            "pulso_latercera",
+            "media",
+            "prestadores"
+          ],
+          "connection_keys": [],
+          "trend_keys": [],
+          "prospective_evidence": true,
+          "economic_impact_score": 86,
+          "regulatory_impact_score": 55,
+          "scope_score": 86,
+          "novelty_score": 86,
+          "actionability_score": 76,
+          "source_quality_score": 92,
+          "radar_score": 79,
+          "confidence_score": 92,
+          "distribution": "archive",
+          "validation_status": "automatic",
+          "corroboration_status": "unknown",
+          "additional_sources": [],
+          "source_documents": [],
+          "key_points": [],
+          "risk_notes": [],
+          "data_insights": [],
+          "data_insight_meta": {},
+          "validity_text": null,
+          "related_reference_ids": [],
+          "original_language": "es",
+          "display_language": "es",
+          "translation_status": "not_required",
+          "original_title": null,
+          "original_what_happened": null,
+          "original_why_it_matters": null,
+          "signal_types": [
+            "Noticias"
+          ],
+          "scopes": [
+            "Prestadores"
+          ],
+          "editorial_relevance": 86,
+          "source_quality_gate": "passed",
+          "evidence_maturity": "media_reported",
+          "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+          "publication_date": "2026-08-08",
+          "publication_timestamp": "2026-08-08T18:03:09.74Z",
+          "publication_date_source": "visible_article_byline",
+          "editorial_assessment": {
+            "decision": "published",
+            "relevance_score": 86,
+            "threshold": 72,
+            "analysis_reason": "Es una señal concreta de política sanitaria nacional frente a un aumento reportado de casos y letalidad de una enfermedad humana, con efectos esperados sobre vigilancia epidemiológica, sospecha diagnóstica, testeo y capacidad de respuesta de los establecimientos asistenciales. Ingresa como BACKFILL porque la publicación es anterior a la fecha de revisión."
+          },
+          "ingestion_mode": "BACKFILL",
+          "editorial_review": {
+            "schema_version": "pulso_editorial_review_v1",
+            "review_id": "pulso_mixed_reused18_independent_semantic_2026_10_11",
+            "review_file": "data/audits/pulso_mixed_reused18_editorial_corrections_2026_10_11.json",
+            "review_sha256": "35b584e4b29212a3b84b61ed1b1dc1bdedd0e5eebca8051ed6528edf45f5a1fa",
+            "record_sha256": "939b4272c1aba68b415bda0509fdfa9fb96b06510a7b22348ba03c7d025bd15e",
+            "original_signal_sha256": "62c3718dc383373b8f8c197aa83a035ab80808ebed5eda31992579b11bbbebc4",
+            "original_body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+            "publication_date": "2026-08-08",
+            "decision": "accept",
+            "reason": "La extensión de alerta sanitaria para hantavirus es una medida humana concreta reportada el 8 de agosto. Cifras de casos/letalidad y la alerta quedan atribuidas a esa fecha; la copia no afirma situación epidemiológica, vigencia o efectos preventivos actuales al 11 de octubre.",
+            "evidence_quotes": [
+              "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país. Según la subsecretaria de Salud Pública, Alejandra Pizarro, la enfermedad ha experimentado un cambio en el patrón epidemiológico, debido a la aparición de casos durante distintas estaciones del año y una mayor presencia en sectores rurales y semirrurales. Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”. “Estam"
+            ],
+            "original_terminal_status": "published",
+            "original_model_assessment": {
+              "decision": "published",
+              "relevance_score": 86,
+              "threshold": 72,
+              "analysis_reason": "Es una señal concreta de política sanitaria nacional frente a un aumento reportado de casos y letalidad de una enfermedad humana, con efectos esperados sobre vigilancia epidemiológica, sospecha diagnóstica, testeo y capacidad de respuesta de los establecimientos asistenciales. Ingresa como BACKFILL porque la publicación es anterior a la fecha de revisión."
+            },
+            "original_model_what_happened": "Según Pulso / La Tercera, Según la nota del 8 de agosto de 2026, el Ministerio de Salud anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas, ante el aumento de casos y letalidad reportado durante los últimos meses en Chile. La nota señala que la medida permitiría fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta asistencial; no acredita por sí sola su vigencia operativa al 11 de octubre de 2026.",
+            "original_model_why_it_matters": "Según la nota del 8 de agosto de 2026, la medida del Minsal buscaba reforzar la detección y respuesta de los establecimientos asistenciales frente a un cambio reportado en el patrón epidemiológico del hantavirus, incluyendo casos en distintas estaciones y en sectores rurales y semirrurales. Su relevancia para el radar está en la coordinación de vigilancia, diagnóstico oportuno y respuesta sanitaria; la publicación no permite verificar que ese estado continúe vigente al 11 de octubre de 2026."
+          },
+          "editorial_decision": "accept",
+          "editorial_review_reason": "La extensión de alerta sanitaria para hantavirus es una medida humana concreta reportada el 8 de agosto. Cifras de casos/letalidad y la alerta quedan atribuidas a esa fecha; la copia no afirma situación epidemiológica, vigencia o efectos preventivos actuales al 11 de octubre.",
+          "feed_visibility": true
+        },
+        "signal_sha256": "3c13e5abaecea6d1e0a560f542d2045be4a2525856621dacdb98393312581889"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "queue_fingerprint": "c670f94578b33beee724ab15570f664702be673272547ae7bf8d144658c47fb9",
+      "actual_queue_status": "retry",
+      "actual_attempts": 5,
+      "original_full_primary_body": "Hasta el Centro de Mamografías Comunal de La Florida (Región Metropolitana) llegó esta jornada la ministra de Salud, May Chomali, junto a los subsecretarios de Salud Pública, Alejandra Pizarro, y Redes Asistenciales, Julio Montt, para reforzar la importancia de la detección precoz del cáncer de mama, la patología más frecuente que afecta a la población femenina en Chile y primera causa de muerte de mujeres por causa oncológica. Esto, en el marco del Mes de la Concientización sobre el Cáncer de Mama. “La cita más importante es contigo, como dice nuestra campaña”, afirmó al respecto la secretaria de Estado, manifestando en esta línea que “todas somos vulnerables al cáncer de mamá, unas más, otras menos, pero todas somos vulnerables”. En este sentido, la autoridad destacó el Mamógrafo Móvil de la comuna, así como también la atención en el Centro de Mamografías Comunal, los cuales funcionan de lunes a domingo, permitiendo así que mujeres que trabajan puedan realizarse el examen. “Aquí todo lo que ocurre es virtuoso para que las mujeres de la comuna de La Florida se beneficien de esta política pública”, afirmó. Asimismo, la autoridad ministerial destacó que la mamografía para mujeres de entre 50 y 69 años es gratuita, no requiere orden médica y existe un permiso laboral de medio día al año para realizarse el examen. “Prevenir y diagnosticar precozmente es mejor que curar, por eso la cita es contigo misma”, reiteró Chomali. Por su parte, el alcalde de La Florida, Daniel Reyes, destacó que como municipalidad vienen realizando un trabajo sostenido para facilitar herramientas para prevenir el cáncer de mamas. “Hace 12 años está funcionando nuestra Clínica Ginecológica Móvil para realizar mamografías en distintos sectores de nuestra comuna. Hace 2 años sumamos el Centro Mamográfico Nicole Díaz Correa con atención todos los días de la semana con horario extendido sábados y domingo”, sostuvo. Además de esto, indicó, se encuentran liderando un plan pionero preventivo a través de un examen genético que permite advertir riesgos hereditarios y adelantar aún más a un posible diagnóstico. “Este año llevamos realizadas más de 7 mil mamografías y estimamos cerrar el 2026 con más de 10.000 y 14 casos de examen genético, entregando herramientas para que no lleguemos tarde y que juntos salvemos vidas”, destacó. El Centro de Mamografías Comunal lleva el nombre de Nicole Díaz Correa, vecina de La Florida que falleció por un cáncer. Cuenta con tres radiólogos que informan las imágenes por telemedicina, fue inaugurado en marzo de 2025 y realiza, en promedio, 800 mamografías mensuales. En cuanto a cifras, y sobre la Alerta Oncológica que se llevó a cabo a comienzos de este año, el jefe del Departamento de Cáncer del Minsal, Alejandro Berkovits, destacó que entre el periodo de enero y julio de este año, existen 14.301 garantías activadas de sospecha de cáncer de mama, con una confirmación un poco superior al 30%. Es decir, se han diagnosticado 4.400 nuevos casos, un 7,6% más que el año pasado. Asimismo, hasta la fecha, se han cerrado 30.805 garantías, un 9,6% más que en 2025. “Eso habla que la Alerta Oncológica generó una conciencia de que probablemente había mujeres en que no estábamos presentes para hacer el diagnóstico y que, probablemente, tengamos más mujeres con cáncer de mama presente en el país”, sostuvo. Durante la mañana de este lunes la ministra Chomali estuvo presente en el inicio de la Expo APS 2026, encuentro que reúne a representantes del sector público, privado y académico para abordar los principales desafíos de la Atención Primaria de Salud en Chile. En la instancia, la autoridad señaló que, poniendo el énfasis en la detección precoz del cáncer, el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal, ya que un cuarto de los nuevos cánceres que se producen al año se relaciona con aspectos que podrían haberse detectado en APS, gracias a las nuevas tecnologías que existen. “Necesitamos una Atención Primaria fortalecida, que salga a su comunidad, que la comunidad la quiera, que la comunidad la respete y que no esté pensando en cuándo me van a mandar al hospital. No es lo que queremos, la atención primaria no es para derivar al hospital. Necesitamos una Atención Primaria más resolutiva, pero más fortalecida y que tenga la confianza no solamente de la comunidad, sino que también de los niveles secundarios y terciarios”, agregó",
+      "original_full_model_output": {
+        "relevance_score": 80,
+        "what_happened": "Según la nota del 5 de octubre de 2026, entre enero y julio de 2026 se reportaron 14.301 garantías activadas por sospecha de cáncer de mama y 4.400 diagnósticos, un 7,6% más que el año anterior. Hasta el 5 de octubre, la nota reportó 30.805 garantías cerradas, un 9,6% más que en 2025. La nota también informó que el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal, sin acreditar que esa orientación ya estuviera implementada. En La Florida, durante 2026 se habían realizado más de 7.000 mamografías; el alcalde estimó cerrar el año con más de 10.000 mamografías y 14 casos de examen genético.",
+        "why_it_matters": "Según la nota del 5 de octubre de 2026, la dirección anunciada por el Ministerio podría reorientar el trabajo de la Atención Primaria y aumentar el foco en la detección precoz, con efectos de atención para mujeres y de coordinación para municipios y prestadores, aunque la nota no acredita una implementación terminada. Las cifras reportadas para enero-julio de 2026 muestran un aumento de diagnósticos de cáncer de mama, mientras que las garantías cerradas corresponden al acumulado informado hasta el 5 de octubre y no deben extenderse al período enero-julio. La estimación municipal de superar 10.000 mamografías y alcanzar 14 casos de examen genético durante 2026 seguía siendo futura a la fecha de publicación.",
+        "reason": "La nota combina datos nacionales recientes de garantías y diagnósticos de cáncer de mama con una orientación ministerial reportada para la APS. Es una señal relevante para prestadores, municipios y autoridades sanitarias, pero su materialidad está limitada porque la pesquisa universal aparece como una decisión anunciada y no como una implementación verificada; además, parte del contenido es un balance local y una estimación futura.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "El contenido aborda directamente la detección, diagnóstico y cobertura de una enfermedad humana, además de una orientación ministerial para la Atención Primaria de Salud.",
+          "human_health_scope_quote": "la mamografía para mujeres de entre 50 y 69 años es gratuita, no requiere orden médica y existe un permiso laboral de medio día al año para realizarse el examen",
+          "actor": "el Ministerio",
+          "action": "tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+          "consequence": "un cuarto de los nuevos cánceres que se producen al año se relaciona con aspectos que podrían haberse detectado en APS",
+          "actor_quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+          "action_quote": "tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+          "consequence_quote": "ya que un cuarto de los nuevos cánceres que se producen al año se relaciona con aspectos que podrían haberse detectado en APS",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La nota reporta una orientación ministerial específica para enfocar la APS hacia una pesquisa universal y entrega cifras de 2026 sobre garantías activadas, diagnósticos y garantías cerradas. La orientación no equivale a implementación terminada y las cifras mantienen los períodos informados por la prensa.",
+          "novelty_quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Según la nota del 5 de octubre de 2026, entre enero y julio de 2026 se reportaron 14.301 garantías activadas por sospecha de cáncer de mama y 4.400 diagnósticos, un 7,6% más que el año anterior. Hasta el 5 de octubre, la nota reportó 30.805 garantías cerradas, un 9,6% más que en 2025. La nota también informó que el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal, sin acreditar que esa orientación ya estuviera implementada. En La Florida, durante 2026 se habían realizado más de 7.000 mamografías; el alcalde estimó cerrar el año con más de 10.000 mamografías y 14 casos de examen genético.",
+              "source_quote": "estimamos cerrar el 2026 con más de 10.000 y 14 casos de examen genético"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Según la nota del 5 de octubre de 2026, la dirección anunciada por el Ministerio podría reorientar el trabajo de la Atención Primaria y aumentar el foco en la detección precoz, con efectos de atención para mujeres y de coordinación para municipios y prestadores, aunque la nota no acredita una implementación terminada. Las cifras reportadas para enero-julio de 2026 muestran un aumento de diagnósticos de cáncer de mama, mientras que las garantías cerradas corresponden al acumulado informado hasta el 5 de octubre y no deben extenderse al período enero-julio. La estimación municipal de superar 10.000 mamografías y alcanzar 14 casos de examen genético durante 2026 seguía siendo futura a la fecha de publicación.",
+              "source_quote": "Necesitamos una Atención Primaria fortalecida, que salga a su comunidad, que la comunidad la quiera, que la comunidad la respete"
+            }
+          ]
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_06ee18158a24b956006acc05c1f19c87d09f13899818b114c3",
+          "analysis_text_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+          "request_input_sha256": "0c8881ccd43cb7d116634f14cfa9764c9c66744a290c6f8733b9bed411c226c1",
+          "raw_model_output_sha256": "121d775d281d337a5f2816507e020ef343972642b8122f0474ec380166a42288"
+        }
+      },
+      "actual_pulso_validation": {
+        "version": "pulso_editorial_proof_v5",
+        "source": "pulso_latercera",
+        "analysis_text_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+        "quote_validation_is_semantic_approval": false,
+        "publication_approved": false,
+        "model_output_sha256": "326fec40a0fb34bbdac3b5805ca0cac54ea86d9bff5924619f57e545873dcdaa",
+        "proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "El contenido aborda directamente la detección, diagnóstico y cobertura de una enfermedad humana, además de una orientación ministerial para la Atención Primaria de Salud.",
+          "human_health_scope_quote": "la mamografía para mujeres de entre 50 y 69 años es gratuita, no requiere orden médica y existe un permiso laboral de medio día al año para realizarse el examen",
+          "actor": "el Ministerio",
+          "action": "tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+          "consequence": "un cuarto de los nuevos cánceres que se producen al año se relaciona con aspectos que podrían haberse detectado en APS",
+          "actor_quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+          "action_quote": "tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+          "consequence_quote": "ya que un cuarto de los nuevos cánceres que se producen al año se relaciona con aspectos que podrían haberse detectado en APS",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La nota reporta una orientación ministerial específica para enfocar la APS hacia una pesquisa universal y entrega cifras de 2026 sobre garantías activadas, diagnósticos y garantías cerradas. La orientación no equivale a implementación terminada y las cifras mantienen los períodos informados por la prensa.",
+          "novelty_quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Según la nota del 5 de octubre de 2026, entre enero y julio de 2026 se reportaron 14.301 garantías activadas por sospecha de cáncer de mama y 4.400 diagnósticos, un 7,6% más que el año anterior. Hasta el 5 de octubre, la nota reportó 30.805 garantías cerradas, un 9,6% más que en 2025. La nota también informó que el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal, sin acreditar que esa orientación ya estuviera implementada. En La Florida, durante 2026 se habían realizado más de 7.000 mamografías; el alcalde estimó cerrar el año con más de 10.000 mamografías y 14 casos de examen genético.",
+              "source_quote": "estimamos cerrar el 2026 con más de 10.000 y 14 casos de examen genético"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Según la nota del 5 de octubre de 2026, la dirección anunciada por el Ministerio podría reorientar el trabajo de la Atención Primaria y aumentar el foco en la detección precoz, con efectos de atención para mujeres y de coordinación para municipios y prestadores, aunque la nota no acredita una implementación terminada. Las cifras reportadas para enero-julio de 2026 muestran un aumento de diagnósticos de cáncer de mama, mientras que las garantías cerradas corresponden al acumulado informado hasta el 5 de octubre y no deben extenderse al período enero-julio. La estimación municipal de superar 10.000 mamografías y alcanzar 14 casos de examen genético durante 2026 seguía siendo futura a la fecha de publicación.",
+              "source_quote": "Necesitamos una Atención Primaria fortalecida, que salga a su comunidad, que la comunidad la quiera, que la comunidad la respete"
+            }
+          ]
+        },
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded",
+        "primary_article_body_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+        "request_input_sha256": "0c8881ccd43cb7d116634f14cfa9764c9c66744a290c6f8733b9bed411c226c1",
+        "model_response": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_06ee18158a24b956006acc05c1f19c87d09f13899818b114c3",
+          "analysis_text_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+          "request_input_sha256": "0c8881ccd43cb7d116634f14cfa9764c9c66744a290c6f8733b9bed411c226c1",
+          "raw_model_output_sha256": "121d775d281d337a5f2816507e020ef343972642b8122f0474ec380166a42288"
+        }
+      },
+      "actual_reason": "pulso_editorial_future_copy_not_grounded",
+      "actual_queue_entry_sha256": "9bd3b53f3a4b00605db62d276d4b85dc04aa66cdf5ba4bfd7483129d4c41e1b2",
+      "original_raw_sha256": "de797ba226984128f96484224584a156b71c42c2ddc17aa9b6efc8dae1ef1899",
+      "original_metadata_sha256": "6eb37634ef5ca56bd65c9ee7511f4a0ac9071ce24dcb38f9ade15d5503c9100e",
+      "original_model_output_sha256": "326fec40a0fb34bbdac3b5805ca0cac54ea86d9bff5924619f57e545873dcdaa",
+      "original_validation_sha256": "6e974abf581d44da6104f21f041a090e5648577e0d92317b6b5ee3dfac9de4a7",
+      "original_response_id": "resp_06ee18158a24b956006acc05c1f19c87d09f13899818b114c3",
+      "original_body_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+      "original_html_sha256": "12dd0d1641d196ac0ec694da1852736d77f93e914a5036cf4a74f247ed120b64",
+      "original_request_input_sha256": "0c8881ccd43cb7d116634f14cfa9764c9c66744a290c6f8733b9bed411c226c1",
+      "publication_date": "2026-10-05",
+      "proposed_runtime_route": "reuse_code_fn",
+      "publication_approved": false,
+      "semantic_diagnosis": "The genuinely new model corrects the prior temporal/growth error: January–July applies to activations and diagnoses7.6%; closed30,805/9.6% applies up to October5, and no activated-guarantee increase is asserted. The municipal10,000/14 year-end estimate remains an estimate and APS orientation is not represented as implemented.",
+      "primary_evidence_quotes": [
+        "entre el periodo de enero y julio de este año, existen 14.301 garantías activadas de sospecha de cáncer de mama",
+        "Es decir, se han diagnosticado 4.400 nuevos casos, un 7,6% más que el año pasado.",
+        "Asimismo, hasta la fecha, se han cerrado 30.805 garantías, un 9,6% más que en 2025.",
+        "estimamos cerrar el 2026 con más de 10.000 y 14 casos de examen genético"
+      ],
+      "guard_false_negative_details": {
+        "future_what": "The complete observation-date field says el alcalde estimó cerrar el año; existing qualifier does not recognize this dated estimate. Literal/fullfield matches pass, and both achievement/clinical-completion safeguards areFalse."
+      },
+      "materiality_score": 80,
+      "gate_threshold": 72,
+      "comparative_published_context": null
+    }
+  ]
+}

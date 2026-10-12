@@ -1,0 +1,550 @@
+{
+  "schema_version": "pulso_live9_original_primary_recovery_v1",
+  "artifact_run_id": 38149773071,
+  "artifact_id": 11707255596,
+  "artifact_zip_sha256": "481a48062b1a689a370df5040a211889ba59d664f0f0b9a2fad5728e86d0c26e",
+  "target_proof": {
+    "target_commit": "1b4817164dbd9cd091197e1c7ebd03de6fa93526",
+    "cohort_path": "data/audits/pulso_additional_live9_recovery_cohort_2026_10_11.json",
+    "cohort_sha256": "641eee7d713cd1c9fba2171d9e45dbaeab0688434ac371a87f56089b2f141373",
+    "queue_path": "data/state/pending_queue.json",
+    "queue_sha256": "509da9e5c5a2da99da8b537c7a003870e5f6a1b777adff6aff5f3db106308105"
+  },
+  "current_target_proof": {
+    "target_commit": "d48a495a5fcefb9adaca26ca30b1f12ddad7e59f",
+    "cohort_path": "data/audits/pulso_additional_live9_recovery_cohort_2026_10_11.json",
+    "cohort_sha256": "641eee7d713cd1c9fba2171d9e45dbaeab0688434ac371a87f56089b2f141373",
+    "queue_path": "data/state/pending_queue.json",
+    "queue_sha256": "d44cfa10569f34cf1e1f8a7746d26bd71728d069679c89b756387381123eddf8"
+  },
+  "current_artifact_run_id": 38183583899,
+  "current_artifact_id": 11718992843,
+  "current_artifact_zip_sha256": "9346939527e5ece2c6ff82c8e0659489e9ae26c6af1034527b29b9d6570d3c02",
+  "retained_at": "2026-10-11T23:40:35.606183+00:00",
+  "targets": 9,
+  "retained_originals": 4,
+  "refreshed_primary_targets": 1,
+  "retained_refreshed_originals": 1,
+  "requests": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/fallece-juan-pablo-cardenas-premio-nacional-de-periodismo-2005/",
+      "requested_at": "2026-10-11T15:07:03.753705+00:00",
+      "status": 200,
+      "final_url": "https://www.latercera.com/nacional/noticia/fallece-juan-pablo-cardenas-premio-nacional-de-periodismo-2005/",
+      "content_type": "text/html; charset=utf-8",
+      "charset": "utf-8",
+      "captured_at": "2026-10-11T15:07:03.951725+00:00",
+      "bytes": 424639,
+      "sha256": "2b26c82563487d7d05a31e18d78c81fb637e14feaaa503cd79886fd6106122af",
+      "returned_text_utf8_sha256": "2b26c82563487d7d05a31e18d78c81fb637e14feaaa503cd79886fd6106122af",
+      "observed": {
+        "canonical": "https://www.latercera.com/nacional/noticia/fallece-juan-pablo-cardenas-premio-nacional-de-periodismo-2005/",
+        "metadata": {
+          "og:url": "https://www.latercera.com/nacional/noticia/fallece-juan-pablo-cardenas-premio-nacional-de-periodismo-2005/",
+          "og:title": "Fallece Juan Pablo Cárdenas, Premio Nacional de Periodismo 2005 - La Tercera",
+          "article:section": "Nacional",
+          "article:modified_time": "2026-10-11T14:51:22.835Z",
+          "article:published_time": "2026-10-11T14:51:22.725Z"
+        },
+        "json_ld": [
+          {
+            "@type": "NewsArticle",
+            "@id": "https://www.latercera.com/nacional/noticia/fallece-juan-pablo-cardenas-premio-nacional-de-periodismo-2005/#article",
+            "url": "https://www.latercera.com/nacional/noticia/fallece-juan-pablo-cardenas-premio-nacional-de-periodismo-2005/",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://www.latercera.com/nacional/noticia/fallece-juan-pablo-cardenas-premio-nacional-de-periodismo-2005/",
+              "name": "Fallece Juan Pablo Cárdenas, Premio Nacional de Periodismo 2005",
+              "primaryImageOfPage": {
+                "@type": "ImageObject",
+                "width": 1600,
+                "height": 900,
+                "url": "https://www.latercera.com/resizer/v2/GA2BQJTQWVCR3IZWIAMXMP6GKM.png?auth=cf533ec19c3e5acd74bd6250495bee166ed905d182257cad781a7e37d9b92d12&height=900&width=1600&smart=true",
+                "description": "Juan Pablo Cárdenas"
+              }
+            },
+            "headline": "Fallece Juan Pablo Cárdenas, Premio Nacional de Periodismo 2005",
+            "datePublished": "2026-10-11T14:51:22.725Z",
+            "dateModified": "2026-10-11T14:51:22.835Z",
+            "articleSection": "Nacional",
+            "keywords": [
+              "Juan Pablo Cárdenas",
+              "Premio nacional de periodismo",
+              "Revista Análisis"
+            ]
+          },
+          {
+            "@type": "BreadcrumbList"
+          },
+          {
+            "@type": "NewsMediaOrganization",
+            "@id": "https://www.latercera.com/#organization",
+            "url": "https://www.latercera.com/"
+          },
+          {
+            "@type": "WebSite",
+            "url": "https://www.latercera.com/"
+          }
+        ]
+      },
+      "primary_article": {
+        "title": "Fallece Juan Pablo Cárdenas, Premio Nacional de Periodismo 2005",
+        "publication_date": "2026-10-11",
+        "publication_timestamp": "2026-10-11T14:51:22.725Z",
+        "publication_date_source": "visible_article_byline",
+        "section": "Nacional",
+        "health_relevant": true
+      },
+      "gzip_file": "tests/fixtures/pulso_live9_primary_real/2b26c82563487d7d05a31e18d78c81fb637e14feaaa503cd79886fd6106122af.html.gz",
+      "gzip_sha256": "bf7618fd8ce138226401c5033ef31c5fcc23b87560c5d1fb6853567cf21c1c34",
+      "retention_reason": "verified_primary_health_article",
+      "original_capture_gzip_file": "responses/2b26c82563487d7d05a31e18d78c81fb637e14feaaa503cd79886fd6106122af.gz",
+      "original_capture_manifest_sha256": "9a054db9f2b3da81ce3ca5bbff8bb8a478fee8cf706f08b8df52e0736f2d0450",
+      "original_capture_manifest_path": "data/audits/pulso_runtime_capture/manifest.json",
+      "capture_provenance": "preserved_original_http_response",
+      "primary_identity_verified": true,
+      "publication_date_verified": true,
+      "publication_date": "2026-10-11",
+      "publication_date_source": "visible_article_byline",
+      "primary_body_sha256": "ea77802bc5bad54fb476386dc3b9b4bfb4732494feecaa8e9cfa1fc54de46c72",
+      "primary_body_characters": 1553,
+      "expected_html_sha256": "2b26c82563487d7d05a31e18d78c81fb637e14feaaa503cd79886fd6106122af",
+      "primary_replay_status": "EXACT_ORIGINAL_REPLAY_VERIFIED",
+      "queue_fingerprint": "76cdc28597009114d576b7e20314a93ed1390c31008b831ba7b2f47968ee40a7",
+      "target_stage": "original_discovery_primary",
+      "artifact_run_id": 38149773071,
+      "artifact_id": 11707255596
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/amplian-por-72-horas-detencion-de-chofer-de-bus-que-se-desbarranco-en-valparaiso-y-dejo-una-persona-fallecida/",
+      "requested_at": "2026-10-11T15:07:03.753942+00:00",
+      "status": 200,
+      "final_url": "https://www.latercera.com/nacional/noticia/amplian-por-72-horas-detencion-de-chofer-de-bus-que-se-desbarranco-en-valparaiso-y-dejo-una-persona-fallecida/",
+      "content_type": "text/html; charset=utf-8",
+      "charset": "utf-8",
+      "captured_at": "2026-10-11T15:07:03.916759+00:00",
+      "bytes": 446795,
+      "sha256": "9670966b23630ce9747c3c076fe417826ad6c658797ff1312d3825e745e3f049",
+      "returned_text_utf8_sha256": "9670966b23630ce9747c3c076fe417826ad6c658797ff1312d3825e745e3f049",
+      "observed": {
+        "canonical": "https://www.latercera.com/nacional/noticia/amplian-por-72-horas-detencion-de-chofer-de-bus-que-se-desbarranco-en-valparaiso-y-dejo-una-persona-fallecida/",
+        "metadata": {
+          "og:url": "https://www.latercera.com/nacional/noticia/amplian-por-72-horas-detencion-de-chofer-de-bus-que-se-desbarranco-en-valparaiso-y-dejo-una-persona-fallecida/",
+          "og:title": "Amplían por 72 horas detención de chofer de bus que se desbarrancó en Valparaíso y dejó una persona fallecida - La Tercera",
+          "article:section": "Nacional",
+          "article:modified_time": "2026-10-11T15:04:35.302Z",
+          "article:published_time": "2026-10-11T14:47:52.443Z"
+        },
+        "json_ld": [
+          {
+            "@type": "NewsArticle",
+            "@id": "https://www.latercera.com/nacional/noticia/amplian-por-72-horas-detencion-de-chofer-de-bus-que-se-desbarranco-en-valparaiso-y-dejo-una-persona-fallecida/#article",
+            "url": "https://www.latercera.com/nacional/noticia/amplian-por-72-horas-detencion-de-chofer-de-bus-que-se-desbarranco-en-valparaiso-y-dejo-una-persona-fallecida/",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://www.latercera.com/nacional/noticia/amplian-por-72-horas-detencion-de-chofer-de-bus-que-se-desbarranco-en-valparaiso-y-dejo-una-persona-fallecida/",
+              "name": "Amplían por 72 horas detención de chofer de bus que se desbarrancó en Valparaíso y dejó una persona fallecida",
+              "primaryImageOfPage": {
+                "@type": "ImageObject",
+                "width": 1600,
+                "height": 900,
+                "url": "https://www.latercera.com/resizer/v2/IJHLEGFXUJGCVMIN7OQUZ6FU3Q.jpg?auth=80ebf5089106c7584078941d91a39a4661bb24d5dca39b412e47b56e1b4b7028&height=900&width=1600&smart=true"
+              }
+            },
+            "headline": "Amplían por 72 horas detención de chofer de bus que se desbarrancó en Valparaíso y dejó una persona fallecida",
+            "datePublished": "2026-10-11T14:47:52.443Z",
+            "dateModified": "2026-10-11T15:04:35.302Z",
+            "articleSection": "Nacional",
+            "keywords": [
+              "Valparaíso",
+              "Orquesta",
+              "Tragedia",
+              "Accidente",
+              "Imputado"
+            ]
+          },
+          {
+            "@type": "BreadcrumbList"
+          },
+          {
+            "@type": "NewsMediaOrganization",
+            "@id": "https://www.latercera.com/#organization",
+            "url": "https://www.latercera.com/"
+          },
+          {
+            "@type": "WebSite",
+            "url": "https://www.latercera.com/"
+          }
+        ]
+      },
+      "primary_article": {
+        "title": "Amplían por 72 horas detención de chofer de bus que se desbarrancó en Valparaíso y dejó una persona fallecida",
+        "publication_date": "2026-10-11",
+        "publication_timestamp": "2026-10-11T14:47:52.443Z",
+        "publication_date_source": "visible_article_byline",
+        "section": "Nacional",
+        "health_relevant": true
+      },
+      "gzip_file": "tests/fixtures/pulso_live9_primary_real/9670966b23630ce9747c3c076fe417826ad6c658797ff1312d3825e745e3f049.html.gz",
+      "gzip_sha256": "4868ee2d1a9b514b688eeae64de9773544d1f9c1391914043f0f683c751a1618",
+      "retention_reason": "verified_primary_health_article",
+      "original_capture_gzip_file": "responses/9670966b23630ce9747c3c076fe417826ad6c658797ff1312d3825e745e3f049.gz",
+      "original_capture_manifest_sha256": "9a054db9f2b3da81ce3ca5bbff8bb8a478fee8cf706f08b8df52e0736f2d0450",
+      "original_capture_manifest_path": "data/audits/pulso_runtime_capture/manifest.json",
+      "capture_provenance": "preserved_original_http_response",
+      "primary_identity_verified": true,
+      "publication_date_verified": true,
+      "publication_date": "2026-10-11",
+      "publication_date_source": "visible_article_byline",
+      "primary_body_sha256": "29064564d2499b11698111775dc358825dff4eb640167102d23e38333de37a4d",
+      "primary_body_characters": 2952,
+      "expected_html_sha256": "9670966b23630ce9747c3c076fe417826ad6c658797ff1312d3825e745e3f049",
+      "primary_replay_status": "EXACT_ORIGINAL_REPLAY_VERIFIED",
+      "queue_fingerprint": "bbc92593ad927019d68a04f3427e469aedea0e236c2532af9da9af0dfc38309b",
+      "target_stage": "original_discovery_primary",
+      "artifact_run_id": 38149773071,
+      "artifact_id": 11707255596
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/hospital-van-buren-entrega-nuevo-balance-tras-accidente-de-bus-de-orquesta-tres-pacientes-permanecen-internados/",
+      "requested_at": "2026-10-11T15:07:03.754279+00:00",
+      "status": 200,
+      "final_url": "https://www.latercera.com/nacional/noticia/hospital-van-buren-entrega-nuevo-balance-tras-accidente-de-bus-de-orquesta-tres-pacientes-permanecen-internados/",
+      "content_type": "text/html; charset=utf-8",
+      "charset": "utf-8",
+      "captured_at": "2026-10-11T15:07:04.005928+00:00",
+      "bytes": 442590,
+      "sha256": "7a632a39efbbe294e38ef8b0628f7227cf4a17d9402c93e73f4ddf5f6cacaed3",
+      "returned_text_utf8_sha256": "7a632a39efbbe294e38ef8b0628f7227cf4a17d9402c93e73f4ddf5f6cacaed3",
+      "observed": {
+        "canonical": "https://www.latercera.com/nacional/noticia/hospital-van-buren-entrega-nuevo-balance-tras-accidente-de-bus-de-orquesta-tres-pacientes-permanecen-internados/",
+        "metadata": {
+          "og:url": "https://www.latercera.com/nacional/noticia/hospital-van-buren-entrega-nuevo-balance-tras-accidente-de-bus-de-orquesta-tres-pacientes-permanecen-internados/",
+          "og:title": "Hospital Van Buren entrega nuevo balance tras accidente de bus de orquesta: tres pacientes permanecen internados - La Tercera",
+          "article:section": "Nacional",
+          "article:modified_time": "2026-10-11T14:56:21.445Z",
+          "article:published_time": "2026-10-11T13:35:20.471Z"
+        },
+        "json_ld": [
+          {
+            "@type": "NewsArticle",
+            "@id": "https://www.latercera.com/nacional/noticia/hospital-van-buren-entrega-nuevo-balance-tras-accidente-de-bus-de-orquesta-tres-pacientes-permanecen-internados/#article",
+            "url": "https://www.latercera.com/nacional/noticia/hospital-van-buren-entrega-nuevo-balance-tras-accidente-de-bus-de-orquesta-tres-pacientes-permanecen-internados/",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://www.latercera.com/nacional/noticia/hospital-van-buren-entrega-nuevo-balance-tras-accidente-de-bus-de-orquesta-tres-pacientes-permanecen-internados/",
+              "name": "Hospital Van Buren entrega nuevo balance tras accidente de bus de orquesta: tres pacientes permanecen internados",
+              "primaryImageOfPage": {
+                "@type": "ImageObject",
+                "width": 1600,
+                "height": 900,
+                "url": "https://www.latercera.com/resizer/v2/AS3GN3PUHVELVGPK3LW6M6X5QI.jpg?auth=b8152a43fa5af0b04c98ba28d8687fe6ad364f0f607022c8a9b4ffc69420de03&height=900&width=1600&smart=true"
+              }
+            },
+            "headline": "Hospital Van Buren entrega nuevo balance tras accidente de bus de orquesta: tres pacientes permanecen internados",
+            "datePublished": "2026-10-11T13:35:20.471Z",
+            "dateModified": "2026-10-11T14:56:21.445Z",
+            "articleSection": "Nacional",
+            "keywords": [
+              "Hospital Carlos Van Buren",
+              "Valparaíso",
+              "Orquesta",
+              "Accidente",
+              "Tragedia",
+              "Fellecido",
+              "Víctima"
+            ]
+          },
+          {
+            "@type": "BreadcrumbList"
+          },
+          {
+            "@type": "NewsMediaOrganization",
+            "@id": "https://www.latercera.com/#organization",
+            "url": "https://www.latercera.com/"
+          },
+          {
+            "@type": "WebSite",
+            "url": "https://www.latercera.com/"
+          }
+        ]
+      },
+      "primary_article": {
+        "title": "Hospital Van Buren entrega nuevo balance tras accidente de bus de orquesta: tres pacientes permanecen internados",
+        "publication_date": "2026-10-11",
+        "publication_timestamp": "2026-10-11T13:35:20.471Z",
+        "publication_date_source": "visible_article_byline",
+        "section": "Nacional",
+        "health_relevant": true
+      },
+      "gzip_file": "tests/fixtures/pulso_live9_primary_real/7a632a39efbbe294e38ef8b0628f7227cf4a17d9402c93e73f4ddf5f6cacaed3.html.gz",
+      "gzip_sha256": "89018f7a723366ba43e4a82c19dfa05ca9a208ce459a61c516271c3591e74e50",
+      "retention_reason": "verified_primary_health_article",
+      "original_capture_gzip_file": "responses/7a632a39efbbe294e38ef8b0628f7227cf4a17d9402c93e73f4ddf5f6cacaed3.gz",
+      "original_capture_manifest_sha256": "9a054db9f2b3da81ce3ca5bbff8bb8a478fee8cf706f08b8df52e0736f2d0450",
+      "original_capture_manifest_path": "data/audits/pulso_runtime_capture/manifest.json",
+      "capture_provenance": "preserved_original_http_response",
+      "primary_identity_verified": true,
+      "publication_date_verified": true,
+      "publication_date": "2026-10-11",
+      "publication_date_source": "visible_article_byline",
+      "primary_body_sha256": "1a8e2cb747ff4f55e459c16d02f27a7b570f75c36899543861cb843ff0a67f8d",
+      "primary_body_characters": 2787,
+      "expected_html_sha256": "7a632a39efbbe294e38ef8b0628f7227cf4a17d9402c93e73f4ddf5f6cacaed3",
+      "primary_replay_status": "EXACT_ORIGINAL_REPLAY_VERIFIED",
+      "queue_fingerprint": "cab108224d311493028b294814e4e971ec29e91168face4427bc9ebf8b58f9e1",
+      "target_stage": "original_discovery_primary",
+      "artifact_run_id": 38149773071,
+      "artifact_id": 11707255596
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/muere-juan-aliste-vega-exlautarista-condenado-por-asesinato-del-cabo-luis-moyano/",
+      "requested_at": "2026-10-11T15:07:03.754494+00:00",
+      "status": 200,
+      "final_url": "https://www.latercera.com/nacional/noticia/muere-juan-aliste-vega-exlautarista-condenado-por-asesinato-del-cabo-luis-moyano/",
+      "content_type": "text/html; charset=utf-8",
+      "charset": "utf-8",
+      "captured_at": "2026-10-11T15:07:04.112420+00:00",
+      "bytes": 427057,
+      "sha256": "298e026ace0051f53e23f58b2904026a9a40293726660e0c1cc9a5ae9b8d9105",
+      "returned_text_utf8_sha256": "298e026ace0051f53e23f58b2904026a9a40293726660e0c1cc9a5ae9b8d9105",
+      "observed": {
+        "canonical": "https://www.latercera.com/nacional/noticia/muere-juan-aliste-vega-exlautarista-condenado-por-asesinato-del-cabo-luis-moyano/",
+        "metadata": {
+          "og:url": "https://www.latercera.com/nacional/noticia/muere-juan-aliste-vega-exlautarista-condenado-por-asesinato-del-cabo-luis-moyano/",
+          "og:title": "Muere Juan Aliste Vega, exlautarista condenado por asesinato del cabo Luis Moyano - La Tercera",
+          "article:section": "Nacional",
+          "article:modified_time": "2026-10-11T13:40:22.278Z",
+          "article:published_time": "2026-10-11T13:28:14.526Z"
+        },
+        "json_ld": [
+          {
+            "@type": "NewsArticle",
+            "@id": "https://www.latercera.com/nacional/noticia/muere-juan-aliste-vega-exlautarista-condenado-por-asesinato-del-cabo-luis-moyano/#article",
+            "url": "https://www.latercera.com/nacional/noticia/muere-juan-aliste-vega-exlautarista-condenado-por-asesinato-del-cabo-luis-moyano/",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://www.latercera.com/nacional/noticia/muere-juan-aliste-vega-exlautarista-condenado-por-asesinato-del-cabo-luis-moyano/",
+              "name": "Muere Juan Aliste Vega, exlautarista condenado por asesinato del cabo Luis Moyano",
+              "primaryImageOfPage": {
+                "@type": "ImageObject",
+                "width": 1600,
+                "height": 900,
+                "url": "https://www.latercera.com/resizer/v2/WDLNSIMRQNHVPNA5BMZHIG3FUQ.JPG?auth=2189c13bed32f26af99966d6ac237cbda0c7871296d879829df63b8617fa29d9&height=900&width=1600&smart=true",
+                "description": "juan aliste vega"
+              }
+            },
+            "headline": "Muere Juan Aliste Vega, exlautarista condenado por asesinato del cabo Luis Moyano",
+            "datePublished": "2026-10-11T13:28:14.526Z",
+            "dateModified": "2026-10-11T13:40:22.278Z",
+            "articleSection": "Nacional",
+            "keywords": [
+              "Aliste Vega",
+              "Kast",
+              "Indulto",
+              "Luis Moyano",
+              "Nacional",
+              "Rabat",
+              "Carabineros"
+            ]
+          },
+          {
+            "@type": "BreadcrumbList"
+          },
+          {
+            "@type": "NewsMediaOrganization",
+            "@id": "https://www.latercera.com/#organization",
+            "url": "https://www.latercera.com/"
+          },
+          {
+            "@type": "WebSite",
+            "url": "https://www.latercera.com/"
+          }
+        ]
+      },
+      "primary_article": {
+        "title": "Muere Juan Aliste Vega, exlautarista condenado por asesinato del cabo Luis Moyano",
+        "publication_date": "2026-10-11",
+        "publication_timestamp": "2026-10-11T13:28:14.526Z",
+        "publication_date_source": "visible_article_byline",
+        "section": "Nacional",
+        "health_relevant": true
+      },
+      "gzip_file": "tests/fixtures/pulso_live9_primary_real/298e026ace0051f53e23f58b2904026a9a40293726660e0c1cc9a5ae9b8d9105.html.gz",
+      "gzip_sha256": "88d5a004efa5388ce4cd3a4892c6cb5f255610fe4c90f41f57a3b0097411cace",
+      "retention_reason": "verified_primary_health_article",
+      "original_capture_gzip_file": "responses/298e026ace0051f53e23f58b2904026a9a40293726660e0c1cc9a5ae9b8d9105.gz",
+      "original_capture_manifest_sha256": "9a054db9f2b3da81ce3ca5bbff8bb8a478fee8cf706f08b8df52e0736f2d0450",
+      "original_capture_manifest_path": "data/audits/pulso_runtime_capture/manifest.json",
+      "capture_provenance": "preserved_original_http_response",
+      "primary_identity_verified": true,
+      "publication_date_verified": true,
+      "publication_date": "2026-10-11",
+      "publication_date_source": "visible_article_byline",
+      "primary_body_sha256": "461828182f49ea460d59055783ff4d88c413c6720f55fcb25e35b3fc133546eb",
+      "primary_body_characters": 2666,
+      "expected_html_sha256": "298e026ace0051f53e23f58b2904026a9a40293726660e0c1cc9a5ae9b8d9105",
+      "primary_replay_status": "EXACT_ORIGINAL_REPLAY_VERIFIED",
+      "queue_fingerprint": "163e2e80aec2d66306c976c8de5b8aaf03eda3e0438ae9c8a6a67c6fe490396a",
+      "target_stage": "original_discovery_primary",
+      "artifact_run_id": 38149773071,
+      "artifact_id": 11707255596
+    },
+    {
+      "url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+      "requested_at": "2026-10-11T23:30:55.324212+00:00",
+      "status": 200,
+      "final_url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+      "content_type": "text/html; charset=utf-8",
+      "charset": "utf-8",
+      "captured_at": "2026-10-11T23:30:55.509773+00:00",
+      "bytes": 437756,
+      "sha256": "f8a47c32d341468218003754ee4965ea84ee9aa3aef5f617e0e73db918306cb8",
+      "returned_text_utf8_sha256": "f8a47c32d341468218003754ee4965ea84ee9aa3aef5f617e0e73db918306cb8",
+      "observed": {
+        "canonical": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+        "metadata": {
+          "og:url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+          "og:title": "Renocido actor Gabriel Prieto fallece a los 65 años - La Tercera",
+          "article:section": "Culto",
+          "article:modified_time": "2026-10-11T23:01:25.661Z",
+          "article:published_time": "2026-10-11T22:47:49.888Z"
+        },
+        "json_ld": [
+          {
+            "@type": "NewsArticle",
+            "@id": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/#article",
+            "url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+              "name": "Renocido actor Gabriel Prieto fallece a los 65 años ",
+              "primaryImageOfPage": {
+                "@type": "ImageObject",
+                "width": 1600,
+                "height": 900,
+                "url": "https://www.latercera.com/resizer/v2/EPBC5NIKJNDGNOCQCCLTS3E54A.jpg?auth=edf94f37facb0a67be2395945495e8e56b63bacdd5be1f691f97fb58e410fd14&height=900&width=1600&focal=600%2C158",
+                "description": "Gabriel Prieto"
+              }
+            },
+            "headline": "Renocido actor Gabriel Prieto fallece a los 65 años ",
+            "datePublished": "2026-10-11T22:47:49.888Z",
+            "dateModified": "2026-10-11T23:01:25.661Z",
+            "articleSection": "Culto",
+            "keywords": [
+              "Gabriel Prieto",
+              "Fallecimiento",
+              "Actor",
+              "Covid-19",
+              "Culto",
+              "ChileActores"
+            ]
+          },
+          {
+            "@type": "BreadcrumbList"
+          },
+          {
+            "@type": "NewsMediaOrganization",
+            "@id": "https://www.latercera.com/#organization",
+            "url": "https://www.latercera.com/"
+          },
+          {
+            "@type": "WebSite",
+            "url": "https://www.latercera.com/"
+          }
+        ]
+      },
+      "primary_article": {
+        "title": "Renocido actor Gabriel Prieto fallece a los 65 años",
+        "publication_date": "2026-10-11",
+        "publication_timestamp": "2026-10-11T22:47:49.888Z",
+        "publication_date_source": "visible_article_byline",
+        "section": "Culto",
+        "health_relevant": true
+      },
+      "gzip_file": "tests/fixtures/pulso_live9_primary_real/f8a47c32d341468218003754ee4965ea84ee9aa3aef5f617e0e73db918306cb8.html.gz",
+      "gzip_sha256": "885dd3ba4745f33997fa57194772ee1c828ae025d2c0b6dea603861e518835ce",
+      "retention_reason": "verified_primary_health_article",
+      "original_capture_gzip_file": "responses/f8a47c32d341468218003754ee4965ea84ee9aa3aef5f617e0e73db918306cb8.gz",
+      "original_capture_manifest_sha256": "aed932bba64c0a04e9b2bb8b255f5caab80de247954012161dc559d12ec0068b",
+      "original_capture_manifest_path": "data/audits/pulso_runtime_capture/manifest.json",
+      "capture_provenance": "preserved_original_http_response",
+      "primary_identity_verified": true,
+      "publication_date_verified": true,
+      "publication_date": "2026-10-11",
+      "publication_date_source": "visible_article_byline",
+      "primary_body_sha256": "d5314e898c41422ecea913473d3cac6f7514a20705d10a684a7c91bc38862cd3",
+      "primary_body_characters": 3449,
+      "expected_html_sha256": "f8a47c32d341468218003754ee4965ea84ee9aa3aef5f617e0e73db918306cb8",
+      "primary_replay_status": "EXACT_ORIGINAL_REPLAY_VERIFIED",
+      "queue_fingerprint": "a98db753925f93fa42fcf0a60065020e59e099578e9d6313d60ff314fccf7280",
+      "target_stage": "current_paid_processing_primary",
+      "artifact_run_id": 38183583899,
+      "artifact_id": 11718992843
+    }
+  ],
+  "missing": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/universidad-catolica-lamenta-muerte-de-penelope-knuth-tras-accidente-en-valparaiso/",
+      "queue_fingerprint": "48c017ec9f9ca492c3f0ae7bebe9684c98225101a2e128aeee60d4895b7b0657",
+      "title": "Universidad Católica lamenta muerte de Penélope Knuth tras accidente en Valparaíso",
+      "publication_date": "2026-10-11",
+      "html_sha256": "5b772d61fa3df4799765d58d05a009075f591f5d8492bfc74ba3ea56af05716b",
+      "body_sha256": "6ec4e6d5db14ab4c9f3f2f3e369bcebb67ae997977ad9a6a00b5e08ac76f5885",
+      "body_characters": 3189,
+      "status": "EXACT_ORIGINAL_MISSING_OR_INVALID",
+      "errors": []
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/aluvion-en-las-condes-municipio-reporta-2015-viviendas-afectadas-y-933-atenciones-en-vacunatorios/",
+      "queue_fingerprint": "1f3c9b4fdad8a36de23c44b6e8ca57b9870177e1fb6dd52bb5cde1e095441392",
+      "title": "Aluvión en Las Condes: municipio reporta 2.015 viviendas afectadas y 933 atenciones en vacunatorios",
+      "publication_date": "2026-10-11",
+      "html_sha256": "1d9a57e0fabd3c230ae5ca23a4cbbbfc15584a77884de945a1ffbc4d6067cd25",
+      "body_sha256": "7341a0a60e33f93339937d6714ad3fd66d233879cec9af9e9acd4de0ab3b0631",
+      "body_characters": 4866,
+      "status": "EXACT_ORIGINAL_MISSING_OR_INVALID",
+      "errors": []
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/abogado-de-aliste-vega-apunta-a-penal-de-rancagua-y-evalua-acciones-legales-contra-el-estado-tras-su-muerte/",
+      "queue_fingerprint": "d3f50bfb73fb868ff68b8a68d9997de170ce61234b1a344b782f7d1508fcc676",
+      "title": "Abogado de Aliste Vega apunta a penal de Rancagua y evalúa acciones legales contra el Estado tras su muerte",
+      "publication_date": "2026-10-11",
+      "html_sha256": "c80e39904f0edea2f0abbd94c81d5c979361d9c6aadc17d21c50bf336f098a95",
+      "body_sha256": "bc1b361e5a23f3225e35d27dd4e42d1488a8408deb93ebbbd6952657e009ee9b",
+      "body_characters": 2761,
+      "status": "EXACT_ORIGINAL_MISSING_OR_INVALID",
+      "errors": []
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/muerte-de-aliste-vega-reabre-debate-por-indultos-de-exigir-celeridad-en-tramitacion-a-advertir-limites-por-lesa-humanidad/",
+      "queue_fingerprint": "e7b3ca96c457220c2864feae3f174889348b408fd6496ffd51e24bd53e6132c6",
+      "title": "Muerte de Aliste Vega reabre debate por indultos: de exigir “celeridad” en tramitación a advertir límites por lesa humanidad",
+      "publication_date": "2026-10-11",
+      "html_sha256": "9bd23f2f884108a559433654f0614fcce2af6a725dacf2693f2968c260772ce3",
+      "body_sha256": "46827634e3ce478bc5df6c182322871810c0a4c4e543f25ed859f67b995688b2",
+      "body_characters": 4824,
+      "status": "EXACT_ORIGINAL_MISSING_OR_INVALID",
+      "errors": []
+    },
+    {
+      "url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+      "queue_fingerprint": "a98db753925f93fa42fcf0a60065020e59e099578e9d6313d60ff314fccf7280",
+      "title": "Renocido actor Gabriel Prieto fallece a los 65 años",
+      "publication_date": "2026-10-11",
+      "html_sha256": "4f3f704d03ac70945eb50b78904efcdfcfe0a6be618f455174a02fb76dac9414",
+      "body_sha256": "94e66cb5eac914c75172013ca91b92d2c568cd2f1ebcffe0cda9e70e29e4dfc3",
+      "body_characters": 2645,
+      "status": "EXACT_ORIGINAL_MISSING_OR_INVALID",
+      "errors": []
+    }
+  ],
+  "refreshed_missing": [],
+  "verdict": "FAIL_ORIGINALS_INCOMPLETE",
+  "no_publisher_request": true,
+  "no_model_call": true,
+  "no_discovery_call": true,
+  "queue_history_cache_ledger_writes": 0,
+  "publication_approved": false
+}

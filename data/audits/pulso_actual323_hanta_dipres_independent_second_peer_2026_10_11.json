@@ -1,0 +1,79 @@
+{
+  "schema_version": "pulso_actual323_hanta_dipres_independent_second_peer_v1",
+  "source_id": "pulso_latercera",
+  "reviewer": "publisher_surfaces",
+  "producer_commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+  "producer_run_id": 38177423421,
+  "producer_code_sha": "c2db17141fd55cbacbcda5b53805341aa4dfa86f",
+  "inputs": {
+    "history": {
+      "commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "39e63cc84af25227fc7cf916ab42867ab8a84a085cb6fffb3b920aa2ba0ed11a"
+    },
+    "queue": {
+      "commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "b5fb262284e5ce28e6b9664703f2a94996ad7abef128a7f1c679fc0a83b26481"
+    },
+    "runtime_report": {
+      "commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "c746b44864dceb465c2d72889ed48e15510fcb7286f8d0840545f584afe6793e"
+    },
+    "telemetry": {
+      "commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "19bb3e6b2ae1e15c623a97eb08ae6b3f323b1c11cec6fa74aad359f3ca04cfad"
+    }
+  },
+  "first_reader": {
+    "path": "data/audits/pulso_actual_followup_hanta_dipres_independent_semantic_review_2026_10_11.json",
+    "sha256": "b4c19a8bead89a2db48f2820851b25f968b9edc3c307f1189cd8419a7e8f408c"
+  },
+  "publication_template": {
+    "path": "data/audits/pulso_actual_followup_dipres_editorial_correction_2026_10_11.json",
+    "sha256": "312cc47e9d22bedd31c783553708623aefa7dcfb30a4fa596fc6c121409788b5"
+  },
+  "pending_diagnosis": {
+    "path": "data/audits/pulso_actual323_two_pending_complete_guard_diagnosis_2026_10_11.json",
+    "sha256": "bb8651fa441209bac7705c88a63d513d0bd82132a2064e7f49dd9549ee0ee979"
+  },
+  "rows": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "publication_date": "2026-09-21",
+      "immutable_actual_model_primary_pin_sha256": "f0507a3cda82e375d0ef58f9559e34ec06411702277cec8654ab16635c3713f4",
+      "full_original_body_read": true,
+      "full_actual_model_read": true,
+      "full_actual_signal_read": true,
+      "actual_status": "published",
+      "actual_score": 84,
+      "decision": "correct",
+      "exact_reason": "Add the named Pulso/La Tercera prefix only to WHAT. Purchases in 2022–2023, the April 2025 base, the 2026 report and future unimplemented recommendations remain distinct. The 10,615 million total and 28 entities accounting for 91.2% are multisector; named health services establish a real health-financing connection without assigning the whole amount to healthcare. The copy asserts neither executed savings nor a completed reallocation.",
+      "proposed_what_happened": "Según Pulso / La Tercera, en su nota del 21 de septiembre de 2026, la Dirección de Presupuestos (Dipres) revisó compras de convenio marco realizadas durante 2022 y 2023 y reportó $10.615 millones de sobregasto. La Tercera obtuvo vía Ley de Transparencia el desglose, según el cual 28 entidades públicas concentraron el 91,2% del monto; entre ellas aparecen varios Servicios de Salud. La base general del estudio correspondía a abril de 2025. Según la nota, sus resultados fueron contemplados para reajustar las asignaciones de esas entidades en la Ley de Presupuesto 2026, pero esto no acredita que el reajuste se haya ejecutado. La nota también reportó recomendaciones de revisión focalizada y de refuerzo de incentivos, sin acreditar su implementación al 21 de septiembre de 2026.",
+      "proposed_why_it_matters": "Según la nota del 21 de septiembre de 2026, el hallazgo afecta la gestión del financiamiento de los Servicios de Salud mencionados, que forman parte de las entidades públicas incluidas en el desglose del sobregasto. La información puede orientar eventuales medidas correctivas y decisiones presupuestarias sobre compras sanitarias, pero la nota no acredita una reasignación ya ejecutada ni un efecto operativo actual en esos servicios. Para el radar, importa separar los datos de compras de 2022-2023, la base de abril de 2025, las asignaciones 2026 contempladas y las recomendaciones futuras reportadas por Pulso/La Tercera.",
+      "model_body_date_score_prospective_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "publication_date": "2026-07-29",
+      "immutable_actual_model_primary_pin_sha256": "69198b67e7bc4cfd0fa68b94efc4df42e2343f4646aef6f75c9bd2ac79edba68",
+      "full_original_body_read": true,
+      "full_actual_model_read": true,
+      "full_actual_signal_read": false,
+      "actual_status": "retry",
+      "actual_score": 78,
+      "decision": "code_only_false_negative_subject_to_exact_revalidation",
+      "exact_reason": "The actual model recognizes the August 8 prior alert and separates the July 46 cases / 18 deaths / 39% cut from October 11 status. Regional and exposure detail in the original is absent from August 8; no new decree, additional implemented capacity or current validity is claimed. Both the hanta scope alias and the dated historical WHY qualification are false negatives of the frozen C2 validator. No human publication, model mutation or score change is authorized.",
+      "publication_approved": false
+    }
+  ],
+  "AI_calls": 0,
+  "state_mutated": false,
+  "scores_changed": false,
+  "models_changed": false,
+  "pending_publication_approved": false,
+  "scope_verdict": "PASS_TWO_COMPLETE_PRIMARY_AND_ACTUAL_MODEL_PEER",
+  "global_acceptance": "NOT_ACCEPTED_PENDING_TWO_HELD_REAL_OUTCOMES_FINAL_QA"
+}

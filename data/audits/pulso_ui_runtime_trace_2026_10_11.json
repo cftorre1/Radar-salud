@@ -1,0 +1,61 @@
+{
+  "captured_at": "2026-10-11T06:32:09.733076+00:00",
+  "scope": "Pulso daily runtime registration and user-facing source registry linkage",
+  "baseline_actual_artifacts": {
+    "core_discovery": "2026-10-10T22:23:57.654378+00:00;19sources;Pulso absent;runtime marker absent",
+    "pulso_source_health": "2026-10-10T22:25:43.933385+00:00;discovered5,published0,last_signal_atnull;old beta evidence",
+    "web_product_registry": "2026-09-24T03:50:32.729445+00:00;7sources;Pulso absent",
+    "web_feed_real_pulso_rows": 0
+  },
+  "code_registration": {
+    "core_config": "config/sources.json pulso_latercera press_high_trust",
+    "core_engine": "Pulso registered alongside19other sources; ordinary CLI without--sources includes it",
+    "daily_workflow": "staging checkout; normal processing_limit30; completes all discovery before globalprocessing",
+    "source_scoped_recovery_isolation": "--sources pulso_latercera limits discovery/processing and preserves unrelatedqueue"
+  },
+  "ui_current_behavior": {
+    "filtering": "Noticias + scopechips +30/90days; no publisher-specific sourcefilter",
+    "evidence_maturity": "media_reported remains JSONmetadata; renderer shows publisher attribution/name rather than raw enum; genuine UIattribution still awaiting realrows",
+    "source_registry_input": "web/data/product.json; exported source_health.json alone does not refresh source dialog",
+    "preview_refresh": "staging QA invokesproduct_report; daily export step alone does not"
+  },
+  "demonstrated_identity_bug_and_repair": {
+    "bug": "engine health name slug-titlecase yieldedPulso Latercera; UIselectedDate matchedcanonicalpublisher Pulso / La Tercera literally; latestselected falselyaúnno visible; groupingfelltoOtrasfuentesrelevantes",
+    "fix": "engine health uses Pulso sourceconfig name only; UIcanonicalizeslegacyPulso Latercera; media grouping recognizesPulso andLaTercera",
+    "python_regression": "Synthetic empty-discovery corepoll, noarticles/AI/publication;1PASS",
+    "browser_regression": "Explicit synthetic registry fixtures with incomplete(nonpublishable) identity/date records;4PASS desktop/mobile legacy/canonicalnames; never sourceacceptance",
+    "browser_stats": {
+      "startTime": "2026-10-11T06:30:53.119Z",
+      "duration": 2724.902,
+      "expected": 4,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "browser_report_sha256": "bb43b1fe4ac95422b5febbd503d9f823191f542b2625bde8f96e2d562136fd78"
+  },
+  "actual_queue_readonly": {
+    "ready_items": 86,
+    "first30_sources": {
+      "diario_financiero": 28,
+      "suseso": 2
+    },
+    "pulso_ready_items": 11,
+    "first_pulso_1based_rank": 53,
+    "conclusion": "Initialbackfill willnotprocessinthefirst normal30item globalcycle. Source-scoped recoverycancompleteinitialbackfill. Permanentstarvationnotdemonstrated."
+  },
+  "genuine_ui_qa": {
+    "status": "PREPARED_NOT_RUN_WAITING_FOR_GENUINE_CORE_FEED_EXPORT",
+    "scratch_spec": "/workspace/work/pulso_ui_real.spec.cjs",
+    "scratch_config": "/workspace/work/pulso-ui-real.config.cjs",
+    "checks": [
+      "realpublishedsnapshotmetadata media_reported +press_high_trust",
+      "verifiedpublicationprovenance +originalpublisherURL",
+      "Noticias90day cards andofficialoriginalhref",
+      "publisherattributioncard/detail +mobileoverflow",
+      "actualcoreproductregistry +lastselected +mediagroup"
+    ],
+    "no_synthetic_rows": true
+  },
+  "acceptance_limit": "FixturePASS demonstratesidentityrepaironly. Realcorehistory/feed/sourcehealthand directedUIQA remain tovalidate aftergenuineruntimeoutputs arrive."
+}

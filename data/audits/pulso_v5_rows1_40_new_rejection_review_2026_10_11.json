@@ -1,0 +1,104 @@
+{
+  "schema_version": "pulso_actual_paid_rejection_second_reader_v1",
+  "source_id": "pulso_latercera",
+  "producer_commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+  "inputs": {
+    "history": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "f779385fed3eccf96d0e6d95ebfece23d1e79d83d6a0a8675b80615a63c121fa"
+    },
+    "queue": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "4cf450c4e0ab8b1238af11833dcc65b037382bae5b2ff0da93bc5539e1bbbf8f"
+    },
+    "runtime_report": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "c42683a457229a23bf35fbc1a658af5a8617411f615d4dcb0ddcaa5b03c4f43b"
+    },
+    "telemetry": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "d5cbef5b62630ab6f17305c29bfea987f788313e0876d15d6a02c115b2a30c30"
+    }
+  },
+  "scope": "Independent read of the one new actual rejected output within cohort rows1–40. Does not claim that all interviews are excluded or that ILC is not a human-health actor.",
+  "publication_approved": false,
+  "AI_calls": 0,
+  "state_mutated": false,
+  "gate_threshold": 72,
+  "row": {
+    "url": "https://www.latercera.com/horizontes/noticia/pablo-gonzalez-de-ilc-chile-envejece-mas-rapido-y-con-menos-recursos-que-otros-paises/",
+    "publication_date": "2026-09-16",
+    "title": "Pablo González de ILC: “Chile envejece más rápido y con menos recursos que otros países”",
+    "original_full_primary_body": "El gerente general del holding ILC —que reúne a RedSalud, Consalud, AFP Habitat, Confuturo y otras compañías del área salud, previsión y servicios financieros— fue el primer invitado de “Conversaciones LT Horizontes”, el nuevo espacio de entrevistas de La Tercera sobre la nueva longevidad. En la conversación con Polo Ramírez, González repasa por qué el envejecimiento acelerado de Chile ya no es un tema de pensiones, sino un cambio de era que tensiona la salud, el trabajo y la economía del país completo. En 1925, un chileno vivía en promedio 33 años. Cien años después, en 2025, esa cifra saltó a los 85. Es un salto de 2,5 veces en solo un siglo —algo que a la mayoría de los países desarrollados les tomó mucho más tiempo lograr—. Pablo González, gerente general de ILC, usa ese dato para explicar por qué insiste en un punto: lo que vive Chile “no es una tendencia, es un cambio de era”. Consultado sobre si el país está preparado para ese cambio, la respuesta de González es directa: “Yo creo que no estamos preparados”. Y explica por qué la conversación pública se quedó corta: durante años el envejecimiento se discutió casi exclusivamente desde las pensiones, cuando en realidad tensiona al sistema de salud, al mercado laboral y hasta al sistema educacional. Para González, el punto de partida no es un diagnóstico negativo. “Este es un logro de Chile”, afirma sobre el salto en expectativa de vida —resultado, dice, de políticas públicas y de un sistema de salud que en varios indicadores funciona mejor de lo que se suele reconocer. El problema, plantea, es que ese logro fue tan rápido que el país no alcanzó a adaptar los sistemas construidos para una realidad demográfica completamente distinta. Ahí aparece uno de los conceptos centrales de la conversación: la diferencia entre la esperanza de vida y la esperanza de vida saludable. González detalla por qué esa brecha no se ha cerrado, y apunta a una causa concreta en el diseño del sistema de salud chileno —curativo antes que preventivo, y fragmentado— que ilustra con un ejemplo cotidiano: lo que ocurre en una consulta médica de apenas 15 o 20 minutos cuando el paciente es una persona mayor. Uno de los momentos más directos de la entrevista es cuando González compara a Chile con otros países de la OCDE. Entre las diez naciones que más rápido aumentaron su esperanza de vida en las últimas décadas, hay una que nunca movió su edad legal de jubilación. Esa es la pregunta que, según él, el país sigue evitando —y que conecta con una cifra que muestra cómo se contrae el mercado laboral en los años previos a pensionarse. También adelanta un dato que probablemente pocos esperan: durante la próxima década, cerca de la mitad de las salas de clase de los colegios en Chile va a estar vacía. Y prácticamente al mismo tiempo, el país va a necesitar bastante más camas hospitalarias que las que tiene hoy. Dos cifras que, dice, están directamente conectadas —y que en la conversación explica cómo podrían convertirse en una misma solución. Más allá del diagnóstico, González repasa algunas de las iniciativas concretas que ha desarrollado el holding en los últimos años: un centro de salud diseñado exclusivamente para personas mayores, protocolos de atención distintos para ese segmento —incluyendo quién responde cuando llaman a un call center— y un producto financiero pensado para un problema puntual que enfrentan muchos pensionados y que hasta ahora pasaba inadvertido. Según cuenta, el resultado se refleja en los indicadores de satisfacción de esos servicios, sistemáticamente mejores entre los mayores de 60 que en el resto de los segmentos. Revisa la conversación completa entre Polo Ramírez y Pablo González en el primer capítulo de Conversaciones LT Horizontes.",
+    "original_body_sha256": "c43c6ac8fe5e43e3e8a3d97f34a7a68055ff70c44c01d03c9b4b522a0d70c258",
+    "original_full_model_output": {
+      "relevance_score": 58,
+      "what_happened": "Según la nota del 16 de septiembre de 2026, Pablo González, gerente general de ILC, sostuvo que Chile envejece aceleradamente y que el país no estaría preparado; la nota atribuye a 2025 una esperanza de vida de 85 años, frente a 33 en 1925. Al 16 de septiembre de 2026, según la nota, el holding había desarrollado un centro de salud para personas mayores, protocolos de atención para ese segmento y un producto financiero. La entrevista también proyectó que durante la próxima década cerca de la mitad de las salas de clase estaría vacía y que el país necesitaría más camas hospitalarias que hoy. Son declaraciones y proyecciones de la entrevista, no evidencia de una implementación sectorial nueva.",
+      "why_it_matters": "Según la nota del 16 de septiembre de 2026, la tesis de González vincula el envejecimiento con una brecha entre esperanza de vida y esperanza de vida saludable, además de un sistema de salud descrito como curativo y fragmentado. Para ILC, esto plantearía una presión futura sobre la atención de personas mayores y las camas hospitalarias, pero la nota no acredita una decisión regulatoria, de financiamiento, cobertura o capacidad asistencial del sector. Al 16 de septiembre de 2026, las iniciativas mencionadas eran presentadas por González como desarrollos del holding, con satisfacción reportada como superior entre mayores de 60; ese efecto se atribuye a la entrevista y no se verifica para el 11 de octubre de 2026.",
+      "reason": "La nota aborda un desafío real de salud humana y entrega proyecciones demográficas relevantes, pero su contenido central es una entrevista de diagnóstico y opinión. No acredita una medida pública, inversión sectorial, cambio regulatorio, adquisición cerrada ni capacidad asistencial nueva; las iniciativas de ILC se describen de forma general y no permiten establecer un cambio material verificable para el sector.",
+      "pulso_editorial_proof": {
+        "scope_decision": "opinion",
+        "scope_reason": "El envejecimiento y la atención de personas mayores son asuntos de salud humana, pero la pieza presenta principalmente la interpretación de un ejecutivo y proyecciones futuras, sin acreditar un cambio concreto ejecutado en aseguramiento, prestadores, financiamiento, regulación, medicamentos o capacidad sanitaria.",
+        "human_health_scope_quote": "la diferencia entre la esperanza de vida y la esperanza de vida saludable",
+        "actor": "",
+        "action": "",
+        "consequence": "",
+        "actor_quote": "",
+        "action_quote": "",
+        "consequence_quote": "",
+        "event_status": "mixed_actual_and_future",
+        "event_status_quote": "durante la próxima década, cerca de la mitad de las salas de clase de los colegios en Chile va a estar vacía.",
+        "novelty_decision": "uncertain",
+        "novelty_reason": "La entrevista reúne cifras, proyecciones e iniciativas del holding, pero no se entrega contexto incremental que permita determinar si esos elementos son nuevos frente a información ya conocida.",
+        "novelty_quote": "Más allá del diagnóstico, González repasa algunas de las iniciativas concretas que ha desarrollado el holding en los últimos años",
+        "future_claims": [
+          {
+            "summary_field": "what_happened",
+            "summary_quote": "Según la nota del 16 de septiembre de 2026, Pablo González, gerente general de ILC, sostuvo que Chile envejece aceleradamente y que el país no estaría preparado; la nota atribuye a 2025 una esperanza de vida de 85 años, frente a 33 en 1925. Al 16 de septiembre de 2026, según la nota, el holding había desarrollado un centro de salud para personas mayores, protocolos de atención para ese segmento y un producto financiero. La entrevista también proyectó que durante la próxima década cerca de la mitad de las salas de clase estaría vacía y que el país necesitaría más camas hospitalarias que hoy. Son declaraciones y proyecciones de la entrevista, no evidencia de una implementación sectorial nueva.",
+            "source_quote": "durante la próxima década, cerca de la mitad de las salas de clase de los colegios en Chile va a estar vacía. Y prácticamente al mismo tiempo, el país va a necesitar bastante más camas hospitalarias que las que tiene hoy."
+          },
+          {
+            "summary_field": "why_it_matters",
+            "summary_quote": "Según la nota del 16 de septiembre de 2026, la tesis de González vincula el envejecimiento con una brecha entre esperanza de vida y esperanza de vida saludable, además de un sistema de salud descrito como curativo y fragmentado. Para ILC, esto plantearía una presión futura sobre la atención de personas mayores y las camas hospitalarias, pero la nota no acredita una decisión regulatoria, de financiamiento, cobertura o capacidad asistencial del sector. Al 16 de septiembre de 2026, las iniciativas mencionadas eran presentadas por González como desarrollos del holding, con satisfacción reportada como superior entre mayores de 60; ese efecto se atribuye a la entrevista y no se verifica para el 11 de octubre de 2026.",
+            "source_quote": "prácticamente al mismo tiempo, el país va a necesitar bastante más camas hospitalarias que las que tiene hoy"
+          }
+        ]
+      },
+      "_pulso_analysis_meta": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0dd615cd083f9a92006acbc7879b2c87d1809c524892a8f0d4",
+        "analysis_text_sha256": "c43c6ac8fe5e43e3e8a3d97f34a7a68055ff70c44c01d03c9b4b522a0d70c258",
+        "request_input_sha256": "0e6eb92ae97a13b551e42b809701ffcb57103750dce6a7a82533dc2492d9f467",
+        "raw_model_output_sha256": "4d7aed8c04078acef8056140a4f8aaf3530709cd44c437a8b13a979089d35468"
+      }
+    },
+    "original_model_output_sha256": "9a87227c0884f15cc04c421d2a1dce13e1666e0bd9b1969da0da10dfa4c626f9",
+    "original_model_response": {
+      "schema_version": "pulso_editorial_proof_v5",
+      "source_name": "Pulso / La Tercera",
+      "model": "gpt-5.6-luna",
+      "response_id": "resp_0dd615cd083f9a92006acbc7879b2c87d1809c524892a8f0d4",
+      "analysis_text_sha256": "c43c6ac8fe5e43e3e8a3d97f34a7a68055ff70c44c01d03c9b4b522a0d70c258",
+      "request_input_sha256": "0e6eb92ae97a13b551e42b809701ffcb57103750dce6a7a82533dc2492d9f467",
+      "raw_model_output_sha256": "4d7aed8c04078acef8056140a4f8aaf3530709cd44c437a8b13a979089d35468"
+    },
+    "actual_status": "rejected",
+    "actual_reason": "pulso_editorial_opinion",
+    "actual_score": 58,
+    "independently_read_complete_body_and_model": true,
+    "decision": "conservative_rejection_defensible_no_new_material_action",
+    "exact_reason": "El actor ILC y la atención de personas mayores son reales y sanitarios. Sin embargo, centro/protocolos/producto se presentan como desarrollos de los últimos años; no hay apertura/inversión/adopción/cambio regulatorio concretamente nuevo y fechado en la entrevistaSep16. Se trata de diagnóstico/proyecciones y antecedentes generales, con novedad incierta y score58 menor que72. La esperanza devida85en2025 es afirmación de la entrevista, no dato oficial corroborado ni se publica. No se convierte el envejecimiento genérico en señal aprobada de capacidad recién implementada.",
+    "supporting_verbatim_quotes": [
+      "que ha desarrollado el holding en los últimos años",
+      "un centro de salud diseñado exclusivamente para personas mayores",
+      "sistemáticamente mejores entre los mayores de 60"
+    ],
+    "body_source_day_original_output_score_status_preserved": true
+  }
+}

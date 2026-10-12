@@ -1,0 +1,916 @@
+{
+  "schema_version": "pulso_followup5_independent_qa_peer_v1",
+  "generated_at": "2026-10-11T21:25:24.549050+00:00",
+  "reviewed_head": "c29b618f21c8db8918d663616c2a8c6c7e794e94",
+  "status": "SCOPED_QA_CODE_PASS",
+  "qa_helpers_sha256": {
+    "verify_followup_reassessment_context": "e2c9084c3ce2a94862e7b519414e6c5bb34840d487b684d9069a472bf380c967",
+    "followup_paid_proof_files": "365d79530b535ca3a69c0e68b0f13e5aa91d48a9efb59992f388f066dabc6091",
+    "has_followup_paid_claim": "d07dd511fe9b86241ddbb1f5d000c68a3c93e61755e481e71945a5a56b478f5d",
+    "requires_followup_paid_authority": "23f7b720f41c416588d2c766aa8433ce400f443febeab63ab41e65ea41e5c7f8",
+    "followup_paid_pin": "54b124b66d4eda4e4da1de08daca83afced7337962a61f266e15ab95814e000f",
+    "followup_paid_origin": "7bea7ecb26864fb883cd4f0154c687f2f7f3adfd7b1ec5832243eba07ad4894e",
+    "verify_followup_paid_revalidation": "0881d2d35a6110b9de8a2264f22bc4101e6fed9bc03da65571a18df950ce4deb",
+    "unchanged_current_paid_execution": "410a4118033877089a46c549b9ff52ac9ce674cdaa45326457ce2ccdde9b617c",
+    "unchanged_previous_paid_execution": "642ac61ed575ea5c9bce63d09cc0f7c6d7f8f609dcdacd12d1c887ac45b246fb"
+  },
+  "inputs": {
+    "tests/test_pulso_followup_paid_revalidation_qa.py": "4da9d3dbf92b17677be34c535ea3f66d7caed24d0a4608a23e9a5eed82e71bd5",
+    "src/radar_salud/pulso_followup_paid_revalidation.py": "cf498c6d38327b6c1633f1536444e14486405fee8b6a763f183bbb98a5d03a06",
+    "src/radar_salud/pulso_editorial_proof.py": "e524dec57d62daa9559ba21e792422d350635b7a65f0eb78a277e36b800c231e",
+    "data/audits/pulso_followup5_paid_guard_revalidation_manifest_2026_10_11.json": "1c7389906e3855d2e622e4bc4aab91addcf1e8615e8251f03def15b447f922fa",
+    "data/audits/pulso_current5_guard_independent_diagnosis_2026_10_11.json": "b57156432b9f669fba9147bf215312b0067c501ba4cd385dc699f3d714765eab",
+    "data/audits/pulso_current12_remaining5_second_semantic_diagnosis_2026_10_11.json": "d5234ffd225f5cc45fe57ca7c7d6377539ec0f46b19a18696e89b204ed896c13"
+  },
+  "rows": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "publication_date": "2026-10-05",
+      "route": "assess_contract_or_semantic_defect",
+      "original_response_id": "resp_06b321eec0a4c07f006acbf3f38d0c87d0be4b0433bf3d71cb",
+      "current_response_id": "resp_synthetic_unit_followup5_distinct",
+      "temporary_synthetic_response": true,
+      "genuine_external_calls": 0,
+      "result": "SCOPED_UNIT_AUTHORITY_PASS",
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "publication_date": "2026-09-01",
+      "route": "reuse_code_fn",
+      "original_response_id": "resp_0ba893c422f43fff006acbf46d7b7087d08f2e5202e0b8c81a",
+      "current_response_id": "resp_0ba893c422f43fff006acbf46d7b7087d08f2e5202e0b8c81a",
+      "temporary_synthetic_response": false,
+      "genuine_external_calls": 0,
+      "result": "SCOPED_UNIT_AUTHORITY_PASS",
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "publication_date": "2026-09-01",
+      "route": "reuse_code_fn",
+      "original_response_id": "resp_0482b05a494763e7006acbf490607c87d0bfa2f797f7a616b8",
+      "current_response_id": "resp_0482b05a494763e7006acbf490607c87d0bfa2f797f7a616b8",
+      "temporary_synthetic_response": false,
+      "genuine_external_calls": 0,
+      "result": "SCOPED_UNIT_AUTHORITY_PASS",
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "publication_date": "2026-07-29",
+      "route": "assess_contract_or_semantic_defect",
+      "original_response_id": "resp_067ece23e848c255006acbf4ecaf6487d09d7334c588812e6b",
+      "current_response_id": "resp_synthetic_unit_followup5_distinct",
+      "temporary_synthetic_response": true,
+      "genuine_external_calls": 0,
+      "result": "SCOPED_UNIT_AUTHORITY_PASS",
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "publication_date": "2026-09-21",
+      "route": "reuse_code_fn",
+      "original_response_id": "resp_0198a8fdf4ba8f19006acbf42fb5dc87d0b54472ac2e9408f1",
+      "current_response_id": "resp_0198a8fdf4ba8f19006acbf42fb5dc87d0b54472ac2e9408f1",
+      "temporary_synthetic_response": false,
+      "genuine_external_calls": 0,
+      "result": "SCOPED_UNIT_AUTHORITY_PASS",
+      "publication_approved": false
+    }
+  ],
+  "all_claim_erasure_results": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "all_claims_removed": true,
+      "old_current12_qa_genuinely_passes": true,
+      "result": "DENY_REQUIRED_AUTHORITY"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "all_claims_removed": true,
+      "old_current12_qa_genuinely_passes": false,
+      "result": "DENY_REQUIRED_AUTHORITY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "all_claims_removed": true,
+      "old_current12_qa_genuinely_passes": false,
+      "result": "DENY_REQUIRED_AUTHORITY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "all_claims_removed": true,
+      "old_current12_qa_genuinely_passes": true,
+      "result": "DENY_REQUIRED_AUTHORITY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "all_claims_removed": true,
+      "old_current12_qa_genuinely_passes": false,
+      "result": "DENY_REQUIRED_AUTHORITY"
+    }
+  ],
+  "mutations": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "erase_all_followup_claims",
+      "result": "DENY",
+      "reason": "followup_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "erase_all_without_supplied_origin",
+      "result": "DENY",
+      "reason": "followup_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "original66_archive",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "original908_archive",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "original981_archive",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "model_rewrite",
+      "result": "DENY",
+      "reason": "followup_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "source_day",
+      "result": "DENY",
+      "reason": "followup_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "official_role",
+      "result": "DENY",
+      "reason": "followup_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "boolean_attempt",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "guard",
+      "result": "DENY",
+      "reason": "paid_revalidation_guard_not_bound_to_actual_execution"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "wrong_window",
+      "result": "DENY",
+      "reason": "followup_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "own_receipt_approval",
+      "result": "DENY",
+      "reason": "followup_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "synthetic_new_response_removed_from_execution_telemetry",
+      "result": "DENY",
+      "reason": "followup_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "erase_all_followup_claims",
+      "result": "DENY",
+      "reason": "followup_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "original66_archive",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "original908_archive",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "original981_archive",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "model_rewrite",
+      "result": "DENY",
+      "reason": "followup_paid_unchanged66f_answer_or_current_guard_receipt_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "source_day",
+      "result": "DENY",
+      "reason": "followup_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "official_role",
+      "result": "DENY",
+      "reason": "followup_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "boolean_attempt",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "guard",
+      "result": "DENY",
+      "reason": "paid_revalidation_guard_not_bound_to_actual_execution"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "wrong_window",
+      "result": "DENY",
+      "reason": "followup_paid_unchanged66f_answer_or_current_guard_receipt_changed"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "own_receipt_approval",
+      "result": "DENY",
+      "reason": "followup_paid_unchanged66f_answer_or_current_guard_receipt_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "erase_all_followup_claims",
+      "result": "DENY",
+      "reason": "followup_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "original66_archive",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "original908_archive",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "original981_archive",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "model_rewrite",
+      "result": "DENY",
+      "reason": "followup_paid_unchanged66f_answer_or_current_guard_receipt_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "source_day",
+      "result": "DENY",
+      "reason": "followup_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "official_role",
+      "result": "DENY",
+      "reason": "followup_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "boolean_attempt",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "guard",
+      "result": "DENY",
+      "reason": "paid_revalidation_guard_not_bound_to_actual_execution"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "wrong_window",
+      "result": "DENY",
+      "reason": "followup_paid_unchanged66f_answer_or_current_guard_receipt_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "own_receipt_approval",
+      "result": "DENY",
+      "reason": "followup_paid_unchanged66f_answer_or_current_guard_receipt_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "erase_all_followup_claims",
+      "result": "DENY",
+      "reason": "followup_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "erase_all_without_supplied_origin",
+      "result": "DENY",
+      "reason": "followup_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "original66_archive",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "original908_archive",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "original981_archive",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "model_rewrite",
+      "result": "DENY",
+      "reason": "followup_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "source_day",
+      "result": "DENY",
+      "reason": "followup_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "official_role",
+      "result": "DENY",
+      "reason": "followup_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "boolean_attempt",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "guard",
+      "result": "DENY",
+      "reason": "paid_revalidation_guard_not_bound_to_actual_execution"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "wrong_window",
+      "result": "DENY",
+      "reason": "followup_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "own_receipt_approval",
+      "result": "DENY",
+      "reason": "followup_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "synthetic_new_response_removed_from_execution_telemetry",
+      "result": "DENY",
+      "reason": "followup_paid_contract_defect_requires_new_actual_bound_fast"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "erase_all_followup_claims",
+      "result": "DENY",
+      "reason": "followup_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "original66_archive",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "original908_archive",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "original981_archive",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "model_rewrite",
+      "result": "DENY",
+      "reason": "followup_paid_unchanged66f_answer_or_current_guard_receipt_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "source_day",
+      "result": "DENY",
+      "reason": "followup_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "official_role",
+      "result": "DENY",
+      "reason": "followup_paid_current_primary_or_full_request_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "boolean_attempt",
+      "result": "DENY",
+      "reason": "followup_paid_admission_archive_or_historical_chain_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "guard",
+      "result": "DENY",
+      "reason": "paid_revalidation_guard_not_bound_to_actual_execution"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "wrong_window",
+      "result": "DENY",
+      "reason": "followup_paid_unchanged66f_answer_or_current_guard_receipt_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "own_receipt_approval",
+      "result": "DENY",
+      "reason": "followup_paid_unchanged66f_answer_or_current_guard_receipt_changed"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "attack": "original_deferred_premise_relabelled_as_terminal",
+      "result": "DENY",
+      "reason": "followup_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "attack": "original_deferred_premise_relabelled_as_terminal",
+      "result": "DENY",
+      "reason": "followup_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "attack": "original_deferred_premise_relabelled_as_terminal",
+      "result": "DENY",
+      "reason": "followup_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "attack": "original_deferred_premise_relabelled_as_terminal",
+      "result": "DENY",
+      "reason": "followup_paid_required_authority_missing"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "attack": "original_deferred_premise_relabelled_as_terminal",
+      "result": "DENY",
+      "reason": "followup_paid_required_authority_missing"
+    }
+  ],
+  "historical_terminal_checks": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "cohort": "original66_terminal7",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-prohibe-temporalmente-funcionamiento-de-planta-procesadora-de-lacteos-matthei-tras-reiteradas-muestras-positivas-con-listeria/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/diez-servicios-de-salud-concentran-el-62-de-la-oferta-publica-para-resolver-el-cancer/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/gobierno-anuncia-plan-laboral-que-movilizara-recursos-por-unos-us1350-millones-que-apunta-a-crear-mas-de-100-mil-empleos/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+      "cohort": "original66_terminal7",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+      "cohort": "original66_terminal7",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/agencia-de-ciberseguridad-refuta-a-uc-christus-y-defiende-incorporarla-a-listado-un-ransomware-puede-tener-alcances-catastroficos/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/bancada-udi-anuncia-agenda-pro-consumidor-con-14-medidas-en-seguros-salud-transporte-y-otras-areas/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/virus-respiratorios-positividad-asciende-al-579-la-mas-alta-en-los-ultimos-tres-anos/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/contraloria-investigara-alcances-de-la-alerta-oncologica-del-minsal-por-solicitud-de-diputada-radical/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "cohort": "original66_terminal7",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/ante-baja-vacunacion-en-grupos-de-riesgo-minsal-advierte-aumento-de-consultas-en-urgencias-por-virus-respiratorios/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/inauguran-el-primer-centro-de-salud-de-alta-resolutividad-sar-para-vina-del-mar-recinto-podra-realizar-65-mil-atenciones-anuales/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+      "cohort": "original66_terminal7",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/sernac-fiscaliza-centros-de-estetica-en-14-regiones-y-pone-foco-en-seguridad-publicidad-y-precios/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/clinica-las-condes-finaliza-aumento-de-capital-y-recauda-80-mil-millones/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/grupo-estatal-chino-es-el-gran-concesionario-de-los-hospitales-publicos-chilenos/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-informa-de-afectaciones-leves-en-recintos-de-salud-por-el-sistema-frontal-pero-afirma-que-red-esta-completamente-operativa/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/anuncio-para-hospitales-y-un-plan-maestro-de-listas-de-espera-los-pasos-del-minsal-tras-el-fin-de-la-alerta-oncologica/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-entrega-balance-final-del-plan-de-alerta-oncologica-y-adelanta-medidas-para-evitar-el-incumplimiento-de-garantias/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/centro-medico-de-atacama-tramitaba-bonos-falsos-de-fonasa-fraude-supero-los-260-millones/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+      "cohort": "original66_terminal7",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-conmemora-dia-nacional-del-donante-de-organos-y-tejidos-con-partido-en-hospital-dr-luis-calvo-mackenna/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-publica-nomina-con-los-eleam-que-cuenta-con-autorizacion-sanitaria-son-993-a-nivel-pais-y-la-rm-concentra-mas-de-la-mitad/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/contraloria-detecta-plantas-de-aguas-servidas-sin-autorizacion-y-deficiencias-en-tres-comunas-de-la-rm/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/contraloria-revela-que-observaciones-ordenadas-al-hospital-de-chillan-no-se-han-corregido-mas-de-dos-mil-cirugias-preferenciales-a-familiares/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/alerta-alimentaria-por-listeria-supermercado-informa-del-retiro-preventivo-de-todas-las-unidades-de-pasta-de-jamon/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/calisto-entra-a-la-batalla-por-causa-junaeb-defensa-buscara-limitar-acceso-al-contenido-de-celular-incautado-por-la-pdi/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/por-emanaciones-toxicas-informan-suspension-de-clases-en-quilicura-tras-gigantesco-incendio-en-empresa-de-productos-quimicos/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-apelara-a-fallo-que-ordeno-reincorporar-a-exdirectora-del-hospital-de-san-antonio-tras-declarar-ilegal-su-remocion/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/ejercito-despliega-hospital-modular-en-ovalle-tras-inutilizacion-de-cinco-pabellones-por-lluvias/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/gobierno-suspende-clases-para-este-lunes-en-provincia-de-huasco-y-regiones-de-coquimbo-y-valparaiso/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+      "cohort": "original908_terminal37",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+      "cohort": "original66_terminal7",
+      "genuine_archived_guard_and_window": true,
+      "legitimate_copy_curation_does_not_relabel_paid_execution": true,
+      "changed_paid_model_cannot_borrow_history": true,
+      "publication_approved": false
+    }
+  ],
+  "actual_original_execution_ledger_delta": {
+    "fast": {
+      "attempted": 10,
+      "successful": 10,
+      "failed": 0
+    },
+    "deep": {
+      "attempted": 0,
+      "successful": 0,
+      "failed": 0
+    }
+  },
+  "gate_threshold": 72,
+  "source_state_edits": false,
+  "genuine_external_calls": 0,
+  "publication_approved": false,
+  "actual_followup_core_approved": false,
+  "actual_zero_ai_replay_approved": false,
+  "final_native_reviewer_ui_approved": false,
+  "limitations": [
+    "Two new-response IDs/results and execution envelopes are explicit temporary synthetic units; three reuse original actual paid models. This is not runtime acceptance.",
+    "Original66 failed five remain historical deferred premises without publication credit; only exact5 reviewed authority permits later processing.",
+    "The historical7+37 check preserves genuine archived execution and allows legitimate copy/status curation; actual publication/group application requires separate independent editorial proof.",
+    "All-chain erasure, archived bodies, model/day/role/attempt/receipt/guard/window/telemetry tampering are denied; whole-body semantics, genuine next core, zero-AI replay and final native/UI acceptance remain separate."
+  ],
+  "exact_lineage_partition": {
+    "older49": 49,
+    "unchanged_older_terminal37": 37,
+    "current12": 12,
+    "current_terminal7": 7,
+    "followup5": 5,
+    "all_original_url_sets_preserved": true,
+    "original25_actual_ledger_delta": {
+      "fast": {
+        "attempted": 25,
+        "successful": 25,
+        "failed": 0
+      },
+      "deep": {
+        "attempted": 0,
+        "successful": 0,
+        "failed": 0
+      }
+    }
+  },
+  "qa_full_script_checkpoint": "5a67117e6ca49f6940cf156964655e67b02ca844",
+  "qa_full_script_sha256": "3810b277f8299ffdeefc0c6e5440e209c6dcf8fd2eb46a0d1d2b17c47e0c578b",
+  "qa_scoped_helpers_unchanged_since": "7969a86b5db7df254e73319fd1bfb483967780c1",
+  "final_scope": "Followup5 admission/paid-authority/archive/guard/window/ledger continuity only; separate cross-source grouping helpers are pinned for reproducibility but not approved by this peer.",
+  "full_qa_global_approval": false,
+  "source_peer": {
+    "path": "data/audits/pulso_followup5_revalidation_independent_source_peer_2026_10_11.json",
+    "sha256": "b3f2e9f7644296075ea9192e1c6a365f7c81841c0e08fb1d19041bcd08239919",
+    "commit": "696cff23bd0b043f314b2562b69bc74a247b4dc8"
+  },
+  "validation": {
+    "command": "PYTHONPATH=src /workspace/work/venv/bin/python -m pytest -q tests/test_pulso_followup_paid_revalidation_qa.py",
+    "passed": 72,
+    "failed": 0,
+    "seconds": 73.46,
+    "final_followup_helpers_byte_identical": true
+  }
+}

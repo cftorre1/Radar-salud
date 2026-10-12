@@ -8,6 +8,7 @@ from .beta_sources_fast import FastCuratedBetaSourceScout
 from .history import load_history, save_history
 from .paths import project_root
 from .source_health import record as health_record
+from .beta_core_handoff import core_handoff
 from .pending_queue import PendingQueue
 
 
@@ -44,6 +45,10 @@ def main():
     specs += [(slug,FastCuratedBetaSourceScout(slug).discover) for slug in
               ("red_davila","andes_salud","clinicas_achs_salud","achs_seguro_laboral","mutual_seguridad","ist","pulso_latercera")]
     for slug,discover in specs:
+        handoff=core_handoff(root,slug)
+        if handoff is not None:
+            audit["sources"][slug]=handoff
+            continue
         found=[];error=None;error_detail=None
         owner=getattr(discover,"__self__",None)
         try:

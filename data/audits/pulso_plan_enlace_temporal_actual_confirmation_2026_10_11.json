@@ -1,0 +1,149 @@
+{
+  "schema_version": "pulso_plan_enlace_actual_temporal_confirmation_v1",
+  "source_id": "pulso_latercera",
+  "generated_at": "2026-10-11T16:37:06.608895+00:00",
+  "reviewer": "historical_discovery_independent_reader",
+  "observed_commit": "4b2cfcc17158dc83ffc19716b573821da717eb95",
+  "scope": "Actual persisted cumulative Plan Enlace WHY correction and exact ALL5 effective-copy/source-preservation verification",
+  "verdict": "PASS_SCOPED_THREE_TEMPORAL_COPY_FINDINGS_RESOLVED",
+  "global_acceptance_claimed": false,
+  "inputs": {
+    "data/state/pending_queue.json": {
+      "commit": "4b2cfcc17158dc83ffc19716b573821da717eb95",
+      "sha256": "984bd7c37d3dc06c7b29ff8fee964d8ca78b037d46564f51651b80a3b00ec8e0"
+    },
+    "data/history/superintendencia_signals.json": {
+      "commit": "4b2cfcc17158dc83ffc19716b573821da717eb95",
+      "sha256": "ff1d416b6e85a743834024b90b212533db02d1ca081ad5bba8abbaebc66bada9"
+    },
+    "web/data/radar_today.json": {
+      "commit": "4b2cfcc17158dc83ffc19716b573821da717eb95",
+      "sha256": "00144b3e8f00730337e65f7d217ab07169baf78ac3885e09e00f797790cccbf2"
+    },
+    "data/ai_usage/2026-10.json": {
+      "commit": "4b2cfcc17158dc83ffc19716b573821da717eb95",
+      "sha256": "eede55020fde42bc9ed520490d6499bdb7fbb0aae91b607d975c3d6a8f163877"
+    },
+    "data/ai_usage/responses.jsonl": {
+      "commit": "4b2cfcc17158dc83ffc19716b573821da717eb95",
+      "sha256": "f952db8df171ef75cb919331430cb2b021a50df9afba9aad1bd47cb58f9f283f"
+    }
+  },
+  "addendum": {
+    "path": "data/audits/pulso_plan_enlace_temporal_addendum_2026_10_11.json",
+    "sha256": "f65b95dbc9d768a97342f58accd5f0e1f3261d38a21d620640ddc51660209eb2"
+  },
+  "applied_correction": {
+    "path": "data/audits/pulso_plan_enlace_temporal_correction_2026_10_11.json",
+    "sha256": "c9310df3284fdfffc90710a72645a9eb582db81be4f3f350b9bf099141d2c60f"
+  },
+  "plan_enlace": {
+    "url": "https://www.latercera.com/nacional/noticia/chomali-por-listas-de-espera-yo-no-esperaba-que-disminuyeran-lo-que-yo-espero-es-que-disminuyan-los-tiempos/",
+    "publication_date": "2026-09-23",
+    "original_body_sha256": "30fa3965a37a4b4c63c9500b5be1a0ec6f1e58c40acc8af01a05f4029072bf25",
+    "original_html_sha256": "f2a058862e76ee3404f9c7474478cd17033c8624f744c1b4cad3530ea6936632",
+    "queue_fingerprint": "3f432d78c49713a8cf9d3e5e1a6675dbdd56bc006dfac9abda8eca7d23aaff54",
+    "score": 84,
+    "status": "published",
+    "model_response": {
+      "schema_version": "pulso_editorial_proof_v4",
+      "source_name": "Pulso / La Tercera",
+      "model": "gpt-5.6-luna",
+      "response_id": "resp_0978a4d6216a505f006acba7fe5b3487d19f50386ee9140a18",
+      "analysis_text_sha256": "30fa3965a37a4b4c63c9500b5be1a0ec6f1e58c40acc8af01a05f4029072bf25",
+      "request_input_sha256": "095dbd610bccd67d2804d66abeff6c94d0d77fd7cba8182e6f5165a2405a287b",
+      "raw_model_output_sha256": "378e504d5753b81acf3d7d12248e61b1ec4ac81f30869b6d7308759bc0a65e75"
+    },
+    "previous_acceptance_provenance_exact_preserved": true,
+    "previous_editorial_review_sha256": "dd06cd9b8d13bc69f863c41871df0cc2a8783075053fb2ad4a1a8dd886a00860",
+    "current_editorial_review_sha256": "855090795eb7dfdb20435ac85fbd4d9ff56ccfe53803f19dd36e1bc3fc546bce",
+    "changed_signal_fields": [
+      "editorial_review",
+      "editorial_review_reason",
+      "event_status",
+      "prospective_evidence",
+      "why_it_matters"
+    ],
+    "actual_WHAT_unchanged": true,
+    "actual_WHY_exact_addendum": true,
+    "WHY": "El convenio crea una coordinación concreta entre Fonasa, el Ministerio de Salud y tres cajas de compensación para abordar listas de espera No GES, con potencial de ampliar el acceso de beneficiarios Fonasa a consultas y, eventualmente, a cirugías y otras prestaciones. Sin embargo, la capacidad adicional futura todavía depende de su implementación y de las necesidades identificadas; además, según la nota del 23 de septiembre de 2026, la negociación presupuestaria para 2027 todavía no tenía un monto definido a esa fecha.",
+    "publication_date_media_reported_and_source_evidence_preserved": true,
+    "finding_resolved": true
+  },
+  "all5": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/chomali-por-listas-de-espera-yo-no-esperaba-que-disminuyeran-lo-que-yo-espero-es-que-disminuyan-los-tiempos/",
+      "publication_date": "2026-09-23",
+      "effective_copy_exact_independent_approval": true,
+      "body_date_original_paid_output_score_status_attempts_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/siete-de-cada-10-hogares-gastan-mas-de-30-mil-al-mes-en-medicamentos/",
+      "publication_date": "2026-08-24",
+      "effective_copy_exact_independent_approval": true,
+      "body_date_original_paid_output_score_status_attempts_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/banmedica-y-vida-tres-demandan-al-fisco-por-desfase-en-el-cobro-del-ges-y-exigen-casi-9000-millones/",
+      "publication_date": "2026-08-10",
+      "effective_copy_exact_independent_approval": true,
+      "body_date_original_paid_output_score_status_attempts_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-amplia-alerta-sanitaria-a-las-regiones-de-tarapaca-y-antofagasta-tras-afectaciones-por-el-sistema-frontal/",
+      "publication_date": "2026-08-20",
+      "effective_copy_exact_independent_approval": true,
+      "body_date_original_paid_output_score_status_attempts_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/posta-central-obtiene-911-en-evaluacion-de-gestion-y-lidera-desempeno-de-hospitales-publicos-mas-de-la-mitad-no-cumplio-la-meta/",
+      "publication_date": "2026-08-04",
+      "effective_copy_exact_independent_approval": true,
+      "body_date_original_paid_output_score_status_attempts_unchanged": true
+    }
+  ],
+  "actual_feed": {
+    "total": 110,
+    "pulso": 17
+  },
+  "real_state_in_memory_replay": {
+    "review_id": "pulso_focus_38149773071_plan_enlace_observation_date_addendum",
+    "review_sha256": "c9310df3284fdfffc90710a72645a9eb582db81be4f3f350b9bf099141d2c60f",
+    "reviewed_count": 1,
+    "applied_count": 0,
+    "unchanged_on_replay": 1,
+    "decisions": {
+      "accept": 0,
+      "reject": 0,
+      "group": 0,
+      "correct": 1
+    },
+    "ai_calls": 0,
+    "primary_evidence_mutations": 0,
+    "queue_attempt_resets": 0,
+    "history_identical": true,
+    "queue_identical": true,
+    "persisted": false
+  },
+  "reader_state_mutations": 0,
+  "reader_AI_calls": 0,
+  "limits": [
+    "This verifies copy and provenance, not a current October observation of the September negotiation.",
+    "The first ALL5 reader remains historical and unchanged; its missed Plan clause is addressed by the explicit cumulative addendum.",
+    "No final source/discovery/runtime/staging acceptance or full global provider accounting PASS is claimed."
+  ],
+  "validation": {
+    "directed_tests": {
+      "paths": [
+        "tests/test_pulso_editorial_review.py",
+        "tests/test_pmo_readiness.py",
+        "tests/test_orchestrator_liveness.py"
+      ],
+      "passed": 57,
+      "failed": 0
+    },
+    "strict_original_sha_day_model_review_bindings": "PASS",
+    "state_mutations": 0,
+    "AI_calls": 0
+  }
+}

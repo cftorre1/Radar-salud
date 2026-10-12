@@ -1,0 +1,487 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-10-11T12:51:59.885697+00:00",
+  "mode": "read_only_git_archive_snapshots_no_network_no_ai_no_repository_mutation",
+  "baseline_sha": "4ff51cfe3f5b61217699eb68612a9861239b72a8",
+  "own_frozen_sha": "3b613393cba2ef6d88732bf450b13119adc99eeb",
+  "live_head_at_end": "21ca5d0e6850a1c0dc12b9ebc010e8d97a6b4b7f",
+  "known_remote_failure_run_id": "38123952091",
+  "target_test": "test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review",
+  "venv_python": "/workspace/work/venv/bin/python",
+  "original_test_applied_unchanged_to_both_source_data_snapshots": true,
+  "baseline_and_own_data_export_identical": true,
+  "test_diff": "diff --git a/tests/test_web_snapshot.py b/tests/test_web_snapshot.py\nindex 90f566e..c41051b 100644\n--- a/tests/test_web_snapshot.py\n+++ b/tests/test_web_snapshot.py\n@@ -284,9 +284,30 @@ def test_material_statistical_releases_use_value_ladder_instead_of_disappearing(\n \n \n def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():\n+    from datetime import date, timedelta\n+    import re\n     payload=json.loads(Path(\"web/data/radar_today.json\").read_text())\n     rows=[m._normative_contract(s) for s in payload[\"signals\"] if \"Normativa\" in (s.get(\"signal_types\") or [])]\n-    assert len(rows)>=12\n+    history=json.loads(Path(\"data/history/superintendencia_signals.json\").read_text())[\"signals\"]\n+    reviewed=json.loads(Path(\"config/normative_editorial_v2.json\").read_text())[\"records\"]\n+    decisions={x[\"id\"]:x.get(\"decision\") for x in json.loads(Path(\"data/editorial_audit_90d_2026_09_26.json\").read_text())[\"items\"]}\n+    # Reviewed act identities are an independent oracle. A document leaving\n+    # the rolling window must not be republished just to satisfy a fixed count.\n+    anchor=max(date.fromisoformat(s[\"event_date\"][:10]) for s in history if s.get(\"event_date\"))\n+    cutoff=anchor-timedelta(days=90)\n+    known={}\n+    for s in history:\n+        match=re.search(r\"/(?:circular-if|resolucion-exenta-if)-n(\\d+)/$\",s.get(\"source_url\") or \"\")\n+        if match and match.group(1) in reviewed and \"Normativa\" in (s.get(\"signal_types\") or []):\n+            known[s[\"source_url\"]]=s\n+    expected={url for url,s in known.items()\n+              if cutoff<=date.fromisoformat(s[\"event_date\"][:10])<=anchor and decisions.get(url)!=\"reject\"}\n+    actual={s[\"source_url\"] for s in rows}\n+    assert expected<=actual\n+    assert all(cutoff<=date.fromisoformat(s[\"event_date\"][:10])<=anchor for s in rows)\n+    assert not {url for url,s in known.items() if date.fromisoformat(s[\"event_date\"][:10])<cutoff}&actual\n+    c533=next(s for s in rows if s[\"source_url\"].endswith(\"circular-if-n533/\"))\n+    assert \"Circular IF/N°533\" in c533[\"display_title\"] and \"SIL\" in c533[\"display_title\"] and \"actualiza\" in c533[\"display_title\"]\n     assert all(x[\"normative_editorial\"][\"plain_language_title\"]==x[\"display_title\"] for x in rows)\n     assert all(x[\"normative_editorial\"][\"legal_identity\"]==x[\"normative_document_label\"] for x in rows)\n     assert all(x[\"legal_subtitle\"] for x in rows)\n",
+  "runs": [
+    {
+      "label": "pure_staging_original_test",
+      "source_data_snapshot": "/workspace/work/pulso-governance-base-4ff51",
+      "test_node": "tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review",
+      "test_code_sha256": "7acd7472fbd99dac10ebd46bb51efa24ee6222ca6d83d554ae83726a21ba8021",
+      "returncode": 1,
+      "log_path": "/workspace/work/pure_staging_original_test-pytest.log",
+      "stdout_stderr": "F                                                                        [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\ntests/test_web_snapshot.py:289: in test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review\n    assert len(rows)>=12\nE   AssertionError: assert 11 >= 12\nE    +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review\n1 failed in 0.06s\n",
+      "observation": {
+        "cwd": "/workspace/work/pulso-governance-base-4ff51",
+        "snapshot_export_module_file": "/workspace/work/pulso-governance-base-4ff51/scripts/export_web_snapshot.py",
+        "normative_count": 11,
+        "normative_rows": [
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156/",
+            "event_date": "2026-09-23",
+            "display_title": "Resolución Exenta IF/N°11156 · TEA: acoge parcialmente recursos contra Circular IF/N°528; mantiene cobertura sin tope anual y prohíbe exigir RND"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n535/",
+            "event_date": "2026-09-14",
+            "display_title": "Circular IF/N°535 · Reembolsos a empleadores públicos: prohíbe a las isapres compensarlos con otras deudas, salvo habilitación legal"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n534/",
+            "event_date": "2026-09-14",
+            "display_title": "Circular IF/N°534 · Bonos electrónicos: si fallan biometría y validación auxiliar, las isapres deben aceptar la cédula"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n10670/",
+            "event_date": "2026-09-10",
+            "display_title": "Resolución Exenta IF/N°10670 · Metas EMP: rechaza recursos contra Circular IF/N°531, por lo que sigue vigente el cambio de junio a octubre en el informe parcial"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n10615/",
+            "event_date": "2026-09-09",
+            "display_title": "Resolución Exenta IF/N°10615 · Plan MAS2026: acoge parcialmente el recurso contra Oficio IF/N°27.377; Nueva Masvida ajusta aporte, siniestralidad y mandato"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n533/",
+            "event_date": "2026-09-07",
+            "display_title": "Circular IF/N°533 · SIL: actualiza el inventario mensual con nuevos campos, formatos y validaciones"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n9994/",
+            "event_date": "2026-08-26",
+            "display_title": "Resolución Exenta IF/N°9994 · Afiliación electrónica: rechaza suspender Circular IF/N°532; sus reglas entran en vigor en enero de 2027"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n532/",
+            "event_date": "2026-07-31",
+            "display_title": "Circular IF/N°532 · Afiliación electrónica: refuerza controles de identidad, consentimiento y trazabilidad desde enero de 2027"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n531/",
+            "event_date": "2026-07-31",
+            "display_title": "Circular IF/N°531 · Metas EMP: traslada a octubre el informe de avance parcial sobre enero-octubre"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/",
+            "event_date": "2026-07-30",
+            "display_title": "Resolución Exenta IF/N°8760 · CAEC: suspende Circular IF/N°529; pausa reglas de derivación urgente hasta resolver los recursos"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n530/",
+            "event_date": "2026-07-24",
+            "display_title": "Circular IF/N°530 · Contralores médicos: exige informar cambios cada mes, dentro de los primeros cinco días hábiles"
+          }
+        ],
+        "history_anchor": "2026-10-09",
+        "history_90d_cutoff": "2026-07-11",
+        "reviewed_current_expected_urls": [
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n530/",
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n531/",
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n532/",
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n533/",
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n534/",
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n535/",
+          "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n10615/",
+          "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n10670/",
+          "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156/",
+          "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/",
+          "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n9994/"
+        ],
+        "missing_expected_urls": [],
+        "obsolete_known_urls": [
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n529/"
+        ],
+        "obsolete_actually_visible_urls": [],
+        "data_and_export_sha256": {
+          "scripts/export_web_snapshot.py": "274ade00acb68e85cd3bc1b57b6294845956367ac112c06d8bf4cbf598d11a89",
+          "web/data/radar_today.json": "cdb2ec7e617c0653cd6f3016d419c227c0ca10101cd7bca7f3969110634427fc",
+          "data/history/superintendencia_signals.json": "0b54ae732b37b79b6e48917fd56b4beb254cdee3f49ee6ceb68a72536fcaade1",
+          "config/normative_editorial_v2.json": "5d65b1dae48965c4ddaa38648cd4fdd4f36d5dea796240652c5df8f1802e7a56",
+          "data/editorial_audit_90d_2026_09_26.json": "4af8e4e9168adf1e0fed978f0b43cd96e806685c9a9036fb94a0ad7b7052a824"
+        },
+        "imported_module_files": {
+          "radar_salud": "/workspace/work/pulso-governance-base-4ff51/src/radar_salud/__init__.py",
+          "radar_salud.editorial_committee": "/workspace/work/pulso-governance-base-4ff51/src/radar_salud/editorial_committee.py",
+          "radar_salud.editorial_copy": "/workspace/work/pulso-governance-base-4ff51/src/radar_salud/editorial_copy.py",
+          "radar_salud.editorial_gate": "/workspace/work/pulso-governance-base-4ff51/src/radar_salud/editorial_gate.py",
+          "radar_salud.editorial_rules_v2": "/workspace/work/pulso-governance-base-4ff51/src/radar_salud/editorial_rules_v2.py",
+          "radar_salud.isapre_insights": "/workspace/work/pulso-governance-base-4ff51/src/radar_salud/isapre_insights.py",
+          "radar_salud.isapre_pulse": "/workspace/work/pulso-governance-base-4ff51/src/radar_salud/isapre_pulse.py",
+          "radar_salud.reference_resolver": "/workspace/work/pulso-governance-base-4ff51/src/radar_salud/reference_resolver.py",
+          "test_web_snapshot.m": "/workspace/work/pulso-governance-base-4ff51/scripts/export_web_snapshot.py"
+        },
+        "all_recorded_imports_within_snapshot": true,
+        "pytest_exit_code": 1,
+        "imported_module_sha256": {
+          "radar_salud": "75ad4f4c2943325f88064ad2beae890b59674be2bf0404b30afc5584dc4de4bb",
+          "radar_salud.editorial_committee": "3647f4d5b865886a56ec1c09b3ca1119274eacd5d831baef95bfc366931912da",
+          "radar_salud.editorial_copy": "ffef307bf27a186e1ec6677022862a4e3caf5f5f022519b5833de9f13322b86d",
+          "radar_salud.editorial_gate": "5549f40e24ca6a21fa0986dd027fc8aca14437fceb7024ac7e76a0f2e4191e22",
+          "radar_salud.editorial_rules_v2": "bc207f0a7051cfcd11f84513b4c27c2b5fc23c51b48c6c9395bc755ab3e23f5d",
+          "radar_salud.isapre_insights": "74b4ca64e8ad31a9ad653ec43f064e7829b2550c585639eb8be132139a27f4e3",
+          "radar_salud.isapre_pulse": "31bcdbfa732190c470e7090d5e83d2c13ace77ce728e9affb3480d55f664f508",
+          "radar_salud.reference_resolver": "6ccb10a116fac4d5b3195dfc35b923cca1e1fda15565b890ea9df3b6cb08d922",
+          "test_web_snapshot.m": "274ade00acb68e85cd3bc1b57b6294845956367ac112c06d8bf4cbf598d11a89"
+        }
+      },
+      "repro_command": [
+        "/workspace/work/venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review",
+        "-q",
+        "--tb=short",
+        "-p",
+        "no:cacheprovider"
+      ],
+      "repro_environment": {
+        "PYTHONPATH": "/workspace/work/pulso-governance-base-4ff51/src",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+      },
+      "failure_class": "AssertionError: assert 11 >= 12",
+      "source_data_git_blob_ids": {
+        "scripts/export_web_snapshot.py": "6f7db76053dceae02655df090ab80f1341cb9f87",
+        "web/data/radar_today.json": "ef5cdd0369afffba5515cba8a8b6d96d06a4baf6",
+        "data/history/superintendencia_signals.json": "754b4b17ff6012e28f4e6d4d17c60e1f26a2d759",
+        "config/normative_editorial_v2.json": "8a17ba9557e3123ff72e901315d8a87997043358",
+        "data/editorial_audit_90d_2026_09_26.json": "51e370b5f6cf8c012a966836a7647e160f89b4a6"
+      }
+    },
+    {
+      "label": "own_original_staging_test",
+      "source_data_snapshot": "/workspace/work/pulso-governance-own-3b613393",
+      "test_node": "tests/test_web_snapshot_baseline_ab.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review",
+      "test_code_sha256": "7acd7472fbd99dac10ebd46bb51efa24ee6222ca6d83d554ae83726a21ba8021",
+      "returncode": 1,
+      "log_path": "/workspace/work/own_original_staging_test-pytest.log",
+      "stdout_stderr": "F                                                                        [100%]\n=================================== FAILURES ===================================\n_ test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review _\ntests/test_web_snapshot_baseline_ab.py:289: in test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review\n    assert len(rows)>=12\nE   AssertionError: assert 11 >= 12\nE    +  where 11 = len([{'title': 'Isapres: cobertura TEA sin tope anual y nuevo registro obligatorio · IF/N°11156', 'source_name': 'Superint...ud', 'source_type': 'official', 'source_url': 'https://www.superdesalud.gob.cl/normativa/circular-if-n533/', ...}, ...])\n=========================== short test summary info ============================\nFAILED tests/test_web_snapshot_baseline_ab.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review\n1 failed in 0.06s\n",
+      "observation": {
+        "cwd": "/workspace/work/pulso-governance-own-3b613393",
+        "snapshot_export_module_file": "/workspace/work/pulso-governance-own-3b613393/scripts/export_web_snapshot.py",
+        "normative_count": 11,
+        "normative_rows": [
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156/",
+            "event_date": "2026-09-23",
+            "display_title": "Resolución Exenta IF/N°11156 · TEA: acoge parcialmente recursos contra Circular IF/N°528; mantiene cobertura sin tope anual y prohíbe exigir RND"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n535/",
+            "event_date": "2026-09-14",
+            "display_title": "Circular IF/N°535 · Reembolsos a empleadores públicos: prohíbe a las isapres compensarlos con otras deudas, salvo habilitación legal"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n534/",
+            "event_date": "2026-09-14",
+            "display_title": "Circular IF/N°534 · Bonos electrónicos: si fallan biometría y validación auxiliar, las isapres deben aceptar la cédula"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n10670/",
+            "event_date": "2026-09-10",
+            "display_title": "Resolución Exenta IF/N°10670 · Metas EMP: rechaza recursos contra Circular IF/N°531, por lo que sigue vigente el cambio de junio a octubre en el informe parcial"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n10615/",
+            "event_date": "2026-09-09",
+            "display_title": "Resolución Exenta IF/N°10615 · Plan MAS2026: acoge parcialmente el recurso contra Oficio IF/N°27.377; Nueva Masvida ajusta aporte, siniestralidad y mandato"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n533/",
+            "event_date": "2026-09-07",
+            "display_title": "Circular IF/N°533 · SIL: actualiza el inventario mensual con nuevos campos, formatos y validaciones"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n9994/",
+            "event_date": "2026-08-26",
+            "display_title": "Resolución Exenta IF/N°9994 · Afiliación electrónica: rechaza suspender Circular IF/N°532; sus reglas entran en vigor en enero de 2027"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n532/",
+            "event_date": "2026-07-31",
+            "display_title": "Circular IF/N°532 · Afiliación electrónica: refuerza controles de identidad, consentimiento y trazabilidad desde enero de 2027"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n531/",
+            "event_date": "2026-07-31",
+            "display_title": "Circular IF/N°531 · Metas EMP: traslada a octubre el informe de avance parcial sobre enero-octubre"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/",
+            "event_date": "2026-07-30",
+            "display_title": "Resolución Exenta IF/N°8760 · CAEC: suspende Circular IF/N°529; pausa reglas de derivación urgente hasta resolver los recursos"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n530/",
+            "event_date": "2026-07-24",
+            "display_title": "Circular IF/N°530 · Contralores médicos: exige informar cambios cada mes, dentro de los primeros cinco días hábiles"
+          }
+        ],
+        "history_anchor": "2026-10-09",
+        "history_90d_cutoff": "2026-07-11",
+        "reviewed_current_expected_urls": [
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n530/",
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n531/",
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n532/",
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n533/",
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n534/",
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n535/",
+          "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n10615/",
+          "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n10670/",
+          "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156/",
+          "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/",
+          "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n9994/"
+        ],
+        "missing_expected_urls": [],
+        "obsolete_known_urls": [
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n529/"
+        ],
+        "obsolete_actually_visible_urls": [],
+        "data_and_export_sha256": {
+          "scripts/export_web_snapshot.py": "274ade00acb68e85cd3bc1b57b6294845956367ac112c06d8bf4cbf598d11a89",
+          "web/data/radar_today.json": "cdb2ec7e617c0653cd6f3016d419c227c0ca10101cd7bca7f3969110634427fc",
+          "data/history/superintendencia_signals.json": "0b54ae732b37b79b6e48917fd56b4beb254cdee3f49ee6ceb68a72536fcaade1",
+          "config/normative_editorial_v2.json": "5d65b1dae48965c4ddaa38648cd4fdd4f36d5dea796240652c5df8f1802e7a56",
+          "data/editorial_audit_90d_2026_09_26.json": "4af8e4e9168adf1e0fed978f0b43cd96e806685c9a9036fb94a0ad7b7052a824"
+        },
+        "imported_module_files": {
+          "radar_salud": "/workspace/work/pulso-governance-own-3b613393/src/radar_salud/__init__.py",
+          "radar_salud.editorial_committee": "/workspace/work/pulso-governance-own-3b613393/src/radar_salud/editorial_committee.py",
+          "radar_salud.editorial_copy": "/workspace/work/pulso-governance-own-3b613393/src/radar_salud/editorial_copy.py",
+          "radar_salud.editorial_gate": "/workspace/work/pulso-governance-own-3b613393/src/radar_salud/editorial_gate.py",
+          "radar_salud.editorial_rules_v2": "/workspace/work/pulso-governance-own-3b613393/src/radar_salud/editorial_rules_v2.py",
+          "radar_salud.isapre_insights": "/workspace/work/pulso-governance-own-3b613393/src/radar_salud/isapre_insights.py",
+          "radar_salud.isapre_pulse": "/workspace/work/pulso-governance-own-3b613393/src/radar_salud/isapre_pulse.py",
+          "radar_salud.reference_resolver": "/workspace/work/pulso-governance-own-3b613393/src/radar_salud/reference_resolver.py",
+          "test_web_snapshot_baseline_ab.m": "/workspace/work/pulso-governance-own-3b613393/scripts/export_web_snapshot.py"
+        },
+        "all_recorded_imports_within_snapshot": true,
+        "pytest_exit_code": 1,
+        "imported_module_sha256": {
+          "radar_salud": "75ad4f4c2943325f88064ad2beae890b59674be2bf0404b30afc5584dc4de4bb",
+          "radar_salud.editorial_committee": "3647f4d5b865886a56ec1c09b3ca1119274eacd5d831baef95bfc366931912da",
+          "radar_salud.editorial_copy": "ffef307bf27a186e1ec6677022862a4e3caf5f5f022519b5833de9f13322b86d",
+          "radar_salud.editorial_gate": "5549f40e24ca6a21fa0986dd027fc8aca14437fceb7024ac7e76a0f2e4191e22",
+          "radar_salud.editorial_rules_v2": "bc207f0a7051cfcd11f84513b4c27c2b5fc23c51b48c6c9395bc755ab3e23f5d",
+          "radar_salud.isapre_insights": "74b4ca64e8ad31a9ad653ec43f064e7829b2550c585639eb8be132139a27f4e3",
+          "radar_salud.isapre_pulse": "31bcdbfa732190c470e7090d5e83d2c13ace77ce728e9affb3480d55f664f508",
+          "radar_salud.reference_resolver": "6ccb10a116fac4d5b3195dfc35b923cca1e1fda15565b890ea9df3b6cb08d922",
+          "test_web_snapshot_baseline_ab.m": "274ade00acb68e85cd3bc1b57b6294845956367ac112c06d8bf4cbf598d11a89"
+        }
+      },
+      "repro_command": [
+        "/workspace/work/venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_web_snapshot_baseline_ab.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review",
+        "-q",
+        "--tb=short",
+        "-p",
+        "no:cacheprovider"
+      ],
+      "repro_environment": {
+        "PYTHONPATH": "/workspace/work/pulso-governance-own-3b613393/src",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+      },
+      "failure_class": "AssertionError: assert 11 >= 12",
+      "source_data_git_blob_ids": {
+        "scripts/export_web_snapshot.py": "6f7db76053dceae02655df090ab80f1341cb9f87",
+        "web/data/radar_today.json": "ef5cdd0369afffba5515cba8a8b6d96d06a4baf6",
+        "data/history/superintendencia_signals.json": "754b4b17ff6012e28f4e6d4d17c60e1f26a2d759",
+        "config/normative_editorial_v2.json": "8a17ba9557e3123ff72e901315d8a87997043358",
+        "data/editorial_audit_90d_2026_09_26.json": "51e370b5f6cf8c012a966836a7647e160f89b4a6"
+      }
+    },
+    {
+      "label": "own_current_test",
+      "source_data_snapshot": "/workspace/work/pulso-governance-own-3b613393",
+      "test_node": "tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review",
+      "test_code_sha256": "d2921ba3dca7f6cc40df2a2123fe5cf47bfb42c56e8359c29af3db50c095e5dc",
+      "returncode": 0,
+      "log_path": "/workspace/work/own_current_test-pytest.log",
+      "stdout_stderr": ".                                                                        [100%]\n1 passed in 0.09s\n",
+      "observation": {
+        "cwd": "/workspace/work/pulso-governance-own-3b613393",
+        "snapshot_export_module_file": "/workspace/work/pulso-governance-own-3b613393/scripts/export_web_snapshot.py",
+        "normative_count": 11,
+        "normative_rows": [
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156/",
+            "event_date": "2026-09-23",
+            "display_title": "Resolución Exenta IF/N°11156 · TEA: acoge parcialmente recursos contra Circular IF/N°528; mantiene cobertura sin tope anual y prohíbe exigir RND"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n535/",
+            "event_date": "2026-09-14",
+            "display_title": "Circular IF/N°535 · Reembolsos a empleadores públicos: prohíbe a las isapres compensarlos con otras deudas, salvo habilitación legal"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n534/",
+            "event_date": "2026-09-14",
+            "display_title": "Circular IF/N°534 · Bonos electrónicos: si fallan biometría y validación auxiliar, las isapres deben aceptar la cédula"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n10670/",
+            "event_date": "2026-09-10",
+            "display_title": "Resolución Exenta IF/N°10670 · Metas EMP: rechaza recursos contra Circular IF/N°531, por lo que sigue vigente el cambio de junio a octubre en el informe parcial"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n10615/",
+            "event_date": "2026-09-09",
+            "display_title": "Resolución Exenta IF/N°10615 · Plan MAS2026: acoge parcialmente el recurso contra Oficio IF/N°27.377; Nueva Masvida ajusta aporte, siniestralidad y mandato"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n533/",
+            "event_date": "2026-09-07",
+            "display_title": "Circular IF/N°533 · SIL: actualiza el inventario mensual con nuevos campos, formatos y validaciones"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n9994/",
+            "event_date": "2026-08-26",
+            "display_title": "Resolución Exenta IF/N°9994 · Afiliación electrónica: rechaza suspender Circular IF/N°532; sus reglas entran en vigor en enero de 2027"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n532/",
+            "event_date": "2026-07-31",
+            "display_title": "Circular IF/N°532 · Afiliación electrónica: refuerza controles de identidad, consentimiento y trazabilidad desde enero de 2027"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n531/",
+            "event_date": "2026-07-31",
+            "display_title": "Circular IF/N°531 · Metas EMP: traslada a octubre el informe de avance parcial sobre enero-octubre"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/",
+            "event_date": "2026-07-30",
+            "display_title": "Resolución Exenta IF/N°8760 · CAEC: suspende Circular IF/N°529; pausa reglas de derivación urgente hasta resolver los recursos"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n530/",
+            "event_date": "2026-07-24",
+            "display_title": "Circular IF/N°530 · Contralores médicos: exige informar cambios cada mes, dentro de los primeros cinco días hábiles"
+          }
+        ],
+        "history_anchor": "2026-10-09",
+        "history_90d_cutoff": "2026-07-11",
+        "reviewed_current_expected_urls": [
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n530/",
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n531/",
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n532/",
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n533/",
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n534/",
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n535/",
+          "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n10615/",
+          "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n10670/",
+          "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11156/",
+          "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/",
+          "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n9994/"
+        ],
+        "missing_expected_urls": [],
+        "obsolete_known_urls": [
+          "https://www.superdesalud.gob.cl/normativa/circular-if-n529/"
+        ],
+        "obsolete_actually_visible_urls": [],
+        "data_and_export_sha256": {
+          "scripts/export_web_snapshot.py": "274ade00acb68e85cd3bc1b57b6294845956367ac112c06d8bf4cbf598d11a89",
+          "web/data/radar_today.json": "cdb2ec7e617c0653cd6f3016d419c227c0ca10101cd7bca7f3969110634427fc",
+          "data/history/superintendencia_signals.json": "0b54ae732b37b79b6e48917fd56b4beb254cdee3f49ee6ceb68a72536fcaade1",
+          "config/normative_editorial_v2.json": "5d65b1dae48965c4ddaa38648cd4fdd4f36d5dea796240652c5df8f1802e7a56",
+          "data/editorial_audit_90d_2026_09_26.json": "4af8e4e9168adf1e0fed978f0b43cd96e806685c9a9036fb94a0ad7b7052a824"
+        },
+        "imported_module_files": {
+          "radar_salud": "/workspace/work/pulso-governance-own-3b613393/src/radar_salud/__init__.py",
+          "radar_salud.editorial_committee": "/workspace/work/pulso-governance-own-3b613393/src/radar_salud/editorial_committee.py",
+          "radar_salud.editorial_copy": "/workspace/work/pulso-governance-own-3b613393/src/radar_salud/editorial_copy.py",
+          "radar_salud.editorial_gate": "/workspace/work/pulso-governance-own-3b613393/src/radar_salud/editorial_gate.py",
+          "radar_salud.editorial_rules_v2": "/workspace/work/pulso-governance-own-3b613393/src/radar_salud/editorial_rules_v2.py",
+          "radar_salud.isapre_insights": "/workspace/work/pulso-governance-own-3b613393/src/radar_salud/isapre_insights.py",
+          "radar_salud.isapre_pulse": "/workspace/work/pulso-governance-own-3b613393/src/radar_salud/isapre_pulse.py",
+          "radar_salud.reference_resolver": "/workspace/work/pulso-governance-own-3b613393/src/radar_salud/reference_resolver.py",
+          "test_web_snapshot.m": "/workspace/work/pulso-governance-own-3b613393/scripts/export_web_snapshot.py"
+        },
+        "all_recorded_imports_within_snapshot": true,
+        "pytest_exit_code": 0,
+        "imported_module_sha256": {
+          "radar_salud": "75ad4f4c2943325f88064ad2beae890b59674be2bf0404b30afc5584dc4de4bb",
+          "radar_salud.editorial_committee": "3647f4d5b865886a56ec1c09b3ca1119274eacd5d831baef95bfc366931912da",
+          "radar_salud.editorial_copy": "ffef307bf27a186e1ec6677022862a4e3caf5f5f022519b5833de9f13322b86d",
+          "radar_salud.editorial_gate": "5549f40e24ca6a21fa0986dd027fc8aca14437fceb7024ac7e76a0f2e4191e22",
+          "radar_salud.editorial_rules_v2": "bc207f0a7051cfcd11f84513b4c27c2b5fc23c51b48c6c9395bc755ab3e23f5d",
+          "radar_salud.isapre_insights": "74b4ca64e8ad31a9ad653ec43f064e7829b2550c585639eb8be132139a27f4e3",
+          "radar_salud.isapre_pulse": "31bcdbfa732190c470e7090d5e83d2c13ace77ce728e9affb3480d55f664f508",
+          "radar_salud.reference_resolver": "6ccb10a116fac4d5b3195dfc35b923cca1e1fda15565b890ea9df3b6cb08d922",
+          "test_web_snapshot.m": "274ade00acb68e85cd3bc1b57b6294845956367ac112c06d8bf4cbf598d11a89"
+        }
+      },
+      "repro_command": [
+        "/workspace/work/venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review",
+        "-q",
+        "--tb=short",
+        "-p",
+        "no:cacheprovider"
+      ],
+      "repro_environment": {
+        "PYTHONPATH": "/workspace/work/pulso-governance-own-3b613393/src",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+      },
+      "failure_class": null,
+      "source_data_git_blob_ids": {
+        "scripts/export_web_snapshot.py": "6f7db76053dceae02655df090ab80f1341cb9f87",
+        "web/data/radar_today.json": "ef5cdd0369afffba5515cba8a8b6d96d06a4baf6",
+        "data/history/superintendencia_signals.json": "754b4b17ff6012e28f4e6d4d17c60e1f26a2d759",
+        "config/normative_editorial_v2.json": "8a17ba9557e3123ff72e901315d8a87997043358",
+        "data/editorial_audit_90d_2026_09_26.json": "51e370b5f6cf8c012a966836a7647e160f89b4a6"
+      }
+    }
+  ],
+  "conclusion": {
+    "original_failure_reproduces_on_pure_latest_staging": true,
+    "original_failure_reproduces_on_own_source_and_data_with_identical_baseline_test": true,
+    "own_connector_changes_did_not_cause_this_failure": true,
+    "basis": [
+      "Same original baseline test bytes in both executions",
+      "Same exporter and all four relevant data/config file bytes",
+      "All imported radar_salud module bytes identical",
+      "Exact same observed assertion: 11 >= 12"
+    ],
+    "original_normative_count_threshold": 12,
+    "actual_normative_count_both_snapshots": 11,
+    "current_test_passes": true,
+    "current_test_changed": true,
+    "current_test_change_explanation": "The fixed >=12 count was replaced by completeness of reviewed, non-rejected act URL identities in the 90-day window, bounds for every visible act, exclusion of obsolete reviewed acts, and explicit C533/SIL/current-title assertions. The original plain-language/legal-identity/subtitle/n9994/opaque-title checks remain.",
+    "reviewed_act_oracle_count": 11,
+    "reviewed_act_oracle_window": {
+      "anchor": "2026-10-09",
+      "cutoff": "2026-07-11"
+    },
+    "missing_current_reviewed_acts": [],
+    "obsolete_reviewed_acts_visible": [],
+    "staging_critical_qa_pass_claimed": false,
+    "scope": "Exactly one targeted test and its data/source/import proof; no broad-suite, runtime, discovery, AI, or network claim."
+  },
+  "all_loaded_radar_salud_modules_byte_identical": true,
+  "obsolete_reviewed_act_history": [
+    {
+      "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n529/",
+      "event_date": "2026-07-10",
+      "title": "Circular IF/N°529"
+    }
+  ],
+  "repository_files_modified_by_this_audit": [],
+  "requested_initial_own_sha": "ca87d80",
+  "initial_own_to_frozen_own_normative_files_diff": ""
+}

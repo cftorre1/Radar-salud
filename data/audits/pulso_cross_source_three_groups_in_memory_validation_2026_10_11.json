@@ -1,0 +1,73 @@
+{
+  "schema_version": "pulso_cross_source_three_groups_in_memory_validation_v1",
+  "recorded_at": "2026-10-11T21:22:52.566293+00:00",
+  "reader": {
+    "path": "data/audits/pulso_cross_source_three_duplicate_publications_independent_review_2026_10_11.json",
+    "sha256": "361fea64fddce6689795d174371443ce306884e501276085f38894c27c7cfbdd"
+  },
+  "template": {
+    "path": "data/audits/pulso_cross_source_three_duplicate_publications_editorial_group_2026_10_11.json",
+    "sha256": "a148a3e9bbbb71ae9430f05f6212a468760df298e3765d6549f5d141408befac"
+  },
+  "current_observation": {
+    "commit": "d510919352b34c5cfd84efaca265bb1903f2f138",
+    "queue_sha256": "6dcab92748d759058c6eabb7df78bda5d364a03f8bcbcf9201ed3f73de8fa2e8",
+    "history_sha256": "b3ccf5c31b217c724c80e83c086c32f96841bd449bd42866e29459453cca802c"
+  },
+  "verdict": "PASS_SCOPED_THREE_CHAINED_GROUPS_IN_MEMORY_ONLY",
+  "in_memory_application": {
+    "review_id": "pulso_cross_source_three_bound_duplicate_publications_2026_10_11",
+    "review_sha256": "a148a3e9bbbb71ae9430f05f6212a468760df298e3765d6549f5d141408befac",
+    "reviewed_count": 3,
+    "applied_count": 3,
+    "unchanged_on_replay": 0,
+    "decisions": {
+      "accept": 0,
+      "reject": 0,
+      "group": 3,
+      "correct": 0
+    },
+    "ai_calls": 0,
+    "primary_evidence_mutations": 0,
+    "queue_attempt_resets": 0
+  },
+  "in_memory_reapplication": {
+    "review_id": "pulso_cross_source_three_bound_duplicate_publications_2026_10_11",
+    "review_sha256": "a148a3e9bbbb71ae9430f05f6212a468760df298e3765d6549f5d141408befac",
+    "reviewed_count": 3,
+    "applied_count": 0,
+    "unchanged_on_replay": 3,
+    "decisions": {
+      "accept": 0,
+      "reject": 0,
+      "group": 3,
+      "correct": 0
+    },
+    "ai_calls": 0,
+    "primary_evidence_mutations": 0,
+    "queue_attempt_resets": 0
+  },
+  "native_queue_preserved_count": 5293,
+  "native_history_preserved_count": 897,
+  "all_non_target_queue_and_history_exact": true,
+  "all_three_survivors_byte_identical": true,
+  "rejected_native_same_URL_sibling_untouched": true,
+  "original_models_bodies_dates_scores_attempts_lanes_preserved": true,
+  "legacy_UC_model_absent_preserved": true,
+  "previous_review_chains_retained_exactly": true,
+  "cost_files_sha256_before_and_after": {
+    "data/ai_usage/2026-09.json": "0b73f3e5092a0cf5a5d9b5ab97019612acf90157c733283254cce880a7e71779",
+    "data/ai_usage/responses.jsonl": "f5d5f4ba51d3c510997e2750d97e43d3e1d4c05196b3f2cdcb8eb5b18aec6a1b",
+    "data/ai_usage/occupational_recovery_2026_10.json": "90c56d1b430ab52aa66023f4378360aabaea5803274b4fc23232bc338d5fd7a8",
+    "data/ai_usage/2026-10.json": "604a5ede6b504429476717acc1065113910b6d08aa1bf9af4b81aa9218d76631"
+  },
+  "actual_state_writes": 0,
+  "AI_calls": 0,
+  "acceptance_pass": false,
+  "limitations": [
+    "Actual application, registry registration and independent QA must occur in parent workflow.",
+    "The tested groups remove duplicated Pulso feed entries; it does not mutate or certify the native survivor.",
+    "Known legacy UC raw AI output remains absent.",
+    "All three groups await real parent application and independent actual confirmation."
+  ]
+}

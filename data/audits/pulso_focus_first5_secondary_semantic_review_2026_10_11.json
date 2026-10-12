@@ -1,0 +1,208 @@
+{
+  "scope": "Independent secondary human reading of ALL5 newly published signals in actual focused run38149773071, with exact captured original HTML/fullbody/date/model binding; original outputs preserved",
+  "producer_run_id": 38149773071,
+  "producer_code": "0713ca9",
+  "reviewer": "/root/publisher_surfaces",
+  "source_and_guard_checkpoint": "835984e9",
+  "publication_approved": false,
+  "global_acceptance_claimed": false,
+  "all_five_read": true,
+  "model_calls": 0,
+  "network_calls": 0,
+  "press_maturity_required": "media_reported",
+  "source_published_versus_review_date_context": "2026-07/08/09 publications are reviewed11October2026, so then-pending/current conditions cannot be silently moved to review-date present.",
+  "findings_count": 3,
+  "prior_primary_reviewer_report_must_remain_immutable": true,
+  "rows": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/chomali-por-listas-de-espera-yo-no-esperaba-que-disminuyeran-lo-que-yo-espero-es-que-disminuyan-los-tiempos/",
+      "title": "Chomali por listas de espera: “Yo no esperaba que disminuyeran, lo que yo espero es que disminuyan los tiempos”",
+      "publication_date": "2026-09-23",
+      "original_html_fixture": "tests/fixtures/pulso_runtime_real/f2a058862e76ee3404f9c7474478cd17033c8624f744c1b4cad3530ea6936632.html.gz",
+      "original_html_sha256": "f2a058862e76ee3404f9c7474478cd17033c8624f744c1b4cad3530ea6936632",
+      "fullbody_sha256": "30fa3965a37a4b4c63c9500b5be1a0ec6f1e58c40acc8af01a05f4029072bf25",
+      "fullbody_characters": 4479,
+      "raw_bytes_sha_verified": true,
+      "strict_original_date_verified": true,
+      "full_original_body_individually_read": true,
+      "complete_body_exact_match": true,
+      "original_model_response_id": "resp_0978a4d6216a505f006acba7fe5b3487d19f50386ee9140a18",
+      "original_schema_version": "pulso_editorial_proof_v4",
+      "original_score_unchanged": 84,
+      "original_what_happened": "Según reportó Pulso/La Tercera, el Ministerio de Salud, Fonasa y las cajas de compensación 18 de Septiembre, La Araucana y Los Héroes firmaron un convenio de colaboración para incorporar capacidad privada a la resolución de listas de espera No GES. La iniciativa contempla identificar a afiliados de las cajas que también sean beneficiarios de Fonasa y que estén esperando atención de especialidad. El modelo considera inicialmente consultas de nueva especialidad y posteriormente podría incorporar cirugías y otras prestaciones, según las necesidades de los pacientes.",
+      "original_why_it_matters": "El convenio crea una coordinación concreta entre Fonasa, el Ministerio de Salud y tres cajas de compensación para abordar listas de espera No GES, con potencial de ampliar el acceso de beneficiarios Fonasa a consultas y, eventualmente, a cirugías y otras prestaciones. Sin embargo, la capacidad adicional futura todavía depende de su implementación y de las necesidades identificadas; además, la negociación presupuestaria para el próximo año sigue sin monto definido.",
+      "guard_diagnostic_decision": "ready",
+      "guard_diagnostic_semantic_approval": false,
+      "verdict": "supported_with_temporal_copy_finding",
+      "topics": [
+        "waiting_lists",
+        "insurance_public_private_agreement",
+        "provider_network"
+      ],
+      "findings": [
+        {
+          "type": "backfill_current_status_not_established",
+          "field": "why_it_matters",
+          "quoted_copy": "además, la negociación presupuestaria para el próximo año sigue sin monto definido.",
+          "source_as_of": "2026-09-23",
+          "review_as_of": "2026-10-11",
+          "required_correction": "Attribute the no-defined-amount observation explicitly to the 23 September report; do not assert the same budget negotiation state on 11 October.",
+          "status": "separate_follow_up_required_first_reviewer_report_preserved"
+        }
+      ],
+      "caveats": [
+        "The convenio is reported signed; optional future surgeries and capacity are not already implemented.",
+        "No amount was defined in the source interview at that date; this does not establish the later budget status."
+      ]
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/siete-de-cada-10-hogares-gastan-mas-de-30-mil-al-mes-en-medicamentos/",
+      "title": "Siete de cada 10 hogares gastan más de $30 mil al mes en medicamentos",
+      "publication_date": "2026-08-24",
+      "original_html_fixture": "tests/fixtures/pulso_runtime_real/7253f5710b63fe99cf1b583195fd56487359958273150186b1caa315779aa503.html.gz",
+      "original_html_sha256": "7253f5710b63fe99cf1b583195fd56487359958273150186b1caa315779aa503",
+      "fullbody_sha256": "111d27e3f2b627b2054e8f1f20605141783da19315fad68098cf2d3787cf2049",
+      "fullbody_characters": 4112,
+      "raw_bytes_sha_verified": true,
+      "strict_original_date_verified": true,
+      "full_original_body_individually_read": true,
+      "complete_body_exact_match": true,
+      "original_model_response_id": "resp_043859385a53bc6a006acbaa4bbc1087d1b0fccc3a67078264",
+      "original_schema_version": "pulso_editorial_proof_v4",
+      "original_score_unchanged": 88,
+      "original_what_happened": "La encuesta Chile Nos Habla–Salud, realizada por Ipsuss y la USS, reporta que 69,6% de los hogares destina más de $30.000 mensuales a medicamentos; 37,2% señala que los fármacos no estaban cubiertos por su plan y 29,1% que no estaban disponibles en el establecimiento. También informa que 65,6% de los pacientes lleva sus documentos médicos impresos y que solo en 31,4% de los casos el profesional o centro accede directamente a la información en su sistema. El artículo además reporta que el reglamento de la ley de interoperabilidad clínica aprobada en 2024 aún no ha sido publicado.",
+      "original_why_it_matters": "La señal afecta directamente a hogares Fonasa e isapre, pacientes con enfermedades crónicas, prestadores y al regulador sanitario: el gasto por medicamentos no cubiertos o no disponibles puede dificultar la continuidad de tratamientos, mientras la baja interoperabilidad puede elevar el riesgo de diagnósticos o tratamientos incompletos. Merece atención ahora porque el reglamento de la ley de interoperabilidad sigue pendiente, según lo reportado por la prensa.",
+      "guard_diagnostic_decision": "ready",
+      "guard_diagnostic_semantic_approval": false,
+      "verdict": "supported_with_temporal_copy_finding",
+      "topics": [
+        "medication_out_of_pocket",
+        "coverage",
+        "clinical_interoperability"
+      ],
+      "findings": [
+        {
+          "type": "backfill_current_status_not_established",
+          "field": "why_it_matters",
+          "quoted_copy": "el reglamento de la ley de interoperabilidad sigue pendiente",
+          "source_as_of": "2026-08-24",
+          "review_as_of": "2026-10-11",
+          "required_correction": "Bind the pending-regulation statement to the August report; no current October regulatory verification is supplied.",
+          "status": "root_targeted_correction_previously_authorized_keep_original_response_immutable"
+        }
+      ],
+      "caveats": [
+        "69.6% is a reported household survey finding, not an independently verified national clinical fact.",
+        "37.2% coverage and29.1% availability are separately reported causes; no invented universal denominator or summed shares.",
+        "Continuity-of-treatment risk is conditional; actual treatment abandonment or clinical harm is not established."
+      ]
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/banmedica-y-vida-tres-demandan-al-fisco-por-desfase-en-el-cobro-del-ges-y-exigen-casi-9000-millones/",
+      "title": "Banmédica y Vida Tres demandan al Fisco por desfase en el cobro del GES y exigen casi $9.000 millones",
+      "publication_date": "2026-08-10",
+      "original_html_fixture": "tests/fixtures/pulso_runtime_real/96e52472f54764b2c9cfc0da36b7e7f458a16a655f336f4c621b6ee908b9c549.html.gz",
+      "original_html_sha256": "96e52472f54764b2c9cfc0da36b7e7f458a16a655f336f4c621b6ee908b9c549",
+      "fullbody_sha256": "5f38c200250c12c9469d0399d456bdba4cbf792bf9687b00d6a885ff8665b8a1",
+      "fullbody_characters": 3253,
+      "raw_bytes_sha_verified": true,
+      "strict_original_date_verified": true,
+      "full_original_body_individually_read": true,
+      "complete_body_exact_match": true,
+      "original_model_response_id": "resp_0789eb0299e4ed53006acbab1b689087d186a5bbf2423ff820",
+      "original_schema_version": "pulso_editorial_proof_v4",
+      "original_score_unchanged": 87,
+      "original_what_happened": "Pulso reporta que Banmédica y Vida Tres presentaron demandas contra el Fisco por casi $9.000 millones, alegando que el Decreto GES 29/2025 activó nuevas coberturas el 1 de diciembre de 2025, mientras la Circular IF/N° 520 permitió cobrar la nueva prima recién desde febrero de 2026. Las aseguradoras sostienen que financiaron las garantías durante diciembre de 2025 y enero de 2026 con la prima anterior; la existencia y el mérito de sus reclamos deberán resolverse judicialmente.",
+      "original_why_it_matters": "El caso pone en disputa el diseño regulatorio que sincroniza la entrada en vigor de nuevas garantías GES con el cobro a afiliados y expone un eventual costo financiero para las isapres. Merece atención ahora porque Banmédica y Vida Tres cuantifican el perjuicio en cerca de $9.000 millones y vinculan el desfase con la sostenibilidad del sistema privado, aunque no existe en el contenido una decisión judicial ni una determinación oficial que valide sus acusaciones.",
+      "guard_diagnostic_decision": "ready",
+      "guard_diagnostic_semantic_approval": false,
+      "verdict": "supported",
+      "topics": [
+        "insurance",
+        "ges_financing",
+        "regulation",
+        "litigation"
+      ],
+      "findings": [],
+      "caveats": [
+        "Nearly CLP9bn is demanded, not awarded; allegations are attributed to the insurers and no court determination is reported.",
+        "The reported alleged expense concerns December2025/January2026 and charging fromFebruary2026; article publication is10August2026.",
+        "No completed sale/ownership transfer is asserted by the published summary."
+      ]
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-amplia-alerta-sanitaria-a-las-regiones-de-tarapaca-y-antofagasta-tras-afectaciones-por-el-sistema-frontal/",
+      "title": "Minsal amplía alerta sanitaria a las regiones de Tarapacá y Antofagasta tras afectaciones por el sistema frontal",
+      "publication_date": "2026-08-20",
+      "original_html_fixture": "tests/fixtures/pulso_runtime_real/cd03856ff04d1c680e47e6d809fed2ad63dcd774207f4fb016311b73a16ca786.html.gz",
+      "original_html_sha256": "cd03856ff04d1c680e47e6d809fed2ad63dcd774207f4fb016311b73a16ca786",
+      "fullbody_sha256": "6debb4b6c895b3e14035d349337509a5a7936e063e3509e079a605aa9affdc47",
+      "fullbody_characters": 1674,
+      "raw_bytes_sha_verified": true,
+      "strict_original_date_verified": true,
+      "full_original_body_individually_read": true,
+      "complete_body_exact_match": true,
+      "original_model_response_id": "resp_0d307d0267ac29b3006acbaaa6a3e087d1b2b5276ed0d48989",
+      "original_schema_version": "pulso_editorial_proof_v4",
+      "original_score_unchanged": 84,
+      "original_what_happened": "Según lo reportado por Pulso/La Tercera, el Ministerio de Salud anunció la ampliación de la alerta sanitaria desde Atacama y Coquimbo hacia Tarapacá y Antofagasta. Bajo esta alerta, se podrían evaluar y ordenar medidas extraordinarias de personal, contratación y adquisición directa de bienes, servicios, equipamiento e insumos.",
+      "original_why_it_matters": "La medida afecta la respuesta de los servicios de salud en Tarapacá y Antofagasta, donde el aislamiento, los problemas de conectividad, las interrupciones de servicios básicos y los daños a infraestructura pueden dificultar la derivación y el acceso de la población. Merece atención ahora porque la alerta habilita una respuesta operativa más flexible ante una emergencia hidrometeorológica en curso.",
+      "guard_diagnostic_decision": "ready",
+      "guard_diagnostic_semantic_approval": false,
+      "verdict": "supported_with_temporal_copy_finding",
+      "topics": [
+        "regulation",
+        "provider_continuity",
+        "health_emergency_response"
+      ],
+      "findings": [
+        {
+          "type": "backfill_current_status_not_established",
+          "field": "why_it_matters",
+          "quoted_copy": "ante una emergencia hidrometeorológica en curso",
+          "source_as_of": "2026-08-20",
+          "review_as_of": "2026-10-11",
+          "required_correction": "Attribute emergency conditions and authorization to the20August report; do not claim the same emergency is ongoing11October.",
+          "status": "root_targeted_correction_previously_authorized_keep_original_response_immutable"
+        }
+      ],
+      "caveats": [
+        "Press reports an extension fromAtacama/Coquimbo toTarapacá/Antofagasta; no original official act is adopted as verified authority.",
+        "Extraordinary hiring/procurement are enabled possibilities; the summary does not claim they were already performed."
+      ]
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/posta-central-obtiene-911-en-evaluacion-de-gestion-y-lidera-desempeno-de-hospitales-publicos-mas-de-la-mitad-no-cumplio-la-meta/",
+      "title": "Posta Central obtiene 91,1% en evaluación de gestión y lidera ranking de desempeño de hospitales: más de la mitad no cumplió la meta",
+      "publication_date": "2026-08-04",
+      "original_html_fixture": "tests/fixtures/pulso_runtime_real/ffe26e72ca1fff91059252c9703e21a1c3a235b4e59f7a3eefabe0dbf065cb62.html.gz",
+      "original_html_sha256": "ffe26e72ca1fff91059252c9703e21a1c3a235b4e59f7a3eefabe0dbf065cb62",
+      "fullbody_sha256": "2178d42717fb7d9e584b6f3bb99ba96441124f5ad4d644dae43b02ce63b39493",
+      "fullbody_characters": 4186,
+      "raw_bytes_sha_verified": true,
+      "strict_original_date_verified": true,
+      "full_original_body_individually_read": true,
+      "complete_body_exact_match": true,
+      "original_model_response_id": "resp_0dd7ff93cc7230e5006acbab89676487d1a849c88d89c9c87b",
+      "original_schema_version": "pulso_editorial_proof_v4",
+      "original_score_unchanged": 84,
+      "original_what_happened": "La evaluación de gestión hospitalaria de 2025 reportada por Pulso/La Tercera muestra que solo 26 de 62 hospitales autogestionados superaron la línea base de 75%; 21 quedaron bajo 69% y 15 entre 70% y 74,9%. La Posta Central lideró con 91,1%.",
+      "original_why_it_matters": "La Subsecretaría de Redes Asistenciales dispone de una señal comparable sobre el desempeño de la red hospitalaria pública: más de la mitad de los establecimientos autogestionados quedó bajo la meta mínima, lo que identifica una brecha de gestión con potencial efecto sobre la eficiencia operacional y la atención de pacientes.",
+      "guard_diagnostic_decision": "ready",
+      "guard_diagnostic_semantic_approval": false,
+      "verdict": "supported",
+      "topics": [
+        "provider_management",
+        "sector_performance",
+        "operational_efficiency"
+      ],
+      "findings": [],
+      "caveats": [
+        "The measurements concern hospital management2025, reported4August2026; publication date does not rejuvenate the data period.",
+        "26/62 exceeded75%;15were70–74.9% and21below69%; the report supports more thanhalf belowtheminimum.",
+        "91.1% is management-indicator compliance, not a clinical outcome/success or mortality statistic.",
+        "Ranking language remains an attributed publisher headline assertion; the body does not enumerate every individual hospital score."
+      ]
+    }
+  ]
+}
