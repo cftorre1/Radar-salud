@@ -32,6 +32,9 @@ test('Global Home teaser and Global canonical detail share read state',async({co
 });
 test('catalog excludes blocked paused and unverified; filter plus is adjacent and floating action outside cards',async({page})=>{
  await page.route('**/data/public_sources.json',r=>r.fulfill({json:{sources:[{id:'minsal',name:'Activa',group:'Organismos públicos',url:'https://www.minsal.cl/',description:'Noticias'}]}}));await page.goto('/sources.html');await expect(page.locator('#catalog')).toContainText('Activa');await expect(page.locator('#catalog')).not.toContainText(/Bloqueada|Pausada|Desconocida/);
+ const links=await page.locator('.sources-page .topnav a').evaluateAll(xs=>xs.map(x=>{const r=x.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,height:r.height}}));
+ expect(links).toHaveLength(3);for(let i=0;i<links.length;i++){expect(links[i].height).toBeGreaterThanOrEqual(44);if(i)expect(links[i].top>=links[i-1].bottom||links[i].left-links[i-1].right>=12).toBeTruthy();}
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();await page.screenshot({path:`artifacts/sources-navigation-${test.info().project.name}.png`});
  await prepare(page);await page.goto('/');const summary=page.locator('#filterDetails>summary');expect(await summary.evaluate(el=>getComputedStyle(el).justifyContent)).toBe('flex-start');await expect(page.locator('article #backTop')).toHaveCount(0);expect(await page.locator('#backTop').evaluate(el=>getComputedStyle(el).position)).toBe('fixed');
  await expect(page.locator('#backTop')).toBeHidden();await page.emulateMedia({reducedMotion:'reduce'});
  await page.locator('#local').scrollIntoViewIfNeeded();await expect(page.locator('#backTop')).toBeVisible();
