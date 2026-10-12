@@ -2,6 +2,8 @@
 
 Fecha: 12-oct-2026. Destino exclusivo: PR hacia `staging`. Integración reservada al Integration Commander.
 
+Actualización posterior: [cierre del gate CI](CODEX_H_CI_GATE_2026_10_12.md), con causa raíz, corrección focal y condiciones de PASS sobre el candidato final. Las validaciones siguientes corresponden a la entrega original; el estado definitivo está en PR33.
+
 Contrato: [PR32](https://github.com/cftorre1/Radar-salud/pull/32), SHA `a3e254d9ada6d2750787b416d7a9ee2253c08334`. Base reconciliada: `ef8cbe3938623d493872ff5f3e717153f176d1be`. Rama: `codex/h-product-editorial-20261012`. El SHA final de entrega figura en la descripción de la PR; los receipts identifican separadamente el SHA del código revisado y los hashes de cada candidato editorial.
 
 Estado: PASS_SCOPED técnico y editorial del Reviewer independiente sobre el código final, sin P0/P1 abiertos en su alcance; QA local completo más rechecks focales. Actions del head final se registra en la PR. No implica autorización de publicación, beta, producción ni merge. Los HOLD de fuentes y contenido continúan vigentes.

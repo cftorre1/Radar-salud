@@ -1,0 +1,102 @@
+diff --git a/scripts/export_public_sources.py b/scripts/export_public_sources.py
+index 79ce34b2..6d69c905 100644
+--- a/scripts/export_public_sources.py
++++ b/scripts/export_public_sources.py
+@@ -1,12 +1,3 @@
+-from pathlib import Path
+-import json
+-from radar_salud.public_source_catalog import build_catalog
+-
+-def export_public_sources(source_path=Path('data/source_health.json'),output=Path('web/data/public_sources.json')):
+-    data=json.loads(source_path.read_text(encoding='utf-8'))
+-    payload=build_catalog(data.get('sources') or {})
+-    output.parent.mkdir(parents=True,exist_ok=True)
+-    output.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+-    return payload
++from radar_salud.public_source_catalog import export_public_sources
+ 
+ if __name__=='__main__':export_public_sources()
+diff --git a/scripts/export_web_snapshot.py b/scripts/export_web_snapshot.py
+index 92093e78..03ba631a 100644
+--- a/scripts/export_web_snapshot.py
++++ b/scripts/export_web_snapshot.py
+@@ -693,7 +693,7 @@ def main():
+     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
+     health=Path("data/source_health.json")
+     if health.exists():shutil.copyfile(health,out.parent/"source_health.json")
+-    from scripts.export_public_sources import export_public_sources
++    from radar_salud.public_source_catalog import export_public_sources
+     if health.exists():export_public_sources(health,out.parent/"public_sources.json")
+     print(f"snapshot={out} signals={len(payload['signals'])}")
+ if __name__=="__main__":main()
+diff --git a/src/radar_salud/public_source_catalog.py b/src/radar_salud/public_source_catalog.py
+index 8aa1a448..c7a78f8a 100644
+--- a/src/radar_salud/public_source_catalog.py
++++ b/src/radar_salud/public_source_catalog.py
+@@ -1,5 +1,7 @@
+ """Sanitized catalogue, derived from current evidence; diagnostics stay administrative."""
+ from datetime import datetime, timezone
++import json
++from pathlib import Path
+ 
+ CATALOG={
+  'deis':('Datos oficiales','https://deis.minsal.cl/','Estadísticas oficiales de salud.'),
+@@ -45,3 +47,10 @@ def build_catalog(sources,now=None):
+         group,url,description=CATALOG[key]
+         rows.append({'id':key,'name':row['name'],'group':group,'url':url,'description':description})
+     return {'schema_version':1,'sources':sorted(rows,key=lambda x:(x['group'],x['name']))}
++
++def export_public_sources(source_path=Path('data/source_health.json'),output=Path('web/data/public_sources.json')):
++    data=json.loads(source_path.read_text(encoding='utf-8'))
++    payload=build_catalog(data.get('sources') or {})
++    output.parent.mkdir(parents=True,exist_ok=True)
++    output.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
++    return payload
+diff --git a/tests/test_public_source_catalog_cli.py b/tests/test_public_source_catalog_cli.py
+new file mode 100644
+index 00000000..f2f86f24
+--- /dev/null
++++ b/tests/test_public_source_catalog_cli.py
+@@ -0,0 +1,42 @@
++"""Exercise the installed CLI entry points without pytest's repository import path."""
++import json
++import os
++from pathlib import Path
++import subprocess
++import sys
++
++ROOT=Path(__file__).resolve().parents[1]
++
++
++def run_cli(script,*arguments,cwd=ROOT):
++    env=dict(os.environ)
++    env.pop('PYTHONPATH',None)
++    return subprocess.run([sys.executable,str(ROOT/'scripts'/script),*map(str,arguments)],
++                          cwd=cwd,env=env,check=True,capture_output=True,text=True,timeout=60)
++
++
++def test_offline_snapshot_cli_exports_public_catalog_without_repository_pythonpath(tmp_path):
++    output=tmp_path/'radar_today.json'
++    result=run_cli('export_web_snapshot.py','--input','data/history/superintendencia_signals.json',
++                   '--offline','--output',output)
++    snapshot=json.loads(output.read_text())
++    assert snapshot['signals'] and 'snapshot=' in result.stdout
++    catalog=json.loads((tmp_path/'public_sources.json').read_text())
++    assert catalog['sources']
++    assert all(set(row)=={'id','name','group','url','description'} for row in catalog['sources'])
++    assert 'global_reuters' not in {row['id'] for row in catalog['sources']}
++    assert (tmp_path/'source_health.json').read_bytes()==(ROOT/'data/source_health.json').read_bytes()
++
++
++def test_standalone_catalog_cli_preserves_input_and_excludes_blocked_source(tmp_path):
++    health=tmp_path/'data/source_health.json'
++    health.parent.mkdir()
++    health.write_text(json.dumps({'sources':{
++        'minsal':{'name':'Ministerio de Salud','technical_status':'ok','coverage_status':'observed','checked_at':'2026-10-01T12:00:00Z'},
++        'global_who':{'name':'WHO bloqueada','technical_status':'ok','coverage_status':'blocked','checked_at':'2026-10-01T12:00:00Z'}}}))
++    original=health.read_bytes()
++    run_cli('export_public_sources.py',cwd=tmp_path)
++    catalog=json.loads((tmp_path/'web/data/public_sources.json').read_text())
++    assert [row['id'] for row in catalog['sources']]==['minsal']
++    assert set(catalog['sources'][0])=={'id','name','group','url','description'}
++    assert health.read_bytes()==original
