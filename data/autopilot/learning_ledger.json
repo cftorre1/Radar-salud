@@ -3867,5 +3867,72 @@
     "source_closed": false,
     "specific_fix": "Hold acceptance until bounded daily path/explicit disabled hook; read actual run/job and exact-head checks; preserve historical qualification receipts.",
     "status": "OPEN_ACTIONABLE"
+  },
+  {
+    "classification": "missed_agent_finding",
+    "evidence": [
+      "data/audits/pulso_reconciliation_2026_10_11.json",
+      "data/audits/pulso_core_blocked_2026_10_11.json",
+      "data/audits/pulso_qa_2026_10_11.json"
+    ],
+    "finding": "Config promotion tests did not demonstrate real core discovery or prevent beta health overwrite; arbitrary listing dates/body and title-based identities weakened traceability.",
+    "id": "pulso_core_promotion_unverified_2026_10_11",
+    "owner_minutes_saved": "not measured; no unsupported autonomy KPI claim",
+    "preventive_controls": [
+      "tests/test_pulso_source.py",
+      "tests/test_pulso_core_runtime.py",
+      "tests/test_beta_core_handoff.py",
+      "source_details for partial listing/detail failures",
+      "source-scoped isolated runtime",
+      "hold preservation and canonical URL queue identity"
+    ],
+    "recorded_at": "2026-10-11T04:42:58.167048+00:00",
+    "root_cause": "Registration and sampled beta discovery were treated as too much evidence; tests omitted publisher-bound dates, core publication/rejection/retry and beta/core writer interaction.",
+    "source": "Issue #5 / Work3 / Codex B",
+    "status": "implemented_deterministic_controls_live_acceptance_blocked"
+  },
+  {
+    "evidence": [
+      "data/audits/pulso_external_control_2026_10_11.json",
+      "tests/test_pulso_real_fixtures.py",
+      "tests/test_pulso_archive_discovery.py"
+    ],
+    "id": "pulso_exhaustive_discovery_false_confidence_2026_10_11",
+    "incident": "Human external control disproved first-page/title-only11candidate inventory; prior synthetic tests covered parser cases but not publisher universe or historical recall.",
+    "owner_minutes_saved": "not_measured_no_claim",
+    "preventive_controls": [
+      "Frozen independent200originaldate control before implementation",
+      "Actual byte-hashed publisher HTML/XML fixtures through isolated Actions",
+      "Tests require detail opening for general headlines and factual health sections",
+      "Independent review of empty archives, page limits and timestamp calendar",
+      "Discovery-only core before paid editorial review; numeric72 gate unchanged"
+    ],
+    "recorded_at": "2026-10-11T05:33:53.667681+00:00",
+    "status": "implemented_controls_coverage_acceptance_pending"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:pulso_latercera_exhaustive_discovery_2026_10_11",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-1f00adf667344411b0a583e3addfa3bd.json",
+        "sha256": "d4c5c019bd1459a283a3addd125a3a9241f3a0b4e24417d42a07b4b9f0c65260",
+        "staging_sha": "515b8809ecc391600c4093ce0435955d7d3685c5",
+        "state_sha": "9668b813a298f151d375650d69c4d870880bca47"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: pulso_latercera_exhaustive_discovery_2026_10_11",
+    "id": "autonomy_observed_84ce7d47bb2ccb0c0e2dc472d4a48ca2c1b91dd530d4e15d09403fa4ede96197",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "pulso_latercera_exhaustive_discovery_2026_10_11"
   }
 ]
