@@ -3,6 +3,12 @@ Corte editorial: **11 octubre 2026, America/Santiago**. Ventana30d:12-sep–11-o
 Referencia staging `bc723e08200ada1cfb0146c6ce6da0d6f1ad11af`; PR10 `d3c28447b4f113ffb161168f240591bf0f479fc2`; PR26 `060c7a810496602c34a706410d33f125bf55c96c`.
 **DECISIONES PARA PUBLICADOR; NO PUBLICADO.** No se modificó staging, main, producción, umbrales, colectores ni configuración. La rama sólo contiene este documento y la matriz.
 
+## Corrección de Dirección — 11 octubre 2026, 23:09 Chile
+
+**Global Intelligence no tiene límite numérico de temas, ni cuota mínima.** Esta instrucción sustituye el máximo anterior de diez. Los ocho temas de este corte son una selección inicial, no un cupo ni un cierre del universo editorial. Deben admitirse todos los temas adicionales que cumplan materialidad, evidencia, independencia, actualidad y utilidad para Chile, evitando duplicaciones. Se mantienen los umbrales de calidad y el pipeline autorizado.
+
+Integration Commander: trasladar esta decisión al responsable técnico para eliminar cualquier truncamiento o máximo de diez en configuración, preselección, exportación o presentación de Global; comprobar que la paginación o los límites visuales no descarten temas elegibles. Este PR documental registra la decisión, no acredita que el límite técnico haya sido eliminado.
+
 ## Dictamen
 El Insight de septiembre ya fue archivado/reemplazado. El actual **está vigente**: ancla10-oct, vence al comenzar17-oct en Chile. Mantenerlo con el análisis profundo y límites que permite el contrato; no simular tres fuentes independientes cuando DF/LT replican a UC.
 La selección Global técnica no es selección editorial. **377 candidatos =148WHO+229PAHO;122 en30d y255 anteriores**. No son377 novedades de la semana. Se revisó metadata por grupos, sin fingir lectura profunda individual. Propongo **8 temas:4 para revisión final del publicador y4 HOLD**. Ninguno se publica por este handoff.
