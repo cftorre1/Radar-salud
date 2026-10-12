@@ -1,0 +1,1352 @@
+{
+  "scope": "Work5 documentary handoff; no publication or implementation",
+  "staging_sha": "ef8cbe3938623d493872ff5f3e717153f176d1be",
+  "captured_at_utc": "2026-10-12T08:14:34.750241+00:00",
+  "window_calendar_chile": [
+    "2026-09-13",
+    "2026-10-12"
+  ],
+  "reviewed_file_sha256": {
+    "config/orchestrator_queue.json": "3dcdca0a953b4641b4918cd673f45baccdc0a0552e5e8b2af2c663a4afbfb424",
+    "config/pmo_baseline.json": "f9bdbecf41c71cb533267df5d0d1d48f91fab57fe02d26ed96f6c45efd60e4e3",
+    "config/editorial_rules_v2.json": "7357103b3dbede1572659b406c30049b7ac1e3a9d5aef7b0911695225586f02a",
+    "config/editorial_intelligence_committee_v1.json": "6130ea404523f00278fad872e999e0a1dc8f1961f85f41ca40ea0ea6a8f12d3d",
+    "data/autopilot/learning_ledger.json": "28951f5a7ea04d60cfe1e077d15b8e54133f2d2087e0d3473efe6778fcc8e6d1",
+    "data/source_health.json": "8bcf97e272b36070bfd301e48a0731035f99497d94d6f94ab045a94c8ac726a5",
+    "web/data/radar_today.json": "55ed5ef4dec299696f1f813243f76cd1a18a947bf71eb5474b4de7cccc39fc17",
+    "web/data/global_themes.json": "e2517bf6d5435f899e30dbac6c1fa651cf811613400426dc87490010ef0d5a77",
+    "data/weekly_insight/latest.json": "827d7b5a4c4a0d7388c85746db86108ba9054e9c93c9a86e18d76fc0966990af"
+  },
+  "live_browser": "desktop only; mobile historical CI evidence not rerun",
+  "new_pipeline_ai_calls": 0,
+  "source_capture_runtime_executed": false,
+  "queue_pmo_contract_mutations": false,
+  "document": "docs/handoffs/WORK5_PRODUCT_EDITORIAL_2026_10_12.md",
+  "review_status": "PASS_SCOPED_P1_READY_FOR_WORK6_RECHECK",
+  "independent_review": "docs/handoffs/WORK5_PRODUCT_EDITORIAL_REVIEW_2026_10_12.md",
+  "deliverable_sha256": {
+    "docs/handoffs/WORK5_PRODUCT_EDITORIAL_2026_10_12.md": "259bdf1421368e4c9176497a0d0b51113d23d08b1d0d775b7f1178dcf473d365",
+    "docs/handoffs/WORK5_PRODUCT_EDITORIAL_REVIEW_2026_10_12.md": "e169fb89d7114a80a53e822c51c4f9303e151a6b7860d391c08c1c16251de0ef"
+  },
+  "v1_review_status": "PASS_SCOPED_DOCUMENTARY",
+  "addendum_v2": {
+    "direction_comment": "https://github.com/cftorre1/Radar-salud/issues/5#issuecomment-6120684438",
+    "base_pr_head": "5163f2fff1512587726cc5a0924598d2e5fa8ff7",
+    "staging_rechecked": "ef8cbe3938623d493872ff5f3e717153f176d1be",
+    "observed_at_utc": "2026-10-12T09:04:44.189708+00:00",
+    "scope": "documentary delta only; Work6 before Direction acceptance and Codex H",
+    "pipeline_paid_calls": 0,
+    "baseline_hashes_unchanged": true,
+    "new_visual_mobile_qa": false,
+    "originals": [
+      {
+        "id": "IF10670",
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/res-exenta-if-n10670-2026.pdf",
+        "sha256": "33b264702a6cd5209eac7e64aab27d4f9876510b8b665f1062bdd616b52e2509",
+        "pages": 8
+      },
+      {
+        "id": "IF531",
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/circular-if-n-531-2026.pdf",
+        "sha256": "e4908364b387a2db27ec9e6685ca6971012eeafa8ba504ad1619de07989f47b5",
+        "pages": 2
+      },
+      {
+        "id": "IF534",
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/circular-if-n-534-2026.pdf",
+        "pages": 4,
+        "access": "official document read; no retained-byte hash claimed"
+      },
+      {
+        "id": "AHA20261005",
+        "url": "https://www.aha.org/news/blog/2026-10-05-better-information-better-care-how-coding-supports-todays-complex-patients",
+        "access": "full public response read; interested counterparty"
+      },
+      {
+        "id": "BCBSA20260924",
+        "url": "https://www.bcbs.com/about-us/association-news/bcbsa-analysis-ai-coding-tools-affects-healthcare-costs",
+        "access": "indexed primary excerpt only; full GET502; technical methodology unverified"
+      },
+      {
+        "id": "Reuters20260924",
+        "url": "https://www.reuters.com/legal/litigation/ai-tools-generated-nearly-1-billion-extra-costs-blue-cross-insurers-say-2026-09-24/",
+        "access": "existing attribution inspected; new full-text access unavailable"
+      }
+    ],
+    "open_findings": [
+      "IF10670 later hierarchical outcome and individual notification not verified; wording dated to decision",
+      "IF534 discovery timestamp absent; seen/history/accept/feed confirmed",
+      "Global technical BCBSA methodology remains HOLD_SOURCE_METHOD",
+      "desktop/mobile QA is future implementation acceptance, not newly executed",
+      "model benchmark and Astra routing unexecuted; no pipeline spend authorization",
+      "historical sanctions aggregates must distinguish publication windows from issued-event freshness",
+      "source catalog eligibility and read-state migration require implementation QA"
+    ],
+    "codex_h_authorized": false,
+    "reviewed_candidate_sha256": "1c588f68704c3f08e75299b6856c10a8705c475113dfbd383de08ef07175e9ff",
+    "reviewer_findings_open_p0_p1": 0
+  },
+  "statistical_complement": {
+    "direction_comment": "https://github.com/cftorre1/Radar-salud/pull/32#issuecomment-6121104768",
+    "base_pr_sha": "ef41c9fd3b8fa4724a3b2273d94f40e638c2e813",
+    "staging_sha": "ef8cbe3938623d493872ff5f3e717153f176d1be",
+    "observed_at_utc": "2026-10-12T09:21:21.704054+00:00",
+    "scope": "statistical contract only; no code/publication",
+    "paid_pipeline_calls": 0,
+    "mobile_qa_executed": false,
+    "source_workbooks": {
+      "families": {
+        "cartera": {
+          "family": "cartera",
+          "status": "validated",
+          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
+          "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
+          "bytes": 3558853,
+          "schema": "monthly_isapre_totals_v2",
+          "series": [
+            {
+              "period": "2026-01",
+              "sheet": "Enero",
+              "isapres": 10,
+              "metrics": {
+                "cotizantes": 1557064,
+                "cargas": 956974,
+                "beneficiarios": 2514038
+              }
+            },
+            {
+              "period": "2026-02",
+              "sheet": "Febrero",
+              "isapres": 10,
+              "metrics": {
+                "cotizantes": 1555751,
+                "cargas": 954634,
+                "beneficiarios": 2510385
+              }
+            },
+            {
+              "period": "2026-03",
+              "sheet": "Marzo",
+              "isapres": 10,
+              "metrics": {
+                "cotizantes": 1553560,
+                "cargas": 951277,
+                "beneficiarios": 2504837
+              }
+            },
+            {
+              "period": "2026-04",
+              "sheet": "Abril",
+              "isapres": 10,
+              "metrics": {
+                "cotizantes": 1550891,
+                "cargas": 947758,
+                "beneficiarios": 2498649
+              }
+            },
+            {
+              "period": "2026-05",
+              "sheet": "Mayo",
+              "isapres": 10,
+              "metrics": {
+                "cotizantes": 1549840,
+                "cargas": 943844,
+                "beneficiarios": 2493684
+              }
+            },
+            {
+              "period": "2026-06",
+              "sheet": "Junio",
+              "isapres": 10,
+              "metrics": {
+                "cotizantes": 1549398,
+                "cargas": 939860,
+                "beneficiarios": 2489258
+              }
+            },
+            {
+              "period": "2026-07",
+              "sheet": "Julio",
+              "isapres": 10,
+              "metrics": {
+                "cotizantes": 1549873,
+                "cargas": 937624,
+                "beneficiarios": 2487497
+              }
+            }
+          ]
+        },
+        "suscripciones": {
+          "family": "suscripciones",
+          "status": "validated",
+          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
+          "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6",
+          "bytes": 242120,
+          "schema": "monthly_isapre_totals_v2",
+          "series": [
+            {
+              "period": "2026-01",
+              "sheet": "Enero",
+              "isapres": 10,
+              "metrics": {
+                "contratos_suscritos": 22619,
+                "desahucios_voluntarios": 21322
+              }
+            },
+            {
+              "period": "2026-02",
+              "sheet": "Febrero",
+              "isapres": 10,
+              "metrics": {
+                "contratos_suscritos": 19452,
+                "desahucios_voluntarios": 18230
+              }
+            },
+            {
+              "period": "2026-03",
+              "sheet": "Marzo",
+              "isapres": 10,
+              "metrics": {
+                "contratos_suscritos": 18274,
+                "desahucios_voluntarios": 16140
+              }
+            },
+            {
+              "period": "2026-04",
+              "sheet": "Abril",
+              "isapres": 10,
+              "metrics": {
+                "contratos_suscritos": 18994,
+                "desahucios_voluntarios": 16305
+              }
+            },
+            {
+              "period": "2026-05",
+              "sheet": "Mayo",
+              "isapres": 10,
+              "metrics": {
+                "contratos_suscritos": 17557,
+                "desahucios_voluntarios": 13948
+              }
+            },
+            {
+              "period": "2026-06",
+              "sheet": "Junio",
+              "isapres": 10,
+              "metrics": {
+                "contratos_suscritos": 18331,
+                "desahucios_voluntarios": 14726
+              }
+            },
+            {
+              "period": "2026-07",
+              "sheet": "Julio",
+              "isapres": 10,
+              "metrics": {
+                "contratos_suscritos": 19716,
+                "desahucios_voluntarios": 15172
+              }
+            }
+          ]
+        },
+        "movilidad": {
+          "family": "movilidad",
+          "status": "validated",
+          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-movilidad-de-cotizantes-202607.xlsx",
+          "sha256": "851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7",
+          "bytes": 393047,
+          "schema": "national_comparison_totals_v2",
+          "series": [
+            {
+              "period_start": "2025-07",
+              "period_end": "2026-07",
+              "period_type": "comparison_between_july_cuts",
+              "sheet": "Nacional",
+              "metrics": {
+                "salidas_intervalo": 109663,
+                "entradas_intervalo": 91963,
+                "diferencia_intervalo": -17700
+              }
+            }
+          ]
+        }
+      },
+      "entity_rows": [
+        {
+          "code": 67,
+          "name": "Colmena Golden Cross S.A.",
+          "group": "abiertas",
+          "cotizantes": 363526,
+          "cargas": 201038,
+          "beneficiarios": 564564,
+          "start_beneficiarios": 573597,
+          "delta": -9033,
+          "delta_pct": -1.5747990313756872,
+          "source_cells": "Enero!A8:E8;Julio!A8:E8"
+        },
+        {
+          "code": 78,
+          "name": "Cruz Blanca S.A.",
+          "group": "abiertas",
+          "cotizantes": 223084,
+          "cargas": 131318,
+          "beneficiarios": 354402,
+          "start_beneficiarios": 360643,
+          "delta": -6241,
+          "delta_pct": -1.7305202097364984,
+          "source_cells": "Enero!A9:E9;Julio!A9:E9"
+        },
+        {
+          "code": 80,
+          "name": "Vida Tres S.A.",
+          "group": "abiertas",
+          "cotizantes": 80285,
+          "cargas": 59557,
+          "beneficiarios": 139842,
+          "start_beneficiarios": 140775,
+          "delta": -933,
+          "delta_pct": -0.6627597229621737,
+          "source_cells": "Enero!A10:E10;Julio!A10:E10"
+        },
+        {
+          "code": 81,
+          "name": "Nueva Masvida S.A.",
+          "group": "abiertas",
+          "cotizantes": 193635,
+          "cargas": 104073,
+          "beneficiarios": 297708,
+          "start_beneficiarios": 293968,
+          "delta": 3740,
+          "delta_pct": 1.272247319436129,
+          "source_cells": "Enero!A11:E11;Julio!A11:E11"
+        },
+        {
+          "code": 99,
+          "name": "Banmédica S.A.",
+          "group": "abiertas",
+          "cotizantes": 322333,
+          "cargas": 224599,
+          "beneficiarios": 546932,
+          "start_beneficiarios": 565481,
+          "delta": -18549,
+          "delta_pct": -3.280216311423372,
+          "source_cells": "Enero!A12:E12;Julio!A12:E12"
+        },
+        {
+          "code": 107,
+          "name": "Consalud S.A.",
+          "group": "abiertas",
+          "cotizantes": 295872,
+          "cargas": 162679,
+          "beneficiarios": 458551,
+          "start_beneficiarios": 458571,
+          "delta": -20,
+          "delta_pct": -0.004361374792562112,
+          "source_cells": "Enero!A13:E13;Julio!A13:E13"
+        },
+        {
+          "code": 108,
+          "name": "Esencial S.A.",
+          "group": "abiertas",
+          "cotizantes": 34857,
+          "cargas": 23728,
+          "beneficiarios": 58585,
+          "start_beneficiarios": 52873,
+          "delta": 5712,
+          "delta_pct": 10.803245512832637,
+          "source_cells": "Enero!A14:E14;Julio!A14:E14"
+        },
+        {
+          "code": 63,
+          "name": "Isalud Ltda.",
+          "group": "cerradas",
+          "cotizantes": 19800,
+          "cargas": 19779,
+          "beneficiarios": 39579,
+          "start_beneficiarios": 40490,
+          "delta": -911,
+          "delta_pct": -2.249938256359595,
+          "source_cells": "Enero!A16:E16;Julio!A16:E16"
+        },
+        {
+          "code": 76,
+          "name": "Fundación",
+          "group": "cerradas",
+          "cotizantes": 15970,
+          "cargas": 10297,
+          "beneficiarios": 26267,
+          "start_beneficiarios": 26522,
+          "delta": -255,
+          "delta_pct": -0.9614659527939069,
+          "source_cells": "Enero!A17:E17;Julio!A17:E17"
+        },
+        {
+          "code": 94,
+          "name": "Cruz Del Norte Ltda.",
+          "group": "cerradas",
+          "cotizantes": 511,
+          "cargas": 556,
+          "beneficiarios": 1067,
+          "start_beneficiarios": 1118,
+          "delta": -51,
+          "delta_pct": -4.561717352415027,
+          "source_cells": "Enero!A18:E18;Julio!A18:E18"
+        }
+      ],
+      "source_notes": "provisional; benefits in force; same entity code and period; open/closed groups separate"
+    },
+    "landing_current_period": "2026-08",
+    "landing_current_publication": "2026-10-02",
+    "case_period_preserved": "2026-07",
+    "historical_publication_reverified": false,
+    "review_status": "PASS_SCOPED_DOCUMENTARY_READY_FOR_WORK6",
+    "later_direction_comment": "https://github.com/cftorre1/Radar-salud/pull/32#issuecomment-6121281277",
+    "adaptive_contract": true,
+    "second_family_negative_fixture": "data/epidemiology/respiratory_pressure_2026.json; contradiction indicator HOLD; no new source revalidation",
+    "fefi_numeric_series_verified": false,
+    "reviewed_candidate_sha256": "9ba5c848d8aa4416b38e5ab07d29a2c8610eb6c6fdd727c8e5858fcd6cc4870f",
+    "p0_p1_open": 0
+  },
+  "w6_01_correction": {
+    "scope": "W6-01 only; preserve other decisions, P2 and HOLD",
+    "base_pr_sha": "4bb075eda97413d0c4423848c2ad8f7d8f0ceb91",
+    "work6_audit_sha": "469b491caba94b281f4ab31844d4e8eb827ff594",
+    "direction_comment": "https://github.com/cftorre1/Radar-salud/pull/32#issuecomment-6123589624",
+    "observed_at_utc": "2026-10-12T11:53:22.034424+00:00",
+    "test_results": {
+      "scope": "disposable deterministic specification probe; not tests of implemented product",
+      "result": "PASS",
+      "case_count": 37,
+      "cases": [
+        {
+          "id": "F1",
+          "inputs": [
+            "-273.285",
+            "34090.653"
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "34363.938",
+            "pct": null,
+            "pp": null,
+            "transition": "loss_to_profit",
+            "reason": "sign_change"
+          },
+          "expected_numeric": {
+            "delta": "34363.938",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "official_numeric_counterexample"
+        },
+        {
+          "id": "F2",
+          "inputs": [
+            -100,
+            -40
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "60",
+            "pct": null,
+            "pp": null,
+            "transition": "smaller_loss",
+            "reason": "negative_base"
+          },
+          "expected_numeric": {
+            "delta": "60",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F3",
+          "inputs": [
+            -100,
+            -160
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "-60",
+            "pct": null,
+            "pp": null,
+            "transition": "larger_loss",
+            "reason": "negative_base"
+          },
+          "expected_numeric": {
+            "delta": "-60",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F4",
+          "inputs": [
+            -100,
+            -100
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "0",
+            "pct": null,
+            "pp": null,
+            "transition": "unchanged_loss",
+            "reason": "negative_base"
+          },
+          "expected_numeric": {
+            "delta": "0",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F5",
+          "inputs": [
+            -100,
+            0
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "100",
+            "pct": null,
+            "pp": null,
+            "transition": "loss_to_zero",
+            "reason": "negative_base"
+          },
+          "expected_numeric": {
+            "delta": "100",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F6",
+          "inputs": [
+            0,
+            40
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "40",
+            "pct": null,
+            "pp": null,
+            "transition": "zero_to_profit",
+            "reason": "zero_base"
+          },
+          "expected_numeric": {
+            "delta": "40",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F7",
+          "inputs": [
+            0,
+            -40
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "-40",
+            "pct": null,
+            "pp": null,
+            "transition": "zero_to_loss",
+            "reason": "zero_base"
+          },
+          "expected_numeric": {
+            "delta": "-40",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F8",
+          "inputs": [
+            0,
+            0
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "0",
+            "pct": null,
+            "pp": null,
+            "transition": "zero_unchanged",
+            "reason": "zero_base"
+          },
+          "expected_numeric": {
+            "delta": "0",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F9",
+          "inputs": [
+            100,
+            -20
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "-120",
+            "pct": null,
+            "pp": null,
+            "transition": "profit_to_loss",
+            "reason": "sign_change"
+          },
+          "expected_numeric": {
+            "delta": "-120",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F10",
+          "inputs": [
+            100,
+            0
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "-100",
+            "pct": "-100",
+            "pp": null,
+            "transition": null,
+            "reason": null
+          },
+          "expected_numeric": {
+            "delta": "-100",
+            "pct": "-100",
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "F11",
+          "inputs": [
+            100,
+            150
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "50",
+            "pct": "50",
+            "pp": null,
+            "transition": null,
+            "reason": null
+          },
+          "expected_numeric": {
+            "delta": "50",
+            "pct": "50",
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "C1",
+          "inputs": [
+            2514038,
+            2487497
+          ],
+          "policy": {
+            "kind": "count"
+          },
+          "actual": {
+            "delta": "-26541",
+            "pct": "-1.055711966167575828209438362",
+            "pp": null,
+            "transition": null,
+            "reason": null
+          },
+          "expected_numeric": {
+            "delta": "-26541",
+            "pct": "-1.055711966167575828209438362",
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "official_stock_regression"
+        },
+        {
+          "id": "C2",
+          "inputs": [
+            100,
+            -1
+          ],
+          "policy": {
+            "kind": "count"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "invalid_domain"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_None_0",
+          "inputs": [
+            null,
+            10
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_None_1",
+          "inputs": [
+            10,
+            null
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_S/I_0",
+          "inputs": [
+            "S/I",
+            10
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_S/I_1",
+          "inputs": [
+            10,
+            "S/I"
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_NA_0",
+          "inputs": [
+            "NA",
+            10
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_NA_1",
+          "inputs": [
+            10,
+            "NA"
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_NaN_0",
+          "inputs": [
+            "NaN",
+            10
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_NaN_1",
+          "inputs": [
+            10,
+            "NaN"
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_Infinity_0",
+          "inputs": [
+            "Infinity",
+            10
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "M1_Infinity_1",
+          "inputs": [
+            10,
+            "Infinity"
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "missing_or_invalid"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "R1",
+          "inputs": [
+            120,
+            150
+          ],
+          "policy": {
+            "kind": "count"
+          },
+          "actual": {
+            "delta": "30",
+            "pct": "25",
+            "pp": null,
+            "transition": null,
+            "reason": null
+          },
+          "expected_numeric": {
+            "delta": "30",
+            "pct": "25",
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "R2",
+          "inputs": [
+            120,
+            150
+          ],
+          "policy": {
+            "kind": "result",
+            "revised_ok": false
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "HOLD_REVISED_BASE"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "R3",
+          "inputs": [
+            -20,
+            40
+          ],
+          "policy": {
+            "kind": "result"
+          },
+          "actual": {
+            "delta": "60",
+            "pct": null,
+            "pp": null,
+            "transition": "loss_to_profit",
+            "reason": "sign_change"
+          },
+          "expected_numeric": {
+            "delta": "60",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "P1",
+          "inputs": [
+            ".20",
+            ".30"
+          ],
+          "policy": {
+            "kind": "proportion"
+          },
+          "actual": {
+            "delta": "0.10",
+            "pct": "50",
+            "pp": "10.00",
+            "transition": null,
+            "reason": null
+          },
+          "expected_numeric": {
+            "delta": "0.10",
+            "pct": "50",
+            "pp": "10"
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "P2",
+          "inputs": [
+            0,
+            ".30"
+          ],
+          "policy": {
+            "kind": "proportion"
+          },
+          "actual": {
+            "delta": "0.30",
+            "pct": null,
+            "pp": "30.00",
+            "transition": null,
+            "reason": "zero_base"
+          },
+          "expected_numeric": {
+            "delta": "0.30",
+            "pct": null,
+            "pp": "30"
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "P3_den",
+          "inputs": [
+            ".2",
+            ".3"
+          ],
+          "policy": {
+            "kind": "proportion",
+            "denominator_ok": false
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "invalid_denominator"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "P3_domain",
+          "inputs": [
+            ".2",
+            "1.2"
+          ],
+          "policy": {
+            "kind": "proportion"
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "invalid_domain"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "G1",
+          "inputs": [
+            "-.05",
+            ".03"
+          ],
+          "policy": {
+            "kind": "margin"
+          },
+          "actual": {
+            "delta": "0.08",
+            "pct": null,
+            "pp": "8.00",
+            "transition": null,
+            "reason": "sign_change"
+          },
+          "expected_numeric": {
+            "delta": "0.08",
+            "pct": null,
+            "pp": "8"
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "G2",
+          "inputs": [
+            ".05",
+            "-.03"
+          ],
+          "policy": {
+            "kind": "margin"
+          },
+          "actual": {
+            "delta": "-0.08",
+            "pct": null,
+            "pp": "-8.00",
+            "transition": null,
+            "reason": "sign_change"
+          },
+          "expected_numeric": {
+            "delta": "-0.08",
+            "pct": null,
+            "pp": "-8"
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "G3",
+          "inputs": [
+            "-.05",
+            "-.02"
+          ],
+          "policy": {
+            "kind": "margin"
+          },
+          "actual": {
+            "delta": "0.03",
+            "pct": null,
+            "pp": "3.00",
+            "transition": null,
+            "reason": "negative_base"
+          },
+          "expected_numeric": {
+            "delta": "0.03",
+            "pct": null,
+            "pp": "3"
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "T1",
+          "inputs": [
+            10,
+            15
+          ],
+          "policy": {
+            "kind": "rate"
+          },
+          "actual": {
+            "delta": "5",
+            "pct": "50",
+            "pp": null,
+            "transition": null,
+            "reason": null
+          },
+          "expected_numeric": {
+            "delta": "5",
+            "pct": "50",
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "T2",
+          "inputs": [
+            10,
+            15
+          ],
+          "policy": {
+            "kind": "rate",
+            "denominator_ok": false
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "invalid_denominator"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "U1",
+          "inputs": [
+            100,
+            120
+          ],
+          "policy": {
+            "kind": "result",
+            "comparable": false
+          },
+          "actual": {
+            "delta": null,
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "incomparable"
+          },
+          "expected_numeric": {
+            "delta": null,
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        },
+        {
+          "id": "I1",
+          "inputs": [
+            100,
+            120
+          ],
+          "policy": {
+            "kind": "index",
+            "proportional": false
+          },
+          "actual": {
+            "delta": "20",
+            "pct": null,
+            "pp": null,
+            "transition": null,
+            "reason": "nonproportional"
+          },
+          "expected_numeric": {
+            "delta": "20",
+            "pct": null,
+            "pp": null
+          },
+          "pass": true,
+          "fixture_type": "synthetic_domain_test"
+        }
+      ],
+      "mutations_detected": [
+        "negative_base_naive_pct",
+        "absolute_base_universal_fix",
+        "stock_end_denominator"
+      ],
+      "fefi_raw_cells": [
+        -273.28500000000076,
+        34090.65299999999,
+        34363.937999999995
+      ],
+      "fefi_publication_status": "HOLD_COVERAGE_ESENCIAL",
+      "mobile_executed": false,
+      "source_harness_sha256": "d0414a12611807dd8d85ae9fb508e9dedc91ee395a53a3738b5da8876c4a5978"
+    },
+    "originals": [
+      {
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/07/finan_ifrs_mar_2026_web_v2.xls",
+        "sha256": "e3c4f7b3cfee9a6e4a3122aef4d0c65a26d41630e482c16ec4345b8a804db065",
+        "cells": "Result. Financieros comparados!B16,D16,F16; A4/B5/D5/A8 period/unit; Notas Explicativas!A18 coverage conflict",
+        "status": "HOLD_COVERAGE_ESENCIAL; valid numerical counterexample only"
+      },
+      {
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
+        "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
+        "cells": "Enero!E20,Julio!E20",
+        "status": "numeric regression only; no update or publication"
+      }
+    ],
+    "review_status": "PASS_SCOPED_P1",
+    "paid_pipeline_calls": 0,
+    "product_code_changed": false,
+    "work6_recheck_required": true,
+    "codex_h_authorized": false,
+    "reviewed_candidate_sha256": "259bdf1421368e4c9176497a0d0b51113d23d08b1d0d775b7f1178dcf473d365",
+    "independent_additional_checks": 15,
+    "open_p0_p1_in_focal_delta": 0
+  }
+}
