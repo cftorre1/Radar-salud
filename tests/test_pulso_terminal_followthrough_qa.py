@@ -114,6 +114,57 @@ def rollover_snapshot(actual):
     return dict(date=audit["current_date"], signals=[rows[url] for url in audit["current_signal_order"]])
 
 
+@pytest.fixture
+def observed_rediscovery(zero_shape):
+    import subprocess
+    producer = "d3c28447b4f113ffb161168f240591bf0f479fc2"
+    read = lambda path: json.loads(subprocess.check_output(["git", "show", producer+":"+path], cwd=ROOT))
+    actual_report = read("data/audits/pulso_runtime_2026_10_11.json")
+    result = dict(zero_shape, queue=read("data/state/pending_queue.json"),
+        snapshot=read("web/data/radar_today.json"), report=actual_report)
+    result["execution"] = copy.deepcopy(zero_shape["execution"])
+    for field in ("started_at", "finished_at"):
+        result["execution"][field] = actual_report["last_core_execution"][field]
+    return result
+
+
+def test_real_first_zero_discovery_deltas_preserve_all_editorial_and_paid_stock(observed_rediscovery):
+    proof = qa.verify_terminal_followthrough_execution(**observed_rediscovery)
+    from collections import Counter
+    kinds = Counter(proof["launch_stock"]["unselected_operational_observations"].values())
+    assert kinds == {"verified_unselected_publication_aged_beyond_90_days":22,
+        "unchanged_unselected_primary_HTML_transport_refresh":7, "verified_late_personal_primary_identity_enrichment":1}
+    assert len(proof["launch_stock"]["preserved_terminal_urls"]) == 113
+    assert proof["launch_stock"]["native_queue_count"] == 5293
+    assert proof["launch_stock"]["history_signal_count"] == 992
+    assert proof["inherited_native_feed_clock_rollover"]["pulso_70_signals_unchanged"]
+
+
+@pytest.mark.parametrize("mutation", ["refresh_body", "refresh_model", "refresh_date", "refresh_revision",
+    "age_attempt", "age_primary", "age_gate", "pope_body", "pope_model", "pope_identity"])
+def test_discovery_observation_deltas_never_allow_editorial_or_primary_changes(observed_rediscovery, mutation):
+    current = dict(observed_rediscovery, queue=copy.deepcopy(observed_rediscovery["queue"]))
+    if mutation.startswith("refresh"):
+        item = next(v for v in current["queue"].values() if v.get("raw",{}).get("url") in qa.TERMINAL_REDISCOVERY_URLS)
+        meta = item["raw"]["metadata"]
+        if mutation == "refresh_body": meta["page_text"] = "invented body"
+        elif mutation == "refresh_model": meta["analysis_model_output"] = {"radar_score":80}
+        elif mutation == "refresh_date": meta["publication_date"] = "2026-10-12"
+        else: meta["evidence_revisions"][-1]["verified_publication_date"] = "2026-10-12"
+    elif mutation.startswith("age"):
+        item = next(v for v in current["queue"].values() if v.get("source") == qa.SOURCE and v.get("status") == "archived")
+        if mutation == "age_attempt": item["attempts"] = 1
+        elif mutation == "age_primary": item["raw"]["metadata"]["page_text"] += " erased original evidence"
+        else: item["raw"]["metadata"]["editorial_assessment"] = {"decision":"reject","relevance_score":70}
+    else:
+        item = next(v for v in current["queue"].values() if v.get("raw",{}).get("url") == qa.TERMINAL_LATE_PERSONAL_URL)
+        if mutation == "pope_body": item["raw"]["metadata"]["page_text"] += " new diagnosis"
+        elif mutation == "pope_model": item["raw"]["metadata"]["analysis_model_output"] = {"radar_score":90}
+        else: item["raw"]["metadata"]["queue_identity_fingerprint"] = "different identity"
+    with pytest.raises(ValueError, match="terminal_followthrough"):
+        qa.verify_terminal_followthrough_execution(**current)
+
+
 def test_only_exact_inherited_native_rollover_keeps_all70_source_signals(zero_shape):
     current = dict(zero_shape, snapshot=rollover_snapshot(zero_shape["origin"]))
     proof = qa.verify_terminal_followthrough_execution(**current)

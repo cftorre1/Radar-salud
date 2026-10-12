@@ -118,7 +118,8 @@ def shape(monkeypatch):
         result["current_followthrough_execution"] = deepcopy(execution)
         result["actual_budget_delta"] = helper.budget_delta(execution)
         return result
-    reader = SimpleNamespace(verify_terminal_followthrough_execution=fixed_reader)
+    reader = SimpleNamespace(verify_terminal_followthrough_execution=fixed_reader,
+        terminal_source_inventory_semantic=helper.compact)
     monkeypatch.setattr(helper, "final_paid_reader", lambda root: reader)
     baseline = helper.capture_terminal_followthrough_baseline(context, now=NOW)
     return context, baseline, reader

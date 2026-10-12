@@ -1935,6 +1935,84 @@ def terminal_source_semantic(value):
     return [terminal_source_semantic(item) for item in value] if isinstance(value,list) else value
 
 
+TERMINAL_REDISCOVERY_URLS = frozenset({
+    "https://www.latercera.com/branded/noticia/revive-el-primer-capitulo-de-empresas-en-accion-los-desafios-para-conectar-la-educacion-tecnico-profesional-con-el-empleo/",
+    "https://www.latercera.com/branded/noticia/cardenal-chomali-presidenta-de-sofofa-y-rector-de-inacap-dialogan-sobre-el-rol-de-las-empresas-en-la-sociedad/",
+    "https://www.latercera.com/videos/noticia/jose-miguel-correa-esta-entrando-mucha-inversion-al-mercado-chileno/",
+    "https://www.latercera.com/videos/noticia/el-crudo-documental-de-la-ultima-expedicion-de-jp-mohr/",
+    "https://www.latercera.com/videos/noticia/bernardo-larrain-matte-no-basta-con-la-gestion-se-requieren-reformas-claves/",
+    "https://www.latercera.com/videos/noticia/claves-de-la-nueva-estrategia-electrica-de-porsche/",
+    "https://www.latercera.com/videos/noticia/marisol-pena-expresidenta-del-tc-esta-reforma-constitucional-aborda-temas-que-perfectamente-podrian-ser-acometidos-por-reformas-legales/",
+})
+TERMINAL_LATE_PERSONAL_URL = "https://www.latercera.com/mundo/noticia/leon-xiv-sera-operado-de-un-nodulo-pulmonar-a-semanas-de-su-gira-por-uruguay-argentina-y-peru/"
+
+
+def terminal_source_inventory_semantic(item):
+    """Seven unprocessed URLs may renew HTML transport; body and dates stay exact."""
+    raw = item.get("raw") or {}
+    metadata = raw.get("metadata") or {}
+    if (raw.get("url") in TERMINAL_REDISCOVERY_URLS and item.get("status") in {"pending", "retry"}
+            and metadata.get("publication_date_verified") is True and metadata.get("primary_identity_verified") is True
+            and not metadata.get("analysis_model_output")):
+        item = dict(item, raw=dict(raw, metadata={key:value for key,value in metadata.items()
+            if key not in {"html_sha256", "captured_at", "evidence_revisions"}}))
+    return terminal_source_semantic(item)
+
+
+def terminal_unselected_observation(old, item, key, observer):
+    """Explain operational rediscovery separately from editorial processing."""
+    original, current = old["raw"], item["raw"]
+    before, after = original.get("metadata") or {}, current.get("metadata") or {}
+    semantic = lambda value: object_digest(terminal_source_inventory_semantic(value))
+    if semantic(old) == semantic(item):
+        if terminal_source_semantic(old) == terminal_source_semantic(item):
+            return "unchanged"
+        kind, revision_reason = "unchanged_unselected_primary_HTML_transport_refresh", "verified_publisher_exception_rediscovery"
+        if original.get("url") == "https://www.latercera.com/videos/noticia/marisol-pena-expresidenta-del-tc-esta-reforma-constitucional-aborda-temas-que-perfectamente-podrian-ser-acometidos-por-reformas-legales/":
+            revision_reason = "verified_article_rediscovery"
+        end = stamp(observer.get("finished_at"))
+        captured = stamp(after.get("captured_at"))
+        if not captured or not end or captured > end or not SHA.fullmatch(str(after.get("html_sha256", ""))):
+            raise ValueError("terminal_followthrough_rediscovery_capture_unverified")
+    elif (old.get("status") == "pending" and old.get("attempts") == 0
+            and item.get("status") == "archived" and item.get("reason") == "outside_90_day_backfill"
+            and original.get("event_date") == before.get("publication_date") == "2026-07-13"
+            and before.get("publication_date_verified") is True
+            and stamp(observer.get("started_at")).date().isoformat() == "2026-10-12"
+            and terminal_source_semantic(dict(old, status="archived", reason="outside_90_day_backfill")) == terminal_source_semantic(item)):
+        return "verified_unselected_publication_aged_beyond_90_days"
+    elif (original.get("url") == TERMINAL_LATE_PERSONAL_URL and old.get("status") == item.get("status") == "pending"
+            and old.get("attempts") == item.get("attempts") == 0 and before.get("article_body_complete") is None
+            and after.get("article_body_complete") is True and after.get("queue_identity_fingerprint") == key
+            and before.get("article_verified") is before.get("primary_identity_verified") is before.get("publication_date_verified") is True
+            and isinstance(before.get("page_text"), str) and len(before["page_text"]) == 5351
+            and digest(before["page_text"].encode()) == "57f6222d5fd48097f997c5d975823a20966cd516bc4154cb6c08adec17cd6fbc"):
+        restored = dict(after)
+        for field in ("article_body_complete", "queue_identity_fingerprint", "evidence_revisions"):
+            if field in before: restored[field] = before[field]
+            else: restored.pop(field, None)
+        if terminal_source_semantic(dict(item, raw=dict(current, metadata=restored))) != terminal_source_semantic(old):
+            raise ValueError("terminal_followthrough_late_personal_primary_or_decision_changed")
+        kind, revision_reason = "verified_late_personal_primary_identity_enrichment", "verified_article_rediscovery"
+    else:
+        raise ValueError("terminal_followthrough_unselected_processing_changed")
+    previous = before.get("evidence_revisions", [])
+    revisions = after.get("evidence_revisions", [])
+    if revisions[:len(previous)] != previous or len(revisions) <= len(previous):
+        raise ValueError("terminal_followthrough_rediscovery_revision_erased")
+    for revision in revisions[len(previous):]:
+        if (revision.get("reason") != revision_reason or not stamp(revision.get("at"))
+                or stamp(revision["at"]) > stamp(observer.get("finished_at"))
+                or revision.get("previous_publication_date") != original.get("event_date")
+                or revision.get("verified_publication_date") != current.get("event_date")
+                or revision.get("previous_title") != original.get("title") or revision.get("verified_title") != current.get("title")
+                or revision.get("lane_preserved") != old.get("lane")
+                or revision.get("previous_publisher_exception_reason") != before.get("publisher_exception_reason")
+                or revision.get("verified_publisher_exception_reason") != after.get("publisher_exception_reason")):
+            raise ValueError("terminal_followthrough_rediscovery_original_identity_changed")
+    return kind
+
+
 def terminal_feed_clock_rollover(root, snapshot, settlement, execution):
     """Recognize only the retained staging UTC rollover; Source feed stays exact."""
     previous = settlement["snapshot"]
@@ -2022,11 +2100,13 @@ def verify_terminal_followthrough_execution(root, *, report, queue, history, sna
     if (native_queue != native_original or len(native_queue) != 5293 or history != settlement["history"]
             or len([row for row in history if not normalized_url(row.get("source_url"))]) != 897):
         raise ValueError("terminal_followthrough_effective_history_feed_or_native_stock_changed")
+    observations = {}
+    observer = report.get("last_core_execution") or execution
     for url, (key,item) in current.items():
         if url not in selected and url in previous:
             old = previous[url][1]
-            if object_digest(terminal_source_semantic(item)) != object_digest(terminal_source_semantic(old)):
-                raise ValueError("terminal_followthrough_unselected_processing_changed")
+            kind = terminal_unselected_observation(old, item, key, observer)
+            if kind != "unchanged": observations[url] = kind
         elif url not in previous and (item.get("attempts") != 0 or item.get("status") not in {"pending", "archived"}):
             raise ValueError("terminal_followthrough_new_unselected_candidate_processed")
     stock = dict(commit=LIVE9_PRODUCER, file_sha256=settlement["files"],
@@ -2037,7 +2117,9 @@ def verify_terminal_followthrough_execution(root, *, report, queue, history, sna
         native_history_sha256=object_digest([row for row in history if not normalized_url(row.get("source_url"))]),
         history_signal_count=len(history), history_sha256=object_digest(history),
         feed_signal_count=len(snapshot["signals"]), feed_sha256=object_digest(snapshot["signals"]),
-        source_queue_semantic_sha256s={url:object_digest(terminal_source_semantic(item)) for url,(key,item) in previous.items()})
+        source_queue_semantic_sha256s={url:object_digest(terminal_source_inventory_semantic(current[url][1])) for url in previous},
+        original_source_queue_semantic_sha256s={url:object_digest(terminal_source_inventory_semantic(item)) for url,(key,item) in previous.items()},
+        unselected_operational_observations=observations)
     return dict(schema_version="pulso_terminal_followthrough_provenance_v1",
         archived_producer=dict(commit=TERMINAL_FOLLOWTHROUGH_PRODUCER,
             code_sha=TERMINAL_FOLLOWTHROUGH_CODE, runtime_fingerprint_sha256=TERMINAL_FOLLOWTHROUGH_FINGERPRINT,
@@ -3925,7 +4007,7 @@ def verify_genuine_idempotence(baseline, proof, *, root, report, discovery, queu
             require(url not in current_queue, "duplicate_source_queue_identity")
             metadata = item.get("raw", {}).get("metadata", {})
             current_queue[url] = dict(fingerprint=key, status=item.get("status"), attempts=item.get("attempts", 0),
-                semantic_sha256=object_digest(compact(item)), retry_at=item.get("retry_at"),
+                semantic_sha256=object_digest(terminal_source_inventory_semantic(item) if terminal else compact(item)), retry_at=item.get("retry_at"),
                 publication_date=item.get("raw", {}).get("event_date"), lane=item.get("lane"), reason=item.get("reason"),
                 assessment=metadata.get("editorial_assessment"), editorial_hold=metadata.get("editorial_hold"),
                 body_sha256=metadata.get("article_body_sha256"), body_characters=metadata.get("article_body_characters"),
@@ -4210,13 +4292,17 @@ def evaluate(report, control, *, root, discovery, queue, history, snapshot, tele
             checks.setdefault("original_publisher_exception_validation", []).append(proof)
         reason = metadata.get("publisher_exception_reason") or metadata.get("source_content_unavailable_reason")
         assessment = metadata.get("editorial_assessment") or {}
-        if (raw.get("event_date") != metadata.get("publication_date") or item.get("status") not in {"pending", "retry"}
+        aged_hold = (item.get("status") == "archived" and item.get("reason") == "outside_90_day_backfill"
+            and item.get("attempts") == 0 and metadata.get("publication_date_verified") is True
+            and raw.get("event_date") == metadata.get("publication_date") and end
+            and (end.date() - date.fromisoformat(metadata["publication_date"])).days > 90)
+        if (raw.get("event_date") != metadata.get("publication_date") or item.get("status") not in {"pending", "retry"} and not aged_hold
                 or assessment.get("decision") != "pending" or assessment.get("reason") != reason
                 or any(assessment.get(key) is not None for key in ("relevance_score", "analysis_reason"))
-                or row.get("exact_reason") != reason or row.get("passed_gate") is not None):
+                or row.get("exact_reason") != ("outside_90_day_backfill" if aged_hold else reason) or row.get("passed_gate") is not None):
             fail("discovery", "publisher_exception_exact_editorial_hold_missing", url=url)
         if (url in historical_urls | feed_urls or row.get("history_present") or row.get("feed_present")
-                or row.get("editorial_outcome") not in {"pending", "deferred"}):
+                or row.get("editorial_outcome") not in ({"archived"} if aged_hold else {"pending", "deferred"})):
             fail("discovery", "unverified_publisher_exception_published_or_terminal", url=url)
         captured = stamp(row.get("primary_detail_captured_at"))
         if not captured or end and captured > end or not row.get("primary_detail_cache_hit") and start and captured < start:

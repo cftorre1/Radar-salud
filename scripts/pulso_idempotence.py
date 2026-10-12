@@ -578,6 +578,16 @@ def revalidated_snapshot(context):
     return result
 
 
+def terminal_snapshot(context, *, root):
+    result = revalidated_snapshot(context)
+    reader = final_paid_reader(root)
+    for item in context["queue"].values():
+        if item.get("source") == SOURCE:
+            url = item.get("raw", {}).get("url")
+            result["source_queue"][url]["semantic_sha256"] = digest(reader.terminal_source_inventory_semantic(item))
+    return result
+
+
 def final_paid_reader(root):
     path = root / "scripts/qa_pulso_recovery.py"
     spec = importlib.util.spec_from_file_location("pulso_revalidated_idempotence_reader", path)
@@ -784,7 +794,7 @@ def capture_terminal_followthrough_baseline(context, *, root=ROOT, now=None):
             and qa["checks"].get("processing_selection", {}).get("sha256") == context["observed_files"][DEFAULT_SELECTION]
             and qa["checks"]["processing_selection"].get("selected_urls") == 113,
             "passing_terminal_followthrough_qa_not_bound_to_actual_observations")
-    snapshot = revalidated_snapshot(context)
+    snapshot = terminal_snapshot(context, root=root)
     partition = selected_partition(snapshot["source_queue"], urls, now)
     recorded = execution["processing_selection"]
     require(partition == dict(terminal_urls=sorted(urls), held_not_due_urls=[])
@@ -1040,7 +1050,7 @@ def preflight(bundle, context, *, now=None, root=ROOT):
         verify_revalidated_baseline_lineage(bundle, context, root=root)
     if terminal:
         verify_terminal_followthrough_baseline_lineage(bundle, context, root=root)
-    snapshot = revalidated_snapshot(context) if revalidated or terminal else semantic_snapshot(context)
+    snapshot = terminal_snapshot(context, root=root) if terminal else revalidated_snapshot(context) if revalidated else semantic_snapshot(context)
     require(snapshot == bundle["semantic"], "runtime_state_changed_since_passing_baseline")
     partition = selected_partition(snapshot["source_queue"], bundle["selection"]["urls"], now,
                                    reviewed_holds=snapshot["reviewed_hold_bindings"])
@@ -1093,7 +1103,7 @@ def compare(bundle, context, *, now=None, root=ROOT):
     except (KeyError, TypeError, ValueError) as error:
         findings.append(dict(code="genuine_second_core_proof_invalid", reason=str(error)))
         delta, partition = {}, {}
-    after = revalidated_snapshot(context) if revalidated or terminal else semantic_snapshot(context)
+    after = terminal_snapshot(context, root=root) if terminal else revalidated_snapshot(context) if revalidated else semantic_snapshot(context)
     before = bundle["semantic"]
     for key in ("history", "feed", "referenced_proof_files", "reviewed_hold_bindings", "ledgers",
                 "response_event_sha256s", "actual_response_ids"):

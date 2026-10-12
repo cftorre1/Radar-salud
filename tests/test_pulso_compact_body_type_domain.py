@@ -80,7 +80,8 @@ def test_followthrough_preflight_rejects_real_unselected_live9_body_erasure(monk
         result["actual_budget_delta"] = helper.budget_delta(kwargs["execution"])
         return result
     monkeypatch.setattr(helper, "final_paid_reader", lambda root: SimpleNamespace(
-        verify_terminal_followthrough_execution=independent_boundary))
+        verify_terminal_followthrough_execution=independent_boundary,
+        terminal_source_inventory_semantic=helper.compact))
     baseline = helper.capture_terminal_followthrough_baseline(context, now=units.NOW)
     assert helper.preflight(baseline, context, now=units.NOW)["verdict"] == "PASS"
     body = context["queue"][key]["raw"]["metadata"]["page_text"]
