@@ -1,0 +1,861 @@
+{
+  "code_sha": "8f6039dca843fda5903e5e0684ce524e0146bebe",
+  "checked_at": "2026-10-12T13:32:16.241851+00:00",
+  "technical_status": "PASS_LOCAL_FULL_PLUS_TARGETED_DELTAS",
+  "browser": {
+    "cases_covered": 94,
+    "passed_after_rechecks": 94,
+    "initial_full_run": {
+      "passed": 84,
+      "failed": 10
+    },
+    "method": "Full94-case run plus targeted rechecks of changed and failed paths. No claim of a single94/94green run.",
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "extra_widths": [
+      320,
+      195
+    ],
+    "runs": [
+      {
+        "file": "browser-integral-recheck.json",
+        "sha256": "e40c97f4d7137019b19e3875517cc130cb225b8e120e538acefb0ca4df5b712e",
+        "passed": 84,
+        "failed": 10
+      },
+      {
+        "file": "browser-focused-first.json",
+        "sha256": "b03d5aa079dd57d2e5e7c362579631f239774da4547733628a16ec30844ffb0d",
+        "passed": 6,
+        "failed": 4
+      },
+      {
+        "file": "browser-delta-second.json",
+        "sha256": "043282221ff14df86e5f96775427c6739a440767bc4e76b7cd46594e6568718b",
+        "passed": 10,
+        "failed": 4
+      },
+      {
+        "file": "implementation/artifacts/browser.json",
+        "sha256": "50eab66ca2ba9aef53fdf5483b770fcfb00ff5a8cfcee06ba268bb1e2ce59446",
+        "passed": 10,
+        "failed": 0
+      },
+      {
+        "file": "browser-receipt-final.json",
+        "sha256": "eaae3653a5e872ac682227b24c48c542973cc54b1e8966f74fde1759834ad723",
+        "passed": 10,
+        "failed": 0
+      },
+      {
+        "file": "browser-adapter-final.json",
+        "sha256": "9f256ffd7a594bc2bd72bcf7bf866a93decffac793c510e18e8dcabe0b26ad32",
+        "passed": 12,
+        "failed": 0
+      }
+    ],
+    "cases": [
+      {
+        "file": "editorial-v3.spec.cjs",
+        "title": "incremental editorial candidate felix_bulnes retains facts and primary references",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 2627
+      },
+      {
+        "file": "editorial-v3.spec.cjs",
+        "title": "incremental editorial candidate presupuesto_2027 retains facts and primary references",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1697
+      },
+      {
+        "file": "editorial-v3.spec.cjs",
+        "title": "incremental editorial candidate san_carlos retains facts and primary references",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 2182
+      },
+      {
+        "file": "editorial-v3.spec.cjs",
+        "title": "incremental editorial candidate circular_if534 retains facts and primary references",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 2208
+      },
+      {
+        "file": "editorial-v3.spec.cjs",
+        "title": "incremental editorial candidate resolucion_if10670 retains facts and primary references",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 2334
+      },
+      {
+        "file": "editorial-v3.spec.cjs",
+        "title": "adaptive portfolio presents comparable entity groups, meaningful precise deltas and accessible series",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 2,
+        "duration_ms": 3021
+      },
+      {
+        "file": "editorial-v3.spec.cjs",
+        "title": "held financial comparison has no chart ranking or misleading percentage",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 2,
+        "duration_ms": 1257
+      },
+      {
+        "file": "editorial-v3.spec.cjs",
+        "title": "incremental editorial candidate felix_bulnes retains facts and primary references",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 2110
+      },
+      {
+        "file": "editorial-v3.spec.cjs",
+        "title": "incremental editorial candidate presupuesto_2027 retains facts and primary references",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1663
+      },
+      {
+        "file": "editorial-v3.spec.cjs",
+        "title": "incremental editorial candidate san_carlos retains facts and primary references",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1514
+      },
+      {
+        "file": "editorial-v3.spec.cjs",
+        "title": "incremental editorial candidate circular_if534 retains facts and primary references",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1244
+      },
+      {
+        "file": "editorial-v3.spec.cjs",
+        "title": "incremental editorial candidate resolucion_if10670 retains facts and primary references",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1239
+      },
+      {
+        "file": "editorial-v3.spec.cjs",
+        "title": "adaptive portfolio presents comparable entity groups, meaningful precise deltas and accessible series",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 2,
+        "duration_ms": 2134
+      },
+      {
+        "file": "editorial-v3.spec.cjs",
+        "title": "held financial comparison has no chart ranking or misleading percentage",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 2,
+        "duration_ms": 1166
+      },
+      {
+        "file": "fiscalization.spec.cjs",
+        "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 6877
+      },
+      {
+        "file": "fiscalization.spec.cjs",
+        "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 2,
+        "duration_ms": 7274
+      },
+      {
+        "file": "fiscalization.spec.cjs",
+        "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 5348
+      },
+      {
+        "file": "fiscalization.spec.cjs",
+        "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 2,
+        "duration_ms": 5057
+      },
+      {
+        "file": "occupational-recovery.spec.cjs",
+        "title": "occupational sources expose verified counts and readable source identity on desktop and mobile",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 5393
+      },
+      {
+        "file": "occupational-recovery.spec.cjs",
+        "title": "occupational backfills retain their publisher and original publication year in the 90-day radar",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 2,
+        "duration_ms": 8932
+      },
+      {
+        "file": "occupational-recovery.spec.cjs",
+        "title": "occupational sources expose verified counts and readable source identity on desktop and mobile",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 3493
+      },
+      {
+        "file": "occupational-recovery.spec.cjs",
+        "title": "occupational backfills retain their publisher and original publication year in the 90-day radar",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 2,
+        "duration_ms": 4939
+      },
+      {
+        "file": "product-v3.spec.cjs",
+        "title": "title and Más info resolve the same direct detail; read and unread survive reload",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 3583
+      },
+      {
+        "file": "product-v3.spec.cjs",
+        "title": "distinct concurrent writes and tombstones synchronize without lost updates",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 3137
+      },
+      {
+        "file": "product-v3.spec.cjs",
+        "title": "two first opens migrate legacy once and preserve unread over stale legacy",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 2746
+      },
+      {
+        "file": "product-v3.spec.cjs",
+        "title": "corrected ID preserves explicit unread over stale imported title alias",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1829
+      },
+      {
+        "file": "product-v3.spec.cjs",
+        "title": "Global Home teaser and Global canonical detail share read state",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 3,
+        "duration_ms": 2982
+      },
+      {
+        "file": "product-v3.spec.cjs",
+        "title": "catalog excludes blocked paused and unverified; filter plus is adjacent and floating action outside cards",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1045
+      },
+      {
+        "file": "product-v3.spec.cjs",
+        "title": "title and Más info resolve the same direct detail; read and unread survive reload",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1868
+      },
+      {
+        "file": "product-v3.spec.cjs",
+        "title": "distinct concurrent writes and tombstones synchronize without lost updates",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1437
+      },
+      {
+        "file": "product-v3.spec.cjs",
+        "title": "two first opens migrate legacy once and preserve unread over stale legacy",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1071
+      },
+      {
+        "file": "product-v3.spec.cjs",
+        "title": "corrected ID preserves explicit unread over stale imported title alias",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 707
+      },
+      {
+        "file": "product-v3.spec.cjs",
+        "title": "Global Home teaser and Global canonical detail share read state",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 3,
+        "duration_ms": 2880
+      },
+      {
+        "file": "product-v3.spec.cjs",
+        "title": "catalog excludes blocked paused and unverified; filter plus is adjacent and floating action outside cards",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1235
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Home V2 loads, filters persist and compact triage remains stable",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 17827
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Inbox shows every unread signal, supports direct read and persists it",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 3,
+        "duration_ms": 5014
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "operations dashboard loads without inventing measurements",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 5766
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Home V2 places unread Global and Insight in the brief, then retains subdued feed cards",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 5284
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Expired weekly insight stays hidden while its original signal remains in history",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1385
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Feed-only share uses Web Share and clipboard fallback without analytics",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1744
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Global read state is shared across Home and the research page",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 3,
+        "duration_ms": 2247
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "source suggestion is visible, concise and fail-closed without provider",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 3279
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "source suggestion never falls back to URL serialization without JavaScript",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 575
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 3,
+        "duration_ms": 9456
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Global Intelligence mirrors Home while keeping global facts and Chile hypotheses distinct",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 2068
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Weekly email capture requires consent and stays closed without approved provider",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1910
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "analytics never sends without explicit privacy approval even if a key is present",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1133
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "authorized analytics fixture emits only anonymous event fields",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1059
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "persistent editorial contract is visible in feed and brief",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 2029
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Pulso Isapre presents stock KPIs with separate contracts and mobility views",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 3,
+        "duration_ms": 3215
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "committee HOLD/REJECT and failed publication contracts do not render as individual feed cards",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1169
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "period is visible outside filters, persisted without duplicating metric copy, and resettable",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 3066
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Home hero is compact, one-line and exposes subscription plus Global Intelligence",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1236
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "conversion surfaces lead with value and hide internal implementation status",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1434
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Global metadata health stays separate from Chile LIVE coverage",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 2,
+        "duration_ms": 1462
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "sources are grouped by decision value and expose freshness layers",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1436
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "priority statistical releases use compact tables and collapsed traceability",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 2844
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Normative V2.1 puts document, subject and action in each current headline",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 9442
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "source capture errors remain administrative and are excluded from the public catalog",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1212
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Home V2 loads, filters persist and compact triage remains stable",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 11544
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Inbox shows every unread signal, supports direct read and persists it",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 3,
+        "duration_ms": 5062
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "operations dashboard loads without inventing measurements",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 3429
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Home V2 places unread Global and Insight in the brief, then retains subdued feed cards",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 3420
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Expired weekly insight stays hidden while its original signal remains in history",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1119
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Feed-only share uses Web Share and clipboard fallback without analytics",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1425
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Global read state is shared across Home and the research page",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 3,
+        "duration_ms": 2319
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "source suggestion is visible, concise and fail-closed without provider",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 2914
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "source suggestion never falls back to URL serialization without JavaScript",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 872
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 3,
+        "duration_ms": 7729
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Global Intelligence mirrors Home while keeping global facts and Chile hypotheses distinct",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1687
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Weekly email capture requires consent and stays closed without approved provider",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1210
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "analytics never sends without explicit privacy approval even if a key is present",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1209
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "authorized analytics fixture emits only anonymous event fields",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1435
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "persistent editorial contract is visible in feed and brief",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 2370
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Pulso Isapre presents stock KPIs with separate contracts and mobility views",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 3,
+        "duration_ms": 3528
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "committee HOLD/REJECT and failed publication contracts do not render as individual feed cards",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 956
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "period is visible outside filters, persisted without duplicating metric copy, and resettable",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 3313
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Home hero is compact, one-line and exposes subscription plus Global Intelligence",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1570
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "conversion surfaces lead with value and hide internal implementation status",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1535
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Global metadata health stays separate from Chile LIVE coverage",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 2,
+        "duration_ms": 1338
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "sources are grouped by decision value and expose freshness layers",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1315
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "priority statistical releases use compact tables and collapsed traceability",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1817
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "Normative V2.1 puts document, subject and action in each current headline",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 7917
+      },
+      {
+        "file": "product.spec.cjs",
+        "title": "source capture errors remain administrative and are excluded from the public catalog",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 884
+      },
+      {
+        "file": "providers.spec.cjs",
+        "title": "audited providers retain one visible institution and truthful freshness",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 2733
+      },
+      {
+        "file": "providers.spec.cjs",
+        "title": "recovered provider outputs retain source/date and pass feed contract",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1291
+      },
+      {
+        "file": "providers.spec.cjs",
+        "title": "audited providers retain one visible institution and truthful freshness",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 3870
+      },
+      {
+        "file": "providers.spec.cjs",
+        "title": "recovered provider outputs retain source/date and pass feed contract",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 998
+      },
+      {
+        "file": "pulso-source-registry.spec.cjs",
+        "title": "synthetic Pulso registry fixture links Pulso Latercera to canonical publisher selection",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1467
+      },
+      {
+        "file": "pulso-source-registry.spec.cjs",
+        "title": "synthetic Pulso registry fixture links Pulso / La Tercera to canonical publisher selection",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1830
+      },
+      {
+        "file": "pulso-source-registry.spec.cjs",
+        "title": "synthetic Pulso registry fixture links Pulso Latercera to canonical publisher selection",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1659
+      },
+      {
+        "file": "pulso-source-registry.spec.cjs",
+        "title": "synthetic Pulso registry fixture links Pulso / La Tercera to canonical publisher selection",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1655
+      },
+      {
+        "file": "statistical-contract.spec.cjs",
+        "title": "verified historical bulletin keeps its statistical UI contract after live-window expiry",
+        "project": "desktop",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 2107
+      },
+      {
+        "file": "statistical-contract.spec.cjs",
+        "title": "verified historical bulletin keeps its statistical UI contract after live-window expiry",
+        "project": "mobile",
+        "status": "passed",
+        "evidence_run": 0,
+        "duration_ms": 1717
+      }
+    ],
+    "final_deltas": "10PASS Home/Global/Pulso;12PASS adapter, receipt boundary,195px, reduced motion and shared state."
+  },
+  "python": {
+    "initial_full": {
+      "passed": 3885,
+      "failed": 2,
+      "skipped": 1,
+      "subtests_passed": 94
+    },
+    "dependency_fix": "pypdf[crypto]==6.20.0 as pinned in pyproject; system6.10.0 changed113-page extracted-text hashes.",
+    "ist_recheck": {
+      "passed": 3,
+      "failed": 0
+    },
+    "final_focal": {
+      "passed": 75,
+      "failed": 0
+    }
+  },
+  "node": {
+    "passed": 49,
+    "failed": 0
+  },
+  "deterministic_review": {
+    "findings": 0,
+    "input_signals": 165
+  },
+  "pipeline_ai": {
+    "new_paid_calls": 0,
+    "budget_resets": 0,
+    "receipts_rewritten": 0,
+    "session_model_tokens": "not exposed",
+    "session_model_cost_usd": "not exposed"
+  },
+  "independent_reviewer": {
+    "code_sha": "8f6039dca843fda5903e5e0684ce524e0146bebe",
+    "status": "PASS_SCOPED_TECHNICAL_AND_EDITORIAL",
+    "open_p0": 0,
+    "open_p1": 0,
+    "open_p2": 3,
+    "report_sha256": "342486ff4c5a2d5902627233d5a95813b83833afc43c4365eefb0c456f8e7031"
+  }
+}

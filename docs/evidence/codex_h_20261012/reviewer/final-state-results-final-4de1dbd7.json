@@ -1,0 +1,78 @@
+[
+  {
+    "case": "home_all_initial_states",
+    "descriptions": [
+      {
+        "dataset": {
+          "briefRead": "global:global-ai-coding-payer-cost-2026"
+        },
+        "description": "Estado: no leído"
+      },
+      {
+        "dataset": {
+          "briefRead": "weekly:approved-2"
+        },
+        "description": "Estado: no leído"
+      },
+      {
+        "dataset": {
+          "briefRead": "aHR0cHM6Ly9leGFtcGxlLm9yZy9uZXdzfDIwMjYtMTAtMTJ8UkVHVUxBVElPTg=="
+        },
+        "description": "Estado: no leído"
+      },
+      {
+        "dataset": {
+          "read": "aHR0cHM6Ly9leGFtcGxlLm9yZy9uZXdzfDIwMjYtMTAtMTJ8UkVHVUxBVElPTg=="
+        },
+        "description": "Estado: no leído"
+      },
+      {
+        "dataset": {
+          "specialRead": "weekly:approved-2"
+        },
+        "description": "Estado: no leído"
+      },
+      {
+        "dataset": {
+          "specialRead": "global:global-ai-coding-payer-cost-2026"
+        },
+        "description": "Estado: no leído"
+      }
+    ]
+  },
+  {
+    "case": "home_weekly_read",
+    "description": "Estado: leído"
+  },
+  {
+    "case": "home_global_read",
+    "description": "Estado: leído"
+  },
+  {
+    "case": "global_from_home_sync",
+    "description": "Estado: leído",
+    "label": "Marcar como no leído: BCBSA estima US$942 millones adicionales por codificación; atribución a IA no verificada",
+    "title": "BCBSA estima US$942 millones adicionales por codificación; atribución a IA no verificada",
+    "homeTitle": "BCBSA estima US$942 millones adicionales por codificación; atribución a IA no verificada"
+  },
+  {
+    "case": "global_unread_and_inbox",
+    "description": "Estado: no leído",
+    "inbox": "Estado: no leído",
+    "label": "Marcar como leído: BCBSA estima US$942 millones adicionales por codificación; atribución a IA no verificada"
+  },
+  {
+    "case": "global_detail_success",
+    "description": "Estado: leído",
+    "body": "BCBSA estima US$942 millones adicionales por codificación; atribución a IA no verificadaEl registro histórico atribuye a BCBSA una estimación de US$942 millones adicionales por cambios de codificación, según Reuters. Falta verificar el informe técnico primario, su método y denominadores. Este registro no acredita un efecto causal de la IA ni un efecto comprobado en Chile.Fuentes y evidencia disponibleReuters · AI tools generated nearly $1 billion in extra costs, Blue Cross insurers say ↗Publicado 24 sept 2026Comunicado BCBSA · metodología técnica pendiente de verificación ↗"
+  },
+  {
+    "case": "three_historical_complements",
+    "count": 3,
+    "texts": [
+      "Mezcla de cartera enero→julio 2026: cargas por cotizante 0.615 → 0.605 (-1.57%); la baja de 19.350 cargas equivale al 72.9% de la disminución de 26.541 beneficiarios. Describe composición, no causa ni ingreso.2026-01 → 2026-07 · cargas/cotizante: (937624/1549873 - 956974/1557064) / (956974/1557064) * 100 = -1.5674%; participación cargas: 19350 / 26541 * 100 = 72.9061% · Julio · Serie oficial ↗",
+      "Suscripciones y desahucios voluntarios: en julio hubo 19.716 y 15.172, brecha +4.544; enero–julio, brecha acumulada +19.100 eventos. No equivale a variación neta de cartera.2026-01 → 2026-07 · julio: 19716 - 15172 = 4544; acumulado: 134943 - 115843 = 19100 · Julio · Serie oficial ↗",
+      "Movilidad entre cortes julio 2025 y julio 2026: 91.963 entradas y 109.663 salidas; diferencia -17.700. No es variación mensual.2025-07 → 2026-07 · 91963 - 109663 = -17700 · Nacional · Serie oficial ↗"
+    ]
+  }
+]

@@ -1,0 +1,218 @@
+
+Running 10 tests using 4 workers
+
+(node:38340) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38339) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38347) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38346) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38340) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38339) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38346) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38347) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [mobile] › tests/browser/fiscalization.spec.cjs:45:1 › recovered registers retain offices, actors, effects and issuance dates in grouped details (5.8s)
+  ✓   2 [desktop] › tests/browser/fiscalization.spec.cjs:45:1 › recovered registers retain offices, actors, effects and issuance dates in grouped details (5.8s)
+(node:38982) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38982) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   3 [desktop] › tests/browser/occupational-recovery.spec.cjs:36:1 › occupational backfills retain their publisher and original publication year in the 90-day radar (8.1s)
+  ✓   5 [mobile] › tests/browser/occupational-recovery.spec.cjs:36:1 › occupational backfills retain their publisher and original publication year in the 90-day radar (4.7s)
+  ✘   4 [desktop] › tests/browser/product.spec.cjs:265:1 › Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable (11.6s)
+(node:39188) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39188) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   6 [mobile] › tests/browser/product.spec.cjs:265:1 › Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable (9.3s)
+(node:39344) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39344) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   7 [desktop] › tests/browser/product.spec.cjs:411:1 › Pulso Isapre presents stock KPIs with separate contracts and mobility views (7.7s)
+(node:39505) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39505) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   9 [desktop] › tests/browser/product.spec.cjs:516:1 › Global metadata health stays separate from Chile LIVE coverage (1.4s)
+  ✘   8 [mobile] › tests/browser/product.spec.cjs:411:1 › Pulso Isapre presents stock KPIs with separate contracts and mobility views (7.8s)
+(node:39656) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39656) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  10 [mobile] › tests/browser/product.spec.cjs:516:1 › Global metadata health stays separate from Chile LIVE coverage (1.2s)
+
+
+  1) [desktop] › tests/browser/product.spec.cjs:265:1 › Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('#detailBody')
+    Expected substring: [32m"Fecha de publicación: 07 sept 2026"[39m
+    Received string:    [31m"Pulso Isapre · datos a 2026-07Beneficiarios2.487.4972026-07Cambio desde 2026-01-26.5412026-01 → 2026-07Variación relativa-1,06%Base 2514038Datos provisionales; personas con beneficios vigentes. La composición de cartera no prueba causalidad ni ingresos.Millones de personas · eje no inicia en cero2,5172,484010203040506072026-01 → 2026-07 · BeneficiariosSerie mensual de beneficiarios; datos provisionales. Fuente: Superintendencia de Salud.Ver datos del gráficoPeríodoPersonas2026-012.514.0382026-022.510.3852026-032.504.8372026-042.498.6492026-052.493.6842026-062.489.2582026-072.487.497desglose no verificadoContratos · 2026-07Desahucios voluntarios no incluyen todas las terminaciones; su diferencia no es cambio neto de cartera.IndicadorValorSuscripciones19.716 contratosDesahucios voluntarios15.172 contratosLibro oficial de esta vista ↗Metodología de esta vista2026-07 · contratosSuscripciones · Julio!C20Desahucios voluntarios · Julio!D20Versión de fuente: dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6Movilidad · cortes 2025-07 y 2026-07Comparación entre cortes; no variación mensual ni conteo de todos los movimientos intermedios.IndicadorValorEntradas entre cortes91.963 cotizantesSalidas entre cortes109.663 cotizantesLibro oficial de esta vista ↗Metodología de esta vista2025-07 → 2026-07 · cotizantesEntradas entre cortes · Nacional!D31Salidas entre cortes · Nacional!D19Versión de fuente: 851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7Metodología y fuentesfin − inicio; relativa = 100 × (fin − inicio) / inicio2026-01 → 2026-07 · personasLibro oficial ↗2026-01 · Enero!E202026-02 · Febrero!E202026-03 · Marzo!E202026-04 · Abril!E202026-05 · Mayo!E202026-06 · Junio!E202026-07 · Julio!E20Cálculos adicionales verificadosMuestra de datos validada · período, cálculo y evidenciaMezcla de cartera enero→julio 2026: cargas por cotizante 0.615 → 0.605 (-1.57%); la baja de 19.350 cargas equivale al 72.9% de la disminución de 26.541 beneficiarios. Describe composición, no causa ni ingreso.2026-01 → 2026-07 · cargas/cotizante: (937624/1549873 - 956974/1557064) / (956974/1557064) * 100 = -1.5674%; participación cargas: 19350 / 26541 * 100 = 72.9061% · Julio · Serie oficial ↗Suscripciones y desahucios voluntarios: en julio hubo 19.716 y 15.172, brecha +4.544; enero–julio, brecha acumulada +19.100 eventos. No equivale a variación neta de cartera.2026-01 → 2026-07 · julio: 19716 - 15172 = 4544; acumulado: 134943 - 115843 = 19100 · Julio · Serie oficial ↗Movilidad entre cortes julio 2025 y julio 2026: 91.963 entradas y 109.663 salidas; diferencia -17.700. No es variación mensual.2025-07 → 2026-07 · 91963 - 109663 = -17700 · Nacional · Serie oficial ↗Series oficiales incluidas · 3Superintendencia de SaludEstadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE – año 2026 ↗Publicado 07 sept 2026Superintendencia de SaludEstadística Mensual de Suscripciones y Desahucios del Sistema ISAPRE – año 2026 ↗Publicado 07 sept 2026Superintendencia de SaludEstadística Mensual de Movilidad de Cartera de Cotizantes del Sistema ISAPRE a Nivel Regional – Año 2026 ↗Publicado 07 sept 2026Período de datos: 2026-07 · Publicado 07 sept 2026 · Superintendencia de Salud · Fuente original ↗"[39m
+    Timeout: 5000ms
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 5000ms[22m
+    [2m  - waiting for locator('#detailBody')[22m
+    [2m    9 × locator resolved to <div id="detailBody">…</div>[22m
+    [2m      - unexpected value "Pulso Isapre · datos a 2026-07Beneficiarios2.487.4972026-07Cambio desde 2026-01-26.5412026-01 → 2026-07Variación relativa-1,06%Base 2514038Datos provisionales; personas con beneficios vigentes. La composición de cartera no prueba causalidad ni ingresos.Millones de personas · eje no inicia en cero2,5172,484010203040506072026-01 → 2026-07 · BeneficiariosSerie mensual de beneficiarios; datos provisionales. Fuente: Superintendencia de Salud.Ver datos del gráficoPeríodoPersonas2026-012.514.0382026-022.510.3852026-032.504.8372026-042.498.6492026-052.493.6842026-062.489.2582026-072.487.497desglose no verificadoContratos · 2026-07Desahucios voluntarios no incluyen todas las terminaciones; su diferencia no es cambio neto de cartera.IndicadorValorSuscripciones19.716 contratosDesahucios voluntarios15.172 contratosLibro oficial de esta vista ↗Metodología de esta vista2026-07 · contratosSuscripciones · Julio!C20Desahucios voluntarios · Julio!D20Versión de fuente: dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6Movilidad · cortes 2025-07 y 2026-07Comparación entre cortes; no variación mensual ni conteo de todos los movimientos intermedios.IndicadorValorEntradas entre cortes91.963 cotizantesSalidas entre cortes109.663 cotizantesLibro oficial de esta vista ↗Metodología de esta vista2025-07 → 2026-07 · cotizantesEntradas entre cortes · Nacional!D31Salidas entre cortes · Nacional!D19Versión de fuente: 851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7Metodología y fuentesfin − inicio; relativa = 100 × (fin − inicio) / inicio2026-01 → 2026-07 · personasLibro oficial ↗2026-01 · Enero!E202026-02 · Febrero!E202026-03 · Marzo!E202026-04 · Abril!E202026-05 · Mayo!E202026-06 · Junio!E202026-07 · Julio!E20Cálculos adicionales verificadosMuestra de datos validada · período, cálculo y evidenciaMezcla de cartera enero→julio 2026: cargas por cotizante 0.615 → 0.605 (-1.57%); la baja de 19.350 cargas equivale al 72.9% de la disminución de 26.541 beneficiarios. Describe composición, no causa ni ingreso.2026-01 → 2026-07 · cargas/cotizante: (937624/1549873 - 956974/1557064) / (956974/1557064) * 100 = -1.5674%; participación cargas: 19350 / 26541 * 100 = 72.9061% · Julio · Serie oficial ↗Suscripciones y desahucios voluntarios: en julio hubo 19.716 y 15.172, brecha +4.544; enero–julio, brecha acumulada +19.100 eventos. No equivale a variación neta de cartera.2026-01 → 2026-07 · julio: 19716 - 15172 = 4544; acumulado: 134943 - 115843 = 19100 · Julio · Serie oficial ↗Movilidad entre cortes julio 2025 y julio 2026: 91.963 entradas y 109.663 salidas; diferencia -17.700. No es variación mensual.2025-07 → 2026-07 · 91963 - 109663 = -17700 · Nacional · Serie oficial ↗Series oficiales incluidas · 3Superintendencia de SaludEstadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE – año 2026 ↗Publicado 07 sept 2026Superintendencia de SaludEstadística Mensual de Suscripciones y Desahucios del Sistema ISAPRE – año 2026 ↗Publicado 07 sept 2026Superintendencia de SaludEstadística Mensual de Movilidad de Cartera de Cotizantes del Sistema ISAPRE a Nivel Regional – Año 2026 ↗Publicado 07 sept 2026Período de datos: 2026-07 · Publicado 07 sept 2026 · Superintendencia de Salud · Fuente original ↗"[22m
+
+
+      294 |  await expect(page.locator('#detailBody .sourceverify')).toContainText('Publicado 07 sept 2026');
+      295 |  await expect(page.locator('#detailBody')).toContainText('Período de datos: 2026-07');
+    > 296 |  await expect(page.locator('#detailBody')).toContainText('Fecha de publicación: 07 sept 2026');
+          |                                            ^
+      297 |  await expect(page.locator('#detailBody')).toContainText('Validado: 24 sept 2026');
+      298 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();
+      299 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});
+        at /workspace/work/codex-h/implementation/tests/browser/product.spec.cjs:296:44
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/product-Cards-V2-keep-Bupa-db6bd-lar-535-copy-understandable-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/product-Cards-V2-keep-Bupa-db6bd-lar-535-copy-understandable-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/product-Cards-V2-keep-Bupa-db6bd-lar-535-copy-understandable-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/product-Cards-V2-keep-Bupa-db6bd-lar-535-copy-understandable-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [desktop] › tests/browser/product.spec.cjs:411:1 › Pulso Isapre presents stock KPIs with separate contracts and mobility views 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('#detailBody').locator('#entityComparison')
+    Expected substring: [32m"Beneficiarios"[39m
+    Received string:    [31m"desglose no verificado"[39m
+    Timeout: 5000ms
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 5000ms[22m
+    [2m  - waiting for locator('#detailBody').locator('#entityComparison')[22m
+    [2m    9 × locator resolved to <div id="entityComparison">…</div>[22m
+    [2m      - unexpected value "desglose no verificado"[22m
+
+
+      436 |  const detail=page.locator('#detailBody'),table=detail.locator('#entityComparison');
+      437 |  await expect(table).toBeVisible();
+    > 438 |  for(const label of ['Beneficiarios','Cotizantes','Cargas'])await expect(table).toContainText(label);
+          |                                                                                 ^
+      439 |  await expect(detail.locator('.stat-kpis')).toContainText('2.487.497');
+      440 |  await detail.getByText('Contratos · 2026-07',{exact:true}).click();
+      441 |  await expect(detail).toContainText('Suscripciones');await expect(detail).toContainText('Desahucios voluntarios');
+        at /workspace/work/codex-h/implementation/tests/browser/product.spec.cjs:438:81
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/product-Pulso-Isapre-prese-dc1b0-ontracts-and-mobility-views-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/product-Pulso-Isapre-prese-dc1b0-ontracts-and-mobility-views-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/product-Pulso-Isapre-prese-dc1b0-ontracts-and-mobility-views-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/product-Pulso-Isapre-prese-dc1b0-ontracts-and-mobility-views-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [mobile] › tests/browser/product.spec.cjs:265:1 › Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('#detailBody')
+    Expected substring: [32m"Fecha de publicación: 07 sept 2026"[39m
+    Received string:    [31m"Pulso Isapre · datos a 2026-07Beneficiarios2.487.4972026-07Cambio desde 2026-01-26.5412026-01 → 2026-07Variación relativa-1,06%Base 2514038Datos provisionales; personas con beneficios vigentes. La composición de cartera no prueba causalidad ni ingresos.Millones de personas · eje no inicia en cero2,5172,484010203040506072026-01 → 2026-07 · BeneficiariosSerie mensual de beneficiarios; datos provisionales. Fuente: Superintendencia de Salud.Ver datos del gráficoPeríodoPersonas2026-012.514.0382026-022.510.3852026-032.504.8372026-042.498.6492026-052.493.6842026-062.489.2582026-072.487.497desglose no verificadoContratos · 2026-07Desahucios voluntarios no incluyen todas las terminaciones; su diferencia no es cambio neto de cartera.IndicadorValorSuscripciones19.716 contratosDesahucios voluntarios15.172 contratosLibro oficial de esta vista ↗Metodología de esta vista2026-07 · contratosSuscripciones · Julio!C20Desahucios voluntarios · Julio!D20Versión de fuente: dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6Movilidad · cortes 2025-07 y 2026-07Comparación entre cortes; no variación mensual ni conteo de todos los movimientos intermedios.IndicadorValorEntradas entre cortes91.963 cotizantesSalidas entre cortes109.663 cotizantesLibro oficial de esta vista ↗Metodología de esta vista2025-07 → 2026-07 · cotizantesEntradas entre cortes · Nacional!D31Salidas entre cortes · Nacional!D19Versión de fuente: 851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7Metodología y fuentesfin − inicio; relativa = 100 × (fin − inicio) / inicio2026-01 → 2026-07 · personasLibro oficial ↗2026-01 · Enero!E202026-02 · Febrero!E202026-03 · Marzo!E202026-04 · Abril!E202026-05 · Mayo!E202026-06 · Junio!E202026-07 · Julio!E20Cálculos adicionales verificadosMuestra de datos validada · período, cálculo y evidenciaMezcla de cartera enero→julio 2026: cargas por cotizante 0.615 → 0.605 (-1.57%); la baja de 19.350 cargas equivale al 72.9% de la disminución de 26.541 beneficiarios. Describe composición, no causa ni ingreso.2026-01 → 2026-07 · cargas/cotizante: (937624/1549873 - 956974/1557064) / (956974/1557064) * 100 = -1.5674%; participación cargas: 19350 / 26541 * 100 = 72.9061% · Julio · Serie oficial ↗Suscripciones y desahucios voluntarios: en julio hubo 19.716 y 15.172, brecha +4.544; enero–julio, brecha acumulada +19.100 eventos. No equivale a variación neta de cartera.2026-01 → 2026-07 · julio: 19716 - 15172 = 4544; acumulado: 134943 - 115843 = 19100 · Julio · Serie oficial ↗Movilidad entre cortes julio 2025 y julio 2026: 91.963 entradas y 109.663 salidas; diferencia -17.700. No es variación mensual.2025-07 → 2026-07 · 91963 - 109663 = -17700 · Nacional · Serie oficial ↗Series oficiales incluidas · 3Superintendencia de SaludEstadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE – año 2026 ↗Publicado 07 sept 2026Superintendencia de SaludEstadística Mensual de Suscripciones y Desahucios del Sistema ISAPRE – año 2026 ↗Publicado 07 sept 2026Superintendencia de SaludEstadística Mensual de Movilidad de Cartera de Cotizantes del Sistema ISAPRE a Nivel Regional – Año 2026 ↗Publicado 07 sept 2026Período de datos: 2026-07 · Publicado 07 sept 2026 · Superintendencia de Salud · Fuente original ↗"[39m
+    Timeout: 5000ms
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 5000ms[22m
+    [2m  - waiting for locator('#detailBody')[22m
+    [2m    9 × locator resolved to <div id="detailBody">…</div>[22m
+    [2m      - unexpected value "Pulso Isapre · datos a 2026-07Beneficiarios2.487.4972026-07Cambio desde 2026-01-26.5412026-01 → 2026-07Variación relativa-1,06%Base 2514038Datos provisionales; personas con beneficios vigentes. La composición de cartera no prueba causalidad ni ingresos.Millones de personas · eje no inicia en cero2,5172,484010203040506072026-01 → 2026-07 · BeneficiariosSerie mensual de beneficiarios; datos provisionales. Fuente: Superintendencia de Salud.Ver datos del gráficoPeríodoPersonas2026-012.514.0382026-022.510.3852026-032.504.8372026-042.498.6492026-052.493.6842026-062.489.2582026-072.487.497desglose no verificadoContratos · 2026-07Desahucios voluntarios no incluyen todas las terminaciones; su diferencia no es cambio neto de cartera.IndicadorValorSuscripciones19.716 contratosDesahucios voluntarios15.172 contratosLibro oficial de esta vista ↗Metodología de esta vista2026-07 · contratosSuscripciones · Julio!C20Desahucios voluntarios · Julio!D20Versión de fuente: dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6Movilidad · cortes 2025-07 y 2026-07Comparación entre cortes; no variación mensual ni conteo de todos los movimientos intermedios.IndicadorValorEntradas entre cortes91.963 cotizantesSalidas entre cortes109.663 cotizantesLibro oficial de esta vista ↗Metodología de esta vista2025-07 → 2026-07 · cotizantesEntradas entre cortes · Nacional!D31Salidas entre cortes · Nacional!D19Versión de fuente: 851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7Metodología y fuentesfin − inicio; relativa = 100 × (fin − inicio) / inicio2026-01 → 2026-07 · personasLibro oficial ↗2026-01 · Enero!E202026-02 · Febrero!E202026-03 · Marzo!E202026-04 · Abril!E202026-05 · Mayo!E202026-06 · Junio!E202026-07 · Julio!E20Cálculos adicionales verificadosMuestra de datos validada · período, cálculo y evidenciaMezcla de cartera enero→julio 2026: cargas por cotizante 0.615 → 0.605 (-1.57%); la baja de 19.350 cargas equivale al 72.9% de la disminución de 26.541 beneficiarios. Describe composición, no causa ni ingreso.2026-01 → 2026-07 · cargas/cotizante: (937624/1549873 - 956974/1557064) / (956974/1557064) * 100 = -1.5674%; participación cargas: 19350 / 26541 * 100 = 72.9061% · Julio · Serie oficial ↗Suscripciones y desahucios voluntarios: en julio hubo 19.716 y 15.172, brecha +4.544; enero–julio, brecha acumulada +19.100 eventos. No equivale a variación neta de cartera.2026-01 → 2026-07 · julio: 19716 - 15172 = 4544; acumulado: 134943 - 115843 = 19100 · Julio · Serie oficial ↗Movilidad entre cortes julio 2025 y julio 2026: 91.963 entradas y 109.663 salidas; diferencia -17.700. No es variación mensual.2025-07 → 2026-07 · 91963 - 109663 = -17700 · Nacional · Serie oficial ↗Series oficiales incluidas · 3Superintendencia de SaludEstadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE – año 2026 ↗Publicado 07 sept 2026Superintendencia de SaludEstadística Mensual de Suscripciones y Desahucios del Sistema ISAPRE – año 2026 ↗Publicado 07 sept 2026Superintendencia de SaludEstadística Mensual de Movilidad de Cartera de Cotizantes del Sistema ISAPRE a Nivel Regional – Año 2026 ↗Publicado 07 sept 2026Período de datos: 2026-07 · Publicado 07 sept 2026 · Superintendencia de Salud · Fuente original ↗"[22m
+
+
+      294 |  await expect(page.locator('#detailBody .sourceverify')).toContainText('Publicado 07 sept 2026');
+      295 |  await expect(page.locator('#detailBody')).toContainText('Período de datos: 2026-07');
+    > 296 |  await expect(page.locator('#detailBody')).toContainText('Fecha de publicación: 07 sept 2026');
+          |                                            ^
+      297 |  await expect(page.locator('#detailBody')).toContainText('Validado: 24 sept 2026');
+      298 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();
+      299 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});
+        at /workspace/work/codex-h/implementation/tests/browser/product.spec.cjs:296:44
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/product-Cards-V2-keep-Bupa-db6bd-lar-535-copy-understandable-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/product-Cards-V2-keep-Bupa-db6bd-lar-535-copy-understandable-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/product-Cards-V2-keep-Bupa-db6bd-lar-535-copy-understandable-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/product-Cards-V2-keep-Bupa-db6bd-lar-535-copy-understandable-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [mobile] › tests/browser/product.spec.cjs:411:1 › Pulso Isapre presents stock KPIs with separate contracts and mobility views 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('#detailBody').locator('#entityComparison')
+    Expected substring: [32m"Beneficiarios"[39m
+    Received string:    [31m"desglose no verificado"[39m
+    Timeout: 5000ms
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 5000ms[22m
+    [2m  - waiting for locator('#detailBody').locator('#entityComparison')[22m
+    [2m    9 × locator resolved to <div id="entityComparison">…</div>[22m
+    [2m      - unexpected value "desglose no verificado"[22m
+
+
+      436 |  const detail=page.locator('#detailBody'),table=detail.locator('#entityComparison');
+      437 |  await expect(table).toBeVisible();
+    > 438 |  for(const label of ['Beneficiarios','Cotizantes','Cargas'])await expect(table).toContainText(label);
+          |                                                                                 ^
+      439 |  await expect(detail.locator('.stat-kpis')).toContainText('2.487.497');
+      440 |  await detail.getByText('Contratos · 2026-07',{exact:true}).click();
+      441 |  await expect(detail).toContainText('Suscripciones');await expect(detail).toContainText('Desahucios voluntarios');
+        at /workspace/work/codex-h/implementation/tests/browser/product.spec.cjs:438:81
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/product-Pulso-Isapre-prese-dc1b0-ontracts-and-mobility-views-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/product-Pulso-Isapre-prese-dc1b0-ontracts-and-mobility-views-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/product-Pulso-Isapre-prese-dc1b0-ontracts-and-mobility-views-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/product-Pulso-Isapre-prese-dc1b0-ontracts-and-mobility-views-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4 failed
+    [desktop] › tests/browser/product.spec.cjs:265:1 › Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable 
+    [desktop] › tests/browser/product.spec.cjs:411:1 › Pulso Isapre presents stock KPIs with separate contracts and mobility views 
+    [mobile] › tests/browser/product.spec.cjs:265:1 › Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable 
+    [mobile] › tests/browser/product.spec.cjs:411:1 › Pulso Isapre presents stock KPIs with separate contracts and mobility views 
+  6 passed (29.2s)
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
