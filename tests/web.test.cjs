@@ -18,6 +18,11 @@ test('Home Global teaser preserves attribution, exact historical amount and meth
  const c=context(),before={theme_id:'global-ai-coding-payer-cost-2026',title:'La IA clínica infla gasto',excerpt:'Causalidad no validada'};
  const projected=c.globalPreview(before);assert.match(projected.title,/BCBSA.*942/);assert.match(projected.excerpt,/pendientes de verificación/);assert.equal(before.title,'La IA clínica infla gasto');
 });
+test('portfolio adapter holds unsupported percentage families without a people chart',()=>{
+ const c={Intl};vm.createContext(c);vm.runInContext(fs.readFileSync('web/statistical-view.js','utf8'),c);
+ const out=c.AlicantoStats.render({family:'respiratory_positivity',unit:'%',publication_status:'REVIEW_REQUIRED',complete_series_verified:true,source_url:'https://example.org/report',series:[{period:'2026-01',value:10},{period:'2026-02',value:20},{period:'2026-03',value:30}]});
+ assert.doesNotMatch(out,/<svg|<table|Millones de personas|Beneficiarios|stat-kpi/);assert.match(out,/pendiente de verificación/);assert.match(out,/https:\/\/example.org\/report/);
+});
 test('Signal Density defaults and fiscalizacion',()=>{const c=context();assert.equal(vm.runInContext('periodMode',c),'30');assert.equal(vm.runInContext('sortMode',c),'date');assert.match(source,/Fiscalización/);assert.match(fs.readFileSync('web/index.html','utf8'),/<option value="30" selected>30 días<\/option>/)});
 test('BACKFILL never counts as new since visit',()=>{const c=context();vm.runInContext("periodMode='last';previousVisit='2026-09-22T00:00:00Z'",c);assert.equal(c.inPeriod({ingestion_mode:'BACKFILL',event_date:'2026-09-23',detected_at:'2026-09-23T12:00:00Z'}),false);assert.equal(c.inPeriod({ingestion_mode:'LIVE',event_date:'2026-09-23',detected_at:'2026-09-23T12:00:00Z'}),true)});
 

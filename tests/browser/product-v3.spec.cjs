@@ -33,4 +33,8 @@ test('Global Home teaser and Global canonical detail share read state',async({co
 test('catalog excludes blocked paused and unverified; filter plus is adjacent and floating action outside cards',async({page})=>{
  await page.route('**/data/public_sources.json',r=>r.fulfill({json:{sources:[{id:'minsal',name:'Activa',group:'Organismos públicos',url:'https://www.minsal.cl/',description:'Noticias'}]}}));await page.goto('/sources.html');await expect(page.locator('#catalog')).toContainText('Activa');await expect(page.locator('#catalog')).not.toContainText(/Bloqueada|Pausada|Desconocida/);
  await prepare(page);await page.goto('/');const summary=page.locator('#filterDetails>summary');expect(await summary.evaluate(el=>getComputedStyle(el).justifyContent)).toBe('flex-start');await expect(page.locator('article #backTop')).toHaveCount(0);expect(await page.locator('#backTop').evaluate(el=>getComputedStyle(el).position)).toBe('fixed');
+ await expect(page.locator('#backTop')).toBeHidden();await page.emulateMedia({reducedMotion:'reduce'});
+ await page.locator('#local').scrollIntoViewIfNeeded();await expect(page.locator('#backTop')).toBeVisible();
+ await page.evaluate(()=>{window.__scrollBehavior=null;const native=Element.prototype.scrollIntoView;Element.prototype.scrollIntoView=function(options){window.__scrollBehavior=options?.behavior;return native.call(this,options)}});
+ await page.locator('#backTop').click();expect(await page.evaluate(()=>window.__scrollBehavior)).toBe('auto');await expect(page.locator('main')).toBeFocused();
 });
