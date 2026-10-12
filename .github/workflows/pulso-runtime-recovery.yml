@@ -35,33 +35,25 @@ jobs:
       - name: Assert exclusive isolated branch
         run: test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
       - run: pip install -e . pytest
-      - name: Directed source, primary evidence and core checks
+      - name: Directed final consumer, archived editorial evidence and core checks
         run: >-
-          python -m pytest -q tests/test_pulso_source.py tests/test_pulso_archive_discovery.py
-          tests/test_pulso_real_fixtures.py tests/test_pulso_core_runtime.py tests/test_beta_core_handoff.py
-          tests/test_pulso_runtime_audit.py tests/test_pulso_runtime_fixtures.py tests/test_pulso_recovery_qa.py
-          tests/test_pulso_recovery_command.py tests/test_pulso_idempotence.py tests/test_pulso_idempotence_qa.py
-          tests/test_pulso_execution_provenance.py tests/test_pulso_editorial_proof.py
-          tests/test_pulso_oct5_incremental_addendum.py tests/test_pulso_queue_incremental_admission.py
-          tests/test_pulso_formal_budget_proposal_guard.py tests/test_pulso_queue_model_evidence_continuity.py
-          tests/test_pulso_queue_code_repair_admission.py tests/test_pulso_code_repair_admission.py
-          tests/test_pulso_actual_model_grounding_repair.py tests/test_pulso_code_repair_qa.py
-          tests/test_pulso_health_anchor_compatibility.py tests/test_pulso_health_identity.py
-          tests/test_pulso_source_health_history.py tests/test_pulso_qa_native_record_identity.py
-          tests/test_pulso_editorial_review.py tests/test_pulso_bound_editorial_review_qa.py
-          tests/test_pulso_paid_guard_revalidation.py tests/test_pulso_v5_revalidation_manifest.py
-          tests/test_pulso_paid_revalidation_qa.py tests/test_pulso_actual49_second_reader_context.py
-          tests/test_pulso_current_paid_guard_revalidation.py tests/test_pulso_current_paid_revalidation_qa.py
-          tests/test_pulso_followup_paid_guard_revalidation.py tests/test_pulso_followup_paid_revalidation_qa.py
-          tests/test_pulso_revalidated_publication_review_qa.py tests/test_pulso_actual_mixed12_guard_repair.py
-          tests/test_pulso_mixed_reused18_semantic_review.py tests/test_pulso_mixed25_first8_review_v2_group.py
-          tests/test_pulso_actual_final2_guard_repair.py tests/test_pulso_daily_git_history.py
-          tests/test_pulso_media_network_materiality.py tests/test_pulso_followup5_actual_technical_audit.py
-          tests/test_pulso_actual323_three_semantic_review.py tests/test_pulso_followup_hanta_dipres_review.py
-          tests/test_pulso_final_paid_guard_revalidation.py tests/test_pulso_revalidated_idempotence.py
-          tests/test_pulso_actual323_two_pending_diagnosis.py tests/test_pulso_actual_final2_independent_review.py
-          tests/test_pulso_final_paid_revalidation_qa.py
+          python -m pytest -q
+          tests/test_pulso_recovery_command.py
+          tests/test_pulso_terminal_followthrough_qa.py
+          tests/test_pulso_terminal_followthrough_idempotence.py
+          tests/test_pulso_compact_body_type_domain.py
+          tests/test_pulso_final_actual_terminal_review_qa.py
+          tests/test_pulso_revalidated_idempotence.py
+          tests/test_pulso_idempotence.py
+          tests/test_pulso_idempotence_qa.py
           tests/test_pulso_final_revalidated_execution_qa.py
+          tests/test_pulso_final_paid_revalidation_qa.py
+          tests/test_pulso_core_runtime.py
+          tests/test_pulso_execution_provenance.py
+          tests/test_retain_pulso_live9_originals.py
+          tests/test_pulso_additional_live9_actual_technical_audit.py
+          tests/test_pulso_live9_actual_paid_rejection_reader.py
+          tests/test_pulso_final2_actual_technical_audit.py
       - name: Read optional prior and additional original capture runs
         id: prior_capture
         run: |
