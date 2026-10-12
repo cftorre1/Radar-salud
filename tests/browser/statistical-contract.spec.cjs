@@ -16,7 +16,7 @@ test('verified historical bulletin keeps its statistical UI contract after live-
  const card=page.locator('article[data-card]').filter({hasText:'Boletín Estadístico Informativo IP'});
  await expect(card).toHaveCount(1);
  await expect(card).not.toContainText('Por qué importa:');
- await card.locator('[data-detail]').click();
+ await card.locator('[data-detail]').first().click();
  const detail=page.locator('#detailBody');
  await expect(detail.locator('.summary-table tbody tr')).toHaveCount(6);
  for(const topic of ['Acreditación','Mediación','Reclamos','RNPI'])await expect(detail.locator('.summary-table')).toContainText(topic);

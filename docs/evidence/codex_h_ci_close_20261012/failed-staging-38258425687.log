@@ -1,0 +1,477 @@
+﻿2026-10-12T14:01:14.3810898Z Current runner version: '2.337.0'
+2026-10-12T14:01:14.3839122Z ##[group]Runner Image Provisioner
+2026-10-12T14:01:14.3840135Z Hosted Compute Agent
+2026-10-12T14:01:14.3840904Z Version: 20261002.596
+2026-10-12T14:01:14.3841558Z Commit: c3d12f3313a95f25162a1503be624f3b0617f8c0
+2026-10-12T14:01:14.3842359Z Build Date: 2026-10-02T22:28:27Z
+2026-10-12T14:01:14.3843068Z Worker ID: {e4021261-9e0f-4523-8432-7f220055eb36}
+2026-10-12T14:01:14.3843800Z Region: westus
+2026-10-12T14:01:14.3844438Z Cloud: Azure
+2026-10-12T14:01:14.3844990Z ##[endgroup]
+2026-10-12T14:01:14.3846544Z ##[group]Operating System
+2026-10-12T14:01:14.3847323Z Ubuntu
+2026-10-12T14:01:14.3847866Z 24.04.5
+2026-10-12T14:01:14.3848744Z LTS
+2026-10-12T14:01:14.3849296Z ##[endgroup]
+2026-10-12T14:01:14.3849886Z ##[group]Runner Image
+2026-10-12T14:01:14.3850593Z Image: ubuntu-24.04
+2026-10-12T14:01:14.3851179Z Version: 20261004.327.1
+2026-10-12T14:01:14.3852560Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261004.327/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-12T14:01:14.3854191Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261004.327
+2026-10-12T14:01:14.3855308Z ##[endgroup]
+2026-10-12T14:01:14.3856473Z ##[group]GITHUB_TOKEN Permissions
+2026-10-12T14:01:14.3858761Z Contents: read
+2026-10-12T14:01:14.3859415Z Metadata: read
+2026-10-12T14:01:14.3860081Z ##[endgroup]
+2026-10-12T14:01:14.3862324Z Secret source: Actions
+2026-10-12T14:01:14.3863425Z Cache mode: write
+2026-10-12T14:01:14.3864226Z Prepare workflow directory
+2026-10-12T14:01:14.4225424Z Prepare all required actions
+2026-10-12T14:01:14.4276742Z Getting action download info
+2026-10-12T14:01:14.8028020Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-12T14:01:14.9133877Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-12T14:01:15.0577215Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-10-12T14:01:15.1444891Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-12T14:01:15.3613972Z Complete job name: staging
+2026-10-12T14:01:15.4514333Z ##[group]Run actions/checkout@v4
+2026-10-12T14:01:15.4515259Z with:
+2026-10-12T14:01:15.4515702Z   fetch-depth: 0
+2026-10-12T14:01:15.4516179Z   repository: cftorre1/Radar-salud
+2026-10-12T14:01:15.4520115Z   token: ***
+2026-10-12T14:01:15.4520575Z   ssh-strict: true
+2026-10-12T14:01:15.4521029Z   ssh-user: git
+2026-10-12T14:01:15.4521484Z   persist-credentials: true
+2026-10-12T14:01:15.4521992Z   clean: true
+2026-10-12T14:01:15.4522462Z   sparse-checkout-cone-mode: true
+2026-10-12T14:01:15.4523010Z   fetch-tags: false
+2026-10-12T14:01:15.4523473Z   show-progress: true
+2026-10-12T14:01:15.4523935Z   lfs: false
+2026-10-12T14:01:15.4524366Z   submodules: false
+2026-10-12T14:01:15.4524839Z   set-safe-directory: true
+2026-10-12T14:01:15.4525371Z   allow-unsafe-pr-checkout: false
+2026-10-12T14:01:15.4526204Z ##[endgroup]
+2026-10-12T14:01:15.5603710Z Syncing repository: cftorre1/Radar-salud
+2026-10-12T14:01:15.5606464Z ##[group]Getting Git version info
+2026-10-12T14:01:15.5607763Z Working directory is '/home/runner/work/Radar-salud/Radar-salud'
+2026-10-12T14:01:15.5609884Z [command]/usr/bin/git version
+2026-10-12T14:01:15.5677832Z git version 2.55.0
+2026-10-12T14:01:15.5703006Z ##[endgroup]
+2026-10-12T14:01:15.5819759Z Temporarily overriding HOME='/home/runner/work/_temp/097c0c61-d313-40fe-b1c8-c8b1bc7c8984' before making global git config changes
+2026-10-12T14:01:15.5821383Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-12T14:01:15.5822584Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Radar-salud/Radar-salud
+2026-10-12T14:01:15.5824527Z Deleting the contents of '/home/runner/work/Radar-salud/Radar-salud'
+2026-10-12T14:01:15.5825841Z ##[group]Initializing the repository
+2026-10-12T14:01:15.5826611Z [command]/usr/bin/git init /home/runner/work/Radar-salud/Radar-salud
+2026-10-12T14:01:15.5945589Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-12T14:01:15.5947600Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-12T14:01:15.5949696Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-12T14:01:15.5951119Z hint: call:
+2026-10-12T14:01:15.5951855Z hint:
+2026-10-12T14:01:15.5952883Z hint: 	git config --global init.defaultBranch <name>
+2026-10-12T14:01:15.5954062Z hint:
+2026-10-12T14:01:15.5955113Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-12T14:01:15.5956786Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-12T14:01:15.5958229Z hint:
+2026-10-12T14:01:15.5959320Z hint: 	git branch -m <name>
+2026-10-12T14:01:15.5960183Z hint:
+2026-10-12T14:01:15.5961307Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-12T14:01:15.5962984Z Initialized empty Git repository in /home/runner/work/Radar-salud/Radar-salud/.git/
+2026-10-12T14:01:15.5965893Z [command]/usr/bin/git remote add origin https://github.com/cftorre1/Radar-salud
+2026-10-12T14:01:15.6021248Z ##[endgroup]
+2026-10-12T14:01:15.6022584Z ##[group]Disabling automatic garbage collection
+2026-10-12T14:01:15.6025034Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-12T14:01:15.6061516Z ##[endgroup]
+2026-10-12T14:01:15.6062730Z ##[group]Setting up auth
+2026-10-12T14:01:15.6069437Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-12T14:01:15.6106198Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-12T14:01:15.6515783Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-12T14:01:15.6559796Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-12T14:01:15.6805946Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-12T14:01:15.6846843Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-12T14:01:15.7089592Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-12T14:01:15.7135173Z ##[endgroup]
+2026-10-12T14:01:15.7136193Z ##[group]Fetching the repository
+2026-10-12T14:01:15.7147885Z [command]/usr/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +634fc08400b58bc14e05116ed641e4186325ac4e:refs/remotes/pull/33/merge
+2026-10-12T14:01:40.4524228Z From https://github.com/cftorre1/Radar-salud
+2026-10-12T14:01:40.4525668Z  * [new branch]        autopilot-state                          -> origin/autopilot-state
+2026-10-12T14:01:40.4527052Z  * [new branch]        codex/b-pulso-runtime-20261011           -> origin/codex/b-pulso-runtime-20261011
+2026-10-12T14:01:40.4528880Z  * [new branch]        codex/c-public-sources-20261011          -> origin/codex/c-public-sources-20261011
+2026-10-12T14:01:40.4530422Z  * [new branch]        codex/d-fiscalizacion-sis-suseso-20261011 -> origin/codex/d-fiscalizacion-sis-suseso-20261011
+2026-10-12T14:01:40.4532156Z  * [new branch]        codex/daily-first-fonasa-isp-minsal-20261012 -> origin/codex/daily-first-fonasa-isp-minsal-20261012
+2026-10-12T14:01:40.4533629Z  * [new branch]        codex/df-end-to-end-20261011             -> origin/codex/df-end-to-end-20261011
+2026-10-12T14:01:40.4534992Z  * [new branch]        codex/e-salud-laboral-20261011           -> origin/codex/e-salud-laboral-20261011
+2026-10-12T14:01:40.4536544Z  * [new branch]        codex/f-prestadores-gremio-2026-10-11    -> origin/codex/f-prestadores-gremio-2026-10-11
+2026-10-12T14:01:40.4539527Z  * [new branch]        codex/global-intelligence-recurrent-20261011 -> origin/codex/global-intelligence-recurrent-20261011
+2026-10-12T14:01:40.4541314Z  * [new branch]        codex/h-product-editorial-20261012       -> origin/codex/h-product-editorial-20261012
+2026-10-12T14:01:40.4542852Z  * [new branch]        codex/integration-commander-20261011     -> origin/codex/integration-commander-20261011
+2026-10-12T14:01:40.4544658Z  * [new branch]        codex/integration-commander-final-receipts-20261011 -> origin/codex/integration-commander-final-receipts-20261011
+2026-10-12T14:01:40.4546595Z  * [new branch]        codex/integration-director-20261011      -> origin/codex/integration-director-20261011
+2026-10-12T14:01:40.4548409Z  * [new branch]        codex/integration-laboral-20261011       -> origin/codex/integration-laboral-20261011
+2026-10-12T14:01:40.4550391Z  * [new branch]        codex/integration-prestadores-20261011   -> origin/codex/integration-prestadores-20261011
+2026-10-12T14:01:40.4551773Z  * [new branch]        codex/integration-publicas-20261011      -> origin/codex/integration-publicas-20261011
+2026-10-12T14:01:40.4553054Z  * [new branch]        codex/integration-transport-20261011     -> origin/codex/integration-transport-20261011
+2026-10-12T14:01:40.4554357Z  * [new branch]        codex/staging-qa-gates-20261011          -> origin/codex/staging-qa-gates-20261011
+2026-10-12T14:01:40.4555847Z  * [new branch]        codex/w4-market-intelligence-expansion-20261011 -> origin/codex/w4-market-intelligence-expansion-20261011
+2026-10-12T14:01:40.4557406Z  * [new branch]        commander/daily-first-controls-20261012  -> origin/commander/daily-first-controls-20261012
+2026-10-12T14:01:40.4559230Z  * [new branch]        commander/source-status-ui-20261012      -> origin/commander/source-status-ui-20261012
+2026-10-12T14:01:40.4560148Z  * [new branch]        main                                     -> origin/main
+2026-10-12T14:01:40.4560752Z  * [new branch]        production-stable                        -> origin/production-stable
+2026-10-12T14:01:40.4561572Z  * [new branch]        staging                                  -> origin/staging
+2026-10-12T14:01:40.4562207Z  * [new branch]        work/autopilot-v1-2026-09-27             -> origin/work/autopilot-v1-2026-09-27
+2026-10-12T14:01:40.4563107Z  * [new branch]        work/autopilot-v1-preview-gate-2026-09-27 -> origin/work/autopilot-v1-preview-gate-2026-09-27
+2026-10-12T14:01:40.4563925Z  * [new branch]        work/autopilot-v1-rebased-2026-09-27     -> origin/work/autopilot-v1-rebased-2026-09-27
+2026-10-12T14:01:40.4564797Z  * [new branch]        work/editorial-senior-handoff-20261011   -> origin/work/editorial-senior-handoff-20261011
+2026-10-12T14:01:40.4565581Z  * [new branch]        work/home-v2-2026-09-24                  -> origin/work/home-v2-2026-09-24
+2026-10-12T14:01:40.4566272Z  * [new branch]        work/home-v2-qa-2026-09-24               -> origin/work/home-v2-qa-2026-09-24
+2026-10-12T14:01:40.4566942Z  * [new branch]        work/home-v2-qa2-2026-09-24              -> origin/work/home-v2-qa2-2026-09-24
+2026-10-12T14:01:40.4567642Z  * [new branch]        work/home-v2-validated-2026-09-24        -> origin/work/home-v2-validated-2026-09-24
+2026-10-12T14:01:40.4568398Z  * [new branch]        work/normative-editorial-v2-2026-09-27   -> origin/work/normative-editorial-v2-2026-09-27
+2026-10-12T14:01:40.4569997Z  * [new branch]        work/paolo-recovery-2026-09-27           -> origin/work/paolo-recovery-2026-09-27
+2026-10-12T14:01:40.4571479Z  * [new branch]        work5/product-editorial-handoff-20261012 -> origin/work5/product-editorial-handoff-20261012
+2026-10-12T14:01:40.4572386Z  * [new branch]        work6/independent-product-audit-20261012 -> origin/work6/independent-product-audit-20261012
+2026-10-12T14:01:40.4573159Z  * [new branch]        work6/w601-recheck-20261012              -> origin/work6/w601-recheck-20261012
+2026-10-12T14:01:40.4573774Z  * [new ref]           634fc08400b58bc14e05116ed641e4186325ac4e -> pull/33/merge
+2026-10-12T14:01:40.4576215Z ##[endgroup]
+2026-10-12T14:01:40.4576686Z ##[group]Determining the checkout info
+2026-10-12T14:01:40.4577201Z ##[endgroup]
+2026-10-12T14:01:40.4577498Z [command]/usr/bin/git sparse-checkout disable
+2026-10-12T14:01:40.4609992Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-12T14:01:40.4654092Z ##[group]Checking out the ref
+2026-10-12T14:01:40.4658881Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/33/merge
+2026-10-12T14:01:41.7044870Z Updating files:  10% (875/8077)
+2026-10-12T14:01:42.5624178Z Updating files:  11% (889/8077)
+2026-10-12T14:01:42.5717586Z Updating files:  11% (954/8077)
+2026-10-12T14:01:43.5104171Z Updating files:  12% (970/8077)
+2026-10-12T14:01:43.7515445Z Updating files:  12% (1029/8077)
+2026-10-12T14:01:43.7725606Z Updating files:  13% (1051/8077)
+2026-10-12T14:01:43.7851283Z Updating files:  14% (1131/8077)
+2026-10-12T14:01:43.7947001Z Updating files:  15% (1212/8077)
+2026-10-12T14:01:43.8079071Z Updating files:  16% (1293/8077)
+2026-10-12T14:01:43.8204623Z Updating files:  17% (1374/8077)
+2026-10-12T14:01:43.8319605Z Updating files:  18% (1454/8077)
+2026-10-12T14:01:43.8445652Z Updating files:  19% (1535/8077)
+2026-10-12T14:01:43.8603573Z Updating files:  20% (1616/8077)
+2026-10-12T14:01:43.8722919Z Updating files:  21% (1697/8077)
+2026-10-12T14:01:43.8833597Z Updating files:  22% (1777/8077)
+2026-10-12T14:01:43.8937289Z Updating files:  23% (1858/8077)
+2026-10-12T14:01:43.9048189Z Updating files:  24% (1939/8077)
+2026-10-12T14:01:43.9161781Z Updating files:  25% (2020/8077)
+2026-10-12T14:01:43.9269387Z Updating files:  26% (2101/8077)
+2026-10-12T14:01:43.9370806Z Updating files:  27% (2181/8077)
+2026-10-12T14:01:43.9467825Z Updating files:  28% (2262/8077)
+2026-10-12T14:01:43.9561408Z Updating files:  29% (2343/8077)
+2026-10-12T14:01:43.9664271Z Updating files:  30% (2424/8077)
+2026-10-12T14:01:43.9798820Z Updating files:  31% (2504/8077)
+2026-10-12T14:01:44.0003938Z Updating files:  32% (2585/8077)
+2026-10-12T14:01:44.0524779Z Updating files:  33% (2666/8077)
+2026-10-12T14:01:44.1159523Z Updating files:  34% (2747/8077)
+2026-10-12T14:01:44.1311210Z Updating files:  35% (2827/8077)
+2026-10-12T14:01:44.1416511Z Updating files:  36% (2908/8077)
+2026-10-12T14:01:44.1528727Z Updating files:  37% (2989/8077)
+2026-10-12T14:01:44.1634129Z Updating files:  38% (3070/8077)
+2026-10-12T14:01:44.1823298Z Updating files:  39% (3151/8077)
+2026-10-12T14:01:44.2332752Z Updating files:  40% (3231/8077)
+2026-10-12T14:01:44.2937869Z Updating files:  41% (3312/8077)
+2026-10-12T14:01:44.3205327Z Updating files:  42% (3393/8077)
+2026-10-12T14:01:44.3622545Z Updating files:  43% (3474/8077)
+2026-10-12T14:01:44.4377722Z Updating files:  44% (3554/8077)
+2026-10-12T14:01:44.5137656Z Updating files:  45% (3635/8077)
+2026-10-12T14:01:44.5320643Z Updating files:  45% (3656/8077)
+2026-10-12T14:01:44.5631890Z Updating files:  46% (3716/8077)
+2026-10-12T14:01:44.5999943Z Updating files:  47% (3797/8077)
+2026-10-12T14:01:44.6757042Z Updating files:  48% (3877/8077)
+2026-10-12T14:01:44.7723466Z Updating files:  49% (3958/8077)
+2026-10-12T14:01:44.7993672Z Updating files:  50% (4039/8077)
+2026-10-12T14:01:44.8692196Z Updating files:  51% (4120/8077)
+2026-10-12T14:01:44.9397666Z Updating files:  52% (4201/8077)
+2026-10-12T14:01:45.0080763Z Updating files:  53% (4281/8077)
+2026-10-12T14:01:45.0373046Z Updating files:  54% (4362/8077)
+2026-10-12T14:01:45.1356185Z Updating files:  55% (4443/8077)
+2026-10-12T14:01:45.2216225Z Updating files:  56% (4524/8077)
+2026-10-12T14:01:45.2477218Z Updating files:  57% (4604/8077)
+2026-10-12T14:01:45.2744202Z Updating files:  58% (4685/8077)
+2026-10-12T14:01:45.3458193Z Updating files:  59% (4766/8077)
+2026-10-12T14:01:45.4587976Z Updating files:  60% (4847/8077)
+2026-10-12T14:01:45.4775050Z Updating files:  61% (4927/8077)
+2026-10-12T14:01:45.4826889Z Updating files:  61% (4986/8077)
+2026-10-12T14:01:45.5043019Z Updating files:  62% (5008/8077)
+2026-10-12T14:01:45.5355983Z Updating files:  63% (5089/8077)
+2026-10-12T14:01:45.6060368Z Updating files:  64% (5170/8077)
+2026-10-12T14:01:45.6963005Z Updating files:  65% (5251/8077)
+2026-10-12T14:01:45.7103296Z Updating files:  66% (5331/8077)
+2026-10-12T14:01:45.7170535Z Updating files:  67% (5412/8077)
+2026-10-12T14:01:45.8785829Z Updating files:  68% (5493/8077)
+2026-10-12T14:01:46.4130161Z Updating files:  69% (5574/8077)
+2026-10-12T14:01:46.4328479Z Updating files:  70% (5654/8077)
+2026-10-12T14:01:46.4444180Z Updating files:  71% (5735/8077)
+2026-10-12T14:01:46.4522336Z Updating files:  72% (5816/8077)
+2026-10-12T14:01:46.4590849Z Updating files:  73% (5897/8077)
+2026-10-12T14:01:46.4672467Z Updating files:  74% (5977/8077)
+2026-10-12T14:01:46.4758285Z Updating files:  75% (6058/8077)
+2026-10-12T14:01:46.4772284Z Updating files:  76% (6139/8077)
+2026-10-12T14:01:46.5001984Z Updating files:  76% (6144/8077)
+2026-10-12T14:01:46.5172933Z Updating files:  77% (6220/8077)
+2026-10-12T14:01:46.5405639Z Updating files:  78% (6301/8077)
+2026-10-12T14:01:46.5496295Z Updating files:  79% (6381/8077)
+2026-10-12T14:01:46.5577066Z Updating files:  80% (6462/8077)
+2026-10-12T14:01:46.5665960Z Updating files:  81% (6543/8077)
+2026-10-12T14:01:46.5746264Z Updating files:  82% (6624/8077)
+2026-10-12T14:01:46.5818320Z Updating files:  83% (6704/8077)
+2026-10-12T14:01:46.5889133Z Updating files:  84% (6785/8077)
+2026-10-12T14:01:46.5959912Z Updating files:  85% (6866/8077)
+2026-10-12T14:01:46.6040696Z Updating files:  86% (6947/8077)
+2026-10-12T14:01:46.6121086Z Updating files:  87% (7027/8077)
+2026-10-12T14:01:46.6199345Z Updating files:  88% (7108/8077)
+2026-10-12T14:01:46.6276971Z Updating files:  89% (7189/8077)
+2026-10-12T14:01:46.6355162Z Updating files:  90% (7270/8077)
+2026-10-12T14:01:46.6437301Z Updating files:  91% (7351/8077)
+2026-10-12T14:01:46.6519172Z Updating files:  92% (7431/8077)
+2026-10-12T14:01:46.6609515Z Updating files:  93% (7512/8077)
+2026-10-12T14:01:46.6805734Z Updating files:  94% (7593/8077)
+2026-10-12T14:01:46.6910420Z Updating files:  95% (7674/8077)
+2026-10-12T14:01:46.6973942Z Updating files:  96% (7754/8077)
+2026-10-12T14:01:46.7037827Z Updating files:  97% (7835/8077)
+2026-10-12T14:01:46.7992623Z Updating files:  98% (7916/8077)
+2026-10-12T14:01:46.9483279Z Updating files:  99% (7997/8077)
+2026-10-12T14:01:46.9483922Z Updating files: 100% (8077/8077)
+2026-10-12T14:01:46.9484467Z Updating files: 100% (8077/8077), done.
+2026-10-12T14:01:46.9571522Z Note: switching to 'refs/remotes/pull/33/merge'.
+2026-10-12T14:01:46.9572038Z 
+2026-10-12T14:01:46.9572405Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-12T14:01:46.9573278Z changes and commit them, and you can discard any commits you make in this
+2026-10-12T14:01:46.9574156Z state without impacting any branches by switching back to a branch.
+2026-10-12T14:01:46.9574667Z 
+2026-10-12T14:01:46.9574988Z If you want to create a new branch to retain commits you create, you may
+2026-10-12T14:01:46.9575745Z do so (now or later) by using -c with the switch command. Example:
+2026-10-12T14:01:46.9576245Z 
+2026-10-12T14:01:46.9576795Z   git switch -c <new-branch-name>
+2026-10-12T14:01:46.9577102Z 
+2026-10-12T14:01:46.9577280Z Or undo this operation with:
+2026-10-12T14:01:46.9577560Z 
+2026-10-12T14:01:46.9577698Z   git switch -
+2026-10-12T14:01:46.9577907Z 
+2026-10-12T14:01:46.9578284Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-12T14:01:46.9579076Z 
+2026-10-12T14:01:46.9579712Z HEAD is now at 634fc084 Merge 29287d21af55b283a46fb402223cf6bb168f4b4d into ef8cbe3938623d493872ff5f3e717153f176d1be
+2026-10-12T14:01:46.9680225Z ##[endgroup]
+2026-10-12T14:01:46.9735559Z [command]/usr/bin/git log -1 --format=%H
+2026-10-12T14:01:46.9766740Z 634fc08400b58bc14e05116ed641e4186325ac4e
+2026-10-12T14:01:47.0040797Z ##[group]Run actions/setup-python@v5
+2026-10-12T14:01:47.0041098Z with:
+2026-10-12T14:01:47.0041301Z   python-version: 3.11
+2026-10-12T14:01:47.0041529Z   check-latest: false
+2026-10-12T14:01:47.0043939Z   token: ***
+2026-10-12T14:01:47.0044352Z   update-environment: true
+2026-10-12T14:01:47.0044603Z   allow-prereleases: false
+2026-10-12T14:01:47.0044831Z   freethreaded: false
+2026-10-12T14:01:47.0045043Z ##[endgroup]
+2026-10-12T14:01:47.1431742Z ##[group]Installed versions
+2026-10-12T14:01:47.2251147Z (node:2323) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-12T14:01:47.2252461Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-12T14:01:47.2281100Z Successfully set up CPython (3.11.17)
+2026-10-12T14:01:47.2287889Z ##[endgroup]
+2026-10-12T14:01:47.2436593Z ##[group]Run pip install -e .
+2026-10-12T14:01:47.2436960Z [36;1mpip install -e .[0m
+2026-10-12T14:01:47.3001674Z shell: /usr/bin/bash -e {0}
+2026-10-12T14:01:47.3002041Z env:
+2026-10-12T14:01:47.3002412Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:01:47.3003049Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib/pkgconfig
+2026-10-12T14:01:47.3003659Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:01:47.3004193Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:01:47.3004711Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:01:47.3005247Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib
+2026-10-12T14:01:47.3005688Z ##[endgroup]
+2026-10-12T14:01:51.0965925Z Obtaining file:///home/runner/work/Radar-salud/Radar-salud
+2026-10-12T14:01:51.0982804Z   Installing build dependencies: started
+2026-10-12T14:01:54.2910344Z   Installing build dependencies: finished with status 'done'
+2026-10-12T14:01:54.2916763Z   Checking if build backend supports build_editable: started
+2026-10-12T14:01:54.6608194Z   Checking if build backend supports build_editable: finished with status 'done'
+2026-10-12T14:01:54.6616063Z   Getting requirements to build editable: started
+2026-10-12T14:01:55.0173331Z   Getting requirements to build editable: finished with status 'done'
+2026-10-12T14:01:55.0188326Z   Preparing editable metadata (pyproject.toml): started
+2026-10-12T14:01:55.2247252Z   Preparing editable metadata (pyproject.toml): finished with status 'done'
+2026-10-12T14:01:55.2964047Z Collecting pypdf==6.20.0 (from pypdf[crypto]==6.20.0->radar-salud==0.1.0)
+2026-10-12T14:01:55.3421269Z   Downloading pypdf-6.20.0-py3-none-any.whl.metadata (7.6 kB)
+2026-10-12T14:01:55.3598242Z Collecting openpyxl>=3.1.0 (from radar-salud==0.1.0)
+2026-10-12T14:01:55.3634828Z   Downloading openpyxl-3.1.5-py2.py3-none-any.whl.metadata (2.5 kB)
+2026-10-12T14:01:55.4365544Z Collecting openai>=1.0.0 (from radar-salud==0.1.0)
+2026-10-12T14:01:55.4404015Z   Downloading openai-3.29.0-py3-none-any.whl.metadata (44 kB)
+2026-10-12T14:01:55.6324752Z Collecting cryptography>3.0 (from pypdf[crypto]==6.20.0->radar-salud==0.1.0)
+2026-10-12T14:01:55.6362063Z   Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (4.4 kB)
+2026-10-12T14:01:55.7328983Z Collecting cffi>=2.0.0 (from cryptography>3.0->pypdf[crypto]==6.20.0->radar-salud==0.1.0)
+2026-10-12T14:01:55.7368876Z   Downloading cffi-2.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.5 kB)
+2026-10-12T14:01:55.7488235Z Collecting pycparser (from cffi>=2.0.0->cryptography>3.0->pypdf[crypto]==6.20.0->radar-salud==0.1.0)
+2026-10-12T14:01:55.7520682Z   Downloading pycparser-3.11-py3-none-any.whl.metadata (8.2 kB)
+2026-10-12T14:01:55.7686497Z Collecting anyio<5,>=4.10.0 (from openai>=1.0.0->radar-salud==0.1.0)
+2026-10-12T14:01:55.7725915Z   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+2026-10-12T14:01:55.7847950Z Collecting httpx2<3,>=2.12.0 (from openai>=1.0.0->radar-salud==0.1.0)
+2026-10-12T14:01:55.7884746Z   Downloading httpx2-2.13.1-py3-none-any.whl.metadata (9.8 kB)
+2026-10-12T14:01:55.8741585Z Collecting jiter<1,>=0.16.0 (from openai>=1.0.0->radar-salud==0.1.0)
+2026-10-12T14:01:55.8774579Z   Downloading jiter-0.17.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (5.2 kB)
+2026-10-12T14:01:55.9986814Z Collecting pydantic!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,<3,>=1.10.13 (from openai>=1.0.0->radar-salud==0.1.0)
+2026-10-12T14:01:56.0029113Z   Downloading pydantic-2.14.1-py3-none-any.whl.metadata (133 kB)
+2026-10-12T14:01:56.0202079Z Collecting sniffio (from openai>=1.0.0->radar-salud==0.1.0)
+2026-10-12T14:01:56.0237477Z   Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+2026-10-12T14:01:56.0415088Z Collecting typing-extensions<5,>=4.14 (from openai>=1.0.0->radar-salud==0.1.0)
+2026-10-12T14:01:56.0449952Z   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+2026-10-12T14:01:56.0593658Z Collecting idna>=2.8 (from anyio<5,>=4.10.0->openai>=1.0.0->radar-salud==0.1.0)
+2026-10-12T14:01:56.0628444Z   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+2026-10-12T14:01:56.0767766Z Collecting httpcore2==2.13.1 (from httpx2<3,>=2.12.0->openai>=1.0.0->radar-salud==0.1.0)
+2026-10-12T14:01:56.0807519Z   Downloading httpcore2-2.13.1-py3-none-any.whl.metadata (26 kB)
+2026-10-12T14:01:56.0958083Z Collecting truststore>=0.10 (from httpx2<3,>=2.12.0->openai>=1.0.0->radar-salud==0.1.0)
+2026-10-12T14:01:56.1014360Z   Downloading truststore-0.10.4-py3-none-any.whl.metadata (4.4 kB)
+2026-10-12T14:01:56.1153754Z Collecting h11>=0.16 (from httpcore2==2.13.1->httpx2<3,>=2.12.0->openai>=1.0.0->radar-salud==0.1.0)
+2026-10-12T14:01:56.1188548Z   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+2026-10-12T14:01:56.1324325Z Collecting annotated-types>=0.6.0 (from pydantic!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,<3,>=1.10.13->openai>=1.0.0->radar-salud==0.1.0)
+2026-10-12T14:01:56.1357959Z   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+2026-10-12T14:01:56.7908946Z Collecting pydantic-core==2.50.1 (from pydantic!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,<3,>=1.10.13->openai>=1.0.0->radar-salud==0.1.0)
+2026-10-12T14:01:56.7946537Z   Downloading pydantic_core-2.50.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.5 kB)
+2026-10-12T14:01:56.8059470Z Collecting typing-inspection>=0.4.4 (from pydantic!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,<3,>=1.10.13->openai>=1.0.0->radar-salud==0.1.0)
+2026-10-12T14:01:56.8099026Z   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+2026-10-12T14:01:56.8217848Z Collecting et-xmlfile (from openpyxl>=3.1.0->radar-salud==0.1.0)
+2026-10-12T14:01:56.8254456Z   Downloading et_xmlfile-2.0.0-py3-none-any.whl.metadata (2.7 kB)
+2026-10-12T14:01:56.8353065Z Downloading pypdf-6.20.0-py3-none-any.whl (401 kB)
+2026-10-12T14:01:56.8446791Z Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl (4.8 MB)
+2026-10-12T14:01:56.8749155Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.8/4.8 MB 172.8 MB/s  0:00:00
+2026-10-12T14:01:56.8789071Z Downloading cffi-2.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (217 kB)
+2026-10-12T14:01:56.8879965Z Downloading openai-3.29.0-py3-none-any.whl (2.2 MB)
+2026-10-12T14:01:56.8995026Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 215.9 MB/s  0:00:00
+2026-10-12T14:01:56.9030585Z Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+2026-10-12T14:01:56.9108806Z Downloading httpx2-2.13.1-py3-none-any.whl (95 kB)
+2026-10-12T14:01:56.9167295Z Downloading httpcore2-2.13.1-py3-none-any.whl (83 kB)
+2026-10-12T14:01:56.9229615Z Downloading jiter-0.17.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (346 kB)
+2026-10-12T14:01:56.9329693Z Downloading pydantic-2.14.1-py3-none-any.whl (488 kB)
+2026-10-12T14:01:56.9439198Z Downloading pydantic_core-2.50.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.2 MB)
+2026-10-12T14:01:56.9549743Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 245.5 MB/s  0:00:00
+2026-10-12T14:01:56.9583992Z Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+2026-10-12T14:01:56.9638449Z Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+2026-10-12T14:01:56.9693285Z Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+2026-10-12T14:01:56.9750709Z Downloading idna-3.20-py3-none-any.whl (69 kB)
+2026-10-12T14:01:56.9807400Z Downloading openpyxl-3.1.5-py2.py3-none-any.whl (250 kB)
+2026-10-12T14:01:56.9870095Z Downloading truststore-0.10.4-py3-none-any.whl (18 kB)
+2026-10-12T14:01:56.9932908Z Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+2026-10-12T14:01:56.9987846Z Downloading et_xmlfile-2.0.0-py3-none-any.whl (18 kB)
+2026-10-12T14:01:57.0041705Z Downloading pycparser-3.11-py3-none-any.whl (51 kB)
+2026-10-12T14:01:57.0128874Z Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+2026-10-12T14:01:57.0798243Z Building wheels for collected packages: radar-salud
+2026-10-12T14:01:57.0808080Z   Building editable for radar-salud (pyproject.toml): started
+2026-10-12T14:01:57.3057389Z   Building editable for radar-salud (pyproject.toml): finished with status 'done'
+2026-10-12T14:01:57.3064363Z   Created wheel for radar-salud: filename=radar_salud-0.1.0-0.editable-py3-none-any.whl size=1309 sha256=0cf60027dfefb209c448026c1f1afe19aa2546d4ac173a6e42c8fcb22791f2ba
+2026-10-12T14:01:57.3065953Z   Stored in directory: /tmp/pip-ephem-wheel-cache-51qe89dy/wheels/db/9f/32/47ab3e40cea9cb6d57b25a88ed1a741e9292afcfaf90515a78
+2026-10-12T14:01:57.3079207Z Successfully built radar-salud
+2026-10-12T14:01:57.3871114Z Installing collected packages: typing-extensions, truststore, sniffio, pypdf, pycparser, jiter, idna, h11, et-xmlfile, annotated-types, typing-inspection, pydantic-core, openpyxl, httpcore2, cffi, anyio, pydantic, httpx2, cryptography, openai, radar-salud
+2026-10-12T14:02:00.3517520Z 
+2026-10-12T14:02:00.3533897Z Successfully installed annotated-types-0.8.0 anyio-4.15.1 cffi-2.1.1 cryptography-50.0.2 et-xmlfile-2.0.0 h11-0.16.0 httpcore2-2.13.1 httpx2-2.13.1 idna-3.20 jiter-0.17.0 openai-3.29.0 openpyxl-3.1.5 pycparser-3.11 pydantic-2.14.1 pydantic-core-2.50.1 pypdf-6.20.0 radar-salud-0.1.0 sniffio-1.3.1 truststore-0.10.4 typing-extensions-4.16.0 typing-inspection-0.4.4
+2026-10-12T14:02:00.5141015Z ##[group]Run mkdir -p data/autopilot
+2026-10-12T14:02:00.5141744Z [36;1mmkdir -p data/autopilot[0m
+2026-10-12T14:02:00.5142468Z [36;1mif git ls-remote --exit-code --heads origin autopilot-state >/dev/null; then[0m
+2026-10-12T14:02:00.5143182Z [36;1m  git fetch origin autopilot-state[0m
+2026-10-12T14:02:00.5143686Z [36;1m  if git cat-file -e FETCH_HEAD:data/autopilot/ledger.json 2>/dev/null; then[0m
+2026-10-12T14:02:00.5144249Z [36;1m    git show FETCH_HEAD:data/autopilot/ledger.json > data/autopilot/ledger.json[0m
+2026-10-12T14:02:00.5144658Z [36;1m  fi[0m
+2026-10-12T14:02:00.5144844Z [36;1mfi[0m
+2026-10-12T14:02:00.5213235Z shell: /usr/bin/bash -e {0}
+2026-10-12T14:02:00.5213501Z env:
+2026-10-12T14:02:00.5213792Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:00.5214280Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib/pkgconfig
+2026-10-12T14:02:00.5214738Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:00.5215201Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:00.5215607Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:00.5216023Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib
+2026-10-12T14:02:00.5216367Z ##[endgroup]
+2026-10-12T14:02:01.2394947Z From https://github.com/cftorre1/Radar-salud
+2026-10-12T14:02:01.2395820Z  * branch              autopilot-state -> FETCH_HEAD
+2026-10-12T14:02:01.2489454Z ##[group]Run python scripts/build_statistics_deep_analysis.py
+2026-10-12T14:02:01.2489976Z [36;1mpython scripts/build_statistics_deep_analysis.py[0m
+2026-10-12T14:02:01.2555143Z shell: /usr/bin/bash -e {0}
+2026-10-12T14:02:01.2555426Z env:
+2026-10-12T14:02:01.2555719Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:01.2556227Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib/pkgconfig
+2026-10-12T14:02:01.2556726Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:01.2557149Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:01.2557571Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:01.2558214Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib
+2026-10-12T14:02:01.2558873Z ##[endgroup]
+2026-10-12T14:02:01.5207113Z {"https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/": {"rows": 6, "methodology": "collapsed"}}
+2026-10-12T14:02:01.5480574Z ##[group]Run python scripts/build_epidemiology_snapshot.py
+2026-10-12T14:02:01.5481398Z [36;1mpython scripts/build_epidemiology_snapshot.py[0m
+2026-10-12T14:02:01.5579957Z shell: /usr/bin/bash -e {0}
+2026-10-12T14:02:01.5580418Z env:
+2026-10-12T14:02:01.5580887Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:01.5581696Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib/pkgconfig
+2026-10-12T14:02:01.5582484Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:01.5583221Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:01.5583943Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:01.5584755Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib
+2026-10-12T14:02:01.5585402Z ##[endgroup]
+2026-10-12T14:02:01.6111092Z ##[group]Run python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json --offline
+2026-10-12T14:02:01.6111937Z [36;1mpython scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json --offline[0m
+2026-10-12T14:02:01.6175525Z shell: /usr/bin/bash -e {0}
+2026-10-12T14:02:01.6175794Z env:
+2026-10-12T14:02:01.6176072Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:01.6176531Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib/pkgconfig
+2026-10-12T14:02:01.6176973Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:01.6177357Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:01.6177755Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:01.6178147Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib
+2026-10-12T14:02:01.6178757Z ##[endgroup]
+2026-10-12T14:02:01.9562708Z Traceback (most recent call last):
+2026-10-12T14:02:01.9573337Z   File "/home/runner/work/Radar-salud/Radar-salud/scripts/export_web_snapshot.py", line 699, in <module>
+2026-10-12T14:02:01.9574320Z     if __name__=="__main__":main()
+2026-10-12T14:02:01.9574727Z                             ^^^^^^
+2026-10-12T14:02:01.9575517Z   File "/home/runner/work/Radar-salud/Radar-salud/scripts/export_web_snapshot.py", line 696, in main
+2026-10-12T14:02:01.9576433Z     from scripts.export_public_sources import export_public_sources
+2026-10-12T14:02:01.9577044Z ModuleNotFoundError: No module named 'scripts'
+2026-10-12T14:02:01.9803549Z ##[error]Process completed with exit code 1.
+2026-10-12T14:02:01.9929363Z ##[group]Run actions/upload-artifact@v4
+2026-10-12T14:02:01.9929689Z with:
+2026-10-12T14:02:01.9929991Z   name: staging-evidence-634fc08400b58bc14e05116ed641e4186325ac4e
+2026-10-12T14:02:01.9930393Z   path: artifacts/
+test-results/
+web/
+
+2026-10-12T14:02:01.9930691Z   if-no-files-found: warn
+2026-10-12T14:02:01.9930926Z   compression-level: 6
+2026-10-12T14:02:01.9931149Z   overwrite: false
+2026-10-12T14:02:01.9931365Z   include-hidden-files: false
+2026-10-12T14:02:01.9931597Z env:
+2026-10-12T14:02:01.9931855Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:01.9932292Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib/pkgconfig
+2026-10-12T14:02:01.9932718Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:01.9933102Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:01.9933488Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.17/x64
+2026-10-12T14:02:01.9933938Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.17/x64/lib
+2026-10-12T14:02:01.9934271Z ##[endgroup]
+2026-10-12T14:02:02.1717323Z (node:2405) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-12T14:02:02.1719413Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-12T14:02:02.1882963Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-12T14:02:02.1886125Z The least common ancestor is /home/runner/work/Radar-salud/Radar-salud. This will be the root directory of the artifact
+2026-10-12T14:02:02.1887185Z With the provided path, there will be 40 files uploaded
+2026-10-12T14:02:02.1893449Z Artifact name is valid!
+2026-10-12T14:02:02.1894120Z Root directory input is valid!
+2026-10-12T14:02:02.5875912Z Beginning upload of artifact content to blob storage
+2026-10-12T14:02:03.0832687Z (node:2405) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-12T14:02:03.8694384Z Uploaded bytes 4177309
+2026-10-12T14:02:03.9500136Z Finished uploading artifact content to blob storage!
+2026-10-12T14:02:03.9501622Z SHA256 digest of uploaded artifact zip is 605d9f3ac857052de5b0773f1c85d31545a6f0e3a6b5179d5d81a14985a16e1d
+2026-10-12T14:02:03.9503805Z Finalizing artifact upload
+2026-10-12T14:02:04.2616651Z Artifact staging-evidence-634fc08400b58bc14e05116ed641e4186325ac4e.zip successfully finalized. Artifact ID 11752411281
+2026-10-12T14:02:04.2618969Z Artifact staging-evidence-634fc08400b58bc14e05116ed641e4186325ac4e has been successfully uploaded! Final size is 4177309 bytes. Artifact ID is 11752411281
+2026-10-12T14:02:04.2624882Z Artifact download URL: https://github.com/cftorre1/Radar-salud/actions/runs/38258425687/artifacts/11752411281
+2026-10-12T14:02:04.2859871Z Post job cleanup.
+2026-10-12T14:02:04.3774900Z [command]/usr/bin/git version
+2026-10-12T14:02:04.3823745Z git version 2.55.0
+2026-10-12T14:02:04.3869826Z Temporarily overriding HOME='/home/runner/work/_temp/49cd4817-93d4-4509-870f-96931727d77f' before making global git config changes
+2026-10-12T14:02:04.3872497Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-12T14:02:04.3873896Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Radar-salud/Radar-salud
+2026-10-12T14:02:04.3915663Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-12T14:02:04.3958711Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-12T14:02:04.4246758Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-12T14:02:04.4280606Z http.https://github.com/.extraheader
+2026-10-12T14:02:04.4296324Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-12T14:02:04.4342668Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-12T14:02:04.4626422Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-12T14:02:04.4671221Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-12T14:02:04.5163140Z Cleaning up orphan processes
+2026-10-12T14:02:04.5481544Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+

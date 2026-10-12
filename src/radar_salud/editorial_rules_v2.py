@@ -129,6 +129,13 @@ def evaluate_editorial_v2(
 
 def validate_publication_contract(signal: Mapping[str, Any]) -> dict[str, Any]:
     """Fail-closed minimum contract shared by brief, feed card and detail."""
+    if str(signal.get("editorial_schema_version"))=="3":
+        from .editorial_v3 import validate_depth
+        depth=validate_depth(signal)
+        missing=[key for key in ("title","signal_types","scopes","event_date","source_name","source_url") if not signal.get(key)]
+        if "Normativa" in (signal.get("signal_types") or []) and not signal.get("normative_document_label"):
+            missing.append("normative_document_label")
+        return {"status":"pass" if depth["ok"] and not missing else "fail","missing":missing+depth["reason_codes"],"optional_sections":{}}
     missing=[]
     title=str(signal.get("display_title") or signal.get("title") or "").strip()
     what=str(signal.get("card_what") or signal.get("what_happened") or "").strip()

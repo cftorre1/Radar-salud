@@ -4,9 +4,7 @@ const {test,expect}=require('@playwright/test');
 
 for(const name of ['Pulso Latercera','Pulso / La Tercera']){
  test(`synthetic Pulso registry fixture links ${name} to canonical publisher selection`,async({page})=>{
-  await page.route('**/data/product.json',route=>route.fulfill({json:{sources:{pulso_latercera:{
-   name,checked_at:'2026-10-11T05:00:00Z',last_signal_at:'2026-10-10',
-  }}}}));
+  await page.route('**/data/public_sources.json',route=>route.fulfill({json:{sources:[{id:'pulso_latercera',name,group:'Noticias y mercado',url:'https://www.latercera.com/pulso/',description:'Noticias públicas del sector.'}]}}));
   // This incomplete record supplies only registry identity/date. It cannot
   // pass the card publication contract and is never a synthetic public signal.
   await page.route('**/data/radar_today.json',route=>route.fulfill({json:{
@@ -15,9 +13,8 @@ for(const name of ['Pulso Latercera','Pulso / La Tercera']){
   await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
   await page.locator('#sourcesOpen').click();
   const source=page.locator('#sourcesList .source-row');
-  await expect(source).toHaveCount(1);await expect(source.locator('strong')).toHaveText(name);
-  await expect(source).toContainText('Última seleccionada');await expect(source).not.toContainText('aún no visible');
-  await expect(source.locator('.source-meta span').last()).toContainText('10');
+  await expect(source).toHaveCount(1);await expect(source.getByRole('link')).toContainText(name);
+  await expect(source.getByRole('link')).toHaveAttribute('href','https://www.latercera.com/pulso/');await expect(source).not.toContainText('Última seleccionada');
   await expect(source.locator('xpath=ancestor::section[contains(@class,"source-group")]')).toContainText('Noticias y mercado');
   await expect(page.locator('article[data-card]')).toHaveCount(0);
  });

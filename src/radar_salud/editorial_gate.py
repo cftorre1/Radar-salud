@@ -28,8 +28,9 @@ def quality_score(r:Dict[str,Any])->int:
     if not r.get("event_date"):q-=18
     if not r.get("source_url"):q-=15
     if len(str(r.get("title") or "").strip())<12:q-=20
-    if len(str(r.get("what_happened") or "").strip())<35:q-=20
-    if len(str(r.get("why_it_matters") or "").strip())<35:q-=15
+    if str(r.get("editorial_schema_version"))!="3":
+        if len(str(r.get("what_happened") or "").strip())<35:q-=20
+        if len(str(r.get("why_it_matters") or "").strip())<35:q-=15
     why=" ".join(str(r.get("why_it_matters") or "").lower().split())
     if any(x in why for x in _GENERIC):q-=18
     if has_garbage(r):q-=80
@@ -37,14 +38,25 @@ def quality_score(r:Dict[str,Any])->int:
     return max(0,q)
 
 def publication_ready(r:Dict[str,Any])->Tuple[bool,str,int]:
+    if str(r.get("editorial_schema_version"))=="3":
+        from .editorial_v3 import validate_depth
+        from .normative_dates import legal_dates
+        legal=legal_dates(r)
+        if legal["hold_reason"] or str(r.get("event_type") or "").startswith("SANCTION") and legal["event_date"]!=r.get("event_date"):
+            return False,"HOLD_DATE",0
+        depth=validate_depth(r)
+        if not depth["ok"]:return False,"editorial_v3_"+depth["reason_codes"][0],0
     review = r.get("editorial_review") or {}
     if isinstance(review, dict) and review.get("schema_version") == "pulso_editorial_review_v1" and review.get("decision") in {"reject", "group"}:
         return False, "pulso_independent_editorial_" + review["decision"], quality_score(r)
-    if invalid_validity(r):r["validity_text"]=None
+    if invalid_validity(r):
+        if str(r.get("editorial_schema_version"))=="3":
+            return False,"editorial_v3_invalid_validity",0
+        r["validity_text"]=None
     if "Normativa" in (r.get("signal_types") or []) and (r.get("event_type")=="REGULATION" or r.get("normative_document_label") or r.get("legal_identity")):
         title=str(r.get("display_title") or r.get("title") or "")
         identity=str(r.get("legal_identity") or r.get("normative_document_label") or "")
-        if r.get("normative_title_review_required") or not identity or identity.casefold() not in title.casefold() or not str(r.get("normative_context") or "").strip():
+        if r.get("normative_title_review_required") or not identity or identity.casefold() not in title.casefold() or not str(r.get("normative_context") or r.get("detail_body") or "").strip():
             return False,"normative_title_needs_review",0
     q=quality_score(r)
     if has_garbage(r):return False,"binary_or_markup",q

@@ -200,31 +200,17 @@ def series():
 
 
 def financial():
-    # SIS March-2026 financial statistical workbook, figures in CLP millions.
-    data = [
-        ("Consalud", 193273, 22207, 18040), ("Cruz Blanca", 171484, 7264, 6782),
-        ("Banmédica", 230379, 1692, 3918), ("Isalud", 32449, -3474, 2027),
-        ("Nueva Masvida", 115517, 133, 1704), ("Colmena", 267347, -2470, 1484),
-        ("Fundación", 12176, 254, 759), ("Cruz del Norte", 799, 34, 31),
-        ("Vida Tres", 67926, -1685, -625), ("Esencial", 29063, 50, -30),
-    ]
-    rows = [[name, revenue, operating, profit] for name, revenue, operating, profit in data]
-    total = sum(row[3] for row in rows)
-    positive = sum(row[3] > 0 for row in rows)
-    conclusion = f"El resultado neto conjunto fue CLP {total:,} millones; {positive} de 10 isapres cerraron con utilidad.".replace(",", ".")
-    return {
-        "card_what": "Resultados del sistema ISAPRE para enero–marzo de 2026, en millones de pesos chilenos.",
-        "card_why_optional": True,
-        "data_insights": [],
-        "data_insight_evidence": [trace("Resultados comparables del estado de resultados por institución; montos en CLP millones.", "enero–marzo 2026", "Ingresos de actividades ordinarias; resultado operacional; resultado neto del período", "estado de resultados por institución", FIN_SOURCE)],
-        "summary_table": {"title": "Estadísticas financieras por Isapre · marzo 2026", **cells(["Isapre", "Ingresos (CLP millones)", "Resultado operacional (CLP millones)", "Utilidad/pérdida neta (CLP millones)"], rows)},
-        "statistical_conclusion": conclusion,
-        "incremental_value_gate": {"table": "Tres métricas definidas para cada institución en la misma unidad", "conclusion": "Agregado neto del sistema y cantidad de instituciones con utilidad, calculados desde las filas visibles"},
-        "methodology_visibility": "collapsed",
-        "statistical_methodology": {"period": "enero–marzo 2026", "unit": "CLP millones", "definitions": {"ingresos": "Ingresos de actividades ordinarias del estado de resultados", "resultado operacional": "Resultado operacional informado por la Superintendencia", "utilidad/pérdida neta": "Resultado neto del período informado por la Superintendencia"}, "source_url": FIN_PAGE, "source_document_url": FIN_SOURCE, "accounting_basis": "NIIF / IFRS"},
-        "statistical_value_level": "deep_analysis",
-        "analysis_trace": {"method": "official_superintendencia_financial_table", "unit": "CLP millions", "source_url": FIN_SOURCE},
-    }
+    # Work6 original XLS v2: notes A18 conflict with Esencial institutional rows.
+    # A valid arithmetic fixture is not authorization for a dependent aggregate/ranking.
+    return {"card_why_optional":True,"data_insights":[],"data_insight_evidence":[],
+            "summary_table":{"title":"FEFI · cobertura pendiente de aclaración","columns":[],"rows":[]},
+            "statistical_conclusion":"","methodology_visibility":"collapsed",
+            "statistical_view":{"family":"fefi","publication_status":"HOLD","hold_reason":"HOLD_COVERAGE_ESENCIAL",
+                                "limitations":["La nota de cobertura contradice las cifras institucionales de Esencial; comparaciones y agregados afectados pendientes de aclaración."],
+                                "source_url":FIN_SOURCE,"source_hash":"e3c4f7b3cfee9a6e4a3122aef4d0c65a26d41630e482c16ec4345b8a804db065"},
+            "statistical_methodology":{"source_url":FIN_PAGE,"source_document_url":FIN_SOURCE,
+                                       "conflict_locator":"Notas Explicativas!A18; E. Resultados comparado por Isa!A13:B13,Q13:R13"},
+            "statistical_value_level":"publication_inventory"}
 
 
 def bulletin():

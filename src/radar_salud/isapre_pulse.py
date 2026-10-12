@@ -4,6 +4,7 @@ from urllib.parse import urlparse
 import re
 
 from .isapre_insights import derive
+from .statistics_v3 import portfolio_view
 
 
 RELEASE_URLS = {
@@ -102,6 +103,7 @@ def build_pulse(validation, releases=None):
         label=lambda v:f"{v:,}".replace(",",".")
         start_label=start.strftime("%m-%Y");end_label=end.strftime("%m-%Y")
         return {
+            "statistical_view":portfolio_view(validation),
             "title":f"Pulso Isapre · datos a {period}","source_name":"Superintendencia de Salud",
             "source_type":"official","source_url":official["cartera"]["url"],
             "event_date":publication_date.isoformat(),"publication_date":publication_date.isoformat(),

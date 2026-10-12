@@ -59,7 +59,17 @@ def _monthly(book, family):
             metrics = {"cotizantes": _count(total[2]), "cargas": _count(total[3]), "beneficiarios": _count(total[4])}
         else:
             metrics = {"contratos_suscritos": _count(total[2]), "desahucios_voluntarios": _count(total[3])}
-        result.append({"period": f"2026-{index:02d}", "sheet": month, "isapres": len(members), "metrics": metrics})
+        item={"period": f"2026-{index:02d}", "sheet": month, "isapres": len(members), "metrics": metrics}
+        if family=="cartera":
+            from radar_salud.isapre_universe import EXPECTED_CODES
+            if {r[0] for r in members}!=EXPECTED_CODES:
+                raise ValueError(f"Unknown or missing official code in {month}")
+            # Retain values already reconciled by this parser, not inferred from totals.
+            item["entities"]=[{"code":r[0],"name":r[1],"group":"cerradas" if r[0] in {63,76,94} else "abiertas",
+                                "cotizantes":_count(r[2]),"cargas":_count(r[3]),"beneficiarios":_count(r[4]),
+                                "locator":f"{month}!A{row}:E{row}"}
+                               for row,r in enumerate(rows,8) if isinstance(r[0],int) and r[1]]
+        result.append(item)
     return result
 
 

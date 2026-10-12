@@ -1,0 +1,54 @@
+{
+  "verdict": "PASS_SCOPED_CLI_FIX_REMOTE_CI_PENDING",
+  "reviewer": "CodexH-IndependentReviewer",
+  "date": "2026-10-12",
+  "baseline_head": "68749a93d67e871ce9aaf7dc72b8f80458a17154",
+  "code_sha": "9cb334462a852ab09e2bf4221b10497fc25b6bac",
+  "reviewed_diff_sha256": "4735f1fb453dae888128d10d872eecc4a23000cb34fe50204adbabbc8fbdc5ed",
+  "code_files_manifest_sha256": "02398d61dab743a91ec02393987bde328c10791266e97101a52137e80ca10d1e",
+  "code_files_sha256": {
+    "scripts/export_public_sources.py": "f11cc6aa8595f81a1daeb9aa3e9eb150429ebf405ad159ffa7b2ec7d979bde4d",
+    "scripts/export_web_snapshot.py": "485f4e2c3250a98d668441bcfae4d0b566d5e7d14006d37e7e21746b47cf5419",
+    "src/radar_salud/public_source_catalog.py": "3123b86cfe07e9ad7b21c420a6702464a8f9e0e3308545cb07b7ea83fc79b8b6",
+    "tests/test_public_source_catalog_cli.py": "0cd6f5ed870b4407b57b1146400a20e006683d569495c99ebab2eaa24848e391"
+  },
+  "preserved_catalog_functions": [
+    "eligible",
+    "build_catalog"
+  ],
+  "independent_checks": {
+    "signal_count": 165,
+    "signals_unchanged_against_before_failed_cli": true,
+    "date_unchanged": true,
+    "helper_function_ast_unchanged": true,
+    "catalog_sources": 14,
+    "public_fields_only": true,
+    "source_health_exact_copy": true,
+    "blocked_reuters_excluded": true,
+    "paid_pipeline_calls": 0,
+    "network_capture": false
+  },
+  "independent_subprocess_tests": {
+    "passed": 2,
+    "env": "PYTHONPATH removed; installed radar_salud package from editable venv",
+    "log": "independent-cli-tests.log"
+  },
+  "failed_run": "38258425687",
+  "scope": "Only CLI packaging/import fix, helper relocation and two subprocess regressions; no product/editorial/gate reassessment.",
+  "open_p0": [],
+  "open_p1": [],
+  "limits": [
+    "Reviewed code commit9cb334462a852ab09e2bf4221b10497fc25b6bac identified; final documentation-only head and remote CI result still pending.",
+    "No suite integral rerun; Builder reports60focused PASS and independent Reviewer ran only2CLI regressions plus offline export.",
+    "No external original reading/capture, paid pipeline call or deployment/merge approval.",
+    "Prior editorial/source/statistical HOLD and P2 scope limits preserved.",
+    "Existing pytest path handling masked scripts namespace failure; regression now exercises actual subprocess import environment."
+  ],
+  "evidence": {
+    "reviewed-code.diff": "4735f1fb453dae888128d10d872eecc4a23000cb34fe50204adbabbc8fbdc5ed",
+    "independent-cli.log": "9e6163db7955fff28a1ea534194d0b6c997b830dfc82922a3276bee344c4ca99",
+    "independent-cli-checks.json": "c457f3571dc2785b430456eb2ec67f47da7be116561f706414df4ea01279abc6",
+    "independent-cli-tests.log": "df184e1384a1d41f53ef77ec2045c1c728488ca377dff284cad494d0d1091885"
+  },
+  "commit_diff_sha256": "4735f1fb453dae888128d10d872eecc4a23000cb34fe50204adbabbc8fbdc5ed"
+}

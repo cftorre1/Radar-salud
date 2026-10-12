@@ -1,0 +1,163 @@
+[
+  {
+    "name": "baseline",
+    "result": {
+      "ok": true,
+      "reason_codes": [],
+      "content_version": "81e00f7e4191a9be10c49b9a72f0a03dfeffbfe9ba23ca458bab88e6397a7c06",
+      "diagnostics": []
+    }
+  },
+  {
+    "name": "invalid_evidence_and_empty_claim",
+    "result": {
+      "ok": false,
+      "reason_codes": [
+        "empty_claim",
+        "invalid_evidence_date",
+        "unresolved_evidence_locator"
+      ],
+      "content_version": "8e5e8dcaf4725ea1591fef1b4c183933c432a7f22114685b40c136bb8fbd57cd",
+      "diagnostics": []
+    }
+  },
+  {
+    "name": "module_unknown_evidence",
+    "result": {
+      "ok": false,
+      "reason_codes": [
+        "no_incremental_module",
+        "unresolved_module_evidence",
+        "unreviewed_module"
+      ],
+      "content_version": "ec121066a7c06a12ce56230993516ee9780569babc2b4fbb00bf2550cb3b983c",
+      "diagnostics": []
+    }
+  },
+  {
+    "name": "module_scalar_crash",
+    "result": {
+      "ok": false,
+      "reason_codes": [
+        "invalid_depth_module"
+      ],
+      "content_version": "ff5106877221ff30705d494891d972dac6751eeadc2be2b216201153503c55fd",
+      "diagnostics": []
+    }
+  },
+  {
+    "name": "malformed_verdict_crash",
+    "result": {
+      "ok": false,
+      "reason_codes": [
+        "invalid_claim_review",
+        "unsupported_claim"
+      ],
+      "content_version": "81e00f7e4191a9be10c49b9a72f0a03dfeffbfe9ba23ca458bab88e6397a7c06",
+      "diagnostics": []
+    }
+  },
+  {
+    "name": "post_receipt_public_context_mutation",
+    "result": {
+      "same_hash": false,
+      "depth": {
+        "ok": false,
+        "reason_codes": [
+          "stale_review"
+        ],
+        "content_version": "26916c616b2e3744da6d38184d76be8fd8cf0f0f180d45080c76ced9c5d99bc6",
+        "diagnostics": []
+      }
+    }
+  },
+  {
+    "name": "self_premise",
+    "result": {
+      "ok": true,
+      "reason_codes": [],
+      "content_version": "bb7319c13d0cd994df69ccd2e3a8b78a2ee56b07dd2ec129d811dc9e1925dd94",
+      "diagnostics": []
+    }
+  },
+  {
+    "name": "proportion_denominator_missing",
+    "result": {
+      "absolute_delta": null,
+      "relative_pct": null,
+      "point_delta": null,
+      "transition": null,
+      "reason_code": "missing_or_invalid_value",
+      "comparison_status": "HOLD",
+      "publication_status": "HOLD",
+      "base_version_used": "v1",
+      "revision_delta": null
+    }
+  },
+  {
+    "name": "proportion_signed_out_of_range",
+    "result": {
+      "absolute_delta": null,
+      "relative_pct": null,
+      "point_delta": null,
+      "transition": null,
+      "reason_code": "invalid_policy_domain",
+      "comparison_status": "HOLD",
+      "publication_status": "HOLD",
+      "base_version_used": "v1",
+      "revision_delta": null
+    }
+  },
+  {
+    "name": "invalid_point_scale_keeps_pass",
+    "result": {
+      "absolute_delta": null,
+      "relative_pct": null,
+      "point_delta": null,
+      "transition": null,
+      "reason_code": "invalid_point_scale",
+      "comparison_status": "HOLD",
+      "publication_status": "HOLD",
+      "base_version_used": "v1",
+      "revision_delta": null
+    }
+  },
+  {
+    "name": "invalid_original_base_keeps_numbers",
+    "result": {
+      "absolute_delta": null,
+      "relative_pct": null,
+      "point_delta": null,
+      "transition": null,
+      "reason_code": "invalid_original_base",
+      "comparison_status": "HOLD",
+      "publication_status": "HOLD",
+      "base_version_used": "v1",
+      "revision_delta": null
+    }
+  },
+  {
+    "name": "unordered_duplicate_nonfinite_line",
+    "result": {
+      "publication_status": "HOLD",
+      "reason": "invalid_source_provenance",
+      "modules": []
+    }
+  },
+  {
+    "name": "invalid_issued_date",
+    "result": {
+      "issued_on": "invalid",
+      "published_on": null,
+      "inspection_date": null,
+      "inspection_period": null,
+      "fact_period": null,
+      "effective_from": null,
+      "effective_until": null,
+      "detected_at": null,
+      "event_date": null,
+      "event_date_basis": "unverified_emission",
+      "hold_reason": "HOLD_DATE"
+    }
+  }
+]

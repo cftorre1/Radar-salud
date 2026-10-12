@@ -21,11 +21,11 @@ test('occupational sources expose verified counts and readable source identity o
   // The source list loads independently from the radar metadata. Wait for its render before inspecting the expansion control.
   await expect(page.locator('#sourcesList .source-row').first()).toBeVisible();
   if(await page.locator('#sourcesMore').isVisible())await page.locator('#sourcesMore').click();
+  const catalog=await (await page.request.get('/data/public_sources.json')).json();
   for(const slug of lanes){
-    const row=page.locator('.source-row').filter({has:page.getByText(health.sources[slug].name,{exact:true})});
-    await expect(row).toHaveCount(1);
-    await expect(row).toContainText('Última consulta');
-    await expect(row).not.toContainText('2016');
+    const listed=catalog.sources.find(x=>x.id===slug),row=page.locator('.source-row').filter({hasText:health.sources[slug].name});
+    await expect(row).toHaveCount(listed?1:0);
+    if(listed)await expect(row).not.toContainText(/Última consulta|2016/);
   }
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
   expect(errors).toEqual([]);
@@ -34,8 +34,9 @@ test('occupational sources expose verified counts and readable source identity o
 });
 
 test('occupational backfills retain their publisher and original publication year in the 90-day radar',async({page})=>{
-  await page.goto('/');
   const snapshot=await (await page.request.get('/data/radar_today.json')).json();
+  await page.clock.install({time:new Date(snapshot.date+'T15:00:00Z')});
+  await page.goto('/');
   const recovered=snapshot.signals.filter(s=>(s.watch_tags||[]).some(t=>lanes.includes(t)));
   expect(recovered.length).toBeGreaterThanOrEqual(4);
   await page.locator('#period').selectOption('90');
@@ -44,6 +45,8 @@ test('occupational backfills retain their publisher and original publication yea
     expect(signal.event_date).toBe(signal.publication_date);
     expect(signal.editorial_relevance).toBeGreaterThanOrEqual(75);
     const card=page.locator('article.signal').filter({has:page.locator('a').filter({hasText:'Fuente original'}).and(page.locator(`a[href=${JSON.stringify(signal.source_url)}]`))});
+    const age=(Date.parse(snapshot.date+'T00:00:00Z')-Date.parse(signal.event_date+'T00:00:00Z'))/86400000;
+    if(age<0||age>=90){await expect(card).toHaveCount(0);continue;}
     await expect(card).toHaveCount(1);
     await expect(card.locator('.card-meta')).toContainText(signal.source_name);
     await expect(card.locator('.card-meta')).toContainText('2026');

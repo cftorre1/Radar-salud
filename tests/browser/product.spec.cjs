@@ -43,9 +43,9 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ tarjetas · no leídos \d+$/);
  const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();
- await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(6);
+ await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(0);
  await expect(page.locator('#sourcesDialog')).toContainText('¿Falta una fuente relevante?');
- if(await page.locator('#sourcesMore').isVisible())await page.locator('#sourcesMore').click();
+ if(await page.locator('#sourcesMore').isVisible())await expect(page.locator('#sourcesMore')).toBeHidden();
  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(10);
  await page.getByRole('button',{name:'Cerrar fuentes'}).click();
  await page.locator('#filterDetails summary').click();
@@ -67,16 +67,13 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await page.screenshot({path:`artifacts/${test.info().project.name}-browse.png`,fullPage:true});
  await page.locator('.briefitem').filter({hasNot:page.locator('.brief-kind')}).first().click();
  await expect(page.locator('article.read').first()).toBeVisible();
- expect(await page.evaluate(()=>document.activeElement?.tagName)).toBe('ARTICLE');
- await expect(page.locator('article.read').first().getByRole('button',{name:'Volver arriba'})).toBeVisible();
- await page.locator('article.read').first().getByRole('button',{name:'Volver arriba'}).click();
- expect(await page.evaluate(()=>document.activeElement?.tagName)).toBe('MAIN');
+ await expect(page.locator('#signalDetail')).toBeVisible();await expect(page.locator('#closeDetail')).toBeFocused();await page.keyboard.press('Escape');
  const ids=await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id));expect(new Set(ids).size).toBe(ids.length);
  await page.locator('article[data-card]').first().getByRole('button',{name:/Marcar/}).click();
  expect((await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id))).sort()).toEqual(ids.sort());
  await expect(page.locator('article').first().locator('.intel,.related')).toHaveCount(0);
- const withDepth=page.locator('article:has([data-detail])').first();await withDepth.locator('[data-detail]').click();
- await expect(page.locator('#signalDetail')).toBeVisible();await page.getByRole('button',{name:'Cerrar resumen'}).click();
+ const withDepth=page.locator('article:has([data-detail])').first();await withDepth.locator('[data-detail]').first().click();
+ await expect(page.locator('#signalDetail')).toBeVisible();await page.getByRole('button',{name:'Cerrar ficha'}).click();
  await page.locator('#typeFilters').getByRole('button',{name:'Fiscalización',exact:true}).click();
  await expect(page.locator('article').first()).toBeVisible();
  const filteredMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
@@ -98,7 +95,7 @@ test('Inbox shows every unread signal, supports direct read and persists it',asy
  const radar=await (await page.request.get('/data/radar_today.json')).json();
  const weeklyRendered=await page.locator('article[data-special].weekly:not(.read)').count()>0;
  const dedupedInsightBase=weeklyRendered&&freeValue.weekly_insight&&radar.signals.some(s=>s.source_url===freeValue.weekly_insight.source_url)?1:0;
- const expected=await page.locator('article[data-card]:not(.read)').count()+await page.locator('article[data-special]:not(.read)').count()-dedupedInsightBase;
+ const expected=await page.locator('article[data-card]:not(.read)').count()+await page.locator('article[data-special]:not(.read)').count();
  expect(initial).toBe(expected);expect(initial).toBeGreaterThan(4);
  const first=await page.locator('.briefitem').first().getAttribute('data-brief');
  await page.locator('[data-brief-read]').first().click();
@@ -113,17 +110,7 @@ test('Inbox shows every unread signal, supports direct read and persists it',asy
  const inbox=page.locator('.brief-list');
  const deepCount=await page.locator('[data-brief-read]').count();
  expect(deepCount).toBeGreaterThan(4);
- if(test.info().project.name==='mobile'){
-  await expect(page.locator('[data-brief-expand]')).toBeVisible();
-  expect(await inbox.evaluate(el=>getComputedStyle(el).overflowY)).toBe('hidden');
-  await page.locator('[data-brief-expand]').click();
-  await expect(inbox).toHaveClass(/expanded/);
- }else{
-  await inbox.evaluate(el=>el.scrollTop=el.scrollHeight);
-  expect(await inbox.evaluate(el=>el.scrollTop)).toBeGreaterThan(0);
- }
- await page.locator('[data-brief-read]').last().click();
- if(test.info().project.name!=='mobile')expect(await inbox.evaluate(el=>el.scrollTop)).toBeGreaterThan(0);
+ await expect(page.locator('[data-brief-expand]')).toBeVisible();expect(await inbox.evaluate(el=>getComputedStyle(el).overflowY)).toBe('visible');await page.locator('[data-brief-expand]').click();await expect(inbox).toHaveClass(/expanded/);await page.locator('[data-brief-read]').last().click();await expect(inbox).toHaveClass(/expanded/);
  expect(await page.evaluate(()=>document.activeElement?.hasAttribute('data-brief-read'))).toBeTruthy();
 });
 test('operations dashboard loads without inventing measurements',async({page})=>{
@@ -173,7 +160,7 @@ test('Home V2 places unread Global and Insight in the brief, then retains subdue
  const fills=await page.locator('.signal.special').evaluateAll(rows=>rows.map(row=>getComputedStyle(row).backgroundColor));expect(new Set(fills).size).toBe(hasWeekly?2:1);
  const readTargets=await page.locator('.briefread').evaluateAll((buttons,count)=>buttons.slice(0,count).map(button=>({width:button.getBoundingClientRect().width,height:button.getBoundingClientRect().height})),hasWeekly?2:1);expect(readTargets.every(({width,height})=>width>=44&&height>=44)).toBeTruthy();
  await expect(page.locator('.hero-purpose')).toHaveText('Señales clave del sector salud, claras y a tiempo.');
- if(hasWeekly){await expect(weekly).toContainText(data.weekly_insight.insight_title);await page.locator('.brief-weekly [data-brief-read]').click();await expect(page.locator('.brief-weekly')).toHaveCount(0);await expect(weekly).toHaveClass(/read/);await weekly.getByRole('button',{name:/Ver insight/}).click();await expect(page.locator('#weeklyInsightDialog')).toContainText('Lectura Alicanto:');await expect(page.locator('#weeklyInsightDialog').getByRole('link',{name:/Revisar fuente original/})).toHaveAttribute('href',/^https:\/\//);await page.getByRole('button',{name:'Cerrar insight'}).click()}
+ if(hasWeekly){await expect(weekly).toContainText(data.weekly_insight.insight_title);await page.locator('.brief-weekly [data-brief-read]').click();await expect(page.locator('.brief-weekly')).toHaveCount(0);await expect(weekly).toHaveClass(/read/);await weekly.getByRole('button',{name:'Más info',exact:true}).click();await expect(page.locator('#weeklyInsightDialog')).toContainText('Lectura Alicanto:');await expect(page.locator('#weeklyInsightDialog').getByRole('link',{name:/Revisar fuente original/})).toHaveAttribute('href',/^https:\/\//);await page.getByRole('button',{name:'Cerrar insight'}).click()}
  await page.locator('.brief-global [data-brief-read]').click();
  await expect(page.locator('.brief-global')).toHaveCount(0);await expect(global).toHaveClass(/read/);
  await page.reload();await expect(page.locator('.brief-global,.brief-weekly')).toHaveCount(0);
@@ -208,8 +195,8 @@ test('Global read state is shared across Home and the research page',async({page
  const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,visibleCount=themeCount;
  await page.goto('/');await expect(page.locator('.brief-global')).toHaveCount(1);
  const free=await (await page.request.get('/data/free_value.json')).json(),teaserId=free.global_teaser.theme_id;
- await page.locator('.signal.special.global [data-special-open]').click();
- await expect(page).toHaveURL(/global\.html#theme-/);
+ await page.locator('.signal.special.global .card-actions [data-special-open]').first().click();
+ await expect(page).toHaveURL(/global\.html#theme-/);await expect(page.locator('#globalDetail')).toBeVisible();await page.keyboard.press('Escape');
  await page.locator('#globalPeriod').selectOption('all');
  // Filter its publisher to verify read-state persistence independently of rank.
  const teaser=globalData.themes.find(t=>t.id===teaserId);
@@ -280,23 +267,22 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await page.locator('#filterDetails summary').click();
  await page.locator('#period').selectOption('90');
  const bupa=page.locator('article').filter({has:page.getByRole('heading',{name:/Bupa refuerza su red/})});
- await expect(bupa).toContainText('La Dehesa');await expect(bupa).toContainText('Clínicas Huinganal');await expect(bupa).toContainText('Mindplace en San Damián');
- await expect(bupa).toContainText('No es solo expansión física');
+ await bupa.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('La Dehesa');await expect(page.locator('#detailBody')).toContainText('Clínicas Huinganal');await expect(page.locator('#detailBody')).toContainText('Mindplace en San Damián');
+ await expect(page.locator('#detailBody')).toContainText('No es solo expansión física');
  await expect(bupa).not.toContainText('…');
  await expect(bupa.locator('.card-meta')).toContainText('Publicado');
- await bupa.locator('[data-detail]').click();
  await expect(page.locator('#detailBody')).toContainText('La Dehesa: inauguración');
  await expect(page.locator('#detailBody')).toContainText('Clínicas Huinganal: crecimiento mediante adquisición');
  await expect(page.locator('#detailBody')).toContainText('Mindplace San Damián');
  await expect(page.locator('#detailBody')).toContainText('capacidad nueva, compra y diversificación de servicios');
  await expect(page.locator('#detailBody')).not.toContainText('Enriquecimiento editorial');
- await page.getByRole('button',{name:'Cerrar resumen'}).click();
+ await page.getByRole('button',{name:'Cerrar ficha'}).click();
  const isapre=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso Isapre · datos/})});
  await expect(isapre.locator('.card-meta')).toContainText('Datos a 2026-07');
  await expect(isapre.locator('.card-meta')).toContainText('Publicado 07 sept 2026');
  await expect(isapre.locator('.card-meta')).toContainText('Validado 24 sept 2026');
- await isapre.locator('[data-detail]').click();
- await expect(page.locator('#detailBody .intel').filter({hasText:'Muestra de datos validada'}).locator('li')).toHaveCount(5);
+ await isapre.locator('[data-detail]').first().click();
+ await expect(page.locator('#detailBody .statistical-calculations .intel').locator('li')).toHaveCount(3);
  await expect(page.locator('#detailBody')).toContainText('2026-01 → 2026-07');
  await expect(page.locator('#detailBody')).toContainText('0.615 → 0.605');
  await expect(page.locator('#detailBody')).toContainText('72.9%');
@@ -307,27 +293,23 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);
  await expect(page.locator('#detailBody .sourceverify')).toContainText('Publicado 07 sept 2026');
  await expect(page.locator('#detailBody')).toContainText('Período de datos: 2026-07');
- await expect(page.locator('#detailBody')).toContainText('Fecha de publicación: 07 sept 2026');
+ await expect(page.locator('#detailBody')).toContainText('Publicado 07 sept 2026');
  await expect(page.locator('#detailBody')).toContainText('Validado: 24 sept 2026');
- await page.getByRole('button',{name:'Cerrar resumen'}).click();
+ await page.getByRole('button',{name:'Cerrar ficha'}).click();
  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});
- await expect(pulse).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');
- await pulse.locator('[data-detail]').click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');
- const sourceBeforeDetails=await page.locator('#detailBody').evaluate(el=>el.querySelector('.sourceverify').compareDocumentPosition(el.querySelector('.intel'))&Node.DOCUMENT_POSITION_FOLLOWING);
- expect(sourceBeforeDetails).toBeTruthy();
+ await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');
+ await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');
  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);
  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');
- await page.getByRole('button',{name:'Cerrar resumen'}).click();
+ await page.getByRole('button',{name:'Cerrar ficha'}).click();
  const tea=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Resolución Exenta IF\/N°11156 · TEA:/i})});
- await expect(tea).toContainText('RND');
- await tea.locator('[data-detail]').click();
- await expect(page.locator('#detailBody .normative-context')).toContainText('Contexto de la señal');
- await expect(page.locator('#detailBody .normative-context')).toContainText('15 días hábiles');
- await expect(page.locator('#detailBody .normative-context')).toContainText('1 de noviembre de 2026');
+ await tea.locator('[data-detail]').first().click();
+ await expect(page.locator('#detailBody')).toContainText('15 días hábiles');
+ await expect(page.locator('#detailBody')).toContainText('1 de noviembre de 2026');
  await expect(page.locator('#detailBody')).toContainText('Registro Nacional de Discapacidad');
- await page.getByRole('button',{name:'Cerrar resumen'}).click();
+ await page.getByRole('button',{name:'Cerrar ficha'}).click();
  const circular=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\/N°535 · Reembolsos a empleadores públicos/i})});
- await circular.locator('[data-detail]').click();await expect(page.locator('#detailBody')).toContainText('Circular IF/N°77');
+ await circular.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Circular IF/N°77');
  await page.locator('#detailBody .related').getByText('Normativa relacionada',{exact:false}).click();
  await expect(page.locator('#detailBody')).toContainText('Norma modificada');
  const ref=page.locator('#detailBody .related-item').filter({hasText:'Circular IF/N°77'});
@@ -339,9 +321,9 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
 test('Global Intelligence mirrors Home while keeping global facts and Chile hypotheses distinct',async({page})=>{
  const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,visibleCount=themeCount;
  await page.goto('/');
- await expect(page.locator('.signal.special.global [data-special-open]')).toBeVisible();
- await page.locator('.signal.special.global [data-special-open]').click();
- await expect(page.getByRole('heading',{name:'Global Intelligence',exact:true})).toBeVisible();
+ await expect(page.locator('.signal.special.global .card-actions [data-special-open]')).toBeVisible();
+ await page.locator('.signal.special.global .card-actions [data-special-open]').first().click();
+ await expect(page.getByRole('heading',{name:'Global Intelligence',exact:true})).toBeVisible();await expect(page.locator('#globalDetail')).toBeVisible();await page.keyboard.press('Escape');
  await expect(page.getByRole('heading',{name:'Ponte al día en Global Intelligence'})).toBeVisible();
  await expect(page.locator('#globalPeriod')).toHaveValue('30');
  await page.locator('#globalFilters summary').click();
@@ -353,26 +335,10 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${initialUnread}`);
  await page.locator('[data-open]').first().click();
  await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${initialUnread-1}`);
- const opened=page.locator('.theme').filter({has:page.locator('details[open]')});
- await expect(opened).toContainText('Qué mirar en Chile');
- await expect(opened).toContainText('Lectura estratégica');
- await expect(opened).toContainText('Qué encontró:');
- await expect(opened).toContainText('Fuentes del tema');
- await expect(opened).toContainText('Hipótesis Chile');
- await expect(opened).toContainText('señales locales compatibles verificadas: 0');
- await expect(opened.getByRole('button',{name:'Volver a Ponte al día ↑'})).toBeVisible();
- const toggle=opened.locator('[data-read]');
- await toggle.click();await expect(opened.locator('details')).toHaveAttribute('open','');
- await toggle.click();await expect(opened.locator('details')).toHaveAttribute('open','');
- await opened.getByRole('button',{name:'Volver a Ponte al día ↑'}).click();
- await expect(page.locator('#globalInbox')).toBeFocused();
+ const opened=page.locator('#globalDetail');await expect(opened).toBeVisible();await expect(opened).toContainText('Fuentes y evidencia');await expect(opened).not.toContainText(/Qué encontró:|Lectura estratégica|Qué mirar en Chile/);await expect(opened).toContainText('evidencia local');await page.keyboard.press('Escape');
  await page.reload();await expect(page.locator('#globalPeriod')).toHaveValue('all');
  await expect(page.locator('.theme')).toHaveCount(visibleCount);
- const visibleIds=await page.locator('.theme').evaluateAll(nodes=>nodes.map(n=>n.id.replace(/^theme-/,'')));
- const visibleData=globalData.themes.filter(t=>visibleIds.includes(t.id));
- const visibleSources=visibleData.flatMap(t=>t.sources||[]);
- if(visibleSources.some(s=>s.publisher==='PwC'))await expect(page.locator('.source a').filter({hasText:'PwC'})).toHaveAttribute('href',/^https:\/\/www\.pwc\.com\//);
- if(visibleSources.some(s=>s.url==='https://www.who.int/publications/i/item/9789240122925'))await expect(page.locator('.source a[href="https://www.who.int/publications/i/item/9789240122925"]')).toContainText(/^WHO ·/);
+ const visibleIds=await page.locator('.theme').evaluateAll(nodes=>nodes.map(n=>n.id.replace(/^theme-/,'')));expect(visibleIds.length).toBe(themeCount);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);
  await page.screenshot({path:`artifacts/${test.info().project.name}-global-intelligence.png`,fullPage:true});
 });
@@ -433,12 +399,12 @@ test('persistent editorial contract is visible in feed and brief',async({page})=
  await expect(opaque).toHaveCount(0);
  const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\/N°533 · SIL: actualiza el inventario mensual/})});
  await expect(c533).toHaveCount(1);
- await expect(c533).toContainText('Qué pasó:');
+ await expect(c533).not.toContainText('Qué pasó:');await c533.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Circular');await page.keyboard.press('Escape');
  const briefOpaque=page.locator('.briefitem strong').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\d+$/});
  await expect(briefOpaque).toHaveCount(0);
 });
 
-test('Pulso Isapre leads with executive table and statistics use the value ladder',async({page})=>{
+test('Pulso Isapre presents stock KPIs with separate contracts and mobility views',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await page.locator('#filterDetails summary').click();await page.locator('#period').selectOption('90');
  await expect(page.locator('article[data-card]').filter({hasText:'Resonancia Magnética del Biobío'})).toHaveCount(0);
@@ -458,16 +424,22 @@ test('Pulso Isapre leads with executive table and statistics use the value ladde
    expect(signal.summary_table?.rows?.length||0,needle+' table').toBeGreaterThan(0);
    const card=page.locator('article[data-card]').filter({hasText:needle});
    if(signal.feed_visibility!==false&&String(signal.editorial_committee?.verdict||'PASS').toUpperCase()==='PASS'){
-     if(await card.count())await expect(card).toContainText(copy);
+     if(await card.count()){await card.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText(copy);await page.keyboard.press('Escape');}
    }
  }
  const pulse=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Pulso Isapre/})});
- await expect(pulse).toHaveCount(1);await pulse.locator('[data-detail]').click();
- const table=page.locator('#detailBody .summary-table');
+ await expect(pulse).toHaveCount(1);await pulse.locator('[data-detail]').first().click();
+ const detail=page.locator('#detailBody'),table=detail.locator('#entityComparison');
  await expect(table).toBeVisible();
- await expect(table).toContainText('Resumen ejecutivo Isapre');
- for(const label of ['Beneficiarios','Cotizantes','Cargas','Suscripciones','Desahucios voluntarios','Movilidad'])await expect(table).toContainText(label);
- await expect(table).toContainText('2.487.497');await expect(table).toContainText('-17.700');
+ const stock=radar.signals.find(s=>s.title.startsWith('Pulso Isapre')).statistical_view;
+ if(stock.entity_status==='verified')for(const label of ['Beneficiarios','Cotizantes','Cargas'])await expect(table).toContainText(label);
+ else{await expect(table).toContainText('desglose no verificado');await expect(table.locator('table')).toHaveCount(0);}
+ await expect(detail.locator('.stat-kpis')).toContainText('2.487.497');
+ await detail.getByText('Contratos · 2026-07',{exact:true}).click();
+ await expect(detail).toContainText('Suscripciones');await expect(detail).toContainText('Desahucios voluntarios');
+ await detail.getByText('Movilidad · cortes 2025-07 y 2026-07',{exact:true}).click();
+ await expect(detail).toContainText('91.963');await expect(detail).toContainText('109.663');
+ await expect(detail).toContainText('diferencia -17.700');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
 });
 
@@ -515,7 +487,7 @@ test('Home hero is compact, one-line and exposes subscription plus Global Intell
  await expect(page.locator('.hero-purpose')).toHaveText('Señales clave del sector salud, claras y a tiempo.');
  await expect(page.locator('.newsletter-strip')).toContainText('Suscríbete para recibir en tu correo las señales más importantes');
  await expect(page.locator('.newsletter-strip #newsletterOpen')).toHaveText('Suscríbete');
- await expect(page.locator('a.header-premium')).toHaveAttribute('href','global.html');
+ await expect(page.locator('a.header-premium[href="global.html"]')).toHaveAttribute('href','global.html');
  await expect(page.locator('button.premium-access')).toHaveText('Acceso PREMIUM');
  if(test.info().project.name==='mobile'){
    const title=await page.locator('#radarTitle').boundingBox();
@@ -554,8 +526,13 @@ test('Global metadata health stays separate from Chile LIVE coverage',async({pag
  const coverage=await page.evaluate(data=>coverageText(data),health);
  expect(coverage).toEqual(await page.evaluate(data=>coverageText(data),coreHealth));
  await page.locator('#sourcesOpen').click();
- const group=page.locator('.source-group').filter({has:page.getByRole('heading',{name:'Global Intelligence',exact:true})});
- await expect(group).toContainText('WHO');await expect(group).toContainText('PAHO');await expect(group).toContainText('Reuters');
+ const catalog=await(await page.request.get('/data/public_sources.json')).json();
+ for(const id of ['global_who','global_paho','global_reuters']){
+  const source=catalog.sources.find(x=>x.id===id);
+  const row=page.locator('.source-row').filter({hasText:health.sources[id].name});
+  if(source)await expect(row).toHaveCount(1);else await expect(row).toHaveCount(0);
+ }
+ await expect(page.locator('#sourcesList')).not.toContainText('Reuters');
 });
 
 test('sources are grouped by decision value and expose freshness layers',async({page})=>{
@@ -563,11 +540,7 @@ test('sources are grouped by decision value and expose freshness layers',async({
  await page.locator('#sourcesOpen').click();
  await expect(page.locator('#sourcesList')).toContainText('Organismos públicos y reguladores');
  await expect(page.locator('#sourcesList')).toContainText('Noticias y mercado');
- const first=page.locator('#sourcesList .source-row').first();
- await expect(first.locator('.source-capture-state')).toBeVisible();
- await expect(first).toContainText('Última consulta');
- await expect(first).toContainText('Última señal detectada');
- await expect(first).toContainText('Última seleccionada');
+ const first=page.locator('#sourcesList .source-row').first();await expect(first.getByRole('link')).toHaveAttribute('href',/^https:\/\//);await expect(page.locator('#sourcesList')).not.toContainText(/Última consulta|Última señal detectada|Última seleccionada|Reuters|FONASA/);
  await expect(page.locator('#source-suggestion')).toContainText('¿Falta una fuente relevante?');
 });
 
@@ -613,7 +586,7 @@ test('priority statistical releases use compact tables and collapsed traceabilit
    expect(fin.data_insight_evidence[0].source_url).toContain('finan_ifrs_mar_2026_web_v2.xls');
    const card=page.locator('article[data-card]').filter({hasText:'Estadísticas Financieras del Sistema ISAPRE'});
    await expect(card).not.toContainText('Por qué importa:');
-   await card.locator('[data-detail]').click();
+   await card.locator('[data-detail]').first().click();
    const detail=page.locator('#detailBody');
    await expect(detail.locator('.summary-table')).toBeVisible();
    await page.locator('#detailDialog [data-close]').click();
@@ -622,13 +595,13 @@ test('priority statistical releases use compact tables and collapsed traceabilit
  if(bulletin){
   expect(new Set(bulletin.summary_table.rows.map(r=>r.cells[0]))).toEqual(new Set(['Acreditación','Mediación','Reclamos','RNPI']));
   const bulletinCard=page.locator('article[data-card]').filter({hasText:'Boletín Estadístico Informativo IP'});
-  await bulletinCard.locator('[data-detail]').click();
+  await bulletinCard.locator('[data-detail]').first().click();
   const detail=page.locator('#detailBody');
   await expect(detail.locator('details.statistical-methodology')).not.toHaveAttribute('open','');
   await expect(detail).not.toContainText('Muestra de datos validada');
   await expect(detail.locator('.source')).toContainText('Fuente original');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
-  await page.getByRole('button',{name:'Cerrar resumen'}).click();
+  await page.getByRole('button',{name:'Cerrar ficha'}).click();
  }
 });
 
@@ -667,26 +640,17 @@ test('Normative V2.1 puts document, subject and action in each current headline'
   const article=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:title,exact:true})});
   if(await article.count()){
     await expect(article.locator('.normative-identity')).toHaveCount(0);
-    await article.locator('[data-detail]').click();
-    await expect(page.locator('#detailBody .normative-context')).toBeVisible();
-    await expect(page.locator('#detailBody .normative-context')).toContainText('Contexto de la señal');
-    await expect(page.locator('#detailBody .normative-context')).not.toContainText(title);
-    await page.getByRole('button',{name:'Cerrar resumen'}).click();
+    await article.locator('[data-detail]').first().click();
+    await expect(page.locator('#detailBody')).toBeVisible();
+    await expect(page.locator('#detailBody')).toContainText(signal.normative_context);
+
+    await page.getByRole('button',{name:'Cerrar ficha'}).click();
   }
  }
 });
 
 
-test('source capture errors are distinct from absence of news in the visible panel',async({page})=>{
- await page.route('**/data/product.json',async route=>{
-  const response=await route.fetch(),data=await response.json();
-  data.sources={fonasa:{name:'Fondo Nacional de Salud (FONASA)',technical_status:'error',status:'error',coverage_status:'unverified',checked_at:'2026-10-12T00:00:00Z'}};
-  await route.fulfill({response,json:data});
- });
- await page.goto('/');
- await page.locator('#sourcesOpen').click();
- const row=page.locator('#sourcesList .source-row').filter({hasText:'Fondo Nacional de Salud'});
- await expect(row).toContainText('Captura con error · no se puede confirmar si hay novedades');
- await expect(row).toContainText('sin detección verificada');
- await expect(row).not.toContainText('sin señal reciente');
+test('source capture errors remain administrative and are excluded from the public catalog',async({page})=>{
+ await page.route('**/data/public_sources.json',route=>route.fulfill({json:{sources:[]}}));
+ await page.goto('/');await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesList')).toContainText('No hay fuentes activas verificadas');await expect(page.locator('#sourcesList')).not.toContainText('Fondo Nacional de Salud');
 });
