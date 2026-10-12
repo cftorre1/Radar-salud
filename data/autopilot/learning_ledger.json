@@ -638,5 +638,23 @@
     ],
     "status": "implemented_controls_coverage_acceptance_pending",
     "owner_minutes_saved": "not_measured_no_claim"
+  },
+  {
+    "id": "historical_runtime_receipt_not_current_integration_2026_10_12",
+    "recorded_at": "2026-10-12T04:33:22.469945+00:00",
+    "source": "Integration Commander",
+    "class": "integration_contract_mismatch",
+    "finding": "A historical exact-code runtime receipt cannot contain modules introduced by later integrations. The global/P0 candidate CI failed38 fixture setups, not38 independent regressions.",
+    "specific_fix": "Replay strict historical contract at accepted515b8809 tree with current validator; retain all negative checks and explicitly reject an unrecorded module. New integration requires a new runtime receipt.",
+    "preventive_controls": [
+      "immutable_producer_checkout",
+      "negative_unrecorded_module_test",
+      "postmerge_runtime_by_sha"
+    ],
+    "status": "repair_pending_exact_head_ci",
+    "evidence": [
+      "https://github.com/cftorre1/Radar-salud/actions/runs/38202982071",
+      "tests/test_pulso_terminal_followthrough_qa.py"
+    ]
   }
 ]
