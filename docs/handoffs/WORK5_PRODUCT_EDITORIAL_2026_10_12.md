@@ -1,6 +1,8 @@
 # WORK 5 · Product & Editorial Director
 
-Paquete v1.0 · 12 octubre 2026 · destino: Work 3, Integration Commander y un único Codex Builder.
+Paquete v2.0 · 12 octubre 2026 · destino inmediato: Work 6; después de aceptación de Dirección, Codex H único y Work 3 Integration Commander.
+
+**Autoridad vigente: Addendum Final V2 al final de este archivo. Sustituye el prompt de §7 y cualquier orden incompatible; conserva los siete entregables originales.**
 
 **Dictamen: implementar primero navegación/lectura y profundidad editorial; ampliar selectivamente después.** Este handoff especifica trabajo, no acredita su implementación. No publica señales, cambia configuración activa, fusiona PR ni toca main/producción.
 
@@ -427,3 +429,304 @@ Presupuesto: máximo dos implementaciones nuevas en este sprint (CENS e iHEALTH)
 - E15 https://www.colegiomedico.cl/colmed-plantea-a-suseso-preocupacion-por-criterios-de-fiscalizacion-de-licencias-medicas/ (`turn4search15`;1oct oficial indexado, fetch403 `turn6view2`).
 
 Sin validación de permisos recurrentes, feeds, exhaustividad mensual ni contenido completo de Colmed/ADIMECH/Transforma. Estas limitaciones permanecen como gates de implementación; no se presentan como verificaciones aprobadas.
+
+# ADDENDUM FINAL V2 · Dirección · 12 octubre 2026
+
+## V2.0 Autoridad, alcance y secuencia de autorización
+
+Este delta prevalece sobre instrucciones incompatibles del cuerpo v1 y anexos. Mantiene los siete entregables, las tres correcciones originales, nueve fuentes, prioridades CENS/iHEALTH condicionadas, reutilización Clínicas de Chile, alcance FONASA/ISP y stop-loss. No repite esas investigaciones. Base documental PR32 `5163f2fff1512587726cc5a0924598d2e5fa8ff7`; staging `ef8cbe3938623d493872ff5f3e717153f176d1be`. Mandato adicional: [Dirección, issue5 comentario6120684438](https://github.com/cftorre1/Radar-salud/issues/5#issuecomment-6120684438). No se cambia queue, PMO, contratos activos, contenido ni código.
+
+**Secuencia vinculante: candidato documental final → Work6 auditor integral independiente → aceptación de Dirección → Codex H único → QA/reviewer → Integration Commander.** READY_FOR_WORK6 sólo significa documento apto para auditar; nunca autoriza Builder, publicación o merge. El prompt de §7 queda sustituido por V2.7.
+
+## V2.1 Diagnóstico causal y contrato de conocimiento incremental
+
+|Capa inspeccionada en staging|Hallazgo comprobable|Cambio especificado|
+|---|---|---|
+|`src/radar_salud/llm_analysis.py`, NORM_SCHEMA/NEWS_SCHEMA e instrucciones|what/why obligatorios; normativa además exige key_points/review_points y pide explicar antecedente en what. Máximo3 no es mínimo3, pero obligación de campos y guion favorecen repetir el mismo efecto.|Separar selección interna de redacción; arrays vacíos válidos; redactor recibe inventario único de claims y resultado completo, no encargos aislados por sección.|
+|`regulatory_pipeline.py`|Copia what a key_facts y proyecta key_points, review_points→risk_notes; acumular representaciones no aporta evidencia.|Proyectar claims una sola vez en cada nivel; mantener raw legacy y trazabilidad sin renderizar todos sus espejos.|
+|`editorial_gate.py`/contrato vigente|Penalizaciones de longitud y validación what/why pueden premiar completar plantilla.|Sustituir sólo en versión nueva por soporte, precisión y delta; mantener materialidad y reglas normativas especiales.|
+|`editorial_committee.py:build_committee_artifact`|Enumera miembros, pero PASS puede derivar de URL, identidad y decisión; no prueba lectura independiente de documentos ni del texto final.|Etiquetar comprobación estructural. Receipt semántico separado con hash texto+evidencia y revisor distinto del autor.|
+|`web/app.js:card/detail`|Qué pasó/Por qué importa antes de Ver resumen; luego Qué ocurrió/contexto/hallazgos/implicancias/riesgos. `distinct` no prueba novedad semántica.|Una ficha canónica, sin segundo resumen del mismo contenido; eliminación de bloques obligatorios y concatenación automática.|
+|`web/global.js:theme/source` y `web/data/global_themes.json`|Razón de selección, patrón, uso ejecutivo y Chile son párrafos públicos obligados; análisis de fuente repite resumen/hallazgos/implicancias.|Contrato común de claims y módulos opcionales; conservar preguntas como criterios internos.|
+
+La causalidad es conjunta: cambiar sólo el modelo o esconder encabezados conserva la repetición. No se ha demostrado que un proveedor/modelo determinado sea causa exclusiva. Tampoco que cada campo legacy sea malo: una limitación o referencia concreta sí puede añadir conocimiento.
+
+**Regla por párrafo:** el editor registra qué aprende el lector respecto del nivel anterior y del resto del nivel actual. Si no hay respuesta sustantiva, elimina/fusiona/reescribe. Precisión jurídica y trazabilidad justifican repetir identificadores, sujetos, cifras o una breve cláusula de enlace; no justifican repetir conclusiones completas.
+
+- Nivel1 Radar/Ponte/Global: título factual autosuficiente, fecha y fuente; deck opcional sólo si incorpora un hecho esencial nuevo.
+- Nivel2 ficha: hechos adicionales con alcance, actores, base temporal y fuentes. Se admite ficha breve. Si sólo existe el título, mostrar fuente y limitación honesta, sin reclamar profundidad ni esconder la señal material.
+- Nivel3 bajo demanda: fundamentos, comparación, metodología o documentos relacionados que añaden evidencia. Sin cupo de secciones, palabras, temas Global ni cifras. Cero módulos es válido.
+
+Extender esquema v3 de §4 con `depth_modules[]` opcional (`id`, `label` descriptivo del contenido, `claim_ids`, `evidence_refs`), `paragraph_claim_ids` y `incremental_review[]` (`paragraph_id`, `compared_with`, `new_claim_ids`, `necessary_repeat_reason`, `verdict`). Los módulos referencian claims, no copian el body. Si un claim ya está en nivel2, nivel3 puede demostrarlo con fundamento nuevo identificado, pero no presentarlo como hallazgo nuevo. No almacenar aquí razonamiento privado del modelo: sólo justificación editorial breve y auditable.
+
+### Decisión de producto: eliminar el paso «Ver resumen»
+
+Título y Más info abren la misma ficha por `piece_id` en Radar, Ponte y Global. No más salto al feed, Contexto general, Ver contexto disponible ni Ver análisis completo como pasos necesarios. La ficha inicia con información incremental; el título puede repetirse como orientación de la vista y no cuenta como ganancia de información. Fuentes verificadas siempre accesibles, incluso sin módulo profundo.
+
+|Elemento actual|Destino|
+|---|---|
+|Qué pasó/Qué ocurrió como encabezado|Eliminar obligación; su hecho nuevo se integra en body una vez.|
+|Contexto/hallazgos con la misma proposición|Fusionar; descartar paráfrasis.|
+|Por qué importa/Implicancias/Puntos de atención genéricos|Eliminar de público; selección y riesgos de revisión internos. Una consecuencia comprobada se conserva como claim.|
+|Ver resumen|Sustituir por Más info a ficha; no renombrar conservando otra capa repetida.|
+|Fundamentos o metodología sustantivos|Módulo bajo demanda con título específico («Fundamentos de la decisión», «Cómo se estimó el gasto»); nunca módulo vacío.|
+|Referencias normativas|Permanecen con función explícita: acto impugnado, antecedente, disposición modificada o decisión posterior; enlaces directos originales y relación verificada.|
+|Documentos densos|Primera vista breve, expansión accesible dentro de ficha; abrir no cambia identidad de pieza ni genera otro resumen.|
+
+### Pruebas semánticas y gate
+
+Comparar título↔síntesis, síntesis↔contexto, contexto↔hallazgos, hallazgos↔implicancias y ficha↔profundización; también comparar el conjunto acumulado de claims. La comparación por parejas sola no detecta un párrafo compuesto de duplicaciones dispersas. Ausencia de una sección opcional significa N/A, no fallo.
+
+Determinístico: duplicado exacto normalizado, n-gramas, referencias faltantes, hashes, fechas, denominadores y unidades. Similitud es alerta, nunca rechazo automático. Preservar negaciones, números y operadores jurídicos durante normalización; una variación «rechaza/acoge» no es duplicado equivalente. Modelo/revisor compara proposiciones y soporte; no basta cambiar vocabulario. No agregar embeddings pagados al sprint.
+
+Fixtures de aceptación: (1) «rechaza reposición»→«no acoge reconsideración» sin otro dato: REVISE; (2) mismo ID jurídico más fundamento art57 y su aplicación al caso: incremental válido; (3) US$942m repetido con universo/base temporal antes ausentes: conservar precisión y evaluar aporte del resto; (4) rechazo de reposición confundido con rechazo jerárquico: BLOCK; (5) nuevo detalle sin evidencia: BLOCK aunque diferente; (6) módulo que combina tres frases anteriores: REVISE; (7) fuente breve sin detalle: ficha breve sin módulo y sin badge de análisis; (8) informe con metodología/limitación nuevas: PASS aunque repita indicador. Verificar claves legacy y stock sin borrar receipts históricos.
+
+Cada candidato tiene inventario de claims, versión de originales, redacción completa y revisión independiente. PASS exige cero afirmaciones materiales sin soporte, cero contradicciones jurídicas/fechas/bases y que cada párrafo público se clasifique como nuevo, enlace necesario o limitación sustantiva. Un resultado insuficiente queda REVISE/HOLD; no «se arregla» añadiendo texto.
+
+## V2.2 Comité y uso eficiente de modelos
+
+Flujo: extracción/caché → inventario de hechos y faltantes → decisión de materialidad → editor único del texto completo → revisor independiente con originales → gate/versionado → publicador autorizado. Especialista legal/datos sólo por disparador concreto. Dos roles reales no implican siete llamadas ni otro comité permanente.
+
+Situación observada: runtime `llm_analysis.py` usa `RADAR_FAST_MODEL` con default `gpt-5.6-luna` y `RADAR_DEEP_MODEL` con default `gpt-5.6-terra`. No existe evidencia aquí de evaluación comparativa que autorice reemplazar Luna o desplegar Astra. Terra/Astra son roles/candidatos de routing; Builder debe resolver identificadores API autorizados y disponibilidad real del pipeline, sin inventarlos. No se hizo benchmark ni llamada pagada nueva.
+
+|Trabajo|Ruta propuesta|Disparador/limitación|
+|---|---|---|
+|Extracción textual, entidades candidatas, fechas, referencias, hashes, dedupe|Determinístico reutilizable|OCR dudoso o fechas contradictorias quedan señaladas; regex no decide efectos jurídicos.|
+|Noticia simple con evidencia suficiente|Luna actual o Terra si evaluación autorizada mejora coste por salida aceptada|Una redacción integrada; detección de paráfrasis en misma salida no equivale a revisión independiente.|
+|Norma con varios recursos/actos, conflicto documental, fundamentos extensos|Astra o mayor capacidad autorizada|Ejemplo IF10670: separar peticiones, fundamentos y parte resolutiva. Escalar por complejidad, no por longitud sola.|
+|Revisión final alto impacto, Insight y Global|Revisor independiente con fuentes completas; especialista si hace falta|Sesión/rol separado, sin recibir veredicto del autor como verdad. Mismo modelo puede repetir sesgos: originales y fixtures adversariales obligatorios.|
+|Evidencia ausente, acceso bloqueado, presupuesto agotado|HOLD/manual|Un modelo potente no sustituye original ni permiso de gasto.|
+
+Evaluación futura controlada, sólo con autorización pipeline: conjunto fijo de12 ejemplos existentes (4noticias,4normas,4datos/Global; incluir IF10670,534 y Reuters). Mismo paquete fuente, misma versión de prompt, evaluación ciega del texto completo. Medir errores factuales/jurídicos críticos, soporte por claim, ganancia por párrafo, omisiones materiales, fechas/denominadores, coste por candidato aceptado y latencia; registrar tokens/coste observado, no precios supuestos. Gate crítico0errores y100%claims materiales sustentados; rúbrica utilidad0–2 por caso, mínimo2 para promover portada. Elegir ruta de menor coste que supera gates; no declarar superioridad con esta muestra pequeña. Evaluación pagada queda posterior y no consume presupuesto por defecto.
+
+Escalar sólo si complejidad normativa identificada, evidencia conflictiva legible o borrador falla por síntesis/interpretación reparable; falta de fuente no escala. Máximo una reparación y una escalada por candidato si autorizadas dentro del límite vigente; después HOLD, sin bucles. Conservar `allow_call`, ledger mensual, attempted/success/failed, `record_response`, response_id, modelo exacto, input/output hashes y lineage. Cache key incluye fuente+prompt+schema+modelo. Ningún cambio de modelo reinicia contadores. Los defaults del módulo (deep5/60, fast40/400) NO son necesariamente presupuesto operativo: daily-radar configura deep15/run180/mes y fast120/run1500/mes. Leer límites efectivos del workflow antes de cualquier llamada; nunca elevarlos. Como límites por número de llamadas no garantizan dólares al cambiar modelo, Astra requiere además reserva de coste/tokens dentro del presupuesto monetario autorizado; si no está definido, HOLD. Este documento autoriza0 llamadas del pipeline.
+
+## V2.3 Global: corrección focal de IA y codificación
+
+Pieza actual `global-ai-coding-payer-cost-2026`, en `web/data/global_themes.json` y copia `data/global/themes.json`: titular afirma que IA puede inflar gasto; cuerpo redondea a US$1.000m; referencia interna atribuye US$942m a BCBSA vía Reuters24-sep. Why, recurring_pattern, decision_use y chile_watch repiten posibles efectos/recomendaciones sin nueva medición. Scores comerciales98/99 no prueban calidad.
+
+Comprobación nueva: [comunicado primario BCBSA](https://www.bcbs.com/about-us/association-news/bcbsa-analysis-ai-coding-tools-affects-healthcare-costs) indexado confirma estimación942m para BCBS entre2023–2025; GET oficial devolvió502, no se leyó informe técnico. [Reuters registrado](https://www.reuters.com/legal/litigation/ai-tools-generated-nearly-1-billion-extra-costs-blue-cross-insurers-say-2026-09-24/) no accesible en esta revisión: no certificar nueva lectura de su artículo. [Respuesta primaria AHA5-oct](https://www.aha.org/news/blog/2026-10-05-better-information-better-care-how-coding-supports-todays-complex-patients) sí leída: cuestiona que se revisaran historias clínicas o identificaran reclamaciones con IA; indica total acumulado de dos años y falta de denominador del gasto total. AHA es contraparte interesada, no árbitro neutral. Su respuesta posterior añade evidencia que la ficha actual no contiene.
+
+**Borrador condicionado, no publicación:** «BCBSA estima US$942 millones adicionales por cambios de codificación; hospitales cuestionan su atribución a IA». Ficha: «La estimación corresponde a planes de Blue Cross Blue Shield, no al gasto sanitario mundial. AHA objeta que el análisis no acredita diagnósticos sin respaldo clínico ni distingue reclamaciones procesadas con IA. Es una controversia sobre documentación y reembolso; no una medición causal del efecto de la IA clínica en Chile». El título conserva atribución y desacuerdo; ficha añade universo y límites de identificación. La réplica AHA se atribuye expresamente.
+
+Eliminar recomendaciones genéricas de qué debe hacer cada institución y Chile-watch vacío. Conservar magnitud exacta, autor, período y límites en una sola exposición. Antes de aprobar el overlay, recuperar por vía permitida el original técnico BCBSA para verificar muestra, período analizado frente a ventana de coste, base2023, contrafactual y denominador. No incorporar37→40%,55.000casos ni653m sólo desde reproducciones secundarias. Si el informe no está accesible, no activar «Cómo se estimó» y conservar ficha corta atribuida con carencia explícita. Estado del overlay HOLD_SOURCE_METHOD, sin nueva publicación; no bloquea especificación Work6. No declarar fraude, causalidad ni efecto en primas comprobado por esta ficha.
+
+## V2.4 UX transversal adicional
+
+Se preservan exactamente componente de sobres, `piece_id`, IndexedDB/migración atómica/tombstones, sincronización y persistencia aprobados en §3. Sobre cerrado=no leído; abierto=leído. Misma pieza en Radar/Ponte/Global, misma ficha; piezas editoriales distintas no comparten lectura por mera URL.
+
+- Navegación principal: «Radar · Chile» y «Global · Evidencia internacional»; texto breve en cabecera explica alcance, no otra capa. Radar cubre hechos del sector chileno; Global evidencia internacional seleccionada con límites de transferencia. `aria-current=page`, estado activo además de color. El teaser Global en Radar conserva procedencia y abre la ficha Global canónica.
+- «Volver arriba»: una única acción flotante del viewport, fuera de articles y dialogs, aparece al salir de vista cabecera/controles (IntersectionObserver, sin polling). Respeta safe-area, no cubre CTA/foco, se oculta con modal abierto; vuelve a cabecera y deja foco en destino lógico. Con reduced-motion no animar scroll. No repetirla dentro de cada ficha.
+- Filtros: `+` inmediatamente al lado del texto «Filtrar u ordenar», dentro del mismo activador de expansión con área44px mínima; cambia a menos al expandir, estado accesible via details/summary o aria-expanded. No crear dos targets que hacen lo mismo. «Fuentes» conserva enlace/acción propia al catálogo y no se convierte en filtro: la confusión visual actual no autoriza cambiar semántica.
+- Fuentes: página pública agrupada por organismos/reguladores, prestadores/industria, gremios/innovación/investigación y evidencia internacional/medios, con nombre enlazado y descripción breve de alcance. Reutilizar datos y acceso desde Fuentes; URL estable de catálogo, sin exigir nuevo framework. Elegibilidad por superficie operativa: ACTIVA + evidencia de acceso/captura válida vigente conforme política de esa fuente. Un estado histórico, HTTP200 sin parsing o señal antigua no acredita cobertura actual. Excluir PAUSED/BLOCKED/unknown. Parcial sólo si superficie concreta verificada y nombrada; no listar institución completa por un producto que funciona. Cero novedades con captura válida puede seguir activa. Si ninguna elegible, estado vacío honesto.
+- `web/app.js` hoy filtra catálogo sólo por nombre y expone checked_at/última detección/selección. Nueva proyección pública por allowlist: nombre, URL oficial, grupo y alcance. Diagnósticos, polling, errores y motivos permanecen administración; no borrarlos de history ni source_health, ni enviarlos ocultos en DOM público. Deshabilitar una fuente no borra noticias históricas ni sus atribuciones.
+
+QA futuro delta: desktop1440×900, móvil390×844,320px y zoom200%; teclado/lector de pantalla, foco de retorno, Esc y scroll modal; título largo íntegro,44px, contraste4,5:1. Verificar + al lado del texto en ambos anchos y que Fuentes no altere filtros. Scroll muestra una sola acción flotante sin solapar banners/CTA. Fixtures catálogo ACTIVEvalid/ACTIVEstale/PAUSED/BLOCKED/unknown/parcial/valid-empty y caída de carga; ningún interno se filtra a payload/DOM público. Dos pestañas, bfcache y reversión siguen QA §3; no repetir pruebas históricas del comportamiento viejo. Esto es contrato, no QA visual acreditado de una implementación inexistente.
+
+
+## V2.5 Ficha corregida IF/N°10670: texto concreto y ganancia por nivel
+
+**Título propuesto:** Resolución Exenta IF/N°10670: Superintendencia rechaza reposiciones de cinco isapres contra el cambio del informe EMP.
+
+**Fecha:** emitida10-sep-2026. **Fuente:** Superintendencia de Salud. No rejuvenecer al12-oct por esta revisión.
+
+**Primera vista de ficha (borrador):**
+
+La Circular IF/N°531 trasladó el informe parcial que la Superintendencia entrega a las isapres: se elaborará una vez concluido octubre, evaluando enero–octubre, en lugar del primer semestre. Cambia la oportunidad de esa comunicación; no agrega metas ni nuevas cargas de reporte a las isapres. La circular rige desde su notificación. [C,III–IV,p2; R,considerando12,p7]
+
+Esencial y Consalud también pidieron suspender la circular. La Intendencia rechazó esa petición porque no fundamentaron ni acreditaron el daño irreparable o la imposibilidad de ejecutar una eventual decisión favorable exigidos por el artículo57. [R,considerando7,p4]
+
+Los recursos jerárquicos subsidiarios se remitieron al Superintendente para decisión. Esta resolución no los resuelve. Su desenlace posterior no fue verificado al12-oct; por eso la ficha describe lo decidido el10-sep y no afirma pendencia actual. [R,resuelvo1–3,p8]
+
+Fuentes al pie: «Resolución IF10670 · decisión sobre recursos» y «Circular IF531 · modificación impugnada», con enlaces oficiales del expediente siguiente. No otro resumen de estos párrafos.
+
+**Bajo demanda: «Qué solicitaron y por qué se rechazó»**
+
+|Recurrente|Petición y argumentos que recoge la resolución|Localizador|
+|---|---|---|
+|Nueva Masvida|Dejar sin efecto531; subsidiariamente conservar revisiones de junio y octubre. Alega pérdida de margen correctivo, utilidad del seguimiento para metas vinculadas a adecuación de precios, retroactividad y confianza legítima por aplicación al ejercicio2026 ya iniciado. Señala contraste con archivos del10nov y notificación31jul como parte de su alegación.|R,c3,pp1–2|
+|Cruz Blanca|Dejar sin efecto531; recurso jerárquico subsidiario. Sostiene que noviembre/diciembre no bastan para movilizar beneficiarios hacia EMP y que falta motivación suficiente conforme art11 de Ley19.880: un informe parcial no exige esperar evaluación más completa.|R,c4,pp2–3|
+|Colmena Golden Cross|Dejar sin efecto531 y mantener oportunidad anterior; recurso jerárquico subsidiario. Invoca utilidad de comunicaciones2023–2025 para acciones correctivas y pérdida de meses de gestión.|R,c5,p3|
+|Consalud|Dejar sin efecto o corregir531 manteniendo también informe del primer semestre. Alega menor tiempo correctivo, riesgo para cumplimiento habilitante de adecuación del precio base y utilidad de validaciones junio/octubre por medición de embarazadas en segundo semestre. También pide suspensión.|R,c6–7,pp3–4|
+|Esencial|Reposición, jerárquico subsidiario y suspensión constan; los considerandos no individualizan sus argumentos de fondo. No atribuirle los de otras recurrentes.|R,c2,p1;c7,p4;resuelvo,p8|
+
+Las posiciones anteriores son las recogidas por el regulador; no se obtuvieron los escritos completos de las isapres. Las alegaciones no son hechos jurídicos confirmados por Alicanto.
+
+**Fundamentos de fondo adicionales:**
+
+- El regulador considera que las isapres tienen metodología e información propia para seguimiento permanente; el informe parcial es una verificación metodológica, no sustituto de su gestión ni garantía de cumplimiento. [R,c9,pp4–5]
+- El corte octubre permite observar mejor embarazadas, recién nacidos y reliquidaciones. El Manual2026, aprobado mediante Resolución5143 de11mayo, ya contenía ventanas de identificación anteriores a531. No se introducen esas ventanas mediante10670. [R,c10,pp5–6]
+- Frente a falta de motivación, explica que no pretende equiparar informe parcial y final: busca datos observables que en junio estaban incompletos. [R,c11,pp6–7]
+- Frente a retroactividad, razona que cambiar la comunicación no altera derechos/cargas ni efectos de actuaciones anteriores; las acciones para cumplir metas permanecen. Frente a doble validación, considera suficientes metodología y proyecciones propias y aplica eficiencia a la verificación del organismo. [R,c12–13,p7]
+
+**Calendario y efecto exacto (no nuevos plazos inventados):**31jul2026 fecha de531; vigencia desde notificación, no desde su carpeta web/agosto. Nueva Masvida relata notificación31jul; no consta aquí prueba individual para todas las isapres.10sep2026 firma10670; no se acredita fecha individual de notificación. Corte enero–octubre e informe una vez cumplido décimo mes, sin día de emisión señalado.10nov aparece en argumento de recurrente sobre archivos y10ene2027 en fundamento sobre carga final de reliquidaciones; no son fechas nuevas creadas por la resolución. El acto rechaza reposición y suspensión, remite los jerárquicos sobre531, y no sanciona ni determina por sí mismo cumplimiento de metas o autorización de alzas. No presupone que esas materias ya estén definitivamente resueltas.
+
+|Bloque propuesto|Información nueva frente al nivel anterior|Qué deja de repetirse|
+|---|---|---|
+|Título|Acto, emisor, decisión y sujetos/circular impugnada|No necesita explicación del informe completo.|
+|Ficha párrafo1|Quién informa a quién; período anterior/nuevo; límite de efectos; regla de vigencia|No vuelve a listar el rechazo.|
+|Ficha párrafo2|Petición cautelar separada, dos solicitantes y estándar art57 aplicado|No llama a todo «recursos rechazados».|
+|Ficha párrafo3|Remisión jerárquica y límite temporal del conocimiento|No presenta rechazo como cierre definitivo.|
+|Tabla bajo demanda|Peticiones y argumentos diferenciados de cada recurrente, carenciaEsencial|No resume nuevamente la parte resolutiva.|
+|Fundamentos bajo demanda|Respuesta técnica/jurídica a objeciones y relación Manual5143→531→10670|No repite «deben cumplir» como conclusión empresarial.|
+|Calendario bajo demanda|Distingue corte/emisión/notificación y procedencia de otras fechas|No promete informe durante octubre ni renueva fecha del acto.|
+
+La tabla de ganancia es un control interno del handoff, no una sección que debe renderizarse al usuario. La ficha compacta admite estos tres párrafos porque cada uno añade una dimensión distinta. Los módulos profundos pueden fusionarse si el diseño conserva sus afirmaciones y locators.
+### Expediente de comparación con la ficha actual IF10670
+
+Corte de investigación: 12 octubre 2026. Delta respecto de V1. Auditoría de originales descargados y ficha congelada en staging ef8cbe39; no implementación. Se aplicó skill PDF para lectura y comprobación visual de disposiciones; no API de IA pagada.
+
+## Respuestas a las siete preguntas
+
+1. **¿Quiénes recurrieron?** Nueva Masvida, Cruz Blanca, Colmena, Esencial y Consalud. [R, considerando2, p1; resuelvo1, p8]
+2. **¿Qué pidieron?** Nueva Masvida: anular o conservar junio/octubre; Cruz Blanca: anular; Colmena: restituir oportunidad previa; Consalud: anular o corregir. Esencial: reposición registrada, sin motivos individualizados. [R, considerandos3–6, pp1–3]
+3. **¿Qué argumentos?** Menor tiempo correctivo; Nueva Masvida: retroactividad/confianza legítima; Cruz Blanca: motivación insuficiente; Colmena: utilidad histórica; Consalud: riesgo para adecuación tarifaria y doble validación. [R, considerandos3–6, pp1–3]
+4. **¿Por qué rechazar reposiciones?** Seguimiento autónomo; mejor observación de embarazadas, recién nacidos y reliquidaciones; motivación técnica; sin nuevas cargas ni retroactividad; innecesaria doble validación. [R, considerandos9–13, pp4–7]
+5. **¿Por qué rechazar suspensión?** Esencial/Consalud no acreditaron daño irreparable ni imposibilidad de ejecutar una eventual decisión favorable, exigidos por artículo57. [R, considerando7, p4; resuelvo2, p8]
+6. **¿Qué quedó pendiente?** Jerárquicos remitidos al Superintendente, no resueltos aquí. Notificación31-julio alegada por Nueva Masvida; fecha efectiva de notificación de esta resolución no consta. [R, considerando3,p2; resuelvo3,p8]
+7. **¿Qué cambia y desde cuándo?** Circular fechada31-julio: vigencia desde notificación. Cambia informe de Superintendencia, antes posterior al primer semestre; ahora posterior al décimo mes, evaluando enero–octubre. No fija día de emisión. [C, numeralesIII–IV,p2]
+
+## Evidencia y trazabilidad
+
+Páginas anteriores en numeración humana (1–8 / 1–2). Texto completo revisado; verificación visual adicional de p8 de R y p2 de C para separar resuelvo, vigencia y fecha de corte.
+
+| Clave | Original oficial | Archivo local de evidencia | Bytes | SHA256 |
+|---|---|---|---:|---|
+| R | https://www.superdesalud.gob.cl/app/uploads/2026/09/res-exenta-if-n10670-2026.pdf | v2-if10670.pdf | 2772571 | 33b264702a6cd5209eac7e64aab27d4f9876510b8b665f1062bdd616b52e2509 |
+| C | https://www.superdesalud.gob.cl/app/uploads/2026/08/circular-if-n-531-2026.pdf | v2-if531.pdf | 511935 | e4908364b387a2db27ec9e6685ca6971012eeafa8ba504ad1619de07989f47b5 |
+
+Fichas oficiales: https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n10670/ y https://www.superdesalud.gob.cl/normativa/circular-if-n531/ . La fecha estampada de R es10-septiembre, no el1-septiembre que devolvió un metadato de buscador. No deducir la fecha jurídica desde /08/ del alojamiento de C.
+
+## Comparación de backend: problemas demostrados
+
+`web/data/radar_today.json` contiene un registro coincidente por source_url. Huella canónica del registro (JSON UTF8, sort_keys, ensure_ascii=False, separadores coma/dos puntos): `9a0dafd63485fa8dac09d7a18d2ef568e8cf31c0193cdc070226c70b3120c074`.
+
+`data/history/superintendencia_signals.json` contiene un registro de misma URL con hash `260e2f6146469de8cef6623efb219fd26a84bc0e595c049d7e05607d44904b0d`. Sus estructuras no son idénticas: no hacer reemplazo ciego ni suponer que cualquier discrepancia es error.
+
+| Campo actual exportado | Diagnóstico y cambio requerido |
+|---|---|
+| `title` sólo número de resolución | Identidad jurídica sin hecho explicativo. Conservar como identidad; mostrar título factual. |
+| `display_title` extenso, referencia a “junio a octubre” | Precisar corte, no fecha garantizada de comunicación. |
+| `why_it_matters` / `required_change`: “se emitirá en octubre” | Error temporal frente a C, numeralIII. Sustituir por corte a octubre y emisión posterior al cierre de ese mes. |
+| `related_context[0].summary` | Ya contiene correctamente “una vez cumplido el décimo mes”. La información existe, pero otra capa la degrada. |
+| `key_facts[0]` idéntico a `what_happened` | Duplicación exacta; no es profundidad adicional. |
+| `normative_editorial.business_subject` idéntico a `legal_action` | Campos distintos almacenan la misma explicación. No tratarlos como dos aportes. |
+| `editorial_committee.public_title` | Texto truncado/agramatical: “Las isapres recurrentes deben operar bajo la mientras se resuelven”. Rechazar aun si otra capa muestra un título correcto. |
+| `normative_context`: “siguen pendientes” | Estado actual no acreditado por una resolución histórica. Formular “remitidos en esta resolución; desenlace posterior no verificado”. |
+| `effective_date_or_status=null`, `validity_text=null` | Contradice la seguridad aparente del texto vigente; exigir estado fechado y evidencia. |
+| `publication_ready_score=100`, comité PASS, `critical_objections=[]` | Falso positivo de calidad: no detecta contradicción temporal, mala sintaxis ni repetición entre campos. |
+| `source_documents` sólo R | Incorporar C como original de la modificación; URL de una norma relacionada no reemplaza fragmento verificable. |
+
+### Autoridad de la corrección
+
+El único texto propuesto para la ficha es la primera vista de V2.5 y sus módulos. Este expediente documenta el diagnóstico y no introduce una segunda ficha ni otro título. Mantener identidad y lectura; contrastar huella vigente antes de preparar overlay. Esta propuesta no autoriza publicación ni actualización automática de fecha.
+
+## Límites y comprobaciones pendientes
+
+- Se buscaron resoluciones posteriores por combinación de531, jerárquicos y Esencial en sitio oficial; no se localizó un desenlace posterior. Ausencia de resultado de búsqueda no certifica pendencia actual. No afirmar cierre definitivo de vía administrativa.
+- Los escritos originales de cada isapre no fueron obtenidos: las posiciones están resumidas por la autoridad. Diferenciar “la resolución recoge” de “la isapre escribió”, y citar considerarandos, no presumir acceso al expediente.
+- No convertir la fecha de firma de R en fecha probada de notificación. Para calendarios exigibles individualmente se necesita constancia de notificación.
+- No verificado en esta revisión el Manual5143 completo ni cada tabla del Compendio vigente. C acredita su modificación histórica; una afirmación consolidada a hoy requiere cotejo actualizado del Compendio y decisiones posteriores.
+- La ficha no debe extraer nuevas metas cuantitativas, aranceles, sanciones o permisos de adecuación desde este acto. Separar decisión del recurso, regla original, calendario y efectos de seguimiento.
+
+## QA mínimo V2
+
+1. Fallar si una superficie dice emisión “en octubre” y otra “una vez cumplido octubre”.
+2. Fallar si suspensión y reposición comparten una razón genérica sin diferenciar sus fundamentos.
+3. Fallar si Esencial recibe argumentos individualizados no encontrados en el original.
+4. Fallar si remisión histórica se convierte en estado procesal actual sin `verified_at` y evidencia posterior.
+5. Fallar si cualquier título canónico/exportado queda agramatical, aunque el componente principal utilice otro campo.
+6. Pasar sólo con mapa afirmación→documento→página/considerando y revisión editorial independiente de la nueva síntesis.
+## V2.6 Circular 534 y contrato temporal normativo
+
+Revisión focal 12-oct-2026. HEAD observado al cierre: `860d95baf3b7db3e8c28493a0edfd2ffe371ab60` (árbol compartido actualizado desde la revisión UX anterior). No modificación de código ni llamadas pagadas. Evidencia externa original abierta nuevamente; conclusiones UI de este addendum son derivadas del código, no nueva sesión browser.
+
+## Circular 534: sí está en backend y feed
+
+|Etapa|Prueba y dictamen|
+|---|---|
+|Original|PDF oficial de cuatro páginas, Circular IF/N°534, fecha de emisión 14-sep-2026. Página normativa oficial muestra 14-sep-2026.|
+|Discovery|No se identificó en esta revisión un evento histórico individual de discovery con timestamp. Eso no prueba ausencia de captura: seen/history la acreditan. `detected_at=null` impide afirmar detección LIVE.|
+|Seen|`data/state/superintendencia_normativa_seen.json` incluye SHA256 `929d164f2e1f889bb2c7a79f5d65c8654cca4e21a0d2ebd86a652f0e752bedd3`, calculado mediante la función real `scouts._fingerprint`: slug + URL + título Circular IF/N°534. No buscar URL literal dentro de un archivo de hashes.|
+|Queue|No hay entrada exacta de su URL en `data/state/pending_queue.json`; no es una señal pendiente actual. No inferir fallo.|
+|History|Presente en `data/history/superintendencia_signals.json`, con what, why, tres key_points, PDF, vigencia y antecedentes. Título histórico opaco; existe recuración posterior.|
+|Decisión|Feed: `editorial_decision=accept`, `publication_ready_score=100`, `feed_visibility=true`, comité PASS. Acredita dictamen persistido; no demuestra por sí solo revisión humana independiente. `config/df_integration_controls.json` conserva DF1-oct como corroboración duplicada del evento oficial14-sep.|
+|Feed|Presente en `web/data/radar_today.json` con display_title explicativo y contexto normativo. `distribution=archive` no significa excluida: `individualCardAllowed` no consulta ese campo.|
+|UI|`triageTitle` prioriza display_title. `visible` exige filtros+periodo+contrato. A 12-oct, 14-sep tiene28d: elegible30/60d; no14d. Si leída, desaparece solo de inbox y permanece feed. Filtros scope/type también pueden ocultarla. No hay evidencia para diagnosticar «colector no la capturó».|
+
+Originales:
+- https://www.superdesalud.gob.cl/app/uploads/2026/09/circular-if-n-534-2026.pdf (páginas1–4).
+- https://www.superdesalud.gob.cl/normativa/circular-if-n534/ (fecha visible y PDF).
+
+## Delta sustantivo verificado y propuesta editorial
+
+**Título:** Circular IF/N°534: isapres deberán emitir bonos con cédula si fallan la huella y la validación auxiliar.
+
+**Ficha propuesta:** Rige desde el 1 de diciembre de 2026. Complementa la Circular476 y modifica el Compendio de Beneficios. Las regularizaciones deben realizarse después de la atención. Exige registro de los casos, protocolo interno disponible para fiscalización y comunicación escrita de las decisiones sobre regularización. Si el impedimento es permanente, las medidas también deben ser permanentes. La isapre mantiene responsabilidad sobre protección de datos cuando usa proveedores tecnológicos.
+
+**Evidencia:** PDF p1 antecedentes; p2 contingencia; p3 registro, protocolo y comunicaciones; p4 vigencia y proveedores. **Omitir:** extrapolaciones de ahorro, tasas de rechazo o sanciones que el documento no cuantifica. No confundir vigencia futura con obligación ya exigible al12-oct. Esta ficha aporta detalle real sobre el título; no requiere un bloque fijo de «importancia».
+
+## Contradicciones y oportunidades temporales verificables en stock 30/60d
+
+1. **IP7462:** feed `event_date=emission_date=2026-09-23`, `publication_date=null`, observación de listado `2025-09-23`, hecho `2023-05-02`. La reconciliación primaria ya existe (`verified_primary_emission`): no deshacerla ni declarar el año2025 válido. `sourceTiming` distingue emisión/publicación desconocida en ficha, pero la fila de Ponte usa únicamente `event_date`, sin etiqueta de base. Dos fechas diferentes no son automáticamente contradicción: hecho2023 y acto2026 son dimensiones distintas. Debe mostrarse «Emitida23sep» y, en profundidad, hecho2023; no «fiscalización reciente» por inferencia.
+2. **IF9774:** emisión/publicación20-ago-2026, `fact_period` identifica fiscalización enero2025 y recurso contra acto julio2025. Está dentro de60d al12-oct (53d), fuera de30. No equivale a infracción ocurrida en agosto2026. La ficha renderiza sourceTiming, pero no tiene render específico para fact_period: dato capturado puede quedar invisible.
+3. **Pulso Prestadores30d:** tres publicaciones15-sep, actos emitidos3/8sep. Su agrupación por publicación está declarada y puede ser válida, aunque los actos por emisión estén fuera de30d. No mezclar denominadores «actos emitidos» y «publicaciones». Al12-oct todavía cumplen30d por publicación; deben migrar/expirar al avanzar reloj. Exigir fecha de corte visible para que «últimos30d» no envejezca en un snapshot.
+4. **Pulso Prestadores31–90d:** seis publicaciones, cuatro21-ago y dos5-ago; en una vista60d la tarjeta agregada entra por21-ago, pero dos componentes5-ago quedan fuera60d. El filtro evalúa únicamente fecha máxima de tarjeta, no miembros. Solución de bajo esfuerzo: rotular siempre ventana propia del agregado y corte; no presentar el número como resultado del filtro60d. Alternativa posterior: recalcular miembros y denominador según filtro. Nunca sumar UF y UTM sin conversión fechada.
+5. **Reloj:** `ageDays` usa díaUTC para fechas puras mientras weekly freshness usa America/Santiago. Entre medianocheUTC y medianocheChile puede cambiar la pertenencia30/60d antes del cambio local. No se afirma fallo visual observado; se acredita divergencia en implementación. Unificar calendarioChile y documentar límites inclusivos (`<=30` actualmente permite31 fechas calendario si se incluye hoy).
+6. **Fuente primaria oculta:** Circular534 conserva PDF en source_documents, pero detailHtml no itera ese array; presenta source_url de landing y related_context sin links verificados. El documento original existe y puede ser expuesto como «Circular original · PDF», evitando clic adicional y sin fabricar enlaces.
+
+## Contrato normativo y de sanciones V2
+
+Separar siempre: `issued_on` (acto), `published_on` (publicación comprobada), `fact_period` (hecho fiscalizado), `inspection_period` (fiscalización), `effective_from/until` (vigencia), `detected_at` (sistema). No completar unas a partir de otras. Mantener `event_date` por compatibilidad pero exigir `event_date_basis` y evidencia por fecha. Lo desconocido permanece null. `observed_listing_date` conflictivo se conserva como observación, no fecha canónica.
+
+Título: acto+identidad+actor+sujeto+cambio. Ficha: cambio frente a antecedente, sujetos obligados, alcance, vigencia/plazo, obligaciones verificadas y enlaces primarios; separar resolución de recurso del acto original y no hacer que la resolución parezca creadora de una obligación preexistente. Hechos y sanción no son equivalentes a firmeza: estado procesal se conserva y no se inventa.
+
+**Regla vinculante de sanciones:** `issued_on`, verificado contra resolución original, determina `event_date`, orden y frescura del acontecimiento sancionatorio. No hacer fallback a inspección, período, publicación ni first_seen. Si falta emisión, evento queda sin fecha verificada y fuera del ranking de sanciones recientes; puede mostrarse publicación reciente en una vista separada, rotulada como tal, sin llamar nueva a la sanción. Resolver contradicción índice/PDF a favor del original legible y conservar ambos valores y fundamento; ambigüedad no resuelta queda HOLD_DATE. Recaptura nunca cambia emisión. Los agregados históricos por publicación se conservan como «publicaciones oficiales», con ventana propia; no cuentan como sanciones emitidas dentro del filtro30/60d. El caso PulsoPrestadores30d descrito arriba es diagnóstico del agrupamiento heredado, no excepción a esta regla. Separar además `inspection_date` cuando haya día exacto y `inspection_period` si es intervalo; ambos distintos de período de hechos fiscalizados.
+
+Para agregados: `window_start`, `window_end`, `window_basis`, `generated_at`, lista de IDs de miembros, unidades y `count_basis`; mostrar corte real. El usuario debe distinguir publicación reciente de acto reciente y de hecho reciente. Tests focales: IF534 incluida30d/no14d; IP7462 conserva publicaciónnull; IF9774 fiscalización2025 visible; agregado31–90 en filtro60 no se presenta como60; borde medianocheChile; clicPDF válido. No repetir backfill ni recaptura masiva.
+
+## V2.7 Backlog focal y prompt sustituto de Codex H
+
+Se conserva techo propuesto20h, sin sumar silenciosamente nuevas obligaciones. Reordenar antes que ampliar: núcleo editorial/normativo/UX consume prioridad; pilotos nuevos de fuentes se difieren si no caben. CENS/iHEALTH conservan prioridad estratégica y contrato, no promesa de ejecución este sprint.
+
+|Tarea independiente|Tope|Dependencia / salida|
+|---|---|---|
+|H0 conciliación SHA/queue/PMO/contratos y alcance|0,5h|Work6 aceptado + autorización Dirección; sin eso no ejecutar.|
+|H1 ficha canónica, eliminación resumen duplicado y etiquetas, navegación/+/flotante|3h|Reutilizar renderer; pruebas rutas/accesibilidad.|
+|H2 sobres/store/migración aprobados|3h|No simplificar a Set obsoleto; evidencia concurrencia.|
+|H3 esquema v3, proyección legacy y gate receipt, contrato flexible Global|4h|No implementar evaluador semántico universal; fixtures con PASS/REVISE.|
+|H4 overlays/fixtures IF10670,534,Global y tres casos originales|2h|Sólo documentos/fixtures; respetar HOLD de fuente, no publicar.|
+|H5 fechas sanción/reconciliación focal, trazabilidad534|2h|Sin backfill90d ni regeneración pagada; conflictos quedan auditados.|
+|H6 catálogo público allowlist + alcance FONASA/ISP|2h|No falsificar actividad; conciliar PR29; administración conserva diagnóstico.|
+|H7 QA focal y reviewer del SHA|2,5h|Evidencia desktop/mobile y contratos; riesgo abierto explícito.|
+|H8 reserva para defectos críticos|1h|No consumir en nueva fuente mientras haya fallo P0.|
+
+Suma20h. Recuperación Clínicas y spikes CENS/iHEALTH del backlog original conservados en cola siguiente, o sólo con capacidad liberada verificable y autorización de alcance por Commander; no nuevas horas implícitas. Mejoras posteriores: benchmark pagado autorizado de modelos, instrumentación coste monetario si faltante, relectura semántica progresiva del stock, fuentes adicionales. Al vencer timebox cerrar con artefacto y bloqueo, no rebajar gates.
+
+```text
+CODEX H ÚNICO · EJECUCIÓN CONDICIONADA
+Antes de actuar: exigir receipt Work6 sobre versión final de PR32 y aceptación
+explícita de Dirección. READY_FOR_WORK6 no es autorización. Si faltan: STOP.
+Base staging fresca; rama aislada; Work3 único integrador. Lee este handoff V2,
+issue5 últimas decisiones y Work6. Precedencia V2 sobre §7 y anexos antiguos.
+No tocar main/prod ni fusionar staging. No publicar señales, ejecutar modelos
+pagados, capturas masivas, backfill90d ni repetir auditorías acreditadas.
+H0: concilia HEAD/queue/PMO/contratos; preserva cambios ajenos con guard.
+H1–H2: implementa ficha única y UX V2.4, lectura exacta §3; no cambies identidad
+por copy ni publiques una migración parcial Home/Global.
+H3: esquema compatible y receipt semántico final, claims/módulos opcionales;
+no mínimos de palabras/campos públicos redundantes. Normas mantienen identidad,
+organismo, sujeto, objetivo, cambio, efecto/vigencia; art57 no igual recurso
+jerárquico. Raw outputs/receipts históricos inmutables.
+H4: fixtures/overlays revisables basados en originales y delta por párrafo;
+no escribir history/feed/latest/approved para publicar. Global pendiente de
+metodología queda HOLD_SOURCE_METHOD. No inventes motivo individual Esencial.
+H5: audita captura534 sin duplicar; separa emisión sanción/publicación/inspección/
+período/first_seen; recaptura no rejuvenece. Conflicto PDF/índice se registra.
+H6: catálogo sólo superficies activas verificadas; sin técnicos en público.
+FONASA noticiasP0; ISP vigilanciaP0. Sin bypass/relajarTLS ni rescatar todoP1.
+H7: tests adversariales de delta y QA desktop/mobile; revisor independiente
+sobre diff final y evidencia original. Recibos con hashes, consumo0 pipeline.
+Respeta timeboxes20h; nuevos colectores/benchmarks se difieren, no absorben P0.
+Entrega un PR revisable por tareas, SHA y riesgos a Work3. No merge/publicación.
+```

@@ -22,10 +22,68 @@
   "source_capture_runtime_executed": false,
   "queue_pmo_contract_mutations": false,
   "document": "docs/handoffs/WORK5_PRODUCT_EDITORIAL_2026_10_12.md",
-  "review_status": "PASS_SCOPED_DOCUMENTARY",
+  "review_status": "PASS_SCOPED_DOCUMENTARY_READY_FOR_WORK6",
   "independent_review": "docs/handoffs/WORK5_PRODUCT_EDITORIAL_REVIEW_2026_10_12.md",
   "deliverable_sha256": {
-    "docs/handoffs/WORK5_PRODUCT_EDITORIAL_2026_10_12.md": "2a5627356d48650b283a6eb3403c4f1995865ee318e53fe69f71e7531b86841f",
-    "docs/handoffs/WORK5_PRODUCT_EDITORIAL_REVIEW_2026_10_12.md": "4330a15ccd8aedfeb03da6fb5428d63651519b3bf8aaf1331148d995655ede05"
+    "docs/handoffs/WORK5_PRODUCT_EDITORIAL_2026_10_12.md": "1c588f68704c3f08e75299b6856c10a8705c475113dfbd383de08ef07175e9ff",
+    "docs/handoffs/WORK5_PRODUCT_EDITORIAL_REVIEW_2026_10_12.md": "7aafb6ab0c2cffe481ec9094a3757346643be5f3f7b6e501d6c2a56ff0e26fd8"
+  },
+  "v1_review_status": "PASS_SCOPED_DOCUMENTARY",
+  "addendum_v2": {
+    "direction_comment": "https://github.com/cftorre1/Radar-salud/issues/5#issuecomment-6120684438",
+    "base_pr_head": "5163f2fff1512587726cc5a0924598d2e5fa8ff7",
+    "staging_rechecked": "ef8cbe3938623d493872ff5f3e717153f176d1be",
+    "observed_at_utc": "2026-10-12T09:04:44.189708+00:00",
+    "scope": "documentary delta only; Work6 before Direction acceptance and Codex H",
+    "pipeline_paid_calls": 0,
+    "baseline_hashes_unchanged": true,
+    "new_visual_mobile_qa": false,
+    "originals": [
+      {
+        "id": "IF10670",
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/res-exenta-if-n10670-2026.pdf",
+        "sha256": "33b264702a6cd5209eac7e64aab27d4f9876510b8b665f1062bdd616b52e2509",
+        "pages": 8
+      },
+      {
+        "id": "IF531",
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/circular-if-n-531-2026.pdf",
+        "sha256": "e4908364b387a2db27ec9e6685ca6971012eeafa8ba504ad1619de07989f47b5",
+        "pages": 2
+      },
+      {
+        "id": "IF534",
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/circular-if-n-534-2026.pdf",
+        "pages": 4,
+        "access": "official document read; no retained-byte hash claimed"
+      },
+      {
+        "id": "AHA20261005",
+        "url": "https://www.aha.org/news/blog/2026-10-05-better-information-better-care-how-coding-supports-todays-complex-patients",
+        "access": "full public response read; interested counterparty"
+      },
+      {
+        "id": "BCBSA20260924",
+        "url": "https://www.bcbs.com/about-us/association-news/bcbsa-analysis-ai-coding-tools-affects-healthcare-costs",
+        "access": "indexed primary excerpt only; full GET502; technical methodology unverified"
+      },
+      {
+        "id": "Reuters20260924",
+        "url": "https://www.reuters.com/legal/litigation/ai-tools-generated-nearly-1-billion-extra-costs-blue-cross-insurers-say-2026-09-24/",
+        "access": "existing attribution inspected; new full-text access unavailable"
+      }
+    ],
+    "open_findings": [
+      "IF10670 later hierarchical outcome and individual notification not verified; wording dated to decision",
+      "IF534 discovery timestamp absent; seen/history/accept/feed confirmed",
+      "Global technical BCBSA methodology remains HOLD_SOURCE_METHOD",
+      "desktop/mobile QA is future implementation acceptance, not newly executed",
+      "model benchmark and Astra routing unexecuted; no pipeline spend authorization",
+      "historical sanctions aggregates must distinguish publication windows from issued-event freshness",
+      "source catalog eligibility and read-state migration require implementation QA"
+    ],
+    "codex_h_authorized": false,
+    "reviewed_candidate_sha256": "1c588f68704c3f08e75299b6856c10a8705c475113dfbd383de08ef07175e9ff",
+    "reviewer_findings_open_p0_p1": 0
   }
 }
