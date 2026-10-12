@@ -1,13 +1,13 @@
 {
   "version": "0.9.0",
-  "generated_at": "2026-10-12T02:16:21.165767+00:00",
-  "snapshot_at": "2026-10-12T02:16:20.259664+00:00",
-  "published": 165,
+  "generated_at": "2026-10-12T05:32:50.746312+00:00",
+  "snapshot_at": "2026-10-12T04:47:21.948502+00:00",
+  "published": 168,
   "queue": {
-    "live_pending": 1,
-    "backfill_pending": 1564,
-    "rejected": 684,
-    "published": 276
+    "live_pending": 0,
+    "backfill_pending": 1556,
+    "rejected": 693,
+    "published": 279
   },
   "queue_status": "measured",
   "discovery": {
@@ -696823,8 +696823,8 @@
     "processing_attempts": 0
   },
   "coverage_live": {
-    "detected": 66,
-    "evaluated": 65,
+    "detected": 69,
+    "evaluated": 69,
     "selected": 7
   },
   "coverage_segments": {
@@ -696851,21 +696851,21 @@
       "active_sources": 2,
       "detected_live": 0,
       "selected_live": 0,
-      "published_feed": 28,
+      "published_feed": 31,
       "last_signal_at": "2026-10-09",
       "last_signal_age_days": 3
     },
     "Transversal": {
       "registered_sources": 13,
       "active_sources": 9,
-      "detected_live": 48,
+      "detected_live": 51,
       "selected_live": 6,
       "published_feed": 77,
       "last_signal_at": "2026-10-10",
       "last_signal_age_days": 2
     }
   },
-  "legacy_pending": 1565,
+  "legacy_pending": 1556,
   "sources": {
     "superintendencia_normativa": {
       "name": "Superintendencia Normativa",
@@ -696887,23 +696887,65 @@
       "editorial_outcome": "no_new_signals"
     },
     "minsal": {
-      "name": "Minsal",
-      "checked_at": "2026-10-10T22:24:44.395941+00:00",
-      "last_signal_at": "2026-10-07",
-      "discovered": 53,
-      "new": 4,
-      "published": 0,
+      "name": "Ministerio de Salud",
+      "checked_at": "2026-10-12T04:42:56.212220+00:00",
+      "last_signal_at": "2026-10-09",
+      "discovered": 10,
+      "new": 0,
+      "published": 3,
       "live_pending": 0,
-      "backfill_pending": 4,
-      "pending": 4,
+      "backfill_pending": 0,
+      "pending": 0,
       "deferred": 0,
-      "rejected": 14,
-      "status": "ok",
+      "rejected": 15,
+      "status": "warning",
       "error": null,
       "technical_status": "ok",
-      "coverage_status": "observed",
+      "coverage_status": "partial",
       "content_freshness": "recent",
-      "editorial_outcome": "pending"
+      "latest_original_at": "2026-10-09",
+      "editorial_outcome": "published",
+      "evaluation_performed": true,
+      "processed_rejections": 1,
+      "counts_scope": {
+        "discovered": "this_run",
+        "new": "this_run",
+        "published": "this_run",
+        "processed_rejections": "this_run",
+        "rejected": "cumulative_queue"
+      },
+      "discovery_diagnostics": {
+        "verified_publications": 10,
+        "latest_verified_publication_date": "2026-10-09",
+        "poll_mode": "daily_engine"
+      },
+      "engine_checked_at": "2026-10-12T04:42:56.212220+00:00",
+      "poll_mode": "native_capture_then_retained_editorial_assessment",
+      "latest_verified_publication_at": "2026-10-09",
+      "last_attempt_at": "2026-10-12T04:42:56.212220+00:00",
+      "assessed_at": "2026-10-12T04:42:56.212220+00:00",
+      "last_successful_capture_at": "2026-10-12T04:42:56.212220+00:00",
+      "last_verified_discovery_at": "2026-10-12T04:42:56.212220+00:00",
+      "pages_checked": 11,
+      "held_surfaces": 0,
+      "items_discovered": 10,
+      "unique_items": 10,
+      "items_recent": 3,
+      "items_material": 3,
+      "materiality_status": "primary_bound_editorial_assessment",
+      "parse_errors": 0,
+      "coverage_complete": false,
+      "coverage_reason": "official_rss10_and_primary_details_verified; 72h_priority; full30d_inventory_not_reconciled",
+      "recovery_outcome": "OPERATIVE_DEGRADED",
+      "zero_publication_reason": null,
+      "next_retry_at": null,
+      "poll_age_hours": 0.0,
+      "daily_check_state": "checked_within_24h",
+      "recovery_cadence_validated": false,
+      "latest_detected_at": "2026-10-09",
+      "items_evaluated": 4,
+      "native_runtime_run": 38204748188,
+      "evidence": "data/audits/daily_first_20261012/verified-native-runtime.zip"
     },
     "suseso": {
       "name": "Suseso",
@@ -696926,7 +696968,7 @@
     },
     "diario_financiero": {
       "name": "Diario Financiero",
-      "checked_at": "2026-10-11T14:47:06.601900+00:00",
+      "checked_at": "2026-10-12T05:07:09.983803+00:00",
       "last_signal_at": "2026-10-10",
       "discovered": 41,
       "new": 0,
@@ -696939,7 +696981,7 @@
       "status": "warning",
       "error": null,
       "technical_status": "partial",
-      "coverage_status": "format_gap",
+      "coverage_status": "date_or_detail_gap",
       "content_freshness": "recent",
       "latest_original_at": "2026-10-10",
       "editorial_outcome": "not_evaluated",
@@ -696953,13 +696995,13 @@
         "deferred": "cumulative_queue",
         "rejected": "cumulative_queue"
       },
-      "dated": 41,
-      "undated": 0,
-      "detail_errors": 0,
-      "insufficient_evidence": 5,
-      "textual_candidates": 36,
+      "dated": 40,
+      "undated": 1,
+      "detail_errors": 1,
+      "insufficient_evidence": 6,
+      "textual_candidates": 35,
       "nontextual_candidates_known": 5,
-      "textual_capture_status": "verified",
+      "textual_capture_status": "partial",
       "format_capability": {
         "text": "runtime_verified",
         "images": "requires_ocr",
@@ -696970,8 +697012,7 @@
       "unverifiable_date_dispositions": 0,
       "last_published_event_at": "2026-10-10",
       "last_discovered_event_at": "2026-10-10",
-      "coverage_complete": false,
-      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/diario_financiero/summary.json"
+      "coverage_complete": false
     },
     "diario_oficial": {
       "name": "Diario Oficial",
@@ -697134,7 +697175,7 @@
     },
     "fonasa": {
       "name": "Fondo Nacional de Salud (FONASA)",
-      "checked_at": "2026-10-11T14:45:26.442065+00:00",
+      "checked_at": "2026-10-12T04:14:22.317724+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -697145,9 +697186,9 @@
       "deferred": 0,
       "rejected": 0,
       "status": "error",
-      "error": "FonasaDiscoveryError",
+      "error": "HTTP403_ALB",
       "technical_status": "error",
-      "coverage_status": "unverified",
+      "coverage_status": "blocked",
       "content_freshness": "unknown",
       "latest_original_at": null,
       "editorial_outcome": "not_evaluated",
@@ -697161,25 +697202,10 @@
         "rejected": "cumulative_queue"
       },
       "error_details": {
-        "exception_chain": [
-          {
-            "type": "FonasaDiscoveryError"
-          },
-          {
-            "type": "HTTPError",
-            "http_status": 403,
-            "url": "https://www.fonasa.gob.cl/noticias/",
-            "reason": "Forbidden"
-          }
-        ],
-        "failure_signature": "FonasaDiscoveryError > HTTPError:403:Forbidden > HTTPError:HTTP Error 403: Forbidden",
-        "endpoint_failures": [
-          {
-            "url": "https://www.fonasa.gob.cl/noticias/",
-            "type": "HTTPError",
-            "reason": "HTTP Error 403: Forbidden"
-          }
-        ]
+        "failure_signature": "HTTP403_ALB",
+        "origin_tls_observed": true,
+        "trace_scope": "native_official_probe",
+        "details": null
       },
       "discovery_diagnostics": {
         "surfaces": [
@@ -697196,12 +697222,63 @@
         "poll_mode": "daily_engine"
       },
       "engine_checked_at": "2026-10-11T14:45:26.442065+00:00",
-      "poll_mode": "daily_engine",
-      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/fonasa/summary.json"
+      "poll_mode": "independent_official_probe",
+      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/fonasa/summary.json",
+      "last_attempt_at": "2026-10-12T04:14:22.317724+00:00",
+      "assessed_at": "2026-10-12T04:47:21.713778+00:00",
+      "recovery_outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "coverage_complete": false,
+      "coverage_reason": "official_http403_ALB",
+      "pages_checked": 1,
+      "items_discovered": null,
+      "unique_items": null,
+      "items_recent": null,
+      "items_material": null,
+      "parse_errors": 0,
+      "zero_publication_reason": "blocked_surface_not_evidence_of_absence",
+      "native_probe_outcomes": [
+        {
+          "source": "fonasa",
+          "url": "https://www.fonasa.gob.cl/noticias/",
+          "host": "www.fonasa.gob.cl",
+          "captured_at": "2026-10-12T04:14:22.317724+00:00",
+          "method": "GET",
+          "redirects": [],
+          "http_status": 403,
+          "origin_tls_observed": true,
+          "dns": {
+            "addresses": [
+              "166.117.237.103",
+              "166.117.45.213"
+            ]
+          },
+          "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+          "final_url": "https://www.fonasa.gob.cl/noticias/",
+          "headers": {
+            "Server": "awselb/2.0",
+            "Date": "Mon, 12 Oct 2026 04:14:22 GMT",
+            "Content-Type": "text/html",
+            "Content-Length": "118"
+          },
+          "capture_limit_mib": 8,
+          "sha256": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4",
+          "bytes": 118,
+          "body_path": "captures/58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4.html",
+          "waf_challenge": false,
+          "outcome": "http"
+        }
+      ],
+      "evidence": "data/audits/daily_first_20261012/verified-native-runtime.zip",
+      "stop_loss": "No further equivalent recovery probes; existing core circuit permits controlled probe after24h",
+      "poll_age_hours": 0.55,
+      "daily_check_state": "checked_within_24h",
+      "last_verified_discovery_at": null,
+      "recovery_cadence_validated": false,
+      "probe_checked_at": "2026-10-12T04:14:22.317724+00:00"
     },
     "isp_anamed": {
       "name": "Instituto de Salud Pública de Chile (ISP) / ANAMED",
-      "checked_at": "2026-10-11T14:50:26.450101+00:00",
+      "checked_at": "2026-10-12T04:41:41.136843+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -697212,9 +697289,9 @@
       "deferred": 0,
       "rejected": 0,
       "status": "error",
-      "error": "RuntimeError",
+      "error": "TLSCertificateChainVerificationFailed",
       "technical_status": "error",
-      "coverage_status": "unverified",
+      "coverage_status": "blocked",
       "content_freshness": "unknown",
       "latest_original_at": null,
       "editorial_outcome": "not_evaluated",
@@ -697228,20 +697305,10 @@
         "rejected": "cumulative_queue"
       },
       "error_details": {
-        "exception_chain": [
-          {
-            "type": "RuntimeError"
-          },
-          {
-            "type": "URLError",
-            "reason": "timed out"
-          },
-          {
-            "type": "TimeoutError",
-            "reason": "timed out"
-          }
-        ],
-        "failure_signature": "RuntimeError > URLError:timed out > TimeoutError:timed out"
+        "failure_signature": "TLS_unable_to_get_local_issuer_certificate",
+        "origin_tls_observed": false,
+        "trace_scope": "native_official_probe",
+        "details": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)>"
       },
       "discovery_diagnostics": {
         "surfaces": [
@@ -697278,8 +697345,68 @@
         "poll_mode": "daily_engine"
       },
       "engine_checked_at": "2026-10-11T14:50:26.450101+00:00",
-      "poll_mode": "daily_engine",
-      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/isp_anamed/summary.json"
+      "poll_mode": "independent_official_probe",
+      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/isp_anamed/summary.json",
+      "last_attempt_at": "2026-10-12T04:41:41.136843+00:00",
+      "assessed_at": "2026-10-12T04:47:21.713810+00:00",
+      "recovery_outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "coverage_complete": false,
+      "coverage_reason": "official_primary_and_gob_alias_TLS_chain_verification_failed",
+      "pages_checked": 2,
+      "items_discovered": null,
+      "unique_items": null,
+      "items_recent": null,
+      "items_material": null,
+      "parse_errors": 0,
+      "zero_publication_reason": "blocked_surface_not_evidence_of_absence",
+      "native_probe_outcomes": [
+        {
+          "source": "isp_anamed",
+          "url": "https://www.ispch.cl/categorias-alertas/anamed/",
+          "host": "www.ispch.cl",
+          "captured_at": "2026-10-12T04:14:22.318392+00:00",
+          "method": "GET",
+          "redirects": [],
+          "http_status": null,
+          "origin_tls_observed": false,
+          "dns": {
+            "addresses": [
+              "200.68.11.20"
+            ]
+          },
+          "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+          "outcome": "tls",
+          "error_type": "URLError",
+          "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)>"
+        },
+        {
+          "source": "isp_anamed",
+          "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/",
+          "host": "www.ispch.gob.cl",
+          "captured_at": "2026-10-12T04:41:41.136843+00:00",
+          "method": "GET",
+          "redirects": [],
+          "http_status": null,
+          "origin_tls_observed": false,
+          "dns": {
+            "addresses": [
+              "200.54.12.61",
+              "200.68.11.20"
+            ]
+          },
+          "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+          "outcome": "tls",
+          "error_type": "URLError",
+          "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)>"
+        }
+      ],
+      "evidence": "data/audits/daily_first_20261012/verified-native-runtime.zip",
+      "stop_loss": "No further equivalent recovery probes; existing core circuit permits controlled probe after24h",
+      "poll_age_hours": 0.09,
+      "daily_check_state": "checked_within_24h",
+      "last_verified_discovery_at": null,
+      "recovery_cadence_validated": false,
+      "probe_checked_at": "2026-10-12T04:41:41.136843+00:00"
     },
     "deis": {
       "name": "Departamento de Estadísticas e Información de Salud",
@@ -697865,7 +697992,7 @@
     },
     "fonasa_datos_abiertos": {
       "name": "Fondo Nacional de Salud (FONASA)",
-      "checked_at": "2026-10-11T14:45:30.511053+00:00",
+      "checked_at": "2026-10-12T04:14:22.318142+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -697876,9 +698003,9 @@
       "deferred": 0,
       "rejected": 0,
       "status": "error",
-      "error": "FonasaDiscoveryError",
+      "error": "HTTP403_ALB",
       "technical_status": "error",
-      "coverage_status": "unverified",
+      "coverage_status": "blocked",
       "content_freshness": "unknown",
       "latest_original_at": null,
       "editorial_outcome": "not_evaluated",
@@ -697892,34 +698019,10 @@
         "rejected": "cumulative_queue"
       },
       "error_details": {
-        "exception_chain": [
-          {
-            "type": "FonasaDiscoveryError"
-          }
-        ],
-        "failure_signature": "FonasaDiscoveryError > HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden",
-        "endpoint_failures": [
-          {
-            "url": "https://datosabiertos.fonasa.cl/noticias/",
-            "type": "HTTPError",
-            "reason": "HTTP Error 403: Forbidden"
-          },
-          {
-            "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
-            "type": "HTTPError",
-            "reason": "HTTP Error 403: Forbidden"
-          },
-          {
-            "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
-            "type": "HTTPError",
-            "reason": "HTTP Error 403: Forbidden"
-          },
-          {
-            "url": "https://datosabiertos.fonasa.cl/analysis/",
-            "type": "HTTPError",
-            "reason": "HTTP Error 403: Forbidden"
-          }
-        ]
+        "failure_signature": "HTTP403_ALB",
+        "origin_tls_observed": true,
+        "trace_scope": "native_official_probe",
+        "details": null
       },
       "discovery_diagnostics": {
         "surfaces": [
@@ -697960,8 +698063,59 @@
         "poll_mode": "daily_engine"
       },
       "engine_checked_at": "2026-10-11T14:45:30.511053+00:00",
-      "poll_mode": "daily_engine",
-      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/fonasa_datos_abiertos/summary.json"
+      "poll_mode": "independent_official_probe",
+      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/fonasa_datos_abiertos/summary.json",
+      "last_attempt_at": "2026-10-12T04:14:22.318142+00:00",
+      "assessed_at": "2026-10-12T04:47:21.713802+00:00",
+      "recovery_outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "coverage_complete": false,
+      "coverage_reason": "official_http403_ALB",
+      "pages_checked": 1,
+      "items_discovered": null,
+      "unique_items": null,
+      "items_recent": null,
+      "items_material": null,
+      "parse_errors": 0,
+      "zero_publication_reason": "blocked_surface_not_evidence_of_absence",
+      "native_probe_outcomes": [
+        {
+          "source": "fonasa_datos_abiertos",
+          "url": "https://datosabiertos.fonasa.cl/noticias/",
+          "host": "datosabiertos.fonasa.cl",
+          "captured_at": "2026-10-12T04:14:22.318142+00:00",
+          "method": "GET",
+          "redirects": [],
+          "http_status": 403,
+          "origin_tls_observed": true,
+          "dns": {
+            "addresses": [
+              "13.223.130.10",
+              "3.93.122.73"
+            ]
+          },
+          "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+          "final_url": "https://datosabiertos.fonasa.cl/noticias/",
+          "headers": {
+            "Server": "awselb/2.0",
+            "Date": "Mon, 12 Oct 2026 04:14:22 GMT",
+            "Content-Type": "text/html",
+            "Content-Length": "118"
+          },
+          "capture_limit_mib": 8,
+          "sha256": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4",
+          "bytes": 118,
+          "body_path": "captures/58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4.html",
+          "waf_challenge": false,
+          "outcome": "http"
+        }
+      ],
+      "evidence": "data/audits/daily_first_20261012/verified-native-runtime.zip",
+      "stop_loss": "No further equivalent recovery probes; existing core circuit permits controlled probe after24h",
+      "poll_age_hours": 0.55,
+      "daily_check_state": "checked_within_24h",
+      "last_verified_discovery_at": null,
+      "recovery_cadence_validated": false,
+      "probe_checked_at": "2026-10-12T04:14:22.318142+00:00"
     },
     "suseso_news": {
       "name": "Suseso News",
@@ -698930,25 +699084,25 @@
     },
     "pulso_latercera": {
       "name": "Pulso / La Tercera",
-      "checked_at": "2026-10-12T02:16:09.501544+00:00",
+      "checked_at": "2026-10-12T05:09:01.943985+00:00",
       "last_signal_at": "2026-10-10",
-      "discovered": 1743,
+      "discovered": 555,
       "new": 0,
       "published": 0,
-      "live_pending": 1,
-      "backfill_pending": 1485,
-      "pending": 1486,
-      "deferred": 12,
-      "rejected": 180,
-      "status": "warning",
+      "live_pending": 0,
+      "backfill_pending": 1481,
+      "pending": 1481,
+      "deferred": 14,
+      "rejected": 188,
+      "status": "ok",
       "error": null,
       "technical_status": "ok",
       "coverage_status": "observed",
       "content_freshness": "recent",
-      "latest_original_at": "2026-10-11",
-      "editorial_outcome": "not_evaluated",
-      "evaluation_performed": false,
-      "processed_rejections": 0,
+      "latest_original_at": "2026-10-12",
+      "editorial_outcome": "rejected",
+      "evaluation_performed": true,
+      "processed_rejections": 4,
       "counts_scope": {
         "discovered": "this_run",
         "new": "this_run",
@@ -698962,7 +699116,7 @@
     },
     "isp_surveillance": {
       "name": "Instituto de Salud Pública de Chile (ISP)",
-      "checked_at": "2026-10-11T14:55:34.964795+00:00",
+      "checked_at": "2026-10-12T04:41:41.137149+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -698973,9 +699127,9 @@
       "deferred": 0,
       "rejected": 0,
       "status": "error",
-      "error": "RuntimeError",
+      "error": "TLSCertificateChainVerificationFailed",
       "technical_status": "error",
-      "coverage_status": "unverified",
+      "coverage_status": "blocked",
       "content_freshness": "unknown",
       "latest_original_at": null,
       "editorial_outcome": "not_evaluated",
@@ -698989,20 +699143,10 @@
         "rejected": "cumulative_queue"
       },
       "error_details": {
-        "exception_chain": [
-          {
-            "type": "RuntimeError"
-          },
-          {
-            "type": "URLError",
-            "reason": "timed out"
-          },
-          {
-            "type": "TimeoutError",
-            "reason": "timed out"
-          }
-        ],
-        "failure_signature": "RuntimeError > URLError:timed out > TimeoutError:timed out"
+        "failure_signature": "TLS_unable_to_get_local_issuer_certificate",
+        "origin_tls_observed": false,
+        "trace_scope": "native_official_probe",
+        "details": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)>"
       },
       "discovery_diagnostics": {
         "surfaces": [
@@ -699079,8 +699223,68 @@
         "poll_mode": "daily_engine"
       },
       "engine_checked_at": "2026-10-11T14:55:34.964795+00:00",
-      "poll_mode": "daily_engine",
-      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/isp_surveillance/summary.json"
+      "poll_mode": "independent_official_probe",
+      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/isp_surveillance/summary.json",
+      "last_attempt_at": "2026-10-12T04:41:41.137149+00:00",
+      "assessed_at": "2026-10-12T04:47:21.713816+00:00",
+      "recovery_outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "coverage_complete": false,
+      "coverage_reason": "official_primary_and_gob_alias_TLS_chain_verification_failed",
+      "pages_checked": 2,
+      "items_discovered": null,
+      "unique_items": null,
+      "items_recent": null,
+      "items_material": null,
+      "parse_errors": 0,
+      "zero_publication_reason": "blocked_surface_not_evidence_of_absence",
+      "native_probe_outcomes": [
+        {
+          "source": "isp_surveillance",
+          "url": "https://www.ispch.cl/boletin/",
+          "host": "www.ispch.cl",
+          "captured_at": "2026-10-12T04:14:22.318626+00:00",
+          "method": "GET",
+          "redirects": [],
+          "http_status": null,
+          "origin_tls_observed": false,
+          "dns": {
+            "addresses": [
+              "200.68.11.20"
+            ]
+          },
+          "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+          "outcome": "tls",
+          "error_type": "URLError",
+          "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)>"
+        },
+        {
+          "source": "isp_surveillance",
+          "url": "https://www.ispch.gob.cl/boletin/",
+          "host": "www.ispch.gob.cl",
+          "captured_at": "2026-10-12T04:41:41.137149+00:00",
+          "method": "GET",
+          "redirects": [],
+          "http_status": null,
+          "origin_tls_observed": false,
+          "dns": {
+            "addresses": [
+              "200.54.12.61",
+              "200.68.11.20"
+            ]
+          },
+          "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+          "outcome": "tls",
+          "error_type": "URLError",
+          "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)>"
+        }
+      ],
+      "evidence": "data/audits/daily_first_20261012/verified-native-runtime.zip",
+      "stop_loss": "No further equivalent recovery probes; existing core circuit permits controlled probe after24h",
+      "poll_age_hours": 0.09,
+      "daily_check_state": "checked_within_24h",
+      "last_verified_discovery_at": null,
+      "recovery_cadence_validated": false,
+      "probe_checked_at": "2026-10-12T04:41:41.137149+00:00"
     },
     "clinicas_chile": {
       "name": "Clínicas de Chile A.G.",
@@ -699178,21 +699382,474 @@
         "preview_run": 38147510597,
         "artifact": "data/audits/integration_20261011/postmerge-clinicas_chile/summary.json"
       }
+    },
+    "dipres_health_budget": {
+      "pages_checked": 182,
+      "items_discovered": 116,
+      "unique_items": 116,
+      "items_recent": null,
+      "items_material": 5,
+      "published": 0,
+      "rejected": 0,
+      "deferred": 5,
+      "parse_errors": 0,
+      "coverage_complete": false,
+      "coverage_reason": "Declared Salud project/execution perimeter parsed; source publication dates, complete fiscal version stock and separated-cadence recurrence remain unverified",
+      "technical_status": "degraded",
+      "snapshot_semantics": "Data observations; published is news cards, never table rows",
+      "recurrence_validated": false,
+      "runtime_activation": "held_for_core_quality_gate",
+      "outcome": "OPERATIVE_DEGRADED",
+      "data_documents": 116,
+      "observations": 408,
+      "recency_reason": "Original PDF publication dates unknown; fiscal years and execution cutoffs do not prove recent publication",
+      "programs": [
+        "16.02.01",
+        "16.02.02",
+        "16.02.04",
+        "16.02.05",
+        "16.04.01",
+        "16.05.01",
+        "16.09.01",
+        "16.10.01",
+        "16.10.02",
+        "16.11.01",
+        "16.20.01",
+        "16.20.02",
+        "16.21.01",
+        "16.21.02",
+        "16.22.01",
+        "16.22.02",
+        "16.23.01",
+        "16.23.02",
+        "16.24.01",
+        "16.24.02",
+        "16.25.01",
+        "16.25.02",
+        "16.26.01",
+        "16.26.02",
+        "16.27.01",
+        "16.27.02",
+        "16.28.01",
+        "16.28.02",
+        "16.29.01",
+        "16.29.02",
+        "16.30.01",
+        "16.30.02",
+        "16.31.01",
+        "16.31.02",
+        "16.32.01",
+        "16.32.02",
+        "16.33.01",
+        "16.33.02",
+        "16.34.01",
+        "16.34.02",
+        "16.35.01",
+        "16.35.02",
+        "16.36.01",
+        "16.36.02",
+        "16.37.01",
+        "16.37.02",
+        "16.38.01",
+        "16.38.02",
+        "16.39.01",
+        "16.39.02",
+        "16.40.01",
+        "16.40.02",
+        "16.41.01",
+        "16.41.02",
+        "16.42.01",
+        "16.42.02",
+        "16.43.01",
+        "16.43.02",
+        "16.44.01",
+        "16.44.02",
+        "16.45.01",
+        "16.45.02",
+        "16.46.01",
+        "16.46.02",
+        "16.47.01",
+        "16.47.02",
+        "16.49.01",
+        "16.51.01",
+        "16.52.01",
+        "16.53.01",
+        "16.53.02"
+      ],
+      "fiscal_years": [
+        2025,
+        2026,
+        2027
+      ],
+      "publication_reason": "Tables feed Trend/Benchmark; material changes without verified publication day stay deferred",
+      "checked_at": "2026-10-11T14:48:16.984086+00:00",
+      "status": "warning",
+      "coverage_status": "partial",
+      "editorial_outcome": "data_snapshot_no_news_quota"
+    },
+    "cmf_health_ecosystem": {
+      "pages_checked": 108,
+      "items_discovered": 9,
+      "unique_items": 9,
+      "items_recent": 3,
+      "items_material": 7,
+      "published": 0,
+      "rejected": 2,
+      "deferred": 7,
+      "parse_errors": 0,
+      "coverage_complete": false,
+      "coverage_reason": "Official issuer queries and primary disclosures reconciled; reviewed BACKFILL events held for core/editorial activation; complete health-group reporting perimeter and separate-cadence recurrence remain pending",
+      "technical_status": "ok",
+      "snapshot_semantics": "Data observations; published is news cards, never table rows",
+      "recurrence_validated": false,
+      "runtime_activation": "held_for_core_quality_gate",
+      "outcome": "OPERATIVE_DEGRADED",
+      "reporting_actors": 6,
+      "active_issuers": 4,
+      "financial_observations": 42,
+      "statement_documents": 24,
+      "primary_documents_verified": 9,
+      "primary_documents_reverified": 9,
+      "actor_coverage": [
+        {
+          "issuer": "cl:rut:93930000-7",
+          "registration_status": "Vigente",
+          "coverage_complete": true,
+          "coverage_reason": "dated_results",
+          "query_start": "2026-07-14",
+          "query_end": "2026-10-11"
+        },
+        {
+          "issuer": "cl:rut:94139000-5",
+          "registration_status": "Vigente",
+          "coverage_complete": true,
+          "coverage_reason": "dated_results",
+          "query_start": "2026-07-14",
+          "query_end": "2026-10-11"
+        },
+        {
+          "issuer": "cl:rut:76020458-7",
+          "registration_status": "Vigente",
+          "coverage_complete": true,
+          "coverage_reason": "dated_results",
+          "query_start": "2026-07-14",
+          "query_end": "2026-10-11"
+        },
+        {
+          "issuer": "cl:rut:92051000-0",
+          "registration_status": "Vigente",
+          "coverage_complete": true,
+          "coverage_reason": "dated_results",
+          "query_start": "2026-07-14",
+          "query_end": "2026-10-11"
+        },
+        {
+          "issuer": "cl:rut:96528990-9",
+          "registration_status": "No Vigente",
+          "coverage_complete": true,
+          "coverage_reason": "official_explicit_absence",
+          "query_start": "2026-07-14",
+          "query_end": "2026-10-11"
+        }
+      ],
+      "material_events": 5,
+      "transport_failures": [],
+      "issuer_reported_health_relationships": 3,
+      "checked_at": "2026-10-11T14:48:06.270591+00:00",
+      "status": "warning",
+      "coverage_status": "partial",
+      "editorial_outcome": "data_snapshot_no_news_quota"
+    },
+    "sis_isapre_universe": {
+      "pages_checked": 5,
+      "items_discovered": 10,
+      "unique_items": 10,
+      "items_recent": null,
+      "items_material": 0,
+      "published": 0,
+      "rejected": 0,
+      "deferred": 1,
+      "parse_errors": 0,
+      "coverage_complete": false,
+      "coverage_reason": "10/10 official codes and January–August portfolio reconcile; complete control perimeter, legal form Isalud, networks and separate-cadence recurrence remain unverified",
+      "technical_status": "ok",
+      "snapshot_semantics": "Data observations; published is news cards, never table rows",
+      "recurrence_validated": false,
+      "runtime_activation": "held_for_core_quality_gate",
+      "inventory_entities": 10,
+      "open_entities": 7,
+      "closed_entities": 3,
+      "observations": 320,
+      "validated_periods": 8,
+      "latest_reporting_period": "2026-08",
+      "latest_release_at": "2026-10-02",
+      "recency_reason": "Registry validity is observed, not dated publication; release date and data month are separate",
+      "inventory_coverage_complete": true,
+      "outcome": "OPERATIVE_DEGRADED",
+      "entities_with_control_evidence": 1,
+      "checked_at": "2026-10-11T14:47:47.880645+00:00",
+      "status": "warning",
+      "coverage_status": "partial",
+      "editorial_outcome": "data_snapshot_no_news_quota"
+    },
+    "global_who": {
+      "name": "WHO",
+      "checked_at": "2026-10-11T16:07:31.827873+00:00",
+      "status": "warning",
+      "technical_status": "ok",
+      "coverage_status": "complete",
+      "outcome": "READY_FOR_INTEGRATION",
+      "operation_mode": "isolated_qualification",
+      "discovery_scope": "global_intelligence",
+      "recurrent_operation_proven": false,
+      "cadence_seconds": 86400,
+      "cadence_validation_pending": true,
+      "coverage_contract_id": "e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56",
+      "next_cadence_validation_not_before": "2026-10-12T16:07:31.827873+00:00",
+      "coverage_completeness": "complete",
+      "coverage_window_days": 90,
+      "coverage_from": "2026-07-14",
+      "coverage_to": "2026-10-11",
+      "pages_checked": 7,
+      "recent_items": 84,
+      "discovery_recall_30": {
+        "basis": "independent_native_index_control_on_declared_surfaces",
+        "inventory_url_count": 84,
+        "detected": 84,
+        "omitted_urls": [],
+        "recall": 1.0,
+        "whole_source_archive_claim": false
+      },
+      "discovery_recall_90": {
+        "basis": "independent_native_index_control_on_declared_surfaces",
+        "inventory_url_count": 241,
+        "detected": 241,
+        "omitted_urls": [],
+        "recall": 1.0,
+        "whole_source_archive_claim": false
+      },
+      "window_completeness": {
+        "30": "complete_on_declared_surfaces",
+        "90": "complete_on_declared_surfaces"
+      },
+      "unique_language_urls_90": 241,
+      "unique_items": 241,
+      "counts": {
+        "30": 84,
+        "90": 241
+      },
+      "indexed_counts": {
+        "30": 84,
+        "90": 241
+      },
+      "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
+      "material_items": 148,
+      "published": 0,
+      "rejected": 4,
+      "deferred": 237,
+      "pending_date_items": 0,
+      "technical_failures": [],
+      "discovered": 241,
+      "new": 0,
+      "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
+      "parser_routes": [
+        "news",
+        "publications",
+        "disease_outbreak_news"
+      ],
+      "boundary_evidence": [
+        {
+          "section": "news",
+          "stop": "verified_older_boundary",
+          "pages": 3
+        },
+        {
+          "section": "publications",
+          "stop": "verified_older_boundary",
+          "pages": 3
+        },
+        {
+          "section": "disease_outbreak_news",
+          "stop": "verified_older_boundary",
+          "pages": 1
+        }
+      ],
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json",
+      "source_quality_disposition": "pass_data",
+      "publication_activation": false,
+      "content_freshness": "recent",
+      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review",
+      "materiality_evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json",
+      "materiality_projection_run_id": "38155456354"
+    },
+    "global_paho": {
+      "name": "PAHO",
+      "checked_at": "2026-10-11T16:19:32.470424+00:00",
+      "status": "warning",
+      "technical_status": "ok",
+      "coverage_status": "complete",
+      "outcome": "READY_FOR_INTEGRATION",
+      "operation_mode": "isolated_qualification",
+      "discovery_scope": "global_intelligence",
+      "recurrent_operation_proven": false,
+      "cadence_seconds": 86400,
+      "cadence_validation_pending": true,
+      "coverage_contract_id": "10f7a75d3b571eaf9952dfe456fc75ac6b1cbd6e78c391c9618edc2ea343fa1e",
+      "next_cadence_validation_not_before": "2026-10-12T16:19:32.470424+00:00",
+      "coverage_completeness": "complete",
+      "coverage_window_days": 90,
+      "coverage_from": "2026-07-14",
+      "coverage_to": "2026-10-11",
+      "pages_checked": 125,
+      "recent_items": 185,
+      "discovery_recall_30": {
+        "basis": "independent_native_index_control_on_declared_surfaces",
+        "inventory_url_count": 243,
+        "detected": 243,
+        "omitted_urls": [],
+        "recall": 1.0,
+        "whole_source_archive_claim": false
+      },
+      "discovery_recall_90": {
+        "basis": "independent_native_index_control_on_declared_surfaces",
+        "inventory_url_count": 673,
+        "detected": 673,
+        "omitted_urls": [],
+        "recall": 1.0,
+        "whole_source_archive_claim": false
+      },
+      "window_completeness": {
+        "30": "complete_on_declared_surfaces",
+        "90": "complete_on_declared_surfaces"
+      },
+      "unique_language_urls_90": 673,
+      "unique_items": 530,
+      "counts": {
+        "30": 185,
+        "90": 530
+      },
+      "indexed_counts": {
+        "30": 185,
+        "90": 530
+      },
+      "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
+      "material_items": 229,
+      "published": 0,
+      "rejected": 14,
+      "deferred": 516,
+      "pending_date_items": 0,
+      "technical_failures": [],
+      "discovered": 530,
+      "new": 0,
+      "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
+      "parser_routes": [
+        "regional_news",
+        "regional_news_es",
+        "chile_news",
+        "chile_news_es",
+        "epidemiological_alerts",
+        "technical_reports"
+      ],
+      "boundary_evidence": [
+        {
+          "section": "regional_news",
+          "stop": "verified_date_partition_coverage",
+          "pages": 43
+        },
+        {
+          "section": "regional_news_es",
+          "stop": "verified_date_partition_coverage",
+          "pages": 77
+        },
+        {
+          "section": "chile_news",
+          "stop": "verified_older_boundary",
+          "pages": 1
+        },
+        {
+          "section": "chile_news_es",
+          "stop": "verified_older_boundary",
+          "pages": 2
+        },
+        {
+          "section": "epidemiological_alerts",
+          "stop": "verified_older_boundary",
+          "pages": 1
+        },
+        {
+          "section": "technical_reports",
+          "stop": "verified_older_boundary",
+          "pages": 1
+        }
+      ],
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json",
+      "source_quality_disposition": "pass_data",
+      "publication_activation": false,
+      "content_freshness": "recent",
+      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review",
+      "materiality_evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json",
+      "materiality_projection_run_id": "38155456354",
+      "coverage_evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.json",
+      "coverage_qualification_run_id": "38156977778",
+      "coverage_qualification_mode": "captured_byte_replay",
+      "first_complete_fresh_capture_under_current_contract_pending": true,
+      "cadence_validation_requires": "First complete fresh live capture under current contract, then a second at least 86400 seconds later. This projection is not a fresh cadence anchor."
+    },
+    "global_reuters": {
+      "name": "Reuters",
+      "discovery_scope": "global_intelligence",
+      "checked_at": null,
+      "status": "error",
+      "technical_status": "not_polled_license_hold",
+      "coverage_status": "not_permitted",
+      "outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "operation_mode": "manual_curated_only",
+      "recurrent_operation_proven": false,
+      "coverage_completeness": "unmeasured_without_permitted_route",
+      "coverage_window_days": 90,
+      "counts": {
+        "30": null,
+        "90": null
+      },
+      "recent_items": null,
+      "unique_items": null,
+      "material_items": null,
+      "published": 0,
+      "rejected": 0,
+      "deferred": 0,
+      "discovered": 0,
+      "new": 0,
+      "pages_checked": 0,
+      "technical_failures": [
+        {
+          "code": "prior_written_consent_required",
+          "evidence_ref": "data/audits/global_source_recovery_2026_10_11/probes/38141320771/reuters_robots.body"
+        }
+      ],
+      "manual_reference_control": {
+        "total": 8,
+        "30": 8,
+        "90": 8,
+        "collector_recall": null
+      },
+      "reason": "Reuters prohibits automated collection of content/data/information without prior written consent; no authorized contracted route is configured or documented for Alicanto.",
+      "publication_activation": false,
+      "editorial_outcome": "rights_hold"
     }
   },
   "iterations": [],
   "usage": {
     "calls": {
-      "2026-10": {
+      "2026-09": {
         "deep": {
-          "attempted": 14,
-          "successful": 14,
+          "attempted": 28,
+          "successful": 28,
           "failed": 0
         },
         "fast": {
-          "attempted": 520,
-          "successful": 520,
-          "failed": 0
+          "attempted": 124,
+          "successful": 82,
+          "failed": 42
         }
       },
       "occupational_recovery_2026_10": {
@@ -699235,25 +699892,25 @@
         "policy": "Unpromoted isolated branch: staging plus its own delta, shared writer lock; no staging/main writes",
         "phase_fast_limit": 30
       },
-      "2026-09": {
+      "2026-10": {
         "deep": {
-          "attempted": 28,
-          "successful": 28,
+          "attempted": 14,
+          "successful": 14,
           "failed": 0
         },
         "fast": {
-          "attempted": 124,
-          "successful": 82,
-          "failed": 42
+          "attempted": 530,
+          "successful": 530,
+          "failed": 0
         }
       }
     },
-    "measured_responses": 550,
-    "input_tokens": 1402785,
-    "output_tokens": 538672,
+    "measured_responses": 560,
+    "input_tokens": 1428367,
+    "output_tokens": 551232,
     "models": {
       "gpt-5.6-terra": 22,
-      "gpt-5.6-luna": 528
+      "gpt-5.6-luna": 538
     },
     "errors": {},
     "fast_failed": 0,
@@ -699471,7 +700128,7 @@
         "model_status": "unavailable"
       }
     },
-    "unassigned_responses": 550
+    "unassigned_responses": 560
   },
   "excel": [
     {
@@ -700993,9 +701650,9 @@
     ],
     "observed": {
       "development": {
-        "deployable_sha": "26c13b982f770577ff37bf3e6effd6e5da12d402",
-        "blocked_task_count": 9,
-        "active_task_count": 35,
+        "deployable_sha": null,
+        "blocked_task_count": 12,
+        "active_task_count": 34,
         "test_pass_count": null
       },
       "operations": {
@@ -701025,17 +701682,17 @@
     }
   },
   "read_model": {
-    "generated_at": "2026-10-12T02:16:21.172119+00:00",
-    "queue_updated_at": "2026-10-12T01:36:56.500136+00:00",
-    "queue_task_count": 86,
-    "active_task_count": 35,
-    "blocked_task_count": 9,
+    "generated_at": "2026-10-12T05:32:50.751238+00:00",
+    "queue_updated_at": "2026-10-12T04:56:08.462889+00:00",
+    "queue_task_count": 88,
+    "active_task_count": 34,
+    "blocked_task_count": 12,
     "freshness": "available"
   },
   "pmo": {
     "version": "beta-friday-2026-09-25",
     "target_date": "2026-09-25",
-    "candidate_sha": "26c13b982f770577ff37bf3e6effd6e5da12d402",
+    "candidate_sha": null,
     "reference_staging_sha": "3433b3e26f4d76ea6ce0970015bc03e10fd85105",
     "production_reference_sha": "ea55bc7e084b54ff07cb25ea50e211186dfb1c63",
     "reference_deploy": {
@@ -701263,15 +701920,18 @@
         "critical": true,
         "evidence": [
           "global_intelligence_lite_qa",
-          "mvp_product_refinements_global_editorial_qa"
+          "mvp_product_refinements_global_editorial_qa",
+          "global_official_discovery_qualification_2026_10_11",
+          "global_daily_first_integration_packet_2026_10_11"
         ],
         "dependencies": [
           "fuentes internacionales con acceso público",
           "separación Global Theme/Trend Chile"
         ],
         "missing": [
-          "Monitoreo recurrente de fuentes internacionales para operación continua.",
-          "Auth/pricing/pagos solo para etapa comercial; no bloquean Beta cerrada."
+          "Auth/pricing/pagos solo para etapa comercial; no bloquean Beta cerrada.",
+          "Daily source operation requires two complete fresh captures separated by 24h, core recovery/balance acceptance and remaining technical/rights holds. Isolated resume is not cadence proof.",
+          "Daily First: qualify real30-day polling without enlarging retained90-day evidence; Commander must observe staging7/7 cycles and24/48h freshness. Integration package readiness does not enable collection or prove cadence."
         ],
         "requirements": [
           {
@@ -701290,6 +701950,30 @@
             "status": "Implementado"
           }
         ],
+        "source_qualification": {
+          "branch": "codex/global-intelligence-recurrent-20261011",
+          "run_id": "38153425336",
+          "outcomes": {
+            "who": "READY_FOR_INTEGRATION",
+            "paho": "READY_FOR_INTEGRATION",
+            "reuters": "EXTERNAL_BLOCKER_PROVEN"
+          },
+          "source_activation": false,
+          "cadence_proven": false,
+          "new_cards": 0
+        },
+        "integration_packet": {
+          "PR": 26,
+          "branch": "codex/global-intelligence-recurrent-20261011",
+          "source_package_outcome": "READY_FOR_INTEGRATION",
+          "source_as_of": "2026-10-11",
+          "daily_collection_enabled": false,
+          "cadence_proven": false,
+          "post_merge_runtime_proven": false,
+          "new_connectors": 0,
+          "new_cards": 0,
+          "evidence": "data/audits/global_integration_2026_10_11/package.json"
+        },
         "evidence_links": [
           {
             "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36038753641",
@@ -701300,6 +701984,16 @@
             "url": "https://github.com/cftorre1/Radar-salud/actions/runs/36067186012",
             "sha": "234e8445e7d99066e9a72af563280ead98457347",
             "result": "success"
+          },
+          {
+            "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38153425336",
+            "sha": "f7de051a645e21e293b6d1439341e508e5b0c403",
+            "result": "qualified_with_explicit_source_holds"
+          },
+          {
+            "url": null,
+            "sha": "a1a0e655b848c146b60762f87f60e71ea1e0db69",
+            "result": "focused_delta_PASS_with_operational_holds"
           }
         ]
       },
@@ -702117,6 +702811,73 @@
           "public_sources_c_2026_10_11",
           "data/audits/public_sources_c_20261011/recovery/stock-reconciliation.json"
         ]
+      },
+      {
+        "date": "2026-10-11",
+        "change": "Work4 P0 implementados: inventarios Isapres/CMF/DIPRES y runtime nativo calificados. Tres OPERATIVE_DEGRADED por brechas específicas/cadencia; sin activación ni aumento de readiness global.",
+        "evidence": [
+          "work4_p0_implementation_2026_10_11"
+        ]
+      },
+      {
+        "date": "2026-10-11",
+        "source": "Work 4 P0 / PR #16",
+        "change": "Final source-code qualification on 82c50e5: native adapters/replay/independent Reviewer and global QA PASS; preserve three OPERATIVE_DEGRADED outcomes and exact unresolved scope/cadence/publication gaps"
+      },
+      {
+        "date": "2026-10-11",
+        "change": "PR16 integration conflict reconciled against bc723e0; safe P0 package qualified with retained evidence, 45 focused tests/replay/Reviewer. Deferred recurrence/legal/perimeter/publication scopes do not authorize source activation; merge reserved to Integration Commander.",
+        "evidence": [
+          "work4_p0_integration_candidate"
+        ]
+      },
+      {
+        "date": "2026-10-11",
+        "change": "Global source qualification on isolated branch: official discovery, dated archive reconciliation and rights blocker; Global block remains Implementado, not operationally validated or promoted.",
+        "evidence": [
+          "data/audits/w4_who_2026_10_11.json",
+          "data/audits/w4_paho_2026_10_11.json",
+          "data/audits/w4_reuters_2026_10_11.json",
+          "data/audits/global_source_recovery_2026_10_11/runs/38153425336/python_qa.json",
+          "data/audits/global_source_recovery_2026_10_11/runs/38153425336/browser_qa.json",
+          "data/audits/global_source_recovery_2026_10_11/runs/38153425336/replay.json",
+          "data/audits/global_source_recovery_2026_10_11/runs/38153425336/independent_capture_audit.json",
+          "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/python_qa.json",
+          "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/browser_qa.json",
+          "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/replay.json",
+          "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/independent_capture_audit.json",
+          "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/report.json",
+          "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/report.json",
+          "data/audits/global_source_recovery_2026_10_11/reviewer_final.json"
+        ]
+      },
+      {
+        "date": "2026-10-11",
+        "change": "Codex C closes scoped WHO/PAHO candidate package for Integration Commander; daily gate off and snapshot freshness observer added. Reuters remains paused; six alternatives conditional, zero additional connectors; Global remains Implementado.",
+        "evidence": [
+          "docs/GLOBAL_INTEGRATION_HANDOFF_2026_10_11.md",
+          "data/audits/global_integration_2026_10_11/package.json",
+          "data/audits/global_integration_2026_10_11/focused_qa.json",
+          "data/audits/global_integration_2026_10_11/freshness_preintegration.json",
+          "data/audits/global_integration_2026_10_11/alternatives.json",
+          "data/audits/global_integration_2026_10_11/reviewer.json"
+        ]
+      },
+      {
+        "date": "2026-10-12",
+        "change": "Commander integrates Pulso PR10 with paid ancestry. Exact-SHA preview PASS; remaining integration and fresh source runtime pending. Historical exact-code tests must not certify later source modules.",
+        "evidence": [
+          "https://github.com/cftorre1/Radar-salud/actions/runs/38202622766",
+          "tests/test_pulso_terminal_followthrough_qa.py"
+        ]
+      },
+      {
+        "date": "2026-10-12",
+        "change": "Integrated PR10/26/16/28/30/31 with merge commits. Live Pulso/DF atc10f PASS;6FAST paid outputs queued for additive durable preservation, no publications. Source freshness/recurrence and independent semantic review remain release blockers.",
+        "evidence": [
+          "data/audits/integration_commander_2026_10_12/checkpoint.json",
+          "data/audits/integration_commander_2026_10_12/merged_preservation.json"
+        ]
       }
     ],
     "missing_for_beta": [
@@ -702127,8 +702888,9 @@
       "Datos y Excel: Falta evidencia completa del commit candidato.",
       "Fuentes MVP Chile: FONASA/ANAMED/DEIS permanecen como expansión de cobertura externa; no bloquean Beta cerrada.",
       "Fuentes MVP Chile: Continuar incorporando fuentes solo cuando exista evidencia pública accesible y trazable.",
-      "Global Intelligence Lite: Monitoreo recurrente de fuentes internacionales para operación continua.",
       "Global Intelligence Lite: Auth/pricing/pagos solo para etapa comercial; no bloquean Beta cerrada.",
+      "Global Intelligence Lite: Daily source operation requires two complete fresh captures separated by 24h, core recovery/balance acceptance and remaining technical/rights holds. Isolated resume is not cadence proof.",
+      "Global Intelligence Lite: Daily First: qualify real30-day polling without enlarging retained90-day evidence; Commander must observe staging7/7 cycles and24/48h freshness. Integration package readiness does not enable collection or prove cadence.",
       "Cobertura y transparencia: estado de cobertura histórica progresiva",
       "Email y suscripción: Crear/habilitar MailerLite; crear grupos newsletter/acceso anticipado y entregar IDs/API key por secreto.",
       "Email y suscripción: Confirmar capacidad emails.*.content del plan o elegir flujo oficial compatible; no cambiar plan sin autorización.",

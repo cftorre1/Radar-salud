@@ -79,6 +79,16 @@ jobs:
           echo "Beta source failures remain repair-required but do not suppress independent core collection." >> "$GITHUB_STEP_SUMMARY"
       - name: Snapshot reviewer after collection
         run: python -m pytest -q tests/test_reviewer.py
+      - name: Observe Daily First freshness independently of collector success
+        if: always()
+        run: python scripts/check_daily_first.py --output artifacts/daily-first-freshness.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: daily-first-freshness-${{ github.run_id }}
+          path: artifacts/daily-first-freshness.json
+          if-no-files-found: warn
+          retention-days: 30
       - name: Observe Global snapshot freshness without collecting or publishing
         if: always()
         continue-on-error: true

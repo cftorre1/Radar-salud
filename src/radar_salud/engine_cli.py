@@ -137,11 +137,16 @@ def main():
     surfaces={}
     occupational_audit={}
     original_dates={}
+    from .daily_first import SOURCES as DAILY_FIRST_SOURCES, monitor_scope, annotate_health
+    previous_health=json.loads((root/'data/source_health.json').read_text()).get('sources',{}) if (root/'data/source_health.json').exists() else {}
+    daily_monitors={}
     # Complete discovery for every source before any budget-consuming processing.
     for name,_,discover,_ in specs:
         owner=getattr(discover,"__self__",None)
         try:
-            items=discover()
+            with monitor_scope(root,name) as monitor:
+                daily_monitors[name]=monitor
+                items=discover()
             observed[name]=[dict(url=raw.url,event_date=raw.event_date,metadata=raw.metadata) for raw in items]
             surfaces[name]=getattr(getattr(discover,"__self__",None),"surface_results",None)
             scout=getattr(discover,"__self__",None)
@@ -289,7 +294,8 @@ def main():
         prior_assessment=deepcopy(processing_raw.metadata.get('editorial_assessment'))
         try:
             cfg,processor=processors[item["source"]]
-            row=processor(processing_raw,cfg)
+            with monitor_scope(root,item['source'],monitor=daily_monitors.get(item['source'])):
+                row=processor(processing_raw,cfg)
             if row or (processing_raw.metadata.get('editorial_assessment') and processing_raw.metadata['editorial_assessment']!=prior_assessment):
                 evaluated[item['source']]+=1
             if row:
@@ -392,6 +398,9 @@ def main():
             **({"error_detail":occupational_audit[name].get("error"), "inventory":occupational_audit[name].get("inventory", {})} if name in OCCUPATIONAL_SOURCES else {}),
             **{k:v for k,v in diagnostic_details.get(name,{}).items() if v},
             latest_original_at=original_dates.get(name),evaluation_performed=evaluated[name]>0)
+        if name in DAILY_FIRST_SOURCES:
+            annotate_health(root,name,previous=previous_health.get(name,{}),monitor=daily_monitors.get(name,{}),
+                            items=observed.get(name,[]),inventory=getattr(next(s[2].__self__ for s in specs if s[0]==name),'inventory',{}),error=error,source_queue=source_items)
     print({"queue":queue.counts(),"budget":ai_budget_status()})
 
 if __name__=="__main__":main()

@@ -203,6 +203,13 @@ class MinsalNewsScout:
     SOURCE_TYPE = "official"
     DEFAULT_URL = "https://www.minsal.cl/category/noticias/"
 
+    def __init__(self, fetcher=None, now=None):
+        from .public_source_transport import fetch_official_html, fetch_official_feed
+        self.fetcher = fetcher or (lambda url: (fetch_official_feed if url.endswith('/feed/') else fetch_official_html)(url, 'minsal', timeout=15))
+        self.now = now
+        self.discovery_audit = []
+        self.inventory = {}
+
     def discover_from_html(self, html: str, base_url: Optional[str] = None) -> List[RawItem]:
         base_url = base_url or self.DEFAULT_URL
         parser = _AnchorParser(); parser.feed(html)
@@ -219,8 +226,40 @@ class MinsalNewsScout:
         return items
 
     def discover(self, url: Optional[str] = None) -> List[RawItem]:
-        target=url or self.DEFAULT_URL
-        return self.discover_from_html(fetch_html(target),target)
+        from datetime import datetime, timedelta, timezone
+        from .minsal_news import bind_minsal, rss_candidates
+        now = self.now or datetime.now(timezone.utc)
+        self.discovery_audit = []
+        feed = self.DEFAULT_URL + 'feed/'
+        try:
+            candidates = rss_candidates(self.fetcher(feed), now=now)
+            self.discovery_audit.append(dict(url=feed, status='parsed'))
+        except Exception as exc:
+            self.discovery_audit.append(dict(url=feed, status='listing_error', error=type(exc).__name__))
+            # Category HTML contains institutional navigation and a dynamic grid.
+            # Recover independently known pending detail URLs, never its first ten anchors.
+            from .paths import project_root
+            path = project_root()/'data/state/pending_queue.json'
+            stock = json.loads(path.read_text()) if path.exists() else {}
+            candidates = [RawItem(**v['raw']) for v in stock.values()
+                          if v.get('source') == 'minsal' and v.get('status') in ('pending','retry')][:4]
+        items = []
+        for raw in candidates:
+            try:
+                bind_minsal(raw, self.fetcher(raw.url), now=now)
+                if datetime.fromisoformat(raw.metadata['publication_timestamp']) >= now-timedelta(days=30):
+                    items.append(raw)
+                self.discovery_audit.append(dict(url=raw.url, status='parsed'))
+            except Exception as exc:
+                self.discovery_audit.append(dict(url=raw.url, status='detail_error', error=str(exc)))
+        self.inventory = dict(pages_checked=len(self.discovery_audit), items_discovered=len(candidates),
+            unique_items=len(items), items_recent=sum(datetime.fromisoformat(r.metadata['publication_timestamp']) >= now-timedelta(hours=72) for r in items),
+            window_days=30, priority_hours=72, coverage_complete=False,
+            coverage_reason='bounded_official_rss_and_verified_details; full_30d_inventory_not_reconciled',
+            parse_errors=sum(r['status'].endswith('error') for r in self.discovery_audit))
+        if not items:
+            raise RuntimeError('minsal_no_verified_primary_news; absence_not_proven')
+        return items
 
     def discover_new(self, store: SeenStore, url: Optional[str] = None) -> List[RawItem]:
         items=self.discover(url); new_items=[]; fps=[]

@@ -46,7 +46,7 @@ def lane(raw, now, last_discovered_at=None):
         published = datetime.fromisoformat(raw.event_date[:10]).date()
         stamp = datetime.fromisoformat(last_discovered_at.replace("Z", "+00:00"))
         current_day=now.date()
-        if raw.source_slug=="diario_financiero":
+        if raw.source_slug in ("diario_financiero", "minsal"):
             from zoneinfo import ZoneInfo
             # DF publishes Chile calendar days. A UTC midnight watermark must
             # not turn a still-current Chile article into historical backfill.
@@ -276,6 +276,18 @@ class PendingQueue:
                 fiscal_index.setdefault((item["source"], canonical_url(item["raw"]["url"]), item['raw'].get('metadata', {}).get('source_record_id')), []).append(old_key)
         for raw in items:
             key = fingerprint(raw)
+            if source == 'minsal' and raw.metadata.get('minsal_primary_verified'):
+                # Rediscovery repairs evidence, never terminal editorial decisions or LIVE classification.
+                old_key = next((k for k,v in self.items.items() if v.get('source') == source
+                    and canonical_url(v['raw']['url']) == canonical_url(raw.url)), None)
+                if old_key is not None:
+                    item = self.items[old_key]
+                    if item['status'] in ('pending','retry','deferred') and item['raw'] != asdict(raw):
+                        item.setdefault('minsal_provenance_repairs', []).append(dict(previous_raw=item['raw'],
+                            at=now.isoformat(), reason='official_primary_body_and_publication_recovered'))
+                        item['raw'] = asdict(raw)
+                        item.update(reason='minsal_verified_primary_pending_editorial_assessment', retry_at=None)
+                    continue
             if source == "pulso_latercera":
                 url = article_url(raw.url)
                 previous = self.items.get(pulso_urls.get(url)) if url else None
