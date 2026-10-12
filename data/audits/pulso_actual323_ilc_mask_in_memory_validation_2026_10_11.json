@@ -1,0 +1,49 @@
+{
+  "schema_version": "pulso_actual323_ilc_mask_in_memory_validation_v1",
+  "producer_commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+  "reader": {
+    "path": "data/audits/pulso_actual323_three_primary_semantic_review_2026_10_11.json",
+    "sha256": "7646fca3839727228c5b603175056320454e4ad3f74e8eb0708d0c6b66e33d66"
+  },
+  "template": {
+    "path": "data/audits/pulso_actual323_ilc_mask_editorial_review_2026_10_11.json",
+    "sha256": "8ff73f3d5abba75148238f609d39f96957bf9e51e9b3f16add04c60806c8760c"
+  },
+  "application": {
+    "review_id": "pulso_actual323_ilc_mask_exact_publication_review",
+    "review_sha256": "8ff73f3d5abba75148238f609d39f96957bf9e51e9b3f16add04c60806c8760c",
+    "reviewed_count": 2,
+    "applied_count": 2,
+    "unchanged_on_replay": 0,
+    "decisions": {
+      "accept": 1,
+      "reject": 0,
+      "group": 0,
+      "correct": 1
+    },
+    "ai_calls": 0,
+    "primary_evidence_mutations": 0,
+    "queue_attempt_resets": 0
+  },
+  "replay": {
+    "review_id": "pulso_actual323_ilc_mask_exact_publication_review",
+    "review_sha256": "8ff73f3d5abba75148238f609d39f96957bf9e51e9b3f16add04c60806c8760c",
+    "reviewed_count": 2,
+    "applied_count": 0,
+    "unchanged_on_replay": 2,
+    "decisions": {
+      "accept": 1,
+      "reject": 0,
+      "group": 0,
+      "correct": 1
+    },
+    "ai_calls": 0,
+    "primary_evidence_mutations": 0,
+    "queue_attempt_resets": 0
+  },
+  "copy_model_body_score_day_attempts_unchanged": true,
+  "actual_runtime_writes": 0,
+  "AI_calls": 0,
+  "verdict": "PASS_SCOPED_IN_MEMORY_TWO_ALREADY_PUBLISHED_SIGNALS_ONLY",
+  "global_acceptance": "NOT_ACCEPTED_PENDING_TWO_HELD_OUTCOMES_FINAL_REPLAY_QA"
+}

@@ -1,0 +1,376 @@
+{
+  "result": "PASS_SCOPED_WITH_OPERATIONAL_HOLDS",
+  "reviewer": "independent /root/reviewer",
+  "created_at": "2026-10-11T16:59:30.792031+00:00",
+  "engineering_gate": "PASS",
+  "operational_gate": "HOLD_CADENCE_AND_REUTERS_ENTITLEMENT",
+  "publication_and_production_gate": "HOLD_NOT_ACTIVATED",
+  "branch": "codex/global-intelligence-recurrent-20261011",
+  "initial_staging_base": "4ff51cf",
+  "integrated_staging_base": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+  "frozen_code_commit": "aee4ed3dff0c6cd900751e89a219548b261308a1",
+  "reviewed_evidence_checkpoint": "13d02bcc5199e1dc931680851b5a1b254c146913",
+  "review_scope": [
+    "WHO official news/publications/DON metadata",
+    "PAHO regional EN/ES dated news, Chile EN/ES, alerts and technical reports metadata",
+    "Reuters verified licensing/robots hold and unchanged manual references",
+    "Transport/TLS/robots/redirect/cooldown/budget controls",
+    "Date/identity/evidence binding, native recall, translation dedupe/materiality",
+    "Daily candidate wiring, isolated workflows, immutable replay/projections",
+    "Source health, current staging preservation, regression and desktop/mobile QA"
+  ],
+  "reviewer_actions": {
+    "publisher_requests": 0,
+    "paid_ai_calls": 0,
+    "canonical_state_mutations": 0,
+    "implementation_edits": 0,
+    "subagents_spawned": 0,
+    "git_index_or_commits": 0,
+    "own_work_audits_written": true,
+    "raw_auditor_authored_independently_without_collector_parser_imports": true
+  },
+  "actual_evidence": {
+    "fresh_capture_run": "38153425336",
+    "fresh_capture_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38153425336",
+    "fresh_capture_code": "f7de051a645e21e293b6d1439341e508e5b0c403",
+    "fresh_inventory_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json",
+    "fresh_inventory_sha256": "434dec044c79ade78f82f82271121753685cdf5b4a80888cc1c52831efcff831",
+    "fresh_mode": "live_discovery",
+    "fresh_network_requests": 1053,
+    "fresh_reused_url_count": 0,
+    "original_fresh_PAHO_outcome": "IMPLEMENTED_WITH_DECLARED_COVERAGE_GAPS; 23 unverified native end probes retained unchanged",
+    "metadata_projection": {
+      "qa_run": "38155456354",
+      "inventory_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json",
+      "inventory_sha256": "83fa7e2150d07c0e7ee2d7c2afd9d9e03abcc92d62f90ec0211a456960774063",
+      "report_sha256": "5309867fb980bc56536a610c36de78c74f0144d47d8b2a1d1e3a6a0155558f29",
+      "changes": 7,
+      "candidate_recoveries": 6,
+      "routine_to_undetermined": 1,
+      "publisher_requests": 0
+    },
+    "coverage_projection": {
+      "qa_run": "38156977778",
+      "inventory_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.json",
+      "inventory_sha256": "0c9c225fb64e2a40e84c7a4240df41c513044f4a8ec01dc53709ed3fc29c432d",
+      "report_sha256": "2c08bcdc7d106a5839d1b125175bb616e5d63d34af89e1f5447e851618d5329a",
+      "newly_qualified_native_end_probes": 23,
+      "protocol": "date_partition_native_empty_after_clamped_numbered_end",
+      "actual_heading": "h4.visually-hidden#pagination-heading",
+      "publisher_requests": 0,
+      "fresh_and_metadata_inventories_and_ledger_preserved": true,
+      "does_not_prove_new_live_capture_or_cadence": true
+    },
+    "canonical_inventory_sha256": "0c9c225fb64e2a40e84c7a4240df41c513044f4a8ec01dc53709ed3fc29c432d",
+    "independent_raw_audit": {
+      "ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/independent_capture_audit.json",
+      "sha256": "0b188e94174370391f28631c2e796771ed80494a164254fb664510c96abfd9c0",
+      "result": "PASS",
+      "auditor_sha256": "d630a5b616299915bdb0ca804f0338291f2ec42ea3596923e5d7574c50cd9de2",
+      "captures": 1053,
+      "http_statuses": {
+        "200": 1053
+      },
+      "native_pages": 132,
+      "verified_language_details": 914,
+      "hashed_input_files_unchanged": 2107,
+      "all_1053_origin_json_sha_body_sha_bytes_TLS_final_URL_records_bound_to_manifest": true,
+      "robots_and_all_redirect_destinations_rederived_from_saved_policy_bytes": true,
+      "errors": 0,
+      "local_scope": "Reviewer validated committed matrix/manifest/lineage hashes; independently authored raw-reader ran over all original bytes on the isolated GitHub runner. Recorded TLS verification was checked; no reviewer endpoint or independent new certificate handshake."
+    },
+    "replay": {
+      "ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/replay.json",
+      "sha256": "03861301df10fc69526e725e55ac010794085344a521a16114812c63350ef1f3",
+      "result": "PASS",
+      "zero_network_AI_publications": true,
+      "protected_canonical_hashes_unchanged": true,
+      "native_control_items_dates_aliases_and_editorial_selection_identical": true
+    }
+  },
+  "source_outcomes": {
+    "who": {
+      "result": "READY_FOR_INTEGRATION",
+      "technical_status": "ok",
+      "checked_at": "2026-10-11T16:07:31.827873+00:00",
+      "verified_counts_30_90": {
+        "30": 84,
+        "90": 241
+      },
+      "material_candidates_90": 148,
+      "published": 0,
+      "rejected": 4,
+      "pending": 237,
+      "recurrent_operation_proven": false,
+      "publication_activation": false,
+      "coverage_completeness": "complete",
+      "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
+      "recall30": {
+        "basis": "independent_native_index_control_on_declared_surfaces",
+        "inventory_url_count": 84,
+        "detected": 84,
+        "omitted_urls": [],
+        "recall": 1.0,
+        "whole_source_archive_claim": false
+      },
+      "recall90": {
+        "basis": "independent_native_index_control_on_declared_surfaces",
+        "inventory_url_count": 241,
+        "detected": 241,
+        "omitted_urls": [],
+        "recall": 1.0,
+        "whole_source_archive_claim": false
+      }
+    },
+    "paho": {
+      "result": "READY_FOR_INTEGRATION",
+      "technical_status": "ok",
+      "checked_at": "2026-10-11T16:19:32.470424+00:00",
+      "verified_counts_30_90": {
+        "30": 185,
+        "90": 530
+      },
+      "material_candidates_90": 229,
+      "published": 0,
+      "rejected": 14,
+      "pending": 516,
+      "recurrent_operation_proven": false,
+      "publication_activation": false,
+      "coverage_completeness": "complete",
+      "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
+      "recall30": {
+        "basis": "independent_native_index_control_on_declared_surfaces",
+        "inventory_url_count": 243,
+        "detected": 243,
+        "omitted_urls": [],
+        "recall": 1.0,
+        "whole_source_archive_claim": false
+      },
+      "recall90": {
+        "basis": "independent_native_index_control_on_declared_surfaces",
+        "inventory_url_count": 673,
+        "detected": 673,
+        "omitted_urls": [],
+        "recall": 1.0,
+        "whole_source_archive_claim": false
+      }
+    },
+    "reuters": {
+      "result": "EXTERNAL_BLOCKER_PROVEN",
+      "technical_status": "not_polled_license_hold",
+      "checked_at": null,
+      "verified_counts_30_90": {
+        "30": null,
+        "90": null
+      },
+      "material_candidates_90": null,
+      "published": 0,
+      "rejected": 0,
+      "pending": 0,
+      "recurrent_operation_proven": false,
+      "publication_activation": false,
+      "coverage_completeness": "unmeasured_without_permitted_route",
+      "count_basis": "unmeasured_without_permitted_route",
+      "recall30": null,
+      "recall90": null
+    }
+  },
+  "date_and_evidence_gate": {
+    "result": "PASS",
+    "publication_dates_verified_against_native_index_and_detail": true,
+    "unknown_invalid_future_or_conflicting_dates_fail_closed": true,
+    "dateModified_and_data_periods_not_publication_dates": true,
+    "full_listing_detail_identity_and_receipt_binding": true,
+    "WHO_DON_event_period_retained_separately_from_publication_date": true,
+    "PAHO_native_date_form_echo_and_full_query_binding": true,
+    "translations_require_reciprocal_official_aliases_and_retain_every_member_receipt": true,
+    "date_or_routine_candidate_disagreement_remains_pending": true,
+    "declared_surface_30_90_windows_only_no_whole_publisher_historical_archive_claim": true
+  },
+  "QA": {
+    "isolated_artifact_only_run": "38156977778",
+    "job": "114521861948",
+    "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38156977778",
+    "publisher_requests": 0,
+    "frozen_commit_tested": "aee4ed3dff0c6cd900751e89a219548b261308a1",
+    "directed_python_passed": 184,
+    "independent_adversarial_subcases_passed": 94,
+    "reviewer_local_directed_passed": 184,
+    "reviewer_local_subcases_passed": 94,
+    "full_deterministic_python_passed": 1178,
+    "full_deterministic_python_failed": 0,
+    "current_inherited_failures": [],
+    "new_regressions": 0,
+    "excluded_unrelated_live_suite": "tests/test_beta_source_runtime_fast.py",
+    "node_passed": 43,
+    "node_failed": 0,
+    "browser_passed": 12,
+    "browser_failed": 0,
+    "browser_projects": [
+      "desktop",
+      "mobile"
+    ],
+    "deployment": false,
+    "python_report_sha256": "d34eef027b618808508ec69ceee91b600a2e105b146ed4b6cfe57f3969f90ce9",
+    "browser_report_sha256": "c0cede4bc17495945c0e8d048a236e27453b6c9e86944768480f97c0100fe1f4",
+    "historical_baseline_failures": "Fresh and intermediate QA retain their original results. Current staging resolved the old Normativa issue; current final Python has zero failures. Old Global browser assumptions were reproduced on 4ff and corrected to test supported Lite fields; web/global.js remains byte identical. Richer research UI is not certified."
+  },
+  "repair_delta": {
+    "basis": "Comparison with the committed partial run38145510005 at the same 2026-10-11 as_of, not new daily publications and not the14curatedthemes",
+    "partial_inventory_sha256": "e03b4db52eb5871ea4a934ba1845ba2c8f19479b3cc7b88c955937c0446a943b",
+    "WHO_new_identities": 0,
+    "WHO_detail_verifications_restored": 63,
+    "WHO_verified_counts_before": {
+      "30": 81,
+      "90": 178
+    },
+    "PAHO_new_verified_identities": 358,
+    "PAHO_new_30_day_identities": 46,
+    "PAHO_new_metadata_material_candidates": 152,
+    "PAHO_verified_counts_before": {
+      "30": 139,
+      "90": 172
+    },
+    "current_health_new_zero_explanation": "Per-run new compares immediately previous campaign inventory; repair_delta compares the older partial run."
+  },
+  "preservation": {
+    "current_staging_mirrors": {
+      "data/source_health.json": {
+        "unowned_upstream_objects_preserved": 27,
+        "upstream_top_level_metadata_unchanged": true,
+        "owned_objects_exactly_match_qualified_inventory": true,
+        "sha256": "9f6453782b5251857e06cf3063e8fa221880c84ba42c225afd9dc45f3db5f3df"
+      },
+      "web/data/source_health.json": {
+        "unowned_upstream_objects_preserved": 27,
+        "upstream_top_level_metadata_unchanged": true,
+        "owned_objects_exactly_match_qualified_inventory": true,
+        "sha256": "9f6453782b5251857e06cf3063e8fa221880c84ba42c225afd9dc45f3db5f3df"
+      },
+      "web/data/product.json": {
+        "unowned_upstream_objects_preserved": 27,
+        "upstream_top_level_metadata_unchanged": true,
+        "owned_objects_exactly_match_qualified_inventory": true,
+        "sha256": "a5fc12c77ef0b965cd2e00ab709b457c5a5c46f4532838502ad9d7f223a3eb9f"
+      }
+    },
+    "protected_core_and_curated_files": {
+      "data/global/themes.json": {
+        "identical_to_current_staging": true,
+        "sha256": "e2517bf6d5435f899e30dbac6c1fa651cf811613400426dc87490010ef0d5a77"
+      },
+      "web/data/global_themes.json": {
+        "identical_to_current_staging": true,
+        "sha256": "e2517bf6d5435f899e30dbac6c1fa651cf811613400426dc87490010ef0d5a77"
+      },
+      "web/global.js": {
+        "identical_to_current_staging": true,
+        "sha256": "c45bedb30891322c66e8b03aada977e2457a2f5e8ee4821886d3777e643163fa"
+      },
+      "scripts/export_global_intelligence.py": {
+        "identical_to_current_staging": true,
+        "sha256": "2fb5a44eec9841d8c91654dccf193285d103dd2930dc40030c918072d4a92831"
+      },
+      "web/data/radar_today.json": {
+        "identical_to_current_staging": true,
+        "sha256": "3b894c227803d2d971e6080ce2f572b9053d44eaef79b9ed14c8cd076d9a3b6d"
+      }
+    },
+    "approved_curated_themes": 14,
+    "new_cards_or_publications": 0,
+    "Global_metadata_excluded_from_Chile_LIVE_source_denominator": true,
+    "source_health_global_rows_not_new_Chile_signals": true,
+    "unowned_queue_tasks_preserved": 83,
+    "queue_ID_set_unchanged": true,
+    "ledger_sha256": "d7c9934bf3fb1274be598d5e4d22a8280ae689e7d2a36cdda089237d0c780d2c",
+    "original_PAHO_incomplete_contract3_ledger_entry_unchanged": true,
+    "all_metadata_to_coverage_items_dates_aliases_receipts_and_dispositions_unchanged": true,
+    "unrelated_main_staging_E_canonical_state_untouched_by_reviewer": true
+  },
+  "operational_holds": [
+    {
+      "source": "WHO",
+      "code": "CADENCE_NOT_YET_PROVEN",
+      "current_contract": "e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56",
+      "latest_real_complete_fresh_anchor": "2026-10-11T16:07:31.827873+00:00",
+      "reported_next_validation_not_before": "2026-10-12T16:07:31.827873+00:00",
+      "next_action": "A distinct truly fresh complete live run with zero reused URLs and the same coverage contract at least86400 seconds after a qualifying prior fresh run; back-to-back runs and replay cannot qualify."
+    },
+    {
+      "source": "PAHO",
+      "code": "FIRST_COMPLETE_FRESH_CONTRACT4_AND_24H_CADENCE_PENDING",
+      "current_contract": "10f7a75d3b571eaf9952dfe456fc75ac6b1cbd6e78c391c9618edc2ea343fa1e",
+      "capture_checked_at_preserved": "2026-10-11T16:19:32.470424+00:00",
+      "first_complete_fresh_capture_pending": true,
+      "projection_is_cadence_anchor": false,
+      "next_action": "First obtain a complete fresh live capture under contract 4, then a different complete fresh live capture under the same contract at least86400 seconds later. The source next-not-before timestamp is not proof that the first future run establishes cadence."
+    },
+    {
+      "source": "Reuters",
+      "code": "PRIOR_WRITTEN_CONSENT_ENTITLEMENT_UNCONFIGURED",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/probes/38141320771/reuters_robots.body",
+      "fallback_evaluated": "Official licensed delivery/Reuters Connect/API service and licensing pages do not establish Alicanto entitlement. Retain editor-supplied references supported by independent verified primary evidence; no automated Reuters title/metadata/body requests or reproduction.",
+      "next_action": "Accredit written authorization, contracted service and permitted uses before implementing any collector; credentials through a secure channel, never audit/log."
+    },
+    {
+      "source": "GLOBAL_INTEGRATION",
+      "code": "ISOLATED_CANDIDATE_ONLY",
+      "daily_hook_verified": "After core review, always/continue-on-error, GlobalAIkeyempty,50 minute step/45 minute live campaign/95 minute job; coreAIbudgets unchanged.",
+      "next_action": "Keep draft isolated branch and existing activation dependencies; no main/staging promotion, publication or production activation is approved by this source QA."
+    }
+  ],
+  "material_findings_resolution": [
+    {
+      "id": "G-R7",
+      "status": "RESOLVED",
+      "finding": "WHO first 429 was followed by 62 more requests in historical run 3.",
+      "fix": "Serialized paced transport and persisted per-origin Retry-After/cooldown block queued / new requests without UA identity changes. Latest fresh 1053 responses are200 with zero source technical failures; the old429evidence remains immutable."
+    },
+    {
+      "ids": [
+        "G-R8",
+        "G-R9",
+        "G-R10"
+      ],
+      "status": "RESOLVED",
+      "fix": "Merge all overlapping listing receipts and fail closed conflicting dates; only distinct complete truly fresh shared-contract captures can prove cadence; live-resume age/hash checked per use; monotonic campaign budget checked around robots/redirect/pacing."
+    },
+    {
+      "ids": [
+        "G-R11",
+        "G-R12",
+        "G-R13",
+        "G-R14"
+      ],
+      "status": "RESOLVED",
+      "fix": "Native end proofs reject unsupported initial-empty, dated repetition, unrelated/malformed/tracked pager URLs, hidden duplicate/gapped controls and cap8 on any earlier positive page; generic empty cannot contain a pager."
+    },
+    {
+      "id": "G-R15",
+      "status": "RESOLVED",
+      "fix": "Metadata projection freezes source membership and all Reuters health/rights fields; immutable dated identities, aliases, receipts, fresh capture and ledger preserved."
+    },
+    {
+      "id": "G-R16",
+      "status": "RESOLVED_COUNTERCHECKED",
+      "fix": "Clamped empty receipt requires exact requested final URL without fallback / stripping; naked time/publicationmeta/title/card content is rejected."
+    },
+    {
+      "id": "G-I1",
+      "status": "RESOLVED_SAME_BYTE_PROJECTION",
+      "fix": "Verified reciprocal translations retain their own classification receipts; six existing groups recover candidate classification, one routine/candidate disagreement becomes undetermined. No score/publication/date/evidence or quota manipulation."
+    },
+    {
+      "id": "NATIVE_H4_ASSUMPTION",
+      "status": "RESOLVED_ACTUAL_RAW_PROOF",
+      "finding": "New synthetic tests initially assumedh2; the realclosed native header ish4.visually-hidden. Failed qualification produced no canonical promotion and all 23 independent predicate diagnostics isolated the tag mismatch.",
+      "fix": "Exactactualh4 hierarchy with receipt-bound metadata fixtures, h2 / wrong class regressions, independently raw audited 23 clamped closures. Original freshgap and intermediate failures remain historical."
+    }
+  ],
+  "improvement_review": {
+    "integrity": "Independent raw-reader validation and separate immutable fresh/metadata/coverage receipts give reviewable provenance without repolling publishers or upgrading the historical ledger.",
+    "maintainability": "Version native completion contracts and keep fixtures bound to exact observed DOM; future changes should separate small pager predicates to reduce the risk of synthetic assumptions. Current behavior is guarded by the independent raw auditor and adversarial regressions.",
+    "scope_clarity": "Verified counts/recall cover declared official metadata surfaces only. WHO and PAHO share WHO_UN_SYSTEM and are not independent corroboration. Materiality is discovery classification, not a publication score. Candidate maximum 10 / default 30 / no quota; no automated publication."
+  },
+  "remaining_finalization": "Parent may now generate scoped per-source audits/docs and reconcile only its three Global task objects and its own PMO key. A separate light governance-preservation review will cover that final documentation delta; no new publisher poll or parser change is needed for this accepted source-code gate."
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": "pulso_mixed_recovery_validated_checkpoint_v1",
+  "commit": "8dd0195fa037e008b9eb6c97d40268312b6ff7bb",
+  "status": "IMPLEMENTATION_VALIDATED_PENDING_GENUINE_CORE_AND_INDEPENDENT_PEER_VERDICT",
+  "runtime_acceptance": "NOT_ACCEPTED",
+  "file_sha256": {
+    "src/radar_salud/pulso_paid_revalidation.py": "57c838db696cf5e8d5f9b9b3763bc33a84ce021636fc5af7567ad1f6f8263e18",
+    "src/radar_salud/beta_sources.py": "b2cc3a5e2a5b06f2ff7b4576ae7c7ee01897fde8e4fdc9164d7260391beba665",
+    "src/radar_salud/pending_queue.py": "24ca13fe894abd4726a9815273d77db050164c9f25b389f9c637e9567cac01e7",
+    "src/radar_salud/pulso_editorial_proof.py": "a4ee60f71325df003ae0f1842480093e63446f7ae221139f8c970e79c83ce4ec",
+    "tests/test_pulso_paid_guard_revalidation.py": "963a1f925f0e3ea6a8ac75a9286f9461affaaaef3554dc7b50ea0d2603f93bb6"
+  },
+  "manifest": {
+    "path": "data/audits/pulso_v5_paid_guard_revalidation_manifest_2026_10_11.json",
+    "sha256": "3645971793d5803c53b3a9f0f5bcb1b8e8f91ef5638b186aeaab4073645a48ff"
+  },
+  "routes": {
+    "reuse_code_fn": 18,
+    "reuse_below_gate_reject": 6,
+    "assess_contract_or_semantic_defect": 25
+  },
+  "tests": [
+    {
+      "command": "pytest -q tests/test_pulso_paid_guard_revalidation.py tests/test_pulso_queue_code_repair_admission.py tests/test_pulso_queue_model_evidence_continuity.py tests/test_pulso_queue_incremental_admission.py",
+      "passed": 93,
+      "seconds": 48.63
+    },
+    {
+      "command": "pytest -q tests/test_pulso_idempotence.py tests/test_pulso_paid_revalidation_qa.py",
+      "passed": 102,
+      "seconds": 22.47
+    }
+  ],
+  "diff_check": "PASS",
+  "py_compile": "PASS",
+  "state_mutated": false,
+  "new_api_requests": 0,
+  "push_performed": false,
+  "unit_response_ids": "explicit synthetic identifiers only in temporary continuation test; never evidence of actual AI",
+  "preservation": [
+    "original producer code03bf and runtimefp4feb remain distinct from current guard validator receipt",
+    "entire original981 paid model/response/input/date/body/hash and prior v4 admission archive",
+    "nonselected terminals and native sources",
+    "queue status/attempts/lane/detected/fingerprint; one exact nonterminal retry clear"
+  ],
+  "handoff": [
+    "Root commit remaining owned QA/helper/audits and freeze fingerprint",
+    "Reviewer finalize independent product peer verdict against exact code file hashes",
+    "Root preflight exact18/6/25 and actual113 unchanged primary/AI proof",
+    "Only Root launch controlled genuine core; planned25newFAST under existing caps",
+    "Prior artifact38159032940 + additional38120291133 exact missing9 originals; no publisher refetch",
+    "Reconcile actual publication/rejection/deferred/history/feed/budgets/Response IDs; directedQA and real idempotence afterward"
+  ]
+}

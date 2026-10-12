@@ -1,0 +1,60 @@
+{
+  "schema_version": "pulso_actual_paid_review_application_v1",
+  "observed_at": "2026-10-11T21:25:20.698765+00:00",
+  "producer_commit": "fa5cf78582c9d1db1341f9a49624d8868e7391f2",
+  "reviewed_urls": [
+    "https://www.latercera.com/nacional/noticia/chomali-por-listas-de-espera-yo-no-esperaba-que-disminuyeran-lo-que-yo-espero-es-que-disminuyan-los-tiempos/",
+    "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+    "https://www.latercera.com/nacional/noticia/posta-central-obtiene-911-en-evaluacion-de-gestion-y-lidera-desempeno-de-hospitales-publicos-mas-de-la-mitad-no-cumplio-la-meta/"
+  ],
+  "reviews": [
+    {
+      "review": {
+        "review_file": "data/audits/pulso_cross_source_three_duplicate_publications_editorial_group_2026_10_11.json",
+        "review_sha256": "a148a3e9bbbb71ae9430f05f6212a468760df298e3765d6549f5d141408befac",
+        "independent_review_file": "data/audits/pulso_cross_source_three_duplicate_publications_independent_review_2026_10_11.json",
+        "independent_review_sha256": "361fea64fddce6689795d174371443ce306884e501276085f38894c27c7cfbdd"
+      },
+      "application": {
+        "review_id": "pulso_cross_source_three_bound_duplicate_publications_2026_10_11",
+        "review_sha256": "a148a3e9bbbb71ae9430f05f6212a468760df298e3765d6549f5d141408befac",
+        "reviewed_count": 3,
+        "applied_count": 3,
+        "unchanged_on_replay": 0,
+        "decisions": {
+          "accept": 0,
+          "reject": 0,
+          "group": 3,
+          "correct": 0
+        },
+        "ai_calls": 0,
+        "primary_evidence_mutations": 0,
+        "queue_attempt_resets": 0
+      },
+      "immediate_reapplication": {
+        "review_id": "pulso_cross_source_three_bound_duplicate_publications_2026_10_11",
+        "review_sha256": "a148a3e9bbbb71ae9430f05f6212a468760df298e3765d6549f5d141408befac",
+        "reviewed_count": 3,
+        "applied_count": 0,
+        "unchanged_on_replay": 3,
+        "decisions": {
+          "accept": 0,
+          "reject": 0,
+          "group": 3,
+          "correct": 0
+        },
+        "ai_calls": 0,
+        "primary_evidence_mutations": 0,
+        "queue_attempt_resets": 0
+      }
+    }
+  ],
+  "all_paid_models_and_original_bodies_unchanged": true,
+  "all_attempts_lanes_dates_unchanged": true,
+  "native5293_queue_entries_unchanged": true,
+  "native897_history_rows_unchanged": true,
+  "all_unreviewed_queue_entries_unchanged": true,
+  "all_cost_ledgers_and_response_events_unchanged": true,
+  "AI_calls": 0,
+  "global_acceptance": false
+}

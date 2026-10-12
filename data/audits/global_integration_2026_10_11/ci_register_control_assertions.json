@@ -1,0 +1,46 @@
+{
+  "scope": "Exact non-DOM assertions extracted from changed browser case; not a browser run",
+  "valid_snapshots": 3,
+  "required_mutation_rejections": 3,
+  "results": [
+    {
+      "day": "2026-10-11",
+      "counts": {
+        "30": 20,
+        "90": 75
+      },
+      "contexts": 17,
+      "result": "PASS"
+    },
+    {
+      "day": "2026-10-12",
+      "counts": {
+        "30": 20,
+        "90": 72
+      },
+      "contexts": 20,
+      "result": "PASS"
+    },
+    {
+      "day": "2026-10-13",
+      "counts": {
+        "30": 20,
+        "90": 72
+      },
+      "contexts": 13,
+      "result": "PASS"
+    },
+    {
+      "mutation": "missing_office",
+      "result": "REJECTED_AS_REQUIRED"
+    },
+    {
+      "mutation": "recycled_issuance",
+      "result": "REJECTED_AS_REQUIRED"
+    },
+    {
+      "mutation": "invented_publication",
+      "result": "REJECTED_AS_REQUIRED"
+    }
+  ]
+}

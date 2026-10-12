@@ -1,0 +1,263 @@
+{
+  "reviewer": "independent_adversarial_subagent",
+  "reviewed_head": "0b3a41ed6aa21c968e3dd85211eac7ae5bfc45f9",
+  "reviewed_at_stage": "before_live_capture_and_exhaustive_discovery_redesign",
+  "verdict": "FINDINGS_UNRESOLVED_NOT_PASS",
+  "scope": [
+    "source identity/date/body parser",
+    "health/materiality prefilters",
+    "core queue outcome persistence",
+    "media attribution",
+    "completed-calendar-day audit windows"
+  ],
+  "live_capture_reviewed": true,
+  "findings": [
+    {
+      "id": "R1",
+      "severity": "high",
+      "status": "confirmed_by_direct_reproduction",
+      "file": "src/radar_salud/beta_sources.py",
+      "issue": "Hard substring noise veto suppresses material healthcare stories before editorial scoring. The substring reconoc can match reconoce/reconocimiento anywhere in the article, while exceptions omit closure, capacity, prestations, budget and debt.",
+      "reproductions": [
+        {
+          "title": "Hospital regional reconoce crisis y anuncia cierre de pabellones",
+          "body": "La suspensión afecta la capacidad quirúrgica y cambia las prestaciones de oncología.",
+          "actual_materiality_prefilter": false,
+          "expected": "reach unchanged editorial score>=72 and publication_ready, not auto-publish"
+        },
+        {
+          "title": "Salud reconoce recorte en su presupuesto hospitalario",
+          "body": "El proyecto reduce el financiamiento de hospitales y redistribuye recursos para las prestaciones.",
+          "actual_materiality_prefilter": false,
+          "expected": "reach unchanged editorial assessment"
+        }
+      ],
+      "required_test": "Material closure/budget stories with ordinary reconocer language reach analysis; marketing-only award still rejected.",
+      "resolution_stage": "Corrected in code at 89878a5; targeted repros/tests inspected. Final runtime remains required."
+    },
+    {
+      "id": "R2",
+      "severity": "high",
+      "status": "confirmed_by_direct_reproduction",
+      "file": "src/radar_salud/beta_sources.py",
+      "issue": "The positive keyword materiality prefilter omits explicit regulation/accreditation/reform terms and rejects healthcare regulatory signals before editorial assessment.",
+      "reproductions": [
+        {
+          "title": "Congreso aprueba reforma de aseguramiento sanitario",
+          "body": "La nueva ley modifica los derechos de afiliación y la obligación de contratación para los seguros de salud.",
+          "actual_materiality_prefilter": false
+        },
+        {
+          "title": "Nueva norma cambia la acreditación obligatoria de hospitales",
+          "body": "La autoridad modifica los estándares y los plazos para obtener la autorización sanitaria.",
+          "actual_materiality_prefilter": false
+        }
+      ],
+      "required_test": "Regulatory reforms and hospital accreditation reach score>=72 gate while nonhealth bank news cannot.",
+      "resolution_stage": "Corrected in code at 89878a5; targeted repros/tests inspected. Final runtime remains required."
+    },
+    {
+      "id": "R3",
+      "severity": "high",
+      "status": "confirmed_by_code_reading",
+      "file": "src/radar_salud/engine_cli.py",
+      "issue": "DeferredProcessing always records budget_or_analysis_deferred instead of exact assessment reason. Scalar corrections to RawItem.title/event_date/raw_text after process refetch are not copied to queue raw. Metadata uses a shallow-shared dict and is persisted; do not claim all assessment metadata is lost.",
+      "required_test": "Process an unverified queue record whose original publication date/title differs; queue stores repaired scalar fields while preserving identity/detected_at/lane/attempts. Distinct verification_failed, analysis_unavailable and editorial_hold retries retain their exact reasons.",
+      "resolution_stage": "Corrected in code at 89878a5; targeted repros/tests inspected. Final runtime remains required."
+    },
+    {
+      "id": "R4",
+      "severity": "medium",
+      "status": "synthetic_reproduction_live_structure_unverified",
+      "file": "src/radar_salud/pulso_source.py",
+      "issue": "Body extraction is global across multiple article/body-chain elements. A second unblocked recommendation article can contaminate the primary article body and create a false health anchor.",
+      "reproduction": "Primary bank article with canonical-bound JSONLD plus secondary <article class=\"recommendation\"><div class=\"body-chain\">hospital announces closure</div></article> returns hospital text in primary body and health_anchor=True.",
+      "required_test": "Captured full-page detail fixture retains only primary article text; unrelated recommendations never supply health evidence or publication time.",
+      "resolution_stage": "Real publisher body now taken from URL-bound JSONLD articleBody and both captured originals verified. HTML-only fallback still global; actual observed publisher structure is protected."
+    },
+    {
+      "id": "R5",
+      "severity": "medium",
+      "status": "synthetic_reproduction_live_structure_unverified",
+      "file": "src/radar_salud/pulso_source.py",
+      "issue": "Every time datetime inside article is treated as publication evidence, including itemprop=dateModified. A correct publication date and next-day modification cause conflicting_publication_dates.",
+      "required_test": "Captured publication and modification nodes bind to distinct purposes; retain original publication date and capture modification separately.",
+      "resolution_stage": "Corrected in code at 89878a5; targeted repros/tests inspected. Final runtime remains required."
+    },
+    {
+      "id": "R6",
+      "severity": "high",
+      "status": "confirmed_in_prior_audit",
+      "file": "data/audits/pulso_reconciliation_2026_10_11.json",
+      "issue": "Prior inclusive Sep12..Oct11 and Jul14..Oct11 windows include the in-progress day; this does not satisfy 30/90 complete days.",
+      "expected_windows_if_cutoff_date_2026_10_11": "30 complete days 2026-09-11..2026-10-10; 90 complete days 2026-07-13..2026-10-10. Report 2026-10-11 separately as current LIVE slice.",
+      "required_test": "Window bounds use completed America/Santiago calendar days with exact captured_at; inclusive counts 30/90.",
+      "resolution_stage": "Corrected at dfe53d9 and targeted tests/code independently inspected."
+    },
+    {
+      "id": "R7",
+      "severity": "medium",
+      "status": "confirmed_by_diff_review",
+      "file": "src/radar_salud/beta_sources.py",
+      "issue": "The revised noise policy applies to provider/mutuality/provider_achs as well as media. It changes unrelated source gates by limiting noise detection to headline and widening bypass terms.",
+      "required_test": "Preserve prior nonmedia noise rule with role-specific branch; provider/mutuality body-only marketing remains rejected.",
+      "resolution_stage": "Corrected at dfe53d9 and targeted tests/code independently inspected."
+    },
+    {
+      "id": "R8",
+      "severity": "high",
+      "status": "confirmed_by_direct_reproduction",
+      "file": "src/radar_salud/pulso_source.py",
+      "issue": "UTC datePublished calendar date is compared to America/Santiago current calendar date for future detection. Already-published UTC stories after midnight UTC but before midnight Chile are falsely rejected as future.",
+      "reproduction": {
+        "clock_utc": "2026-10-11T02:00:00Z",
+        "clock_santiago": "2026-10-10T23:00:00-03:00",
+        "published_utc": "2026-10-11T01:00:00Z",
+        "actual": "future_publication_date",
+        "expected": "accept real past timestamp; preserve declared publication date"
+      },
+      "required_test": "Accept an aware timestamp one hour before frozen clock across UTC/Chile midnight; reject a genuinely future timestamp. Handle date-only separately.",
+      "resolution_stage": "Corrected at dfe53d9 and targeted tests/code independently inspected."
+    },
+    {
+      "id": "R9",
+      "severity": "high",
+      "status": "confirmed_original_archive_boundary",
+      "file": "tests/fixtures/pulso_real/sitemap_boundary_9900.xml.gz",
+      "issue": "The declared sitemap index contains 100 pages/10000 primary entries, but observed offset9900 reaches only 2026-08-12 by lastmod. It cannot establish 90-day coverage back to 2026-07-13. Lastmod is not publication date.",
+      "required_test": "Verify older offsets beyond declared index or another original archive surface; demonstrate chronological boundary by original publication evidence with no unexplained older omitted controls."
+    },
+    {
+      "id": "R10",
+      "severity": "high",
+      "status": "confirmed_by_code_and_existing_test_expectation",
+      "file": "src/radar_salud/pulso_source.py",
+      "issue": "An empty well-formed archive urlset currently marks terminal and coverage_complete even when every verified original publication is newer than the 90-day cutoff. A publisher hard cap can return an empty page without exhausting older content. Existing replay expects full90 coverage from only100 Oct9 articles plus empty next page, which overstates evidence.",
+      "required_test": "Empty archive page with youngest/oldest fetched articles all after cutoff must remain coverage_complete=False/90-day gap. Require a detail-verified older boundary or independently corroborated archive exhaustion for90. Real current from10000 bodies are malformed/empty and correctly cause bounded errors; guard the well-formed-empty variant too."
+    },
+    {
+      "id": "R11",
+      "severity": "high",
+      "status": "resolved_by_code_inspection",
+      "file": "src/radar_salud/pulso_source.py",
+      "issue": "Discovery cache initially located under data/cache was outside daily workflow git persistence; repaired default path data/state/pulso_discovery_cache.json is covered by existing daily checkpoint.",
+      "resolution_stage": "Fixed in f5ebe3e; stateless cache-reuse tests pass; actual warm second runtime still to observe."
+    },
+    {
+      "id": "R12",
+      "severity": "medium",
+      "status": "resolved_by_code_and_synthetic_test",
+      "file": "scripts/audit_pulso_runtime.py",
+      "issue": "Original observer only patched source binding; processor direct revalidation binding was omitted.",
+      "resolution_stage": "ad6ba47 patches and restores both Pulso source and beta processor fetch bindings within source-scoped engine context. Synthetic HTML with real parser/processor and gzip/SHA assertion verifies mechanism; live HTTP acceptance not inferred."
+    }
+  ],
+  "conditional_concerns": [
+    {
+      "id": "C1",
+      "issue": "Attribution check only searches pulso|la tercera anywhere in generated what_happened. A mention of financial pulso or La Tercera elsewhere can suppress explicit source-attribution prefix. Evidence_maturity remains media_reported, which is correct.",
+      "suggestion": "Require clear opening attribution to the publisher, tested with a publisher mention inside a nonattributed generated sentence."
+    },
+    {
+      "id": "C2",
+      "issue": "Strict requested-url/canonical identity equality can omit redirected legacy paths whose canonical article changes. Verify actual captured redirected routes and preserve alias mapping if needed rather than accepting mismatched foreign evidence."
+    },
+    {
+      "id": "C3",
+      "issue": "excluded_opinion_content raised by metadata under a factual-looking path currently becomes technical detail_error. If observed live, classify explicit opinion exclusion separately so correct editorial exclusion does not degrade source coverage."
+    },
+    {
+      "id": "C4",
+      "severity": "medium",
+      "status": "observe_actual_warm_runtime_provenance",
+      "file": "scripts/audit_pulso_runtime.py",
+      "issue": "Each new CaptureObserver at the same capture_path starts a fresh manifest; warm cached original positives may no longer have original_http_captures in final join. Raw gzip files remain bySHA and git keeps earlier manifest, but final report should explicitly link cached primary SHA/provenance to earlier retained raw capture, or preserve per-execution manifests. Sent actions_route; not a discovery recall failure."
+    }
+  ],
+  "acceptance_unproven": [
+    "complete 30/90 inventory beyond landing pages",
+    "independent external control recall",
+    "HTML-real fixtures and primary original dates",
+    "current runtime core execution",
+    "recent material articles with exact terminal/deferred outcomes",
+    "final QA and reviewer on final SHA"
+  ],
+  "review_notes": [
+    "PR10 most recent comments explicitly prohibit merge/resolved; 11-item inventory is insufficiency evidence only.",
+    "No repository source file edited by reviewer.",
+    "This checkpoint is an interim adversarial review and cannot be cited as final PASS."
+  ],
+  "second_review_head": "6a680ce69dcc4f1631615925de2f4e3d02956b4b",
+  "second_review_results": {
+    "source_core_capture_tests": "31 PASS",
+    "real_capture_fixtures_tests": "2 PASS",
+    "original_fixtures_verified": [
+      "senior_housing.html.gz",
+      "uc_christus.html.gz"
+    ],
+    "verified_original_article_dates": [
+      "2026-10-10",
+      "2026-10-10"
+    ],
+    "verified_original_article_body_lengths": [
+      12107,
+      1608
+    ],
+    "verdict": "SOURCE_FIXES_CONFIRMED_COVERAGE_AND_RUNTIME_STILL_UNPROVEN"
+  },
+  "third_review_head": "7a4219ad512eb9b506cca39c9651d1cc4e0b4e0b",
+  "third_review_results": {
+    "targeted_source_core_capture_real_archive_tests": "48 PASS",
+    "completed_calendar_windows": "corrected to Sep11..Oct10 and Jul13..Oct10",
+    "future_timestamp_check": "aware timestamps now compared to current instant; visible publisher byline checked against Santiago calendar",
+    "nonmedia_noise_rule": "restored to previous body+headline rule",
+    "archive_request_bound": "attempt counter and 3 consecutive error termination inspected",
+    "external_control_inventory_inspected": "200 publisher-byline-verified controls; all 79 in-window primary-recall URLs match supported factual paths"
+  },
+  "fourth_review_code_commits": [
+    "20d394cdb2a7513bdfebbf7223eaa544e09f7114",
+    "b261818cf473a33613e49bc1668a9700df97bfd3"
+  ],
+  "fourth_review_results": {
+    "targeted_source_core_archive_audit_fixture_capture_tests": "77 PASS at b261818",
+    "runtime_reconciliation_expectations": "/workspace/work/pulso-runtime-reconciliation-expectations.json",
+    "code_status": "No new high finding in data-envelope parsing or observed pending attribution; runtime/recall/source editorial acceptance pending real run."
+  },
+  "remaining_acceptance_review": "Actual runtime discovery-only run, primary control recall29/79, recent primary detail publication dates, real processor outcomes/history/serialized feed and final SHA QA. No overall PASS.",
+  "fifth_review_head": "62f751d8fc954686d874c9c7883266b450e3d66b",
+  "fifth_review_results": {
+    "at": "2026-10-11T05:55:50.420203+00:00",
+    "targeted_tests": {
+      "command": "python -m pytest -q tests/test_pulso_incremental_review.py tests/test_pulso_core_runtime.py tests/test_pulso_runtime_audit.py",
+      "result": "75 PASS",
+      "evidence_scope": "Synthetic parser/runtime regressions only; does not establish actual publisher coverage or real AI outcomes"
+    },
+    "commits_reviewed": [
+      "20d394c",
+      "b261818",
+      "bbcbe55",
+      "e49f662",
+      "5dd9743",
+      "38d6fda",
+      "90b19ba",
+      "9506ccd"
+    ],
+    "code_findings_new_blocking": [],
+    "feed_reconciliation": "Actual serialized radar_today.json rows establish feed_present; in-memory curate eligibility retained separately. Snapshot SHA and generated_after_current_history are explicit.",
+    "coverage_reconciliation": "runtime_coverage is authoritative over complementary intentionally capped global sitemap; public_feed_coverage remains in evidence.",
+    "incremental_hold_review": "Three exact URL-bound holds checked against durable review SHA, primary body/date/capture provenance and comparison source. Two releases enable unchanged >=72 analysis only; generic budget remains held. Explicit media context distinguishes proposed budget, real/nominal changes, May signing flows and July effective stock.",
+    "pending_operational_causes": "Pulso fast-budget stop occurs before queue.start and emits processing_deferrals; existing exact editorial holds take precedence over operational explanation.",
+    "working_tree_caveat": "beta_sources.py currently uncommitted verified-legacy provenance and incremental-review integration diff read; root owns validation/commit.",
+    "runtime_acceptance": "NOT VERIFIED. Requires fresh actual normal public feed traversal, original detail/canonical/date evidence, frozen29/79 recall, real editorial outcomes, actual feed/history and final SHA review.",
+    "source_fixture_tests": {
+      "command": "python -m pytest -q tests/test_pulso_source.py tests/test_pulso_real_fixtures.py tests/test_pulso_archive_discovery.py tests/test_pulso_capture_surfaces.py",
+      "result": "54 PASS",
+      "scope": "Actual raw HTML/XML/RSS fixtures plus synthetic hostile parser/pagination regressions; no genuine90-day core acceptance implied"
+    },
+    "integration_committed": "62f751d committed beta_sources provenance plus verified incremental-review invocation; no important source changes uncommitted at reviewer check.",
+    "browser_probe": "Independent inspection:16 HTTP200 projected frontend captures, three growing surfaces, coherent count/next. Scope correctly probe only, not30/90. Raw ANS bytes expected from runtime capture for final reproducibility.",
+    "rss_safety": "Current archive never excludes a cold URL from unmarked content:encoded excerpts, even above160 chars. All cold factual URLs still open original detail; prior conditional RSS false-negative concern removed by current code and adversarial test."
+  },
+  "fifth_review_completed_at": "2026-10-11T05:59:12.056897+00:00",
+  "latest_reviewed_head": "0e0a11e9b05e32eab81b7346a6582d83c9c63e41"
+}

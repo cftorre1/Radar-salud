@@ -1,0 +1,953 @@
+{
+  "schema_version": "pulso_live9_actual_four_paid_rejections_independent_reader_v1",
+  "source_id": "pulso_latercera",
+  "reviewer": "publisher_surfaces",
+  "recorded_at": "2026-10-11T23:43:46.395590+00:00",
+  "producer_commit": "d48a495a5fcefb9adaca26ca30b1f12ddad7e59f",
+  "producer_run_id": 38183583899,
+  "producer_code_sha": "1b4817164dbd9cd091197e1c7ebd03de6fa93526",
+  "inputs": {
+    "queue": {
+      "commit": "d48a495a5fcefb9adaca26ca30b1f12ddad7e59f",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "d44cfa10569f34cf1e1f8a7746d26bd71728d069679c89b756387381123eddf8"
+    },
+    "history": {
+      "commit": "d48a495a5fcefb9adaca26ca30b1f12ddad7e59f",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "1400cb4a7bfd9d50283bf7927515dffa328ec07cbb1a780148f9227f3db98b26"
+    },
+    "runtime_report": {
+      "commit": "d48a495a5fcefb9adaca26ca30b1f12ddad7e59f",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "8ce66b878a4165bb079292eb4c2853eb029309a9341954c77007bc578cf5accb"
+    },
+    "telemetry": {
+      "commit": "d48a495a5fcefb9adaca26ca30b1f12ddad7e59f",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "85baafcd92e24f98d912105fc8dced023b5dd78f18d63a571e7626908d917d31"
+    }
+  },
+  "feed_input": {
+    "commit": "d48a495a5fcefb9adaca26ca30b1f12ddad7e59f",
+    "path": "web/data/radar_today.json",
+    "file_sha256": "4801f42db2518366dd9c2555bd62a1b55d257e46cfb25f67bf089352fc5eccf0"
+  },
+  "prior_triage": {
+    "path": "data/audits/pulso_additional_live9_primary_semantic_triage_2026_10_11.json",
+    "sha256": "fba017ed27f0449be06e20c9c2c4943984d7b835c47fa0a0e8b74bf7de67dfe8"
+  },
+  "all_nine_actual_outcomes": [
+    {
+      "live9_index": 1,
+      "url": "https://www.latercera.com/nacional/noticia/fallece-juan-pablo-cardenas-premio-nacional-de-periodismo-2005/",
+      "publication_date": "2026-10-11",
+      "queue_fingerprint": "76cdc28597009114d576b7e20314a93ed1390c31008b831ba7b2f47968ee40a7",
+      "actual_status": "rejected",
+      "actual_reason": "media_materiality_prefilter",
+      "actual_score": null,
+      "actual_response_id": null,
+      "body_sha256": "ea77802bc5bad54fb476386dc3b9b4bfb4732494feecaa8e9cfa1fc54de46c72",
+      "html_sha256": "2b26c82563487d7d05a31e18d78c81fb637e14feaaa503cd79886fd6106122af",
+      "body_characters": 1553,
+      "primary_body_changed_since_triage": false,
+      "history_matches": 0,
+      "feed_matches": 0
+    },
+    {
+      "live9_index": 2,
+      "url": "https://www.latercera.com/nacional/noticia/amplian-por-72-horas-detencion-de-chofer-de-bus-que-se-desbarranco-en-valparaiso-y-dejo-una-persona-fallecida/",
+      "publication_date": "2026-10-11",
+      "queue_fingerprint": "bbc92593ad927019d68a04f3427e469aedea0e236c2532af9da9af0dfc38309b",
+      "actual_status": "rejected",
+      "actual_reason": "editorial_relevance_below_threshold",
+      "actual_score": 58,
+      "actual_response_id": "resp_01b2cb8f55165d7a006acc1c55288487d0821c27732520eb29",
+      "body_sha256": "29064564d2499b11698111775dc358825dff4eb640167102d23e38333de37a4d",
+      "html_sha256": "9670966b23630ce9747c3c076fe417826ad6c658797ff1312d3825e745e3f049",
+      "body_characters": 2952,
+      "primary_body_changed_since_triage": false,
+      "history_matches": 0,
+      "feed_matches": 0
+    },
+    {
+      "live9_index": 3,
+      "url": "https://www.latercera.com/nacional/noticia/hospital-van-buren-entrega-nuevo-balance-tras-accidente-de-bus-de-orquesta-tres-pacientes-permanecen-internados/",
+      "publication_date": "2026-10-11",
+      "queue_fingerprint": "cab108224d311493028b294814e4e971ec29e91168face4427bc9ebf8b58f9e1",
+      "actual_status": "rejected",
+      "actual_reason": "editorial_relevance_below_threshold",
+      "actual_score": 35,
+      "actual_response_id": "resp_0f0c1b79cdd56e85006acc1c648e8887d0b8d6025a5f374a71",
+      "body_sha256": "1a8e2cb747ff4f55e459c16d02f27a7b570f75c36899543861cb843ff0a67f8d",
+      "html_sha256": "7a632a39efbbe294e38ef8b0628f7227cf4a17d9402c93e73f4ddf5f6cacaed3",
+      "body_characters": 2787,
+      "primary_body_changed_since_triage": false,
+      "history_matches": 0,
+      "feed_matches": 0
+    },
+    {
+      "live9_index": 4,
+      "url": "https://www.latercera.com/nacional/noticia/muere-juan-aliste-vega-exlautarista-condenado-por-asesinato-del-cabo-luis-moyano/",
+      "publication_date": "2026-10-11",
+      "queue_fingerprint": "163e2e80aec2d66306c976c8de5b8aaf03eda3e0438ae9c8a6a67c6fe490396a",
+      "actual_status": "rejected",
+      "actual_reason": "media_materiality_prefilter",
+      "actual_score": null,
+      "actual_response_id": null,
+      "body_sha256": "461828182f49ea460d59055783ff4d88c413c6720f55fcb25e35b3fc133546eb",
+      "html_sha256": "298e026ace0051f53e23f58b2904026a9a40293726660e0c1cc9a5ae9b8d9105",
+      "body_characters": 2666,
+      "primary_body_changed_since_triage": false,
+      "history_matches": 0,
+      "feed_matches": 0
+    },
+    {
+      "live9_index": 5,
+      "url": "https://www.latercera.com/nacional/noticia/universidad-catolica-lamenta-muerte-de-penelope-knuth-tras-accidente-en-valparaiso/",
+      "publication_date": "2026-10-11",
+      "queue_fingerprint": "48c017ec9f9ca492c3f0ae7bebe9684c98225101a2e128aeee60d4895b7b0657",
+      "actual_status": "rejected",
+      "actual_reason": "media_materiality_prefilter",
+      "actual_score": null,
+      "actual_response_id": null,
+      "body_sha256": "6ec4e6d5db14ab4c9f3f2f3e369bcebb67ae997977ad9a6a00b5e08ac76f5885",
+      "html_sha256": "5b772d61fa3df4799765d58d05a009075f591f5d8492bfc74ba3ea56af05716b",
+      "body_characters": 3189,
+      "primary_body_changed_since_triage": false,
+      "history_matches": 0,
+      "feed_matches": 0
+    },
+    {
+      "live9_index": 6,
+      "url": "https://www.latercera.com/nacional/noticia/aluvion-en-las-condes-municipio-reporta-2015-viviendas-afectadas-y-933-atenciones-en-vacunatorios/",
+      "publication_date": "2026-10-11",
+      "queue_fingerprint": "1f3c9b4fdad8a36de23c44b6e8ca57b9870177e1fb6dd52bb5cde1e095441392",
+      "actual_status": "rejected",
+      "actual_reason": "editorial_relevance_below_threshold",
+      "actual_score": 68,
+      "actual_response_id": "resp_06ad848f4f62031e006acc1c7a7b1487d097607e5885a5fa10",
+      "body_sha256": "7341a0a60e33f93339937d6714ad3fd66d233879cec9af9e9acd4de0ab3b0631",
+      "html_sha256": "1d9a57e0fabd3c230ae5ca23a4cbbbfc15584a77884de945a1ffbc4d6067cd25",
+      "body_characters": 4866,
+      "primary_body_changed_since_triage": false,
+      "history_matches": 0,
+      "feed_matches": 0
+    },
+    {
+      "live9_index": 7,
+      "url": "https://www.latercera.com/nacional/noticia/abogado-de-aliste-vega-apunta-a-penal-de-rancagua-y-evalua-acciones-legales-contra-el-estado-tras-su-muerte/",
+      "publication_date": "2026-10-11",
+      "queue_fingerprint": "d3f50bfb73fb868ff68b8a68d9997de170ce61234b1a344b782f7d1508fcc676",
+      "actual_status": "rejected",
+      "actual_reason": "media_materiality_prefilter",
+      "actual_score": null,
+      "actual_response_id": null,
+      "body_sha256": "bc1b361e5a23f3225e35d27dd4e42d1488a8408deb93ebbbd6952657e009ee9b",
+      "html_sha256": "c80e39904f0edea2f0abbd94c81d5c979361d9c6aadc17d21c50bf336f098a95",
+      "body_characters": 2761,
+      "primary_body_changed_since_triage": false,
+      "history_matches": 0,
+      "feed_matches": 0
+    },
+    {
+      "live9_index": 8,
+      "url": "https://www.latercera.com/politica/noticia/muerte-de-aliste-vega-reabre-debate-por-indultos-de-exigir-celeridad-en-tramitacion-a-advertir-limites-por-lesa-humanidad/",
+      "publication_date": "2026-10-11",
+      "queue_fingerprint": "e7b3ca96c457220c2864feae3f174889348b408fd6496ffd51e24bd53e6132c6",
+      "actual_status": "rejected",
+      "actual_reason": "media_materiality_prefilter",
+      "actual_score": null,
+      "actual_response_id": null,
+      "body_sha256": "46827634e3ce478bc5df6c182322871810c0a4c4e543f25ed859f67b995688b2",
+      "html_sha256": "9bd23f2f884108a559433654f0614fcce2af6a725dacf2693f2968c260772ce3",
+      "body_characters": 4824,
+      "primary_body_changed_since_triage": false,
+      "history_matches": 0,
+      "feed_matches": 0
+    },
+    {
+      "live9_index": 9,
+      "url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+      "publication_date": "2026-10-11",
+      "queue_fingerprint": "a98db753925f93fa42fcf0a60065020e59e099578e9d6313d60ff314fccf7280",
+      "actual_status": "rejected",
+      "actual_reason": "editorial_relevance_below_threshold",
+      "actual_score": 5,
+      "actual_response_id": "resp_0123ba60b6d9db6f006acc1c93845487d0a8b9fc05432adb98",
+      "body_sha256": "d5314e898c41422ecea913473d3cac6f7514a20705d10a684a7c91bc38862cd3",
+      "html_sha256": "f8a47c32d341468218003754ee4965ea84ee9aa3aef5f617e0e73db918306cb8",
+      "body_characters": 3449,
+      "primary_body_changed_since_triage": true,
+      "history_matches": 0,
+      "feed_matches": 0
+    }
+  ],
+  "all_four_actual_paid_models": [
+    {
+      "live9_index": 2,
+      "url": "https://www.latercera.com/nacional/noticia/amplian-por-72-horas-detencion-de-chofer-de-bus-que-se-desbarranco-en-valparaiso-y-dejo-una-persona-fallecida/",
+      "publication_date": "2026-10-11",
+      "queue_fingerprint": "bbc92593ad927019d68a04f3427e469aedea0e236c2532af9da9af0dfc38309b",
+      "original_full_primary_body": "El Juzgado de Garantía de Valparaíso amplió por 72 horas la detención de J.A.R.R., conductor del bus que durante la noche del sábado sufrió un accidente en el sector de Placeres y que dejó a una persona fallecida. El vehículo transportaba a una orquesta cuando se desbarrancó. De acuerdo con los antecedentes entregados durante la jornada, el hecho corresponde al accidente en que un bus interurbano se volcó al interior de un condominio en el sector de Placeres. Durante la audiencia realizada esta mañana, el tribunal resolvió ampliar la detención del imputado a solicitud del Ministerio Público, que requiere reunir mayores antecedentes antes de formalizar la investigación. Tras la decisión judicial, J.A.R.R. ingresará al Complejo Penitenciario Valparaíso, donde permanecerá mientras se desarrolla la ampliación de su detención. El conductor será nuevamente puesto a disposición del tribunal durante la jornada del miércoles 14 de octubre, cuando se realizará el control de detención y la formalización de la investigación. El accidente ocurrió durante la noche del sábado y dejó una persona fallecida en el lugar. Mientras tanto, esta mañana, minutos antes del juicio del conductor, el Hospital Carlos Van Buren entregó un nuevo balance en cuanto a las víctimas del accidente. En ese sentido, el director del recinto precisó que de los 12 pacientes ingresados, cinco ya fueron dados de alta, cuatro fueron derivados a una mutual en Santiago y tres permanecen hospitalizados, dos de ellos en condición grave pero estable. Así también, quien también estuvo presente fue el ministro de las Culturas, Francisco Undurraga, agradeciendo la atención entregada por los servicios de salud de la Región de Valparaíso. “Estamos todos muy impactados en el ministerio”, señaló, agregando que las personas que serán trasladadas a Santiago lo harán por razones relacionadas con su domicilio y no por cuestionamientos a la atención recibida en la región. Undurraga confirmó además el fallecimiento de una integrante del elenco. “Tuvimos una pérdida, falleció un miembro del elenco. En las próximas horas su cuerpo será trasladado a Santiago, será velado”, indicó. Consultado por la víctima fatal, Penelope Nute, el ministro la describió como una violinista de extensa trayectoria dentro de la agrupación. “Ella era una violinista muy destacada, ya mucho tiempo, más de 35 años, si la memoria no me falla, siendo parte de este elenco, profesora, una líder [...] en la orquesta”, manifestó. El secretario de Estado agregó que será “muy difícil poder reemplazarla por la calidad musical y, desde luego, además, por la calidad humana”. Undurraga indicó también que la Fiscalía se encuentra abordando el accidente y señaló que, según entendía, el conductor se encontraba en control de detención. Añadió que la empresa utilizada para el traslado es una compañía que el ministerio ha empleado anteriormente y que las contrataciones se realizan mediante Mercado Público.",
+      "body_sha256": "29064564d2499b11698111775dc358825dff4eb640167102d23e38333de37a4d",
+      "html_sha256": "9670966b23630ce9747c3c076fe417826ad6c658797ff1312d3825e745e3f049",
+      "captured_at": "2026-10-11T15:07:03.753913+00:00",
+      "primary_body_characters": 2952,
+      "prior_triage_body_sha256": "29064564d2499b11698111775dc358825dff4eb640167102d23e38333de37a4d",
+      "primary_body_changed_since_triage": false,
+      "original_full_model_output": {
+        "relevance_score": 58,
+        "what_happened": "Según la nota del 11 de octubre de 2026, el accidente del bus dejó una persona fallecida y el Hospital Carlos Van Buren reportó, durante esa mañana, la situación de 12 pacientes ingresados: cinco dados de alta, cuatro derivados a una mutual en Santiago y tres hospitalizados, dos en condición grave pero estable.",
+        "why_it_matters": "Según la nota del 11 de octubre de 2026, el Hospital Carlos Van Buren informó la evolución clínica y el destino asistencial de las personas afectadas, incluyendo tres pacientes aún hospitalizados y dos en condición grave pero estable. Es una señal de atención sanitaria asociada a un accidente local, pero no acredita un cambio sectorial, regulatorio o de capacidad permanente.",
+        "reason": "La nota entrega un balance clínico concreto de víctimas de un accidente, pero corresponde a una emergencia puntual y local. No evidencia un cambio material para el sistema de salud chileno ni merece ingreso prioritario a un radar estratégico.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "El contenido informa explícitamente sobre pacientes ingresados, altas, derivaciones y condición clínica tras un accidente, por lo que existe un vínculo directo con atención de salud humana. Sin embargo, el hecho es puntual y local, sin cambio sectorial acreditado.",
+          "human_health_scope_quote": "de los 12 pacientes ingresados, cinco ya fueron dados de alta, cuatro fueron derivados a una mutual en Santiago y tres permanecen hospitalizados, dos de ellos en condición grave pero estable",
+          "actor": "Hospital Carlos Van Buren",
+          "action": "entregó un nuevo balance",
+          "consequence": "tres permanecen hospitalizados, dos de ellos en condición grave pero estable",
+          "actor_quote": "el Hospital Carlos Van Buren entregó un nuevo balance en cuanto a las víctimas del accidente",
+          "action_quote": "el Hospital Carlos Van Buren entregó un nuevo balance en cuanto a las víctimas del accidente",
+          "consequence_quote": "de los 12 pacientes ingresados, cinco ya fueron dados de alta, cuatro fueron derivados a una mutual en Santiago y tres permanecen hospitalizados, dos de ellos en condición grave pero estable",
+          "event_status": "actual",
+          "event_status_quote": "esta mañana, minutos antes del juicio del conductor",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La nota aporta un balance asistencial específico y actualizado sobre los 12 pacientes ingresados, sus altas, derivaciones y hospitalizaciones; no se entrega evidencia de una modificación estructural del sistema de salud.",
+          "novelty_quote": "el Hospital Carlos Van Buren entregó un nuevo balance en cuanto a las víctimas del accidente",
+          "future_claims": []
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_01b2cb8f55165d7a006acc1c55288487d0821c27732520eb29",
+          "analysis_text_sha256": "29064564d2499b11698111775dc358825dff4eb640167102d23e38333de37a4d",
+          "request_input_sha256": "03f6d2a87389ca7037a510bbf47f113d69052b872f6fa1587258cc4e16712f5f",
+          "raw_model_output_sha256": "0d4596c08d3ca14833bd350b5089f9666fba0e86c5ff0141d29ce24f2f7fe561"
+        }
+      },
+      "model_output_sha256": "de1e218ac4ca876a405fa36454a60f5059285750b3afa8c585b862834ca10955",
+      "model_response_id": "resp_01b2cb8f55165d7a006acc1c55288487d0821c27732520eb29",
+      "request_input_sha256": "03f6d2a87389ca7037a510bbf47f113d69052b872f6fa1587258cc4e16712f5f",
+      "immutable_actual_model_primary_pin": {
+        "url": "https://www.latercera.com/nacional/noticia/amplian-por-72-horas-detencion-de-chofer-de-bus-que-se-desbarranco-en-valparaiso-y-dejo-una-persona-fallecida/",
+        "publication_date": "2026-10-11",
+        "body_sha256": "29064564d2499b11698111775dc358825dff4eb640167102d23e38333de37a4d",
+        "html_sha256": "9670966b23630ce9747c3c076fe417826ad6c658797ff1312d3825e745e3f049",
+        "model_sha256": "de1e218ac4ca876a405fa36454a60f5059285750b3afa8c585b862834ca10955",
+        "response_id": "resp_01b2cb8f55165d7a006acc1c55288487d0821c27732520eb29",
+        "request_input_sha256": "03f6d2a87389ca7037a510bbf47f113d69052b872f6fa1587258cc4e16712f5f"
+      },
+      "immutable_actual_model_primary_pin_sha256": "ba3e502cd8eff0a4fb83ac275eb9c4e0d46aaee2d7fab67d04ca90eb3cd1feee",
+      "genuine_paid_telemetry_event": {
+        "at": "2026-10-11T23:31:45.715081+00:00",
+        "kind": "fast",
+        "model": "gpt-5.6-luna",
+        "requested_model": "gpt-5.6-luna",
+        "response_id": "resp_01b2cb8f55165d7a006acc1c55288487d0821c27732520eb29",
+        "success": true,
+        "error_type": null,
+        "input_tokens": 3247,
+        "cached_input_tokens": 0,
+        "output_tokens": 1211,
+        "total_tokens": 4458,
+        "cost_usd": null,
+        "cost_status": "pricing_not_configured",
+        "feature": null,
+        "output_id": null,
+        "run_id": null,
+        "publishable": null,
+        "incremental_quality_points": null
+      },
+      "actual_editorial_assessment": {
+        "decision": "rejected",
+        "reason": "editorial_relevance_below_threshold",
+        "relevance_score": 58,
+        "threshold": 72,
+        "proof_version": "pulso_editorial_proof_v5",
+        "analysis_reason": "La nota entrega un balance clínico concreto de víctimas de un accidente, pero corresponde a una emergencia puntual y local. No evidencia un cambio material para el sistema de salud chileno ni merece ingreso prioritario a un radar estratégico."
+      },
+      "actual_guard_validation": {
+        "version": "pulso_editorial_proof_v5",
+        "source": "pulso_latercera",
+        "analysis_text_sha256": "29064564d2499b11698111775dc358825dff4eb640167102d23e38333de37a4d",
+        "quote_validation_is_semantic_approval": false,
+        "publication_approved": false,
+        "model_output_sha256": "de1e218ac4ca876a405fa36454a60f5059285750b3afa8c585b862834ca10955",
+        "proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "El contenido informa explícitamente sobre pacientes ingresados, altas, derivaciones y condición clínica tras un accidente, por lo que existe un vínculo directo con atención de salud humana. Sin embargo, el hecho es puntual y local, sin cambio sectorial acreditado.",
+          "human_health_scope_quote": "de los 12 pacientes ingresados, cinco ya fueron dados de alta, cuatro fueron derivados a una mutual en Santiago y tres permanecen hospitalizados, dos de ellos en condición grave pero estable",
+          "actor": "Hospital Carlos Van Buren",
+          "action": "entregó un nuevo balance",
+          "consequence": "tres permanecen hospitalizados, dos de ellos en condición grave pero estable",
+          "actor_quote": "el Hospital Carlos Van Buren entregó un nuevo balance en cuanto a las víctimas del accidente",
+          "action_quote": "el Hospital Carlos Van Buren entregó un nuevo balance en cuanto a las víctimas del accidente",
+          "consequence_quote": "de los 12 pacientes ingresados, cinco ya fueron dados de alta, cuatro fueron derivados a una mutual en Santiago y tres permanecen hospitalizados, dos de ellos en condición grave pero estable",
+          "event_status": "actual",
+          "event_status_quote": "esta mañana, minutos antes del juicio del conductor",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La nota aporta un balance asistencial específico y actualizado sobre los 12 pacientes ingresados, sus altas, derivaciones y hospitalizaciones; no se entrega evidencia de una modificación estructural del sistema de salud.",
+          "novelty_quote": "el Hospital Carlos Van Buren entregó un nuevo balance en cuanto a las víctimas del accidente",
+          "future_claims": []
+        },
+        "decision": "rejected",
+        "reason": "editorial_relevance_below_threshold",
+        "primary_article_body_sha256": "29064564d2499b11698111775dc358825dff4eb640167102d23e38333de37a4d",
+        "request_input_sha256": "03f6d2a87389ca7037a510bbf47f113d69052b872f6fa1587258cc4e16712f5f",
+        "model_response": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_01b2cb8f55165d7a006acc1c55288487d0821c27732520eb29",
+          "analysis_text_sha256": "29064564d2499b11698111775dc358825dff4eb640167102d23e38333de37a4d",
+          "request_input_sha256": "03f6d2a87389ca7037a510bbf47f113d69052b872f6fa1587258cc4e16712f5f",
+          "raw_model_output_sha256": "0d4596c08d3ca14833bd350b5089f9666fba0e86c5ff0141d29ce24f2f7fe561"
+        }
+      },
+      "actual_status": "rejected",
+      "actual_score": 58,
+      "unchanged_threshold": 72,
+      "actual_lane": "LIVE",
+      "no_actual_history_or_feed_signal": true,
+      "complete_body_and_model_read": true,
+      "quote_diagnostics": [
+        {
+          "field": "human_health_scope_quote",
+          "quote": "de los 12 pacientes ingresados, cinco ya fueron dados de alta, cuatro fueron derivados a una mutual en Santiago y tres permanecen hospitalizados, dos de ellos en condición grave pero estable",
+          "empty": false,
+          "literal_quote_matches": true
+        },
+        {
+          "field": "actor_quote",
+          "quote": "el Hospital Carlos Van Buren entregó un nuevo balance en cuanto a las víctimas del accidente",
+          "empty": false,
+          "literal_quote_matches": true
+        },
+        {
+          "field": "action_quote",
+          "quote": "el Hospital Carlos Van Buren entregó un nuevo balance en cuanto a las víctimas del accidente",
+          "empty": false,
+          "literal_quote_matches": true
+        },
+        {
+          "field": "consequence_quote",
+          "quote": "de los 12 pacientes ingresados, cinco ya fueron dados de alta, cuatro fueron derivados a una mutual en Santiago y tres permanecen hospitalizados, dos de ellos en condición grave pero estable",
+          "empty": false,
+          "literal_quote_matches": true
+        },
+        {
+          "field": "event_status_quote",
+          "quote": "esta mañana, minutos antes del juicio del conductor",
+          "empty": false,
+          "literal_quote_matches": true
+        },
+        {
+          "field": "novelty_quote",
+          "quote": "el Hospital Carlos Van Buren entregó un nuevo balance en cuanto a las víctimas del accidente",
+          "empty": false,
+          "literal_quote_matches": true
+        }
+      ],
+      "semantic_decision": "retain_rejection",
+      "exact_reason": "Conservative rejection is justified. The core story is a judicial detention extension; its medical paragraph reports the same 12 admitted / 5 discharged / 4 mutual referrals / 3 remaining balance as the hospital article. This is genuine human care, not absence of health, but the primary does not establish a sector policy, changed insurance arrangement, new financing, wider capacity pressure or a service-network change. The actual score 58 remains below 72.",
+      "score_or_model_or_date_changes": false,
+      "publication_approved": false
+    },
+    {
+      "live9_index": 3,
+      "url": "https://www.latercera.com/nacional/noticia/hospital-van-buren-entrega-nuevo-balance-tras-accidente-de-bus-de-orquesta-tres-pacientes-permanecen-internados/",
+      "publication_date": "2026-10-11",
+      "queue_fingerprint": "cab108224d311493028b294814e4e971ec29e91168face4427bc9ebf8b58f9e1",
+      "original_full_primary_body": "El Hospital Carlos Van Buren de Valparaíso entregó este domingo un nuevo balance sobre las personas atendidas tras el accidente de un bus que transportaba a una orquesta y que cayó por un barranco durante la noche del sábado. El director médico del recinto, Simón Rojas, informó que el hospital recibió a 12 pacientes producto del accidente. “Hoy día, en el hospital Van Buren, quedan 3 pacientes. [...] Recibimos 12 pacientes del accidente. De estos pacientes, ya 5 han sido dados de alta de la institución”, señaló. Según explicó, otros cuatro pacientes fueron derivados a una mutual en Santiago, mientras que tres continúan en el Hospital Carlos Van Buren. De los tres pacientes que siguen internados, dos permanecen en condición grave. Uno presenta contusiones pulmonares bilaterales y múltiples fracturas costales, aunque se encuentra estable dentro de su gravedad y en condiciones de ser trasladado a Santiago. El segundo fue operado durante la noche por fracturas en una pierna y un pie y también permanece estable dentro de su gravedad, con posibilidad de ser derivado. Respecto de la persona de 62 años que anteriormente se encontraba en riesgo vital, Rojas explicó que “durante la noche se estabilizó” y que este domingo se encontraba estable dentro de su cuadro grave y en condiciones de ser trasladado a su mutualidad en Santiago. El tercer paciente permanece en evaluación y presenta algunas fracturas costales, manteniéndose clínicamente estable. El ministro de las Culturas, Francisco Undurraga, también se refirió al accidente y agradeció la atención entregada por los servicios de salud de la Región de Valparaíso. “Estamos todos muy impactados en el ministerio”, señaló, agregando que las personas que serán trasladadas a Santiago lo harán por razones relacionadas con su domicilio y no por cuestionamientos a la atención recibida en la región. Undurraga confirmó además el fallecimiento de una integrante del elenco. “Tuvimos una pérdida, falleció un miembro del elenco. En las próximas horas su cuerpo será trasladado a Santiago, será velado”, indicó. Consultado por la víctima fatal, Penelope Knuth, el ministro la describió como una violinista de extensa trayectoria dentro de la agrupación. “Ella era una violinista muy destacada, ya mucho tiempo, más de 35 años (...) siendo parte de este elenco, profesora, una líder [...] en la orquesta”, manifestó. El secretario de Estado agregó que será “muy difícil poder reemplazarla por la calidad musical y, desde luego, además, por la calidad humana”. Undurraga indicó también que la Fiscalía se encuentra abordando el accidente y señaló que, según entendía, el conductor se encontraba en control de detención. Añadió que la empresa utilizada para el traslado es una compañía que el ministerio ha empleado anteriormente.",
+      "body_sha256": "1a8e2cb747ff4f55e459c16d02f27a7b570f75c36899543861cb843ff0a67f8d",
+      "html_sha256": "7a632a39efbbe294e38ef8b0628f7227cf4a17d9402c93e73f4ddf5f6cacaed3",
+      "captured_at": "2026-10-11T15:07:03.754247+00:00",
+      "primary_body_characters": 2787,
+      "prior_triage_body_sha256": "1a8e2cb747ff4f55e459c16d02f27a7b570f75c36899543861cb843ff0a67f8d",
+      "primary_body_changed_since_triage": false,
+      "original_full_model_output": {
+        "relevance_score": 35,
+        "what_happened": "Según la publicación del 11 de octubre de 2026, el Hospital Carlos Van Buren informó un nuevo balance por el accidente de un bus ocurrido durante la noche del sábado: recibió 12 pacientes, cinco fueron dados de alta, cuatro fueron derivados a una mutual en Santiago y tres continuaban internados en el recinto; dos de estos permanecían en condición grave. El balance corresponde a la situación reportada ese domingo.",
+        "why_it_matters": "Al 11 de octubre de 2026, según la nota, el Hospital Carlos Van Buren mantenía tres pacientes internados por una emergencia puntual, dos de ellos graves, mientras otros cuatro habían sido derivados a Santiago. Es información directa sobre atención clínica y derivaciones, pero no muestra un cambio material en la capacidad, regulación, financiamiento o estrategia del sector salud; por eso no merece un radar estratégico.",
+        "reason": "Es un balance clínico puntual asociado a un accidente, con relevancia para la atención inmediata de los pacientes, pero sin evidencia de cambio sectorial o nacional material.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La nota informa atención hospitalaria, altas, derivaciones, cirugía y condiciones clínicas de pacientes humanos. Sin embargo, se trata de una emergencia puntual, no de un cambio estratégico del sector salud.",
+          "human_health_scope_quote": "El director médico del recinto, Simón Rojas, informó que el hospital recibió a 12 pacientes producto del accidente.",
+          "actor": "el hospital",
+          "action": "recibió a 12 pacientes producto del accidente",
+          "consequence": "tres continúan en el Hospital Carlos Van Buren",
+          "actor_quote": "El director médico del recinto, Simón Rojas, informó que el hospital recibió a 12 pacientes producto del accidente.",
+          "action_quote": "El director médico del recinto, Simón Rojas, informó que el hospital recibió a 12 pacientes producto del accidente.",
+          "consequence_quote": "Según explicó, otros cuatro pacientes fueron derivados a una mutual en Santiago, mientras que tres continúan en el Hospital Carlos Van Buren.",
+          "event_status": "actual",
+          "event_status_quote": "Hoy día, en el hospital Van Buren, quedan 3 pacientes.",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La publicación entrega un nuevo balance con cifras actualizadas sobre pacientes recibidos, dados de alta, derivados e internados; no se entrega contexto suficiente para determinar si el balance agrega información sustantiva frente a reportes previos.",
+          "novelty_quote": "El Hospital Carlos Van Buren de Valparaíso entregó este domingo un nuevo balance sobre las personas atendidas tras el accidente de un bus",
+          "future_claims": []
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0f0c1b79cdd56e85006acc1c648e8887d0b8d6025a5f374a71",
+          "analysis_text_sha256": "1a8e2cb747ff4f55e459c16d02f27a7b570f75c36899543861cb843ff0a67f8d",
+          "request_input_sha256": "7a5b71b6310f025273dcecb950b3604b699d091cd8a2229328689dce213bd90b",
+          "raw_model_output_sha256": "e0526dfa4d42c9fdbc290eae5b65008e2cc9ee10638a7830f7804fc9cf57874b"
+        }
+      },
+      "model_output_sha256": "0cdab9ef9b07172a1bd145bfd5bebb07b038b196aaef965c854668640168b389",
+      "model_response_id": "resp_0f0c1b79cdd56e85006acc1c648e8887d0b8d6025a5f374a71",
+      "request_input_sha256": "7a5b71b6310f025273dcecb950b3604b699d091cd8a2229328689dce213bd90b",
+      "immutable_actual_model_primary_pin": {
+        "url": "https://www.latercera.com/nacional/noticia/hospital-van-buren-entrega-nuevo-balance-tras-accidente-de-bus-de-orquesta-tres-pacientes-permanecen-internados/",
+        "publication_date": "2026-10-11",
+        "body_sha256": "1a8e2cb747ff4f55e459c16d02f27a7b570f75c36899543861cb843ff0a67f8d",
+        "html_sha256": "7a632a39efbbe294e38ef8b0628f7227cf4a17d9402c93e73f4ddf5f6cacaed3",
+        "model_sha256": "0cdab9ef9b07172a1bd145bfd5bebb07b038b196aaef965c854668640168b389",
+        "response_id": "resp_0f0c1b79cdd56e85006acc1c648e8887d0b8d6025a5f374a71",
+        "request_input_sha256": "7a5b71b6310f025273dcecb950b3604b699d091cd8a2229328689dce213bd90b"
+      },
+      "immutable_actual_model_primary_pin_sha256": "c72e458376bbe46f62d397fdebc43472d5e3bf893e8c27924f5f07b9a275842e",
+      "genuine_paid_telemetry_event": {
+        "at": "2026-10-11T23:32:02.365502+00:00",
+        "kind": "fast",
+        "model": "gpt-5.6-luna",
+        "requested_model": "gpt-5.6-luna",
+        "response_id": "resp_0f0c1b79cdd56e85006acc1c648e8887d0b8d6025a5f374a71",
+        "success": true,
+        "error_type": null,
+        "input_tokens": 3208,
+        "cached_input_tokens": 2578,
+        "output_tokens": 1541,
+        "total_tokens": 4749,
+        "cost_usd": null,
+        "cost_status": "pricing_not_configured",
+        "feature": null,
+        "output_id": null,
+        "run_id": null,
+        "publishable": null,
+        "incremental_quality_points": null
+      },
+      "actual_editorial_assessment": {
+        "decision": "rejected",
+        "reason": "editorial_relevance_below_threshold",
+        "relevance_score": 35,
+        "threshold": 72,
+        "proof_version": "pulso_editorial_proof_v5",
+        "analysis_reason": "Es un balance clínico puntual asociado a un accidente, con relevancia para la atención inmediata de los pacientes, pero sin evidencia de cambio sectorial o nacional material."
+      },
+      "actual_guard_validation": {
+        "version": "pulso_editorial_proof_v5",
+        "source": "pulso_latercera",
+        "analysis_text_sha256": "1a8e2cb747ff4f55e459c16d02f27a7b570f75c36899543861cb843ff0a67f8d",
+        "quote_validation_is_semantic_approval": false,
+        "publication_approved": false,
+        "model_output_sha256": "0cdab9ef9b07172a1bd145bfd5bebb07b038b196aaef965c854668640168b389",
+        "proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La nota informa atención hospitalaria, altas, derivaciones, cirugía y condiciones clínicas de pacientes humanos. Sin embargo, se trata de una emergencia puntual, no de un cambio estratégico del sector salud.",
+          "human_health_scope_quote": "El director médico del recinto, Simón Rojas, informó que el hospital recibió a 12 pacientes producto del accidente.",
+          "actor": "el hospital",
+          "action": "recibió a 12 pacientes producto del accidente",
+          "consequence": "tres continúan en el Hospital Carlos Van Buren",
+          "actor_quote": "El director médico del recinto, Simón Rojas, informó que el hospital recibió a 12 pacientes producto del accidente.",
+          "action_quote": "El director médico del recinto, Simón Rojas, informó que el hospital recibió a 12 pacientes producto del accidente.",
+          "consequence_quote": "Según explicó, otros cuatro pacientes fueron derivados a una mutual en Santiago, mientras que tres continúan en el Hospital Carlos Van Buren.",
+          "event_status": "actual",
+          "event_status_quote": "Hoy día, en el hospital Van Buren, quedan 3 pacientes.",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La publicación entrega un nuevo balance con cifras actualizadas sobre pacientes recibidos, dados de alta, derivados e internados; no se entrega contexto suficiente para determinar si el balance agrega información sustantiva frente a reportes previos.",
+          "novelty_quote": "El Hospital Carlos Van Buren de Valparaíso entregó este domingo un nuevo balance sobre las personas atendidas tras el accidente de un bus",
+          "future_claims": []
+        },
+        "decision": "rejected",
+        "reason": "editorial_relevance_below_threshold",
+        "primary_article_body_sha256": "1a8e2cb747ff4f55e459c16d02f27a7b570f75c36899543861cb843ff0a67f8d",
+        "request_input_sha256": "7a5b71b6310f025273dcecb950b3604b699d091cd8a2229328689dce213bd90b",
+        "model_response": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0f0c1b79cdd56e85006acc1c648e8887d0b8d6025a5f374a71",
+          "analysis_text_sha256": "1a8e2cb747ff4f55e459c16d02f27a7b570f75c36899543861cb843ff0a67f8d",
+          "request_input_sha256": "7a5b71b6310f025273dcecb950b3604b699d091cd8a2229328689dce213bd90b",
+          "raw_model_output_sha256": "e0526dfa4d42c9fdbc290eae5b65008e2cc9ee10638a7830f7804fc9cf57874b"
+        }
+      },
+      "actual_status": "rejected",
+      "actual_score": 35,
+      "unchanged_threshold": 72,
+      "actual_lane": "LIVE",
+      "no_actual_history_or_feed_signal": true,
+      "complete_body_and_model_read": true,
+      "quote_diagnostics": [
+        {
+          "field": "human_health_scope_quote",
+          "quote": "El director médico del recinto, Simón Rojas, informó que el hospital recibió a 12 pacientes producto del accidente.",
+          "empty": false,
+          "literal_quote_matches": true
+        },
+        {
+          "field": "actor_quote",
+          "quote": "El director médico del recinto, Simón Rojas, informó que el hospital recibió a 12 pacientes producto del accidente.",
+          "empty": false,
+          "literal_quote_matches": true
+        },
+        {
+          "field": "action_quote",
+          "quote": "El director médico del recinto, Simón Rojas, informó que el hospital recibió a 12 pacientes producto del accidente.",
+          "empty": false,
+          "literal_quote_matches": true
+        },
+        {
+          "field": "consequence_quote",
+          "quote": "Según explicó, otros cuatro pacientes fueron derivados a una mutual en Santiago, mientras que tres continúan en el Hospital Carlos Van Buren.",
+          "empty": false,
+          "literal_quote_matches": true
+        },
+        {
+          "field": "event_status_quote",
+          "quote": "Hoy día, en el hospital Van Buren, quedan 3 pacientes.",
+          "empty": false,
+          "literal_quote_matches": true
+        },
+        {
+          "field": "novelty_quote",
+          "quote": "El Hospital Carlos Van Buren de Valparaíso entregó este domingo un nuevo balance sobre las personas atendidas tras el accidente de un bus",
+          "empty": false,
+          "literal_quote_matches": true
+        }
+      ],
+      "semantic_decision": "retain_rejection",
+      "exact_reason": "Conservative rejection is justified. The hospital reports individual case management following a local accident: 12 received, 5 discharged, 4 referred and 3 remaining, 2 in serious condition. Transfers are attributed to domicile, not defective care or saturated capacity. Clinical attention and one operation are real; no strategic change in provider capacity, financing, coverage or regulation is demonstrated. The actual score 35 remains below 72.",
+      "score_or_model_or_date_changes": false,
+      "publication_approved": false
+    },
+    {
+      "live9_index": 6,
+      "url": "https://www.latercera.com/nacional/noticia/aluvion-en-las-condes-municipio-reporta-2015-viviendas-afectadas-y-933-atenciones-en-vacunatorios/",
+      "publication_date": "2026-10-11",
+      "queue_fingerprint": "1f3c9b4fdad8a36de23c44b6e8ca57b9870177e1fb6dd52bb5cde1e095441392",
+      "original_full_primary_body": "La Municipalidad de Las Condes entregó un nuevo balance de las consecuencias del aluvión que afectó a San Carlos de Apoquindo el pasado jueves 8 de octubre, informando un total de 2.015 viviendas afectadas, mientras continúan las labores de despeje, asistencia a las familias y recuperación de la conectividad en los sectores damnificados. De acuerdo con las cifras municipales, 55 viviendas presentan daños mayores y se encuentran inhabitables, mientras que otras 1.960 registran daños menores. La emergencia comprometió una superficie de 3,1 kilómetros cuadrados, con 12 kilómetros de avenidas y otros tres de calles secundarias afectadas. En paralelo, el municipio desplegó una campaña preventiva de vacunación en coordinación con el Servicio de Salud Metropolitano Oriente, destinada a vecinos, funcionarios municipales, voluntarios y personal que participa en las labores de emergencia. La iniciativa comenzó el viernes 9 de octubre con un punto de vacunación en el Estadio Claro Arena, al que se sumó un vacunatorio móvil durante la jornada del sábado. Solo ese día se atendió a 883 personas, alcanzando un total acumulado de 933 atenciones desde el inicio de la campaña. La municipalidad también informó la entrega de cerca de mil dosis de vacunas. A 48 horas del aluvión, el municipio contabilizaba 637 procedimientos de emergencia, de los cuales 499 estaban directamente relacionados con la catástrofe, además de informar el rescate de 1.200 personas. El despliegue contempla maquinaria pesada en Quebrada Honda y sectores aledaños, con la participación de equipos municipales, la Delegación Presidencial, el Ministerio de Obras Públicas (MOP), las Fuerzas Armadas, Carabineros, la Policía de Investigaciones (PDI) y Bomberos. A estas labores se suman alrededor de 800 voluntarios registrados, coordinados por la Dirección de Desarrollo Comunitario, además de personas que han llegado por iniciativa propia para colaborar en la limpieza y asistencia a los afectados. La municipalidad también mantiene apoyo psicológico para quienes lo requieran y comenzó a aplicar la Ficha Básica de Emergencia (FIBE), instrumento utilizado para identificar las necesidades de las familias damnificadas. El levantamiento coordinado con el Ministerio de Desarrollo Social está previsto para comenzar el martes 13 de octubre. La alcaldesa de Las Condes, Catalina San Martín, llamó a concentrar los esfuerzos en la recuperación de los sectores afectados y la atención de sus habitantes. “Estamos en un punto donde esta tragedia no se puede ocupar como gallito político. Hoy lo que importa es devolver la tranquilidad a las familias de Las Condes y esa es la prioridad de este municipio”, sostuvo. En materia de infraestructura vial, el municipio reportó seis cruces semaforizados dañados, 18 postes semafóricos derribados y 60 señales de tránsito afectadas entre avenida Plaza y San Carlos de Apoquindo. Asimismo, se mantienen cortes y desvíos de tránsito para facilitar el desplazamiento de maquinaria y vehículos de emergencia. Los automóviles que permanecían atrapados en el barro están siendo trasladados al estacionamiento del Claro Arena para coordinar su posterior entrega a los propietarios. Junto con los trabajos de recuperación, la municipalidad entregó antecedentes sobre los proyectos de mitigación que se encontraban en desarrollo antes de la emergencia. Tras el incendio forestal que afectó cerca de 1.012 hectáreas de San Carlos de Apoquindo entre diciembre de 2025 y enero de 2026, el municipio comenzó a impulsar estudios y proyectos destinados a reducir los riesgos asociados a la pérdida de vegetación, la erosión del suelo y el arrastre de sedimentos. Uno de ellos contempla la instalación de cinco barreras dinámicas en dos subcuencas prioritarias, diseñadas para retener material sólido y disminuir la energía de los flujos aluvionales antes de que lleguen a zonas urbanas. El proyecto, desarrollado en coordinación con la Dirección de Obras Hidráulicas (DOH) del MOP, considera una inversión de $776,7 millones y una capacidad conjunta de retención de 14.250 metros cúbicos. El contrato fue fechado el 5 de octubre, tres días antes del aluvión, y establece un plazo de ejecución de 90 días desde la entrega del terreno. Sin embargo, las obras todavía no habían comenzado cuando ocurrió la emergencia. El municipio explicó que las precipitaciones y el aluvión modificaron nuevamente las condiciones de las quebradas, por lo que será necesario reevaluar los cauces, emplazamientos y accesos antes de iniciar la instalación de las barreras. A ello se suma un segundo proyecto destinado al retiro de sedimentos, residuos y vegetación en cuatro cauces, con una extensión aproximada de 4,1 kilómetros y un presupuesto de hasta $500 millones. La contratación fue aprobada por el Concejo Municipal el mismo 8 de octubre y se encuentra en etapa de adjudicación.",
+      "body_sha256": "7341a0a60e33f93339937d6714ad3fd66d233879cec9af9e9acd4de0ab3b0631",
+      "html_sha256": "1d9a57e0fabd3c230ae5ca23a4cbbbfc15584a77884de945a1ffbc4d6067cd25",
+      "captured_at": "2026-10-11T17:20:11.753494+00:00",
+      "primary_body_characters": 4866,
+      "prior_triage_body_sha256": "7341a0a60e33f93339937d6714ad3fd66d233879cec9af9e9acd4de0ab3b0631",
+      "primary_body_changed_since_triage": false,
+      "original_full_model_output": {
+        "relevance_score": 68,
+        "what_happened": "Según Pulso/La Tercera, al 11 de octubre la Municipalidad de Las Condes reportó 2.015 viviendas afectadas por el aluvión del 8 de octubre y 933 atenciones acumuladas en una campaña preventiva de vacunación iniciada el 9 de octubre, además de cerca de mil dosis entregadas y apoyo psicológico para quienes lo requieran. Como medidas aún futuras o en curso según la nota, el levantamiento de la FIBE estaba previsto para comenzar el 13 de octubre; las barreras aluvionales todavía no habían comenzado y el municipio debía reevaluar cauces, emplazamientos y accesos antes de instalarlas; el segundo proyecto de retiro de sedimentos se encontraba en etapa de adjudicación.",
+        "why_it_matters": "Para la Municipalidad de Las Condes y el Servicio de Salud Metropolitano Oriente, la respuesta sanitaria local implicó desplegar vacunación preventiva para vecinos y personal de emergencia, con 933 atenciones acumuladas reportadas al 11 de octubre. Según la nota, el municipio y el Ministerio de Desarrollo Social aún debían iniciar el levantamiento de necesidades mediante la FIBE el 13 de octubre, mientras las obras de mitigación seguían pendientes de reevaluación o adjudicación; esto mantiene abierta la gestión de riesgos sanitarios y de atención a damnificados, sin acreditar capacidad preventiva ya instalada.",
+        "reason": "Señal local de respuesta de salud pública ante una emergencia, con vacunación y apoyo psicológico ya desplegados, pero de alcance acotado y con los principales proyectos de mitigación aún no ejecutados. Merece seguimiento secundario, no constituye por sí sola un cambio sectorial nacional.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La nota informa una campaña preventiva de vacunación coordinada con un Servicio de Salud y dirigida a personas expuestas durante las labores de emergencia; además menciona apoyo psicológico a damnificados.",
+          "human_health_scope_quote": "En paralelo, el municipio desplegó una campaña preventiva de vacunación en coordinación con el Servicio de Salud Metropolitano Oriente, destinada a vecinos, funcionarios municipales, voluntarios y personal que participa en las labores de emergencia.",
+          "actor": "el municipio",
+          "action": "desplegó una campaña preventiva de vacunación",
+          "consequence": "alcanzando un total acumulado de 933 atenciones desde el inicio de la campaña",
+          "actor_quote": "el municipio desplegó una campaña preventiva de vacunación",
+          "action_quote": "el municipio desplegó una campaña preventiva de vacunación en coordinación con el Servicio de Salud Metropolitano Oriente",
+          "consequence_quote": "Solo ese día se atendió a 883 personas, alcanzando un total acumulado de 933 atenciones desde el inicio de la campaña.",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "el levantamiento coordinado con el Ministerio de Desarrollo Social está previsto para comenzar el martes 13 de octubre",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La publicación entrega un balance actualizado de atenciones de vacunación y dosis entregadas en una emergencia local, junto con el estado concreto de proyectos de mitigación todavía no ejecutados o en adjudicación.",
+          "novelty_quote": "Solo ese día se atendió a 883 personas, alcanzando un total acumulado de 933 atenciones desde el inicio de la campaña.",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Según Pulso/La Tercera, al 11 de octubre la Municipalidad de Las Condes reportó 2.015 viviendas afectadas por el aluvión del 8 de octubre y 933 atenciones acumuladas en una campaña preventiva de vacunación iniciada el 9 de octubre, además de cerca de mil dosis entregadas y apoyo psicológico para quienes lo requieran. Como medidas aún futuras o en curso según la nota, el levantamiento de la FIBE estaba previsto para comenzar el 13 de octubre; las barreras aluvionales todavía no habían comenzado y el municipio debía reevaluar cauces, emplazamientos y accesos antes de instalarlas; el segundo proyecto de retiro de sedimentos se encontraba en etapa de adjudicación.",
+              "source_quote": "el levantamiento coordinado con el Ministerio de Desarrollo Social está previsto para comenzar el martes 13 de octubre"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Para la Municipalidad de Las Condes y el Servicio de Salud Metropolitano Oriente, la respuesta sanitaria local implicó desplegar vacunación preventiva para vecinos y personal de emergencia, con 933 atenciones acumuladas reportadas al 11 de octubre. Según la nota, el municipio y el Ministerio de Desarrollo Social aún debían iniciar el levantamiento de necesidades mediante la FIBE el 13 de octubre, mientras las obras de mitigación seguían pendientes de reevaluación o adjudicación; esto mantiene abierta la gestión de riesgos sanitarios y de atención a damnificados, sin acreditar capacidad preventiva ya instalada.",
+              "source_quote": "La contratación fue aprobada por el Concejo Municipal el mismo 8 de octubre y se encuentra en etapa de adjudicación."
+            }
+          ]
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_06ad848f4f62031e006acc1c7a7b1487d097607e5885a5fa10",
+          "analysis_text_sha256": "7341a0a60e33f93339937d6714ad3fd66d233879cec9af9e9acd4de0ab3b0631",
+          "request_input_sha256": "9f88847ae1e166bd7378cc5a7c9d8cebdd01923f387b27a7ee6fedf018be1a82",
+          "raw_model_output_sha256": "b94c3e1c86f6fcce7b52cc345d8db4b9f0a91a92b67de4df2c4b027b09d90cea"
+        }
+      },
+      "model_output_sha256": "166732a5cace0321ef2f17bc6839611f79b4c0c220ee91a6a98fdd429d32f72d",
+      "model_response_id": "resp_06ad848f4f62031e006acc1c7a7b1487d097607e5885a5fa10",
+      "request_input_sha256": "9f88847ae1e166bd7378cc5a7c9d8cebdd01923f387b27a7ee6fedf018be1a82",
+      "immutable_actual_model_primary_pin": {
+        "url": "https://www.latercera.com/nacional/noticia/aluvion-en-las-condes-municipio-reporta-2015-viviendas-afectadas-y-933-atenciones-en-vacunatorios/",
+        "publication_date": "2026-10-11",
+        "body_sha256": "7341a0a60e33f93339937d6714ad3fd66d233879cec9af9e9acd4de0ab3b0631",
+        "html_sha256": "1d9a57e0fabd3c230ae5ca23a4cbbbfc15584a77884de945a1ffbc4d6067cd25",
+        "model_sha256": "166732a5cace0321ef2f17bc6839611f79b4c0c220ee91a6a98fdd429d32f72d",
+        "response_id": "resp_06ad848f4f62031e006acc1c7a7b1487d097607e5885a5fa10",
+        "request_input_sha256": "9f88847ae1e166bd7378cc5a7c9d8cebdd01923f387b27a7ee6fedf018be1a82"
+      },
+      "immutable_actual_model_primary_pin_sha256": "2280092c768d1527aca1463f7a45abe169fef032b447aded02c236bfbcbeaab1",
+      "genuine_paid_telemetry_event": {
+        "at": "2026-10-11T23:32:27.290485+00:00",
+        "kind": "fast",
+        "model": "gpt-5.6-luna",
+        "requested_model": "gpt-5.6-luna",
+        "response_id": "resp_06ad848f4f62031e006acc1c7a7b1487d097607e5885a5fa10",
+        "success": true,
+        "error_type": null,
+        "input_tokens": 3651,
+        "cached_input_tokens": 2578,
+        "output_tokens": 2102,
+        "total_tokens": 5753,
+        "cost_usd": null,
+        "cost_status": "pricing_not_configured",
+        "feature": null,
+        "output_id": null,
+        "run_id": null,
+        "publishable": null,
+        "incremental_quality_points": null
+      },
+      "actual_editorial_assessment": {
+        "decision": "rejected",
+        "reason": "editorial_relevance_below_threshold",
+        "relevance_score": 68,
+        "threshold": 72,
+        "proof_version": "pulso_editorial_proof_v5",
+        "analysis_reason": "Señal local de respuesta de salud pública ante una emergencia, con vacunación y apoyo psicológico ya desplegados, pero de alcance acotado y con los principales proyectos de mitigación aún no ejecutados. Merece seguimiento secundario, no constituye por sí sola un cambio sectorial nacional."
+      },
+      "actual_guard_validation": {
+        "version": "pulso_editorial_proof_v5",
+        "source": "pulso_latercera",
+        "analysis_text_sha256": "7341a0a60e33f93339937d6714ad3fd66d233879cec9af9e9acd4de0ab3b0631",
+        "quote_validation_is_semantic_approval": false,
+        "publication_approved": false,
+        "model_output_sha256": "166732a5cace0321ef2f17bc6839611f79b4c0c220ee91a6a98fdd429d32f72d",
+        "proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La nota informa una campaña preventiva de vacunación coordinada con un Servicio de Salud y dirigida a personas expuestas durante las labores de emergencia; además menciona apoyo psicológico a damnificados.",
+          "human_health_scope_quote": "En paralelo, el municipio desplegó una campaña preventiva de vacunación en coordinación con el Servicio de Salud Metropolitano Oriente, destinada a vecinos, funcionarios municipales, voluntarios y personal que participa en las labores de emergencia.",
+          "actor": "el municipio",
+          "action": "desplegó una campaña preventiva de vacunación",
+          "consequence": "alcanzando un total acumulado de 933 atenciones desde el inicio de la campaña",
+          "actor_quote": "el municipio desplegó una campaña preventiva de vacunación",
+          "action_quote": "el municipio desplegó una campaña preventiva de vacunación en coordinación con el Servicio de Salud Metropolitano Oriente",
+          "consequence_quote": "Solo ese día se atendió a 883 personas, alcanzando un total acumulado de 933 atenciones desde el inicio de la campaña.",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "el levantamiento coordinado con el Ministerio de Desarrollo Social está previsto para comenzar el martes 13 de octubre",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La publicación entrega un balance actualizado de atenciones de vacunación y dosis entregadas en una emergencia local, junto con el estado concreto de proyectos de mitigación todavía no ejecutados o en adjudicación.",
+          "novelty_quote": "Solo ese día se atendió a 883 personas, alcanzando un total acumulado de 933 atenciones desde el inicio de la campaña.",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Según Pulso/La Tercera, al 11 de octubre la Municipalidad de Las Condes reportó 2.015 viviendas afectadas por el aluvión del 8 de octubre y 933 atenciones acumuladas en una campaña preventiva de vacunación iniciada el 9 de octubre, además de cerca de mil dosis entregadas y apoyo psicológico para quienes lo requieran. Como medidas aún futuras o en curso según la nota, el levantamiento de la FIBE estaba previsto para comenzar el 13 de octubre; las barreras aluvionales todavía no habían comenzado y el municipio debía reevaluar cauces, emplazamientos y accesos antes de instalarlas; el segundo proyecto de retiro de sedimentos se encontraba en etapa de adjudicación.",
+              "source_quote": "el levantamiento coordinado con el Ministerio de Desarrollo Social está previsto para comenzar el martes 13 de octubre"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Para la Municipalidad de Las Condes y el Servicio de Salud Metropolitano Oriente, la respuesta sanitaria local implicó desplegar vacunación preventiva para vecinos y personal de emergencia, con 933 atenciones acumuladas reportadas al 11 de octubre. Según la nota, el municipio y el Ministerio de Desarrollo Social aún debían iniciar el levantamiento de necesidades mediante la FIBE el 13 de octubre, mientras las obras de mitigación seguían pendientes de reevaluación o adjudicación; esto mantiene abierta la gestión de riesgos sanitarios y de atención a damnificados, sin acreditar capacidad preventiva ya instalada.",
+              "source_quote": "La contratación fue aprobada por el Concejo Municipal el mismo 8 de octubre y se encuentra en etapa de adjudicación."
+            }
+          ]
+        },
+        "decision": "rejected",
+        "reason": "editorial_relevance_below_threshold",
+        "primary_article_body_sha256": "7341a0a60e33f93339937d6714ad3fd66d233879cec9af9e9acd4de0ab3b0631",
+        "request_input_sha256": "9f88847ae1e166bd7378cc5a7c9d8cebdd01923f387b27a7ee6fedf018be1a82",
+        "model_response": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_06ad848f4f62031e006acc1c7a7b1487d097607e5885a5fa10",
+          "analysis_text_sha256": "7341a0a60e33f93339937d6714ad3fd66d233879cec9af9e9acd4de0ab3b0631",
+          "request_input_sha256": "9f88847ae1e166bd7378cc5a7c9d8cebdd01923f387b27a7ee6fedf018be1a82",
+          "raw_model_output_sha256": "b94c3e1c86f6fcce7b52cc345d8db4b9f0a91a92b67de4df2c4b027b09d90cea"
+        }
+      },
+      "actual_status": "rejected",
+      "actual_score": 68,
+      "unchanged_threshold": 72,
+      "actual_lane": "LIVE",
+      "no_actual_history_or_feed_signal": true,
+      "complete_body_and_model_read": true,
+      "quote_diagnostics": [
+        {
+          "field": "human_health_scope_quote",
+          "quote": "En paralelo, el municipio desplegó una campaña preventiva de vacunación en coordinación con el Servicio de Salud Metropolitano Oriente, destinada a vecinos, funcionarios municipales, voluntarios y personal que participa en las labores de emergencia.",
+          "empty": false,
+          "literal_quote_matches": true
+        },
+        {
+          "field": "actor_quote",
+          "quote": "el municipio desplegó una campaña preventiva de vacunación",
+          "empty": false,
+          "literal_quote_matches": true
+        },
+        {
+          "field": "action_quote",
+          "quote": "el municipio desplegó una campaña preventiva de vacunación en coordinación con el Servicio de Salud Metropolitano Oriente",
+          "empty": false,
+          "literal_quote_matches": true
+        },
+        {
+          "field": "consequence_quote",
+          "quote": "Solo ese día se atendió a 883 personas, alcanzando un total acumulado de 933 atenciones desde el inicio de la campaña.",
+          "empty": false,
+          "literal_quote_matches": true
+        },
+        {
+          "field": "event_status_quote",
+          "quote": "el levantamiento coordinado con el Ministerio de Desarrollo Social está previsto para comenzar el martes 13 de octubre",
+          "empty": false,
+          "literal_quote_matches": true
+        },
+        {
+          "field": "novelty_quote",
+          "quote": "Solo ese día se atendió a 883 personas, alcanzando un total acumulado de 933 atenciones desde el inicio de la campaña.",
+          "empty": false,
+          "literal_quote_matches": true
+        }
+      ],
+      "semantic_decision": "retain_rejection",
+      "exact_reason": "Conservative rejection is defensible at the unchanged gate. The model recognizes an actual local public-health response rather than mislabeling it as no health: 933 accumulated attendances and about 1,000 doses delivered, with psychological support. The primary separately states 883 persons on Saturday; those are not 933 unique people, and delivered doses are not claimed as administered. The civil mitigation contract of October 5 and its 90-day term do not mean construction had started; the second project remains in adjudication. This quantified local update received a genuine score 68, not an omitted assessment or technical hold. No quota, manual upgrade or national-sector impact is inferred.",
+      "score_or_model_or_date_changes": false,
+      "publication_approved": false,
+      "metric_and_period_review": {
+        "persons_saturday_oct10": 883,
+        "attendances_accumulated_since_oct9": 933,
+        "doses_delivered_approximately": 1000,
+        "persons_not_equal_attendances": true,
+        "delivered_not_claimed_administered": true,
+        "civil_contract_oct5_million_CLP": 776.7,
+        "construction_started_at_flood": false,
+        "secondary_project_million_CLP": 500,
+        "secondary_project_status": "adjudication",
+        "actual_model_keeps_counts_and_future_states_distinct": true
+      }
+    },
+    {
+      "live9_index": 9,
+      "url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+      "publication_date": "2026-10-11",
+      "queue_fingerprint": "a98db753925f93fa42fcf0a60065020e59e099578e9d6313d60ff314fccf7280",
+      "original_full_primary_body": "Este domingo se confirmó el fallecimiento del reconocido actor Gabriel Prieto a la edad de 65 años, marcando un nuevo episodio de luto en las artes escénicas nacionales. La información fue confirmada a través de la Corporación de Actores y Actrices de Chile (ChileActores), instancia que dio a conocer su deceso en una publicación en las redes sociales institucionales. Si bien no se detallaron las causas puntuales de su muerte, Prieto enfrentó graves consecuencias médicas luego de padecer Covid-19 en septiembre de 2022, lo que lo mantuvo internado en Cuidados Intensivos, además de enfrentar un estado de coma inducido durante un mes, en el Hospital Luis Tisné de la comuna de Peñalolén. Las consecuencias de la enfermedad le provocaron un fuerte deterioro físico durante el último tiempo. Además, sufrió una falla multisistémica producto de lo anterior y enfermedades asociadas previas como la diabetes. Tras recibir el alta médica en 2023, Prieto inició un extenso proceso de rehabilitación, cuyos avances compartió públicamente con sus seguidores a través de redes sociales. En diciembre de ese año publicó un registro en el que mostraba sus progresos físicos y relataba que había comenzado a retomar las caminatas, aunque todavía enfrentaba dificultades de resistencia producto de su recuperación. Pese a las complicaciones, el intérprete consiguió regresar a los escenarios. En enero de 2025 se conoció su retorno al teatro con la obra La Nona, luego de permanecer alejado de la actividad artística debido a sus problemas de salud. En aquella oportunidad, el actor recordó la gravedad del cuadro médico que había enfrentado y aseguró que estuvo cerca de perder la vida en tres oportunidades. Su regreso a las tablas marcó una nueva etapa de su trayectoria, después de varios años dedicados a recuperar su movilidad y condición física. El fallecimiento de Prieto deja una extensa carrera vinculada a la actuación, la docencia y el desarrollo del teatro chileno, además de su participación en producciones televisivas que marcaron distintas épocas de la pantalla nacional. Nacido el 2 de febrero de 1961 en Santiago, Prieto estudió actuación en la Pontificia Universidad Católica de Chile, institución en la que posteriormente también se desempeñó como docente, formando a nuevas generaciones de intérpretes. “Con profunda tristeza y dolor lamentamos comunicar el sensible fallecimiento de nuestro compañero y amigo, Gabriel Prieto Escobar. Gabriel fue un actor de teatro y televisión, además maestro de muchas generaciones de artistas en la Universidad Católica, su escuela”, afirmaron desde ChileActores. Desde el organismo destacaron que “Prieto pasará a la historia como uno de los fundadores de la compañía Teatro Aparte, un espacio que ha sido un aporte esencial para la escena artística chilena”. Dicho lugar fue creado junto a Rodrigo Bastidas, Magdalena Max-Neef y Elena Muñoz. Cabe recordar que Prieto participó en distintas obras de teatro y teleseries, tales como Los Títeres, Loca Piel, Brujas, Dama y Obrero y Te doy la vida. También protagonizó las producciones Loco por ti, La Nany, Casado con Hijos, entre otras. En esa línea, afirmaron desde el sindicato de actores que “en 2022 Gabriel se convirtió en un sobreviviente de la pandemia, compartiendo con generosidad y valentía un testimonio de vida, amor, resiliencia y gratitud”. Los detalles de su velorio y funeral serán comunicados oportunamente a través de ChileActores.",
+      "body_sha256": "d5314e898c41422ecea913473d3cac6f7514a20705d10a684a7c91bc38862cd3",
+      "html_sha256": "f8a47c32d341468218003754ee4965ea84ee9aa3aef5f617e0e73db918306cb8",
+      "captured_at": "2026-10-11T23:30:55.324149+00:00",
+      "primary_body_characters": 3449,
+      "prior_triage_body_sha256": "94e66cb5eac914c75172013ca91b92d2c568cd2f1ebcffe0cda9e70e29e4dfc3",
+      "primary_body_changed_since_triage": true,
+      "original_full_model_output": {
+        "relevance_score": 5,
+        "what_happened": "Según la nota publicada el 11 de octubre de 2026, se confirmó el fallecimiento del actor Gabriel Prieto, a los 65 años. El contenido también repasa sus consecuencias médicas tras padecer Covid-19 en septiembre de 2022 y su posterior rehabilitación.",
+        "why_it_matters": "Según la nota del 11 de octubre de 2026, el fallecimiento afecta a la comunidad artística y teatral chilena, pero el artículo no reporta cambios en cobertura, prestadores, financiamiento, regulación, medicamentos ni capacidad del sistema de salud.",
+        "reason": "Es una nota necrológica sobre una persona pública. Aunque incluye antecedentes clínicos y atención hospitalaria, no presenta un cambio material ni una señal estratégica para el sector salud chileno.",
+        "pulso_editorial_proof": {
+          "scope_decision": "incidental_health",
+          "scope_reason": "La salud humana aparece como antecedente individual de la trayectoria y fallecimiento de un actor; no se informa una medida, cambio o consecuencia para el sistema sanitario, aseguramiento, prestadores, regulación o salud poblacional.",
+          "human_health_scope_quote": "enfrentó graves consecuencias médicas luego de padecer Covid-19 en septiembre de 2022",
+          "actor": "",
+          "action": "",
+          "consequence": "",
+          "actor_quote": "",
+          "action_quote": "",
+          "consequence_quote": "",
+          "event_status": "actual",
+          "event_status_quote": "Este domingo se confirmó el fallecimiento del reconocido actor Gabriel Prieto",
+          "novelty_decision": "repetition_or_context",
+          "novelty_reason": "El contenido aporta información biográfica y clínica contextual sobre una persona fallecida, pero no información material nueva para el sector salud ni un cambio institucional.",
+          "novelty_quote": "El fallecimiento de Prieto deja una extensa carrera vinculada a la actuación, la docencia y el desarrollo del teatro chileno",
+          "future_claims": []
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0123ba60b6d9db6f006acc1c93845487d0a8b9fc05432adb98",
+          "analysis_text_sha256": "d5314e898c41422ecea913473d3cac6f7514a20705d10a684a7c91bc38862cd3",
+          "request_input_sha256": "2eb0e86c58fd4e467d68de169bcdb1110dd6cf94888e2f8db9267143aefdb2a7",
+          "raw_model_output_sha256": "e665bd8cb937391079ff696c44ec51b694e7a332ba62f1003b9f1ab18b577ef2"
+        }
+      },
+      "model_output_sha256": "855fd981d368ea67db8958487266ab75165a156b98c46bf24e33e6edcf3023fb",
+      "model_response_id": "resp_0123ba60b6d9db6f006acc1c93845487d0a8b9fc05432adb98",
+      "request_input_sha256": "2eb0e86c58fd4e467d68de169bcdb1110dd6cf94888e2f8db9267143aefdb2a7",
+      "immutable_actual_model_primary_pin": {
+        "url": "https://www.latercera.com/culto/noticia/renocido-actor-gabriel-prieto-fallece-a-los-65-anos/",
+        "publication_date": "2026-10-11",
+        "body_sha256": "d5314e898c41422ecea913473d3cac6f7514a20705d10a684a7c91bc38862cd3",
+        "html_sha256": "f8a47c32d341468218003754ee4965ea84ee9aa3aef5f617e0e73db918306cb8",
+        "model_sha256": "855fd981d368ea67db8958487266ab75165a156b98c46bf24e33e6edcf3023fb",
+        "response_id": "resp_0123ba60b6d9db6f006acc1c93845487d0a8b9fc05432adb98",
+        "request_input_sha256": "2eb0e86c58fd4e467d68de169bcdb1110dd6cf94888e2f8db9267143aefdb2a7"
+      },
+      "immutable_actual_model_primary_pin_sha256": "124ae1d506c8a06a0174792a0041d02bad758b9c40a698e2073e2763f141ee7a",
+      "genuine_paid_telemetry_event": {
+        "at": "2026-10-11T23:32:44.684105+00:00",
+        "kind": "fast",
+        "model": "gpt-5.6-luna",
+        "requested_model": "gpt-5.6-luna",
+        "response_id": "resp_0123ba60b6d9db6f006acc1c93845487d0a8b9fc05432adb98",
+        "success": true,
+        "error_type": null,
+        "input_tokens": 3355,
+        "cached_input_tokens": 2578,
+        "output_tokens": 787,
+        "total_tokens": 4142,
+        "cost_usd": null,
+        "cost_status": "pricing_not_configured",
+        "feature": null,
+        "output_id": null,
+        "run_id": null,
+        "publishable": null,
+        "incremental_quality_points": null
+      },
+      "actual_editorial_assessment": {
+        "decision": "rejected",
+        "reason": "editorial_relevance_below_threshold",
+        "relevance_score": 5,
+        "threshold": 72,
+        "proof_version": "pulso_editorial_proof_v5",
+        "analysis_reason": "Es una nota necrológica sobre una persona pública. Aunque incluye antecedentes clínicos y atención hospitalaria, no presenta un cambio material ni una señal estratégica para el sector salud chileno."
+      },
+      "actual_guard_validation": {
+        "version": "pulso_editorial_proof_v5",
+        "source": "pulso_latercera",
+        "analysis_text_sha256": "d5314e898c41422ecea913473d3cac6f7514a20705d10a684a7c91bc38862cd3",
+        "quote_validation_is_semantic_approval": false,
+        "publication_approved": false,
+        "model_output_sha256": "855fd981d368ea67db8958487266ab75165a156b98c46bf24e33e6edcf3023fb",
+        "proof": {
+          "scope_decision": "incidental_health",
+          "scope_reason": "La salud humana aparece como antecedente individual de la trayectoria y fallecimiento de un actor; no se informa una medida, cambio o consecuencia para el sistema sanitario, aseguramiento, prestadores, regulación o salud poblacional.",
+          "human_health_scope_quote": "enfrentó graves consecuencias médicas luego de padecer Covid-19 en septiembre de 2022",
+          "actor": "",
+          "action": "",
+          "consequence": "",
+          "actor_quote": "",
+          "action_quote": "",
+          "consequence_quote": "",
+          "event_status": "actual",
+          "event_status_quote": "Este domingo se confirmó el fallecimiento del reconocido actor Gabriel Prieto",
+          "novelty_decision": "repetition_or_context",
+          "novelty_reason": "El contenido aporta información biográfica y clínica contextual sobre una persona fallecida, pero no información material nueva para el sector salud ni un cambio institucional.",
+          "novelty_quote": "El fallecimiento de Prieto deja una extensa carrera vinculada a la actuación, la docencia y el desarrollo del teatro chileno",
+          "future_claims": []
+        },
+        "decision": "rejected",
+        "reason": "editorial_relevance_below_threshold",
+        "primary_article_body_sha256": "d5314e898c41422ecea913473d3cac6f7514a20705d10a684a7c91bc38862cd3",
+        "request_input_sha256": "2eb0e86c58fd4e467d68de169bcdb1110dd6cf94888e2f8db9267143aefdb2a7",
+        "model_response": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0123ba60b6d9db6f006acc1c93845487d0a8b9fc05432adb98",
+          "analysis_text_sha256": "d5314e898c41422ecea913473d3cac6f7514a20705d10a684a7c91bc38862cd3",
+          "request_input_sha256": "2eb0e86c58fd4e467d68de169bcdb1110dd6cf94888e2f8db9267143aefdb2a7",
+          "raw_model_output_sha256": "e665bd8cb937391079ff696c44ec51b694e7a332ba62f1003b9f1ab18b577ef2"
+        }
+      },
+      "actual_status": "rejected",
+      "actual_score": 5,
+      "unchanged_threshold": 72,
+      "actual_lane": "LIVE",
+      "no_actual_history_or_feed_signal": true,
+      "complete_body_and_model_read": true,
+      "quote_diagnostics": [
+        {
+          "field": "human_health_scope_quote",
+          "quote": "enfrentó graves consecuencias médicas luego de padecer Covid-19 en septiembre de 2022",
+          "empty": false,
+          "literal_quote_matches": true
+        },
+        {
+          "field": "actor_quote",
+          "quote": "",
+          "empty": true,
+          "literal_quote_matches": false
+        },
+        {
+          "field": "action_quote",
+          "quote": "",
+          "empty": true,
+          "literal_quote_matches": false
+        },
+        {
+          "field": "consequence_quote",
+          "quote": "",
+          "empty": true,
+          "literal_quote_matches": false
+        },
+        {
+          "field": "event_status_quote",
+          "quote": "Este domingo se confirmó el fallecimiento del reconocido actor Gabriel Prieto",
+          "empty": false,
+          "literal_quote_matches": true
+        },
+        {
+          "field": "novelty_quote",
+          "quote": "El fallecimiento de Prieto deja una extensa carrera vinculada a la actuación, la docencia y el desarrollo del teatro chileno",
+          "empty": false,
+          "literal_quote_matches": true
+        }
+      ],
+      "semantic_decision": "retain_rejection",
+      "exact_reason": "Conservative rejection is justified. The new longer publisher body describes a current obituary, while COVID illness in September 2022, discharge in 2023 and rehabilitation are explicitly historical biographical context. No new care-system, insurance, medicine, funding, regulation or capacity change is reported. The actual fresh 3,449-character body, not the frozen 2,645-character triage body, was sent in a genuine new request and received score 5. The original negative triage remains a separate older observation.",
+      "score_or_model_or_date_changes": false,
+      "publication_approved": false,
+      "updated_body_lineage": {
+        "original_triage_characters": 2645,
+        "actual_model_input_characters": 3449,
+        "original_triage_sha256": "94e66cb5eac914c75172013ca91b92d2c568cd2f1ebcffe0cda9e70e29e4dfc3",
+        "actual_primary_sha256": "d5314e898c41422ecea913473d3cac6f7514a20705d10a684a7c91bc38862cd3",
+        "fresh_primary_capture_at": "2026-10-11T23:30:55.324149+00:00",
+        "old_triage_replaced_or_rewritten": false,
+        "current_obituary_date": "2026-10-11",
+        "prior_covid_episode": "2022-09",
+        "discharge_year": 2023,
+        "model_explicitly_preserves_prior_medical_context": true
+      }
+    }
+  ],
+  "summary": {
+    "actual_cohort": 9,
+    "actual_rejected": 9,
+    "actual_pending": 0,
+    "actual_published": 0,
+    "genuine_new_FAST_calls": 4,
+    "FAST_scores": [
+      58,
+      35,
+      68,
+      5
+    ],
+    "unpaid_materiality_prefilter_rejections": 5,
+    "full_actual_paid_bodies_and_models_read": 4,
+    "source_history_signal_content_unchanged": true,
+    "source_feed_signal_content_unchanged": true,
+    "feed_generated_at_refreshed": true,
+    "no_quota": true,
+    "media_gate_threshold": 72
+  },
+  "reviewer_AI_calls": 0,
+  "Source_state_registry_mutations": 0,
+  "models_mutated": 0,
+  "scores_mutated": 0,
+  "global_acceptance": "NOT_ACCEPTED_PENDING_LIVE9_QA_SCOPE_ARCHIVAL_CONTEXT_FINAL_REVIEWER_STAGING",
+  "scope_verdict": "PASS_FOUR_REAL_REJECTION_SEMANTICS_AND_NINE_TERMINAL_OUTCOME_BINDINGS",
+  "limits": [
+    "The original whole LIVE9 QA produced 1,477 scope/archival findings. This independent semantic result does not assert a global QA PASS.",
+    "The first frozen Prieto triage and actual updated publisher body are distinct dated observations; its fourth real request must not be hidden.",
+    "A structured conservative rejection below 72 does not require otherwise publishable actor/action evidence; the response/request/complete-primary bindings remain mandatory."
+  ]
+}

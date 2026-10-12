@@ -1,5 +1,7 @@
 from __future__ import annotations
+import hashlib
 import json
+from copy import deepcopy
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -29,6 +31,108 @@ def record_data_adapter(root: Path, slug: str, evidence: dict) -> None:
     d['generated_at'] = datetime.now(timezone.utc).isoformat()
     atomic_json(_path(root), d)
 
+
+
+def _pulso_published_body_bound(row, raw):
+    """Bind current primary bytes to the persisted assessment/review body."""
+    from .llm_analysis import news_analysis_input
+    from .pulso_source import liveblog_analysis_text
+    metadata = raw.get("metadata", {})
+    body = metadata.get("page_text")
+    body_sha = metadata.get("article_body_sha256")
+    pins = []
+    if "analysis_base_article_body_sha256" in metadata:
+        pins.append(metadata["analysis_base_article_body_sha256"])
+    for review in (row.get("editorial_review"), metadata.get("editorial_review")):
+        if isinstance(review, dict) and "original_body_sha256" in review:
+            pins.append(review["original_body_sha256"])
+    validation = metadata.get("pulso_editorial_proof_validation")
+    if isinstance(validation, dict) and "primary_article_body_sha256" in validation:
+        pins.append(validation["primary_article_body_sha256"])
+    if not pins or any(pin != body_sha for pin in pins):
+        return False
+    if ("analysis_base_article_body_characters" in metadata
+            and metadata["analysis_base_article_body_characters"] != len(body)):
+        return False
+    try:
+        # Live blogs have an augmented, verified timeline request. Its input
+        # hash must match that full request, never the plain base body hash.
+        text = liveblog_analysis_text(metadata) if metadata.get("publisher_document_type") == "liveblog" else body
+        request = news_analysis_input(title=raw["title"], text=text, source_name=raw["source_name"], full_text=True)
+        text_sha = hashlib.sha256(text.encode("utf-8")).hexdigest()
+        request_sha = hashlib.sha256(request.encode("utf-8")).hexdigest()
+    except (KeyError, TypeError, ValueError, AttributeError):
+        return False
+    for field, expected in (("analysis_input_body_sha256", text_sha),
+                            ("analysis_request_input_sha256", request_sha)):
+        if field in metadata and metadata[field] != expected:
+            return False
+    ai = metadata.get("analysis_model_output")
+    model_binding = ai.get("_pulso_analysis_meta") if isinstance(ai, dict) else None
+    if isinstance(model_binding, dict) and (model_binding.get("analysis_text_sha256") != text_sha
+            or model_binding.get("request_input_sha256") != request_sha):
+        return False
+    return True
+
+def _effective_pulso_history(history, source_queue):
+    """Current published stock, bound to the same verified primary and gate."""
+    from .editorial_gate import publication_ready
+    from .pulso_source import article_url, complete_article_body
+    queue_by_url = {}
+    for item in source_queue or []:
+        if item.get("source") == "pulso_latercera":
+            raw = item.get("raw", {})
+            url = article_url(raw.get("url", ""))
+            if url:
+                queue_by_url.setdefault(url, []).append(item)
+    effective = {}
+    for row in history or []:
+        review = row.get("editorial_review")
+        if (row.get("source_name") != "Pulso / La Tercera"
+                or row.get("source_type") != "press_high_trust"
+                or row.get("source_quality_gate") != "passed"
+                or row.get("evidence_maturity") != "media_reported"
+                or row.get("feed_visibility") is False
+                or row.get("editorial_decision") in {"reject", "group"}
+                or (isinstance(review, dict) and review.get("decision") in {"reject", "group"})):
+            continue
+        try:
+            if isinstance(row.get("editorial_relevance"), bool) or int(row.get("editorial_relevance") or 0) < 72:
+                continue
+            day = row.get("event_date")
+            if (not isinstance(day, str) or date.fromisoformat(day).isoformat() != day
+                    or row.get("publication_date") != day):
+                continue
+        except (ValueError, TypeError):
+            continue
+        url = article_url(row.get("source_url", ""))
+        if not url or url != row.get("source_url") or not publication_ready(deepcopy(row))[0]:
+            continue
+        for item in queue_by_url.get(url, []):
+            raw = item.get("raw", {})
+            metadata = raw.get("metadata", {})
+            binding = metadata.get("primary_item_binding")
+            assessment = metadata.get("editorial_assessment")
+            validation = metadata.get("pulso_editorial_proof_validation")
+            if (item.get("status") != "published" or raw.get("event_date") != day
+                    or raw.get("source_slug") != "pulso_latercera"
+                    or raw.get("source_name") != "Pulso / La Tercera" or raw.get("source_type") != "press_high_trust"
+                    or not isinstance(assessment, dict) or assessment.get("decision") != "published"
+                    or metadata.get("editorial_hold") or metadata.get("analysis_input_complete") is False
+                    or (isinstance(validation, dict) and validation.get("decision") == "deferred")
+                    or metadata.get("canonical_url") != url or metadata.get("publication_date") != day
+                    or any(metadata.get(flag) is not True for flag in (
+                        "article_verified", "primary_identity_verified", "publication_date_verified"))
+                    or metadata.get("source_quality_gate") != "passed"
+                    or metadata.get("article_body_complete") is False or not complete_article_body(metadata)
+                    or (isinstance(binding, dict) and binding.get("verified") is False)):
+                continue
+            if not _pulso_published_body_bound(row, raw):
+                continue
+            effective[url] = row
+            break
+    return list(effective.values())
+
 def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,rows:list[dict]|None=None,
            pending:int=0,deferred:int=0,rejected:int=0,error:str|None=None,live_pending:int|None=None,backfill_pending:int|None=None,
            discovery_evidence:dict|None=None, observed_rows:list[dict]|None=None,
@@ -47,6 +151,13 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
     incomplete=bool(audited_coverage and audited_coverage.get('coverage_complete') is not True)
     degraded=bool(audited_coverage and audited_coverage.get('outcome')=='OPERATIVE_DEGRADED')
     fiscal = slug in ("superintendencia_fiscalizacion", "suseso_fiscalizacion")
+    pulso_history = (_effective_pulso_history(published_history, source_queue)
+                     if slug == "pulso_latercera" and published_history is not None else None)
+    if pulso_history is not None:
+        # Editorial withdrawals can move the latest effective publication
+        # backwards. Neither an old health snapshot nor this-run-only rows
+        # may keep a removed signal's date alive.
+        last_signal = max((row["event_date"] for row in pulso_history), default=None)
     if fiscal and published_history is not None:
         last_signal = max((row.get("event_date") or "" for row in published_history), default="") or None
     observed_rows = observed_rows or []
@@ -100,6 +211,10 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
         "counts_scope":{"discovered":"this_run","new":"this_run","published":"this_run",
                         "processed_rejections":"this_run","rejected":"cumulative_queue"},
     }
+    if pulso_history is not None:
+        src[slug].update(published_total=len(pulso_history),
+                         last_signal_at_basis="effective_verified_published_history")
+        src[slug]["counts_scope"]["published_total"] = "effective_persisted_source_history"
     if discovery_evidence is not None:
         row=src[slug]
         row.update(discovery_evidence)

@@ -1,0 +1,120 @@
+{
+  "result": "PASS_SCOPED_GOVERNANCE",
+  "reviewer": "independent /root/reviewer",
+  "created_at": "2026-10-11T17:10:22.836281+00:00",
+  "reviewed_head": "d0e2d584829e188e1f749a25c13405a75e660a32",
+  "integrated_staging_base": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+  "scope": "Light final governance/documentation/preservation review only; no publisher requests, implementation changes, index or commits.",
+  "findings": [],
+  "preservation": {
+    "queue_total": 86,
+    "unowned_tasks_exactly_preserved": 83,
+    "owned_tasks_only": [
+      "w4_paho_2026_10_11",
+      "w4_reuters_2026_10_11",
+      "w4_who_2026_10_11"
+    ],
+    "task_ids_and_order_unchanged": true,
+    "queue_top_level_metadata_unchanged": true,
+    "activation_dependencies_unchanged": true,
+    "nonGlobal_PMO_blocks_and_all_previous_catalog_entries_unchanged": true,
+    "PMO_change_scope": "Global evidence/missing/source_qualification; one owned evidence catalog key; one appended changelog entry",
+    "Global_status": "Implementado",
+    "Global_requirements_not_promoted": true,
+    "PMO_doc_is_append_only": true,
+    "approved_14_themes_exporter_renderer_and_core_feed_byte_identical_to_staging": true,
+    "technical_10_protected_hashes_still_match": true,
+    "fresh_metadata_coverage_inventory_and_ledger_unchanged": true,
+    "copied_technical_reviewer_byte_exact_sha256": "39cf3b77b69a247d07dd87d8012b09acbaa7aee1371ca11e8e732fc0ad3858cf"
+  },
+  "evidence_contract": {
+    "fresh_capture_run": "38153425336",
+    "fresh_capture_sha": "f7de051a645e21e293b6d1439341e508e5b0c403",
+    "PMO_sha_matches_fresh_capture_url": true,
+    "qa_run": "38156977778",
+    "tested_commit": "aee4ed3dff0c6cd900751e89a219548b261308a1",
+    "tested_commit_separate_from_capture_sha": true,
+    "canonical_inventory_sha256": "0c9c225fb64e2a40e84c7a4240df41c513044f4a8ec01dc53709ed3fc29c432d",
+    "23_raw_native_clamped_end_closures": true,
+    "original_fresh_contract3_PAHO_gap_retained": true,
+    "all_referenced_files_exist": true,
+    "QA": {
+      "directed_python": 184,
+      "adversarial_subcases": 94,
+      "deterministic_python_passed": 1178,
+      "deterministic_python_failed": 0,
+      "Node_passed": 43,
+      "desktop_mobile_passed": 12,
+      "raw_capture_audit": "PASS",
+      "zero_network_replay": "PASS"
+    }
+  },
+  "source_outcomes": {
+    "who": {
+      "counts_30_90": {
+        "30": 84,
+        "90": 241
+      },
+      "outcome": "READY_FOR_INTEGRATION",
+      "audit_health_exactly_matches_canonical": true,
+      "recurrent_operation_proven": false,
+      "publication_activation": false
+    },
+    "paho": {
+      "counts_30_90": {
+        "30": 185,
+        "90": 530
+      },
+      "outcome": "READY_FOR_INTEGRATION",
+      "audit_health_exactly_matches_canonical": true,
+      "recurrent_operation_proven": false,
+      "publication_activation": false
+    },
+    "reuters": {
+      "counts_30_90": {
+        "30": null,
+        "90": null
+      },
+      "outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "audit_health_exactly_matches_canonical": true,
+      "recurrent_operation_proven": false,
+      "publication_activation": false
+    }
+  },
+  "holds_preserved": [
+    "WHO still requires a distinct complete truly fresh run under contract2 at least86400s after its qualifying anchor.",
+    "PAHO has no qualifying fresh contract4 anchor: first complete fresh live capture under contract4, then another complete fresh capture at least86400s later; projection is not cadence proof.",
+    "Reuters written consent/entitled route unconfigured; counts/recall null and no automated article/title/metadata requests.",
+    "Core recovery/balance activation dependencies, rights/editorial acceptance and production promotion remain held."
+  ],
+  "scope_limits": {
+    "new_cards": 0,
+    "paid_AI_calls_from_Global": 0,
+    "source_or_production_activation": false,
+    "default_window_days": 30,
+    "maximum_editorial_topics": 10,
+    "quota": false,
+    "whole_publisher_historical_archive_certified": false,
+    "richer_research_UI_certified": false
+  },
+  "reviewed_file_sha256": {
+    "config/orchestrator_queue.json": "16cf262ca66c7166216fc64a8fed7a6431e940f36cea38f90279d0ac3c0b7f0a",
+    "config/pmo_baseline.json": "3485e3e176d18258bd0f6312207b621d51d809b350cc77fef072296493a2eb9e",
+    "docs/GLOBAL_SOURCE_DISCOVERY_2026_10_11.md": "ce71dd67e21ac7a1ab0161adf32a395cef15bca9482c9bbb3f812d60c78befa4",
+    "docs/PMO_BASELINE.md": "06d7ff424bf8d143877d1304b124145bf2a77eab6cd8dd9df2466ff278abe507",
+    "data/pmo/global_discovery_qualification_2026_10_11.json": "88e243501b3f0c90a6fb5f937440822811b981ed9d5a84b890e190eb21b7da76",
+    "data/audits/global_source_recovery_2026_10_11/reviewer_final.json": "39cf3b77b69a247d07dd87d8012b09acbaa7aee1371ca11e8e732fc0ad3858cf",
+    "data/audits/w4_who_2026_10_11.json": "17af150f1e3140daf714cb5fb5c430d85064bd5d737d9b6a69182d9c855eb1d4",
+    "data/audits/w4_paho_2026_10_11.json": "50dee96f35016da949427a0f2f2f086f4a63bc5346253bd3ea2efc1b3131ccb5",
+    "data/audits/w4_reuters_2026_10_11.json": "4d9794c96578e8e815227ed42e3e741fb1c4a656c523da56e2aa33dff7e5aff4"
+  },
+  "reviewer_actions": {
+    "network_requests": 0,
+    "paid_AI_calls": 0,
+    "implementation_edits": 0,
+    "canonical_state_mutations": 0,
+    "git_index_or_commits": 0,
+    "only_write": "work/reviewer_global_governance.json"
+  },
+  "verification": "Semantic JSON/byte/hash assertions and scoped git diff --check passed. Final test figures were reconciled with durable actual QA receipts; no redundant implementation test run."
+}

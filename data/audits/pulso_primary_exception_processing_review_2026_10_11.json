@@ -1,0 +1,1211 @@
+{
+  "schema_version": "1.0",
+  "source": "pulso_latercera",
+  "verdict": "PASS_EXACT_PRIMARY_LIMITATION_PROCESSING_NOT_RUNTIME_ACCEPTANCE",
+  "mode": "offline_original_byte_verified_replay_no_live_fetch_no_ai",
+  "fixture_manifest": "tests/fixtures/pulso_editorial_exception_real/manifest.json",
+  "fixture_manifest_sha256": "1e1b2330786c2ec9dc6d46d5af90f6af1467977a1c64f8852410d454e5e441ba",
+  "original_discovery_run_sha256": "660f979b34a7ba9025ee0ddfc7d41f5edf89bb145939fb290ae4c37d48b38131",
+  "original_retained_html_count": 58,
+  "primary_publication_date_conflict_count": 4,
+  "primary_video_text_unavailable_count": 20,
+  "primary_video_with_substantive_text_count": 1,
+  "body_threshold": 160,
+  "editorial_media_gate": 72,
+  "gate_changed": false,
+  "publication_approved": false,
+  "network_requests": 0,
+  "ai_calls": 0,
+  "validation": {
+    "command": "PYTHONPATH=src /workspace/work/venv/bin/pytest -q tests/test_pulso_date_conflict_processing.py tests/test_pulso_video_processing.py tests/test_pulso_complete_body.py tests/test_pulso_date_exceptions.py tests/test_pulso_media_network_materiality.py tests/test_pulso_core_runtime.py tests/test_beta_source_package.py",
+    "result": "115 passed"
+  },
+  "records": [
+    {
+      "url": "https://www.latercera.com/branded/noticia/atencion-medica-domiciliaria-cuando-conviene-llamar-a-un-medico-a-casa-en-lugar-de-ir-a-urgencias/",
+      "title": "Atención médica domiciliaria: cuándo conviene llamar a un médico a casa en lugar de ir a urgencias",
+      "canonical": "https://www.latercera.com/branded/noticia/atencion-medica-domiciliaria-cuando-conviene-llamar-a-un-medico-a-casa-en-lugar-de-ir-a-urgencias/",
+      "original_html_sha256": "2bf12005a8a796390535942897933b7088faae307a1b48eb7677ec4d4fb5a44e",
+      "original_gzip_sha256": "e039d0e7472d107b02a4559d623d683bd6670c575012d6673b1b00d81a0350a3",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:16:32.822141+00:00",
+      "publication_date": null,
+      "publication_date_verified": false,
+      "article_verified": false,
+      "article_body_complete": true,
+      "source_body_source": "url_bound_json_ld_articleBody",
+      "source_body_characters": 6190,
+      "source_body_sha256": "8229f49f44b19e9c0526f5b0fe8d3b2570010c5c020292a8da00cf618ec4fa21",
+      "observed_capture_projection_body_source": "url_bound_json_ld_articleBody",
+      "observed_capture_projection_body_characters": 6190,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-07-28T19:48:35.118Z",
+          "publisher_day": null,
+          "timestamp_calendar_day": "2026-07-28",
+          "america_santiago_day": "2026-07-28"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-07-28T19:48:35.118Z",
+          "publisher_day": null,
+          "timestamp_calendar_day": "2026-07-28",
+          "america_santiago_day": "2026-07-28"
+        }
+      ],
+      "visible_publication_date": "2026-07-31",
+      "possible_publication_days": [
+        "2026-07-28",
+        "2026-07-31"
+      ],
+      "video_evidence": null,
+      "decision": "pending",
+      "reason": "publisher_conflicting_publication_dates",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/paula/noticia/asi-son-los-infartos-en-las-mujeres/",
+      "title": "Así son los infartos en las mujeres",
+      "canonical": "https://www.latercera.com/paula/noticia/asi-son-los-infartos-en-las-mujeres/",
+      "original_html_sha256": "697eccc7d70a64ff80654d997678c4ec36d2950e67586d18b311769639a2c207",
+      "original_gzip_sha256": "584250e85b317961de366aaf8c1ab28e28ed64b2ea24da5b8a31b982c20df1a1",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:16:24.147231+00:00",
+      "publication_date": null,
+      "publication_date_verified": false,
+      "article_verified": false,
+      "article_body_complete": true,
+      "source_body_source": "url_bound_json_ld_articleBody",
+      "source_body_characters": 9843,
+      "source_body_sha256": "4fa10662fadc87ced996611be80b98a52c9d609300975d80c233c4b23b8597f3",
+      "observed_capture_projection_body_source": "url_bound_json_ld_articleBody",
+      "observed_capture_projection_body_characters": 9843,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-08-06T21:23:55.927Z",
+          "publisher_day": null,
+          "timestamp_calendar_day": "2026-08-06",
+          "america_santiago_day": "2026-08-06"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-08-06T21:23:55.927Z",
+          "publisher_day": null,
+          "timestamp_calendar_day": "2026-08-06",
+          "america_santiago_day": "2026-08-06"
+        }
+      ],
+      "visible_publication_date": "2026-07-30",
+      "possible_publication_days": [
+        "2026-07-30",
+        "2026-08-06"
+      ],
+      "video_evidence": null,
+      "decision": "pending",
+      "reason": "publisher_conflicting_publication_dates",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/paula/noticia/el-trabajo-tambien-puede-enfermar-el-corazon/",
+      "title": "El trabajo también puede enfermar el corazón",
+      "canonical": "https://www.latercera.com/paula/noticia/el-trabajo-tambien-puede-enfermar-el-corazon/",
+      "original_html_sha256": "403472b45a406cd5835a55d68d8250094d4a88a9ebfe310bc56bf89588c63d58",
+      "original_gzip_sha256": "f283c9552257855be96d7e5eb0783481f684d4ffd911d9deb9c2f95b62d3d450",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:16:24.316440+00:00",
+      "publication_date": null,
+      "publication_date_verified": false,
+      "article_verified": false,
+      "article_body_complete": true,
+      "source_body_source": "url_bound_json_ld_articleBody",
+      "source_body_characters": 2743,
+      "source_body_sha256": "321e0ac539191c900c8d0ca3c0bb6817719133a14e1f204009cc7a1f1a284f01",
+      "observed_capture_projection_body_source": "url_bound_json_ld_articleBody",
+      "observed_capture_projection_body_characters": 2743,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-08-06T21:20:49.55Z",
+          "publisher_day": null,
+          "timestamp_calendar_day": "2026-08-06",
+          "america_santiago_day": "2026-08-06"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-08-06T21:20:49.55Z",
+          "publisher_day": null,
+          "timestamp_calendar_day": "2026-08-06",
+          "america_santiago_day": "2026-08-06"
+        }
+      ],
+      "visible_publication_date": "2026-07-30",
+      "possible_publication_days": [
+        "2026-07-30",
+        "2026-08-06"
+      ],
+      "video_evidence": null,
+      "decision": "pending",
+      "reason": "publisher_conflicting_publication_dates",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/desocupacion-llega-a-95-su-mayor-nivel-en-cinco-anos-y-se-destruyo-empleo-por-primera-vez-desde-la-pandemia/",
+      "title": "Desocupación llega a 9,5%, su mayor nivel en cinco años, y se destruyó empleo por primera vez desde la pandemia",
+      "canonical": "https://www.latercera.com/pulso/noticia/desocupacion-llega-a-95-su-mayor-nivel-en-cinco-anos-y-se-destruyo-empleo-por-primera-vez-desde-la-pandemia/",
+      "original_html_sha256": "9d7f0c8b7346dfe1ed0b5d43b4aaa5a9a0d9c85220f3f93c6af511f374ed58d1",
+      "original_gzip_sha256": "7bf0f8cb62a2116760436ad3bd522befb251c43c93fb60586baca868ce4d578f",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T05:51:58.378081+00:00",
+      "publication_date": null,
+      "publication_date_verified": false,
+      "article_verified": false,
+      "article_body_complete": true,
+      "source_body_source": "url_bound_json_ld_articleBody",
+      "source_body_characters": 3132,
+      "source_body_sha256": "4ef2167a42ad232ad64840dab83cdcdb15e9526889ff5b6166798e2eeed5573b",
+      "observed_capture_projection_body_source": "url_bound_json_ld_articleBody",
+      "observed_capture_projection_body_characters": 3132,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-08-28T16:05:50.598Z",
+          "publisher_day": null,
+          "timestamp_calendar_day": "2026-08-28",
+          "america_santiago_day": "2026-08-28"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-08-28T16:05:50.598Z",
+          "publisher_day": null,
+          "timestamp_calendar_day": "2026-08-28",
+          "america_santiago_day": "2026-08-28"
+        }
+      ],
+      "visible_publication_date": "2026-08-29",
+      "possible_publication_days": [
+        "2026-08-28",
+        "2026-08-29"
+      ],
+      "video_evidence": null,
+      "decision": "pending",
+      "reason": "publisher_conflicting_publication_dates",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-alerta-por-influenza-abre-la-vacunacion-para-toda-la-poblacion/",
+      "title": "Radar LT | Alerta por influenza abre la vacunación para toda la población",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-alerta-por-influenza-abre-la-vacunacion-para-toda-la-poblacion/",
+      "original_html_sha256": "b5af86f765f4457e92c6b45d7ae47bdb2de81a76f29c6efadb954c6a4f62f72f",
+      "original_gzip_sha256": "bd8f23f586447e451fb71a110eb7c0fb44fb7d16ef392171a39727034021ef45",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:16:32.076972+00:00",
+      "publication_date": "2026-07-29",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 151,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-07-29T18:34:03.025Z",
+          "publisher_day": "2026-07-29",
+          "timestamp_calendar_day": "2026-07-29",
+          "america_santiago_day": "2026-07-29"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-07-29T18:34:03.025Z",
+          "publisher_day": "2026-07-29",
+          "timestamp_calendar_day": "2026-07-29",
+          "america_santiago_day": "2026-07-29"
+        }
+      ],
+      "visible_publication_date": "2026-07-29",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-alerta-por-influenza-abre-la-vacunacion-para-toda-la-poblacion/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-alerta-por-influenza-abre-la-vacunacion-para-toda-la-poblacion/#video",
+        "embed_url": "https://mdstrm.com/embed/6a6a2c9eb41c34bdfa3200fa",
+        "upload_date": "2026-07-29T18:34:03.025Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-alzheimer-cientificos-estudian-el-dano-cerebral-que-comienza-anos-antes-de-los-sintomas/",
+      "title": "Radar LT | Alzheimer: científicos estudian el daño cerebral que comienza años antes de los síntomas",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-alzheimer-cientificos-estudian-el-dano-cerebral-que-comienza-anos-antes-de-los-sintomas/",
+      "original_html_sha256": "31123696dd8e06a9ff1126c73fdea4df10d2d9d43a18401728a4abc3827acb0a",
+      "original_gzip_sha256": "f9d47a8202c5f6eda86c0a660fd26c5834fc74ccea84387bac86c1837194c7d9",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:15:51.472702+00:00",
+      "publication_date": "2026-09-22",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 156,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-09-22T19:41:56.237Z",
+          "publisher_day": "2026-09-22",
+          "timestamp_calendar_day": "2026-09-22",
+          "america_santiago_day": "2026-09-22"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-09-22T19:41:56.237Z",
+          "publisher_day": "2026-09-22",
+          "timestamp_calendar_day": "2026-09-22",
+          "america_santiago_day": "2026-09-22"
+        }
+      ],
+      "visible_publication_date": "2026-09-22",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-alzheimer-cientificos-estudian-el-dano-cerebral-que-comienza-anos-antes-de-los-sintomas/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-alzheimer-cientificos-estudian-el-dano-cerebral-que-comienza-anos-antes-de-los-sintomas/#video",
+        "embed_url": "https://mdstrm.com/embed/6ab2a400a9dde314899b7108",
+        "upload_date": "2026-09-22T19:41:56.237Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-bacterias-probioticas-producen-monoxido-de-carbono-y-reducen-severidad-de-infecciones/",
+      "title": "Radar LT | Bacterias probióticas producen monóxido de carbono y reducen severidad de infecciones",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-bacterias-probioticas-producen-monoxido-de-carbono-y-reducen-severidad-de-infecciones/",
+      "original_html_sha256": "f12be4217dc6c6af6355721e89a5c052ce3c04a1a01ee087533f3cbca9f1be5a",
+      "original_gzip_sha256": "e4bd71c091d37b01fcd22ee30fa04b6f65f7806241d64f7b569f54a02c4e559b",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:16:37.585855+00:00",
+      "publication_date": "2026-07-20",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 138,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-07-20T18:09:51.819Z",
+          "publisher_day": "2026-07-20",
+          "timestamp_calendar_day": "2026-07-20",
+          "america_santiago_day": "2026-07-20"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-07-20T18:09:51.819Z",
+          "publisher_day": "2026-07-20",
+          "timestamp_calendar_day": "2026-07-20",
+          "america_santiago_day": "2026-07-20"
+        }
+      ],
+      "visible_publication_date": "2026-07-20",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-bacterias-probioticas-producen-monoxido-de-carbono-y-reducen-severidad-de-infecciones/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-bacterias-probioticas-producen-monoxido-de-carbono-y-reducen-severidad-de-infecciones/#video",
+        "embed_url": "https://mdstrm.com/embed/6a5e4fe24c6cb2c04637b261",
+        "upload_date": "2026-07-20T18:09:51.819Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-bupa-chile-invita-a-caminar-6-mil-pasos-diarios-por-la-salud-y-el-planeta/",
+      "title": "Radar LT | Bupa Chile invita a caminar 6 mil pasos diarios por la salud y el planeta",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-bupa-chile-invita-a-caminar-6-mil-pasos-diarios-por-la-salud-y-el-planeta/",
+      "original_html_sha256": "e40dba0f0017cee54ee33031d7f9c2ee8239fabe487809232ef7fdde7c85422e",
+      "original_gzip_sha256": "fbf721779dfaf11bcc90b8200935a60b6b89f78825830dcd01a97f23e93c52b8",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:15:51.783943+00:00",
+      "publication_date": "2026-09-21",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 165,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-09-21T18:17:39.251Z",
+          "publisher_day": "2026-09-21",
+          "timestamp_calendar_day": "2026-09-21",
+          "america_santiago_day": "2026-09-21"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-09-21T18:17:39.251Z",
+          "publisher_day": "2026-09-21",
+          "timestamp_calendar_day": "2026-09-21",
+          "america_santiago_day": "2026-09-21"
+        }
+      ],
+      "visible_publication_date": "2026-09-21",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-bupa-chile-invita-a-caminar-6-mil-pasos-diarios-por-la-salud-y-el-planeta/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-bupa-chile-invita-a-caminar-6-mil-pasos-diarios-por-la-salud-y-el-planeta/#video",
+        "embed_url": "https://mdstrm.com/embed/6ab14eaba3dff5cb8027085c",
+        "upload_date": "2026-09-21T18:17:39.251Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-ciencia-contra-el-cancer-esta-investigacion-clinica-nace-de-la-experiencia-de-los-pacientes/",
+      "title": "Radar LT | Ciencia contra el cáncer: esta investigación clínica nace de la experiencia de los pacientes",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-ciencia-contra-el-cancer-esta-investigacion-clinica-nace-de-la-experiencia-de-los-pacientes/",
+      "original_html_sha256": "d4b4b4ed3b58a521f274c2feb4d851232df6e70d71c0e28c90dfbc8b4582329e",
+      "original_gzip_sha256": "3d01106664c451205472e11604763e023642b84eb361ded34627975f40e2e03b",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:16:15.548040+00:00",
+      "publication_date": "2026-08-19",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 141,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-08-19T19:38:22.797Z",
+          "publisher_day": "2026-08-19",
+          "timestamp_calendar_day": "2026-08-19",
+          "america_santiago_day": "2026-08-19"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-08-19T19:38:22.797Z",
+          "publisher_day": "2026-08-19",
+          "timestamp_calendar_day": "2026-08-19",
+          "america_santiago_day": "2026-08-19"
+        }
+      ],
+      "visible_publication_date": "2026-08-19",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-ciencia-contra-el-cancer-esta-investigacion-clinica-nace-de-la-experiencia-de-los-pacientes/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-ciencia-contra-el-cancer-esta-investigacion-clinica-nace-de-la-experiencia-de-los-pacientes/#video",
+        "embed_url": "https://mdstrm.com/embed/6a85de2c048f6d8d33ffd79f",
+        "upload_date": "2026-08-19T19:38:22.797Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-descubren-doble-avance-que-podria-cambiar-el-diagnostico-y-tratamiento-del-alzheimer/",
+      "title": "Radar LT | Descubren doble avance que podría cambiar el diagnóstico y tratamiento del Alzheimer",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-descubren-doble-avance-que-podria-cambiar-el-diagnostico-y-tratamiento-del-alzheimer/",
+      "original_html_sha256": "6c310d175c41f476e2d54622122d63e370f5c916c4b8408587dccb2952082967",
+      "original_gzip_sha256": "f49f16a0d08fb386e724431e14d110154d9ce752afede6622d29015a9bd3a10f",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:16:00.685183+00:00",
+      "publication_date": "2026-09-08",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "url_bound_json_ld_articleBody",
+      "source_body_characters": 84,
+      "source_body_sha256": "e47fcf71c636dcefa6e0a3c186f2decccb9c3cd29f534d197f6d04a2c9056cfe",
+      "observed_capture_projection_body_source": "url_bound_json_ld_articleBody",
+      "observed_capture_projection_body_characters": 84,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-09-08T17:50:38.429Z",
+          "publisher_day": "2026-09-08",
+          "timestamp_calendar_day": "2026-09-08",
+          "america_santiago_day": "2026-09-08"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-09-08T17:50:38.429Z",
+          "publisher_day": "2026-09-08",
+          "timestamp_calendar_day": "2026-09-08",
+          "america_santiago_day": "2026-09-08"
+        }
+      ],
+      "visible_publication_date": "2026-09-08",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-descubren-doble-avance-que-podria-cambiar-el-diagnostico-y-tratamiento-del-alzheimer/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-descubren-doble-avance-que-podria-cambiar-el-diagnostico-y-tratamiento-del-alzheimer/#video",
+        "embed_url": "https://mdstrm.com/embed/6aa02c2bd79356a0d9bd9441",
+        "upload_date": "2026-09-08T17:50:38.429Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false,
+      "verified_real_wrapper_regression": {
+        "primary_text_characters": 84,
+        "wrapper_characters": 251,
+        "wrapper_text": "Por La Tercera TV 8 SEPTIEMBRE 2026 Compartir Twitter Facebook Whatsapp LinkedIn Email Comentarios Descubren doble avance que podría cambiar el diagnóstico y tratamiento del Alzheimer Más sobre: Videopodcast Radar LT Alzheimer Ciencia Tecnología Salud",
+        "wrapper_is_transcript": false,
+        "wrapper_used_for_analysis": false
+      }
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-estudio-revela-que-la-forma-de-hablar-puede-entregar-senales-de-envejecimiento-cerebral-y-demencia/",
+      "title": "Radar LT | Estudio revela que la forma de hablar puede entregar señales de envejecimiento cerebral y demencia",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-estudio-revela-que-la-forma-de-hablar-puede-entregar-senales-de-envejecimiento-cerebral-y-demencia/",
+      "original_html_sha256": "76e9d1938604d6336eadaeb71e87681d7f5d261eb8c06aaf1f9770553402df48",
+      "original_gzip_sha256": "e1549c0311985e83ab03c4e328bb2a4e8812c08464a18f4d081e369d616c47c2",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:23:48.545290+00:00",
+      "publication_date": "2026-10-08",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 159,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-10-08T17:44:23.459Z",
+          "publisher_day": "2026-10-08",
+          "timestamp_calendar_day": "2026-10-08",
+          "america_santiago_day": "2026-10-08"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-10-08T17:44:23.459Z",
+          "publisher_day": "2026-10-08",
+          "timestamp_calendar_day": "2026-10-08",
+          "america_santiago_day": "2026-10-08"
+        }
+      ],
+      "visible_publication_date": "2026-10-08",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-estudio-revela-que-la-forma-de-hablar-puede-entregar-senales-de-envejecimiento-cerebral-y-demencia/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-estudio-revela-que-la-forma-de-hablar-puede-entregar-senales-de-envejecimiento-cerebral-y-demencia/#video",
+        "embed_url": "https://mdstrm.com/embed/6ac7c11a0f2c2b16cb9d421f",
+        "upload_date": "2026-10-08T17:44:23.459Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-exposoma-la-ciencia-busca-explicar-por-que-algunas-personas-enferman-y-otras-no/",
+      "title": "Radar LT | Exposoma: la ciencia busca explicar por qué algunas personas enferman y otras no",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-exposoma-la-ciencia-busca-explicar-por-que-algunas-personas-enferman-y-otras-no/",
+      "original_html_sha256": "5b1953ceb60ee2ead2ac9aeb586ea5262c4f374153f6d7cf655a36bd93ce02c9",
+      "original_gzip_sha256": "a41cb54b87a202684058789ab8d03c029c1a5c8563617b0d80527d507b524be4",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:23:48.833800+00:00",
+      "publication_date": "2026-10-07",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 136,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-10-07T17:55:00.639Z",
+          "publisher_day": "2026-10-07",
+          "timestamp_calendar_day": "2026-10-07",
+          "america_santiago_day": "2026-10-07"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-10-07T17:55:00.639Z",
+          "publisher_day": "2026-10-07",
+          "timestamp_calendar_day": "2026-10-07",
+          "america_santiago_day": "2026-10-07"
+        }
+      ],
+      "visible_publication_date": "2026-10-07",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-exposoma-la-ciencia-busca-explicar-por-que-algunas-personas-enferman-y-otras-no/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-exposoma-la-ciencia-busca-explicar-por-que-algunas-personas-enferman-y-otras-no/#video",
+        "embed_url": "https://mdstrm.com/embed/6ac6684c8512de0f2b2d7170",
+        "upload_date": "2026-10-07T17:55:00.639Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-fortificacion-con-vitamina-d-busca-reducir-el-deficit-en-la-poblacion/",
+      "title": "Radar LT | Fortificación con Vitamina D busca reducir el déficit en la población",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-fortificacion-con-vitamina-d-busca-reducir-el-deficit-en-la-poblacion/",
+      "original_html_sha256": "c2b850943c47ad41d4cc8354014f2e143b3ff1a78a55504e90db2af6354dd928",
+      "original_gzip_sha256": "89bdee0501c95531281059ed22c3e9862280a9771b3d0b5383b162962027f34d",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:16:22.820318+00:00",
+      "publication_date": "2026-08-11",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 145,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-08-11T19:01:31.453Z",
+          "publisher_day": "2026-08-11",
+          "timestamp_calendar_day": "2026-08-11",
+          "america_santiago_day": "2026-08-11"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-08-11T19:01:31.453Z",
+          "publisher_day": "2026-08-11",
+          "timestamp_calendar_day": "2026-08-11",
+          "america_santiago_day": "2026-08-11"
+        }
+      ],
+      "visible_publication_date": "2026-08-11",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-fortificacion-con-vitamina-d-busca-reducir-el-deficit-en-la-poblacion/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-fortificacion-con-vitamina-d-busca-reducir-el-deficit-en-la-poblacion/#video",
+        "embed_url": "https://mdstrm.com/embed/6a7b501c22e13464ef783633",
+        "upload_date": "2026-08-11T19:01:31.453Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-manual-de-quemaduras-para-profesionales-de-la-salud/",
+      "title": "Radar LT | Manual de quemaduras para profesionales de la salud",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-manual-de-quemaduras-para-profesionales-de-la-salud/",
+      "original_html_sha256": "5f5e5e6502ba2708660dda287df730f36c9ada4ebca5f888911a62d8f69abda5",
+      "original_gzip_sha256": "8cbd3ecfbf9980209b488724eab6d8400885b910415e45f32f3a58a2a078fe6a",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:16:18.057871+00:00",
+      "publication_date": "2026-08-17",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 155,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-08-17T19:48:00.206Z",
+          "publisher_day": "2026-08-17",
+          "timestamp_calendar_day": "2026-08-17",
+          "america_santiago_day": "2026-08-17"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-08-17T19:48:00.206Z",
+          "publisher_day": "2026-08-17",
+          "timestamp_calendar_day": "2026-08-17",
+          "america_santiago_day": "2026-08-17"
+        }
+      ],
+      "visible_publication_date": "2026-08-17",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-manual-de-quemaduras-para-profesionales-de-la-salud/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-manual-de-quemaduras-para-profesionales-de-la-salud/#video",
+        "embed_url": "https://mdstrm.com/embed/6a833a16059ba30e726ee413",
+        "upload_date": "2026-08-17T19:48:00.206Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-metapneumovirus-el-tercer-virus-respiratorio-con-mayor-circulacion-en-chile/",
+      "title": "Radar LT | Metapneumovirus: el tercer virus respiratorio con mayor circulación en Chile",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-metapneumovirus-el-tercer-virus-respiratorio-con-mayor-circulacion-en-chile/",
+      "original_html_sha256": "e4ffcafbb1a5502a60c0e55f2b9575b04a8f4a8c947bdf4d6f9de84adfeb7888",
+      "original_gzip_sha256": "f9610fa7a2c67f121663af77bb473d2923ca4806b2ca8eae0847ac836b3b4542",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:15:50.654027+00:00",
+      "publication_date": "2026-09-24",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 181,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-09-24T15:48:42.948Z",
+          "publisher_day": "2026-09-24",
+          "timestamp_calendar_day": "2026-09-24",
+          "america_santiago_day": "2026-09-24"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-09-24T15:48:42.948Z",
+          "publisher_day": "2026-09-24",
+          "timestamp_calendar_day": "2026-09-24",
+          "america_santiago_day": "2026-09-24"
+        }
+      ],
+      "visible_publication_date": "2026-09-24",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-metapneumovirus-el-tercer-virus-respiratorio-con-mayor-circulacion-en-chile/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-metapneumovirus-el-tercer-virus-respiratorio-con-mayor-circulacion-en-chile/#video",
+        "embed_url": "https://mdstrm.com/embed/6ab543a98cfcf46e66fc5226",
+        "upload_date": "2026-09-24T15:48:42.948Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-modelos-computacionales-abren-nuevas-vias-para-desarrollar-terapias-basadas-en-arn/",
+      "title": "Radar LT | Modelos computacionales abren nuevas vías para desarrollar terapias basadas en ARN",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-modelos-computacionales-abren-nuevas-vias-para-desarrollar-terapias-basadas-en-arn/",
+      "original_html_sha256": "2dd31c19783453c88311c12a75048c2587d3dd8560cc126682c00d34bdcbbdba",
+      "original_gzip_sha256": "e2825a3dc38b5ea153f7584e47299d511a2d8429569cf96302e280024257497b",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:15:54.274536+00:00",
+      "publication_date": "2026-09-15",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 159,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-09-15T18:14:39.609Z",
+          "publisher_day": "2026-09-15",
+          "timestamp_calendar_day": "2026-09-15",
+          "america_santiago_day": "2026-09-15"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-09-15T18:14:39.609Z",
+          "publisher_day": "2026-09-15",
+          "timestamp_calendar_day": "2026-09-15",
+          "america_santiago_day": "2026-09-15"
+        }
+      ],
+      "visible_publication_date": "2026-09-15",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-modelos-computacionales-abren-nuevas-vias-para-desarrollar-terapias-basadas-en-arn/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-modelos-computacionales-abren-nuevas-vias-para-desarrollar-terapias-basadas-en-arn/#video",
+        "embed_url": "https://mdstrm.com/embed/6aa967d7fcf92bc1755d3edd",
+        "upload_date": "2026-09-15T18:14:39.609Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-prevencion-de-las-enfermedades-cardiovasculares-para-enfrentar-el-envejecimiento/",
+      "title": "Radar LT | Prevención de las enfermedades cardiovasculares para enfrentar el envejecimiento",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-prevencion-de-las-enfermedades-cardiovasculares-para-enfrentar-el-envejecimiento/",
+      "original_html_sha256": "3557137a94e9820df73f35f6e6bb414dd19ee5acc851f1bc4d4739ab1ee08082",
+      "original_gzip_sha256": "5bf7a6dc050b0f7fdc0a541d3bb248ba047bdb3cdd14ba4559bfd7be8f805b3d",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:16:06.044608+00:00",
+      "publication_date": "2026-09-01",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 173,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-09-01T19:46:20.942Z",
+          "publisher_day": "2026-09-01",
+          "timestamp_calendar_day": "2026-09-01",
+          "america_santiago_day": "2026-09-01"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-09-01T19:46:20.942Z",
+          "publisher_day": "2026-09-01",
+          "timestamp_calendar_day": "2026-09-01",
+          "america_santiago_day": "2026-09-01"
+        }
+      ],
+      "visible_publication_date": "2026-09-01",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-prevencion-de-las-enfermedades-cardiovasculares-para-enfrentar-el-envejecimiento/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-prevencion-de-las-enfermedades-cardiovasculares-para-enfrentar-el-envejecimiento/#video",
+        "embed_url": "https://mdstrm.com/embed/6a9701a1fc30a2e2497533c3",
+        "upload_date": "2026-09-01T19:46:20.942Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-sarcopenia-la-perdida-muscular-que-puede-comenzar-a-los-40-anos/",
+      "title": "Radar LT | Sarcopenia: la pérdida muscular que puede comenzar a los 40 años",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-sarcopenia-la-perdida-muscular-que-puede-comenzar-a-los-40-anos/",
+      "original_html_sha256": "8217e6b93e293d8c101397c4642f3aed6efd19ad6260851fcd9ad0de8b7ec203",
+      "original_gzip_sha256": "1fd1025aae9bdf029078ffabfd5128d90bae002ab0fb8c55204381794841ea4c",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:15:47.705178+00:00",
+      "publication_date": "2026-10-01",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 153,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-10-01T17:55:38.866Z",
+          "publisher_day": "2026-10-01",
+          "timestamp_calendar_day": "2026-10-01",
+          "america_santiago_day": "2026-10-01"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-10-01T17:55:38.866Z",
+          "publisher_day": "2026-10-01",
+          "timestamp_calendar_day": "2026-10-01",
+          "america_santiago_day": "2026-10-01"
+        }
+      ],
+      "visible_publication_date": "2026-10-01",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-sarcopenia-la-perdida-muscular-que-puede-comenzar-a-los-40-anos/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-sarcopenia-la-perdida-muscular-que-puede-comenzar-a-los-40-anos/#video",
+        "embed_url": "https://mdstrm.com/embed/6abe7f730107adc2b156e5f3",
+        "upload_date": "2026-10-01T17:55:38.866Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-sifilis-se-dispara-en-adultos-mayores-en-chile-casos-en-mujeres-de-60-anos-se-duplican/",
+      "title": "Radar LT | Sífilis se dispara en adultos mayores en Chile: casos en mujeres de 60 años se duplican",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-sifilis-se-dispara-en-adultos-mayores-en-chile-casos-en-mujeres-de-60-anos-se-duplican/",
+      "original_html_sha256": "8f5c13c75e360a39a11104f93a5d898e5e41a14c691599ce9c169e8c3a4fda47",
+      "original_gzip_sha256": "f062b5ea6bcbc82ca13e1cd7aaa5b09506e679a969f063dbdee2009958808071",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:16:09.168263+00:00",
+      "publication_date": "2026-08-26",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 151,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-08-26T19:23:44.131Z",
+          "publisher_day": "2026-08-26",
+          "timestamp_calendar_day": "2026-08-26",
+          "america_santiago_day": "2026-08-26"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-08-26T19:23:44.131Z",
+          "publisher_day": "2026-08-26",
+          "timestamp_calendar_day": "2026-08-26",
+          "america_santiago_day": "2026-08-26"
+        }
+      ],
+      "visible_publication_date": "2026-08-26",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-sifilis-se-dispara-en-adultos-mayores-en-chile-casos-en-mujeres-de-60-anos-se-duplican/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-sifilis-se-dispara-en-adultos-mayores-en-chile-casos-en-mujeres-de-60-anos-se-duplican/#video",
+        "embed_url": "https://mdstrm.com/embed/6a8f3c7d8627508c6f2bf7e5",
+        "upload_date": "2026-08-26T19:23:44.131Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-tecnologia-chilena-avanza-contra-el-cancer-de-prostata/",
+      "title": "Radar LT | Tecnología chilena avanza contra el cáncer de próstata",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-tecnologia-chilena-avanza-contra-el-cancer-de-prostata/",
+      "original_html_sha256": "c76ccb9dc00581dcaad9ffff8c29965ea2097592ae40932345bc4f348843fbc1",
+      "original_gzip_sha256": "4442d55133f9ba52a45113427679255460db640dc98abc2c573d8b95989465df",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:16:24.842153+00:00",
+      "publication_date": "2026-08-06",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 167,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-08-06T18:17:51.101Z",
+          "publisher_day": "2026-08-06",
+          "timestamp_calendar_day": "2026-08-06",
+          "america_santiago_day": "2026-08-06"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-08-06T18:17:51.101Z",
+          "publisher_day": "2026-08-06",
+          "timestamp_calendar_day": "2026-08-06",
+          "america_santiago_day": "2026-08-06"
+        }
+      ],
+      "visible_publication_date": "2026-08-06",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-tecnologia-chilena-avanza-contra-el-cancer-de-prostata/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-tecnologia-chilena-avanza-contra-el-cancer-de-prostata/#video",
+        "embed_url": "https://mdstrm.com/embed/6a74b84979ce3b0e7ca4942a",
+        "upload_date": "2026-08-06T18:17:51.101Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-tecnologia-desarrollada-en-chile-avanza-a-su-validacion-medica/",
+      "title": "Radar LT | Tecnología desarrollada en Chile avanza a su validación médica",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-tecnologia-desarrollada-en-chile-avanza-a-su-validacion-medica/",
+      "original_html_sha256": "7660181f2d2d40779c01ef6e26d56099f5484a668dc4bc01e48e8036e7317ae5",
+      "original_gzip_sha256": "55eeb90d7f1110b40b3b768f216040c9c75503d4072117c0989cfc4c6102584d",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:16:44.366471+00:00",
+      "publication_date": "2026-07-13",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 140,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-07-13T18:39:30.563Z",
+          "publisher_day": "2026-07-13",
+          "timestamp_calendar_day": "2026-07-13",
+          "america_santiago_day": "2026-07-13"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-07-13T18:39:30.563Z",
+          "publisher_day": "2026-07-13",
+          "timestamp_calendar_day": "2026-07-13",
+          "america_santiago_day": "2026-07-13"
+        }
+      ],
+      "visible_publication_date": "2026-07-13",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-tecnologia-desarrollada-en-chile-avanza-a-su-validacion-medica/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-tecnologia-desarrollada-en-chile-avanza-a-su-validacion-medica/#video",
+        "embed_url": "https://mdstrm.com/embed/6a5516e8fd2699fb992d9642",
+        "upload_date": "2026-07-13T18:39:30.563Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-terapia-car-t-chilena-contra-el-parkinson-busca-llegar-al-mercado-europeo/",
+      "title": "Radar LT | Terapia CAR-T chilena contra el Parkinson busca llegar al mercado europeo",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-terapia-car-t-chilena-contra-el-parkinson-busca-llegar-al-mercado-europeo/",
+      "original_html_sha256": "67ce2fe0cb337eaf0eb325a8c2d860e6b5ce5ecfc7579f7b0d402267a48ba6af",
+      "original_gzip_sha256": "cf572e6e35c1c49725356c37ba40798a74856e30c21f7b8ea6dfa1a48a47b5f7",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:16:17.306483+00:00",
+      "publication_date": "2026-08-18",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 166,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-08-18T18:23:35.097Z",
+          "publisher_day": "2026-08-18",
+          "timestamp_calendar_day": "2026-08-18",
+          "america_santiago_day": "2026-08-18"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-08-18T18:23:35.097Z",
+          "publisher_day": "2026-08-18",
+          "timestamp_calendar_day": "2026-08-18",
+          "america_santiago_day": "2026-08-18"
+        }
+      ],
+      "visible_publication_date": "2026-08-18",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-terapia-car-t-chilena-contra-el-parkinson-busca-llegar-al-mercado-europeo/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-terapia-car-t-chilena-contra-el-parkinson-busca-llegar-al-mercado-europeo/#video",
+        "embed_url": "https://mdstrm.com/embed/6a848f5c49a94213f843d191",
+        "upload_date": "2026-08-18T18:23:35.097Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/radar-lt-terapias-car-t-para-eliminar-la-leucemia/",
+      "title": "Radar LT | Terapias CAR-T para eliminar la leucemia",
+      "canonical": "https://www.latercera.com/videos/noticia/radar-lt-terapias-car-t-para-eliminar-la-leucemia/",
+      "original_html_sha256": "fc7964369fecdc57b963b24f27a0c1e0640d8dd07de835ce095aa57743cf655b",
+      "original_gzip_sha256": "97de6d04e03c8ec0ea23ca152463f3cdb60c805fd0509c4a13f3799f02fa8ee0",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:16:26.757215+00:00",
+      "publication_date": "2026-08-05",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 165,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-08-05T18:43:52.712Z",
+          "publisher_day": "2026-08-05",
+          "timestamp_calendar_day": "2026-08-05",
+          "america_santiago_day": "2026-08-05"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-08-05T18:43:52.712Z",
+          "publisher_day": "2026-08-05",
+          "timestamp_calendar_day": "2026-08-05",
+          "america_santiago_day": "2026-08-05"
+        }
+      ],
+      "visible_publication_date": "2026-08-05",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/radar-lt-terapias-car-t-para-eliminar-la-leucemia/",
+        "id": "https://www.latercera.com/videos/noticia/radar-lt-terapias-car-t-para-eliminar-la-leucemia/#video",
+        "embed_url": "https://mdstrm.com/embed/6a7365a82bdbfc0e4cb76fb2",
+        "upload_date": "2026-08-05T18:43:52.712Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/sensores-detectan-caidas-en-adultos-mayores-y-envian-su-ubicacion-por-whatsapp/",
+      "title": "Radar LT | Sensores detectan caídas en adultos mayores y envían su ubicación por WhatsApp",
+      "canonical": "https://www.latercera.com/videos/noticia/sensores-detectan-caidas-en-adultos-mayores-y-envian-su-ubicacion-por-whatsapp/",
+      "original_html_sha256": "583a327fc839c99c065e8ae0a73dc6bd86c39ed3328de7092057115e3b7c96f2",
+      "original_gzip_sha256": "03aaeec2e4bf1e252b1309b03b71e7d1d796e1bf7293c67c83d2b6c0d6934c4e",
+      "original_bytes_verified": true,
+      "captured_at": "2026-10-11T06:16:35.745240+00:00",
+      "publication_date": "2026-07-21",
+      "publication_date_verified": true,
+      "article_verified": false,
+      "article_body_complete": false,
+      "source_body_source": "publisher_video_no_textual_article_body",
+      "source_body_characters": 0,
+      "source_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observed_capture_projection_body_source": "article_html",
+      "observed_capture_projection_body_characters": 170,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-07-21T19:39:42.88Z",
+          "publisher_day": "2026-07-21",
+          "timestamp_calendar_day": "2026-07-21",
+          "america_santiago_day": "2026-07-21"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-07-21T19:39:42.88Z",
+          "publisher_day": "2026-07-21",
+          "timestamp_calendar_day": "2026-07-21",
+          "america_santiago_day": "2026-07-21"
+        }
+      ],
+      "visible_publication_date": "2026-07-21",
+      "possible_publication_days": null,
+      "video_evidence": {
+        "type": "VideoObject",
+        "url": "https://www.latercera.com/videos/noticia/sensores-detectan-caidas-en-adultos-mayores-y-envian-su-ubicacion-por-whatsapp/",
+        "id": "https://www.latercera.com/videos/noticia/sensores-detectan-caidas-en-adultos-mayores-y-envian-su-ubicacion-por-whatsapp/#video",
+        "embed_url": "https://mdstrm.com/embed/6a5fa30b8c4db9108d689412",
+        "upload_date": "2026-07-21T19:39:42.880Z"
+      },
+      "decision": "pending",
+      "reason": "publisher_video_text_unavailable",
+      "refetch_calls": 0,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "analysis_input_complete": false
+    }
+  ],
+  "verified_substantive_video_text": [
+    {
+      "url": "https://www.latercera.com/videos/noticia/aluvion-en-las-condes-experto-apunta-a-actualizacion-de-planificacion-territorial-y-a-decreto-de-contraloria/",
+      "primary_body_sha256": "f634bfdc7b7f319276434d3d9ec317ac6d7d1f14b248ae54bf8cc581b046906e",
+      "primary_body_characters": 2616,
+      "disposition": "verified_substantive_text_not_video_text_exception",
+      "publication_date": "2026-10-09"
+    }
+  ],
+  "limitations": [
+    "Identity and dates of publisher videos do not establish a recovered transcript or a verified health event.",
+    "Conflicting primary dates remain unknown; both original days are retained and no date is selected.",
+    "Some capture projections used HTML wrapper text when JSON-LD articleBody was absent; such projections are not evidence of a transcript.",
+    "This replay proves processing holds and raw-byte integrity, not genuine core discovery, model processing, publication, history/feed or acceptance."
+  ]
+}

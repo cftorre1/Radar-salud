@@ -1,0 +1,1494 @@
+{
+  "schema_version": "pulso_legacy32_editorial_module_independent_review_v1",
+  "reviewed_commit": "2f9c72f05d9f2ddb392de547e8d5f2194dffe72a",
+  "reviewed_module_sha256": "8defb6a844043d0e45a8499958bbb262d018bab8a2ab9381834acef5c68ae904",
+  "reviewed_script_sha256": "09b2f33fa1c7ab93845cd0ba50274aa0747d68e719c81ae23b6ab84576673735",
+  "original_feed_path": "/workspace/work/pulso-first-real-processing-feed32.json",
+  "original_feed_sha256": "ce4ffeff68ecbfe45bf963ef958db5c21e649a2d859e9d53703bcd39f37063d4",
+  "durable_reader_path": "data/audits/pulso_first_real_all32_semantic_review_2026_10_11.json",
+  "durable_reader_sha256": "a6ddc143c4cedb1bdc77bb1eb07ce80f25630a36bdde9ac68d49e2e2fe44d48f",
+  "correction_audit_sha256": "35e1d8a806f99881b56c5358d904880ca6bf2aa7ddd21e7bdada8a4b740a78d2",
+  "input_history_sha256": "04fcb275bda8f48b2ecefd4923ce99a20b94e850dfbb8415b6321b80bb2fe09e",
+  "input_queue_sha256": "44d1e17ffc5d3f158570e458f59907a9cf7d5fea57575e4c5e0f8bedc20e886b",
+  "all32_normal_dry_run": {
+    "review_id": "pulso-first-paid-all32-independent-original-body-review-2026-10-11",
+    "review_sha256": "3917d7bcba24dce96dcf0146f43de47ca8f47208e61f8e3889bc76791f9e6192",
+    "reviewed_count": 32,
+    "applied_count": 32,
+    "unchanged_on_replay": 0,
+    "decisions": {
+      "accept": 10,
+      "reject": 12,
+      "group": 8,
+      "correct": 2
+    },
+    "ai_calls": 0,
+    "primary_evidence_mutations": 0,
+    "queue_attempt_resets": 0
+  },
+  "all32_normal_replay": {
+    "review_id": "pulso-first-paid-all32-independent-original-body-review-2026-10-11",
+    "review_sha256": "3917d7bcba24dce96dcf0146f43de47ca8f47208e61f8e3889bc76791f9e6192",
+    "reviewed_count": 32,
+    "applied_count": 0,
+    "unchanged_on_replay": 32,
+    "decisions": {
+      "accept": 10,
+      "reject": 12,
+      "group": 8,
+      "correct": 2
+    },
+    "ai_calls": 0,
+    "primary_evidence_mutations": 0,
+    "queue_attempt_resets": 0
+  },
+  "replay_history_identical": true,
+  "replay_queue_identical": true,
+  "all32_field_changes": [
+    {
+      "url": "https://www.latercera.com/pulso/noticia/la-bateria-de-proyectos-laborales-que-prepara-el-gobierno-para-combatir-la-crisis-de-empleo/",
+      "day": "2026-10-11",
+      "decision": "reject",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_reject",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/may-chomali-el-impensado-ascenso-de-la-discola-del-gabinete/",
+      "day": "2026-10-11",
+      "decision": "group",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_group",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
+      "day": "2026-10-10",
+      "decision": "accept",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "raw"
+      ],
+      "publication_ready": [
+        true,
+        "ok",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/los-ministros-favorecidos-y-afectados-por-el-primer-apreton-de-cinturon-de-quiroz/",
+      "day": "2026-10-10",
+      "decision": "group",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_group",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/paula/noticia/cierre-de-prodemu-las-mujeres-lo-van-a-extranar/",
+      "day": "2026-10-10",
+      "decision": "reject",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_reject",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/sustentabilidad/noticia/el-costo-de-no-anticiparse-a-los-riesgos-climaticos-en-el-sistema-de-salud/",
+      "day": "2026-10-10",
+      "decision": "accept",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "raw"
+      ],
+      "publication_ready": [
+        true,
+        "ok",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+      "day": "2026-10-10",
+      "decision": "accept",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "raw"
+      ],
+      "publication_ready": [
+        true,
+        "ok",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/gobierno-decreta-zona-de-catastrofe-en-las-condes-tras-devastador-aluvion-que-arraso-con-personas-autos-y-casas/",
+      "day": "2026-10-09",
+      "decision": "group",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_group",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/videos/noticia/aluvion-en-las-condes-experto-apunta-a-actualizacion-de-planificacion-territorial-y-a-decreto-de-contraloria/",
+      "day": "2026-10-09",
+      "decision": "reject",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_reject",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/horizontes/noticia/ministro-mas-en-chile-100-incorporar-a-las-personas-mayores-a-la-vida-economica-no-es-caridad/",
+      "day": "2026-10-09",
+      "decision": "reject",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_reject",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+      "day": "2026-10-09",
+      "decision": "accept",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "raw"
+      ],
+      "publication_ready": [
+        true,
+        "ok",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/medicos-sin-vinculo-con-hospital-de-talagante-emitieron-1045-recetas-por-fentanilo-y-otros-farmacos-controlados/",
+      "day": "2026-10-08",
+      "decision": "accept",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "raw"
+      ],
+      "publication_ready": [
+        true,
+        "ok",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/sigue-en-vivo-aluvion-las-condes-lluvias/",
+      "day": "2026-10-08",
+      "decision": "correct",
+      "signal_changed_fields": [
+        "category",
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "event_status",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "raw"
+      ],
+      "publication_ready": [
+        true,
+        "ok",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/comite-social-salud-y-mideso-destacan-avances-en-certificacion-de-discapacidad-y-ampliacion-de-la-red-de-apoyos-y-cuidados/",
+      "day": "2026-10-08",
+      "decision": "correct",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "event_status",
+        "feed_visibility",
+        "prospective_evidence",
+        "what_happened",
+        "why_it_matters"
+      ],
+      "queue_changed_fields": [
+        "raw"
+      ],
+      "publication_ready": [
+        true,
+        "ok",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/expertos-ven-factible-cumplimiento-de-meta-fiscal-este-ano-pero-califican-de-exigente-llegar-a-15-del-pib-a-2030/",
+      "day": "2026-10-08",
+      "decision": "reject",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_reject",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/lluvias-provocan-aluvion-en-las-condes-registros-captan-a-vehiculos-siendo-arrastrados-por-el-agua/",
+      "day": "2026-10-08",
+      "decision": "group",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_group",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/gobierno-le-dice-adios-al-presupuesto-con-perspectiva-de-genero-establecido-por-boric/",
+      "day": "2026-10-08",
+      "decision": "reject",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_reject",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/servicios/noticia/declaran-alerta-roja-para-10-comunas-de-la-region-metropolitana-por-riesgo-de-aluviones-luego-de-emergencia-en-las-condes/",
+      "day": "2026-10-08",
+      "decision": "group",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_group",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/la-zona-cero-del-aluvion-en-las-condes-que-inundo-clinicas-y-arrastro-autos/",
+      "day": "2026-10-08",
+      "decision": "group",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_group",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-salud-2027-rebajas-al-ajuar-del-recien-nacido-y-a-la-ley-ricarte-soto-y-foco-en-atencion-primaria/",
+      "day": "2026-10-07",
+      "decision": "accept",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "raw"
+      ],
+      "publication_ready": [
+        true,
+        "ok",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/rodrigo-mundaca-le-dijimos-al-ministro-que-si-rebajas-van-a-ser-de-esta-magnitud-vamos-a-dejar-de-trabajar-con-los-servicios-de-ministerios/",
+      "day": "2026-10-07",
+      "decision": "reject",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_reject",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/senador-castro-acusa-gran-retroceso-por-recortes-en-presupuesto-de-salud-y-advierte-que-pacientes-de-ley-ricarte-soto-no-tendran-la-misma-cobertura/",
+      "day": "2026-10-07",
+      "decision": "group",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_group",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/china-joyvio-se-querella-contra-de-isidoro-quiroga-ahora-por-delitos-ambientales-defensa-acusa-nuevo-manotazo-de-ahogado/",
+      "day": "2026-10-07",
+      "decision": "reject",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_reject",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/tecnologia/noticia/chile-plan-nacional-digital-subtel-6g/",
+      "day": "2026-10-07",
+      "decision": "reject",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_reject",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/presupuesto-2027-minuta-politica-del-gobierno-reporta-alza-del-gasto-distinta-de-la-informada/",
+      "day": "2026-10-06",
+      "decision": "accept",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "raw"
+      ],
+      "publication_ready": [
+        true,
+        "ok",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/los-otros-detalles-de-la-minuta-que-el-gobierno-entrego-a-los-parlamentarios-del-oficialismo/",
+      "day": "2026-10-06",
+      "decision": "group",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_group",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/cambios-estructurales-no-maquillajes-gobierno-lanza-plan-para-agilizar-proceso-de-certificacion-de-discapacidad/",
+      "day": "2026-10-06",
+      "decision": "accept",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "raw"
+      ],
+      "publication_ready": [
+        true,
+        "ok",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/gobernador-de-valparaiso-revela-detalles-de-tensa-cita-con-quiroz-por-presupuesto-y-su-advertencia-al-titular-de-hacienda/",
+      "day": "2026-10-06",
+      "decision": "accept",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "raw"
+      ],
+      "publication_ready": [
+        true,
+        "ok",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/senadores-de-oposicion-presentan-indicaciones-a-infraestructura-critica-y-marcan-diferencias-con-mociones-del-ejecutivo/",
+      "day": "2026-10-06",
+      "decision": "accept",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "raw"
+      ],
+      "publication_ready": [
+        true,
+        "ok",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-guino-de-kast-a-dorothy-perez-presupuesto-de-contraloria-sube-un-59-y-aumentan-funcionarios/",
+      "day": "2026-10-06",
+      "decision": "reject",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_reject",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/presupuesto-2027-las-cuatro-prioridades-del-ejecutivo-y-los-21-programas-bajo-el-analisis-de-la-dipres/",
+      "day": "2026-10-06",
+      "decision": "reject",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_reject",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-gobierno-de-los-retrocesos-oposicion-eleva-criticas-contra-kast-tras-recorte-de-86-a-programa-asociado-a-la-ley-cholito/",
+      "day": "2026-10-06",
+      "decision": "reject",
+      "signal_changed_fields": [
+        "editorial_decision",
+        "editorial_review",
+        "editorial_review_reason",
+        "feed_visibility"
+      ],
+      "queue_changed_fields": [
+        "last_error",
+        "raw",
+        "status"
+      ],
+      "publication_ready": [
+        false,
+        "pulso_independent_editorial_reject",
+        100
+      ],
+      "primary_body_identical": true,
+      "attempts_identical": true,
+      "date_identical": true,
+      "media_reported": true,
+      "gate_72_retained": true
+    }
+  ],
+  "other_source_queues_byte_equivalent": true,
+  "adversarial_probes": [
+    {
+      "probe": "group_survivor_outside_review_already_withdrawn",
+      "accepted": false,
+      "error": "ValueError:group_surviving_signal_not_eligible",
+      "input_unchanged": true
+    },
+    {
+      "probe": "effective_original_queue_prose_corruption",
+      "accepted": false,
+      "error": "ValueError:observed_original_queue_model_prose_mismatch",
+      "input_unchanged": true
+    },
+    {
+      "probe": "saved_provenance_tamper_on_replay",
+      "accepted": false,
+      "error": "ValueError:conflicting_existing_editorial_review",
+      "input_unchanged": true
+    },
+    {
+      "probe": "group_to_correction_failing_publication_gate",
+      "accepted": false,
+      "error": "ValueError:group_surviving_signal_not_eligible",
+      "input_unchanged": true
+    }
+  ],
+  "partial_original_queue_resumption": {
+    "review_id": "pulso-first-paid-all32-independent-original-body-review-2026-10-11",
+    "review_sha256": "3917d7bcba24dce96dcf0146f43de47ca8f47208e61f8e3889bc76791f9e6192",
+    "reviewed_count": 32,
+    "applied_count": 32,
+    "unchanged_on_replay": 0,
+    "decisions": {
+      "accept": 10,
+      "reject": 12,
+      "group": 8,
+      "correct": 2
+    },
+    "ai_calls": 0,
+    "primary_evidence_mutations": 0,
+    "queue_attempt_resets": 0
+  },
+  "partial_resumption_equals_uninterrupted": {
+    "history": true,
+    "queue": true
+  },
+  "partial_state_tamper_guards": [
+    {
+      "probe": "partial_queue_page_text",
+      "blocked": true,
+      "error": "ValueError:review_original_primary_body_or_date_mismatch",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_queue_article_body_sha256",
+      "blocked": true,
+      "error": "ValueError:review_original_primary_body_or_date_mismatch",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_queue_analysis_base_article_body_sha256",
+      "blocked": true,
+      "error": "ValueError:review_original_primary_body_or_date_mismatch",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_queue_canonical_url",
+      "blocked": true,
+      "error": "ValueError:review_original_primary_body_or_date_mismatch",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_queue_publication_date",
+      "blocked": true,
+      "error": "ValueError:review_original_primary_body_or_date_mismatch",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_queue_article_verified",
+      "blocked": true,
+      "error": "ValueError:review_original_primary_body_or_date_mismatch",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_queue_article_body_complete",
+      "blocked": true,
+      "error": "ValueError:review_original_primary_body_or_date_mismatch",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_queue_primary_identity_verified",
+      "blocked": true,
+      "error": "ValueError:review_original_primary_body_or_date_mismatch",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_queue_publication_date_verified",
+      "blocked": true,
+      "error": "ValueError:review_original_primary_body_or_date_mismatch",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_queue_what_happened",
+      "blocked": true,
+      "error": "ValueError:previous_editorial_review_state_tampered",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_queue_why_it_matters",
+      "blocked": true,
+      "error": "ValueError:previous_editorial_review_state_tampered",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_queue_status_pending",
+      "blocked": true,
+      "error": "ValueError:previous_editorial_review_state_tampered",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_queue_status_rejected",
+      "blocked": true,
+      "error": "ValueError:queue_history_editorial_review_mismatch",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_queue_attempts_0",
+      "blocked": true,
+      "error": "ValueError:previous_editorial_review_state_tampered",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_assessment_threshold",
+      "blocked": true,
+      "error": "ValueError:previous_editorial_review_state_tampered",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_assessment_relevance_score",
+      "blocked": true,
+      "error": "ValueError:previous_editorial_review_state_tampered",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_assessment_decision",
+      "blocked": true,
+      "error": "ValueError:previous_editorial_review_state_tampered",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_assessment_analysis_reason",
+      "blocked": true,
+      "error": "ValueError:previous_editorial_review_state_tampered",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_provenance_schema_version",
+      "blocked": true,
+      "error": "ValueError:conflicting_existing_editorial_review",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_provenance_review_id",
+      "blocked": true,
+      "error": "ValueError:conflicting_existing_editorial_review",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_provenance_review_file",
+      "blocked": true,
+      "error": "ValueError:conflicting_existing_editorial_review",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_provenance_review_sha256",
+      "blocked": true,
+      "error": "ValueError:conflicting_existing_editorial_review",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_provenance_record_sha256",
+      "blocked": true,
+      "error": "ValueError:conflicting_existing_editorial_review",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_provenance_original_signal_sha256",
+      "blocked": true,
+      "error": "ValueError:conflicting_existing_editorial_review",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_provenance_original_body_sha256",
+      "blocked": true,
+      "error": "ValueError:conflicting_existing_editorial_review",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_provenance_publication_date",
+      "blocked": true,
+      "error": "ValueError:conflicting_existing_editorial_review",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_provenance_decision",
+      "blocked": true,
+      "error": "ValueError:conflicting_existing_editorial_review",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_provenance_reason",
+      "blocked": true,
+      "error": "ValueError:conflicting_existing_editorial_review",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_provenance_evidence_quotes",
+      "blocked": true,
+      "error": "ValueError:conflicting_existing_editorial_review",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_provenance_original_terminal_status",
+      "blocked": true,
+      "error": "ValueError:conflicting_existing_editorial_review",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_provenance_original_model_assessment",
+      "blocked": true,
+      "error": "ValueError:conflicting_existing_editorial_review",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_provenance_original_model_what_happened",
+      "blocked": true,
+      "error": "ValueError:conflicting_existing_editorial_review",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_provenance_original_model_why_it_matters",
+      "blocked": true,
+      "error": "ValueError:conflicting_existing_editorial_review",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_signal_what_happened",
+      "blocked": true,
+      "error": "ValueError:previous_editorial_review_state_tampered",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_signal_why_it_matters",
+      "blocked": true,
+      "error": "ValueError:previous_editorial_review_state_tampered",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_signal_evidence_maturity",
+      "blocked": true,
+      "error": "ValueError:previous_editorial_review_state_tampered",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_signal_source_name",
+      "blocked": true,
+      "error": "ValueError:previous_editorial_review_state_tampered",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_signal_publication_date",
+      "blocked": true,
+      "error": "ValueError:previous_editorial_review_state_tampered",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_signal_editorial_relevance",
+      "blocked": true,
+      "error": "ValueError:previous_editorial_review_state_tampered",
+      "input_unchanged": true
+    },
+    {
+      "probe": "partial_history_signal_feed_visibility",
+      "blocked": true,
+      "error": "ValueError:previous_editorial_review_state_tampered",
+      "input_unchanged": true
+    }
+  ],
+  "persistence_fault": {
+    "probe": "script_second_file_replace_failure",
+    "fault_error": "OSError:independent_fault_injection_second_replace_failed",
+    "writes_attempted": [
+      "data/history/superintendencia_signals.json",
+      "data/state/pending_queue.json",
+      "data/history/superintendencia_signals.json",
+      "data/state/pending_queue.json"
+    ],
+    "history_changed": true,
+    "queue_changed": false,
+    "normal_retry_error": null,
+    "eventual_state_equal_uninterrupted_application": {
+      "history": true,
+      "queue": true
+    },
+    "eventual_replay": {
+      "review_id": "pulso-first-paid-all32-independent-original-body-review-2026-10-11",
+      "review_sha256": "ab062d8002517ff39ed94d25dc275a24a84e47864ff9dccdc65fb7bb3a2859f4",
+      "reviewed_count": 32,
+      "applied_count": 0,
+      "unchanged_on_replay": 32,
+      "decisions": {
+        "accept": 10,
+        "reject": 12,
+        "group": 8,
+        "correct": 2
+      },
+      "ai_calls": 0,
+      "primary_evidence_mutations": 0,
+      "queue_attempt_resets": 0
+    },
+    "scope": "Temporary fixture repository only; no real state persisted"
+  },
+  "verdict": "SCOPED_MODULE_PASS",
+  "acceptance_pass": false,
+  "scope": "Readonly independent review of the specified immutable commit and all32 real observed input. No product edits, no AI calls, no real persistence. This bounded review does not approve Source, runtime, staging, or later changes.",
+  "original_full_signal_snapshot_projection": {
+    "immutable_feed_sha256": "ce4ffeff68ecbfe45bf963ef958db5c21e649a2d859e9d53703bcd39f37063d4",
+    "export_only_fields_removed": [
+      "editorial_committee",
+      "editorial_decision",
+      "feed_visibility",
+      "publication_gate_reason",
+      "publication_ready_score",
+      "related_context",
+      "source_alternatives"
+    ],
+    "all32_exactly_match": true,
+    "rows": [
+      {
+        "url": "https://www.latercera.com/pulso/noticia/la-bateria-de-proyectos-laborales-que-prepara-el-gobierno-para-combatir-la-crisis-de-empleo/",
+        "event_date": "2026-10-11",
+        "immutable_snapshot_signal_sha256": "8c7476b0a8d85f5f71de082cee46f2bb1c90e88fa02cc797b246996122f04a2f",
+        "history_original_signal_sha256": "1cf10a2c86115a3ecd3fffab3126dc9ae08492fc8e3369fac0a1e98ed3a0b3e9",
+        "snapshot_projected_history_original_sha256": "1cf10a2c86115a3ecd3fffab3126dc9ae08492fc8e3369fac0a1e98ed3a0b3e9",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/politica/noticia/may-chomali-el-impensado-ascenso-de-la-discola-del-gabinete/",
+        "event_date": "2026-10-11",
+        "immutable_snapshot_signal_sha256": "9f82c40cae5a657e2fa3e99a24f0768bdedc840b9919119e374133dff1a8bf14",
+        "history_original_signal_sha256": "5b4318b1416063b4411e999ed726bbd91b4f64782feb94941d3e5faee688a7eb",
+        "snapshot_projected_history_original_sha256": "5b4318b1416063b4411e999ed726bbd91b4f64782feb94941d3e5faee688a7eb",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
+        "event_date": "2026-10-10",
+        "immutable_snapshot_signal_sha256": "a547b6edbe2eba2449d806846adf4f29c45265a77010590a2ca5678b764a010f",
+        "history_original_signal_sha256": "380b8e55329a9f334f4415d50f97583045c6cdadb165a7e867b6dab2cbeaf81a",
+        "snapshot_projected_history_original_sha256": "380b8e55329a9f334f4415d50f97583045c6cdadb165a7e867b6dab2cbeaf81a",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/politica/noticia/los-ministros-favorecidos-y-afectados-por-el-primer-apreton-de-cinturon-de-quiroz/",
+        "event_date": "2026-10-10",
+        "immutable_snapshot_signal_sha256": "9632d0ec660625c4039ef46f8d26e635ecabea58bb05c6e02e76c32e3b7a02be",
+        "history_original_signal_sha256": "c02dc06f2a3a63e097ba6db614ecb4eac9e69e760bf2f5cad1a308db99dcfec0",
+        "snapshot_projected_history_original_sha256": "c02dc06f2a3a63e097ba6db614ecb4eac9e69e760bf2f5cad1a308db99dcfec0",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/paula/noticia/cierre-de-prodemu-las-mujeres-lo-van-a-extranar/",
+        "event_date": "2026-10-10",
+        "immutable_snapshot_signal_sha256": "a6124d89fb26679a889ebe640e61bbf3b9ecc5982315a6fdc7fe1881320058cc",
+        "history_original_signal_sha256": "a77e39d38320e8a1644563910665f7c0667ff1da649fd8d2d6bdb7a11d0ba192",
+        "snapshot_projected_history_original_sha256": "a77e39d38320e8a1644563910665f7c0667ff1da649fd8d2d6bdb7a11d0ba192",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/sustentabilidad/noticia/el-costo-de-no-anticiparse-a-los-riesgos-climaticos-en-el-sistema-de-salud/",
+        "event_date": "2026-10-10",
+        "immutable_snapshot_signal_sha256": "db6de0403de632c616f9b25d1e2aeecbd54afd0ce84e13703d7b1f58b08cbb8e",
+        "history_original_signal_sha256": "04c93d96ce5f0ad213121c2d8d593a947ddd2218f2c869a490f8565b460fe164",
+        "snapshot_projected_history_original_sha256": "04c93d96ce5f0ad213121c2d8d593a947ddd2218f2c869a490f8565b460fe164",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+        "event_date": "2026-10-10",
+        "immutable_snapshot_signal_sha256": "b694de0848e5a8211c329b090cb13d67346e8fcad6dce8a8f48b175faa7519e1",
+        "history_original_signal_sha256": "75d0f98af73f79d8767f6075b09ebfd4080de52cd2899c12fd952d5e798f33cf",
+        "snapshot_projected_history_original_sha256": "75d0f98af73f79d8767f6075b09ebfd4080de52cd2899c12fd952d5e798f33cf",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/gobierno-decreta-zona-de-catastrofe-en-las-condes-tras-devastador-aluvion-que-arraso-con-personas-autos-y-casas/",
+        "event_date": "2026-10-09",
+        "immutable_snapshot_signal_sha256": "dc32944c2f6dc71b3ee5db4194b1fd49b9bf86393646c9c9549e7a94d38fd54e",
+        "history_original_signal_sha256": "47bde677006da35594de382c0b455f52f50ff051de61cb33a3b8e57d7c7108b2",
+        "snapshot_projected_history_original_sha256": "47bde677006da35594de382c0b455f52f50ff051de61cb33a3b8e57d7c7108b2",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/videos/noticia/aluvion-en-las-condes-experto-apunta-a-actualizacion-de-planificacion-territorial-y-a-decreto-de-contraloria/",
+        "event_date": "2026-10-09",
+        "immutable_snapshot_signal_sha256": "1027207997fb63017115fa87dedadbbb6f746032bcc909737515abceb26fe19b",
+        "history_original_signal_sha256": "f9e4688ec84ffb1f90ad268c6b7566b2be6199b4e696b588527800aa1fe80368",
+        "snapshot_projected_history_original_sha256": "f9e4688ec84ffb1f90ad268c6b7566b2be6199b4e696b588527800aa1fe80368",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/horizontes/noticia/ministro-mas-en-chile-100-incorporar-a-las-personas-mayores-a-la-vida-economica-no-es-caridad/",
+        "event_date": "2026-10-09",
+        "immutable_snapshot_signal_sha256": "f37f570d51a8ec6e01e578bd2a1fb25acc9a58af881e454ef05ca7e049d646d9",
+        "history_original_signal_sha256": "5acee334190be0a2b96006caef377ecb519bb22257de995804ff655793832632",
+        "snapshot_projected_history_original_sha256": "5acee334190be0a2b96006caef377ecb519bb22257de995804ff655793832632",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+        "event_date": "2026-10-09",
+        "immutable_snapshot_signal_sha256": "7442554469d83b70f1963da2307621b4c96b3e3751caf71e39e97fed2cde33a4",
+        "history_original_signal_sha256": "356a80c5b96aba1237561e95cc6247c3d91575eb4dd1c2cdefa5ccd92977fd54",
+        "snapshot_projected_history_original_sha256": "356a80c5b96aba1237561e95cc6247c3d91575eb4dd1c2cdefa5ccd92977fd54",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/medicos-sin-vinculo-con-hospital-de-talagante-emitieron-1045-recetas-por-fentanilo-y-otros-farmacos-controlados/",
+        "event_date": "2026-10-08",
+        "immutable_snapshot_signal_sha256": "bb9fc4269c391492bbe1767b993d3dbf41db39df1cf78650d705d30ead694001",
+        "history_original_signal_sha256": "79b51a9ec614d91d64cd691398def1b53a392db55b10859fc99d9efccd0ce59b",
+        "snapshot_projected_history_original_sha256": "79b51a9ec614d91d64cd691398def1b53a392db55b10859fc99d9efccd0ce59b",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/sigue-en-vivo-aluvion-las-condes-lluvias/",
+        "event_date": "2026-10-08",
+        "immutable_snapshot_signal_sha256": "e2cc064fdc3dc957a189a9a49b6639536fc7fc0a424692c2e6068765399efc9a",
+        "history_original_signal_sha256": "c739802a1d3a97f31981d05ada885600e118abb992d2ef9ff68fb0f69bf4c844",
+        "snapshot_projected_history_original_sha256": "c739802a1d3a97f31981d05ada885600e118abb992d2ef9ff68fb0f69bf4c844",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/comite-social-salud-y-mideso-destacan-avances-en-certificacion-de-discapacidad-y-ampliacion-de-la-red-de-apoyos-y-cuidados/",
+        "event_date": "2026-10-08",
+        "immutable_snapshot_signal_sha256": "d161c61d9edb8156d74f50e2447cee24507d7706107fed9be7c101d00137bfeb",
+        "history_original_signal_sha256": "424c63cb7822977805594892692451b363ed10f1c1e429a083b046620ad5a9c0",
+        "snapshot_projected_history_original_sha256": "424c63cb7822977805594892692451b363ed10f1c1e429a083b046620ad5a9c0",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/expertos-ven-factible-cumplimiento-de-meta-fiscal-este-ano-pero-califican-de-exigente-llegar-a-15-del-pib-a-2030/",
+        "event_date": "2026-10-08",
+        "immutable_snapshot_signal_sha256": "1de002fc5fce4885f6d9f6b0be79fc37c49aa1162f414b6cf5be381311111493",
+        "history_original_signal_sha256": "5df6e673c7b5637846b93127f8ad000c574c80392be1ffa95ba18a589c40a7c9",
+        "snapshot_projected_history_original_sha256": "5df6e673c7b5637846b93127f8ad000c574c80392be1ffa95ba18a589c40a7c9",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/lluvias-provocan-aluvion-en-las-condes-registros-captan-a-vehiculos-siendo-arrastrados-por-el-agua/",
+        "event_date": "2026-10-08",
+        "immutable_snapshot_signal_sha256": "8a59fd6a28a632cbe33024f672de552be7d6cb581d777982ea353c7684794490",
+        "history_original_signal_sha256": "d6a9968a514d8b40998f822f01eeaa4b626294d2e6e02fe70b0a99ea79db8273",
+        "snapshot_projected_history_original_sha256": "d6a9968a514d8b40998f822f01eeaa4b626294d2e6e02fe70b0a99ea79db8273",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/gobierno-le-dice-adios-al-presupuesto-con-perspectiva-de-genero-establecido-por-boric/",
+        "event_date": "2026-10-08",
+        "immutable_snapshot_signal_sha256": "2ae967fe6ce29a6a8b503376141e21b781a5c2acb7a44c370fcf3f60e4002ca5",
+        "history_original_signal_sha256": "026a9c7c2b00ae32ce35b92b682fb3d12a14a472aefc232e2df9d2eac8fb21f7",
+        "snapshot_projected_history_original_sha256": "026a9c7c2b00ae32ce35b92b682fb3d12a14a472aefc232e2df9d2eac8fb21f7",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/servicios/noticia/declaran-alerta-roja-para-10-comunas-de-la-region-metropolitana-por-riesgo-de-aluviones-luego-de-emergencia-en-las-condes/",
+        "event_date": "2026-10-08",
+        "immutable_snapshot_signal_sha256": "2803a780cca6ecafdc48a7f25f93bc62a170bfbfb955afceadf6413e65dc4b67",
+        "history_original_signal_sha256": "55627ecf7ae1006438db303242e6bada07b4638928b220fcce650b9e00b1d7d0",
+        "snapshot_projected_history_original_sha256": "55627ecf7ae1006438db303242e6bada07b4638928b220fcce650b9e00b1d7d0",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/la-zona-cero-del-aluvion-en-las-condes-que-inundo-clinicas-y-arrastro-autos/",
+        "event_date": "2026-10-08",
+        "immutable_snapshot_signal_sha256": "eb553d238ffc286f2cd1058409a636eefcc24edc9b9b84c9ceff0dbe530a6eab",
+        "history_original_signal_sha256": "9e059777353c2b079583484fd82dd9e91c1cb4d9604bfeb849b1c80955f52afd",
+        "snapshot_projected_history_original_sha256": "9e059777353c2b079583484fd82dd9e91c1cb4d9604bfeb849b1c80955f52afd",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/presupuesto-salud-2027-rebajas-al-ajuar-del-recien-nacido-y-a-la-ley-ricarte-soto-y-foco-en-atencion-primaria/",
+        "event_date": "2026-10-07",
+        "immutable_snapshot_signal_sha256": "10ca90e05a0b6cdf52f1d284dc8cb81c598eed507400e4c09c25985726b955b5",
+        "history_original_signal_sha256": "b2e168f1eb75e42ac7fec683ddd7049bbc52f097e6fc82f5f2f109d9f8c0b34d",
+        "snapshot_projected_history_original_sha256": "b2e168f1eb75e42ac7fec683ddd7049bbc52f097e6fc82f5f2f109d9f8c0b34d",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/politica/noticia/rodrigo-mundaca-le-dijimos-al-ministro-que-si-rebajas-van-a-ser-de-esta-magnitud-vamos-a-dejar-de-trabajar-con-los-servicios-de-ministerios/",
+        "event_date": "2026-10-07",
+        "immutable_snapshot_signal_sha256": "be6dbac7abc19a95a237072ef70183897c850b7e14ca889006c1f568fc9ccb87",
+        "history_original_signal_sha256": "356bd020b3029a8a00a59abb555e5e37fcd09addda27f1dbc6273ea49e9a8570",
+        "snapshot_projected_history_original_sha256": "356bd020b3029a8a00a59abb555e5e37fcd09addda27f1dbc6273ea49e9a8570",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/politica/noticia/senador-castro-acusa-gran-retroceso-por-recortes-en-presupuesto-de-salud-y-advierte-que-pacientes-de-ley-ricarte-soto-no-tendran-la-misma-cobertura/",
+        "event_date": "2026-10-07",
+        "immutable_snapshot_signal_sha256": "15c721f16af184d91f3f33c48ad1b6b78162bf69ff3189184b670715f7b3c2ea",
+        "history_original_signal_sha256": "cde493bc67beacf8892cc441401d4ebfc65e5fad2548455684641f928c573723",
+        "snapshot_projected_history_original_sha256": "cde493bc67beacf8892cc441401d4ebfc65e5fad2548455684641f928c573723",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/china-joyvio-se-querella-contra-de-isidoro-quiroga-ahora-por-delitos-ambientales-defensa-acusa-nuevo-manotazo-de-ahogado/",
+        "event_date": "2026-10-07",
+        "immutable_snapshot_signal_sha256": "95b99885f74cf3ce70268e4e3fdd21f10855f6190b12030c80e3f95e5b1d04f7",
+        "history_original_signal_sha256": "9f4a9ae75e0e96a90879946b138a33c43e998f2a968addf38dce5d2d7e0dcc91",
+        "snapshot_projected_history_original_sha256": "9f4a9ae75e0e96a90879946b138a33c43e998f2a968addf38dce5d2d7e0dcc91",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/tecnologia/noticia/chile-plan-nacional-digital-subtel-6g/",
+        "event_date": "2026-10-07",
+        "immutable_snapshot_signal_sha256": "2b83391b10f7f3cead55eb35c6661487927b56cbc1303aa8ac12bab6fbe69853",
+        "history_original_signal_sha256": "29f6d272360c8d0bc33c33982f5cea7723b62fb932f6136da0f87f118538c51f",
+        "snapshot_projected_history_original_sha256": "29f6d272360c8d0bc33c33982f5cea7723b62fb932f6136da0f87f118538c51f",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/presupuesto-2027-minuta-politica-del-gobierno-reporta-alza-del-gasto-distinta-de-la-informada/",
+        "event_date": "2026-10-06",
+        "immutable_snapshot_signal_sha256": "dd895288f9c56076ca24d63d6d5e9167b45f9c429df48fe49ab4e263e333e4f3",
+        "history_original_signal_sha256": "64fe7a8ecb71a762845d5c3269a15a6bff9bfb3e82aa0c89e76e27346204ff2c",
+        "snapshot_projected_history_original_sha256": "64fe7a8ecb71a762845d5c3269a15a6bff9bfb3e82aa0c89e76e27346204ff2c",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/los-otros-detalles-de-la-minuta-que-el-gobierno-entrego-a-los-parlamentarios-del-oficialismo/",
+        "event_date": "2026-10-06",
+        "immutable_snapshot_signal_sha256": "f2cc37c6fea74e131eb49f3caf1e0b092a8435a470ec2d788dc6c318d8cf29d7",
+        "history_original_signal_sha256": "9518928991505a64928366bafb3e3900df0e121321bbb9077a1980fbc48fd819",
+        "snapshot_projected_history_original_sha256": "9518928991505a64928366bafb3e3900df0e121321bbb9077a1980fbc48fd819",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/cambios-estructurales-no-maquillajes-gobierno-lanza-plan-para-agilizar-proceso-de-certificacion-de-discapacidad/",
+        "event_date": "2026-10-06",
+        "immutable_snapshot_signal_sha256": "3860e3b68762354fbf2b5c0b8760e6a3c11b851eb2de39c6871fa537568e99ca",
+        "history_original_signal_sha256": "d588d725f922d16df974b7733bc5d8021feed245b73bb0314d2d13cbf2eda2be",
+        "snapshot_projected_history_original_sha256": "d588d725f922d16df974b7733bc5d8021feed245b73bb0314d2d13cbf2eda2be",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/politica/noticia/gobernador-de-valparaiso-revela-detalles-de-tensa-cita-con-quiroz-por-presupuesto-y-su-advertencia-al-titular-de-hacienda/",
+        "event_date": "2026-10-06",
+        "immutable_snapshot_signal_sha256": "fe99a094fc51f226aa3e5209b5880afc5b57847486dadde788351a05685478ca",
+        "history_original_signal_sha256": "c573421a7380bbf7392f28aaf32029eec5d80b085770901ad9466b8d318138c7",
+        "snapshot_projected_history_original_sha256": "c573421a7380bbf7392f28aaf32029eec5d80b085770901ad9466b8d318138c7",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/politica/noticia/senadores-de-oposicion-presentan-indicaciones-a-infraestructura-critica-y-marcan-diferencias-con-mociones-del-ejecutivo/",
+        "event_date": "2026-10-06",
+        "immutable_snapshot_signal_sha256": "0804c9fbff1d6e09fb3ef4e3f7ebdba18fcf05f9cc9b4be4a04acb14ff1d3340",
+        "history_original_signal_sha256": "f298239531c601d1eb4e7035238562cca68247b74c8714b86e10d20079240750",
+        "snapshot_projected_history_original_sha256": "f298239531c601d1eb4e7035238562cca68247b74c8714b86e10d20079240750",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/el-guino-de-kast-a-dorothy-perez-presupuesto-de-contraloria-sube-un-59-y-aumentan-funcionarios/",
+        "event_date": "2026-10-06",
+        "immutable_snapshot_signal_sha256": "91e9254260fd4de5add914bff4bd688c732249be073d54a8f3a2564c9fa73260",
+        "history_original_signal_sha256": "3974b1b43a5dbb000287cf0f78e0b848ca84c01a5da28b7fb2d8c1601f3df9f0",
+        "snapshot_projected_history_original_sha256": "3974b1b43a5dbb000287cf0f78e0b848ca84c01a5da28b7fb2d8c1601f3df9f0",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/pulso/noticia/presupuesto-2027-las-cuatro-prioridades-del-ejecutivo-y-los-21-programas-bajo-el-analisis-de-la-dipres/",
+        "event_date": "2026-10-06",
+        "immutable_snapshot_signal_sha256": "615a47e8c377ebb75a05ad2083dd237ab4f5aadff87da159bb44ee46a977bf09",
+        "history_original_signal_sha256": "ad40202641c07e9cce09fb3c41fb1490ea18f947674327952d3221d668259de3",
+        "snapshot_projected_history_original_sha256": "ad40202641c07e9cce09fb3c41fb1490ea18f947674327952d3221d668259de3",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      },
+      {
+        "url": "https://www.latercera.com/nacional/noticia/el-gobierno-de-los-retrocesos-oposicion-eleva-criticas-contra-kast-tras-recorte-de-86-a-programa-asociado-a-la-ley-cholito/",
+        "event_date": "2026-10-06",
+        "immutable_snapshot_signal_sha256": "ec02180fdf32878dae5c31d9d0fbc155efa9802da382428fdb38e28aaeb46aef",
+        "history_original_signal_sha256": "f673aa8345f8250ffbb9e16596e6b9cbcff8a875dd4f5802ce6a02c3092b3f02",
+        "snapshot_projected_history_original_sha256": "f673aa8345f8250ffbb9e16596e6b9cbcff8a875dd4f5802ce6a02c3092b3f02",
+        "full_history_original_equals_snapshot_before_export_enrichment": true
+      }
+    ]
+  },
+  "verification": {
+    "module_tests": {
+      "command": "PYTHONPATH=src /workspace/work/venv/bin/python -m pytest -q tests/test_pulso_editorial_review.py",
+      "result": "39 passed in 0.24s",
+      "test_file_sha256": "477f73eceecbb42c8a116b992686f218cf642ea4ff08ce1f4358d7169220b26d"
+    },
+    "independent_probe_script_sha256": "3c7378a8362c6c5ae5cb60fbfda29c43812af8d7dc00a13703a31645e17ff3cb",
+    "read_only_real_repo": true,
+    "temp_fixture_persistence_only": true,
+    "no_product_edits": true,
+    "reviewed_module_unchanged_current": true,
+    "reviewed_script_unchanged_current": true
+  },
+  "resolved_findings": {
+    "original_commit": "e64d9aa2576bc55ccc026ab23a516e9bc2165ce6",
+    "findings": [
+      "group survivor must remain eligible and actually published",
+      "original effective queue prose must match reviewed full model output before application",
+      "replay provenance must be reconstructed exactly from immutable audit",
+      "corrected surviving copy must pass existing publication gate",
+      "history-only persisted interruption must resume only exact verified original queue"
+    ],
+    "resolution_commits": [
+      "f0f5cdf",
+      "0a2f3ac",
+      "2f9c72f"
+    ]
+  },
+  "limitations": [
+    "Bounded editorial-correction module review only; no Source, whole runtime, feed rebuild, staging or global acceptance approval.",
+    "The independent reader retains original serialized full publication snapshot and raw primary body proofs. No absent raw provider-completion hash is invented.",
+    "Real repository history/queue were read only; fault injection and eventual persistence ran in a deleted temporary fixture repository.",
+    "Accept/reject/group/correct reproduce the separate reader decision; no relevance scores, source evidence, queue attempts or other source states were reset."
+  ]
+}

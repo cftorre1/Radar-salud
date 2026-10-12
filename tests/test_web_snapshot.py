@@ -286,23 +286,34 @@ def test_material_statistical_releases_use_value_ladder_instead_of_disappearing(
 
 
 def test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review():
+    import re
     payload=json.loads(Path("web/data/radar_today.json").read_text())
+    # Inspect the actual serialized contract; recuration cannot repair evidence
+    # for this assertion. The history and reviewed original IDs are the oracle.
     rows=[s for s in payload["signals"] if "Normativa" in (s.get("signal_types") or [])]
     history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
     cfg=json.loads(Path("config/normative_editorial_v2.json").read_text())
     anchor=max(m._d(s.get("event_date")) for s in history if m._d(s.get("event_date")))
-    reviewed=[s for s in history if __import__("re").search(r"/(?:circular|resolucion-exenta)-if-n(\d+)/$",s.get("source_url", ""))]
-    reviewed=[s for s in reviewed if s["source_url"].split("if-n")[-1].rstrip("/") in cfg["records"]]
+    reviewed=[]
+    for signal in history:
+        match=re.search(r"/(?:circular|resolucion-exenta)-if-n(\d+)/$",signal.get("source_url", ""))
+        if match and match.group(1) in cfg["records"] and "Normativa" in (signal.get("signal_types") or []):
+            reviewed.append(signal)
     assert {s["source_url"].split("if-n")[-1].rstrip("/") for s in reviewed}==set(cfg["records"]), "Reviewed primary acts must remain in history"
-    eligible={s["source_url"] for s in reviewed if 0 <= (anchor-m._d(s["event_date"])).days <= 90}
+    decisions={x["id"]:x.get("decision") for x in json.loads(Path("data/editorial_audit_90d_2026_09_26.json").read_text())["items"]}
+    eligible={s["source_url"] for s in reviewed if 0 <= (anchor-m._d(s["event_date"])).days <= 90 and decisions.get(s["source_url"]) != "reject"}
     expired={s["source_url"] for s in reviewed if (anchor-m._d(s["event_date"])).days > 90}
     actual={s["source_url"] for s in rows}
     assert eligible <= actual, "An eligible reviewed act was lost from the snapshot"
     assert actual.isdisjoint(expired), "An expired act was resurrected to satisfy a quota"
     assert len(actual)==len(rows), "Duplicate normative URLs must not inflate coverage"
+    assert all(0 <= (anchor-m._d(s["event_date"])).days <= 90 for s in rows)
     assert all(x["normative_editorial"]["plain_language_title"]==x["display_title"] for x in rows)
     assert all(x["normative_editorial"]["legal_identity"]==x["normative_document_label"] for x in rows)
     assert all(x["legal_subtitle"] for x in rows)
+    if any(url.endswith("n533/") for url in eligible):
+        c533=next(s for s in rows if s["source_url"].endswith("circular-if-n533/"))
+        assert "Circular IF/N°533" in c533["display_title"] and "SIL" in c533["display_title"] and "actualiza" in c533["display_title"]
     if any(url.endswith("n9994/") for url in eligible):
         assert any(x["source_url"].endswith("n9994/") and "Afiliación electrónica" in x["display_title"] and "rechaza" in x["display_title"] and "Circular IF/N°532" in x["display_title"] for x in rows)
     unknown={"event_type":"REGULATION","title":"Circular IF/N°123456","source_title_full":"Circular IF/N°123456","source_url":"https://x/n123456","signal_types":["Normativa"]}
@@ -376,3 +387,4 @@ def test_verified_publication_boundary_retains_old_issuance_without_changing_it(
     assert 'días 31 a 90' in pulse['title']
     assert m.curate([row],resolve_external=False,as_of=date(2026,10,12))==[]
     assert m.curate([{**row,'publication_date':'2026-07-07'}],resolve_external=False,as_of=date(2026,10,11))==[]
+    assert m.curate([row],resolve_external=False,as_of=date(2026,10,12))==[]

@@ -1,0 +1,20 @@
+{
+  "schema_version": "pulso_native_identity_compatibility_v1",
+  "scope": "Pulso-owned correction/idempotence assumptions, not a defect in staging native records",
+  "staging_commit": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+  "native_source": "SUSESO official offices",
+  "demonstrated_original_failure": "duplicate_history_identity and duplicate_effective_signal_identity for distinct offices at same listing URL/day",
+  "repair": "Correction indexes reviewed Pulso and named group survivors, preserving all unrelated native rows. Idempotence uses native official source_record_id when present; publisher articles retain strict URL/date identity. Independent QA implements same contract separately.",
+  "actual_history_rows_preserved": 934,
+  "actual_history_distinct_effective_identities": 934,
+  "actual_feed_rows": 110,
+  "actual_feed_distinct_effective_identities": 110,
+  "tests": {
+    "directed": 139,
+    "passed": true
+  },
+  "new_ai_calls": 0,
+  "queue_mutations": 0,
+  "history_mutations": 0,
+  "acceptance": "Pending actual frozen-cohort reprocessing, final SHA QA and independent review"
+}

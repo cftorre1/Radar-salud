@@ -1,0 +1,85 @@
+{
+  "schema_version": "pulso_mixed25_assessment9_16_editorial_schema_validation_v1",
+  "recorded_at": "2026-10-11T19:35:42.754027+00:00",
+  "original_actual_producer_commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+  "reader": {
+    "path": "data/audits/pulso_mixed25_assessment9_16_independent_semantic_review_2026_10_11.json",
+    "sha256": "7dc1bcc321ec5650a8258b13e3a7d564010f33828fbf388e55fb4b5bae3b5321"
+  },
+  "template": {
+    "path": "data/audits/pulso_mixed25_assessment9_16_editorial_corrections_2026_10_11.json",
+    "sha256": "95478fefae0c8c4ed127bed5819483ed030e3e70a97478fcbe69e862b2d2747a"
+  },
+  "verdict": "PASS_SCOPED_ALL3_ALREADY_PAID_APPLICATION_IN_MEMORY_ONLY",
+  "validation": {
+    "independent_reader_template_binding": true,
+    "in_memory_application": {
+      "review_id": "pulso_mixed25_assessment9_16_actual_paid_review_2026_10_11",
+      "review_sha256": "95478fefae0c8c4ed127bed5819483ed030e3e70a97478fcbe69e862b2d2747a",
+      "reviewed_count": 3,
+      "applied_count": 3,
+      "unchanged_on_replay": 0,
+      "decisions": {
+        "accept": 2,
+        "reject": 0,
+        "group": 0,
+        "correct": 1
+      },
+      "ai_calls": 0,
+      "primary_evidence_mutations": 0,
+      "queue_attempt_resets": 0
+    },
+    "in_memory_reapplication": {
+      "review_id": "pulso_mixed25_assessment9_16_actual_paid_review_2026_10_11",
+      "review_sha256": "95478fefae0c8c4ed127bed5819483ed030e3e70a97478fcbe69e862b2d2747a",
+      "reviewed_count": 3,
+      "applied_count": 0,
+      "unchanged_on_replay": 3,
+      "decisions": {
+        "accept": 2,
+        "reject": 0,
+        "group": 0,
+        "correct": 1
+      },
+      "ai_calls": 0,
+      "primary_evidence_mutations": 0,
+      "queue_attempt_resets": 0
+    },
+    "actual_registry_plus_own_registration_only_temporary": true,
+    "independent_QA_fullcontext_verified": 26,
+    "independent_QA_fullcontext_failures": [],
+    "independent_QA_exact_three_verified": 3,
+    "independent_QA_exact_three_failures": [],
+    "Matthei_category_history_queue_feed_RegLegal": true,
+    "Matthei_copy_body_score_and_prospective_false_unchanged": true,
+    "both_accepts_copy_and_original_prospective_flag_unchanged": true,
+    "all5_retry_rows_byte_identical": true,
+    "original_models_and_primary_bodies_intact": true
+  },
+  "actual_state_writes": 0,
+  "AI_calls": 0,
+  "global_source_acceptance": false,
+  "limitations": [
+    "No actual correction or registry registration performed in this test.",
+    "None of the5 pending cases enters the application template or receives human approval.",
+    "The newly published3 need actual application followed by separate independent confirmation."
+  ],
+  "minimum_tests": {
+    "passed": 6,
+    "failed": 0,
+    "seconds": 4.0,
+    "tests": [
+      "tests/test_pulso_editorial_review.py::test_real_outputs_keep_original_api_evidence_and_exact_gate_with_reviewed_states",
+      "tests/test_pulso_editorial_review.py::test_second_application_is_identical_without_queue_or_paid_replay",
+      "tests/test_pulso_editorial_review.py::test_bound_copy_correction_keeps_original_gate_and_can_correct_reviewed_taxonomy",
+      "tests/test_pulso_additional_editorial_review_qa.py::test_paid_category_correction_requires_exact_independent_approved_category"
+    ],
+    "actual_immutable908_schema_replay": {
+      "own": 3,
+      "context": 26,
+      "findings": 0,
+      "model_calls": 0,
+      "state_writes": 0
+    }
+  }
+}

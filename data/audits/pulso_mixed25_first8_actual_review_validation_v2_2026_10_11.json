@@ -1,0 +1,67 @@
+{
+  "schema_version": "pulso_paid_mixed_review4_group_memory_validation_v1",
+  "source_id": "pulso_latercera",
+  "reader_path": "data/audits/pulso_mixed25_first8_actual_semantic_review_v2_2026_10_11.json",
+  "reader_sha256": "4e7ac45e904fb776da639a8f4d27f2fecaefe4a7ca409b2b9b729c24b3af2849",
+  "review_path": "data/audits/pulso_mixed25_first8_actual_editorial_review_v2_2026_10_11.json",
+  "review_sha256": "10542bdbdd5d923fd5b08579952bcf4e4a58d05645d4d2a1f8cf63bf717e8bca",
+  "producer_commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+  "inputs": {
+    "history": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "bd7e32dd341348f44cfacdb0140247c5f957c417f6bed625fdcf9762a4d0f4ca"
+    },
+    "queue": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202"
+    },
+    "runtime_report": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "eb420d6e3b74b9a2274598adc5b2ae7f2f5f7e9635e1fc34f60968c896a95bd3"
+    },
+    "telemetry": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "d421299b6f6fbe440c166bb13ad686ba0896ccfc0cbfeda400f49932c9781037"
+    }
+  },
+  "application_report": {
+    "review_id": "pulso-mixed38166157093-first8-four-publications-v2-group-2026-10-11",
+    "review_sha256": "10542bdbdd5d923fd5b08579952bcf4e4a58d05645d4d2a1f8cf63bf717e8bca",
+    "reviewed_count": 4,
+    "applied_count": 4,
+    "unchanged_on_replay": 0,
+    "decisions": {
+      "accept": 3,
+      "reject": 0,
+      "group": 1,
+      "correct": 0
+    },
+    "ai_calls": 0,
+    "primary_evidence_mutations": 0,
+    "queue_attempt_resets": 0
+  },
+  "independent_consumer_proofs": 7,
+  "new_reviewed_records": 4,
+  "existing_survivor_review_records": 3,
+  "independent_consumer_findings": [],
+  "idempotent_signals_changed": 0,
+  "group_target_preserved_exactly": true,
+  "old_reader_and_review_bytes_preserved": true,
+  "actual_runtime_state_changed": false,
+  "AI_calls": 0,
+  "publication_approved": false,
+  "directed_tests": {
+    "passed": 11,
+    "paths": [
+      "tests/test_pulso_mixed25_first8_review_v2_group.py",
+      "tests/test_pulso_mixed25_first8_actual_semantic_review.py",
+      "tests/test_pulso_mixed_eight_publications_second_peer.py"
+    ],
+    "survivor_missing_or_withdrawn_denied": true,
+    "complete_prior_survivor_review_records_preserved": 3
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "schema_version": "pulso_archived323_ilc_mask_binding_discrepancy_readonly_v1",
+  "archived_producer": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+  "current_observed_bot": "123bf2550536030a077c03ad4d56572df24ab418",
+  "current_QA_sha256": "c11b825305bce670758ab3d22cbb65af2c9584942e4b16906c5be8b769201eed",
+  "immutable_reader": {
+    "path": "data/audits/pulso_actual323_three_primary_semantic_review_2026_10_11.json",
+    "sha256": "7646fca3839727228c5b603175056320454e4ad3f74e8eb0708d0c6b66e33d66"
+  },
+  "immutable_template": {
+    "path": "data/audits/pulso_actual323_ilc_mask_editorial_review_2026_10_11.json",
+    "sha256": "8ff73f3d5abba75148238f609d39f96957bf9e51e9b3f16add04c60806c8760c"
+  },
+  "independent_second_peer": {
+    "path": "data/audits/pulso_actual323_ilc_mask_independent_second_peer_2026_10_11.json",
+    "sha256": "cd826b140ad60154f34bb278a08248265883313c5d0eab39eb2077dd2ce95ecd"
+  },
+  "rows": [
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "queue_fingerprint": "852ddd50090ff6545524605d36658ae4751aebbd46d7796f728c9a6793485846",
+      "first_reader_record_sha256": "1a966d9d535c4fa59551f7e3513e134313f6e53c63c3cd04bfa28523ef496514",
+      "immutable_binding": {
+        "retained_model_output_semantic_sha256": "08bc7c7fdffea478aba999ee3ddea36e76aa6e4bb12d7db64611712342d18ea4",
+        "model_response": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0ba893c422f43fff006acbf46d7b7087d08f2e5202e0b8c81a",
+          "analysis_text_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+          "request_input_sha256": "a1914b9f3d0d1bb37baaedcda5002c68dc32600705276d93ebcd2c01c78a06b8",
+          "raw_model_output_sha256": "823dc51b34ecf338a0bb46ebff499c794f4618ffa7c8edaf0d64a50f5d5227d2"
+        },
+        "signal_sha256": "762d12f6418b61301b6d992bff2d1c02d3036bc2f1c5b4768202674825d4bc62"
+      },
+      "current_QA_reconstructed_revalidation": {
+        "original_producer": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+        "original_core_code": "de51496ca0bfbe656c96551743e52024b9b6608e",
+        "publication_execution_code": "c2db17141fd55cbacbcda5b53805341aa4dfa86f",
+        "manifest_ref": "data/audits/pulso_followup5_paid_guard_revalidation_manifest_2026_10_11.json",
+        "manifest_sha256": "1c7389906e3855d2e622e4bc4aab91addcf1e8615e8251f03def15b447f922fa",
+        "actual_receipt_sha256": "ac3cba53ef7c35f5172d8c641e4445681b312e2a91a10e45c848d97376f35ec8",
+        "proof": {
+          "manifest_ref": "data/audits/pulso_followup5_paid_guard_revalidation_manifest_2026_10_11.json",
+          "manifest_sha256": "1c7389906e3855d2e622e4bc4aab91addcf1e8615e8251f03def15b447f922fa",
+          "disposition": "reuse_code_fn",
+          "original_producer": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+          "original_response_id": "resp_0ba893c422f43fff006acbf46d7b7087d08f2e5202e0b8c81a",
+          "current_response_id": "resp_0ba893c422f43fff006acbf46d7b7087d08f2e5202e0b8c81a",
+          "old_paid_output_reused": true,
+          "prior981_and908_and66_paid_provenances_preserved": true,
+          "publication_approved": false
+        }
+      },
+      "exact_discrepancy": {
+        "path": "original_output_binding.revalidated_followup_paid_response",
+        "immutable": "MISSING",
+        "current_QA_requires": "complete reconstructed binding dictionary",
+        "failed_equality": "None != reconstructed dict"
+      },
+      "remaining_three_binding_fields_match_exactly": true,
+      "actual_archived323_full_receipt_revalidation_passed": true,
+      "paid_origin66_unique_actual_event": {
+        "at": "2026-10-11T20:41:48.562108+00:00",
+        "kind": "fast",
+        "model": "gpt-5.6-luna",
+        "requested_model": "gpt-5.6-luna",
+        "response_id": "resp_0ba893c422f43fff006acbf46d7b7087d08f2e5202e0b8c81a",
+        "success": true,
+        "error_type": null,
+        "input_tokens": 3862,
+        "cached_input_tokens": 0,
+        "output_tokens": 3416,
+        "total_tokens": 7278,
+        "cost_usd": null,
+        "cost_status": "pricing_not_configured",
+        "feature": null,
+        "output_id": null,
+        "run_id": null,
+        "publishable": null,
+        "incremental_quality_points": null
+      },
+      "no_323_paid_event_invented": true,
+      "independent_second_peer_full_receipt_identical": true,
+      "whole_primary_model_response_and_signal_pins_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "queue_fingerprint": "b2ad52c4b0bc300bba9d63b86165a18e56f551fcc8fa9b4990611a68772f7114",
+      "first_reader_record_sha256": "4eba05795bf8bec30aede7c3d3747e6636cbb2491c9e226232d38de71e03111f",
+      "immutable_binding": {
+        "retained_model_output_semantic_sha256": "727de0a669fc995610e4f1769f8fd410f92b16d03f73268b75ab3540f9b8539a",
+        "model_response": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0482b05a494763e7006acbf490607c87d0bfa2f797f7a616b8",
+          "analysis_text_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+          "request_input_sha256": "84755be99de3e38baaf62c92dc9fabb41e24b8481dde112e787da155ad0ec269",
+          "raw_model_output_sha256": "15febf4dd527675d1c03adec0483ed781c6141417fcd49f44cd3e151fb853e04"
+        },
+        "signal_sha256": "ef9e010220b219b7b1a291b76c323e1ad768be23469a8490b0da3a5f7eed585a"
+      },
+      "current_QA_reconstructed_revalidation": {
+        "original_producer": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+        "original_core_code": "de51496ca0bfbe656c96551743e52024b9b6608e",
+        "publication_execution_code": "c2db17141fd55cbacbcda5b53805341aa4dfa86f",
+        "manifest_ref": "data/audits/pulso_followup5_paid_guard_revalidation_manifest_2026_10_11.json",
+        "manifest_sha256": "1c7389906e3855d2e622e4bc4aab91addcf1e8615e8251f03def15b447f922fa",
+        "actual_receipt_sha256": "44de625c1b17c7eb34d959c3445114fde4e8a25b903512d942de7587809733e8",
+        "proof": {
+          "manifest_ref": "data/audits/pulso_followup5_paid_guard_revalidation_manifest_2026_10_11.json",
+          "manifest_sha256": "1c7389906e3855d2e622e4bc4aab91addcf1e8615e8251f03def15b447f922fa",
+          "disposition": "reuse_code_fn",
+          "original_producer": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+          "original_response_id": "resp_0482b05a494763e7006acbf490607c87d0bfa2f797f7a616b8",
+          "current_response_id": "resp_0482b05a494763e7006acbf490607c87d0bfa2f797f7a616b8",
+          "old_paid_output_reused": true,
+          "prior981_and908_and66_paid_provenances_preserved": true,
+          "publication_approved": false
+        }
+      },
+      "exact_discrepancy": {
+        "path": "original_output_binding.revalidated_followup_paid_response",
+        "immutable": "MISSING",
+        "current_QA_requires": "complete reconstructed binding dictionary",
+        "failed_equality": "None != reconstructed dict"
+      },
+      "remaining_three_binding_fields_match_exactly": true,
+      "actual_archived323_full_receipt_revalidation_passed": true,
+      "paid_origin66_unique_actual_event": {
+        "at": "2026-10-11T20:42:15.442395+00:00",
+        "kind": "fast",
+        "model": "gpt-5.6-luna",
+        "requested_model": "gpt-5.6-luna",
+        "response_id": "resp_0482b05a494763e7006acbf490607c87d0bfa2f797f7a616b8",
+        "success": true,
+        "error_type": null,
+        "input_tokens": 3437,
+        "cached_input_tokens": 0,
+        "output_tokens": 2148,
+        "total_tokens": 5585,
+        "cost_usd": null,
+        "cost_status": "pricing_not_configured",
+        "feature": null,
+        "output_id": null,
+        "run_id": null,
+        "publishable": null,
+        "incremental_quality_points": null
+      },
+      "no_323_paid_event_invented": true,
+      "independent_second_peer_full_receipt_identical": true,
+      "whole_primary_model_response_and_signal_pins_unchanged": true
+    }
+  ],
+  "diagnosis": "Historical frozen reader omitted the derived revalidation sub-binding; strict current consumer compares absentNone with actual verified66-to323binding. Primary/model/ResponseID/request/event/gate evidence remains identical. Not a newly changed paidmodel or publisherdate.",
+  "narrow_compatibility_proposal": [
+    "Only immutable readerSHA7646fca3839727228c5b603175056320454e4ad3f74e8eb0708d0c6b66e33d66 andtemplateSHA8ff73f3d5abba75148238f609d39f96957bf9e51e9b3f16add04c60806c8760c, producer323, exacttwo URL/day/fingerprint/parentrecordpins.",
+    "All three existing binding fields must equal exact immutable paidmodel/response/originalsignal hashes.",
+    "Require original archived323 full receipt, strict followup66 origin and unique genuine paidFAST event in66 window, current publicationwindow andno fabricated323 paid event.",
+    "Require independent second-peer SHAcd826b140ad60154f34bb278a08248265883313c5d0eab39eb2077dd2ce95ecd fullreceipt equals archived323receipt.",
+    "Compatibility is reconstruction of that historically missing derived field only; unknown readers/missingdifferentfield/tampered models/receipt/body/day/score must stillFAIL.",
+    "Do not mutate frozen humanreview files, actualmodels, Source, state or acceptance; record inherited schema limitation explicitly."
+  ],
+  "AI_calls": 0,
+  "Source_or_state_changes": 0,
+  "files_written": "work only",
+  "global_acceptance": "NOT_DECLARED"
+}

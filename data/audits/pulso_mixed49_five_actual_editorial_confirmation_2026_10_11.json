@@ -1,0 +1,167 @@
+{
+  "schema_version": "pulso_mixed49_own5_actual_confirmation_v1",
+  "reviewer": "external_control_independent_actual_state_reader",
+  "observed_at": "2026-10-11T19:58:18.431169+00:00",
+  "producer_commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+  "actual_application_commit": "55bf6e24a0f07db6d074d269510a688dce32ce0f",
+  "actual_application_ref": {
+    "commit": "55bf6e24a0f07db6d074d269510a688dce32ce0f",
+    "path": "data/audits/pulso_mixed_actual_8_paid_review_application_2026_10_11.json",
+    "sha256": "0db1b60012ef8d4e6a2904a297b52bb9cac4c95a68d404b7e1708d600ebdf147"
+  },
+  "actual_state_references": {
+    "queue": {
+      "commit": "55bf6e24a0f07db6d074d269510a688dce32ce0f",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "74868abf32887d3d7cebb1dd6d7c9c1d7a8777c32173030c577baf72af87fc04"
+    },
+    "history": {
+      "commit": "55bf6e24a0f07db6d074d269510a688dce32ce0f",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "6524922ede72c46ccf10c7e054f358f23da87a8e57341d9c32f4d08fdffa191b"
+    },
+    "feed": {
+      "commit": "55bf6e24a0f07db6d074d269510a688dce32ce0f",
+      "path": "web/data/radar_today.json",
+      "file_sha256": "aad025a0903c5ffa90de9187d5a9354a5a32a4b7753ed8393ba9bb87cb242f7c"
+    },
+    "runtime_report": {
+      "commit": "55bf6e24a0f07db6d074d269510a688dce32ce0f",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "2b41c48051db5038413facde08751f6fd65984a9ede2b24d92b122f3718f4842"
+    },
+    "telemetry": {
+      "commit": "55bf6e24a0f07db6d074d269510a688dce32ce0f",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "d421299b6f6fbe440c166bb13ad686ba0896ccfc0cbfeda400f49932c9781037"
+    },
+    "monthly_budget": {
+      "commit": "55bf6e24a0f07db6d074d269510a688dce32ce0f",
+      "path": "data/ai_usage/2026-10.json",
+      "file_sha256": "e6692992c104bf34f21a857f9542103d6229888d2ccdda70784289d2a36680a5"
+    },
+    "discovery": {
+      "commit": "55bf6e24a0f07db6d074d269510a688dce32ce0f",
+      "path": "data/state/discovery_run.json",
+      "file_sha256": "078b69bddf23a6a0837b8cf99275fb890853e3956910361715f8eff1ed3573ca"
+    },
+    "source_health": {
+      "commit": "55bf6e24a0f07db6d074d269510a688dce32ce0f",
+      "path": "data/source_health.json",
+      "file_sha256": "388f41cb7a2195777f8279feadea4259d62e7f3acab19fe31c584b0d83a738e5"
+    }
+  },
+  "primary_reader": {
+    "path": "data/audits/pulso_mixed49_rows81_113_semantic_review_2026_10_11.json",
+    "sha256": "38d197852f7b0ba08a81f5e0eaa17733d90d0ba770c455c1fecf5913846658bd"
+  },
+  "application_template": {
+    "path": "data/audits/pulso_mixed49_five_paid_editorial_corrections_2026_10_11.json",
+    "sha256": "6d436739668724e4f6618bcd0e3beb7be2135792edad20ca044a61ec1be60de2"
+  },
+  "rows": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/virus-respiratorios-positividad-asciende-al-579-la-mas-alta-en-los-ultimos-tres-anos/",
+      "publication_date": "2026-09-03",
+      "queue_fingerprint": "4a24900ccf2f1fc422f6c471e338a105479922616ea878901d7b37861b43b7c3",
+      "decision": "correct",
+      "original_signal_sha256": "85b45448f37c2dece83c5641a4c395bbdeebbe413f8fe21147e4bf0bd8fa299a",
+      "actual_signal_sha256": "04977baa6f919464390002d83cb9a5ebcad6492f82d7c683b23aae82f4661fca",
+      "original_body_sha256": "154bbf48237ee93852375c2f2f89f0ccc56ab8d25678fb4267f0d3844c64e825",
+      "original_model_output_sha256": "3fa34773dda127a4fc17d7d7a154be50ff45e2d5dcd58175f1e45db7d2c5d520",
+      "actual_history_and_visible_feed_exact_match": true,
+      "actual_queue_status": "published",
+      "score": 91,
+      "threshold": 72,
+      "actual_copy_matches_independent_review": true,
+      "primary_model_date_score_bookkeeping_preserved": true,
+      "finding_resolved": true
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/bancada-udi-anuncia-agenda-pro-consumidor-con-14-medidas-en-seguros-salud-transporte-y-otras-areas/",
+      "publication_date": "2026-09-06",
+      "queue_fingerprint": "1b8b5573a478b5a45316874e5eb141a02edfebb1ebb2c4339df8f13bce7ea339",
+      "decision": "accept",
+      "original_signal_sha256": "0185e8dbbe3b41452148b19632c5b2c6dc8121e1cc5e442cef7d806c7aede14f",
+      "actual_signal_sha256": "cd737ff5b25d2d36851e91a7d0f398062a47ef71b9d4c5117cc5de6f6e28630e",
+      "original_body_sha256": "e1103163b677d90ce7198ebd911f8783a76838c85f5bba10423ac3b4bf9ea078",
+      "original_model_output_sha256": "c11c38f74e515acc69c201bc0fc40b263128320fcaa7ab69ab3e2eb59e77c843",
+      "actual_history_and_visible_feed_exact_match": true,
+      "actual_queue_status": "published",
+      "score": 80,
+      "threshold": 72,
+      "actual_copy_matches_independent_review": true,
+      "primary_model_date_score_bookkeeping_preserved": true,
+      "finding_resolved": false
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/clinica-las-condes-finaliza-aumento-de-capital-y-recauda-80-mil-millones/",
+      "publication_date": "2026-08-05",
+      "queue_fingerprint": "c70ab1ae56415c6a4398dbcc1d7feae37dd3d72c86ae5136d46dea5a7b182bd0",
+      "decision": "accept",
+      "original_signal_sha256": "eff9b46bd9b25c745ab9308e9abd39a7f1d03990715cc8e758798a284e4d48b0",
+      "actual_signal_sha256": "3de675b8976fb25022d3767cd01e5da202428c498baf0320f9abee588f071397",
+      "original_body_sha256": "429534bc93b6896966063905882ca45688c1bd734c21bcb65778ebfcb97641f1",
+      "original_model_output_sha256": "606d8d87ef6ea9ffb5ee70d49627490d460497de22fba583fc38f76779fbb770",
+      "actual_history_and_visible_feed_exact_match": true,
+      "actual_queue_status": "published",
+      "score": 86,
+      "threshold": 72,
+      "actual_copy_matches_independent_review": true,
+      "primary_model_date_score_bookkeeping_preserved": true,
+      "finding_resolved": false
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/",
+      "publication_date": "2026-08-05",
+      "queue_fingerprint": "841718ee5b9515734765c356d6dcd50987a5b2f79bf5c2f6a6233a173ceeaa38",
+      "decision": "accept",
+      "original_signal_sha256": "81c8bb4c8dc67db365384397515b4c3ffb893ab423f178420b7e5bd4b9abad15",
+      "actual_signal_sha256": "f9639b87e1f000f99655672aa5082e908b4a6b16ff11a8fe4027d4d8fd24daf5",
+      "original_body_sha256": "586fc0d4835039ec5fb9a4f4e7f151762934d50405343da14a243acc29ba12df",
+      "original_model_output_sha256": "674dc4c33b2df245252d6a103b5d7087160d0c74d41a61c71cc448ade6feeb5a",
+      "actual_history_and_visible_feed_exact_match": true,
+      "actual_queue_status": "published",
+      "score": 84,
+      "threshold": 72,
+      "actual_copy_matches_independent_review": true,
+      "primary_model_date_score_bookkeeping_preserved": true,
+      "finding_resolved": false
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+      "publication_date": "2026-07-23",
+      "queue_fingerprint": "4253ceb9ffdc3a75a20c1f4b9a9902900cc3e97134aef098183a298f8cb0be4d",
+      "decision": "accept",
+      "original_signal_sha256": "6958899e1059eb25aca7b79168e5f405cc3108ff43799611cb80545628898efc",
+      "actual_signal_sha256": "7e7fc5fbcf12574b09817cbc306bd36f2c4922a45fdf6d8b568d3ba6ce174c31",
+      "original_body_sha256": "2f4c1a327ad59db81e2b452a4ebc21dcf95b34de7cad832bf7ba8dcd6407c67e",
+      "original_model_output_sha256": "61510b224ead8d94022babfeee5c5a15b70fdf59036a18675412f4d3f82e4304",
+      "actual_history_and_visible_feed_exact_match": true,
+      "actual_queue_status": "published",
+      "score": 86,
+      "threshold": 72,
+      "actual_copy_matches_independent_review": true,
+      "primary_model_date_score_bookkeeping_preserved": true,
+      "finding_resolved": false
+    }
+  ],
+  "summary": {
+    "actual_history_visible_feed_and_queue_verified": 5,
+    "accepted_copy_preserved": 4,
+    "respiratory_denominator_corrected_on_actual_state": 1,
+    "score_threshold_unchanged": 72,
+    "idempotent_replay_applied": 0,
+    "actual_consumer_verified_own5": 5,
+    "all_registry_claims_verified": 31,
+    "actual_consumer_findings": []
+  },
+  "AI_calls": 0,
+  "state_mutations": 0,
+  "global_acceptance": false,
+  "limits": [
+    "This confirms five already published signals at immutable application55bf6e24, not acceptance of the entire source recovery.",
+    "Twelve technical holds from producer908 remain outside this actual copy review.",
+    "The prior producer908 outcome matrix remains frozen; later producer/application states require distinct versions."
+  ]
+}

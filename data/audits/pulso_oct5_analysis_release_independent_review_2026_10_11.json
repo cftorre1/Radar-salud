@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "scope": "Oct5 immutable analysis release, queue admission and independent QA references",
+  "verdict": "PASS_SCOPED_ANALYSIS_ADMISSION_NOT_RUNTIME_ACCEPTANCE",
+  "reviewed_tree_head": "662836b9b933c2a51f25ad7d9d70e165ce4822bf",
+  "implementation_file_sha256": {
+    "src/radar_salud/pulso_incremental_review.py": "7839ae3542484c27f7473267df22bd662839a441028532f805347823cdb3f697",
+    "src/radar_salud/pending_queue.py": "8028264c7031aeaea467e2f33f9d8fa0f9cfdd26c73af025047286f5ca276232",
+    "scripts/pulso_idempotence.py": "a2ccb2c4cb115deaf1dca44971840d4b515bcdc00c5abf83daf165806d01d1f1",
+    "scripts/qa_pulso_recovery.py": "0a860692922296af9a5ba3b7a975fd17cd36eb111d20d55adc5c46ff05ab9e78"
+  },
+  "documents": {
+    "prior_review": {
+      "path": "data/audits/pulso_incremental_review_2026_10_11.json",
+      "sha256": "e5cee8d34839a905e391e85d6187db8bcdae09c0dde7f688cc71a9f04f093ddd",
+      "preserved": true
+    },
+    "addendum": {
+      "path": "data/audits/pulso_oct5_incremental_addendum_2026_10_11.json",
+      "sha256": "589ba50032521924803ef8ce94f40e3854930edcadddf7fc1223d9df81714160"
+    }
+  },
+  "original_integrity": {
+    "audit_sha256": "589ba50032521924803ef8ce94f40e3854930edcadddf7fc1223d9df81714160",
+    "prior_review_sha256": "e5cee8d34839a905e391e85d6187db8bcdae09c0dde7f688cc71a9f04f093ddd",
+    "original_html_sha256": "60dd84e90cfdca2702312a13a90f669dbae10ed5de7dc2c71f76461d6115e807",
+    "original_gzip_sha256": "0ce5058ff1b35c2044d79b327f734316059db2072af359c4a36787a2b686b80f",
+    "html_bytes": 458350,
+    "full_primary_body_sha256": "0ebfaaf59515c5c7f01f4e150f7a9000e5f5a0888ecfaf48c73c9364378d0131",
+    "full_primary_body_characters": 2916,
+    "all3_incremental_quotes_exact": true
+  },
+  "semantic_analysis_release_review": {
+    "full_primary_body_characters_read": 2916,
+    "three_incremental_quotes_exact": true,
+    "findings": "Full source reports first-semester 2026 hospital activity with unchanged spend, procurement channels and absenteeism. This permits ordinary editorial assessment beyond the repeated proposed 2027 budget percentage. It does not independently verify minister testimony or approve publication.",
+    "comparison_limit": "Hash-verified linked twelve original Pulso bodies; independent comparison judgment remains explicitly scoped to the declared twelve and two DF documents. No claim of reading all staging history or verifying official performance."
+  },
+  "constraints": [
+    "media_reported and explicit publisher attribution",
+    "first-semester 2026 testimony is not a newly measured October performance result",
+    "2027 budget remains proposed, not enacted",
+    "30-40 percent price comparison is not aggregate savings",
+    "publisher conflicting Education/Health portfolio wording must not be adopted as settled official identity",
+    "same single FAST analysis and threshold72; no publication or score quota",
+    "all79 controls still require a traceable published/rejected decision"
+  ],
+  "resolved_findings": [
+    {
+      "id": "ADMISSION-01",
+      "before": "A retry queue entry with terminal old editorial assessment could lose that assessment and have retry_at cleared when fresh primary lacked an assessment.",
+      "repair_commit": "a154c4f",
+      "after": "Admission requires matching old pending assessment. Contradictory terminal assessments published/rejected/accepted/approved preserve the whole queue entry even with a fresh changed title.",
+      "independent_reproduction_variants": 4,
+      "all_whole_entries_unchanged": true
+    }
+  ],
+  "validation": {
+    "directed_tests": 318,
+    "failures": 0,
+    "test_paths": [
+      "tests/test_pulso_incremental_addendum_qa.py",
+      "tests/test_pulso_oct5_incremental_addendum.py",
+      "tests/test_pulso_queue_incremental_admission.py",
+      "tests/test_pulso_idempotence_qa.py",
+      "tests/test_pulso_idempotence.py",
+      "tests/test_pulso_bound_editorial_review_qa.py",
+      "tests/test_pulso_processing_selection_qa.py",
+      "tests/test_pulso_recovery_qa.py"
+    ],
+    "test_execution_type": "Retained real publisher HTML/body plus temporary synthetic queue/ledger bookkeeping. No AI call or current runtime state mutation."
+  },
+  "remaining_acceptance": "Fresh same-implementation real focused processing, all decisions and serialized feed/history semantic review, then genuine zero-call replay and final staging checks remain mandatory."
+}

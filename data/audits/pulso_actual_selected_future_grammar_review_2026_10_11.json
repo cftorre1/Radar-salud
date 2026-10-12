@@ -1,0 +1,2233 @@
+{
+  "scope": "ALL207 selected source quotes from ALL69 actual held responses: pending future grammar audit, no source/model response rewriting or old-output reuse",
+  "producer_run_id": 38149773071,
+  "repair_version": "pulso_editorial_proof_v5",
+  "fixture_sha256": "de2d7642695b2cd2f2875d985ea340919efdec7542b8f1413ff8cb17e80c2fb7",
+  "guard_sha256": "b2817ef8b3873507b02dcc090ef8c8eecf8a87ee67ff20d0b9cb297026c2e4b1",
+  "model_calls": 0,
+  "publication_approved": false,
+  "threshold": 72,
+  "selected_quotes": 207,
+  "responses": 69,
+  "source_grammar_detected_quotes": 42,
+  "independent_findings_resolved": [
+    "Ovalle coordination for installation is not installed/available capacity.",
+    "SAR estimated future annual capacity is not realized annual attention volume."
+  ],
+  "unchanged_negative_examples": [
+    "Current judicial obligation deberán pagar is not a proposed court order.",
+    "An existing insurance plan is not a proposed policy.",
+    "Past verbs and unrelated para/proyecto wording do not match generic future grammar."
+  ],
+  "tests": "79 PASS: ALL69, actual future witnesses, two false-achievement counterexamples, current legal/order/insurance negatives, previous strict source/ResponseID/proposal/threshold72 guards",
+  "rows": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+      "publication_date": "2026-10-05",
+      "body_sha256": "0ebfaaf59515c5c7f01f4e150f7a9000e5f5a0888ecfaf48c73c9364378d0131",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 82,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "da345a7738b5b2c059c0d47089a72a13c2b11dd8b8596fc0e5bd6396848d5977",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "6ca11bf56bec37a0cfa363659458d9bcebf593a1953e5bee092bdbc1d0dd9c36",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "82a89f5118e29d6c89b39652640991e29ece1c238e356cfe104539c5f3441aef",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+      "publication_date": "2026-09-29",
+      "body_sha256": "328e72605ee42fc840f0aacfc636a0589da7088885780c95174a70642441ee35",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 62,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "7e9e8e50b47e944750ae9c468e3b3e4815c58b0b7de260831fe2fde687808109",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "eliminará"
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "0f8dd98cab7ff319b510e757ad196cfccd6f3e233c08cb287e805767eb9d0924",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "llegará"
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "c87cf8cd43e865fdc27400c7bbaf8834e194792f963558b457b6e0e7632c06cd",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "eliminará"
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-santiago-y-expertos-ponen-panos-frios-al-optimismo-del-minsal-por-avances-en-listas-de-espera/",
+      "publication_date": "2026-09-22",
+      "body_sha256": "433dcee97df8c5e18c2fb88a1b592ce7c8e4ebd16b0118192a1ab525a789c425",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "adab496413debd58ee2115ee9acc5b899003cb57e7e649df027add6cc2deb34c",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "48bca5798ba8a57590f6eabe8d9614f985cd71981c96a6df373521714376caa5",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "6581220fbbf5c81c62eb20089b6f26983c8f4f198849a99579d673861a4ba730",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-ofrecen-los-planes-mas-baratos-en-cinco-anos-gracias-a-la-ley-corta-y-menor-gasto-en-licencias/",
+      "publication_date": "2026-08-30",
+      "body_sha256": "dbadb4ecf3aa794a84c24dcbc5cc0a7f05eb58c29a32b8e6aec8954011a8dbcd",
+      "event_status": "actual",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "529d1dd59c806f233888b47e646bffb67a510fba6ed9d74624218de3ea483074",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "d96a045a35f46a5860b53a98141ad2a79b68b3f9aeb394e70857cfd637dcd6e2",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "f3a8c1ea730484f2b6d998e12736975e0c3927315c7802f464c0ab0fcbc28be6",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+      "publication_date": "2026-08-20",
+      "body_sha256": "2eb2cfabe7030bef50873ba9722bee3df24acec327e63f85d05655a7b3ccee1e",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "63b9534eab42c58386e9074f763ed9fadb11cf52462982c75fa4f4dc21af65e0",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "4e3ea63adc1f6f0a633ed60d185f2572a577664f2f313f92d135951142df80da",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "ec31f92772c25a99525d2a022bf13f356c367415054d5dfbdb64818694f4342a",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_status_or_novelty_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+      "publication_date": "2026-07-23",
+      "body_sha256": "2f4c1a327ad59db81e2b452a4ebc21dcf95b34de7cad832bf7ba8dcd6407c67e",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 86,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "483f6a91d9f76eb20454b834bc2ddbd3b93ddb492d45056cf26143f98d8c157e",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "d45384c6b0ac9ab3829e893612a63f4ab8ff270a1ff0b7c92b64cf0101feddce",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "590dc8781c3df88a45efaf5150dc281cdf267ed6c5b593014f21eee1a5773895",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "publication_date": "2026-07-14",
+      "body_sha256": "35ce3696d5b7b638452ffe3aa8783bfaef251cb7809efae3962f51aac3f2dffb",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 76,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "d45384c6b0ac9ab3829e893612a63f4ab8ff270a1ff0b7c92b64cf0101feddce",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "3e305b9ab2c5bed98a05a7dab24a65e53346b90c5b40b2021ce9f45f2ba964e5",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "e2e3b5190bacd0f26162848250cc5a6e880ecf079c85ecbd9e955595f43e02df",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "publication_date": "2026-10-05",
+      "body_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 78,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "0ae3193253e5dcbb2d7a5c8aaa920a59266dcbe021713f27bfd53965c0f23e7a",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "podrían"
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "536f4dbaa882ea07dda7c673834d459bb1240ff9b06b2217710c17be6094a874",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "4c2b80c626dfe40715dde899be2b77a2ba3c8d2e322423a1dc1c3fbab1777ad5",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-prohibe-temporalmente-funcionamiento-de-planta-procesadora-de-lacteos-matthei-tras-reiteradas-muestras-positivas-con-listeria/",
+      "publication_date": "2026-10-02",
+      "body_sha256": "efb7ec47cefe1d5c0622915a54436d928f4187bdc6c5e1f1ef762a031b8c2273",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 84,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "a2777d01c9a3d7d417aed26d11d681f069a4034484d9372d6e2b2b48ba7b5444",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "36d5de034c8b07d3c54c5c7f5bdb65cafda5e77e74922dc644a8eaa71db2facc",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "6bae0c544a70a3d6e4e03acc0ca7e11e4a5facc9929a0151d1ed1c97cca5774d",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/diez-servicios-de-salud-concentran-el-62-de-la-oferta-publica-para-resolver-el-cancer/",
+      "publication_date": "2026-10-01",
+      "body_sha256": "d5e8897cc1159b24c458efacfe2ab582ae70bb5442029d522c15d81a3c8ea690",
+      "event_status": "actual",
+      "score_unchanged": 87,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "12058d9db2b202acf56f23d8f44b9763add31b2e9bdc9d493f9746bf382ae706",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "38b874bce8ea82bf7b48dec531b76cdbeff8e3bd9556c056ea3588c160882b2a",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "d873a251b3670678234b226c0a95bd7c0603f4aed869c4eb5efd92aa7dd1169d",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/gobierno-anuncia-plan-laboral-que-movilizara-recursos-por-unos-us1350-millones-que-apunta-a-crear-mas-de-100-mil-empleos/",
+      "publication_date": "2026-09-28",
+      "body_sha256": "96a37ca4ba3f88f5d4131d6739e46e3ea602d460bba6eb77b9e9a8de950e4149",
+      "event_status": "plan",
+      "score_unchanged": 78,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "b184e0d9acabea30e4a83205ad60de01e9b3d62cd55141bfc55f2000e80a4b01",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "liberará"
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "b184e0d9acabea30e4a83205ad60de01e9b3d62cd55141bfc55f2000e80a4b01",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "liberará"
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "6ba54d5536dee2e5b7799f315bb08ad2267d83642f41b31e2403967dce2f4f69",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "liberará"
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+      "publication_date": "2026-09-19",
+      "body_sha256": "4af8fea9489b451652e9469649bc3d3871f9241dc5cb86bb80f15ad33321d936",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "b2a7534b69cb1279c1aadd54eb2035b73edbacbfe1175c217a7cd89dd7447de5",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "6b5381a802a252cc37a157838ffe65f07c5efdad68dff7d3100de76fd8f29543",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "5b87268364e69a6c7796ee9e84c578cc659a7ccfa71da27bb8ae1e635f4493ec",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_scope_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/horizontes/noticia/pablo-gonzalez-de-ilc-chile-envejece-mas-rapido-y-con-menos-recursos-que-otros-paises/",
+      "publication_date": "2026-09-16",
+      "body_sha256": "c43c6ac8fe5e43e3e8a3d97f34a7a68055ff70c44c01d03c9b4b522a0d70c258",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 68,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "88429e5cdecb2fedbb020eedbbdf0890472ece22453f1d98f84f0189af56a742",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "4590db65aa50817df62e0fadb17adeb0a22192a85df7c1629e555bcf636e947f",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "94818e4889b76657259b0689e775946880e8ee2f191adda01ee206b9301f825d",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_scope_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+      "publication_date": "2026-09-09",
+      "body_sha256": "beac60d96524a37fb805e27c0d2f68e5405bbbc747980b7da2f46d166ef12509",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 87,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "32229f000de4c5bd6e477bf383da3fb2174eb5aeb3d0a16f1a097ce21ee15a92",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "9f0d30fe9bdc6e621079ca02c72543329c958466fb3068d36924bdee8cce9f5c",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "56ab095e210d4da782fa3124c2771d9e466591f8bd468c55d81f86e74217ca51",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "se espera una inyección de recursos"
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/agencia-de-ciberseguridad-refuta-a-uc-christus-y-defiende-incorporarla-a-listado-un-ransomware-puede-tener-alcances-catastroficos/",
+      "publication_date": "2026-09-08",
+      "body_sha256": "d9ebb4a4ec84cfc09b90146e0bdb16cea16ff9d1293e9f3d8d84b6fcd32c685c",
+      "event_status": "actual",
+      "score_unchanged": 86,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "b4316e9dd3e5418b88e182d0ecf350fb99054f94d8f318e0250d49943d40081d",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "a0260519801e406a09ad2621d87206e983c12e43f2ff28ad68e5804f95d5e21c",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "34386d0c3fd069fe7b1c5015861c69f9e4cf663d90c6d753ffcf08aae3ab7dd9",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/bancada-udi-anuncia-agenda-pro-consumidor-con-14-medidas-en-seguros-salud-transporte-y-otras-areas/",
+      "publication_date": "2026-09-06",
+      "body_sha256": "e1103163b677d90ce7198ebd911f8783a76838c85f5bba10423ac3b4bf9ea078",
+      "event_status": "proposal",
+      "score_unchanged": 76,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "73ee6559720b556763c465f5e87245ebb7db278493e914e2eb27848d2c7858b4",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "9ef7b23264340bde5a2b1c0f6e3fe2851150ddb50fde2134d40ac7e93996be69",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "963e86b68f181d4dbe64e903ef9148173786599d1d3d60834506fabd3632a17c",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/prision-preventiva-para-hombre-de-73-anos-acusado-de-emitir-1482-licencias-medicas-falsas/",
+      "publication_date": "2026-09-05",
+      "body_sha256": "f5a53a4df980ad0d5fd0b177c013a5eb9d995650853c99dc4ebe97da3137b954",
+      "event_status": "actual",
+      "score_unchanged": 83,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "6a4ba93e995f1ca23b471d4d47bd7be0efbe29e8b8c2c5a0b16e7faf1b0a6541",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "06a5276c3b462fb8c8dc3828c8ff51f2cc19651f590e652dc47b01e63a2085f9",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "d5330878a770ee285c3fc8b7817849b0d24dbbbbc2643b88d57cbd157fd2f211",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/virus-respiratorios-positividad-asciende-al-579-la-mas-alta-en-los-ultimos-tres-anos/",
+      "publication_date": "2026-09-03",
+      "body_sha256": "154bbf48237ee93852375c2f2f89f0ccc56ab8d25678fb4267f0d3844c64e825",
+      "event_status": "actual",
+      "score_unchanged": 90,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "7d32d15ff5f976f4724a8eb34bf8c9dd2699be8937c808dc5030a0ab4f1cb1b4",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "a0e45281f12681aef9a109ff321b3a5d03e400ee3d241c1b9a71255d91ab6977",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "4cd28e05252ecef41d66f3cc85c3cc0063cd9cf17e8869c209bb79504464e38d",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/contraloria-investigara-alcances-de-la-alerta-oncologica-del-minsal-por-solicitud-de-diputada-radical/",
+      "publication_date": "2026-09-02",
+      "body_sha256": "ab7f054c1eb220e2a114d4cbf1ca476c5c8e324e9adcdfd4137674ea63ae07d8",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 84,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "8ffa139e5bf5e8101c87d4ed636798fdfb15317f677297383d2d492a62c4721a",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "serán"
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "590d907f24e62b92240b176136ad11a887b542273a1336ab620b7d7c2f8cc4c0",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "serán"
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "8ffa139e5bf5e8101c87d4ed636798fdfb15317f677297383d2d492a62c4721a",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "serán"
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "publication_date": "2026-09-01",
+      "body_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 84,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "916684cf0884524474d72dfebcb7737083e54a267925bdce908a39dc6a44fd41",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "45793a7d150794e4af18492c906414d3932f3419a92e957c6e227814c3eb2a2f",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "8b3f8abb71eba63500b8e401d83a7357a8258fbdc54e4a7af3b08cc7d700fd93",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/la-agenda-legislativa-del-minsal-desde-cambios-a-cenabast-a-nuevas-condiciones-para-la-devolucion-de-becas-formativas/",
+      "publication_date": "2026-09-01",
+      "body_sha256": "15bf435f8e53e0c2d70f84241061f479f7b726012f9610f6555de091feacb61d",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "9703255440b53333a27a87c1d7c00d650d8ea18fd3d8ed13f1d4d130682be0a7",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "80572c9f91c2bfd269e7848408530117aa9e308c297b58afb8203d6159918cb5",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "587645b294c808fa37c53d2cbdd4fbbf8fbbeeefb91b131ad00d8328a4a464a5",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "serán"
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "publication_date": "2026-09-01",
+      "body_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 82,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "eb436441ceb9bc528740b32c5358e565c0974799dff9a29778cf911691a55ea0",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "8c82bddfcc11de468559e39acc8c1f69828ee00f6c2660fec6537aef72e414bc",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "eb436441ceb9bc528740b32c5358e565c0974799dff9a29778cf911691a55ea0",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-el-plan-de-inversiones-oncologicas-2026-2030-estrategia-enfocada-en-fortalecer-la-atencion-en-todo-el-territorio-nacional/",
+      "publication_date": "2026-08-31",
+      "body_sha256": "c7ca2419f18c57b8beba1dae250809ced4276a7b525a28b67d7d76a2e0b87f90",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "d214dec6906649e16d7320399ba901184a4c301f3e40ac64ffae6df2f1a961d9",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "05f279d56ed4f9d7500bdbf8761fec4794b7108915a3cb9fa7602f020924b8d8",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "341f384a9860901e04688ebad36b5e057a2a84e3f8d7c6fa427d8f7064d27db0",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_scope_quote_not_in_input"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "publication_date": "2026-08-25",
+      "body_sha256": "5b4257997dd4ba1264324b70ee8e699f76ac249b0f0feb94411e317f078f3742",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "9945b61a220b507da28f49372fe246df84d40ca326de90945c4d7cd567a73676",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "1029ff65a625158fb54805cdd8713b364ee7b70e44d47d1c43482151a04bc94f",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "f4373de16e03103c52419a899b4f551bf738f0944876e54d9f208670674512ab",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "implementará"
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_status_or_novelty_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/ante-baja-vacunacion-en-grupos-de-riesgo-minsal-advierte-aumento-de-consultas-en-urgencias-por-virus-respiratorios/",
+      "publication_date": "2026-08-24",
+      "body_sha256": "d73454ef54ffd65bffab7177c7b942b9e7be139f3f6175178c5f6db50a9df5f0",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 84,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "e5cfbd89b14eb1bef30b5a65b37944d50386e734420706d277951848408507bc",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "60c39949e5c6594d59b26cdcc6e55d0ce456ad5ebe40d3b731f30e5ef0bb78f3",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "60c39949e5c6594d59b26cdcc6e55d0ce456ad5ebe40d3b731f30e5ef0bb78f3",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_future_copy_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/inauguran-el-primer-centro-de-salud-de-alta-resolutividad-sar-para-vina-del-mar-recinto-podra-realizar-65-mil-atenciones-anuales/",
+      "publication_date": "2026-08-19",
+      "body_sha256": "b19cf891c76d50a414054e4819e3dc943134c6d5329b5cc1430e7bd4813f3b6b",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 78,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "a0224d6854aa737fce755c21985fb0211c5b5b0dcda378509a314efe7cc84e6e",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "62e87b235b378c1ced14dc013ad68a52b01cbee63ee4bc71de61ab1280dc1fc0",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "permitirá"
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "a0224d6854aa737fce755c21985fb0211c5b5b0dcda378509a314efe7cc84e6e",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "ready",
+      "diagnostic_replay_reason": "pulso_editorial_grounded_assessment"
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+      "publication_date": "2026-08-14",
+      "body_sha256": "6c61fb4a54bd3a08384a3675c8fbe2cff609c3b81cdb6be43a84a953a18c78ff",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "78c93de24bffa5b7759405b4620b4054d8a73f79472441d09f80332e5d90defb",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "podrán"
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "9e22ede28a183e4a7aa849eb284a6347f9df6959934445a9e39296cea37b58f8",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "realizarán"
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "f0aabf92e332e815ecc9a4a36ff27769f7c9af2c0d470e823b1aa426542d19f7",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/corte-suprema-revoca-decreto-del-minsal-que-obligaba-a-exhibir-evita-su-consumo-en-publicidad-de-alimentos-con-sellos/",
+      "publication_date": "2026-08-13",
+      "body_sha256": "cab6a70c6c8e6b226fd902508a706016f9f862868d7a40004bd6190f211fa83f",
+      "event_status": "actual",
+      "score_unchanged": 90,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "c26ccf8cdd8353d9426d54219b71a6dce94c223d2f85eda965e7dacc525a273c",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "830ffe943bf812d6521f9181ed851506960779bdda6817b83929ef9e95606416",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "previstas"
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "c26ccf8cdd8353d9426d54219b71a6dce94c223d2f85eda965e7dacc525a273c",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/sernac-fiscaliza-centros-de-estetica-en-14-regiones-y-pone-foco-en-seguridad-publicidad-y-precios/",
+      "publication_date": "2026-08-08",
+      "body_sha256": "743e751bd4b4b2b9f60f440cc87e903cfe529bb22352548264183780f9827758",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 82,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "f418a86699dbc6c857dfed5cea4bf551acc1b6f742c17c7411f1fafaecef74d5",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "d75f0f69858edd6c87ad826c7c008eb3c1f19f7446adcb17b96c33f356912a18",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "ba95c9501c9e1a50af12c1efb4269fda3858517510a891132439a76d3423a91d",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "serán"
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_status_or_novelty_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/clinica-las-condes-finaliza-aumento-de-capital-y-recauda-80-mil-millones/",
+      "publication_date": "2026-08-05",
+      "body_sha256": "429534bc93b6896966063905882ca45688c1bd734c21bcb65778ebfcb97641f1",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "186b38f6b56a2a0b8ba5bdb534c03a2df67d0a82c40fa8b861c86780ea81ecb8",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "1c9cb70aaf91c0782ed70f5fded42ba0ba79b01f26615fb3b8f5eeb03206f242",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "buscará"
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "6b18a13ed27f685203b0abca4ffa1334901873c961f462d6a31789c6a2171145",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "buscará"
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_scope_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "publication_date": "2026-07-29",
+      "body_sha256": "64b7f6c81c0d554942ddd374af52be1ff926acc8ca197284ab52005d9a0bde7e",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "65c4a72aa3163f087fdc6f9739dc94c8962574d1c74b6c67ede764e7bb5fa63a",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "8c002638a53e5736eb23996281d8abf82f6267a582eee9a6558dd8e702bc489b",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "regirá"
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "b6f1f2829ade27b110622fa30f3a49b6e9dee86fd03e8c24f12554da1c50e6d2",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "regirá"
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/grupo-estatal-chino-es-el-gran-concesionario-de-los-hospitales-publicos-chilenos/",
+      "publication_date": "2026-07-28",
+      "body_sha256": "2d0adf9fea9d9eeafb63717224a720710da2517733e3965cdddfab97fa481620",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "ac21c15a5ef5b53ef31613c09a3a8d797b6783796ea7eefe9a6b4bd205fd615a",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "1d8c873e323b824594ad4a2790b993061915f9b521f17d84ab7da367009daf1f",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "d0a9496d598742f610b1907765f993daafcf6b4168f2e1b6bcc37c9a828ca482",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-informa-de-afectaciones-leves-en-recintos-de-salud-por-el-sistema-frontal-pero-afirma-que-red-esta-completamente-operativa/",
+      "publication_date": "2026-07-17",
+      "body_sha256": "82919f9ba75ced370da7c0a82c29ee53d64c0ba896c097239b66156a0f62944e",
+      "event_status": "actual",
+      "score_unchanged": 62,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "36460250cc51b89c3e21dc07112f4def411e8ca1b959d434cca6b7e1ef47bd16",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "575f818358d075cc6e125f9cad6db3b8484efbb63093dd0b3f6969488b9341be",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "c95820e699ffa0c751457a03a3c6c47b5199deb2545b077f67f2efa7fc06bb76",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/anuncio-para-hospitales-y-un-plan-maestro-de-listas-de-espera-los-pasos-del-minsal-tras-el-fin-de-la-alerta-oncologica/",
+      "publication_date": "2026-07-15",
+      "body_sha256": "37a35426bc426f8b62947312cacfec5805bbb3d61f2806adcc163c132d62e33c",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "b533546f209ae3795c425983ef5a60b3e8ed3b01a6a453229c18bed76fef7739",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "cff2ba9054122356a238412308d9be494a245c81dd59b78887b5696227d23497",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "c81efb99b8bc9225410b6c3c431dccb8a1ac87df839fca44cc3e25832eb521eb",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-entrega-balance-final-del-plan-de-alerta-oncologica-y-adelanta-medidas-para-evitar-el-incumplimiento-de-garantias/",
+      "publication_date": "2026-07-14",
+      "body_sha256": "5366372dcb31048b7e91ed1c49bfc461369da15b4cf9567e6c5c79d6e032d9ac",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 92,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "3bcf707172fd5e6bed4b99a2c642fdbb724314ff92d53700de7f1982fa71e9a9",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "df4f72b31d324b44364b0fba4224fdddf30c558f4a2a0b357d2deb7daee4f9cf",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "25935b33d9b79c24675d1c0c1dc8f1ee62dfc4dad4ee022d6c20b91fb7a57054",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/centro-medico-de-atacama-tramitaba-bonos-falsos-de-fonasa-fraude-supero-los-260-millones/",
+      "publication_date": "2026-07-13",
+      "body_sha256": "cfc69fa4535ee989455c6dce041bf965c4b75e29741ecb2c9e7196331e4b7e16",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 82,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "92c873fce49786139fee2083a30a9b127cef09bf2e0e55d81119b21df7e168c4",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "b3851a0dbae62e9c8d344c802d8567c166d5cdd6834b364adcfe523b6ddc86b9",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "752e4dc65cd3fcb696f64c621aa9ba4e0ec01b10acb11ba033e5a551275262cf",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_consequence_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/",
+      "publication_date": "2026-10-01",
+      "body_sha256": "d6e9ec6b2f7552d48069ad442e3a6623d020be5f032339d67b0b5c8de6a9f6dd",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "761bc8916ab16dfb83c5f36bc13386e428376bb6dc5abcbb301051547b36b180",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "f4ac7017ed134f83a5c4c352796173ec930cddfa837c3eb7b86599c783aadc9f",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "comprará"
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "8084b4562cb84c84d6d607d622ea5dfe4cb4bd36a8e66f0ac0fa6dbf7734be4d",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+      "publication_date": "2026-10-01",
+      "body_sha256": "654cb94da13ac182977ef39a58cf721d83a478aa47a35b4522ce35a7cea5a3f9",
+      "event_status": "proposal",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "aaee929cc8b8457f42e5e37b89f5b42ba4e2bdce90236b7981ae6ebe580c5e6c",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "a59cb8b01bb37584254efa2d0eb822bcec1e634b60a076ed85d3fd6b348c142b",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "permitirá"
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "fe2d6f7645b3099401d5362a9fe2be96ba31c7efe4324246910c5268fa94ec58",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+      "publication_date": "2026-10-01",
+      "body_sha256": "9ebcde885d7d2e49ff545494d589d91aa4308eb5281b4de97ba3354ed1d4f7af",
+      "event_status": "proposal",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "e24e5922e43dbbd6edac02f00db8227e3215f5f62293da498b4ec9d25081db86",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "cf0a2938d0f6f4becf98259cd9ff93bab8dda4d9a43e62ebb8f6a627a1336f54",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "aumentará"
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "dbdd5b842c8da020d7f78f4094ef3c028007b4836d73e41985e0afe68952b83b",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+      "publication_date": "2026-09-28",
+      "body_sha256": "ed54fa46914245816a9143533683db3d8bea1c92064ae5b4157b2dcda46d4788",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 83,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "5d4316de396e8a2688460e71d2b4f15e5908f402c2378ed1fc639c229e6a66a1",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "fd37cecb1afabe6d67e1ec99aa9852e2e4d31dc0576d25fab7e257ed98e48279",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "53dd48deed3c5542607494f26cff40950c9fd7d8cbcae90dcfd6414c3784dc34",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-conmemora-dia-nacional-del-donante-de-organos-y-tejidos-con-partido-en-hospital-dr-luis-calvo-mackenna/",
+      "publication_date": "2026-09-26",
+      "body_sha256": "08bfa15c7b56ccca33c388833372cf655265ee63d5c9704d595c2d898819e891",
+      "event_status": "actual",
+      "score_unchanged": 58,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "f31c31a3a7d8b0ddfa8e05f70568a589b105394c79da56442751fcf94db35f8f",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "f31c31a3a7d8b0ddfa8e05f70568a589b105394c79da56442751fcf94db35f8f",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "6c6afcc869bc2c8f4a174525df63a36ab7364b6645f66efc43a81917bab704f9",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_consequence_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "publication_date": "2026-09-21",
+      "body_sha256": "9113e0fd67a716d5a03a5f50bd0dba68dcb391278e16be3e3a900bbc0eebd982",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 78,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "b30cebb665f3b53dd0c1ca360509730b7f28c7f7108f5052c0bbb4a04962b849",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "025ebac18051cf57ce7703b6582c7512484a695e20ccec7c0e20aeb3ce3134eb",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "025ebac18051cf57ce7703b6582c7512484a695e20ccec7c0e20aeb3ce3134eb",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-publica-nomina-con-los-eleam-que-cuenta-con-autorizacion-sanitaria-son-993-a-nivel-pais-y-la-rm-concentra-mas-de-la-mitad/",
+      "publication_date": "2026-09-16",
+      "body_sha256": "42a8afb2862a45f8cd4cafce27bcb62cb6eafd350966a902e4fe4d937454d97f",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 84,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "3df18d3e2f5de8422c0dbc319d696a6e65db152a2f5676d4cf9b612644b09840",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "0569f32b867258bb4bed88bf48515e1b2bc37f8477d7d444f2953e748ff2d971",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "77d1ffd6183810b48ef9a9f1e61eb23e6be0462a4fabb0f8446e7941f435bfe6",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "será"
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_scope_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/contraloria-detecta-plantas-de-aguas-servidas-sin-autorizacion-y-deficiencias-en-tres-comunas-de-la-rm/",
+      "publication_date": "2026-09-11",
+      "body_sha256": "393cb8c87c93f6a7d24a09f1977c5346f9058973b1f9d9679d7ec416c8e65f17",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "8d71239d3e3ff79c805b1a16eadc416403d1c3439517ccad2f14439e4824f37b",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "844a2403e3383883af9552dca6db370ad7499b82fd277c922e56413e4a462d15",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "podrían"
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "54b535d70777502674f58829aa668b4904eec7d2849aabf0a9d3581f3321f8f0",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/diputados-avanzan-para-materializar-comision-investigadora-por-irregularidades-detectadas-en-gestion-de-vacunas-en-2024/",
+      "publication_date": "2026-09-08",
+      "body_sha256": "a743a4957ca4b20cfeef2a56e3ee294bdd9bd00cd3560cd77a207f19cdb64cca",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 94,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "4f1a8b329385b1412a96cab126508b65b9482e51fd301bb65fc5efbb4b4d5a4b",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "presentarán"
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "8f18605cd1f361e779d7452be998ed1151157aef89004edf127d15f4d2cd162e",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "93b77d7e6567f73fdcbd4bf5eec95410db0cabf4ccc413d2ed7a1a64dbedb10f",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "será"
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/contraloria-revela-que-observaciones-ordenadas-al-hospital-de-chillan-no-se-han-corregido-mas-de-dos-mil-cirugias-preferenciales-a-familiares/",
+      "publication_date": "2026-09-07",
+      "body_sha256": "4d750336d5a9f67df96cbb2a15c11d4937552be4c62d2dc80e7349282e07a5bd",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 84,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "28c44a9db103ace199275a342bd4cc245cfbc03c388990b060097da7f91a9e49",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "6e9f550c23e83b3e2b3457119a9f4888d38b4204294d09d314ad7cad43e23a35",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "0ec8db6301a0d32324630584b2cf1531f87f036c2e61f12a6a3e9ecff6d83aad",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/alerta-alimentaria-por-listeria-supermercado-informa-del-retiro-preventivo-de-todas-las-unidades-de-pasta-de-jamon/",
+      "publication_date": "2026-09-04",
+      "body_sha256": "a7fb9caee358447cd3bea47e1956e5bb39a1a908d46936c3eccae183f742f059",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 62,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "ef972e23900e8d345b674de5264b0794717fcf58ab6a1d4906b0d48ec4765313",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "2518f5469499ecdf40ee4a5ba1c5e52eb55bf5fe4f7131f5245ad3cc1177313d",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "7a46cdf5af76506583be0f83408e3260d293ef30e5b167b1b9b5489ec2246a71",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "realizaremos"
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_incremental_value_uncertain"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/la-otra-lista-de-espera-odontologia-acumula-mas-de-537-mil-atenciones-con-retraso/",
+      "publication_date": "2026-09-04",
+      "body_sha256": "f1e2d7e7cdd64ec558765ff3e818c8e8d52dac998cc7e66f96b4b262f929a369",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 86,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "00ede5f57c8391f927e43e6cb42d5d19bb0395caff2e8f12ca28e89ea9d2b486",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "883dfbaaa0412ea704241d50d2c0c4ee41858ee270af084eb675addc0663b847",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "f36206ff33a8217cc7cdc6a2626df95d67194a833422ea0894431af5ecd42b7e",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_consequence_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+      "publication_date": "2026-09-04",
+      "body_sha256": "30d8b8f701b0cde06ea6670423804452f43d4b4ee6ab6bb0efe4bc59d25f545f",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 86,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "fdb90c8085389f0c4dc11bbff12cf4ec0c1380a8b18450218303a6dac8d9b8d5",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "e72cbfc373ff307ce3e54e0571e4baad2320544d67ff5f279dad88a1deccd01c",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "1f50e86058f5690f434acaeb2c088bde66516573806774bfd557dd81cb7963ad",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_scope_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/corte-de-apelaciones-antofagasta-condena-a-hospital-de-calama-y-servicio-de-salud-por-muerte-de-paciente-durante-parto/",
+      "publication_date": "2026-09-02",
+      "body_sha256": "6422dfe7e78299a9c6f9f54d5fe04701badabc7e2cc2ebd79d9e33706643f01e",
+      "event_status": "actual",
+      "score_unchanged": 78,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "c9b1439ca4a5283d6d5d69a46aa321aa12d4cf0907e5ec58f15cfc1ccbc27702",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "7d8a84d34b9eb227d099fb9d114cad50e0cdfe4bcb6b208dec3f705b7457b231",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "105be2b02ea7309e56a4d04540a3144fe9c6aa274e7a2db9cbf9e03c000929ac",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/historica-condena-por-megafraude-a-fonasa-medicos-extranjeros-pagaran-con-carcel-y-mas-de-26-mil-millones-por-emitir-licencias-falsas/",
+      "publication_date": "2026-09-01",
+      "body_sha256": "508daa5d5687161f7f7e635a728637ef503d94722e5044a7e02e1df36e04fa0d",
+      "event_status": "actual",
+      "score_unchanged": 91,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "3a988e201a1ed5af12b5c6cf7ec2cb14da4d112da0008d7ebd0d261521a30dae",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "fc733c119b637c25506ee85e853aebf1d74e009f8d32ca8c7151105bdeeac054",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "b997e602b87583e932417e4a36599fcdf678270a8c14ecf9d52b6b537e347d8b",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-alerta-por-peak-de-hospitalizaciones-pediatricas-por-causa-respiratoria-y-reitera-llamado-a-vacunarse/",
+      "publication_date": "2026-08-27",
+      "body_sha256": "bfc42ff2cdd68c88de8da3395c1f6231b7fdbd0a6a929d5e3a959935f3bc6b20",
+      "event_status": "actual",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "724e0c4c21de2c514d172ca342896c8a4f230a744609089cb2d37b7b2e170508",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "7e2f958c361509b0145ec52b96372bd7e6f3ce87ce898f97a30965b23be0b892",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "0e1a0d818df4646a79b5d524d6957717155f537c5c6784030a061e33e92d94f4",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-conforma-el-consejo-de-eficiencia-y-convergencia-financiera-de-la-red-asistencial-y-celebra-su-primera-sesion/",
+      "publication_date": "2026-08-26",
+      "body_sha256": "924da515bc59eaec9c0f63136635df13eef19157020edf264e586ac2d5498385",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 86,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "c1d183369c03893ee3c868db5bfc5ce268437d2e200057c19e75dc746f043384",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "d51dbe2c813787a0cbae4ad963e10d9f4cc083ba6e54d282099a39f83e4c1aa3",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "0f76b2ca22b1f24d5edcb73812ca75e2b2771609b80291c8015048db2c137bb6",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/ministra-wulf-y-acuerdo-de-meta-por-demandas-sobre-salud-mental-de-ninos-las-companias-deben-ofrecer-productos-seguros/",
+      "publication_date": "2026-08-26",
+      "body_sha256": "e821ed58405cc9c4cc35f9cb48efb90461c4ca41775bec5757e24081c6dfbdac",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 82,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "f922a9abbbcc258d4bb34860561bf50715e18bd6f2945611dde7adb1b7e3efb6",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "f922a9abbbcc258d4bb34860561bf50715e18bd6f2945611dde7adb1b7e3efb6",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "7aaa563bca7eb4c0baab7d1e4f2e8bda7a992e012f96c5ab1aada2ea01a39174",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "presentaremos"
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_scope_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/calisto-entra-a-la-batalla-por-causa-junaeb-defensa-buscara-limitar-acceso-al-contenido-de-celular-incautado-por-la-pdi/",
+      "publication_date": "2026-08-21",
+      "body_sha256": "b1135ab4c5315ed8c1af7d18ae77a2e9c7b983ae1cdd9e2e41e6ded6a3b67c1d",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 68,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "3835a566a399923fdc443e248c82f6bb3ba94b080cd0195b876d2b267d5bdedd",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "3835a566a399923fdc443e248c82f6bb3ba94b080cd0195b876d2b267d5bdedd",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "0a02b7db7a7462925b84d7bd197a98fbc5bfeffaf1e08aceaa2ff3282233f2a4",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_scope_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/marin-cita-a-relatora-de-la-onu-y-apunta-a-prohibir-la-gestacion-subrogada-va-de-la-mano-con-la-comercializacion-de-los-cuerpos/",
+      "publication_date": "2026-08-13",
+      "body_sha256": "e819133f13cb094509e20eb58d55494cd089d8e1ef92334dc981e4b174d32c68",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 78,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "8cb3f5d0e8256578526997bd15201bd8c498d8c8ae300b1766dac4e11f29f871",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "fef55216dbbc9abea1e2e3625b659696b2c47d610d32b1977a880c6c6019d035",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "8cb3f5d0e8256578526997bd15201bd8c498d8c8ae300b1766dac4e11f29f871",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/de-may-chomali-a-exautoridades-la-cita-que-reunio-a-un-centenar-de-personas-para-discutir-cambios-al-sistema-de-salud/",
+      "publication_date": "2026-08-11",
+      "body_sha256": "8d710c9fcf859219a898daad526ebf6ccf870273e99cba731cdc3d4187796812",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 72,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "4a34eada3b69f6260d713c5df85ed8811721a9c39697f21810ea94ca92d658de",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "bc872f8c52f4bfd804a97bbea945f9ff02d0986f5ff14c28f663970421255c5b",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "3653fa2105db8b43a2c48e888c731600f15a98967f84a3763d8b4dbc905bd4c2",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "citará"
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+      "publication_date": "2026-08-08",
+      "body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 86,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "d9b742d9291c5f7e64cc96bfa42803177641f4504364af872c5f664459a18e1a",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "711ad6ff2025dc00042a5cdc5ac2e3387ec49915314287ebe47bb70d97165f31",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "permitirá"
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "10b6b0ae99bfda195b407dbc48fe33dd14eb7d07cf2f210fdda6232ff9ddc797",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "permitirá"
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_status_or_novelty_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/",
+      "publication_date": "2026-08-05",
+      "body_sha256": "586fc0d4835039ec5fb9a4f4e7f151762934d50405343da14a243acc29ba12df",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "4ac5a5793222cb6c40f77037c282bc777dd8dec85421526eb6d3fb9181f6b281",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "a3b86f97b85e863fbde77eed80d90d0dfdd4b5382c32dfe42b2dbf768fe143f7",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "f2bfcdf8dce8e833e964b40c328be0362272a8b37f3344d87031fa3df2543999",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/por-emanaciones-toxicas-informan-suspension-de-clases-en-quilicura-tras-gigantesco-incendio-en-empresa-de-productos-quimicos/",
+      "publication_date": "2026-08-05",
+      "body_sha256": "b190c2b846701c235e961956a22f14c928f3fd87798a0cbd1b5edfdd2dd6a6be",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 68,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "824746bad882b022458a55d3c44c34a0c2d1f58aafad75f61143c0869aee15a9",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "81fc49f57aef4a0a5a814566c0e2798edce024d4167b0f50d5065ec96df0ac21",
+          "literal_contiguous_in_input": false,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "72047960301f6aea90712aee3da47764ab0b87701639c78c311381e28daf41aa",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "continuarán"
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-apelara-a-fallo-que-ordeno-reincorporar-a-exdirectora-del-hospital-de-san-antonio-tras-declarar-ilegal-su-remocion/",
+      "publication_date": "2026-08-01",
+      "body_sha256": "61dc8e4bb1b58621c619beb052136e579daa1d8595cc81ce57d1bda57ee10c23",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 72,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "91373d2c6033a6119c04a0f46c9035809d8737d2c882b3a355347bd256b0e160",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "ejercerá"
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "fb93bf5e240d78ec397dc8a5b74a7223c68aaf2d5e74c18e3a98a874bf4d0b8f",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "91373d2c6033a6119c04a0f46c9035809d8737d2c882b3a355347bd256b0e160",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "ejercerá"
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/corte-ordena-reincorporar-a-exdirectora-del-hospital-de-san-antonio-tras-declarar-ilegal-su-remocion/",
+      "publication_date": "2026-08-01",
+      "body_sha256": "a753f8aa30055d8429f820fa9cd09d5f5440de57e2195045fcaec549073f236d",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 70,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "30714c7d2386e883f542bfc9753cceca85e02c9d19cfd4298025141939e4bded",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "fb93bf5e240d78ec397dc8a5b74a7223c68aaf2d5e74c18e3a98a874bf4d0b8f",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "a89f923217d8add0947f2b561b3357e204c2c3d9ca4e67af1fe99cef3958630c",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "ready",
+      "diagnostic_replay_reason": "pulso_editorial_grounded_assessment"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+      "publication_date": "2026-07-31",
+      "body_sha256": "1d7f55e07ae77e0a3eda89467e2ea0e3b78a1bb990f616f06bcaf3af1f20f9bf",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 88,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "a3547179a3e535c83eb4904163f0e4f8b1485b666d03858ca2d0e1ded514d4d6",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "a0883ba67ba5b9bedea0e029d6c1c081d28ba9ced62e7beda793b942aa65f8ca",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "9ab672cdc644bb9b27a7da91ed7ca2b6c7cd3cf45bbcf0e5559bf506d3a3516d",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_scope_quote_not_in_input"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/arrau-confirma-investigacion-por-cirugias-esteticas-de-esposa-del-general-director-de-carabineros-cubiertas-por-dipreca/",
+      "publication_date": "2026-07-30",
+      "body_sha256": "1984513bed0372453cb79b906d072f975e9ef1286a2dcf1691a6995201d34a0b",
+      "event_status": "actual",
+      "score_unchanged": 72,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "1d6ce915ec08f9063913fd40c077f44dc3413a2cb5a1c0642230f40b2904d88e",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "habrá"
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "739a2a8a638edb34ec637f335158dac52269e96c7c100a66d0c12d72f163b927",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "112f3b68557db2d5ea8269530ef67817346d651d9d2893ffc4c80bce55cd5bff",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_actor_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/ejercito-despliega-hospital-modular-en-ovalle-tras-inutilizacion-de-cinco-pabellones-por-lluvias/",
+      "publication_date": "2026-07-19",
+      "body_sha256": "c160a47a49949f6fd69fa6e7007b01314b7c0e37e142b2bb64cd6ad8b58c6a75",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 84,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "8ad4dc9ba5d572d71c72818c637e911b2151cbf91d6396a42333d07649c5b853",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "3d93fc736db9171fe65b0794d144ac7dba2caea4bafcd588e3272b99b0b4c80a",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "viajará"
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "5f43205f9afea362d14e6d3064c8e1afa5efe4ced099dd6a18980a3172473a6c",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_consequence_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/gobierno-suspende-clases-para-este-lunes-en-provincia-de-huasco-y-regiones-de-coquimbo-y-valparaiso/",
+      "publication_date": "2026-07-19",
+      "body_sha256": "52f7381d02dfa2f44c9ed72ec446324e3f643c321687ac197656e0a96c51afd8",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 68,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "1b5da2428692861e9e1b1431a8063becca1c56984934194b11936e384f3335f1",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "1b5da2428692861e9e1b1431a8063becca1c56984934194b11936e384f3335f1",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "1b5da2428692861e9e1b1431a8063becca1c56984934194b11936e384f3335f1",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+      "publication_date": "2026-07-18",
+      "body_sha256": "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f",
+      "event_status": "mixed_actual_and_future",
+      "score_unchanged": 84,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "e3c683775465c9e464569d8e131178dbef5e2faf57447d0d04255ba4a89f9e55",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "coordinaciones con el Ministerio de Defensa para instalar"
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "e3c683775465c9e464569d8e131178dbef5e2faf57447d0d04255ba4a89f9e55",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "coordinaciones con el Ministerio de Defensa para instalar"
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "e3c683775465c9e464569d8e131178dbef5e2faf57447d0d04255ba4a89f9e55",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": true,
+          "matched_pending_grammar": "coordinaciones con el Ministerio de Defensa para instalar"
+        }
+      ],
+      "diagnostic_replay_decision": "ready",
+      "diagnostic_replay_reason": "pulso_editorial_grounded_assessment"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/ministra-rincon-detalla-que-las-regiones-mas-afectadas-por-cortes-electricos-durante-el-sistema-frontal-son-la-araucania-y-valparaiso/",
+      "publication_date": "2026-07-17",
+      "body_sha256": "fdac2c8ca728e774bf0a27e76dfcf74a5d2f332db3d42f7ef775efa8872629e5",
+      "event_status": "actual",
+      "score_unchanged": 68,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "6644395d547eb1fe2c9b0e825b2c5c055954b845e25390290812d1e8a336e624",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "9b4d58c5b3b43a89c235ab4965f3ec5420d068d410bf404611099383d7bd5e0f",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "4f034c79595035a7196e14c46da81b676704808724ba0824142111e58d39eb88",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_scope_quote_not_in_input"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+      "publication_date": "2026-07-15",
+      "body_sha256": "498322790b34aff91b51dd1768968c41a53ac050657007091f75181bdbb30356",
+      "event_status": "proposal",
+      "score_unchanged": 82,
+      "quote_checks": [
+        {
+          "field": "action_quote",
+          "quote_sha256": "9019ed08d108f751aa5fc92efc5c471752c5dae1bf5e4ec7bf7e578ed1473f09",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "consequence_quote",
+          "quote_sha256": "9019ed08d108f751aa5fc92efc5c471752c5dae1bf5e4ec7bf7e578ed1473f09",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        },
+        {
+          "field": "event_status_quote",
+          "quote_sha256": "9019ed08d108f751aa5fc92efc5c471752c5dae1bf5e4ec7bf7e578ed1473f09",
+          "literal_contiguous_in_input": true,
+          "pending_future_grammar": false,
+          "matched_pending_grammar": null
+        }
+      ],
+      "diagnostic_replay_decision": "deferred",
+      "diagnostic_replay_reason": "pulso_editorial_action_not_grounded"
+    }
+  ]
+}

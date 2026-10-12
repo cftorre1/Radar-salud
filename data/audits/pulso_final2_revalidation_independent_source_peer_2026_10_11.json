@@ -1,0 +1,504 @@
+{
+  "schema_version": "pulso_final2_independent_source_peer_v1",
+  "reviewed_head": "8a8c7be374084f70607b6805638f5d5a4d71f250",
+  "source_owner_checkpoint": "da7d4bf3",
+  "source_attribution_checkpoint": "4831ab09390419dd96d562c002724a717bc0f522",
+  "generated_at": "2026-10-11T22:24:19.683679+00:00",
+  "status": "SCOPED_FINAL_SOURCE_CODE_PASS",
+  "inputs": {
+    "src/radar_salud/pulso_final_paid_revalidation.py": "770c8e912644333cafe8fa38c3345eb3512390e23be9c06f5d0930e2ffdd6086",
+    "src/radar_salud/beta_sources.py": "506e6648c5aa4ef5dcb514226aebc274f7d5f8642ff5d16ca396863d15fb76d8",
+    "src/radar_salud/pending_queue.py": "dcb6e6069620b832564a4a2d3556447190e8516228535211ddd0c667afab01ca",
+    "src/radar_salud/pulso_editorial_proof.py": "cfdfc0914a1e6d145d932ffe29063eae3be0cf72a977a522dd7e454772cb241b",
+    "tests/test_pulso_final_paid_guard_revalidation.py": "6e50a986109ee8a4a8b9b947a732c580b362dca84e55584178399ef2241e7f24",
+    "data/audits/pulso_final2_paid_guard_revalidation_manifest_2026_10_11.json": "78020e40fa2ff47c59086faf58bd8413122866e25221d0a99131150cb25e0534",
+    ".github/workflows/daily-radar.yml": "44c8fda045ff44261e0a06438e5dddcbe75461bb77e54686b2b8efb19c06030f",
+    "tests/test_pulso_daily_git_history.py": "32e8b39276426f88288f5974e6ddc0a57726fc7f28450b6282ca56836e2c4bd1",
+    "data/audits/pulso_actual_final2_primary_model_independent_diagnosis_2026_10_11.json": "36305b73927ea55e3be1d718210a670b11b3eb68daa360b125109e6c01734244",
+    "data/audits/pulso_actual323_two_pending_complete_guard_diagnosis_2026_10_11.json": "bb8651fa441209bac7705c88a63d513d0bd82132a2064e7f49dd9549ee0ee979"
+  },
+  "producer_state": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+  "producer_code": "c2db17141fd55cbacbcda5b53805341aa4dfa86f",
+  "producer_fingerprint": "c960999eea01aed6e578d0ca1354cb5f45b8720ae8832993d609d0db540b0406",
+  "original_actual_unique_successful_fast_responses": 2,
+  "original_paid_processing_qa_approval": false,
+  "gate": 72,
+  "checks": [
+    {
+      "check": "all_original_queue_only2_changed_no_terminal_or_native_reopen",
+      "entries": 7049,
+      "untouched": 7047,
+      "result": "PASS"
+    },
+    {
+      "check": "daily_vs_actual_stagebc_only_required_full_git_history_added",
+      "result": "PASS",
+      "base": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af"
+    },
+    {
+      "check": "all2_once_admission_and_unchanged_due_dates_complete_archive_bookkeeping",
+      "result": "PASS"
+    },
+    {
+      "check": "two_actual_paid_outputs_normal_media_gate72_reused_no_http_no_model",
+      "result": "PASS",
+      "records": 2
+    },
+    {
+      "check": "five_ancestor_generations_all_claim_erasure_no_legacy_dispatch",
+      "result": "PASS",
+      "cases": 10
+    }
+  ],
+  "rows": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "publication_date": "2026-10-05",
+      "body_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+      "original_response_id": "resp_06ee18158a24b956006acc05c1f19c87d09f13899818b114c3",
+      "score": 80,
+      "original_model_unchanged": true,
+      "old323_guard_failure_preserved": true,
+      "current_guard_sha256": "cfdfc0914a1e6d145d932ffe29063eae3be0cf72a977a522dd7e454772cb241b",
+      "three_previous_paid_generations_intact": true,
+      "publisher_attribution_is_signal_copy_only": true,
+      "external_calls": 0,
+      "publication_approved": false,
+      "result": "PASS_TEMP_UNIT_ONLY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "publication_date": "2026-07-29",
+      "body_sha256": "64b7f6c81c0d554942ddd374af52be1ff926acc8ca197284ab52005d9a0bde7e",
+      "original_response_id": "resp_002f5b0446570472006acc05e1534887d0987e282ef36da3b9",
+      "score": 78,
+      "original_model_unchanged": true,
+      "old323_guard_failure_preserved": true,
+      "current_guard_sha256": "cfdfc0914a1e6d145d932ffe29063eae3be0cf72a977a522dd7e454772cb241b",
+      "three_previous_paid_generations_intact": true,
+      "publisher_attribution_is_signal_copy_only": true,
+      "external_calls": 0,
+      "publication_approved": false,
+      "result": "PASS_TEMP_UNIT_ONLY"
+    }
+  ],
+  "authority_mutations": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "admission",
+      "attack": "body",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "admission",
+      "attack": "day",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "admission",
+      "attack": "html",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "admission",
+      "attack": "official_type",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "admission",
+      "attack": "official_role",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "admission",
+      "attack": "model",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "admission",
+      "attack": "response",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "admission",
+      "attack": "bool_attempt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "admission",
+      "attack": "wrong_attempt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "admission",
+      "attack": "published",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "admission",
+      "attack": "old49_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "admission",
+      "attack": "old12_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "admission",
+      "attack": "old5_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing",
+      "attack": "body",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing",
+      "attack": "day",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing",
+      "attack": "type",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing",
+      "attack": "role",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing",
+      "attack": "own_stamp",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing",
+      "attack": "original323_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing",
+      "attack": "legacy_receipt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing",
+      "attack": "current_receipt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing",
+      "attack": "followup_receipt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing",
+      "attack": "model",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "admission",
+      "attack": "body",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "admission",
+      "attack": "day",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "admission",
+      "attack": "html",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "admission",
+      "attack": "official_type",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "admission",
+      "attack": "official_role",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "admission",
+      "attack": "model",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "admission",
+      "attack": "response",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "admission",
+      "attack": "bool_attempt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "admission",
+      "attack": "wrong_attempt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "admission",
+      "attack": "published",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "admission",
+      "attack": "old49_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "admission",
+      "attack": "old12_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "admission",
+      "attack": "old5_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing",
+      "attack": "body",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing",
+      "attack": "day",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing",
+      "attack": "type",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing",
+      "attack": "role",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing",
+      "attack": "own_stamp",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing",
+      "attack": "original323_archive",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing",
+      "attack": "legacy_receipt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing",
+      "attack": "current_receipt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing",
+      "attack": "followup_receipt",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing",
+      "attack": "model",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing",
+      "attack": "rehashed_validation",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing",
+      "attack": "receipt_approval",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing",
+      "attack": "receipt_response",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing",
+      "attack": "receipt_guard",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "stage": "processing",
+      "attack": "model_rewrite",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing",
+      "attack": "rehashed_validation",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing",
+      "attack": "receipt_approval",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing",
+      "attack": "receipt_response",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing",
+      "attack": "receipt_guard",
+      "result": "DENY"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "stage": "processing",
+      "attack": "model_rewrite",
+      "result": "DENY"
+    }
+  ],
+  "erasure_cases": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "generation": "original981",
+      "result": "DENY_BEFORE_API",
+      "external_calls": 0
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "generation": "original908",
+      "result": "DENY_BEFORE_API",
+      "external_calls": 0
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "generation": "original66",
+      "result": "DENY_BEFORE_API",
+      "external_calls": 0
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "generation": "original323",
+      "result": "DENY_BEFORE_API",
+      "external_calls": 0
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "generation": "revalidated_final",
+      "result": "DENY_BEFORE_API",
+      "external_calls": 0
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "generation": "original981",
+      "result": "DENY_BEFORE_API",
+      "external_calls": 0
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "generation": "original908",
+      "result": "DENY_BEFORE_API",
+      "external_calls": 0
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "generation": "original66",
+      "result": "DENY_BEFORE_API",
+      "external_calls": 0
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "generation": "original323",
+      "result": "DENY_BEFORE_API",
+      "external_calls": 0
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "generation": "revalidated_final",
+      "result": "DENY_BEFORE_API",
+      "external_calls": 0
+    }
+  ],
+  "source_or_runtime_state_edits": false,
+  "publication_approved": false,
+  "actual_final_core_approved": false,
+  "actual_zero_ai_replay_approved": false,
+  "final_native_reviewer_ui_approved": false,
+  "limitations": [
+    "All processing is a temporary unit using unchanged actual original323 paid models; no provider request, ledger write or product publication occurs.",
+    "The old c2db/c960 payment and failed guard remain original evidence. The current repaired cfdf validator and its zero-request receipt are separate; fingerprints/windows are not retagged.",
+    "Source authority and archival checks are scoped PASS only; actual final core, genuine later zero-AI replay, independent fullbody publication review and final-SHA UI/staging/Reviewer remain pending.",
+    "Literal/structural readiness is not global natural-language semantic approval; fullbody date/novelty review remains required."
+  ],
+  "validation": {
+    "command": "PYTHONPATH=src /workspace/work/venv/bin/python -m pytest -q tests/test_pulso_final_paid_guard_revalidation.py tests/test_pulso_daily_git_history.py tests/test_pulso_revalidated_idempotence.py tests/test_pulso_recovery_command.py",
+    "passed": 114,
+    "failed": 0,
+    "seconds": 14.33,
+    "composite_tests_are_unit_contracts_only": true
+  },
+  "qa4_and_composite_independent_peer": "Pending owner QA4 final committed bytes and separate peer audit; this Source audit does not approve them or actual runtime."
+}

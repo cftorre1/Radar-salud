@@ -1,0 +1,223 @@
+name: Pulso isolated real core recovery
+on:
+  push:
+    branches: [codex/b-pulso-runtime-20261011]
+    paths:
+      - '.github/run-pulso-runtime-now'
+      - '.github/workflows/pulso-runtime-recovery.yml'
+      - 'scripts/audit_pulso_runtime.py'
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: pulso-isolated-real-core
+  cancel-in-progress: false
+jobs:
+  runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      RADAR_FAST_MODEL: gpt-5.6-luna
+      RADAR_DEEP_MODEL: gpt-5.6-terra
+      RADAR_DEEP_PER_RUN: 15
+      RADAR_FAST_PER_RUN: 120
+      RADAR_DEEP_PER_MONTH: 180
+      RADAR_FAST_PER_MONTH: 1500
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/b-pulso-runtime-20261011
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Assert exclusive isolated branch
+        run: test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
+      - run: pip install -e . pytest
+      - name: Directed final consumer, archived editorial evidence and core checks
+        run: >-
+          python -m pytest -q
+          tests/test_pulso_recovery_command.py
+          tests/test_pulso_terminal_followthrough_qa.py
+          tests/test_pulso_terminal_followthrough_idempotence.py
+          tests/test_pulso_compact_body_type_domain.py
+          tests/test_pulso_final_actual_terminal_review_qa.py
+          tests/test_pulso_revalidated_idempotence.py
+          tests/test_pulso_idempotence.py
+          tests/test_pulso_idempotence_qa.py
+          tests/test_pulso_final_revalidated_execution_qa.py
+          tests/test_pulso_final_paid_revalidation_qa.py
+          tests/test_pulso_core_runtime.py
+          tests/test_pulso_execution_provenance.py
+          tests/test_retain_pulso_live9_originals.py
+          tests/test_pulso_additional_live9_actual_technical_audit.py
+          tests/test_pulso_live9_actual_paid_rejection_reader.py
+          tests/test_pulso_final2_actual_technical_audit.py
+      - name: Read optional prior and additional original capture runs
+        id: prior_capture
+        run: |
+          python - <<'PY'
+          import json, os
+          marker=json.load(open('.github/run-pulso-runtime-now'))
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              for field, output_key in (('prior_capture_run_id', 'run_id'),
+                                        ('additional_capture_run_id', 'additional_run_id')):
+                  value=marker.get(field, '')
+                  if value not in ('', None) and (type(value) not in (int, str)
+                          or not str(value).isdigit() or int(value)<=0):
+                      raise SystemExit('Invalid '+field)
+                  output.write(output_key+'='+('' if value is None else str(value))+'\n')
+          PY
+      - name: Download prior original responses without restoring runtime state
+        if: steps.prior_capture.outputs.run_id != ''
+        uses: actions/download-artifact@v4
+        with:
+          pattern: pulso-real-core-*
+          merge-multiple: true
+          path: .scratch/pulso-prior-capture
+          github-token: ${{ github.token }}
+          run-id: ${{ steps.prior_capture.outputs.run_id }}
+      - name: Recover an explicitly selected original capture without restoring runtime state
+        if: steps.prior_capture.outputs.additional_run_id != ''
+        uses: actions/download-artifact@v4
+        with:
+          pattern: pulso-real-core-*
+          merge-multiple: true
+          path: .scratch/pulso-prior-capture/additional-${{ steps.prior_capture.outputs.additional_run_id }}
+          github-token: ${{ github.token }}
+          run-id: ${{ steps.prior_capture.outputs.additional_run_id }}
+      - name: Preserve original fixtures and identify missing cached metadata provenance
+        id: metadata_original_probe
+        run: |
+          python scripts/retain_pulso_runtime_fixtures.py --capture-artifact .scratch/pulso-prior-capture
+          python - <<'PY'
+          import json, os
+          manifest=json.load(open('tests/fixtures/pulso_runtime_real/manifest.json'))
+          missing=(manifest.get('current_metadata_hold_original_status')=='CURRENT_METADATA_HOLD_ORIGINAL_RETENTION_PARTIAL'
+                   or manifest.get('current_control_primary_original_status')=='CURRENT_CONTROL_PRIMARY_ORIGINAL_RETENTION_PARTIAL')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('needs_initial_warm_originals='+str(missing).lower()+'\n')
+          PY
+      - name: Recover first-warm original bytes only when cached primary hashes lack provenance
+        if: steps.metadata_original_probe.outputs.needs_initial_warm_originals == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          pattern: pulso-real-core-*
+          merge-multiple: true
+          path: .scratch/pulso-prior-capture/initial-warm-38120291133
+          github-token: ${{ github.token }}
+          run-id: 38120291133
+      - name: Recover second-warm original bytes for unchanged cached primary hashes
+        if: steps.metadata_original_probe.outputs.needs_initial_warm_originals == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          pattern: pulso-real-core-*
+          merge-multiple: true
+          path: .scratch/pulso-prior-capture/second-warm-38121971530
+          github-token: ${{ github.token }}
+          run-id: 38121971530
+      - name: Bind recovered original responses without restoring state or refetching details
+        if: steps.metadata_original_probe.outputs.needs_initial_warm_originals == 'true'
+        run: python scripts/retain_pulso_runtime_fixtures.py --capture-artifact .scratch/pulso-prior-capture
+      - name: Replay preserved original fixtures
+        run: python -m pytest -q tests/test_pulso_runtime_fixtures.py
+      - name: Verify paid baseline before an optional genuine zero-call replay
+        run: |
+          python - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          from scripts.pulso_recovery_command import idempotence_command
+          command=idempotence_command(json.load(open('.github/run-pulso-runtime-now')), Path.cwd(), 'preflight')
+          if command:
+              subprocess.run(command, check=True)
+          PY
+      - name: Execute source-scoped core with original HTTP observation
+        run: |
+          python - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          from scripts.pulso_recovery_command import recovery_command
+          command=recovery_command(json.load(open('.github/run-pulso-runtime-now')), Path.cwd())
+          raise SystemExit(subprocess.call(command))
+          PY
+      - name: Preserve new original responses and reconcile their durable provenance
+        if: always()
+        run: |
+          python scripts/retain_pulso_runtime_fixtures.py --capture-artifact .scratch/pulso-prior-capture
+          python scripts/audit_pulso_runtime.py --report-only
+      - name: Export processed history to actual offline candidate feed and reconcile it
+        run: |
+          python - <<'PY'
+          import json, subprocess, sys
+          phase=json.load(open('.github/run-pulso-runtime-now'))['phase']
+          if phase=='process':
+              subprocess.run([sys.executable, 'scripts/export_web_snapshot.py', '--input', 'data/history/superintendencia_signals.json', '--offline'], check=True)
+              subprocess.run([sys.executable, 'scripts/product_report.py'], check=True)
+              subprocess.run([sys.executable, 'scripts/audit_pulso_runtime.py', '--report-only'], check=True)
+          PY
+      - name: Independently verify actual original coverage and exact editorial outcomes
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          from scripts.pulso_recovery_command import directed_qa_command, idempotence_command
+          marker=json.load(open('.github/run-pulso-runtime-now'))
+          command=idempotence_command(marker, Path.cwd(), 'after_core')
+          comparison_status=0
+          if command:
+              comparison_status=subprocess.run(command).returncode
+          qa_status=subprocess.run(directed_qa_command(marker, Path.cwd())).returncode
+          if comparison_status or qa_status:
+              raise SystemExit(comparison_status or qa_status)
+          command=idempotence_command(marker, Path.cwd(), 'after_qa')
+          if command:
+              subprocess.run(command, check=True)
+          PY
+      - name: Preserve source checkpoints and paid ledgers exclusively on isolated branch
+        if: always()
+        run: |
+          test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
+          git config user.name alicanto-salud-bot
+          git config user.email alicanto-salud-bot@users.noreply.github.com
+          git add data/state data/history data/analysis_cache data/ai_usage data/source_health.json
+          if test -f data/audits/pulso_runtime_2026_10_11.json; then git add data/audits/pulso_runtime_2026_10_11.json; fi
+          if test -f data/audits/pulso_runtime_capture/manifest.json; then git add data/audits/pulso_runtime_capture/manifest.json; fi
+          if test -f data/audits/pulso_directed_discovery_qa_2026_10_11.json || test -f data/audits/pulso_directed_processing_qa_2026_10_11.json; then git add 'data/audits/pulso_directed_*_qa_2026_10_11.json'; fi
+          if test -f data/audits/pulso_idempotence_baseline_2026_10_11.json; then git add data/audits/pulso_idempotence_baseline_2026_10_11.json; fi
+          if test -f data/audits/pulso_idempotence_2026_10_11.json; then git add data/audits/pulso_idempotence_2026_10_11.json; fi
+          if test -f web/data/radar_today.json; then git add web/data/radar_today.json; fi
+          if test -f web/data/source_health.json; then git add web/data/source_health.json; fi
+          if test -f web/data/product.json; then git add web/data/product.json; fi
+          if test -f web/data/free_value.json; then git add web/data/free_value.json; fi
+          if test -f web/data/excel_diagnostics.csv; then git add web/data/excel_diagnostics.csv; fi
+          if test -f tests/fixtures/pulso_runtime_real/manifest.json; then git add tests/fixtures/pulso_runtime_real; fi
+          git diff --cached --quiet || git commit -m "audit(pulso): preserve real core inventory and exact outcomes [skip ci]"
+          git fetch origin codex/b-pulso-runtime-20261011
+          git rebase origin/codex/b-pulso-runtime-20261011
+          git push origin HEAD:codex/b-pulso-runtime-20261011
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pulso-real-core-${{ github.sha }}
+          retention-days: 90
+          path: |
+            data/audits/pulso_runtime_2026_10_11.json
+            data/audits/pulso_runtime_capture/
+            data/audits/pulso_directed_*_qa_2026_10_11.json
+            data/audits/pulso_idempotence_baseline_2026_10_11.json
+            data/audits/pulso_idempotence_2026_10_11.json
+            data/state/pulso_discovery_cache.json
+            data/state/discovery_run.json
+            data/state/pending_queue.json
+            data/analysis_cache/
+            data/ai_usage/
+            data/source_health.json
+            data/history/superintendencia_signals.json
+            web/data/radar_today.json
+            web/data/source_health.json
+            web/data/product.json
+            web/data/free_value.json
+            tests/fixtures/pulso_runtime_real/
+          if-no-files-found: error
