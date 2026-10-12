@@ -1,8 +1,11 @@
 """Validate the branch-owned recovery marker before invoking the real core."""
 from pathlib import Path
+import hashlib
 
 BASELINE = "data/audits/pulso_idempotence_baseline_2026_10_11.json"
 PROOF = "data/audits/pulso_idempotence_2026_10_11.json"
+TERMINAL_COHORT = "data/audits/pulso_material_recovery_cohort_2026_10_11.json"
+TERMINAL_COHORT_SHA256 = "8ed358f0cd37ecc4b554ab96cd4366048b8e6180ad1c0ee0044fc5d5f6976514"
 
 
 def audit_path(value, root: Path, label: str, *, exists=True) -> str:
@@ -46,6 +49,9 @@ def recovery_command(marker: dict, root: Path) -> list[str]:
             raise ValueError("Unsupported baseline capture mode")
         if phase != "process" or selection is None or baseline is not None:
             raise ValueError("Paid-lineage capture requires selected processing before its replay")
+        if capture_mode == "terminal_followthrough":
+            if selection != TERMINAL_COHORT or hashlib.sha256((root / selection).read_bytes()).hexdigest() != TERMINAL_COHORT_SHA256:
+                raise ValueError("Terminal followthrough requires the unchanged frozen 113 cohort before core")
     return command
 
 

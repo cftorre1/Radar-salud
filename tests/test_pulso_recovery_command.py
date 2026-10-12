@@ -159,7 +159,10 @@ def test_paid_lineage_capture_cannot_replace_replay_baseline(tmp_path):
 
 
 def test_terminal_followthrough_capture_is_explicit_and_only_after_qa(tmp_path):
-    value = marker(tmp_path)
+    path = tmp_path / module.TERMINAL_COHORT
+    path.parent.mkdir(parents=True)
+    path.write_bytes((Path(__file__).parents[1] / module.TERMINAL_COHORT).read_bytes())
+    value = {"phase": "process", "queue_selection": module.TERMINAL_COHORT}
     value["baseline_capture_mode"] = "terminal_followthrough"
     assert idempotence_command(value, tmp_path, "preflight") == []
     assert idempotence_command(value, tmp_path, "after_core") == []
@@ -167,6 +170,29 @@ def test_terminal_followthrough_capture_is_explicit_and_only_after_qa(tmp_path):
         "python", "scripts/pulso_idempotence.py", "capture-terminal-followthrough", "--baseline", module.BASELINE]
     ordinary = {key: item for key, item in value.items() if key != "baseline_capture_mode"}
     assert recovery_command(value, tmp_path) == recovery_command(ordinary, tmp_path)
+
+
+@pytest.mark.parametrize("alteration", ["other_path", "modified_bytes", "fake113"])
+def test_terminal_followthrough_rejects_wrong_cohort_before_core(tmp_path, alteration):
+    path = tmp_path / module.TERMINAL_COHORT
+    path.parent.mkdir(parents=True)
+    path.write_bytes((Path(__file__).parents[1] / module.TERMINAL_COHORT).read_bytes())
+    value = {"phase": "process", "queue_selection": module.TERMINAL_COHORT,
+             "baseline_capture_mode": "terminal_followthrough"}
+    if alteration == "other_path":
+        other = path.with_name("live9.json")
+        other.write_bytes(path.read_bytes())
+        value["queue_selection"] = str(other.relative_to(tmp_path))
+    elif alteration == "modified_bytes":
+        path.write_bytes(path.read_bytes() + b"\n")
+    else:
+        path.write_text(json.dumps({"source": "pulso_latercera", "urls": [
+            "https://www.latercera.com/pulso/noticia/fake-" + str(i) + "/" for i in range(113)]}))
+    for validate in (recovery_command, directed_qa_command):
+        with pytest.raises(ValueError, match="unchanged frozen 113"):
+            validate(value, tmp_path)
+    with pytest.raises(ValueError, match="unchanged frozen 113"):
+        idempotence_command(value, tmp_path, "preflight")
 
 
 @pytest.mark.parametrize("phase", ["discovery_only", "report_only", "process"])
