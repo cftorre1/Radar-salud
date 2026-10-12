@@ -1,0 +1,26 @@
+{
+  "schema_version": "pulso_mixed12_veterinary_scope_peer_finding_repair_v1",
+  "source_id": "pulso_latercera",
+  "finding": "Explicit veterinary context followed by patients-contacted phrase was wrongly counted as independent human evidence after removing the veterinary prefix.",
+  "prior_guard_commit": "b9ab35c9",
+  "prior_guard_sha256": "5639990b90675dea3d9e0c05a6edae1ba31ac5c8962646055a539e84b97bb0a7",
+  "repaired_guard_sha256": "c48048c8bf0f0aaf3ba07785faafe64fd0f8896d41c5a3d5d9c00afb7b4a250d",
+  "counterexamples_are_synthetic_scope_only_not_publisher_captures": true,
+  "body_and_original_paid_models_changed": false,
+  "AI_calls": 0,
+  "state_mutations": 0,
+  "publication_approved": false,
+  "gate_threshold": 72,
+  "repair": "Patient-contact phrase can anchor the two actual clinical models, but cannot independently override explicit veterinary scope. A separately explicit human procedure in the same quote remains eligible.",
+  "tests": {
+    "passed": 172,
+    "synthetic_veterinary_prefix_models": 4,
+    "actual_mixed12_original_models_checked": 12,
+    "actual_ready_preserved": 2,
+    "actual_other10_still_held": true
+  },
+  "original_diagnosis": {
+    "path": "data/audits/pulso_actual_mixed12_full_primary_model_diagnosis_2026_10_11.json",
+    "sha256": "a87dbac7e8c60484545fc166591ebc000f8d8e7917bd08cfb416ad1038f82690"
+  }
+}

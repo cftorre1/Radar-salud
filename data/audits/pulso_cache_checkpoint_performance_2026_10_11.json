@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "source": "pulso_latercera",
+  "benchmark_at": "2026-10-11T07:52:29Z",
+  "observed_primary_cache_bytes": 57201772,
+  "one_atomic_write_seconds": 0.6366734720013483,
+  "observed_public_pages": 454,
+  "projected_serialization_only_seconds_at_same_size": 289.0497562886121,
+  "projection_is_not_measured_total_runtime": true,
+  "repair": "Atomic checkpoint after first verified page, after at least30seconds since last completed save when a page completes, and force at every feed end including publisher errors. Same cache contents/trust/enumeration; archival writes unchanged.",
+  "verification": "119 directed source/archive/date/realfixture/video tests PASS; meaningful192URL cold+warm inventory replay preserves all fullbodySHA/date/capture fields with2fast checkpoints,4time-driven checkpoints; publisher failure preserves all72verified details.",
+  "limitation": "Periodic interval checked at page boundaries; an in-flight HTTP/detail page can extend wall-clock time beyond30seconds. Always flush completed/failed feed before moving on.",
+  "editorial_gate_and_budgets": "UNCHANGED",
+  "acceptance": "PERFORMANCE_REPAIR_ONLY_NOT_SOURCE_RUNTIME_ACCEPTANCE"
+}

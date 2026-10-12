@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "source": "pulso_latercera",
+  "verdict": "PASS_TWO_PRIMARY_CONTROL_PREFILTER_REPAIRS_NOT_ACCEPTANCE",
+  "corpus_input_sha256": "3a44b93d62c2ba4e3864a9cb2955216c7080f04a974f630b374fab87e987b8e7",
+  "source_cache_sha256": "0270e64ffd6fbf865af28fece59ee569e834ea0317d4c0b007c6e0f53a1a2414",
+  "scope": {
+    "eligible_fullhealth90": 1706,
+    "unambiguous_date90": 1695,
+    "possible_date90_hold": 11,
+    "unique_new_since888": 871,
+    "prefilter_positive": 1419,
+    "prefilter_negative": 287,
+    "new_prefilter_negative": 171,
+    "full_body_hash_mismatches": 0
+  },
+  "prefilter_before": 1419,
+  "prefilter_after": 1421,
+  "changed_originals": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-publica-nomina-con-los-eleam-que-cuenta-con-autorizacion-sanitaria-son-993-a-nivel-pais-y-la-rm-concentra-mas-de-la-mitad/",
+      "title": "Minsal da detalles de los Eleam que cuentan con autorización sanitaria: son 993 a nivel país y la RM concentra más del 50%",
+      "publication_date": "2026-09-16",
+      "date_verified": true,
+      "section": "Nacional",
+      "primary_body_sha256": "42a8afb2862a45f8cd4cafce27bcb62cb6eafd350966a902e4fe4d937454d97f",
+      "primary_body_characters": 1750,
+      "original_html_sha256": "393f1dba5176066616e90ae3978bd9afc11f386a08c14425bc41b3b8e6ed6f89",
+      "captured_at": "2026-10-11T07:15:37.782664+00:00",
+      "full_primary_body": "Tal como lo anunció la jornada de ayer la ministra de Salud, May Chomali, desde hoy está disponible públicamente la oferta de los Eleam (Establecimiento de Larga Estadía para Adultos Mayores) que cuentan con autorización sanitaria. El objetivo de esta medida, según dio a conocer Chomali junto a la ministra de Desarrollo Social y Familia, María Jesús Wulf, es “transparentar la información a las familias” acerca de cuáles son aquellos establecimientos que cumplen con todas las exigencias que están incorporadas en el Decreto 20, “y así puedan saber si el lugar donde ellos van a llevar a sus adultos mayores cumple con estas exigencias”. La medida forma parte de un plan anunciado por Minsal y Mideso para reforzar la seguridad y ampliar la oferta de cuidados para personas mayores, tras la tragedia ocurrida en un hogar de adultos mayores en Pitrufquén. Así, y de acuerdo al listado publicado esta jornada, al 14 de septiembre del 2026 existen un total de 993 ELEAM -públicos y privados- en el país que cuentan con autorización sanitaria, La Región Metropolitana concentra más de la mitad de los Eleam del país (507), mientras que Valparaíso es la segunda región con más establecimientos (151). Luego está O’Higgins, con 53 residencias autorizadas (5,34%); Biobío, con 52 residencias (5,24%); y Maule, con 50 (5,04%). En tanto, las regiones donde hay menos residencias autorizadas son Tarapacá y Atacama, con 3 cada una. A nivel comunal, Las Condes (65), Ñuñoa (61) y Providencia (50) concentran la mayor cantidad de Eleam en la Región Metropolitana. Según detallan desde el Minsal, la lista será actualizada semanalmente para así mantener informada a la ciudadanía. Revisa la lista de los ELEAM con autorización sanitaria vigente a continuación:",
+      "before_eligible": false,
+      "after_eligible": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/uc-christus-san-carlos-de-apoquindo-suspende-atencion-de-urgencia-y-consultas-medicas-tras-verse-afectada-por-aluvion/",
+      "title": "UC Christus San Carlos de Apoquindo suspende atención de urgencia y consultas médicas tras verse afectada por aluvión",
+      "publication_date": "2026-10-08",
+      "date_verified": true,
+      "section": "Nacional",
+      "primary_body_sha256": "38ffa83c8276fba1876f5dd50e5eaaabad9c852c0a76505ace9a61830f7e545f",
+      "primary_body_characters": 1345,
+      "original_html_sha256": "0f1229de208acdf2f1abde446cba41e518f944ccb1e66e89641c2c1a3b17c18b",
+      "captured_at": "2026-10-11T07:12:55.092243+00:00",
+      "full_primary_body": "La Red de Salud UC Christus informó este jueves, que tras el aluvión que inundó parte de sus instalaciones en el sector alto de la comuna de Las Condes, suspenderá su atención de urgencia en la Clínica San Carlos de Apoquindo, así como las consultas médicas para lo que resta de jueves y para mañana viernes. A través de una declaración pública, la institución de salud, señaló que en este momento se enfocan en resguardar la seguridad y bienestar de los pacientes, trabajadores y todas las personas que se encontraban al interior del recinto ubicado en Camino El Alba. Así, afirman que “los pacientes hospitalizados se encuentran a salvo y continúan recibiendo atención por parte de nuestros equipos clínicos”. Además, afirman que de momento, no ha sido necesario realizar evacuaciones. Además, informaron que “como medida preventiva, hemos suspendido la atención del Servicio de Urgencia, así como las consultas médicas, exámenes y procedimientos ambulatorios durante hoy jueves 8 y mañana viernes 9 de octubre”. “Nuestros equipos de emergencia se encuentran trabajando para abordar esta contingencia, evaluar sus efectos y adoptar las medidas necesarias para restablecer la atención en condiciones seguras”, agregaron. Con todo, solicitaron a los pacientes a no acudir a la Clínica San Carlos de Apoquindo mientras se mantenga esta situación.",
+      "before_eligible": false,
+      "after_eligible": true
+    }
+  ],
+  "editorial_media_gate": 72,
+  "gate_changed": false,
+  "publication_approved": false,
+  "evidence_maturity": "media_reported",
+  "validation": {
+    "result": "77 passed",
+    "command": "PYTHONPATH=src /workspace/work/venv/bin/pytest -q tests/test_pulso_expanded_materiality.py tests/test_pulso_media_network_materiality.py tests/test_pulso_complete_body.py tests/test_pulso_core_runtime.py tests/test_pulso_publisher_exception_processing.py"
+  },
+  "remaining_work": [
+    "Independent semantic audit of all171 newly negative originals and precise repairs of additional demonstrated false negatives.",
+    "Complete actual core run, actual editorial outcomes, duplicate/incremental review, history/feed, QA, Reviewer and staging acceptance."
+  ],
+  "limitations": [
+    "This expanded original cache came from a failed source registration warm run; internal cached observations do not constitute actual core discovery recall.",
+    "Both modified controls have byte-verified original HTML fixtures in tests/fixtures/pulso_runtime_real; all1706 comparisons use complete SHA-bound primary cached bodies.",
+    "Current dates include11 held conflicts whose byline window observation does not establish a true publication date."
+  ]
+}

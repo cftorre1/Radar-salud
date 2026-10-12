@@ -1,0 +1,210 @@
+{
+  "schema_version": "pulso_current12_independent_code_peer_v1",
+  "generated_at": "2026-10-11T20:01:31.221197+00:00",
+  "reviewed_head": "a1acafcc91d98e8c3928a1cba32c4c43b694d001",
+  "status": "SCOPED_CODE_PASS",
+  "source_id": "pulso_latercera",
+  "gate_threshold": 72,
+  "publication_approved": false,
+  "actual_core_execution_approved": false,
+  "actual_replay_approved": false,
+  "actual_ui_approved": false,
+  "source_and_state_edits": false,
+  "inputs": {
+    "src/radar_salud/pulso_current_paid_revalidation.py": "fb4741d618b756cdc10e50354ab7a5a872d430ada77e66243663606129603945",
+    "src/radar_salud/pulso_paid_revalidation.py": "57c838db696cf5e8d5f9b9b3763bc33a84ce021636fc5af7567ad1f6f8263e18",
+    "src/radar_salud/beta_sources.py": "a0a47e804cc4f630fe33e74eb7ee31c846baa08da8e2debdcdb7519536f459c9",
+    "src/radar_salud/pending_queue.py": "ebcda50f38fe3c3130c74546f8d5da1e8f87d218eca787735f38653b299a165e",
+    "src/radar_salud/pulso_editorial_proof.py": "e39663acbe8d952039373c04763c05f613d365459cc9a98feb314f2a60567dd3",
+    "tests/test_pulso_current_paid_guard_revalidation.py": "eed9199231aeb1194c64c5b01cccab7c4ac944e3623d5d498bcca6bc5c1e44a0",
+    "data/audits/pulso_current12_paid_guard_revalidation_manifest_2026_10_11.json": "3f27a3a4450e0fbf074fadc8da380f674c18d35ab20e896971a2b19d7c55cc1b",
+    "data/audits/pulso_actual_mixed12_full_primary_model_diagnosis_2026_10_11.json": "a87dbac7e8c60484545fc166591ebc000f8d8e7917bd08cfb416ad1038f82690",
+    "data/audits/pulso_mixed12_independent_peer_2026_10_11.json": "9f7dba641312afa5b8ea18ed99916080367b74531c9741dc9d0f1437b848b665"
+  },
+  "producer_state": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+  "producer_code": "29731f04d998659e5892c109871f54ef0c7f8eef",
+  "producer_fingerprint": "73b012deb1cd6729e55527f87569825136d5f5523617029ff862640eadea366d",
+  "manifest_pin": "3f27a3a4450e0fbf074fadc8da380f674c18d35ab20e896971a2b19d7c55cc1b",
+  "semantic_references": [
+    {
+      "path": "data/audits/pulso_actual_mixed12_full_primary_model_diagnosis_2026_10_11.json",
+      "sha256": "a87dbac7e8c60484545fc166591ebc000f8d8e7917bd08cfb416ad1038f82690"
+    },
+    {
+      "path": "data/audits/pulso_mixed12_independent_peer_2026_10_11.json",
+      "sha256": "9f7dba641312afa5b8ea18ed99916080367b74531c9741dc9d0f1437b848b665"
+    }
+  ],
+  "checks": [
+    {
+      "check": "exact12_once_admission_preserves_both_original_paid_chains_and_queue_identity",
+      "result": "PASS",
+      "records": 12
+    },
+    {
+      "check": "unchanged_rediscovery_does_not_reset_due_or_attempts_again",
+      "result": "PASS",
+      "records": 12
+    },
+    {
+      "check": "primary_current_response_original_receipt_attempt_terminal_authority_mutations_fail_closed",
+      "result": "PASS",
+      "cases": 120
+    },
+    {
+      "check": "composite_current_and_981_processing_authority_rejects_changed_admission_or_archive",
+      "result": "PASS",
+      "cases": 72
+    },
+    {
+      "check": "exact2_reuse_zero_external_calls_and10_new_routes_full_primary_bound_context",
+      "result": "PASS",
+      "records": 12,
+      "new_route_spy_calls": 10,
+      "actual_paid_calls": 0,
+      "actual_publisher_calls": 0
+    },
+    {
+      "check": "changed_manifest_route_gate_publication_date_review_authority_bytes_unpinned",
+      "result": "PASS",
+      "cases": 5
+    }
+  ],
+  "current12": [
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "route": "assess_contract_or_semantic_defect",
+      "result": "PASS",
+      "source_day": "2026-07-14",
+      "score": 84,
+      "full_primary_input_unchanged": true,
+      "bound_context_in_kind": true,
+      "intercepted_before_api_no_actual_new_model_response": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "route": "assess_contract_or_semantic_defect",
+      "result": "PASS",
+      "source_day": "2026-10-05",
+      "score": 78,
+      "full_primary_input_unchanged": true,
+      "bound_context_in_kind": true,
+      "intercepted_before_api_no_actual_new_model_response": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+      "route": "reuse_code_fn",
+      "result": "PASS",
+      "source_day": "2026-09-19",
+      "score": 86,
+      "model_output_unchanged": true,
+      "original_chain_unchanged": true,
+      "unit_pipeline_only_not_actual_publication": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+      "route": "assess_contract_or_semantic_defect",
+      "result": "PASS",
+      "source_day": "2026-09-09",
+      "score": 88,
+      "full_primary_input_unchanged": true,
+      "bound_context_in_kind": true,
+      "intercepted_before_api_no_actual_new_model_response": true
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "route": "assess_contract_or_semantic_defect",
+      "result": "PASS",
+      "source_day": "2026-09-01",
+      "score": 78,
+      "full_primary_input_unchanged": true,
+      "bound_context_in_kind": true,
+      "intercepted_before_api_no_actual_new_model_response": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "route": "assess_contract_or_semantic_defect",
+      "result": "PASS",
+      "source_day": "2026-09-01",
+      "score": 86,
+      "full_primary_input_unchanged": true,
+      "bound_context_in_kind": true,
+      "intercepted_before_api_no_actual_new_model_response": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "route": "assess_contract_or_semantic_defect",
+      "result": "PASS",
+      "source_day": "2026-08-25",
+      "score": 94,
+      "full_primary_input_unchanged": true,
+      "bound_context_in_kind": true,
+      "intercepted_before_api_no_actual_new_model_response": true
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+      "route": "assess_contract_or_semantic_defect",
+      "result": "PASS",
+      "source_day": "2026-08-14",
+      "score": 88,
+      "full_primary_input_unchanged": true,
+      "bound_context_in_kind": true,
+      "intercepted_before_api_no_actual_new_model_response": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "route": "assess_contract_or_semantic_defect",
+      "result": "PASS",
+      "source_day": "2026-07-29",
+      "score": 92,
+      "full_primary_input_unchanged": true,
+      "bound_context_in_kind": true,
+      "intercepted_before_api_no_actual_new_model_response": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+      "route": "assess_contract_or_semantic_defect",
+      "result": "PASS",
+      "source_day": "2026-10-01",
+      "score": 88,
+      "full_primary_input_unchanged": true,
+      "bound_context_in_kind": true,
+      "intercepted_before_api_no_actual_new_model_response": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "route": "assess_contract_or_semantic_defect",
+      "result": "PASS",
+      "source_day": "2026-09-21",
+      "score": 82,
+      "full_primary_input_unchanged": true,
+      "bound_context_in_kind": true,
+      "intercepted_before_api_no_actual_new_model_response": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+      "route": "reuse_code_fn",
+      "result": "PASS",
+      "source_day": "2026-07-15",
+      "score": 84,
+      "model_output_unchanged": true,
+      "original_chain_unchanged": true,
+      "unit_pipeline_only_not_actual_publication": true
+    }
+  ],
+  "limitations": [
+    "All mutation/dispatch tests use actual immutable publisher inputs and original paid outputs in temporary queues. No real model or publisher call is made.",
+    "Unit reuse signals are never written to product history or feed and are not claimed as new actual publications.",
+    "This is code/authority review only. Acceptance additionally requires a genuine current12 core execution, its actual model receipts/ledger, real zero-AI replay, final-source-SHA Reviewer and six actual desktop/mobile UI checks.",
+    "Literal quotation and technical ready never approve semantic correctness or publication. Historic date/current novelty still requires independent full-primary/body/date review."
+  ],
+  "validation": {
+    "command": "/workspace/work/venv/bin/python -m pytest -q tests/test_pulso_current_paid_guard_revalidation.py tests/test_pulso_paid_guard_revalidation.py",
+    "exit_code": 0,
+    "tests_passed": 60,
+    "independent_authority_harness": "PASS",
+    "audit_contract": "PASS",
+    "actual_paid_calls": 0,
+    "actual_publisher_calls": 0
+  }
+}

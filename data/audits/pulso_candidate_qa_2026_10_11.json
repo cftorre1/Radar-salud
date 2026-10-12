@@ -1,0 +1,82 @@
+{
+  "recorded_at": "2026-10-11T06:13:17Z",
+  "status": "PASS_GENERAL_CANDIDATE_GATES_NOT_SOURCE_ACCEPTANCE",
+  "source": "pulso_latercera",
+  "head_sha": "8c38828aa5f22263652a4c099f4816c2af2097f9",
+  "pr_merge_candidate_sha": "a1bfcc9c8ac7120a3663f3c169a79ef2f28814ec",
+  "base_staging_sha": "c4819844e413d31ede792521a2c137392c4ae104",
+  "workflow_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38117198596",
+  "jobs": {
+    "tests": {
+      "id": 114404345175,
+      "conclusion": "success"
+    },
+    "staging": {
+      "id": 114404401081,
+      "conclusion": "success",
+      "desktop_mobile_browser_tests": 46
+    },
+    "reviewer": {
+      "id": 114404598721,
+      "conclusion": "success"
+    }
+  },
+  "review": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "a1bfcc9c8ac7120a3663f3c169a79ef2f28814ec",
+    "reviewed_at": "2026-10-11T06:12:23.741241+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "artifacts": [
+    {
+      "id": 11694395906,
+      "name": "reviewer-a1bfcc9c8ac7120a3663f3c169a79ef2f28814ec",
+      "size_in_bytes": 493,
+      "url": "https://api.github.com/repos/cftorre1/Radar-salud/actions/artifacts/11694395906",
+      "archive_download_url": "https://api.github.com/repos/cftorre1/Radar-salud/actions/artifacts/11694395906/zip",
+      "expired": false,
+      "created_at": "2026-10-11T06:12:24Z",
+      "expires_at": "2027-01-09T06:10:32Z",
+      "updated_at": "2026-10-11T06:12:24Z",
+      "digest": "sha256:bbed9beb110da4efa7cf23ebb34f582718d5314a9209d739d52ed7c71f8dd4bb",
+      "workflow_run": {
+        "id": 38117198596,
+        "repository_id": 1379044672,
+        "head_repository_id": 1379044672,
+        "head_branch": "codex/b-pulso-runtime-20261011",
+        "head_sha": "8c38828aa5f22263652a4c099f4816c2af2097f9"
+      }
+    },
+    {
+      "id": 11694126402,
+      "name": "staging-evidence-a1bfcc9c8ac7120a3663f3c169a79ef2f28814ec",
+      "size_in_bytes": 26685078,
+      "url": "https://api.github.com/repos/cftorre1/Radar-salud/actions/artifacts/11694126402",
+      "archive_download_url": "https://api.github.com/repos/cftorre1/Radar-salud/actions/artifacts/11694126402/zip",
+      "expired": false,
+      "created_at": "2026-10-11T06:12:03Z",
+      "expires_at": "2027-01-09T06:10:32Z",
+      "updated_at": "2026-10-11T06:12:03Z",
+      "digest": "sha256:7924377d393556a561275270bc62ac0653d238a97f33f480698b39a35464ec92",
+      "workflow_run": {
+        "id": 38117198596,
+        "repository_id": 1379044672,
+        "head_repository_id": 1379044672,
+        "head_branch": "codex/b-pulso-runtime-20261011",
+        "head_sha": "8c38828aa5f22263652a4c099f4816c2af2097f9"
+      }
+    }
+  ],
+  "source_acceptance": "NOT_RESOLVED_NO_MERGE: original core 30/90 recall, real editorial outcomes, history/feed and independent semantic review pending. Re-run final gates after source data updates."
+}

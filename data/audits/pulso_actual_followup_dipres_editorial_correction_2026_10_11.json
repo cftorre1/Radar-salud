@@ -1,0 +1,152 @@
+{
+  "schema_version": "pulso_editorial_review_v1",
+  "source_id": "pulso_latercera",
+  "review_id": "pulso_actual_followup_dipres_published_attribution_2026_10_11",
+  "producer_commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+  "inputs": {
+    "history": {
+      "commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "39e63cc84af25227fc7cf916ab42867ab8a84a085cb6fffb3b920aa2ba0ed11a"
+    },
+    "queue": {
+      "commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "b5fb262284e5ce28e6b9664703f2a94996ad7abef128a7f1c679fc0a83b26481"
+    },
+    "runtime_report": {
+      "commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "c746b44864dceb465c2d72889ed48e15510fcb7286f8d0840545f584afe6793e"
+    },
+    "telemetry": {
+      "commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "19bb3e6b2ae1e15c623a97eb08ae6b3f323b1c11cec6fa74aad359f3ca04cfad"
+    }
+  },
+  "independent_review": {
+    "path": "data/audits/pulso_actual_followup_hanta_dipres_independent_semantic_review_2026_10_11.json",
+    "sha256": "b4c19a8bead89a2db48f2820851b25f968b9edc3c307f1189cd8419a7e8f408c"
+  },
+  "scope": "One actualpublishedDipres correction only; nohumanpublicationofretryHanta.",
+  "required_media_gate_threshold": 72,
+  "application_performed": false,
+  "reviewer_AI_calls": 0,
+  "source_or_state_writes": 0,
+  "records": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "publication_date": "2026-09-21",
+      "original_signal": {
+        "title": "Pollo, pañales y papas: Dipres identifica a 28 servicios que concentraron $10 mil millones de sobregasto en compras durante periodo Boric",
+        "source_name": "Pulso / La Tercera",
+        "source_type": "press_high_trust",
+        "source_url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+        "category": "Regulación & Legal",
+        "subcategory": "General",
+        "system_domain": "HEALTH",
+        "what_happened": "Según la nota del 21 de septiembre de 2026, la Dirección de Presupuestos (Dipres) revisó compras de convenio marco realizadas durante 2022 y 2023 y reportó $10.615 millones de sobregasto. La Tercera obtuvo vía Ley de Transparencia el desglose, según el cual 28 entidades públicas concentraron el 91,2% del monto; entre ellas aparecen varios Servicios de Salud. La base general del estudio correspondía a abril de 2025. Según la nota, sus resultados fueron contemplados para reajustar las asignaciones de esas entidades en la Ley de Presupuesto 2026, pero esto no acredita que el reajuste se haya ejecutado. La nota también reportó recomendaciones de revisión focalizada y de refuerzo de incentivos, sin acreditar su implementación al 21 de septiembre de 2026.",
+        "event_date": "2026-09-21",
+        "detected_at": "2026-10-11T07:52:34.224551+00:00",
+        "primary_source_url": null,
+        "event_type": "OTHER",
+        "strategic_theme": [],
+        "institution_types": [],
+        "entity_refs": [],
+        "country": "CL",
+        "topics": [
+          "investment_ma",
+          "financing",
+          "regulation"
+        ],
+        "entities": [],
+        "people": [],
+        "geography": [],
+        "key_facts": [],
+        "key_numbers": [],
+        "why_it_matters": "Según la nota del 21 de septiembre de 2026, el hallazgo afecta la gestión del financiamiento de los Servicios de Salud mencionados, que forman parte de las entidades públicas incluidas en el desglose del sobregasto. La información puede orientar eventuales medidas correctivas y decisiones presupuestarias sobre compras sanitarias, pero la nota no acredita una reasignación ya ejecutada ni un efecto operativo actual en esos servicios. Para el radar, importa separar los datos de compras de 2022-2023, la base de abril de 2025, las asignaciones 2026 contempladas y las recomendaciones futuras reportadas por Pulso/La Tercera.",
+        "who_cares": [],
+        "possible_implications": [],
+        "watch_tags": [
+          "pulso_latercera",
+          "media",
+          "sistema de salud"
+        ],
+        "connection_keys": [],
+        "trend_keys": [],
+        "prospective_evidence": true,
+        "economic_impact_score": 84,
+        "regulatory_impact_score": 55,
+        "scope_score": 84,
+        "novelty_score": 84,
+        "actionability_score": 76,
+        "source_quality_score": 92,
+        "radar_score": 78,
+        "confidence_score": 92,
+        "distribution": "archive",
+        "validation_status": "automatic",
+        "corroboration_status": "unknown",
+        "additional_sources": [],
+        "source_documents": [],
+        "key_points": [],
+        "risk_notes": [],
+        "data_insights": [],
+        "data_insight_meta": {},
+        "validity_text": null,
+        "related_reference_ids": [],
+        "original_language": "es",
+        "display_language": "es",
+        "translation_status": "not_required",
+        "original_title": null,
+        "original_what_happened": null,
+        "original_why_it_matters": null,
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Sistema de salud"
+        ],
+        "editorial_relevance": 84,
+        "source_quality_gate": "passed",
+        "evidence_maturity": "media_reported",
+        "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+        "publication_date": "2026-09-21",
+        "publication_timestamp": "2026-09-21T00:00:00Z",
+        "publication_date_source": "visible_article_byline",
+        "editorial_assessment": {
+          "decision": "published",
+          "relevance_score": 84,
+          "threshold": 72,
+          "analysis_reason": "Merece radar por exponer una revisión nacional de compras públicas con impacto potencial en el financiamiento y control de los Servicios de Salud. Es un BACKFILL: la nota es del 21 de septiembre de 2026 y no permite afirmar que las recomendaciones, reajustes o medidas correctivas sigan pendientes, estén vigentes o se hayan implementado al 11 de octubre de 2026."
+        },
+        "ingestion_mode": "BACKFILL"
+      },
+      "original_signal_sha256": "bababa53e1813f7b444aa5da50fad960b46828b0913f4094be7c5b2fda0e1ebc",
+      "original_body_sha256": "9113e0fd67a716d5a03a5f50bd0dba68dcb391278e16be3e3a900bbc0eebd982",
+      "original_model_assessment": {
+        "decision": "published",
+        "relevance_score": 84,
+        "threshold": 72,
+        "analysis_reason": "Merece radar por exponer una revisión nacional de compras públicas con impacto potencial en el financiamiento y control de los Servicios de Salud. Es un BACKFILL: la nota es del 21 de septiembre de 2026 y no permite afirmar que las recomendaciones, reajustes o medidas correctivas sigan pendientes, estén vigentes o se hayan implementado al 11 de octubre de 2026."
+      },
+      "independent_review_record_sha256": "ba6a255187bd67253a99ff5ad5edef7b9210bca5171f974cd7557d575d704c89",
+      "decision": "correct",
+      "reason": "La publicación real323 usa íntegramente la respuesta pagada66 de84, revalidada sin nuevaFAST paraDipres ycon dobleprocedencia comprobada. La copia separa compras2022–23, informeQ22026/baseabril2025, concentración28entidades/91,2%deltotalpúblico y consideración de asignaciones2026. No transforma10.615millones en todoSalud, ahorrorealizado, nuevaspartidas2026/27 o recomendación implementada, nipresenta estadoOct11. RegLegal yprospectividadTrue son defendibles. WHAT dice sóloSegúnla nota sinnombrar elmedio; la única corrección propuesta nombraPulso/LaTercera enelprimerprefijo, manteniendo toda la copia restante,WHY, números, categorías, fechas y84/72. Ninguna primaryoficial confirmaaquí eldesglose oejecución.",
+      "evidence_quotes": [
+        "El Servicio de Salud del Maule compró en 2022 un total de 886 computadores marca HP por unos $595 millones.",
+        "durante el pasado gobierno de Gabriel Boric en los años 2022 y 2023.",
+        "se detectaron $10.615 millones en sobregasto en las compras de convenio marco",
+        "solo 28 entidades públicas concentran el 91,2% de esos $10 mil millones.",
+        "La Tercera accedió vía Ley de Transparencia al desglose de esos $10 mil millones de sobregasto.",
+        "se recomienda reforzar los incentivos para evitar la ejecución innecesaria de recursos hacia el cierre del ejercicio presupuestario",
+        "Los datos generales de este estudio son de abril de 2025 y sus resultados fueron contemplados para reajustar las respectivas asignaciones de los 28 servicios involucrados en la Ley de Presupuesto 2026."
+      ],
+      "proposed": {
+        "what_happened": "Según Pulso / La Tercera, en su nota del 21 de septiembre de 2026, la Dirección de Presupuestos (Dipres) revisó compras de convenio marco realizadas durante 2022 y 2023 y reportó $10.615 millones de sobregasto. La Tercera obtuvo vía Ley de Transparencia el desglose, según el cual 28 entidades públicas concentraron el 91,2% del monto; entre ellas aparecen varios Servicios de Salud. La base general del estudio correspondía a abril de 2025. Según la nota, sus resultados fueron contemplados para reajustar las asignaciones de esas entidades en la Ley de Presupuesto 2026, pero esto no acredita que el reajuste se haya ejecutado. La nota también reportó recomendaciones de revisión focalizada y de refuerzo de incentivos, sin acreditar su implementación al 21 de septiembre de 2026.",
+        "why_it_matters": "Según la nota del 21 de septiembre de 2026, el hallazgo afecta la gestión del financiamiento de los Servicios de Salud mencionados, que forman parte de las entidades públicas incluidas en el desglose del sobregasto. La información puede orientar eventuales medidas correctivas y decisiones presupuestarias sobre compras sanitarias, pero la nota no acredita una reasignación ya ejecutada ni un efecto operativo actual en esos servicios. Para el radar, importa separar los datos de compras de 2022-2023, la base de abril de 2025, las asignaciones 2026 contempladas y las recomendaciones futuras reportadas por Pulso/La Tercera."
+      },
+      "event_status": "planned"
+    }
+  ]
+}

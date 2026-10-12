@@ -2063,22 +2063,35 @@
     },
     "pulso_latercera": {
       "name": "Pulso / La Tercera",
-      "checked_at": "2026-10-10T22:25:43.933385+00:00",
-      "last_signal_at": null,
-      "discovered": 5,
+      "checked_at": "2026-10-12T02:16:09.501544+00:00",
+      "last_signal_at": "2026-10-10",
+      "discovered": 1743,
       "new": 0,
       "published": 0,
-      "live_pending": 0,
-      "backfill_pending": 0,
-      "pending": 0,
-      "deferred": 0,
-      "rejected": 0,
-      "status": "ok",
+      "live_pending": 1,
+      "backfill_pending": 1485,
+      "pending": 1486,
+      "deferred": 12,
+      "rejected": 180,
+      "status": "warning",
       "error": null,
       "technical_status": "ok",
       "coverage_status": "observed",
-      "content_freshness": "unknown",
-      "editorial_outcome": "no_new_signals"
+      "content_freshness": "recent",
+      "latest_original_at": "2026-10-11",
+      "editorial_outcome": "not_evaluated",
+      "evaluation_performed": false,
+      "processed_rejections": 0,
+      "counts_scope": {
+        "discovered": "this_run",
+        "new": "this_run",
+        "published": "this_run",
+        "processed_rejections": "this_run",
+        "rejected": "cumulative_queue",
+        "published_total": "effective_persisted_source_history"
+      },
+      "published_total": 70,
+      "last_signal_at_basis": "effective_verified_published_history"
     },
     "isp_surveillance": {
       "name": "Instituto de Salud Pública de Chile (ISP)",
@@ -2300,7 +2313,7 @@
       }
     }
   },
-  "generated_at": "2026-10-11T14:40:23.112019+00:00",
+  "generated_at": "2026-10-12T02:16:09.501558+00:00",
   "occupational_sources_checked_at": "2026-10-11T08:09:52.626810+00:00",
   "public_data_sources_checked_at": "2026-10-11T05:38:00.741627+00:00",
   "integration_revalidation_recorded_at": "2026-10-11T15:07:30.832140+00:00"

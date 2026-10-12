@@ -1,0 +1,999 @@
+{
+  "schema_version": "pulso_actual323_three_primary_semantic_reader_v1",
+  "source_id": "pulso_latercera",
+  "reviewer": "publisher_surfaces",
+  "review_id": "pulso_actual323_ilc_mask_published_and_mama_pending",
+  "recorded_at": "2026-10-11T22:06:30.804685+00:00",
+  "producer_commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+  "producer_run_id": 38177423421,
+  "producer_code_sha": "c2db17141fd55cbacbcda5b53805341aa4dfa86f",
+  "runtime_fingerprint": "c960999eea01aed6e578d0ca1354cb5f45b8720ae8832993d609d0db540b0406",
+  "inputs": {
+    "history": {
+      "commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "39e63cc84af25227fc7cf916ab42867ab8a84a085cb6fffb3b920aa2ba0ed11a"
+    },
+    "queue": {
+      "commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "b5fb262284e5ce28e6b9664703f2a94996ad7abef128a7f1c679fc0a83b26481"
+    },
+    "runtime_report": {
+      "commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "c746b44864dceb465c2d72889ed48e15510fcb7286f8d0840545f584afe6793e"
+    },
+    "telemetry": {
+      "commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "19bb3e6b2ae1e15c623a97eb08ae6b3f323b1c11cec6fa74aad359f3ca04cfad"
+    }
+  },
+  "all_three_actual_assessments": [
+    {
+      "manifest_order_1_based": 1,
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "publication_date": "2026-10-05",
+      "queue_fingerprint": "c670f94578b33beee724ab15570f664702be673272547ae7bf8d144658c47fb9",
+      "immutable_actual_model_primary_pin": {
+        "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+        "publication_date": "2026-10-05",
+        "body_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+        "html_sha256": "12dd0d1641d196ac0ec694da1852736d77f93e914a5036cf4a74f247ed120b64",
+        "model_sha256": "326fec40a0fb34bbdac3b5805ca0cac54ea86d9bff5924619f57e545873dcdaa",
+        "response_id": "resp_06ee18158a24b956006acc05c1f19c87d09f13899818b114c3",
+        "request_input_sha256": "0c8881ccd43cb7d116634f14cfa9764c9c66744a290c6f8733b9bed411c226c1"
+      },
+      "immutable_actual_model_primary_pin_sha256": "c780507b277495578b5fc6ac7d12064a7bc6b3b33710d0db53b8076a630b12b3",
+      "source_primary_flags": {
+        "article_verified": true,
+        "article_body_complete": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      "actual_status": "retry",
+      "actual_reason": "pulso_editorial_future_copy_not_grounded",
+      "actual_score": 80,
+      "actual_lane": "BACKFILL",
+      "original_full_primary_body": "Hasta el Centro de Mamografías Comunal de La Florida (Región Metropolitana) llegó esta jornada la ministra de Salud, May Chomali, junto a los subsecretarios de Salud Pública, Alejandra Pizarro, y Redes Asistenciales, Julio Montt, para reforzar la importancia de la detección precoz del cáncer de mama, la patología más frecuente que afecta a la población femenina en Chile y primera causa de muerte de mujeres por causa oncológica. Esto, en el marco del Mes de la Concientización sobre el Cáncer de Mama. “La cita más importante es contigo, como dice nuestra campaña”, afirmó al respecto la secretaria de Estado, manifestando en esta línea que “todas somos vulnerables al cáncer de mamá, unas más, otras menos, pero todas somos vulnerables”. En este sentido, la autoridad destacó el Mamógrafo Móvil de la comuna, así como también la atención en el Centro de Mamografías Comunal, los cuales funcionan de lunes a domingo, permitiendo así que mujeres que trabajan puedan realizarse el examen. “Aquí todo lo que ocurre es virtuoso para que las mujeres de la comuna de La Florida se beneficien de esta política pública”, afirmó. Asimismo, la autoridad ministerial destacó que la mamografía para mujeres de entre 50 y 69 años es gratuita, no requiere orden médica y existe un permiso laboral de medio día al año para realizarse el examen. “Prevenir y diagnosticar precozmente es mejor que curar, por eso la cita es contigo misma”, reiteró Chomali. Por su parte, el alcalde de La Florida, Daniel Reyes, destacó que como municipalidad vienen realizando un trabajo sostenido para facilitar herramientas para prevenir el cáncer de mamas. “Hace 12 años está funcionando nuestra Clínica Ginecológica Móvil para realizar mamografías en distintos sectores de nuestra comuna. Hace 2 años sumamos el Centro Mamográfico Nicole Díaz Correa con atención todos los días de la semana con horario extendido sábados y domingo”, sostuvo. Además de esto, indicó, se encuentran liderando un plan pionero preventivo a través de un examen genético que permite advertir riesgos hereditarios y adelantar aún más a un posible diagnóstico. “Este año llevamos realizadas más de 7 mil mamografías y estimamos cerrar el 2026 con más de 10.000 y 14 casos de examen genético, entregando herramientas para que no lleguemos tarde y que juntos salvemos vidas”, destacó. El Centro de Mamografías Comunal lleva el nombre de Nicole Díaz Correa, vecina de La Florida que falleció por un cáncer. Cuenta con tres radiólogos que informan las imágenes por telemedicina, fue inaugurado en marzo de 2025 y realiza, en promedio, 800 mamografías mensuales. En cuanto a cifras, y sobre la Alerta Oncológica que se llevó a cabo a comienzos de este año, el jefe del Departamento de Cáncer del Minsal, Alejandro Berkovits, destacó que entre el periodo de enero y julio de este año, existen 14.301 garantías activadas de sospecha de cáncer de mama, con una confirmación un poco superior al 30%. Es decir, se han diagnosticado 4.400 nuevos casos, un 7,6% más que el año pasado. Asimismo, hasta la fecha, se han cerrado 30.805 garantías, un 9,6% más que en 2025. “Eso habla que la Alerta Oncológica generó una conciencia de que probablemente había mujeres en que no estábamos presentes para hacer el diagnóstico y que, probablemente, tengamos más mujeres con cáncer de mama presente en el país”, sostuvo. Durante la mañana de este lunes la ministra Chomali estuvo presente en el inicio de la Expo APS 2026, encuentro que reúne a representantes del sector público, privado y académico para abordar los principales desafíos de la Atención Primaria de Salud en Chile. En la instancia, la autoridad señaló que, poniendo el énfasis en la detección precoz del cáncer, el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal, ya que un cuarto de los nuevos cánceres que se producen al año se relaciona con aspectos que podrían haberse detectado en APS, gracias a las nuevas tecnologías que existen. “Necesitamos una Atención Primaria fortalecida, que salga a su comunidad, que la comunidad la quiera, que la comunidad la respete y que no esté pensando en cuándo me van a mandar al hospital. No es lo que queremos, la atención primaria no es para derivar al hospital. Necesitamos una Atención Primaria más resolutiva, pero más fortalecida y que tenga la confianza no solamente de la comunidad, sino que también de los niveles secundarios y terciarios”, agregó",
+      "body_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+      "html_sha256": "12dd0d1641d196ac0ec694da1852736d77f93e914a5036cf4a74f247ed120b64",
+      "full_original_primary_body_read": true,
+      "full_actual_model_read": true,
+      "original_full_model_output": {
+        "relevance_score": 80,
+        "what_happened": "Según la nota del 5 de octubre de 2026, entre enero y julio de 2026 se reportaron 14.301 garantías activadas por sospecha de cáncer de mama y 4.400 diagnósticos, un 7,6% más que el año anterior. Hasta el 5 de octubre, la nota reportó 30.805 garantías cerradas, un 9,6% más que en 2025. La nota también informó que el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal, sin acreditar que esa orientación ya estuviera implementada. En La Florida, durante 2026 se habían realizado más de 7.000 mamografías; el alcalde estimó cerrar el año con más de 10.000 mamografías y 14 casos de examen genético.",
+        "why_it_matters": "Según la nota del 5 de octubre de 2026, la dirección anunciada por el Ministerio podría reorientar el trabajo de la Atención Primaria y aumentar el foco en la detección precoz, con efectos de atención para mujeres y de coordinación para municipios y prestadores, aunque la nota no acredita una implementación terminada. Las cifras reportadas para enero-julio de 2026 muestran un aumento de diagnósticos de cáncer de mama, mientras que las garantías cerradas corresponden al acumulado informado hasta el 5 de octubre y no deben extenderse al período enero-julio. La estimación municipal de superar 10.000 mamografías y alcanzar 14 casos de examen genético durante 2026 seguía siendo futura a la fecha de publicación.",
+        "reason": "La nota combina datos nacionales recientes de garantías y diagnósticos de cáncer de mama con una orientación ministerial reportada para la APS. Es una señal relevante para prestadores, municipios y autoridades sanitarias, pero su materialidad está limitada porque la pesquisa universal aparece como una decisión anunciada y no como una implementación verificada; además, parte del contenido es un balance local y una estimación futura.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "El contenido aborda directamente la detección, diagnóstico y cobertura de una enfermedad humana, además de una orientación ministerial para la Atención Primaria de Salud.",
+          "human_health_scope_quote": "la mamografía para mujeres de entre 50 y 69 años es gratuita, no requiere orden médica y existe un permiso laboral de medio día al año para realizarse el examen",
+          "actor": "el Ministerio",
+          "action": "tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+          "consequence": "un cuarto de los nuevos cánceres que se producen al año se relaciona con aspectos que podrían haberse detectado en APS",
+          "actor_quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+          "action_quote": "tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+          "consequence_quote": "ya que un cuarto de los nuevos cánceres que se producen al año se relaciona con aspectos que podrían haberse detectado en APS",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La nota reporta una orientación ministerial específica para enfocar la APS hacia una pesquisa universal y entrega cifras de 2026 sobre garantías activadas, diagnósticos y garantías cerradas. La orientación no equivale a implementación terminada y las cifras mantienen los períodos informados por la prensa.",
+          "novelty_quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Según la nota del 5 de octubre de 2026, entre enero y julio de 2026 se reportaron 14.301 garantías activadas por sospecha de cáncer de mama y 4.400 diagnósticos, un 7,6% más que el año anterior. Hasta el 5 de octubre, la nota reportó 30.805 garantías cerradas, un 9,6% más que en 2025. La nota también informó que el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal, sin acreditar que esa orientación ya estuviera implementada. En La Florida, durante 2026 se habían realizado más de 7.000 mamografías; el alcalde estimó cerrar el año con más de 10.000 mamografías y 14 casos de examen genético.",
+              "source_quote": "estimamos cerrar el 2026 con más de 10.000 y 14 casos de examen genético"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Según la nota del 5 de octubre de 2026, la dirección anunciada por el Ministerio podría reorientar el trabajo de la Atención Primaria y aumentar el foco en la detección precoz, con efectos de atención para mujeres y de coordinación para municipios y prestadores, aunque la nota no acredita una implementación terminada. Las cifras reportadas para enero-julio de 2026 muestran un aumento de diagnósticos de cáncer de mama, mientras que las garantías cerradas corresponden al acumulado informado hasta el 5 de octubre y no deben extenderse al período enero-julio. La estimación municipal de superar 10.000 mamografías y alcanzar 14 casos de examen genético durante 2026 seguía siendo futura a la fecha de publicación.",
+              "source_quote": "Necesitamos una Atención Primaria fortalecida, que salga a su comunidad, que la comunidad la quiera, que la comunidad la respete"
+            }
+          ]
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_06ee18158a24b956006acc05c1f19c87d09f13899818b114c3",
+          "analysis_text_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+          "request_input_sha256": "0c8881ccd43cb7d116634f14cfa9764c9c66744a290c6f8733b9bed411c226c1",
+          "raw_model_output_sha256": "121d775d281d337a5f2816507e020ef343972642b8122f0474ec380166a42288"
+        }
+      },
+      "original_model_output_sha256": "326fec40a0fb34bbdac3b5805ca0cac54ea86d9bff5924619f57e545873dcdaa",
+      "original_model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_06ee18158a24b956006acc05c1f19c87d09f13899818b114c3",
+        "analysis_text_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+        "request_input_sha256": "0c8881ccd43cb7d116634f14cfa9764c9c66744a290c6f8733b9bed411c226c1",
+        "raw_model_output_sha256": "121d775d281d337a5f2816507e020ef343972642b8122f0474ec380166a42288"
+      },
+      "actual_response_request_primary_binding": true,
+      "six_proof_quote_checks": [
+        {
+          "field": "human_health_scope_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "la mamografía para mujeres de entre 50 y 69 años es gratuita, no requiere orden médica y existe un permiso laboral de medio día al año para realizarse el examen"
+        },
+        {
+          "field": "actor_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal"
+        },
+        {
+          "field": "action_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal"
+        },
+        {
+          "field": "consequence_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "ya que un cuarto de los nuevos cánceres que se producen al año se relaciona con aspectos que podrían haberse detectado en APS"
+        },
+        {
+          "field": "event_status_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal"
+        },
+        {
+          "field": "novelty_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "el Ministerio tomó la decisión de enfocar la Atención Primaria de Salud hacia una pesquisa universal"
+        }
+      ],
+      "two_future_claim_checks": [
+        {
+          "summary_field": "what_happened",
+          "source_quote_contiguous_in_full_primary": true,
+          "whole_field_equals_actual_model": true,
+          "future_qualified": false,
+          "unqualified_achieved_copy": false,
+          "unsupported_clinical_completion": false
+        },
+        {
+          "summary_field": "why_it_matters",
+          "source_quote_contiguous_in_full_primary": true,
+          "whole_field_equals_actual_model": true,
+          "future_qualified": true,
+          "unqualified_achieved_copy": false,
+          "unsupported_clinical_completion": false
+        }
+      ],
+      "exact_reason": "The genuine new score80 response corrects the prior semantic errors:14,301 activated guarantees and4,400 confirmed diagnoses are January–July;30,805 closed guarantees are untilOctober5, with9.6%comparison, not assigned toJanuary–July. It does not invent activated-guarantee growth. The universal APS orientation is a decision, not implementation, and the local10,000/14 target remains an estimate. All six proof quotes and two future source quotes are contiguous, whole fields exact, but the dated WHAT alcalde estimó cerrar el año lacks a recognized future-qualification expression. Pending; no human publication.",
+      "publication_approved": false
+    },
+    {
+      "manifest_order_1_based": 2,
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "publication_date": "2026-09-01",
+      "queue_fingerprint": "852ddd50090ff6545524605d36658ae4751aebbd46d7796f728c9a6793485846",
+      "immutable_actual_model_primary_pin": {
+        "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+        "publication_date": "2026-09-01",
+        "body_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+        "html_sha256": "979d36ea3330af47a5de9870b7becd6808b26d8a9a14b14c0fb6805f5c8358fb",
+        "model_sha256": "08bc7c7fdffea478aba999ee3ddea36e76aa6e4bb12d7db64611712342d18ea4",
+        "response_id": "resp_0ba893c422f43fff006acbf46d7b7087d08f2e5202e0b8c81a",
+        "request_input_sha256": "a1914b9f3d0d1bb37baaedcda5002c68dc32600705276d93ebcd2c01c78a06b8"
+      },
+      "immutable_actual_model_primary_pin_sha256": "a9e0ee7ddb9ad0cd24837aaba1125c43bdacd7a165231f911f70d6eb0e348331",
+      "source_primary_flags": {
+        "article_verified": true,
+        "article_body_complete": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      "actual_status": "published",
+      "actual_reason": null,
+      "actual_score": 82,
+      "actual_lane": "BACKFILL",
+      "original_full_primary_body": "Un resultado que la compañía calificó como “histórico” logró en el primer semestre el brazo de inversiones de la Cámara Chilena de la Construcción (CChC). Es que Inversiones La Construcción (ILC) obtuvo ganancias por $165 mil millones a junio, lo que implicó un incremento de 45% en comparación con igual periodo del año anterior, gracias a que todas sus empresas registraron un mejor desempeño. Así, se convierte en el mejor resultado que ha obtenido ILC en un primer semestre. ILC está presente en los sectores de pensiones, salud, rentas vitalicias y banca; dado que es propietaria de RedSalud, isapre Consalud, Vida Cámara, AFP Habitat, Confuturo y Banco Internacional. “Estamos frente a resultados históricos para ILC y nuestro desafío hoy es mantenerlos. El nivel de resultados está explicado por el mejor desempeño transversal de nuestras empresas: un alto dinamismo del mercado de rentas vitalicias en Confuturo, mayor actividad en RedSalud, Banco Internacional que prácticamente duplicó su utilidad y el buen desempeño de AFP Habitat, AAISA y un escenario más estable en Consalud”, señaló Pablo González, gerente general de ILC. Agregó que “ese crecimiento transversal nos respalda para seguir invirtiendo en proyectos que generan valor social y económico de largo plazo para nuestros beneficiarios, clientes y accionistas”. En su análisis razonado, ILC detalló que las utilidades del primer semestre estuvieron principalmente explicadas “por el resultado obtenido de sus subsidiarias pertenecientes al sector financiero en donde, Pensiones, a través de Inversiones Previsionales Dos, obtuvo un resultado de $58.835 millones”; mientras que en Banco Internacional fue de $44.8621 millones, un alza del 99%; Confuturo logró un resultado de $39.410 millones, un 2,5% superior; y Vivir Seguros obtuvo $25.403 millones, el doble que en igual periodo de 2025. “Por su parte, las subsidiarias del sector salud obtuvieron una utilidad de $36.783 millones”, puntualizó la compañía. En ese sentido, el resultado adicional de $51 mil millones que consiguió ILC en el primer semestre versus igual periodo de 2025, “es consecuencia de un mejor desempeño de Banco Internacional por $22.334 millones, explicado por un mayor volumen de colocaciones y gestión de Tesorería, menor gasto en riesgo y un aumento en el resultado de su filial Autofin”. Pero también ”en Inversiones Previsionales Dos, se observa un mejor resultado por $18.056 millones asociado al mejor desempeño de Habitat Chile y en AAISA por el mejor resultado de sus filiales Habitat Perú, Andina Vida y Colfondos S.A. Pensiones y Cesantías. Adicionalmente, Vivir Seguros registra un resultado superior por $12.713 millones respecto a lo alcanzado durante el mismo periodo del año anterior, por mayor resultado proveniente del SISCO y mejor desempeño de inversiones”. Asimismo, la firma detalló en su análisis razonado que “el mayor resultado de las subsidiarias del sector salud por $8.664 millones, fue impulsado por el mejor desempeño de RedSalud, que registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones, explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán, que en el semestre contribuyó con una utilidad de $1.412 millones”. Por su parte, Consalud “registró un mayor resultado por $2.506 millones producto de un menor costo de licencias médicas, efecto inflación sobre contratos pactados en UF, y ajustes de tarifa GES y precio base, parcialmente compensado por una disminución de 3,6% de sus afiliados suscritos, un aumento en costo de remuneraciones y en gastos de ventas, y la amortización del pasivo por Tabla Única de Factores. Vida Cámara, por su parte, presenta una mayor utilidad por $1.778 millones, asociada a un mejor desempeño del segmento colectivo.",
+      "body_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+      "html_sha256": "979d36ea3330af47a5de9870b7becd6808b26d8a9a14b14c0fb6805f5c8358fb",
+      "full_original_primary_body_read": true,
+      "full_actual_model_read": true,
+      "original_full_model_output": {
+        "relevance_score": 82,
+        "what_happened": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, Inversiones La Construcción (ILC) reportó ganancias por $165 mil millones en el primer semestre de 2026, un 45% más que en igual período anterior. La nota atribuyó $36.783 millones a las subsidiarias del sector salud; dentro de ese resultado, RedSalud registró una utilidad superior en $4.380 millones frente al primer semestre de 2025, asociada a una mayor complejidad de sus prestaciones y a la incorporación del Sanatorio Alemán, que aportó $1.412 millones en el semestre. Consalud también registró un mayor resultado por $2.506 millones, aunque con una disminución de 3,6% de sus afiliados suscritos. Como proyección informada en esa misma fecha, el gerente general de ILC señaló que el crecimiento respaldaba a la compañía para seguir invirtiendo en proyectos de largo plazo.",
+        "why_it_matters": "Al 1 de septiembre de 2026, según la nota, los resultados de RedSalud y Consalud constituían parte del desempeño financiero del principal grupo propietario de prestadores y aseguramiento privado mencionado en el artículo. La señal es relevante para el radar porque cuantifica el desempeño semestral de negocios de salud, incluyendo la contribución del Sanatorio Alemán y el resultado de Consalud, pero no acredita por sí sola una mejora actual de cobertura, capacidad clínica o afiliación. En esa fecha, ILC también expresó su intención de seguir invirtiendo en proyectos de largo plazo; se trataba de una proyección declarada, no de inversiones ya ejecutadas ni de capacidad sanitaria adicional verificada.",
+        "reason": "La nota entrega resultados financieros semestrales cuantificados de ILC y de sus subsidiarias de salud, con desglose para RedSalud, Sanatorio Alemán y Consalud. Merece radar por su relevancia para prestadores y aseguramiento privado, aunque la evidencia corresponde a desempeño reportado y a una intención futura de inversión, no a una medida regulatoria ni a capacidad nueva ya implementada.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "El contenido vincula directamente el resultado de RedSalud con la complejidad de sus prestaciones y la incorporación de un sanatorio, además de reportar resultados de Consalud y afiliados suscritos. Es una señal financiera de actores de prestación y aseguramiento de salud humana en Chile.",
+          "human_health_scope_quote": "explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán, que en el semestre contribuyó con una utilidad de $1.412 millones",
+          "actor": "RedSalud",
+          "action": "registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones",
+          "consequence": "una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán",
+          "actor_quote": "mejor desempeño de RedSalud, que registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones, explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán, que en el semestre contribuyó con una utilidad de $1.412 millones",
+          "action_quote": "registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones",
+          "consequence_quote": "explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "seguir invirtiendo en proyectos que generan valor social y económico de largo plazo",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La nota reporta resultados cuantificados del primer semestre y desglosa por primera vez dentro de este contenido el aporte de RedSalud, Sanatorio Alemán y Consalud; no se limita a una descripción corporativa general.",
+          "novelty_quote": "las subsidiarias del sector salud obtuvieron una utilidad de $36.783 millones",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, Inversiones La Construcción (ILC) reportó ganancias por $165 mil millones en el primer semestre de 2026, un 45% más que en igual período anterior. La nota atribuyó $36.783 millones a las subsidiarias del sector salud; dentro de ese resultado, RedSalud registró una utilidad superior en $4.380 millones frente al primer semestre de 2025, asociada a una mayor complejidad de sus prestaciones y a la incorporación del Sanatorio Alemán, que aportó $1.412 millones en el semestre. Consalud también registró un mayor resultado por $2.506 millones, aunque con una disminución de 3,6% de sus afiliados suscritos. Como proyección informada en esa misma fecha, el gerente general de ILC señaló que el crecimiento respaldaba a la compañía para seguir invirtiendo en proyectos de largo plazo.",
+              "source_quote": "ese crecimiento transversal nos respalda para seguir invirtiendo en proyectos que generan valor social y económico de largo plazo para nuestros beneficiarios, clientes y accionistas"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Al 1 de septiembre de 2026, según la nota, los resultados de RedSalud y Consalud constituían parte del desempeño financiero del principal grupo propietario de prestadores y aseguramiento privado mencionado en el artículo. La señal es relevante para el radar porque cuantifica el desempeño semestral de negocios de salud, incluyendo la contribución del Sanatorio Alemán y el resultado de Consalud, pero no acredita por sí sola una mejora actual de cobertura, capacidad clínica o afiliación. En esa fecha, ILC también expresó su intención de seguir invirtiendo en proyectos de largo plazo; se trataba de una proyección declarada, no de inversiones ya ejecutadas ni de capacidad sanitaria adicional verificada.",
+              "source_quote": "ese crecimiento transversal nos respalda para seguir invirtiendo en proyectos que generan valor social y económico de largo plazo para nuestros beneficiarios, clientes y accionistas"
+            }
+          ]
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0ba893c422f43fff006acbf46d7b7087d08f2e5202e0b8c81a",
+          "analysis_text_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+          "request_input_sha256": "a1914b9f3d0d1bb37baaedcda5002c68dc32600705276d93ebcd2c01c78a06b8",
+          "raw_model_output_sha256": "823dc51b34ecf338a0bb46ebff499c794f4618ffa7c8edaf0d64a50f5d5227d2"
+        }
+      },
+      "original_model_output_sha256": "08bc7c7fdffea478aba999ee3ddea36e76aa6e4bb12d7db64611712342d18ea4",
+      "original_model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0ba893c422f43fff006acbf46d7b7087d08f2e5202e0b8c81a",
+        "analysis_text_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+        "request_input_sha256": "a1914b9f3d0d1bb37baaedcda5002c68dc32600705276d93ebcd2c01c78a06b8",
+        "raw_model_output_sha256": "823dc51b34ecf338a0bb46ebff499c794f4618ffa7c8edaf0d64a50f5d5227d2"
+      },
+      "actual_response_request_primary_binding": true,
+      "six_proof_quote_checks": [
+        {
+          "field": "human_health_scope_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán, que en el semestre contribuyó con una utilidad de $1.412 millones"
+        },
+        {
+          "field": "actor_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "mejor desempeño de RedSalud, que registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones, explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán, que en el semestre contribuyó con una utilidad de $1.412 millones"
+        },
+        {
+          "field": "action_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones"
+        },
+        {
+          "field": "consequence_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán"
+        },
+        {
+          "field": "event_status_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "seguir invirtiendo en proyectos que generan valor social y económico de largo plazo"
+        },
+        {
+          "field": "novelty_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "las subsidiarias del sector salud obtuvieron una utilidad de $36.783 millones"
+        }
+      ],
+      "two_future_claim_checks": [
+        {
+          "summary_field": "what_happened",
+          "source_quote_contiguous_in_full_primary": true,
+          "whole_field_equals_actual_model": true,
+          "future_qualified": true,
+          "unqualified_achieved_copy": false,
+          "unsupported_clinical_completion": false
+        },
+        {
+          "summary_field": "why_it_matters",
+          "source_quote_contiguous_in_full_primary": true,
+          "whole_field_equals_actual_model": true,
+          "future_qualified": true,
+          "unqualified_achieved_copy": false,
+          "unsupported_clinical_completion": false
+        }
+      ],
+      "exact_reason": "The complete reported financial result distinguishes165billion holding profit from36,783million health-subsidiary profit. RedSalud4,380million and Consalud2,506million are differences from the comparison semester, not their absolute profit;Sanatorio1,412million is contribution. Affiliates−3.6% and futureinvestment remain separate. Existing source body/date/media maturity and the pinned genuine paid reuse are intact. Accept; no copied fact is official confirmation or new capacity achieved.",
+      "publication_approved": false
+    },
+    {
+      "manifest_order_1_based": 3,
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "publication_date": "2026-09-01",
+      "queue_fingerprint": "b2ad52c4b0bc300bba9d63b86165a18e56f551fcc8fa9b4990611a68772f7114",
+      "immutable_actual_model_primary_pin": {
+        "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+        "publication_date": "2026-09-01",
+        "body_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+        "html_sha256": "8005d3bd4577194f26fbe104d039968189ee4140695fd0f34f5b4a556d457505",
+        "model_sha256": "727de0a669fc995610e4f1769f8fd410f92b16d03f73268b75ab3540f9b8539a",
+        "response_id": "resp_0482b05a494763e7006acbf490607c87d0bfa2f797f7a616b8",
+        "request_input_sha256": "84755be99de3e38baaf62c92dc9fabb41e24b8481dde112e787da155ad0ec269"
+      },
+      "immutable_actual_model_primary_pin_sha256": "e574e8e3ba1eb974beb469441651d8a9a455f7894c68826310567627d5f1ad7a",
+      "source_primary_flags": {
+        "article_verified": true,
+        "article_body_complete": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      "actual_status": "published",
+      "actual_reason": null,
+      "actual_score": 86,
+      "actual_lane": "BACKFILL",
+      "original_full_primary_body": "En un escenario epidemiológico marcado por una alta circulación de virus respiratorios, el Ministerio de Salud anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país, medida que está vigente desde el 1 de abril. Según se detalla en el último reporte de la Campaña de Invierno correspondiente a la semana epidemiológica 33 -16 y al 22 de agosto-, la positividad de las muestras alcanzó un 56,1%, el registro más alto de 2026 hasta ese momento. Entre los virus detectados, se indica, el rinovirus concentra el 32,3% de las detecciones, seguido por el Virus Respiratorio Sincicial (VRS), con 26,6% %, y la Influenza B, con 14,3%. Respecto a la decisión, la subsecretaria de Salud Pública, Alejandra Pizarro, explicó que el objetivo es reforzar la protección de las personas que se encuentran en espacios asistenciales donde existe una mayor exposición a virus respiratorios. “Hemos decidido extender hasta el 30 de septiembre el uso obligatorio de mascarillas en los servicios de urgencia, unidades de diálisis y oncohematología, tanto de la red pública como privada. Lo hacemos porque los virus respiratorios siguen circulando con fuerza y más de la mitad de las muestras analizadas están dando positivo a estos virus”, explicó la autoridad. Junto con esto, la autoridad sanitaria también apuntó a que esto corresponde a una medida de cuidado, especialmente, para quienes están en tratamiento médico y para nuestros grupos más vulnerables, como los niños y las personas mayores de 60 años. “En estos espacios necesitamos reducir las posibilidades de contagio y proteger tanto a los pacientes como a los equipos de salud”, sostuvo. Desde el Ministerio de Salud se reiteró que la prevención de los contagios sigue siendo fundamental durante este periodo de alta circulación viral. En este sentido, se recomienda mantener el uso de mascarilla en caso de tener síntomas respiratorios, ventilar los espacios, realizar un adecuado lavado de manos y evitar asistir a lugares de trabajo o estudio cuando se presentan síntomas respiratorios.",
+      "body_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+      "html_sha256": "8005d3bd4577194f26fbe104d039968189ee4140695fd0f34f5b4a556d457505",
+      "full_original_primary_body_read": true,
+      "full_actual_model_read": true,
+      "original_full_model_output": {
+        "relevance_score": 86,
+        "what_happened": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, el Ministerio de Salud anunció extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país. La obligación estaba vigente desde el 1 de abril y la nota reportó una positividad de 56,1% en las muestras de la semana epidemiológica 33, correspondiente al 16 y al 22 de agosto. La extensión se anunciaba para ese período y este contenido no acredita que la medida siguiera vigente al 11 de octubre de 2026.",
+        "why_it_matters": "Al 1 de septiembre de 2026, según la nota, la medida del Ministerio de Salud afectaba a prestadores públicos y privados de todo Chile y buscaba reforzar la protección de pacientes, personas en tratamiento médico y equipos de salud en espacios asistenciales con mayor exposición a virus respiratorios. La señal merecía atención por su alcance nacional y por basarse en una positividad de 56,1% registrada en la semana epidemiológica 33; la nota no acredita que esa obligación permaneciera vigente al 11 de octubre.",
+        "reason": "Señal regulatoria sanitaria nacional y temporal, con efecto directo en la operación de servicios de urgencia, diálisis y oncohematología públicos y privados. La nota combina una medida ya vigente con una extensión anunciada hasta el 30 de septiembre, por lo que no permite inferir vigencia posterior a la fecha de revisión.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La nota describe una obligación sanitaria aplicada directamente a espacios de atención humana —urgencias, diálisis y oncohematología— para proteger a pacientes y equipos de salud frente a virus respiratorios.",
+          "human_health_scope_quote": "uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología",
+          "actor": "el Ministerio de Salud",
+          "action": "anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla",
+          "consequence": "reforzar la protección de las personas que se encuentran en espacios asistenciales donde existe una mayor exposición a virus respiratorios",
+          "actor_quote": "el Ministerio de Salud anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país",
+          "action_quote": "anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país",
+          "consequence_quote": "el objetivo es reforzar la protección de las personas que se encuentran en espacios asistenciales donde existe una mayor exposición a virus respiratorios",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "anunció esta jornada extender hasta el 30 de septiembre",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "El cuerpo reporta una extensión nacional concreta de una obligación sanitaria, con fecha de término anunciada y datos epidemiológicos de la semana 33; esos elementos constituyen una señal material para prestadores y equipos de salud.",
+          "novelty_quote": "Hemos decidido extender hasta el 30 de septiembre el uso obligatorio de mascarillas en los servicios de urgencia, unidades de diálisis y oncohematología, tanto de la red pública como privada.",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, el Ministerio de Salud anunció extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país. La obligación estaba vigente desde el 1 de abril y la nota reportó una positividad de 56,1% en las muestras de la semana epidemiológica 33, correspondiente al 16 y al 22 de agosto. La extensión se anunciaba para ese período y este contenido no acredita que la medida siguiera vigente al 11 de octubre de 2026.",
+              "source_quote": "Hemos decidido extender hasta el 30 de septiembre el uso obligatorio de mascarillas en los servicios de urgencia, unidades de diálisis y oncohematología, tanto de la red pública como privada."
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Al 1 de septiembre de 2026, según la nota, la medida del Ministerio de Salud afectaba a prestadores públicos y privados de todo Chile y buscaba reforzar la protección de pacientes, personas en tratamiento médico y equipos de salud en espacios asistenciales con mayor exposición a virus respiratorios. La señal merecía atención por su alcance nacional y por basarse en una positividad de 56,1% registrada en la semana epidemiológica 33; la nota no acredita que esa obligación permaneciera vigente al 11 de octubre.",
+              "source_quote": "En estos espacios necesitamos reducir las posibilidades de contagio y proteger tanto a los pacientes como a los equipos de salud"
+            }
+          ]
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0482b05a494763e7006acbf490607c87d0bfa2f797f7a616b8",
+          "analysis_text_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+          "request_input_sha256": "84755be99de3e38baaf62c92dc9fabb41e24b8481dde112e787da155ad0ec269",
+          "raw_model_output_sha256": "15febf4dd527675d1c03adec0483ed781c6141417fcd49f44cd3e151fb853e04"
+        }
+      },
+      "original_model_output_sha256": "727de0a669fc995610e4f1769f8fd410f92b16d03f73268b75ab3540f9b8539a",
+      "original_model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0482b05a494763e7006acbf490607c87d0bfa2f797f7a616b8",
+        "analysis_text_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+        "request_input_sha256": "84755be99de3e38baaf62c92dc9fabb41e24b8481dde112e787da155ad0ec269",
+        "raw_model_output_sha256": "15febf4dd527675d1c03adec0483ed781c6141417fcd49f44cd3e151fb853e04"
+      },
+      "actual_response_request_primary_binding": true,
+      "six_proof_quote_checks": [
+        {
+          "field": "human_health_scope_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología"
+        },
+        {
+          "field": "actor_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "el Ministerio de Salud anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país"
+        },
+        {
+          "field": "action_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país"
+        },
+        {
+          "field": "consequence_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "el objetivo es reforzar la protección de las personas que se encuentran en espacios asistenciales donde existe una mayor exposición a virus respiratorios"
+        },
+        {
+          "field": "event_status_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "anunció esta jornada extender hasta el 30 de septiembre"
+        },
+        {
+          "field": "novelty_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "Hemos decidido extender hasta el 30 de septiembre el uso obligatorio de mascarillas en los servicios de urgencia, unidades de diálisis y oncohematología, tanto de la red pública como privada."
+        }
+      ],
+      "two_future_claim_checks": [
+        {
+          "summary_field": "what_happened",
+          "source_quote_contiguous_in_full_primary": true,
+          "whole_field_equals_actual_model": true,
+          "future_qualified": true,
+          "unqualified_achieved_copy": false,
+          "unsupported_clinical_completion": false
+        },
+        {
+          "summary_field": "why_it_matters",
+          "source_quote_contiguous_in_full_primary": true,
+          "whole_field_equals_actual_model": true,
+          "future_qualified": true,
+          "unqualified_achieved_copy": false,
+          "unsupported_clinical_completion": false
+        }
+      ],
+      "exact_reason": "The press report dates the mandatory-mask extension onSeptember1 throughSeptember30, with positivity56.1%fromweek33 August16–22. Both fields expressly avoid October11 validity. This is a national reported healthcare obligation for urgent care/dialysis/oncohematology, so categoryRegulación &Legal is more accurate than Mercado. Correct category only; keep both complete texts, score86, planned/True, body and paid response unchanged.",
+      "publication_approved": false
+    }
+  ],
+  "all_signals": [
+    {
+      "manifest_order_1_based": 2,
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "publication_date": "2026-09-01",
+      "queue_fingerprint": "852ddd50090ff6545524605d36658ae4751aebbd46d7796f728c9a6793485846",
+      "immutable_actual_model_primary_pin": {
+        "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+        "publication_date": "2026-09-01",
+        "body_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+        "html_sha256": "979d36ea3330af47a5de9870b7becd6808b26d8a9a14b14c0fb6805f5c8358fb",
+        "model_sha256": "08bc7c7fdffea478aba999ee3ddea36e76aa6e4bb12d7db64611712342d18ea4",
+        "response_id": "resp_0ba893c422f43fff006acbf46d7b7087d08f2e5202e0b8c81a",
+        "request_input_sha256": "a1914b9f3d0d1bb37baaedcda5002c68dc32600705276d93ebcd2c01c78a06b8"
+      },
+      "immutable_actual_model_primary_pin_sha256": "a9e0ee7ddb9ad0cd24837aaba1125c43bdacd7a165231f911f70d6eb0e348331",
+      "source_primary_flags": {
+        "article_verified": true,
+        "article_body_complete": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      "actual_status": "published",
+      "actual_reason": null,
+      "actual_score": 82,
+      "actual_lane": "BACKFILL",
+      "original_full_primary_body": "Un resultado que la compañía calificó como “histórico” logró en el primer semestre el brazo de inversiones de la Cámara Chilena de la Construcción (CChC). Es que Inversiones La Construcción (ILC) obtuvo ganancias por $165 mil millones a junio, lo que implicó un incremento de 45% en comparación con igual periodo del año anterior, gracias a que todas sus empresas registraron un mejor desempeño. Así, se convierte en el mejor resultado que ha obtenido ILC en un primer semestre. ILC está presente en los sectores de pensiones, salud, rentas vitalicias y banca; dado que es propietaria de RedSalud, isapre Consalud, Vida Cámara, AFP Habitat, Confuturo y Banco Internacional. “Estamos frente a resultados históricos para ILC y nuestro desafío hoy es mantenerlos. El nivel de resultados está explicado por el mejor desempeño transversal de nuestras empresas: un alto dinamismo del mercado de rentas vitalicias en Confuturo, mayor actividad en RedSalud, Banco Internacional que prácticamente duplicó su utilidad y el buen desempeño de AFP Habitat, AAISA y un escenario más estable en Consalud”, señaló Pablo González, gerente general de ILC. Agregó que “ese crecimiento transversal nos respalda para seguir invirtiendo en proyectos que generan valor social y económico de largo plazo para nuestros beneficiarios, clientes y accionistas”. En su análisis razonado, ILC detalló que las utilidades del primer semestre estuvieron principalmente explicadas “por el resultado obtenido de sus subsidiarias pertenecientes al sector financiero en donde, Pensiones, a través de Inversiones Previsionales Dos, obtuvo un resultado de $58.835 millones”; mientras que en Banco Internacional fue de $44.8621 millones, un alza del 99%; Confuturo logró un resultado de $39.410 millones, un 2,5% superior; y Vivir Seguros obtuvo $25.403 millones, el doble que en igual periodo de 2025. “Por su parte, las subsidiarias del sector salud obtuvieron una utilidad de $36.783 millones”, puntualizó la compañía. En ese sentido, el resultado adicional de $51 mil millones que consiguió ILC en el primer semestre versus igual periodo de 2025, “es consecuencia de un mejor desempeño de Banco Internacional por $22.334 millones, explicado por un mayor volumen de colocaciones y gestión de Tesorería, menor gasto en riesgo y un aumento en el resultado de su filial Autofin”. Pero también ”en Inversiones Previsionales Dos, se observa un mejor resultado por $18.056 millones asociado al mejor desempeño de Habitat Chile y en AAISA por el mejor resultado de sus filiales Habitat Perú, Andina Vida y Colfondos S.A. Pensiones y Cesantías. Adicionalmente, Vivir Seguros registra un resultado superior por $12.713 millones respecto a lo alcanzado durante el mismo periodo del año anterior, por mayor resultado proveniente del SISCO y mejor desempeño de inversiones”. Asimismo, la firma detalló en su análisis razonado que “el mayor resultado de las subsidiarias del sector salud por $8.664 millones, fue impulsado por el mejor desempeño de RedSalud, que registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones, explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán, que en el semestre contribuyó con una utilidad de $1.412 millones”. Por su parte, Consalud “registró un mayor resultado por $2.506 millones producto de un menor costo de licencias médicas, efecto inflación sobre contratos pactados en UF, y ajustes de tarifa GES y precio base, parcialmente compensado por una disminución de 3,6% de sus afiliados suscritos, un aumento en costo de remuneraciones y en gastos de ventas, y la amortización del pasivo por Tabla Única de Factores. Vida Cámara, por su parte, presenta una mayor utilidad por $1.778 millones, asociada a un mejor desempeño del segmento colectivo.",
+      "body_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+      "html_sha256": "979d36ea3330af47a5de9870b7becd6808b26d8a9a14b14c0fb6805f5c8358fb",
+      "full_original_primary_body_read": true,
+      "full_actual_model_read": true,
+      "original_full_model_output": {
+        "relevance_score": 82,
+        "what_happened": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, Inversiones La Construcción (ILC) reportó ganancias por $165 mil millones en el primer semestre de 2026, un 45% más que en igual período anterior. La nota atribuyó $36.783 millones a las subsidiarias del sector salud; dentro de ese resultado, RedSalud registró una utilidad superior en $4.380 millones frente al primer semestre de 2025, asociada a una mayor complejidad de sus prestaciones y a la incorporación del Sanatorio Alemán, que aportó $1.412 millones en el semestre. Consalud también registró un mayor resultado por $2.506 millones, aunque con una disminución de 3,6% de sus afiliados suscritos. Como proyección informada en esa misma fecha, el gerente general de ILC señaló que el crecimiento respaldaba a la compañía para seguir invirtiendo en proyectos de largo plazo.",
+        "why_it_matters": "Al 1 de septiembre de 2026, según la nota, los resultados de RedSalud y Consalud constituían parte del desempeño financiero del principal grupo propietario de prestadores y aseguramiento privado mencionado en el artículo. La señal es relevante para el radar porque cuantifica el desempeño semestral de negocios de salud, incluyendo la contribución del Sanatorio Alemán y el resultado de Consalud, pero no acredita por sí sola una mejora actual de cobertura, capacidad clínica o afiliación. En esa fecha, ILC también expresó su intención de seguir invirtiendo en proyectos de largo plazo; se trataba de una proyección declarada, no de inversiones ya ejecutadas ni de capacidad sanitaria adicional verificada.",
+        "reason": "La nota entrega resultados financieros semestrales cuantificados de ILC y de sus subsidiarias de salud, con desglose para RedSalud, Sanatorio Alemán y Consalud. Merece radar por su relevancia para prestadores y aseguramiento privado, aunque la evidencia corresponde a desempeño reportado y a una intención futura de inversión, no a una medida regulatoria ni a capacidad nueva ya implementada.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "El contenido vincula directamente el resultado de RedSalud con la complejidad de sus prestaciones y la incorporación de un sanatorio, además de reportar resultados de Consalud y afiliados suscritos. Es una señal financiera de actores de prestación y aseguramiento de salud humana en Chile.",
+          "human_health_scope_quote": "explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán, que en el semestre contribuyó con una utilidad de $1.412 millones",
+          "actor": "RedSalud",
+          "action": "registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones",
+          "consequence": "una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán",
+          "actor_quote": "mejor desempeño de RedSalud, que registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones, explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán, que en el semestre contribuyó con una utilidad de $1.412 millones",
+          "action_quote": "registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones",
+          "consequence_quote": "explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "seguir invirtiendo en proyectos que generan valor social y económico de largo plazo",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La nota reporta resultados cuantificados del primer semestre y desglosa por primera vez dentro de este contenido el aporte de RedSalud, Sanatorio Alemán y Consalud; no se limita a una descripción corporativa general.",
+          "novelty_quote": "las subsidiarias del sector salud obtuvieron una utilidad de $36.783 millones",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, Inversiones La Construcción (ILC) reportó ganancias por $165 mil millones en el primer semestre de 2026, un 45% más que en igual período anterior. La nota atribuyó $36.783 millones a las subsidiarias del sector salud; dentro de ese resultado, RedSalud registró una utilidad superior en $4.380 millones frente al primer semestre de 2025, asociada a una mayor complejidad de sus prestaciones y a la incorporación del Sanatorio Alemán, que aportó $1.412 millones en el semestre. Consalud también registró un mayor resultado por $2.506 millones, aunque con una disminución de 3,6% de sus afiliados suscritos. Como proyección informada en esa misma fecha, el gerente general de ILC señaló que el crecimiento respaldaba a la compañía para seguir invirtiendo en proyectos de largo plazo.",
+              "source_quote": "ese crecimiento transversal nos respalda para seguir invirtiendo en proyectos que generan valor social y económico de largo plazo para nuestros beneficiarios, clientes y accionistas"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Al 1 de septiembre de 2026, según la nota, los resultados de RedSalud y Consalud constituían parte del desempeño financiero del principal grupo propietario de prestadores y aseguramiento privado mencionado en el artículo. La señal es relevante para el radar porque cuantifica el desempeño semestral de negocios de salud, incluyendo la contribución del Sanatorio Alemán y el resultado de Consalud, pero no acredita por sí sola una mejora actual de cobertura, capacidad clínica o afiliación. En esa fecha, ILC también expresó su intención de seguir invirtiendo en proyectos de largo plazo; se trataba de una proyección declarada, no de inversiones ya ejecutadas ni de capacidad sanitaria adicional verificada.",
+              "source_quote": "ese crecimiento transversal nos respalda para seguir invirtiendo en proyectos que generan valor social y económico de largo plazo para nuestros beneficiarios, clientes y accionistas"
+            }
+          ]
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0ba893c422f43fff006acbf46d7b7087d08f2e5202e0b8c81a",
+          "analysis_text_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+          "request_input_sha256": "a1914b9f3d0d1bb37baaedcda5002c68dc32600705276d93ebcd2c01c78a06b8",
+          "raw_model_output_sha256": "823dc51b34ecf338a0bb46ebff499c794f4618ffa7c8edaf0d64a50f5d5227d2"
+        }
+      },
+      "original_model_output_sha256": "08bc7c7fdffea478aba999ee3ddea36e76aa6e4bb12d7db64611712342d18ea4",
+      "original_model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0ba893c422f43fff006acbf46d7b7087d08f2e5202e0b8c81a",
+        "analysis_text_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+        "request_input_sha256": "a1914b9f3d0d1bb37baaedcda5002c68dc32600705276d93ebcd2c01c78a06b8",
+        "raw_model_output_sha256": "823dc51b34ecf338a0bb46ebff499c794f4618ffa7c8edaf0d64a50f5d5227d2"
+      },
+      "actual_response_request_primary_binding": true,
+      "six_proof_quote_checks": [
+        {
+          "field": "human_health_scope_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán, que en el semestre contribuyó con una utilidad de $1.412 millones"
+        },
+        {
+          "field": "actor_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "mejor desempeño de RedSalud, que registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones, explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán, que en el semestre contribuyó con una utilidad de $1.412 millones"
+        },
+        {
+          "field": "action_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones"
+        },
+        {
+          "field": "consequence_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán"
+        },
+        {
+          "field": "event_status_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "seguir invirtiendo en proyectos que generan valor social y económico de largo plazo"
+        },
+        {
+          "field": "novelty_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "las subsidiarias del sector salud obtuvieron una utilidad de $36.783 millones"
+        }
+      ],
+      "two_future_claim_checks": [
+        {
+          "summary_field": "what_happened",
+          "source_quote_contiguous_in_full_primary": true,
+          "whole_field_equals_actual_model": true,
+          "future_qualified": true,
+          "unqualified_achieved_copy": false,
+          "unsupported_clinical_completion": false
+        },
+        {
+          "summary_field": "why_it_matters",
+          "source_quote_contiguous_in_full_primary": true,
+          "whole_field_equals_actual_model": true,
+          "future_qualified": true,
+          "unqualified_achieved_copy": false,
+          "unsupported_clinical_completion": false
+        }
+      ],
+      "exact_reason": "The complete reported financial result distinguishes165billion holding profit from36,783million health-subsidiary profit. RedSalud4,380million and Consalud2,506million are differences from the comparison semester, not their absolute profit;Sanatorio1,412million is contribution. Affiliates−3.6% and futureinvestment remain separate. Existing source body/date/media maturity and the pinned genuine paid reuse are intact. Accept; no copied fact is official confirmation or new capacity achieved.",
+      "publication_approved": false,
+      "review_index": 1,
+      "source_commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+      "original_body_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+      "original_html_sha256": "979d36ea3330af47a5de9870b7becd6808b26d8a9a14b14c0fb6805f5c8358fb",
+      "full_original_body_read": true,
+      "full_signal_read": true,
+      "original_full_signal": {
+        "title": "Ganancias de ILC suben 45% a $165 mil millones en el primer semestre gracias a un mejor resultado en todas sus empresas",
+        "source_name": "Pulso / La Tercera",
+        "source_type": "press_high_trust",
+        "source_url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+        "category": "Aseguramiento",
+        "subcategory": "General",
+        "system_domain": "HEALTH",
+        "what_happened": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, Inversiones La Construcción (ILC) reportó ganancias por $165 mil millones en el primer semestre de 2026, un 45% más que en igual período anterior. La nota atribuyó $36.783 millones a las subsidiarias del sector salud; dentro de ese resultado, RedSalud registró una utilidad superior en $4.380 millones frente al primer semestre de 2025, asociada a una mayor complejidad de sus prestaciones y a la incorporación del Sanatorio Alemán, que aportó $1.412 millones en el semestre. Consalud también registró un mayor resultado por $2.506 millones, aunque con una disminución de 3,6% de sus afiliados suscritos. Como proyección informada en esa misma fecha, el gerente general de ILC señaló que el crecimiento respaldaba a la compañía para seguir invirtiendo en proyectos de largo plazo.",
+        "event_date": "2026-09-01",
+        "detected_at": "2026-10-11T06:23:48.863044+00:00",
+        "primary_source_url": null,
+        "event_type": "OTHER",
+        "strategic_theme": [],
+        "institution_types": [],
+        "entity_refs": [],
+        "country": "CL",
+        "topics": [
+          "insurance",
+          "providers",
+          "investment_ma",
+          "financing",
+          "competition"
+        ],
+        "entities": [],
+        "people": [],
+        "geography": [],
+        "key_facts": [],
+        "key_numbers": [],
+        "why_it_matters": "Al 1 de septiembre de 2026, según la nota, los resultados de RedSalud y Consalud constituían parte del desempeño financiero del principal grupo propietario de prestadores y aseguramiento privado mencionado en el artículo. La señal es relevante para el radar porque cuantifica el desempeño semestral de negocios de salud, incluyendo la contribución del Sanatorio Alemán y el resultado de Consalud, pero no acredita por sí sola una mejora actual de cobertura, capacidad clínica o afiliación. En esa fecha, ILC también expresó su intención de seguir invirtiendo en proyectos de largo plazo; se trataba de una proyección declarada, no de inversiones ya ejecutadas ni de capacidad sanitaria adicional verificada.",
+        "who_cares": [],
+        "possible_implications": [],
+        "watch_tags": [
+          "pulso_latercera",
+          "media",
+          "isapres"
+        ],
+        "connection_keys": [],
+        "trend_keys": [],
+        "prospective_evidence": true,
+        "economic_impact_score": 82,
+        "regulatory_impact_score": 55,
+        "scope_score": 82,
+        "novelty_score": 82,
+        "actionability_score": 76,
+        "source_quality_score": 92,
+        "radar_score": 77,
+        "confidence_score": 92,
+        "distribution": "archive",
+        "validation_status": "automatic",
+        "corroboration_status": "unknown",
+        "additional_sources": [],
+        "source_documents": [],
+        "key_points": [],
+        "risk_notes": [],
+        "data_insights": [],
+        "data_insight_meta": {},
+        "validity_text": null,
+        "related_reference_ids": [],
+        "original_language": "es",
+        "display_language": "es",
+        "translation_status": "not_required",
+        "original_title": null,
+        "original_what_happened": null,
+        "original_why_it_matters": null,
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Isapres"
+        ],
+        "editorial_relevance": 82,
+        "source_quality_gate": "passed",
+        "evidence_maturity": "media_reported",
+        "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+        "publication_date": "2026-09-01",
+        "publication_timestamp": "2026-09-01T15:28:08.452Z",
+        "publication_date_source": "visible_article_byline",
+        "editorial_assessment": {
+          "decision": "published",
+          "relevance_score": 82,
+          "threshold": 72,
+          "analysis_reason": "La nota entrega resultados financieros semestrales cuantificados de ILC y de sus subsidiarias de salud, con desglose para RedSalud, Sanatorio Alemán y Consalud. Merece radar por su relevancia para prestadores y aseguramiento privado, aunque la evidencia corresponde a desempeño reportado y a una intención futura de inversión, no a una medida regulatoria ni a capacidad nueva ya implementada."
+        },
+        "ingestion_mode": "BACKFILL"
+      },
+      "original_signal_sha256": "762d12f6418b61301b6d992bff2d1c02d3036bc2f1c5b4768202674825d4bc62",
+      "original_published_what_happened": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, Inversiones La Construcción (ILC) reportó ganancias por $165 mil millones en el primer semestre de 2026, un 45% más que en igual período anterior. La nota atribuyó $36.783 millones a las subsidiarias del sector salud; dentro de ese resultado, RedSalud registró una utilidad superior en $4.380 millones frente al primer semestre de 2025, asociada a una mayor complejidad de sus prestaciones y a la incorporación del Sanatorio Alemán, que aportó $1.412 millones en el semestre. Consalud también registró un mayor resultado por $2.506 millones, aunque con una disminución de 3,6% de sus afiliados suscritos. Como proyección informada en esa misma fecha, el gerente general de ILC señaló que el crecimiento respaldaba a la compañía para seguir invirtiendo en proyectos de largo plazo.",
+      "original_published_why_it_matters": "Al 1 de septiembre de 2026, según la nota, los resultados de RedSalud y Consalud constituían parte del desempeño financiero del principal grupo propietario de prestadores y aseguramiento privado mencionado en el artículo. La señal es relevante para el radar porque cuantifica el desempeño semestral de negocios de salud, incluyendo la contribución del Sanatorio Alemán y el resultado de Consalud, pero no acredita por sí sola una mejora actual de cobertura, capacidad clínica o afiliación. En esa fecha, ILC también expresó su intención de seguir invirtiendo en proyectos de largo plazo; se trataba de una proyección declarada, no de inversiones ya ejecutadas ni de capacidad sanitaria adicional verificada.",
+      "original_output_binding": {
+        "retained_model_output_semantic_sha256": "08bc7c7fdffea478aba999ee3ddea36e76aa6e4bb12d7db64611712342d18ea4",
+        "model_response": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0ba893c422f43fff006acbf46d7b7087d08f2e5202e0b8c81a",
+          "analysis_text_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+          "request_input_sha256": "a1914b9f3d0d1bb37baaedcda5002c68dc32600705276d93ebcd2c01c78a06b8",
+          "raw_model_output_sha256": "823dc51b34ecf338a0bb46ebff499c794f4618ffa7c8edaf0d64a50f5d5227d2"
+        },
+        "signal_sha256": "762d12f6418b61301b6d992bff2d1c02d3036bc2f1c5b4768202674825d4bc62"
+      },
+      "original_model_assessment": {
+        "decision": "published",
+        "relevance_score": 82,
+        "threshold": 72,
+        "analysis_reason": "La nota entrega resultados financieros semestrales cuantificados de ILC y de sus subsidiarias de salud, con desglose para RedSalud, Sanatorio Alemán y Consalud. Merece radar por su relevancia para prestadores y aseguramiento privado, aunque la evidencia corresponde a desempeño reportado y a una intención futura de inversión, no a una medida regulatoria ni a capacidad nueva ya implementada."
+      },
+      "evidence_maturity": "media_reported",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán, que en el semestre contribuyó con una utilidad de $1.412 millones"
+        },
+        {
+          "origin": "original",
+          "text": "registra una utilidad superior a la obtenida durante el primer semestre de 2025 por $4.380 millones"
+        },
+        {
+          "origin": "original",
+          "text": "explicada por una mayor complejidad de sus prestaciones, sumado a la incorporación del Sanatorio Alemán"
+        }
+      ],
+      "decision": "accept",
+      "event_status": null
+    },
+    {
+      "manifest_order_1_based": 3,
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "publication_date": "2026-09-01",
+      "queue_fingerprint": "b2ad52c4b0bc300bba9d63b86165a18e56f551fcc8fa9b4990611a68772f7114",
+      "immutable_actual_model_primary_pin": {
+        "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+        "publication_date": "2026-09-01",
+        "body_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+        "html_sha256": "8005d3bd4577194f26fbe104d039968189ee4140695fd0f34f5b4a556d457505",
+        "model_sha256": "727de0a669fc995610e4f1769f8fd410f92b16d03f73268b75ab3540f9b8539a",
+        "response_id": "resp_0482b05a494763e7006acbf490607c87d0bfa2f797f7a616b8",
+        "request_input_sha256": "84755be99de3e38baaf62c92dc9fabb41e24b8481dde112e787da155ad0ec269"
+      },
+      "immutable_actual_model_primary_pin_sha256": "e574e8e3ba1eb974beb469441651d8a9a455f7894c68826310567627d5f1ad7a",
+      "source_primary_flags": {
+        "article_verified": true,
+        "article_body_complete": true,
+        "primary_identity_verified": true,
+        "publication_date_verified": true
+      },
+      "actual_status": "published",
+      "actual_reason": null,
+      "actual_score": 86,
+      "actual_lane": "BACKFILL",
+      "original_full_primary_body": "En un escenario epidemiológico marcado por una alta circulación de virus respiratorios, el Ministerio de Salud anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país, medida que está vigente desde el 1 de abril. Según se detalla en el último reporte de la Campaña de Invierno correspondiente a la semana epidemiológica 33 -16 y al 22 de agosto-, la positividad de las muestras alcanzó un 56,1%, el registro más alto de 2026 hasta ese momento. Entre los virus detectados, se indica, el rinovirus concentra el 32,3% de las detecciones, seguido por el Virus Respiratorio Sincicial (VRS), con 26,6% %, y la Influenza B, con 14,3%. Respecto a la decisión, la subsecretaria de Salud Pública, Alejandra Pizarro, explicó que el objetivo es reforzar la protección de las personas que se encuentran en espacios asistenciales donde existe una mayor exposición a virus respiratorios. “Hemos decidido extender hasta el 30 de septiembre el uso obligatorio de mascarillas en los servicios de urgencia, unidades de diálisis y oncohematología, tanto de la red pública como privada. Lo hacemos porque los virus respiratorios siguen circulando con fuerza y más de la mitad de las muestras analizadas están dando positivo a estos virus”, explicó la autoridad. Junto con esto, la autoridad sanitaria también apuntó a que esto corresponde a una medida de cuidado, especialmente, para quienes están en tratamiento médico y para nuestros grupos más vulnerables, como los niños y las personas mayores de 60 años. “En estos espacios necesitamos reducir las posibilidades de contagio y proteger tanto a los pacientes como a los equipos de salud”, sostuvo. Desde el Ministerio de Salud se reiteró que la prevención de los contagios sigue siendo fundamental durante este periodo de alta circulación viral. En este sentido, se recomienda mantener el uso de mascarilla en caso de tener síntomas respiratorios, ventilar los espacios, realizar un adecuado lavado de manos y evitar asistir a lugares de trabajo o estudio cuando se presentan síntomas respiratorios.",
+      "body_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+      "html_sha256": "8005d3bd4577194f26fbe104d039968189ee4140695fd0f34f5b4a556d457505",
+      "full_original_primary_body_read": true,
+      "full_actual_model_read": true,
+      "original_full_model_output": {
+        "relevance_score": 86,
+        "what_happened": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, el Ministerio de Salud anunció extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país. La obligación estaba vigente desde el 1 de abril y la nota reportó una positividad de 56,1% en las muestras de la semana epidemiológica 33, correspondiente al 16 y al 22 de agosto. La extensión se anunciaba para ese período y este contenido no acredita que la medida siguiera vigente al 11 de octubre de 2026.",
+        "why_it_matters": "Al 1 de septiembre de 2026, según la nota, la medida del Ministerio de Salud afectaba a prestadores públicos y privados de todo Chile y buscaba reforzar la protección de pacientes, personas en tratamiento médico y equipos de salud en espacios asistenciales con mayor exposición a virus respiratorios. La señal merecía atención por su alcance nacional y por basarse en una positividad de 56,1% registrada en la semana epidemiológica 33; la nota no acredita que esa obligación permaneciera vigente al 11 de octubre.",
+        "reason": "Señal regulatoria sanitaria nacional y temporal, con efecto directo en la operación de servicios de urgencia, diálisis y oncohematología públicos y privados. La nota combina una medida ya vigente con una extensión anunciada hasta el 30 de septiembre, por lo que no permite inferir vigencia posterior a la fecha de revisión.",
+        "pulso_editorial_proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La nota describe una obligación sanitaria aplicada directamente a espacios de atención humana —urgencias, diálisis y oncohematología— para proteger a pacientes y equipos de salud frente a virus respiratorios.",
+          "human_health_scope_quote": "uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología",
+          "actor": "el Ministerio de Salud",
+          "action": "anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla",
+          "consequence": "reforzar la protección de las personas que se encuentran en espacios asistenciales donde existe una mayor exposición a virus respiratorios",
+          "actor_quote": "el Ministerio de Salud anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país",
+          "action_quote": "anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país",
+          "consequence_quote": "el objetivo es reforzar la protección de las personas que se encuentran en espacios asistenciales donde existe una mayor exposición a virus respiratorios",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "anunció esta jornada extender hasta el 30 de septiembre",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "El cuerpo reporta una extensión nacional concreta de una obligación sanitaria, con fecha de término anunciada y datos epidemiológicos de la semana 33; esos elementos constituyen una señal material para prestadores y equipos de salud.",
+          "novelty_quote": "Hemos decidido extender hasta el 30 de septiembre el uso obligatorio de mascarillas en los servicios de urgencia, unidades de diálisis y oncohematología, tanto de la red pública como privada.",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, el Ministerio de Salud anunció extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país. La obligación estaba vigente desde el 1 de abril y la nota reportó una positividad de 56,1% en las muestras de la semana epidemiológica 33, correspondiente al 16 y al 22 de agosto. La extensión se anunciaba para ese período y este contenido no acredita que la medida siguiera vigente al 11 de octubre de 2026.",
+              "source_quote": "Hemos decidido extender hasta el 30 de septiembre el uso obligatorio de mascarillas en los servicios de urgencia, unidades de diálisis y oncohematología, tanto de la red pública como privada."
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Al 1 de septiembre de 2026, según la nota, la medida del Ministerio de Salud afectaba a prestadores públicos y privados de todo Chile y buscaba reforzar la protección de pacientes, personas en tratamiento médico y equipos de salud en espacios asistenciales con mayor exposición a virus respiratorios. La señal merecía atención por su alcance nacional y por basarse en una positividad de 56,1% registrada en la semana epidemiológica 33; la nota no acredita que esa obligación permaneciera vigente al 11 de octubre.",
+              "source_quote": "En estos espacios necesitamos reducir las posibilidades de contagio y proteger tanto a los pacientes como a los equipos de salud"
+            }
+          ]
+        },
+        "_pulso_analysis_meta": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0482b05a494763e7006acbf490607c87d0bfa2f797f7a616b8",
+          "analysis_text_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+          "request_input_sha256": "84755be99de3e38baaf62c92dc9fabb41e24b8481dde112e787da155ad0ec269",
+          "raw_model_output_sha256": "15febf4dd527675d1c03adec0483ed781c6141417fcd49f44cd3e151fb853e04"
+        }
+      },
+      "original_model_output_sha256": "727de0a669fc995610e4f1769f8fd410f92b16d03f73268b75ab3540f9b8539a",
+      "original_model_response_binding": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0482b05a494763e7006acbf490607c87d0bfa2f797f7a616b8",
+        "analysis_text_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+        "request_input_sha256": "84755be99de3e38baaf62c92dc9fabb41e24b8481dde112e787da155ad0ec269",
+        "raw_model_output_sha256": "15febf4dd527675d1c03adec0483ed781c6141417fcd49f44cd3e151fb853e04"
+      },
+      "actual_response_request_primary_binding": true,
+      "six_proof_quote_checks": [
+        {
+          "field": "human_health_scope_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología"
+        },
+        {
+          "field": "actor_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "el Ministerio de Salud anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país"
+        },
+        {
+          "field": "action_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país"
+        },
+        {
+          "field": "consequence_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "el objetivo es reforzar la protección de las personas que se encuentran en espacios asistenciales donde existe una mayor exposición a virus respiratorios"
+        },
+        {
+          "field": "event_status_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "anunció esta jornada extender hasta el 30 de septiembre"
+        },
+        {
+          "field": "novelty_quote",
+          "contiguous_in_full_primary": true,
+          "quote": "Hemos decidido extender hasta el 30 de septiembre el uso obligatorio de mascarillas en los servicios de urgencia, unidades de diálisis y oncohematología, tanto de la red pública como privada."
+        }
+      ],
+      "two_future_claim_checks": [
+        {
+          "summary_field": "what_happened",
+          "source_quote_contiguous_in_full_primary": true,
+          "whole_field_equals_actual_model": true,
+          "future_qualified": true,
+          "unqualified_achieved_copy": false,
+          "unsupported_clinical_completion": false
+        },
+        {
+          "summary_field": "why_it_matters",
+          "source_quote_contiguous_in_full_primary": true,
+          "whole_field_equals_actual_model": true,
+          "future_qualified": true,
+          "unqualified_achieved_copy": false,
+          "unsupported_clinical_completion": false
+        }
+      ],
+      "exact_reason": "The press report dates the mandatory-mask extension onSeptember1 throughSeptember30, with positivity56.1%fromweek33 August16–22. Both fields expressly avoid October11 validity. This is a national reported healthcare obligation for urgent care/dialysis/oncohematology, so categoryRegulación &Legal is more accurate than Mercado. Correct category only; keep both complete texts, score86, planned/True, body and paid response unchanged.",
+      "publication_approved": false,
+      "review_index": 2,
+      "source_commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+      "original_body_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+      "original_html_sha256": "8005d3bd4577194f26fbe104d039968189ee4140695fd0f34f5b4a556d457505",
+      "full_original_body_read": true,
+      "full_signal_read": true,
+      "original_full_signal": {
+        "title": "Minsal extiende hasta el 30 de septiembre el uso obligatorio de mascarillas en urgencias por alta circulación de virus respiratorios",
+        "source_name": "Pulso / La Tercera",
+        "source_type": "press_high_trust",
+        "source_url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+        "category": "Mercado",
+        "subcategory": "General",
+        "system_domain": "HEALTH",
+        "what_happened": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, el Ministerio de Salud anunció extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país. La obligación estaba vigente desde el 1 de abril y la nota reportó una positividad de 56,1% en las muestras de la semana epidemiológica 33, correspondiente al 16 y al 22 de agosto. La extensión se anunciaba para ese período y este contenido no acredita que la medida siguiera vigente al 11 de octubre de 2026.",
+        "event_date": "2026-09-01",
+        "detected_at": "2026-10-11T06:23:48.863044+00:00",
+        "primary_source_url": null,
+        "event_type": "OTHER",
+        "strategic_theme": [],
+        "institution_types": [],
+        "entity_refs": [],
+        "country": "CL",
+        "topics": [
+          "public_health"
+        ],
+        "entities": [],
+        "people": [],
+        "geography": [],
+        "key_facts": [],
+        "key_numbers": [],
+        "why_it_matters": "Al 1 de septiembre de 2026, según la nota, la medida del Ministerio de Salud afectaba a prestadores públicos y privados de todo Chile y buscaba reforzar la protección de pacientes, personas en tratamiento médico y equipos de salud en espacios asistenciales con mayor exposición a virus respiratorios. La señal merecía atención por su alcance nacional y por basarse en una positividad de 56,1% registrada en la semana epidemiológica 33; la nota no acredita que esa obligación permaneciera vigente al 11 de octubre.",
+        "who_cares": [],
+        "possible_implications": [],
+        "watch_tags": [
+          "pulso_latercera",
+          "media",
+          "sistema de salud"
+        ],
+        "connection_keys": [],
+        "trend_keys": [],
+        "prospective_evidence": true,
+        "economic_impact_score": 86,
+        "regulatory_impact_score": 55,
+        "scope_score": 86,
+        "novelty_score": 86,
+        "actionability_score": 76,
+        "source_quality_score": 92,
+        "radar_score": 79,
+        "confidence_score": 92,
+        "distribution": "archive",
+        "validation_status": "automatic",
+        "corroboration_status": "unknown",
+        "additional_sources": [],
+        "source_documents": [],
+        "key_points": [],
+        "risk_notes": [],
+        "data_insights": [],
+        "data_insight_meta": {},
+        "validity_text": null,
+        "related_reference_ids": [],
+        "original_language": "es",
+        "display_language": "es",
+        "translation_status": "not_required",
+        "original_title": null,
+        "original_what_happened": null,
+        "original_why_it_matters": null,
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Sistema de salud"
+        ],
+        "editorial_relevance": 86,
+        "source_quality_gate": "passed",
+        "evidence_maturity": "media_reported",
+        "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+        "publication_date": "2026-09-01",
+        "publication_timestamp": "2026-09-01T16:44:25.115Z",
+        "publication_date_source": "visible_article_byline",
+        "editorial_assessment": {
+          "decision": "published",
+          "relevance_score": 86,
+          "threshold": 72,
+          "analysis_reason": "Señal regulatoria sanitaria nacional y temporal, con efecto directo en la operación de servicios de urgencia, diálisis y oncohematología públicos y privados. La nota combina una medida ya vigente con una extensión anunciada hasta el 30 de septiembre, por lo que no permite inferir vigencia posterior a la fecha de revisión."
+        },
+        "ingestion_mode": "BACKFILL"
+      },
+      "original_signal_sha256": "ef9e010220b219b7b1a291b76c323e1ad768be23469a8490b0da3a5f7eed585a",
+      "original_published_what_happened": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, el Ministerio de Salud anunció extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país. La obligación estaba vigente desde el 1 de abril y la nota reportó una positividad de 56,1% en las muestras de la semana epidemiológica 33, correspondiente al 16 y al 22 de agosto. La extensión se anunciaba para ese período y este contenido no acredita que la medida siguiera vigente al 11 de octubre de 2026.",
+      "original_published_why_it_matters": "Al 1 de septiembre de 2026, según la nota, la medida del Ministerio de Salud afectaba a prestadores públicos y privados de todo Chile y buscaba reforzar la protección de pacientes, personas en tratamiento médico y equipos de salud en espacios asistenciales con mayor exposición a virus respiratorios. La señal merecía atención por su alcance nacional y por basarse en una positividad de 56,1% registrada en la semana epidemiológica 33; la nota no acredita que esa obligación permaneciera vigente al 11 de octubre.",
+      "original_output_binding": {
+        "retained_model_output_semantic_sha256": "727de0a669fc995610e4f1769f8fd410f92b16d03f73268b75ab3540f9b8539a",
+        "model_response": {
+          "schema_version": "pulso_editorial_proof_v5",
+          "source_name": "Pulso / La Tercera",
+          "model": "gpt-5.6-luna",
+          "response_id": "resp_0482b05a494763e7006acbf490607c87d0bfa2f797f7a616b8",
+          "analysis_text_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+          "request_input_sha256": "84755be99de3e38baaf62c92dc9fabb41e24b8481dde112e787da155ad0ec269",
+          "raw_model_output_sha256": "15febf4dd527675d1c03adec0483ed781c6141417fcd49f44cd3e151fb853e04"
+        },
+        "signal_sha256": "ef9e010220b219b7b1a291b76c323e1ad768be23469a8490b0da3a5f7eed585a"
+      },
+      "original_model_assessment": {
+        "decision": "published",
+        "relevance_score": 86,
+        "threshold": 72,
+        "analysis_reason": "Señal regulatoria sanitaria nacional y temporal, con efecto directo en la operación de servicios de urgencia, diálisis y oncohematología públicos y privados. La nota combina una medida ya vigente con una extensión anunciada hasta el 30 de septiembre, por lo que no permite inferir vigencia posterior a la fecha de revisión."
+      },
+      "evidence_maturity": "media_reported",
+      "supporting_verbatim_quotes": [
+        {
+          "origin": "original",
+          "text": "uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología"
+        },
+        {
+          "origin": "original",
+          "text": "anunció esta jornada extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país"
+        },
+        {
+          "origin": "original",
+          "text": "el objetivo es reforzar la protección de las personas que se encuentran en espacios asistenciales donde existe una mayor exposición a virus respiratorios"
+        }
+      ],
+      "decision": "correct",
+      "event_status": "planned",
+      "proposed_what_happened": "Según la nota de Pulso/La Tercera publicada el 1 de septiembre de 2026, el Ministerio de Salud anunció extender hasta el 30 de septiembre el uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país. La obligación estaba vigente desde el 1 de abril y la nota reportó una positividad de 56,1% en las muestras de la semana epidemiológica 33, correspondiente al 16 y al 22 de agosto. La extensión se anunciaba para ese período y este contenido no acredita que la medida siguiera vigente al 11 de octubre de 2026.",
+      "proposed_why_it_matters": "Al 1 de septiembre de 2026, según la nota, la medida del Ministerio de Salud afectaba a prestadores públicos y privados de todo Chile y buscaba reforzar la protección de pacientes, personas en tratamiento médico y equipos de salud en espacios asistenciales con mayor exposición a virus respiratorios. La señal merecía atención por su alcance nacional y por basarse en una positividad de 56,1% registrada en la semana epidemiológica 33; la nota no acredita que esa obligación permaneciera vigente al 11 de octubre.",
+      "proposed_category": "Regulación & Legal"
+    }
+  ],
+  "required_media_gate_threshold": 72,
+  "summary": {
+    "full_original_bodies": 3,
+    "full_actual_models": 3,
+    "actual_published": 2,
+    "actual_retry": 1,
+    "accept": 1,
+    "correct_category_only": 1,
+    "reviewer_AI_calls": 0
+  },
+  "changes_applied": false,
+  "scores_changed": false,
+  "models_changed": false,
+  "state_mutated": false,
+  "pending_publication_approved": false,
+  "global_acceptance": "NOT_ACCEPTED_PENDING_TWO_HELD_OUTCOMES_FINAL_REPLAY_QA"
+}

@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.0",
+  "source": "pulso_latercera",
+  "candidate_code_sha": "dd3b253529871fb1cf4fcc8d27a9cddfa719f9f5",
+  "recorded_at": "2026-10-11T04:42:58.167048+00:00",
+  "execution": "real CLI, source-scoped isolated data root; no mocked fetch/analysis",
+  "command": "RADAR_ROOT=/workspace/work/pulso-core-blocked python -m radar_salud.engine_cli --sources pulso_latercera --limit 1",
+  "exit_code": 0,
+  "interpretation": "Core registration observed; operational verification FAIL. Exit 0 is not source acceptance.",
+  "discovery_run": {
+    "at": "2026-10-11T04:37:23.136392+00:00",
+    "sources": {
+      "pulso_latercera": {
+        "discovered": 0,
+        "new": 0,
+        "technical_status": "error",
+        "error_type": "RuntimeError"
+      }
+    },
+    "successful_sources": 0,
+    "failed_sources": 1,
+    "source_details": {
+      "pulso_latercera": [
+        {
+          "listing": "https://www.latercera.com/canal/pulso/",
+          "status": "listing_error",
+          "error_type": "URLError"
+        },
+        {
+          "listing": "https://www.latercera.com/canal/nacional/",
+          "status": "listing_error",
+          "error_type": "URLError"
+        },
+        {
+          "listing": "https://www.latercera.com/etiqueta/isapres/",
+          "status": "listing_error",
+          "error_type": "URLError"
+        },
+        {
+          "listing": "https://www.latercera.com/etiqueta/fonasa/",
+          "status": "listing_error",
+          "error_type": "URLError"
+        },
+        {
+          "listing": "https://www.latercera.com/etiqueta/clinicas/",
+          "status": "listing_error",
+          "error_type": "URLError"
+        },
+        {
+          "listing": "https://www.latercera.com/etiqueta/salud/",
+          "status": "listing_error",
+          "error_type": "URLError"
+        }
+      ]
+    },
+    "runtime": "daily_core",
+    "selected_sources": [
+      "pulso_latercera"
+    ]
+  },
+  "source_health": {
+    "sources": {
+      "pulso_latercera": {
+        "name": "Pulso Latercera",
+        "checked_at": "2026-10-11T04:37:23.140318+00:00",
+        "last_signal_at": null,
+        "discovered": 0,
+        "new": 0,
+        "published": 0,
+        "live_pending": 0,
+        "backfill_pending": 11,
+        "pending": 11,
+        "deferred": 0,
+        "rejected": 0,
+        "status": "error",
+        "error": "RuntimeError",
+        "technical_status": "error",
+        "coverage_status": "unverified",
+        "content_freshness": "unknown",
+        "editorial_outcome": "not_evaluated"
+      }
+    },
+    "generated_at": "2026-10-11T04:37:23.140322+00:00"
+  },
+  "attempted_items": [
+    {
+      "fingerprint": "7bfc4ad998061775d555d47d72f51fd34f9eddaf51181d339f55b90a79ea011f",
+      "url": "https://www.latercera.com/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
+      "status": "retry",
+      "reason": "budget_or_analysis_deferred",
+      "attempts": 1,
+      "lane": "BACKFILL",
+      "detected_at": "2026-10-11T04:36:44.044688+00:00",
+      "editorial_assessment": {
+        "decision": "pending",
+        "reason": "article_verification_failed",
+        "error_type": "URLError"
+      }
+    }
+  ],
+  "blocking_evidence": {
+    "network": "CONNECT tunnel failed, response 403; latercera.com absent from enforced egress policy",
+    "credentials": "No OPENAI_API_KEY configured in selected managed environment; no secret values inspected",
+    "ai_calls_attempted": 0
+  },
+  "limitations": [
+    "This is not the daily staging workflow or a successful original-site crawl.",
+    "Persisted baseline discovery_run.json remains unchanged; this failed attempt is stored separately.",
+    "The later tightening of unbound JSON-LD in 63765b1 is tested deterministically; live retrieval remains blocked."
+  ]
+}

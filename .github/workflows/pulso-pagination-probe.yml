@@ -1,0 +1,56 @@
+name: Pulso public browser pagination probe
+on:
+  push:
+    branches: [codex/b-pulso-runtime-20261011]
+    paths:
+      - '.github/run-pulso-pagination-now'
+      - '.github/workflows/pulso-pagination-probe.yml'
+      - 'scripts/capture_pulso_browser_pagination.cjs'
+      - 'tests/test_pulso_browser_pagination.cjs'
+permissions:
+  contents: write
+concurrency:
+  group: pulso-isolated-public-pagination
+  cancel-in-progress: false
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - name: Assert exclusive isolated branch
+        run: test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
+      - run: npm ci
+      - name: Verify public capture projection and credential exclusion
+        run: node --test tests/test_pulso_browser_pagination.cjs
+      - run: npx playwright install --with-deps chromium
+      - name: Observe normal public Ver más navigation
+        run: node scripts/capture_pulso_browser_pagination.cjs --clicks 5
+      - name: Preserve observed pagination and public ANS article text
+        if: always()
+        run: |
+          test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
+          git config user.name alicanto-salud-bot
+          git config user.email alicanto-salud-bot@users.noreply.github.com
+          if test -f data/audits/pulso_browser_pagination/manifest.json; then
+            git add data/audits/pulso_browser_pagination
+            if ! git diff --cached --quiet; then
+              git commit -m "audit(pulso): preserve observed public browser pagination [skip ci]"
+              git fetch origin codex/b-pulso-runtime-20261011
+              git rebase origin/codex/b-pulso-runtime-20261011
+              git push origin HEAD:codex/b-pulso-runtime-20261011
+            fi
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pulso-public-browser-pagination-${{ github.sha }}
+          retention-days: 90
+          path: data/audits/pulso_browser_pagination/
+          if-no-files-found: error

@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-11T08:17:19.062511+00:00",
+  "status": "IN_PROGRESS_NOT_ACCEPTED",
+  "source": "pulso_latercera",
+  "branch": "codex/b-pulso-runtime-20261011",
+  "actual_runtime": {
+    "run_id": 38121971530,
+    "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38121971530",
+    "code_sha": "8e2f2172f5ea083c2af217947ebbffe986f56dc3",
+    "phase": "discovery_only",
+    "core_source_present": true,
+    "source_inventory_returned_to_core": true,
+    "current_core_discovered_urls": 1732,
+    "current_core_verified_health_urls": 1688,
+    "metadata_only_candidates": 44,
+    "source_queue_urls": 1736,
+    "history_urls": 0,
+    "published_in_feed": 0,
+    "control_30": {
+      "detected": 29,
+      "expected": 29,
+      "recall": 1.0
+    },
+    "control_90": {
+      "detected": 79,
+      "expected": 79,
+      "recall": 1.0
+    },
+    "directed_discovery_qa": "FAIL",
+    "findings": {
+      "publisher_exception_original_not_verified": 43,
+      "publisher_conflict_falsely_labeled_verified_date": 11,
+      "publisher_exception_exact_editorial_hold_missing": 11,
+      "publisher_exception_capture_freshness_unproven": 6,
+      "queue_primary_detail_evidence_unverified": 2,
+      "original_primary_capture_not_verified": 1
+    },
+    "acceptance": "NOT_ACCEPTED_PENDING_REPAIRED_ACTUAL_QA_AND_PROCESSING"
+  },
+  "published_original_union_run": 38122619431,
+  "repairs_after_actual_run": [
+    "Refresh only pending/retry/processing canonical-bound original proof while preserving identity, attempts, lane, retry_at, reasons and terminal decisions.",
+    "Release only resolved primary publisher holds; independent incremental and duplicate reviews remain.",
+    "Upgrade missing legacy cache proof flags only with existing original canonical/hash/full-body/date evidence, retaining original captured_at rather than claiming new HTTP. Explicit false flags force original revalidation.",
+    "Bind listing fallbacks to complete primary proof; retain all warm original publisher exception evidence.",
+    "Independently corroborate publication calendar rather than require identical intraday byline instants; preserve same-day disagreements and unresolved calendar conflicts.",
+    "Reduce large cache serialization at verified page checkpoints without changing traversal or discovery inventory.",
+    "Audit all1706 body projections and all287 prefilter negatives; sixteen precise additional admissions go to existing unchanged editorial72, not automatic publication."
+  ],
+  "validation": {
+    "full_suite": "1164 passed / 1 skipped at09bfe3f; later guards/union-fixture transport require directed revalidation",
+    "full_suite_at": "2026-10-11T08:13:00Z",
+    "last_local_checkpoint": "30ae39417924e6c407b9712b1da668c14bbdd8a0"
+  },
+  "authentication_route": "Local git credentials unavailable; GitHub connector commits and authorized isolated GitHub Actions work. Preserve genuine remote state and retrieve tracked objects with a verified incremental bundle; do not overwrite remote state from older local data.",
+  "constraints": [
+    "issue6 remains open",
+    "main/production untouched",
+    "no merge/deploy",
+    "no budget reset",
+    "media_reported",
+    "editorial72 unchanged",
+    "no publication quota"
+  ],
+  "next_action": "Repeat genuine corrected discovery_only using38121971530 original artifact and all retained union fixtures. Require directed actual QA and independent Reviewer before processing real queue with existing budgets. Then reconcile every material recent outcome and real history/feed/UI/staging."
+}

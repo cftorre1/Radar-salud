@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0",
+  "recorded_at": "2026-10-11T04:42:58.167048+00:00",
+  "branch": "codex/b-pulso-runtime-20261011",
+  "latest_product_candidate_sha": "63765b199fb5575538293a1a11a1b9ca98f6837c",
+  "verdict": "FAIL_NOT_ACCEPTED",
+  "source_checks": {
+    "result": "PASS",
+    "passed": 32,
+    "kind": "adversarial examples and mocked-analysis core replay; not live acceptance"
+  },
+  "python": {
+    "candidate_sha": "63765b199fb5575538293a1a11a1b9ca98f6837c",
+    "passed": 287,
+    "failed": 1,
+    "skipped": 1,
+    "failure": "tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review: 11 >= 12 fails",
+    "skip": "live beta integration has no OPENAI_API_KEY; not counted as verification",
+    "action": "Retain editorial selections/gates; normative QA owner must reconcile IF/529 and intended visible inventory, not force cards."
+  },
+  "node": {
+    "result": "PASS",
+    "scope": "npm test on existing web bytes"
+  },
+  "browser": {
+    "source_tree_sha": "d45c770f4bb005e447ce3b597797afa1b136504a",
+    "environment": "isolated QA export, installed /usr/bin/chromium",
+    "passed": 40,
+    "failed": 6,
+    "skipped": 0,
+    "failures": [
+      {
+        "test": "Pulso Isapre leads with executive table and statistics use the value ladder",
+        "project": "desktop",
+        "status": "unexpected"
+      },
+      {
+        "test": "priority statistical releases use compact tables and collapsed traceability",
+        "project": "desktop",
+        "status": "unexpected"
+      },
+      {
+        "test": "Normative V2.1 puts document, subject and action in each current headline",
+        "project": "desktop",
+        "status": "unexpected"
+      },
+      {
+        "test": "Pulso Isapre leads with executive table and statistics use the value ladder",
+        "project": "mobile",
+        "status": "unexpected"
+      },
+      {
+        "test": "priority statistical releases use compact tables and collapsed traceability",
+        "project": "mobile",
+        "status": "unexpected"
+      },
+      {
+        "test": "Normative V2.1 puts document, subject and action in each current headline",
+        "project": "mobile",
+        "status": "unexpected"
+      }
+    ],
+    "limitations": "Statistical deep-analysis build was denied CONNECT to superdesalud.gob.cl; full canonical QA pipeline incomplete. No UI bytes changed in subsequent source repairs."
+  },
+  "reviewer": {
+    "type": "deterministic independent process",
+    "scope": "offline regenerated web snapshot, not human semantic review or real Pulso source acceptance",
+    "result": "FAIL",
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": false,
+      "ux": true
+    },
+    "findings": [
+      {
+        "category": "statistics",
+        "code": "invalid_statistical_table",
+        "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+        "detail": "Every visible statistical row must map to the declared columns",
+        "severity": "critical"
+      },
+      {
+        "category": "statistics",
+        "code": "methodology_not_collapsed",
+        "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+        "detail": "Technical traceability must be available in a collapsed layer",
+        "severity": "critical"
+      },
+      {
+        "category": "statistics",
+        "code": "missing_incremental_value_gate",
+        "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+        "detail": "Visible blocks need an explicit incremental value decision",
+        "severity": "critical"
+      },
+      {
+        "category": "statistics",
+        "code": "generic_why_required",
+        "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+        "detail": "Statistical cards must allow omission of generic impact copy",
+        "severity": "critical"
+      },
+      {
+        "category": "statistics",
+        "code": "untraceable_statistical_evidence",
+        "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+        "detail": "Data evidence must link to an official source",
+        "severity": "critical"
+      },
+      {
+        "category": "statistics",
+        "code": "bulletin_coverage",
+        "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+        "detail": "June 2026 audit must include accreditation, mediation, complaints and RNPI",
+        "severity": "critical"
+      },
+      {
+        "category": "statistics",
+        "code": "bulletin_missing_pdf",
+        "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+        "detail": "All four official June 2026 bulletin PDFs must be traceable",
+        "severity": "critical"
+      },
+      {
+        "category": "statistics",
+        "code": "bulletin_stock_flow_confusion",
+        "path": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+        "detail": "Stock, cumulative flow and monthly flow must be labelled separately",
+        "severity": "critical"
+      }
+    ]
+  },
+  "remote_qa": {
+    "candidate_sha": "56e078d8f3f79c9f512801c863f7c5e431ba2ba7",
+    "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38111649062",
+    "passed": 278,
+    "failed": 1,
+    "skipped": 1,
+    "result": "FAIL",
+    "failed_job": "tests",
+    "failure": "same 11-versus-12 normative assertion",
+    "staging_job": "skipped",
+    "reviewer_job": "skipped",
+    "latest_candidate_remote_run": "not observed at checkpoint; prior SHA never certifies current candidate"
+  },
+  "staging": {
+    "result": "NOT_PASS",
+    "merged": false,
+    "deployed": false,
+    "reason": "Source verification blocked, QA/Reviewer fail; PR remains draft."
+  }
+}

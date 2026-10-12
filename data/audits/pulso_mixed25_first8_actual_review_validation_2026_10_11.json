@@ -1,0 +1,54 @@
+{
+  "schema_version": "pulso_paid_mixed_review4_memory_validation_v1",
+  "source_id": "pulso_latercera",
+  "reader_path": "data/audits/pulso_mixed25_first8_actual_semantic_review_2026_10_11.json",
+  "reader_sha256": "c7e3b65a6ad9389e7232a6073069ce0ddf225f572fcb4f415b23e1005dd74761",
+  "review_path": "data/audits/pulso_mixed25_first8_actual_editorial_review_2026_10_11.json",
+  "review_sha256": "925788f447656b3ee0d72cbaea291f1863ed1e9c5ae054a9f31a788ac43c5c66",
+  "producer_commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+  "inputs": {
+    "history": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "bd7e32dd341348f44cfacdb0140247c5f957c417f6bed625fdcf9762a4d0f4ca"
+    },
+    "queue": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202"
+    },
+    "runtime_report": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "eb420d6e3b74b9a2274598adc5b2ae7f2f5f7e9635e1fc34f60968c896a95bd3"
+    },
+    "telemetry": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "d421299b6f6fbe440c166bb13ad686ba0896ccfc0cbfeda400f49932c9781037"
+    }
+  },
+  "application_report": {
+    "review_id": "pulso-mixed38166157093-first8-actual-four-publications-2026-10-11",
+    "review_sha256": "925788f447656b3ee0d72cbaea291f1863ed1e9c5ae054a9f31a788ac43c5c66",
+    "reviewed_count": 4,
+    "applied_count": 4,
+    "unchanged_on_replay": 0,
+    "decisions": {
+      "accept": 4,
+      "reject": 0,
+      "group": 0,
+      "correct": 0
+    },
+    "ai_calls": 0,
+    "primary_evidence_mutations": 0,
+    "queue_attempt_resets": 0
+  },
+  "independent_consumer_proofs": 4,
+  "independent_consumer_findings": [],
+  "idempotent_signals_changed": 0,
+  "actual_runtime_state_changed": false,
+  "AI_calls": 0,
+  "network_calls": 0,
+  "publication_approved": false
+}

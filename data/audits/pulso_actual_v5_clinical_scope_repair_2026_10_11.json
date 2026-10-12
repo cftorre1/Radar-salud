@@ -1,0 +1,615 @@
+{
+  "schema_version": "pulso_actual_v5_clinical_scope_repair_review_v1",
+  "scope": "ALL24 actual nonfuture deferred outputs from38159032940, including ALL11scope quotes. Seven explicit clinical anchors corrected; four generic excerpts remain insufficient. Body/output/literal/score/defaultsource/budget contracts unchanged.",
+  "producer_run_id": 38159032940,
+  "producer_code_sha": "03bf998a4bb5840c84da6473666e932fbc5cedd9",
+  "producer_commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+  "inputs": {
+    "history": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "f779385fed3eccf96d0e6d95ebfece23d1e79d83d6a0a8675b80615a63c121fa"
+    },
+    "queue": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "4cf450c4e0ab8b1238af11833dcc65b037382bae5b2ff0da93bc5539e1bbbf8f"
+    },
+    "runtime_report": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "c42683a457229a23bf35fbc1a658af5a8617411f615d4dcb0ddcaa5b03c4f43b"
+    },
+    "telemetry": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "d5cbef5b62630ab6f17305c29bfea987f788313e0876d15d6a02c115b2a30c30"
+    }
+  },
+  "actual_fixture": {
+    "path": "tests/fixtures/pulso_actual_v5_nonfuture_holds.json.gz",
+    "decoded_sha256": "91288ad1c62380820efe80b445ddf0f55d87b46ed54edf5c7ed549a796ebc796",
+    "gzip_sha256": "9fef191ca3ea132aa052ed9cf7ea39fa75688396a4bc30ac84306c3868074430"
+  },
+  "counts": {
+    "actual_deferred_outputs_reviewed": 24,
+    "scope_failures_before": 11,
+    "scope_failures_remaining": 4,
+    "literal_clinical_scope_omissions_corrected": 7,
+    "guard_after_decisions": {
+      "deferred": 21,
+      "ready": 2,
+      "rejected": 1
+    }
+  },
+  "tests": {
+    "command": "python -m pytest -q tests/test_pulso_actual_v5_clinical_scope.py tests/test_pulso_editorial_proof.py tests/test_pulso_actual_model_grounding_repair.py",
+    "result": "70 PASS"
+  },
+  "current_guard_version": "pulso_editorial_proof_v5",
+  "publication_or_response_reuse_approved": false,
+  "global_acceptance_claimed": false,
+  "ai_calls": 0,
+  "network_calls": 0,
+  "runtime_state_changed": false,
+  "editorial_threshold": 72,
+  "rows": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+      "title": "Chomali destaca alza de 4,7% en presupuesto de Salud y apunta como prioridad reducir listas de espera, oncología y APS",
+      "publication_date": "2026-10-05",
+      "body_sha256": "0ebfaaf59515c5c7f01f4e150f7a9000e5f5a0888ecfaf48c73c9364378d0131",
+      "html_sha256": "60dd84e90cfdca2702312a13a90f669dbae10ed5de7dc2c71f76461d6115e807",
+      "response_id": "resp_0bab386418ef423b006acbcc74083c87d19617444b47cb03c8",
+      "actual_score_unchanged": 80,
+      "original_actual_reason": "pulso_editorial_scope_not_grounded",
+      "original_scope_quote": "que es la atención de los pacientes",
+      "scope_before": false,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+      "title": "Isapres aumentan su fuerza de ventas 45% en un año y a marzo ya superan los cuatro mil vendedores",
+      "publication_date": "2026-07-23",
+      "body_sha256": "2f4c1a327ad59db81e2b452a4ebc21dcf95b34de7cad832bf7ba8dcd6407c67e",
+      "html_sha256": "252382dfe72359ab067c906b7772404ad25ae7278efbcda4ee95ea3aea1e1fef",
+      "response_id": "resp_07b064290b27caa3006acbcb8c34bc87d1928f187848d5ba05",
+      "actual_score_unchanged": 82,
+      "original_actual_reason": "pulso_editorial_actor_not_grounded",
+      "original_scope_quote": "afiliados que no pudieron seguir pagando tuvieron que irse al sistema estatal que representa Fonasa",
+      "scope_before": true,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_actor_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_actor_not_grounded"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "title": "“Todas somos vulnerables”: Minsal refuerza el llamado a la detección precoz del cáncer de mama para un tratamiento oportuno",
+      "publication_date": "2026-10-05",
+      "body_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+      "html_sha256": "12dd0d1641d196ac0ec694da1852736d77f93e914a5036cf4a74f247ed120b64",
+      "response_id": "resp_03d4c4b7219f35c7006acbc6636b7c87d18eb23a443702dc76",
+      "actual_score_unchanged": 78,
+      "original_actual_reason": "pulso_editorial_incremental_value_uncertain",
+      "original_scope_quote": "la patología más frecuente que afecta a la población femenina en Chile y primera causa de muerte de mujeres por causa oncológica",
+      "scope_before": true,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_incremental_value_uncertain"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_incremental_value_uncertain"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/diez-servicios-de-salud-concentran-el-62-de-la-oferta-publica-para-resolver-el-cancer/",
+      "title": "Diez servicios de salud concentran el 62% de la oferta pública para resolver el cáncer",
+      "publication_date": "2026-10-01",
+      "body_sha256": "d5e8897cc1159b24c458efacfe2ab582ae70bb5442029d522c15d81a3c8ea690",
+      "html_sha256": "4ba41ef9e7ca5567a5710b051bcb59e2519731935cbff1dbe5d457f9a274eedb",
+      "response_id": "resp_056f69cad4c03623006acbc68e87a087d1a1850ff0de7649f8",
+      "actual_score_unchanged": 92,
+      "original_actual_reason": "pulso_editorial_scope_not_grounded",
+      "original_scope_quote": "En 2019 se transformó en la primera causa de fallecimientos en Chile",
+      "scope_before": false,
+      "scope_after": false,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_not_grounded"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+      "title": "Pese a recorte presupuestario impulsado por Hacienda, Chomali reconoce que el Minsal necesitará $3,2 billones adicionales",
+      "publication_date": "2026-09-09",
+      "body_sha256": "beac60d96524a37fb805e27c0d2f68e5405bbbc747980b7da2f46d166ef12509",
+      "html_sha256": "23c7be351965b662811ff6bc4939cae25a22d461bb9fcd3bb93e30bb22abf49f",
+      "response_id": "resp_00b6c896421b062b006acbc7d0496887d18138a00943b417c3",
+      "actual_score_unchanged": 88,
+      "original_actual_reason": "pulso_editorial_scope_not_grounded",
+      "original_scope_quote": "para poder llegar a fin de año sin inconvenientes, que no se cierren los pabellones",
+      "scope_before": false,
+      "scope_after": false,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_not_grounded"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/agencia-de-ciberseguridad-refuta-a-uc-christus-y-defiende-incorporarla-a-listado-un-ransomware-puede-tener-alcances-catastroficos/",
+      "title": "Agencia de Ciberseguridad refuta a UC Christus y defiende incorporarla a listado: “Un ransomware puede tener alcances catastróficos”",
+      "publication_date": "2026-09-08",
+      "body_sha256": "d9ebb4a4ec84cfc09b90146e0bdb16cea16ff9d1293e9f3d8d84b6fcd32c685c",
+      "html_sha256": "c4e1df1107ec75873e9f1179e9fb64989d0532faaf070b9663c9429f11a17f5d",
+      "response_id": "resp_00ff8ce1db14ac0c006acbc7edf79087d19408303dff742ab1",
+      "actual_score_unchanged": 86,
+      "original_actual_reason": "pulso_editorial_scope_not_grounded",
+      "original_scope_quote": "la cancelación de procedimientos clínicos programados, la demora significativa en el procesamiento de exámenes de diagnóstico, como rayos-X y tomografías computarizadas",
+      "scope_before": false,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/bancada-udi-anuncia-agenda-pro-consumidor-con-14-medidas-en-seguros-salud-transporte-y-otras-areas/",
+      "title": "Bancada UDI anuncia “Agenda Pro Consumidor” con 14 medidas en seguros, salud, transporte y otras áreas",
+      "publication_date": "2026-09-06",
+      "body_sha256": "e1103163b677d90ce7198ebd911f8783a76838c85f5bba10423ac3b4bf9ea078",
+      "html_sha256": "8114b82c0921962f1bbeb844b2418a439d825ef55e79e57f32d74c077b45cdb5",
+      "response_id": "resp_005e0b2c7ad0ccf4006acbc834f42887d184e67782fe4639c7",
+      "actual_score_unchanged": 78,
+      "original_actual_reason": "pulso_editorial_actor_not_grounded",
+      "original_scope_quote": "La primera apunta a acelerar la codificación de exámenes y procedimientos que todavía no cuentan con cobertura de Fonasa o las Isapres.",
+      "scope_before": true,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_actor_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_actor_not_grounded"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/virus-respiratorios-positividad-asciende-al-579-la-mas-alta-en-los-ultimos-tres-anos/",
+      "title": "Virus respiratorios: positividad asciende al 57,9%, la cifra más alta en los últimos tres años",
+      "publication_date": "2026-09-03",
+      "body_sha256": "154bbf48237ee93852375c2f2f89f0ccc56ab8d25678fb4267f0d3844c64e825",
+      "html_sha256": "a01a63581a75a63ebc829a5ce7c2eadf555af155bc1f47fad2893bf229a3f073",
+      "response_id": "resp_09b9e0e0a7e99ed5006acbc8be1ca887d1929bff4a441802d1",
+      "actual_score_unchanged": 86,
+      "original_actual_reason": "pulso_editorial_scope_not_grounded",
+      "original_scope_quote": "es muy importante mantener todas las medidas preventivas que disponemos para evitar enfermar gravemente e incluso evitar el riesgo de morir por algún virus respiratorio",
+      "scope_before": false,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_not_grounded"
+      },
+      "guard_after": {
+        "decision": "rejected",
+        "reason": "pulso_editorial_repetition_or_context"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/contraloria-investigara-alcances-de-la-alerta-oncologica-del-minsal-por-solicitud-de-diputada-radical/",
+      "title": "Contraloría investigará alcances de la alerta oncológica del Minsal por solicitud de diputada radical",
+      "publication_date": "2026-09-02",
+      "body_sha256": "ab7f054c1eb220e2a114d4cbf1ca476c5c8e324e9adcdfd4137674ea63ae07d8",
+      "html_sha256": "7cade3f27e6e39d5702fd9e69072f4a1f6e2485de0d9051f2fabf2f15df3e4fd",
+      "response_id": "resp_077c5d468bd65022006acbc8d087dc87d1a0326c3c9c44358b",
+      "actual_score_unchanged": 84,
+      "original_actual_reason": "pulso_editorial_actor_not_grounded",
+      "original_scope_quote": "decretar una alerta sanitaria para enfrentar las listas de espera oncológicas",
+      "scope_before": true,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_actor_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_actor_not_grounded"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "title": "Ganancias de ILC suben 45% a $165 mil millones en el primer semestre gracias a un mejor resultado en todas sus empresas",
+      "publication_date": "2026-09-01",
+      "body_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+      "html_sha256": "979d36ea3330af47a5de9870b7becd6808b26d8a9a14b14c0fb6805f5c8358fb",
+      "response_id": "resp_0797260601bb2823006acbc8faa10087d184b6139768eab519",
+      "actual_score_unchanged": 82,
+      "original_actual_reason": "pulso_editorial_status_or_novelty_not_grounded",
+      "original_scope_quote": "las subsidiarias del sector salud obtuvieron una utilidad de $36.783 millones",
+      "scope_before": true,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_status_or_novelty_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_status_or_novelty_not_grounded"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+      "title": "Kast en firma de convenio para agilizar listas de espera: “En algún momento no se utilizaron bien los recursos”",
+      "publication_date": "2026-08-14",
+      "body_sha256": "6c61fb4a54bd3a08384a3675c8fbe2cff609c3b81cdb6be43a84a953a18c78ff",
+      "html_sha256": "9ede30844feb15968e61f5535dd7835b13a2f53e5f9ef34a126155bf3dbcfbef",
+      "response_id": "resp_06ba33b4c340d02f006acbca36784887d189ec8606f2414dfd",
+      "actual_score_unchanged": 91,
+      "original_actual_reason": "pulso_editorial_actor_not_grounded",
+      "original_scope_quote": "disminuir los periodos de espera para intervenciones y consultas de especialidad no incluidas en las Garantías Explícitas en Salud (GES)",
+      "scope_before": true,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_actor_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_actor_not_grounded"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/clinica-las-condes-finaliza-aumento-de-capital-y-recauda-80-mil-millones/",
+      "title": "Clínica Las Condes finaliza aumento de capital y recauda $80 mil millones",
+      "publication_date": "2026-08-05",
+      "body_sha256": "429534bc93b6896966063905882ca45688c1bd734c21bcb65778ebfcb97641f1",
+      "html_sha256": "8cf078c439450784dcc2bdb79079497d2707a7c8ec104c063d683cb1cc395d96",
+      "response_id": "resp_07f37e0d2103beb6006acbcaaff9fc87d18ab8e30dc3a4de1a",
+      "actual_score_unchanged": 82,
+      "original_actual_reason": "pulso_editorial_status_or_novelty_not_grounded",
+      "original_scope_quote": "Clínica Las Condes (CLC) aseguró que “concluyó con éxito” su proceso de aumento de capital, recaudando $80.120 millones",
+      "scope_before": true,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_status_or_novelty_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_status_or_novelty_not_grounded"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-informa-de-afectaciones-leves-en-recintos-de-salud-por-el-sistema-frontal-pero-afirma-que-red-esta-completamente-operativa/",
+      "title": "Minsal informa de afectaciones leves en recintos de salud por el sistema frontal pero afirma que red está completamente operativa",
+      "publication_date": "2026-07-17",
+      "body_sha256": "82919f9ba75ced370da7c0a82c29ee53d64c0ba896c097239b66156a0f62944e",
+      "html_sha256": "38af8bb3cb56f8f9a7096287d7df681be2024f7259c9497a8a67b0476ab230a7",
+      "response_id": "resp_03dc7a1df6059b90006acbcbdbf11487d1ad03647ce4256578",
+      "actual_score_unchanged": 62,
+      "original_actual_reason": "pulso_editorial_incremental_value_uncertain",
+      "original_scope_quote": "hasta el momento, la red asistencial ha podido responder sin ninguna afectación grave a los requerimientos de la ciudadanía",
+      "scope_before": true,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_incremental_value_uncertain"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_incremental_value_uncertain"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-entrega-balance-final-del-plan-de-alerta-oncologica-y-adelanta-medidas-para-evitar-el-incumplimiento-de-garantias/",
+      "title": "Minsal entrega balance final del Plan de Alerta Oncológica y adelanta medidas para evitar el incumplimiento de garantías",
+      "publication_date": "2026-07-14",
+      "body_sha256": "5366372dcb31048b7e91ed1c49bfc461369da15b4cf9567e6c5c79d6e032d9ac",
+      "html_sha256": "c0af90d5c5a003fd5f0fb53e59f57263b26a3b4a740e1c82a55acce12c13ab98",
+      "response_id": "resp_0091892f4ae8f011006acbcc47e58087d19f6a74c3a5c3dad1",
+      "actual_score_unchanged": 94,
+      "original_actual_reason": "pulso_editorial_incremental_value_uncertain",
+      "original_scope_quote": "garantías oncológicas que cumplan su tiempo de espera pasen automáticamente a un segundo prestador",
+      "scope_before": true,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_incremental_value_uncertain"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_incremental_value_uncertain"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+      "title": "Presupuesto 2027: ministra Chomali destaca aumento de recursos de 4,7% en Salud",
+      "publication_date": "2026-10-01",
+      "body_sha256": "654cb94da13ac182977ef39a58cf721d83a478aa47a35b4522ce35a7cea5a3f9",
+      "html_sha256": "a779c887c63eea2ece1217873e35854b3fd4c9540cce4d1061de9770ac302a8b",
+      "response_id": "resp_0cdc94d9219c00cd006acbc6bfb1ec87d1b7b4cc4d8bb84e91",
+      "actual_score_unchanged": 88,
+      "original_actual_reason": "pulso_editorial_scope_not_grounded",
+      "original_scope_quote": "uno de los principales objetivos seguirá siendo disminuir los tiempos que deben enfrentar las personas para acceder a una consulta, procedimiento o tratamiento",
+      "scope_before": false,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_action_not_grounded"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+      "title": "Kast anuncia uso de inteligencia artificial en Salud para priorizar atención de pacientes de mayor gravedad",
+      "publication_date": "2026-10-01",
+      "body_sha256": "9ebcde885d7d2e49ff545494d589d91aa4308eb5281b4de97ba3354ed1d4f7af",
+      "html_sha256": "0a5f821b373a5ff14b130f25ea528749fb9558f35caf8e0aa2466688d644ccea",
+      "response_id": "resp_0ace1e06243cfeec006acbc6d0861c87d1ac45a0d3be4b7638",
+      "actual_score_unchanged": 97,
+      "original_actual_reason": "pulso_editorial_action_not_grounded",
+      "original_scope_quote": "una ficha clínica compartida entre la red pública y la privada; y el uso de inteligencia artificial para que el paciente más grave sea atendido primero",
+      "scope_before": true,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_action_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_action_not_grounded"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-conmemora-dia-nacional-del-donante-de-organos-y-tejidos-con-partido-en-hospital-dr-luis-calvo-mackenna/",
+      "title": "Minsal llama a donar órganos ante más de 2.200 personas en lista de espera por un trasplante",
+      "publication_date": "2026-09-26",
+      "body_sha256": "08bfa15c7b56ccca33c388833372cf655265ee63d5c9704d595c2d898819e891",
+      "html_sha256": "ed67755ddf612c02b7b9425acd233ef48d4a47cbcede45d422a6e7cedb1bedca",
+      "response_id": "resp_0e75ac7532df6058006acbc729952487d1ac915f4d92f02487",
+      "actual_score_unchanged": 68,
+      "original_actual_reason": "pulso_editorial_incremental_value_uncertain",
+      "original_scope_quote": "actualmente son más de dos mil personas las que están esperando un trasplante",
+      "scope_before": true,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_incremental_value_uncertain"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_incremental_value_uncertain"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-publica-nomina-con-los-eleam-que-cuenta-con-autorizacion-sanitaria-son-993-a-nivel-pais-y-la-rm-concentra-mas-de-la-mitad/",
+      "title": "Minsal da detalles de los Eleam que cuentan con autorización sanitaria: son 993 a nivel país y la RM concentra más del 50%",
+      "publication_date": "2026-09-16",
+      "body_sha256": "42a8afb2862a45f8cd4cafce27bcb62cb6eafd350966a902e4fe4d937454d97f",
+      "html_sha256": "393f1dba5176066616e90ae3978bd9afc11f386a08c14425bc41b3b8e6ed6f89",
+      "response_id": "resp_03d83e13ed9ce059006acbc7a071f887d1aaffcd634d0e971d",
+      "actual_score_unchanged": 86,
+      "original_actual_reason": "pulso_editorial_scope_not_grounded",
+      "original_scope_quote": "donde ellos van a llevar a sus adultos mayores cumple con estas exigencias",
+      "scope_before": false,
+      "scope_after": false,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_not_grounded"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/alerta-alimentaria-por-listeria-supermercado-informa-del-retiro-preventivo-de-todas-las-unidades-de-pasta-de-jamon/",
+      "title": "Alerta alimentaria por Listeria: supermercado informa del retiro preventivo de todas las unidades de pasta de jamón",
+      "publication_date": "2026-09-04",
+      "body_sha256": "a7fb9caee358447cd3bea47e1956e5bb39a1a908d46936c3eccae183f742f059",
+      "html_sha256": "6b36e7da3309572825f6c64a1cb4728f55e4cacacef193ec78a94e9e84817082",
+      "response_id": "resp_08d7c702a5084d5c006acbc86a854087d1818f31d6d34b8c3a",
+      "actual_score_unchanged": 62,
+      "original_actual_reason": "pulso_editorial_scope_not_grounded",
+      "original_scope_quote": "alerta alimentaria por la presencia de la bacteria Listeria Monocytogenes en un lote de la pasta cóctel de jamón marca Lider",
+      "scope_before": false,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/calisto-entra-a-la-batalla-por-causa-junaeb-defensa-buscara-limitar-acceso-al-contenido-de-celular-incautado-por-la-pdi/",
+      "title": "Calisto entra a la batalla por causa Junaeb: defensa buscará limitar acceso al contenido de celular incautado por la PDI",
+      "publication_date": "2026-08-21",
+      "body_sha256": "b1135ab4c5315ed8c1af7d18ae77a2e9c7b983ae1cdd9e2e41e6ded6a3b67c1d",
+      "html_sha256": "01f769067bf00d3757180e6c78f32d5f35e2ea5d20196baf026822b5d16f2e39",
+      "response_id": "resp_0a7c9efc4fa4eb5d006acbc9ee46d487d1a72c6c97069ddf67",
+      "actual_score_unchanged": 78,
+      "original_actual_reason": "pulso_editorial_scope_not_grounded",
+      "original_scope_quote": "distribución de comida contaminada y la incorporación de información falsa a los sistemas de la Junaeb",
+      "scope_before": false,
+      "scope_after": false,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_not_grounded"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+      "title": "Minsal incorpora hantavirus a alerta sanitaria vigente para enfermedades zoonóticas ante aumento de casos y letalidad",
+      "publication_date": "2026-08-08",
+      "body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+      "html_sha256": "e6bbfa96147cc5e6fb6dc851e8f265776943438a5198c0972af13053fe73f3c5",
+      "response_id": "resp_06d55302e3760f78006acbca9c84dc87d1b9e5af7a2cbc5fd3",
+      "actual_score_unchanged": 86,
+      "original_actual_reason": "pulso_editorial_scope_not_grounded",
+      "original_scope_quote": "Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente.",
+      "scope_before": false,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_future_copy_not_grounded"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-apelara-a-fallo-que-ordeno-reincorporar-a-exdirectora-del-hospital-de-san-antonio-tras-declarar-ilegal-su-remocion/",
+      "title": "Minsal apelará a fallo que ordenó reincorporar a exdirectora del Hospital de San Antonio tras declarar ilegal su remoción",
+      "publication_date": "2026-08-01",
+      "body_sha256": "61dc8e4bb1b58621c619beb052136e579daa1d8595cc81ce57d1bda57ee10c23",
+      "html_sha256": "cc080587b9b14ae265d58ae3dda094add15011ab49043ce63a76f0c778b04470",
+      "response_id": "resp_039af5468b27badc006acbcafb05d887d195f2071d709681c5",
+      "actual_score_unchanged": 58,
+      "original_actual_reason": "pulso_editorial_scope_quote_not_in_input",
+      "original_scope_quote": "",
+      "scope_before": false,
+      "scope_after": false,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_quote_not_in_input"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_quote_not_in_input"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/ejercito-despliega-hospital-modular-en-ovalle-tras-inutilizacion-de-cinco-pabellones-por-lluvias/",
+      "title": "Ejército despliega hospital modular en Ovalle tras inutilización de cinco pabellones por lluvias",
+      "publication_date": "2026-07-19",
+      "body_sha256": "c160a47a49949f6fd69fa6e7007b01314b7c0e37e142b2bb64cd6ad8b58c6a75",
+      "html_sha256": "7a713806abddad6e3d20a15842f633925c11ace935f47de9c0c23f8337c8d584",
+      "response_id": "resp_0e4bbfef1704c7b1006acbcba1bbd487d1b832daedbbbf0046",
+      "actual_score_unchanged": 86,
+      "original_actual_reason": "pulso_editorial_scope_not_grounded",
+      "original_scope_quote": "reforzar la continuidad de la atención médica en la comuna.",
+      "scope_before": false,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_scope_not_grounded"
+      },
+      "guard_after": {
+        "decision": "ready",
+        "reason": "pulso_editorial_grounded_assessment"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+      "title": "Colmed se suma a las críticas contra proyecto “Escucha su corazón” y defiende que exista un consentimiento informado libre de coerción",
+      "publication_date": "2026-07-15",
+      "body_sha256": "498322790b34aff91b51dd1768968c41a53ac050657007091f75181bdbb30356",
+      "html_sha256": "619fd197fd910a46c6ec6811c1356b01392dc95ee9f5c7b86f5d5f6e1c020817",
+      "response_id": "resp_0445f0eb055cb7b4006acbcc18687487d1a77eb630864b10c4",
+      "actual_score_unchanged": 84,
+      "original_actual_reason": "pulso_editorial_status_or_novelty_not_grounded",
+      "original_scope_quote": "los médicos ofrezcan escuchar la actividad cardíaca fetal antes de la interrupción del embarazo por las tres causales",
+      "scope_before": true,
+      "scope_after": true,
+      "guard_before": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_status_or_novelty_not_grounded"
+      },
+      "guard_after": {
+        "decision": "deferred",
+        "reason": "pulso_editorial_status_or_novelty_not_grounded"
+      },
+      "publication_approved": false,
+      "actual_paid_output_unchanged": true
+    }
+  ],
+  "limitations": [
+    "Guard scope/literal validation establishes provenance, not factual/novelty/temporal semantic approval. Two newly ready diagnoses are not published by this repair.",
+    "Other blocked reasons remain visible after scope correction. Actual model label historical_context is preserved for the virus report; no automatic reinterpretation of BACKFILL or novelty.",
+    "Food/Junaeb litigation, generic deaths, unnamed pavilions and generic demographic/exigency wording remain scope_not_grounded."
+  ]
+}

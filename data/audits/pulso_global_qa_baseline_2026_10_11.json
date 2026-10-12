@@ -1,0 +1,192 @@
+{
+  "audit_type": "independent_global_QA_baseline_and_date_expiry_diagnosis",
+  "captured_at": "2026-10-11T05:54:29.177149+00:00",
+  "baseline_staging_commit": "73aff5c9e97c7c0294ccaf10708f0e6732a90816",
+  "pulso_before_qa_commit": "bbcbe55de8968dcf05bd7305084ad6e7d5d6bfd1",
+  "product_and_test_baseline_comparison": [
+    {
+      "path": "scripts/export_web_snapshot.py",
+      "staging_sha256": "274ade00acb68e85cd3bc1b57b6294845956367ac112c06d8bf4cbf598d11a89",
+      "pulso_before_qa_sha256": "274ade00acb68e85cd3bc1b57b6294845956367ac112c06d8bf4cbf598d11a89",
+      "identical": true
+    },
+    {
+      "path": "web/data/radar_today.json",
+      "staging_sha256": "cdb2ec7e617c0653cd6f3016d419c227c0ca10101cd7bca7f3969110634427fc",
+      "pulso_before_qa_sha256": "cdb2ec7e617c0653cd6f3016d419c227c0ca10101cd7bca7f3969110634427fc",
+      "identical": true
+    },
+    {
+      "path": "data/history/superintendencia_signals.json",
+      "staging_sha256": "0b54ae732b37b79b6e48917fd56b4beb254cdee3f49ee6ceb68a72536fcaade1",
+      "pulso_before_qa_sha256": "0b54ae732b37b79b6e48917fd56b4beb254cdee3f49ee6ceb68a72536fcaade1",
+      "identical": true
+    },
+    {
+      "path": "scripts/build_statistics_deep_analysis.py",
+      "staging_sha256": "a4411e657dadca747bfd08e15393b4b5577c02d725c2ea8aae9d9ed5107f6314",
+      "pulso_before_qa_sha256": "a4411e657dadca747bfd08e15393b4b5577c02d725c2ea8aae9d9ed5107f6314",
+      "identical": true
+    },
+    {
+      "path": "tests/browser/product.spec.cjs",
+      "staging_sha256": "c1572baa75a2df988d364dd0866e3141147ad7afcde193b252cb5813abae0d4c",
+      "pulso_before_qa_sha256": "c1572baa75a2df988d364dd0866e3141147ad7afcde193b252cb5813abae0d4c",
+      "identical": true
+    },
+    {
+      "path": "tests/test_web_snapshot.py",
+      "staging_sha256": "7acd7472fbd99dac10ebd46bb51efa24ee6222ca6d83d554ae83726a21ba8021",
+      "pulso_before_qa_sha256": "7acd7472fbd99dac10ebd46bb51efa24ee6222ca6d83d554ae83726a21ba8021",
+      "identical": true
+    }
+  ],
+  "read_only_baseline_python": {
+    "command": "python -m pytest -q tests/test_web_snapshot.py::test_normative_v2_recurates_all_visible_acts_and_routes_opaque_titles_to_review",
+    "staging_result": "FAIL:11>=12",
+    "pulso_result": "FAIL:11>=12",
+    "failure_line_before_repair": 289
+  },
+  "read_only_baseline_browser": {
+    "report_sha256": "40920095bd94a19a500e7e6202ffd2f708ab5f0d5f6245b3ab87194ac0ea68b0",
+    "stats": {
+      "startTime": "2026-10-11T05:49:30.741Z",
+      "duration": 11518.929,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 6,
+      "flaky": 0
+    },
+    "results": [
+      {
+        "project": "desktop",
+        "test": "Pulso Isapre leads with executive table and statistics use the value ladder",
+        "status": "failed",
+        "error": "Error: Estadística Trimestral de Casos GES missing from snapshot\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+      },
+      {
+        "project": "desktop",
+        "test": "priority statistical releases use compact tables and collapsed traceability",
+        "status": "failed",
+        "error": "Error: Estadística Trimestral de Casos GES missing\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+      },
+      {
+        "project": "desktop",
+        "test": "Normative V2.1 puts document, subject and action in each current headline",
+        "status": "failed",
+        "error": "Error: 529\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+      },
+      {
+        "project": "mobile",
+        "test": "Pulso Isapre leads with executive table and statistics use the value ladder",
+        "status": "failed",
+        "error": "Error: Estadística Trimestral de Casos GES missing from snapshot\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+      },
+      {
+        "project": "mobile",
+        "test": "priority statistical releases use compact tables and collapsed traceability",
+        "status": "failed",
+        "error": "Error: Estadística Trimestral de Casos GES missing\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+      },
+      {
+        "project": "mobile",
+        "test": "Normative V2.1 puts document, subject and action in each current headline",
+        "status": "failed",
+        "error": "Error: 529\n\nexpect(received).toBeTruthy()\n\nReceived: undefined"
+      }
+    ]
+  },
+  "date_evidence": {
+    "snapshot_date": "2026-10-10",
+    "latest_history_event_date": "2026-10-09",
+    "curator_policy": "event_date no more than90 elapsed days before latest eligible history event; no publication quota",
+    "cutoff": "2026-07-11",
+    "expired_documents": [
+      {
+        "url": "https://www.superdesalud.gob.cl/normativa/circular-if-n529/",
+        "original_event_date": "2026-07-10",
+        "age_days_from_latest_history": 91,
+        "correct_feed_result": "excluded_by_90_day_horizon; remains in durable history"
+      },
+      {
+        "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-a-marzo-2026/",
+        "original_event_date": "2026-07-10",
+        "age_days_from_latest_history": 91,
+        "correct_feed_result": "excluded_by_90_day_horizon; remains in durable history"
+      },
+      {
+        "url": "https://www.superdesalud.gob.cl/biblioteca-digital/series-estadisticas-del-sistema-isapre-1990-2025/",
+        "original_event_date": "2026-07-10",
+        "age_days_from_latest_history": 91,
+        "correct_feed_result": "excluded_by_90_day_horizon; remains in durable history"
+      }
+    ]
+  },
+  "validated_qa_repairs": [
+    "Python test expects reviewed normative identities from current90-day recorded history and persistent editorial decisions; validates complete title/identity/context contract and currentIF533 subject/action.",
+    "Browser tests bind known statistical releases to exact sourceURLs and their original durable history date; require expired records to be absent and retain all table/evidence/unit/methodology checks for current rows.",
+    "Browser normative test checks exact act identity and same subject/action/context contract only within rolling horizon; expiredIF529 must be absent rather than republished."
+  ],
+  "after_qa_python": {
+    "command": "python -m pytest -q tests/test_web_snapshot.py",
+    "result": "PASS",
+    "passed": 25
+  },
+  "after_qa_browser_without_priority_build": {
+    "report_sha256": "04c5a98b81ff5b29a2b62a5d397d4e95002e0caadaac0ed0592afd7ab1eff4dd",
+    "stats": {
+      "startTime": "2026-10-11T05:53:34.293Z",
+      "duration": 9616.128999999999,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 4,
+      "flaky": 0
+    },
+    "results": [
+      {
+        "project": "desktop",
+        "test": "Pulso Isapre leads with executive table and statistics use the value ladder",
+        "status": "failed",
+        "error": "Error: Boletín Estadístico Informativo IP table\n\nexpect(received).toBeGreaterThan(expected)\n\nExpected: > 0\nReceived:   0"
+      },
+      {
+        "project": "desktop",
+        "test": "priority statistical releases use compact tables and collapsed traceability",
+        "status": "failed",
+        "error": "Error: Boletín Estadístico Informativo IP table\n\nexpect(received).toBeGreaterThanOrEqual(expected)\n\nExpected: >= 6\nReceived:    0"
+      },
+      {
+        "project": "desktop",
+        "test": "Normative V2.1 puts document, subject and action in each current headline",
+        "status": "passed",
+        "error": ""
+      },
+      {
+        "project": "mobile",
+        "test": "Pulso Isapre leads with executive table and statistics use the value ladder",
+        "status": "failed",
+        "error": "Error: Boletín Estadístico Informativo IP table\n\nexpect(received).toBeGreaterThan(expected)\n\nExpected: > 0\nReceived:   0"
+      },
+      {
+        "project": "mobile",
+        "test": "priority statistical releases use compact tables and collapsed traceability",
+        "status": "failed",
+        "error": "Error: Boletín Estadístico Informativo IP table\n\nexpect(received).toBeGreaterThanOrEqual(expected)\n\nExpected: >= 6\nReceived:    0"
+      },
+      {
+        "project": "mobile",
+        "test": "Normative V2.1 puts document, subject and action in each current headline",
+        "status": "passed",
+        "error": ""
+      }
+    ]
+  },
+  "remaining_genuine_statistics_failure": {
+    "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+    "original_event_date": "2026-08-03",
+    "reason": "checked-in offline snapshot has no summary_table; no data/statistical_analysis_overrides_v1.json exists locally",
+    "required_action": "Run existing Build priority statistical deep analysis step against original official documents in authorized GitHubActions, export snapshot, rerun unchanged strict statistical assertions and independent Reviewer. If builder fails or table invalid, preserve FAIL and diagnose actual data; do not loosen quality."
+  },
+  "acceptance_limit": "Global staging PASS is not demonstrated by this audit. Two normative browser cases PASS; four statistics cases still FAIL until the genuine priority builder/export completes.",
+  "scope": "No product, curator, publication gate, history, or production changes in this QA repair. Other agents own simultaneous Pulso runtime changes."
+}

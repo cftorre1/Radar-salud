@@ -1,0 +1,31 @@
+name: Pulso FINAL SHA acceptance
+on:
+  push:
+    branches: [codex/b-pulso-runtime-20261011]
+    paths: ['.github/run-pulso-final-validation-now','.github/workflows/pulso-final-validation.yml']
+permissions:
+  contents: read
+jobs:
+  observations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest
+      - name: Strict observed-primary and editorial regression checks
+        run: PYTHONPATH=. python -m pytest -q tests/test_pulso_completed_zero_observations.py
+      - name: Independently read both completed real cores on FINAL SHA without HTTP or AI
+        run: PYTHONPATH=. python scripts/verify_pulso_completed_zero_observations.py --output artifacts/pulso-completed-zero-${{ github.sha }}.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pulso-final-observations-${{ github.sha }}
+          path: artifacts/pulso-completed-zero-*.json
+          retention-days: 90
+  qa:
+    needs: observations
+    uses: ./.github/workflows/qa.yml

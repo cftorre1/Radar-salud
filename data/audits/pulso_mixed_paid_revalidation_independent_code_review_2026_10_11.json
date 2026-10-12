@@ -1,0 +1,2565 @@
+{
+  "schema_version": "pulso_mixed_paid_revalidation_independent_code_review_v1",
+  "source_id": "pulso_latercera",
+  "reviewed_at_utc": "2026-10-11T18:44:05.638602+00:00",
+  "status": "PASS_SCOPED_COMMITTED_IMPLEMENTATION",
+  "scope": "Read-only bounded independent module/hook/queue review against immutable actual49 paid originals and real body/model inputs. No AI/network, no runtime-state or product/test edits.",
+  "initial_snapshot": {
+    "head_at_snapshot": "d3b7ca20f71eac7fdd6cb217e8cb46b716abe519",
+    "snapshot_at": "2026-10-11T18:29:31.633367+00:00",
+    "inputs": {
+      "src/radar_salud/pulso_paid_revalidation.py": "99810137dec85fe37235f52a51c1ab0b66c4102a0ad9ec1551e30ffb16c3356c",
+      "src/radar_salud/beta_sources.py": "e0b7729a92afbd94f0e2cc2ea6d3f0bab0567d270dcd5ad9c6718daa596ad027",
+      "src/radar_salud/pending_queue.py": "46b886b88a7a7d3846f2a3e135559a309436bd60a9b7edbbcb57d4935e93cf06",
+      "src/radar_salud/pulso_editorial_proof.py": "92dae3c081f9b3c576204e5e9b4d15ee8f168fa9a310f9070f062308afc56e15",
+      "src/radar_salud/engine_cli.py": "2df2c2f42f4aeebd1c9a992a6fbc235072312fedf3747a08ab297553782b8f61",
+      "tests/test_pulso_paid_guard_revalidation.py": "d84fd2e2c3b61441bf7826d9dd5561465eb8ff0d7a61f06130db959fb216e2ad",
+      "tests/test_pulso_actual_v5_future_qualifiers.py": "1d7c4df205d93b52c73173415522906450d82a0f68328210ed0fabb0b6ece017"
+    }
+  },
+  "manifest_sha256": "1e2b8ee53e2118dbe8776a9e9ed1535b137c8219899bd3e1ba1a3504931ef88e",
+  "producer_state_commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+  "producer_core_checkout": "03bf998a4bb5840c84da6473666e932fbc5cedd9",
+  "producer_fingerprint_sha256": "4feb04bc17ac24d37bd5cbb07f12893f5e8202de61aa7133b8fb1a8aeb6a4118",
+  "initial_partition": {
+    "reuse_code_fn": 19,
+    "reuse_below_gate_reject": 6,
+    "assess_contract_or_semantic_defect": 24
+  },
+  "validation": {
+    "corrected_fixture_tests": {
+      "passed": 110,
+      "failed": 0,
+      "elapsed_seconds": 33.9,
+      "paid_revalidation_test_sha256": "560b9ee7474cc36d03866260b6975c3cb607d76caf9c1b9cd664e624493341b4",
+      "stdout": "........................................................................ [ 65%]\n......................................                                   [100%]\n110 passed in 33.90s\n",
+      "stdout_sha256": "78adf1bb77a72c0d4d7419be07b6dc0a71adbab74de6cd156285291db29f9ee1",
+      "note": "Explicit sys.path snapshot precedence used. Original test spy import target and legacy nonterminal selection were corrected by owner before this test run; no child repo edits."
+    },
+    "actual49_replay": {
+      "snapshot": {
+        "head_at_snapshot": "d3b7ca20f71eac7fdd6cb217e8cb46b716abe519",
+        "snapshot_at": "2026-10-11T18:29:31.633367+00:00",
+        "inputs": {
+          "src/radar_salud/pulso_paid_revalidation.py": "99810137dec85fe37235f52a51c1ab0b66c4102a0ad9ec1551e30ffb16c3356c",
+          "src/radar_salud/beta_sources.py": "e0b7729a92afbd94f0e2cc2ea6d3f0bab0567d270dcd5ad9c6718daa596ad027",
+          "src/radar_salud/pending_queue.py": "46b886b88a7a7d3846f2a3e135559a309436bd60a9b7edbbcb57d4935e93cf06",
+          "src/radar_salud/pulso_editorial_proof.py": "92dae3c081f9b3c576204e5e9b4d15ee8f168fa9a310f9070f062308afc56e15",
+          "src/radar_salud/engine_cli.py": "2df2c2f42f4aeebd1c9a992a6fbc235072312fedf3747a08ab297553782b8f61",
+          "tests/test_pulso_paid_guard_revalidation.py": "d84fd2e2c3b61441bf7826d9dd5561465eb8ff0d7a61f06130db959fb216e2ad",
+          "tests/test_pulso_actual_v5_future_qualifiers.py": "1d7c4df205d93b52c73173415522906450d82a0f68328210ed0fabb0b6ece017"
+        }
+      },
+      "manifest_sha256": "1e2b8ee53e2118dbe8776a9e9ed1535b137c8219899bd3e1ba1a3504931ef88e",
+      "validated_partition": {
+        "reuse_code_fn": 19,
+        "reuse_below_gate_reject": 6,
+        "assess_contract_or_semantic_defect": 24
+      },
+      "all49_checks": [
+        {
+          "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "438514ab5ccbb32c1ae2a55ad008041810d81124181691f64b05b8ee794800ef",
+          "body_sha256": "0ebfaaf59515c5c7f01f4e150f7a9000e5f5a0888ecfaf48c73c9364378d0131",
+          "model_sha256": "d0453091652609bbadbc0ceeeed8c9e2469bcdf3a891df43f05dfbb4f656c688",
+          "original_response_id": "resp_0bab386418ef423b006acbcc74083c87d19617444b47cb03c8"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "c8a8f7ccc9a6aa81efc838e4f511f685f0c35e3a68f47b605496c2c7862e6710",
+          "body_sha256": "328e72605ee42fc840f0aacfc636a0589da7088885780c95174a70642441ee35",
+          "model_sha256": "00c097422049e4ce7246d6ed2131d46774a2b927d99a1b989f43e20ad89d87ef",
+          "original_response_id": "resp_03408fdc62b34a33006acbc6e70d7887d18d1f29d3d2ca7e63"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "c843ce2dc3110a0f5b80c2acd4e474a03568c815bea71ce4136f0128ae6e1945",
+          "body_sha256": "2eb2cfabe7030bef50873ba9722bee3df24acec327e63f85d05655a7b3ccee1e",
+          "model_sha256": "8b5287375b69875e8f083681be3a32d2001f721774ac6a2c6e9d5f17efa2a361",
+          "original_response_id": "resp_0039a4baa29e7964006acbca04c7b087d1888bb0ca29fb87f9"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-prohibe-temporalmente-funcionamiento-de-planta-procesadora-de-lacteos-matthei-tras-reiteradas-muestras-positivas-con-listeria/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/diez-servicios-de-salud-concentran-el-62-de-la-oferta-publica-para-resolver-el-cancer/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/gobierno-anuncia-plan-laboral-que-movilizara-recursos-por-unos-us1350-millones-que-apunta-a-crear-mas-de-100-mil-empleos/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "9a41b0d7eddee9b81f55e7a50e2acb7377bc2456bc2731c37b05a5cfa7c18aa6",
+          "body_sha256": "96a37ca4ba3f88f5d4131d6739e46e3ea602d460bba6eb77b9e9a8de950e4149",
+          "model_sha256": "ac823a7107d7945f9f85c93823000efc579be37793aa3182bdd119038d71328c",
+          "original_response_id": "resp_01d436c358f53739006acbc701386087d19fa5b2e1ff2bdf52"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/agencia-de-ciberseguridad-refuta-a-uc-christus-y-defiende-incorporarla-a-listado-un-ransomware-puede-tener-alcances-catastroficos/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "a647d55b2e53c4612e92f367c50354c6d0d56efc61efcb00cc10fe2ee66ac5c2",
+          "body_sha256": "d9ebb4a4ec84cfc09b90146e0bdb16cea16ff9d1293e9f3d8d84b6fcd32c685c",
+          "model_sha256": "ee5f38a3f790c1d778a7167fcad09db72e14248847a1635a2c6df4f9ad2cbce9",
+          "original_response_id": "resp_00ff8ce1db14ac0c006acbc7edf79087d19408303dff742ab1"
+        },
+        {
+          "url": "https://www.latercera.com/politica/noticia/bancada-udi-anuncia-agenda-pro-consumidor-con-14-medidas-en-seguros-salud-transporte-y-otras-areas/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/virus-respiratorios-positividad-asciende-al-579-la-mas-alta-en-los-ultimos-tres-anos/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-investigara-alcances-de-la-alerta-oncologica-del-minsal-por-solicitud-de-diputada-radical/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ante-baja-vacunacion-en-grupos-de-riesgo-minsal-advierte-aumento-de-consultas-en-urgencias-por-virus-respiratorios/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "4d47abc89531c504db9db0df477922fc09f18e4faf5f2e05c7471887e7c1065d",
+          "body_sha256": "d73454ef54ffd65bffab7177c7b942b9e7be139f3f6175178c5f6db50a9df5f0",
+          "model_sha256": "9984152db8bcc76783dcd02cfee789dc4a38530c6b1a6fda10f498b72e2ef261",
+          "original_response_id": "resp_0424465ec1ef12dd006acbc9d8224c87d19bf5301733d090d5"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/inauguran-el-primer-centro-de-salud-de-alta-resolutividad-sar-para-vina-del-mar-recinto-podra-realizar-65-mil-atenciones-anuales/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "a8e38ac1bc4eee2d01fe3229bf830078ecc10f970e4566be7fd38c606ccd2549",
+          "body_sha256": "b19cf891c76d50a414054e4819e3dc943134c6d5329b5cc1430e7bd4813f3b6b",
+          "model_sha256": "29285c6564db4c5c7b38aa5bed77ff3d41e8929180dbed886877e2875ce1f82a",
+          "original_response_id": "resp_07384e2f0b021ebc006acbca1e78cc87d1884156675106a1f1"
+        },
+        {
+          "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/sernac-fiscaliza-centros-de-estetica-en-14-regiones-y-pone-foco-en-seguridad-publicidad-y-precios/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "51d876e5bc3a9b535f17ccb599e0d0ed52e8a85f9a832ef0e222a443ebe63799",
+          "body_sha256": "743e751bd4b4b2b9f60f440cc87e903cfe529bb22352548264183780f9827758",
+          "model_sha256": "7f23d18ba31b4a9e5ef80413d945ecb6ac0edef420df50e303a62202078bccd5",
+          "original_response_id": "resp_05d90b3f95397e1b006acbca8b08dc87d198673b4b41600961"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/clinica-las-condes-finaliza-aumento-de-capital-y-recauda-80-mil-millones/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/grupo-estatal-chino-es-el-gran-concesionario-de-los-hospitales-publicos-chilenos/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "11cb956179418eb569736fc025697be8f03b33f66fb6d9c0549391345619a7e0",
+          "body_sha256": "2d0adf9fea9d9eeafb63717224a720710da2517733e3965cdddfab97fa481620",
+          "model_sha256": "41925356c99bb2e5924427d9b48d506db47e31473b7dd8a6218ee2912e00bf07",
+          "original_response_id": "resp_05052c2f0d19eb14006acbcb6de50887d188cd0d25d933de7b"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-informa-de-afectaciones-leves-en-recintos-de-salud-por-el-sistema-frontal-pero-afirma-que-red-esta-completamente-operativa/",
+          "route": "reuse_below_gate_reject",
+          "model_unchanged": true,
+          "guard_result": "rejected",
+          "published_row_returned": false,
+          "guard_receipt_sha256": "0370cf4110a3f530934bb0870b18bc2bfeb6f125bf80851899f37e62f2e2a467",
+          "body_sha256": "82919f9ba75ced370da7c0a82c29ee53d64c0ba896c097239b66156a0f62944e",
+          "model_sha256": "d0f0b9f15a22ab244c808a654775c85651554471e2181871749c5464fbc017cb",
+          "original_response_id": "resp_03dc7a1df6059b90006acbcbdbf11487d1ad03647ce4256578"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/anuncio-para-hospitales-y-un-plan-maestro-de-listas-de-espera-los-pasos-del-minsal-tras-el-fin-de-la-alerta-oncologica/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "582ba6723a48f7e195801ad36cbb23773b65a14df65850b031c49ce80515db9b",
+          "body_sha256": "37a35426bc426f8b62947312cacfec5805bbb3d61f2806adcc163c132d62e33c",
+          "model_sha256": "994816d37658c66338618307046daee2b648bd5e363a75991bbad562ed561b93",
+          "original_response_id": "resp_03387739aec0243c006acbcbf8d11c87d1aaf94fb230804f5d"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-entrega-balance-final-del-plan-de-alerta-oncologica-y-adelanta-medidas-para-evitar-el-incumplimiento-de-garantias/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/centro-medico-de-atacama-tramitaba-bonos-falsos-de-fonasa-fraude-supero-los-260-millones/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "28fbd8a4daeda83e7539a3cbc38abfb8d0a4d5b6a2f90747c8741384cb74e86f",
+          "body_sha256": "cfc69fa4535ee989455c6dce041bf965c4b75e29741ecb2c9e7196331e4b7e16",
+          "model_sha256": "a1e122a457ecec485cd02fea70d0782ba864d8eb86701d3a678cba8cdab6ddc6",
+          "original_response_id": "resp_007958a2b1b18bf6006acbcc5d61fc87d1851350a3a912b6bb"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "9dbae34f2984f3c684c080de4de0f1e23afe5e84c4c909f35d2b3b2907817716",
+          "body_sha256": "ed54fa46914245816a9143533683db3d8bea1c92064ae5b4157b2dcda46d4788",
+          "model_sha256": "f16c6b8411c7f6a375be0c46e51fd70baebb8f967f4c9af7ee0ece6c37398c25",
+          "original_response_id": "resp_0a8e18c8ba0d4f03006acbc716f52c87d190e26febf5c6148b"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-conmemora-dia-nacional-del-donante-de-organos-y-tejidos-con-partido-en-hospital-dr-luis-calvo-mackenna/",
+          "route": "reuse_below_gate_reject",
+          "model_unchanged": true,
+          "guard_result": "rejected",
+          "published_row_returned": false,
+          "guard_receipt_sha256": "a4303f0c55bcd704702a751a698a2b387c659e1834ee538fa798e955653c04a9",
+          "body_sha256": "08bfa15c7b56ccca33c388833372cf655265ee63d5c9704d595c2d898819e891",
+          "model_sha256": "2a859626c1ca37f2ee682f846e3f83a0cbac072dfa23a5a9b2ef8d6b0bbab7e6",
+          "original_response_id": "resp_0e75ac7532df6058006acbc729952487d1ac915f4d92f02487"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-publica-nomina-con-los-eleam-que-cuenta-con-autorizacion-sanitaria-son-993-a-nivel-pais-y-la-rm-concentra-mas-de-la-mitad/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-detecta-plantas-de-aguas-servidas-sin-autorizacion-y-deficiencias-en-tres-comunas-de-la-rm/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "894054df968e0dd6d5fb2dab2fca8e4d78c8c75325dfd60e1bc68b68af0e1a5e",
+          "body_sha256": "393cb8c87c93f6a7d24a09f1977c5346f9058973b1f9d9679d7ec416c8e65f17",
+          "model_sha256": "07a23fb5f54a39a7cf07e3503fe65bf89b7e9a8a68aa8056ff5ff64fd9ea6c9a",
+          "original_response_id": "resp_0976fe603ca74c57006acbc7b6336087d1adcf07db99b4c17c"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-revela-que-observaciones-ordenadas-al-hospital-de-chillan-no-se-han-corregido-mas-de-dos-mil-cirugias-preferenciales-a-familiares/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "40ee633551d1f23b38fa1539fb6c851157ea9c694473fc7acb27ab81e9e87794",
+          "body_sha256": "4d750336d5a9f67df96cbb2a15c11d4937552be4c62d2dc80e7349282e07a5bd",
+          "model_sha256": "2e06a0200a38d48b986e120a059b693d9bbf591db53c28583e0538a16fea8595",
+          "original_response_id": "resp_011f84ba687e9b1d006acbc8219f2887d1991e262ec0bc0348"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/alerta-alimentaria-por-listeria-supermercado-informa-del-retiro-preventivo-de-todas-las-unidades-de-pasta-de-jamon/",
+          "route": "reuse_below_gate_reject",
+          "model_unchanged": true,
+          "guard_result": "rejected",
+          "published_row_returned": false,
+          "guard_receipt_sha256": "dbcada6c05b7d60508dddefd05b90ee6f4e696a2c61dcebabb2cec13bceb2416",
+          "body_sha256": "a7fb9caee358447cd3bea47e1956e5bb39a1a908d46936c3eccae183f742f059",
+          "model_sha256": "c907a9b05121f501a4b57ea570b45caf98d7c8cddf3662029dba2c036e1655c1",
+          "original_response_id": "resp_08d7c702a5084d5c006acbc86a854087d1818f31d6d34b8c3a"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "c1187aaacbda1d7e5d24fdb25db0892153593f84e53a9f38546f0680147f9907",
+          "body_sha256": "30d8b8f701b0cde06ea6670423804452f43d4b4ee6ab6bb0efe4bc59d25f545f",
+          "model_sha256": "ffe51c76b40043ae765fa7e069d74e2a008a0b65b59e57ff93bbbfb67f57a6f2",
+          "original_response_id": "resp_0702e5313576200f006acbc8a6725c87d1845e4bb339334dbe"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/calisto-entra-a-la-batalla-por-causa-junaeb-defensa-buscara-limitar-acceso-al-contenido-de-celular-incautado-por-la-pdi/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "02b3ff816bfa9a529dd9b6d1a05d8986d608d14237131b4244f2c57f36deeea5",
+          "body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+          "model_sha256": "472ff5490dc44982765c9aca2906ec268f77df1b33aad47c8530baba73fa7bd1",
+          "original_response_id": "resp_06d55302e3760f78006acbca9c84dc87d1b9e5af7a2cbc5fd3"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/por-emanaciones-toxicas-informan-suspension-de-clases-en-quilicura-tras-gigantesco-incendio-en-empresa-de-productos-quimicos/",
+          "route": "reuse_below_gate_reject",
+          "model_unchanged": true,
+          "guard_result": "rejected",
+          "published_row_returned": false,
+          "guard_receipt_sha256": "6dc820e83d25c4ed1a881b22efcce8d80520e8a7056001b5e6296e3e820e1b8f",
+          "body_sha256": "b190c2b846701c235e961956a22f14c928f3fd87798a0cbd1b5edfdd2dd6a6be",
+          "model_sha256": "b0bff7a53d5f433e8c183cf7acea2200b3c0ffb5973ac45a1cbe49baa7e896c9",
+          "original_response_id": "resp_08df88ad79c21d60006acbcadefd6087d1a330a32388650b50"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-apelara-a-fallo-que-ordeno-reincorporar-a-exdirectora-del-hospital-de-san-antonio-tras-declarar-ilegal-su-remocion/",
+          "route": "reuse_below_gate_reject",
+          "model_unchanged": true,
+          "guard_result": "rejected",
+          "published_row_returned": false,
+          "guard_receipt_sha256": "d554651a98753f02a15e6a0a7e182b704eb6055ea1bf5897483ea8439079c823",
+          "body_sha256": "61dc8e4bb1b58621c619beb052136e579daa1d8595cc81ce57d1bda57ee10c23",
+          "model_sha256": "5e7c4340d345ab93df70ad6b1ed08acd2de295783a367adcfce1c3a568a98b67",
+          "original_response_id": "resp_039af5468b27badc006acbcafb05d887d195f2071d709681c5"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "3b36a5c3c112655c43d18d59c95d791b544f7c770831815fd1945e265109961c",
+          "body_sha256": "1d7f55e07ae77e0a3eda89467e2ea0e3b78a1bb990f616f06bcaf3af1f20f9bf",
+          "model_sha256": "ef1abf1d609d62f5d0be7e0626469fa206be0bf6467d3123e168d1c30a21b713",
+          "original_response_id": "resp_02c0d344dc3dcbe0006acbcb2838c087d19d118d1eda771ecb"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ejercito-despliega-hospital-modular-en-ovalle-tras-inutilizacion-de-cinco-pabellones-por-lluvias/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "f53be3ffc64273daf538ca3ed19bf0bcc45cba56e600a9977b3eb0f79fcd6a7e",
+          "body_sha256": "c160a47a49949f6fd69fa6e7007b01314b7c0e37e142b2bb64cd6ad8b58c6a75",
+          "model_sha256": "bd4b42a612974f12e8834bc8cbd5459aa0d21fd881240939c5a6ffd1bb8d9d57",
+          "original_response_id": "resp_0e4bbfef1704c7b1006acbcba1bbd487d1b832daedbbbf0046"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/gobierno-suspende-clases-para-este-lunes-en-provincia-de-huasco-y-regiones-de-coquimbo-y-valparaiso/",
+          "route": "reuse_below_gate_reject",
+          "model_unchanged": true,
+          "guard_result": "rejected",
+          "published_row_returned": false,
+          "guard_receipt_sha256": "e988e33ea150ab90aba5377b3b4e998149abcdb7af0e0ded2aa27eeea7d1e440",
+          "body_sha256": "52f7381d02dfa2f44c9ed72ec446324e3f643c321687ac197656e0a96c51afd8",
+          "model_sha256": "6b0a6fdf75539f415f126da222f3956e97e99a4d6f1efd6c56aeb74d9c7f6a64",
+          "original_response_id": "resp_0864d525476c66e9006acbcbb76f3887d1ac6c0f84544e8e1b"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "4a17956d22cf143a0840d92ed7da749ca136cd7b644d7c593324444405cb0597",
+          "body_sha256": "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f",
+          "model_sha256": "4b9f200a6ae2e72feb0597149bcdb34bb45fc064cfafdf5c8eb0e6739f2403d6",
+          "original_response_id": "resp_0fb90ebcf3cf93e2006acbcbca873487d1854bc3c7526d6c3b"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        }
+      ],
+      "contradictory_fresh_source_classification": [
+        {
+          "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 80,
+            "threshold": 75,
+            "analysis_reason": "El artículo repite el aumento propuesto de 4,7% y las prioridades generales del antecedente del 2026-10-01, pero agrega declaraciones operativas de la evaluación del primer semestre de 2026 sobre productividad, compras, stock, licitaciones y ausentismo. Es una señal material para el radar, aunque permanece como desempeño reportado por prensa y no como resultado auditado ni como presupuesto 2027 aprobado."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "rejected",
+            "reason": "editorial_relevance_below_threshold",
+            "relevance_score": 72,
+            "threshold": 75,
+            "analysis_reason": "Es una señal relevante para un actor importante de la prestación privada en Chile porque combina una reorganización de las líneas de reporte con un cambio de liderazgo en Clínica Santa María, en el contexto de la venta anunciada del controlador de Empresas Banmédica. Su impacto sectorial concreto todavía no está demostrado en la nota, por lo que corresponde tratarla como contexto estratégico secundario y no como una expansión o mejora asistencial ya ejecutada."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 92,
+            "threshold": 75,
+            "analysis_reason": "La nota reporta un avance cuantificado de una obligación regulatoria y financiera de gran escala para las isapres abiertas, con efectos sobre pagos a afiliados, supervisión, dividendos y gestión de caja. Es una señal estratégica material para el aseguramiento privado de salud, aunque los estados descritos corresponden a la publicación original del 20 de agosto de 2026 y no acreditan por sí solos su vigencia al 11 de octubre de 2026."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/gobierno-anuncia-plan-laboral-que-movilizara-recursos-por-unos-us1350-millones-que-apunta-a-crear-mas-de-100-mil-empleos/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 82,
+            "threshold": 75,
+            "analysis_reason": "Merece radar por el tamaño del plan fiscal y por su componente específico de financiamiento sanitario de $130 mil millones para proveedores del sistema de salud. Sin embargo, la nota reporta un anuncio con medidas futuras y no acredita ejecución ni continuidad posterior a la publicación original."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/agencia-de-ciberseguridad-refuta-a-uc-christus-y-defiende-incorporarla-a-listado-un-ransomware-puede-tener-alcances-catastroficos/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "rejected",
+            "reason": "source_materiality_prefilter"
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ante-baja-vacunacion-en-grupos-de-riesgo-minsal-advierte-aumento-de-consultas-en-urgencias-por-virus-respiratorios/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "rejected",
+            "reason": "source_materiality_prefilter"
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/inauguran-el-primer-centro-de-salud-de-alta-resolutividad-sar-para-vina-del-mar-recinto-podra-realizar-65-mil-atenciones-anuales/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 76,
+            "threshold": 75,
+            "analysis_reason": "Es una inversión concreta en capacidad de atención primaria, con infraestructura clínica, diagnóstico por imágenes, laboratorio y farmacia, pero corresponde a un proyecto comunal y su impacto operativo futuro se presenta como estimación."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/sernac-fiscaliza-centros-de-estetica-en-14-regiones-y-pone-foco-en-seguridad-publicidad-y-precios/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "rejected",
+            "reason": "source_materiality_prefilter"
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/grupo-estatal-chino-es-el-gran-concesionario-de-los-hospitales-publicos-chilenos/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 92,
+            "threshold": 75,
+            "analysis_reason": "Señal material para infraestructura sanitaria, competencia y participación de inversionistas en la operación de hospitales públicos concesionados. La nota atribuye las cifras y la caracterización del grupo al informe de la FNE y a datos del MOP; no acredita aprobación o cierre de la adquisición."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/anuncio-para-hospitales-y-un-plan-maestro-de-listas-de-espera-los-pasos-del-minsal-tras-el-fin-de-la-alerta-oncologica/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 88,
+            "threshold": 75,
+            "analysis_reason": "Es una señal nacional relevante porque combina un balance de prestaciones oncológicas atendidas con una agenda anunciada para gestión hospitalaria, listas de espera y cumplimiento GES. Su impacto potencial es alto, pero varias medidas seguían en propuesta, análisis o planificación al 15 de julio de 2026."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/centro-medico-de-atacama-tramitaba-bonos-falsos-de-fonasa-fraude-supero-los-260-millones/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 84,
+            "threshold": 75,
+            "analysis_reason": "Es una señal concreta de fraude contra Fonasa y de vulnerabilidad en la autenticación biométrica de prestaciones de salud, con impacto financiero estatal y potencial afectación de pacientes. Ingresa como caso relevante de integridad del aseguramiento, aunque su alcance reportado es local y la investigación aún no estaba cerrada a la fecha de publicación."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 84,
+            "threshold": 75,
+            "analysis_reason": "Señal relevante de financiamiento y cobertura sanitaria: organizaciones de pacientes plantearon al Minsal una alternativa para reducir la judicialización del acceso a tratamientos de enfermedades poco frecuentes. El impacto potencial es material, pero la cobertura compartida seguía siendo una posibilidad reportada por los participantes, no una medida aprobada."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-detecta-plantas-de-aguas-servidas-sin-autorizacion-y-deficiencias-en-tres-comunas-de-la-rm/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 88,
+            "threshold": 75,
+            "analysis_reason": "Señal estratégica relevante para regulación sanitaria, fiscalización ambiental y continuidad segura del tratamiento de aguas servidas municipales: documenta incumplimientos en cinco plantas de tres comunas, posibles descargas sin tratamiento y fallas de coordinación entre autoridades. La nota merece radar, pero sus hallazgos y el procedimiento disciplinario deben mantenerse atribuidos y fechados al 11 de septiembre de 2026."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-revela-que-observaciones-ordenadas-al-hospital-de-chillan-no-se-han-corregido-mas-de-dos-mil-cirugias-preferenciales-a-familiares/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 84,
+            "threshold": 75,
+            "analysis_reason": "Es una señal relevante para prestadores públicos y la gestión de listas de espera: un seguimiento de Contraloría reportó persistencia de irregularidades, discrepancias materiales entre sistemas y una eventual afectación de la priorización de pacientes. Ingresa por su impacto en acceso, trazabilidad y control sanitario, aunque el caso se circunscribe principalmente a un hospital y la medida disciplinaria aún no constituía una sanción definitiva."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 93,
+            "threshold": 75,
+            "analysis_reason": "La nota reporta un resultado judicial material en salud humana, con impacto en el financiamiento y control del sistema de licencias médicas, además de capacidades investigativas replicables en otros casos. Ingresa como BACKFILL: los estados descritos corresponden a lo publicado el 2026-09-04 y no se presentan como vigentes al 2026-10-11 sin evidencia posterior."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 86,
+            "threshold": 75,
+            "analysis_reason": "Es una señal concreta de política sanitaria nacional frente a un aumento reportado de casos y letalidad de una enfermedad humana, con efectos esperados sobre vigilancia epidemiológica, sospecha diagnóstica, testeo y capacidad de respuesta de los establecimientos asistenciales. Ingresa como BACKFILL porque la publicación es anterior a la fecha de revisión."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 88,
+            "threshold": 75,
+            "analysis_reason": "Es una señal material para la gestión de la red pública y el acceso oportuno a prestaciones de salud humana: incorpora datos nacionales y territoriales del período 2021-2025, identifica brechas en GES y listas de espera, y reporta una respuesta de gestión del Minsal. La nota también contiene una medida en curso y objetivos futuros que no deben confundirse con resultados ya logrados."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ejercito-despliega-hospital-modular-en-ovalle-tras-inutilizacion-de-cinco-pabellones-por-lluvias/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 86,
+            "threshold": 75,
+            "analysis_reason": "Es una señal material de continuidad asistencial y capacidad sanitaria de emergencia: la inutilización temporal de cinco de siete pabellones de un hospital activó apoyo militar para recuperar parte de la capacidad quirúrgica, con posibles efectos sobre prestadores, atención hospitalaria y vacunación en zonas afectadas. Ingresa como BACKFILL con los estados fechados a la publicación original; la nota no permite afirmar que esas condiciones sigan vigentes al 2026-10-11."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 78,
+            "threshold": 75,
+            "analysis_reason": "Señal concreta de gestión de capacidad y continuidad de atención hospitalaria ante una emergencia climática, con coordinación interministerial y afectación directa de un hospital. Su alcance estratégico es acotado y temporal, por lo que no corresponde a un cambio estructural del sistema."
+          },
+          "error": null
+        }
+      ],
+      "original_producer_objects_unchanged": true,
+      "AI_calls": 0,
+      "runtime_writes": 0
+    }
+  },
+  "findings": [
+    {
+      "id": "NEW_FAST_RETRY_PERMANENT_POISON",
+      "severity": "high",
+      "status": "resolved_in_reviewed_commit",
+      "problem": "After a genuine new-output path stores a deferred answer, the one-time admission verifier still requires current answer and validation to equal original paid output. It blocks the next due retry before another FAST request.",
+      "repro": {
+        "scope": "Dirty code snapshot; actual original paid article/model, synthetic new Response ID and spy output only, no AI/network/runtime changes",
+        "snapshot": {
+          "head_at_snapshot": "d3b7ca20f71eac7fdd6cb217e8cb46b716abe519",
+          "snapshot_at": "2026-10-11T18:29:31.633367+00:00",
+          "inputs": {
+            "src/radar_salud/pulso_paid_revalidation.py": "99810137dec85fe37235f52a51c1ab0b66c4102a0ad9ec1551e30ffb16c3356c",
+            "src/radar_salud/beta_sources.py": "e0b7729a92afbd94f0e2cc2ea6d3f0bab0567d270dcd5ad9c6718daa596ad027",
+            "src/radar_salud/pending_queue.py": "46b886b88a7a7d3846f2a3e135559a309436bd60a9b7edbbcb57d4935e93cf06",
+            "src/radar_salud/pulso_editorial_proof.py": "92dae3c081f9b3c576204e5e9b4d15ee8f168fa9a310f9070f062308afc56e15",
+            "src/radar_salud/engine_cli.py": "2df2c2f42f4aeebd1c9a992a6fbc235072312fedf3747a08ab297553782b8f61",
+            "tests/test_pulso_paid_guard_revalidation.py": "d84fd2e2c3b61441bf7826d9dd5561465eb8ff0d7a61f06130db959fb216e2ad",
+            "tests/test_pulso_actual_v5_future_qualifiers.py": "1d7c4df205d93b52c73173415522906450d82a0f68328210ed0fabb0b6ece017"
+          }
+        },
+        "url": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+        "date": "2026-07-23",
+        "original_response_id": "resp_07b064290b27caa3006acbcb8c34bc87d1928f187848d5ba05",
+        "original_model_sha256": "c07c27093d9eadb99cc8e704aa1605c217763cbb6145671d7a8b6896bfd98776",
+        "original_body_sha256": "2f4c1a327ad59db81e2b452a4ebc21dcf95b34de7cad832bf7ba8dcd6407c67e",
+        "disposition": "assess_contract_or_semantic_defect",
+        "currently_deferred_contract_candidates": 20,
+        "attempts": [
+          {
+            "attempt": 1,
+            "error": "pulso_editorial_actor_not_grounded",
+            "evidence_error": null,
+            "model_calls_total": 1,
+            "attempts": 3,
+            "retry_at": "2026-10-12T03:00:00+00:00",
+            "persisted_model_sha256": "1e64213541ce95c1d9c762385406eff715804ef3ef267a3bd4aa27b38e538fdd",
+            "persisted_model_response_id": "resp_unit_synthetic_new_first_attempt",
+            "persisted_validation_reason": "pulso_editorial_actor_not_grounded"
+          },
+          {
+            "attempt": 2,
+            "error": "pulso_paid_revalidation_evidence_unverified",
+            "evidence_error": "paid_revalidation_original_current_answer_or_validation_changed",
+            "model_calls_total": 1,
+            "attempts": 4,
+            "retry_at": "2026-10-12T11:00:00+00:00",
+            "persisted_model_sha256": "1e64213541ce95c1d9c762385406eff715804ef3ef267a3bd4aa27b38e538fdd",
+            "persisted_model_response_id": "resp_unit_synthetic_new_first_attempt",
+            "persisted_validation_reason": "pulso_editorial_actor_not_grounded"
+          }
+        ],
+        "model_calls": [
+          {
+            "body_sha256": "2f4c1a327ad59db81e2b452a4ebc21dcf95b34de7cad832bf7ba8dcd6407c67e",
+            "full_text": true,
+            "pulso_editorial_proof": true
+          }
+        ],
+        "original_archive_unchanged": true,
+        "producer_object_unchanged": true,
+        "retry_deadline_not_reset_by_rediscovery": true,
+        "permanent_pending_poison_reproduced": true,
+        "AI_calls": 0,
+        "runtime_writes": 0
+      },
+      "minimal_fix": "Preserve original full paid revision and every new full model/validation receipt, verify current new input/response, then allow conventional due new FAST without resetting attempts or retry deadline and without reusing the original defective output.",
+      "resolution": "Each new attempt retains its full model and exact computed guard result in a native-input-bound receipt before deferral. Continuations preserve original paid archive, verify latest current answer and receipt, require a distinct new ResponseID, and request conventional FAST on a later due attempt without resetting admission or bookkeeping.",
+      "fixed_commit": "8dd0195fa037e008b9eb6c97d40268312b6ff7bb"
+    },
+    {
+      "id": "REUSE_SOURCE_CLASSIFICATION_MEDIA_DOWNGRADE",
+      "severity": "high",
+      "status": "resolved_in_reviewed_commit",
+      "problem": "Fresh rediscovery source_type and market_role are not bound to original press source. Actual unchanged health bodies and paid outputs can be admitted under official/provider metadata; 15 of19 returned published official rows without media_reported, skipping the media publication gate.",
+      "admitted_actual_urls": 19,
+      "wrong_classification_returned_rows": 15,
+      "example": {
+        "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+        "false_classification_admitted": true,
+        "source_type": "official",
+        "market_role": "provider",
+        "returned_row": true,
+        "evidence_maturity": null,
+        "source_type_output": "official",
+        "assessment": {
+          "decision": "published",
+          "relevance_score": 80,
+          "threshold": 75,
+          "analysis_reason": "El artículo repite el aumento propuesto de 4,7% y las prioridades generales del antecedente del 2026-10-01, pero agrega declaraciones operativas de la evaluación del primer semestre de 2026 sobre productividad, compras, stock, licitaciones y ausentismo. Es una señal material para el radar, aunque permanece como desempeño reportado por prensa y no como resultado auditado ni como presupuesto 2027 aprobado."
+        },
+        "error": null
+      },
+      "all_actual_case_results": [
+        {
+          "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 80,
+            "threshold": 75,
+            "analysis_reason": "El artículo repite el aumento propuesto de 4,7% y las prioridades generales del antecedente del 2026-10-01, pero agrega declaraciones operativas de la evaluación del primer semestre de 2026 sobre productividad, compras, stock, licitaciones y ausentismo. Es una señal material para el radar, aunque permanece como desempeño reportado por prensa y no como resultado auditado ni como presupuesto 2027 aprobado."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "rejected",
+            "reason": "editorial_relevance_below_threshold",
+            "relevance_score": 72,
+            "threshold": 75,
+            "analysis_reason": "Es una señal relevante para un actor importante de la prestación privada en Chile porque combina una reorganización de las líneas de reporte con un cambio de liderazgo en Clínica Santa María, en el contexto de la venta anunciada del controlador de Empresas Banmédica. Su impacto sectorial concreto todavía no está demostrado en la nota, por lo que corresponde tratarla como contexto estratégico secundario y no como una expansión o mejora asistencial ya ejecutada."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 92,
+            "threshold": 75,
+            "analysis_reason": "La nota reporta un avance cuantificado de una obligación regulatoria y financiera de gran escala para las isapres abiertas, con efectos sobre pagos a afiliados, supervisión, dividendos y gestión de caja. Es una señal estratégica material para el aseguramiento privado de salud, aunque los estados descritos corresponden a la publicación original del 20 de agosto de 2026 y no acreditan por sí solos su vigencia al 11 de octubre de 2026."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/gobierno-anuncia-plan-laboral-que-movilizara-recursos-por-unos-us1350-millones-que-apunta-a-crear-mas-de-100-mil-empleos/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 82,
+            "threshold": 75,
+            "analysis_reason": "Merece radar por el tamaño del plan fiscal y por su componente específico de financiamiento sanitario de $130 mil millones para proveedores del sistema de salud. Sin embargo, la nota reporta un anuncio con medidas futuras y no acredita ejecución ni continuidad posterior a la publicación original."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/agencia-de-ciberseguridad-refuta-a-uc-christus-y-defiende-incorporarla-a-listado-un-ransomware-puede-tener-alcances-catastroficos/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "rejected",
+            "reason": "source_materiality_prefilter"
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ante-baja-vacunacion-en-grupos-de-riesgo-minsal-advierte-aumento-de-consultas-en-urgencias-por-virus-respiratorios/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "rejected",
+            "reason": "source_materiality_prefilter"
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/inauguran-el-primer-centro-de-salud-de-alta-resolutividad-sar-para-vina-del-mar-recinto-podra-realizar-65-mil-atenciones-anuales/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 76,
+            "threshold": 75,
+            "analysis_reason": "Es una inversión concreta en capacidad de atención primaria, con infraestructura clínica, diagnóstico por imágenes, laboratorio y farmacia, pero corresponde a un proyecto comunal y su impacto operativo futuro se presenta como estimación."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/sernac-fiscaliza-centros-de-estetica-en-14-regiones-y-pone-foco-en-seguridad-publicidad-y-precios/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "rejected",
+            "reason": "source_materiality_prefilter"
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/grupo-estatal-chino-es-el-gran-concesionario-de-los-hospitales-publicos-chilenos/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 92,
+            "threshold": 75,
+            "analysis_reason": "Señal material para infraestructura sanitaria, competencia y participación de inversionistas en la operación de hospitales públicos concesionados. La nota atribuye las cifras y la caracterización del grupo al informe de la FNE y a datos del MOP; no acredita aprobación o cierre de la adquisición."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/anuncio-para-hospitales-y-un-plan-maestro-de-listas-de-espera-los-pasos-del-minsal-tras-el-fin-de-la-alerta-oncologica/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 88,
+            "threshold": 75,
+            "analysis_reason": "Es una señal nacional relevante porque combina un balance de prestaciones oncológicas atendidas con una agenda anunciada para gestión hospitalaria, listas de espera y cumplimiento GES. Su impacto potencial es alto, pero varias medidas seguían en propuesta, análisis o planificación al 15 de julio de 2026."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/centro-medico-de-atacama-tramitaba-bonos-falsos-de-fonasa-fraude-supero-los-260-millones/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 84,
+            "threshold": 75,
+            "analysis_reason": "Es una señal concreta de fraude contra Fonasa y de vulnerabilidad en la autenticación biométrica de prestaciones de salud, con impacto financiero estatal y potencial afectación de pacientes. Ingresa como caso relevante de integridad del aseguramiento, aunque su alcance reportado es local y la investigación aún no estaba cerrada a la fecha de publicación."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 84,
+            "threshold": 75,
+            "analysis_reason": "Señal relevante de financiamiento y cobertura sanitaria: organizaciones de pacientes plantearon al Minsal una alternativa para reducir la judicialización del acceso a tratamientos de enfermedades poco frecuentes. El impacto potencial es material, pero la cobertura compartida seguía siendo una posibilidad reportada por los participantes, no una medida aprobada."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-detecta-plantas-de-aguas-servidas-sin-autorizacion-y-deficiencias-en-tres-comunas-de-la-rm/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 88,
+            "threshold": 75,
+            "analysis_reason": "Señal estratégica relevante para regulación sanitaria, fiscalización ambiental y continuidad segura del tratamiento de aguas servidas municipales: documenta incumplimientos en cinco plantas de tres comunas, posibles descargas sin tratamiento y fallas de coordinación entre autoridades. La nota merece radar, pero sus hallazgos y el procedimiento disciplinario deben mantenerse atribuidos y fechados al 11 de septiembre de 2026."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-revela-que-observaciones-ordenadas-al-hospital-de-chillan-no-se-han-corregido-mas-de-dos-mil-cirugias-preferenciales-a-familiares/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 84,
+            "threshold": 75,
+            "analysis_reason": "Es una señal relevante para prestadores públicos y la gestión de listas de espera: un seguimiento de Contraloría reportó persistencia de irregularidades, discrepancias materiales entre sistemas y una eventual afectación de la priorización de pacientes. Ingresa por su impacto en acceso, trazabilidad y control sanitario, aunque el caso se circunscribe principalmente a un hospital y la medida disciplinaria aún no constituía una sanción definitiva."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 93,
+            "threshold": 75,
+            "analysis_reason": "La nota reporta un resultado judicial material en salud humana, con impacto en el financiamiento y control del sistema de licencias médicas, además de capacidades investigativas replicables en otros casos. Ingresa como BACKFILL: los estados descritos corresponden a lo publicado el 2026-09-04 y no se presentan como vigentes al 2026-10-11 sin evidencia posterior."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 86,
+            "threshold": 75,
+            "analysis_reason": "Es una señal concreta de política sanitaria nacional frente a un aumento reportado de casos y letalidad de una enfermedad humana, con efectos esperados sobre vigilancia epidemiológica, sospecha diagnóstica, testeo y capacidad de respuesta de los establecimientos asistenciales. Ingresa como BACKFILL porque la publicación es anterior a la fecha de revisión."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 88,
+            "threshold": 75,
+            "analysis_reason": "Es una señal material para la gestión de la red pública y el acceso oportuno a prestaciones de salud humana: incorpora datos nacionales y territoriales del período 2021-2025, identifica brechas en GES y listas de espera, y reporta una respuesta de gestión del Minsal. La nota también contiene una medida en curso y objetivos futuros que no deben confundirse con resultados ya logrados."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ejercito-despliega-hospital-modular-en-ovalle-tras-inutilizacion-de-cinco-pabellones-por-lluvias/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 86,
+            "threshold": 75,
+            "analysis_reason": "Es una señal material de continuidad asistencial y capacidad sanitaria de emergencia: la inutilización temporal de cinco de siete pabellones de un hospital activó apoyo militar para recuperar parte de la capacidad quirúrgica, con posibles efectos sobre prestadores, atención hospitalaria y vacunación en zonas afectadas. Ingresa como BACKFILL con los estados fechados a la publicación original; la nota no permite afirmar que esas condiciones sigan vigentes al 2026-10-11."
+          },
+          "error": null
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+          "false_classification_admitted": true,
+          "source_type": "official",
+          "market_role": "provider",
+          "returned_row": true,
+          "evidence_maturity": null,
+          "source_type_output": "official",
+          "assessment": {
+            "decision": "published",
+            "relevance_score": 78,
+            "threshold": 75,
+            "analysis_reason": "Señal concreta de gestión de capacidad y continuidad de atención hospitalaria ante una emergencia climática, con coordinación interministerial y afectación directa de un hospital. Su alcance estratégico es acotado y temporal, por lo que no corresponde a un cambio estructural del sistema."
+          },
+          "error": null
+        }
+      ],
+      "minimal_fix": "Require original and current source_type press_high_trust and current market_role media in admission and processing; preserve media_reported and the72 media publication gate.",
+      "resolution": "Fresh/current source_type must equal the immutable producer press_high_trust value and market_role must remain media. All18 fresh mutations deny admission; all54 current-stamp type/role combinations deny verification and publication.",
+      "fixed_commit": "8dd0195fa037e008b9eb6c97d40268312b6ff7bb"
+    }
+  ],
+  "non_findings": [
+    "Correct-classification original19 reuse paths retain the exact model and native ResponseID, produce actual new guard receipts with SHA-bound validator and unchanged input/body/request and keep media_reported.",
+    "All6 below-gate paths reuse unchanged original scores and reject without model activity.",
+    "All24 initially designated contract/semantic defects reach full original body FAST branch and do not reuse old answers; spies stop before new responses.",
+    "One-time admissions preserve queue identity, status, attempts and old raw archive; rediscovery does not clear later retry deadlines. Terminal admissions are denied.",
+    "The initial full-queue test extra changes arose from existing general nonterminal rediscovery, not demonstrated terminal reopening.",
+    "Initial fixture import/spy issues are owner-corrected setup defects, not source coverage or publication findings."
+  ],
+  "next_review": "Scoped code review complete. Preserve this evidence durably and execute/reconcile actual runtime new25 FAST responses, receipts, model semantics and final acceptance separately; no runtime or staging PASS follows from this unit replay.",
+  "AI_calls": 0,
+  "runtime_writes": 0,
+  "repo_product_or_test_edits": 0,
+  "evidence_hashes": {
+    "pulso-mixed-all49-independent-replay.json": "b7fa35508b705185c0b7f8ad803ebed978f56a9adb6fb38dabbe0cec551e7e85",
+    "pulso-mixed-paid-revalidation-retry-poison-repro.json": "b7f741eb8fdb97cd1f7fd67f25a8f7faeb69bd60073bf06f003c5eec9e1f07d7",
+    "replay_pulso_mixed49_independent.py": "6bc38607ab8c062d026a41c2019766f93f094b02c571934b397892070ab11450",
+    "repro_pulso_mixed_retry_poison_independent.py": "22d393e86c44f1896b8fae3d03886eab78cd244c4041c1794d8342672ac55016",
+    "pulso-mixed-all49-independent-fixed-replay.json": "16d848928994de00fbc1e108e44a935307b794534d6e31ab81a2dbc318ff8687",
+    "pulso-mixed-paid-revalidation-retry-fixed-repro.json": "bb5f363409423981449785dc23b968040d4060e30be451b4a74ecde18f0ede5e",
+    "pulso-mixed-source-classification-fixed-repro.json": "24f0c7d7580a1ecd8b7ba1873fd49a91f952920352b67db98ca7ee01f1929d11",
+    "replay_pulso_mixed49_fixed_independent.py": "69f486aad66a537142c29755b8e6f79bba125c8e9082588086ad3ab2c1165655",
+    "repro_pulso_mixed_retry_poison_fixed_independent.py": "94b2edc303c02cbaf50f69ee518ca95d838bb2b7def80bcf518eb7e32d87758a",
+    "repro_pulso_mixed_source_classification_fixed_independent.py": "4e09e6a3220d3a86919718eeed484e0c1d68593dd4d55b1f354108ff78b9ce05"
+  },
+  "fixed_snapshot": {
+    "head_at_snapshot": "f0c2b99a9ac23a413ab54b4f8e9437a8688ddaab",
+    "snapshot_at": "2026-10-11T18:39:12.246093+00:00",
+    "inputs": {
+      "src/radar_salud/pulso_paid_revalidation.py": "57c838db696cf5e8d5f9b9b3763bc33a84ce021636fc5af7567ad1f6f8263e18",
+      "src/radar_salud/beta_sources.py": "b2cc3a5e2a5b06f2ff7b4576ae7c7ee01897fde8e4fdc9164d7260391beba665",
+      "src/radar_salud/pending_queue.py": "24ca13fe894abd4726a9815273d77db050164c9f25b389f9c637e9567cac01e7",
+      "src/radar_salud/pulso_editorial_proof.py": "a4ee60f71325df003ae0f1842480093e63446f7ae221139f8c970e79c83ce4ec",
+      "src/radar_salud/engine_cli.py": "2df2c2f42f4aeebd1c9a992a6fbc235072312fedf3747a08ab297553782b8f61",
+      "tests/test_pulso_paid_guard_revalidation.py": "963a1f925f0e3ea6a8ac75a9286f9461affaaaef3554dc7b50ea0d2603f93bb6",
+      "tests/test_pulso_actual_v5_future_qualifiers.py": "b1284b847429723feaf172b763aaf9f747d5c3a8ea06fc51224f5f4bcf0f05f6"
+    }
+  },
+  "fixed_manifest_sha256": "3645971793d5803c53b3a9f0f5bcb1b8e8f91ef5638b186aeaab4073645a48ff",
+  "current_worktree_matches_reviewed_code": {
+    "src/radar_salud/pulso_paid_revalidation.py": true,
+    "src/radar_salud/beta_sources.py": true,
+    "src/radar_salud/pending_queue.py": true,
+    "src/radar_salud/pulso_editorial_proof.py": true,
+    "src/radar_salud/engine_cli.py": true,
+    "tests/test_pulso_paid_guard_revalidation.py": true,
+    "tests/test_pulso_actual_v5_future_qualifiers.py": true
+  },
+  "final_partition": {
+    "reuse_code_fn": 18,
+    "reuse_below_gate_reject": 6,
+    "assess_contract_or_semantic_defect": 25
+  },
+  "final_validation": {
+    "tests": {
+      "passed": 127,
+      "failed": 0,
+      "elapsed_seconds": 47.93,
+      "exit_code": 0,
+      "stdout": "........................................................................ [ 56%]\n.......................................................                  [100%]\n127 passed in 47.93s\n",
+      "stdout_sha256": "cb48dde404c9ee6e0960471ad5ea56a08c9bc9bb6d5cc9099c93abfbe6b2c1e0",
+      "snapshot_source_precedence_explicit": true
+    },
+    "all49_replay": {
+      "snapshot": {
+        "head_at_snapshot": "f0c2b99a9ac23a413ab54b4f8e9437a8688ddaab",
+        "snapshot_at": "2026-10-11T18:39:12.246093+00:00",
+        "inputs": {
+          "src/radar_salud/pulso_paid_revalidation.py": "57c838db696cf5e8d5f9b9b3763bc33a84ce021636fc5af7567ad1f6f8263e18",
+          "src/radar_salud/beta_sources.py": "b2cc3a5e2a5b06f2ff7b4576ae7c7ee01897fde8e4fdc9164d7260391beba665",
+          "src/radar_salud/pending_queue.py": "24ca13fe894abd4726a9815273d77db050164c9f25b389f9c637e9567cac01e7",
+          "src/radar_salud/pulso_editorial_proof.py": "a4ee60f71325df003ae0f1842480093e63446f7ae221139f8c970e79c83ce4ec",
+          "src/radar_salud/engine_cli.py": "2df2c2f42f4aeebd1c9a992a6fbc235072312fedf3747a08ab297553782b8f61",
+          "tests/test_pulso_paid_guard_revalidation.py": "963a1f925f0e3ea6a8ac75a9286f9461affaaaef3554dc7b50ea0d2603f93bb6",
+          "tests/test_pulso_actual_v5_future_qualifiers.py": "b1284b847429723feaf172b763aaf9f747d5c3a8ea06fc51224f5f4bcf0f05f6"
+        }
+      },
+      "manifest_sha256": "3645971793d5803c53b3a9f0f5bcb1b8e8f91ef5638b186aeaab4073645a48ff",
+      "validated_partition": {
+        "reuse_code_fn": 18,
+        "reuse_below_gate_reject": 6,
+        "assess_contract_or_semantic_defect": 25
+      },
+      "all49_checks": [
+        {
+          "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "aa2350e70f21b9529c6c59108d3a64fe4c3f133cdbfe61050801a842cacffce8",
+          "body_sha256": "0ebfaaf59515c5c7f01f4e150f7a9000e5f5a0888ecfaf48c73c9364378d0131",
+          "model_sha256": "d0453091652609bbadbc0ceeeed8c9e2469bcdf3a891df43f05dfbb4f656c688",
+          "original_response_id": "resp_0bab386418ef423b006acbcc74083c87d19617444b47cb03c8"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "6b200d1a0f3120aab1e4e36c3d5bb84b0414bcb85f8e10b61ed6d779e68a2629",
+          "body_sha256": "328e72605ee42fc840f0aacfc636a0589da7088885780c95174a70642441ee35",
+          "model_sha256": "00c097422049e4ce7246d6ed2131d46774a2b927d99a1b989f43e20ad89d87ef",
+          "original_response_id": "resp_03408fdc62b34a33006acbc6e70d7887d18d1f29d3d2ca7e63"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "e75b4e441c57d571d272a1ea11f332359cfb068edfdc9da6adfeaa40d847bbc4",
+          "body_sha256": "2eb2cfabe7030bef50873ba9722bee3df24acec327e63f85d05655a7b3ccee1e",
+          "model_sha256": "8b5287375b69875e8f083681be3a32d2001f721774ac6a2c6e9d5f17efa2a361",
+          "original_response_id": "resp_0039a4baa29e7964006acbca04c7b087d1888bb0ca29fb87f9"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-prohibe-temporalmente-funcionamiento-de-planta-procesadora-de-lacteos-matthei-tras-reiteradas-muestras-positivas-con-listeria/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/diez-servicios-de-salud-concentran-el-62-de-la-oferta-publica-para-resolver-el-cancer/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/gobierno-anuncia-plan-laboral-que-movilizara-recursos-por-unos-us1350-millones-que-apunta-a-crear-mas-de-100-mil-empleos/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "0cd76fd5749d451592b43fcc7faffbe60586886daecde47ef99fd68589211f5f",
+          "body_sha256": "96a37ca4ba3f88f5d4131d6739e46e3ea602d460bba6eb77b9e9a8de950e4149",
+          "model_sha256": "ac823a7107d7945f9f85c93823000efc579be37793aa3182bdd119038d71328c",
+          "original_response_id": "resp_01d436c358f53739006acbc701386087d19fa5b2e1ff2bdf52"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/agencia-de-ciberseguridad-refuta-a-uc-christus-y-defiende-incorporarla-a-listado-un-ransomware-puede-tener-alcances-catastroficos/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "f0934eb77942e9a6f2861cc12b1dfdd0b4386cbd5d3cdd954a7077c56a9c7a47",
+          "body_sha256": "d9ebb4a4ec84cfc09b90146e0bdb16cea16ff9d1293e9f3d8d84b6fcd32c685c",
+          "model_sha256": "ee5f38a3f790c1d778a7167fcad09db72e14248847a1635a2c6df4f9ad2cbce9",
+          "original_response_id": "resp_00ff8ce1db14ac0c006acbc7edf79087d19408303dff742ab1"
+        },
+        {
+          "url": "https://www.latercera.com/politica/noticia/bancada-udi-anuncia-agenda-pro-consumidor-con-14-medidas-en-seguros-salud-transporte-y-otras-areas/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/virus-respiratorios-positividad-asciende-al-579-la-mas-alta-en-los-ultimos-tres-anos/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-investigara-alcances-de-la-alerta-oncologica-del-minsal-por-solicitud-de-diputada-radical/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ante-baja-vacunacion-en-grupos-de-riesgo-minsal-advierte-aumento-de-consultas-en-urgencias-por-virus-respiratorios/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "91d83af2e1053902559d87bb9ab3fe1d4d0316b7a3cf568043dba26def09b5fb",
+          "body_sha256": "d73454ef54ffd65bffab7177c7b942b9e7be139f3f6175178c5f6db50a9df5f0",
+          "model_sha256": "9984152db8bcc76783dcd02cfee789dc4a38530c6b1a6fda10f498b72e2ef261",
+          "original_response_id": "resp_0424465ec1ef12dd006acbc9d8224c87d19bf5301733d090d5"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/inauguran-el-primer-centro-de-salud-de-alta-resolutividad-sar-para-vina-del-mar-recinto-podra-realizar-65-mil-atenciones-anuales/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "a6f3604f616bac6dcf1289c5620ad7bf0b9ec6cb3659633aad8c9aa1a42b0d38",
+          "body_sha256": "b19cf891c76d50a414054e4819e3dc943134c6d5329b5cc1430e7bd4813f3b6b",
+          "model_sha256": "29285c6564db4c5c7b38aa5bed77ff3d41e8929180dbed886877e2875ce1f82a",
+          "original_response_id": "resp_07384e2f0b021ebc006acbca1e78cc87d1884156675106a1f1"
+        },
+        {
+          "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/sernac-fiscaliza-centros-de-estetica-en-14-regiones-y-pone-foco-en-seguridad-publicidad-y-precios/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "bdccf75a9213edd508c947db38c13db6d13cf8b4cf73418f6a2bac4a058e931e",
+          "body_sha256": "743e751bd4b4b2b9f60f440cc87e903cfe529bb22352548264183780f9827758",
+          "model_sha256": "7f23d18ba31b4a9e5ef80413d945ecb6ac0edef420df50e303a62202078bccd5",
+          "original_response_id": "resp_05d90b3f95397e1b006acbca8b08dc87d198673b4b41600961"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/clinica-las-condes-finaliza-aumento-de-capital-y-recauda-80-mil-millones/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/grupo-estatal-chino-es-el-gran-concesionario-de-los-hospitales-publicos-chilenos/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "9311ab423707a675d5fd0a7db8e68bd51b250754fceb4eeba00f9176fedb052e",
+          "body_sha256": "2d0adf9fea9d9eeafb63717224a720710da2517733e3965cdddfab97fa481620",
+          "model_sha256": "41925356c99bb2e5924427d9b48d506db47e31473b7dd8a6218ee2912e00bf07",
+          "original_response_id": "resp_05052c2f0d19eb14006acbcb6de50887d188cd0d25d933de7b"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-informa-de-afectaciones-leves-en-recintos-de-salud-por-el-sistema-frontal-pero-afirma-que-red-esta-completamente-operativa/",
+          "route": "reuse_below_gate_reject",
+          "model_unchanged": true,
+          "guard_result": "rejected",
+          "published_row_returned": false,
+          "guard_receipt_sha256": "dd8565f9e8731f6914d789e75ca9ae914d117d952640e58fd168a27b9519ab47",
+          "body_sha256": "82919f9ba75ced370da7c0a82c29ee53d64c0ba896c097239b66156a0f62944e",
+          "model_sha256": "d0f0b9f15a22ab244c808a654775c85651554471e2181871749c5464fbc017cb",
+          "original_response_id": "resp_03dc7a1df6059b90006acbcbdbf11487d1ad03647ce4256578"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/anuncio-para-hospitales-y-un-plan-maestro-de-listas-de-espera-los-pasos-del-minsal-tras-el-fin-de-la-alerta-oncologica/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "bdf214faf5c5ab7aa4563bb5833e306aef7e0af1f99fb3432d0218b310bd4154",
+          "body_sha256": "37a35426bc426f8b62947312cacfec5805bbb3d61f2806adcc163c132d62e33c",
+          "model_sha256": "994816d37658c66338618307046daee2b648bd5e363a75991bbad562ed561b93",
+          "original_response_id": "resp_03387739aec0243c006acbcbf8d11c87d1aaf94fb230804f5d"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-entrega-balance-final-del-plan-de-alerta-oncologica-y-adelanta-medidas-para-evitar-el-incumplimiento-de-garantias/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/centro-medico-de-atacama-tramitaba-bonos-falsos-de-fonasa-fraude-supero-los-260-millones/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "41c461299975f25397b3b3a7a3dd82aa57fc40c863f9dfa3e77142c96c4184e8",
+          "body_sha256": "cfc69fa4535ee989455c6dce041bf965c4b75e29741ecb2c9e7196331e4b7e16",
+          "model_sha256": "a1e122a457ecec485cd02fea70d0782ba864d8eb86701d3a678cba8cdab6ddc6",
+          "original_response_id": "resp_007958a2b1b18bf6006acbcc5d61fc87d1851350a3a912b6bb"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "911baf8a240c2390e94741ede3283b0ff316b11fcde7727255658e342c1fa8f6",
+          "body_sha256": "ed54fa46914245816a9143533683db3d8bea1c92064ae5b4157b2dcda46d4788",
+          "model_sha256": "f16c6b8411c7f6a375be0c46e51fd70baebb8f967f4c9af7ee0ece6c37398c25",
+          "original_response_id": "resp_0a8e18c8ba0d4f03006acbc716f52c87d190e26febf5c6148b"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-conmemora-dia-nacional-del-donante-de-organos-y-tejidos-con-partido-en-hospital-dr-luis-calvo-mackenna/",
+          "route": "reuse_below_gate_reject",
+          "model_unchanged": true,
+          "guard_result": "rejected",
+          "published_row_returned": false,
+          "guard_receipt_sha256": "6a9dd6a4476cd29d5b72d7e4d9d444d03e49ad696b5d4e898780c78982d30782",
+          "body_sha256": "08bfa15c7b56ccca33c388833372cf655265ee63d5c9704d595c2d898819e891",
+          "model_sha256": "2a859626c1ca37f2ee682f846e3f83a0cbac072dfa23a5a9b2ef8d6b0bbab7e6",
+          "original_response_id": "resp_0e75ac7532df6058006acbc729952487d1ac915f4d92f02487"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-publica-nomina-con-los-eleam-que-cuenta-con-autorizacion-sanitaria-son-993-a-nivel-pais-y-la-rm-concentra-mas-de-la-mitad/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-detecta-plantas-de-aguas-servidas-sin-autorizacion-y-deficiencias-en-tres-comunas-de-la-rm/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "9f614da196fa47bb587009a784f5dbb0ae0ae164f12a1910e553d77212838310",
+          "body_sha256": "393cb8c87c93f6a7d24a09f1977c5346f9058973b1f9d9679d7ec416c8e65f17",
+          "model_sha256": "07a23fb5f54a39a7cf07e3503fe65bf89b7e9a8a68aa8056ff5ff64fd9ea6c9a",
+          "original_response_id": "resp_0976fe603ca74c57006acbc7b6336087d1adcf07db99b4c17c"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-revela-que-observaciones-ordenadas-al-hospital-de-chillan-no-se-han-corregido-mas-de-dos-mil-cirugias-preferenciales-a-familiares/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "9b1939bb3c66115ee18691015b9ab7d6c8bb28f991e30f64003909b8fddf87b0",
+          "body_sha256": "4d750336d5a9f67df96cbb2a15c11d4937552be4c62d2dc80e7349282e07a5bd",
+          "model_sha256": "2e06a0200a38d48b986e120a059b693d9bbf591db53c28583e0538a16fea8595",
+          "original_response_id": "resp_011f84ba687e9b1d006acbc8219f2887d1991e262ec0bc0348"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/alerta-alimentaria-por-listeria-supermercado-informa-del-retiro-preventivo-de-todas-las-unidades-de-pasta-de-jamon/",
+          "route": "reuse_below_gate_reject",
+          "model_unchanged": true,
+          "guard_result": "rejected",
+          "published_row_returned": false,
+          "guard_receipt_sha256": "db43717e9612dc03f235bed387d4fd86637e32b64d6e01386273f853d8154c2e",
+          "body_sha256": "a7fb9caee358447cd3bea47e1956e5bb39a1a908d46936c3eccae183f742f059",
+          "model_sha256": "c907a9b05121f501a4b57ea570b45caf98d7c8cddf3662029dba2c036e1655c1",
+          "original_response_id": "resp_08d7c702a5084d5c006acbc86a854087d1818f31d6d34b8c3a"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/calisto-entra-a-la-batalla-por-causa-junaeb-defensa-buscara-limitar-acceso-al-contenido-de-celular-incautado-por-la-pdi/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "a3dc5c72aeed7a35d8ac7cf8581ce0cd1e2b0605edb835f5abf457ec2785d107",
+          "body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+          "model_sha256": "472ff5490dc44982765c9aca2906ec268f77df1b33aad47c8530baba73fa7bd1",
+          "original_response_id": "resp_06d55302e3760f78006acbca9c84dc87d1b9e5af7a2cbc5fd3"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/por-emanaciones-toxicas-informan-suspension-de-clases-en-quilicura-tras-gigantesco-incendio-en-empresa-de-productos-quimicos/",
+          "route": "reuse_below_gate_reject",
+          "model_unchanged": true,
+          "guard_result": "rejected",
+          "published_row_returned": false,
+          "guard_receipt_sha256": "a52f53ca61e977380fde282e8f5075e35aa92bca077a3e583a6eafbecdf004dc",
+          "body_sha256": "b190c2b846701c235e961956a22f14c928f3fd87798a0cbd1b5edfdd2dd6a6be",
+          "model_sha256": "b0bff7a53d5f433e8c183cf7acea2200b3c0ffb5973ac45a1cbe49baa7e896c9",
+          "original_response_id": "resp_08df88ad79c21d60006acbcadefd6087d1a330a32388650b50"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-apelara-a-fallo-que-ordeno-reincorporar-a-exdirectora-del-hospital-de-san-antonio-tras-declarar-ilegal-su-remocion/",
+          "route": "reuse_below_gate_reject",
+          "model_unchanged": true,
+          "guard_result": "rejected",
+          "published_row_returned": false,
+          "guard_receipt_sha256": "4e99aaed22bac5137c1281cb1120662b1c60515e3bc86b1d6aef79bace7ee6ad",
+          "body_sha256": "61dc8e4bb1b58621c619beb052136e579daa1d8595cc81ce57d1bda57ee10c23",
+          "model_sha256": "5e7c4340d345ab93df70ad6b1ed08acd2de295783a367adcfce1c3a568a98b67",
+          "original_response_id": "resp_039af5468b27badc006acbcafb05d887d195f2071d709681c5"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "1963e4e4a1b5f013efc49eb85bdd9f99aa36a4710e70ac04fe9073512d401572",
+          "body_sha256": "1d7f55e07ae77e0a3eda89467e2ea0e3b78a1bb990f616f06bcaf3af1f20f9bf",
+          "model_sha256": "ef1abf1d609d62f5d0be7e0626469fa206be0bf6467d3123e168d1c30a21b713",
+          "original_response_id": "resp_02c0d344dc3dcbe0006acbcb2838c087d19d118d1eda771ecb"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ejercito-despliega-hospital-modular-en-ovalle-tras-inutilizacion-de-cinco-pabellones-por-lluvias/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "8f0017ec7f60b36cb5e707c48817076da9b4e7b159aa887bfd48c683cd86ca79",
+          "body_sha256": "c160a47a49949f6fd69fa6e7007b01314b7c0e37e142b2bb64cd6ad8b58c6a75",
+          "model_sha256": "bd4b42a612974f12e8834bc8cbd5459aa0d21fd881240939c5a6ffd1bb8d9d57",
+          "original_response_id": "resp_0e4bbfef1704c7b1006acbcba1bbd487d1b832daedbbbf0046"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/gobierno-suspende-clases-para-este-lunes-en-provincia-de-huasco-y-regiones-de-coquimbo-y-valparaiso/",
+          "route": "reuse_below_gate_reject",
+          "model_unchanged": true,
+          "guard_result": "rejected",
+          "published_row_returned": false,
+          "guard_receipt_sha256": "6e0c2a5ab9b40445d0c07d16fa323b42c044f9e23df6e26129af2718a926923a",
+          "body_sha256": "52f7381d02dfa2f44c9ed72ec446324e3f643c321687ac197656e0a96c51afd8",
+          "model_sha256": "6b0a6fdf75539f415f126da222f3956e97e99a4d6f1efd6c56aeb74d9c7f6a64",
+          "original_response_id": "resp_0864d525476c66e9006acbcbb76f3887d1ac6c0f84544e8e1b"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+          "route": "reuse_code_fn",
+          "model_unchanged": true,
+          "guard_result": "ready",
+          "published_row_returned": true,
+          "guard_receipt_sha256": "760194f593c3c39f6b6a116236b87c03cf188f7823e1a31026d772910d6fb81d",
+          "body_sha256": "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f",
+          "model_sha256": "4b9f200a6ae2e72feb0597149bcdb34bb45fc064cfafdf5c8eb0e6739f2403d6",
+          "original_response_id": "resp_0fb90ebcf3cf93e2006acbcbca873487d1854bc3c7526d6c3b"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+          "route": "assess_contract_or_semantic_defect",
+          "new_branch_observed": true,
+          "model_unchanged_before_new_response": true,
+          "full_input_hash_matches": true
+        }
+      ],
+      "contradictory_fresh_source_classification": [
+        {
+          "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_scope_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_future_copy_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_future_copy_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/gobierno-anuncia-plan-laboral-que-movilizara-recursos-por-unos-us1350-millones-que-apunta-a-crear-mas-de-100-mil-empleos/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_future_copy_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/agencia-de-ciberseguridad-refuta-a-uc-christus-y-defiende-incorporarla-a-listado-un-ransomware-puede-tener-alcances-catastroficos/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_scope_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ante-baja-vacunacion-en-grupos-de-riesgo-minsal-advierte-aumento-de-consultas-en-urgencias-por-virus-respiratorios/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_future_copy_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/inauguran-el-primer-centro-de-salud-de-alta-resolutividad-sar-para-vina-del-mar-recinto-podra-realizar-65-mil-atenciones-anuales/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_future_copy_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/sernac-fiscaliza-centros-de-estetica-en-14-regiones-y-pone-foco-en-seguridad-publicidad-y-precios/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_future_copy_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/grupo-estatal-chino-es-el-gran-concesionario-de-los-hospitales-publicos-chilenos/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_future_copy_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/anuncio-para-hospitales-y-un-plan-maestro-de-listas-de-espera-los-pasos-del-minsal-tras-el-fin-de-la-alerta-oncologica/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_future_copy_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/centro-medico-de-atacama-tramitaba-bonos-falsos-de-fonasa-fraude-supero-los-260-millones/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_future_copy_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_future_copy_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-detecta-plantas-de-aguas-servidas-sin-autorizacion-y-deficiencias-en-tres-comunas-de-la-rm/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_future_copy_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-revela-que-observaciones-ordenadas-al-hospital-de-chillan-no-se-han-corregido-mas-de-dos-mil-cirugias-preferenciales-a-familiares/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_future_copy_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_scope_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_future_copy_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ejercito-despliega-hospital-modular-en-ovalle-tras-inutilizacion-de-cinco-pabellones-por-lluvias/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_scope_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+          "false_classification_admitted": false,
+          "source_type": "press_high_trust",
+          "market_role": "media",
+          "returned_row": false,
+          "evidence_maturity": null,
+          "source_type_output": null,
+          "assessment": {
+            "decision": "pending",
+            "reason": "pulso_editorial_future_copy_not_grounded",
+            "threshold": 72,
+            "proof_version": "pulso_editorial_proof_v5"
+          },
+          "error": "No AI/network allowed"
+        }
+      ],
+      "original_producer_objects_unchanged": true,
+      "AI_calls": 0,
+      "runtime_writes": 0
+    },
+    "retry_poison_resolution": {
+      "scope": "Dirty code snapshot; actual original paid article/model, synthetic new Response ID and spy output only, no AI/network/runtime changes",
+      "snapshot": {
+        "head_at_snapshot": "f0c2b99a9ac23a413ab54b4f8e9437a8688ddaab",
+        "snapshot_at": "2026-10-11T18:39:12.246093+00:00",
+        "inputs": {
+          "src/radar_salud/pulso_paid_revalidation.py": "57c838db696cf5e8d5f9b9b3763bc33a84ce021636fc5af7567ad1f6f8263e18",
+          "src/radar_salud/beta_sources.py": "b2cc3a5e2a5b06f2ff7b4576ae7c7ee01897fde8e4fdc9164d7260391beba665",
+          "src/radar_salud/pending_queue.py": "24ca13fe894abd4726a9815273d77db050164c9f25b389f9c637e9567cac01e7",
+          "src/radar_salud/pulso_editorial_proof.py": "a4ee60f71325df003ae0f1842480093e63446f7ae221139f8c970e79c83ce4ec",
+          "src/radar_salud/engine_cli.py": "2df2c2f42f4aeebd1c9a992a6fbc235072312fedf3747a08ab297553782b8f61",
+          "tests/test_pulso_paid_guard_revalidation.py": "963a1f925f0e3ea6a8ac75a9286f9461affaaaef3554dc7b50ea0d2603f93bb6",
+          "tests/test_pulso_actual_v5_future_qualifiers.py": "b1284b847429723feaf172b763aaf9f747d5c3a8ea06fc51224f5f4bcf0f05f6"
+        }
+      },
+      "url": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+      "date": "2026-07-23",
+      "original_response_id": "resp_07b064290b27caa3006acbcb8c34bc87d1928f187848d5ba05",
+      "original_model_sha256": "c07c27093d9eadb99cc8e704aa1605c217763cbb6145671d7a8b6896bfd98776",
+      "original_body_sha256": "2f4c1a327ad59db81e2b452a4ebc21dcf95b34de7cad832bf7ba8dcd6407c67e",
+      "disposition": "assess_contract_or_semantic_defect",
+      "currently_deferred_contract_candidates": 20,
+      "attempts": [
+        {
+          "attempt": 1,
+          "error": "pulso_editorial_actor_not_grounded",
+          "evidence_error": null,
+          "model_calls_total": 1,
+          "attempts": 3,
+          "retry_at": "2026-10-12T03:00:00+00:00",
+          "persisted_model_sha256": "ff0241ffd02537b3c08023adc04c936d0f51c88d0742e5b6e290818e6de8fbc5",
+          "persisted_model_response_id": "resp_unit_synthetic_new_attempt_1",
+          "persisted_validation_reason": "pulso_editorial_actor_not_grounded"
+        },
+        {
+          "attempt": 2,
+          "error": "pulso_editorial_actor_not_grounded",
+          "evidence_error": null,
+          "model_calls_total": 2,
+          "attempts": 4,
+          "retry_at": "2026-10-12T11:00:00+00:00",
+          "persisted_model_sha256": "83530542c4ffedbb3367bae521ae40d1c89d3e9505da842c049dfe44972def5e",
+          "persisted_model_response_id": "resp_unit_synthetic_new_attempt_2",
+          "persisted_validation_reason": "pulso_editorial_actor_not_grounded"
+        }
+      ],
+      "model_calls": [
+        {
+          "body_sha256": "2f4c1a327ad59db81e2b452a4ebc21dcf95b34de7cad832bf7ba8dcd6407c67e",
+          "full_text": true,
+          "pulso_editorial_proof": true
+        },
+        {
+          "body_sha256": "2f4c1a327ad59db81e2b452a4ebc21dcf95b34de7cad832bf7ba8dcd6407c67e",
+          "full_text": true,
+          "pulso_editorial_proof": true
+        }
+      ],
+      "original_archive_unchanged": true,
+      "producer_object_unchanged": true,
+      "retry_deadline_not_reset_by_rediscovery": true,
+      "permanent_pending_poison_reproduced": false,
+      "AI_calls": 0,
+      "runtime_writes": 0
+    },
+    "source_classification_resolution": {
+      "snapshot": {
+        "head_at_snapshot": "f0c2b99a9ac23a413ab54b4f8e9437a8688ddaab",
+        "snapshot_at": "2026-10-11T18:39:12.246093+00:00",
+        "inputs": {
+          "src/radar_salud/pulso_paid_revalidation.py": "57c838db696cf5e8d5f9b9b3763bc33a84ce021636fc5af7567ad1f6f8263e18",
+          "src/radar_salud/beta_sources.py": "b2cc3a5e2a5b06f2ff7b4576ae7c7ee01897fde8e4fdc9164d7260391beba665",
+          "src/radar_salud/pending_queue.py": "24ca13fe894abd4726a9815273d77db050164c9f25b389f9c637e9567cac01e7",
+          "src/radar_salud/pulso_editorial_proof.py": "a4ee60f71325df003ae0f1842480093e63446f7ae221139f8c970e79c83ce4ec",
+          "src/radar_salud/engine_cli.py": "2df2c2f42f4aeebd1c9a992a6fbc235072312fedf3747a08ab297553782b8f61",
+          "tests/test_pulso_paid_guard_revalidation.py": "963a1f925f0e3ea6a8ac75a9286f9461affaaaef3554dc7b50ea0d2603f93bb6",
+          "tests/test_pulso_actual_v5_future_qualifiers.py": "b1284b847429723feaf172b763aaf9f747d5c3a8ea06fc51224f5f4bcf0f05f6"
+        }
+      },
+      "actual_reuse_originals": 18,
+      "mutation_cases": 54,
+      "all_verifier_mutations_blocked": true,
+      "all_publications_blocked": true,
+      "cases": [
+        {
+          "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/chomali-destaca-alza-de-47-en-presupuesto-de-salud-y-apunta-como-prioridad-reducir-listas-de-espera-oncologia-y-aps/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/gobierno-anuncia-plan-laboral-que-movilizara-recursos-por-unos-us1350-millones-que-apunta-a-crear-mas-de-100-mil-empleos/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/gobierno-anuncia-plan-laboral-que-movilizara-recursos-por-unos-us1350-millones-que-apunta-a-crear-mas-de-100-mil-empleos/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/gobierno-anuncia-plan-laboral-que-movilizara-recursos-por-unos-us1350-millones-que-apunta-a-crear-mas-de-100-mil-empleos/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/agencia-de-ciberseguridad-refuta-a-uc-christus-y-defiende-incorporarla-a-listado-un-ransomware-puede-tener-alcances-catastroficos/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/agencia-de-ciberseguridad-refuta-a-uc-christus-y-defiende-incorporarla-a-listado-un-ransomware-puede-tener-alcances-catastroficos/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": null,
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/agencia-de-ciberseguridad-refuta-a-uc-christus-y-defiende-incorporarla-a-listado-un-ransomware-puede-tener-alcances-catastroficos/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": null,
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ante-baja-vacunacion-en-grupos-de-riesgo-minsal-advierte-aumento-de-consultas-en-urgencias-por-virus-respiratorios/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ante-baja-vacunacion-en-grupos-de-riesgo-minsal-advierte-aumento-de-consultas-en-urgencias-por-virus-respiratorios/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": null,
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ante-baja-vacunacion-en-grupos-de-riesgo-minsal-advierte-aumento-de-consultas-en-urgencias-por-virus-respiratorios/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": null,
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/inauguran-el-primer-centro-de-salud-de-alta-resolutividad-sar-para-vina-del-mar-recinto-podra-realizar-65-mil-atenciones-anuales/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/inauguran-el-primer-centro-de-salud-de-alta-resolutividad-sar-para-vina-del-mar-recinto-podra-realizar-65-mil-atenciones-anuales/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/inauguran-el-primer-centro-de-salud-de-alta-resolutividad-sar-para-vina-del-mar-recinto-podra-realizar-65-mil-atenciones-anuales/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/sernac-fiscaliza-centros-de-estetica-en-14-regiones-y-pone-foco-en-seguridad-publicidad-y-precios/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/sernac-fiscaliza-centros-de-estetica-en-14-regiones-y-pone-foco-en-seguridad-publicidad-y-precios/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": null,
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/sernac-fiscaliza-centros-de-estetica-en-14-regiones-y-pone-foco-en-seguridad-publicidad-y-precios/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": null,
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/grupo-estatal-chino-es-el-gran-concesionario-de-los-hospitales-publicos-chilenos/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/grupo-estatal-chino-es-el-gran-concesionario-de-los-hospitales-publicos-chilenos/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/grupo-estatal-chino-es-el-gran-concesionario-de-los-hospitales-publicos-chilenos/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/anuncio-para-hospitales-y-un-plan-maestro-de-listas-de-espera-los-pasos-del-minsal-tras-el-fin-de-la-alerta-oncologica/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/anuncio-para-hospitales-y-un-plan-maestro-de-listas-de-espera-los-pasos-del-minsal-tras-el-fin-de-la-alerta-oncologica/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/anuncio-para-hospitales-y-un-plan-maestro-de-listas-de-espera-los-pasos-del-minsal-tras-el-fin-de-la-alerta-oncologica/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/centro-medico-de-atacama-tramitaba-bonos-falsos-de-fonasa-fraude-supero-los-260-millones/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/centro-medico-de-atacama-tramitaba-bonos-falsos-de-fonasa-fraude-supero-los-260-millones/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/centro-medico-de-atacama-tramitaba-bonos-falsos-de-fonasa-fraude-supero-los-260-millones/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-detecta-plantas-de-aguas-servidas-sin-autorizacion-y-deficiencias-en-tres-comunas-de-la-rm/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-detecta-plantas-de-aguas-servidas-sin-autorizacion-y-deficiencias-en-tres-comunas-de-la-rm/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-detecta-plantas-de-aguas-servidas-sin-autorizacion-y-deficiencias-en-tres-comunas-de-la-rm/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-revela-que-observaciones-ordenadas-al-hospital-de-chillan-no-se-han-corregido-mas-de-dos-mil-cirugias-preferenciales-a-familiares/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-revela-que-observaciones-ordenadas-al-hospital-de-chillan-no-se-han-corregido-mas-de-dos-mil-cirugias-preferenciales-a-familiares/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/contraloria-revela-que-observaciones-ordenadas-al-hospital-de-chillan-no-se-han-corregido-mas-de-dos-mil-cirugias-preferenciales-a-familiares/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ejercito-despliega-hospital-modular-en-ovalle-tras-inutilizacion-de-cinco-pabellones-por-lluvias/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ejercito-despliega-hospital-modular-en-ovalle-tras-inutilizacion-de-cinco-pabellones-por-lluvias/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ejercito-despliega-hospital-modular-en-ovalle-tras-inutilizacion-de-cinco-pabellones-por-lluvias/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+          "mode": "source_type",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+          "mode": "market_role",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+          "mode": "both",
+          "verifier_error": "paid_revalidation_current_primary_or_admission_unverified",
+          "processor_error": "pulso_paid_revalidation_evidence_unverified",
+          "no_publication": true
+        }
+      ],
+      "AI_calls": 0,
+      "runtime_writes": 0
+    },
+    "semantic_references": [
+      {
+        "path": "data/audits/pulso_v5_all25_future_holds_independent_review_2026_10_11.json",
+        "sha256": "8ab2c4fab23bc63482ce0bed9fde4268e65fa88ec041226fbb55456883482c69",
+        "scope_count": 25,
+        "reader": "/root/publisher_surfaces/v5_future_holds_reader",
+        "observed_file_sha256": "8ab2c4fab23bc63482ce0bed9fde4268e65fa88ec041226fbb55456883482c69"
+      },
+      {
+        "path": "data/audits/pulso_v5_all24_nonfuture_holds_independent_review_2026_10_11.json",
+        "sha256": "900a58ba50080c7d6f183e2d0f293c54dc3c5970cdedc60be43e99a463e00232",
+        "scope_count": 24,
+        "reader": "independent_adversarial_review",
+        "observed_file_sha256": "900a58ba50080c7d6f183e2d0f293c54dc3c5970cdedc60be43e99a463e00232"
+      }
+    ]
+  },
+  "limitations": [
+    "All subsequent-new-output scenarios use explicit synthetic unit Response IDs and spies returning retained actual defective content. There were zero actual AI calls. This proves control flow and preservation, not existence or quality of future paid responses.",
+    "Initial19/6/24 was superseded by an independently reviewed18/6/25 partition because repeated Fonasa judgment requires genuine fresh novelty assessment. The revised comparison context is hash-pinned to actual producer primary bodies and target paid history and is passed as model instruction context; no novelty publication approval is inferred.",
+    "Approval is bounded to exact module/hook/queue and input hashes shown. It does not declare recovery closed, issue6 resolved, runtime PASS, or staging PASS.",
+    "No child edits to product, tests, state or execution configuration; owner corrections are reviewed through isolated snapshots."
+  ],
+  "reviewed_commit": "8dd0195fa037e008b9eb6c97d40268312b6ff7bb",
+  "committed_code_bindings": {
+    "src/radar_salud/pulso_paid_revalidation.py": {
+      "sha256": "57c838db696cf5e8d5f9b9b3763bc33a84ce021636fc5af7567ad1f6f8263e18",
+      "reviewed_snapshot_sha256": "57c838db696cf5e8d5f9b9b3763bc33a84ce021636fc5af7567ad1f6f8263e18",
+      "matches": true,
+      "git_blob": "e0b700fffd8dae55ea0f12923927fcaa77549a96"
+    },
+    "src/radar_salud/beta_sources.py": {
+      "sha256": "b2cc3a5e2a5b06f2ff7b4576ae7c7ee01897fde8e4fdc9164d7260391beba665",
+      "reviewed_snapshot_sha256": "b2cc3a5e2a5b06f2ff7b4576ae7c7ee01897fde8e4fdc9164d7260391beba665",
+      "matches": true,
+      "git_blob": "91530246c2b2553ffeb40e3899ce365762d026c7"
+    },
+    "src/radar_salud/pending_queue.py": {
+      "sha256": "24ca13fe894abd4726a9815273d77db050164c9f25b389f9c637e9567cac01e7",
+      "reviewed_snapshot_sha256": "24ca13fe894abd4726a9815273d77db050164c9f25b389f9c637e9567cac01e7",
+      "matches": true,
+      "git_blob": "39c286049eb29fc262a336baf413b485c67a49ef"
+    },
+    "src/radar_salud/pulso_editorial_proof.py": {
+      "sha256": "a4ee60f71325df003ae0f1842480093e63446f7ae221139f8c970e79c83ce4ec",
+      "reviewed_snapshot_sha256": "a4ee60f71325df003ae0f1842480093e63446f7ae221139f8c970e79c83ce4ec",
+      "matches": true,
+      "git_blob": "cd4ddde7b112393cbc8b5cb1f655a53b93e51b3e"
+    },
+    "src/radar_salud/engine_cli.py": {
+      "sha256": "2df2c2f42f4aeebd1c9a992a6fbc235072312fedf3747a08ab297553782b8f61",
+      "reviewed_snapshot_sha256": "2df2c2f42f4aeebd1c9a992a6fbc235072312fedf3747a08ab297553782b8f61",
+      "matches": true,
+      "git_blob": "5da9420b395bad874a5b64bec0a6e2d8080f2482"
+    },
+    "tests/test_pulso_paid_guard_revalidation.py": {
+      "sha256": "963a1f925f0e3ea6a8ac75a9286f9461affaaaef3554dc7b50ea0d2603f93bb6",
+      "reviewed_snapshot_sha256": "963a1f925f0e3ea6a8ac75a9286f9461affaaaef3554dc7b50ea0d2603f93bb6",
+      "matches": true,
+      "git_blob": "0e77165a6f14a20a5ba16c8591906c1642b636dd"
+    },
+    "tests/test_pulso_actual_v5_future_qualifiers.py": {
+      "sha256": "b1284b847429723feaf172b763aaf9f747d5c3a8ea06fc51224f5f4bcf0f05f6",
+      "reviewed_snapshot_sha256": "b1284b847429723feaf172b763aaf9f747d5c3a8ea06fc51224f5f4bcf0f05f6",
+      "matches": true,
+      "git_blob": "3194e028cd6af0287403b01fe8e9ea8fd076449f"
+    }
+  },
+  "committed_manifest": {
+    "path": "data/audits/pulso_v5_paid_guard_revalidation_manifest_2026_10_11.json",
+    "sha256": "3645971793d5803c53b3a9f0f5bcb1b8e8f91ef5638b186aeaab4073645a48ff",
+    "git_blob": "3c1df110c0d5abf68c62f7ab2e7f5707f1f47ff3"
+  }
+}

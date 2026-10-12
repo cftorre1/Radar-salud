@@ -1,0 +1,144 @@
+{
+  "at": "2026-10-11T13:39:13.180801+00:00",
+  "sources": {
+    "superintendencia": {
+      "discovered": 740,
+      "new": 0,
+      "technical_status": "ok",
+      "error_type": null
+    },
+    "superintendencia_normativa": {
+      "discovered": 4289,
+      "new": 0,
+      "technical_status": "ok",
+      "error_type": null
+    },
+    "superintendencia_fiscalizacion": {
+      "discovered": 3343,
+      "new": 0,
+      "technical_status": "ok",
+      "error_type": null,
+      "checked_at": "2026-10-11T13:39:13.180788+00:00"
+    },
+    "minsal": {
+      "discovered": 53,
+      "new": 4,
+      "technical_status": "ok",
+      "error_type": null
+    },
+    "fonasa": {
+      "discovered": 0,
+      "new": 0,
+      "technical_status": "error",
+      "error_type": "HTTPError"
+    },
+    "fonasa_datos_abiertos": {
+      "discovered": 0,
+      "new": 0,
+      "technical_status": "error",
+      "error_type": "HTTPError"
+    },
+    "isp_anamed": {
+      "discovered": 0,
+      "new": 0,
+      "technical_status": "error",
+      "error_type": "URLError"
+    },
+    "isp_surveillance": {
+      "discovered": 0,
+      "new": 0,
+      "technical_status": "error",
+      "error_type": "URLError"
+    },
+    "pfizer_chile": {
+      "discovered": 3,
+      "new": 0,
+      "technical_status": "ok",
+      "error_type": null
+    },
+    "deis": {
+      "discovered": 0,
+      "new": 0,
+      "technical_status": "ok",
+      "error_type": null
+    },
+    "redsalud": {
+      "discovered": 10,
+      "new": 0,
+      "technical_status": "ok",
+      "error_type": null
+    },
+    "bupa_chile": {
+      "discovered": 15,
+      "new": 0,
+      "technical_status": "ok",
+      "error_type": null
+    },
+    "indisa": {
+      "discovered": 0,
+      "new": 0,
+      "technical_status": "error",
+      "error_type": "HTTPError"
+    },
+    "clinicas_chile": {
+      "discovered": 29,
+      "new": 0,
+      "technical_status": "ok",
+      "error_type": null
+    },
+    "suseso": {
+      "discovered": 7608,
+      "new": 2,
+      "technical_status": "ok",
+      "error_type": null
+    },
+    "suseso_news": {
+      "discovered": 6,
+      "new": 1,
+      "technical_status": "ok",
+      "error_type": null
+    },
+    "suseso_fiscalizacion": {
+      "discovered": 1273,
+      "new": 0,
+      "technical_status": "ok",
+      "error_type": null,
+      "checked_at": "2026-10-11T13:39:13.180801+00:00"
+    },
+    "diario_financiero": {
+      "discovered": 41,
+      "new": 0,
+      "technical_status": "ok",
+      "error_type": null,
+      "checked_at": "2026-10-11T13:18:27.075056+00:00",
+      "dated": 41,
+      "undated": 0,
+      "detail_errors": 0,
+      "insufficient_evidence": 5,
+      "textual_candidates": 36,
+      "nontextual_candidates_known": 5,
+      "textual_capture_status": "verified",
+      "format_capability": {
+        "text": "runtime_verified",
+        "images": "requires_ocr",
+        "audio_video": "requires_official_text"
+      },
+      "newest_event_date": "2026-10-10"
+    },
+    "diario_oficial": {
+      "discovered": 2,
+      "new": 0,
+      "technical_status": "ok",
+      "error_type": null
+    }
+  },
+  "run_scope": [
+    "diario_financiero"
+  ],
+  "successful_sources": 14,
+  "failed_sources": 5,
+  "integration_receipts": [
+    38142527704,
+    38143952220
+  ]
+}

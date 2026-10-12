@@ -1,0 +1,119 @@
+{
+  "schema_version": "pulso_focus77_actual_annotation_independent_confirmation_v1",
+  "source_id": "pulso_latercera",
+  "generated_at": "2026-10-11T16:43:12.283991+00:00",
+  "reviewer": "historical_discovery_independent_reader",
+  "applied_commit": "fe5bb4ac4d5b6b796cd368dd2dcb04b85175665c",
+  "before_commit": "ebcf42e73dfc5da8297f29013363d941ae191a46",
+  "scope": "Exact existing rejected70 metadata reason annotation and surrounding-state preservation",
+  "verdict": "PASS_SCOPED_ACTUAL_REJECTION_REASON_ANNOTATION",
+  "global_acceptance": false,
+  "finding_resolved": true,
+  "url": "https://www.latercera.com/nacional/noticia/salud-garantiza-seguridad-de-agua-potable-en-la-rm-y-anuncia-vacunacion-contra-la-hepatitis-y-tetanos-en-las-condes/",
+  "publication_date": "2026-10-09",
+  "queue_fingerprint": "aa199c65e4c86ca90459050809d00825b70793b0cb86637405032f9dda7ab5fe",
+  "original_body_sha256": "bbfc3435a41bb234e6316fe9bb80ae2bf85ac00a8fcd09d9f488359c21c19bcd",
+  "original_html_sha256": "8aefb2232d2bf67d750c10b69c95e78d8d96be12b8c52bd87c7db3e413f060bc",
+  "score": 70,
+  "threshold": 72,
+  "status": "rejected",
+  "attempts": 1,
+  "independent_review": {
+    "path": "data/audits/pulso_focus77_rejection_reason_independent_review_2026_10_11.json",
+    "sha256": "e08ee622c179f18f77ba95f6ffe24e7109b8523f38716099db5d720a81f5435f",
+    "complete_copy_in_annotation_exact": true
+  },
+  "application_audit": {
+    "path": "data/audits/pulso_focus77_rejection_reason_application_2026_10_11.json",
+    "sha256": "202ae3c1b517d55253624bece1ba453e23285385bd490a411416ca3f541173e9",
+    "reason_and_hash_cross_check": true
+  },
+  "original_assessment_sha256": "e528329e04f7815ceed1a6d3ef487f20d96fbabf1e2ac76d8fbb401056282673",
+  "original_legacy_analysis_reason": "Señal útil de gestión sanitaria ante una emergencia, pero de alcance principalmente local y temporal. El contenido reporta declaraciones y acciones anunciadas por autoridades; no acredita un cambio permanente en regulación, financiamiento, cobertura o capacidad nacional.",
+  "effective_human_reason": "La nota del 9 de octubre reporta una campaña de vacunación contra hepatitis y tétanos ya iniciada en APS, un punto previsto en Claro Arena y traslados efectivos de seis pacientes dentro de UC Christus y dos al Hospital Metropolitano. Son actuaciones sanitarias concretas; no se rechaza por ausencia de salud humana ni por tratarse sólo de anuncios. La campaña preventiva y el destino exacto de pacientes aportan detalles a la respuesta local por el aluvión, cuya interrupción y traslado global están cubiertos por las notas publicadas del 8 y 10 de octubre. No son duplicados literales. El contenido no acredita cambios en capacidad instalada, contratos de prestaciones, cobertura o financiamiento fuera de esa contingencia local. Se mantiene la valoración 70 y el umbral 72, sin exigir permanencia como regla general ni borrar los hechos sanitarios.",
+  "specific_evidence_classes": {
+    "campaign": "already_started",
+    "Claro_Arena_point": "planned",
+    "six_UC_transfers": "already_done",
+    "two_Hospital_Metropolitano_transfers": "already_done",
+    "literal_duplicate_claimed": false,
+    "permanence_required_as_general_gate": false,
+    "new_capacity_financing_or_coverage_outside_emergency_documented": false
+  },
+  "checks": {
+    "exactly_one_added_field": "raw.metadata.rejection_reason_review",
+    "whole_queue_equal_after_removing_only_annotation": true,
+    "original_queue_bytes_restored_after_annotation_removed": true,
+    "other_queue_entries_exact": 7044,
+    "terminal_status_score_threshold_attempts_reason_code_source_body_dates_old_assessment_preserved": true,
+    "three_primary_quotes_exact": true,
+    "annotation_hash_and_original_assessment_bound": true,
+    "model_analysis_or_provider_receipts_fabricated": false
+  },
+  "protected_file_bytes": {
+    "data/history/superintendencia_signals.json": {
+      "before_sha256": "ff1d416b6e85a743834024b90b212533db02d1ca081ad5bba8abbaebc66bada9",
+      "after_sha256": "ff1d416b6e85a743834024b90b212533db02d1ca081ad5bba8abbaebc66bada9",
+      "byte_identical": true
+    },
+    "web/data/radar_today.json": {
+      "before_sha256": "00144b3e8f00730337e65f7d217ab07169baf78ac3885e09e00f797790cccbf2",
+      "after_sha256": "00144b3e8f00730337e65f7d217ab07169baf78ac3885e09e00f797790cccbf2",
+      "byte_identical": true
+    },
+    "data/state/discovery_run.json": {
+      "before_sha256": "b035c88268d0aec874989a6385141e342d391d71afa9b0b4b675324fd72440cb",
+      "after_sha256": "b035c88268d0aec874989a6385141e342d391d71afa9b0b4b675324fd72440cb",
+      "byte_identical": true
+    },
+    "data/state/discovery_watermarks.json": {
+      "before_sha256": "c56813c4e28ab214b813103456554f8a5ac09379d660ed45986396547c71863f",
+      "after_sha256": "c56813c4e28ab214b813103456554f8a5ac09379d660ed45986396547c71863f",
+      "byte_identical": true
+    },
+    "data/source_health.json": {
+      "before_sha256": "4fd4817e963e1f249e9ca614b0116e353a66e675cc0241a307093f96d5530195",
+      "after_sha256": "4fd4817e963e1f249e9ca614b0116e353a66e675cc0241a307093f96d5530195",
+      "byte_identical": true
+    },
+    "web/data/source_health.json": {
+      "before_sha256": "4fd4817e963e1f249e9ca614b0116e353a66e675cc0241a307093f96d5530195",
+      "after_sha256": "4fd4817e963e1f249e9ca614b0116e353a66e675cc0241a307093f96d5530195",
+      "byte_identical": true
+    },
+    "data/ai_usage/2026-10.json": {
+      "before_sha256": "eede55020fde42bc9ed520490d6499bdb7fbb0aae91b607d975c3d6a8f163877",
+      "after_sha256": "eede55020fde42bc9ed520490d6499bdb7fbb0aae91b607d975c3d6a8f163877",
+      "byte_identical": true
+    },
+    "data/ai_usage/responses.jsonl": {
+      "before_sha256": "f952db8df171ef75cb919331430cb2b021a50df9afba9aad1bd47cb58f9f283f",
+      "after_sha256": "f952db8df171ef75cb919331430cb2b021a50df9afba9aad1bd47cb58f9f283f",
+      "byte_identical": true
+    }
+  },
+  "reader_AI_calls": 0,
+  "reader_state_mutations": 0,
+  "limits": [
+    "The legacy explanation remains unchanged and separately visible; the annotation supplies the independently reviewed specific human reason.",
+    "The campaign and six plus two transfer destinations are not asserted to be literal duplicates or unperformed announcements.",
+    "No permanence requirement is introduced, no score/status is changed, and no queue is reopened.",
+    "A legacy raw model completion/ResponseID is unavailable and is not fabricated.",
+    "Fresh outcome-matrix exposure of effective_human_reason separately from original_model_reason remains independently owned; this confirmation verifies the actual stored annotation, not a future matrix.",
+    "No final source/runtime/staging acceptance or global accounting PASS is implied."
+  ],
+  "validation": {
+    "independent_exact_annotation_replay": "PASS",
+    "existing_atomic_json_serialization_restores_entire_original_queue_bytes": true,
+    "directed_tests": {
+      "paths": [
+        "tests/test_pmo_readiness.py",
+        "tests/test_orchestrator_liveness.py"
+      ],
+      "passed": 9,
+      "failed": 0
+    },
+    "AI_calls": 0,
+    "state_mutations": 0
+  }
+}

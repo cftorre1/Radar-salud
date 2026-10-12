@@ -1,0 +1,104 @@
+{
+  "schema_version": "pulso_scoped_peer_review_v1",
+  "reviewer": "Codex B actions_route independent from QA implementation owner",
+  "review_date": "2026-10-11",
+  "scope": "Read-only additional editorial QA reader, registry and idempotence dual-proof references. No core processing or publication performed.",
+  "implementation_commits": {
+    "additional_reader": "61d2890a4ec4d86e5c51923a730ce1a247b4e99b",
+    "group_target_repair": "f62e359e36659df35a9e0d8af93af0997eceaeff",
+    "idempotence_registry": "136eca8381f4570345112a4b3f2ef43ad8cabb87"
+  },
+  "verdict": "PASS_SCOPED_READER_REVIEW",
+  "acceptance": "PENDING_GENUINE_V5_PROCESSING_AND_FINAL_INDEPENDENT_REVIEW",
+  "checks": [
+    {
+      "id": "immutable_paid_producer",
+      "outcome": "PASS",
+      "evidence": "Reader loads full immutable producer history, queue, runtime report and telemetry by 40-character commit and exact byte SHA; verifies positive actual FAST ledger delta and unique successful ResponseIDs inside producer execution."
+    },
+    {
+      "id": "independent_dual_audit_binding",
+      "outcome": "PASS",
+      "evidence": "Known new5/Plan files have pinned independent-reader SHA. Generic pairs require registry entry, complete URL/day coverage, exact full original signal/body, literal source quotes and matching decisions; paths remain inside authorized audit directory."
+    },
+    {
+      "id": "gate_and_press_stance_preserved",
+      "outcome": "PASS",
+      "evidence": "Original published assessment remains score>=72/threshold72, media_reported, full verified primary and original body/request. Corrected copy cannot change score/day/source evidence; existing publication_ready gate is rerun. Paid retries cannot become publications through synchronized current flags/audit hashes."
+    },
+    {
+      "id": "group_target_original_to_effective_binding",
+      "outcome": "PASS",
+      "evidence": "Same-audit survivor hashes bind original producer signal/paid queue; reader reconstructs exact effective target. Outside-audit survivor must equal immutable producer history and queue with published assessment at threshold72. Current retry/withdrawal/score/model/day/hash/duplicate/feed attacks fail."
+    },
+    {
+      "id": "source_api_capture_binding",
+      "outcome": "UNCHANGED_IN_THIS_SCOPE",
+      "evidence": "Diff inspection confirms verify_primary_capture/public feed proof readers retain exact original gzip/raw/UTF8 SHA and independent URL/date/body validation. This scoped review does not substitute for the next genuine full discovery/processing QA."
+    },
+    {
+      "id": "idempotence_registry",
+      "outcome": "PASS_STATIC_REVIEW",
+      "evidence": "Helper and independent QA bind registry plus both audit byte SHAs into immutable proof references; data-only audit authorization cannot change silently between paid baseline and replay."
+    }
+  ],
+  "executed_tests": [
+    {
+      "command": "python -m pytest -q tests/test_pulso_additional_editorial_review_qa.py (pre-group-repair 61d2890a)",
+      "passed": 31,
+      "failed": 0,
+      "seconds": 59.26
+    },
+    {
+      "command": "python -m pytest -q tests/test_pulso_additional_editorial_review_qa.py -k group (repaired reader)",
+      "passed": 9,
+      "failed": 0,
+      "seconds": 16.86
+    },
+    {
+      "command": "python -m pytest -q tests/test_pulso_additional_editorial_review_qa.py::test_same_audit_survivor_uses_original_paid_hash_and_reconstructs_final_acceptance_without_circular_hash tests/test_pulso_additional_editorial_review_qa.py::test_real_paid_retry_cannot_be_turned_into_publication_by_synchronized_flags_and_dual_audit",
+      "passed": 2,
+      "failed": 0,
+      "seconds": 4.58
+    }
+  ],
+  "actual_all37_read_only_reconciliation": {
+    "implementation_commit": "f62e359e",
+    "reader_file_sha256": "14b28fe5728710ead7e689021730084421cbbab0b432cdf15c1ab860d96fe38a",
+    "observed_checkpoint_sha": "f62e359e36659df35a9e0d8af93af0997eceaeff",
+    "observed_file_sha256": {
+      "data/state/pending_queue.json": "8bd7c9260571b00bd41f5e1da4cc0b1895c4588b9b5fa3e8ce57730080898796",
+      "data/history/superintendencia_signals.json": "ff1d416b6e85a743834024b90b212533db02d1ca081ad5bba8abbaebc66bada9",
+      "web/data/radar_today.json": "00144b3e8f00730337e65f7d217ab07169baf78ac3885e09e00f797790cccbf2"
+    },
+    "records_verified": 37,
+    "review_files": [
+      "data/audits/pulso_first_paid_editorial_corrections_2026_10_11.json",
+      "data/audits/pulso_focus_new5_editorial_corrections_2026_10_11.json",
+      "data/audits/pulso_plan_enlace_temporal_correction_2026_10_11.json"
+    ],
+    "decisions": {
+      "accept": 12,
+      "reject": 12,
+      "group": 8,
+      "correct": 5
+    },
+    "failures": []
+  },
+  "findings": [
+    {
+      "id": "future_group_original_current_hash_mismatch_and_unpublished_target",
+      "initial_commit": "61d2890a",
+      "status": "RESOLVED",
+      "repair_commit": "f62e359e",
+      "validation": "Direct implementation review plus same-audit survivor acceptance and nine target-tamper denial cases. No unresolved scoped finding remains."
+    }
+  ],
+  "runtime_files_modified_by_review": false,
+  "model_calls_by_review": 0,
+  "limitations": [
+    "The current 69 genuine FAST retries are not accepted, published or rejected by this review.",
+    "Full runtime processing acceptance, Source API poll and paid baseline/idempotence evidence remain dependent on the next genuine execution.",
+    "Audit authorization requires independent editorial judgment; valid quotes and schemas alone do not approve editorial semantics."
+  ]
+}

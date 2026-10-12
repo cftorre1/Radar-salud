@@ -1,0 +1,197 @@
+{
+  "schema_version": "pulso_isapre104_102_primary_period_addendum_v1",
+  "source_id": "pulso_latercera",
+  "reviewer": "external_control_independent_fullbody_reader",
+  "generated_at": "2026-10-11T19:59:46.033475+00:00",
+  "producer_commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+  "producer_run_id": "38166157093",
+  "inputs": {
+    "queue": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "10b1f2e3ea5ea434be8347b06874fcec7bb3c1f3a6ab67eec803976849101202"
+    },
+    "history": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "bd7e32dd341348f44cfacdb0140247c5f957c417f6bed625fdcf9762a4d0f4ca"
+    },
+    "feed": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "web/data/radar_today.json",
+      "file_sha256": "1eceaa200b0313379cab9f8a8f63f42a4eca3d336cabb131ad7d5aad43e1ce0d"
+    },
+    "runtime_report": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "eb420d6e3b74b9a2274598adc5b2ae7f2f5f7e9635e1fc34f60968c896a95bd3"
+    },
+    "telemetry": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "d421299b6f6fbe440c166bb13ad686ba0896ccfc0cbfeda400f49932c9781037"
+    },
+    "discovery": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/state/discovery_run.json",
+      "file_sha256": "078b69bddf23a6a0837b8cf99275fb890853e3956910361715f8eff1ed3573ca"
+    },
+    "health": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/source_health.json",
+      "file_sha256": "388f41cb7a2195777f8279feadea4259d62e7f3acab19fe31c584b0d83a738e5"
+    },
+    "budget": {
+      "commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+      "path": "data/ai_usage/2026-10.json",
+      "file_sha256": "e6692992c104bf34f21a857f9542103d6229888d2ccdda70784289d2a36680a5"
+    }
+  },
+  "previous_novelty_context": {
+    "path": "/workspace/work/pulso-isapre104-vs-published102-context.json",
+    "sha256": "1ac1f9f7e7fed4181f4fe3a336af1b42f07843e9ee940858141d882545d4dc36"
+  },
+  "scope": "Read-only adversarial verification of whether publication2026 masks older March/May source data, for candidate104 and already-published comparator102.",
+  "rows": [
+    {
+      "cohort_index": 104,
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "original_publication_date": "2026-07-14",
+      "publication_timestamp": "2026-07-14T00:36:58.91Z",
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-07-14T00:36:58.91Z",
+          "publisher_day": "2026-07-14",
+          "timestamp_calendar_day": "2026-07-14",
+          "america_santiago_day": "2026-07-13"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-07-14T00:36:58.91Z",
+          "publisher_day": "2026-07-14",
+          "timestamp_calendar_day": "2026-07-14",
+          "america_santiago_day": "2026-07-13"
+        }
+      ],
+      "publication_date_source": "visible_article_byline",
+      "publisher_date_convention": "timestamp_calendar",
+      "primary_http_captured_at": "2026-10-11T07:12:11.828695+00:00",
+      "original_body_sha256": "35ce3696d5b7b638452ffe3aa8783bfaef251cb7809efae3962f51aac3f2dffb",
+      "original_html_sha256": "404af1941f27b1f23eeb6f9d226cb8c1e680f7fa622f527287c291d904a8f1e1",
+      "original_full_body_characters": 5432,
+      "original_full_body_read_again": true,
+      "verified_temporal_quotes": [
+        {
+          "text": "es decir, desde noviembre de 2021 sin parar.",
+          "start": 147,
+          "end": 191,
+          "source": "full_primary_article_body"
+        },
+        {
+          "text": "Además, esta cifra implica una baja de 1,7% versus igual mes de 2025, o 25.817 cotizantes menos en un año.",
+          "start": 2442,
+          "end": 2548,
+          "source": "full_primary_article_body"
+        },
+        {
+          "text": "corresponden a afiliados que anunciaron su retiro en marzo de 2026.",
+          "start": 2656,
+          "end": 2723,
+          "source": "full_primary_article_body"
+        },
+        {
+          "text": "registran 462 mil cotizantes menos versus cuando iniciaron las bajas en octubre de 2019.",
+          "start": 4952,
+          "end": 5040,
+          "source": "full_primary_article_body"
+        }
+      ],
+      "conclusion": "The body itself anchors the May/March statistics in2026. Accumulated losses from2019 are a distinct longer baseline, not the start of the53-month run. This conclusion does not derive the data year from the publisher byline."
+    },
+    {
+      "cohort_index": 102,
+      "url": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+      "original_publication_date": "2026-07-23",
+      "publication_timestamp": "2026-07-23T00:51:44.885Z",
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-07-23T00:51:44.885Z",
+          "publisher_day": "2026-07-23",
+          "timestamp_calendar_day": "2026-07-23",
+          "america_santiago_day": "2026-07-22"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-07-23T00:51:44.885Z",
+          "publisher_day": "2026-07-23",
+          "timestamp_calendar_day": "2026-07-23",
+          "america_santiago_day": "2026-07-22"
+        }
+      ],
+      "publication_date_source": "visible_article_byline",
+      "publisher_date_convention": "timestamp_calendar",
+      "primary_http_captured_at": "2026-10-11T07:11:21.233896+00:00",
+      "original_body_sha256": "2f4c1a327ad59db81e2b452a4ebc21dcf95b34de7cad832bf7ba8dcd6407c67e",
+      "original_html_sha256": "252382dfe72359ab067c906b7772404ad25ae7278efbcda4ee95ea3aea1e1fef",
+      "original_full_body_characters": 5861,
+      "original_full_body_read_again": true,
+      "verified_temporal_quotes": [
+        {
+          "text": "Desde diciembre de 2019 hasta mayo de 2026, las isapres han perdido más de 900 mil afiliados",
+          "start": 0,
+          "end": 92,
+          "source": "full_primary_article_body"
+        },
+        {
+          "text": "1.300 vendedores adicionales entre el tercer mes de 2025 y marzo de 2026.",
+          "start": 2171,
+          "end": 2244,
+          "source": "full_primary_article_body"
+        },
+        {
+          "text": "es decir, desde noviembre de 2021.",
+          "start": 2854,
+          "end": 2888,
+          "source": "full_primary_article_body"
+        },
+        {
+          "text": "entre diciembre de 2025 y marzo recién pasado",
+          "start": 4123,
+          "end": 4168,
+          "source": "full_primary_article_body"
+        }
+      ],
+      "conclusion": "The body itself anchors the May/March statistics in2026. Accumulated losses from2019 are a distinct longer baseline, not the start of the53-month run. This conclusion does not derive the data year from the publisher byline."
+    }
+  ],
+  "judgement": {
+    "old_2019_data_rejuvenation_demonstrated": false,
+    "original_body_explicit_2026_year_support": true,
+    "may_2026_contract_flow_vs_stock_must_remain_distinct": true,
+    "march_2026_salesforce_year_supported_by_literal_primary_quote": true,
+    "independent_official_dataset_corroboration": false,
+    "independent_analysis_required_for_candidate104": true,
+    "existing_published102_temporal_withdrawal_required_on_this_specific_suspicion": false
+  },
+  "arithmetic_caution": {
+    "source_reported_consecutive_negative_months": 53,
+    "source_reported_start": "2021-11",
+    "first_reported_positive_contract_month": "2026-05",
+    "calendar_months_from_november2021_through_april2026_inclusive": 54,
+    "classification": "publisher_internal_count_boundary_discrepancy",
+    "reason": "The stated53 is not exact for that inclusive month range. Its roughly four-and-a-half-year scale fits2021..2026, not a run from2019. Do not turn a reviewer calculation into an official correction or invent a reconstructed regulator dataset."
+  },
+  "context_for_genuine_editorial_analysis": [
+    "The article104 expressly says departures reflected in May were announced in March2026 and compares May with the same month2025; article102 expressly dates the annual salesforce increase from March2025 to March2026.",
+    "The2019 figures refer to accumulated affiliate/cotizante losses over a longer baseline. They do not mean the May/March source statistics are from2019.",
+    "Keep +52 subscriptions net of cancellations as a contract-flow indicator, not +52 effective cotizantes: the May stock still declined by967 to1,513,429 and any later stock effect is prospective.",
+    "Acknowledge the source53-month count as attributed if retained; do not imply an independently validated regulator duration.",
+    "The novelty comparison104→published102 remains a same-May-indicator family comparison; source date/calendar and data-period verification are separate from novelty, gate72 and publication."
+  ],
+  "AI_calls": 0,
+  "state_mutations": 0,
+  "publication_approval": false,
+  "global_acceptance": false
+}

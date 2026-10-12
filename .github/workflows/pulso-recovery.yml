@@ -1,0 +1,54 @@
+name: Pulso isolated surface recovery
+on:
+  push:
+    branches: [codex/b-pulso-runtime-20261011]
+    paths:
+      - '.github/run-pulso-audit-now'
+      - '.github/workflows/pulso-recovery.yml'
+      - 'scripts/capture_pulso_surfaces.py'
+permissions:
+  contents: write
+concurrency:
+  group: pulso-isolated-surface-recovery
+  cancel-in-progress: false
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Assert exclusive isolated branch
+        run: test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
+      - run: pip install pytest
+      - name: Verify capture provenance and robots exclusions
+        run: python -m pytest -q tests/test_pulso_capture_surfaces.py
+      - name: Probe original public publisher surfaces without AI or publishing
+        run: python scripts/capture_pulso_surfaces.py --seconds 600 --max-urls 45
+      - name: Preserve real capture manifest and fixtures on isolated branch
+        if: always()
+        run: |
+          test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
+          git config user.name alicanto-salud-bot
+          git config user.email alicanto-salud-bot@users.noreply.github.com
+          if test -f data/audits/pulso_capture/manifest.json; then
+            git add data/audits/pulso_capture/manifest.json
+          fi
+          if test -f tests/fixtures/pulso_real/manifest.json; then
+            git add tests/fixtures/pulso_real
+          fi
+          git diff --cached --quiet || git commit -m "audit(pulso): preserve original surface probe and real fixtures [skip ci]"
+          git push origin HEAD:codex/b-pulso-runtime-20261011
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pulso-original-surfaces-${{ github.sha }}
+          retention-days: 90
+          path: |
+            data/audits/pulso_capture/
+            tests/fixtures/pulso_real/
+          if-no-files-found: error

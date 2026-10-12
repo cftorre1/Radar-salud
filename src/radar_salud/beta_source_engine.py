@@ -7,6 +7,7 @@ from .beta_sources import CuratedBetaSourceScout, PrestadoresDataScout, process_
 from .history import load_history, merge_history, save_history
 from .paths import project_root
 from .source_health import record as health_record
+from .beta_core_handoff import core_handoff
 from .occupational_sources import SOURCES as OCCUPATIONAL_SOURCES
 from .processing import DeferredProcessing
 
@@ -53,6 +54,10 @@ def main():
           for slug in ("red_davila","andes_salud","clinicas_achs_salud","achs_seguro_laboral","mutual_seguridad","ist","pulso_latercera")]
     ]
     for slug,discover,processor in specs:
+        handoff=core_handoff(root,slug)
+        if handoff is not None:
+            audit["sources"][slug]=handoff
+            continue
         rows=[];rejected=0;deferred=0;error=None;error_detail=None;found=[];decisions=[]
         owner=getattr(discover,"__self__",None)
         try:
