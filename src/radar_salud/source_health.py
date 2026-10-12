@@ -14,6 +14,23 @@ def _load(root:Path)->dict[str,Any]:
     try:return json.loads(p.read_text(encoding="utf-8"))
     except Exception:return {"sources":{}}
 
+def record_data_adapter(root: Path, slug: str, evidence: dict) -> None:
+    """Data coverage is independent of news publication and transport success."""
+    required = {'pages_checked', 'items_discovered', 'unique_items', 'items_recent',
+                'items_material', 'published', 'rejected', 'deferred', 'parse_errors',
+                'coverage_complete', 'coverage_reason'}
+    if not required <= evidence.keys(): raise ValueError('Incomplete adapter health evidence')
+    d = _load(root)
+    d.setdefault('sources', {})[slug] = {
+        **evidence, 'checked_at': datetime.now(timezone.utc).isoformat(),
+        'status': 'error' if evidence['parse_errors'] else 'ok' if evidence['coverage_complete'] else 'warning',
+        'technical_status': evidence.get('technical_status', 'unverified'),
+        'coverage_status': 'validated_declared_perimeter' if evidence['coverage_complete'] else 'partial',
+        'editorial_outcome': evidence.get('editorial_outcome', 'data_snapshot_no_news_quota'),
+    }
+    d['generated_at'] = datetime.now(timezone.utc).isoformat()
+    atomic_json(_path(root), d)
+
 
 
 def _pulso_published_body_bound(row, raw):

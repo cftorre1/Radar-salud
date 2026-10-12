@@ -250,8 +250,9 @@ def main():
     produced={name:[] for name in processors}
     processed_rejections={name:0 for name in processors}
     queue.enforce_backfill_horizon(sources=set(selected_sources) if selected_sources else None)
+    from .daily_window import eligible_daily_item
     ready=((key,item) for key,item in _prioritize_pulso_ready(queue.ready())
-           if item['source'] in processors and
+           if item['source'] in processors and eligible_daily_item(item) and
            (not selected_sources or item['source'] in selected_sources or
             ('suseso_fiscalizacion' in selected_sources and item['raw'].get('metadata',{}).get('routed_from')=='suseso_fiscalizacion')))
     if selection is not None:

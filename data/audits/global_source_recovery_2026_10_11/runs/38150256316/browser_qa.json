@@ -1,0 +1,32 @@
+{
+  "result": "PASS",
+  "qa_run_id": "38152677485",
+  "tested_commit": "16bd7e3fbcbebb0d87e9d371369673660a85d4a4",
+  "capture_run_id": "38150256316",
+  "qa_source_network_requests": 0,
+  "deployment": false,
+  "directed_python_passed": 105,
+  "node_passed": 42,
+  "node_failed": 0,
+  "browser_passed": 12,
+  "browser_failed": 0,
+  "projects": [
+    "desktop",
+    "mobile"
+  ],
+  "scope": "Global views, source groups and Global metadata exclusion from Chile LIVE coverage",
+  "baseline_browser": {
+    "sha": "4ff51cf",
+    "stats": {
+      "startTime": "2026-10-11T15:47:34.395Z",
+      "duration": 17232.911,
+      "expected": 6,
+      "skipped": 0,
+      "unexpected": 4,
+      "flaky": 0
+    },
+    "note": "Old tests assumed Home teaser top-ten inclusion and research headings absent in the unchanged Lite renderer. Current source QA verifies read state, factual findings, sources and separate Chile hypotheses; does not certify richer research UI."
+  },
+  "global_renderer_byte_identical_to_staging": true,
+  "global_renderer_sha256": "c45bedb30891322c66e8b03aada977e2457a2f5e8ee4821886d3777e643163fa"
+}

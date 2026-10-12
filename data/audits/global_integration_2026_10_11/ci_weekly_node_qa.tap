@@ -1,0 +1,268 @@
+TAP version 13
+# Subtest: full card IDs do not collide for long URLs
+ok 1 - full card IDs do not collide for long URLs
+  ---
+  duration_ms: 4.499237
+  type: 'test'
+  ...
+# Subtest: date-only publication keeps calendar date in Chile
+ok 2 - date-only publication keeps calendar date in Chile
+  ---
+  duration_ms: 16.101347
+  type: 'test'
+  ...
+# Subtest: update label is direct and does not overstate source review
+ok 3 - update label is direct and does not overstate source review
+  ---
+  duration_ms: 1.509941
+  type: 'test'
+  ...
+# Subtest: Signal Density defaults and fiscalizacion
+ok 4 - Signal Density defaults and fiscalizacion
+  ---
+  duration_ms: 1.121626
+  type: 'test'
+  ...
+# Subtest: BACKFILL never counts as new since visit
+ok 5 - BACKFILL never counts as new since visit
+  ---
+  duration_ms: 0.884513
+  type: 'test'
+  ...
+# Subtest: coverage counts never invent LIVE or BACKFILL when queue has not run
+ok 6 - coverage counts never invent LIVE or BACKFILL when queue has not run
+  ---
+  duration_ms: 4.554451
+  type: 'test'
+  ...
+# Subtest: coverage separates LIVE funnel and historical queue
+ok 7 - coverage separates LIVE funnel and historical queue
+  ---
+  duration_ms: 1.09187
+  type: 'test'
+  ...
+# Subtest: active source counts technical availability even when editorial outcome is warning
+ok 8 - active source counts technical availability even when editorial outcome is warning
+  ---
+  duration_ms: 0.969411
+  type: 'test'
+  ...
+# Subtest: Global metadata qualification does not increase the Chile LIVE source count
+ok 9 - Global metadata qualification does not increase the Chile LIVE source count
+  ---
+  duration_ms: 1.251919
+  type: 'test'
+  ...
+# Subtest: sanction pulse lists resolutions rather than corroborating sources
+ok 10 - sanction pulse lists resolutions rather than corroborating sources
+  ---
+  duration_ms: 1.105165
+  type: 'test'
+  ...
+# Subtest: read status survives any audited headline change through stable identity and exact legacy migration
+ok 11 - read status survives any audited headline change through stable identity and exact legacy migration
+  ---
+  duration_ms: 1.192758
+  type: 'test'
+  ...
+# Subtest: every visible pre-review title migrates read state even when persistent rules remove routine items
+ok 12 - every visible pre-review title migrates read state even when persistent rules remove routine items
+  ---
+  duration_ms: 19.588112
+  type: 'test'
+  ...
+# Subtest: ambiguous legacy read never marks two signals that reuse one URL
+ok 13 - ambiguous legacy read never marks two signals that reuse one URL
+  ---
+  duration_ms: 0.952359
+  type: 'test'
+  ...
+# Subtest: legacy read from an absent older date never marks the sole current item at the same URL
+ok 14 - legacy read from an absent older date never marks the sole current item at the same URL
+  ---
+  duration_ms: 0.821475
+  type: 'test'
+  ...
+# Subtest: Cards V2 does not pretend depth from a headline or duplicate summary
+ok 15 - Cards V2 does not pretend depth from a headline or duplicate summary
+  ---
+  duration_ms: 1.738148
+  type: 'test'
+  ...
+# Subtest: limited evidence never gains a detail action from length or generic impact
+ok 16 - limited evidence never gains a detail action from length or generic impact
+  ---
+  duration_ms: 1.125713
+  type: 'test'
+  ...
+# Subtest: negative evidence and repeated importance are not executive findings
+ok 17 - negative evidence and repeated importance are not executive findings
+  ---
+  duration_ms: 0.955155
+  type: 'test'
+  ...
+# Subtest: one persistent filter model replaces the duplicate preference surface
+ok 18 - one persistent filter model replaces the duplicate preference surface
+  ---
+  duration_ms: 1.02186
+  type: 'test'
+  ...
+# Subtest: Home V2 keeps conversion surfaces compact and fail-closed
+ok 19 - Home V2 keeps conversion surfaces compact and fail-closed
+  ---
+  duration_ms: 0.593069
+  type: 'test'
+  ...
+# Subtest: sources prioritize coverage value and expose freshness layers
+ok 20 - sources prioritize coverage value and expose freshness layers
+  ---
+  duration_ms: 0.431556
+  type: 'test'
+  ...
+# Subtest: triage title expands opaque regulatory labels without mechanical truncation
+ok 21 - triage title expands opaque regulatory labels without mechanical truncation
+  ---
+  duration_ms: 1.01674
+  type: 'test'
+  ...
+# Subtest: card never cuts a Bupa announcement in the middle of its meaning
+ok 22 - card never cuts a Bupa announcement in the middle of its meaning
+  ---
+  duration_ms: 1.064779
+  type: 'test'
+  ...
+# Subtest: editorial enrichment never looks like independent corroboration
+ok 23 - editorial enrichment never looks like independent corroboration
+  ---
+  duration_ms: 1.802207
+  type: 'test'
+  ...
+# Subtest: sanction pulse lists every material resolution including anchor
+ok 24 - sanction pulse lists every material resolution including anchor
+  ---
+  duration_ms: 0.960855
+  type: 'test'
+  ...
+# Subtest: card metadata separates resolution, data period, publication and validation dates
+ok 25 - card metadata separates resolution, data period, publication and validation dates
+  ---
+  duration_ms: 1.089576
+  type: 'test'
+  ...
+# Subtest: unverified Circular 77 relation remains visible without invented URL
+ok 26 - unverified Circular 77 relation remains visible without invented URL
+  ---
+  duration_ms: 0.828027
+  type: 'test'
+  ...
+# Subtest: Global Intelligence mirrors Home with value-first inbox and Chile hypothesis separation
+ok 27 - Global Intelligence mirrors Home with value-first inbox and Chile hypothesis separation
+  ---
+  duration_ms: 0.748408
+  type: 'test'
+  ...
+# Subtest: Home V2 specials share read identity and suppress their base signal
+ok 28 - Home V2 specials share read identity and suppress their base signal
+  ---
+  duration_ms: 2.716726
+  type: 'test'
+  ...
+# Subtest: Final Home polish keeps sharing in feed state actions and metadata in every brief row
+ok 29 - Final Home polish keeps sharing in feed state actions and metadata in every brief row
+  ---
+  duration_ms: 2.244965
+  type: 'test'
+  ...
+# Subtest: persistent presentation contracts supersede older editorial copy without losing substance
+ok 30 - persistent presentation contracts supersede older editorial copy without losing substance
+  ---
+  duration_ms: 34.661658
+  type: 'test'
+  ...
+# Subtest: subscription capture is MailerLite-ready, consented and fail-closed until provider and privacy approval
+ok 31 - subscription capture is MailerLite-ready, consented and fail-closed until provider and privacy approval
+  ---
+  duration_ms: 1.206965
+  type: 'test'
+  ...
+# Subtest: public pages carry consistent social metadata without unapproved canonical domain
+ok 32 - public pages carry consistent social metadata without unapproved canonical domain
+  ---
+  duration_ms: 0.531653
+  type: 'test'
+  ...
+# Subtest: normative detail keeps act identity visible even with descriptive triage title
+ok 33 - normative detail keeps act identity visible even with descriptive triage title
+  ---
+  duration_ms: 1.048169
+  type: 'test'
+  ...
+# Subtest: admin P0 scorecard is fail-closed and never fabricates unavailable beta metrics
+ok 34 - admin P0 scorecard is fail-closed and never fabricates unavailable beta metrics
+  ---
+  duration_ms: 0.405558
+  type: 'test'
+  ...
+# Subtest: normative public title always includes act identity and subject before human override
+ok 35 - normative public title always includes act identity and subject before human override
+  ---
+  duration_ms: 0.961216
+  type: 'test'
+  ...
+# Subtest: persistent editorial contract encodes aggregation and review precedence
+ok 36 - persistent editorial contract encodes aggregation and review precedence
+  ---
+  duration_ms: 0.338102
+  type: 'test'
+  ...
+# Subtest: editorial intelligence committee is permanent, multidisciplinary and signal-specific
+ok 37 - editorial intelligence committee is permanent, multidisciplinary and signal-specific
+  ---
+  duration_ms: 0.309719
+  type: 'test'
+  ...
+# Subtest: visible stock obeys committee and publication contract site-wide
+ok 38 - visible stock obeys committee and publication contract site-wide
+  ---
+  duration_ms: 7.662337
+  type: 'test'
+  ...
+# Subtest: Bupa and Pulso retain approved business depth without weak references
+ok 39 - Bupa and Pulso retain approved business depth without weak references
+  ---
+  duration_ms: 6.656238
+  type: 'test'
+  ...
+# Subtest: Home keeps period compact and exposes direct Global Intelligence navigation
+ok 40 - Home keeps period compact and exposes direct Global Intelligence navigation
+  ---
+  duration_ms: 0.466081
+  type: 'test'
+  ...
+# Subtest: weekly freshness expires at Chile midnight and rejects invalid or recycled dates
+ok 41 - weekly freshness expires at Chile midnight and rejects invalid or recycled dates
+  ---
+  duration_ms: 1.401699
+  type: 'test'
+  ...
+# Subtest: approved insight detail exposes figures decisions limits and all evidence links
+ok 42 - approved insight detail exposes figures decisions limits and all evidence links
+  ---
+  duration_ms: 1.45031
+  type: 'test'
+  ...
+# Subtest: enforcement dates display issuance and preserve separately verified publication
+ok 43 - enforcement dates display issuance and preserve separately verified publication
+  ---
+  duration_ms: 1.555756
+  type: 'test'
+  ...
+1..43
+# tests 43
+# suites 0
+# pass 43
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 160.360197

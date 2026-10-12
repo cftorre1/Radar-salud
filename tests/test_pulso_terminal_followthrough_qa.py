@@ -2,10 +2,9 @@
 import copy
 import importlib.util
 import json
-import io
-from pathlib import Path
 import subprocess
 import tarfile
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -15,33 +14,57 @@ spec = importlib.util.spec_from_file_location("terminal_actual_qa", ROOT / "scri
 qa = importlib.util.module_from_spec(spec); spec.loader.exec_module(qa)
 
 
-@pytest.fixture(scope='module', autouse=True)
-def immutable_pulso_producer(tmp_path_factory):
-    """Historical receipt tests use the accepted producer, not later source packages.
+@pytest.fixture(scope="module")
+def actual(tmp_path_factory):
+    """This exact-code receipt proves the accepted Pulso checkout, not later merges.
 
-    All policy/source-byte, stock, ledger and negative corruption assertions remain
-    active. This fixture makes no claim about the current branch's runtime.
+    Keep production's strict live fingerprint check unchanged. Replay historical
+    contracts against a pinned tree; the integration runtime has its own gates.
     """
     global ROOT
-    current = ROOT
-    producer = '4a05c276469d5c28d264cc3eb3530f0629dadaa3'
-    target = tmp_path_factory.mktemp('pulso-accepted-producer')
-    archive = subprocess.check_output(['git','archive',producer],cwd=current)
-    with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
-        tar.extractall(target,filter='data')
-    # Read-only git show queries retain the real producer ancestry.
-    gitdir = subprocess.check_output(['git','rev-parse','--absolute-git-dir'],cwd=current,text=True).strip()
-    (target/'.git').write_text('gitdir: '+gitdir+'\n')
-    ROOT = target
+    current_root = ROOT
+    frozen = tmp_path_factory.mktemp("pulso-accepted-checkout")
+    accepted = "515b8809ecc391600c4093ce0435955d7d3685c5"
+    paths = ["src", "scripts", "config", "pyproject.toml", ".github",
+             "data/state", "data/history", "data/ai_usage", "data/analysis_cache",
+             "tests/fixtures", "web/data/radar_today.json"]
+    tracked = subprocess.check_output(["git", "ls-tree", "-r", "--name-only", accepted,
+                                       "--", "data/audits"], cwd=current_root, text=True)
+    paths.extend(path for path in tracked.splitlines()
+                 if path.startswith("data/audits/pulso_") and path.endswith(".json")
+                 and path.count("/") == 2)
+    archive = subprocess.Popen(["git", "archive", accepted, "--", *paths],
+                               cwd=current_root, stdout=subprocess.PIPE)
+    with tarfile.open(fileobj=archive.stdout, mode="r|") as stream:
+        stream.extractall(frozen, filter="data")
+    assert archive.wait() == 0
+    git_dir = subprocess.check_output(["git", "rev-parse", "--absolute-git-dir"],
+                                      cwd=current_root, text=True).strip()
+    (frozen / ".git").write_text("gitdir: " + git_dir + "\n")
+    # Test the current validator implementation against the historical contract.
+    for path in qa.TERMINAL_CONSUMER_PATHS:
+        (frozen / path).write_bytes((current_root / path).read_bytes())
+    ROOT = frozen
     try:
-        yield
+        yield qa.terminal_followthrough_origin(ROOT)
     finally:
-        ROOT = current
+        ROOT = current_root
 
 
-@pytest.fixture(scope="module")
-def actual():
-    return qa.terminal_followthrough_origin(ROOT)
+def test_integrated_modules_cannot_be_claimed_by_the_old_runtime_receipt(actual):
+    frozen_files = set(actual["execution"]["runtime_fingerprint"]["files"])
+    added = ROOT / "src/radar_salud/integration_unrecorded_module.py"
+    added.write_text("# A new integration must acquire a new runtime receipt.\n")
+    try:
+        assert not qa.required_runtime_fingerprint_paths(ROOT) <= frozen_files
+        with pytest.raises(ValueError, match="final_revalidated_execution_not_real_zero_api_exact2"):
+            qa.verify_final_revalidated_execution(
+                ROOT, report=actual["report"], queue=actual["queue"],
+                history=actual["history"], telemetry=actual["telemetry"],
+                execution=actual["execution"], origin=actual["final_origin"],
+                _terminal_archive=True)
+    finally:
+        added.unlink()
 
 
 def test_actual_archive_separates_paid_two_real_final_revalidation_and_live9(actual):

@@ -47,7 +47,7 @@
     },
     "budget_deep": 14
   },
-  "final_head_ci": "PENDING; final PR29 body and issue5 checkpoint are authoritative once exact-head checks finish",
+  "final_head_ci": "PENDING; PR29/issue5 final receipt authoritative; stagingc10f678 preserved",
   "gates_lowered": false,
   "main_production_staging_written": false,
   "qa": {
@@ -74,5 +74,26 @@
       "38203992061 global QA",
       "local530.92s suite1FAIL38ERROR"
     ]
+  },
+  "integration_base_sha": "c10f67812face5a62a30623d6eb418418ab0994b",
+  "integration_conflicts_resolved": [
+    "daily-radar.yml",
+    "orchestrator_queue.json",
+    "PMO_BASELINE.md",
+    "test_pulso_terminal_followthrough_qa.py"
+  ],
+  "integration_preservation": {
+    "other_orchestrator_tasks": 87,
+    "other_health_rows": 28,
+    "staging_tasks_health_pmo_preserved": true
+  },
+  "integration_local_qa": {
+    "focused_python": 102,
+    "node": "PASS",
+    "desktop_mobile": "2PASS",
+    "reviewer": "PASS findings[]",
+    "retained_replay": "PASS zero requests/calls",
+    "conflicts_remaining": 0,
+    "staging_public_captures_preserved_without_whitespace_normalization": true
   }
 }

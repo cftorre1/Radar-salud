@@ -54,3 +54,7 @@ Consumo API:4FAST(gpt-5.6-luna),0DEEP,4867tokens; ledger520→524FAST/14DEEP. Cu
 4. Blocker humano mínimo: FONASA debe habilitar GET público autorizado o export/feed oficial actual, con fechas/cuerpos; ISP debe servir cadena TLS completa verificable o un feed/export oficial accesible. No desactivar TLS, evadir ALB/WAF ni habilitar credenciales.
 
 Alternativas ya revisadas del PR13 se reutilizan: datos.gob.cl tiene14 registros FONASA históricos, no newsroom actual; documentos DIPRES/MINSAL conservan su publicador. Rutas ISP/ANAMED Noticias `https://ispch.cl/categorias-noticias/noticia-anamed/` y detalle oncológico1Oct están indexados: son pistas sin captura primaria nativa y se difieren bajo bloqueo TLS; no se convierten en alertas farmacológicas ni señales publicadas. Issue5 y los gates maestros siguen abiertos.
+
+## Conciliación de staging vigente
+
+Staging avanzó a `c10f67812face5a62a30623d6eb418418ab0994b` integrando PR26/16/28/30. Se incorporó a esta rama sin merge a staging. Conflictos exactos:workflow diario,queue,PMO yfixturePulso. Se conservaron los pasos/política Global de staging y el observer Daily First; todas sus tareas y health ajenos; PMO como unión; y su fixture histórica optimizada con prueba negativa de módulo nuevo. Engine conserva `eligible_daily_item`30d, home30/60 yGlobal por mérito sincuota. Nuevas validaciones usan replay primario retenido, sin otra captura o modelo. El SHA final de conciliación y sus gates sustituyen b5ca6c35 en el PR/issue5.

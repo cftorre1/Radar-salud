@@ -1,0 +1,354 @@
+{
+  "status": "READY_FOR_INTEGRATION",
+  "scope": "Safe non-activated P0 data package only; mandatory final-head CI remains a merge condition",
+  "recorded_at": "2026-10-11T22:39:28.512653-03:00",
+  "pr": 16,
+  "branch": "codex/w4-market-intelligence-expansion-20261011",
+  "validated_local_code_sha": "9dc4c20932796eb815f5d81d84421b2aad70a8ce",
+  "integration_base_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+  "actual_conflicts": [
+    "config/pmo_baseline.json"
+  ],
+  "resolution": "Preserve complete staging PMO; add only Work4 P0 evidence entry and its two changelog entries. Verify automatic queue/health merge and unchanged inventory bytes.",
+  "inventory_counts": {
+    "isapres_entities": 10,
+    "isapre_observations": 320,
+    "cmf_actors": 6,
+    "cmf_disclosures": 9,
+    "cmf_events": 5,
+    "cmf_accounting_links": 24,
+    "cmf_financial_observations": 42,
+    "dipres_documents": 116,
+    "dipres_observations": 408,
+    "dipres_material_candidates": 5
+  },
+  "inventory_sha256": {
+    "data/entities/cmf_reporting_actors.json": "bdb849ab658734e7bb85fda4f62a0cc3fc8086e92e041cf6173bd4091075b2ce",
+    "data/entities/isapres.json": "07cc878aeec24f4be8b3de6d817e65503358f5baa6dba6cdebf0d8eb2c5019f6",
+    "data/market/cmf_disclosures.json": "dff49f1ae0be9fd9a328bf6209853fc35f8f2b005abd5c551062d56e6d77f9d9",
+    "data/market/cmf_events.json": "9f65499dce748ca0444c7c5b9b1dc7ce21574c0367d820f2cb7f578e0c6de73b",
+    "data/market/cmf_financials.json": "14e1bfefe4ac3d381028fb04452a89cda578663b0cfe1a379d5251297e59b1a1",
+    "data/market/collection_result.json": "1dc9a389c643a5712dce62540576d8579afa86122b4ce64b7c660b5acbae06a2",
+    "data/market/dipres_health_budget.json": "d1759495cb56ad59ae5be7966c3662cabe07c908d35412ed22576f1b08c125f7",
+    "data/market/isapre_portfolio.json": "788bc1a73ac72159607e63d14f4a7c1bcd14328bb8c4752eb3c8d96e42199e9a",
+    "data/market/market_intelligence.json": "0b012405df3b8f7ac0702e8291eb85a09514f75c748d89687f5087a52ac1f612",
+    "data/market/signal_candidates.json": "8307266dc4fe6cf2910f73c9c1465644403f503653891d107f0ffb6af4bf0390"
+  },
+  "protected_staging_sha256": {
+    "data/ai_usage/2026-10.json": "7894a3606b9cb8262fa98b61e0292251c11604976c64dfb21017d133ac15d4e8",
+    "data/ai_usage/responses.jsonl": "142ebc4dc6e93df6652f7763a84054cc96c1f8666961de4e2690411015d4c279",
+    "config/sources.json": "15b5ee35186b50ca13f4e013c952b21824d725f9cd883807da0f6353b8d32c70",
+    "config/source_quality_gate.json": "a25932b75342d2c479832dc6dc3de9d0a06b13a98d8408c937f1b58ea92af71a",
+    "config/beta_source_configs.json": "17d7a85e289ebfce4b9515119f2377f7e20555baa23f5d32c1a6e080a0551064",
+    "data/state/pending_queue.json": "746ba9edc1fe203c5d182f68296afefc3be767a7a8f9487876d9345adf2a5556"
+  },
+  "source_outcomes": {
+    "w4_isapres_2026_10_11": "OPERATIVE_DEGRADED",
+    "w4_cmf_2026_10_11": "OPERATIVE_DEGRADED",
+    "w4_dipres_2026_10_11": "OPERATIVE_DEGRADED"
+  },
+  "deferred_scope": {
+    "w4_isapres_2026_10_11": [
+      "Isalud Ltda./SpA contradiction and effective legal date remain unproven",
+      "Remaining demonstrable control and network/plan perimeter",
+      "Qualified public polls separated by at least 24 hours"
+    ],
+    "w4_cmf_2026_10_11": [
+      "Complete current health reporting ecosystem and standalone subsidiary figures",
+      "Historical ticker references do not prove current listings/quotes",
+      "Qualified public polls separated by at least 24 hours; core/editorial activation gates"
+    ],
+    "w4_dipres_2026_10_11": [
+      "Complete fiscal version/period stock",
+      "Verified official publication day bound to each material candidate",
+      "Qualified public polls separated by at least 24 hours; core/editorial activation gates"
+    ]
+  },
+  "prior_native_qualification": {
+    "head_sha": "0339dd24ccf16f8f9ec19750a62505b9d5815e04",
+    "native_run": 38148940088,
+    "global_qa_run": 38148940138,
+    "native_status": "PASS",
+    "global_status": "PASS",
+    "review_checks": 302,
+    "recurrence_validated": false
+  },
+  "local_validation": {
+    "focused_tests_passed": 75,
+    "review": {
+      "status": "PASS",
+      "checks": 264,
+      "failures": [],
+      "cmf_official_disclosures": 9,
+      "cmf_captured": 9,
+      "scope": "Independent parser/checks for captured declared surfaces; no exhaustive universe or cadence certification",
+      "replay_idempotent": true,
+      "replay_differences": [],
+      "baseline_qa": "Separate mandatory global workflow; qualification does not override its gates",
+      "recurrence_validated": false
+    },
+    "replay_preparation": {
+      "mode": "retained_evidence_replay",
+      "original_as_of": "2026-10-11",
+      "remote_source_requests": 0,
+      "paid_model_calls": 0,
+      "archives": {
+        "native_final_indexes.zip": "f9d37ae521b19e2bb966e60f693284a5d11d23b5d9df42fea3361c6d45241285",
+        "native_validated.zip": "a6315789402ff0d7d1e15e99106f829935e5c5a59eb4cc51de0826bb99c783bc",
+        "equity_identity_fixtures.zip": "59068da34358e0179fa00ef7658104a7e1cd905be1cad458074d0a96baaa9dda"
+      },
+      "restored_bodies": 126,
+      "unavailable_unused_bodies": [
+        {
+          "kind": "Análisis Razonado",
+          "sha256": "6cf0f60e1a130706cfa5c8ee2f07e436853d05e45cc308e67750ee2781e5b7c2"
+        },
+        {
+          "kind": "Declaración de responsabilidad",
+          "sha256": "9e1502e993c152da69f7072d521dc69833151637c808b235ada45e5d654fa93f"
+        },
+        {
+          "kind": "Hechos Relevantes",
+          "sha256": "4f315c2595debea5228e988ab239cb40c9d80ab152141640828da5af8c313d5a"
+        },
+        {
+          "kind": "Estados financieros (PDF)",
+          "sha256": "d1ba5d437346f644de9f7d90c053d11be9e7e8df52e491cfaa5ae95381fe8d42"
+        },
+        {
+          "kind": "Análisis Razonado",
+          "sha256": "e65cc7513a0d87a806a09804ce4d2abbc274c250037640aafd46e164d970ec28"
+        },
+        {
+          "kind": "Declaración de responsabilidad",
+          "sha256": "8fc0fd9ac37e8f54e28a412e760b6f8ae20a30d5ad5491f0e56fae2a546854c8"
+        },
+        {
+          "kind": "Hechos Relevantes",
+          "sha256": "cb9718d8641d0a504b13481c8c0435dbf40c826ad4a67bed6ac05d12446ef4a6"
+        },
+        {
+          "kind": "Estados financieros (PDF)",
+          "sha256": "1235f69695cd7fdfe035c49bab55d8b4fc09d3b00e790b57655168c68c6d7327"
+        },
+        {
+          "kind": "Análisis Razonado",
+          "sha256": "342155ee7242d749ea1beeeb63896877e6402f8a9ad72229e3ed684f8dd16054"
+        },
+        {
+          "kind": "Declaración de responsabilidad",
+          "sha256": "659191dfc66ec265ad0e223f874d0c51eb397cae00054e150de7c0c4badc6f5c"
+        },
+        {
+          "kind": "Hechos Relevantes",
+          "sha256": "a29add7eb1f4c59b7b3f8440e2d83950fde1df000f1987db84e7ebcc2f781779"
+        },
+        {
+          "kind": "Estados financieros (PDF)",
+          "sha256": "16301c536ef2407b9d32d6428cc0bb5107981e4581c998429761e57a95ddcbbe"
+        },
+        {
+          "kind": "Análisis Razonado",
+          "sha256": "e0b628c7a605f4bd4c181c6d0581edddad76bf0aebd36e99a6008023168350f7"
+        },
+        {
+          "kind": "Declaración de responsabilidad",
+          "sha256": "2c37aba561e0545a378a4aabc1895587a876d1868ab5fc418a0c0b0943f3479d"
+        },
+        {
+          "kind": "Hechos Relevantes",
+          "sha256": "e87a9cd7bde606d967946cb8bc951a69e7e6f0a4701bb55dc80212283ce17992"
+        },
+        {
+          "kind": "Estados financieros (PDF)",
+          "sha256": "e2b0b1fae8a2716f5311b8b4b93210aaaf31ae5ff95f420202b4a95a287b5136"
+        },
+        {
+          "kind": "https://ilcinversiones.cl/app/uploads/2025/05/Estados_financieros_PDF94139000_202512.pdf",
+          "sha256": "dbc867cdbef6b748790968a695750431bdbfd4852bea0d795b53a08e380d5591"
+        },
+        {
+          "kind": "https://ilcinversiones.cl/app/uploads/2025/01/Estados_financieros_-PDF-94139000_202412.pdf",
+          "sha256": "3c45f940e04f3ea5ef6f208b77b2166fbe08ca8b3d13f43eb3eb7cbc1bb57088"
+        },
+        {
+          "kind": "https://ilcinversiones.cl/app/uploads/wpallimport/files/estados-financieros-4t23-opens-in-new-window",
+          "sha256": "7f5a7133a80a848a383f9b62d46996f8d92ea2de22940b1b26f7e87208614943"
+        },
+        {
+          "kind": "https://ilcinversiones.cl/app/uploads/2025/01/Estados_financieros_-PDF-94139000_202212.pdf",
+          "sha256": "4aceeb7166b6f68d0b3179d5a8529fe06782c35e1cb6477beddcbc210e90ae22"
+        },
+        {
+          "kind": "https://ilcinversiones.cl/app/uploads/2025/01/Estados-Financieros-4T21-opens-in-new-window_.pdf",
+          "sha256": "16530d3bdd651a6ef7f45064371b2b8d2e3d1a1539789f0cbb916f06267c511d"
+        },
+        {
+          "kind": "Análisis Razonado",
+          "sha256": "937927552d723e17ec7004bcd112ae371dd6b753c34c544d60d6a838be78398b"
+        },
+        {
+          "kind": "Estados financieros (PDF)",
+          "sha256": "d403435d3c00a8722351e76cf6d046ba52f48554dbd8777b46affd7dad440bfa"
+        },
+        {
+          "kind": "Declaración de responsabilidad",
+          "sha256": "60901f6c17d12f0c93f1f1b2a4df14226df26671460bbce80e7dbf7b562faf73"
+        },
+        {
+          "kind": "Hechos Relevantes",
+          "sha256": "8f55396d5a823f7478e070d0ec2f6e0b0e97c58821ad7279d3182c7b31177ddd"
+        },
+        {
+          "kind": "Estados financieros (PDF)",
+          "sha256": "ccc32f71de4fddbf1bf6c167da4c2b767b60caa572b656f1e5f8b63991d0dfd2"
+        },
+        {
+          "kind": "Análisis Razonado",
+          "sha256": "7167057103fea99c80a50644b2f4309de4cac6e0e9b44555d796db96feabbc6a"
+        },
+        {
+          "kind": "Declaración de responsabilidad",
+          "sha256": "74bfcb96cdef179d52826ad88c2aa94801fa4f2ad8581ea04adf5c123d5a6e4a"
+        },
+        {
+          "kind": "Hechos Relevantes",
+          "sha256": "6e49e437a36f4719f2e654c6430ed9f3a9ed34f37cfe6baaacad6b2e7c84c3a2"
+        },
+        {
+          "kind": "Análisis Razonado",
+          "sha256": "22ca5c7b8e4c361f226f17cd7b7f7b641f3bd72b59b16021d768a76da51ffc46"
+        },
+        {
+          "kind": "Declaración de responsabilidad",
+          "sha256": "105ebe9c2d90ddfc6486d34b92632b864452094c285c06047fc6c3cad01d3261"
+        },
+        {
+          "kind": "Hechos Relevantes",
+          "sha256": "8310898b4fbaaedc4c9c1ee8598d99237ab70068db955c4cdff5400775ab7b79"
+        },
+        {
+          "kind": "Estados financieros (PDF)",
+          "sha256": "56b20582e21a963d616d115aab86cdfb28d2e5a7d8b47c93196899c08abbd73f"
+        },
+        {
+          "kind": "Análisis Razonado",
+          "sha256": "8a6f2dd8353f2cda9a75f9eacb767005ce166699a22be734594898757f44b64b"
+        },
+        {
+          "kind": "Declaración de responsabilidad",
+          "sha256": "4d27d62b05303304e99cdfd2fa0970f32597c8d440568cc1447eedc605c89745"
+        },
+        {
+          "kind": "Hechos Relevantes",
+          "sha256": "8f24f65e31497c42dc684d6c8709b9d45d6cf2fc4d5b88573f57797c7b7ebf02"
+        },
+        {
+          "kind": "Estados financieros (PDF)",
+          "sha256": "9f3b0b8ae920e0821fa99ce01b507f1f769b9efffad1e686549fa433c71b0aa5"
+        },
+        {
+          "kind": "Presentación Corporativa",
+          "sha256": "d470abbf685da55ab161a74c07201c90689cb923bf809df1761b9c5f3a987e8d"
+        }
+      ],
+      "scope": "Original retained parser inputs; no fresh capture, recurrence or exhaustive coverage claim"
+    },
+    "node_tests_passed": 42,
+    "focused_browser_passed": 2,
+    "browser_runtime": "Existing /usr/bin/chromium; isolated baseline worktree with fresh offline snapshot; no browser download"
+  },
+  "final_head_ci": {
+    "required": true,
+    "status": "PENDING",
+    "record_location": "PR16 checks and final issue5 checkpoint; validated local code and exact retained inputs above"
+  },
+  "budget": {
+    "new_source_requests": 0,
+    "new_paid_pipeline_model_calls": 0,
+    "new_recovery_audits": 0,
+    "new_credentials": 0,
+    "new_services": 0,
+    "paid_pipeline_usage_unchanged": true,
+    "monetary_billing_not_exposed": true,
+    "ci_mode": "Three different inherited clock/rolling-snapshot failures proved and corrected with focused controls; final-head mandatory QA and retained replay, no equivalent blind retry or fresh collection"
+  },
+  "next_action": "Integration Commander: verify final PR16 head, green required checks and no conflicts; merge PR16 into staging with a merge commit and matched head; capture resulting staging SHA and run read-only retained-evidence qualification/QA. Do not activate sources or publish held candidates. Follow deferred source scopes separately.",
+  "merge_authority": "Integration Commander; not this agent",
+  "activation": "held",
+  "post_merge_runtime": "not_executed",
+  "subsequent_staging_update": "88979eb changes governance only; no code/data-source changes. Existing focal/replay proof still applies; final CI validates merged candidate.",
+  "initial_final_head_ci_failure": {
+    "run_id": 38193068526,
+    "head_sha": "b7306cde668e59c08a3efbc6efea741d06d7bb1f",
+    "python_passed": 1038,
+    "python_failed": 1,
+    "python_skipped": 1,
+    "test": "tests/test_web_snapshot.py::test_verified_publication_boundary_retains_old_issuance_without_changing_it",
+    "classification": "inherited_baseline_clock_defect",
+    "baseline_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+    "baseline_reproduction": "same failure in isolated baseline worktree",
+    "baseline_script_sha256": "e91c5b247fa855e16b6cf82057608880181f6568ae77aae3e5d6b08aeb157f96",
+    "reason": "curate(as_of=2026-10-11) filtered on the requested cutoff but sanction aggregation used the 2026-10-12 host clock",
+    "fix": "Pass today=as_of into sanction aggregation; None keeps existing real-clock behavior. Test host pinned to October12 checks inclusion on October11 and exclusion on October12 without changing original dates.",
+    "introduced_failure": false
+  },
+  "retained_ci_replay": {
+    "run_id": 38193068529,
+    "head_sha": "b7306cde668e59c08a3efbc6efea741d06d7bb1f",
+    "status": "PASS",
+    "directed_tests": 32,
+    "review_checks": 264,
+    "replay_idempotent": true,
+    "new_source_requests": 0
+  },
+  "second_final_head_ci_failure": {
+    "run_id": 38193520581,
+    "head_sha": "3c552fc113b7fbc7dd62cd907fe50277a416b32e",
+    "python_passed": 1039,
+    "python_skipped": 1,
+    "node_passed": 41,
+    "node_failed": 1,
+    "test": "Home V2 specials share read identity and suppress their base signal",
+    "classification": "distinct_inherited_baseline_fixture_clock_defect",
+    "baseline_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+    "baseline_reproduction": "Direct node baseline suite: 41 PASS/1 FAIL, same undefined weekly special",
+    "reason": "Fixture publication used UTC October12 while the Chile freshness gate correctly saw October11 and rejected a future date",
+    "fix": "Test-only clock fixed to 2026-10-12T01:30Z with fixture publication 2026-10-11; retain all identity/suppression assertions and explicitly reject 2026-10-12 as future. Product JS unchanged.",
+    "introduced_failure": false
+  },
+  "retained_ci_replay_after_python_fix": {
+    "run_id": 38193520527,
+    "status": "PASS",
+    "review_checks": 264,
+    "new_source_requests": 0
+  },
+  "third_final_head_ci_failure": {
+    "run_id": 38194114552,
+    "head_sha": "7cc2521b88c022d1e8fb6d4f04f9224914806f6f",
+    "python_passed": 1039,
+    "python_skipped": 1,
+    "node_passed": 42,
+    "browser_passed": 58,
+    "browser_failed": 2,
+    "test": "recovered registers retain offices, actors, effects and issuance dates in grouped details",
+    "classification": "distinct_inherited_baseline_static_rolling_inventory_expectations",
+    "baseline_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+    "baseline_reproduction": "Unchanged baseline exporter gives 72 recent +20 historical SUSESO records on Oct12; old browser expects 75 +17. SIS rolling agents become16 vs18.",
+    "fix": "Browser test computes exact current and active historical ID sets from immutable source history and snapshot date. Preserve 92 unique issuer records and 18 original agent records; assert counts, membership, effects and rendered detail rows. No minimum/gate reductions or production JS changes.",
+    "fixed_date_checks": {
+      "2026-10-11": {
+        "suseso_recent": 75,
+        "suseso_historical": 17,
+        "sis_agents_recent": 18
+      },
+      "2026-10-12": {
+        "suseso_recent": 72,
+        "suseso_historical": 20,
+        "sis_agents_recent": 16
+      }
+    },
+    "local_browser_passed": 2,
+    "introduced_failure": false
+  }
+}

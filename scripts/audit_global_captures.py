@@ -1,0 +1,840 @@
+"""Independent saved-byte QA. Reads captures/inventory; writes only its work report.
+
+No collector imports, no network client, no AI, no canonical-state mutations.
+TLS checks validate recorded verified-TLS evidence; they do not retransmit requests.
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import re
+import sys
+from collections import Counter
+from datetime import date, datetime, timedelta, timezone
+from html.parser import HTMLParser
+from pathlib import Path
+from urllib.parse import parse_qsl, urlencode, urljoin, urlsplit, urlunsplit
+from urllib.robotparser import RobotFileParser
+
+UA = "AlicantoHealthRadar/1.0 (+https://github.com/cftorre1/Radar-salud; metadata monitoring, no model training)"
+HOSTS = {"www.who.int", "who.int", "www.paho.org", "paho.org", "iris.paho.org"}
+DOC_HOSTS = HOSTS | {"cdn.who.int", "iris.who.int"}
+SAFE_HEADERS = {"content-type", "last-modified", "date", "server", "retry-after"}
+MONTHS = {}
+for number, words in enumerate([
+    "January Jan enero", "February Feb febrero", "March Mar marzo", "April Apr abril",
+    "May mayo", "June Jun junio", "July Jul julio", "August Aug agosto",
+    "September Sep Sept septiembre", "October Oct octubre", "November Nov noviembre",
+    "December Dec diciembre"], 1):
+    MONTHS.update({word.casefold(): number for word in words.split()})
+VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}
+
+
+def digest(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def official_url(value, base=""):
+    parts = urlsplit(urljoin(base, str(value)))
+    if parts.scheme != "https" or parts.hostname not in HOSTS or parts.username or parts.password or parts.port not in (None, 443):
+        raise ValueError("URL outside approved HTTPS public origins")
+    query = [(key, val) for key, val in parse_qsl(parts.query, keep_blank_values=True)
+             if not key.lower().startswith("utm_") and key.lower() not in {"gclid", "fbclid"}]
+    return urlunsplit(("https", parts.netloc.lower(), parts.path or "/", urlencode(query), ""))
+
+
+def calendar_day(value, as_of):
+    value = str(value or "").strip()
+    try:
+        if re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+            result = date.fromisoformat(value)
+        elif re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:\d{2})?", value):
+            result = datetime.fromisoformat(value.replace("Z", "+00:00")).date()
+        else:
+            match = re.fullmatch(r"(\d{1,2})\s+(?:de\s+)?([A-Za-z]+)\.?\s+(?:(?:de|del)\s+)?(\d{4})", value)
+            if not match or match[2].casefold() not in MONTHS:
+                return None
+            result = date(int(match[3]), MONTHS[match[2].casefold()], int(match[1]))
+        return result.isoformat() if result <= as_of else None
+    except (ValueError, TypeError):
+        return None
+
+
+def in_window(value, as_of, days):
+    return bool(value and (as_of - timedelta(days=days - 1)).isoformat() <= value <= as_of.isoformat())
+
+
+class NativeHTML(HTMLParser):
+    """Streaming card/header reader; no collector DOM implementation is used."""
+    def __init__(self, raw):
+        super().__init__(convert_charrefs=True)
+        self.stack = []
+        self.cards, self.h1, self.meta_dates, self.visible_dates = [], [], [], []
+        self.canonical, self.alternates, self.documents = [], [], []
+        self.forms, self.inputs, self.links, self.empty_messages = [], [], [], []
+        self.news_views, self.pager_elements, self.pager_navs = [], [], []
+        self.feed(raw.decode("utf-8", errors="replace"))
+        self.close()
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        classes = set(attrs.get("class", "").split())
+        if any(token in {"pager", "pagination"} or token.startswith(("pager__", "js-pager__", "pager-nav")) for token in classes):
+            self.pager_elements.append({"tag": tag, "attrs": attrs,
+                                       "inside_news_view": any(frame.get("news_view") for frame in self.stack),
+                                       "inside_native_nav": tag == "nav" and "pager-nav" in classes or any(frame.get("pager_node") for frame in self.stack)})
+        for frame in self.stack:
+            if frame.get("news_view"):
+                frame["descendants"].append({"tag": tag, "attrs": attrs})
+        if tag == "input":
+            self.inputs.append(attrs)
+            for frame in self.stack:
+                if frame["tag"] == "form":
+                    frame["inputs"].append(attrs)
+        if tag == "meta":
+            name = (attrs.get("property") or attrs.get("name") or "").casefold()
+            if name in {"article:published_time", "datepublished", "citation_publication_date", "dc.date.issued"}:
+                self.meta_dates.append(attrs.get("content", ""))
+        if tag == "link":
+            rel = set(attrs.get("rel", "").casefold().split())
+            if "canonical" in rel and attrs.get("href"):
+                self.canonical.append(attrs["href"])
+            if "alternate" in rel and attrs.get("hreflang") and attrs.get("href"):
+                self.alternates.append(attrs["href"])
+        if tag == "a":
+            self.links.append(attrs)
+            href = attrs.get("href", "")
+            if "language-link" in classes and attrs.get("hreflang"):
+                self.alternates.append(href)
+            if ".pdf" in href.casefold() or "/bitstream/" in href or "/bitstreams/" in href:
+                self.documents.append(href)
+        if tag == "time":
+            for frame in self.stack:
+                frame["times"].append(attrs.get("datetime", ""))
+        if tag not in VOID:
+            pager_parent = next((frame["pager_node"] for frame in reversed(self.stack) if frame.get("pager_node")), None)
+            pager_node = None
+            if pager_parent is not None or tag == "nav" and "pager-nav" in classes:
+                pager_node = {"tag": tag, "attrs": attrs, "children": [], "text": [], "explicitly_closed": False,
+                              "inside_news_view": any(frame.get("news_view") for frame in self.stack)}
+                if pager_parent is not None:
+                    pager_parent["children"].append(pager_node)
+                else:
+                    self.pager_navs.append(pager_node)
+            self.stack.append({"tag": tag, "attrs": attrs, "classes": classes,
+                               "text": [], "links": [], "times": [], "inputs": [],
+                               "news_view": tag == "div" and {"news-grid", "view-news", "view-id-news", "view-display-id-news_page"} <= classes,
+                               "descendants": [], "forms": [], "outside_form_text": [], "pager_node": pager_node})
+
+    def handle_startendtag(self, tag, attrs):
+        self.handle_starttag(tag, attrs)
+        if tag not in VOID:
+            self.handle_endtag(tag)
+
+    def handle_data(self, text):
+        for position, frame in enumerate(self.stack):
+            if frame["tag"] in {"a", "h1"} or frame["classes"] & {"date", "field--name-created", "views-field-title", "view-empty"}:
+                frame["text"].append(text)
+            if frame.get("news_view") and not any(parent["tag"] == "form" for parent in self.stack[position + 1:]):
+                frame["outside_form_text"].append(text)
+            if frame.get("pager_node"):
+                frame["pager_node"]["text"].append(text)
+
+    def handle_endtag(self, tag):
+        position = next((n for n in range(len(self.stack)-1, -1, -1) if self.stack[n]["tag"] == tag), None)
+        if position is None:
+            return
+        while len(self.stack) > position:
+            explicitly_closed = len(self.stack) == position + 1
+            frame = self.stack.pop()
+            text = " ".join(" ".join(frame["text"]).split())
+            if frame.get("pager_node"):
+                frame["pager_node"]["explicitly_closed"] = explicitly_closed
+            if frame["tag"] == "form":
+                form = {"attrs": frame["attrs"], "inputs": frame["inputs"], "explicitly_closed": explicitly_closed}
+                self.forms.append(form)
+                for parent in self.stack:
+                    if parent.get("news_view"):
+                        parent["forms"].append(form)
+            if frame.get("news_view"):
+                self.news_views.append({"attrs": frame["attrs"], "explicitly_closed": explicitly_closed,
+                                       "forms": frame["forms"], "descendants": frame["descendants"],
+                                       "outside_form_text": " ".join(" ".join(frame["outside_form_text"]).split())})
+            if "view-empty" in frame["classes"] and text:
+                self.empty_messages.append(text)
+            if frame["tag"] == "a":
+                for parent in self.stack:
+                    parent["links"].append((frame["attrs"].get("href", ""), text))
+            if frame["tag"] == "h1" and text:
+                self.h1.append(text)
+            if frame["classes"] & {"date", "field--name-created"}:
+                match = re.match(r"\s*(\d{1,2}\s+(?:de\s+)?[A-Za-z]+\s+(?:(?:de|del)\s+)?\d{4})\b", text)
+                if match:
+                    self.visible_dates.append(match[1])
+            if "views-field-title" in frame["classes"]:
+                links = [(href, title) for href, title in frame["links"] if href and title]
+                times = list(self.stack[-1]["times"]) if self.stack else []
+                self.cards.append({"links": links, "times": times,
+                                   "inside_news_view": any(parent.get("news_view") for parent in self.stack)})
+
+
+def independent_index(raw, route, page_url, as_of):
+    rows = []
+    if route["format"] == "who_api":
+        payload = json.loads(raw)
+        if not isinstance(payload, dict) or not isinstance(payload.get("value"), list):
+            raise ValueError("WHO native value array missing")
+        prefix = {"news": "/news/item", "publications": "/publications/i/item",
+                  "disease_outbreak_news": "/emergencies/disease-outbreak-news/item"}[route["section"]]
+        for item in payload["value"]:
+            suffix = str(item.get("ItemDefaultUrl") or "")
+            if not suffix.startswith("/"):
+                raise ValueError("WHO native item path missing")
+            path = suffix if suffix.startswith(prefix + "/") else prefix + suffix
+            raw_dates = [str(item[key]) for key in ("FormatedDate", "FormattedDate", "PublicationDateAndTime") if item.get(key)]
+            values = [calendar_day(value, as_of) for value in raw_dates]
+            day = values[0] if values and None not in values and len(set(values)) == 1 else None
+            event = item.get("EmergencyEvent") or {}
+            rows.append({"url": official_url(path, "https://www.who.int"), "published_at": day,
+                         "event_id": event.get("EventId"), "event_date": event.get("EmergencyEventStartDate")})
+    else:
+        document = NativeHTML(raw)
+        for card in document.cards:
+            if len(card["links"]) != 1 or len(card["times"]) != 1:
+                raise ValueError("native PAHO card date/title identity ambiguous")
+            rows.append({"url": official_url(card["links"][0][0], page_url),
+                         "published_at": calendar_day(card["times"][0], as_of),
+                         "event_id": None, "event_date": None})
+    return rows
+
+
+def bound_pager_page(href, page_url):
+    """Strict full-query binding, including repeated parameters; no tracking stripping."""
+    target = urlsplit(urljoin(page_url, href))
+    base = urlsplit(page_url)
+    official_url(urlunsplit(target))
+    query = parse_qsl(target.query, keep_blank_values=True)
+    values = [value for key, value in query if key == "page"]
+    if target.fragment or target[:3] != base[:3] or len(values) != 1 or not re.fullmatch(r"0|[1-9]\d*", values[0]):
+        raise ValueError("native pager identity/page invalid")
+    if sorted((key, value) for key, value in query if key != "page") != sorted(
+            (key, value) for key, value in parse_qsl(base.query, keep_blank_values=True) if key != "page"):
+        raise ValueError("native pager full query differs")
+    return int(values[0])
+
+
+def pager_tree_nodes(node):
+    return [node] + [descendant for child in node["children"] for descendant in pager_tree_nodes(child)]
+
+
+def native_pager_cap_checks(reader, page_url):
+    anchors = [node["attrs"] for nav in reader.pager_navs for node in pager_tree_nodes(nav)
+               if node["tag"] == "a"]
+    anchors += [attrs for attrs in reader.links if "last" in attrs.get("rel", "").split()]
+    bound, under_cap = True, True
+    for attrs in anchors:
+        try:
+            number = bound_pager_page(attrs.get("href", ""), page_url)
+            under_cap = under_cap and number < 8
+        except (TypeError, ValueError):
+            bound = False
+    return {"all_pager_links_have_exact_query_and_page": bound, "all_native_pagers_below_cap_8": under_cap}
+
+
+def numbered_native_end_checks(reader, page_url):
+    """Native Drupal numbered terminal pager, distinct from an advertised last link."""
+    checks = {"numbered_unique_closed_news_nav": False, "numbered_closed_direct_list": False,
+              "numbered_items_closed_recognized": False, "numbered_query_bound_labels": False,
+              "numbered_contiguous_zero_to_current": False, "numbered_unique_final_active": False,
+              "numbered_without_forward_or_ellipsis": False, "numbered_native_cap_below_8": False}
+    if reader is None or len(reader.pager_navs) != 1:
+        return checks
+    nav = reader.pager_navs[0]
+    attrs = nav["attrs"]
+    checks["numbered_unique_closed_news_nav"] = (nav["explicitly_closed"] and nav["inside_news_view"]
+        and {"pager-nav", "text-center"} <= set(attrs.get("class", "").split())
+        and attrs.get("role") == "navigation" and attrs.get("aria-labelledby") == "pagination-heading")
+    lists = [child for child in nav["children"] if child["tag"] == "ul"]
+    all_lists = [node for node in pager_tree_nodes(nav) if node["tag"] == "ul"]
+    if len(lists) != 1 or len(all_lists) != 1:
+        return checks
+    listing = lists[0]
+    checks["numbered_closed_direct_list"] = (listing["explicitly_closed"]
+        and {"pagination", "js-pager__items"} <= set(listing["attrs"].get("class", "").split())
+        and all(child["tag"] == "li" for child in listing["children"])
+        and all(node["explicitly_closed"] for node in pager_tree_nodes(nav))
+        and len([node for node in pager_tree_nodes(nav) if node["tag"] == "a"]) == len(listing["children"]))
+    query = parse_qsl(urlsplit(page_url).query, keep_blank_values=True)
+    values = [value for key, value in query if key == "page"]
+    current = int(values[0]) if len(values) == 1 and re.fullmatch(r"0|[1-9]\d*", values[0]) else 0 if not values else -1
+    language = "es" if urlsplit(page_url).path == "/es/noticias" else "en"
+    page_label, active_label = ("Página", "Página actual") if language == "es" else ("Page", "Current page")
+    numbers, active, kinds, valid, recognized, forward = [], [], [], True, True, False
+    for item in listing["children"]:
+        classes = set(item["attrs"].get("class", "").split())
+        anchors = [child for child in item["children"] if child["tag"] == "a"]
+        descendants = pager_tree_nodes(item)
+        recognized = recognized and item["explicitly_closed"] and "pager__item" in classes and len(anchors) == 1
+        recognized = recognized and len([node for node in descendants if node["tag"] == "a"]) == 1
+        if len(anchors) != 1:
+            valid = False
+            continue
+        anchor = anchors[0]
+        attrs = anchor["attrs"]
+        text = " ".join(" ".join(anchor["text"]).split())
+        valid = valid and anchor["explicitly_closed"]
+        try:
+            number = bound_pager_page(attrs.get("href", ""), page_url)
+        except (TypeError, ValueError):
+            valid = False
+            continue
+        modifiers = {token for token in classes if token.startswith("pager__item--")}
+        if modifiers:
+            kind = next(iter(modifiers)) if len(modifiers) == 1 else "invalid"
+            kinds.append(kind)
+            if kind == "pager__item--first":
+                valid = valid and number == 0 and attrs.get("rel") == "prev" and not attrs.get("aria-current")
+                valid = valid and classes == {"pager__item", "pager__item--first"}
+            elif kind == "pager__item--previous":
+                valid = valid and number == current - 1 and attrs.get("rel") == "prev" and not attrs.get("aria-current")
+                valid = valid and classes == {"pager__item", "pager__item--previous"}
+            else:
+                forward = True
+        else:
+            numbers.append(number)
+            is_active = "is-active" in classes or "active" in classes or bool(attrs.get("aria-current"))
+            if is_active:
+                active.append(number)
+                valid = valid and {"is-active", "active"} <= classes and attrs.get("aria-current") == "page"
+                valid = valid and attrs.get("title") == active_label and text == active_label + " " + str(number + 1)
+            else:
+                valid = valid and classes == {"pager__item"} and not attrs.get("aria-current")
+                valid = valid and attrs.get("title") == "Go to page " + str(number + 1) and text == page_label + " " + str(number + 1)
+            valid = valid and not attrs.get("rel")
+    checks["numbered_items_closed_recognized"] = recognized and bool(listing["children"])
+    checks["numbered_query_bound_labels"] = valid
+    checks["numbered_contiguous_zero_to_current"] = numbers == list(range(current + 1)) and current > 0
+    checks["numbered_unique_final_active"] = active == [current] and bool(numbers) and numbers[-1] == current
+    checks["numbered_without_forward_or_ellipsis"] = (not forward and kinds == ["pager__item--first", "pager__item--previous"]
+        and not any(set(anchor.get("rel", "").split()) & {"next", "last"} for anchor in reader.links))
+    checks["numbered_native_cap_below_8"] = 0 < current < 8 and all(number < 8 for number in numbers)
+    return checks
+
+
+def native_empty_end_checks(ordered, page_readers, page_rows, single_page=False, numbered_page=False):
+    """Rederive the publisher's dated native end probe from the saved pages."""
+    terminal = ordered[-1]
+    current = page_readers[terminal]
+    previous_url = ordered[-2] if len(ordered) > 1 else None
+    previous = page_readers.get(previous_url)
+
+    def query_identity(url):
+        parts = urlsplit(official_url(url))
+        return parts[:3], sorted((k, v) for k, v in parse_qsl(parts.query, keep_blank_values=True) if k != "page")
+
+    def page_number(url):
+        values = [value for key, value in parse_qsl(urlsplit(url).query) if key == "page"]
+        return int(values[0]) if len(values) == 1 else 0 if not values else -1
+
+    def scope(reader, url):
+        if reader is None or len(reader.news_views) != 1:
+            return None, False
+        view = reader.news_views[0]
+        forms = view["forms"]
+        bounds = {key: value for key, value in parse_qsl(urlsplit(url).query) if key in {"date[min]", "date[max]"}}
+        expected_h1 = "News" if urlsplit(url).path == "/en/news" else "Noticias" if urlsplit(url).path == "/es/noticias" else None
+        valid = (view["explicitly_closed"] and reader.h1 == [expected_h1]
+                 and {"news-grid", "view", "view-news", "view-id-news", "view-display-id-news_page"} <= set(view["attrs"].get("class", "").split())
+                 and len(forms) == 1)
+        if len(forms) != 1:
+            return view, False
+        form = forms[0]
+        attrs = form["attrs"]
+        inputs = [node for node in form["inputs"] if node.get("name") in {"date[min]", "date[max]"}]
+        action = official_url(attrs.get("action", ""), url)
+        valid = (valid and form["explicitly_closed"] and attrs.get("method", "").casefold() == "get"
+                 and attrs.get("id") == "views-exposed-form-news-news-page"
+                 and attrs.get("data-drupal-selector") == "views-exposed-form-news-news-page"
+                 and urlsplit(action)[:3] == urlsplit(url)[:3] and not urlsplit(action).query
+                 and set(bounds) == {"date[min]", "date[max]"} and len(inputs) == 2
+                 and {node.get("name"): node.get("value") for node in inputs} == bounds)
+        return view, bool(valid)
+
+    def pager_nodes(view):
+        if view is None:
+            return []
+        return [node for node in view["descendants"]
+                if any(token in {"pager", "pagination"} or token.startswith(("pager__", "js-pager__", "pager-nav")) for token in node["attrs"].get("class", "").split())
+                or node["tag"] == "a" and set(node["attrs"].get("rel", "").split()) & {"next", "last", "prev", "previous", "first"}]
+
+    def links_with_rel(view, rel):
+        return [node["attrs"] for node in view["descendants"] if node["tag"] == "a" and rel in node["attrs"].get("rel", "").split()] if view else []
+
+    view, current_scope = scope(current, terminal)
+    prior_view, previous_scope = scope(previous, previous_url) if previous_url else (None, False)
+    index = page_number(terminal)
+    forbidden = {"view-content", "views-row", "views-field-title", "views-field-created", "field--name-created"}
+    checks = {
+        "terminal_closed_official_news_scope": current_scope,
+        "terminal_zero_native_cards": not page_rows.get(terminal) and not current.cards,
+        "terminal_only_filter_text": view is not None and not view["outside_form_text"],
+        "terminal_no_content_or_pager": view is not None and not pager_nodes(view)
+            and not current.pager_elements and not any(set(anchor.get("rel", "").split()) & {"next", "last", "prev", "previous", "first"} for anchor in current.links)
+            and not any(forbidden & set(node["attrs"].get("class", "").split()) for node in view["descendants"]),
+        "previous_closed_official_news_scope": previous_scope,
+        "previous_nonempty_native_cards": bool(page_rows.get(previous_url)),
+        "previous_cards_inside_news_scope": previous is not None and bool(previous.cards)
+            and all(card["inside_news_view"] for card in previous.cards),
+        "previous_without_native_next": prior_view is not None and not links_with_rel(prior_view, "next")
+            and previous is not None and not any("next" in anchor.get("rel", "").split() for anchor in previous.links),
+        "same_query_identity": previous_url is not None and query_identity(previous_url) == query_identity(terminal),
+        "sequential_positive_probe": previous_url is not None and index > 0 and page_number(previous_url) == index - 1,
+    }
+    last_pages, valid_last_bindings = [], True
+    for old_url in ordered[:-1]:
+        old_view, old_scope = scope(page_readers[old_url], old_url)
+        valid_last_bindings = valid_last_bindings and old_scope and query_identity(old_url) == query_identity(terminal)
+        for anchor in links_with_rel(old_view, "last"):
+            target = official_url(anchor.get("href", ""), old_url)
+            valid_last_bindings = valid_last_bindings and query_identity(target) == query_identity(old_url)
+            last_pages.append(page_number(target))
+    checks["all_native_last_links_bound_to_query"] = valid_last_bindings
+    checks["native_cap_not_reached"] = all(0 <= last < 8 for last in last_pages)
+    for old_url in ordered[:-1]:
+        for code, valid in native_pager_cap_checks(page_readers[old_url], old_url).items():
+            checks[code] = checks.get(code, True) and valid
+    bounds = dict(parse_qsl(urlsplit(terminal).query))
+    checks["previous_native_dates_inside_query"] = bool(page_rows.get(previous_url)) and all(
+        row["published_at"] and bounds.get("date[min]", "") <= row["published_at"] <= bounds.get("date[max]", "")
+        for row in page_rows.get(previous_url, []))
+    if numbered_page:
+        checks.update(numbered_native_end_checks(previous, previous_url))
+    elif single_page:
+        checks["single_page_positive_then_empty_only"] = len(ordered) == 2 and index == 1 and page_number(previous_url) == 0
+        checks["single_page_without_advertised_last_or_pager"] = (not last_pages and prior_view is not None and not pager_nodes(prior_view)
+            and previous is not None and not previous.pager_elements and not any(
+                set(anchor.get("rel", "").split()) & {"next", "last", "prev", "previous", "first"} for anchor in previous.links))
+    else:
+        checks["observed_native_last_equals_previous_page"] = bool(last_pages) and max(last_pages) == index - 1
+    return checks
+
+
+def native_clamped_empty_end_checks(ordered, page_readers, page_rows):
+    """Positive terminal n followed by empty n+1 retaining the same native pager."""
+    checks = native_empty_end_checks(ordered, page_readers, page_rows, numbered_page=True)
+    checks.pop("terminal_only_filter_text")
+    checks.pop("terminal_no_content_or_pager")
+    terminal = ordered[-1]
+    prior_url = ordered[-2] if len(ordered) > 1 else None
+    current = page_readers[terminal]
+    previous = page_readers.get(prior_url)
+    current_nav = current.pager_navs[0] if len(current.pager_navs) == 1 else None
+    prior_nav = previous.pager_navs[0] if previous and len(previous.pager_navs) == 1 else None
+    view = current.news_views[0] if len(current.news_views) == 1 else None
+
+    def normalized_text(node):
+        return " ".join(" ".join(node["text"]).split())
+
+    def signature(node, base):
+        attrs = node["attrs"]
+        identity = dict(attrs)
+        if node["tag"] == "a":
+            identity["target_page"] = bound_pager_page(attrs.get("href", ""), base)
+        return {"tag": node["tag"], "attrs": identity, "text": normalized_text(node),
+                "children": [signature(child, base) for child in node["children"]]}
+
+    checks["clamped_terminal_pager_verified_against_positive_page"] = bool(prior_url) and all(
+        numbered_native_end_checks(current, prior_url).values())
+    try:
+        checks["clamped_pager_semantically_identical_to_positive_terminal"] = bool(current_nav and prior_nav) and signature(current_nav, prior_url) == signature(prior_nav, prior_url)
+    except (TypeError, ValueError):
+        checks["clamped_pager_semantically_identical_to_positive_terminal"] = False
+    checks["clamped_empty_only_form_and_native_pager_text"] = bool(view and current_nav) and view["outside_form_text"] == normalized_text(current_nav)
+    forbidden = {"view-content", "views-row", "views-field-title", "views-field-created", "field--name-created"}
+    checks["clamped_empty_no_content_or_publication_fields"] = (bool(view) and not current.meta_dates and not current.visible_dates
+        and not any(forbidden & set(node["attrs"].get("class", "").split()) or node["tag"] == "time" for node in view["descendants"]))
+    checks["clamped_global_pager_nodes_inside_unique_news_nav"] = bool(current_nav) and all(
+        node["inside_news_view"] and node["inside_native_nav"] for node in current.pager_elements)
+    pagination = {"first", "prev", "previous", "next", "last"}
+    global_rels = [anchor for anchor in current.links if set(anchor.get("rel", "").split()) & pagination]
+    native_rels = [node["attrs"] for node in pager_tree_nodes(current_nav) if node["tag"] == "a" and set(node["attrs"].get("rel", "").split()) & pagination] if current_nav else []
+    checks["clamped_global_pagination_links_only_same_native_nav"] = sorted(json.dumps(a, sort_keys=True) for a in global_rels) == sorted(json.dumps(a, sort_keys=True) for a in native_rels)
+    expected_heading = "Paginación" if urlsplit(terminal).path == "/es/noticias" else "Pagination"
+    for label, nav in (("terminal", current_nav), ("positive", prior_nav)):
+        children = nav["children"] if nav else []
+        checks["clamped_" + label + "_recognized_heading_and_list_only"] = (len(children) == 2 and [node["tag"] for node in children] == ["h4", "ul"]
+            and children[0]["explicitly_closed"] and children[0]["attrs"].get("id") == "pagination-heading"
+            and set(children[0]["attrs"].get("class", "").split()) == {"visually-hidden"}
+            and normalized_text(children[0]) == expected_heading)
+    return checks
+
+
+def title_key(value):
+    return "".join(char for char in str(value).casefold() if char.isalnum() or char == "_")
+
+
+def title_equal(actual, expected, source, section):
+    if title_key(actual) == title_key(expected):
+        return True
+    if source == "who" and section == "disease_outbreak_news":
+        strip = lambda text: re.sub(r"\bthe (?=Russian Federation\s*$)", "", text, flags=re.I)
+        return title_key(strip(actual)) == title_key(strip(expected))
+    return False
+
+
+def audit(captures, inventory_path, output):
+    captures, inventory_path, output = captures.resolve(), inventory_path.resolve(), output.resolve()
+    work = (Path.cwd() / "work").resolve()
+    if not output.is_relative_to(work) or output.is_relative_to(captures) or output == inventory_path:
+        raise ValueError("output must be a separate work report")
+    inventory_bytes = inventory_path.read_bytes()
+    inventory = json.loads(inventory_bytes)
+    as_of = date.fromisoformat(inventory["as_of"])
+    errors, records, bodies, input_hashes, matrix = [], {}, {}, {str(inventory_path): digest(inventory_bytes)}, []
+
+    def check(condition, code, context):
+        if not condition:
+            errors.append({"code": code, "context": context})
+
+    for path in sorted(captures.glob("*.json")):
+        try:
+            raw_json = path.read_bytes()
+            record = json.loads(raw_json)
+            url = official_url(record["requested_url"])
+            key = digest(url.encode())[:24]
+            if path.name != key + ".json" or record["body_file"] != key + ".body":
+                raise ValueError("URL-derived capture filename binding failed")
+            body_path = captures / record["body_file"]
+            if body_path.resolve().parent != captures:
+                raise ValueError("body path escaped captures")
+            body = body_path.read_bytes()
+            check(digest(body) == record["body_sha256"], "body_hash", path.name)
+            check(len(body) == record["body_bytes"], "body_bytes", path.name)
+            check(record["tls_verified"] is True, "recorded_tls", path.name)
+            check(record["user_agent"] == UA, "declared_user_agent", path.name)
+            check(set(record.get("headers", {})) <= SAFE_HEADERS, "unsafe_header_keys", path.name)
+            stamp = datetime.fromisoformat(record["fetched_at"].replace("Z", "+00:00"))
+            check(stamp.utcoffset() is not None, "capture_timestamp_offset", path.name)
+            final_url = official_url(record["final_url"])
+            previous = url
+            chain = record.get("redirect_chain", [])
+            check(len(chain) <= 10, "redirect_bound", path.name)
+            is_robots = urlsplit(url).path == "/robots.txt"
+            for hop in chain:
+                check(official_url(hop["from_url"]) == previous, "redirect_chain_from", path.name)
+                check(hop["http_status"] in {301, 302, 303, 307, 308}, "redirect_http_status", path.name)
+                check(hop.get("tls_verified") is True, "redirect_recorded_tls", path.name)
+                previous = official_url(hop["location"])
+                if is_robots:
+                    check(urlsplit(previous).path == "/robots.txt", "robots_redirect_to_content", path.name)
+                else:
+                    check(hop.get("destination_robots_checked") is True, "redirect_robots_marker", path.name)
+            check(previous == final_url, "redirect_final_binding", path.name)
+            records[url], bodies[url] = record, body
+            input_hashes[str(path)] = digest(raw_json)
+            input_hashes[str(body_path)] = digest(body)
+            matrix.append({"url": url, "final_url": final_url, "http_status": record["http_status"],
+                           "origin_json_sha256": digest(raw_json), "body_sha256": digest(body),
+                           "body_bytes": len(body), "recorded_tls_verified": record["tls_verified"],
+                           "redirect_hops": len(chain), "robots_policy_checked": is_robots})
+        except Exception as exc:
+            errors.append({"code": "capture_record_invalid", "context": path.name, "error": str(exc)[:200]})
+    check(bool(records), "capture_records_missing", str(captures))
+    robots_cache = {}
+    for entry in matrix:
+        url = entry["url"]
+        if urlsplit(url).path == "/robots.txt":
+            continue
+        try:
+            for target in [url] + [hop["location"] for hop in records[url].get("redirect_chain", [])] + [entry["final_url"]]:
+                target = official_url(target)
+                origin = urlunsplit((*urlsplit(target)[:2], "", "", ""))
+                if origin not in robots_cache:
+                    policy_url = origin + "/robots.txt"
+                    policy = records[policy_url]
+                    if policy["http_status"] != 200 or policy["tls_verified"] is not True:
+                        raise ValueError("robots capture unavailable/unverified")
+                    text = bodies[policy_url].decode("utf-8", errors="replace")
+                    if re.search(r"<(?:!doctype|html|script|h1)\b", text, re.I):
+                        raise ValueError("robots response is HTML")
+                    parser = RobotFileParser()
+                    parser.parse(text.splitlines())
+                    robots_cache[origin] = parser
+                check(robots_cache[origin].can_fetch(UA, target), "robots_disallowed", target)
+            entry["robots_policy_checked"] = True
+        except Exception as exc:
+            errors.append({"code": "robots_evidence_invalid", "context": url, "error": str(exc)[:200]})
+
+    pages, index_rows, page_readers, page_rows, page_bound_checks, partition_results = [], {}, {}, {}, {}, []
+    native_90 = {"who": set(), "paho": set()}
+    for route_result in inventory["routes"]:
+        route = route_result["route"]
+        for page in route_result["pages"]:
+            try:
+                url = official_url(page["url"])
+                record = records[url]
+                check(page["capture"] == record, "page_capture_metadata", url)
+                check(record["http_status"] == 200, "claimed_index_http", url)
+                rows = independent_index(bodies[url], route, url, as_of)
+                page_rows[url] = rows
+                if route["format"] == "paho_html":
+                    reader = page_readers.setdefault(url, NativeHTML(bodies[url]))
+                    query = parse_qsl(urlsplit(url).query, keep_blank_values=True)
+                    bounds = {key: value for key, value in query if key in {"date[min]", "date[max]"}}
+                    if bounds:
+                        echoed = {node.get("name"): node.get("value") for node in reader.inputs if node.get("name") in bounds}
+                        page_bound_checks[url] = {
+                            "date_query_unambiguous": len([key for key, _ in query if key in bounds]) == 2 and set(bounds) == {"date[min]", "date[max]"},
+                            "date_query_echo": echoed == bounds,
+                            "native_dates_inside_query_bounds": all(row["published_at"] and bounds.get("date[min]", "") <= row["published_at"] <= bounds.get("date[max]", "") for row in rows)}
+                control = [{"url": row["url"], "published_at": row["published_at"]} for row in rows]
+                check(control == page.get("native_control"), "independent_native_control", url)
+                check(len(rows) == page["native_records"], "native_record_count", url)
+                parsed = {row["url"]: row for row in page["items"]}
+                check(set(parsed) == {row["url"] for row in rows}, "native_collector_URL_coverage", url)
+                for row in rows:
+                    if row["url"] in parsed:
+                        check(parsed[row["url"]]["index_published_at"] == row["published_at"], "native_collector_date", row["url"])
+                    index_rows[(url, row["url"])] = row
+                    if in_window(row["published_at"], as_of, 90):
+                        native_90[route["source"]].add(row["url"])
+                pages.append({"source": route["source"], "section": route["section"], "url": url,
+                              "native_records": len(rows), "body_sha256": digest(bodies[url]),
+                              "date_query_checks": page_bound_checks.get(url)})
+            except Exception as exc:
+                errors.append({"code": "native_page_invalid", "context": page.get("url"), "error": str(exc)[:200]})
+
+        if route_result.get("date_partitions"):
+            try:
+                form_capture = route_result["date_filter_form_evidence"]
+                landing = official_url(route["url"])
+                check(form_capture == records[landing], "date_form_capture_binding", landing)
+                forms = NativeHTML(bodies[landing]).forms
+                forms = [form for form in forms if form["attrs"].get("method", "").casefold() == "get"
+                         and {"date[min]", "date[max]"} <= {node.get("name") for node in form["inputs"]}]
+                check(len(forms) == 1 and official_url(forms[0]["attrs"].get("action", ""), landing).split("?")[0] == landing.split("?")[0], "official_date_form_identity", landing)
+                slices = sorted(route_result["date_partitions"], key=lambda part: part["from"])
+                contiguous = (date.fromisoformat(slices[0]["from"]) == as_of - timedelta(days=89)
+                              and date.fromisoformat(slices[-1]["to"]) == as_of
+                              and all(date.fromisoformat(a["to"]) + timedelta(days=1) == date.fromisoformat(b["from"]) for a, b in zip(slices, slices[1:])))
+                if route_result["archive_complete"]:
+                    check(contiguous and route_result.get("unvisited_partitions") == 0 and all(part["archive_complete"] for part in slices), "partition_full_window_claim", landing)
+                for part in slices:
+                    requested = official_url(part["url"])
+                    expected = {"date[min]": part["query_from"], "date[max]": part["query_to"]}
+                    span = (date.fromisoformat(part["to"]) - date.fromisoformat(part["from"])).days + 1
+                    check(0 < span <= route["date_slice_days"], "partition_slice_span_contract", requested)
+                    check(date.fromisoformat(part["query_from"]) == date.fromisoformat(part["from"]) - timedelta(days=1)
+                          and date.fromisoformat(part["query_to"]) == date.fromisoformat(part["to"]) + timedelta(days=1), "declared_one_day_query_overlap", requested)
+                    matching = [official_url(page["url"]) for page in route_result["pages"]
+                                if {k: v for k, v in parse_qsl(urlsplit(page["url"]).query) if k in expected} == expected]
+                    check(len(matching) == part["pages"] and requested in matching, "partition_page_receipts", requested)
+                    ordered = sorted(matching, key=lambda url: int(dict(parse_qsl(urlsplit(url).query)).get("page", 0)))
+                    indices = [int(dict(parse_qsl(urlsplit(url).query)).get("page", 0)) for url in ordered]
+                    check(indices == list(range(len(indices))), "partition_contiguous_page_numbers", requested)
+                    if part["archive_complete"]:
+                        check(bool(ordered), "complete_partition_missing_pages", requested)
+                        for page_url in ordered:
+                            for code, valid in page_bound_checks.get(page_url, {}).items():
+                                check(valid, code, page_url)
+                            check(bool(page_bound_checks.get(page_url)), "complete_partition_missing_query_evidence", page_url)
+                        terminal = ordered[-1]
+                        if part["stop_reason"] == "date_partition_official_empty":
+                            check(False, "unsupported_empty_message_completion_contract", terminal)
+                        elif part["stop_reason"] in {"date_partition_native_empty_after_advertised_end", "date_partition_single_page_native_end_probe", "date_partition_native_empty_after_numbered_end", "date_partition_native_empty_after_clamped_numbered_end"}:
+                            proof = (native_clamped_empty_end_checks(ordered, page_readers, page_rows)
+                                     if part["stop_reason"] == "date_partition_native_empty_after_clamped_numbered_end"
+                                     else native_empty_end_checks(ordered, page_readers, page_rows,
+                                                                 single_page=part["stop_reason"] == "date_partition_single_page_native_end_probe",
+                                                                 numbered_page=part["stop_reason"] == "date_partition_native_empty_after_numbered_end"))
+                            if part["stop_reason"] == "date_partition_native_empty_after_clamped_numbered_end":
+                                requested = int(dict(parse_qsl(urlsplit(terminal).query)).get("page", 0))
+                                receipt = next(page for page in route_result["pages"] if official_url(page["url"]) == terminal).get("clamped_empty_native_pager")
+                                proof["clamped_requested_capture_final_identity"] = records[terminal]["final_url"] == terminal
+                                proof["clamped_native_receipt_matches_independent_request"] = receipt == {
+                                    "requested_page": requested, "clamped_current": requested - 1,
+                                    "maximum": requested - 1, "terminal": True, "previous_page_url": ordered[-2]}
+                            for code, valid in proof.items():
+                                check(valid, code, terminal)
+                        elif part["stop_reason"] == "date_partition_native_archive_exhausted_after_public_end_probe":
+                            check(False, "unsupported_dated_repeated_page_completion_contract", terminal)
+                        elif part["stop_reason"] == "verified_older_boundary":
+                            dates = [row["published_at"] for page_url in ordered for row in page_rows[page_url]]
+                            check(bool(dates) and all(dates) and dates == sorted(dates, reverse=True)
+                                  and min(dates) < (as_of - timedelta(days=89)).isoformat(), "partition_verified_older_calendar_boundary", terminal)
+                        else:
+                            check(False, "unrecognized_partition_completion_contract", terminal)
+                        for page_url in ordered:
+                            last = [anchor["href"] for anchor in page_readers[page_url].links if "last" in anchor.get("rel", "").split()]
+                            check(all(int(dict(parse_qsl(urlsplit(href).query)).get("page", 0)) < 8 for href in last), "complete_partition_native_cap_reached", page_url)
+                    partition_results.append({"source": route["source"], "section": route["section"], "from": part["from"], "to": part["to"],
+                                              "query_from": part["query_from"], "query_to": part["query_to"], "pages": len(matching),
+                                              "archive_complete": part["archive_complete"], "stop_reason": part["stop_reason"]})
+            except Exception as exc:
+                errors.append({"code": "partition_evidence_invalid", "context": route["url"], "error": str(exc)[:200]})
+
+    detail_results, readers = [], {}
+    detected = {"who": set(), "paho": set()}
+    for item in inventory["items"]:
+        check(item.get("publication_ready") is False, "automatic_publication_ready", item["url"])
+        check(item.get("content_use") == "metadata_and_link_only", "item_content_mode", item["url"])
+        aliases = item.get("source_aliases", [item["url"]])
+        check(item["url"] in aliases and len(aliases) == len(set(aliases)), "alias_identity", item["url"])
+        detected[item["source"]].update(aliases)
+        members = item.get("translation_members") or [item]
+        check({member["url"] for member in members} == set(aliases), "translation_member_aliases", item["url"])
+        for member in members:
+            url = member["url"]
+            try:
+                dates = []
+                for evidence in member["index_evidence"]:
+                    listing = official_url(evidence["listing_url"])
+                    record = records[listing]
+                    check(all(evidence.get(key) == record.get(key) for key in ("body_sha256", "fetched_at", "http_status", "tls_verified")), "index_evidence_binding", url)
+                    dates.append(index_rows[(listing, url)]["published_at"])
+                expected = dates[0] if dates and None not in dates and len(set(dates)) == 1 else None
+                check(member["index_published_at"] == expected, "item_native_publication_date", url)
+                all_observed = [row["published_at"] for (_, native_url), row in index_rows.items() if native_url == url]
+                all_day = all_observed[0] if all_observed and None not in all_observed and len(set(all_observed)) == 1 else None
+                check(member["index_published_at"] == all_day, "all_observed_index_dates_fail_closed", url)
+                detail = member.get("detail_evidence")
+                if member.get("detail_verified"):
+                    check(bool(detail), "verified_detail_missing", url)
+                    record = records[official_url(url)]
+                    check(detail["capture"] == record, "detail_capture_metadata", url)
+                    check(record["http_status"] == 200, "verified_detail_http", url)
+                    check(official_url(record["final_url"]).rstrip("/") == official_url(url).rstrip("/"), "verified_detail_final_identity", url)
+                    reader = readers.setdefault(url, NativeHTML(bodies[official_url(url)]))
+                    check(len(reader.h1) == 1, "verified_detail_unique_H1", url)
+                    check(title_equal(reader.h1[0], member["title"], item["source"], item["section"]), "verified_detail_native_title", url)
+                    meta = detail["metadata"]
+                    check(meta["title"] == reader.h1[0], "detail_metadata_title", url)
+                    raw_dates = reader.meta_dates + reader.visible_dates
+                    valid_dates = sorted({value for raw in raw_dates if (value := calendar_day(raw, as_of))})
+                    invalid = [raw for raw in raw_dates if calendar_day(raw, as_of) is None]
+                    check(meta["publication_dates"] == valid_dates, "detail_metadata_dates", url)
+                    check(meta.get("invalid_or_future_publication_fields", []) == invalid, "detail_metadata_invalid_dates", url)
+                    canonical = {official_url(value, url) for value in reader.canonical} or {official_url(url)}
+                    check(len(canonical) == 1 and official_url(meta["canonical_url"], url) in canonical, "detail_canonical_metadata", url)
+                    check(canonical == {official_url(url)}, "verified_detail_canonical_identity", url)
+                    alternatives = sorted({official_url(value, url) for value in reader.alternates
+                                           if urlsplit(urljoin(url, value)).hostname in {"www.who.int", "www.paho.org"}})
+                    check(meta["alternate_language_urls"] == alternatives, "native_language_aliases", url)
+                    docs = sorted({urljoin(url, value) for value in reader.documents
+                                   if urlsplit(urljoin(url, value)).scheme == "https" and urlsplit(urljoin(url, value)).hostname in DOC_HOSTS})
+                    check(meta["document_links"] == docs, "native_document_links", url)
+                    published = member.get("published_at")
+                    if published:
+                        check(not invalid and len(valid_dates) <= 1 and (not valid_dates or valid_dates[0] == expected) and published == expected,
+                              "claimed_exact_publication", url)
+                    detail_results.append({"url": url, "native_publication_day": expected,
+                                           "publication_day": published, "body_sha256": digest(bodies[official_url(url)]),
+                                           "identity_verified": True, "declared_date_fields": len(raw_dates)})
+                else:
+                    check(not member.get("published_at") or member.get("technical_error"), "unverified_detail_not_declared", url)
+            except Exception as exc:
+                errors.append({"code": "detail_invalid", "context": url, "error": str(exc)[:200]})
+        if len(aliases) > 1:
+            connected = {item["url"]}
+            while True:
+                larger = connected | {b for a in connected for b in aliases if a in readers and b in readers
+                                      and b in {official_url(x, a) for x in readers[a].alternates if urlsplit(urljoin(a,x)).hostname in {"www.who.int","www.paho.org"}}
+                                      and a in {official_url(x, b) for x in readers[b].alternates if urlsplit(urljoin(b,x)).hostname in {"www.who.int","www.paho.org"}}}
+                if larger == connected:
+                    break
+                connected = larger
+            check(connected == set(aliases), "reciprocal_language_alias_group", item["url"])
+            if len({member.get("published_at") for member in members}) > 1:
+                check(item.get("published_at") is None and item.get("reason") == "translation_publication_date_conflict", "translation_date_conflict", item["url"])
+
+    health_summary = {}
+    for source in ("who", "paho"):
+        source_items = [item for item in inventory["items"] if item["source"] == source]
+        health = inventory["source_health"][source]
+        counts = {str(days): sum(bool(item.get("detail_verified") and in_window(item.get("published_at"), as_of, days)) for item in source_items) for days in (30, 90)}
+        check(health["counts"] == counts and health["recent_items"] == counts["30"] and health["unique_items"] == counts["90"], "verified_health_counts", source)
+        check(health["material_items"] == sum(bool(item.get("detail_verified") and item.get("published_at")
+              and item["classification"]["materiality"] == "candidate") for item in source_items)
+              and health["rejected"] == sum(item["status"] == "rejected" for item in source_items)
+              and health["deferred"] == sum(item["status"] == "pending" for item in source_items),
+              "metadata_materiality_and_disposition_health_counts", source)
+        recall = health["discovery_recall_90"]
+        check(recall.get("inventory_url_count", recall.get("inventory_90_url_count")) == len(native_90[source]) and recall["detected"] == len(native_90[source] & detected[source])
+              and recall["omitted_urls"] == sorted(native_90[source] - detected[source]), "native_recall_health", source)
+        check(recall["whole_source_archive_claim"] is False, "whole_source_archive_claim", source)
+        check(health["published"] == 0 and health["publication_activation"] is False, "health_publication_activation", source)
+        check(health["pages_checked"] == sum(page["source"] == source for page in pages), "pages_checked_health", source)
+        if health["coverage_completeness"] == "complete" or health["outcome"] == "READY_FOR_INTEGRATION":
+            source_routes = [result for result in inventory["routes"] if result["route"]["source"] == source]
+            for days in (30, 90):
+                boundary = (as_of - timedelta(days=days - 1)).isoformat()
+                for result in source_routes:
+                    if result.get("date_partitions"):
+                        parts = sorted(result["date_partitions"], key=lambda part: part["from"])
+                        valid = (bool(parts) and parts[0]["from"] <= boundary and parts[-1]["to"] >= as_of.isoformat()
+                                 and all(part["archive_complete"] for part in parts) and not result.get("unvisited_partitions")
+                                 and all(date.fromisoformat(a["to"]) + timedelta(days=1) == date.fromisoformat(b["from"]) for a, b in zip(parts, parts[1:])))
+                    else:
+                        dates = [row["published_at"] for page in result["pages"] for row in page_rows.get(official_url(page["url"]), [])]
+                        valid = bool(dates) and all(dates) and dates == sorted(dates, reverse=True) and min(dates) < boundary
+                    check(bool(result["archive_complete"] and valid), "complete_source_missing_independent_window_boundary", source + "/" + result["route"]["section"] + "/" + str(days))
+                check(health["window_completeness"][str(days)] == "complete_on_declared_surfaces", "complete_source_window_health_conflict", source + "/" + str(days))
+            check(all(member.get("detail_verified") and member.get("published_at") for item in source_items for member in (item.get("translation_members") or [item])),
+                  "complete_source_unverified_language_member", source)
+        health_summary[source] = {"counts": counts, "native_90_URLs": len(native_90[source]),
+                                  "detected_native_90_URLs": len(native_90[source] & detected[source]),
+                                  "coverage_completeness": health["coverage_completeness"],
+                                  "recurrent_operation_proven": health["recurrent_operation_proven"]}
+    reuters = inventory["source_health"]["reuters"]
+    check(reuters["checked_at"] is None and reuters["counts"] == {"30": None, "90": None}
+          and all(reuters[field] is None for field in ("recent_items", "unique_items", "material_items"))
+          and reuters["technical_status"] == "not_polled_license_hold" and reuters["pages_checked"] == 0
+          and reuters["published"] == 0 and reuters["publication_activation"] is False
+          and reuters["recurrent_operation_proven"] is False,
+          "reuters_license_hold", "reuters")
+    check(inventory["paid_ai_calls"] == 0 and inventory["publication_count"] == 0 and inventory["default_window_days"] == 30
+          and inventory["maximum_editorial_topics"] in (10, None) and inventory["content_use"] == "metadata_and_link_only",
+          "global_contract", "inventory")
+    topics = inventory["editorial_topics"]
+    check(inventory["maximum_editorial_topics"] is None or len(topics) <= inventory["maximum_editorial_topics"], "declared_historical_topic_limit", "topics")
+    item_by_url = {item["url"]: item for item in inventory["items"]}
+    for topic in topics:
+        item = item_by_url.get(topic["representative_url"])
+        check(bool(item and item["detail_verified"] and in_window(item["published_at"], as_of, 30)
+                   and item["classification"]["materiality"] == "candidate"), "topic_eligible_metadata", topic["topic_id"])
+        check(topic["publication_ready"] is False and topic["status"] == "pending_editorial"
+              and topic["chile_transfer"] == "hypothesis_only" and topic["independence_groups"] == ["WHO_UN_SYSTEM"],
+              "topic_no_false_publication_corroboration", topic["topic_id"])
+    after = {path: digest(Path(path).read_bytes()) for path in input_hashes}
+    check(after == input_hashes, "audit_mutated_inputs", "all_input_files")
+    report = {"result": "FAIL" if errors else "PASS", "reviewer": "independent /root/reviewer",
+              "created_at": datetime.now(timezone.utc).isoformat(), "run_id": inventory["run_id"],
+              "auditor_script_sha256": digest(Path(__file__).read_bytes()),
+              "inventory_sha256": digest(inventory_bytes), "captures": len(records),
+              "captured_http_statuses": dict(Counter(str(entry["http_status"]) for entry in matrix)),
+              "native_pages": len(pages), "verified_language_detail_checks": len(detail_results),
+              "deduplicated_items": len(inventory["items"]), "editorial_topics": len(topics),
+              "source_summary": health_summary, "records": matrix, "pages": pages, "details": detail_results, "date_partitions": partition_results,
+              "network_requests": 0, "paid_ai_calls": 0, "canonical_state_writes": 0,
+              "inputs_unchanged": after == input_hashes, "input_file_count": len(input_hashes),
+              "TLS_scope": "Recorded verified-TLS evidence and redirect binding; no retransmission or independent new certificate handshake.",
+              "historical_archive_scope": "Recalls declared observed native surfaces; does not prove a complete historical publisher archive.",
+              "errors": errors}
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+    print(json.dumps({key: report[key] for key in ("result", "run_id", "captures", "native_pages", "verified_language_detail_checks", "network_requests", "paid_ai_calls")}, ensure_ascii=False))
+    return 1 if errors else 0
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--captures", type=Path, required=True)
+    parser.add_argument("--inventory", type=Path, required=True)
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    return audit(args.captures, args.inventory, args.output)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

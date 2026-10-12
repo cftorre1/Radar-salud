@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.153" timestamp="2026-10-12T02:33:30.292737+00:00" hostname="c3c455d4612e"><testcase classname="tests.test_web_snapshot" name="test_verified_publication_boundary_retains_old_issuance_without_changing_it" time="0.019"><failure message="ValueError: not enough values to unpack (expected 1, got 0)">def test_verified_publication_boundary_retains_old_issuance_without_changing_it():
+        from datetime import date
+        row=sig('Resolución IP/N°4286',event='2026-07-07',url='https://www.superdesalud.gob.cl/normativa/4286')
+        row.update(event_type='SANCTION',signal_types=['Fiscalización'],scopes=['Prestadores'],publication_date='2026-07-13',emission_date='2026-07-07',event_date_basis='emission',regulated_entity='Nueva Cordillera',sanction_amount=50,sanction_unit='UF')
+&gt;       pulse,=m.curate([row],resolve_external=False,as_of=date(2026,10,11))
+        ^^^^^^
+E       ValueError: not enough values to unpack (expected 1, got 0)
+
+tests/test_web_snapshot.py:369: ValueError</failure></testcase></testsuite></testsuites>

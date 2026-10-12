@@ -1,0 +1,89 @@
+{
+  "version": "1.0",
+  "default_window_days": 30,
+  "inventory_window_days": 90,
+  "maximum_editorial_topics": null,
+  "fill_quota": false,
+  "paid_ai_calls": 0,
+  "cadence_seconds": 86400,
+  "daily_collection_enabled": false,
+  "max_pages_per_route": 100,
+  "live_capture_budget_seconds": 2700,
+  "content_use": "metadata_and_link_only",
+  "publication_mode": "editorial_review_required",
+  "activation_dependencies": [
+    "source_audit_issue5_iteration1_recovery_2026_10_09",
+    "source_audit_issue5_iteration2_balance_2026_10_09"
+  ],
+  "routes": [
+    {
+      "source": "who",
+      "section": "news",
+      "url": "https://www.who.int/news",
+      "format": "who_api"
+    },
+    {
+      "source": "who",
+      "section": "publications",
+      "url": "https://www.who.int/publications/i",
+      "format": "who_api"
+    },
+    {
+      "source": "who",
+      "section": "disease_outbreak_news",
+      "url": "https://www.who.int/emergencies/disease-outbreak-news",
+      "format": "who_api"
+    },
+    {
+      "source": "paho",
+      "section": "regional_news",
+      "url": "https://www.paho.org/en/news",
+      "format": "paho_html",
+      "date_slice_days": 7
+    },
+    {
+      "source": "paho",
+      "section": "regional_news_es",
+      "url": "https://www.paho.org/es/noticias",
+      "format": "paho_html",
+      "date_slice_days": 7
+    },
+    {
+      "source": "paho",
+      "section": "chile_news",
+      "url": "https://www.paho.org/en/news?c%5B%5D=65",
+      "format": "paho_html"
+    },
+    {
+      "source": "paho",
+      "section": "chile_news_es",
+      "url": "https://www.paho.org/es/noticias?c%5B%5D=65",
+      "format": "paho_html"
+    },
+    {
+      "source": "paho",
+      "section": "epidemiological_alerts",
+      "url": "https://www.paho.org/en/epidemiological-alerts-and-updates",
+      "format": "paho_html"
+    },
+    {
+      "source": "paho",
+      "section": "technical_reports",
+      "url": "https://www.paho.org/es/informes-tecnicos",
+      "format": "paho_html"
+    }
+  ],
+  "reuters": {
+    "enabled": false,
+    "outcome": "EXTERNAL_BLOCKER_PROVEN",
+    "reason": "Reuters prohibits automated collection of content/data/information without prior written consent; no authorized contracted route is configured or documented for Alicanto.",
+    "robots_evidence": "data/audits/global_source_recovery_2026_10_11/probes/38141320771/reuters_robots.body",
+    "permitted_service_candidates": [
+      "https://reutersagency.com/license-reuters-content/",
+      "https://reutersagency.com/content-delivery-platforms/content-delivery"
+    ],
+    "permission_for_reproduction": "not_established",
+    "inventory_mode": "existing_manual_curated_reference_control_only",
+    "fallback": "Editor may submit a Reuters link without fetching Reuters, and an original description supported by independently verified primary evidence. No body, excerpts or automated title/metadata collection; publication remains held for rights and editorial review."
+  }
+}

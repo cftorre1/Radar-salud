@@ -1,0 +1,82 @@
+{
+  "scope": "Final exact nonDOM case assertions after Reviewer numeric finding; not browser rerun",
+  "valid_snapshots": 3,
+  "negative_mutations": 9,
+  "results": [
+    {
+      "day": "2026-10-11",
+      "suseso": {
+        "30": 20,
+        "90": 75
+      },
+      "contexts": 17,
+      "sis": {
+        "30": 10,
+        "90": 18
+      },
+      "result": "PASS"
+    },
+    {
+      "day": "2026-10-12",
+      "suseso": {
+        "30": 20,
+        "90": 72
+      },
+      "contexts": 20,
+      "sis": {
+        "30": 10,
+        "90": 16
+      },
+      "result": "PASS"
+    },
+    {
+      "day": "2026-10-13",
+      "suseso": {
+        "30": 20,
+        "90": 72
+      },
+      "contexts": 13,
+      "sis": {
+        "30": 10,
+        "90": 16
+      },
+      "result": "PASS"
+    },
+    {
+      "mutation": "missing_office",
+      "result": "REJECTED_AS_REQUIRED"
+    },
+    {
+      "mutation": "recycled_issuance",
+      "result": "REJECTED_AS_REQUIRED"
+    },
+    {
+      "mutation": "invented_publication",
+      "result": "REJECTED_AS_REQUIRED"
+    },
+    {
+      "mutation": "missing_agent",
+      "result": "REJECTED_AS_REQUIRED"
+    },
+    {
+      "mutation": "recycled_agent_date",
+      "result": "REJECTED_AS_REQUIRED"
+    },
+    {
+      "mutation": "changed_agent_publication",
+      "result": "REJECTED_AS_REQUIRED"
+    },
+    {
+      "mutation": "expired_substitution_as_recent",
+      "result": "REJECTED_AS_REQUIRED"
+    },
+    {
+      "mutation": "embedded_wrong_count12",
+      "result": "REJECTED_AS_REQUIRED"
+    },
+    {
+      "mutation": "fractional_wrong_count2_2",
+      "result": "REJECTED_AS_REQUIRED"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 from typing import Dict, Any
 from .models import RawItem, Signal
 from .scoring import ScoreInputs, calculate_radar_score
+from .isapre_universe import entity_refs
 
 CATEGORY_KEYWORDS={
  "Prestadores":["clínica","hospital","centro médico","prestador"],
@@ -31,6 +32,8 @@ def build_signal(raw: RawItem,source_cfg: Dict[str,Any])->Signal:
       system_domain=source_cfg.get("system_domain","HEALTH"),
       what_happened=raw.metadata.get("what_happened",raw.raw_text[:350]),event_date=raw.event_date,
       topics=raw.metadata.get("topics",[]),entities=raw.metadata.get("entities",[]),geography=raw.metadata.get("geography",[]),
+      entity_refs=entity_refs(' '.join(raw.metadata.get('entities', [])) if raw.metadata.get('entity_scope') == 'issuer' else combined,
+                              codes=raw.metadata.get('isapre_codes', [])),
       key_facts=raw.metadata.get("key_facts",[]),key_numbers=raw.metadata.get("key_numbers",[]),
       why_it_matters=raw.metadata.get("why_it_matters",""),who_cares=raw.metadata.get("who_cares",[]),
       possible_implications=raw.metadata.get("possible_implications",[]),watch_tags=raw.metadata.get("watch_tags",[]),
