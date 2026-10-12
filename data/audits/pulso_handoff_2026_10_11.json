@@ -1,11 +1,11 @@
 {
   "schema_version": "2.0",
-  "recorded_at": "2026-10-11T23:14:41.131050+00:00",
-  "status": "IN_PROGRESS_NOT_ACCEPTED",
+  "recorded_at": "2026-10-12T02:53:15.599782+00:00",
+  "status": "FINAL_EXACT_SHA_GATES_IN_PROGRESS",
   "source": "pulso_latercera",
   "owner": "Codex B / Senior Source Recovery Engineer",
   "branch": "codex/b-pulso-runtime-20261011",
-  "base_staging_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+  "base_staging_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
   "current_product_candidate": "f59bee054000b7d3f9892cc5c4b36a92b71df576",
   "previous_handoff": "Historical pre-exhaustive record is preserved in git. Its CONNECT403 limitation is resolved through authorized GitHub Actions and is not a current source blocker.",
   "pr": "https://github.com/cftorre1/Radar-salud/pull/10",
@@ -212,8 +212,8 @@
     "status": "Merged latest staging; source/core unaffected; all other task/governance/PMO evidence preserved."
   },
   "actual_corrected_core_checkpoint": "data/audits/pulso_actual_core_checkpoint_2026_10_11.json",
-  "next_prior_capture_run_id": 38183583899,
-  "next_core_phase": "process",
+  "next_prior_capture_run_id": null,
+  "next_core_phase": "NO_MORE_CORE_OR_CAPTURE_NEEDED_BEFORE_INTEGRATION",
   "renewed_capacity_resume": {
     "same_branch": true,
     "preserved_remote_checkpoint": "f5373a08ffacf957cc18467c52f7585ff3002418",
@@ -291,7 +291,7 @@
     },
     "next_run": "Same branch/PR; genuine full discovery plus113-existing-URL processing selection under unchanged budget; no extra discovery expansion. Then independent semantic review, real second-run idempotence and final-SHA QA/staging."
   },
-  "acceptance": "NOT_ACCEPTED_PENDING_GENUINE_TERMINAL_BASELINE_REPLAY_AND_FINAL_SHA_GATES",
+  "acceptance": "EDITORIAL_AND_GENUINE_SAME_FP_IDEMPOTENCE_PASS_PENDING_FINAL_SHA_GATES",
   "preserved_previous_operational_headers": [
     {
       "recorded_at": "2026-10-11T12:50:20.018214+00:00",
@@ -340,10 +340,7 @@
     }
   ],
   "next_actions": [
-    "Finish independent terminal-consumer peer review and regressions; source/guard/config remain unchanged.",
-    "Run a fresh genuine selected113 terminal core with zero attempts/API and seal its passing baseline.",
-    "Run the same runtime fingerprint a second time and verify all Source/native stocks, paid models, history/feed and costs unchanged.",
-    "Finalize durable complete editorial matrix and exact FINAL SHA QA/Reviewer/staging checks; no direct merge, main or production."
+    "Require Pulso FINAL SHA acceptance all jobs PASS on current HEAD; then PR10 READY_FOR_INTEGRATION. Integration Commander merges with a merge commit preserving all paid-producer ancestors and runs combined Daily First runtime. Do not merge from Source branch or touch production."
   ],
   "latest_followup5_launch_checkpoint": {
     "path": "data/audits/pulso_followup5_genuine_launch_checkpoint_2026_10_11.json",
@@ -1473,5 +1470,26 @@
       "Finalize durable complete editorial matrix and exact FINAL SHA QA/Reviewer/staging checks; no direct merge, main or production."
     ],
     "issues_5_6_remain_open": true
-  }
+  },
+  "final_completed_observations_checkpoint": {
+    "first_run": 38193293862,
+    "first_producer": "65b5dbf13726e4bc73bb74cc5f73ace9368e73eb",
+    "second_run": 38194404484,
+    "second_producer": "58d0f929d0d98de798f9460600ffe71ad07604bd",
+    "actual_core_fingerprint": "49c9062dacf4a38b682be01cf6cdac1457ae0c5bd0d24bbf0ae5273dd52197ad",
+    "corrected_readonly_consumer": "data/audits/pulso_completed_zero_observations_corrected_consumer_2026_10_12.json",
+    "corrected_consumer_sha256": "6af3014f0efcee99a257598f43eb7794529653a78a20132ac0488917b83cabe5",
+    "matrix": "data/audits/pulso_final_editorial_settlement_and_idempotence_2026_10_11.json",
+    "matrix_sha256": "f2d6bf9ceb89d2910763eebb8cc8e142cf110f8ec94d43d047598bcac0d4bcb5",
+    "all113_terminal": true,
+    "original113_published65_rejected48": true,
+    "LIVE9_all9_rejected": true,
+    "original_failures_preserved": true,
+    "additional_AI_calls": 0,
+    "ledger_FAST520_DEEP14": true,
+    "source_history95_feed70": true,
+    "all_other85_tasks_preserved": true
+  },
+  "final_acceptance_authority": "PR10 current HEAD Pulso FINAL SHA acceptance artifact and QA/staging/Reviewer check runs. This immutable pre-final checkpoint does not preapprove their result.",
+  "handoff_for_integration_commander": "docs/PULSO_INTEGRATION_HANDOFF_2026_10_11.md"
 }
