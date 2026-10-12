@@ -3853,5 +3853,19 @@
     "source": "Autonomy hosted observation",
     "status": "observed_open",
     "task_id": "source_repair_mutualities_lane_2026_10_11"
+  },
+  {
+    "at": "2026-10-12T01:36:56.500136+00:00",
+    "class": "integration_contract_mismatch",
+    "evidence": [
+      "data/pmo/sprint_integration_2026_10_11_13.json",
+      "https://github.com/cftorre1/Radar-salud/pull/26#issuecomment-6116190625"
+    ],
+    "finding": "Green technical checks do not establish compatibility with a later Daily First scope: Global UI30 still invokes a hardcoded90-day collector with no activation dependency gate; PR body may lag actual failed runtime or newer CI.",
+    "id": "daily_first_release_contract_2026_10_11",
+    "source": "Integration Commander",
+    "source_closed": false,
+    "specific_fix": "Hold acceptance until bounded daily path/explicit disabled hook; read actual run/job and exact-head checks; preserve historical qualification receipts.",
+    "status": "OPEN_ACTIONABLE"
   }
 ]
