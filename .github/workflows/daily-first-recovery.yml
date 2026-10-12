@@ -1,0 +1,36 @@
+name: Daily First bounded public recovery
+on:
+  pull_request:
+    branches: [staging]
+    paths:
+      - 'scripts/daily_first_runtime.py'
+      - 'src/radar_salud/daily_first.py'
+      - 'src/radar_salud/minsal_news.py'
+      - '.github/workflows/daily-first-recovery.yml'
+permissions:
+  contents: read
+concurrency:
+  group: daily-first-recovery-${{ github.head_ref }}
+  cancel-in-progress: false
+jobs:
+  recovery:
+    if: github.head_ref == 'codex/daily-first-fonasa-isp-minsal-20261012'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest
+      - name: Capture public official routes without credentials or publication
+        run: python scripts/daily_first_runtime.py --output artifacts/daily-first
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: daily-first-${{ github.run_id }}
+          path: artifacts/daily-first/
+          retention-days: 30
