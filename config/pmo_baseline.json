@@ -1431,20 +1431,35 @@
       "kind": "isolated_integration_qualification",
       "status": "READY_FOR_INTEGRATION",
       "scope": "Safe non-activated P0 data package only; mandatory final-head CI remains a merge condition",
-      "sha": "b832aed3630eca59b8b6a2b536a3ae79eeacb69d",
+      "sha": "e2f9bb3439e3159790355991efdd8950aba35e19",
       "integration_base_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
       "paths": [
         "data/audits/w4_p0_integration_readiness.json"
       ],
       "url": "https://github.com/cftorre1/Radar-salud/pull/16",
       "checks": [
-        "45 focused tests PASS",
+        "75 focused source/health/web-snapshot tests PASS",
         "Retained-evidence adapters/replay/independent Reviewer PASS (264 checks)",
         "Initial inventory byte-identical to 0339dd2; unrelated current staging health/tasks/PMO preserved",
         "Final head required CI is a merge condition; source outcomes remain OPERATIVE_DEGRADED"
       ],
       "validated_requirements": [],
-      "validated_blocks": []
+      "validated_blocks": [],
+      "inherited_clock_failure": {
+        "run_id": 38193068526,
+        "head_sha": "b7306cde668e59c08a3efbc6efea741d06d7bb1f",
+        "python_passed": 1038,
+        "python_failed": 1,
+        "python_skipped": 1,
+        "test": "tests/test_web_snapshot.py::test_verified_publication_boundary_retains_old_issuance_without_changing_it",
+        "classification": "inherited_baseline_clock_defect",
+        "baseline_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+        "baseline_reproduction": "same failure in isolated baseline worktree",
+        "baseline_script_sha256": "e91c5b247fa855e16b6cf82057608880181f6568ae77aae3e5d6b08aeb157f96",
+        "reason": "curate(as_of=2026-10-11) filtered on the requested cutoff but sanction aggregation used the 2026-10-12 host clock",
+        "fix": "Pass today=as_of into sanction aggregation; None keeps existing real-clock behavior. Test host pinned to October12 checks inclusion on October11 and exclusion on October12 without changing original dates.",
+        "introduced_failure": false
+      }
     }
   },
   "blocks": [

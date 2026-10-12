@@ -4,7 +4,7 @@
   "recorded_at": "2026-10-11T22:39:28.512653-03:00",
   "pr": 16,
   "branch": "codex/w4-market-intelligence-expansion-20261011",
-  "validated_local_code_sha": "b832aed3630eca59b8b6a2b536a3ae79eeacb69d",
+  "validated_local_code_sha": "e2f9bb3439e3159790355991efdd8950aba35e19",
   "integration_base_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
   "actual_conflicts": [
     "config/pmo_baseline.json"
@@ -74,7 +74,7 @@
     "recurrence_validated": false
   },
   "local_validation": {
-    "focused_tests_passed": 45,
+    "focused_tests_passed": 75,
     "review": {
       "status": "PASS",
       "checks": 264,
@@ -268,11 +268,35 @@
     "new_services": 0,
     "paid_pipeline_usage_unchanged": true,
     "monetary_billing_not_exposed": true,
-    "ci_mode": "One final head; retained replay plus existing mandatory QA; no fresh collection"
+    "ci_mode": "One failed global run diagnosed against baseline, then one corrected-head validation; all source runs reuse retained evidence, no fresh collection"
   },
   "next_action": "Integration Commander: verify final PR16 head, green required checks and no conflicts; merge PR16 into staging with a merge commit and matched head; capture resulting staging SHA and run read-only retained-evidence qualification/QA. Do not activate sources or publish held candidates. Follow deferred source scopes separately.",
   "merge_authority": "Integration Commander; not this agent",
   "activation": "held",
   "post_merge_runtime": "not_executed",
-  "subsequent_staging_update": "88979eb changes governance only; no code/data-source changes. Existing focal/replay proof still applies; final CI validates merged candidate."
+  "subsequent_staging_update": "88979eb changes governance only; no code/data-source changes. Existing focal/replay proof still applies; final CI validates merged candidate.",
+  "initial_final_head_ci_failure": {
+    "run_id": 38193068526,
+    "head_sha": "b7306cde668e59c08a3efbc6efea741d06d7bb1f",
+    "python_passed": 1038,
+    "python_failed": 1,
+    "python_skipped": 1,
+    "test": "tests/test_web_snapshot.py::test_verified_publication_boundary_retains_old_issuance_without_changing_it",
+    "classification": "inherited_baseline_clock_defect",
+    "baseline_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+    "baseline_reproduction": "same failure in isolated baseline worktree",
+    "baseline_script_sha256": "e91c5b247fa855e16b6cf82057608880181f6568ae77aae3e5d6b08aeb157f96",
+    "reason": "curate(as_of=2026-10-11) filtered on the requested cutoff but sanction aggregation used the 2026-10-12 host clock",
+    "fix": "Pass today=as_of into sanction aggregation; None keeps existing real-clock behavior. Test host pinned to October12 checks inclusion on October11 and exclusion on October12 without changing original dates.",
+    "introduced_failure": false
+  },
+  "retained_ci_replay": {
+    "run_id": 38193068529,
+    "head_sha": "b7306cde668e59c08a3efbc6efea741d06d7bb1f",
+    "status": "PASS",
+    "directed_tests": 32,
+    "review_checks": 264,
+    "replay_idempotent": true,
+    "new_source_requests": 0
+  }
 }
