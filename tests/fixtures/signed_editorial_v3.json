@@ -1,0 +1,57 @@
+{
+  "editorial_schema_version": "3",
+  "piece_id": "synthetic:legal",
+  "title": "Resolución IF/N°1 rechaza reposición",
+  "detail_body": "Aplica el artículo 57 porque no se acreditó daño irreparable.",
+  "event_date": "2026-10-12",
+  "source_url": "https://example.org/resolution",
+  "source_name": "Prueba",
+  "signal_types": [
+    "Legal"
+  ],
+  "scopes": [
+    "Isapres"
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "kind": "fact",
+      "text": "No se acreditó daño irreparable.",
+      "evidence_refs": [
+        "e1"
+      ],
+      "adds_to": "title",
+      "incremental_value": "Fundamento cautelar"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "e1",
+      "url": "https://example.org/resolution",
+      "locator": "resuelvo 2",
+      "observed_at": "2026-10-12T10:00:00Z"
+    }
+  ],
+  "paragraph_claim_ids": {
+    "0": [
+      "c1"
+    ]
+  },
+  "review": {
+    "author": "writer",
+    "reviewer": "independent",
+    "verdict": "PASS",
+    "content_version": "881b90bfe7558ae0ce75548ba1867ba3d90908c9e9e1ae6c13fde456c7e47f8f",
+    "claim_verdicts": {
+      "c1": "SUPPORTED"
+    },
+    "paragraph_verdicts": {
+      "0": {
+        "verdict": "NEW",
+        "new_claim_ids": [
+          "c1"
+        ]
+      }
+    }
+  }
+}

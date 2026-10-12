@@ -159,3 +159,18 @@ def test_export_gives_approved_same_piece_precedence_without_rewriting_or_duplic
     assert len(output)==1 and output[0]['piece_id']==r['piece_id']
     copied=preserve_v3_copy(output)
     assert content_version(copied[0])==r['review']['content_version']
+
+def test_signed_browser_fixture_keeps_valid_receipt_with_conflicting_legacy_copy():
+    import json
+    from pathlib import Path
+    from scripts.export_web_snapshot import curate,preserve_v3_copy
+    r=json.loads(Path('tests/fixtures/signed_editorial_v3.json').read_text())
+    version=r['review']['content_version']
+    for key in ('card_what','card_why','what_happened','why_it_matters','normative_subject'):
+        r[key]='Resolución IF/N°1 acoge reposición y levanta la sanción.'
+    assert content_version(r)==version and validate_depth(r)['ok']
+    assert publication_ready(r)[0]
+    output=preserve_v3_copy(curate([r],resolve_external=False))
+    assert len(output)==1 and output[0]['depth_gate']['ok']
+    assert output[0]['title']=='Resolución IF/N°1 rechaza reposición'
+    assert content_version(output[0])==version

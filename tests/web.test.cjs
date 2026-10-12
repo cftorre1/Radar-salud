@@ -3,6 +3,19 @@ const source=fs.readFileSync('web/app.js','utf8').split("fetch('data/radar_today
 function context(Clock=Date){const c={AlicantoRead:{readSet:new Set(),ready:Promise.resolve(),migrate:async function(marker,entries){for(const [id,aliases] of entries)if(aliases.some(x=>this.readSet.has(x)))this.readSet.add(id)}},AlicantoStats:{render:()=>'',wire:()=>{}},localStorage:{getItem:()=>null,setItem:()=>{}},btoa:s=>Buffer.from(s,'binary').toString('base64'),atob:s=>Buffer.from(s,'base64').toString('binary'),escape,unescape,decodeURIComponent,encodeURIComponent,Intl,URL,Date:Clock,Set,Map};vm.createContext(c);vm.runInContext(source,c);return c}
 test('full card IDs do not collide for long URLs',()=>{const c=context();assert.notEqual(c.idFor({source_url:'https://example.org/'+ 'a'.repeat(160)+'1'}),c.idFor({source_url:'https://example.org/'+ 'a'.repeat(160)+'2'}))});
 test('date-only publication keeps calendar date in Chile',()=>{const c=context();assert.match(c.fmtDate('2026-09-23'),/23/)});
+test('reviewed v3 public surfaces never substitute unsigned legacy copy',()=>{
+ const c=context(),title='Resolución IF/N°1 rechaza reposición',unreviewed='Resolución IF/N°1 acoge reposición y levanta la sanción.';
+ const base={editorial_schema_version:'3',piece_id:'synthetic:signed-title',title,detail_body:'No se acreditó daño irreparable.',source_url:'https://example.org/resolution',source_name:'Prueba',event_date:'2026-10-12'};
+ for(const legacy of [{card_what:unreviewed},{normative_document_label:'Resolución IF/N°1',normative_subject:unreviewed,card_why:unreviewed},{source_url:'https://www.superdesalud.gob.cl/normativa/circular-if-n534/'}]){
+  const row={...base,...legacy};assert.equal(c.triageTitle(row),title);assert.match(c.card(row),/Resolución IF\/N°1 rechaza reposición/);assert.match(c.detailHtml(row),/Resolución IF\/N°1 rechaza reposición/);assert.ok(!c.card(row).includes(unreviewed));assert.ok(!c.detailHtml(row).includes(unreviewed));
+ }
+ const news={...base,title:'El hospital realizó una intervención con una técnica y un equipo acreditados por la publicación original.',card_what:'La intervención redujo la mortalidad un 80%.',what_happened:unreviewed,why_it_matters:unreviewed};
+ assert.equal(c.triageTitle(news),news.title);assert.equal(c.triageSummary(news),'');
+ assert.equal(c.triageSummary({...news,brief_deck:'Participaron especialistas del hospital de referencia.'}),'Participaron especialistas del hospital de referencia.');
+ assert.equal(c.triageTitle({...news,editorial_schema_version:3,display_title:'Titular firmado de la intervención'}),'Titular firmado de la intervención');
+ // Historical v2 keeps its established projection.
+ assert.equal(c.triageTitle({...base,editorial_schema_version:'2',card_what:unreviewed}),unreviewed);
+});
 test('update label is direct and does not overstate source review',()=>{const c=context();assert.match(c.fmtUpdated('2026-09-24T12:00:00Z'),/^Última actualización:/);assert.doesNotMatch(c.fmtUpdated('2026-09-24T12:00:00Z'),/Portada generada|revisión de las fuentes/)});
 test('legacy statistical complements require valid matching source hashes and stay outside reviewed v3 copy',()=>{
  const c=context(),hash='a'.repeat(64),view={family:'cartera'},e={text:'Dato complementario',family:'cartera',analysis_kind:'portfolio_mix_shift',sha256:hash,source_url:'https://example.org/book',period:'2026-07',sheet:'Julio',formula:'1/2'};
