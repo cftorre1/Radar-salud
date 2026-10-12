@@ -1,4 +1,5 @@
 const {test,expect}=require('@playwright/test');
+const fs=require('node:fs');
 
 test('fiscalization reconciliation preserves act dates and separates reviewed normativa',async({page})=>{
  const errors=[];page.on('pageerror',error=>errors.push(error.message));
@@ -48,16 +49,34 @@ test('recovered registers retain offices, actors, effects and issuance dates in 
  await page.locator('#filterDetails summary').click();await page.locator('#period').selectOption('90');
  const radar=await (await page.request.get('/data/radar_today.json')).json();
  const register=radar.signals.find(s=>s.source_record_id==='suseso_emisores:rolling90');
- expect(register.counts).toEqual({'30':20,'90':75});expect(register.publication_date).toBeNull();
- expect(new Set(register.source_alternatives.map(s=>s.source_record_id)).size).toBe(75);
+ // The original native control stays fixed; its rolling window ages with the
+ // snapshot date. Expected identities come from that control, not the UI data.
+ const ledger=JSON.parse(fs.readFileSync('data/audits/fiscalizacion/native_stock_ledger_2026_10_11.json','utf8'));
+ const history=JSON.parse(fs.readFileSync('data/history/superintendencia_signals.json','utf8')).signals;
+ const original=ledger.filter(s=>s.source==='suseso_fiscalizacion'&&s.document_class==='enforcement_sanction'&&s.decision==='published');
+ expect(original).toHaveLength(92);
+ expect(radar.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+ const anchor=Date.parse(radar.date+'T00:00:00Z');
+ expect(new Date(anchor).toISOString().slice(0,10)).toBe(radar.date);
+ const start30=new Date(anchor-30*86400000).toISOString().slice(0,10);
+ const start90=new Date(anchor-90*86400000).toISOString().slice(0,10);
+ const recent=original.filter(s=>s.emission_date>=start90&&s.emission_date<=radar.date);
+ const issued30=recent.filter(s=>s.emission_date>=start30);
+ const metadata=new Map(history.map(s=>[s.source_record_id,s]));
+ const context=original.filter(s=>{const m=metadata.get(s.source_record_id);return s.emission_date<start90&&m?.suspension_start<=radar.date&&m?.suspension_end>=radar.date});
+ expect(recent.length).toBeGreaterThan(0);
+ expect(register.counts).toEqual({'30':issued30.length,'90':recent.length});expect(register.publication_date).toBeNull();
+ expect(register.source_alternatives.map(s=>s.source_record_id).sort()).toEqual(recent.map(s=>s.source_record_id).sort());
  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});
- await expect(card).toContainText('20 oficios');await expect(card.locator('.card-meta')).toContainText('Emitido');
+ await expect(card).toContainText(`${issued30.length} oficios`);await expect(card.locator('.card-meta')).toContainText('Emitido');
  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');
  await card.locator('[data-detail]').click();
- await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(75);
- expect(register.historical_sanction_context).toHaveLength(17);
- expect(register.historical_sanction_context.every(s=>s.emission_date<'2026-07-13'&&s.publication_date===null)).toBe(true);
- await expect(page.locator('#detailBody .historical-sanctions .related-item')).toHaveCount(17);
+ await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length);
+ expect(register.historical_sanction_context.map(s=>s.source_record_id).sort()).toEqual(context.map(s=>s.source_record_id).sort());
+ expect(register.historical_sanction_context.every(s=>s.emission_date<start90&&s.publication_date===null)).toBe(true);
+ const originalDates=new Map(original.map(s=>[s.source_record_id,s.emission_date]));
+ expect([...register.source_alternatives,...register.historical_sanction_context].every(s=>s.emission_date===originalDates.get(s.source_record_id)&&s.event_date===s.emission_date&&s.publication_date===null)).toBe(true);
+ await expect(page.locator('#detailBody .historical-sanctions .related-item')).toHaveCount(context.length);
  await expect(page.locator('#detailBody .historical-sanctions summary')).toContainText('anteriores a 90 días');
  await page.locator('#detailBody .sourceverify:not(.historical-sanctions) summary').click();
  await expect(page.locator('#detailBody')).toContainText('O-02-S-03209-2026');
