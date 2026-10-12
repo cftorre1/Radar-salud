@@ -373,8 +373,15 @@ def test_normative_original_cohort_ages_out_without_losing_history():
     assert any(s["source_url"]==july10["source_url"] and s["event_date"]==july10["event_date"] for s in history)
 
 
-def test_verified_publication_boundary_retains_old_issuance_without_changing_it():
+def test_verified_publication_boundary_retains_old_issuance_without_changing_it(monkeypatch):
     from datetime import date
+    # The pulse builder also reads today's date. Keep the explicit October 11
+    # historical boundary stable when CI runs after UTC midnight.
+    class BoundaryDate(date):
+        @classmethod
+        def today(cls):
+            return cls(2026, 10, 11)
+    monkeypatch.setattr(m, "date", BoundaryDate)
     row=sig('Resolución IP/N°4286',event='2026-07-07',url='https://www.superdesalud.gob.cl/normativa/4286')
     row.update(event_type='SANCTION',signal_types=['Fiscalización'],scopes=['Prestadores'],publication_date='2026-07-13',emission_date='2026-07-07',event_date_basis='emission',regulated_entity='Nueva Cordillera',sanction_amount=50,sanction_unit='UF')
     pulse,=m.curate([row],resolve_external=False,as_of=date(2026,10,11))
