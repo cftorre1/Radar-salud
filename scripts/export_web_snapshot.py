@@ -693,7 +693,7 @@ def main():
     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
     health=Path("data/source_health.json")
     if health.exists():shutil.copyfile(health,out.parent/"source_health.json")
-    from scripts.export_public_sources import export_public_sources
+    from radar_salud.public_source_catalog import export_public_sources
     if health.exists():export_public_sources(health,out.parent/"public_sources.json")
     print(f"snapshot={out} signals={len(payload['signals'])}")
 if __name__=="__main__":main()

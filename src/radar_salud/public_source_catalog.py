@@ -1,5 +1,7 @@
 """Sanitized catalogue, derived from current evidence; diagnostics stay administrative."""
 from datetime import datetime, timezone
+import json
+from pathlib import Path
 
 CATALOG={
  'deis':('Datos oficiales','https://deis.minsal.cl/','Estadísticas oficiales de salud.'),
@@ -45,3 +47,10 @@ def build_catalog(sources,now=None):
         group,url,description=CATALOG[key]
         rows.append({'id':key,'name':row['name'],'group':group,'url':url,'description':description})
     return {'schema_version':1,'sources':sorted(rows,key=lambda x:(x['group'],x['name']))}
+
+def export_public_sources(source_path=Path('data/source_health.json'),output=Path('web/data/public_sources.json')):
+    data=json.loads(source_path.read_text(encoding='utf-8'))
+    payload=build_catalog(data.get('sources') or {})
+    output.parent.mkdir(parents=True,exist_ok=True)
+    output.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    return payload
