@@ -113,17 +113,30 @@ def _fallback_minsal_score(title,text):
 def process_minsal(raw,cfg):
     from .minsal_news import bind_minsal
     raw=bind_minsal(raw,fetch_official_html(raw.url,'minsal',timeout=15))
-    if _noise(raw.title):return None
+    if _noise(raw.title):
+        raw.metadata['rejection_reason']='minsal_institutional_title_noise'
+        return None
     body=raw.metadata.get("page_text") or raw.raw_text
     ai=analyze_official_news(title=raw.title,text=body,source_name=raw.source_name)
     if not ai:raise DeferredProcessing('minsal_verified_primary_pending_editorial_assessment')
     score=int(ai.get("relevance_score",0))
-    if score<65:return None
+    raw.metadata['editorial_assessment']=dict(score=score,reason=ai.get('reason'),
+        primary_body_sha256=raw.metadata['primary_body_sha256'],decision='accept' if score>=65 else 'reject')
+    if score<65:
+        raw.metadata['rejection_reason']='minsal_editorial_score_below_65: '+str(ai.get('reason') or score)
+        return None
     raw.metadata.update({"what_happened":(ai.get("what_happened") if ai else raw.raw_text) or raw.title,
       "why_it_matters":(ai.get("why_it_matters") if ai else "La publicación contiene un cambio oficial con efectos relevantes para una parte del sistema de salud."),
       "signal_types":["Noticias"],"scopes":["Salud pública"],"watch_tags":["minsal","salud pública"],
       "scores":{"economic":45,"regulatory":55,"scope":score,"novelty":score,"actionability":60}})
-    s=build_signal(raw,cfg);row=s.to_dict();row["signal_types"]=["Noticias"];row["scopes"]=["Salud pública"];row["editorial_relevance"]=score;return with_publication_provenance(row,raw)
+    s=build_signal(raw,cfg);row=s.to_dict();row["signal_types"]=["Noticias"];row["scopes"]=["Salud pública"];row["editorial_relevance"]=score
+    from .editorial_gate import publication_ready
+    ready,reason,_=publication_ready(row)
+    if not ready:
+        raw.metadata.update(rejection_reason=reason)
+        raw.metadata['editorial_assessment'].update(decision='reject',publication_gate_reason=reason)
+        return None
+    return with_publication_provenance(row,raw)
 
 def _clean_validity(text):
     v=_field(text,"Vigencia")
