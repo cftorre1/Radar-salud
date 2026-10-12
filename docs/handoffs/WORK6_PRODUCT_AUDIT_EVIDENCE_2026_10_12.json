@@ -1,0 +1,183 @@
+{
+  "audit": "WORK6 independent adversarial product audit",
+  "date": "2026-10-12",
+  "verdict": "REVISE",
+  "repository": "cftorre1/Radar-salud",
+  "pr": 32,
+  "candidate_sha": "4bb075eda97413d0c4423848c2ad8f7d8f0ceb91",
+  "reference_staging_sha": "ef8cbe3938623d493872ff5f3e717153f176d1be",
+  "blocking_findings": [
+    "W6-01"
+  ],
+  "p2": [
+    "W6-02",
+    "W6-03",
+    "W6-04"
+  ],
+  "candidate_changes": "Only three Work5 documents; no implementation supplied by PR32",
+  "work5_verified_hashes": {
+    "docs/handoffs/WORK5_PRODUCT_EDITORIAL_2026_10_12.md": "9ba5c848d8aa4416b38e5ab07d29a2c8610eb6c6fdd727c8e5858fcd6cc4870f",
+    "docs/handoffs/WORK5_PRODUCT_EDITORIAL_REVIEW_2026_10_12.md": "02ceee1dc247cd7d0f97af9e23e627ce18fb837ecf8eff736146d1adbc1b5a33"
+  },
+  "original_files": [
+    {
+      "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
+      "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
+      "reader": "openpyxl data_only=True",
+      "cells": {
+        "Enero!C20:E20": [
+          1557064,
+          956974,
+          2514038
+        ],
+        "Julio!C20:E20": [
+          1549873,
+          937624,
+          2487497
+        ],
+        "Enero..Julio!E20": [
+          2514038,
+          2510385,
+          2504837,
+          2498649,
+          2493684,
+          2489258,
+          2487497
+        ]
+      },
+      "tested": "Julio rows8:14 and16:18 C+D=E; sum institutional E=E20; deltaE20=-26541",
+      "delta_percent": -1.0557119661675758
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
+      "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6",
+      "cells": {
+        "Julio!C20": 19716,
+        "Julio!D20": 15172
+      },
+      "difference": 4544,
+      "interpretation": "contract events, not net beneficiary growth"
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-movilidad-de-cotizantes-202607.xlsx",
+      "sha256": "851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7",
+      "cells": {
+        "Nacional!A3": "JULIO 2025 Y JULIO 2026",
+        "Nacional!D19": 109663,
+        "Nacional!D31": 91963,
+        "Nacional!D43": -17700
+      },
+      "interpretation": "between July2025 and July2026 cuts, not monthly"
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/app/uploads/2026/07/finan_ifrs_mar_2026_web_v2.xls",
+      "sha256": "e3c4f7b3cfee9a6e4a3122aef4d0c65a26d41630e482c16ec4345b8a804db065",
+      "reader": "xlrd",
+      "cells": {
+        "Result. Financieros comparados!B16": -273.28500000000076,
+        "Result. Financieros comparados!D16": 34090.65299999999,
+        "Result. Financieros comparados!F16": 34363.937999999995,
+        "E. Resultados comparado por Isa!A13": 108,
+        "E. Resultados comparado por Isa!B13": "Esencial",
+        "E. Resultados comparado por Isa!Q13": -1488.57,
+        "E. Resultados comparado por Isa!R13": -29.705
+      },
+      "notes_conflict": "Notas Explicativas!A18 states Esencial March2026 information unavailable under review, but institutional rows contain numbers.",
+      "counterexample": {
+        "formula": "100*(D16-B16)/B16",
+        "result": -12574.395960261229,
+        "absolute_delta": 34363.937999999995,
+        "expected_policy": "ordinary percent N/A for nonpositive base; explicit loss/profit transition and absolute difference"
+      },
+      "status": "HOLD for affected coverage/comparisons until official contradiction reconciled; numerical counterexample only, not publication approval"
+    }
+  ],
+  "browser": {
+    "url": "https://alicantosalud.cl/staging/",
+    "global": "https://alicantosalud.cl/staging/global.html",
+    "viewport": {
+      "width": 1348,
+      "height": 927
+    },
+    "tests": [
+      {
+        "case": "Cross-tab reading",
+        "result": "Reproduced defect",
+        "steps": "Open Home and Global. Mark IA coding topic read in Global. Global unread9->8; Home same topic remains mark-as-read. Restore unread.",
+        "restored": true
+      },
+      {
+        "case": "Ponte Felix",
+        "result": "Scrolls to card, marks read without opening substantive detail. Reverted read.",
+        "restored": true
+      },
+      {
+        "case": "Pulso Ver resumen",
+        "result": "Dialog opens with repeated blocks. Card aria-label remains Marcar como leído.",
+        "restored": true
+      },
+      {
+        "case": "IF534 detail",
+        "result": "Identity, contingency, responsibilities and December1 effectiveness visible"
+      },
+      {
+        "case": "Filters",
+        "result": "Filtrar u ordenar expands. 30->60days exposes Pulso; restored30."
+      },
+      {
+        "case": "Sources",
+        "result": "Public dialog lists blocked/partial/paused sources with technical dates"
+      },
+      {
+        "case": "Final reading counts",
+        "result": "Home69cards67unread; Global10themes9unread"
+      }
+    ],
+    "mobile_live": false,
+    "screenreader": false,
+    "contrast_measured": false,
+    "zoom200": false,
+    "mobile_scope": "Static CSS and contract review only"
+  },
+  "isolated_code_test": {
+    "files": [
+      "web/app.js:persistRead",
+      "web/global.js:saveRead"
+    ],
+    "method": "Extract exact function declarations; run in separate Node vm contexts using separate readSet snapshots and shared mocked saveLocal. A saves radar fixture, B saves global fixture.",
+    "assertion": "Final shared storage contains only global fixture; lost update reproduced.",
+    "kind": "Existing implementation defect; not a test of proposed IndexedDB"
+  },
+  "architecture_files": [
+    "config/editorial_rules_v2.json",
+    "config/editorial_intelligence_committee_v1.json",
+    "src/radar_salud/llm_analysis.py",
+    "src/radar_salud/editorial_gate.py",
+    "src/radar_salud/editorial_committee.py",
+    "web/app.js",
+    "web/global.js",
+    "web/index.html",
+    "web/global.html"
+  ],
+  "preview_run": {
+    "id": 38208484632,
+    "url": "https://github.com/cftorre1/Radar-salud/actions/runs/38208484632",
+    "observed": "jobs success",
+    "rerun_by_work6": false,
+    "content_hash_equals_commit": "not asserted; workflow recuration/export can change artifact"
+  },
+  "not_done": [
+    "Implementation",
+    "main/staging mutation",
+    "merge",
+    "published-data change",
+    "paid pipeline AI calls",
+    "90day source audit",
+    "large suite rerun",
+    "all Global originals validated",
+    "MINSAL original independently recovered",
+    "BCBSA technical methodology validated",
+    "respiratory PDF independently reread"
+  ],
+  "future_gate": "Work5 closes W6-01, independent focused re-review of new SHA, explicit Direction acceptance, then Codex H."
+}
