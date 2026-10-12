@@ -4077,5 +4077,30 @@
     "source": "Autonomy hosted observation",
     "status": "observed_open",
     "task_id": "w4_isapres_2026_10_11"
+  },
+  {
+    "blocker_fingerprint": "unsupported_executor:integration_commander_daily_first_2026_10_12",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-0c2e30b5913e4e90a94a0cf0f8fbbd49.json",
+        "sha256": "b70a30b333aaf3360c0a7250acb4ed3a97c0c17c00cc89105234694a3d1410e7",
+        "staging_sha": "c10f67812face5a62a30623d6eb418418ab0994b",
+        "state_sha": "600e5b92d67540f57476b9922c2315bf79059c1c"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: integration_commander_daily_first_2026_10_12",
+    "id": "autonomy_observed_da2f932b8cd4a73f09390b7bb46bc77fd92410bb8890fd4482824ba442912724",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "integration_commander_daily_first_2026_10_12"
   }
 ]
