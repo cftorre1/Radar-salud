@@ -1,5 +1,16 @@
 .title-open{border:0;background:transparent;color:inherit;font:inherit;text-align:left;padding:0;cursor:pointer;min-height:44px;width:100%;overflow-wrap:anywhere}
+.radar-unit .brief-list{max-height:none!important;overflow:visible!important}.radar-unit .brief-list .briefrow:nth-child(n+7){display:none}.radar-unit .brief-list.expanded .briefrow{display:flex}
+.brief-continuation{display:flex!important;align-items:center;justify-content:space-between;gap:12px;margin-top:10px}.brief-continuation button{min-height:44px;cursor:pointer;color:inherit;background:transparent;border:0;text-decoration:underline}.brief-continuation button[hidden]{display:none!important}
+.signal.read,.theme.read{opacity:1!important}.signal.read,.theme.read{border-left:3px solid #718794}
+:root{--ink48:rgba(29,51,69,.72)}.meta,.source,.card-meta,.meta-line,.related-desc,.source-row p,.source-group-title{color:#526773!important}.brief-meta,.inbox-meta-line{color:#e2e8eb!important}.global-detail .source span{color:#526773}
+#updated,.eyebrow{color:#526773!important}
+@media(max-width:350px){.hero h1{white-space:normal!important;font-size:28px!important;overflow-wrap:anywhere}#signalDetail,.global-detail{width:calc(100vw - 16px);padding:12px}.stat-kpi{min-width:0;padding:12px}.stat-kpi strong{font-size:20px}.stat-kpis{min-width:0}.topnav{gap:8px!important}}
+@media(max-width:350px){.radar-head h2{white-space:normal!important}.radar-control-row{grid-template-columns:minmax(0,1fr)}.radar-control-row .method-link{justify-self:start}.hero-row{display:block}.newsletter-strip{flex-wrap:wrap}.period-control select{min-width:72px}}
+@media(max-width:350px){.signal .cardhead{flex-wrap:wrap}.card-status-actions{margin-left:0}.filter-persist-row{flex-wrap:wrap}.entity-table th{overflow-wrap:anywhere}.tagrow{min-width:0}}
 .title-open:hover{text-decoration:underline;text-underline-offset:4px}
+.stat-chart{margin:18px 0}.stat-chart svg{min-width:0}.entity-table caption{caption-side:top;text-align:left;padding:10px 0}
+@media(max-width:600px){.entity-table caption{display:block;width:100%;box-sizing:border-box;text-align:left}.stat-chart svg text{font-size:16px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
 button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #b66a25;outline-offset:3px}
 .briefrow,.inbox-row{flex-wrap:wrap}.briefitem,.inbox-open{min-width:0}.brief-more,.inbox-more{border:1px solid currentColor;background:transparent;color:inherit;border-radius:8px;min-height:44px;padding:6px 10px;cursor:pointer;white-space:nowrap}
 .briefread,.read-toggle,.inbox-read,.readbtn{min-width:44px;min-height:44px}.action-icon,.read-icon{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7}
