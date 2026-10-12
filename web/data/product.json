@@ -1,12 +1,12 @@
 {
   "version": "0.9.0",
-  "generated_at": "2026-10-12T05:07:39.000783+00:00",
+  "generated_at": "2026-10-12T05:32:50.746312+00:00",
   "snapshot_at": "2026-10-12T04:47:21.948502+00:00",
   "published": 168,
   "queue": {
-    "live_pending": 1,
-    "backfill_pending": 1560,
-    "rejected": 685,
+    "live_pending": 0,
+    "backfill_pending": 1556,
+    "rejected": 693,
     "published": 279
   },
   "queue_status": "measured",
@@ -696823,8 +696823,8 @@
     "processing_attempts": 0
   },
   "coverage_live": {
-    "detected": 66,
-    "evaluated": 65,
+    "detected": 69,
+    "evaluated": 69,
     "selected": 7
   },
   "coverage_segments": {
@@ -696858,14 +696858,14 @@
     "Transversal": {
       "registered_sources": 13,
       "active_sources": 9,
-      "detected_live": 48,
+      "detected_live": 51,
       "selected_live": 6,
       "published_feed": 77,
       "last_signal_at": "2026-10-10",
       "last_signal_age_days": 2
     }
   },
-  "legacy_pending": 1561,
+  "legacy_pending": 1556,
   "sources": {
     "superintendencia_normativa": {
       "name": "Superintendencia Normativa",
@@ -696968,7 +696968,7 @@
     },
     "diario_financiero": {
       "name": "Diario Financiero",
-      "checked_at": "2026-10-11T14:47:06.601900+00:00",
+      "checked_at": "2026-10-12T05:07:09.983803+00:00",
       "last_signal_at": "2026-10-10",
       "discovered": 41,
       "new": 0,
@@ -696981,7 +696981,7 @@
       "status": "warning",
       "error": null,
       "technical_status": "partial",
-      "coverage_status": "format_gap",
+      "coverage_status": "date_or_detail_gap",
       "content_freshness": "recent",
       "latest_original_at": "2026-10-10",
       "editorial_outcome": "not_evaluated",
@@ -696995,13 +696995,13 @@
         "deferred": "cumulative_queue",
         "rejected": "cumulative_queue"
       },
-      "dated": 41,
-      "undated": 0,
-      "detail_errors": 0,
-      "insufficient_evidence": 5,
-      "textual_candidates": 36,
+      "dated": 40,
+      "undated": 1,
+      "detail_errors": 1,
+      "insufficient_evidence": 6,
+      "textual_candidates": 35,
       "nontextual_candidates_known": 5,
-      "textual_capture_status": "verified",
+      "textual_capture_status": "partial",
       "format_capability": {
         "text": "runtime_verified",
         "images": "requires_ocr",
@@ -697012,8 +697012,7 @@
       "unverifiable_date_dispositions": 0,
       "last_published_event_at": "2026-10-10",
       "last_discovered_event_at": "2026-10-10",
-      "coverage_complete": false,
-      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/diario_financiero/summary.json"
+      "coverage_complete": false
     },
     "diario_oficial": {
       "name": "Diario Oficial",
@@ -699085,25 +699084,25 @@
     },
     "pulso_latercera": {
       "name": "Pulso / La Tercera",
-      "checked_at": "2026-10-12T02:16:09.501544+00:00",
+      "checked_at": "2026-10-12T05:09:01.943985+00:00",
       "last_signal_at": "2026-10-10",
-      "discovered": 1743,
+      "discovered": 555,
       "new": 0,
       "published": 0,
-      "live_pending": 1,
-      "backfill_pending": 1485,
-      "pending": 1486,
-      "deferred": 12,
-      "rejected": 180,
-      "status": "warning",
+      "live_pending": 0,
+      "backfill_pending": 1481,
+      "pending": 1481,
+      "deferred": 14,
+      "rejected": 188,
+      "status": "ok",
       "error": null,
       "technical_status": "ok",
       "coverage_status": "observed",
       "content_freshness": "recent",
-      "latest_original_at": "2026-10-11",
-      "editorial_outcome": "not_evaluated",
-      "evaluation_performed": false,
-      "processed_rejections": 0,
+      "latest_original_at": "2026-10-12",
+      "editorial_outcome": "rejected",
+      "evaluation_performed": true,
+      "processed_rejections": 4,
       "counts_scope": {
         "discovered": "this_run",
         "new": "this_run",
@@ -699900,18 +699899,18 @@
           "failed": 0
         },
         "fast": {
-          "attempted": 524,
-          "successful": 524,
+          "attempted": 530,
+          "successful": 530,
           "failed": 0
         }
       }
     },
-    "measured_responses": 554,
-    "input_tokens": 1406233,
-    "output_tokens": 540091,
+    "measured_responses": 560,
+    "input_tokens": 1428367,
+    "output_tokens": 551232,
     "models": {
       "gpt-5.6-terra": 22,
-      "gpt-5.6-luna": 532
+      "gpt-5.6-luna": 538
     },
     "errors": {},
     "fast_failed": 0,
@@ -700129,7 +700128,7 @@
         "model_status": "unavailable"
       }
     },
-    "unassigned_responses": 554
+    "unassigned_responses": 560
   },
   "excel": [
     {
@@ -701683,7 +701682,7 @@
     }
   },
   "read_model": {
-    "generated_at": "2026-10-12T05:07:39.006858+00:00",
+    "generated_at": "2026-10-12T05:32:50.751238+00:00",
     "queue_updated_at": "2026-10-12T04:56:08.462889+00:00",
     "queue_task_count": 88,
     "active_task_count": 34,
@@ -702870,6 +702869,14 @@
         "evidence": [
           "https://github.com/cftorre1/Radar-salud/actions/runs/38202622766",
           "tests/test_pulso_terminal_followthrough_qa.py"
+        ]
+      },
+      {
+        "date": "2026-10-12",
+        "change": "Integrated PR10/26/16/28/30/31 with merge commits. Live Pulso/DF atc10f PASS;6FAST paid outputs queued for additive durable preservation, no publications. Source freshness/recurrence and independent semantic review remain release blockers.",
+        "evidence": [
+          "data/audits/integration_commander_2026_10_12/checkpoint.json",
+          "data/audits/integration_commander_2026_10_12/merged_preservation.json"
         ]
       }
     ],

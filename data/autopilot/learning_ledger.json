@@ -651,10 +651,29 @@
       "negative_unrecorded_module_test",
       "postmerge_runtime_by_sha"
     ],
-    "status": "repair_pending_exact_head_ci",
+    "status": "validated_exact_head_ci_and_separate_postmerge_runtime",
     "evidence": [
       "https://github.com/cftorre1/Radar-salud/actions/runs/38202982071",
       "tests/test_pulso_terminal_followthrough_qa.py"
+    ]
+  },
+  {
+    "id": "commander_paid_runtime_isolation_2026_10_12",
+    "recorded_at": "2026-10-12T05:19:57.812665+00:00",
+    "source": "Integration Commander",
+    "finding": "Two immediate isolated polls prove identity/publication stability, not zero processing, zero spend or daily recurrence. Pulso advanced pending decisions and used6FAST; DF second capture had1detail error despite technical_status ok.",
+    "preventive_controls": [
+      "Preserve6response_id and paid raw outputs before another run",
+      "Add monthly counters only for absent response IDs; retain PR29 MINSAL4FAST independently",
+      "Conflict-guarded source-scoped import; no feed/history writes",
+      "Display capture errors separately from no verified detection",
+      "Require actual elapsed24h/48h cadence and semantic reviewer independently"
+    ],
+    "status": "durably_imported_hosted_replay_zero_original_terminal_decisions_preserved",
+    "evidence": [
+      "data/audits/integration_commander_2026_10_12/paid_runtime_delta.json",
+      "scripts/import_commander_runtime.py",
+      "data/audits/integration_commander_2026_10_12/ui_postmerge_reviewer.json"
     ]
   }
 ]

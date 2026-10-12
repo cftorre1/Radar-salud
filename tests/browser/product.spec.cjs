@@ -564,6 +564,7 @@ test('sources are grouped by decision value and expose freshness layers',async({
  await expect(page.locator('#sourcesList')).toContainText('Organismos públicos y reguladores');
  await expect(page.locator('#sourcesList')).toContainText('Noticias y mercado');
  const first=page.locator('#sourcesList .source-row').first();
+ await expect(first.locator('.source-capture-state')).toBeVisible();
  await expect(first).toContainText('Última consulta');
  await expect(first).toContainText('Última señal detectada');
  await expect(first).toContainText('Última seleccionada');
@@ -675,3 +676,17 @@ test('Normative V2.1 puts document, subject and action in each current headline'
  }
 });
 
+
+test('source capture errors are distinct from absence of news in the visible panel',async({page})=>{
+ await page.route('**/data/product.json',async route=>{
+  const response=await route.fetch(),data=await response.json();
+  data.sources={fonasa:{name:'Fondo Nacional de Salud (FONASA)',technical_status:'error',status:'error',coverage_status:'unverified',checked_at:'2026-10-12T00:00:00Z'}};
+  await route.fulfill({response,json:data});
+ });
+ await page.goto('/');
+ await page.locator('#sourcesOpen').click();
+ const row=page.locator('#sourcesList .source-row').filter({hasText:'Fondo Nacional de Salud'});
+ await expect(row).toContainText('Captura con error · no se puede confirmar si hay novedades');
+ await expect(row).toContainText('sin detección verificada');
+ await expect(row).not.toContainText('sin señal reciente');
+});

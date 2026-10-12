@@ -1,0 +1,36 @@
+--- a/.github/workflows/daily-radar.yml
++++ b/.github/workflows/daily-radar.yml
+@@ -13,7 +13,7 @@
+         default: 0
+         type: number
+   schedule:
+-    - cron: '30 9 * * 1-5'
++    - cron: '30 9 * * *'
+ permissions:
+   contents: write
+   actions: write
+@@ -23,7 +23,7 @@
+ jobs:
+   build:
+     runs-on: ubuntu-latest
+-    timeout-minutes: 30
++    timeout-minutes: 95
+     env:
+       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+       RADAR_FAST_MODEL: gpt-5.6-luna
+@@ -36,6 +36,7 @@
+       - uses: actions/checkout@v4
+         with:
+           ref: staging
++          fetch-depth: 0
+       - uses: actions/setup-python@v5
+         with:
+           python-version: '3.11'
+@@ -48,6 +49,7 @@
+       - name: Run incremental collectors
+         if: ${{ github.event_name != 'workflow_dispatch' || inputs.rebuild != true }}
+         env:
++          RADAR_DAILY_WINDOW_DAYS: 30
+           REQUESTED_LIMIT: ${{ inputs.processing_limit || 30 }}
+         run: |
+           limit=$(python -c 'import os; n=int(os.environ["REQUESTED_LIMIT"]); print(n if 1 <= n <= 30 else 30)')

@@ -2664,6 +2664,14 @@
         "https://github.com/cftorre1/Radar-salud/actions/runs/38202622766",
         "tests/test_pulso_terminal_followthrough_qa.py"
       ]
+    },
+    {
+      "date": "2026-10-12",
+      "change": "Integrated PR10/26/16/28/30/31 with merge commits. Live Pulso/DF atc10f PASS;6FAST paid outputs queued for additive durable preservation, no publications. Source freshness/recurrence and independent semantic review remain release blockers.",
+      "evidence": [
+        "data/audits/integration_commander_2026_10_12/checkpoint.json",
+        "data/audits/integration_commander_2026_10_12/merged_preservation.json"
+      ]
     }
   ],
   "scope_deviations": [],
@@ -3333,7 +3341,7 @@
     }
   ],
   "current_main_workflows_sha": "083d2f761e829de49ddd5ef9bc41bbeb494aaad4",
-  "current_staging_candidate_sha": "515b8809ecc391600c4093ce0435955d7d3685c5",
+  "current_staging_candidate_sha": "14b536ff5d9a56f2494bf5dc38c5b9ca95c580e3",
   "product_qa_notes": [
     {
       "id": "home_ux_data_visibility_followup_2026_09_24",
@@ -4289,7 +4297,7 @@
       ]
     }
   ],
-  "updated_at": "2026-10-12T04:33:22.469945+00:00",
+  "updated_at": "2026-10-12T05:25:05.668828+00:00",
   "closed_beta": {
     "status": "pending_validation",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",
@@ -4358,21 +4366,59 @@
     }
   },
   "integration_commander_checkpoint": {
-    "recorded_at": "2026-10-12T04:33:22.469945+00:00",
-    "staging_sha": "515b8809ecc391600c4093ce0435955d7d3685c5",
+    "recorded_at": "2026-10-12T05:25:05.668828+00:00",
+    "staging_sha": "14b536ff5d9a56f2494bf5dc38c5b9ca95c580e3",
     "merged_prs": [
-      10
-    ],
-    "pending_prs": [
+      10,
       26,
       16,
       28,
-      30
+      30,
+      31
     ],
-    "preview_run": "https://github.com/cftorre1/Radar-salud/actions/runs/38202622766",
-    "postmerge_live_collection": "PENDING",
-    "readiness": "NO_GO_PENDING_RUNTIME_AND_INDEPENDENT_REVIEW",
+    "pending_prs": [
+      29
+    ],
+    "postmerge_live_runtime": {
+      "sha": "c10f67812face5a62a30623d6eb418418ab0994b",
+      "run_id": 38206184256,
+      "result": "PASS",
+      "scope": [
+        "pulso_latercera",
+        "diario_financiero"
+      ],
+      "new_publications": 0,
+      "new_fast_calls": 6,
+      "new_deep_calls": 0,
+      "tokens": 33275,
+      "cost_usd": null,
+      "cost_status": "pricing_not_configured",
+      "paid_state_import": "PASS_38207526231_16_queue_updates_6_receipts_replay_zero"
+    },
+    "postmerge_ui_reviewer": "data/audits/integration_commander_2026_10_12/ui_postmerge_reviewer.json",
+    "readiness": "NO_GO_PENDING_DAILY_RECURRENCE_ESSENTIAL_FRESHNESS_AND_INDEPENDENT_SEMANTIC_REVIEW",
     "operational_readiness_percent": null,
-    "source_statuses_not_promoted": true
+    "source_statuses_not_promoted": true,
+    "constraints": [
+      "Reuters PAUSED_LICENSE; WHO/PAHO historical candidates not automatically published",
+      "Isapres/CMF/DIPRES OPERATIVE_DEGRADED; recurrence not demonstrated",
+      "INDISA/Pfizer pause is recommendation not implementation",
+      "FONASA/ISP external blockers; PR29 owns recovery evidence",
+      "main weekday shallow scheduled workflow unchanged; staging YAML does not activate corrected default-branch schedule",
+      "24h/48h recurrence cannot be proved by two immediate polls"
+    ],
+    "resource_limits": {
+      "weekly_remaining_percent_current": null,
+      "last_user_report_percent": 88,
+      "reserve_reset_used": false,
+      "chat_capacity_usage_not_exposed": true
+    },
+    "pr29_blockers": [
+      "draft",
+      "current base conflicts",
+      "validation_age_not_separated_from_attempt_age",
+      "valid_empty_capture_not_representable"
+    ],
+    "essential_freshness_receipt": "data/audits/integration_commander_2026_10_12/essential_freshness.json"
   }
 }
