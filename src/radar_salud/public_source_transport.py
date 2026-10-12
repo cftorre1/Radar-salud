@@ -37,6 +37,12 @@ class OfficialRedirectHandler(HTTPRedirectHandler):
 
 
 def download_official(url, slug, *, timeout=25, max_bytes=20 * 1024 * 1024, capture_metadata=None):
+    from .daily_first import controlled_download
+    return controlled_download(url, slug, lambda: _download_official(url, slug,
+        timeout=timeout, max_bytes=max_bytes, capture_metadata=capture_metadata))
+
+
+def _download_official(url, slug, *, timeout=25, max_bytes=20 * 1024 * 1024, capture_metadata=None):
     if not official_url(url, slug):
         raise ValueError("Public-source URL must be official HTTPS")
     requested_url = normalized_official_url(url, slug)
