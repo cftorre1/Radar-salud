@@ -1431,7 +1431,7 @@
       "kind": "isolated_integration_qualification",
       "status": "READY_FOR_INTEGRATION",
       "scope": "Safe non-activated P0 data package only; mandatory final-head CI remains a merge condition",
-      "sha": "e2f9bb3439e3159790355991efdd8950aba35e19",
+      "sha": "9a4d349806f58f7fd0a7b19711a6d9e9bf495eb1",
       "integration_base_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
       "paths": [
         "data/audits/w4_p0_integration_readiness.json"
@@ -1441,7 +1441,8 @@
         "75 focused source/health/web-snapshot tests PASS",
         "Retained-evidence adapters/replay/independent Reviewer PASS (264 checks)",
         "Initial inventory byte-identical to 0339dd2; unrelated current staging health/tasks/PMO preserved",
-        "Final head required CI is a merge condition; source outcomes remain OPERATIVE_DEGRADED"
+        "Final head required CI is a merge condition; source outcomes remain OPERATIVE_DEGRADED",
+        "42 Node tests PASS with pinned Chile clock; product JS and freshness thresholds unchanged"
       ],
       "validated_requirements": [],
       "validated_blocks": [],
@@ -1458,6 +1459,21 @@
         "baseline_script_sha256": "e91c5b247fa855e16b6cf82057608880181f6568ae77aae3e5d6b08aeb157f96",
         "reason": "curate(as_of=2026-10-11) filtered on the requested cutoff but sanction aggregation used the 2026-10-12 host clock",
         "fix": "Pass today=as_of into sanction aggregation; None keeps existing real-clock behavior. Test host pinned to October12 checks inclusion on October11 and exclusion on October12 without changing original dates.",
+        "introduced_failure": false
+      },
+      "inherited_fixture_failure": {
+        "run_id": 38193520581,
+        "head_sha": "3c552fc113b7fbc7dd62cd907fe50277a416b32e",
+        "python_passed": 1039,
+        "python_skipped": 1,
+        "node_passed": 41,
+        "node_failed": 1,
+        "test": "Home V2 specials share read identity and suppress their base signal",
+        "classification": "distinct_inherited_baseline_fixture_clock_defect",
+        "baseline_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+        "baseline_reproduction": "Direct node baseline suite: 41 PASS/1 FAIL, same undefined weekly special",
+        "reason": "Fixture publication used UTC October12 while the Chile freshness gate correctly saw October11 and rejected a future date",
+        "fix": "Test-only clock fixed to 2026-10-12T01:30Z with fixture publication 2026-10-11; retain all identity/suppression assertions and explicitly reject 2026-10-12 as future. Product JS unchanged.",
         "introduced_failure": false
       }
     }

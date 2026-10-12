@@ -4,7 +4,7 @@
   "recorded_at": "2026-10-11T22:39:28.512653-03:00",
   "pr": 16,
   "branch": "codex/w4-market-intelligence-expansion-20261011",
-  "validated_local_code_sha": "e2f9bb3439e3159790355991efdd8950aba35e19",
+  "validated_local_code_sha": "9a4d349806f58f7fd0a7b19711a6d9e9bf495eb1",
   "integration_base_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
   "actual_conflicts": [
     "config/pmo_baseline.json"
@@ -253,7 +253,8 @@
         }
       ],
       "scope": "Original retained parser inputs; no fresh capture, recurrence or exhaustive coverage claim"
-    }
+    },
+    "node_tests_passed": 42
   },
   "final_head_ci": {
     "required": true,
@@ -268,7 +269,7 @@
     "new_services": 0,
     "paid_pipeline_usage_unchanged": true,
     "monetary_billing_not_exposed": true,
-    "ci_mode": "One failed global run diagnosed against baseline, then one corrected-head validation; all source runs reuse retained evidence, no fresh collection"
+    "ci_mode": "Two distinct inherited clock failures diagnosed against baseline, then corrected-head qualification; retained source replay only, no equivalent blind retry or fresh collection"
   },
   "next_action": "Integration Commander: verify final PR16 head, green required checks and no conflicts; merge PR16 into staging with a merge commit and matched head; capture resulting staging SHA and run read-only retained-evidence qualification/QA. Do not activate sources or publish held candidates. Follow deferred source scopes separately.",
   "merge_authority": "Integration Commander; not this agent",
@@ -297,6 +298,27 @@
     "directed_tests": 32,
     "review_checks": 264,
     "replay_idempotent": true,
+    "new_source_requests": 0
+  },
+  "second_final_head_ci_failure": {
+    "run_id": 38193520581,
+    "head_sha": "3c552fc113b7fbc7dd62cd907fe50277a416b32e",
+    "python_passed": 1039,
+    "python_skipped": 1,
+    "node_passed": 41,
+    "node_failed": 1,
+    "test": "Home V2 specials share read identity and suppress their base signal",
+    "classification": "distinct_inherited_baseline_fixture_clock_defect",
+    "baseline_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+    "baseline_reproduction": "Direct node baseline suite: 41 PASS/1 FAIL, same undefined weekly special",
+    "reason": "Fixture publication used UTC October12 while the Chile freshness gate correctly saw October11 and rejected a future date",
+    "fix": "Test-only clock fixed to 2026-10-12T01:30Z with fixture publication 2026-10-11; retain all identity/suppression assertions and explicitly reject 2026-10-12 as future. Product JS unchanged.",
+    "introduced_failure": false
+  },
+  "retained_ci_replay_after_python_fix": {
+    "run_id": 38193520527,
+    "status": "PASS",
+    "review_checks": 264,
     "new_source_requests": 0
   }
 }
