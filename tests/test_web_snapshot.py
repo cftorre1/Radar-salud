@@ -371,3 +371,4 @@ def test_verified_publication_boundary_retains_old_issuance_without_changing_it(
     assert pulse['source_alternatives'][0]['publication_date']=='2026-07-13'
     assert 'días 31 a 90' in pulse['title']
     assert m.curate([{**row,'publication_date':'2026-07-07'}],resolve_external=False,as_of=date(2026,10,11))==[]
+    assert m.curate([row],resolve_external=False,as_of=date(2026,10,12))==[]

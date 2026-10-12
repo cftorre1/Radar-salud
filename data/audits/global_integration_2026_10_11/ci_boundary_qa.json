@@ -1,0 +1,43 @@
+{
+  "result": "PASS_TARGETED_INHERITED_CALENDAR_FIX_PENDING_NEW_HEAD_CI",
+  "observed_at": "2026-10-12T02:36:03.470067+00:00",
+  "failed_automatic_CI": {
+    "run_id": 38195490063,
+    "job_id": 114637076601,
+    "head": "a44adb96541a9725e38fbea545f1ed9cc68c91bb",
+    "test_merge_sha": "11b65c86da3c4bbbdf4a21a96881d251b8328a05",
+    "python_pass": 1201,
+    "failed": 1,
+    "skipped": 1,
+    "subcases_pass": 94,
+    "only_failure": "tests/test_web_snapshot.py::test_verified_publication_boundary_retains_old_issuance_without_changing_it",
+    "downstream_node_browser_reviewer": "skipped"
+  },
+  "independent_baseline": {
+    "sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+    "same_targeted_failure": true,
+    "code_and_test_identical_to_failed_HEAD": true,
+    "baseline_junit_sha256": "7ea1d49b0a2a45647ade27b08b3330dc333537860b43d98035580ed456bb0e54"
+  },
+  "root_cause": "curate explicit as_of was not forwarded to sanction pulses; ambient UTC day advanced, expiring the day90 fixture despite explicit anchor",
+  "fix": "forward today=as_of, retaining ambient runtime if None",
+  "targeted_QA": {
+    "python_pass": 30,
+    "failed": 0,
+    "suite": "tests/test_web_snapshot.py",
+    "junit_sha256": "234ff06894aab85d823544ea8943a384d69fd926439d50bc96e87abc16cf343e",
+    "tested_files_sha256": {
+      "scripts/export_web_snapshot.py": "b95e9637c2dbb2b6c8fd72491fd1fe833d280800c63d1071ae5382b4201fe7f3",
+      "tests/test_web_snapshot.py": "86fe2bd85d8739a767a8f254f1588bb5a927155b7af319dbcd85fdeac3fa9eac"
+    }
+  },
+  "Global_protected18_hashes_unchanged": true,
+  "publisher_requests": 0,
+  "paid_AI_API_calls": 0,
+  "canonical_data_writes": 0,
+  "historical_expansion": 0,
+  "manual_full_suite_runs": 0,
+  "manual_browser_runs": 0,
+  "reviewer_ref": "data/audits/global_integration_2026_10_11/ci_boundary_reviewer.json",
+  "new_automatic_CI_result_location": "PR26 and issue5, exact pushed HEAD"
+}
