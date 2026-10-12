@@ -4,7 +4,7 @@
   "recorded_at": "2026-10-11T22:39:28.512653-03:00",
   "pr": 16,
   "branch": "codex/w4-market-intelligence-expansion-20261011",
-  "validated_local_code_sha": "9a4d349806f58f7fd0a7b19711a6d9e9bf495eb1",
+  "validated_local_code_sha": "9dc4c20932796eb815f5d81d84421b2aad70a8ce",
   "integration_base_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
   "actual_conflicts": [
     "config/pmo_baseline.json"
@@ -254,7 +254,9 @@
       ],
       "scope": "Original retained parser inputs; no fresh capture, recurrence or exhaustive coverage claim"
     },
-    "node_tests_passed": 42
+    "node_tests_passed": 42,
+    "focused_browser_passed": 2,
+    "browser_runtime": "Existing /usr/bin/chromium; isolated baseline worktree with fresh offline snapshot; no browser download"
   },
   "final_head_ci": {
     "required": true,
@@ -269,7 +271,7 @@
     "new_services": 0,
     "paid_pipeline_usage_unchanged": true,
     "monetary_billing_not_exposed": true,
-    "ci_mode": "Two distinct inherited clock failures diagnosed against baseline, then corrected-head qualification; retained source replay only, no equivalent blind retry or fresh collection"
+    "ci_mode": "Three different inherited clock/rolling-snapshot failures proved and corrected with focused controls; final-head mandatory QA and retained replay, no equivalent blind retry or fresh collection"
   },
   "next_action": "Integration Commander: verify final PR16 head, green required checks and no conflicts; merge PR16 into staging with a merge commit and matched head; capture resulting staging SHA and run read-only retained-evidence qualification/QA. Do not activate sources or publish held candidates. Follow deferred source scopes separately.",
   "merge_authority": "Integration Commander; not this agent",
@@ -320,5 +322,33 @@
     "status": "PASS",
     "review_checks": 264,
     "new_source_requests": 0
+  },
+  "third_final_head_ci_failure": {
+    "run_id": 38194114552,
+    "head_sha": "7cc2521b88c022d1e8fb6d4f04f9224914806f6f",
+    "python_passed": 1039,
+    "python_skipped": 1,
+    "node_passed": 42,
+    "browser_passed": 58,
+    "browser_failed": 2,
+    "test": "recovered registers retain offices, actors, effects and issuance dates in grouped details",
+    "classification": "distinct_inherited_baseline_static_rolling_inventory_expectations",
+    "baseline_sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+    "baseline_reproduction": "Unchanged baseline exporter gives 72 recent +20 historical SUSESO records on Oct12; old browser expects 75 +17. SIS rolling agents become16 vs18.",
+    "fix": "Browser test computes exact current and active historical ID sets from immutable source history and snapshot date. Preserve 92 unique issuer records and 18 original agent records; assert counts, membership, effects and rendered detail rows. No minimum/gate reductions or production JS changes.",
+    "fixed_date_checks": {
+      "2026-10-11": {
+        "suseso_recent": 75,
+        "suseso_historical": 17,
+        "sis_agents_recent": 18
+      },
+      "2026-10-12": {
+        "suseso_recent": 72,
+        "suseso_historical": 20,
+        "sis_agents_recent": 16
+      }
+    },
+    "local_browser_passed": 2,
+    "introduced_failure": false
   }
 }
