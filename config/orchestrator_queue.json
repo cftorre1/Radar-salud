@@ -4871,7 +4871,7 @@
         "ruta y runs reales antes de declarar recurrente"
       ],
       "approved_at": "2026-10-11",
-      "next_action": "Run the isolated fresh workflow no earlier than 2026-10-12T16:07:31.827873+00:00; require complete coverage under the identical contract. Keep core recovery/balance, commercial rights and editorial gates; no production activation.",
+      "next_action": "Integration Commander receives PR26 with scoped QA/Reviewer and merges only through staging gates. Keep daily_collection_enabled false; qualify an actual narrow 30-day runtime in a bounded change, then first fresh complete staging cycle and another >=86400s under the same new contract. No historical expansion or automatic publication.",
       "evidence": [
         "data/audits/source_expansion_matrix_2026_10_11.json",
         "config/source_expansion_backlog_2026_10_11.json",
@@ -4887,19 +4887,30 @@
         "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/independent_capture_audit.json",
         "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/report.json",
         "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/report.json",
-        "data/audits/global_source_recovery_2026_10_11/reviewer_final.json"
+        "data/audits/global_source_recovery_2026_10_11/reviewer_final.json",
+        "docs/GLOBAL_INTEGRATION_HANDOFF_2026_10_11.md",
+        "data/audits/global_integration_2026_10_11/package.json",
+        "data/audits/global_integration_2026_10_11/focused_qa.json",
+        "data/audits/global_integration_2026_10_11/freshness_preintegration.json",
+        "data/audits/global_integration_2026_10_11/alternatives.json",
+        "data/audits/global_integration_2026_10_11/reviewer.json"
       ],
       "external_blockers": [],
-      "progress": "READY_FOR_INTEGRATION; verified 30/90={'30': 84, '90': 241}; published 0. Evidence data/audits/global_source_recovery_2026_10_11/runs/38153425336; Reviewer PASS_SCOPED_WITH_OPERATIONAL_HOLDS. Cadence and core promotion not inferred from resume/replay.",
+      "progress": "READY_FOR_INTEGRATION source package; WHO verified30/90={'30': 84, '90': 241}; original captures/dates/ledger unchanged. Focused delta33PASS; daily gate off; snapshot observation is not new poll/cadence. Reviewer evidence data/audits/global_integration_2026_10_11/reviewer.json",
       "started_at": "2026-10-11T12:54:57.247296+00:00",
-      "last_progress_at": "2026-10-11T17:01:09.833937+00:00",
+      "last_progress_at": "2026-10-12T01:53:03.496744+00:00",
       "work_branch": "codex/global-intelligence-recurrent-20261011",
-      "current_subfront": "isolated_source_qualification_complete_promotion_on_hold",
+      "current_subfront": "global_source_package_ready_daily_first_activation_paused",
       "current_hypothesis": "Metadata qualification is separate from approved Global cards and recurrent production acceptance.",
       "technical_holds": [],
       "pending_acceptance_gates": [
-        "Two complete fresh live runs at least 86400 seconds apart with identical coverage contract not yet proven; core activation dependencies unresolved."
-      ]
+        "Two complete fresh live runs at least 86400 seconds apart with identical coverage contract not yet proven; core activation dependencies unresolved.",
+        "Daily First: narrow real 30-day runtime not yet qualified; daily activation is explicitly off. Global7/7 and 24/48h watcher require post-merge actual cycle receipts; fresh contract change resets cadence anchors."
+      ],
+      "integration_packet_status": "READY_FOR_INTEGRATION",
+      "integration_packet_ref": "data/audits/global_integration_2026_10_11/package.json",
+      "daily_collection_enabled": false,
+      "blocks_other_healthy_sources": false
     },
     {
       "id": "w4_reuters_2026_10_11",
@@ -4935,7 +4946,7 @@
         "ruta y runs reales antes de declarar recurrente"
       ],
       "approved_at": "2026-10-11",
-      "next_action": "Accredit written Reuters consent, service entitlement and licensed commercial use scope; only then configure contracted discovery. Keep editorial fallback without automated journalism/title/metadata requests.",
+      "next_action": "Keep PAUSED_LICENSE; document written Reuters consent/entitlement before collection. Official alternatives are only conditional pilots/postponed proposals, not licensed operational replacements.",
       "evidence": [
         "data/audits/source_expansion_matrix_2026_10_11.json",
         "config/source_expansion_backlog_2026_10_11.json",
@@ -4952,19 +4963,29 @@
         "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/independent_capture_audit.json",
         "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/report.json",
         "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/report.json",
-        "data/audits/global_source_recovery_2026_10_11/reviewer_final.json"
+        "data/audits/global_source_recovery_2026_10_11/reviewer_final.json",
+        "docs/GLOBAL_INTEGRATION_HANDOFF_2026_10_11.md",
+        "data/audits/global_integration_2026_10_11/package.json",
+        "data/audits/global_integration_2026_10_11/focused_qa.json",
+        "data/audits/global_integration_2026_10_11/freshness_preintegration.json",
+        "data/audits/global_integration_2026_10_11/alternatives.json",
+        "data/audits/global_integration_2026_10_11/reviewer.json"
       ],
       "external_blockers": [
         "Written Reuters permission and entitled delivery route not configured/documented."
       ],
-      "progress": "EXTERNAL_BLOCKER_PROVEN; verified 30/90={'30': None, '90': None}; published 0. Evidence data/audits/global_source_recovery_2026_10_11/runs/38153425336; Reviewer PASS_SCOPED_WITH_OPERATIONAL_HOLDS. Cadence and core promotion not inferred from resume/replay.",
+      "progress": "EXTERNAL_BLOCKER_PROVEN / PAUSED_LICENSE preserved; counts unmeasured and no Reuters requests. Alternative technical/rights triage completed without new connectors or publication.",
       "started_at": "2026-10-11T12:54:57.247296+00:00",
-      "last_progress_at": "2026-10-11T17:01:09.833937+00:00",
+      "last_progress_at": "2026-10-12T01:53:03.496744+00:00",
       "work_branch": "codex/global-intelligence-recurrent-20261011",
-      "current_subfront": "isolated_source_qualification_complete_promotion_on_hold",
+      "current_subfront": "global_source_package_ready_daily_first_activation_paused",
       "current_hypothesis": "Metadata qualification is separate from approved Global cards and recurrent production acceptance.",
       "technical_holds": [],
-      "pending_acceptance_gates": []
+      "pending_acceptance_gates": [],
+      "integration_packet_status": "PAUSED_LICENSE",
+      "integration_packet_ref": "data/audits/global_integration_2026_10_11/package.json",
+      "daily_collection_enabled": false,
+      "blocks_other_healthy_sources": false
     },
     {
       "id": "w4_paho_2026_10_11",
@@ -5000,7 +5021,7 @@
         "ruta y runs reales antes de declarar recurrente"
       ],
       "approved_at": "2026-10-11",
-      "next_action": "Run a first complete fresh isolated capture under coverage contract4, then a second complete fresh capture with a distinct run ID at least 86400 seconds later. Captured-byte coverage qualification is not a fresh cadence anchor. Keep core, rights and editorial activation gates.",
+      "next_action": "Integration Commander receives PR26 with scoped QA/Reviewer and merges only through staging gates. Keep daily_collection_enabled false; qualify an actual narrow 30-day runtime in a bounded change, then first fresh complete staging cycle and another >=86400s under the same new contract. No historical expansion or automatic publication.",
       "evidence": [
         "data/audits/source_expansion_matrix_2026_10_11.json",
         "config/source_expansion_backlog_2026_10_11.json",
@@ -5016,20 +5037,31 @@
         "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/independent_capture_audit.json",
         "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/report.json",
         "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/report.json",
-        "data/audits/global_source_recovery_2026_10_11/reviewer_final.json"
+        "data/audits/global_source_recovery_2026_10_11/reviewer_final.json",
+        "docs/GLOBAL_INTEGRATION_HANDOFF_2026_10_11.md",
+        "data/audits/global_integration_2026_10_11/package.json",
+        "data/audits/global_integration_2026_10_11/focused_qa.json",
+        "data/audits/global_integration_2026_10_11/freshness_preintegration.json",
+        "data/audits/global_integration_2026_10_11/alternatives.json",
+        "data/audits/global_integration_2026_10_11/reviewer.json"
       ],
       "external_blockers": [],
-      "progress": "READY_FOR_INTEGRATION; verified 30/90={'30': 185, '90': 530}; published 0. Evidence data/audits/global_source_recovery_2026_10_11/runs/38153425336; Reviewer PASS_SCOPED_WITH_OPERATIONAL_HOLDS. Cadence and core promotion not inferred from resume/replay.",
+      "progress": "READY_FOR_INTEGRATION source package; PAHO verified30/90={'30': 185, '90': 530}; original captures/dates/ledger unchanged. Focused delta33PASS; daily gate off; snapshot observation is not new poll/cadence. Reviewer evidence data/audits/global_integration_2026_10_11/reviewer.json",
       "started_at": "2026-10-11T12:54:57.247296+00:00",
-      "last_progress_at": "2026-10-11T17:01:09.833937+00:00",
+      "last_progress_at": "2026-10-12T01:53:03.496744+00:00",
       "work_branch": "codex/global-intelligence-recurrent-20261011",
-      "current_subfront": "isolated_source_qualification_complete_promotion_on_hold",
+      "current_subfront": "global_source_package_ready_daily_first_activation_paused",
       "current_hypothesis": "Metadata qualification is separate from approved Global cards and recurrent production acceptance.",
       "technical_holds": [],
       "pending_acceptance_gates": [
         "First complete truly fresh capture under coverage contract4 is pending; captured-byte qualification is not a cadence anchor.",
-        "Two complete fresh live runs at least 86400 seconds apart with identical coverage contract not yet proven; core activation dependencies unresolved."
-      ]
+        "Two complete fresh live runs at least 86400 seconds apart with identical coverage contract not yet proven; core activation dependencies unresolved.",
+        "Daily First: narrow real 30-day runtime not yet qualified; daily activation is explicitly off. Global7/7 and 24/48h watcher require post-merge actual cycle receipts; fresh contract change resets cadence anchors."
+      ],
+      "integration_packet_status": "READY_FOR_INTEGRATION",
+      "integration_packet_ref": "data/audits/global_integration_2026_10_11/package.json",
+      "daily_collection_enabled": false,
+      "blocks_other_healthy_sources": false
     },
     {
       "id": "w4_legal_2026_10_11",

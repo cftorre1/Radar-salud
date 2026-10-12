@@ -1,0 +1,88 @@
+{
+  "result": "READY_FOR_INTEGRATION",
+  "PR": 26,
+  "branch": "codex/global-intelligence-recurrent-20261011",
+  "target": "staging",
+  "code_checkpoint": "a1a0e655b848c146b60762f87f60e71ea1e0db69",
+  "previous_delivery_SHA": "060c7a810496602c34a706410d33f125bf55c96c",
+  "observed_staging_base": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+  "observed_at": "2026-10-12T01:47:23.196703+00:00",
+  "source_as_of": "2026-10-11",
+  "counts_verified": {
+    "who": {
+      "30": 84,
+      "90": 241
+    },
+    "paho": {
+      "30": 185,
+      "90": 530
+    }
+  },
+  "material_candidates_90": 377,
+  "published": 0,
+  "source_definition_QA_reused": {
+    "commit": "aee4ed3dff0c6cd900751e89a219548b261308a1",
+    "run_id": "38156977778",
+    "Python": 1178,
+    "Node": 43,
+    "desktop_mobile": 12,
+    "directed": 184,
+    "adversarial_subcases": 94,
+    "reviewer": "PASS_SCOPED_WITH_OPERATIONAL_HOLDS",
+    "scope": "Unchanged WHO/PAHO parsers, captured inventory and prior UI/source health evidence; not a new QA claim for all code."
+  },
+  "delta_QA_ref": "data/audits/global_integration_2026_10_11/focused_qa.json",
+  "snapshot_observation_ref": "data/audits/global_integration_2026_10_11/freshness_preintegration.json",
+  "canonical_hashes_preserved": {
+    "data/global_intelligence/discovery.json": "0c9c225fb64e2a40e84c7a4240df41c513044f4a8ec01dc53709ed3fc29c432d",
+    "data/global_intelligence/ledger.json": "d7c9934bf3fb1274be598d5e4d22a8280ae689e7d2a36cdda089237d0c780d2c",
+    "data/global_intelligence/source_health.json": "8be7ead363aa089fe86bdac5b49a48bf5a872aad3b7de5d38052f2f3d6ed8235",
+    "data/global_intelligence/editorial_candidates.json": "1763e9c5a8e7589a37b6e29670da19d3197ccec5c29f74b6fd39d7fa3ea66e51",
+    "data/global/themes.json": "e2517bf6d5435f899e30dbac6c1fa651cf811613400426dc87490010ef0d5a77",
+    "web/data/global_themes.json": "e2517bf6d5435f899e30dbac6c1fa651cf811613400426dc87490010ef0d5a77",
+    "web/global.js": "c45bedb30891322c66e8b03aada977e2457a2f5e8ee4821886d3777e643163fa",
+    "web/app.js": "2d63e86fe5a27c2af87dcb5a668186811c2fc1120a727bafe7844e1592df7ab4",
+    "scripts/export_global_intelligence.py": "2fb5a44eec9841d8c91654dccf193285d103dd2930dc40030c918072d4a92831",
+    "src/radar_salud/global_source_discovery.py": "f40de04b4bb2d6b464e8e1d6de9706192bb17f04573424ce3d41a7ae84094727",
+    "src/radar_salud/global_discovery_common.py": "bd6d9c96ffa6cce748fab156e25ff6c6fba1f9ad73c5f89b3e8c0a65f449cea1",
+    "scripts/discover_global_sources.py": "e33a18434982a3fd5bae19ddf10ff95c52e51445d9827d1ce5be3a815e9affcd",
+    "data/source_health.json": "9f6453782b5251857e06cf3063e8fa221880c84ba42c225afd9dc45f3db5f3df",
+    "web/data/source_health.json": "9f6453782b5251857e06cf3063e8fa221880c84ba42c225afd9dc45f3db5f3df",
+    "web/data/product.json": "a5fc12c77ef0b965cd2e00ab709b457c5a5c46f4532838502ad9d7f223a3eb9f",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json": "434dec044c79ade78f82f82271121753685cdf5b4a80888cc1c52831efcff831",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json": "83fa7e2150d07c0e7ee2d7c2afd9d9e03abcc92d62f90ec0211a456960774063",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.json": "0c9c225fb64e2a40e84c7a4240df41c513044f4a8ec01dc53709ed3fc29c432d"
+  },
+  "daily_plan": {
+    "enabled": false,
+    "merge_is_not_activation": true,
+    "current_collector_window_days": 90,
+    "current_workflow_schedule_UTC": "30 9 * * 1-5",
+    "proposed_global_only_schedule_UTC": "30 9 * * *",
+    "proposed_runtime_window_days": 30,
+    "narrow_daily_30_runtime_not_yet_implemented_or_qualified": true,
+    "historical_expansion_authorized": false,
+    "alert_hours": 24,
+    "degrade_hours": 48,
+    "watcher_success_clock": "Use last valid complete post-merge daily cycle, not last job, HTTP response or failed poll. New script observes qualified snapshot age only; it is not that cycle receipt or external watcher.",
+    "cadence_acceptance": "Two genuinely fresh complete live runs, distinct IDs, same coverage contract, >=86400s; projection/replay/resume excluded. A new 30-day contract resets anchors.",
+    "WHO_existing_90_day_anchor": "2026-10-11T16:07:31.827873+00:00",
+    "WHO_90_day_next_earliest": "2026-10-12T16:07:31.827873+00:00",
+    "PAHO_first_complete_fresh_contract4_pending": true,
+    "instruction": "Do not trigger the current 90-day live qualification workflow in this mission. Integrate paused discovery definitions first; qualify a separate narrow daily30 change, then enable Global-only recurrence on staging through Commander. Core weekday/AI schedule unchanged."
+  },
+  "reuters": {
+    "status": "PAUSED_LICENSE",
+    "outcome": "EXTERNAL_BLOCKER_PROVEN",
+    "enabled": false,
+    "poll_requested": false
+  },
+  "alternatives_ref": "data/audits/global_integration_2026_10_11/alternatives.json",
+  "staging_merged": false,
+  "post_merge_runtime_proven": false,
+  "production_modified": false,
+  "source_publication_activation": false,
+  "resource_budget": "No new full-suite/browser replay or source backfill; one scoped Reviewer; deterministic delta QA only. No additional collector without permitted dates/route/rights and budget.",
+  "reviewer_evidence": "data/audits/global_integration_2026_10_11/reviewer.json",
+  "publication_and_daily_activation_gate": "HOLD_NOT_ACTIVATED"
+}

@@ -188,3 +188,8 @@ de metadata en `data/audits/global_source_recovery_2026_10_11/runs/38153425336/m
 captura ni cadencia. QA final: [run 38156977778](https://github.com/cftorre1/Radar-salud/actions/runs/38156977778);
 la calificación fresca original conserva sus cuatro reportes en `data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/`.
 Queue sólo actualiza esas tres tareas. PMO conserva Global Implementado, sin promoción.
+
+
+## Daily First integration follow-up · 11 October evening (Santiago)
+
+The Global daily step now requires `daily_collection_enabled: true`; the delivered candidate sets it **false**. The existing collector still scans 90 days, so merging the definitions does not authorize another historical qualification or activate daily collection. A read-only snapshot age observer adds 24h/48h controls without changing captured/publication timestamps or proving a daily cycle. See [the Commander handoff](GLOBAL_INTEGRATION_HANDOFF_2026_10_11.md) for the required narrow 30-day qualification, proposed 7/7 staging-only recurrence, scoped QA and conditional alternatives. No new WHO/PAHO/Reuters poll or connector was run in this follow-up.

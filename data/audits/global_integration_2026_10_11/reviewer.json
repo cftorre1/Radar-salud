@@ -1,0 +1,125 @@
+{
+  "result": "PASS_SCOPED_DAILY_FIRST_WITH_OPERATIONAL_HOLDS",
+  "reviewer": "independent /root/reviewer",
+  "created_at": "2026-10-12T02:01:18.293102+00:00",
+  "accepted_delivery_base": "060c7a810496602c34a706410d33f125bf55c96c",
+  "reviewed_code_checkpoint": "a1a0e655b848c146b60762f87f60e71ea1e0db69",
+  "engineering_delta": "PASS",
+  "paused_integration_packet": "READY_FOR_INTEGRATION_CONDITIONAL_ON_BYTE_EXACT_REVIEWER_RECEIPT",
+  "PR26_ready_for_review_recommendation": true,
+  "operational_activation": "HOLD_NOT_30_DAY_RUNTIME_OR_CADENCE_QUALIFIED",
+  "findings": [],
+  "validation": {
+    "independent_focused_tests_passed": 33,
+    "independent_focused_tests_failed": 0,
+    "tests": "24 snapshot/CLI/gate + 7 PMO + 2 cadence; correct candidate modules verified, 33 PASS in0.29s",
+    "invocation": "Base Python with candidate src and existing site-packages on PYTHONPATH; no installation or environment edits.",
+    "environment_attempt_note": "The unrelated shared /workspace/Radar-salud/.venv prepends its root editable package through .pth; initial collection and subprocess import attempts failed before exercising candidate CLI. Correct candidate-only resolution passed all33. This is an environment mismatch, not a product regression. Parent supplied its isolated work/.venv; subsequent read-only invariants used it.",
+    "full_suite_reruns": 0,
+    "browser_reruns": 0,
+    "publisher_requests": 0,
+    "recorded_observation_recomputed_exactly": true,
+    "coverage_contracts_computed_unchanged": {
+      "who": "e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56",
+      "paho": "10f7a75d3b571eaf9952dfe456fc75ac6b1cbd6e78c391c9618edc2ea343fa1e"
+    },
+    "scoped_diff_check": "PASS"
+  },
+  "guards": {
+    "daily_gate_defaults_false_and_requires_literal_JSON_true": true,
+    "policy_missing_or_failed_output_cannot_run_Global_collector": true,
+    "Global_collection_after_core_with_empty_AI_key": true,
+    "snapshot_observer_always_continue_on_error_and_no_canonical_health_write": true,
+    "output_only_new_work_or_owned_audit_receipt_with_resolved_path_and_existing_file_guards": true,
+    "invalid_naive_future_timestamp_and_technical_coverage_date_failure_stay_on_hold": true,
+    "exact_elapsed_24h_alert_and_48h_degradation": true,
+    "observation_does_not_prove_live_poll_daily_cycle_cadence_or_publication": true
+  },
+  "preservation": {
+    "canonical_and_source_definition_files": 18,
+    "all_packet_hashes_match_current_and_accepted_base": true,
+    "original_90_day_fresh_metadata_coverage_inventory_and_ledger_intact": true,
+    "counts_source_as_of": "2026-10-11",
+    "verified_counts_30_90": {
+      "who": {
+        "30": 84,
+        "90": 241
+      },
+      "paho": {
+        "30": 185,
+        "90": 530
+      }
+    },
+    "14_curated_themes_UI_feed_exporter_source_health_intact": true,
+    "queue_total_tasks": 86,
+    "unowned_tasks_exactly_preserved": 83,
+    "IDs_order_metadata_unchanged": true,
+    "three_owned_tasks_still_blocked_activation_dependencies_preserved": true,
+    "nonGlobal_PMO_prior_catalog_and_changelog_prefix_preserved": true,
+    "Global_Implementado_and_requirements_not_promoted": true,
+    "derived_PMO_readiness_and_closed_beta_exactly_equal_accepted_base": true,
+    "readiness_validated_requirements": 14,
+    "readiness_total_requirements": 35,
+    "readiness_ready": false
+  },
+  "alternatives_review": {
+    "scope": "Integrity/honesty of bounded public-reader feasibility triage only; no independent new legal/content investigation.",
+    "conditional_pilots": [
+      "Fierce Healthcare",
+      "Healthcare Dive",
+      "Deloitte"
+    ],
+    "postponed": [
+      "McKinsey",
+      "PwC",
+      "EY"
+    ],
+    "qualified_new_connectors": 0,
+    "HTTP_TLS_robots_feed_dates_not_certified": true,
+    "permission_not_established_and_no_commercial_automation_authority_granted": true,
+    "RSS_reader_two_Fierce_failures_then_STOP_and_one_Dive_failure_no_retry_documented": true,
+    "reader_error_not_misrepresented_as_origin_HTTP_or_WAF_blocker": true,
+    "provider_actual_HTTP_count_and_Codex_cost_unknown_not_claimed_zero": true,
+    "not_a_Reuters_equivalent_worldwide_coverage_claim": true,
+    "editorial_selection_existing_curation_and_rights_decisions_not_duplicated_or_changed": true
+  },
+  "integration_conditions": [
+    "Parent must copy this report byte-exact to data/audits/global_integration_2026_10_11/reviewer.json and commit the reviewed handoff/packet/gov before marking PR26 ready for review; referenced future receipt is currently pending.",
+    "Keep daily_collection_enabled=false and Reuters disabled. No new publisher poll, model call, historical expansion, connector or content card is authorized by this gate.",
+    "Do not mutate reviewed technical source/data/coverage files; any merge conflict or affected code delta requires its scoped revalidation under Integration Commander procedure.",
+    "Ready for review and paused staging integration is separate from merge authorization, post-merge runtime acceptance and source activation."
+  ],
+  "remaining_operational_holds": [
+    "Current collector still scans90 days. Implement and qualify actual narrow30-day routes/control/health/contract as a later bounded change; preserve retained90-day evidence.",
+    "A30-day contract resets freshness/cadence anchors: first complete truly fresh staging cycle and another distinct complete fresh cycle under the same contract>=86400s later.",
+    "Global7/7 orchestration and external24h/48h watcher keyed to last successful complete daily cycle are plans, not implemented/proven receipts. Core cron remains weekdays.",
+    "WHO90-day anchor remains historical; PAHO first complete fresh contract4 still pending. Archived9.5h snapshot observation is not a new capture or>=24h proof.",
+    "Reuters remains PAUSED_LICENSE with null inventory/recall; all six alternatives need bounded exact-route dates/rights qualification before any collector.",
+    "Core activation dependencies, editorial consequence/corroboration/rights and all publication/production gates remain separate; zero newcards, default30/max10/noquota unchanged."
+  ],
+  "reviewed_file_sha256": {
+    "src/radar_salud/global_source_freshness.py": "9473add0db7ce8cf9c0330ef228c4c157608c96b1af0f4116961461f8a34a38e",
+    "scripts/check_global_source_freshness.py": "dad552a56a027f23c9e3a276211e0cda1e3a7f77e26e30328e5cf8d07f721c13",
+    "tests/test_global_source_freshness.py": "c2fd9f8a55c624b5d2a96bd709b46e18c7e09b6032ff472f2c62e883f957621c",
+    ".github/workflows/daily-radar.yml": "5caff0f18296896577d9d0896bb05cef3496630549aa4edfcfe57224f999b134",
+    "config/global_discovery.json": "8d2d1a759bf2cf41c91e973bab058251a065e4c890f0d8aee9e5ad38869e47c8",
+    "config/orchestrator_queue.json": "1118e6eaefe63d3f8caec643450d530f4c1d2cf1e8c2a1b7f8ff1aa226fd9168",
+    "config/pmo_baseline.json": "4d66d2bc1baa67cae3c1e8f5937f7c2e82d7bf3f2448208293429f8e27731ef2",
+    "docs/GLOBAL_INTEGRATION_HANDOFF_2026_10_11.md": "f771bf3b466ffbe5c6f4b23c747002cac549a79085a66c8a651da5f471c3e6a1",
+    "data/global_intelligence/README.md": "c71c585ff181447bca700eb61765ed12436c71d1cf5362cdb1a8ef2186477798",
+    "docs/GLOBAL_SOURCE_DISCOVERY_2026_10_11.md": "2ea49f980567d3621b4369c551dd4e47ba21e7d2ccd86f23b0a408fcb38d1b1a",
+    "data/audits/global_integration_2026_10_11/focused_qa.json": "508d5969174f178ab218c225aa6a1ca67e48bfe1961620a7e2c69b132750d2e2",
+    "data/audits/global_integration_2026_10_11/freshness_preintegration.json": "7b079056f0e1890cc0efd77787e15bb424a341db4eb83cd43b43fae9e324eb41",
+    "data/audits/global_integration_2026_10_11/alternatives.json": "945a25ecc310876a8f0f00ca07e9025d0f959265bcc05dee710123f1c0e2b316",
+    "data/audits/global_integration_2026_10_11/package.json": "c04e7c79fa5e996b47defcb7fcc43e26d4bd8f0cf871adf0f7100166c7a27545"
+  },
+  "reviewer_actions": {
+    "network_requests": 0,
+    "paid_AI_calls": 0,
+    "full_suite_or_browser": 0,
+    "implementation_or_canonical_edits": 0,
+    "git_index_or_commits": 0,
+    "subagents": 0,
+    "only_report_write": "work/reviewer_global_daily_first.json"
+  }
+}

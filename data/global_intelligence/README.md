@@ -87,3 +87,8 @@ separate from the final zero-network qualification. Repeated pages do not qualif
 Qualification outcomes and operational holds are documented in
 `docs/GLOBAL_SOURCE_DISCOVERY_2026_10_11.md` and the three `data/audits/w4_*` reports.
 Core recovery/balance, cadence and rights/editorial acceptance remain separate.
+
+
+## Daily First integration follow-up · 11 October evening (Santiago)
+
+The Global daily step now requires `daily_collection_enabled: true`; the delivered candidate sets it **false**. The existing collector still scans 90 days, so merging the definitions does not authorize another historical qualification or activate daily collection. A read-only snapshot age observer adds 24h/48h controls without changing captured/publication timestamps or proving a daily cycle. See [the Commander handoff](../../docs/GLOBAL_INTEGRATION_HANDOFF_2026_10_11.md) for the required narrow 30-day qualification, proposed 7/7 staging-only recurrence, scoped QA and conditional alternatives. No new WHO/PAHO/Reuters poll or connector was run in this follow-up.
