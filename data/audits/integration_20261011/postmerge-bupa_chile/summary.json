@@ -1,0 +1,315 @@
+{
+  "staging_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+  "targets": {
+    "sources": [
+      "bupa_chile"
+    ],
+    "origin_prs": [
+      14
+    ],
+    "purpose": "Actual post-integration discovery and processing on a copied staging stock; no automatic state publication",
+    "expectations": {
+      "redsalud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "bupa_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "indisa": {
+        "allow_external_blocker": true
+      },
+      "red_davila": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "andes_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "clinicas_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "pfizer_chile": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      }
+    }
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-11T14:33:31.206255+00:00",
+      "finished_at": "2026-10-11T14:33:43.500161+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "bupa_chile": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "bupa_chile": {
+          "discovered": 51,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:33:32.927581+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [
+        "5d99210f4b741e1df2f7fe398b867f5739922e33c15e6c56fa622a50effed353",
+        "e8e7a13bc1f7c7ea9390d11915843599c4ca82b6e25f9a3c366a4d60ae316f71"
+      ],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 2,
+      "source_health": {
+        "bupa_chile": {
+          "name": "Bupa Chile",
+          "checked_at": "2026-10-11T14:33:43.024673+00:00",
+          "last_signal_at": "2026-08-13",
+          "discovered": 51,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 22,
+          "pending": 22,
+          "deferred": 1,
+          "rejected": 22,
+          "status": "warning",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "unverified",
+          "content_freshness": "older",
+          "latest_original_at": "2026-09-10",
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "provider_audit": {
+            "as_of": "2026-10-11",
+            "path": "data/audits/providers_2026_10_11/bupa_chile.json",
+            "blockers": [
+              "All51 observed newsroom cards and official sitemap/root originals checked; newest root pieces omit publication dates in H1/header/meta/JSON-LD/public frontend and feeds unavailable.7verified90 is a lower bound. Investment is related to existingDF event; BancoEstado campaign excluded; Conecta held."
+            ],
+            "latest_verified_original_at": "2026-09-10",
+            "coverage_complete": false,
+            "outcome": "EXTERNAL_BLOCKER_PROVEN",
+            "piece_reconciliation": "data/audits/provider_piece_reconciliation_2026_10_11.json"
+          },
+          "audited_assessment": {
+            "at": "2026-10-11T05:03:43.051938+00:00",
+            "evaluated": 1,
+            "published": 1,
+            "outcome": "published",
+            "last_signal_at": "2026-08-13",
+            "scope": "two repaired original URLs; preceding assessment preserved in history"
+          },
+          "provider_coverage": {
+            "outcome": "EXTERNAL_BLOCKER_PROVEN",
+            "coverage_complete": false,
+            "coverage_reason": "All51 observed newsroom cards and official sitemap/root originals checked; newest root pieces omit publication dates in H1/header/meta/JSON-LD/public frontend and feeds unavailable.7verified90 is a lower bound. Investment is related to existingDF event; BancoEstado campaign excluded; Conecta held.",
+            "archive_depth": {
+              "newsroom_cards": 51,
+              "detail_urls": 53,
+              "public_script_metadata_checked": 5
+            },
+            "owner": "Publisher Bupa Chile / Source Engineering",
+            "next_action": "Require an article-level published date from the original for undated roots, particularly Conecta; recheck official newsroom/sitemap/feed/CMS after publisher supplies release evidence. Investment already covered by DF; BancoEstado renewal needs no paid retry.",
+            "pages_checked": 71,
+            "latest_original_publication": "2026-09-10",
+            "discovered": 53,
+            "unique": 51,
+            "recent_30d": 0,
+            "recent_90d": 7,
+            "publication_date_unknown": 11,
+            "material_30d": 0,
+            "material_90d": 2,
+            "material_date_unknown": 2,
+            "material": 4,
+            "material_unknown": 0,
+            "published": 2,
+            "rejected": 1,
+            "deferred": 1,
+            "detected_material": 4,
+            "omitted_material": 0,
+            "parse_errors": 0,
+            "access_errors": 14,
+            "inventory": "data/audits/provider_inventory_2026_10_11/bupa_chile.json",
+            "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+            "relevant_30d_total": null,
+            "relevant_90d_total": null,
+            "publicable_confirmed": 2,
+            "publicable_total": null
+          }
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-11T14:33:43.539561+00:00",
+      "finished_at": "2026-10-11T14:33:55.509616+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "bupa_chile": "EXECUTED_WITH_CAPTURE"
+      },
+      "discovery": {
+        "bupa_chile": {
+          "discovered": 51,
+          "new": 0,
+          "technical_status": "ok",
+          "error_type": null,
+          "checked_at": "2026-10-11T14:33:45.026824+00:00"
+        }
+      },
+      "queue_identity_sha256": "620aaf871f2ede18448e9e0c4116fa95a58678912c892d6b6b1453d8199af5a3",
+      "published_queue_keys": [
+        "5d99210f4b741e1df2f7fe398b867f5739922e33c15e6c56fa622a50effed353",
+        "e8e7a13bc1f7c7ea9390d11915843599c4ca82b6e25f9a3c366a4d60ae316f71"
+      ],
+      "history_sha256": "6a6dbeee221602bbfdafd095155813534fb3a74d49f5471d24dcfb2b947f4983",
+      "history_count": 897,
+      "history_selected_unique": 2,
+      "source_health": {
+        "bupa_chile": {
+          "name": "Bupa Chile",
+          "checked_at": "2026-10-11T14:33:55.005367+00:00",
+          "last_signal_at": "2026-08-13",
+          "discovered": 51,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 17,
+          "pending": 17,
+          "deferred": 1,
+          "rejected": 22,
+          "status": "warning",
+          "error": null,
+          "technical_status": "ok",
+          "coverage_status": "unverified",
+          "content_freshness": "older",
+          "latest_original_at": "2026-09-10",
+          "editorial_outcome": "not_evaluated",
+          "evaluation_performed": false,
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "provider_audit": {
+            "as_of": "2026-10-11",
+            "path": "data/audits/providers_2026_10_11/bupa_chile.json",
+            "blockers": [
+              "All51 observed newsroom cards and official sitemap/root originals checked; newest root pieces omit publication dates in H1/header/meta/JSON-LD/public frontend and feeds unavailable.7verified90 is a lower bound. Investment is related to existingDF event; BancoEstado campaign excluded; Conecta held."
+            ],
+            "latest_verified_original_at": "2026-09-10",
+            "coverage_complete": false,
+            "outcome": "EXTERNAL_BLOCKER_PROVEN",
+            "piece_reconciliation": "data/audits/provider_piece_reconciliation_2026_10_11.json"
+          },
+          "audited_assessment": {
+            "at": "2026-10-11T05:03:43.051938+00:00",
+            "evaluated": 1,
+            "published": 1,
+            "outcome": "published",
+            "last_signal_at": "2026-08-13",
+            "scope": "two repaired original URLs; preceding assessment preserved in history"
+          },
+          "provider_coverage": {
+            "outcome": "EXTERNAL_BLOCKER_PROVEN",
+            "coverage_complete": false,
+            "coverage_reason": "All51 observed newsroom cards and official sitemap/root originals checked; newest root pieces omit publication dates in H1/header/meta/JSON-LD/public frontend and feeds unavailable.7verified90 is a lower bound. Investment is related to existingDF event; BancoEstado campaign excluded; Conecta held.",
+            "archive_depth": {
+              "newsroom_cards": 51,
+              "detail_urls": 53,
+              "public_script_metadata_checked": 5
+            },
+            "owner": "Publisher Bupa Chile / Source Engineering",
+            "next_action": "Require an article-level published date from the original for undated roots, particularly Conecta; recheck official newsroom/sitemap/feed/CMS after publisher supplies release evidence. Investment already covered by DF; BancoEstado renewal needs no paid retry.",
+            "pages_checked": 71,
+            "latest_original_publication": "2026-09-10",
+            "discovered": 53,
+            "unique": 51,
+            "recent_30d": 0,
+            "recent_90d": 7,
+            "publication_date_unknown": 11,
+            "material_30d": 0,
+            "material_90d": 2,
+            "material_date_unknown": 2,
+            "material": 4,
+            "material_unknown": 0,
+            "published": 2,
+            "rejected": 1,
+            "deferred": 1,
+            "detected_material": 4,
+            "omitted_material": 0,
+            "parse_errors": 0,
+            "access_errors": 14,
+            "inventory": "data/audits/provider_inventory_2026_10_11/bupa_chile.json",
+            "count_semantics": "verified original lower bounds where date/access blockers exist; unknown is never zero",
+            "relevant_30d_total": null,
+            "relevant_90d_total": null,
+            "publicable_confirmed": 2,
+            "publicable_total": null
+          }
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "604851f6b2fbc0f8abb7492e7202740c3f706916",
+    "reviewed_at": "2026-10-11T14:33:55.883647+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 93,
+  "idempotence_scope": "published queue keys, queue identities and history; non-editorial queue transitions reconciled separately",
+  "reviewed_queue_changes": [
+    "e16c00f74100d38bca8948cb50e140419f0c54ef55acabb595d13883365a0839",
+    "2acee0acd869db60a70c94fe0de7b3dfa6de2eedd8a58302f5085dd9b8bd7be4",
+    "9f9779a0c79067943f53fc273b101348f349d018d73b4db53901304e9126c082",
+    "5c26fb557579f7e928325c94ac0a324a68b6d65d8f5452ca13c7e8d3c627c8aa",
+    "1dcaa60cbb24be794c4cdb54c4ac2715f9658411962cb908372b12ad44385738",
+    "a8d92870c1f9fe4691cd297b18c494c47ee50303b3fc30f82574f83a404bb607",
+    "a28d5e3e6dd2cd3ab569f0622fdc8192d167eed44bd5fd567db869229644e2a6",
+    "2ef2c7fba6ce9bd058fbfa7a311990f1c669c977638bb2767bb351348f8c9a90",
+    "52741199a69e25a23e42d3582c98bebe4d272fe88dc014fe70de9003cc193525",
+    "6fc091668509c6e941e94696cae80d879933e6da96d636f37fc2df297be0782b"
+  ],
+  "runtime_run": 38147271657,
+  "preview_run": 38147510597,
+  "artifact_id": 11705139098,
+  "artifact_sha256": "64fcde6a7d27c0c894469a1edada0b74167e1718d64d27c7ace2a7da48e89197",
+  "artifact_retention": "Original full archive retained by GitHub Actions; immutable summary, poll logs, capture manifest and original source-lane evidence preserved in git",
+  "imported_at": "2026-10-11T14:40:23.112019+00:00",
+  "import_scope": "source health/discovery/watermark receipts only; accepted queue/history unchanged"
+}

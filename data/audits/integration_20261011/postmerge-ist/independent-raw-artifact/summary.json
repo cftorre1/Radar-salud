@@ -1,0 +1,292 @@
+{
+  "staging_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+  "targets": {
+    "sources": [
+      "ist"
+    ],
+    "origin_prs": [
+      12
+    ],
+    "purpose": "Actual post-integration discovery and processing on a copied staging stock; no automatic state publication",
+    "expectations": {
+      "clinicas_achs_salud": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "mutual_seguridad": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      },
+      "ist": {
+        "allow_partial_capture": true,
+        "minimum_discovered": 1
+      }
+    }
+  },
+  "actual_engine": true,
+  "isolated_state": true,
+  "polls": [
+    {
+      "poll": 1,
+      "started_at": "2026-10-11T14:03:55.785546+00:00",
+      "finished_at": "2026-10-11T14:06:06.745132+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "ist": "EXECUTED_WITH_PARTIAL_CAPTURE"
+      },
+      "discovery": {
+        "ist": {
+          "discovered": 20,
+          "new": 0,
+          "technical_status": "error",
+          "error_type": "SourceDiscoveryError",
+          "checked_at": "2026-10-11T14:06:06.210726+00:00"
+        }
+      },
+      "queue_identity_sha256": "01e693576a57c9d5ea5e5b193217491cda98b4bffccc1c772a735cea61de9514",
+      "published_queue_keys": [
+        "2b8181bd912960c79b4d60f98210c1d5aedfeded4f4d9faf71b8495f3afb9927"
+      ],
+      "history_sha256": "ea2a57b1b0b2707c8f8551be4cf591ed83b620f0862ac131dbb3f6d95a755284",
+      "history_count": 891,
+      "history_selected_unique": 1,
+      "source_health": {
+        "ist": {
+          "name": "Ist",
+          "checked_at": "2026-10-11T14:06:06.215443+00:00",
+          "last_signal_at": "2026-07-14",
+          "discovered": 20,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 19,
+          "status": "warning",
+          "error": "SourceDiscoveryError",
+          "technical_status": "partial",
+          "coverage_status": "partial",
+          "content_freshness": "older",
+          "editorial_outcome": "not_evaluated",
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "error_detail": {
+            "code": "inventory_capture_incomplete",
+            "url": "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/",
+            "message": "inventory_capture_incomplete: https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/"
+          },
+          "coverage_window": {
+            "convention": "rolling_elapsed_days_inclusive",
+            "end": "2026-10-11",
+            "start_30": "2026-09-11",
+            "start_90": "2026-07-13"
+          },
+          "pages_checked": 2,
+          "recent_items": {
+            "30": {
+              "start": "2026-09-11",
+              "end": "2026-10-11",
+              "dated_articles": 6,
+              "expected_role": 6,
+              "candidates": 0,
+              "rejected": 6,
+              "excluded_role": 0,
+              "pending": 0,
+              "unknown_date_items": 1,
+              "complete": false,
+              "content_kinds": {
+                "news": 4,
+                "prevention": 2
+              }
+            },
+            "90": {
+              "start": "2026-07-13",
+              "end": "2026-10-11",
+              "dated_articles": 20,
+              "expected_role": 20,
+              "candidates": 1,
+              "rejected": 19,
+              "excluded_role": 0,
+              "pending": 0,
+              "unknown_date_items": 1,
+              "complete": false,
+              "content_kinds": {
+                "news": 11,
+                "prevention": 8,
+                "study": 1
+              }
+            }
+          },
+          "unique_items": 20,
+          "material_items": 1,
+          "technical_failures": [
+            {
+              "code": "api_visible_publication_date_conflict",
+              "url": "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/",
+              "api_date": "2026-08-12",
+              "observed_dates": [
+                {
+                  "value": "10/08/2026",
+                  "date": "2026-08-10",
+                  "kind": "rendered_content:date_before_h1"
+                }
+              ]
+            }
+          ],
+          "coverage_completeness": false,
+          "recovery_outcome": "OPERATIVE_DEGRADED"
+        }
+      },
+      "unrelated_stock_preserved": true
+    },
+    {
+      "poll": 2,
+      "started_at": "2026-10-11T14:06:06.785516+00:00",
+      "finished_at": "2026-10-11T14:08:14.226564+00:00",
+      "exit_code": 0,
+      "execution_results": {
+        "ist": "EXECUTED_WITH_PARTIAL_CAPTURE"
+      },
+      "discovery": {
+        "ist": {
+          "discovered": 20,
+          "new": 0,
+          "technical_status": "error",
+          "error_type": "SourceDiscoveryError",
+          "checked_at": "2026-10-11T14:08:13.705434+00:00"
+        }
+      },
+      "queue_identity_sha256": "01e693576a57c9d5ea5e5b193217491cda98b4bffccc1c772a735cea61de9514",
+      "published_queue_keys": [
+        "2b8181bd912960c79b4d60f98210c1d5aedfeded4f4d9faf71b8495f3afb9927"
+      ],
+      "history_sha256": "ea2a57b1b0b2707c8f8551be4cf591ed83b620f0862ac131dbb3f6d95a755284",
+      "history_count": 891,
+      "history_selected_unique": 1,
+      "source_health": {
+        "ist": {
+          "name": "Ist",
+          "checked_at": "2026-10-11T14:08:13.710504+00:00",
+          "last_signal_at": "2026-07-14",
+          "discovered": 20,
+          "new": 0,
+          "published": 0,
+          "live_pending": 0,
+          "backfill_pending": 0,
+          "pending": 0,
+          "deferred": 0,
+          "rejected": 19,
+          "status": "warning",
+          "error": "SourceDiscoveryError",
+          "technical_status": "partial",
+          "coverage_status": "partial",
+          "content_freshness": "older",
+          "editorial_outcome": "not_evaluated",
+          "processed_rejections": 0,
+          "counts_scope": {
+            "discovered": "this_run",
+            "new": "this_run",
+            "published": "this_run",
+            "processed_rejections": "this_run",
+            "rejected": "cumulative_queue"
+          },
+          "error_detail": {
+            "code": "inventory_capture_incomplete",
+            "url": "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/",
+            "message": "inventory_capture_incomplete: https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/"
+          },
+          "coverage_window": {
+            "convention": "rolling_elapsed_days_inclusive",
+            "end": "2026-10-11",
+            "start_30": "2026-09-11",
+            "start_90": "2026-07-13"
+          },
+          "pages_checked": 2,
+          "recent_items": {
+            "30": {
+              "start": "2026-09-11",
+              "end": "2026-10-11",
+              "dated_articles": 6,
+              "expected_role": 6,
+              "candidates": 0,
+              "rejected": 6,
+              "excluded_role": 0,
+              "pending": 0,
+              "unknown_date_items": 1,
+              "complete": false,
+              "content_kinds": {
+                "news": 4,
+                "prevention": 2
+              }
+            },
+            "90": {
+              "start": "2026-07-13",
+              "end": "2026-10-11",
+              "dated_articles": 20,
+              "expected_role": 20,
+              "candidates": 1,
+              "rejected": 19,
+              "excluded_role": 0,
+              "pending": 0,
+              "unknown_date_items": 1,
+              "complete": false,
+              "content_kinds": {
+                "news": 11,
+                "prevention": 8,
+                "study": 1
+              }
+            }
+          },
+          "unique_items": 20,
+          "material_items": 1,
+          "technical_failures": [
+            {
+              "code": "api_visible_publication_date_conflict",
+              "url": "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/",
+              "api_date": "2026-08-12",
+              "observed_dates": [
+                {
+                  "value": "10/08/2026",
+                  "date": "2026-08-10",
+                  "kind": "rendered_content:date_before_h1"
+                }
+              ]
+            }
+          ],
+          "coverage_completeness": false,
+          "recovery_outcome": "OPERATIVE_DEGRADED"
+        }
+      },
+      "unrelated_stock_preserved": true
+    }
+  ],
+  "post_merge": true,
+  "editorial_outputs_require_review_before_state_import": true,
+  "idempotent": true,
+  "unrelated_stock_preserved": true,
+  "reviewer": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "1996b4ec0942edad7ea7752781ddd61944c30b09",
+    "reviewed_at": "2026-10-11T14:08:14.594040+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "feed_count": 87
+}
