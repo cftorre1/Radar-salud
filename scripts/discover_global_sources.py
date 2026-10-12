@@ -70,9 +70,23 @@ def mirror_health(root, source_health):
 def coverage_contract_id(config,source):
     return hashlib.sha256(json.dumps({"qualification_version":4 if source=="paho" else 2,"inventory_days":90,"routes":[route for route in config["routes"] if route["source"]==source]},sort_keys=True).encode()).hexdigest()
 
+def editorial_topics(items, as_of):
+    selected = sorted([row for row in items if in_window(row["published_at"], as_of, 30) and row["detail_verified"] and row["classification"]["materiality"] == "candidate"], key=lambda row:(-row["classification"]["priority"], -date.fromisoformat(row["published_at"]).toordinal(), row["url"]))
+    topics = []
+    seen_topics = set()
+    for row in selected:
+        topic = row.get("event_id") or row["url"]
+        if topic in seen_topics: continue
+        seen_topics.add(topic)
+        topics.append({"topic_id": hashlib.sha256(topic.encode()).hexdigest()[:20], "representative_url": row["url"], "title": row["title"], "published_at": row["published_at"], "priority": row["classification"]["priority"],
+                       "related_discovered_urls": [other["url"] for other in selected if (other.get("event_id") or other["url"]) == topic],
+                       "selection_basis": "discovery_priority_not_editorial_publication_score", "status": "pending_editorial", "publication_ready": False,
+                       "chile_transfer": "hypothesis_only", "independence_groups": ["WHO_UN_SYSTEM"], "requires": ["verified_business_consequence", "independent_corroboration", "rights_review", "editorial_approval"]})
+    return topics
+
 def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | None = None, resume: bool = False):
     config = json.loads((root / "config/global_discovery.json").read_text())
-    if config["default_window_days"] != 30 or config["maximum_editorial_topics"] != 10 or config["fill_quota"] or config["paid_ai_calls"] != 0 or config["reuters"]["enabled"]:
+    if config["default_window_days"] != 30 or config["maximum_editorial_topics"] is not None or config["fill_quota"] or config["paid_ai_calls"] != 0 or config["reuters"]["enabled"]:
         raise ValueError("Global discovery/publication/license contract changed")
     client = CaptureClient(captures, replay=replay, cooldown_file=root/"data/global_intelligence/http_cooldowns.json",resume=resume,
                            live_budget_seconds=config['live_capture_budget_seconds'])
@@ -142,28 +156,17 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
         "technical_failures": [{"code": "prior_written_consent_required", "evidence_ref": config["reuters"]["robots_evidence"]}],
         "manual_reference_control": {"total": len(reuters_refs), "30": sum(in_window(s["published_at"],as_of,30) for s in reuters_refs.values()), "90": sum(in_window(s["published_at"],as_of,90) for s in reuters_refs.values()), "collector_recall": None},
         "reason": config["reuters"]["reason"], "publication_activation": False, "editorial_outcome": "rights_hold"}
-    selected = sorted([row for row in items if in_window(row["published_at"], as_of, 30) and row["detail_verified"] and row["classification"]["materiality"] == "candidate"], key=lambda row:(-row["classification"]["priority"], -date.fromisoformat(row["published_at"]).toordinal(), row["url"]))
-    topics = []
-    seen_topics = set()
-    for row in selected:
-        topic = row.get("event_id") or row["url"]
-        if topic in seen_topics: continue
-        seen_topics.add(topic)
-        topics.append({"topic_id": hashlib.sha256(topic.encode()).hexdigest()[:20], "representative_url": row["url"], "title": row["title"], "published_at": row["published_at"], "priority": row["classification"]["priority"],
-                       "related_discovered_urls": [other["url"] for other in selected if (other.get("event_id") or other["url"]) == topic],
-                       "selection_basis": "discovery_priority_not_editorial_publication_score", "status": "pending_editorial", "publication_ready": False,
-                       "chile_transfer": "hypothesis_only", "independence_groups": ["WHO_UN_SYSTEM"], "requires": ["verified_business_consequence", "independent_corroboration", "rights_review", "editorial_approval"]})
-        if len(topics) >= config["maximum_editorial_topics"]: break
+    topics = editorial_topics(items, as_of)
     payload = {"schema_version": 1, "as_of": as_of.isoformat(), "generated_at": generated, "run_id": run_id,
                "mode": "projection_replay" if replay else "live_resume" if resume else "live_discovery", "network_requests": client.network_requests,
                "capture_reuse": {"reused_url_count":len(client.reused_urls),"maximum_campaign_capture_age_hours":1,"does_not_prove_cadence":True},
                "paid_ai_calls": 0, "live_capture_budget_seconds":config['live_capture_budget_seconds'], "source_health": source_health, "items": items, "routes": routes, "technical_failures": failures,
                "publication_count": 0, "content_use": "metadata_and_link_only", "default_window_days": 30,
-               "maximum_editorial_topics": 10, "editorial_topics": topics, "cadence_is_not_proven_by_back_to_back_runs": True}
+               "maximum_editorial_topics": None, "editorial_topics": topics, "cadence_is_not_proven_by_back_to_back_runs": True}
     write(root, evidence / "inventory.json", payload)
     write(root, "data/global_intelligence/discovery.json", payload)
     write(root, "data/global_intelligence/source_health.json", {"sources": source_health})
-    write(root, "data/global_intelligence/editorial_candidates.json", {"as_of":as_of.isoformat(),"default_window_days":30,"maximum_topics":10,"topics":topics,"publication_count":0})
+    write(root, "data/global_intelligence/editorial_candidates.json", {"as_of":as_of.isoformat(),"default_window_days":30,"maximum_topics":None,"topics":topics,"publication_count":0})
     project_inventory_csv(root,payload)
     # Keep only metadata projections publicly. Original bodies are runtime artifacts.
     projection = {}

@@ -53,6 +53,7 @@ jobs:
       - name: Run incremental collectors
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.rebuild != true }}
         env:
+          RADAR_DAILY_WINDOW_DAYS: 30
           REQUESTED_LIMIT: ${{ inputs.processing_limit || 30 }}
         run: |
           limit=$(python -c 'import os; n=int(os.environ["REQUESTED_LIMIT"]); print(n if 1 <= n <= 30 else 30)')
