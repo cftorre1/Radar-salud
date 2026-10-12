@@ -1,0 +1,344 @@
+{
+  "schema_version": "pulso_actual_low_gate_guard_repair_v1",
+  "source_id": "pulso_latercera",
+  "producer_commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+  "inputs": {
+    "history": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "f779385fed3eccf96d0e6d95ebfece23d1e79d83d6a0a8675b80615a63c121fa"
+    },
+    "queue": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "4cf450c4e0ab8b1238af11833dcc65b037382bae5b2ff0da93bc5539e1bbbf8f"
+    },
+    "runtime_report": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "c42683a457229a23bf35fbc1a658af5a8617411f615d4dcb0ddcaa5b03c4f43b"
+    },
+    "telemetry": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "d5cbef5b62630ab6f17305c29bfea987f788313e0876d15d6a02c115b2a30c30"
+    }
+  },
+  "guard_file_sha256": "b52fbd7539a33e97075862ccb8214f9474aabb01224255c46e2a022f732b3bd1",
+  "scope": "ALL6 structured paid outputs below unchanged72 threshold; nested schema required and processor response binding remains mandatory. No model output, source body/day, score or state rewritten.",
+  "tests": "161 PASS targeted actual models/schema/clinical/future/response-binding/liveblog suites",
+  "AI_calls": 0,
+  "state_mutated": false,
+  "publication_approved": false,
+  "threshold": 72,
+  "rows": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-informa-de-afectaciones-leves-en-recintos-de-salud-por-el-sistema-frontal-pero-afirma-que-red-esta-completamente-operativa/",
+      "publication_date": "2026-07-17",
+      "actual_score": 62,
+      "original_body_sha256": "82919f9ba75ced370da7c0a82c29ee53d64c0ba896c097239b66156a0f62944e",
+      "actual_model_output_sha256": "d0f0b9f15a22ab244c808a654775c85651554471e2181871749c5464fbc017cb",
+      "actual_model_response": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_03dc7a1df6059b90006acbcbdbf11487d1ad03647ce4256578",
+        "analysis_text_sha256": "82919f9ba75ced370da7c0a82c29ee53d64c0ba896c097239b66156a0f62944e",
+        "request_input_sha256": "501f34eb9abbcaa0565b810c9f9f819e1cb353a04b88e378ff613a6f2b54e943",
+        "raw_model_output_sha256": "3b4b103d795d5061f643d2bc9a835668587c84f92fa28f0daa5a4ee285adc330"
+      },
+      "previous_reason": "pulso_editorial_incremental_value_uncertain",
+      "recomputed_verdict": {
+        "version": "pulso_editorial_proof_v5",
+        "source": "pulso_latercera",
+        "analysis_text_sha256": "82919f9ba75ced370da7c0a82c29ee53d64c0ba896c097239b66156a0f62944e",
+        "quote_validation_is_semantic_approval": false,
+        "publication_approved": false,
+        "model_output_sha256": "d0f0b9f15a22ab244c808a654775c85651554471e2181871749c5464fbc017cb",
+        "proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "El contenido describe directamente el funcionamiento de hospitales, servicios de urgencia, SAR y SAPU, además de la capacidad de respuesta de la red asistencial ante una emergencia meteorológica.",
+          "human_health_scope_quote": "hasta el momento, la red asistencial ha podido responder sin ninguna afectación grave a los requerimientos de la ciudadanía",
+          "actor": "Ministerio de Salud",
+          "action": "realizó un balance del funcionamiento de la red sanitaria a nivel nacional",
+          "consequence": "la red asistencial ha podido responder sin ninguna afectación grave a los requerimientos de la ciudadanía",
+          "actor_quote": "El Ministerio de Salud realizó un balance del funcionamiento de la red sanitaria a nivel nacional",
+          "action_quote": "El Ministerio de Salud realizó un balance del funcionamiento de la red sanitaria a nivel nacional",
+          "consequence_quote": "hasta el momento, la red asistencial ha podido responder sin ninguna afectación grave a los requerimientos de la ciudadanía",
+          "event_status": "historical_context",
+          "event_status_quote": "hasta el momento, la red asistencial ha podido responder sin ninguna afectación grave",
+          "novelty_decision": "uncertain",
+          "novelty_reason": "La nota aporta un balance fechado sobre afectaciones leves y continuidad operativa durante el sistema frontal, pero no se entrega contexto incremental para determinar si esa información era nueva frente a reportes previos.",
+          "novelty_quote": "Hemos tenido algunas afectaciones leves pero el sistema está operando al 100% en todas las regiones afectadas por esta alerta meteorológica",
+          "future_claims": []
+        },
+        "decision": "rejected",
+        "reason": "editorial_relevance_below_threshold"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-conmemora-dia-nacional-del-donante-de-organos-y-tejidos-con-partido-en-hospital-dr-luis-calvo-mackenna/",
+      "publication_date": "2026-09-26",
+      "actual_score": 68,
+      "original_body_sha256": "08bfa15c7b56ccca33c388833372cf655265ee63d5c9704d595c2d898819e891",
+      "actual_model_output_sha256": "2a859626c1ca37f2ee682f846e3f83a0cbac072dfa23a5a9b2ef8d6b0bbab7e6",
+      "actual_model_response": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0e75ac7532df6058006acbc729952487d1ac915f4d92f02487",
+        "analysis_text_sha256": "08bfa15c7b56ccca33c388833372cf655265ee63d5c9704d595c2d898819e891",
+        "request_input_sha256": "1ccfff0eff6d01da4a90cb58e1d2dcbb7365bdd760beb1a8a22143bd58471721",
+        "raw_model_output_sha256": "91f27ef9dd074920b945989b5220051a6276736d191f324f4cfbe2d80c85101a"
+      },
+      "previous_reason": "pulso_editorial_incremental_value_uncertain",
+      "recomputed_verdict": {
+        "version": "pulso_editorial_proof_v5",
+        "source": "pulso_latercera",
+        "analysis_text_sha256": "08bfa15c7b56ccca33c388833372cf655265ee63d5c9704d595c2d898819e891",
+        "quote_validation_is_semantic_approval": false,
+        "publication_approved": false,
+        "model_output_sha256": "2a859626c1ca37f2ee682f846e3f83a0cbac072dfa23a5a9b2ef8d6b0bbab7e6",
+        "proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La nota aborda directamente el trasplante de órganos, la donación y la espera de pacientes por atención médica en Chile.",
+          "human_health_scope_quote": "actualmente son más de dos mil personas las que están esperando un trasplante",
+          "actor": "el Minsal",
+          "action": "hizo un llamado a la ciudadanía a donar órganos",
+          "consequence": "2.270 personas que esperan un trasplante en Chile",
+          "actor_quote": "el Minsal hizo un llamado a la ciudadanía a donar órganos.",
+          "action_quote": "el Minsal hizo un llamado a la ciudadanía a donar órganos.",
+          "consequence_quote": "2.270 personas que esperan un trasplante en Chile, la mayoría por un riñón",
+          "event_status": "actual",
+          "event_status_quote": "el Minsal hizo un llamado a la ciudadanía a donar órganos",
+          "novelty_decision": "uncertain",
+          "novelty_reason": "El contenido aporta cifras de 2026 y de la lista de espera, pero no se entrega contexto incremental para determinar si esas cifras constituyen información nueva frente a reportes anteriores.",
+          "novelty_quote": "Según cifras del Minsal, se han registrado 156 donantes efectivos y 451 trasplantes realizados durante 2026",
+          "future_claims": []
+        },
+        "decision": "rejected",
+        "reason": "editorial_relevance_below_threshold"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/alerta-alimentaria-por-listeria-supermercado-informa-del-retiro-preventivo-de-todas-las-unidades-de-pasta-de-jamon/",
+      "publication_date": "2026-09-04",
+      "actual_score": 62,
+      "original_body_sha256": "a7fb9caee358447cd3bea47e1956e5bb39a1a908d46936c3eccae183f742f059",
+      "actual_model_output_sha256": "c907a9b05121f501a4b57ea570b45caf98d7c8cddf3662029dba2c036e1655c1",
+      "actual_model_response": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_08d7c702a5084d5c006acbc86a854087d1818f31d6d34b8c3a",
+        "analysis_text_sha256": "a7fb9caee358447cd3bea47e1956e5bb39a1a908d46936c3eccae183f742f059",
+        "request_input_sha256": "086332fb7f4faf0aa0b99f460fc818d929124370069df1aaa109fecb5954d9f8",
+        "raw_model_output_sha256": "11c02c699df01a711112138ea0e405aa48baf1d4ce3a4497045ee6055610269f"
+      },
+      "previous_reason": "pulso_editorial_scope_not_grounded",
+      "recomputed_verdict": {
+        "version": "pulso_editorial_proof_v5",
+        "source": "pulso_latercera",
+        "analysis_text_sha256": "a7fb9caee358447cd3bea47e1956e5bb39a1a908d46936c3eccae183f742f059",
+        "quote_validation_is_semantic_approval": false,
+        "publication_approved": false,
+        "model_output_sha256": "c907a9b05121f501a4b57ea570b45caf98d7c8cddf3662029dba2c036e1655c1",
+        "proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "El contenido vincula directamente un producto alimentario con la presencia de Listeria Monocytogenes, una alerta del Ministerio de Salud y una recomendación de no consumo para las personas.",
+          "human_health_scope_quote": "alerta alimentaria por la presencia de la bacteria Listeria Monocytogenes en un lote de la pasta cóctel de jamón marca Lider",
+          "actor": "el Ministerio de Salud",
+          "action": "emitiera este jueves una alerta alimentaria por la presencia de la bacteria Listeria Monocytogenes en un lote de la pasta cóctel de jamón marca Lider",
+          "consequence": "recomendaron a las personas que tengan este producto no consumirlo",
+          "actor_quote": "Luego de que el Ministerio de Salud emitiera este jueves una alerta alimentaria por la presencia de la bacteria Listeria Monocytogenes en un lote de la pasta cóctel de jamón marca Lider",
+          "action_quote": "Luego de que el Ministerio de Salud emitiera este jueves una alerta alimentaria por la presencia de la bacteria Listeria Monocytogenes en un lote de la pasta cóctel de jamón marca Lider",
+          "consequence_quote": "Así, desde el Minsal recomendaron a las personas que tengan este producto no consumirlo.",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "realizaremos una investigación interna para asegurar los más altos estándares de calidad y seguridad de nuestros productos",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "En el contenido entregado, la alerta del Minsal, el retiro preventivo del 100% de las unidades disponibles y la prohibición de funcionamiento de la planta proveedora aparecen como información material reportada en esta publicación; no se entrega contexto previo que permita clasificarla como repetición.",
+          "novelty_quote": "instruimos de manera inmediata el retiro preventivo del 100% de las unidades disponibles en nuestras tiendas",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Según la nota del 4 de septiembre de 2026, el Ministerio de Salud había emitido ese jueves una alerta alimentaria por Listeria Monocytogenes en un lote de pasta cóctel de jamón Lider; al 4 de septiembre de 2026, según la nota, el supermercado informó el retiro preventivo del 100% de las unidades disponibles en sus tiendas y señaló que la planta del proveedor estaba con prohibición de funcionar mientras las autoridades sanitarias investigaban. El producto correspondía a un lote elaborado el 14/08/2026, con vencimiento 05/09/2026. La empresa anunció que realizaría una investigación interna sobre la seguridad de sus productos.",
+              "source_quote": "realizaremos una investigación interna para asegurar los más altos estándares de calidad y seguridad de nuestros productos"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Al 4 de septiembre de 2026, según la nota, el Ministerio de Salud recomendó a las personas que tuvieran el producto no consumirlo, mientras el supermercado había informado el retiro preventivo de todas las unidades disponibles en sus tiendas. La empresa también anunció una investigación interna, y la planta del proveedor se encontraba entonces con prohibición de funcionar mientras las autoridades sanitarias investigaban. La señal es relevante para seguridad alimentaria, aunque corresponde a una alerta puntual asociada a un lote específico.",
+              "source_quote": "La seguridad de nuestros clientes y colaboradores es nuestra prioridad. Por este motivo, realizaremos una investigación interna para asegurar los más altos estándares de calidad y seguridad de nuestros productos"
+            }
+          ]
+        },
+        "decision": "rejected",
+        "reason": "editorial_relevance_below_threshold"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/por-emanaciones-toxicas-informan-suspension-de-clases-en-quilicura-tras-gigantesco-incendio-en-empresa-de-productos-quimicos/",
+      "publication_date": "2026-08-05",
+      "actual_score": 70,
+      "original_body_sha256": "b190c2b846701c235e961956a22f14c928f3fd87798a0cbd1b5edfdd2dd6a6be",
+      "actual_model_output_sha256": "b0bff7a53d5f433e8c183cf7acea2200b3c0ffb5973ac45a1cbe49baa7e896c9",
+      "actual_model_response": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_08df88ad79c21d60006acbcadefd6087d1a330a32388650b50",
+        "analysis_text_sha256": "b190c2b846701c235e961956a22f14c928f3fd87798a0cbd1b5edfdd2dd6a6be",
+        "request_input_sha256": "3b7239c27d5d1a24d134ad7e80aa4938d76dc98812fe1dfa39963df7ff3cff7b",
+        "raw_model_output_sha256": "adb7d7a5086633c0082fffb987396660ddfb46ce4587cdd8763421ca560d9c3f"
+      },
+      "previous_reason": "pulso_editorial_future_copy_not_grounded",
+      "recomputed_verdict": {
+        "version": "pulso_editorial_proof_v5",
+        "source": "pulso_latercera",
+        "analysis_text_sha256": "b190c2b846701c235e961956a22f14c928f3fd87798a0cbd1b5edfdd2dd6a6be",
+        "quote_validation_is_semantic_approval": false,
+        "publication_approved": false,
+        "model_output_sha256": "b0bff7a53d5f433e8c183cf7acea2200b3c0ffb5973ac45a1cbe49baa7e896c9",
+        "proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La nota vincula explícitamente la toxicidad del humo con un posible efecto sobre la salud de menores y describe una medida preventiva para establecimientos educacionales, tras un análisis de la Seremi de Salud.",
+          "human_health_scope_quote": "esto puede afectar también la salud de los menores, especialmente por actividades físicas",
+          "actor": "El delegado presidencial de la Región Metropolitana, Germán Codina",
+          "action": "informó esta noche la suspensión de clases para este miércoles 5 de agosto en la comuna de Quilicura",
+          "consequence": "suspensión de clases para este miércoles 5 de agosto en la comuna de Quilicura",
+          "actor_quote": "El delegado presidencial de la Región Metropolitana, Germán Codina, informó esta noche la suspensión de clases para este miércoles 5 de agosto en la comuna de Quilicura",
+          "action_quote": "El delegado presidencial de la Región Metropolitana, Germán Codina, informó esta noche la suspensión de clases para este miércoles 5 de agosto en la comuna de Quilicura",
+          "consequence_quote": "El delegado presidencial de la Región Metropolitana, Germán Codina, informó esta noche la suspensión de clases para este miércoles 5 de agosto en la comuna de Quilicura",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "aunque se encuentra contenido, se va a extender por al menos 8 horas",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "El contenido reporta una decisión concreta de suspensión de clases y su fundamento sanitario ante un incendio químico en curso, información material para la gestión de salud poblacional local.",
+          "novelty_quote": "Se confirma que se suspende el día de mañana (miércoles) las clases en la comuna de Quilicura.",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Según la nota publicada el 5 de agosto de 2026, el delegado presidencial de la Región Metropolitana, Germán Codina, informó la suspensión de clases para el miércoles 5 de agosto en todos los establecimientos de Quilicura, tras un análisis de la Seremi de Salud por las emanaciones tóxicas del incendio en Panimex Química. Al momento del reporte, Bomberos había informado que el incendio estaba contenido, pero que su combate se extendería por al menos ocho horas. Esta nota no acredita que la suspensión ni la emergencia continuaran vigentes al 11 de octubre de 2026.",
+              "source_quote": "el combate del incendio, aunque se encuentra contenido, se va a extender por al menos 8 horas"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Al 5 de agosto de 2026, según la nota, la autoridad regional y la Seremi de Salud adoptaron una medida de salud poblacional que afectó a establecimientos públicos y privados de Quilicura, debido al riesgo de que el humo tóxico afectara la salud de menores, especialmente durante actividades físicas. La nota merece atención por mostrar una respuesta sanitaria y educacional coordinada ante una emergencia química local, sin acreditar un efecto sectorial permanente ni que la medida siguiera vigente a la fecha de revisión.",
+              "source_quote": "que probablemente se va a seguir expandiendo en esta zona durante las próximas horas"
+            }
+          ]
+        },
+        "decision": "rejected",
+        "reason": "editorial_relevance_below_threshold"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-apelara-a-fallo-que-ordeno-reincorporar-a-exdirectora-del-hospital-de-san-antonio-tras-declarar-ilegal-su-remocion/",
+      "publication_date": "2026-08-01",
+      "actual_score": 58,
+      "original_body_sha256": "61dc8e4bb1b58621c619beb052136e579daa1d8595cc81ce57d1bda57ee10c23",
+      "actual_model_output_sha256": "5e7c4340d345ab93df70ad6b1ed08acd2de295783a367adcfce1c3a568a98b67",
+      "actual_model_response": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_039af5468b27badc006acbcafb05d887d195f2071d709681c5",
+        "analysis_text_sha256": "61dc8e4bb1b58621c619beb052136e579daa1d8595cc81ce57d1bda57ee10c23",
+        "request_input_sha256": "6c954edc2de7b8f8a392b02eea57c62b26dee6ca585d1f86cbd5b64cee0e5bb3",
+        "raw_model_output_sha256": "87c67cacbcbcee578eb9001af7bb0e6b973fdcd6e97e580f16e0d9d5a631ebd6"
+      },
+      "previous_reason": "pulso_editorial_scope_quote_not_in_input",
+      "recomputed_verdict": {
+        "version": "pulso_editorial_proof_v5",
+        "source": "pulso_latercera",
+        "analysis_text_sha256": "61dc8e4bb1b58621c619beb052136e579daa1d8595cc81ce57d1bda57ee10c23",
+        "quote_validation_is_semantic_approval": false,
+        "publication_approved": false,
+        "model_output_sha256": "5e7c4340d345ab93df70ad6b1ed08acd2de295783a367adcfce1c3a568a98b67",
+        "proof": {
+          "scope_decision": "incidental_health",
+          "scope_reason": "La nota trata una controversia judicial y administrativa sobre la remoción de una directora hospitalaria. Aunque menciona un hospital y autoridades sanitarias, no acredita un cambio específico en atención clínica, enfermedad, cobertura, medicamentos, financiamiento sanitario, regulación clínica o capacidad asistencial.",
+          "human_health_scope_quote": "",
+          "actor": "",
+          "action": "",
+          "consequence": "",
+          "actor_quote": "",
+          "action_quote": "",
+          "consequence_quote": "",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "El Servicio ejercerá el recurso de apelación que contempla la ley",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "La publicación reporta como información material el fallo que dejó sin efecto la remoción, ordenó la reincorporación y dispuso el pago de remuneraciones, además de la apelación anunciada por el Servicio. No se entrega contexto incremental previo para evaluar si el caso ya era conocido.",
+          "novelty_quote": "se ordenó su reincorporación y el pago de sus remuneraciones desde el momento en que fue apartada",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Según la nota del 2026-08-01, la Corte de Apelaciones de Valparaíso ordenó reincorporar a Loreto Maturana como exdirectora del Hospital Claudio Vicuña y pagarle sus remuneraciones desde su separación, tras declarar ilegal y arbitraria la remoción. Al 2026-08-01, según la nota, el Servicio de Salud Valparaíso-San Antonio comunicó que apelaría y que la sentencia aún no se encontraba ejecutoriada.",
+              "source_quote": "El Servicio ejercerá el recurso de apelación que contempla la ley, dentro del plazo legal, por estimar que existen fundamentos jurídicos para que la Corte Suprema revise el criterio adoptado"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Al 2026-08-01, según la nota, el fallo afectaba el procedimiento administrativo utilizado por el Servicio de Salud Valparaíso-San Antonio para remover a la directora del Hospital Claudio Vicuña, mientras el Servicio anunciaba una apelación ante la Corte Suprema. La nota no acredita un efecto concreto en atención clínica, cobertura, financiamiento o capacidad sanitaria, ni informa el resultado posterior de la apelación a la fecha de revisión.",
+              "source_quote": "para que la Corte Suprema revise el criterio adoptado y se pronuncie respecto del procedimiento administrativo analizado en la sentencia"
+            }
+          ]
+        },
+        "decision": "rejected",
+        "reason": "editorial_relevance_below_threshold"
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/gobierno-suspende-clases-para-este-lunes-en-provincia-de-huasco-y-regiones-de-coquimbo-y-valparaiso/",
+      "publication_date": "2026-07-19",
+      "actual_score": 68,
+      "original_body_sha256": "52f7381d02dfa2f44c9ed72ec446324e3f643c321687ac197656e0a96c51afd8",
+      "actual_model_output_sha256": "6b0a6fdf75539f415f126da222f3956e97e99a4d6f1efd6c56aeb74d9c7f6a64",
+      "actual_model_response": {
+        "schema_version": "pulso_editorial_proof_v5",
+        "source_name": "Pulso / La Tercera",
+        "model": "gpt-5.6-luna",
+        "response_id": "resp_0864d525476c66e9006acbcbb76f3887d1ac6c0f84544e8e1b",
+        "analysis_text_sha256": "52f7381d02dfa2f44c9ed72ec446324e3f643c321687ac197656e0a96c51afd8",
+        "request_input_sha256": "cae35354b42ba61fce4b6268f6815b1e8a086a80b6c23f0d69b230388c94c3fe",
+        "raw_model_output_sha256": "0d0e07dff873add06cfae66c7c95cebf0d369d745243a6e2b88071ef99d3fc94"
+      },
+      "previous_reason": "pulso_editorial_future_copy_not_grounded",
+      "recomputed_verdict": {
+        "version": "pulso_editorial_proof_v5",
+        "source": "pulso_latercera",
+        "analysis_text_sha256": "52f7381d02dfa2f44c9ed72ec446324e3f643c321687ac197656e0a96c51afd8",
+        "quote_validation_is_semantic_approval": false,
+        "publication_approved": false,
+        "model_output_sha256": "6b0a6fdf75539f415f126da222f3956e97e99a4d6f1efd6c56aeb74d9c7f6a64",
+        "proof": {
+          "scope_decision": "human_health_specific",
+          "scope_reason": "La nota describe una medida concreta para reforzar la atención de salud humana en Ovalle mediante el traslado de un hospital modular.",
+          "human_health_scope_quote": "Asimismo, anunció el traslado de un hospital modular proporcionado por el Ejército para reforzar la atención de salud en la comuna de Ovalle.",
+          "actor": "Claudio Alvarado",
+          "action": "anunció el traslado de un hospital modular proporcionado por el Ejército",
+          "consequence": "reforzar la atención de salud en la comuna de Ovalle",
+          "actor_quote": "El biministro del Interior y Segegob, Claudio Alvarado, anunció la noche de este sábado la suspensión de clases para este lunes 20 de julio",
+          "action_quote": "Asimismo, anunció el traslado de un hospital modular proporcionado por el Ejército para reforzar la atención de salud en la comuna de Ovalle.",
+          "consequence_quote": "Asimismo, anunció el traslado de un hospital modular proporcionado por el Ejército para reforzar la atención de salud en la comuna de Ovalle.",
+          "event_status": "mixed_actual_and_future",
+          "event_status_quote": "ese transporte ya se encuentra en desarrollo y a primeras horas de mañana estaría llegando a la región",
+          "novelty_decision": "new_material_information",
+          "novelty_reason": "El contenido informa una acción sanitaria específica —el traslado anunciado de un hospital modular del Ejército— con destino y propósito asistencial definidos; no se entrega contexto incremental previo para establecer que sea una repetición.",
+          "novelty_quote": "Asimismo, anunció el traslado de un hospital modular proporcionado por el Ejército para reforzar la atención de salud en la comuna de Ovalle.",
+          "future_claims": [
+            {
+              "summary_field": "what_happened",
+              "summary_quote": "Según la nota del 2026-07-19, el Gobierno anunció el traslado de un hospital modular proporcionado por el Ejército para reforzar la atención de salud en la comuna de Ovalle. Al 2026-07-19, el transporte estaba en desarrollo y se esperaba su llegada a la región a primeras horas del 2026-07-20; la nota no acredita su implementación ni vigencia al 2026-10-11.",
+              "source_quote": "ese transporte ya se encuentra en desarrollo y a primeras horas de mañana estaría llegando a la región para la implementación lo más rápido posible"
+            },
+            {
+              "summary_field": "why_it_matters",
+              "summary_quote": "Según la nota del 2026-07-19, la medida buscaba reforzar temporalmente la atención de salud en Ovalle durante el sistema frontal, mediante capacidad modular proporcionada por el Ejército. Al 2026-07-19, esto constituía un apoyo anunciado para la red local, pero la publicación no permite verificar que el hospital haya quedado operativo o que continuara disponible al 2026-10-11.",
+              "source_quote": "para la implementación lo más rápido posible y apoyar la atención de salud en la comuna de Ovalle"
+            }
+          ]
+        },
+        "decision": "rejected",
+        "reason": "editorial_relevance_below_threshold"
+      }
+    }
+  ]
+}

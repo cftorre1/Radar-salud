@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "source_id": "pulso_latercera",
+  "scope": "Oct5 incremental comparison evidence supplement; no processing or editorial approval",
+  "prior_addendum": {
+    "ref": "data/audits/pulso_oct5_incremental_addendum_2026_10_11.json",
+    "sha256": "589ba50032521924803ef8ce94f40e3854930edcadddf7fc1223d9df81714160",
+    "preserved_unchanged": true
+  },
+  "publication_approved": false,
+  "score": null,
+  "threshold_changed": false,
+  "media_materiality_threshold": 72,
+  "required_evidence_maturity": "media_reported",
+  "all_known_published_staging_df_budget_rows_compared": true,
+  "published_staging_df_budget_row_count": 2,
+  "semantic_comparison_scope": "Both actual published DF budget primary bodies in the current staging-derived queue. Does not claim a semantic review of all staging history or of all unpublished DF candidates.",
+  "limitations": [
+    "Date discrepancy in Ricarte Soto is explicitly retained: displayed Oct8 publisher publication label selected by DF recovery, metadata Oct7 remains in candidates; the reason for the discrepancy is unknown.",
+    "Original full raw DF HTML bytes are not embedded; original SHA/capture fields are source provenance, with transformed fixture separately identified where available.",
+    "Quoted primary body and baseline comparison are evidence for analysis release only. They are not independent confirmation of the minister operational claims."
+  ],
+  "articles": [
+    {
+      "url": "https://www.df.cl/economia-y-politica/politica/kast-presenta-presupuesto-2027-con-alza-de-1-5-defiende-que-esta",
+      "publication_date": "2026-09-30",
+      "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+      "publication_date_source": "cxenseparse:recs:publishtime",
+      "publication_date_candidates": [
+        {
+          "source": "cxenseparse:recs:publishtime",
+          "value": "2026-09-30T23:31:13Z",
+          "day": "2026-09-30"
+        },
+        {
+          "source": "jsonld:datePublished",
+          "value": "2026-09-30T23:31:13Z",
+          "day": "2026-09-30"
+        },
+        {
+          "source": "visible:published_label",
+          "value": "Miércoles 30 de septiembre de 2026 a las 22:26 hrs.",
+          "day": "2026-09-30"
+        }
+      ],
+      "publication_date_conflict": false,
+      "publication_date_conflict_resolution": null,
+      "source_original_html_sha256": "30eef1fbd7f46c09dde21611f2fbb7109fb1eea9cb506e7b928ff01e511a0658",
+      "source_original_capture_at": "2026-10-11T04:31:43.133709+00:00",
+      "source_schema_fields": "original_sha256/original_captured_at; not Pulso html_sha256/captured_at",
+      "full_primary_body": "El Presidente José Antonio Kast ratificó la noche de este miércoles que el Presupuesto de la nación correspondiente a 2027 subirá 1,5% en relación a la ejecución proyectada para este año, con un foco en las urgencias del país, que implica resguardar los beneficios sociales y ajustado a la disciplina fiscal. “ Cada peso bien cuidado es una oportunidad para Chile”, dijo en un discurso de unos 17 minutos, en el cual expresó que hace seis meses recibieron un Estado “que llevaba más de una década gastando más de lo que recibía”. El jefe de Estado reconoció que se esperaba que el gasto creciera entre 0% y 1%, pero añadió que “ decidimos hacer un esfuerzo adicional de medio punto para acelerar la reactivación, la inversión y el empleo. El problema nunca fue invertir. El problema fue gastar sin saber cómo pagarlo ”. Kast afirmó que “este esfuerzo está financiado y cumple la meta de déficit. Cada peso, donde más se necesita. Hoy, de cada $ 1.000 que gasta el Estado, más de $ 600 van a pensiones, salud y educación . Esa es la parte que este Presupuesto protege”. También indicó que revisaron 632 programas en 23 ministerios. “Los que funcionan, crecen. Los que no dan resultados, tendrán que mejorar antes de recibir un peso más”, precisó. Yendo a los distintos focos temáticos, Kast señaló que “ la primera prioridad es volver a crecer, crear trabajo y reconstruir. Para este 2027 destinamos US$ 9.700 millones a crecimiento, trabajo y reconstrucción: 8,1% más que este año ”. En este punto recordó el Plan Chile Despega, por US$ 1.300 millones , que busca generar más de 100 mil puestos de trabajo. En esa línea, anunció que impulsarán una cartera extraordinaria de 241 obras públicas en todas las regiones de Chile. “Son obras de conservación que se construyen con mano de obra de la zona. No vamos a esperar a mitad de año: vamos a adelantar su inicio a enero, con seguimiento obra por obra”, indicó. Tras la cadena, el ministro del Interior, Claudio Alvarado, informó en Chilevisión que el erario considera un crecimiento de la economía de 3%. El ministro Quiroz encabezó el ingreso del proyecto de Presupuesto a la Cámara. Foto: Camara de Diputado Seguridad La segunda prioridad será la seguridad, área a la que se destinarán US$ 7.200 millones, un 9,1% más que este año, reasignando recursos hacia quienes están en la calle, en las fronteras y resguardando cárceles. Kast subrayó que se están financiando mil nuevos cupos en Carabineros este año y la capacidad para formar a más de 3.200 nuevos alumnos y cinco nuevos cuarteles. La PDI duplica los fondos de sus equipos contra el crimen organizado en los barrios. Gendarmería crece casi un 18% y el Servicio de Migraciones un tercio para financiar expulsiones de quienes “no tienen derecho a estar en Chile” y activar una nueva Fiscalía Supraterritorial “para perseguir a las bandas que operan en varias regiones”. Infancia y beneficios sociales La tercera urgencia del Presupuesto “son nuestros niños: llegar antes y proteger mejor”. En total, se destinarán US$ 2.500 millones, un 4,1% más que este año. “Proteger mejor es llegar a tiempo cuando el daño ya ocurrió y para ello los programas de reparación crecen un 19,3% y el trabajo con sus familias, para que el daño no se repita, crece un 24,1%”, dijo. La cuarta prioridad, según remarcó, es proteger los beneficios sociales: “Durante meses se dijo que poner orden en las cuentas significaría quitarles beneficios a las familias. Este Presupuesto demuestra lo contrario”. Así, puntualizó que la Pensión Garantizada Universal tendrá US$ 7.200 millones para más de 2,2 millones de personas mayores que “hoy merecen algo muy simple: saber que a fin de mes su pensión va a estar ahí. Sin letra chica”. En este marco, Kast destacó que la educación es una de las mayores inversiones del erario con US$ 17.700 millones, “el segundo presupuesto más grande del Estado y solo superado por Salud”. La llamada “Carrera Docente” crece un 2,9% y llega a más de 215 mil profesores; y se mantiene la gratuidad para más de 600 mil estudiantes, y aumenta las becas para los jóvenes que quieren seguir estudiando después del colegio. “Ninguno de los beneficios que la Ley garantiza se toca. Lo que sí va a cambiar, y comenzó a cambiar desde el día en que asumimos, es que el Estado va a verificar cada peso del gasto social, cruzando la información de sus registros para que los recursos lleguen a quien corresponde. No cambian los requisitos. No cambian los montos. Cambia el cuidado de los recursos de todos los chilenos”, enfatizó. Salud crecerá 4,7% Kast destacó que el presupuesto de Salud crece 4,7%. “No se trata solo de poner más recursos, sino de que esos recursos se conviertan en atención a tiempo”. Detalló que aumentará el financiamiento para acortar los tiempos de espera; comprar atenciones a clínicas, invertir en hospitales de mayor complejidad. Asimismo, los consultorios, Cesfam y postas recibirán más, con un mayor aporte por cada persona inscrita. Indicó que “esta noche no solo quiero contarles en qué vamos a gastar. También quiero contarles en qué vamos a dejar de gastar mal. El Estado pagó más de $ 8 mil millones por sobre el precio de mercado en compras por convenio marco”; y adelantó que, “solo ajustando los arriendos de oficinas públicas a lo que vale el mercado, podemos ahorrar hasta $ 5 mil millones al año”. Finalmente, el mandatario hizo un llamado a los parlamentarios: “Les pido que el debate sea exigente, pero que no sea desde una trinchera. Las urgencias de los chilenos, la urgencia de volver a vivir mejor, no tienen color político”, concluyó.",
+      "body_characters": 5585,
+      "primary_body_sha256": "f89fe86e0a83f9a307ae036628ffb216df7d4d7b466d2e460984f398243f2de7",
+      "body_content_source": "df_primary_body",
+      "current_queue_fingerprint": "8845d2bef246d171a5a95697533e91865e448b478ef53cc29723489592f6a5d6",
+      "current_raw_snapshot_sha256": "a3ca28e294eb9f22a8397a5d86401264014346af3dfe14685b60a6a498516485",
+      "full_primary_body_read": true,
+      "comparison_reason": "Budget 2027 general-state proposed spending/savings, not national hospital 2026 procurement/productivity claims.",
+      "missing_generic_sha_capture_fields_in_prior_addendum_are_not_inferred_to_mean_missing_df_original_provenance": true,
+      "direct_independent_corroboration_of_oct5_operational_claims": false,
+      "retained_transformed_publisher_fixture": null
+    },
+    {
+      "url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
+      "publication_date": "2026-10-08",
+      "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+      "publication_date_source": "visible:published_label",
+      "publication_date_candidates": [
+        {
+          "source": "cxenseparse:recs:publishtime",
+          "value": "2026-10-07T22:54:15Z",
+          "day": "2026-10-07"
+        },
+        {
+          "source": "jsonld:datePublished",
+          "value": "2026-10-07T22:54:15Z",
+          "day": "2026-10-07"
+        },
+        {
+          "source": "visible:published_label",
+          "value": "Jueves 8 de octubre de 2026 a las 04:00 hrs. Martín Baeza recorte presupuestario salud Mariela Forma",
+          "day": "2026-10-08"
+        }
+      ],
+      "publication_date_conflict": true,
+      "publication_date_conflict_resolution": {
+        "selected_visible_day": "2026-10-08",
+        "expected_cx_timestamp": "2026-10-07T22:54:15Z",
+        "expected_jsonld_timestamp": "2026-10-07T22:54:15Z",
+        "basis": "The article explicitly labels publication Thursday 8 October 2026 at 04:00. Use that displayed publisher day; retain both earlier metadata timestamps. The reason for the publisher discrepancy remains unknown; no crawl/modification/incident date is substituted.",
+        "evidence": "Work3 original sample and captured original artifact 11691902368 (run38111768459)",
+        "review_scope": "Codex A date-provenance review; independent final candidate review still required"
+      },
+      "source_original_html_sha256": "13f72317361977804811d6b083ee1332b62ebdb45adb35eee1dafcc328fa6047",
+      "source_original_capture_at": "2026-10-11T04:30:26.730087+00:00",
+      "source_schema_fields": "original_sha256/original_captured_at; not Pulso html_sha256/captured_at",
+      "full_primary_body": "El Presupuesto 2027 trajo un aumento de un 4,7% para el Ministerio de Salud y, dentro de ello, un crecimiento de un 4,8% en los recursos para Fonasa. Sin embargo, el Fondo para Diagnósticos y Tratamientos de Alto Costo (Ley Ricarte Soto) registró una caída de un 14,5%, lo que levantó las críticas de la Cámara de Innovación Farmacéutica (CIF) , asociación que agrupa a grandes multinacionales de esta industria en Chile. Este miércoles, en DF al Cierre, su vicepresidenta ejecutiva, Mariela Formas, explicó las alertas que ha estado encendiendo el gremio . “No tiene que ver con este gobierno ni este presupuesto en particular, lo que llama la atención es no reconocer el gasto ejecutado que tiene la Ley Ricarte Soto”, planteó. “Se sobreejecuta en torno a un 30%-40% cada año”. Según argumentó la dirigente, el programa -dirigido a financiar medicamentos que las familias chilenas no tienen la posibilidad de enfrentar por sus propios medios económicos-, tiene un “ error de diseño ”, puesto que fue confeccionado como un fondo fijo y no consideró que “la medicina avanza mucho más rápido que la legislación y que las coberturas, por lo tanto hay nuevos medicamentos que deberían estar en este fondo y no han podido entrar, porque está agotado ”. En ese sentido, planteó que, además de que incluso sobreejecutado el fondo solo llega a ser el 0,3% del gasto público, recortar en este ítem “es un ahorro mal entendido (...) genera ahorro en hospitalizaciones, en que los pacientes caigan en temas críticos de dependencia con que no puedan trabajar, y eso aumenta las licencias y disminuye la productividad… entonces, ¿cómo vas incorporando el valor que tiene sumar esa cobertura con el contrafactual de no tenerla?”. Con todo esto, Formas argumentó que se entendería el recorte presupuestario si es que en el Congreso se estuviera priorizando el proyecto de modernización de la Ley Ricarte Soto, pero que eso no ha sido así , dado que aún se mantiene pendiente la entrega de un informe financiero por parte de la Dirección de Presupuestos (Dipres), que no ha llegado. “Ese proyecto debería reestructurar el fondo e inyectarle fondos relevantes para sincerar el gasto”, dijo la vicepresidenta ejecutiva de la CIF. “Además, lo que no se cubre en salud en este espectro, por el paciente de una patología, se va a judicialización. La judicialización, en 2025, estuvo en torno a los $ 98.000 millones, y ese es un gasto poco predecible, ineficiente e inequitativo”, agregó. “Las alertas se encienden porque este fondo, que debería ir creciendo con el tiempo, no ve luces de tener un nuevo decreto que ingrese nuevas patologías o nuevas terapias más modernas, porque está acotado”. De la mano de lo anterior, Formas admitió que la ministra de Salud, May Chomali, salió a explicar que el recorte no implicará que pacientes queden sin financiamiento para sus medicamentos, pero insistió que la preocupación tiene que ver con que “no se ve para dónde va el crecimiento ordenado de este fondo”. Más allá de este tema en puntual, manifestó que a nivel país, la industria considera que una de las principales prioridades del sistema debería ser rediseñar las coberturas para que crezcan, porque además de los ahorros que generaría en el sistema, esto podría disminuir el gasto de bolsillo al reconfigurar los mercados farmacéuticos. La idea, señaló, es que “tengamos un mercado ordenado, profundo y que efectivamente vaya en línea no solo con la innovación biomédica, sino también con las necesidades de salud pública del país (...). Las familias soportan el 70% del gasto farmacéutico y eso lleva a moldear el mercado de una forma distinta y es importante que los medicamentos sean parte de los planes públicos y privados de salud, de modo que el mercado se ordene y disminuya el gasto de bolsillo”, apuntó.",
+      "body_characters": 3796,
+      "primary_body_sha256": "215bd949c3c99f04c46c88b23bc62d710231f71e599b589b1d6ed07b15990803",
+      "body_content_source": "df_primary_body",
+      "current_queue_fingerprint": "d8fe0749f547dabfdf1122622a357b179561389c2d9c8a91c71ac1e0eae93630",
+      "current_raw_snapshot_sha256": "4c3318090507681880be925de69aa8f8e0e7265b8b273c8c11bd16ee45425abb",
+      "full_primary_body_read": true,
+      "comparison_reason": "2027 Ricarte Soto proposed funding reduction and 30–40% fund overexecution, not direct-purchase price-gap or realised hospital 2026 savings.",
+      "missing_generic_sha_capture_fields_in_prior_addendum_are_not_inferred_to_mean_missing_df_original_provenance": true,
+      "direct_independent_corroboration_of_oct5_operational_claims": false,
+      "retained_transformed_publisher_fixture": {
+        "path": "tests/fixtures/df_ricarte_real.html",
+        "sha256": "ac4ed40af2254132c5dad0d97130d3a48f44c898ea63cabc9197cea0e09f6602",
+        "manifest_ref": "tests/fixtures/df_original_manifest.json",
+        "manifest_sha256": "132dc14fb53ea9b9c63590af711f665ba7013af6396be1fdc232368cbdadaaf5",
+        "transformation": "Removed non-JSON-LD scripts/styles/comments and global navigation/footer; retained original HEAD plus primary-column source fragment including recommendations. Removed blank lines. Parser and primary cards match original excerpt exactly. Normalized trailing whitespace and omitted blank lines; parser/card results unchanged.",
+        "original_full_html_bytes_are_not_this_transformed_fixture": true
+      }
+    }
+  ]
+}

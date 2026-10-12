@@ -1,0 +1,27 @@
+TAP version 13
+# Subtest: Home V2 specials share read identity and suppress their base signal
+not ok 1 - Home V2 specials share read identity and suppress their base signal
+  ---
+  duration_ms: 23.424524
+  type: 'test'
+  location: '/workspace/Radar-salud/work/global-intelligence-20261011/work/ci-baseline-88979eb/tests/web.test.cjs:31:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of undefined (reading 'id')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (/workspace/Radar-salud/work/global-intelligence-20261011/work/ci-baseline-88979eb/tests/web.test.cjs:31:918)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.start (node:internal/test_runner/test:1242:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 41.960665

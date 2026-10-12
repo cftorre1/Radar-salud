@@ -1,0 +1,584 @@
+{
+  "schema_version": 1,
+  "verdict": "PASS_SCOPED_PRE_FINAL_CRITICAL_CI",
+  "scope": "Read-only native critical QA monitor of requested checkpoint. This CI snapshot predates final paid producer/runtime acceptance and does not certify final source recovery.",
+  "repository": "cftorre1/Radar-salud",
+  "pull_request": 10,
+  "run_id": 38166170369,
+  "run_number": 160,
+  "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/38166170369",
+  "requested_source_sha": "29731f04d998659e5892c109871f54ef0c7f8eef",
+  "actual_checkout_sha": "385db4eae8c21f7a2a954652085c0ee3c9ee9488",
+  "staging_base_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+  "separate_genuine_runtime_run_id": 38166157093,
+  "workflow_status": {
+    "id": 38166170369,
+    "name": "Alicanto critical QA",
+    "status": "completed",
+    "conclusion": "success",
+    "run_number": 160,
+    "jobs_url": "https://api.github.com/repos/cftorre1/Radar-salud/actions/runs/38166170369/jobs",
+    "logs_url": "https://api.github.com/repos/cftorre1/Radar-salud/actions/runs/38166170369/logs",
+    "workflow_id": 366617728
+  },
+  "observed_completed_at_utc": "2026-10-11 19:11:21 UTC",
+  "report_written_at_utc": "2026-10-11 19:12:22 UTC",
+  "jobs": [
+    {
+      "id": 114549079211,
+      "name": "tests",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 38166170369,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Run pip install -e . pytest",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Run python -m pytest -q",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Run npm ci && npm test",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15
+        }
+      ]
+    },
+    {
+      "id": 114550418177,
+      "name": "staging",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 38166170369,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Run pip install -e .",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Load durable iteration ledger",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Build priority statistical deep analysis",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Build fresh material epidemiology signal",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Recurate current history without external lookups",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Validate and export the canonical Global Intelligence sample",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Run python scripts/product_report.py",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11
+        },
+        {
+          "name": "Run npm ci && npx playwright install --with-deps chromium",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Run npm run test:browser",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 28
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 29
+        }
+      ]
+    },
+    {
+      "id": 114551074729,
+      "name": "reviewer",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 38166170369,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Run pip install -e .",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Run actions/download-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Run python scripts/review_candidate.py --web reviewed/web --sha \"$GITHUB_SHA\"",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15
+        }
+      ]
+    }
+  ],
+  "pytest": {
+    "verdict": "PASS",
+    "passed": 2956,
+    "skipped": 2,
+    "warnings": 1,
+    "errors": 0,
+    "failed": 0,
+    "duration_seconds": 331.34,
+    "summary": "2956 passed, 2 skipped, 1 warning in 331.34s (0:05:31)"
+  },
+  "node": {
+    "verdict": "PASS",
+    "tests": 42,
+    "passed": 42,
+    "failed": 0,
+    "skipped": 0
+  },
+  "staging": {
+    "verdict": "PASS",
+    "browser_tests_passed": 64,
+    "browser_summary": "64 passed (1.6m)",
+    "offline_snapshot_signals": 127,
+    "all_steps_successful": true
+  },
+  "reviewer": {
+    "verdict": "PASS_DETERMINISTIC_REVIEWER",
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "385db4eae8c21f7a2a954652085c0ee3c9ee9488",
+    "reviewed_at": "2026-10-11T19:11:01.196904+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ],
+    "all_steps_successful": true,
+    "semantic_review_certified": false
+  },
+  "artifacts": [
+    {
+      "id": 11712911260,
+      "name": "reviewer-385db4eae8c21f7a2a954652085c0ee3c9ee9488",
+      "size_in_bytes": 494,
+      "url": "https://api.github.com/repos/cftorre1/Radar-salud/actions/artifacts/11712911260",
+      "archive_download_url": "https://api.github.com/repos/cftorre1/Radar-salud/actions/artifacts/11712911260/zip",
+      "expired": false,
+      "created_at": "2026-10-11T19:11:02Z",
+      "expires_at": "2027-01-09T19:00:14Z",
+      "updated_at": "2026-10-11T19:11:02Z",
+      "digest": "sha256:ead30c4d847c9b2b9e4f07dae0e7a9c86d00bd62c61ed9796a79bb61fb9454ed",
+      "workflow_run": {
+        "id": 38166170369,
+        "repository_id": 1379044672,
+        "head_repository_id": 1379044672,
+        "head_branch": "codex/b-pulso-runtime-20261011",
+        "head_sha": "29731f04d998659e5892c109871f54ef0c7f8eef"
+      }
+    },
+    {
+      "id": 11712237296,
+      "name": "staging-evidence-385db4eae8c21f7a2a954652085c0ee3c9ee9488",
+      "size_in_bytes": 86625520,
+      "url": "https://api.github.com/repos/cftorre1/Radar-salud/actions/artifacts/11712237296",
+      "archive_download_url": "https://api.github.com/repos/cftorre1/Radar-salud/actions/artifacts/11712237296/zip",
+      "expired": false,
+      "created_at": "2026-10-11T19:09:50Z",
+      "expires_at": "2027-01-09T19:00:14Z",
+      "updated_at": "2026-10-11T19:09:50Z",
+      "digest": "sha256:67cbd522357c7682cfa1e4ce739f4dafe974900b8015a25ea016c5cba41e6831",
+      "workflow_run": {
+        "id": 38166170369,
+        "repository_id": 1379044672,
+        "head_repository_id": 1379044672,
+        "head_branch": "codex/b-pulso-runtime-20261011",
+        "head_sha": "29731f04d998659e5892c109871f54ef0c7f8eef"
+      }
+    }
+  ],
+  "job_logs": {
+    "tests": {
+      "sha256": "ad726c9d8a20b5ce1d0203850719cf7a55d76efbd44c8e61eb42ae082ecc7149",
+      "local_log": "/workspace/work/pulso-native-critical-29731f04.tests.log",
+      "decoded_text_chars": 59134,
+      "hash_basis": "exact connector decoded log text encoded as UTF-8, including initial BOM"
+    },
+    "staging": {
+      "sha256": "87bab7b214811fbba44793cd5595973e12243ecf18ef3fe96c2f48652276a14a",
+      "local_log": "/workspace/work/pulso-native-critical-29731f04.staging.log",
+      "decoded_text_chars": 170276,
+      "hash_basis": "exact connector decoded log text encoded as UTF-8, including initial BOM"
+    },
+    "reviewer": {
+      "sha256": "d1994f4dc660f30cffcdab4c8f9a5056d500f06fd823525a1b4857dbfac4143a",
+      "local_log": "/workspace/work/pulso-native-critical-29731f04.reviewer.log",
+      "decoded_text_chars": 37843,
+      "hash_basis": "exact connector decoded log text encoded as UTF-8, including initial BOM"
+    }
+  },
+  "raw_log_snippets": {
+    "tests": [
+      "2026-10-11T19:00:18.7960997Z [command]/usr/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +385db4eae8c21f7a2a954652085c0ee3c9ee9488:refs/remotes/pull/10/merge",
+      "2026-10-11T19:00:57.2489535Z HEAD is now at 385db4ea Merge 29731f04d998659e5892c109871f54ef0c7f8eef into bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+      "2026-10-11T19:06:39.7304971Z 2956 passed, 2 skipped, 1 warning in 331.34s (0:05:31)",
+      "2026-10-11T19:06:42.7960780Z # tests 42",
+      "2026-10-11T19:06:42.7961771Z # pass 42",
+      "2026-10-11T19:06:42.7962289Z # fail 0",
+      "2026-10-11T19:06:42.7963341Z # skipped 0",
+      "2026-10-11T19:06:42.7964413Z # duration_ms 248.347109"
+    ],
+    "staging": [
+      "2026-10-11T19:07:35.0180101Z HEAD is now at 385db4ea Merge 29731f04d998659e5892c109871f54ef0c7f8eef into bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+      "2026-10-11T19:07:46.2396180Z snapshot=web/data/radar_today.json signals=127",
+      "2026-10-11T19:09:46.2062275Z   64 passed (1.6m)",
+      "2026-10-11T19:09:50.5541697Z SHA256 digest of uploaded artifact zip is 67cbd522357c7682cfa1e4ce739f4dafe974900b8015a25ea016c5cba41e6831",
+      "2026-10-11T19:09:50.8348218Z Artifact download URL: https://github.com/cftorre1/Radar-salud/actions/runs/38166170369/artifacts/11712237296"
+    ],
+    "reviewer": [
+      "2026-10-11T19:11:01.1974004Z {",
+      "2026-10-11T19:11:01.1974256Z   \"reviewer\": \"deterministic-reviewer\",",
+      "2026-10-11T19:11:01.1974665Z   \"candidate_sha\": \"385db4eae8c21f7a2a954652085c0ee3c9ee9488\",",
+      "2026-10-11T19:11:01.1974896Z   \"reviewed_at\": \"2026-10-11T19:11:01.196904+00:00\",",
+      "2026-10-11T19:11:01.1975061Z   \"findings\": [],",
+      "2026-10-11T19:11:01.1975182Z   \"checks\": {",
+      "2026-10-11T19:11:01.1975295Z     \"data\": true,",
+      "2026-10-11T19:11:01.1975419Z     \"editorial\": true,",
+      "2026-10-11T19:11:01.1975547Z     \"statistics\": true,",
+      "2026-10-11T19:11:01.1975668Z     \"ux\": true",
+      "2026-10-11T19:11:01.1975776Z   },",
+      "2026-10-11T19:11:01.1975885Z   \"limitations\": [",
+      "2026-10-11T19:11:01.1976065Z     \"Semantic/legal accuracy is not certified by deterministic checks.\",",
+      "2026-10-11T19:11:01.1976317Z     \"Browser evidence is required separately for desktop/mobile.\",",
+      "2026-10-11T19:11:01.1976715Z     \"Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications.\"",
+      "2026-10-11T19:11:01.1977060Z   ]",
+      "2026-10-11T19:11:01.1977159Z }",
+      "2026-10-11T19:10:39.3316225Z HEAD is now at 385db4ea Merge 29731f04d998659e5892c109871f54ef0c7f8eef into bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+      "2026-10-11T19:11:01.1225738Z SHA256 digest of downloaded artifact is 67cbd522357c7682cfa1e4ce739f4dafe974900b8015a25ea016c5cba41e6831",
+      "2026-10-11T19:11:01.9246276Z SHA256 digest of uploaded artifact zip is ead30c4d847c9b2b9e4f07dae0e7a9c86d00bd62c61ed9796a79bb61fb9454ed",
+      "2026-10-11T19:11:02.1909242Z Artifact download URL: https://github.com/cftorre1/Radar-salud/actions/runs/38166170369/artifacts/11712911260"
+    ]
+  },
+  "observations": [
+    {
+      "at": "2026-10-11 19:05:36 UTC",
+      "jobs": [
+        {
+          "id": 114549079211,
+          "name": "tests",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_step": "Run python -m pytest -q"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-11 19:06:26 UTC",
+      "jobs": [
+        {
+          "id": 114549079211,
+          "name": "tests",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_step": "Run python -m pytest -q"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-11 19:07:20 UTC",
+      "jobs": [
+        {
+          "id": 114549079211,
+          "name": "tests",
+          "status": "completed",
+          "conclusion": "success",
+          "active_step": null
+        },
+        {
+          "id": 114550418177,
+          "name": "staging",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_step": "Run actions/checkout@v4"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-11 19:08:29 UTC",
+      "jobs": [
+        {
+          "id": 114549079211,
+          "name": "tests",
+          "status": "completed",
+          "conclusion": "success",
+          "active_step": null
+        },
+        {
+          "id": 114550418177,
+          "name": "staging",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_step": "Run npm run test:browser"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-11 19:09:24 UTC",
+      "jobs": [
+        {
+          "id": 114549079211,
+          "name": "tests",
+          "status": "completed",
+          "conclusion": "success",
+          "active_step": null
+        },
+        {
+          "id": 114550418177,
+          "name": "staging",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_step": "Run npm run test:browser"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-11 19:10:15 UTC",
+      "jobs": [
+        {
+          "id": 114549079211,
+          "name": "tests",
+          "status": "completed",
+          "conclusion": "success",
+          "active_step": null
+        },
+        {
+          "id": 114550418177,
+          "name": "staging",
+          "status": "completed",
+          "conclusion": "success",
+          "active_step": null
+        },
+        {
+          "id": 114551074729,
+          "name": "reviewer",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_step": "Run actions/checkout@v4"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-11 19:11:21 UTC",
+      "jobs": [
+        {
+          "id": 114549079211,
+          "name": "tests",
+          "status": "completed",
+          "conclusion": "success",
+          "active_step": null
+        },
+        {
+          "id": 114550418177,
+          "name": "staging",
+          "status": "completed",
+          "conclusion": "success",
+          "active_step": null
+        },
+        {
+          "id": 114551074729,
+          "name": "reviewer",
+          "status": "completed",
+          "conclusion": "success",
+          "active_step": null
+        }
+      ]
+    }
+  ],
+  "monitor_side_effects": {
+    "repository_edits": false,
+    "commits": false,
+    "pushes": false,
+    "reruns": false,
+    "source_api_calls": false,
+    "model_calls": false,
+    "runtime_or_state_writes": false,
+    "local_work_evidence_only": true
+  },
+  "final_source_runtime_acceptance": "PENDING_SEPARATE_GENUINE_RUNTIME_RECONCILIATION_AND_FINAL_DURABLE_RESULT_REVIEW"
+}

@@ -1,0 +1,214 @@
+{
+  "schema_version": "pulso_v5_three_actual_publication_confirmation_v1",
+  "source_id": "pulso_latercera",
+  "generated_at": "2026-10-11T18:20:42.780842+00:00",
+  "reviewer": "external_control_independent_original_fullbody_reader",
+  "actual_observed_commit": "02a82394d8e083c51c0726d852ac0e3381c4393e",
+  "actual_paid_producer_commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+  "actual_paid_producer_code": "03bf998a4bb5840c84da6473666e932fbc5cedd9",
+  "actual_paid_run": 38159032940,
+  "scope": "Exactly3newactualpaidpublications in rows81–113; twoaccepted and onebasepriceprecisioncorrection applied byRoot, notbyreader.",
+  "verdict": "SCOPED_ACTUAL_THREE_CONFIRMED",
+  "global_acceptance": false,
+  "inputs": {
+    "queue": {
+      "commit": "02a82394d8e083c51c0726d852ac0e3381c4393e",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "3f07f6e923ddb92ab87b1282cc90b5220dc1c4272589347f4e21f8ed43daefce"
+    },
+    "history": {
+      "commit": "02a82394d8e083c51c0726d852ac0e3381c4393e",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "bae8b84771a20e21abd528f4cb3031f047a03643a330570c8182798f99509a3a"
+    },
+    "feed": {
+      "commit": "02a82394d8e083c51c0726d852ac0e3381c4393e",
+      "path": "web/data/radar_today.json",
+      "file_sha256": "14fc7558c10608709154d1c2e895d3649359e029a53c33ebf526c528b608d808"
+    },
+    "runtime_report": {
+      "commit": "02a82394d8e083c51c0726d852ac0e3381c4393e",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "6609d2a815b6108a1fad5443e581d4b24eb57b0485c289ca1c6d3f897d730966"
+    },
+    "telemetry": {
+      "commit": "02a82394d8e083c51c0726d852ac0e3381c4393e",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "d5cbef5b62630ab6f17305c29bfea987f788313e0876d15d6a02c115b2a30c30"
+    }
+  },
+  "independent_review": {
+    "path": "data/audits/pulso_v5_rows81_113_semantic_review_2026_10_11.json",
+    "sha256": "971602c30eeb14e2ba27a7d85f5f236d36e5b4790a7f4b71c4d7719e4d8277ce"
+  },
+  "applied_correction": {
+    "path": "data/audits/pulso_v5_three_paid_editorial_corrections_2026_10_11.json",
+    "sha256": "c801b96464edbe5d179ca72b6d7ca63c746d53e55d6c18ee64bf70d3343923df"
+  },
+  "application_audit": {
+    "path": "data/audits/pulso_v5_three_paid_editorial_application_2026_10_11.json",
+    "sha256": "feed5910b62f23a8c1a79459c888eeaac2eef0e7ebfdd55716641a89e1e82e40"
+  },
+  "all3": [
+    {
+      "matrix_index": 94,
+      "url": "https://www.latercera.com/pulso/noticia/corte-suprema-revoca-decreto-del-minsal-que-obligaba-a-exhibir-evita-su-consumo-en-publicidad-de-alimentos-con-sellos/",
+      "publication_date": "2026-08-13",
+      "independent_decision": "accept",
+      "review_reason": "El original reporta dos fallos divididos que dejan sin efecto Decreto24 publicitario por falta de fundamentación. La copia preserva tribunal/norma/fechas2024-2025, objeto publicitario y atribución de prensa; no elimina todos los sellos ni afirma vigencia actual al11octubre.",
+      "original_body_sha256": "cab6a70c6c8e6b226fd902508a706016f9f862868d7a40004bd6190f211fa83f",
+      "original_html_sha256": "d17314215b18eb96f609c2c553e303522ae51246da67f6a96dfc47cb8e586b06",
+      "original_model_output_semantic_sha256": "321a96647c07cb070e9f83c9668eb5b24655f10d2d5ab2b117f2a1e145f796a6",
+      "response_id": "resp_08e53b928512fc04006acbca4c8bd487d1aeff849d3bb65e82",
+      "original_signal_sha256": "9705ad59c81d71b650a2e6adc85f373195f853c65db8541f5effd63b57988464",
+      "effective_signal_sha256": "ca9cff069d5a2825f5ec7af2b74dc65771217bc83f41806bfadff4ea080cb9b3",
+      "actual_current_what_happened": "Según Pulso / La Tercera, Según la nota del 13 de agosto de 2026, la Corte Suprema acogió los reclamos de empresas de alimentos y dejó sin efecto el Decreto N°24 del Minsal, de 10 de octubre de 2024, que obligaba a incluir la advertencia «Alimento con sello ‘alto en’, evita su consumo» en la publicidad de productos con sellos altos en calorías, sodio y azúcares. La decisión, adoptada en dos fallos divididos, revocó resoluciones previas de la Corte de Apelaciones de Santiago dictadas en octubre de 2025. La nota atribuye al tribunal la conclusión de que el acto administrativo carecía de la debida fundamentación exigida por la Ley N°19.880.",
+      "actual_current_why_it_matters": "Según la nota del 13 de agosto de 2026, la decisión de la Corte Suprema afecta al Minsal y a las empresas de alimentos que impugnaron el decreto, al dejar sin efecto la exigencia publicitaria que reemplazaba «Prefiere alimentos con menos sellos de advertencia» por un mensaje considerado más restrictivo. El fallo también sostuvo, según la publicación, que la medida alteraba las condiciones de operación de Ideal y afectaba derechos de igualdad ante la ley y de desarrollar una actividad económica. La relevancia sanitaria radica en que el litigio involucró la regulación de información al consumidor frente a productos asociados a obesidad y otras enfermedades no transmisibles; la nota no acredita que el estado descrito continúe vigente al 11 de octubre de 2026.",
+      "verified_effective_editorial_provenance": {
+        "schema_version": "pulso_editorial_review_v1",
+        "review_id": "pulso-v5-paid-three-independent-primary-copy-review-2026-10-11",
+        "review_file": "data/audits/pulso_v5_three_paid_editorial_corrections_2026_10_11.json",
+        "review_sha256": "c801b96464edbe5d179ca72b6d7ca63c746d53e55d6c18ee64bf70d3343923df",
+        "record_sha256": "ab994079c44065f51e80b0c5ef90b74f7944d61e3d5d4186d07ca90f69370935",
+        "original_signal_sha256": "9705ad59c81d71b650a2e6adc85f373195f853c65db8541f5effd63b57988464",
+        "original_body_sha256": "cab6a70c6c8e6b226fd902508a706016f9f862868d7a40004bd6190f211fa83f",
+        "publication_date": "2026-08-13",
+        "decision": "accept",
+        "reason": "El original reporta dos fallos divididos que dejan sin efecto Decreto24 publicitario por falta de fundamentación. La copia preserva tribunal/norma/fechas2024-2025, objeto publicitario y atribución de prensa; no elimina todos los sellos ni afirma vigencia actual al11octubre.",
+        "evidence_quotes": [
+          "En dos fallos divididos, la Tercera Sala del máximo tribunal resolvió dejar sin efecto la normativa del Ministerio de Salud (Minsal) tras concluir que el acto administrativo carece de la debida fundamentación exigida por la Ley N°19.880",
+          "responder al aumento de enfermedades no transmisibles como la obesidad"
+        ],
+        "original_terminal_status": "published",
+        "original_model_assessment": {
+          "decision": "published",
+          "relevance_score": 94,
+          "threshold": 72,
+          "analysis_reason": "Es un cambio judicial material en regulación sanitaria y publicidad de alimentos, con efectos reportados para el Minsal, empresas reguladas y la política de información al consumidor. La publicación es anterior a la fecha de revisión, por lo que los efectos se presentan como observados o anunciados al 13 de agosto de 2026, no como vigentes actualmente."
+        },
+        "original_model_what_happened": "Según Pulso / La Tercera, Según la nota del 13 de agosto de 2026, la Corte Suprema acogió los reclamos de empresas de alimentos y dejó sin efecto el Decreto N°24 del Minsal, de 10 de octubre de 2024, que obligaba a incluir la advertencia «Alimento con sello ‘alto en’, evita su consumo» en la publicidad de productos con sellos altos en calorías, sodio y azúcares. La decisión, adoptada en dos fallos divididos, revocó resoluciones previas de la Corte de Apelaciones de Santiago dictadas en octubre de 2025. La nota atribuye al tribunal la conclusión de que el acto administrativo carecía de la debida fundamentación exigida por la Ley N°19.880.",
+        "original_model_why_it_matters": "Según la nota del 13 de agosto de 2026, la decisión de la Corte Suprema afecta al Minsal y a las empresas de alimentos que impugnaron el decreto, al dejar sin efecto la exigencia publicitaria que reemplazaba «Prefiere alimentos con menos sellos de advertencia» por un mensaje considerado más restrictivo. El fallo también sostuvo, según la publicación, que la medida alteraba las condiciones de operación de Ideal y afectaba derechos de igualdad ante la ley y de desarrollar una actividad económica. La relevancia sanitaria radica en que el litigio involucró la regulación de información al consumidor frente a productos asociados a obesidad y otras enfermedades no transmisibles; la nota no acredita que el estado descrito continúe vigente al 11 de octubre de 2026."
+      },
+      "score": 94,
+      "gate": 72,
+      "score_date_body_original_model_unchanged": true,
+      "history_and_feed_agree": true,
+      "current_queue_status": "published",
+      "semantic_precision_finding_resolved": false,
+      "publication_preapproval": false
+    },
+    {
+      "matrix_index": 105,
+      "url": "https://www.latercera.com/pulso/noticia/isapres-ofrecen-los-planes-mas-baratos-en-cinco-anos-gracias-a-la-ley-corta-y-menor-gasto-en-licencias/",
+      "publication_date": "2026-08-30",
+      "independent_decision": "correct",
+      "review_reason": "La copia conserva fuenteQuePlan/isapres, períodojunio2026 y atribuciónmedia, pero omite precio BASE en las medianas2,59UF y2,8UF: pueden confundirse con tarifa totalinclGES. La precisión es material para comparación de cobertura/precio. Mantener1,718UF expresamenteinclGES, cifras/fechas/score88 y la condición secundaria de competencia; no declarar validación oficial independiente.",
+      "original_body_sha256": "dbadb4ecf3aa794a84c24dcbc5cc0a7f05eb58c29a32b8e6aec8954011a8dbcd",
+      "original_html_sha256": "c4117f17b19f8612d513fae87271a54b074331674b96211400ce02a51646d205",
+      "original_model_output_semantic_sha256": "1835d85dee3526b4959ccf1baa51a8bf1505cc8fa1b8eb88c91f4f2d20de5b06",
+      "response_id": "resp_0d308146ef825e99006acbc9605e2c87d1ba832ca52b64f2fe",
+      "original_signal_sha256": "77eaef20e47fa79457cc5323c1c15db3d3188141e7fc8c61c65551e265f5cee4",
+      "effective_signal_sha256": "2ff3879a60c6044f489f00258dd186218dfd6e768e82c08b0b9ef06ee5d24aee",
+      "actual_current_what_happened": "Según Pulso / La Tercera, Según la nota del 30 de agosto de 2026, los nuevos planes de las isapres alcanzaban en 2026 un precio base mediano de 2,59 UF mensuales, 23% menos que en 2023 y el menor valor en cinco años, de acuerdo con cifras de QuePlan.cl. En junio de 2026, el precio base mediano de todos los planes en venta era de 2,8 UF y el plan de entrada más barato, incluyendo GES, costaba 1,718 UF. La nota atribuye esta reducción a la ley corta publicada en mayo de 2024, al aumento de la oferta y a una baja de 13,6% nominal en el gasto de las isapres en SIL entre 2024 y 2025. También reporta que las isapres habían perdido más de 923 mil afiliados entre diciembre de 2019 y junio de 2026, con 2,4 millones de beneficiarios al cierre del primer semestre.",
+      "actual_current_why_it_matters": "Al 30 de agosto de 2026, según la nota, las isapres estaban usando menores costos por licencias médicas, rediseño de productos y precios de entrada más bajos para captar afiliados provenientes de Fonasa y jóvenes. Esto podía modificar la competencia por nuevos cotizantes y facilitar el acceso económico al sistema privado para determinados perfiles, aunque la nota describía precios y estrategias observados hasta junio de 2026, no una situación verificada al 11 de octubre de 2026.",
+      "verified_effective_editorial_provenance": {
+        "schema_version": "pulso_editorial_review_v1",
+        "review_id": "pulso-v5-paid-three-independent-primary-copy-review-2026-10-11",
+        "review_file": "data/audits/pulso_v5_three_paid_editorial_corrections_2026_10_11.json",
+        "review_sha256": "c801b96464edbe5d179ca72b6d7ca63c746d53e55d6c18ee64bf70d3343923df",
+        "record_sha256": "8664f8413aecf04ef290c03527a7ab347bd9df7db94d913e0e8f4f9083102854",
+        "original_signal_sha256": "77eaef20e47fa79457cc5323c1c15db3d3188141e7fc8c61c65551e265f5cee4",
+        "original_body_sha256": "dbadb4ecf3aa794a84c24dcbc5cc0a7f05eb58c29a32b8e6aec8954011a8dbcd",
+        "publication_date": "2026-08-30",
+        "decision": "correct",
+        "reason": "La copia conserva fuenteQuePlan/isapres, períodojunio2026 y atribuciónmedia, pero omite precio BASE en las medianas2,59UF y2,8UF: pueden confundirse con tarifa totalinclGES. La precisión es material para comparación de cobertura/precio. Mantener1,718UF expresamenteinclGES, cifras/fechas/score88 y la condición secundaria de competencia; no declarar validación oficial independiente.",
+        "evidence_quotes": [
+          "si en 2023 los nuevos planes estrenados ese año tenían un precio base de 3,36 UF",
+          "en 2026 alcanzan a las 2,59 UF ($106 mil) mensual, esto es una baja de 23%",
+          "se obtiene un precio base mensual de 2,8 UF ($114 mil)",
+          "ahora está en 1,718 UF ($70 mil), incluyendo la prima GES"
+        ],
+        "original_terminal_status": "published",
+        "original_model_assessment": {
+          "decision": "published",
+          "relevance_score": 88,
+          "threshold": 72,
+          "analysis_reason": "Señal sectorial relevante sobre precios, competencia, afiliación y sostenibilidad financiera de las isapres, con impacto potencial en cobertura y acceso al aseguramiento privado. La evidencia es atribuida a QuePlan.cl y a declaraciones de las isapres; no constituye por sí sola una confirmación oficial independiente."
+        },
+        "original_model_what_happened": "Según Pulso / La Tercera, Según la nota del 30 de agosto de 2026, los nuevos planes de las isapres alcanzaban en 2026 una mediana de 2,59 UF mensuales, 23% menos que en 2023 y el menor valor en cinco años, de acuerdo con cifras de QuePlan.cl. En junio de 2026, la mediana de todos los planes en venta era de 2,8 UF y el plan de entrada más barato, incluyendo GES, costaba 1,718 UF. La nota atribuye esta reducción a la ley corta publicada en mayo de 2024, al aumento de la oferta y a una baja de 13,6% nominal en el gasto de las isapres en SIL entre 2024 y 2025. También reporta que las isapres habían perdido más de 923 mil afiliados entre diciembre de 2019 y junio de 2026, con 2,4 millones de beneficiarios al cierre del primer semestre.",
+        "original_model_why_it_matters": "Al 30 de agosto de 2026, según la nota, las isapres estaban usando menores costos por licencias médicas, rediseño de productos y precios de entrada más bajos para captar afiliados provenientes de Fonasa y jóvenes. Esto podía modificar la competencia por nuevos cotizantes y facilitar el acceso económico al sistema privado para determinados perfiles, aunque la nota describía precios y estrategias observados hasta junio de 2026, no una situación verificada al 11 de octubre de 2026."
+      },
+      "score": 88,
+      "gate": 72,
+      "score_date_body_original_model_unchanged": true,
+      "history_and_feed_agree": true,
+      "current_queue_status": "published",
+      "semantic_precision_finding_resolved": true,
+      "publication_preapproval": false
+    },
+    {
+      "matrix_index": 106,
+      "url": "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/",
+      "publication_date": "2026-10-01",
+      "independent_decision": "accept",
+      "review_reason": "Copia preserva propuestaPresupuesto2027+4,7%Salud y discusiónCongreso, comprafuturaFonasa/privados, APS, canastamedicamentos/fichacompartida/IA como anuncios. No afirma recursos aprobados ni implementación al11octubre, ni trata4,7 como aumento2026. Coincidencia con otros artículos presupuestarios no basta para corroboración o duplicado factual completo.",
+      "original_body_sha256": "d6e9ec6b2f7552d48069ad442e3a6623d020be5f032339d67b0b5c8de6a9f6dd",
+      "original_html_sha256": "0040f21ab450a5fb7e5272d7d7ac273dd154455d2aa100a607d3426b3beb3163",
+      "original_model_output_semantic_sha256": "a3393c78149a95d9594fa3e5147c363ae07c31ab88f52863cfc57bcbf28e4d24",
+      "response_id": "resp_0929d693c365128b006acbc6a75b5087d1b9a2f8f749c5905c",
+      "original_signal_sha256": "9fd7df56f0362820955c5bf73e2c05ede6049f4d5647e726d0965f51bb1ea914",
+      "effective_signal_sha256": "4d47e94bf29e4ad2a7524f70656044eec3a1a190cd41ee7c36ab33368f39d0cd",
+      "actual_current_what_happened": "Según Pulso / La Tercera, Según la nota del 1 de octubre de 2026, el gobierno de José Antonio Kast presentó al Congreso su propuesta de Presupuesto 2027, con un aumento reportado de 4,7% para Salud. La propuesta contempla aumentar el financiamiento para reducir listas de espera mediante compra de atenciones a clínicas, inversión en hospitales de mayor complejidad y mayores aportes a consultorios, Cesfam y postas. También anunció medidas futuras como una canasta esencial de medicamentos, una ficha clínica compartida y uso de inteligencia artificial para priorizar a pacientes graves; al 1 de octubre, el proyecto aún debía discutirse en el Congreso.",
+      "actual_current_why_it_matters": "Al 1 de octubre de 2026, según la nota, Fonasa se preparaba para modificar su compra de prestaciones y el gobierno proponía orientar recursos adicionales a atención oportuna, medicamentos y gestión de listas de espera. La eventual aprobación podría afectar el financiamiento y la relación de compra entre Fonasa, clínicas privadas, hospitales y la atención primaria, pero las medidas descritas seguían siendo parte de un presupuesto en discusión y no acreditan implementación vigente al 11 de octubre.",
+      "verified_effective_editorial_provenance": {
+        "schema_version": "pulso_editorial_review_v1",
+        "review_id": "pulso-v5-paid-three-independent-primary-copy-review-2026-10-11",
+        "review_file": "data/audits/pulso_v5_three_paid_editorial_corrections_2026_10_11.json",
+        "review_sha256": "c801b96464edbe5d179ca72b6d7ca63c746d53e55d6c18ee64bf70d3343923df",
+        "record_sha256": "b17ac12f505216e0851e9e7aa4c602f85de787bac920c14131d24dc2dd0f8029",
+        "original_signal_sha256": "9fd7df56f0362820955c5bf73e2c05ede6049f4d5647e726d0965f51bb1ea914",
+        "original_body_sha256": "d6e9ec6b2f7552d48069ad442e3a6623d020be5f032339d67b0b5c8de6a9f6dd",
+        "publication_date": "2026-10-01",
+        "decision": "accept",
+        "reason": "Copia preserva propuestaPresupuesto2027+4,7%Salud y discusiónCongreso, comprafuturaFonasa/privados, APS, canastamedicamentos/fichacompartida/IA como anuncios. No afirma recursos aprobados ni implementación al11octubre, ni trata4,7 como aumento2026. Coincidencia con otros artículos presupuestarios no basta para corroboración o duplicado factual completo.",
+        "evidence_quotes": [
+          "Para Salud se aumenta el presupuesto en 4,7%.",
+          "Fonasa va a comprar mejor, exigiendo calidad, rapidez y buen precio",
+          "se impulsará “una canasta esencial de medicamentos, para que las familias gasten menos de su bolsillo; una ficha clínica compartida entre la red pública y la privada; y el uso de inteligencia artificial para que el paciente más grave sea atendido primero."
+        ],
+        "original_terminal_status": "published",
+        "original_model_assessment": {
+          "decision": "published",
+          "relevance_score": 92,
+          "threshold": 72,
+          "analysis_reason": "Es una señal nacional y material para el sector salud: el primer presupuesto del gobierno propone un aumento específico para Salud y cambios potenciales en compra de prestaciones, medicamentos, interoperabilidad clínica y priorización de pacientes. Se mantiene la atribución de prensa y se distingue el anuncio presupuestario de su aprobación o ejecución."
+        },
+        "original_model_what_happened": "Según Pulso / La Tercera, Según la nota del 1 de octubre de 2026, el gobierno de José Antonio Kast presentó al Congreso su propuesta de Presupuesto 2027, con un aumento reportado de 4,7% para Salud. La propuesta contempla aumentar el financiamiento para reducir listas de espera mediante compra de atenciones a clínicas, inversión en hospitales de mayor complejidad y mayores aportes a consultorios, Cesfam y postas. También anunció medidas futuras como una canasta esencial de medicamentos, una ficha clínica compartida y uso de inteligencia artificial para priorizar a pacientes graves; al 1 de octubre, el proyecto aún debía discutirse en el Congreso.",
+        "original_model_why_it_matters": "Al 1 de octubre de 2026, según la nota, Fonasa se preparaba para modificar su compra de prestaciones y el gobierno proponía orientar recursos adicionales a atención oportuna, medicamentos y gestión de listas de espera. La eventual aprobación podría afectar el financiamiento y la relación de compra entre Fonasa, clínicas privadas, hospitales y la atención primaria, pero las medidas descritas seguían siendo parte de un presupuesto en discusión y no acreditan implementación vigente al 11 de octubre."
+      },
+      "score": 92,
+      "gate": 72,
+      "score_date_body_original_model_unchanged": true,
+      "history_and_feed_agree": true,
+      "current_queue_status": "published",
+      "semantic_precision_finding_resolved": false,
+      "publication_preapproval": false
+    }
+  ],
+  "checks": {
+    "actual_dual_reader_proofs_verified": 3,
+    "new_price_base_precision_finding_resolved": true,
+    "all_native897_history_rows_whole_unchanged": true,
+    "all1754_pulso_original_models_primary_bodies_and_proof_validations_unchanged": true,
+    "reader_model_calls": 0,
+    "reader_runtime_state_mutations": 0,
+    "required_gate": 72,
+    "actual_pulso_history": 55,
+    "actual_pulso_visible_feed": 35
+  },
+  "limits": [
+    "The remaining49technicaldeferrals are not accepted or terminalized by this review.",
+    "Actualmodeloutput and originalfirstpublishedcopy remain immutable provenance; human precision correction changes neither score88 nor publication date.",
+    "This confirmation is limited to3paidpublications; other15newpublications require their own actualapplication/review confirmation."
+  ]
+}

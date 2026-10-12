@@ -1,0 +1,1402 @@
+{
+  "schema_version": "1.0",
+  "control_sha256": "b9c3ce2aea38107797fc19572581f27884d15611214fd2328d458bd35e906374",
+  "runtime_report": "data/audits/pulso_runtime_2026_10_11.json at isolated bot commit2760854",
+  "window_90": {
+    "start": "2026-07-13",
+    "end": "2026-10-10",
+    "expected": 79,
+    "detected": 46,
+    "missing": 33
+  },
+  "classifications": {
+    "requested_original_detail_date_verification_failed": 12,
+    "not_enumerated_due_nacional_offset0_http503_no_transient_retry": 21
+  },
+  "aliases_counted_as_recall": false,
+  "denominator_modified": false,
+  "entries": [
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "publication_date": "2026-07-14",
+      "title": "Isapres logran detener la fuga de cotizantes tras 53 meses consecutivos a la baja y se asoma el punto de inflexión",
+      "section": "pulso",
+      "topic": "insurance_competition",
+      "omission": {
+        "status": "detail_error",
+        "reason": "conflicting_publication_dates",
+        "error_type": "ValueError",
+        "url_level_cause_verified": true
+      },
+      "classification": "requested_original_detail_date_verification_failed",
+      "current_exact_traces": [
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-tag-fetch?query=%7B%22feedOffset%22%3A0%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22tagSlug%22%3A%22isapres%22%7D&_website=la-tercera&d=1284",
+          "captured_at": "2026-10-11T06:17:00.896965+00:00",
+          "feed": "tag:isapres"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+          "listing": "https://www.latercera.com/etiqueta/isapres/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError"
+        }
+      ],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": 200,
+      "requested_final_url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "original_canonical": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "original_date_metadata": {
+        "og:url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+        "og:title": "Isapres logran detener la fuga de cotizantes tras 53 meses consecutivos a la baja y se asoma el punto de inflexión - La Tercera",
+        "article:section": "Pulso",
+        "article:modified_time": "2026-07-14T00:36:59.045Z",
+        "article:published_time": "2026-07-14T00:36:58.91Z"
+      },
+      "original_json_ld": [
+        {
+          "@type": "NewsArticle",
+          "@id": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/#article",
+          "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+            "name": "Isapres logran detener la fuga de cotizantes tras 53 meses consecutivos a la baja y se asoma el punto de inflexión",
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "width": 1600,
+              "height": 900,
+              "url": "https://www.latercera.com/resizer/v2/X2DOSGJ4QREY3GHHAKJYR325IY.jpg?auth=6be817b2d8123b4bd1abc50eb6c9e6bf82ae059a120a8e113b6b971bcdb357f0&height=900&width=1600&smart=true",
+              "description": "isapres"
+            }
+          },
+          "headline": "Isapres logran detener la fuga de cotizantes tras 53 meses consecutivos a la baja y se asoma el punto de inflexión",
+          "datePublished": "2026-07-14T00:36:58.91Z",
+          "dateModified": "2026-07-14T00:36:59.045Z",
+          "articleSection": "Pulso",
+          "keywords": [
+            "Isapres",
+            "Cotizantes",
+            "Isapre"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList"
+        },
+        {
+          "@type": "NewsMediaOrganization",
+          "@id": "https://www.latercera.com/#organization",
+          "url": "https://www.latercera.com/"
+        },
+        {
+          "@type": "WebSite",
+          "url": "https://www.latercera.com/"
+        }
+      ]
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+      "publication_date": "2026-07-18",
+      "title": "Minsal coordina instalación de hospital modular para apoyar atención en Ovalle por sistema frontal",
+      "section": "nacional",
+      "topic": "providers_capacity",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/ejercito-despliega-hospital-modular-en-ovalle-tras-inutilizacion-de-cinco-pabellones-por-lluvias/",
+      "publication_date": "2026-07-19",
+      "title": "Ejército despliega hospital modular en Ovalle tras inutilización de cinco pabellones por lluvias",
+      "section": "nacional",
+      "topic": "providers_capacity",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+      "publication_date": "2026-07-23",
+      "title": "Isapres aumentan su fuerza de ventas 45% en un año y a marzo ya superan los cuatro mil vendedores",
+      "section": "pulso",
+      "topic": "insurance_competition",
+      "omission": {
+        "status": "detail_error",
+        "reason": "conflicting_publication_dates",
+        "error_type": "ValueError",
+        "url_level_cause_verified": true
+      },
+      "classification": "requested_original_detail_date_verification_failed",
+      "current_exact_traces": [
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-tag-fetch?query=%7B%22feedOffset%22%3A0%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22tagSlug%22%3A%22isapres%22%7D&_website=la-tercera&d=1284",
+          "captured_at": "2026-10-11T06:17:00.896774+00:00",
+          "feed": "tag:isapres"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+          "listing": "https://www.latercera.com/etiqueta/isapres/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError"
+        }
+      ],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": 200,
+      "requested_final_url": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+      "original_canonical": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+      "original_date_metadata": {
+        "og:url": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+        "og:title": "Isapres aumentan su fuerza de ventas 45% en un año y a marzo ya superan los cuatro mil vendedores - La Tercera",
+        "article:section": "Pulso",
+        "article:modified_time": "2026-07-23T00:51:45.017Z",
+        "article:published_time": "2026-07-23T00:51:44.885Z"
+      },
+      "original_json_ld": [
+        {
+          "@type": "NewsArticle",
+          "@id": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/#article",
+          "url": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.latercera.com/pulso/noticia/isapres-aumentan-su-fuerza-de-ventas-45-en-un-ano-y-a-marzo-ya-superan-los-cuatro-mil-vendedores/",
+            "name": "Isapres aumentan su fuerza de ventas 45% en un año y a marzo ya superan los cuatro mil vendedores",
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "width": 1600,
+              "height": 900,
+              "url": "https://www.latercera.com/resizer/v2/X2DOSGJ4QREY3GHHAKJYR325IY.jpg?auth=6be817b2d8123b4bd1abc50eb6c9e6bf82ae059a120a8e113b6b971bcdb357f0&height=900&width=1600&smart=true",
+              "description": "isapres"
+            }
+          },
+          "headline": "Isapres aumentan su fuerza de ventas 45% en un año y a marzo ya superan los cuatro mil vendedores",
+          "datePublished": "2026-07-23T00:51:44.885Z",
+          "dateModified": "2026-07-23T00:51:45.017Z",
+          "articleSection": "Pulso",
+          "keywords": [
+            "Isapres",
+            "Vendedores",
+            "Fuerza de ventas"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList"
+        },
+        {
+          "@type": "NewsMediaOrganization",
+          "@id": "https://www.latercera.com/#organization",
+          "url": "https://www.latercera.com/"
+        },
+        {
+          "@type": "WebSite",
+          "url": "https://www.latercera.com/"
+        }
+      ]
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+      "publication_date": "2026-07-31",
+      "title": "Ministra Chomali acusa deterioro de la red hospitalaria con sus antecesoras Yarza y Aguilera",
+      "section": "nacional",
+      "topic": "providers_capacity",
+      "omission": {
+        "status": "detail_error",
+        "reason": "conflicting_publication_dates",
+        "error_type": "ValueError",
+        "url_level_cause_verified": true
+      },
+      "classification": "requested_original_detail_date_verification_failed",
+      "current_exact_traces": [
+        {
+          "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-tag-fetch?query=%7B%22feedOffset%22%3A216%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22tagSlug%22%3A%22salud%22%7D&_website=la-tercera&d=1284",
+          "captured_at": "2026-10-11T06:16:29.114670+00:00",
+          "feed": "tag:salud"
+        }
+      ],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": 200,
+      "requested_final_url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+      "original_canonical": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+      "original_date_metadata": {
+        "og:url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+        "og:title": "Ministra Chomali acusa deterioro de la red hospitalaria con sus antecesoras Yarza y Aguilera - La Tercera",
+        "article:section": "Nacional",
+        "article:modified_time": "2026-07-31T01:16:30.439Z",
+        "article:published_time": "2026-07-31T01:16:30.22Z"
+      },
+      "original_json_ld": [
+        {
+          "@type": "NewsArticle",
+          "@id": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/#article",
+          "url": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.latercera.com/nacional/noticia/ministra-chomali-acusa-deterioro-de-la-red-hospitalaria-con-sus-antecesoras-yarza-y-aguilera/",
+            "name": "Ministra Chomali acusa deterioro de la red hospitalaria con sus antecesoras Yarza y Aguilera",
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "width": 1600,
+              "height": 900,
+              "url": "https://www.latercera.com/resizer/v2/SYFY4HKBERDOZOQOGL6DOMLXTE.jpg?auth=7def03714a7123c85b021139d86237d76818e9bf28c174b9ef603dccc2d1b3fe&height=900&width=1600&smart=true",
+              "description": "Aguilera Chomali"
+            }
+          },
+          "headline": "Ministra Chomali acusa deterioro de la red hospitalaria con sus antecesoras Yarza y Aguilera",
+          "datePublished": "2026-07-31T01:16:30.22Z",
+          "dateModified": "2026-07-31T01:16:30.439Z",
+          "articleSection": "Nacional",
+          "keywords": [
+            "Salud",
+            "Minsal",
+            "Ministerio de Salud",
+            "May Chomali",
+            "Ximena Aguilera"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList"
+        },
+        {
+          "@type": "NewsMediaOrganization",
+          "@id": "https://www.latercera.com/#organization",
+          "url": "https://www.latercera.com/"
+        },
+        {
+          "@type": "WebSite",
+          "url": "https://www.latercera.com/"
+        }
+      ]
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/corte-ordena-reincorporar-a-exdirectora-del-hospital-de-san-antonio-tras-declarar-ilegal-su-remocion/",
+      "publication_date": "2026-08-01",
+      "title": "Corte ordena reincorporar a exdirectora del Hospital de San Antonio tras declarar ilegal su remoción",
+      "section": "nacional",
+      "topic": "providers_capacity",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-apelara-a-fallo-que-ordeno-reincorporar-a-exdirectora-del-hospital-de-san-antonio-tras-declarar-ilegal-su-remocion/",
+      "publication_date": "2026-08-01",
+      "title": "Minsal apelará a fallo que ordenó reincorporar a exdirectora del Hospital de San Antonio tras declarar ilegal su remoción",
+      "section": "nacional",
+      "topic": "providers_capacity",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/posta-central-obtiene-911-en-evaluacion-de-gestion-y-lidera-desempeno-de-hospitales-publicos-mas-de-la-mitad-no-cumplio-la-meta/",
+      "publication_date": "2026-08-04",
+      "title": "Posta Central obtiene 91,1% en evaluación de gestión y lidera ranking de desempeño de hospitales: más de la mitad no cumplió la meta",
+      "section": "nacional",
+      "topic": "providers_capacity",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/",
+      "publication_date": "2026-08-05",
+      "title": "Expertos cuestionan crédito tributario para el financiamiento de enfermedades catastróficas aprobado en la megarreforma",
+      "section": "pulso",
+      "topic": "health_financing",
+      "omission": {
+        "status": "detail_error",
+        "reason": "conflicting_publication_dates",
+        "error_type": "ValueError",
+        "url_level_cause_verified": true
+      },
+      "classification": "requested_original_detail_date_verification_failed",
+      "current_exact_traces": [
+        {
+          "url": "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-tag-fetch?query=%7B%22feedOffset%22%3A216%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22tagSlug%22%3A%22salud%22%7D&_website=la-tercera&d=1284",
+          "captured_at": "2026-10-11T06:16:26.982663+00:00",
+          "feed": "tag:salud"
+        }
+      ],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": 200,
+      "requested_final_url": "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/",
+      "original_canonical": "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/",
+      "original_date_metadata": {
+        "og:url": "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/",
+        "og:title": "Expertos cuestionan crédito tributario para el financiamiento de enfermedades catastróficas aprobado en la megarreforma - La Tercera",
+        "article:section": "Pulso",
+        "article:modified_time": "2026-08-05T00:48:15.316Z",
+        "article:published_time": "2026-08-05T00:48:15.2Z"
+      },
+      "original_json_ld": [
+        {
+          "@type": "NewsArticle",
+          "@id": "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/#article",
+          "url": "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/",
+            "name": "Expertos cuestionan crédito tributario para el financiamiento de enfermedades catastróficas aprobado en la megarreforma ",
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "width": 1600,
+              "height": 900,
+              "url": "https://www.latercera.com/resizer/v2/F3CQWK6GM4CC53X7OJWRJYN6ZQ.JPG?auth=1065ea8f479bf32bb96432eb9a599c3f72beabdf82b3f54d93e8085a5e5e4fa2&height=900&width=1600&smart=true",
+              "description": "El Hospital Regional de Málaga busca voluntarios para participar en el ensayo clínico de la vacuna de HIPRA adaptada contra las variantes actuales de la Covid-19"
+            }
+          },
+          "headline": "Expertos cuestionan crédito tributario para el financiamiento de enfermedades catastróficas aprobado en la megarreforma ",
+          "datePublished": "2026-08-05T00:48:15.2Z",
+          "dateModified": "2026-08-05T00:48:15.316Z",
+          "articleSection": "Pulso",
+          "keywords": [
+            "Salud",
+            "Enfermedades catastróficas",
+            "Megarreforma"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList"
+        },
+        {
+          "@type": "NewsMediaOrganization",
+          "@id": "https://www.latercera.com/#organization",
+          "url": "https://www.latercera.com/"
+        },
+        {
+          "@type": "WebSite",
+          "url": "https://www.latercera.com/"
+        }
+      ]
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+      "publication_date": "2026-08-08",
+      "title": "Minsal incorpora hantavirus a alerta sanitaria vigente para enfermedades zoonóticas ante aumento de casos y letalidad",
+      "section": "nacional",
+      "topic": "public_health_network_impact",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/de-may-chomali-a-exautoridades-la-cita-que-reunio-a-un-centenar-de-personas-para-discutir-cambios-al-sistema-de-salud/",
+      "publication_date": "2026-08-11",
+      "title": "De May Chomali a exautoridades: la cita que reunió a un centenar de personas para discutir cambios al sistema de salud",
+      "section": "nacional",
+      "topic": "health_system_other",
+      "omission": {
+        "status": "detail_error",
+        "reason": "conflicting_publication_dates",
+        "error_type": "ValueError",
+        "url_level_cause_verified": true
+      },
+      "classification": "requested_original_detail_date_verification_failed",
+      "current_exact_traces": [
+        {
+          "url": "https://www.latercera.com/nacional/noticia/de-may-chomali-a-exautoridades-la-cita-que-reunio-a-un-centenar-de-personas-para-discutir-cambios-al-sistema-de-salud/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-tag-fetch?query=%7B%22feedOffset%22%3A192%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22tagSlug%22%3A%22salud%22%7D&_website=la-tercera&d=1284",
+          "captured_at": "2026-10-11T06:16:21.979952+00:00",
+          "feed": "tag:salud"
+        }
+      ],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": 200,
+      "requested_final_url": "https://www.latercera.com/nacional/noticia/de-may-chomali-a-exautoridades-la-cita-que-reunio-a-un-centenar-de-personas-para-discutir-cambios-al-sistema-de-salud/",
+      "original_canonical": "https://www.latercera.com/nacional/noticia/de-may-chomali-a-exautoridades-la-cita-que-reunio-a-un-centenar-de-personas-para-discutir-cambios-al-sistema-de-salud/",
+      "original_date_metadata": {
+        "og:url": "https://www.latercera.com/nacional/noticia/de-may-chomali-a-exautoridades-la-cita-que-reunio-a-un-centenar-de-personas-para-discutir-cambios-al-sistema-de-salud/",
+        "og:title": "De May Chomali a exautoridades: la cita que reunió a un centenar de personas para discutir cambios al sistema de salud - La Tercera",
+        "article:section": "Nacional",
+        "article:modified_time": "2026-08-11T00:37:59.712Z",
+        "article:published_time": "2026-08-11T00:37:59.573Z"
+      },
+      "original_json_ld": [
+        {
+          "@type": "NewsArticle",
+          "@id": "https://www.latercera.com/nacional/noticia/de-may-chomali-a-exautoridades-la-cita-que-reunio-a-un-centenar-de-personas-para-discutir-cambios-al-sistema-de-salud/#article",
+          "url": "https://www.latercera.com/nacional/noticia/de-may-chomali-a-exautoridades-la-cita-que-reunio-a-un-centenar-de-personas-para-discutir-cambios-al-sistema-de-salud/",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.latercera.com/nacional/noticia/de-may-chomali-a-exautoridades-la-cita-que-reunio-a-un-centenar-de-personas-para-discutir-cambios-al-sistema-de-salud/",
+            "name": "De May Chomali a exautoridades: la cita que reunió a un centenar de personas para discutir cambios al sistema de salud",
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "width": 1600,
+              "height": 900,
+              "url": "https://www.latercera.com/resizer/v2/CPNGSBI44RC3DHMRIQZJHFIFZI.jpeg?auth=ae22ee63de1fd197cdf83a20d1d554daced78b234057c6e6f8a0152cc01a8880&height=900&width=1600&smart=true",
+              "description": "Comisión de salud"
+            }
+          },
+          "headline": "De May Chomali a exautoridades: la cita que reunió a un centenar de personas para discutir cambios al sistema de salud",
+          "datePublished": "2026-08-11T00:37:59.573Z",
+          "dateModified": "2026-08-11T00:37:59.712Z",
+          "articleSection": "Nacional",
+          "keywords": [
+            "Salud",
+            "Comisión de Salud",
+            "May Chomali",
+            "Juan Luis Castro",
+            "Jaime Mañalich"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList"
+        },
+        {
+          "@type": "NewsMediaOrganization",
+          "@id": "https://www.latercera.com/#organization",
+          "url": "https://www.latercera.com/"
+        },
+        {
+          "@type": "WebSite",
+          "url": "https://www.latercera.com/"
+        }
+      ]
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-amplia-alerta-sanitaria-a-las-regiones-de-tarapaca-y-antofagasta-tras-afectaciones-por-el-sistema-frontal/",
+      "publication_date": "2026-08-20",
+      "title": "Minsal amplía alerta sanitaria a las regiones de Tarapacá y Antofagasta tras afectaciones por el sistema frontal",
+      "section": "nacional",
+      "topic": "public_health_network_impact",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+      "publication_date": "2026-08-20",
+      "title": "Isapres han pagado en un año y medio el 21% de la deuda que tenían con sus afiliados tras fallo de la Suprema",
+      "section": "pulso",
+      "topic": "insurance_competition",
+      "omission": {
+        "status": "detail_error",
+        "reason": "conflicting_publication_dates",
+        "error_type": "ValueError",
+        "url_level_cause_verified": true
+      },
+      "classification": "requested_original_detail_date_verification_failed",
+      "current_exact_traces": [
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-tag-fetch?query=%7B%22feedOffset%22%3A0%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22tagSlug%22%3A%22isapres%22%7D&_website=la-tercera&d=1284",
+          "captured_at": "2026-10-11T06:17:00.896523+00:00",
+          "feed": "tag:isapres"
+        },
+        {
+          "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+          "listing": "https://www.latercera.com/etiqueta/isapres/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError"
+        }
+      ],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": 200,
+      "requested_final_url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+      "original_canonical": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+      "original_date_metadata": {
+        "og:url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+        "og:title": "Isapres han pagado en un año y medio el 21% de la deuda que tenían con sus afiliados tras fallo de la Suprema - La Tercera",
+        "article:section": "Pulso",
+        "article:modified_time": "2026-08-20T00:53:06.459Z",
+        "article:published_time": "2026-08-20T00:53:06.353Z"
+      },
+      "original_json_ld": [
+        {
+          "@type": "NewsArticle",
+          "@id": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/#article",
+          "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+            "name": "Isapres han pagado en un año y medio el 21% de la deuda que tenían con sus afiliados tras fallo de la Suprema",
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "width": 1600,
+              "height": 900,
+              "url": "https://www.latercera.com/resizer/v2/R7T6MF6YO5CKBDZGTXFJUWN6GQ.jpg?auth=a2d38b9d4c7a9cebd1271ca62456d54f6199b11621bb0d869583757b4889bc50&height=900&width=1600&smart=true",
+              "description": "isapres"
+            }
+          },
+          "headline": "Isapres han pagado en un año y medio el 21% de la deuda que tenían con sus afiliados tras fallo de la Suprema",
+          "datePublished": "2026-08-20T00:53:06.353Z",
+          "dateModified": "2026-08-20T00:53:06.459Z",
+          "articleSection": "Pulso",
+          "keywords": [
+            "Isapres"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList"
+        },
+        {
+          "@type": "NewsMediaOrganization",
+          "@id": "https://www.latercera.com/#organization",
+          "url": "https://www.latercera.com/"
+        },
+        {
+          "@type": "WebSite",
+          "url": "https://www.latercera.com/"
+        }
+      ]
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-conforma-el-consejo-de-eficiencia-y-convergencia-financiera-de-la-red-asistencial-y-celebra-su-primera-sesion/",
+      "publication_date": "2026-08-26",
+      "title": "Minsal conforma el Consejo de Eficiencia y Convergencia Financiera de la Red Asistencial y celebra su primera sesión",
+      "section": "nacional",
+      "topic": "health_system_other",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-alerta-por-peak-de-hospitalizaciones-pediatricas-por-causa-respiratoria-y-reitera-llamado-a-vacunarse/",
+      "publication_date": "2026-08-27",
+      "title": "Circulación de virus se dispara: Minsal alerta ante peak de hospitalizaciones pediátricas por causa respiratoria",
+      "section": "nacional",
+      "topic": "providers_capacity",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/historica-condena-por-megafraude-a-fonasa-medicos-extranjeros-pagaran-con-carcel-y-mas-de-26-mil-millones-por-emitir-licencias-falsas/",
+      "publication_date": "2026-09-01",
+      "title": "Histórica condena por megafraude a Fonasa: médicos extranjeros pagarán con cárcel y más de $ 26 mil millones por emitir licencias falsas",
+      "section": "nacional",
+      "topic": "regulation_compliance",
+      "omission": {
+        "status": "detail_error",
+        "reason": "conflicting_publication_dates",
+        "error_type": "ValueError",
+        "url_level_cause_verified": true
+      },
+      "classification": "requested_original_detail_date_verification_failed",
+      "current_exact_traces": [
+        {
+          "url": "https://www.latercera.com/nacional/noticia/historica-condena-por-megafraude-a-fonasa-medicos-extranjeros-pagaran-con-carcel-y-mas-de-26-mil-millones-por-emitir-licencias-falsas/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-tag-fetch?query=%7B%22feedOffset%22%3A0%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22tagSlug%22%3A%22fonasa%22%7D&_website=la-tercera&d=1284",
+          "captured_at": "2026-10-11T06:18:03.654203+00:00",
+          "feed": "tag:fonasa"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/historica-condena-por-megafraude-a-fonasa-medicos-extranjeros-pagaran-con-carcel-y-mas-de-26-mil-millones-por-emitir-licencias-falsas/",
+          "listing": "https://www.latercera.com/etiqueta/fonasa/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError"
+        }
+      ],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": 200,
+      "requested_final_url": "https://www.latercera.com/nacional/noticia/historica-condena-por-megafraude-a-fonasa-medicos-extranjeros-pagaran-con-carcel-y-mas-de-26-mil-millones-por-emitir-licencias-falsas/",
+      "original_canonical": "https://www.latercera.com/nacional/noticia/historica-condena-por-megafraude-a-fonasa-medicos-extranjeros-pagaran-con-carcel-y-mas-de-26-mil-millones-por-emitir-licencias-falsas/",
+      "original_date_metadata": {
+        "og:url": "https://www.latercera.com/nacional/noticia/historica-condena-por-megafraude-a-fonasa-medicos-extranjeros-pagaran-con-carcel-y-mas-de-26-mil-millones-por-emitir-licencias-falsas/",
+        "og:title": "Histórica condena por megafraude a Fonasa: médicos extranjeros pagarán con cárcel y más de $ 26 mil millones por emitir licencias falsas - La Tercera",
+        "article:section": "Nacional",
+        "article:modified_time": "2026-09-01T00:29:22.464Z",
+        "article:published_time": "2026-09-01T00:29:22.344Z"
+      },
+      "original_json_ld": [
+        {
+          "@type": "NewsArticle",
+          "@id": "https://www.latercera.com/nacional/noticia/historica-condena-por-megafraude-a-fonasa-medicos-extranjeros-pagaran-con-carcel-y-mas-de-26-mil-millones-por-emitir-licencias-falsas/#article",
+          "url": "https://www.latercera.com/nacional/noticia/historica-condena-por-megafraude-a-fonasa-medicos-extranjeros-pagaran-con-carcel-y-mas-de-26-mil-millones-por-emitir-licencias-falsas/",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.latercera.com/nacional/noticia/historica-condena-por-megafraude-a-fonasa-medicos-extranjeros-pagaran-con-carcel-y-mas-de-26-mil-millones-por-emitir-licencias-falsas/",
+            "name": "Histórica condena por megafraude a Fonasa: médicos extranjeros pagarán con cárcel y más de $ 26 mil millones por emitir licencias falsas",
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "width": 1600,
+              "height": 900,
+              "url": "https://www.latercera.com/resizer/v2/M2O5CEK7MFCZ7KLHPPOFBZEV64.jpg?auth=35d6f907f51c2c2aaa90203138db2fabdf51c9a6773bd051b949e4958fc623fb&height=900&width=1600&smart=true",
+              "description": "Condenados por megafraude de Fonasa"
+            }
+          },
+          "headline": "Histórica condena por megafraude a Fonasa: médicos extranjeros pagarán con cárcel y más de $ 26 mil millones por emitir licencias falsas",
+          "datePublished": "2026-09-01T00:29:22.344Z",
+          "dateModified": "2026-09-01T00:29:22.464Z",
+          "articleSection": "Nacional",
+          "keywords": [
+            "Fonasa",
+            "Fiscalía Oriente",
+            "Fraude de licencias médicas"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList"
+        },
+        {
+          "@type": "NewsMediaOrganization",
+          "@id": "https://www.latercera.com/#organization",
+          "url": "https://www.latercera.com/"
+        },
+        {
+          "@type": "WebSite",
+          "url": "https://www.latercera.com/"
+        }
+      ]
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/alerta-alimentaria-por-listeria-supermercado-informa-del-retiro-preventivo-de-todas-las-unidades-de-pasta-de-jamon/",
+      "publication_date": "2026-09-04",
+      "title": "Alerta alimentaria por Listeria: supermercado informa del retiro preventivo de todas las unidades de pasta de jamón",
+      "section": "nacional",
+      "topic": "health_system_other",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+      "publication_date": "2026-09-04",
+      "title": "Cómo fue que la Fiscalía Oriente logró detener el fraude más grande contra Fonasa por emisión de licencias médicas falsas",
+      "section": "nacional",
+      "topic": "regulation_compliance",
+      "omission": {
+        "status": "detail_error",
+        "reason": "conflicting_publication_dates",
+        "error_type": "ValueError",
+        "url_level_cause_verified": true
+      },
+      "classification": "requested_original_detail_date_verification_failed",
+      "current_exact_traces": [
+        {
+          "url": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-tag-fetch?query=%7B%22feedOffset%22%3A0%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22tagSlug%22%3A%22fonasa%22%7D&_website=la-tercera&d=1284",
+          "captured_at": "2026-10-11T06:18:03.607353+00:00",
+          "feed": "tag:fonasa"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+          "listing": "https://www.latercera.com/etiqueta/fonasa/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError"
+        }
+      ],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": 200,
+      "requested_final_url": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+      "original_canonical": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+      "original_date_metadata": {
+        "og:url": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+        "og:title": "Cómo fue que la Fiscalía Oriente logró detener el fraude más grande contra Fonasa por emisión de licencias médicas falsas - La Tercera",
+        "article:section": "Nacional",
+        "article:modified_time": "2026-09-04T12:23:15.432Z",
+        "article:published_time": "2026-09-04T01:06:33.914Z"
+      },
+      "original_json_ld": [
+        {
+          "@type": "NewsArticle",
+          "@id": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/#article",
+          "url": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.latercera.com/nacional/noticia/como-fue-que-la-fiscalia-oriente-logro-detener-el-fraude-mas-grande-contra-fonasa-por-emision-de-licencias-medicas-falsas/",
+            "name": "Cómo fue que la Fiscalía Oriente logró detener el fraude más grande contra Fonasa por emisión de licencias médicas falsas",
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "width": 1600,
+              "height": 900,
+              "url": "https://www.latercera.com/resizer/v2/C2Y23X5ST5H3NGSLST2JCA7QRQ.jpg?auth=381585ba22ed4f822d21a492d85a01a5116e29e6e8a4a477d905f82a91cc729a&height=900&width=1600&smart=true",
+              "description": "EQUIPO INVESTIGADOR CASO FRAUDE LICENCIAS MEDICAS"
+            }
+          },
+          "headline": "Cómo fue que la Fiscalía Oriente logró detener el fraude más grande contra Fonasa por emisión de licencias médicas falsas",
+          "datePublished": "2026-09-04T01:06:33.914Z",
+          "dateModified": "2026-09-04T12:23:15.432Z",
+          "articleSection": "Nacional",
+          "keywords": [
+            "Fonasa",
+            "Licencias Médicas",
+            "Fraude",
+            "Fiscalía"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList"
+        },
+        {
+          "@type": "NewsMediaOrganization",
+          "@id": "https://www.latercera.com/#organization",
+          "url": "https://www.latercera.com/"
+        },
+        {
+          "@type": "WebSite",
+          "url": "https://www.latercera.com/"
+        }
+      ]
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/la-otra-lista-de-espera-odontologia-acumula-mas-de-537-mil-atenciones-con-retraso/",
+      "publication_date": "2026-09-04",
+      "title": "La otra lista de espera: odontología acumula más de 537 mil atenciones con retraso",
+      "section": "nacional",
+      "topic": "waiting_lists_oncology_capacity",
+      "omission": {
+        "status": "detail_error",
+        "reason": "conflicting_publication_dates",
+        "error_type": "ValueError",
+        "url_level_cause_verified": true
+      },
+      "classification": "requested_original_detail_date_verification_failed",
+      "current_exact_traces": [
+        {
+          "url": "https://www.latercera.com/nacional/noticia/la-otra-lista-de-espera-odontologia-acumula-mas-de-537-mil-atenciones-con-retraso/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-tag-fetch?query=%7B%22feedOffset%22%3A96%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22tagSlug%22%3A%22salud%22%7D&_website=la-tercera&d=1284",
+          "captured_at": "2026-10-11T06:16:02.045061+00:00",
+          "feed": "tag:salud"
+        },
+        {
+          "url": "https://www.latercera.com/nacional/noticia/la-otra-lista-de-espera-odontologia-acumula-mas-de-537-mil-atenciones-con-retraso/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-tag-fetch?query=%7B%22feedOffset%22%3A0%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22tagSlug%22%3A%22listas-de-espera%22%7D&_website=la-tercera&d=1284",
+          "captured_at": "2026-10-11T06:21:36.781283+00:00",
+          "feed": "tag:listas-de-espera"
+        }
+      ],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": 200,
+      "requested_final_url": "https://www.latercera.com/nacional/noticia/la-otra-lista-de-espera-odontologia-acumula-mas-de-537-mil-atenciones-con-retraso/",
+      "original_canonical": "https://www.latercera.com/nacional/noticia/la-otra-lista-de-espera-odontologia-acumula-mas-de-537-mil-atenciones-con-retraso/",
+      "original_date_metadata": {
+        "og:url": "https://www.latercera.com/nacional/noticia/la-otra-lista-de-espera-odontologia-acumula-mas-de-537-mil-atenciones-con-retraso/",
+        "og:title": "La otra lista de espera: odontología acumula más de 537 mil atenciones con retraso - La Tercera",
+        "article:section": "Nacional",
+        "article:modified_time": "2026-09-04T01:13:42.301Z",
+        "article:published_time": "2026-09-04T01:13:42.196Z"
+      },
+      "original_json_ld": [
+        {
+          "@type": "NewsArticle",
+          "@id": "https://www.latercera.com/nacional/noticia/la-otra-lista-de-espera-odontologia-acumula-mas-de-537-mil-atenciones-con-retraso/#article",
+          "url": "https://www.latercera.com/nacional/noticia/la-otra-lista-de-espera-odontologia-acumula-mas-de-537-mil-atenciones-con-retraso/",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.latercera.com/nacional/noticia/la-otra-lista-de-espera-odontologia-acumula-mas-de-537-mil-atenciones-con-retraso/",
+            "name": "La otra lista de espera: odontología acumula más de 537 mil atenciones con retraso",
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "width": 1600,
+              "height": 900,
+              "url": "https://www.latercera.com/resizer/v2/A2UOYV2GH5EN5PIWQE4OHKBBTI.jpg?auth=48ec7530aed5f270c632818bc14ddb51c524dc592e62c0608621ddb28682b49d&height=900&width=1600&smart=true",
+              "description": "Dentista referencial"
+            }
+          },
+          "headline": "La otra lista de espera: odontología acumula más de 537 mil atenciones con retraso",
+          "datePublished": "2026-09-04T01:13:42.196Z",
+          "dateModified": "2026-09-04T01:13:42.301Z",
+          "articleSection": "Nacional",
+          "keywords": [
+            "Salud",
+            "Listas de espera",
+            "Odontología",
+            "Dentistas"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList"
+        },
+        {
+          "@type": "NewsMediaOrganization",
+          "@id": "https://www.latercera.com/#organization",
+          "url": "https://www.latercera.com/"
+        },
+        {
+          "@type": "WebSite",
+          "url": "https://www.latercera.com/"
+        }
+      ]
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/contraloria-revela-que-observaciones-ordenadas-al-hospital-de-chillan-no-se-han-corregido-mas-de-dos-mil-cirugias-preferenciales-a-familiares/",
+      "publication_date": "2026-09-07",
+      "title": "Cirugías preferenciales a familiares: Contraloría revela que persisten irregularidades en Hospital de Chillán",
+      "section": "nacional",
+      "topic": "regulation_compliance",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-designa-a-fernanda-robles-como-la-nueva-seremi-de-la-region-de-los-lagos/",
+      "publication_date": "2026-09-07",
+      "title": "Minsal designa a Fernanda Robles como la nueva seremi de la Región de Los Lagos",
+      "section": "nacional",
+      "topic": "health_system_other",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/diputados-avanzan-para-materializar-comision-investigadora-por-irregularidades-detectadas-en-gestion-de-vacunas-en-2024/",
+      "publication_date": "2026-09-08",
+      "title": "Vencimiento de 700 mil dosis: diputados buscan crear comisión investigadora por irregularidades en gestión de vacunas en 2024",
+      "section": "nacional",
+      "topic": "regulation_compliance",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/contraloria-detecta-plantas-de-aguas-servidas-sin-autorizacion-y-deficiencias-en-tres-comunas-de-la-rm/",
+      "publication_date": "2026-09-11",
+      "title": "Contraloría detecta plantas de aguas servidas sin autorización y deficiencias en tres comunas de la RM",
+      "section": "nacional",
+      "topic": "regulation_compliance",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-publica-nomina-con-los-eleam-que-cuenta-con-autorizacion-sanitaria-son-993-a-nivel-pais-y-la-rm-concentra-mas-de-la-mitad/",
+      "publication_date": "2026-09-16",
+      "title": "Minsal da detalles de los Eleam que cuentan con autorización sanitaria: son 993 a nivel país y la RM concentra más del 50%",
+      "section": "nacional",
+      "topic": "regulation_compliance",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "publication_date": "2026-09-21",
+      "title": "Pollo, pañales y papas: Dipres identifica a 28 servicios que concentraron $10 mil millones de sobregasto en compras durante periodo Boric",
+      "section": "nacional",
+      "topic": "health_financing",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-conmemora-dia-nacional-del-donante-de-organos-y-tejidos-con-partido-en-hospital-dr-luis-calvo-mackenna/",
+      "publication_date": "2026-09-26",
+      "title": "Minsal llama a donar órganos ante más de 2.200 personas en lista de espera por un trasplante",
+      "section": "nacional",
+      "topic": "waiting_lists_oncology_capacity",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+      "publication_date": "2026-09-28",
+      "title": "Organizaciones piden al Minsal analizar financiamiento de tratamientos para enfermedades poco frecuentes",
+      "section": "nacional",
+      "topic": "health_financing",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+      "publication_date": "2026-10-01",
+      "title": "Kast anuncia uso de inteligencia artificial en Salud para priorizar atención de pacientes de mayor gravedad",
+      "section": "nacional",
+      "topic": "health_system_other",
+      "omission": {
+        "status": "detail_error",
+        "reason": "conflicting_publication_dates",
+        "error_type": "ValueError",
+        "url_level_cause_verified": true
+      },
+      "classification": "requested_original_detail_date_verification_failed",
+      "current_exact_traces": [
+        {
+          "url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-tag-fetch?query=%7B%22feedOffset%22%3A24%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22tagSlug%22%3A%22salud%22%7D&_website=la-tercera&d=1284",
+          "captured_at": "2026-10-11T06:15:47.275316+00:00",
+          "feed": "tag:salud"
+        }
+      ],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": 200,
+      "requested_final_url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+      "original_canonical": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+      "original_date_metadata": {
+        "og:url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+        "og:title": "Kast anuncia uso de inteligencia artificial en Salud para priorizar atención de pacientes de mayor gravedad - La Tercera",
+        "article:section": "Nacional",
+        "article:modified_time": "2026-10-01T00:46:24.354Z",
+        "article:published_time": "2026-10-01T00:46:24.224Z"
+      },
+      "original_json_ld": [
+        {
+          "@type": "NewsArticle",
+          "@id": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/#article",
+          "url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+            "name": "Kast anuncia uso de inteligencia artificial en Salud para priorizar atención de pacientes de mayor gravedad",
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "width": 1600,
+              "height": 900,
+              "url": "https://www.latercera.com/resizer/v2/FGGR3HW2GFG4VA4PSZU6F66VRU.jpeg?auth=bd19fdf2bab2109142a4008def57e1af6a71ff1b46134424f75f9bac4e887a7e&height=900&width=1600&smart=true",
+              "description": "Presidente Kast - Cadena Nacional"
+            }
+          },
+          "headline": "Kast anuncia uso de inteligencia artificial en Salud para priorizar atención de pacientes de mayor gravedad",
+          "datePublished": "2026-10-01T00:46:24.224Z",
+          "dateModified": "2026-10-01T00:46:24.354Z",
+          "articleSection": "Nacional",
+          "keywords": [
+            "Presupuesto 2027",
+            "Gobierno",
+            "José Antonio Kast",
+            "Minsal",
+            "Salud"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList"
+        },
+        {
+          "@type": "NewsMediaOrganization",
+          "@id": "https://www.latercera.com/#organization",
+          "url": "https://www.latercera.com/"
+        },
+        {
+          "@type": "WebSite",
+          "url": "https://www.latercera.com/"
+        }
+      ]
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+      "publication_date": "2026-10-01",
+      "title": "Presupuesto 2027: ministra Chomali destaca aumento de recursos de 4,7% en Salud",
+      "section": "nacional",
+      "topic": "health_financing",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/",
+      "publication_date": "2026-10-01",
+      "title": "Kast anuncia su primer Presupuesto con alza del gasto de 1,5% y con foco en empleo, seguridad y salud",
+      "section": "pulso",
+      "topic": "health_financing",
+      "omission": {
+        "status": "detail_error",
+        "reason": "conflicting_publication_dates",
+        "error_type": "ValueError",
+        "url_level_cause_verified": true
+      },
+      "classification": "requested_original_detail_date_verification_failed",
+      "current_exact_traces": [
+        {
+          "url": "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A192%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fpulso%22%7D&_website=la-tercera&d=1284",
+          "captured_at": "2026-10-11T05:49:21.474980+00:00",
+          "feed": "section:pulso"
+        }
+      ],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": 200,
+      "requested_final_url": "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/",
+      "original_canonical": "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/",
+      "original_date_metadata": {
+        "og:url": "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/",
+        "og:title": "Kast anuncia su primer Presupuesto con alza del gasto de 1,5% y con foco en empleo, seguridad y salud - La Tercera",
+        "article:section": "Pulso",
+        "article:modified_time": "2026-10-01T00:48:28.545Z",
+        "article:published_time": "2026-10-01T00:17:15.187Z"
+      },
+      "original_json_ld": [
+        {
+          "@type": "NewsArticle",
+          "@id": "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/#article",
+          "url": "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.latercera.com/pulso/noticia/kast-anuncia-su-primer-presupuesto-con-alza-del-gasto-de-15-y-con-foco-en-empleo-seguridad-y-salud/",
+            "name": "Kast anuncia su primer Presupuesto con alza del gasto de 1,5% y con foco en empleo, seguridad y salud",
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "width": 1600,
+              "height": 900,
+              "url": "https://www.latercera.com/resizer/v2/EPKXWG2TCZHVZDOH2LPOJTNDZE.jpeg?auth=dd7a525f0f24ce45afe2015bc580bda4215db43b2b31a2c2ca2075f97948c910&height=900&width=1600&smart=true",
+              "description": "Presidente Kast - Cadena Nacional"
+            }
+          },
+          "headline": "Kast anuncia su primer Presupuesto con alza del gasto de 1,5% y con foco en empleo, seguridad y salud",
+          "datePublished": "2026-10-01T00:17:15.187Z",
+          "dateModified": "2026-10-01T00:48:28.545Z",
+          "articleSection": "Pulso",
+          "keywords": [
+            "Presupuesto 2027",
+            "Erario Fiscal",
+            "José Antonio Kast"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList"
+        },
+        {
+          "@type": "NewsMediaOrganization",
+          "@id": "https://www.latercera.com/#organization",
+          "url": "https://www.latercera.com/"
+        },
+        {
+          "@type": "WebSite",
+          "url": "https://www.latercera.com/"
+        }
+      ]
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/medicos-sin-vinculo-con-hospital-de-talagante-emitieron-1045-recetas-por-fentanilo-y-otros-farmacos-controlados/",
+      "publication_date": "2026-10-08",
+      "title": "Médicos sin vínculo con Hospital de Talagante emitieron 1.045 recetas por fentanilo y otros fármacos controlados",
+      "section": "nacional",
+      "topic": "regulation_compliance",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/uc-christus-san-carlos-de-apoquindo-suspende-atencion-de-urgencia-y-consultas-medicas-tras-verse-afectada-por-aluvion/",
+      "publication_date": "2026-10-08",
+      "title": "UC Christus San Carlos de Apoquindo suspende atención de urgencia y consultas médicas tras verse afectada por aluvión",
+      "section": "nacional",
+      "topic": "health_system_other",
+      "omission": {
+        "status": "not_observed_in_current_core",
+        "reason": "runtime_coverage_incomplete:required_public_feed_incomplete",
+        "url_level_cause_verified": false
+      },
+      "classification": "not_enumerated_due_nacional_offset0_http503_no_transient_retry",
+      "current_exact_traces": [],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": null,
+      "requested_final_url": null,
+      "original_canonical": null,
+      "original_date_metadata": null,
+      "original_json_ld": null
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+      "publication_date": "2026-10-09",
+      "title": "Licencias médicas anotan en agosto su mayor alza en año y medio, debido a baja base de comparación",
+      "section": "pulso",
+      "topic": "health_system_other",
+      "omission": {
+        "status": "detail_error",
+        "reason": "conflicting_publication_dates",
+        "error_type": "ValueError",
+        "url_level_cause_verified": true
+      },
+      "classification": "requested_original_detail_date_verification_failed",
+      "current_exact_traces": [
+        {
+          "url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+          "status": "detail_error",
+          "reason": "conflicting_publication_dates",
+          "error_type": "ValueError",
+          "listing": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A24%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fpulso%22%7D&_website=la-tercera&d=1284",
+          "captured_at": "2026-10-11T05:48:49.488500+00:00",
+          "feed": "section:pulso"
+        }
+      ],
+      "possible_title_or_slug_matches": [],
+      "requested_original_http_status": 200,
+      "requested_final_url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+      "original_canonical": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+      "original_date_metadata": {
+        "og:url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+        "og:title": "Licencias médicas anotan en agosto su mayor alza en año y medio, debido a baja base de comparación - La Tercera",
+        "article:section": "Pulso",
+        "article:modified_time": "2026-10-09T00:04:37.204Z",
+        "article:published_time": "2026-10-09T00:04:37.079Z"
+      },
+      "original_json_ld": [
+        {
+          "@type": "NewsArticle",
+          "@id": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/#article",
+          "url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+            "name": "Licencias médicas anotan en agosto su mayor alza en año y medio, debido a baja base de comparación",
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "width": 1600,
+              "height": 900,
+              "url": "https://www.latercera.com/resizer/v2/ZUMAJBHDZVECVNSCNHTRY3DJ3Q.jpg?auth=543b6a39fef1f38bf2f5af31f41a69db32b17cb1adb51fcbf8d1d23480f3551d&height=900&width=1600&smart=true",
+              "description": "Licencias Medicas 27/5/25"
+            }
+          },
+          "headline": "Licencias médicas anotan en agosto su mayor alza en año y medio, debido a baja base de comparación",
+          "datePublished": "2026-10-09T00:04:37.079Z",
+          "dateModified": "2026-10-09T00:04:37.204Z",
+          "articleSection": "Pulso",
+          "keywords": [
+            "Licencias",
+            "Licencias médicas"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList"
+        },
+        {
+          "@type": "NewsMediaOrganization",
+          "@id": "https://www.latercera.com/#organization",
+          "url": "https://www.latercera.com/"
+        },
+        {
+          "@type": "WebSite",
+          "url": "https://www.latercera.com/"
+        }
+      ]
+    }
+  ],
+  "acceptance": "NOT_ACCEPTED_REAL_CORE_RECOVERY_PENDING"
+}

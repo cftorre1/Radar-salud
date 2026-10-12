@@ -1,0 +1,68 @@
+{
+  "schema_version": "pulso_actual323_dipres_editorial_schema_validation_v1",
+  "recorded_at": "2026-10-11T22:12:52.734767+00:00",
+  "producer_commit": "323b73ef5fb0ec39410024c21d70e6fd99b065e2",
+  "reader": {
+    "path": "data/audits/pulso_actual_followup_hanta_dipres_independent_semantic_review_2026_10_11.json",
+    "sha256": "b4c19a8bead89a2db48f2820851b25f968b9edc3c307f1189cd8419a7e8f408c"
+  },
+  "template": {
+    "path": "data/audits/pulso_actual_followup_dipres_editorial_correction_2026_10_11.json",
+    "sha256": "312cc47e9d22bedd31c783553708623aefa7dcfb30a4fa596fc6c121409788b5"
+  },
+  "verdict": "PASS_SCOPED_ONE_ALREADY_PUBLISHED_DIPRES_IN_MEMORY_ONLY",
+  "validation": {
+    "actual_registry_plus_own_registration_only_in_temp": true,
+    "fullcontext_QA_verified": 60,
+    "fullcontext_QA_errors": [],
+    "exact_one_QA_verified": 1,
+    "exact_one_QA_errors": [],
+    "in_memory_application": {
+      "review_id": "pulso_actual_followup_dipres_published_attribution_2026_10_11",
+      "review_sha256": "312cc47e9d22bedd31c783553708623aefa7dcfb30a4fa596fc6c121409788b5",
+      "reviewed_count": 1,
+      "applied_count": 1,
+      "unchanged_on_replay": 0,
+      "decisions": {
+        "accept": 0,
+        "reject": 0,
+        "group": 0,
+        "correct": 1
+      },
+      "ai_calls": 0,
+      "primary_evidence_mutations": 0,
+      "queue_attempt_resets": 0
+    },
+    "in_memory_reapplication": {
+      "review_id": "pulso_actual_followup_dipres_published_attribution_2026_10_11",
+      "review_sha256": "312cc47e9d22bedd31c783553708623aefa7dcfb30a4fa596fc6c121409788b5",
+      "reviewed_count": 1,
+      "applied_count": 0,
+      "unchanged_on_replay": 1,
+      "decisions": {
+        "accept": 0,
+        "reject": 0,
+        "group": 0,
+        "correct": 1
+      },
+      "ai_calls": 0,
+      "primary_evidence_mutations": 0,
+      "queue_attempt_resets": 0
+    },
+    "WHAT_publisher_prefix_only": true,
+    "WHY_category_and_prospective_unchanged": true,
+    "score84_threshold72_unchanged": true,
+    "raw_original_model_body_request_receipt_preserved": true,
+    "all5293_nonPulso_queue_and897_history_exact": true,
+    "all_other_queue_history_exact": true,
+    "Hanta_retry_unchanged": true
+  },
+  "actual_state_writes": 0,
+  "AI_calls": 0,
+  "acceptance_pass": false,
+  "limitations": [
+    "Actual parent registry/application and independentpeer still required.",
+    "Only publishedDipres is corrected; retryHanta diagnosed, not humanapproved.",
+    "Actual66model reused through actual323receipt, no newDipres FAST fabricated."
+  ]
+}

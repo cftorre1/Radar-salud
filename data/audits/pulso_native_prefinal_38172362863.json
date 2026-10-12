@@ -1,0 +1,1718 @@
+{
+  "run_id": 38172362863,
+  "head_sha": "de51496ca0bfbe656c96551743e52024b9b6608e",
+  "scope": "PRE_FINAL_NATIVE_CRITICAL_PASS_ONLY; DOES_NOT_APPROVE_CURRENT12_CORE_REPLAY_PUBLICATION_FINAL_REVIEW_OR_UI",
+  "timeline": [
+    {
+      "observed_at": "2026-10-11T20:32:15.898Z",
+      "jobs": [
+        {
+          "id": 114567451613,
+          "name": "tests",
+          "status": "in_progress",
+          "conclusion": null,
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e . pytest",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run python -m pytest -q",
+              "status": "in_progress",
+              "conclusion": null,
+              "number": 5
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 6
+            },
+            {
+              "name": "Run npm ci && npm test",
+              "status": "pending",
+              "conclusion": null,
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "pending",
+              "conclusion": null,
+              "number": 13
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 14
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "observed_at": "2026-10-11T20:33:05.186Z",
+      "jobs": [
+        {
+          "id": 114567451613,
+          "name": "tests",
+          "status": "in_progress",
+          "conclusion": null,
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e . pytest",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run python -m pytest -q",
+              "status": "in_progress",
+              "conclusion": null,
+              "number": 5
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 6
+            },
+            {
+              "name": "Run npm ci && npm test",
+              "status": "pending",
+              "conclusion": null,
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "pending",
+              "conclusion": null,
+              "number": 13
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 14
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "observed_at": "2026-10-11T20:33:46.500Z",
+      "jobs": [
+        {
+          "id": 114567451613,
+          "name": "tests",
+          "status": "in_progress",
+          "conclusion": null,
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e . pytest",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run python -m pytest -q",
+              "status": "in_progress",
+              "conclusion": null,
+              "number": 5
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 6
+            },
+            {
+              "name": "Run npm ci && npm test",
+              "status": "pending",
+              "conclusion": null,
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "pending",
+              "conclusion": null,
+              "number": 13
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 14
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "observed_at": "2026-10-11T20:34:21.837Z",
+      "jobs": [
+        {
+          "id": 114567451613,
+          "name": "tests",
+          "status": "in_progress",
+          "conclusion": null,
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e . pytest",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run python -m pytest -q",
+              "status": "in_progress",
+              "conclusion": null,
+              "number": 5
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 6
+            },
+            {
+              "name": "Run npm ci && npm test",
+              "status": "pending",
+              "conclusion": null,
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "pending",
+              "conclusion": null,
+              "number": 13
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 14
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "observed_at": "2026-10-11T20:35:46.794Z",
+      "jobs": [
+        {
+          "id": 114567451613,
+          "name": "tests",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e . pytest",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run python -m pytest -q",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Run npm ci && npm test",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            }
+          ]
+        },
+        {
+          "id": 114568956771,
+          "name": "staging",
+          "status": "in_progress",
+          "conclusion": null,
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "in_progress",
+              "conclusion": null,
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "pending",
+              "conclusion": null,
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e .",
+              "status": "pending",
+              "conclusion": null,
+              "number": 4
+            },
+            {
+              "name": "Load durable iteration ledger",
+              "status": "pending",
+              "conclusion": null,
+              "number": 5
+            },
+            {
+              "name": "Build priority statistical deep analysis",
+              "status": "pending",
+              "conclusion": null,
+              "number": 6
+            },
+            {
+              "name": "Build fresh material epidemiology signal",
+              "status": "pending",
+              "conclusion": null,
+              "number": 7
+            },
+            {
+              "name": "Recurate current history without external lookups",
+              "status": "pending",
+              "conclusion": null,
+              "number": 8
+            },
+            {
+              "name": "Validate and export the canonical Global Intelligence sample",
+              "status": "pending",
+              "conclusion": null,
+              "number": 9
+            },
+            {
+              "name": "Run python scripts/product_report.py",
+              "status": "pending",
+              "conclusion": null,
+              "number": 10
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 11
+            },
+            {
+              "name": "Run npm ci && npx playwright install --with-deps chromium",
+              "status": "pending",
+              "conclusion": null,
+              "number": 12
+            },
+            {
+              "name": "Run npm run test:browser",
+              "status": "pending",
+              "conclusion": null,
+              "number": 13
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 14
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 28
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "observed_at": "2026-10-11T20:37:00.595Z",
+      "jobs": [
+        {
+          "id": 114567451613,
+          "name": "tests",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e . pytest",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run python -m pytest -q",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Run npm ci && npm test",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            }
+          ]
+        },
+        {
+          "id": 114568956771,
+          "name": "staging",
+          "status": "in_progress",
+          "conclusion": null,
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e .",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Load durable iteration ledger",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Build priority statistical deep analysis",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Build fresh material epidemiology signal",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Recurate current history without external lookups",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Validate and export the canonical Global Intelligence sample",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            },
+            {
+              "name": "Run python scripts/product_report.py",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            },
+            {
+              "name": "Run npm ci && npx playwright install --with-deps chromium",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Run npm run test:browser",
+              "status": "in_progress",
+              "conclusion": null,
+              "number": 13
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 14
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 26
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "pending",
+              "conclusion": null,
+              "number": 27
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 28
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "observed_at": "2026-10-11T20:37:50.729Z",
+      "jobs": [
+        {
+          "id": 114567451613,
+          "name": "tests",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e . pytest",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run python -m pytest -q",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Run npm ci && npm test",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            }
+          ]
+        },
+        {
+          "id": 114568956771,
+          "name": "staging",
+          "status": "in_progress",
+          "conclusion": null,
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e .",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Load durable iteration ledger",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Build priority statistical deep analysis",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Build fresh material epidemiology signal",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Recurate current history without external lookups",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Validate and export the canonical Global Intelligence sample",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            },
+            {
+              "name": "Run python scripts/product_report.py",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            },
+            {
+              "name": "Run npm ci && npx playwright install --with-deps chromium",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Run npm run test:browser",
+              "status": "in_progress",
+              "conclusion": null,
+              "number": 13
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 14
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 26
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "pending",
+              "conclusion": null,
+              "number": 27
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 28
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "observed_at": "2026-10-11T20:38:32.722Z",
+      "jobs": [
+        {
+          "id": 114567451613,
+          "name": "tests",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e . pytest",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run python -m pytest -q",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Run npm ci && npm test",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            }
+          ]
+        },
+        {
+          "id": 114568956771,
+          "name": "staging",
+          "status": "in_progress",
+          "conclusion": null,
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e .",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Load durable iteration ledger",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Build priority statistical deep analysis",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Build fresh material epidemiology signal",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Recurate current history without external lookups",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Validate and export the canonical Global Intelligence sample",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            },
+            {
+              "name": "Run python scripts/product_report.py",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            },
+            {
+              "name": "Run npm ci && npx playwright install --with-deps chromium",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Run npm run test:browser",
+              "status": "in_progress",
+              "conclusion": null,
+              "number": 13
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 14
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 26
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "pending",
+              "conclusion": null,
+              "number": 27
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 28
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "observed_at": "2026-10-11T20:39:11.252Z",
+      "jobs": [
+        {
+          "id": 114567451613,
+          "name": "tests",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e . pytest",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run python -m pytest -q",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Run npm ci && npm test",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            }
+          ]
+        },
+        {
+          "id": 114568956771,
+          "name": "staging",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e .",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Load durable iteration ledger",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Build priority statistical deep analysis",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Build fresh material epidemiology signal",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Recurate current history without external lookups",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Validate and export the canonical Global Intelligence sample",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            },
+            {
+              "name": "Run python scripts/product_report.py",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            },
+            {
+              "name": "Run npm ci && npx playwright install --with-deps chromium",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Run npm run test:browser",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 26
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29
+            }
+          ]
+        },
+        {
+          "id": 114569621892,
+          "name": "reviewer",
+          "status": "in_progress",
+          "conclusion": null,
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "in_progress",
+              "conclusion": null,
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "pending",
+              "conclusion": null,
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e .",
+              "status": "pending",
+              "conclusion": null,
+              "number": 4
+            },
+            {
+              "name": "Run actions/download-artifact@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 5
+            },
+            {
+              "name": "Run python scripts/review_candidate.py --web reviewed/web --sha \"$GITHUB_SHA\"",
+              "status": "pending",
+              "conclusion": null,
+              "number": 6
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "pending",
+              "conclusion": null,
+              "number": 14
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "observed_at": "2026-10-11T20:39:49.550Z",
+      "jobs": [
+        {
+          "id": 114567451613,
+          "name": "tests",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e . pytest",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run python -m pytest -q",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Run npm ci && npm test",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            }
+          ]
+        },
+        {
+          "id": 114568956771,
+          "name": "staging",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e .",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Load durable iteration ledger",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Build priority statistical deep analysis",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Build fresh material epidemiology signal",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Recurate current history without external lookups",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Validate and export the canonical Global Intelligence sample",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            },
+            {
+              "name": "Run python scripts/product_report.py",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            },
+            {
+              "name": "Run npm ci && npx playwright install --with-deps chromium",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Run npm run test:browser",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 26
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29
+            }
+          ]
+        },
+        {
+          "id": 114569621892,
+          "name": "reviewer",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 38172362863,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run pip install -e .",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run actions/download-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Run python scripts/review_candidate.py --web reviewed/web --sha \"$GITHUB_SHA\"",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tests_job_id": 114567451613,
+  "tests_summary": [
+    "2026-10-11T20:35:31.6515106Z 3081 passed, 1 skipped, 1 warning in 363.60s (0:06:03)",
+    "2026-10-11T20:35:34.8415393Z # tests 42",
+    "2026-10-11T20:35:34.8415876Z # pass 42",
+    "2026-10-11T20:35:34.8416134Z # fail 0",
+    "2026-10-11T20:35:34.8416808Z # skipped 0"
+  ],
+  "staging_job_id": 114568956771,
+  "staging_summary": [
+    "2026-10-11T20:36:09.3449181Z HEAD is now at 86fc820e Merge de51496ca0bfbe656c96551743e52024b9b6608e into bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+    "2026-10-11T20:38:04.5151706Z   ✓  37 [desktop] › tests/browser/product.spec.cjs:468:1 › committee HOLD/REJECT and failed publication contracts do not render as individual feed cards (692ms)",
+    "2026-10-11T20:38:27.6262544Z   ✓  58 [mobile] › tests/browser/product.spec.cjs:468:1 › committee HOLD/REJECT and failed publication contracts do not render as individual feed cards (574ms)",
+    "2026-10-11T20:38:40.8119190Z   64 passed (1.8m)"
+  ],
+  "status": "PRE_FINAL_NATIVE_CRITICAL_PASS",
+  "conclusion": "success",
+  "updated_at": "2026-10-11T20:39:24Z",
+  "checkout_merge_sha": "86fc820e595af8093dd836d7aa41f7509aea3352",
+  "base_staging_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+  "reviewer_job_id": 114569621892,
+  "artifacts": [
+    {
+      "id": 11714557524,
+      "name": "staging-evidence-86fc820e595af8093dd836d7aa41f7509aea3352",
+      "size_in_bytes": 103533689,
+      "url": "https://api.github.com/repos/cftorre1/Radar-salud/actions/artifacts/11714557524",
+      "archive_download_url": "https://api.github.com/repos/cftorre1/Radar-salud/actions/artifacts/11714557524/zip",
+      "expired": false,
+      "created_at": "2026-10-11T20:38:45Z",
+      "expires_at": "2027-01-09T20:28:34Z",
+      "updated_at": "2026-10-11T20:38:45Z",
+      "digest": "sha256:1de30092678be9ccbceccd354a379ef1013f388acb1d06135ba06818cb821cc6",
+      "workflow_run": {
+        "id": 38172362863,
+        "repository_id": 1379044672,
+        "head_repository_id": 1379044672,
+        "head_branch": "codex/b-pulso-runtime-20261011",
+        "head_sha": "de51496ca0bfbe656c96551743e52024b9b6608e"
+      }
+    },
+    {
+      "id": 11714348147,
+      "name": "reviewer-86fc820e595af8093dd836d7aa41f7509aea3352",
+      "size_in_bytes": 494,
+      "url": "https://api.github.com/repos/cftorre1/Radar-salud/actions/artifacts/11714348147",
+      "archive_download_url": "https://api.github.com/repos/cftorre1/Radar-salud/actions/artifacts/11714348147/zip",
+      "expired": false,
+      "created_at": "2026-10-11T20:39:21Z",
+      "expires_at": "2027-01-09T20:28:34Z",
+      "updated_at": "2026-10-11T20:39:21Z",
+      "digest": "sha256:9260d3bec3363773761fe95496d473de2b59976c8e3677f1262801f8c9bc3baa",
+      "workflow_run": {
+        "id": 38172362863,
+        "repository_id": 1379044672,
+        "head_repository_id": 1379044672,
+        "head_branch": "codex/b-pulso-runtime-20261011",
+        "head_sha": "de51496ca0bfbe656c96551743e52024b9b6608e"
+      }
+    }
+  ],
+  "actual_current12_core_approved": false,
+  "actual_current12_replay_approved": false,
+  "final_source_sha_acceptance_approved": false,
+  "repo_edits": false,
+  "reviewer_report": {
+    "reviewer": "deterministic-reviewer",
+    "candidate_sha": "86fc820e595af8093dd836d7aa41f7509aea3352",
+    "reviewed_at": "2026-10-11T20:39:20.995831+00:00",
+    "findings": [],
+    "checks": {
+      "data": true,
+      "editorial": true,
+      "statistics": true,
+      "ux": true
+    },
+    "limitations": [
+      "Semantic/legal accuracy is not certified by deterministic checks.",
+      "Browser evidence is required separately for desktop/mobile.",
+      "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+    ]
+  },
+  "evidence_files": {
+    "data/audits/pulso_native_prefinal_38172362863/tests.log.gz": {
+      "sha256": "5fa94c04ba79079ff41fa67ab6be3c1f21d5d21cb9db66e211531f5f2ec504f9",
+      "decompressed_sha256": "c3fd3a3556edb50aa5fbe61e1c5d3f163e298277b1d4fb9652647aef0782b597",
+      "decompressed_bytes": 59485,
+      "original_unmodified": true
+    },
+    "data/audits/pulso_native_prefinal_38172362863/staging.log.gz": {
+      "sha256": "54b6b0cfe94e8536075b8738b8ebeb12e878fef589a2dab8ed28bea74d8d18a2",
+      "decompressed_sha256": "682f07511dfa362dbb783d0afea6fe439b87346b9241b4681dfff821a4a27cce",
+      "decompressed_bytes": 173621,
+      "original_unmodified": true
+    },
+    "data/audits/pulso_native_prefinal_38172362863/reviewer.log.gz": {
+      "sha256": "984ed80e35109d9482bd9845dc4b26670decd08542fd3684368689b755e639aa",
+      "decompressed_sha256": "76014e69127e13c921346505ab8002d2f9a65736b550327b4e1a60d623f09213",
+      "decompressed_bytes": 38130,
+      "original_unmodified": true
+    },
+    "data/audits/pulso_native_prefinal_38172362863/review.json": {
+      "sha256": "554f991848acfbf87172cb6146e7ed75a2b95ff032a7597ac3e1ffcf2ec44a51",
+      "original_unmodified": true
+    },
+    "data/audits/pulso_native_prefinal_38172362863/reviewer.zip": {
+      "sha256": "9260d3bec3363773761fe95496d473de2b59976c8e3677f1262801f8c9bc3baa",
+      "github_artifact_id": 11714348147,
+      "original_unmodified": true
+    }
+  },
+  "schema_version": "pulso_native_prefinal_critical_evidence_v1",
+  "work_original_evidence_hashes": {
+    "pulso_native_prefinal_38172362863_tests.log": "c3fd3a3556edb50aa5fbe61e1c5d3f163e298277b1d4fb9652647aef0782b597",
+    "pulso_native_prefinal_38172362863_staging.log": "682f07511dfa362dbb783d0afea6fe439b87346b9241b4681dfff821a4a27cce",
+    "pulso_native_prefinal_38172362863_reviewer.log": "76014e69127e13c921346505ab8002d2f9a65736b550327b4e1a60d623f09213",
+    "pulso_native_prefinal_38172362863_review.json": "554f991848acfbf87172cb6146e7ed75a2b95ff032a7597ac3e1ffcf2ec44a51"
+  },
+  "repository_commit_at_evidence_persistence": "79cfe0100d0e0532ae8d35da5830ebdd3cf77853",
+  "scope_limitations": [
+    "This run tests PR10 head de51496 against staging bc723e08 using the actual GitHub PR merge86fc820e. It precedes producer66f37ca0 and its later current12 actual outcomes.",
+    "The 3081 Python,42 JavaScript and64 browser PASS results plus deterministic Reviewer zero findings approve only this pre-final native run. They approve neither current12 semantic outcomes nor their followup5 recovery, genuine zero-AI replay, final-SHA Reviewer or final UI6.",
+    "Original job logs and the downloaded Reviewer artifact are retained byte-for-byte. The 103533689-byte staging artifact is identified with its actual GitHub ID,digest and expiry; it was downloaded and checked by the native Reviewer, not copied into this repository."
+  ],
+  "test_results": {
+    "python": {
+      "passed": 3081,
+      "skipped": 1,
+      "warnings": 1,
+      "seconds": 363.6
+    },
+    "javascript": {
+      "passed": 42,
+      "failed": 0
+    },
+    "browser": {
+      "passed": 64,
+      "seconds_description": "1.8m"
+    },
+    "reviewer": {
+      "findings": [],
+      "checks": {
+        "data": true,
+        "editorial": true,
+        "statistics": true,
+        "ux": true
+      }
+    }
+  }
+}

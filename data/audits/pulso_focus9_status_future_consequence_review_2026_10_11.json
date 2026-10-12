@@ -1,0 +1,865 @@
+{
+  "schema_version": "pulso_focus9_status_future_consequence_independent_review_v1",
+  "source_id": "pulso_latercera",
+  "execution_run_id": 38149773071,
+  "execution_code_sha": "81b844a654533891ad0923a40dfedfda03c17fa3",
+  "actual_snapshot_git_revision": "0713ca9",
+  "scope": "ALL9 remaining technical deferrals whose primary reason is status/novelty(4), future-copy(3), or consequence(2). Complementary to separate ALL35 actor/action and ALL25 scope reviews.",
+  "input_matrix": {
+    "path": "data/audits/pulso_focus113_outcome_matrix_2026_10_11.json",
+    "sha256": "ec86e582c3a1543f9fc82bfab863f7450c6e9c002554c1859535ff491cf3c3f3"
+  },
+  "full_bodies_read": 9,
+  "original_body_characters_read": 31224,
+  "all_actual_outcomes_preserved": "retry",
+  "numeric_gate_changed": false,
+  "publication_approved": false,
+  "acceptance_pass": false,
+  "changes_applied": false,
+  "ai_calls": 0,
+  "rows": [
+    {
+      "matrix_index": 4,
+      "url": "https://www.latercera.com/nacional/noticia/ante-baja-vacunacion-en-grupos-de-riesgo-minsal-advierte-aumento-de-consultas-en-urgencias-por-virus-respiratorios/",
+      "publication_date": "2026-08-24",
+      "primary": {
+        "body_file": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+        "body_json_pointer": "/all_controls/2/primary_body_full",
+        "body_file_sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+        "body_sha256": "d73454ef54ffd65bffab7177c7b942b9e7be139f3f6175178c5f6db50a9df5f0",
+        "body_characters": 2995,
+        "original_publication_day": "2026-08-24",
+        "independently_retained_visible_bylines": [
+          {
+            "timestamp": "2026-08-24T14:04:09.278Z",
+            "text": "24 AGOSTO 2026",
+            "visible_day": "2026-08-24"
+          }
+        ],
+        "original_gzip_file": "tests/fixtures/pulso_runtime_real/f23cbb3d5a932986b3877d2afafa16f9d916096f392433f2349c0433b996a03c.html.gz",
+        "html_sha256": "f23cbb3d5a932986b3877d2afafa16f9d916096f392433f2349c0433b996a03c",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+            "sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+            "review_index": 3,
+            "expectation_group": "material_sector_evaluation_required",
+            "reason": "Positividad respiratoria54,3%, cobertura78,9% y aumento de consultas/hospitalizaciones en niños y mayores dan señal cuantificada de presión en red."
+          }
+        ]
+      },
+      "full_original_body_read": true,
+      "full_actual_model_copy_and_proof_read": true,
+      "actual_queue_status": "retry",
+      "exact_actual_reason": "pulso_editorial_consequence_not_grounded",
+      "actual_model_score": 84,
+      "numeric_gate_evaluated": false,
+      "actual_response_id": "resp_00b9377993b95156006acbaa37538487d1843ac433dd860183",
+      "actual_request_input_sha256": "7dd172a3ecb0eda0eb36f76767305f1a6f45a157c5e9068f9101314e1ad85754",
+      "actual_model_output_sha256": "a839b8e0afea64e6d33823a04be07831dbbab81c8d416f24182627f7b0d43828",
+      "actual_what_happened": "Según el último reporte semanal de la Campaña de Invierno 2026 del Minsal, la positividad de las muestras llegó a 54,3%; además, 7 de cada 10 personas fallecidas por influenza y el 53% de las personas hospitalizadas por casos graves no estaban vacunadas. La subsecretaria de Salud Pública reportó un aumento reciente de las consultas de urgencia por virus respiratorios, concentrado en niños y adultos mayores, y advirtió que, si vienen las lluvias esta semana, después de ellas puede aumentar aún más la circulación viral.",
+      "actual_why_it_matters": "La señal afecta directamente a los grupos de riesgo y a la atención de urgencias: sus coberturas de vacunación están entre 62% y 64%, mientras ya se observa mayor demanda por enfermedades respiratorias. Merece atención ahora porque el Minsal mantiene abierta y gratuita la vacunación para toda la población, pero enfrenta una cobertura nacional de 78,9% y una circulación viral todavía alta.",
+      "actual_model_reason": "Es una señal material de salud pública en Chile: combina datos recientes de positividad, mortalidad y hospitalización por influenza con un aumento ya reportado de consultas de urgencia y una brecha específica de vacunación en niños y adultos mayores. La información proviene de un reporte del Minsal y de declaraciones de la subsecretaria, por lo que se presenta como reportada por la prensa y no como una evaluación editorial independiente.",
+      "actual_proof": {
+        "scope_decision": "human_health_specific",
+        "scope_reason": "El contenido describe vacunación contra influenza, mortalidad, hospitalización y consultas de urgencia por virus respiratorios en personas, además de medidas de acceso sanitario en Chile.",
+        "human_health_scope_quote": "se informó que 7 de cada 10 personas fallecidas por Influenza no se encontraban vacunadas para esta enfermedad",
+        "actor": "el Ministerio de Salud (Minsal)",
+        "actor_quote": "En su último reporte semanal de la Campaña de Invierno 2026, el Ministerio de Salud (Minsal) dio cuenta que se registró la positividad más alta de lo que va del año, alcanzando el 54,3% de las muestras.",
+        "action": "dio cuenta que se registró la positividad más alta de lo que va del año, alcanzando el 54,3% de las muestras",
+        "action_quote": "En su último reporte semanal de la Campaña de Invierno 2026, el Ministerio de Salud (Minsal) dio cuenta que se registró la positividad más alta de lo que va del año, alcanzando el 54,3% de las muestras.",
+        "consequence": "aumento de las consultas de urgencias por virus respiratorios",
+        "consequence_quote": "En las últimas semanas hemos visto un aumento de las consultas de urgencias por virus respiratorios. Esto concentrado en niños y en adultos mayores",
+        "event_status": "mixed_actual_and_future",
+        "event_status_quote": "En las últimas semanas hemos visto un aumento de las consultas de urgencias por virus respiratorios. Esto concentrado en niños y en adultos mayores",
+        "novelty_decision": "new_material_information",
+        "novelty_reason": "El contenido atribuye los datos al último reporte semanal de la Campaña de Invierno 2026 e incorpora una actualización sobre consultas de urgencia, cobertura y grupos de riesgo. No se entrega contexto previo que permita clasificarlo como repetición.",
+        "novelty_quote": "En su último reporte semanal de la Campaña de Invierno 2026, el Ministerio de Salud (Minsal) dio cuenta que se registró la positividad más alta de lo que va del año, alcanzando el 54,3% de las muestras.",
+        "future_claims": [
+          {
+            "summary_field": "what_happened",
+            "summary_quote": "Según el último reporte semanal de la Campaña de Invierno 2026 del Minsal, la positividad de las muestras llegó a 54,3%; además, 7 de cada 10 personas fallecidas por influenza y el 53% de las personas hospitalizadas por casos graves no estaban vacunadas. La subsecretaria de Salud Pública reportó un aumento reciente de las consultas de urgencia por virus respiratorios, concentrado en niños y adultos mayores, y advirtió que, si vienen las lluvias esta semana, después de ellas puede aumentar aún más la circulación viral.",
+            "source_quote": "Si vienen las lluvias esta semana y sabemos que después de las lluvias también aumenta aún más la circulación de virus respiratorios"
+          },
+          {
+            "summary_field": "why_it_matters",
+            "summary_quote": "La señal afecta directamente a los grupos de riesgo y a la atención de urgencias: sus coberturas de vacunación están entre 62% y 64%, mientras ya se observa mayor demanda por enfermedades respiratorias. Merece atención ahora porque el Minsal mantiene abierta y gratuita la vacunación para toda la población, pero enfrenta una cobertura nacional de 78,9% y una circulación viral todavía alta.",
+            "source_quote": "Si vienen las lluvias esta semana y sabemos que después de las lluvias también aumenta aún más la circulación de virus respiratorios"
+          }
+        ]
+      },
+      "verbatim_quote_checks_against_entire_original": {
+        "human_health_scope_quote": true,
+        "actor_quote": true,
+        "action_quote": true,
+        "consequence_quote": false,
+        "event_status_quote": false,
+        "novelty_quote": true
+      },
+      "quote_check_is_semantic_approval": false,
+      "independent_semantic_category": "human_public_health_data_with_historical_present_tense",
+      "independent_body_specific_findings": "Las cifras y la asociación descriptiva son fieles al reporte. La vacunación gratuita, las consultas y la circulación alta se describen al 24 de agosto; no demuestran el mismo estado al 11 de octubre. La advertencia sobre lluvias de esta semana debe anclarse a la semana de publicación. No convertir asociación entre no vacunación y hospitalización/muerte en estimación causal.",
+      "specific_followup_findings": [
+        "historical_present_tense_needs_original_date_anchor"
+      ],
+      "supporting_verbatim_quotes": [
+        "En su último reporte semanal de la Campaña de Invierno 2026, el Ministerio de Salud (Minsal) dio cuenta que se registró la positividad más alta de lo que va del año, alcanzando el 54,3% de las muestras.",
+        "Respecto a la cobertura de vacunación, informó que, a nivel nacional, esta alcanza un 78,9%.",
+        "“Nosotros esperábamos el 80%, estamos cerca en realidad”, planteó, aunque señaló que en los grupos de riesgo esa cifra está entre un 62% y 64%."
+      ],
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_reassigned": false
+    },
+    {
+      "matrix_index": 22,
+      "url": "https://www.latercera.com/nacional/noticia/corte-ordena-reincorporar-a-exdirectora-del-hospital-de-san-antonio-tras-declarar-ilegal-su-remocion/",
+      "publication_date": "2026-08-01",
+      "primary": {
+        "body_file": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+        "body_json_pointer": "/all_controls/14/primary_body_full",
+        "body_file_sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+        "body_sha256": "a753f8aa30055d8429f820fa9cd09d5f5440de57e2195045fcaec549073f236d",
+        "body_characters": 2472,
+        "original_publication_day": "2026-08-01",
+        "independently_retained_visible_bylines": [
+          {
+            "timestamp": "2026-08-01T15:30:03.016Z",
+            "text": "1 AGOSTO 2026",
+            "visible_day": "2026-08-01"
+          }
+        ],
+        "original_gzip_file": "tests/fixtures/pulso_runtime_real/869c15bb58d7f5a0cb3ffaa691c442a233a8910da86c9cf67a59b0371f4ad55e.html.gz",
+        "html_sha256": "869c15bb58d7f5a0cb3ffaa691c442a233a8910da86c9cf67a59b0371f4ad55e",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+            "sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+            "review_index": 15,
+            "expectation_group": "material_sector_evaluation_required",
+            "reason": "CorteApelaciones ordena reincorporación y remuneraciones de directoraHospitalClaudioVicuña; cambio gobernanza de prestador público y cumplimientoSistemaADP."
+          }
+        ]
+      },
+      "full_original_body_read": true,
+      "full_actual_model_copy_and_proof_read": true,
+      "actual_queue_status": "retry",
+      "exact_actual_reason": "pulso_editorial_future_copy_not_grounded",
+      "actual_model_score": 70,
+      "numeric_gate_evaluated": false,
+      "actual_response_id": "resp_0b083bdbcd9532b5006acbaba88b8887d1958b6c113d3e6b3d",
+      "actual_request_input_sha256": "6803928c0889279f4f7406faf9af4e0afcb2538ee77ce221291203e45d07ac5f",
+      "actual_model_output_sha256": "7bcb37e5267cbdb6628ae8deb87337c5a1193204bdbe2f62d7fb57195ed41709",
+      "actual_what_happened": "La Corte de Apelaciones de Valparaíso acogió el recurso de protección de la exdirectora del Hospital Claudio Vicuña y ordenó su reincorporación y el pago de las remuneraciones adeudadas. El fallo dejó sin efecto la solicitud de renuncia y la resolución que declaró vacante el cargo. La autoridad conserva la facultad de desvincular a Maturana, pero cualquier nueva decisión deberá cumplir previamente las formalidades legales y expresar de manera fundada los motivos de la remoción.",
+      "actual_why_it_matters": "El Servicio de Salud Valparaíso-San Antonio deberá reincorporar a la directora del hospital y pagarle las remuneraciones correspondientes, lo que afecta la conducción de un prestador público. El fallo también fija una exigencia procedimental para una eventual nueva remoción: esta no podrá basarse solo en una referencia genérica a la pérdida de confianza y deberá cumplir las formalidades legales.",
+      "actual_model_reason": "Es una señal relevante, aunque secundaria, sobre gobernanza y remoción de altos directivos en un hospital público chileno. La resolución tiene un efecto concreto sobre un prestador, pero no informa cambios en cobertura, capacidad asistencial, financiamiento ni regulación sanitaria general.",
+      "actual_proof": {
+        "scope_decision": "human_health_specific",
+        "scope_reason": "La noticia se refiere directamente a la conducción de un hospital público y a una orden judicial que modifica la situación de su directora, con efecto sobre la gestión de un prestador de salud humana en Chile.",
+        "human_health_scope_quote": "exdirectora del Hospital Claudio Vicuña de San Antonio",
+        "actor": "La Corte de Apelaciones de Valparaíso",
+        "actor_quote": "La Corte de Apelaciones de Valparaíso acogió el recurso de protección presentado por Loreto Maturana, exdirectora del Hospital Claudio Vicuña de San Antonio, y ordenó su reincorporación al establecimiento, además del pago de las remuneraciones que dejó de recibir desde que fue apartada de sus funciones.",
+        "action": "ordenó su reincorporación al establecimiento",
+        "action_quote": "La Corte de Apelaciones de Valparaíso acogió el recurso de protección presentado por Loreto Maturana, exdirectora del Hospital Claudio Vicuña de San Antonio, y ordenó su reincorporación al establecimiento, además del pago de las remuneraciones que dejó de recibir desde que fue apartada de sus funciones.",
+        "consequence": "se ordenó su reincorporación y el pago de sus remuneraciones desde el momento en que fue apartada",
+        "consequence_quote": "Por ello, dejó sin efecto la petición de renuncia y la resolución que declaró vacante el cargo, es decir, se ordenó su reincorporación y el pago de sus remuneraciones desde el momento en que fue apartada.",
+        "event_status": "mixed_actual_and_future",
+        "event_status_quote": "El fallo aclaró, sin embargo, que la autoridad mantiene la facultad de desvincular a Maturana por tratarse de un cargo de exclusiva confianza, pero cualquier nueva decisión deberá cumplir previamente con las formalidades legales y expresar de manera fundada los motivos de la remoción.",
+        "novelty_decision": "new_material_information",
+        "novelty_reason": "El contenido reporta una resolución judicial concreta que ordena la reincorporación y deja sin efecto la remoción, un desarrollo distinto de los hechos previos sobre la solicitud de renuncia.",
+        "novelty_quote": "La Corte de Apelaciones de Valparaíso acogió el recurso de protección presentado por Loreto Maturana, exdirectora del Hospital Claudio Vicuña de San Antonio, y ordenó su reincorporación al establecimiento, además del pago de las remuneraciones que dejó de recibir desde que fue apartada de sus funciones.",
+        "future_claims": [
+          {
+            "summary_field": "what_happened",
+            "summary_quote": "La Corte de Apelaciones de Valparaíso acogió el recurso de protección de la exdirectora del Hospital Claudio Vicuña y ordenó su reincorporación y el pago de las remuneraciones adeudadas. El fallo dejó sin efecto la solicitud de renuncia y la resolución que declaró vacante el cargo. La autoridad conserva la facultad de desvincular a Maturana, pero cualquier nueva decisión deberá cumplir previamente las formalidades legales y expresar de manera fundada los motivos de la remoción.",
+            "source_quote": "El fallo aclaró, sin embargo, que la autoridad mantiene la facultad de desvincular a Maturana por tratarse de un cargo de exclusiva confianza, pero cualquier nueva decisión deberá cumplir previamente con las formalidades legales y expresar de manera fundada los motivos de la remoción."
+          },
+          {
+            "summary_field": "why_it_matters",
+            "summary_quote": "El Servicio de Salud Valparaíso-San Antonio deberá reincorporar a la directora del hospital y pagarle las remuneraciones correspondientes, lo que afecta la conducción de un prestador público. El fallo también fija una exigencia procedimental para una eventual nueva remoción: esta no podrá basarse solo en una referencia genérica a la pérdida de confianza y deberá cumplir las formalidades legales.",
+            "source_quote": "Asimismo, declaró que la expresión “pérdida de confianza” no constituía una fundamentación suficiente. Por ello, dejó sin efecto la petición de renuncia y la resolución que declaró vacante el cargo, es decir, se ordenó su reincorporación y el pago de sus remuneraciones desde el momento en que fue apartada."
+          }
+        ]
+      },
+      "verbatim_quote_checks_against_entire_original": {
+        "human_health_scope_quote": true,
+        "actor_quote": true,
+        "action_quote": true,
+        "consequence_quote": true,
+        "event_status_quote": true,
+        "novelty_quote": true
+      },
+      "quote_check_is_semantic_approval": false,
+      "independent_semantic_category": "faithful_judicial_order_with_execution_unconfirmed",
+      "independent_body_specific_findings": "El texto conserva la orden judicial de reincorporación y pago, sin afirmar que se ejecutó. La facultad de nueva desvinculación depende de requisitos futuros. El puntaje observado70 está bajo72, pero el resultado actual es aplazamiento técnico anterior al gate, no rechazo numérico ya ejecutado.",
+      "specific_followup_findings": [],
+      "supporting_verbatim_quotes": [
+        "La Corte de Apelaciones de Valparaíso acogió el recurso de protección presentado por Loreto Maturana, exdirectora del Hospital Claudio Vicuña de San Antonio, y ordenó su reincorporación al establecimiento, además del pago de las remuneraciones que dejó de recibir desde que fue apartada de sus funciones.",
+        "El fallo aclaró, sin embargo, que la autoridad mantiene la facultad de desvincular a Maturana por tratarse de un cargo de exclusiva confianza, pero cualquier nueva decisión deberá cumplir previamente con las formalidades legales y expresar de manera fundada los motivos de la remoción."
+      ],
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_reassigned": false
+    },
+    {
+      "matrix_index": 37,
+      "url": "https://www.latercera.com/nacional/noticia/inauguran-el-primer-centro-de-salud-de-alta-resolutividad-sar-para-vina-del-mar-recinto-podra-realizar-65-mil-atenciones-anuales/",
+      "publication_date": "2026-08-19",
+      "primary": {
+        "body_file": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+        "body_json_pointer": "/all_controls/21/primary_body_full",
+        "body_file_sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+        "body_sha256": "b19cf891c76d50a414054e4819e3dc943134c6d5329b5cc1430e7bd4813f3b6b",
+        "body_characters": 2912,
+        "original_publication_day": "2026-08-19",
+        "independently_retained_visible_bylines": [
+          {
+            "timestamp": "2026-08-19T20:14:35.267Z",
+            "text": "19 AGOSTO 2026",
+            "visible_day": "2026-08-19"
+          }
+        ],
+        "original_gzip_file": "tests/fixtures/pulso_runtime_real/db4b65a84cbf489c97a53567e0c6e2b8f6a2ac29461d8415ef7c6e6198d0ba34.html.gz",
+        "html_sha256": "db4b65a84cbf489c97a53567e0c6e2b8f6a2ac29461d8415ef7c6e6198d0ba34",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+            "sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+            "review_index": 22,
+            "expectation_group": "material_sector_evaluation_required",
+            "reason": "InauguraciónSARMirafloresViñadelMar, inversión>CLP5milmillones, capacidad estimada65milatencionesanuales y equipamientoresolutivo nuevo."
+          }
+        ]
+      },
+      "full_original_body_read": true,
+      "full_actual_model_copy_and_proof_read": true,
+      "actual_queue_status": "retry",
+      "exact_actual_reason": "pulso_editorial_future_copy_not_grounded",
+      "actual_model_score": 78,
+      "numeric_gate_evaluated": false,
+      "actual_response_id": "resp_0f856dd5b3fe9ca5006acbaab9523c87d1821a4342dec7f597",
+      "actual_request_input_sha256": "2a5ba4d7293781643fd3f56137d1698762112f5d1b9b7e936a6f4dc2d304d6c7",
+      "actual_model_output_sha256": "71393551cd314ac5d17e374b56efce6f8fe259635a93a1d1fb1f8c53ccc858ab",
+      "actual_what_happened": "Según lo reportado por Pulso/La Tercera, se inauguró el SAR Miraflores, financiado por el Ministerio de Salud, ejecutado por el Servicio de Salud Viña del Mar y entregado a la municipalidad para su operación en la atención primaria comunal. El recinto tuvo una inversión de más de $5.000 millones y se estima que podrá realizar 65.000 atenciones anuales y beneficiar a más de 100.000 habitantes. Además, la alcaldesa señaló que se construirán otros seis centros de salud en Viña del Mar.",
+      "actual_why_it_matters": "El municipio, la red de atención primaria y los hospitales de Viña del Mar incorporan un nuevo punto de atención con radiología, laboratorio, farmacia, observación y reanimación. Según el reporte, el SAR busca resolver problemas de salud en el territorio, evitar traslados y descongestionar hospitales; su capacidad anual es estimada y la construcción de los otros seis centros sigue siendo un anuncio futuro.",
+      "actual_model_reason": "Es un cambio concreto de capacidad asistencial humana en Chile: una inversión sanitaria de más de $5.000 millones agrega un SAR a la red primaria de Viña del Mar, con una capacidad estimada de 65.000 atenciones anuales y cobertura potencial para más de 100.000 habitantes. La señal es relevante para prestadores públicos, el municipio y la gestión de urgencias, aunque su alcance es principalmente comunal y parte de la expansión anunciada aún no está ejecutada.",
+      "actual_proof": {
+        "scope_decision": "human_health_specific",
+        "scope_reason": "El contenido describe la inauguración y operación de un establecimiento de atención primaria humana, su inversión, capacidad estimada, equipamiento clínico y efecto esperado sobre la red hospitalaria.",
+        "human_health_scope_quote": "El SAR Miraflores cuenta con un área de atención y categorización, equipada con boxes de acogida, categorización y atención médica para evaluar la gravedad de cada paciente al ingresar; salas de procedimientos y reanimación para la ejecución de técnicas clínicas y la atención inmediata de emergencias críticas; sala de Rayos X Osteopulmonar, con área de imagenología propia que permitirá realizar radiografías en el mismo lugar, evitando traslados innecesarios y acelerando los diagnósticos; además de salas de observación y tratamiento respiratorio para el monitoreo temporal de los pacientes bajo cuidado médico y la administración de terapias respiratorias inmediatas.",
+        "actor": "la alcaldesa de Viña del Mar, Macarena Ripamonti, junto a la minstra de Salud, May Chomali",
+        "actor_quote": "Esta jornada, la alcaldesa de Viña del Mar, Macarena Ripamonti, junto a la minstra de Salud, May Chomali, inauguraron el primer Centro de Salud de Alta Resolutividad (SAR) de la comuna.",
+        "action": "inauguraron el primer Centro de Salud de Alta Resolutividad (SAR) de la comuna",
+        "action_quote": "Esta jornada, la alcaldesa de Viña del Mar, Macarena Ripamonti, junto a la minstra de Salud, May Chomali, inauguraron el primer Centro de Salud de Alta Resolutividad (SAR) de la comuna.",
+        "consequence": "El SAR Miraflores permitirá beneficiar a más de 100 mil habitantes de Viña del Mar y se estima que tendrá una capacidad para realizar 65 mil atenciones al año",
+        "consequence_quote": "El SAR Miraflores permitirá beneficiar a más de 100 mil habitantes de Viña del Mar y se estima que tendrá una capacidad para realizar 65 mil atenciones al año.",
+        "event_status": "mixed_actual_and_future",
+        "event_status_quote": "Esta jornada, la alcaldesa de Viña del Mar, Macarena Ripamonti, junto a la minstra de Salud, May Chomali, inauguraron el primer Centro de Salud de Alta Resolutividad (SAR) de la comuna.",
+        "novelty_decision": "new_material_information",
+        "novelty_reason": "No se entrega contexto previo sobre este recinto en el material recibido; el artículo reporta su inauguración, inversión, capacidad estimada y equipamiento como información nueva para la red comunal.",
+        "novelty_quote": "Así, con una inversión de más de 5 mil millones de pesos, el servicio de salud se constituye como el proyecto de salud más relevante que se ha realizado en la comuna en los últimos años.",
+        "future_claims": [
+          {
+            "summary_field": "what_happened",
+            "summary_quote": "Según lo reportado por Pulso/La Tercera, se inauguró el SAR Miraflores, financiado por el Ministerio de Salud, ejecutado por el Servicio de Salud Viña del Mar y entregado a la municipalidad para su operación en la atención primaria comunal. El recinto tuvo una inversión de más de $5.000 millones y se estima que podrá realizar 65.000 atenciones anuales y beneficiar a más de 100.000 habitantes. Además, la alcaldesa señaló que se construirán otros seis centros de salud en Viña del Mar.",
+            "source_quote": "“Todos tenemos una serie de problemas en nuestra vida, una serie de problemas que nos quitan el sueño, pero cuando existe un problema de salud de nuestra familia, solo hay un único problema que resolver y eso es lo que viene a resolver el SAR de Miraflores, junto al resto de los seis centros de salud que vamos a construir en Viña del Mar”, destacó."
+          },
+          {
+            "summary_field": "why_it_matters",
+            "summary_quote": "El municipio, la red de atención primaria y los hospitales de Viña del Mar incorporan un nuevo punto de atención con radiología, laboratorio, farmacia, observación y reanimación. Según el reporte, el SAR busca resolver problemas de salud en el territorio, evitar traslados y descongestionar hospitales; su capacidad anual es estimada y la construcción de los otros seis centros sigue siendo un anuncio futuro.",
+            "source_quote": "El SAR Miraflores permitirá beneficiar a más de 100 mil habitantes de Viña del Mar y se estima que tendrá una capacidad para realizar 65 mil atenciones al año."
+          }
+        ]
+      },
+      "verbatim_quote_checks_against_entire_original": {
+        "human_health_scope_quote": true,
+        "actor_quote": true,
+        "action_quote": true,
+        "consequence_quote": true,
+        "event_status_quote": true,
+        "novelty_quote": true
+      },
+      "quote_check_is_semantic_approval": false,
+      "independent_semantic_category": "actual_sar_opening_and_expansion_forecasts_separated",
+      "independent_body_specific_findings": "La inauguración e inversión son actuales a la fecha original. La capacidad65.000 es estimada y los100.000 habitantes son cobertura potencial; no son visitas o pacientes atendidos. Seis centros adicionales son un anuncio. La copia distingue estos planos y no acredita productividad efectiva o descongestión ya medida.",
+      "specific_followup_findings": [],
+      "supporting_verbatim_quotes": [
+        "Esta jornada, la alcaldesa de Viña del Mar, Macarena Ripamonti, junto a la minstra de Salud, May Chomali, inauguraron el primer Centro de Salud de Alta Resolutividad (SAR) de la comuna.",
+        "Así, con una inversión de más de 5 mil millones de pesos, el servicio de salud se constituye como el proyecto de salud más relevante que se ha realizado en la comuna en los últimos años.",
+        "El SAR Miraflores permitirá beneficiar a más de 100 mil habitantes de Viña del Mar y se estima que tendrá una capacidad para realizar 65 mil atenciones al año.",
+        "“Todos tenemos una serie de problemas en nuestra vida, una serie de problemas que nos quitan el sueño, pero cuando existe un problema de salud de nuestra familia, solo hay un único problema que resolver y eso es lo que viene a resolver el SAR de Miraflores, junto al resto de los seis centros de salud que vamos a construir en Viña del Mar”, destacó."
+      ],
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_reassigned": false
+    },
+    {
+      "matrix_index": 42,
+      "url": "https://www.latercera.com/nacional/noticia/la-otra-lista-de-espera-odontologia-acumula-mas-de-537-mil-atenciones-con-retraso/",
+      "publication_date": "2026-09-04",
+      "primary": {
+        "body_file": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+        "body_json_pointer": "/all_controls/25/primary_body_full",
+        "body_file_sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+        "body_sha256": "f1e2d7e7cdd64ec558765ff3e818c8e8d52dac998cc7e66f96b4b262f929a369",
+        "body_characters": 3900,
+        "original_publication_day": "2026-09-04",
+        "independently_retained_visible_bylines": [
+          {
+            "timestamp": "2026-09-04T01:13:42.196Z",
+            "text": "4 SEPTIEMBRE 2026",
+            "visible_day": "2026-09-04"
+          }
+        ],
+        "original_gzip_file": "tests/fixtures/pulso_runtime_real/e02a0ed39a1a3d206d9ef9f0833c0120a72b466a2bbe54592a614790bf1fa86f.html.gz",
+        "html_sha256": "e02a0ed39a1a3d206d9ef9f0833c0120a72b466a2bbe54592a614790bf1fa86f",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+            "sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+            "review_index": 26,
+            "expectation_group": "material_sector_evaluation_required",
+            "reason": "Backlog odontológico nacional cuantificado y respuesta público-privada específica; merece evaluación de capacidad/acceso con gate intacto."
+          }
+        ]
+      },
+      "full_original_body_read": true,
+      "full_actual_model_copy_and_proof_read": true,
+      "actual_queue_status": "retry",
+      "exact_actual_reason": "pulso_editorial_consequence_not_grounded",
+      "actual_model_score": 86,
+      "numeric_gate_evaluated": false,
+      "actual_response_id": "resp_0d1c96d80a56c216006acba914c04087d19e3b64ac04e07336",
+      "actual_request_input_sha256": "a50ffd190abdfe34905a9c9d91b7bd6dc6b481f6c8fe24cd22efd1b552f6dcf6",
+      "actual_model_output_sha256": "ce797f3ce64e43bb61113ebcff9e468d8df6b0a40558ae668bfb645ae0436b20",
+      "actual_what_happened": "La prensa reporta que la última actualización del Ministerio de Salud registra 537.658 consultas odontológicas en espera y que la cartera contempla planes de acción locales, seguimiento y cooperación público-privada para listas NO GES, incluida odontología.",
+      "actual_why_it_matters": "El volumen de espera afecta el acceso de pacientes a atención odontológica y, según académicos citados, la demora puede agravar patologías o volver irreversible la pérdida del diente; la respuesta ministerial contempla medidas de coordinación y cooperación para abordar el rezago.",
+      "actual_model_reason": "Es una señal nacional y cuantificada de presión sobre el acceso y la capacidad de atención odontológica del sistema público, con efectos clínicos específicos y una respuesta ministerial en curso. El reporte contiene, sin embargo, una inconsistencia que debe verificarse: afirma que las consultas nuevas subieron entre 2023 y 2025, aunque consigna 340.856 para 2023 y 44.130 para 2025.",
+      "actual_proof": {
+        "scope_decision": "human_health_specific",
+        "scope_reason": "El contenido aborda una lista de espera de atención odontológica humana en Chile, con cifras de pacientes, especialidades clínicas, consecuencias sanitarias y medidas de la autoridad para enfrentarla.",
+        "human_health_scope_quote": "De acuerdo a la última actualización del Ministerio de Salud, hay 537.658 consultas que aguardan una atención.",
+        "actor": "Ministerio de Salud",
+        "actor_quote": "De acuerdo a la última actualización del Ministerio de Salud, hay 537.658 consultas que aguardan una atención.",
+        "action": "El plan ministerial contempla una coordinación a nivel nacional, reuniones técnicas macrorregionales, visitas a establecimientos hospitalarios y levantamiento diagnóstico de requerimientos y nudos críticos.",
+        "action_quote": "El plan ministerial contempla una coordinación a nivel nacional, reuniones técnicas macrorregionales, visitas a establecimientos hospitalarios y levantamiento diagnóstico de requerimientos y nudos críticos.",
+        "consequence": "cuando se extiende mucho, la pérdida del diente es irreversible.",
+        "consequence_quote": "Entonces, estas cifras son preocupantes, considerando que la lista de espera de endodoncia hoy está en tercer lugar. ...",
+        "event_status": "mixed_actual_and_future",
+        "event_status_quote": "Consultados por La Tercera, desde la Subsecretaría de Redes Asistenciales explican que la cartera ha tomado varias medidas que han permitido aumentar la productiva en esta área. El plan ministerial contempla una coordinación a nivel nacional, reuniones técnicas macrorregionales, visitas a establecimientos hospitalarios y levantamiento diagnóstico de requerimientos y nudos críticos.",
+        "novelty_decision": "uncertain",
+        "novelty_reason": "El artículo entrega una actualización cuantificada de la lista odontológica, pero no se proporciona un contexto previo para determinar si el dato o la respuesta ministerial constituyen información nueva frente a señales ya conocidas.",
+        "novelty_quote": "De acuerdo a la última actualización del Ministerio de Salud, hay 537.658 consultas que aguardan una atención.",
+        "future_claims": [
+          {
+            "summary_field": "what_happened",
+            "summary_quote": "La prensa reporta que la última actualización del Ministerio de Salud registra 537.658 consultas odontológicas en espera y que la cartera contempla planes de acción locales, seguimiento y cooperación público-privada para listas NO GES, incluida odontología.",
+            "source_quote": "Además, se han formulado planes de acción locales, seguimiento sistemático de compromisos, trabajo colaborativo entre equipos locales y nivel central y Plan Enlace, que avanza en iniciativas de cooperación público-privada para resolver listas de espera NO GES, incluyendo odontología."
+          },
+          {
+            "summary_field": "why_it_matters",
+            "summary_quote": "El volumen de espera afecta el acceso de pacientes a atención odontológica y, según académicos citados, la demora puede agravar patologías o volver irreversible la pérdida del diente; la respuesta ministerial contempla medidas de coordinación y cooperación para abordar el rezago.",
+            "source_quote": "Sebastián Zamorano, coordinador del Centro de Políticas Públicas en Salud de la Universidad Finis Terrae, refuerza que la espera en esta especialidad trae consecuencias en la patología, porque puede empeorar e incluso transformarse en un problema diferente. En ese sentido, detalla que “por ejemplo en la espera de endodoncia, cuando se extiende mucho, la pérdida del diente es irreversible.”"
+          }
+        ]
+      },
+      "verbatim_quote_checks_against_entire_original": {
+        "human_health_scope_quote": true,
+        "actor_quote": true,
+        "action_quote": true,
+        "consequence_quote": false,
+        "event_status_quote": true,
+        "novelty_quote": true
+      },
+      "quote_check_is_semantic_approval": false,
+      "independent_semantic_category": "material_dental_waiting_list_with_novelty_and_primary_numeric_caveat",
+      "independent_body_specific_findings": "La copia conserva537.658 CONSULTAS pendientes, no personas únicas, y no repite la supuesta subida340.856→44.130. El reason del modelo sí señala esa inconsistencia primaria. La novelty_decision permaneceuncertain y necesita revisión incremental; una cita corregida no resolvería automáticamente la novedad. El consequence_quote contiene puntos suspensivos y no sostiene literalmente el campo de consecuencia.",
+      "specific_followup_findings": [
+        "primary_inconsistent_new_consultation_trend",
+        "model_novelty_explicitly_uncertain"
+      ],
+      "supporting_verbatim_quotes": [
+        "De acuerdo a la última actualización del Ministerio de Salud, hay 537.658 consultas que aguardan una atención.",
+        "Por ejemplo, en 2023 se hicieron 340.856 consultas nuevas y 1.358.483 controles nuevos.",
+        "Al comparar con 2025, esas cifras subieron a 44.130 y 1.716.027, respectivamente."
+      ],
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_reassigned": false
+    },
+    {
+      "matrix_index": 57,
+      "url": "https://www.latercera.com/nacional/noticia/minsal-coordina-instalacion-de-hospital-modular-para-apoyar-atencion-en-ovalle-por-sistema-frontal/",
+      "publication_date": "2026-07-18",
+      "primary": {
+        "body_file": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+        "body_json_pointer": "/all_controls/35/primary_body_full",
+        "body_file_sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+        "body_sha256": "1b38b507061816c3a60f47bd77db1baad718cf7314a5de2d4a716bc690fddc1f",
+        "body_characters": 2790,
+        "original_publication_day": "2026-07-18",
+        "independently_retained_visible_bylines": [
+          {
+            "timestamp": "2026-07-18T17:54:22.973Z",
+            "text": "18 JULIO 2026",
+            "visible_day": "2026-07-18"
+          }
+        ],
+        "original_gzip_file": "tests/fixtures/pulso_runtime_real/41815587b7eec6e3817f24177fc6e9afe15fa382ea39ca7b80a809debcf3c6a4.html.gz",
+        "html_sha256": "41815587b7eec6e3817f24177fc6e9afe15fa382ea39ca7b80a809debcf3c6a4",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+            "sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+            "review_index": 36,
+            "expectation_group": "material_sector_evaluation_required",
+            "reason": "Coordinación para hospital modular más impactos/alternativas específicos de la red regional; materialidad de capacidad y continuidad."
+          }
+        ]
+      },
+      "full_original_body_read": true,
+      "full_actual_model_copy_and_proof_read": true,
+      "actual_queue_status": "retry",
+      "exact_actual_reason": "pulso_editorial_future_copy_not_grounded",
+      "actual_model_score": 84,
+      "numeric_gate_evaluated": false,
+      "actual_response_id": "resp_0f2e2a071e286457006acbac602a8087d1b1dd933cac594915",
+      "actual_request_input_sha256": "5860d4786bf896f31b2ed5911d2dfd3e52ef7454930aefde7dcbd81e2eead382",
+      "actual_model_output_sha256": "e32d02cedcd4f3b12e4d42ce1c32c910350f52621a914d255d0120247ec64442",
+      "actual_what_happened": "Pulso/La Tercera reportó que el Ministerio de Salud inició coordinaciones con Defensa para instalar un Hospital Modular de Campaña del Ejército y absorber parte de la demanda del Hospital de Ovalle, que sufrió daños por las lluvias. La medida aún está en fase de coordinación; paralelamente, el Minsal informó que la red asistencial de las regiones afectadas se mantiene mayoritariamente operativa, con interrupciones y atenciones suplementarias puntuales.",
+      "actual_why_it_matters": "La respuesta afecta la capacidad de atención pública en Ovalle y la continuidad operativa de la red durante la emergencia. Merece atención ahora porque la instalación del hospital modular podría apoyar al recinto dañado, pero todavía no constituye capacidad disponible, mientras otras postas y establecimientos enfrentan aislamiento, filtraciones o atención suplementada.",
+      "actual_model_reason": "Es una señal operativa relevante de gestión de capacidad y continuidad asistencial ante una emergencia climática, con una medida futura concreta para apoyar a un hospital dañado y efectos actuales diferenciados por región. La información proviene de un reporte de prensa y de declaraciones atribuidas al Ministerio de Salud; no acredita que el hospital modular ya esté instalado ni operativo.",
+      "actual_proof": {
+        "scope_decision": "human_health_specific",
+        "scope_reason": "El contenido describe una acción específica del Ministerio de Salud sobre capacidad hospitalaria y continuidad de atención para población humana en Chile, incluyendo un recinto dañado y una instalación modular aún no ejecutada.",
+        "human_health_scope_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle, recinto que resultó con daños producto de las lluvias asociadas al sistema frontal.",
+        "actor": "El Ministerio de Salud",
+        "actor_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle, recinto que resultó con daños producto de las lluvias asociadas al sistema frontal.",
+        "action": "comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército",
+        "action_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle, recinto que resultó con daños producto de las lluvias asociadas al sistema frontal.",
+        "consequence": "permita absorber parte de la demanda del Hospital de Ovalle",
+        "consequence_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle, recinto que resultó con daños producto de las lluvias asociadas al sistema frontal.",
+        "event_status": "mixed_actual_and_future",
+        "event_status_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle, recinto que resultó con daños producto de las lluvias asociadas al sistema frontal.",
+        "novelty_decision": "new_material_information",
+        "novelty_reason": "El contenido informa una coordinación específica para una eventual instalación de capacidad modular en Ovalle y actualiza el estado operativo de establecimientos afectados por el sistema frontal. No se entrega contexto incremental que permita concluir que la medida ya había sido informada previamente.",
+        "novelty_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle, recinto que resultó con daños producto de las lluvias asociadas al sistema frontal.",
+        "future_claims": [
+          {
+            "summary_field": "what_happened",
+            "summary_quote": "Pulso/La Tercera reportó que el Ministerio de Salud inició coordinaciones con Defensa para instalar un Hospital Modular de Campaña del Ejército y absorber parte de la demanda del Hospital de Ovalle, que sufrió daños por las lluvias. La medida aún está en fase de coordinación; paralelamente, el Minsal informó que la red asistencial de las regiones afectadas se mantiene mayoritariamente operativa, con interrupciones y atenciones suplementarias puntuales.",
+            "source_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle, recinto que resultó con daños producto de las lluvias asociadas al sistema frontal."
+          },
+          {
+            "summary_field": "why_it_matters",
+            "summary_quote": "La respuesta afecta la capacidad de atención pública en Ovalle y la continuidad operativa de la red durante la emergencia. Merece atención ahora porque la instalación del hospital modular podría apoyar al recinto dañado, pero todavía no constituye capacidad disponible, mientras otras postas y establecimientos enfrentan aislamiento, filtraciones o atención suplementada.",
+            "source_quote": "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle, recinto que resultó con daños producto de las lluvias asociadas al sistema frontal."
+          }
+        ]
+      },
+      "verbatim_quote_checks_against_entire_original": {
+        "human_health_scope_quote": true,
+        "actor_quote": true,
+        "action_quote": true,
+        "consequence_quote": true,
+        "event_status_quote": true,
+        "novelty_quote": true
+      },
+      "quote_check_is_semantic_approval": false,
+      "independent_semantic_category": "planned_modular_capacity_historical_emergency_state",
+      "independent_body_specific_findings": "La copia reconoce coordinación para instalar, sin convertirla en capacidad disponible el18de julio. Sin embargo, todavía no constituye capacidad disponible y los establecimientos enfrentan problemas no deben presentarse como estado actual de octubre. Debe contrastarse el artículo posterior de despliegue real de la misma familia y conservar los incrementos, sin inventar duplicado exacto.",
+      "specific_followup_findings": [
+        "historical_present_tense_needs_original_date_anchor",
+        "later_same_family_operational_update_requires_incremental_comparison"
+      ],
+      "supporting_verbatim_quotes": [
+        "El Ministerio de Salud comenzó las coordinaciones con el Ministerio de Defensa para instalar un Hospital Modular de Campaña del Ejército que permita absorber parte de la demanda del Hospital de Ovalle, recinto que resultó con daños producto de las lluvias asociadas al sistema frontal.",
+        "Si bien la comuna de Alto del Carmen permanece aislada, su CESFAM fue reforzado previamente para responder a las necesidades de atención de la comunidad.",
+        "Respecto del Maule, el Ministerio de Salud informó que la red asistencial funciona en su totalidad, salvo por dificultades en la posta rural Santa Delfina, cuya atención está siendo suplementada."
+      ],
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_reassigned": false
+    },
+    {
+      "matrix_index": 61,
+      "url": "https://www.latercera.com/nacional/noticia/minsal-incorpora-hantavirus-a-alerta-sanitaria-vigente-para-enfermedades-zoonoticas-ante-aumento-de-casos-y-letalidad/",
+      "publication_date": "2026-08-08",
+      "primary": {
+        "body_file": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+        "body_json_pointer": "/all_controls/39/primary_body_full",
+        "body_file_sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+        "body_sha256": "d55475606b3839411f235ccc3c2905b99c29864cb1d5f83cefbefba8be75f0cc",
+        "body_characters": 2197,
+        "original_publication_day": "2026-08-08",
+        "independently_retained_visible_bylines": [
+          {
+            "timestamp": "2026-08-08T18:03:09.74Z",
+            "text": "8 AGOSTO 2026",
+            "visible_day": "2026-08-08"
+          }
+        ],
+        "original_gzip_file": "tests/fixtures/pulso_runtime_real/e6bbfa96147cc5e6fb6dc851e8f265776943438a5198c0972af13053fe73f3c5.html.gz",
+        "html_sha256": "e6bbfa96147cc5e6fb6dc851e8f265776943438a5198c0972af13053fe73f3c5",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+            "sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+            "review_index": 40,
+            "expectation_group": "material_sector_evaluation_required",
+            "reason": "Cambio de alerta sanitaria con respuesta diagnóstica y vigilancia de red; merece gate como señal regulatoria/public-health."
+          }
+        ]
+      },
+      "full_original_body_read": true,
+      "full_actual_model_copy_and_proof_read": true,
+      "actual_queue_status": "retry",
+      "exact_actual_reason": "pulso_editorial_status_or_novelty_not_grounded",
+      "actual_model_score": 86,
+      "numeric_gate_evaluated": false,
+      "actual_response_id": "resp_065a291989a09159006acbab3953fc87d1a73957f25e54f0c3",
+      "actual_request_input_sha256": "8c68818f9db558730b03346288c481ae28054daec6793b3d6f27d47491269983",
+      "actual_model_output_sha256": "8d60930b62498412ba6b1b2145068aa3ef635713cde2eba5384c66c09369f9e9",
+      "actual_what_happened": "El Minsal anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas; según la subsecretaria, la medida permitirá fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales.",
+      "actual_why_it_matters": "Para los equipos de salud y los establecimientos asistenciales, la medida permitirá reforzar la sospecha diagnóstica y la respuesta ante casos que aparecen durante distintas estaciones y en sectores rurales y semirrurales, en un contexto de aumento de casos y letalidad.",
+      "actual_model_reason": "Es una acción sanitaria nacional con efecto directo sobre vigilancia epidemiológica, diagnóstico oportuno y capacidad de respuesta de prestadores frente a una enfermedad humana. La nota reporta un anuncio del Minsal; no equivale por sí sola a una evaluación independiente de la alerta ni de sus resultados.",
+      "actual_proof": {
+        "scope_decision": "human_health_specific",
+        "scope_reason": "La alerta se refiere a una enfermedad transmitida a seres humanos y activa medidas concretas para vigilancia, diagnóstico y respuesta de establecimientos asistenciales en Chile.",
+        "human_health_scope_quote": "la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.",
+        "actor": "El Ministerio de Salud (Minsal)",
+        "actor_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+        "action": "anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas",
+        "action_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+        "consequence": "fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales",
+        "consequence_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.",
+        "event_status": "mixed_actual_and_future",
+        "event_status_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país. Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.",
+        "novelty_decision": "new_material_information",
+        "novelty_reason": "El contenido reporta una incorporación específica del hantavirus a una alerta sanitaria vigente, junto con un cambio en el patrón epidemiológico; el antecedente de una alerta previa por hantavirus aparece como contexto y no como el hecho nuevo principal.",
+        "novelty_quote": "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país. Previamente, el Minsal había decretado alerta sanitaria por hantavirus desde las regiones de Atacama hasta la de Magallanes por una situación de “multiamenaza sanitaria” al presentarse simultáneamente con otros riesgos como arbovirosis (enfermedades transmitidas por zancudos como el dengue, zika, chikungunya y la fiebre amarilla); y la influenza aviar.",
+        "future_claims": [
+          {
+            "summary_field": "what_happened",
+            "summary_quote": "El Minsal anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas; según la subsecretaria, la medida permitirá fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales.",
+            "source_quote": "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”."
+          },
+          {
+            "summary_field": "why_it_matters",
+            "summary_quote": "Para los equipos de salud y los establecimientos asistenciales, la medida permitirá reforzar la sospecha diagnóstica y la respuesta ante casos que aparecen durante distintas estaciones y en sectores rurales y semirrurales, en un contexto de aumento de casos y letalidad.",
+            "source_quote": "“Estamos haciendo un llamado a todos los equipos de salud a reforzar la sospecha diagnóstica. Si una persona presenta síntomas compatibles y tiene antecedentes de haber estado en sectores rurales o semirrurales, se debe sospechar y testear oportunamente. En este escenario, es mejor testear de más que de menos”"
+          }
+        ]
+      },
+      "verbatim_quote_checks_against_entire_original": {
+        "human_health_scope_quote": true,
+        "actor_quote": true,
+        "action_quote": true,
+        "consequence_quote": true,
+        "event_status_quote": false,
+        "novelty_quote": false
+      },
+      "quote_check_is_semantic_approval": false,
+      "independent_semantic_category": "reported_hantavirus_alert_with_prior_alert_context",
+      "independent_body_specific_findings": "La nota dice incorporación nueva pero también reconoce una alerta previa por hantavirus desde Atacama a Magallanes. La copia es fiel al anuncio reportado y al efecto futuro de fortalecer vigilancia; no acredita decreto original, nueva ampliación territorial ni evaluación de resultados. La novedad jurídica exacta requiere reconciliar el antecedente, sin inferir que toda alerta anterior es el mismo acto.",
+      "specific_followup_findings": [
+        "primary_prior_alert_context_requires_precise_novelty_reconciliation"
+      ],
+      "supporting_verbatim_quotes": [
+        "El Ministerio de Salud (Minsal) anunció la incorporación del hantavirus a la alerta sanitaria vigente para enfermedades zoonóticas ante el aumento de la letalidad y casos del virus durante los últimos meses en el país.",
+        "Pizarro precisó que la medida permitirá al Minsal “fortalecer la vigilancia epidemiológica, las investigaciones en terreno, la comunicación preventiva y la capacidad de respuesta de los establecimientos asistenciales”.",
+        "Previamente, el Minsal había decretado alerta sanitaria por hantavirus desde las regiones de Atacama hasta la de Magallanes por una situación de “multiamenaza sanitaria” al presentarse simultáneamente con otros riesgos como arbovirosis (enfermedades transmitidas por zancudos como el dengue, zika, chikungunya y la fiebre amarilla); y la influenza aviar."
+      ],
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_reassigned": false
+    },
+    {
+      "matrix_index": 64,
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "publication_date": "2026-08-25",
+      "primary": {
+        "body_file": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+        "body_json_pointer": "/all_controls/42/primary_body_full",
+        "body_file_sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+        "body_sha256": "5b4257997dd4ba1264324b70ee8e699f76ac249b0f0feb94411e317f078f3742",
+        "body_characters": 4586,
+        "original_publication_day": "2026-08-25",
+        "independently_retained_visible_bylines": [
+          {
+            "timestamp": "2026-08-25T20:33:51.181Z",
+            "text": "25 AGOSTO 2026",
+            "visible_day": "2026-08-25"
+          }
+        ],
+        "original_gzip_file": "tests/fixtures/pulso_runtime_real/3b87eb8c93c3c03cb7bdea74960c60280ac15ef7648b4493e0571e65204efeee.html.gz",
+        "html_sha256": "3b87eb8c93c3c03cb7bdea74960c60280ac15ef7648b4493e0571e65204efeee",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+            "sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+            "review_index": 43,
+            "expectation_group": "material_sector_evaluation_required",
+            "reason": "Nueva pesquisa APS con financiación, elegibilidad, rutas GES y expansión prevista; impacta acceso y demanda secundaria."
+          }
+        ]
+      },
+      "full_original_body_read": true,
+      "full_actual_model_copy_and_proof_read": true,
+      "actual_queue_status": "retry",
+      "exact_actual_reason": "pulso_editorial_status_or_novelty_not_grounded",
+      "actual_model_score": 88,
+      "numeric_gate_evaluated": false,
+      "actual_response_id": "resp_0b675226ffb2d0f0006acbaa235b3487d1af26fe59068c3098",
+      "actual_request_input_sha256": "73e2a2076ae68926ab03f02dce6b165b899c8f956639b62982d3ddf54af2f68e",
+      "actual_model_output_sha256": "88600fbf81ed5617ddaea749a3f98e0c54fe4afafc5b90c4b0ca6a5ba1dfafa7",
+      "actual_what_happened": "Pulso/La Tercera reporta que el Minsal dio inicio a una estrategia de detección precoz de cáncer gástrico y colorrectal en la APS para las 28 comunas con APS Universal, con cerca de $600 millones destinados a los servicios de salud. La implementación en esas comunas se realizará durante el segundo semestre de este año y el Minsal espera incorporar 80 municipios más en 2027.",
+      "actual_why_it_matters": "La medida afecta a la red de atención primaria, los servicios de salud y pacientes con síntomas digestivos, al trasladar el tamizaje inicial a la APS, activar garantías GES ante resultados positivos y priorizar la colonoscopía y la endoscopía para quienes las necesitan. Su alcance podría ampliarse a 80 municipios en 2027, pero esa expansión sigue siendo una expectativa reportada por las autoridades.",
+      "actual_model_reason": "Es un cambio concreto de salud humana en Chile: combina una intervención de pesquisa en APS, financiamiento público, activación de garantías GES y una proyección de expansión territorial. La iniciativa puede modificar el flujo de confirmación diagnóstica y el uso de capacidad hospitalaria, aunque la implementación ampliada aún no se ha ejecutado.",
+      "actual_proof": {
+        "scope_decision": "human_health_specific",
+        "scope_reason": "El contenido describe una estrategia pública de tamizaje y derivación para cáncer gástrico y colorrectal en personas, con efectos explícitos sobre APS, confirmación diagnóstica, medicamentos y garantías GES.",
+        "human_health_scope_quote": "iniciativa enfocada en la aplicación de test preventivos para el cáncer gástrico y colorrectal para las 28 comunas que cuentan con Atención Primaria de Salud Universal",
+        "actor": "la ministra de Salud, May Chomali",
+        "actor_quote": "Desde el Cesfam José Symon Ojeda de Conchalí, la ministra de Salud, May Chomali, dio inicio a la Estrategia Universal de Detección Precoz de Cáncer en la Atención Primaria de Salud (APS)",
+        "action": "dio inicio a la Estrategia Universal de Detección Precoz de Cáncer en la Atención Primaria de Salud (APS)",
+        "action_quote": "Desde el Cesfam José Symon Ojeda de Conchalí, la ministra de Salud, May Chomali, dio inicio a la Estrategia Universal de Detección Precoz de Cáncer en la Atención Primaria de Salud (APS)",
+        "consequence": "se activa la garantía GES N°70 (cáncer colorrectal) para su confirmación diagnóstica en el nivel secundario",
+        "consequence_quote": "De existir un resultado positivo, se activa la garantía GES N°70 (cáncer colorrectal) para su confirmación diagnóstica en el nivel secundario.",
+        "event_status": "mixed_actual_and_future",
+        "event_status_quote": "Desde el Cesfam José Symon Ojeda de Conchalí, la ministra de Salud, May Chomali, dio inicio a la Estrategia Universal de Detección Precoz de Cáncer en la Atención Primaria de Salud (APS), iniciativa enfocada en la aplicación de test preventivos para el cáncer gástrico y colorrectal para las 28 comunas que cuentan con Atención Primaria de Salud Universal. La ministra añadió que durante el segundo semestre de este año la estrategia se implementará en las 28 comunas del país que forman parte del programa de Universalización de la Atención Primaria de Salud, donde se aplicarán test para detectar cáncer gástrico y/o colorrectal como parte inicial de esta iniciativa que busca dotar de mayor resolutividad a la APS. Y para el 2027 se espera incorporar 80 municipios más, indicaron las autoridades.",
+        "novelty_decision": "new_material_information",
+        "novelty_reason": "El contenido reporta el inicio de una estrategia específica, su financiamiento, población objetivo, flujo hacia GES y una eventual expansión territorial; no se entrega contexto que indique que se trate solo de una repetición.",
+        "novelty_quote": "Para esto, se indicó, se destinaron cerca de 600 millones de pesos a los servicios de salud. Y para el 2027 se espera incorporar 80 municipios más, indicaron las autoridades.",
+        "future_claims": [
+          {
+            "summary_field": "what_happened",
+            "summary_quote": "Pulso/La Tercera reporta que el Minsal dio inicio a una estrategia de detección precoz de cáncer gástrico y colorrectal en la APS para las 28 comunas con APS Universal, con cerca de $600 millones destinados a los servicios de salud. La implementación en esas comunas se realizará durante el segundo semestre de este año y el Minsal espera incorporar 80 municipios más en 2027.",
+            "source_quote": "La ministra añadió que durante el segundo semestre de este año la estrategia se implementará en las 28 comunas del país que forman parte del programa de Universalización de la Atención Primaria de Salud, donde se aplicarán test para detectar cáncer gástrico y/o colorrectal como parte inicial de esta iniciativa que busca dotar de mayor resolutividad a la APS. Y para el 2027 se espera incorporar 80 municipios más, indicaron las autoridades."
+          },
+          {
+            "summary_field": "why_it_matters",
+            "summary_quote": "La medida afecta a la red de atención primaria, los servicios de salud y pacientes con síntomas digestivos, al trasladar el tamizaje inicial a la APS, activar garantías GES ante resultados positivos y priorizar la colonoscopía y la endoscopía para quienes las necesitan. Su alcance podría ampliarse a 80 municipios en 2027, pero esa expansión sigue siendo una expectativa reportada por las autoridades.",
+            "source_quote": "Este enfoque permite priorizar el uso de la colonoscopía en quienes realmente la necesitan, en lugar de indicarla de manera inespecífica o masiva, proyectando una reducción de los tiempos de espera para endoscopía a nivel hospitalario. Y para el 2027 se espera incorporar 80 municipios más, indicaron las autoridades."
+          }
+        ]
+      },
+      "verbatim_quote_checks_against_entire_original": {
+        "human_health_scope_quote": true,
+        "actor_quote": true,
+        "action_quote": true,
+        "consequence_quote": true,
+        "event_status_quote": false,
+        "novelty_quote": true
+      },
+      "quote_check_is_semantic_approval": false,
+      "independent_semantic_category": "actual_screening_launch_funding_and_future_rollout_separated",
+      "independent_body_specific_findings": "Se inicia la estrategia al25de agosto y el artículo informa recursos destinados, no gasto o tamizaje completado en28comunas. La extensión a80municipios2027 sigue como expectativa. La copia conserva síntomas digestivos y acceso GES condicionado a resultados; no afirma efecto observado sobre tiempos de espera. El status_quote une fragmentos discontinuos de la fuente.",
+      "specific_followup_findings": [],
+      "supporting_verbatim_quotes": [
+        "Desde el Cesfam José Symon Ojeda de Conchalí, la ministra de Salud, May Chomali, dio inicio a la Estrategia Universal de Detección Precoz de Cáncer en la Atención Primaria de Salud (APS), iniciativa enfocada en la aplicación de test preventivos para el cáncer gástrico y colorrectal para las 28 comunas que cuentan con Atención Primaria de Salud Universal.",
+        "Para esto, se indicó, se destinaron cerca de 600 millones de pesos a los servicios de salud.",
+        "Y para el 2027 se espera incorporar 80 municipios más, indicaron las autoridades."
+      ],
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_reassigned": false
+    },
+    {
+      "matrix_index": 78,
+      "url": "https://www.latercera.com/nacional/noticia/sernac-fiscaliza-centros-de-estetica-en-14-regiones-y-pone-foco-en-seguridad-publicidad-y-precios/",
+      "publication_date": "2026-08-08",
+      "primary": {
+        "body_file": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+        "body_json_pointer": "/all_controls/54/primary_body_full",
+        "body_file_sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+        "body_sha256": "743e751bd4b4b2b9f60f440cc87e903cfe529bb22352548264183780f9827758",
+        "body_characters": 2674,
+        "original_publication_day": "2026-08-08",
+        "independently_retained_visible_bylines": [
+          {
+            "timestamp": "2026-08-08T15:50:24.858Z",
+            "text": "8 AGOSTO 2026",
+            "visible_day": "2026-08-08"
+          }
+        ],
+        "original_gzip_file": "tests/fixtures/pulso_runtime_real/6b3e517705c044967c6c32610019168e762802635ee34ae7fbbbbdbd81443a8c.html.gz",
+        "html_sha256": "6b3e517705c044967c6c32610019168e762802635ee34ae7fbbbbdbd81443a8c",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+            "sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+            "review_index": 55,
+            "expectation_group": "uncertain_or_conditional",
+            "reason": "FiscalizaciónSernac centrosestética14regiones sobre permisos, consentimiento, precios/publicidad; acción multirregional sobre prestadoresprocedimientosinvasivos."
+          }
+        ]
+      },
+      "full_original_body_read": true,
+      "full_actual_model_copy_and_proof_read": true,
+      "actual_queue_status": "retry",
+      "exact_actual_reason": "pulso_editorial_status_or_novelty_not_grounded",
+      "actual_model_score": 82,
+      "numeric_gate_evaluated": false,
+      "actual_response_id": "resp_0e824c1e527fa31e006acbab2a132487d187aaf1e07708da9f",
+      "actual_request_input_sha256": "24b4d4e561022c2b74afd162909c8c881bbe1211b75087f8241d64e0b13e0118",
+      "actual_model_output_sha256": "008ed4706f914e2ba67ac3c5f9a9299bf38df7922f38dd93f0612325bafb763b",
+      "actual_what_happened": "El Sernac está realizando una fiscalización presencial a centros de estética en 14 regiones, enfocada en seguridad, consentimiento informado, permisos sanitarios, publicidad, precios y calificación de los profesionales. Durante el despliegue, revisará condiciones de los establecimientos, información entregada a consumidores y procedimientos invasivos como bótox o ácido hialurónico.",
+      "actual_why_it_matters": "Los centros de estética y sus usuarios quedan bajo un control nacional de cumplimiento que puede detectar riesgos sanitarios, publicidad engañosa y deficiencias en consentimiento, precios o autorización sanitaria. La señal merece atención ahora porque la fiscalización está en curso y abarca 14 regiones, en un contexto de aumento de la demanda por procedimientos estéticos.",
+      "actual_model_reason": "Es una acción concreta de fiscalización humana y sanitaria, con alcance nacional y efectos directos sobre la operación de centros de estética, la información previa al procedimiento y la seguridad de los pacientes o consumidores. No equivale a una nueva regulación ni a sanciones ya informadas.",
+      "actual_proof": {
+        "scope_decision": "human_health_specific",
+        "scope_reason": "El contenido reporta una fiscalización presencial de centros que realizan procedimientos estéticos humanos, incluidos procedimientos invasivos, con revisión de consentimiento informado, permisos sanitarios, profesionales calificados y productos con registro sanitario.",
+        "human_health_scope_quote": "El Servicio Nacional del Consumidor (Sernac) está realizando una fiscalización presencial a centros de estética a nivel nacional, con el objetivo de evitar que los consumidores sean expuestos a riesgos para su salud e integridad física y psicológica o emocional.",
+        "actor": "El Servicio Nacional del Consumidor (Sernac)",
+        "actor_quote": "El Servicio Nacional del Consumidor (Sernac) está realizando una fiscalización presencial a centros de estética a nivel nacional",
+        "action": "está realizando una fiscalización presencial a centros de estética a nivel nacional",
+        "action_quote": "El Servicio Nacional del Consumidor (Sernac) está realizando una fiscalización presencial a centros de estética a nivel nacional, con el objetivo de evitar que los consumidores sean expuestos a riesgos para su salud e integridad física y psicológica o emocional.",
+        "consequence": "La iniciativa busca que los servicios cumplan con estándares de calidad y seguridad",
+        "consequence_quote": "La iniciativa busca que los servicios cumplan con estándares de calidad y seguridad.",
+        "event_status": "mixed_actual_and_future",
+        "event_status_quote": "El Servicio Nacional del Consumidor (Sernac) está realizando una fiscalización presencial a centros de estética a nivel nacional, con el objetivo de evitar que los consumidores sean expuestos a riesgos para su salud e integridad física y psicológica o emocional. Uno de los puntos que serán revisados corresponde a la información y consentimiento.",
+        "novelty_decision": "new_material_information",
+        "novelty_reason": "El contenido informa un despliegue de fiscalización actualmente en curso, con cobertura de 14 regiones y materias específicas de revisión. No se entrega contexto que permita concluir que este mismo operativo ya había sido reportado.",
+        "novelty_quote": "El Servicio Nacional del Consumidor (Sernac) está realizando una fiscalización presencial a centros de estética a nivel nacional",
+        "future_claims": [
+          {
+            "summary_field": "what_happened",
+            "summary_quote": "El Sernac está realizando una fiscalización presencial a centros de estética en 14 regiones, enfocada en seguridad, consentimiento informado, permisos sanitarios, publicidad, precios y calificación de los profesionales. Durante el despliegue, revisará condiciones de los establecimientos, información entregada a consumidores y procedimientos invasivos como bótox o ácido hialurónico.",
+            "source_quote": "Uno de los puntos que serán revisados corresponde a la información y consentimiento. Las empresas deben informar las características, riesgos y medidas preventivas de sus servicios antes de prestarlos. En procedimientos invasivos, como bótox o ácido hialurónico, o aquellos que impliquen un riesgo relevante, el consentimiento informado debe quedar por escrito. El organismo también verificará que los establecimientos cuenten con un permiso sanitario visible y adopten las medidas necesarias para garantizar un servicio seguro."
+          },
+          {
+            "summary_field": "why_it_matters",
+            "summary_quote": "Los centros de estética y sus usuarios quedan bajo un control nacional de cumplimiento que puede detectar riesgos sanitarios, publicidad engañosa y deficiencias en consentimiento, precios o autorización sanitaria. La señal merece atención ahora porque la fiscalización está en curso y abarca 14 regiones, en un contexto de aumento de la demanda por procedimientos estéticos.",
+            "source_quote": "Asimismo, el Sernac pondrá especial atención a la publicidad que pueda inducir a error o engaño, incluyendo aquella que prometa resultados “100% garantizados”. También fiscalizará la identificación del jefe de local y del director técnico, además de las condiciones y vigencia de promociones y ofertas."
+          }
+        ]
+      },
+      "verbatim_quote_checks_against_entire_original": {
+        "human_health_scope_quote": true,
+        "actor_quote": true,
+        "action_quote": true,
+        "consequence_quote": true,
+        "event_status_quote": false,
+        "novelty_quote": true
+      },
+      "quote_check_is_semantic_approval": false,
+      "independent_semantic_category": "actual_aesthetic_services_inspection_historical_ongoing_claim",
+      "independent_body_specific_findings": "La fiscalización en14regiones, requisitos de consentimiento y permisos corresponden a una acción sanitaria humana real. La copia no inventa sanciones ni una norma nueva. Está en curso ahora sólo está acreditado al8de agosto; falta evidencia de continuidad al11de octubre. El status_quote une la apertura con un párrafo posterior, no una cita continua.",
+      "specific_followup_findings": [
+        "historical_present_tense_needs_original_date_anchor"
+      ],
+      "supporting_verbatim_quotes": [
+        "El Servicio Nacional del Consumidor (Sernac) está realizando una fiscalización presencial a centros de estética a nivel nacional, con el objetivo de evitar que los consumidores sean expuestos a riesgos para su salud e integridad física y psicológica o emocional.",
+        "En procedimientos invasivos, como bótox o ácido hialurónico, o aquellos que impliquen un riesgo relevante, el consentimiento informado debe quedar por escrito.",
+        "El organismo también verificará que los establecimientos cuenten con un permiso sanitario visible y adopten las medidas necesarias para garantizar un servicio seguro."
+      ],
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_reassigned": false
+    },
+    {
+      "matrix_index": 103,
+      "url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+      "publication_date": "2026-08-20",
+      "primary": {
+        "body_file": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+        "body_json_pointer": "/all_controls/71/primary_body_full",
+        "body_file_sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+        "body_sha256": "2eb2cfabe7030bef50873ba9722bee3df24acec327e63f85d05655a7b3ccee1e",
+        "body_characters": 6698,
+        "original_publication_day": "2026-08-20",
+        "independently_retained_visible_bylines": [
+          {
+            "timestamp": "2026-08-20T00:53:06.353Z",
+            "text": "20 AGOSTO 2026",
+            "visible_day": "2026-08-20"
+          }
+        ],
+        "original_gzip_file": "tests/fixtures/pulso_runtime_real/c66d21c6db835bc3267f0c474a901fd760ff487ff4bdeabdfc5c9a08450caca9.html.gz",
+        "html_sha256": "c66d21c6db835bc3267f0c474a901fd760ff487ff4bdeabdfc5c9a08450caca9",
+        "independent_review_references": [
+          {
+            "path": "data/audits/pulso_all79_primary_independent_review_2026_10_11.json",
+            "sha256": "fc1e3c13dd3419aec6e5060542efc094bb7bbfd4207ac29ebab33a95facfb84d",
+            "review_index": 72,
+            "expectation_group": "material_sector_evaluation_required",
+            "reason": "Abonos industria21%=CLP247.170millones con corteJUNIO, deudaoriginal1.180.028m/restante932.854m. NuevaMasvida41%junio vs53,89%deuda/58,69%afiliados en declaraciónmásreciente; métricas/cortesdistintos. Expectativa63%afiliadosincluyeprontopago aúnofrecido, no hecho yaefectivo."
+          }
+        ]
+      },
+      "full_original_body_read": true,
+      "full_actual_model_copy_and_proof_read": true,
+      "actual_queue_status": "retry",
+      "exact_actual_reason": "pulso_editorial_status_or_novelty_not_grounded",
+      "actual_model_score": 88,
+      "numeric_gate_evaluated": false,
+      "actual_response_id": "resp_04aeccda3910de29006acbaa94cfec87d180ef0c3ecf3039fa",
+      "actual_request_input_sha256": "dae65223ab5162b52ec31791e6edb387de43dc4e7dcd980be0f47b94efc673ed",
+      "actual_model_output_sha256": "bdc13668a9be1235d3da60259208e8999468a47e6dc46ed4fc37b1cc9082bff0",
+      "actual_what_happened": "Según cifras de la Superintendencia de Salud a junio, las isapres abiertas habían abonado $247.170 millones —21% de una deuda total de $1.180.028 millones— a sus afiliados. El saldo de $932.854 millones deberá completarse de aquí a diciembre de 2037, según los plazos establecidos.",
+      "actual_why_it_matters": "El proceso afecta directamente a los afiliados que esperan la restitución de cobros en exceso y mantiene restringida la distribución de utilidades o dividendos de las isapres mientras la deuda no esté íntegramente pagada. La diferencia entre los avances por isapre y los pagos anticipados hacen relevante monitorear el cumplimiento financiero y regulatorio del mecanismo.",
+      "actual_model_reason": "Es una señal material para el aseguramiento privado de salud en Chile: cuantifica el avance efectivo de una obligación de restitución masiva, muestra que aún queda el 79% de la deuda por pagar y confirma la supervisión permanente de la Superintendencia de Salud. La información es reportada por Pulso/La Tercera y atribuida a cifras y declaraciones del regulador, no constituye por sí sola una aprobación o certificación independiente.",
+      "actual_proof": {
+        "scope_decision": "human_health_specific",
+        "scope_reason": "El contenido describe restituciones obligatorias de cobros en planes de salud a afiliados de isapres, con impacto directo en aseguramiento, financiamiento y derechos económicos de personas afiliadas en Chile.",
+        "human_health_scope_quote": "las isapres abiertas ya han abonado $247.170 millones (US$268 millones) a las cuentas individuales de sus afiliados",
+        "actor": "las isapres abiertas",
+        "actor_quote": "las isapres abiertas ya han abonado $247.170 millones (US$268 millones) a las cuentas individuales de sus afiliados, según cifras de la Superintendencia de Salud a junio.",
+        "action": "han abonado $247.170 millones (US$268 millones) a las cuentas individuales de sus afiliados",
+        "action_quote": "las isapres abiertas ya han abonado $247.170 millones (US$268 millones) a las cuentas individuales de sus afiliados, según cifras de la Superintendencia de Salud a junio.",
+        "consequence": "lo que falta por pagar asciende a $932.854 millones (US$1.011 millones)",
+        "consequence_quote": "Así, lo que falta por pagar asciende a $932.854 millones (US$1.011 millones), devolución que deberán completar de aquí a diciembre de 2037, cuando vence el plazo de restitución.",
+        "event_status": "mixed_actual_and_future",
+        "event_status_quote": "Ahora, a un año y medio desde que se iniciaron esas devoluciones, las isapres abiertas ya han abonado $247.170 millones (US$268 millones) a las cuentas individuales de sus afiliados, según cifras de la Superintendencia de Salud a junio. Así, lo que falta por pagar asciende a $932.854 millones (US$1.011 millones), devolución que deberán completar de aquí a diciembre de 2037, cuando vence el plazo de restitución.",
+        "novelty_decision": "new_material_information",
+        "novelty_reason": "El artículo aporta una medición actualizada del cumplimiento de la restitución: monto pagado, porcentaje de avance, saldo pendiente, plazos y diferencias entre isapres, además de reportar adelantos anunciados por algunas entidades.",
+        "novelty_quote": "Esto constituye un 21% de la deuda total. Así, lo que falta por pagar asciende a $932.854 millones (US$1.011 millones), devolución que deberán completar de aquí a diciembre de 2037, cuando vence el plazo de restitución.",
+        "future_claims": [
+          {
+            "summary_field": "what_happened",
+            "summary_quote": "Según cifras de la Superintendencia de Salud a junio, las isapres abiertas habían abonado $247.170 millones —21% de una deuda total de $1.180.028 millones— a sus afiliados. El saldo de $932.854 millones deberá completarse de aquí a diciembre de 2037, según los plazos establecidos.",
+            "source_quote": "Así, lo que falta por pagar asciende a $932.854 millones (US$1.011 millones), devolución que deberán completar de aquí a diciembre de 2037, cuando vence el plazo de restitución."
+          },
+          {
+            "summary_field": "why_it_matters",
+            "summary_quote": "El proceso afecta directamente a los afiliados que esperan la restitución de cobros en exceso y mantiene restringida la distribución de utilidades o dividendos de las isapres mientras la deuda no esté íntegramente pagada. La diferencia entre los avances por isapre y los pagos anticipados hacen relevante monitorear el cumplimiento financiero y regulatorio del mecanismo.",
+            "source_quote": "mientras la deuda no esté íntegramente pagada, la ley impide a las isapres retirar utilidades o distribuir dividendos, de modo que sus resultados quedan afectos al cumplimiento de esta obligación."
+          }
+        ]
+      },
+      "verbatim_quote_checks_against_entire_original": {
+        "human_health_scope_quote": true,
+        "actor_quote": true,
+        "action_quote": true,
+        "consequence_quote": true,
+        "event_status_quote": false,
+        "novelty_quote": true
+      },
+      "quote_check_is_semantic_approval": false,
+      "independent_semantic_category": "isapre_june_repayment_metrics_primary_arithmetic_inconsistency",
+      "independent_body_specific_findings": "La copia ancla correctamente los pagos a junio y distingue deuda, abonos y plazo futuro2037. Sin embargo, el cuerpo y la copia consignan1.180.028−247.170=932.854 millones, mientras la resta da932.858: diferencia de4millones. No sustituir el saldo por una cifra calculada como si fuera oficial. Hace falta una cautela explícita, omitir el saldo hasta verificación o contrastar el documento original. El avance21% es redondeo válido y no es flujo de contratos ni stock de cotizantes.",
+      "specific_followup_findings": [
+        "primary_balance_arithmetic_inconsistency_4_million_chilean_pesos"
+      ],
+      "supporting_verbatim_quotes": [
+        "¿La deuda total a pagar por las isapres abiertas? $1.180.028 millones (unos US$1.280 millones).",
+        "Ahora, a un año y medio desde que se iniciaron esas devoluciones, las isapres abiertas ya han abonado $247.170 millones (US$268 millones) a las cuentas individuales de sus afiliados, según cifras de la Superintendencia de Salud a junio.",
+        "Así, lo que falta por pagar asciende a $932.854 millones (US$1.011 millones), devolución que deberán completar de aquí a diciembre de 2037, cuando vence el plazo de restitución."
+      ],
+      "changes_applied": false,
+      "publication_approved": false,
+      "score_reassigned": false
+    }
+  ],
+  "finding_counts": {
+    "historical_present_tense_requires_original_day_anchor": 3,
+    "primary_numeric_inconsistency": 2,
+    "explicit_novelty_uncertainty_or_prior_legal_context": 2
+  },
+  "limits": [
+    "Literal source quotations do not provide semantic approval. Every actual guard failure remains a technical deferral.",
+    "No statement here authorizes publication, manual proof substitution, terminal reopening, score changes or a lower gate.",
+    "All dates denote original publisher dates; a future or ongoing clause in July/August is not evidence of current October status."
+  ]
+}

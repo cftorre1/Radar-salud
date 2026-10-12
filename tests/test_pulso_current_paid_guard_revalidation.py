@@ -1,0 +1,239 @@
+"""Actual 29731 articles/responses; unit spies never call a publisher or model."""
+from collections import Counter
+from copy import deepcopy
+from dataclasses import asdict
+from datetime import datetime, timezone
+from pathlib import Path
+import json
+
+import pytest
+
+from radar_salud import beta_sources, llm_analysis
+from radar_salud import pulso_current_paid_revalidation as current
+from radar_salud import pulso_paid_revalidation as previous
+from radar_salud import pulso_followup_paid_revalidation as followup
+from radar_salud.models import RawItem
+from radar_salud.pending_queue import PendingQueue
+from radar_salud.processing import DeferredProcessing
+
+ROOT = Path(__file__).resolve().parents[1]
+NOW = datetime(2026, 10, 11, 21, tzinfo=timezone.utc)
+
+
+@pytest.fixture(scope="module")
+def actual():
+    return current.load_manifest()
+
+
+def fresh(entry):
+    raw = deepcopy(entry["raw"])
+    for field in list(raw["metadata"]):
+        if field.startswith("analysis_") or field in (
+                "article_body_complete", "editorial_assessment", "pulso_editorial_proof_validation",
+                "primary_item_binding", "evidence_revisions", "queue_identity_fingerprint",
+                "editorial_code_repair_admission", previous.STAMP, previous.RECEIPT, previous.NEW_FAST_RECEIPTS,
+                current.STAMP, current.RECEIPT, current.NEW_FAST_RECEIPTS):
+            raw["metadata"].pop(field)
+    return RawItem(**raw)
+
+
+def admitted(tmp_path, actual):
+    queue = PendingQueue(tmp_path / "queue.json")
+    queue.items = deepcopy(actual[1]["held"])
+    source = [fresh(entry) for entry in queue.items.values()]
+    before = [asdict(raw) for raw in source]
+    assert queue.discover("pulso_latercera", source, now=NOW) == 0
+    assert [asdict(raw) for raw in source] == before
+    queue.save()
+    return queue
+
+
+def test_actual_original_25_paid_events_and_12_deferrals_replay_original_guard():
+    origin = current.producer(str(ROOT))
+    assert len(origin["events"]) == 25 and len(origin["held"]) == 12
+    assert all(event["kind"] == "fast" and event["success"] is True for event in origin["events"])
+    assert origin["execution"]["code_sha"] == current.PRODUCER_CODE
+    assert origin["execution"]["runtime_fingerprint"]["sha256"] == current.PRODUCER_FINGERPRINT
+    assert all(entry["attempts"] == 3 for entry in origin["held"].values())
+
+
+def test_manifest_exact12_two_current_semantic_reviews_and2_10_partition(actual):
+    document, origin = actual
+    assert Counter(row["disposition"] for row in document["rows"]) == {"reuse_code_fn": 2, "assess_contract_or_semantic_defect": 10}
+    assert len(origin["held"]) == len(document["rows"]) == 12
+    assert len(document["semantic_references"]) == 2
+    assert current.digest((ROOT / current.MANIFEST_REF).read_bytes()) == current.MANIFEST_SHA256
+    for ref in document["semantic_references"]:
+        assert current.digest((ROOT / ref["path"]).read_bytes()) == ref["sha256"]
+
+
+def test_once_admission_keeps_full_original981_and_new29731_proofs(tmp_path, actual):
+    queue = admitted(tmp_path, actual)
+    for key, old in actual[1]["held"].items():
+        entry = queue.items[key]
+        assert {field:value for field,value in entry.items() if field not in ("raw", "retry_at")} == {
+            field:value for field,value in old.items() if field not in ("raw", "retry_at")}
+        assert entry["retry_at"] is None
+        meta, original = entry["raw"]["metadata"], old["raw"]["metadata"]
+        for field in ("analysis_model_output", "pulso_editorial_proof_validation", "editorial_assessment",
+                      previous.STAMP, previous.NEW_FAST_RECEIPTS, "editorial_code_repair_admission"):
+            assert meta[field] == original[field]
+        assert meta["evidence_revisions"][:-1] == original["evidence_revisions"]
+        revision = meta["evidence_revisions"][-1]
+        assert revision["previous_processing_raw"] == current.paid_raw(old["raw"])
+        assert revision["reason"] == current.REVISION and revision[current.STAMP] == meta[current.STAMP]
+        assert revision["previous_retry_at"] == old["retry_at"]
+        assert current.verified_processing_mode(RawItem(**deepcopy(entry["raw"])))[0] == meta[current.STAMP]
+    before = deepcopy(queue.items)
+    queue.discover("pulso_latercera", [fresh(entry) for entry in actual[1]["held"].values()], now=NOW)
+    assert queue.items == before
+    key = next(iter(queue.items))
+    queue.items[key]["retry_at"] = "2026-10-12T23:00:00+00:00"
+    changed = fresh(actual[1]["held"][key])
+    changed.metadata["publisher_lastmod"] = "unit-only changed inventory annotation"
+    queue.discover("pulso_latercera", [changed], now=NOW)
+    assert queue.items[key]["retry_at"] == "2026-10-12T23:00:00+00:00"
+    assert queue.items[key]["raw"]["metadata"][current.STAMP] == before[key]["raw"]["metadata"][current.STAMP]
+
+
+def test_actual113_terminal_and_other_source_entries_never_reopen(tmp_path, actual):
+    queue = PendingQueue(tmp_path / "queue.json")
+    queue.items = deepcopy(actual[1]["queue"])
+    before = deepcopy(queue.items)
+    selected = [fresh(entry) for key,entry in queue.items.items() if entry.get("source") == "pulso_latercera"
+                and (key in actual[1]["held"] or entry.get("status") in {"published", "rejected", "archived"})]
+    queue.discover("pulso_latercera", selected, now=NOW)
+    changed = {key for key in before if queue.items[key] != before[key]}
+    assert changed == set(actual[1]["held"])
+    assert all(queue.items[key] == before[key] for key in before if key not in changed)
+
+
+@pytest.mark.parametrize("attack", ["body", "html", "day", "source_type", "role", "incomplete", "identity", "hold",
+    "model", "response", "reason", "validation", "assessment", "attempts0", "attempts_bool", "attempts4", "published", "rejected"])
+def test_changed_primary_or_paid_entry_cannot_obtain_current_admission(actual, attack):
+    entry = deepcopy(next(iter(actual[1]["held"].values())))
+    raw = fresh(entry)
+    raw.metadata["article_body_complete"] = True
+    if attack == "body": raw.metadata["page_text"] += " changed"
+    elif attack == "html": raw.metadata["html_sha256"] = "0" * 64
+    elif attack == "day": raw.event_date = "2026-10-10"
+    elif attack == "source_type": raw.source_type = "official"
+    elif attack == "role": raw.metadata["market_role"] = "provider"
+    elif attack == "incomplete": raw.metadata["article_body_complete"] = False
+    elif attack == "identity": raw.metadata["primary_identity_verified"] = False
+    elif attack == "hold": raw.metadata["editorial_hold"] = "unit unresolved hold"
+    elif attack == "model": entry["raw"]["metadata"]["analysis_model_output"]["why_it_matters"] += " altered"
+    elif attack == "response": entry["raw"]["metadata"]["analysis_model_output"]["_pulso_analysis_meta"]["response_id"] = "unit forged id"
+    elif attack == "reason": entry["reason"] = "retry_not_due"
+    elif attack == "validation": entry["raw"]["metadata"]["pulso_editorial_proof_validation"]["decision"] = "ready"
+    elif attack == "assessment": entry["raw"]["metadata"]["editorial_assessment"]["decision"] = "published"
+    elif attack == "attempts0": entry["attempts"] = 0
+    elif attack == "attempts_bool": entry["attempts"] = True
+    elif attack == "attempts4": entry["attempts"] = 4
+    else: entry["status"] = attack
+    assert current.verified_admission(raw, entry) is None
+
+
+def test_real2_reuse_same_current_paid_answer_and_normal_media_pipeline_zero_calls(tmp_path, actual, monkeypatch):
+    queue = admitted(tmp_path, actual)
+    def forbidden(**kwargs):
+        pytest.fail("Current paid reuse must not request another model or fetch original HTML")
+    monkeypatch.setattr(llm_analysis, "analyze_news", forbidden)
+    monkeypatch.setattr(beta_sources, "fetch_html", forbidden)
+    rows = [row for row in actual[0]["rows"] if row["disposition"] == "reuse_code_fn"]
+    assert len(rows) == 2
+    for pin in rows:
+        raw = RawItem(**deepcopy(queue.items[pin["queue_fingerprint"]]["raw"]))
+        old = deepcopy(raw.metadata["analysis_model_output"])
+        old_receipts = deepcopy(raw.metadata[previous.NEW_FAST_RECEIPTS])
+        signal = beta_sources.process_curated_beta_source(raw, {})
+        assert signal is not None and signal["evidence_maturity"] == "media_reported"
+        assert signal["source_type"] == "press_high_trust" and signal["editorial_relevance"] == old["relevance_score"] >= 72
+        assert raw.metadata["analysis_model_output"] == old
+        assert raw.metadata[previous.NEW_FAST_RECEIPTS] == old_receipts
+        receipt = raw.metadata[current.RECEIPT]
+        assert receipt["producer_core_checkout"] == current.PRODUCER_CODE
+        assert receipt["producer_runtime_fingerprint_sha256"] == current.PRODUCER_FINGERPRINT
+        assert receipt["original_response_id"] == old["_pulso_analysis_meta"]["response_id"]
+        assert receipt["new_model_request"] is False and receipt["original_model_output_unchanged"] is True
+        assert receipt["previous_validation"]["decision"] == "deferred"
+        assert receipt["new_validation"]["decision"] == "ready" and receipt["publication_approved"] is False
+
+
+def test_real10_new_fast_receive_bound_context_and_unchanged_full_input(tmp_path, actual, monkeypatch):
+    queue = admitted(tmp_path, actual)
+    class RequestObserved(Exception):
+        pass
+    calls = []
+    def spy(**kwargs):
+        calls.append(kwargs)
+        raise RequestObserved()
+    monkeypatch.setattr(llm_analysis, "analyze_news", spy)
+    rows = [row for row in actual[0]["rows"] if row["disposition"] == "assess_contract_or_semantic_defect"]
+    assert len(rows) == 10
+    for pin in rows:
+        raw = RawItem(**deepcopy(queue.items[pin["queue_fingerprint"]]["raw"]))
+        old = deepcopy(raw.metadata["analysis_model_output"])
+        if followup.known_original_candidate(raw):
+            # The current authority supersedes these five earlier paid
+            # fixtures. Running today's processor must not reuse old context.
+            before_calls = len(calls)
+            with pytest.raises(DeferredProcessing, match="evidence_unverified"):
+                beta_sources.process_curated_beta_source(raw, {})
+            assert len(calls) == before_calls
+            assert raw.metadata["analysis_model_output"] == old
+            continue
+        with pytest.raises(RequestObserved):
+            beta_sources.process_curated_beta_source(raw, {})
+        assert raw.metadata["analysis_model_output"] == old
+        assert calls[-1]["text"] == raw.metadata["page_text"]
+        assert calls[-1]["full_text"] is True and calls[-1]["pulso_editorial_proof"] is True
+        assert pin["reassessment_context"]["context_text"] in calls[-1]["kind"]
+        assert current.digest(calls[-1]["text"].encode()) == pin["body_sha256"]
+    assert len(calls) == 5
+
+
+def test_current_new_fast_deferral_keeps_both_paid_chains_and_later_due_retry(tmp_path, actual, monkeypatch):
+    """Actual article/model, explicitly synthetic unit API IDs, no paid events."""
+    queue = admitted(tmp_path, actual)
+    superseded = {entry["raw"]["url"] for entry in followup.producer(str(ROOT))["held"].values()}
+    pin = next(row for row in actual[0]["rows"] if row["disposition"] == "assess_contract_or_semantic_defect"
+               and row["url"] not in superseded)
+    key = pin["queue_fingerprint"]
+    before = deepcopy(queue.items[key])
+    model = deepcopy(before["raw"]["metadata"]["analysis_model_output"])
+    calls = []
+    def unit_model(**request):
+        calls.append(request)
+        answer = deepcopy(model)
+        answer["pulso_editorial_proof"]["human_health_scope_quote"] = pin["reassessment_context"]["source_verbatim_quotes"][0]
+        answer["pulso_editorial_proof"]["actor"] = "explicit unit actor absent from source quote"
+        answer["_pulso_analysis_meta"]["response_id"] = "explicit-unit-current12-new-id-" + str(len(calls))
+        answer["_pulso_analysis_meta"]["raw_model_output_sha256"] = current.digest({k:v for k,v in answer.items() if k != "_pulso_analysis_meta"})
+        return answer
+    monkeypatch.setattr(llm_analysis, "analyze_news", unit_model)
+    for attempt in range(2):
+        queue.start(key)
+        raw = RawItem(**deepcopy(queue.items[key]["raw"]))
+        with pytest.raises(DeferredProcessing, match="actor_not_grounded"):
+            beta_sources.process_curated_beta_source(raw, {})
+        queue.items[key]["raw"] = asdict(raw)
+        queue.finish(key, "retry", "pulso_editorial_actor_not_grounded", now=NOW)
+        meta = queue.items[key]["raw"]["metadata"]
+        assert queue.items[key]["attempts"] == before["attempts"] + attempt + 1
+        assert len(meta[current.NEW_FAST_RECEIPTS]) == attempt + 1
+        assert len(meta[previous.NEW_FAST_RECEIPTS]) == attempt + 2
+        assert meta[previous.NEW_FAST_RECEIPTS][0] == before["raw"]["metadata"][previous.NEW_FAST_RECEIPTS][0]
+        assert meta["evidence_revisions"][-1]["previous_processing_raw"] == current.paid_raw(actual[1]["held"][key]["raw"])
+    assert len(calls) == 2
+
+
+def test_false_ready_result_cannot_become_a_current_validator_receipt(tmp_path, actual):
+    queue = admitted(tmp_path, actual)
+    pin = next(row for row in actual[0]["rows"] if row["disposition"] == "reuse_code_fn")
+    raw = RawItem(**deepcopy(queue.items[pin["queue_fingerprint"]]["raw"]))
+    model = current.unchanged_output(raw)
+    validation, _, _ = current._validation(raw, model)
+    validation.update(decision="rejected", reason="unit fabricated result")
+    with pytest.raises(ValueError, match="actual_guard_result_unverified"):
+        current.revalidation_receipt(raw, model, validation)

@@ -1,0 +1,118 @@
+{
+  "schema_version": "pulso_current5_bounded_guard_repair_validation_v1",
+  "source_id": "pulso_latercera",
+  "scope": "exact real five paid assessments from producer66; lexical scope/history/local-negation repair only",
+  "guard_source": {
+    "path": "src/radar_salud/pulso_editorial_proof.py",
+    "sha256": "e524dec57d62daa9559ba21e792422d350635b7a65f0eb78a277e36b800c231e",
+    "version": "pulso_editorial_proof_v5"
+  },
+  "independent_semantic_reference": {
+    "path": "data/audits/pulso_current12_remaining5_second_semantic_diagnosis_2026_10_11.json",
+    "sha256": "d5234ffd225f5cc45fe57ca7c7d6377539ec0f46b19a18696e89b204ed896c13"
+  },
+  "actual_fixture": {
+    "path": "tests/fixtures/pulso_actual_current12_remaining5_paid_models.json.gz",
+    "sha256": "edb921df6c0f08d1e186f19ee3ef8245ccda2ae8debacec7fc21ad06e8341580"
+  },
+  "producer_commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+  "producer_run_id": 38172352115,
+  "rows": [
+    {
+      "row": 2,
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "publication_date": "2026-10-05",
+      "immutable_actual_model_primary_pin_sha256": "a94d50fcee3abbbfdfcb76462ca75bae225d7dee6c58e9f066c01e71249757fc",
+      "original_stored_guard_decision": "deferred",
+      "original_stored_guard_reason": "pulso_editorial_future_copy_not_grounded",
+      "recomputed_guard_decision": "ready",
+      "recomputed_guard_reason": "pulso_editorial_grounded_assessment",
+      "runtime_route": "assess_contract_or_semantic_defect",
+      "model_changed": false,
+      "source_body_changed": false,
+      "publication_approved": false
+    },
+    {
+      "row": 5,
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "publication_date": "2026-09-01",
+      "immutable_actual_model_primary_pin_sha256": "a9e0ee7ddb9ad0cd24837aaba1125c43bdacd7a165231f911f70d6eb0e348331",
+      "original_stored_guard_decision": "deferred",
+      "original_stored_guard_reason": "pulso_editorial_scope_not_grounded",
+      "recomputed_guard_decision": "ready",
+      "recomputed_guard_reason": "pulso_editorial_grounded_assessment",
+      "runtime_route": "reuse_code_fn",
+      "model_changed": false,
+      "source_body_changed": false,
+      "publication_approved": false
+    },
+    {
+      "row": 6,
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "publication_date": "2026-09-01",
+      "immutable_actual_model_primary_pin_sha256": "e574e8e3ba1eb974beb469441651d8a9a455f7894c68826310567627d5f1ad7a",
+      "original_stored_guard_decision": "deferred",
+      "original_stored_guard_reason": "pulso_editorial_future_copy_not_grounded",
+      "recomputed_guard_decision": "ready",
+      "recomputed_guard_reason": "pulso_editorial_grounded_assessment",
+      "runtime_route": "reuse_code_fn",
+      "model_changed": false,
+      "source_body_changed": false,
+      "publication_approved": false
+    },
+    {
+      "row": 9,
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "publication_date": "2026-07-29",
+      "immutable_actual_model_primary_pin_sha256": "d12f78a97e626331a97a8cd15a7f4f32ea0bd88247dde6d7914b5c0e3288abfb",
+      "original_stored_guard_decision": "deferred",
+      "original_stored_guard_reason": "pulso_editorial_future_copy_not_grounded",
+      "recomputed_guard_decision": "ready",
+      "recomputed_guard_reason": "pulso_editorial_grounded_assessment",
+      "runtime_route": "assess_contract_or_semantic_defect",
+      "model_changed": false,
+      "source_body_changed": false,
+      "publication_approved": false
+    },
+    {
+      "row": 11,
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "publication_date": "2026-09-21",
+      "immutable_actual_model_primary_pin_sha256": "f0507a3cda82e375d0ef58f9559e34ec06411702277cec8654ab16635c3713f4",
+      "original_stored_guard_decision": "deferred",
+      "original_stored_guard_reason": "pulso_editorial_future_copy_not_grounded",
+      "recomputed_guard_decision": "ready",
+      "recomputed_guard_reason": "pulso_editorial_grounded_assessment",
+      "runtime_route": "reuse_code_fn",
+      "model_changed": false,
+      "source_body_changed": false,
+      "publication_approved": false
+    }
+  ],
+  "validation": {
+    "command": "PYTHONPATH=src /workspace/work/venv/bin/python -m pytest -q tests/test_pulso_current5_guard_repair.py tests/test_pulso_current12_second_semantic_peer.py tests/test_pulso_actual_mixed12_guard_repair.py tests/test_pulso_actual_v5_future_qualifiers.py tests/test_pulso_actual_model_grounding_repair.py tests/test_pulso_editorial_proof.py tests/test_pulso_formal_budget_proposal_guard.py",
+    "passed": 222,
+    "failed": 0
+  },
+  "unchanged": {
+    "media_gate_threshold": 72,
+    "schema_version": "pulso_editorial_proof_v5",
+    "provider_calls": 0,
+    "models": 5,
+    "complete_primary_bodies": 5,
+    "actual_primary_dates": 5,
+    "whole_field_future_quotes": true,
+    "literal_contiguous_quotes": true
+  },
+  "limits": [
+    "Ready verifies a literal source/whole-copy contract, not semantic approval.",
+    "Mama period/growth defect and Hanta prior-alert novelty are explicitly routed to fresh assessments despite repaired lexical checks.",
+    "Unqualified completed clinical availability requires the same positive contiguous primary statement; separate denial does not excuse a new actual achievement.",
+    "Historical date substitutions or other source-backed but misleading interpretation remain matters for complete independent semantic review."
+  ],
+  "publication_approved": false,
+  "state_mutated": false,
+  "reviewer_AI_calls": 0,
+  "scope_verdict": "PASS",
+  "global_acceptance": "NOT_ACCEPTED_PENDING_ACTUAL_REPROCESSING_REPLAY_FINAL_QA"
+}

@@ -1,0 +1,119 @@
+{
+  "result": "PASS_SCOPED_CI_PUBLICATION_BOUNDARY_REPAIR",
+  "created_at": "2026-10-12T02:38:25.280305+00:00",
+  "reviewer": "independent /root/reviewer",
+  "reviewed_base_HEAD": "a44adb96541a9725e38fbea545f1ed9cc68c91bb",
+  "source_of_contingency": {
+    "exact_HEAD_CI_run": "38195490063",
+    "job": "114637076601",
+    "reported_result": "1201PASS +94adversarial subcases +1skip; sole publication-boundary failure",
+    "baseline_reproduced_at": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+    "baseline_receipt": "work/ci-baseline-boundary.xml",
+    "baseline_receipt_sha256": "7ea1d49b0a2a45647ade27b08b3330dc333537860b43d98035580ed456bb0e54",
+    "reviewer_scope": "Verified detached baseline HEAD, original two files byte-identical to a44, and saved failing XML; did not rerun baseline/broader CI."
+  },
+  "findings": [],
+  "delta": {
+    "functional_files_only": [
+      "scripts/export_web_snapshot.py",
+      "tests/test_web_snapshot.py"
+    ],
+    "evidence_updates": [
+      "data/audits/global_integration_2026_10_11/ci_boundary_qa.json",
+      "docs/GLOBAL_INTEGRATION_HANDOFF_2026_10_11.md"
+    ],
+    "implementation": "Forward explicit curate(as_of) to _sanction_pulses(today=as_of); helper rules remain unchanged.",
+    "regression": "Existing date-provenance/day90 test now also asserts expiry at day91.",
+    "default_None_preserves_ambient_date_today": true,
+    "publication_emission_and_event_dates_not_changed": true,
+    "input_dictionary_not_mutated": true,
+    "explicit_cutoff_propagates_into_enforcement_register_and_sanction_grouping": true,
+    "no_UI_canonical_data_or_Global_collector_change": true
+  },
+  "validation": {
+    "independent_targeted_command": "PYTHONDONTWRITEBYTECODE=1 work/.venv/bin/python -m pytest -q -p no:cacheprovider tests/test_web_snapshot.py",
+    "independent_passed": 30,
+    "independent_failed": 0,
+    "elapsed_seconds": 1.25,
+    "additional_pure_counterchecks": "None forwards None; explicit date forwards the same date; day90 retains original publication/emission and input; day91 expires.",
+    "parent_targeted_XML": "work/ci-publication-boundary-qa.xml",
+    "parent_targeted_XML_sha256": "234ff06894aab85d823544ea8943a384d69fd926439d50bc96e87abc16cf343e",
+    "scoped_diff_check": "PASS",
+    "full_suite_or_browser_rerun": false
+  },
+  "changed_file_hashes": {
+    "scripts/export_web_snapshot.py": {
+      "superseded_a44_sha256": "e91c5b247fa855e16b6cf82057608880181f6568ae77aae3e5d6b08aeb157f96",
+      "reviewed_repair_sha256": "b95e9637c2dbb2b6c8fd72491fd1fe833d280800c63d1071ae5382b4201fe7f3"
+    },
+    "tests/test_web_snapshot.py": {
+      "superseded_a44_sha256": "31c40fdadcfde187b310a20802947fe23afc852bf0f68489699cfc448056f007",
+      "reviewed_repair_sha256": "86fe2bd85d8739a767a8f254f1588bb5a927155b7af319dbcd85fdeac3fa9eac"
+    }
+  },
+  "hash_qualification": {
+    "web_exporter_old_hash_is_explicitly_superseded": true,
+    "original_Global_exporter_remains_unchanged": true,
+    "signed_Global_packet_is_not_rewritten": true,
+    "web_exporter_was_not_one_of_packet18_protected_file_hashes": true,
+    "old_full_QA_receipts_remain_historical_and_are_not_claimed_as_new_full_head_PASS": true
+  },
+  "evidence_attribution": {
+    "ci_boundary_qa_sha256": "471d94f29ee194164190d62bc6a69c51d6f7e2c57246a676af927d99c5936000",
+    "updated_handoff_sha256": "9db9fa4ba16296716a1ab5eb715e5c1472afc6810bd2169974e22785683c36b9",
+    "failed_CI_and_skipped_downstream_steps_stated_honestly": true,
+    "earlier_consumption_text_qualified_as_no_manual_suite_and_no_discovery_runs": true,
+    "append_requires_actual_new_HEAD_CI_and_does_not_claim_it_passed": true
+  },
+  "preservation": {
+    "signed_packet_sha256": "c04e7c79fa5e996b47defcb7fcc43e26d4bd8f0cf871adf0f7100166c7a27545",
+    "all18_original_packet_protected_source_canonical_UI_and_Global_exporter_hashes_unchanged": true,
+    "all_focused_gate_config_workflow_hashes_unchanged": true,
+    "original_capture_projections_ledger_counts_14themes_feed_and_health_unchanged": true,
+    "source_counts_30_90": {
+      "who": {
+        "30": 84,
+        "90": 241
+      },
+      "paho": {
+        "30": 185,
+        "90": 530
+      }
+    },
+    "daily_and_Reuters_collection_still_disabled": true
+  },
+  "unchanged_original_source_file_sha256": {
+    "data/global_intelligence/discovery.json": "0c9c225fb64e2a40e84c7a4240df41c513044f4a8ec01dc53709ed3fc29c432d",
+    "data/global_intelligence/ledger.json": "d7c9934bf3fb1274be598d5e4d22a8280ae689e7d2a36cdda089237d0c780d2c",
+    "data/global_intelligence/source_health.json": "8be7ead363aa089fe86bdac5b49a48bf5a872aad3b7de5d38052f2f3d6ed8235",
+    "data/global_intelligence/editorial_candidates.json": "1763e9c5a8e7589a37b6e29670da19d3197ccec5c29f74b6fd39d7fa3ea66e51",
+    "data/global/themes.json": "e2517bf6d5435f899e30dbac6c1fa651cf811613400426dc87490010ef0d5a77",
+    "web/data/global_themes.json": "e2517bf6d5435f899e30dbac6c1fa651cf811613400426dc87490010ef0d5a77",
+    "web/global.js": "c45bedb30891322c66e8b03aada977e2457a2f5e8ee4821886d3777e643163fa",
+    "web/app.js": "2d63e86fe5a27c2af87dcb5a668186811c2fc1120a727bafe7844e1592df7ab4",
+    "scripts/export_global_intelligence.py": "2fb5a44eec9841d8c91654dccf193285d103dd2930dc40030c918072d4a92831",
+    "src/radar_salud/global_source_discovery.py": "f40de04b4bb2d6b464e8e1d6de9706192bb17f04573424ce3d41a7ae84094727",
+    "src/radar_salud/global_discovery_common.py": "bd6d9c96ffa6cce748fab156e25ff6c6fba1f9ad73c5f89b3e8c0a65f449cea1",
+    "scripts/discover_global_sources.py": "e33a18434982a3fd5bae19ddf10ff95c52e51445d9827d1ce5be3a815e9affcd",
+    "data/source_health.json": "9f6453782b5251857e06cf3063e8fa221880c84ba42c225afd9dc45f3db5f3df",
+    "web/data/source_health.json": "9f6453782b5251857e06cf3063e8fa221880c84ba42c225afd9dc45f3db5f3df",
+    "web/data/product.json": "a5fc12c77ef0b965cd2e00ab709b457c5a5c46f4532838502ad9d7f223a3eb9f",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json": "434dec044c79ade78f82f82271121753685cdf5b4a80888cc1c52831efcff831",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json": "83fa7e2150d07c0e7ee2d7c2afd9d9e03abcc92d62f90ec0211a456960774063",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.json": "0c9c225fb64e2a40e84c7a4240df41c513044f4a8ec01dc53709ed3fc29c432d"
+  },
+  "conditions": [
+    "Copy this immutable supplement byte-exact into data/audits/global_integration_2026_10_11/ci_boundary_reviewer.json before committing the reviewed code/test/evidence; preserve original packet/previous receipts.",
+    "Commit/push is supported by this focused review; new exact-HEAD automated CI must pass before final CI acceptance. Prior a44 failure is superseded only by an actual new result, not by this30-test run.",
+    "No regeneration of feed, source health, original dates or source inventory is required for this code-only repair.",
+    "Paused integration and all Daily First30-day runtime/cadence/licensing/editorial/production holds remain as previously reviewed."
+  ],
+  "reviewer_actions": {
+    "publisher_or_external_tool_requests": 0,
+    "paid_AI_calls": 0,
+    "broader_suites_browser_research": 0,
+    "canonical_or_implementation_edits": 0,
+    "git_index_or_commits": 0,
+    "only_report_write": "work/reviewer_global_ci_boundary.json"
+  }
+}

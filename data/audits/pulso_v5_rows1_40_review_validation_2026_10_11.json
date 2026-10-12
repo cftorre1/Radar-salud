@@ -1,0 +1,54 @@
+{
+  "schema_version": "pulso_paid_review8_memory_validation_v1",
+  "source_id": "pulso_latercera",
+  "reader_path": "data/audits/pulso_v5_rows1_40_semantic_review_2026_10_11.json",
+  "reader_sha256": "9164682449e8982f9693ff70692e3a41dee13127c281bb74c1c1b570052811be",
+  "review_path": "data/audits/pulso_v5_rows1_40_editorial_corrections_2026_10_11.json",
+  "review_sha256": "c363e514752d850b0eefbd14873dd666f98a9f067146def30763f0fffbd09545",
+  "producer_commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+  "inputs": {
+    "history": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "f779385fed3eccf96d0e6d95ebfece23d1e79d83d6a0a8675b80615a63c121fa"
+    },
+    "queue": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "4cf450c4e0ab8b1238af11833dcc65b037382bae5b2ff0da93bc5539e1bbbf8f"
+    },
+    "runtime_report": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "c42683a457229a23bf35fbc1a658af5a8617411f615d4dcb0ddcaa5b03c4f43b"
+    },
+    "telemetry": {
+      "commit": "981b0ff25c226d47785b77944aa53c459053aa21",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "d5cbef5b62630ab6f17305c29bfea987f788313e0876d15d6a02c115b2a30c30"
+    }
+  },
+  "application_report": {
+    "review_id": "pulso-v5-rows1-40-actual-paid-content-review-2026-10-11",
+    "review_sha256": "c363e514752d850b0eefbd14873dd666f98a9f067146def30763f0fffbd09545",
+    "reviewed_count": 8,
+    "applied_count": 8,
+    "unchanged_on_replay": 0,
+    "decisions": {
+      "accept": 7,
+      "reject": 0,
+      "group": 0,
+      "correct": 1
+    },
+    "ai_calls": 0,
+    "primary_evidence_mutations": 0,
+    "queue_attempt_resets": 0
+  },
+  "independent_consumer_proofs": 8,
+  "independent_consumer_findings": [],
+  "idempotent_signals_changed": 0,
+  "actual_runtime_state_changed": false,
+  "AI_calls": 0,
+  "network_calls": 0,
+  "publication_approved": false
+}

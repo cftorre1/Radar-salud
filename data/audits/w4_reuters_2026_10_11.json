@@ -1,0 +1,131 @@
+{
+  "task_id": "w4_reuters_2026_10_11",
+  "source": "Reuters",
+  "checked_at": "2026-10-11T14:34:24.511063+00:00",
+  "branch": "codex/global-intelligence-recurrent-20261011",
+  "outcome": "EXTERNAL_BLOCKER_PROVEN",
+  "blocker_kind": "prior_written_consent_and_configured_entitlement_not_established",
+  "scope": "Access/licensing qualification; no journalism crawling or reproduction",
+  "policy": {
+    "enabled": false,
+    "outcome": "EXTERNAL_BLOCKER_PROVEN",
+    "reason": "Reuters prohibits automated collection of content/data/information without prior written consent; no authorized contracted route is configured or documented for Alicanto.",
+    "robots_evidence": "data/audits/global_source_recovery_2026_10_11/probes/38141320771/reuters_robots.body",
+    "permitted_service_candidates": [
+      "https://reutersagency.com/license-reuters-content/",
+      "https://reutersagency.com/content-delivery-platforms/content-delivery"
+    ],
+    "permission_for_reproduction": "not_established",
+    "inventory_mode": "existing_manual_curated_reference_control_only",
+    "fallback": "Editor may submit a Reuters link without fetching Reuters, and an original description supported by independently verified primary evidence. No body, excerpts or automated title/metadata collection; publication remains held for rights and editorial review."
+  },
+  "source_health": {
+    "name": "Reuters",
+    "discovery_scope": "global_intelligence",
+    "checked_at": null,
+    "status": "error",
+    "technical_status": "not_polled_license_hold",
+    "coverage_status": "not_permitted",
+    "outcome": "EXTERNAL_BLOCKER_PROVEN",
+    "operation_mode": "manual_curated_only",
+    "recurrent_operation_proven": false,
+    "coverage_completeness": "unmeasured_without_permitted_route",
+    "coverage_window_days": 90,
+    "counts": {
+      "30": null,
+      "90": null
+    },
+    "recent_items": null,
+    "unique_items": null,
+    "material_items": null,
+    "published": 0,
+    "rejected": 0,
+    "deferred": 0,
+    "discovered": 0,
+    "new": 0,
+    "pages_checked": 0,
+    "technical_failures": [
+      {
+        "code": "prior_written_consent_required",
+        "evidence_ref": "data/audits/global_source_recovery_2026_10_11/probes/38141320771/reuters_robots.body"
+      }
+    ],
+    "manual_reference_control": {
+      "total": 8,
+      "30": 8,
+      "90": 8,
+      "collector_recall": null
+    },
+    "reason": "Reuters prohibits automated collection of content/data/information without prior written consent; no authorized contracted route is configured or documented for Alicanto.",
+    "publication_activation": false,
+    "editorial_outcome": "rights_hold"
+  },
+  "baseline": {
+    "collector": "absent",
+    "curated_references_30": 8,
+    "curated_references_90": 8
+  },
+  "inventory_30": null,
+  "inventory_90": null,
+  "inventory_reason": "No permitted automated route established; eight retained manual references are not a publisher universe.",
+  "routes_evaluated": [
+    {
+      "url": "https://www.reuters.com/robots.txt",
+      "http": 200,
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/probes/38141320771/reuters_robots.body",
+      "finding": "Prior written consent explicitly required for automated content/data/information; wildcard Disallow /."
+    },
+    {
+      "url": "https://www.reuters.com/info-pages/terms-of-use/",
+      "http": 401,
+      "finding": "Supporting portal access evidence; not the basis for the rights blocker."
+    },
+    {
+      "url": "https://reutersagency.com/license-reuters-content/",
+      "http": 200,
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/probes/38141711504/report.json",
+      "finding": "Contracted licensing service; no open consent for Alicanto established."
+    },
+    {
+      "url": "https://reutersagency.com/content-delivery-platforms/content-delivery",
+      "http": 200,
+      "finding": "Reuters Connect/API contracted delivery evaluated; no entitlement configured."
+    }
+  ],
+  "executor_connect_denial_used_as_blocker": false,
+  "configured_entitlement_found": false,
+  "does_not_claim_no_contract_outside_repo": true,
+  "source_article_requests": 0,
+  "article_metadata_requests": 0,
+  "paid_ai_calls": 0,
+  "new_publications": 0,
+  "quality_gate": {
+    "authority": "verified",
+    "stable_discovery": "not_executed_license_hold",
+    "verified_date": "existing_manual_reference_control_only",
+    "material_signal_density": "unmeasured",
+    "traceable_detail": "not_fetched_license_hold",
+    "noise_control": "disabled_fail_closed",
+    "duplicate_control": "manual_reference_urls_unique"
+  },
+  "regression_tests": [
+    "tests/test_global_source_discovery.py::test_reuters_default_robots_prohibits_even_metadata_automation",
+    "tests/test_global_source_probe_policy.py"
+  ],
+  "reviewer_status": "PASS_SCOPED_WITH_OPERATIONAL_HOLDS",
+  "next_action": "Accredit Reuters/LSEG service, prior written consent and authorized commercial metadata/reproduction scope through a secure channel; configure only the licensed route.",
+  "editorial_fallback": "Editor may submit a Reuters link without fetching Reuters, and an original description supported by independently verified primary evidence. No body, excerpts or automated title/metadata collection; publication remains held for rights and editorial review.",
+  "qa_evidence": [
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/python_qa.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/browser_qa.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/replay.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/independent_capture_audit.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/python_qa.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/browser_qa.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/replay.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa/independent_capture_audit.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/report.json",
+    "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/report.json",
+    "data/audits/global_source_recovery_2026_10_11/reviewer_final.json"
+  ]
+}

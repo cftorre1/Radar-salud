@@ -1,0 +1,203 @@
+{
+  "schema_version": "pulso_actual_mixed12_guard_clinical_negation_repair_v1",
+  "source_id": "pulso_latercera",
+  "producer_commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+  "actual_run_id": 38166157093,
+  "actual_code_sha": "29731f04d998659e5892c109871f54ef0c7f8eef",
+  "version": "pulso_editorial_proof_v5",
+  "prior_validator_sha256": "a4ee60f71325df003ae0f1842480093e63446f7ae221139f8c970e79c83ce4ec",
+  "repaired_validator_sha256": "5639990b90675dea3d9e0c05a6edae1ba31ac5c8962646055a539e84b97bb0a7",
+  "full_original_diagnosis": {
+    "path": "data/audits/pulso_actual_mixed12_full_primary_model_diagnosis_2026_10_11.json",
+    "sha256": "a87dbac7e8c60484545fc166591ebc000f8d8e7917bd08cfb416ad1038f82690"
+  },
+  "original_paid_fixture": {
+    "path": "tests/fixtures/pulso_actual_mixed12_paid_models.json.gz",
+    "gzip_sha256": "5d51a01f7be28a6e179a911468849ea525b3fd54561d3f3de3370bd67c1f02b9",
+    "decoded_sha256": "8d1e9e638eac27848a147607b0d0edca77e7ac47beed3d82b1047649a222c185"
+  },
+  "four_clinical_patterns": [
+    "mamografía + mujeres + orden médica",
+    "pacientes contactados iniciaron su proceso de atención",
+    "mascarilla + urgencia + diálisis + oncohematología",
+    "interrupción del embarazo por las tres causales"
+  ],
+  "local_denials": [
+    "no como capacidad ya implementada",
+    "no acredita capacidad nacional ya instalada"
+  ],
+  "scope": "Guard contract repair only; two ready responses require independent semantic peer and immutable runtime receipt. Ten other models remain deferred and need genuine new assessment. No automatic publication, model output edits, retry activation, score changes or future grammar expansion.",
+  "gate_threshold": 72,
+  "state_changed": false,
+  "publication_approved": false,
+  "AI_calls": 0,
+  "tests": {
+    "passed": 167,
+    "suites": [
+      "test_pulso_actual_mixed12_guard_repair.py",
+      "test_pulso_actual_mixed12_diagnosis.py",
+      "test_pulso_actual_v5_clinical_scope.py",
+      "test_pulso_actual_v5_future_qualifiers.py",
+      "test_pulso_real_primary_scope_counterexamples.py",
+      "test_pulso_editorial_proof.py"
+    ]
+  },
+  "rows": [
+    {
+      "url": "https://www.latercera.com/pulso/noticia/isapres-logran-detener-la-fuga-de-cotizantes-tras-53-meses-consecutivos-a-la-baja-y-se-asoma-el-punto-de-inflexion/",
+      "publication_date": "2026-07-14",
+      "body_sha256": "35ce3696d5b7b638452ffe3aa8783bfaef251cb7809efae3962f51aac3f2dffb",
+      "model_output_sha256": "14e36374492274e7e8b9a7c2d6a7e592f1c834a2a481dc732d8a4a6e9b8dc4e3",
+      "response_id": "resp_076f622e58de0a41006acbe11d38c887d19561679bb35b32f0",
+      "actual_original_reason": "pulso_editorial_scope_quote_not_in_input",
+      "repaired_guard_decision": "deferred",
+      "repaired_guard_reason": "pulso_editorial_scope_quote_not_in_input",
+      "proposed_runtime_route": "assess_contract_or_semantic_defect",
+      "publication_approved": false,
+      "model_score_preserved": 84
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/todas-somos-vulnerables-minsal-refuerza-el-llamado-a-la-deteccion-precoz-del-cancer-de-mama-para-un-tratamiento-oportuno/",
+      "publication_date": "2026-10-05",
+      "body_sha256": "0ea32a63880246ff2ebd538fb34fe18da2d6ee0611326b3013b57c960798b101",
+      "model_output_sha256": "7dc17ae63d15eefda8807ef8b5881768860b046c0f0d0cf428eaa1ee77f9bda1",
+      "response_id": "resp_04a03e33bbaa716c006acbdec2545887d191f848ed738c3f91",
+      "actual_original_reason": "pulso_editorial_scope_not_grounded",
+      "repaired_guard_decision": "deferred",
+      "repaired_guard_reason": "pulso_editorial_future_copy_not_grounded",
+      "proposed_runtime_route": "assess_contract_or_semantic_defect",
+      "publication_approved": false,
+      "model_score_preserved": 78
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+      "publication_date": "2026-09-19",
+      "body_sha256": "4af8fea9489b451652e9469649bc3d3871f9241dc5cb86bb80f15ad33321d936",
+      "model_output_sha256": "95436d77d26af60b10e4221a209f6f416232f8cdaede0550d2f21c770d1876b0",
+      "response_id": "resp_0e50639ca2d6d50c006acbdf64d6a887d196d998ddad64ae35",
+      "actual_original_reason": "pulso_editorial_scope_not_grounded",
+      "repaired_guard_decision": "ready",
+      "repaired_guard_reason": "pulso_editorial_grounded_assessment",
+      "proposed_runtime_route": "reuse_code_fn",
+      "publication_approved": false,
+      "model_score_preserved": 86
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pese-a-recorte-presupuestario-impulsado-por-hacienda-chomali-reconoce-que-el-minsal-necesitara-32-billones-adicionales/",
+      "publication_date": "2026-09-09",
+      "body_sha256": "beac60d96524a37fb805e27c0d2f68e5405bbbc747980b7da2f46d166ef12509",
+      "model_output_sha256": "553e762c6728159106189a7be14317e949309c8cb20957e10b87307bb279fe2f",
+      "response_id": "resp_07a6aaeb47fa7799006acbdf8bfd2887d1b160cb548e61d58c",
+      "actual_original_reason": "pulso_editorial_scope_not_grounded",
+      "repaired_guard_decision": "deferred",
+      "repaired_guard_reason": "pulso_editorial_scope_not_grounded",
+      "proposed_runtime_route": "assess_contract_or_semantic_defect",
+      "publication_approved": false,
+      "model_score_preserved": 88
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "publication_date": "2026-09-01",
+      "body_sha256": "ee870a8859e40532d5b76d557fb7f4a90b73f002529d566aa23ae12a2bcdfdd2",
+      "model_output_sha256": "a1b6de8acc41658f401f74556b9cb0f9ea40d0d29c5a0002d83dbc24e344a361",
+      "response_id": "resp_0079d69e0f29d1ca006acbe014589087d1a704aa2898561df1",
+      "actual_original_reason": "pulso_editorial_scope_not_grounded",
+      "repaired_guard_decision": "deferred",
+      "repaired_guard_reason": "pulso_editorial_scope_not_grounded",
+      "proposed_runtime_route": "assess_contract_or_semantic_defect",
+      "publication_approved": false,
+      "model_score_preserved": 78
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-extiende-hasta-el-30-de-septiembre-el-uso-obligatorio-de-mascarillas-en-urgencias-por-alta-circulacion-de-virus-respiratorios/",
+      "publication_date": "2026-09-01",
+      "body_sha256": "35f53e4e257eb89a255acfffa1cccb7215c8fe0945f2a902e674a0ee63b10ff0",
+      "model_output_sha256": "3ca7dbeda1d8a8796a11f1af57c200026f62aa842869535619b533d78740390d",
+      "response_id": "resp_0e60c3c9cebecfb1006acbe0252a7487d18c735ec87404fd90",
+      "actual_original_reason": "pulso_editorial_scope_not_grounded",
+      "repaired_guard_decision": "deferred",
+      "repaired_guard_reason": "pulso_editorial_future_copy_not_grounded",
+      "proposed_runtime_route": "assess_contract_or_semantic_defect",
+      "publication_approved": false,
+      "model_score_preserved": 86
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "publication_date": "2026-08-25",
+      "body_sha256": "5b4257997dd4ba1264324b70ee8e699f76ac249b0f0feb94411e317f078f3742",
+      "model_output_sha256": "22fc63656817c6de72f8aaa2671cb83fb6430c3febcc5a88f3f2c3edb9d7075a",
+      "response_id": "resp_041db95dab0bb263006acbe038228887d195f84385b8fbfc25",
+      "actual_original_reason": "pulso_editorial_future_copy_not_grounded",
+      "repaired_guard_decision": "deferred",
+      "repaired_guard_reason": "pulso_editorial_future_copy_not_grounded",
+      "proposed_runtime_route": "assess_contract_or_semantic_defect",
+      "publication_approved": false,
+      "model_score_preserved": 94
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+      "publication_date": "2026-08-14",
+      "body_sha256": "6c61fb4a54bd3a08384a3675c8fbe2cff609c3b81cdb6be43a84a953a18c78ff",
+      "model_output_sha256": "c07808e06dd74ebcc0823cc3addb37de10c4fe6acd064b4021c890abd094dfbc",
+      "response_id": "resp_027913cd5b1f22af006acbe06c0f7087d18207ce40f3f204ee",
+      "actual_original_reason": "pulso_editorial_future_copy_not_grounded",
+      "repaired_guard_decision": "deferred",
+      "repaired_guard_reason": "pulso_editorial_future_copy_not_grounded",
+      "proposed_runtime_route": "assess_contract_or_semantic_defect",
+      "publication_approved": false,
+      "model_score_preserved": 88
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/el-mapa-del-hanta-residentes-rurales-de-los-lagos-nuble-y-biobio-enfrentan-la-mayor-amenaza/",
+      "publication_date": "2026-07-29",
+      "body_sha256": "64b7f6c81c0d554942ddd374af52be1ff926acc8ca197284ab52005d9a0bde7e",
+      "model_output_sha256": "20eec972baefb2c073420bc79f88b8d09d0045d56184646ac86a7b1011cb60db",
+      "response_id": "resp_000e83371c01286b006acbe0c030b087d1ab5f7c19b1a92990",
+      "actual_original_reason": "pulso_editorial_scope_not_grounded",
+      "repaired_guard_decision": "deferred",
+      "repaired_guard_reason": "pulso_editorial_scope_not_grounded",
+      "proposed_runtime_route": "assess_contract_or_semantic_defect",
+      "publication_approved": false,
+      "model_score_preserved": 92
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+      "publication_date": "2026-10-01",
+      "body_sha256": "654cb94da13ac182977ef39a58cf721d83a478aa47a35b4522ce35a7cea5a3f9",
+      "model_output_sha256": "bcf7da2e86dccf4f9c6cbaf2f28f35d745000c2add3c0682fcbaeb04b44bbdbe",
+      "response_id": "resp_016a0e5fab913667006acbdf06489887d183655f69f0b1709c",
+      "actual_original_reason": "pulso_editorial_scope_quote_not_in_input",
+      "repaired_guard_decision": "deferred",
+      "repaired_guard_reason": "pulso_editorial_scope_quote_not_in_input",
+      "proposed_runtime_route": "assess_contract_or_semantic_defect",
+      "publication_approved": false,
+      "model_score_preserved": 88
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/pollo-panales-y-papas-dipres-identifica-a-28-servicios-que-concentraron-10-mil-millones-de-sobregasto-en-compras-durante-periodo-boric/",
+      "publication_date": "2026-09-21",
+      "body_sha256": "9113e0fd67a716d5a03a5f50bd0dba68dcb391278e16be3e3a900bbc0eebd982",
+      "model_output_sha256": "e9a537193b1978d89ff11381a66f3f70dcb188694bea44d8f10db27c6f4a6cd3",
+      "response_id": "resp_065ad4c920775a9e006acbdf4d64d887d1a5d84ab1e7567dc3",
+      "actual_original_reason": "pulso_editorial_future_copy_not_grounded",
+      "repaired_guard_decision": "deferred",
+      "repaired_guard_reason": "pulso_editorial_future_copy_not_grounded",
+      "proposed_runtime_route": "assess_contract_or_semantic_defect",
+      "publication_approved": false,
+      "model_score_preserved": 82
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+      "publication_date": "2026-07-15",
+      "body_sha256": "498322790b34aff91b51dd1768968c41a53ac050657007091f75181bdbb30356",
+      "model_output_sha256": "248f0a1d5b57e21132d4ae03e82515405fc4e795f8ed9578a4e471fc80dd7c3f",
+      "response_id": "resp_0cecf8a0516932cc006acbe103492087d195562467d0f14c62",
+      "actual_original_reason": "pulso_editorial_scope_not_grounded",
+      "repaired_guard_decision": "ready",
+      "repaired_guard_reason": "pulso_editorial_grounded_assessment",
+      "proposed_runtime_route": "reuse_code_fn",
+      "publication_approved": false,
+      "model_score_preserved": 84
+    }
+  ]
+}

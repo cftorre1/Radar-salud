@@ -1,0 +1,155 @@
+{
+  "schema_version": "pulso_mixed25_v2_and_assessment9_16_actual_confirmation_v1",
+  "source_id": "pulso_latercera",
+  "reviewer": "/root/historical_discovery",
+  "recorded_at": "2026-10-11T20:00:41.340748+00:00",
+  "producer_commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+  "own_actual_application_commit": "55bf6e24a0f07db6d074d269510a688dce32ce0f",
+  "v2_checkpoint_commit": "6c40af4e0e0976709f88489906a6d66a952007f8",
+  "v2_review": {
+    "path": "data/audits/pulso_mixed25_first8_actual_semantic_review_v2_2026_10_11.json",
+    "sha256": "4e7ac45e904fb776da639a8f4d27f2fecaefe4a7ca409b2b9b729c24b3af2849"
+  },
+  "v2_template": {
+    "path": "data/audits/pulso_mixed25_first8_actual_editorial_review_v2_2026_10_11.json",
+    "sha256": "10542bdbdd5d923fd5b08579952bcf4e4a58d05645d4d2a1f8cf63bf717e8bca"
+  },
+  "independent_peer": {
+    "path": "data/audits/pulso_mixed25_first8_four_publications_independent_peer_2026_10_11.json",
+    "sha256": "e2b243d0196d91812250fb5757b8cc044e69c05334d8b09ff9405f489078631a"
+  },
+  "v2_peer_result": {
+    "decisions": {
+      "accept": 3,
+      "group": 1
+    },
+    "unchanged_full_original_bodies_models_signals": true,
+    "unchanged_three_accept_copies": true,
+    "group39_target_exact_original_body_signal_queue_model_908": true,
+    "group_target_primary_date_reparsed": true,
+    "first_reader_and_template_preserved": true,
+    "v1_not_applied": true,
+    "v2_not_applied_at_read": true,
+    "no_Source_state_changes_in_v2_checkpoint": true,
+    "ready_for_parent_owned_actual_application": true
+  },
+  "own_review": {
+    "path": "data/audits/pulso_mixed25_assessment9_16_independent_semantic_review_2026_10_11.json",
+    "sha256": "7dc1bcc321ec5650a8258b13e3a7d564010f33828fbf388e55fb4b5bae3b5321"
+  },
+  "own_actual_inputs": {
+    "history": {
+      "commit": "55bf6e24a0f07db6d074d269510a688dce32ce0f",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "6524922ede72c46ccf10c7e054f358f23da87a8e57341d9c32f4d08fdffa191b"
+    },
+    "queue": {
+      "commit": "55bf6e24a0f07db6d074d269510a688dce32ce0f",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "74868abf32887d3d7cebb1dd6d7c9c1d7a8777c32173030c577baf72af87fc04"
+    },
+    "feed": {
+      "commit": "55bf6e24a0f07db6d074d269510a688dce32ce0f",
+      "path": "web/data/radar_today.json",
+      "file_sha256": "aad025a0903c5ffa90de9187d5a9354a5a32a4b7753ed8393ba9bb87cb242f7c"
+    }
+  },
+  "own_actual_confirmed_rows": [
+    {
+      "row_index": 59,
+      "url": "https://www.latercera.com/nacional/noticia/minsal-entrega-balance-final-del-plan-de-alerta-oncologica-y-adelanta-medidas-para-evitar-el-incumplimiento-de-garantias/",
+      "publication_date": "2026-07-14",
+      "decision": "accept",
+      "actual_category": "Prestadores",
+      "prospective_evidence": true,
+      "actual_editorial_relevance": 92,
+      "original_body_sha256": "5366372dcb31048b7e91ed1c49bfc461369da15b4cf9567e6c5c79d6e032d9ac",
+      "actual_signal_sha256": "2a5e6ef369fd89eaf807052adae700087094a0fbe0a6775fb49de145a57b9ae4",
+      "retained_actual_model_semantic_sha256": "6ee8f5ca3165469dc479d249920a1d0f1dc36d02c79405666d9faaaec9010ec4",
+      "review_record_sha256": "7ef6c74566fb0e076b501f3bdb5dd142460c3c013691e77ad11561d8102975b6",
+      "actual_history_queue_feed_agree": true,
+      "WHAT_WHY_unchanged": true,
+      "primary_and_paid_models_unchanged": true,
+      "actual_finding_resolved": null
+    },
+    {
+      "row_index": 65,
+      "url": "https://www.latercera.com/nacional/noticia/minsal-prohibe-temporalmente-funcionamiento-de-planta-procesadora-de-lacteos-matthei-tras-reiteradas-muestras-positivas-con-listeria/",
+      "publication_date": "2026-10-02",
+      "decision": "correct",
+      "actual_category": "Regulación & Legal",
+      "prospective_evidence": false,
+      "actual_editorial_relevance": 78,
+      "original_body_sha256": "efb7ec47cefe1d5c0622915a54436d928f4187bdc6c5e1f1ef762a031b8c2273",
+      "actual_signal_sha256": "4d02bed836f38da045ac967dd9360162d907cdd2292aa3f0a7c1d83fef331a76",
+      "retained_actual_model_semantic_sha256": "3bf1e9e774312db95fd7665781e3c77ad82170aba060e3fde281138dad19335e",
+      "review_record_sha256": "b4c97259a7866dd29939b2f09b425cd8e9bdfcc77d7e049c6474c30ee1afc578",
+      "actual_history_queue_feed_agree": true,
+      "WHAT_WHY_unchanged": true,
+      "primary_and_paid_models_unchanged": true,
+      "actual_finding_resolved": "food_manufacturing_sanitary_prohibition_category"
+    },
+    {
+      "row_index": 66,
+      "url": "https://www.latercera.com/nacional/noticia/minsal-publica-nomina-con-los-eleam-que-cuenta-con-autorizacion-sanitaria-son-993-a-nivel-pais-y-la-rm-concentra-mas-de-la-mitad/",
+      "publication_date": "2026-09-16",
+      "decision": "accept",
+      "actual_category": "Regulación & Legal",
+      "prospective_evidence": true,
+      "actual_editorial_relevance": 80,
+      "original_body_sha256": "42a8afb2862a45f8cd4cafce27bcb62cb6eafd350966a902e4fe4d937454d97f",
+      "actual_signal_sha256": "c4d9c90a56a689146528555de10c07b72e401dcb6e79d05cc1a4fe989dd14282",
+      "retained_actual_model_semantic_sha256": "ceee4dc9d0191fafc43d7ccb3f306541233a8260eae225e8717bbbf9a185b1d2",
+      "review_record_sha256": "15d481382471255ad0378ecc5ca9a577ca5abee9fb3f754201676720be4b06c1",
+      "actual_history_queue_feed_agree": true,
+      "WHAT_WHY_unchanged": true,
+      "primary_and_paid_models_unchanged": true,
+      "actual_finding_resolved": null
+    }
+  ],
+  "summary": {
+    "own_real_publications_confirmed": 3,
+    "own_category_correction_actually_resolved": 1,
+    "v2_peer_rows": 4,
+    "v2_actual_application_pending": true,
+    "threshold": 72,
+    "AI_calls": 0,
+    "state_edits_by_reviewer": 0,
+    "score_changes": 0
+  },
+  "acceptance_pass": false,
+  "scope_verdict": "V2_PEER_READY_3_ACCEPT_1_GROUP_AND_OWN_3_ACTUAL_APPLICATIONS_CONFIRMED",
+  "limitations": [
+    "V2 grouping is verified as ready before application, not claimed executed.",
+    "Three own publications remain genuinely paid and published; no pending item approved by this confirmation.",
+    "No Source-wide acceptance or new daily poll is asserted."
+  ],
+  "usage_files_unchanged": [
+    {
+      "path": "data/ai_usage/2026-09.json",
+      "sha256": "0b73f3e5092a0cf5a5d9b5ab97019612acf90157c733283254cce880a7e71779",
+      "unchanged_between_producer_and_application": true
+    },
+    {
+      "path": "data/ai_usage/2026-10.json",
+      "sha256": "e6692992c104bf34f21a857f9542103d6229888d2ccdda70784289d2a36680a5",
+      "unchanged_between_producer_and_application": true
+    },
+    {
+      "path": "data/ai_usage/occupational_recovery_2026_10.json",
+      "sha256": "90c56d1b430ab52aa66023f4378360aabaea5803274b4fc23232bc338d5fd7a8",
+      "unchanged_between_producer_and_application": true
+    },
+    {
+      "path": "data/ai_usage/responses.jsonl",
+      "sha256": "d421299b6f6fbe440c166bb13ad686ba0896ccfc0cbfeda400f49932c9781037",
+      "unchanged_between_producer_and_application": true
+    }
+  ],
+  "minimum_tests": {
+    "command": "python -m pytest -q tests/test_pulso_mixed25_first8_review_v2_group.py tests/test_pulso_editorial_review.py::test_second_application_is_identical_without_queue_or_paid_replay",
+    "passed": 6,
+    "failed": 0,
+    "elapsed_seconds": 7.98
+  }
+}

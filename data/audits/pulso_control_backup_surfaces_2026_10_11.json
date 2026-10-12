@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "date": "2026-10-11",
+  "scope": "official backup surfaces for recovery of21 exact-URL Nacional control omissions",
+  "frozen_control_modified": false,
+  "recall_credit_given": false,
+  "surfaces": [
+    {
+      "url": "https://www.latercera.com/etiqueta/minsal/",
+      "publisher_heading": "Minsal",
+      "publisher_pagination": "Ver más button",
+      "public_api_equivalent": "story-feed-tag-fetch tagSlug=minsal feedOffset cursor",
+      "reader_freshness": "proxy result crawled last week; must capture full cursor JSON through permitted Actions before claiming runtime coverage",
+      "known_omissions_visible": [
+        "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+        "https://www.latercera.com/nacional/noticia/organizaciones-piden-al-minsal-analizar-financiamiento-de-tratamientos-para-enfermedades-poco-frecuentes/",
+        "https://www.latercera.com/nacional/noticia/minsal-publica-nomina-con-los-eleam-que-cuenta-con-autorizacion-sanitaria-son-993-a-nivel-pais-y-la-rm-concentra-mas-de-la-mitad/"
+      ]
+    },
+    {
+      "url": "https://www.latercera.com/etiqueta/ministerio-de-salud/",
+      "publisher_heading": "Ministerio de Salud",
+      "publisher_pagination": "Ver más button",
+      "public_api_equivalent": "story-feed-tag-fetch tagSlug=ministerio-de-salud feedOffset cursor",
+      "reader_freshness": "proxy result crawled today; not fresh Actions HTTP capture",
+      "known_omissions_visible": [
+        "https://www.latercera.com/nacional/noticia/presupuesto-2027-ministra-chomali-destaca-aumento-de-recursos-de-47-en-salud/",
+        "https://www.latercera.com/nacional/noticia/minsal-publica-nomina-con-los-eleam-que-cuenta-con-autorizacion-sanitaria-son-993-a-nivel-pais-y-la-rm-concentra-mas-de-la-mitad/"
+      ]
+    }
+  ],
+  "limits": "Backup tags are supplementary. Full Nacional section pagination with bounded same-URL retry remains required; Talagante lacks generic configured salud/hospitales taxonomy and its original tags are Contraloría/Fentanilo/Fármacos/Hospital de Talagante. No tag-only recovery can be assumed to cover all21.",
+  "acceptance": "NOT_ACCEPTED_REAL_CORE_RECOVERY_PENDING"
+}

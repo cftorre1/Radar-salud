@@ -1,0 +1,480 @@
+{
+  "schema_version": "pulso_editorial_review_v1",
+  "source_id": "pulso_latercera",
+  "review_id": "pulso_actual_final12_assigned7_published_review_2026_10_11",
+  "producer_commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+  "inputs": {
+    "history": {
+      "commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+      "path": "data/history/superintendencia_signals.json",
+      "file_sha256": "45ec0b8571447a68465ddcedb92a843663616e6014d423554bb3e4408c4548f0"
+    },
+    "queue": {
+      "commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+      "path": "data/state/pending_queue.json",
+      "file_sha256": "03f998df22ec3410078c0f53dec6332e139799bd8febc92c547eba617f886fe0"
+    },
+    "runtime_report": {
+      "commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+      "path": "data/audits/pulso_runtime_2026_10_11.json",
+      "file_sha256": "7448f3ef7e867ff49ca395f853e61b986f6b4c8c2c5207d18c08207cc6f91dec"
+    },
+    "telemetry": {
+      "commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+      "path": "data/ai_usage/responses.jsonl",
+      "file_sha256": "f5d5f4ba51d3c510997e2750d97e43d3e1d4c05196b3f2cdcb8eb5b18aec6a1b"
+    }
+  },
+  "independent_review": {
+    "path": "data/audits/pulso_actual_final12_assigned7_independent_semantic_review_2026_10_11.json",
+    "sha256": "128ddb2296591847f30576c1613fab2984995ada459c2f7b3f7b94e164a64b4a"
+  },
+  "scope": "Onlyfour actualpublished signals retained66:oneaccept/threecorrect; no human publication of retry or rejection.",
+  "required_media_gate_threshold": 72,
+  "application_performed": false,
+  "reviewer_AI_calls": 0,
+  "source_or_state_writes": 0,
+  "records": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+      "publication_date": "2026-09-19",
+      "original_signal": {
+        "title": "Julio Montt, subsecretario de Redes Asistenciales: “Ningún hospital va a tener problemas financieros”",
+        "source_name": "Pulso / La Tercera",
+        "source_type": "press_high_trust",
+        "source_url": "https://www.latercera.com/nacional/noticia/julio-montt-subsecretario-de-redes-asistenciales-ningun-hospital-va-a-tener-problemas-financieros/",
+        "category": "Prestadores",
+        "subcategory": "General",
+        "system_domain": "HEALTH",
+        "what_happened": "Según Pulso / La Tercera, Según la nota del 19-09-2026, el subsecretario de Redes Asistenciales reportó que la brecha entre el presupuesto y el gasto del sector alcanzaba $2,5 billones y que se aplicó un ajuste de 2,5% al presupuesto inicial de Redes y de 0,5% a Atención Primaria de Salud. Para el segundo trimestre, la red asistencial habría alcanzado 97% de cumplimiento de 2.433.000 garantías GES, mientras que la mediana de espera disminuyó 10% en consultas de especialidad y 6,73% en cirugías respecto del mismo período de 2025. Como medidas futuras, planteó converger presupuesto y gasto en un plazo de cuatro años, recurrir al sector privado si la red pública no logra resolver la demanda y negociar un aumento del per cápita de Atención Primaria.",
+        "event_date": "2026-09-19",
+        "detected_at": "2026-10-11T06:23:48.863044+00:00",
+        "primary_source_url": null,
+        "event_type": "OTHER",
+        "strategic_theme": [],
+        "institution_types": [],
+        "entity_refs": [],
+        "country": "CL",
+        "topics": [
+          "insurance",
+          "providers",
+          "financing",
+          "regulation",
+          "waiting_lists",
+          "public_health"
+        ],
+        "entities": [],
+        "people": [],
+        "geography": [],
+        "key_facts": [],
+        "key_numbers": [],
+        "why_it_matters": "Al 19-09-2026, según la nota, el Minsal buscaba comprometer una trayectoria de convergencia financiera para evitar deuda de arrastre en las redes asistenciales y priorizar recursos para Atención Primaria mediante un mayor per cápita. En paralelo, la gestión de listas de espera ya había derivado al sector privado a pacientes oncológicos con riesgo de retraso a través de Fonasa, mientras que la eventual ampliación de esa complementariedad quedaba planteada como una medida futura, no como capacidad ya implementada.",
+        "who_cares": [],
+        "possible_implications": [],
+        "watch_tags": [
+          "pulso_latercera",
+          "media",
+          "prestadores"
+        ],
+        "connection_keys": [],
+        "trend_keys": [],
+        "prospective_evidence": true,
+        "economic_impact_score": 86,
+        "regulatory_impact_score": 55,
+        "scope_score": 86,
+        "novelty_score": 86,
+        "actionability_score": 76,
+        "source_quality_score": 92,
+        "radar_score": 79,
+        "confidence_score": 92,
+        "distribution": "archive",
+        "validation_status": "automatic",
+        "corroboration_status": "unknown",
+        "additional_sources": [],
+        "source_documents": [],
+        "key_points": [],
+        "risk_notes": [],
+        "data_insights": [],
+        "data_insight_meta": {},
+        "validity_text": null,
+        "related_reference_ids": [],
+        "original_language": "es",
+        "display_language": "es",
+        "translation_status": "not_required",
+        "original_title": null,
+        "original_what_happened": null,
+        "original_why_it_matters": null,
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Prestadores"
+        ],
+        "editorial_relevance": 86,
+        "source_quality_gate": "passed",
+        "evidence_maturity": "media_reported",
+        "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+        "publication_date": "2026-09-19",
+        "publication_timestamp": "2026-09-19T09:00:00Z",
+        "publication_date_source": "visible_article_byline",
+        "editorial_assessment": {
+          "decision": "published",
+          "relevance_score": 86,
+          "threshold": 72,
+          "analysis_reason": "La nota combina una brecha financiera sectorial cuantificada, resultados de listas de espera y GES, y definiciones presupuestarias de Redes Asistenciales con impacto potencial en prestadores públicos, Fonasa, Atención Primaria y proveedores privados. Ingresa por BACKFILL: los estados reportados corresponden a lo observado o anunciado al 19-09-2026 y no se presentan como vigentes al 11-10-2026."
+        },
+        "ingestion_mode": "BACKFILL"
+      },
+      "original_signal_sha256": "c292649c4b0faf1e5f9469ae3cbbf9d0a398f65e315b938de9d9ef06714f3f1b",
+      "original_body_sha256": "4af8fea9489b451652e9469649bc3d3871f9241dc5cb86bb80f15ad33321d936",
+      "original_model_assessment": {
+        "decision": "published",
+        "relevance_score": 86,
+        "threshold": 72,
+        "analysis_reason": "La nota combina una brecha financiera sectorial cuantificada, resultados de listas de espera y GES, y definiciones presupuestarias de Redes Asistenciales con impacto potencial en prestadores públicos, Fonasa, Atención Primaria y proveedores privados. Ingresa por BACKFILL: los estados reportados corresponden a lo observado o anunciado al 19-09-2026 y no se presentan como vigentes al 11-10-2026."
+      },
+      "independent_review_record_sha256": "819359e94179a9a3e3dd3cd6c1d1b519b312817198f52081765ab1dd69c2dd83",
+      "decision": "accept",
+      "reason": "La respuesta pagada de 908 se reutilizó íntegra en el core de 66, sin FAST nuevo para este artículo. La copia atribuye a la entrevista del 19 de septiembre la brecha de $2,5 billones, los ajustes de 2,5% en Redes y 0,5% en APS, y 97% de cumplimiento de 2.433.000 garantías GES. Distingue las disminuciones interanuales de 10% y 6,73% del aumento trimestral de 259 a 277 días; omite el 2,83% ambiguo del original sin reinterpretarlo. La derivación oncológica a privados se reporta como observada, mientras que convergencia fiscal a cuatro años, extensión privada y mayor per cápita son intenciones condicionadas. No afirma recursos aprobados ni estado vigente al 11 de octubre.",
+      "evidence_quotes": [
+        "Siempre tenemos una diferencia entre el presupuesto y el gasto; hoy alcanzó a $ 2,5 billones.",
+        "En el segundo trimestre la red asistencial alcanzó un 97% de cumplimiento de las 2.433.000 garantías GES",
+        "Hoy día se está haciendo eso en el sistema público, pero aquellos pacientes que tienen riesgo de retraso se están derivando al sistema privado a través de Fonasa."
+      ]
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+      "publication_date": "2026-08-25",
+      "original_signal": {
+        "title": "Minsal presenta programa de detección precoz de cáncer en salud primaria para las 28 comunas con APS Universal",
+        "source_name": "Pulso / La Tercera",
+        "source_type": "press_high_trust",
+        "source_url": "https://www.latercera.com/nacional/noticia/minsal-presenta-programa-de-deteccion-precoz-de-cancer-en-salud-primaria-para-las-28-comunas-con-aps-universal/",
+        "category": "Mercado",
+        "subcategory": "General",
+        "system_domain": "HEALTH",
+        "what_happened": "Como BACKFILL, según la nota de Pulso/La Tercera del 25 de agosto de 2026, la ministra de Salud, May Chomali, dio inicio en el Cesfam José Symon Ojeda de Conchalí a la Estrategia Universal de Detección Precoz de Cáncer en la Atención Primaria de Salud (APS). La nota reportó que se destinaron cerca de 600 millones de pesos a los servicios de salud. También informó que durante el segundo semestre de 2026 la estrategia se implementaría en las 28 comunas del país que forman parte del programa de Universalización de la APS, y que para 2027 se esperaba incorporar 80 municipios más; esos anuncios no acreditan implementación efectiva ni cobertura nacional a la fecha de revisión.",
+        "event_date": "2026-08-25",
+        "detected_at": "2026-10-11T06:23:48.863044+00:00",
+        "primary_source_url": null,
+        "event_type": "OTHER",
+        "strategic_theme": [],
+        "institution_types": [],
+        "entity_refs": [],
+        "country": "CL",
+        "topics": [
+          "providers",
+          "waiting_lists",
+          "public_health"
+        ],
+        "entities": [],
+        "people": [],
+        "geography": [],
+        "key_facts": [],
+        "key_numbers": [],
+        "why_it_matters": "Como BACKFILL, según la nota del 25 de agosto de 2026, el Minsal anunció una estrategia de pesquisa de cáncer gástrico y colorrectal en APS, con test dirigidos a personas con determinados rangos etarios y síntomas, y con derivación de resultados positivos para confirmación diagnóstica y activación de GES cuando correspondiera. La medida podía reducir el uso inespecífico de colonoscopías y proyectaba disminuir tiempos de espera hospitalarios; la extensión a 28 comunas y a 80 municipios adicionales seguía siendo, según la nota, una implementación anunciada o esperada, no un resultado verificado al 11 de octubre de 2026.",
+        "who_cares": [],
+        "possible_implications": [],
+        "watch_tags": [
+          "pulso_latercera",
+          "media",
+          "sistema de salud"
+        ],
+        "connection_keys": [],
+        "trend_keys": [],
+        "prospective_evidence": true,
+        "economic_impact_score": 92,
+        "regulatory_impact_score": 55,
+        "scope_score": 92,
+        "novelty_score": 92,
+        "actionability_score": 76,
+        "source_quality_score": 92,
+        "radar_score": 82,
+        "confidence_score": 92,
+        "distribution": "archive",
+        "validation_status": "automatic",
+        "corroboration_status": "unknown",
+        "additional_sources": [],
+        "source_documents": [],
+        "key_points": [],
+        "risk_notes": [],
+        "data_insights": [],
+        "data_insight_meta": {},
+        "validity_text": null,
+        "related_reference_ids": [],
+        "original_language": "es",
+        "display_language": "es",
+        "translation_status": "not_required",
+        "original_title": null,
+        "original_what_happened": null,
+        "original_why_it_matters": null,
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Sistema de salud"
+        ],
+        "editorial_relevance": 92,
+        "source_quality_gate": "passed",
+        "evidence_maturity": "media_reported",
+        "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+        "publication_date": "2026-08-25",
+        "publication_timestamp": "2026-08-25T20:33:51.181Z",
+        "publication_date_source": "visible_article_byline",
+        "editorial_assessment": {
+          "decision": "published",
+          "relevance_score": 92,
+          "threshold": 72,
+          "analysis_reason": "Merece radar por combinar una intervención concreta de salud poblacional y diagnóstico precoz de cáncer en APS con una asignación reportada de cerca de 600 millones de pesos y un plan de expansión territorial. Ingresa como BACKFILL: la nota acredita el inicio anunciado y los compromisos descritos al 25 de agosto de 2026, pero no permite confirmar su ejecución o vigencia al 11 de octubre."
+        },
+        "ingestion_mode": "BACKFILL"
+      },
+      "original_signal_sha256": "2069f3b0e1f5431317c241819267fba2100efeb6df53f064b2607601bda92ad4",
+      "original_body_sha256": "5b4257997dd4ba1264324b70ee8e699f76ac249b0f0feb94411e317f078f3742",
+      "original_model_assessment": {
+        "decision": "published",
+        "relevance_score": 92,
+        "threshold": 72,
+        "analysis_reason": "Merece radar por combinar una intervención concreta de salud poblacional y diagnóstico precoz de cáncer en APS con una asignación reportada de cerca de 600 millones de pesos y un plan de expansión territorial. Ingresa como BACKFILL: la nota acredita el inicio anunciado y los compromisos descritos al 25 de agosto de 2026, pero no permite confirmar su ejecución o vigencia al 11 de octubre."
+      },
+      "independent_review_record_sha256": "dc3f73a2da2faaca9871b69c0e3a152808485971afdffea008a90aa4a937838f",
+      "decision": "correct",
+      "reason": "La nueva respuesta conserva el lanzamiento en el Cesfam de Conchalí, cerca de $600 millones destinados, implementación anunciada para 28 comunas durante el segundo semestre y 80 municipios adicionales para 2027. No declara cobertura universal instalada ni ejecución vigente al 11 de octubre. WHAT empieza con Como BACKFILL y no cumple la atribución de prensa requerida, aunque sí menciona la nota; se propone un prefijo explícito de Pulso / La Tercera y retirar BACKFILL de la copia al usuario, manteniendo todos los hechos. El programa clínico de APS corresponde a Prestadores, no a Mercado. La condición GES de WHY permanece aplicable cuando corresponda, sin afirmar que todos los positivos SAT requieren derivación secundaria.",
+      "evidence_quotes": [
+        "Desde el Cesfam José Symon Ojeda de Conchalí, la ministra de Salud, May Chomali, dio inicio a la Estrategia Universal de Detección Precoz de Cáncer en la Atención Primaria de Salud (APS)",
+        "durante el segundo semestre de este año la estrategia se implementará en las 28 comunas",
+        "Para esto, se indicó, se destinaron cerca de 600 millones de pesos a los servicios de salud. Y para el 2027 se espera incorporar 80 municipios más"
+      ],
+      "proposed": {
+        "what_happened": "Según Pulso / La Tercera, en la nota del 25 de agosto de 2026, la ministra de Salud, May Chomali, dio inicio en el Cesfam José Symon Ojeda de Conchalí a la Estrategia Universal de Detección Precoz de Cáncer en la Atención Primaria de Salud (APS). La nota reportó que se destinaron cerca de 600 millones de pesos a los servicios de salud. También informó que durante el segundo semestre de 2026 la estrategia se implementaría en las 28 comunas del país que forman parte del programa de Universalización de la APS, y que para 2027 se esperaba incorporar 80 municipios más; esos anuncios no acreditan implementación efectiva ni cobertura nacional a la fecha de revisión.",
+        "why_it_matters": "Según la nota de Pulso / La Tercera del 25 de agosto de 2026, el Minsal anunció una estrategia de pesquisa de cáncer gástrico y colorrectal en APS, con test dirigidos a personas con determinados rangos etarios y síntomas, y con derivación de resultados positivos para confirmación diagnóstica y activación de GES cuando correspondiera. La medida podía reducir el uso inespecífico de colonoscopías y proyectaba disminuir tiempos de espera hospitalarios; la extensión a 28 comunas y a 80 municipios adicionales seguía siendo, según la nota, una implementación anunciada o esperada, no un resultado verificado al 11 de octubre de 2026.",
+        "category": "Prestadores"
+      },
+      "event_status": "planned"
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+      "publication_date": "2026-08-14",
+      "original_signal": {
+        "title": "Kast en firma de convenio para agilizar listas de espera: “En algún momento no se utilizaron bien los recursos”",
+        "source_name": "Pulso / La Tercera",
+        "source_type": "press_high_trust",
+        "source_url": "https://www.latercera.com/politica/noticia/kast-en-firma-de-convenio-para-agilizar-listas-de-espera-en-algun-momento-no-se-utilizaron-bien-los-recursos/",
+        "category": "Aseguramiento",
+        "subcategory": "General",
+        "system_domain": "HEALTH",
+        "what_happened": "Según reportó Pulso/La Tercera el 14 de agosto de 2026, el Presidente José Antonio Kast encabezó la firma de un convenio público-privado entre el Ministerio de Salud, Fonasa y Caja Los Andes, en el marco del Plan Enlace. La nota indicó que, a partir del 1 de septiembre, una primera fase permitiría que 50 mil casos en espera por consultas de nueva especialidad No GES accedieran a prestadores en convenio, con foco inicial en otorrinolaringología, obstetricia, oftalmología y traumatología. El paquete comprometido por Caja Los Andes incluía consultas, exámenes y entrega de medicamentos, órtesis y lentes cuando correspondiera, excluyendo procedimientos e intervenciones quirúrgicas. Para esa etapa inicial de dos meses se estimaban aproximadamente 150 mil prestaciones por $3.900 millones, de los cuales Fonasa financiaría $1.500 millones y el resto sería asumido por la caja. La ministra May Chomali también señaló que alrededor de 30 mil pacientes se verían beneficiados; la nota presenta ambas cifras sin conciliarlas ni derivar un saldo entre ellas. La firma del convenio fue un hecho reportado; el acceso desde septiembre, las prestaciones estimadas y la continuidad esperada del programa eran compromisos o proyecciones, no implementación verificada a la fecha de revisión del 11 de octubre de 2026.",
+        "event_date": "2026-08-14",
+        "detected_at": "2026-10-11T06:23:48.863044+00:00",
+        "primary_source_url": null,
+        "event_type": "OTHER",
+        "strategic_theme": [],
+        "institution_types": [],
+        "entity_refs": [],
+        "country": "CL",
+        "topics": [
+          "insurance",
+          "providers",
+          "financing",
+          "waiting_lists",
+          "competition",
+          "public_health"
+        ],
+        "entities": [],
+        "people": [],
+        "geography": [],
+        "key_facts": [],
+        "key_numbers": [],
+        "why_it_matters": "Al 14 de agosto de 2026, según la nota de Pulso/La Tercera, el convenio vinculaba a Fonasa, el Ministerio de Salud y Caja Los Andes para derivar inicialmente consultas de especialidad No GES de afiliados Fonasa de los grupos B, C y D a prestadores en convenio, con copago cero para los casos incluidos. Si se ejecutaba desde el 1 de septiembre, podía aportar capacidad adicional para consultas, exámenes y medicamentos, órtesis o lentes, pero no para procedimientos ni intervenciones quirúrgicas en esa primera etapa. Para la red pública, la autoridad planteó que el plan liberaría espacio; para los pacientes, el beneficio anunciado dependía de la implementación y de la disponibilidad de prestadores. La nota también atribuyó a Chomali la expectativa de mantener el programa en el tiempo y extenderlo a todas las regiones, pero esas eran condiciones anunciadas, no una vigencia operativa verificada hoy. El antecedente publicado el 23 de septiembre reportó nuevamente el convenio y señaló que el modelo podría incorporar cirugías y otras prestaciones posteriormente; por ello, no se cuenta dos veces la misma firma ni se retroproyecta esa descripción posterior sobre el artículo del 14 de agosto.",
+        "who_cares": [],
+        "possible_implications": [],
+        "watch_tags": [
+          "pulso_latercera",
+          "media",
+          "fonasa",
+          "prestadores"
+        ],
+        "connection_keys": [],
+        "trend_keys": [],
+        "prospective_evidence": true,
+        "economic_impact_score": 88,
+        "regulatory_impact_score": 55,
+        "scope_score": 88,
+        "novelty_score": 88,
+        "actionability_score": 76,
+        "source_quality_score": 92,
+        "radar_score": 80,
+        "confidence_score": 92,
+        "distribution": "archive",
+        "validation_status": "automatic",
+        "corroboration_status": "unknown",
+        "additional_sources": [],
+        "source_documents": [],
+        "key_points": [],
+        "risk_notes": [],
+        "data_insights": [],
+        "data_insight_meta": {},
+        "validity_text": null,
+        "related_reference_ids": [],
+        "original_language": "es",
+        "display_language": "es",
+        "translation_status": "not_required",
+        "original_title": null,
+        "original_what_happened": null,
+        "original_why_it_matters": null,
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Fonasa",
+          "Prestadores"
+        ],
+        "editorial_relevance": 88,
+        "source_quality_gate": "passed",
+        "evidence_maturity": "media_reported",
+        "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+        "publication_date": "2026-08-14",
+        "publication_timestamp": "2026-08-14T13:20:09.123Z",
+        "publication_date_source": "visible_article_byline",
+        "editorial_assessment": {
+          "decision": "published",
+          "relevance_score": 88,
+          "threshold": 72,
+          "analysis_reason": "Señal relevante de capacidad, cobertura y financiamiento sanitario: combina un convenio público-privado concreto con una primera fase cuantificada, copago cero y asignación de recursos para resolver consultas No GES. El valor incremental frente al antecedente del 23 de septiembre está en el detalle inicial de 50 mil casos, 150 mil prestaciones estimadas, financiamiento de $3.900 millones y exclusión expresa de procedimientos e intervenciones quirúrgicas; no en la existencia general del Plan Enlace."
+        },
+        "ingestion_mode": "BACKFILL"
+      },
+      "original_signal_sha256": "8e71d4f712891b58c94fc19bdf8a2459e1030aa1bb264fddd28a7ec27f30938a",
+      "original_body_sha256": "6c61fb4a54bd3a08384a3675c8fbe2cff609c3b81cdb6be43a84a953a18c78ff",
+      "original_model_assessment": {
+        "decision": "published",
+        "relevance_score": 88,
+        "threshold": 72,
+        "analysis_reason": "Señal relevante de capacidad, cobertura y financiamiento sanitario: combina un convenio público-privado concreto con una primera fase cuantificada, copago cero y asignación de recursos para resolver consultas No GES. El valor incremental frente al antecedente del 23 de septiembre está en el detalle inicial de 50 mil casos, 150 mil prestaciones estimadas, financiamiento de $3.900 millones y exclusión expresa de procedimientos e intervenciones quirúrgicas; no en la existencia general del Plan Enlace."
+      },
+      "independent_review_record_sha256": "12fbd9f9c7afc36e3a99d2c66652e3095147f5a94dbf41e1f60f6005246a2bb3",
+      "decision": "correct",
+      "reason": "WHAT conserva la firma del 14 de agosto con Caja Los Andes, la futura fase del 1 de septiembre, 50 mil casos, 30 mil pacientes, 150 mil prestaciones estimadas, $3.900 millones de valor total y $1.500 millones de financiamiento de Fonasa. No concilia esas unidades ni afirma desembolso. La etapa inicial excluye procedimientos y cirugías. WHY confunde el antecedente del 23 de septiembre como la misma firma o repetición del mismo convenio, pero ese original enumera las cajas 18 de Septiembre, La Araucana y Los Héroes: es otra alianza dentro del Plan Enlace. Se corrige sólo esa cláusula final, conservando las cautelas de implementación, WHAT y puntaje 88. No se agrupan contratos distintos ni se presenta el plan general como nueva capacidad instalada.",
+      "evidence_quotes": [
+        "la firma de un convenio público-privado entre el Ministerio de Salud, Fonasa y Caja Los Andes",
+        "excluyendo procedimientos e intervenciones quirúrgicas",
+        "En esta etapa inicial de dos meses se estima que se realizarán aproximadamente 150 mil prestaciones, las que tendrán un valor de $3.900 millones.",
+        "Fonasa financiará $1.500 millones"
+      ],
+      "proposed": {
+        "what_happened": "Según reportó Pulso/La Tercera el 14 de agosto de 2026, el Presidente José Antonio Kast encabezó la firma de un convenio público-privado entre el Ministerio de Salud, Fonasa y Caja Los Andes, en el marco del Plan Enlace. La nota indicó que, a partir del 1 de septiembre, una primera fase permitiría que 50 mil casos en espera por consultas de nueva especialidad No GES accedieran a prestadores en convenio, con foco inicial en otorrinolaringología, obstetricia, oftalmología y traumatología. El paquete comprometido por Caja Los Andes incluía consultas, exámenes y entrega de medicamentos, órtesis y lentes cuando correspondiera, excluyendo procedimientos e intervenciones quirúrgicas. Para esa etapa inicial de dos meses se estimaban aproximadamente 150 mil prestaciones por $3.900 millones, de los cuales Fonasa financiaría $1.500 millones y el resto sería asumido por la caja. La ministra May Chomali también señaló que alrededor de 30 mil pacientes se verían beneficiados; la nota presenta ambas cifras sin conciliarlas ni derivar un saldo entre ellas. La firma del convenio fue un hecho reportado; el acceso desde septiembre, las prestaciones estimadas y la continuidad esperada del programa eran compromisos o proyecciones, no implementación verificada a la fecha de revisión del 11 de octubre de 2026.",
+        "why_it_matters": "Al 14 de agosto de 2026, según la nota de Pulso/La Tercera, el convenio vinculaba a Fonasa, el Ministerio de Salud y Caja Los Andes para derivar inicialmente consultas de especialidad No GES de afiliados Fonasa de los grupos B, C y D a prestadores en convenio, con copago cero para los casos incluidos. Si se ejecutaba desde el 1 de septiembre, podía aportar capacidad adicional para consultas, exámenes y medicamentos, órtesis o lentes, pero no para procedimientos ni intervenciones quirúrgicas en esa primera etapa. Para la red pública, la autoridad planteó que el plan liberaría espacio; para los pacientes, el beneficio anunciado dependía de la implementación y de la disponibilidad de prestadores. La nota también atribuyó a Chomali la expectativa de mantener el programa en el tiempo y extenderlo a todas las regiones, pero esas eran condiciones anunciadas, no una vigencia operativa verificada hoy. El antecedente publicado el 23 de septiembre reportó un convenio del Plan Enlace con las cajas 18 de Septiembre, La Araucana y Los Héroes, distinto de la alianza con Caja Los Andes descrita el 14 de agosto. Su referencia a una posible incorporación posterior de cirugías y otras prestaciones no se retroproyecta sobre la etapa inicial del convenio con Los Andes, que excluía procedimientos e intervenciones quirúrgicas."
+      },
+      "event_status": "planned"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+      "publication_date": "2026-07-15",
+      "original_signal": {
+        "title": "Colmed se suma a las críticas contra proyecto “Escucha su corazón” y defiende que exista un consentimiento informado libre de coerción",
+        "source_name": "Pulso / La Tercera",
+        "source_type": "press_high_trust",
+        "source_url": "https://www.latercera.com/nacional/noticia/colmed-se-suma-a-las-criticas-contra-proyecto-escucha-su-corazon-y-defiende-que-exista-un-consentimiento-informado-libre-de-coercion/",
+        "category": "Prestadores",
+        "subcategory": "General",
+        "system_domain": "HEALTH",
+        "what_happened": "Según Pulso / La Tercera, Según la nota del 2026-07-15, el proyecto de ley denominado “Escucha su corazón” propone que los médicos ofrezcan escuchar la actividad cardíaca fetal antes de la interrupción del embarazo por las tres causales y plantea condicionar la realización del procedimiento a la aceptación de esa instancia. Al 2026-07-15, la iniciativa contaba con respaldo de parlamentarios del Partido Republicano y de Renovación Nacional, mientras era cuestionada por el Colegio Médico y otros sectores; la nota no reporta aprobación ni implementación.",
+        "event_date": "2026-07-15",
+        "detected_at": "2026-10-11T07:52:34.224551+00:00",
+        "primary_source_url": null,
+        "event_type": "OTHER",
+        "strategic_theme": [],
+        "institution_types": [],
+        "entity_refs": [],
+        "country": "CL",
+        "topics": [
+          "providers",
+          "regulation"
+        ],
+        "entities": [],
+        "people": [],
+        "geography": [],
+        "key_facts": [],
+        "key_numbers": [],
+        "why_it_matters": "Según la nota del 2026-07-15, si la propuesta avanzara, médicos y pacientes enfrentarían una regla legal que vincularía la realización del procedimiento a la aceptación de una instancia específica, con impacto en el consentimiento informado y la atención clínica de mujeres que recurren a la interrupción del embarazo por tres causales. El Colmed sostiene, a esa fecha, que el consentimiento debe ser individualizado, libre de coerción y centrado en la autonomía de la persona.",
+        "who_cares": [],
+        "possible_implications": [],
+        "watch_tags": [
+          "pulso_latercera",
+          "media",
+          "prestadores"
+        ],
+        "connection_keys": [],
+        "trend_keys": [],
+        "prospective_evidence": true,
+        "economic_impact_score": 84,
+        "regulatory_impact_score": 55,
+        "scope_score": 84,
+        "novelty_score": 84,
+        "actionability_score": 76,
+        "source_quality_score": 92,
+        "radar_score": 78,
+        "confidence_score": 92,
+        "distribution": "archive",
+        "validation_status": "automatic",
+        "corroboration_status": "unknown",
+        "additional_sources": [],
+        "source_documents": [],
+        "key_points": [],
+        "risk_notes": [],
+        "data_insights": [],
+        "data_insight_meta": {},
+        "validity_text": null,
+        "related_reference_ids": [],
+        "original_language": "es",
+        "display_language": "es",
+        "translation_status": "not_required",
+        "original_title": null,
+        "original_what_happened": null,
+        "original_why_it_matters": null,
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Prestadores"
+        ],
+        "editorial_relevance": 84,
+        "source_quality_gate": "passed",
+        "evidence_maturity": "media_reported",
+        "confirmation_policy": "upgrade_same_signal_when_company_or_official_source_confirms",
+        "publication_date": "2026-07-15",
+        "publication_timestamp": "2026-07-15T17:41:09.828Z",
+        "publication_date_source": "visible_article_byline",
+        "editorial_assessment": {
+          "decision": "published",
+          "relevance_score": 84,
+          "threshold": 72,
+          "analysis_reason": "Es una señal legislativa relevante para la regulación clínica y los derechos de las pacientes, pero corresponde a una propuesta no aprobada ni implementada al momento de la publicación. Su impacto potencial justifica seguimiento, sin presentarla como un cambio vigente."
+        },
+        "ingestion_mode": "BACKFILL"
+      },
+      "original_signal_sha256": "066176e8cd88a42735f9032369d6521223f8f1836204e5cdabb51d2e3eac011e",
+      "original_body_sha256": "498322790b34aff91b51dd1768968c41a53ac050657007091f75181bdbb30356",
+      "original_model_assessment": {
+        "decision": "published",
+        "relevance_score": 84,
+        "threshold": 72,
+        "analysis_reason": "Es una señal legislativa relevante para la regulación clínica y los derechos de las pacientes, pero corresponde a una propuesta no aprobada ni implementada al momento de la publicación. Su impacto potencial justifica seguimiento, sin presentarla como un cambio vigente."
+      },
+      "independent_review_record_sha256": "1501788e373d71b7d08f4be978e492220e1ba75b936a33861d1e9bb113ac5f16",
+      "decision": "correct",
+      "reason": "La respuesta pagada de 908 se revalidó íntegra sin una nueva FAST. WHAT y WHY distinguen la propuesta existente del pronunciamiento crítico del Colmed del 15 de julio; no afirman una ley aprobada ni una condición clínica actualmente implementada. El consentimiento autónomo y libre de coerción se atribuye al gremio. Se propone sólo cambiar Prestadores por Regulación & Legal, porque el hecho seguido es un proyecto de regla legal de consentimiento, no una nueva prestación ejecutada. Se mantienen prospectividad verdadera, puntaje 84, copias y modelo original, sin presentar el proyecto conocido desde el 7 de julio como una nueva presentación del día 15.",
+      "evidence_quotes": [
+        "el proyecto de ley denominado “Escucha su corazón”",
+        "condicionando la realización del procedimiento a la aceptación de esa instancia",
+        "El proyecto, que cuenta con el respaldo de parlamentarios de la bancada del Partido Republicano y de Renovación Nacional, ha sido rechazado desde distintos sectores tanto del oficialismo como de la oposición."
+      ],
+      "proposed": {
+        "what_happened": "Según Pulso / La Tercera, Según la nota del 2026-07-15, el proyecto de ley denominado “Escucha su corazón” propone que los médicos ofrezcan escuchar la actividad cardíaca fetal antes de la interrupción del embarazo por las tres causales y plantea condicionar la realización del procedimiento a la aceptación de esa instancia. Al 2026-07-15, la iniciativa contaba con respaldo de parlamentarios del Partido Republicano y de Renovación Nacional, mientras era cuestionada por el Colegio Médico y otros sectores; la nota no reporta aprobación ni implementación.",
+        "why_it_matters": "Según la nota del 2026-07-15, si la propuesta avanzara, médicos y pacientes enfrentarían una regla legal que vincularía la realización del procedimiento a la aceptación de una instancia específica, con impacto en el consentimiento informado y la atención clínica de mujeres que recurren a la interrupción del embarazo por tres causales. El Colmed sostiene, a esa fecha, que el consentimiento debe ser individualizado, libre de coerción y centrado en la autonomía de la persona.",
+        "category": "Regulación & Legal"
+      },
+      "event_status": "planned"
+    }
+  ]
+}

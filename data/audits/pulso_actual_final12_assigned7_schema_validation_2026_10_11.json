@@ -1,0 +1,71 @@
+{
+  "schema_version": "pulso_actual_final12_assigned7_schema_validation_v1",
+  "recorded_at": "2026-10-11T21:02:27.565960+00:00",
+  "producer_commit": "66f37ca044b4cf233bc9f649b7140ff8a69855d3",
+  "reader": {
+    "path": "data/audits/pulso_actual_final12_assigned7_independent_semantic_review_2026_10_11.json",
+    "sha256": "128ddb2296591847f30576c1613fab2984995ada459c2f7b3f7b94e164a64b4a"
+  },
+  "template": {
+    "path": "data/audits/pulso_actual_final12_assigned7_editorial_corrections_2026_10_11.json",
+    "sha256": "1a08eeb947162a921756546f82a704db18371c066a2065b31042222ac69a544c"
+  },
+  "verdict": "PASS_SCOPED_FOUR_ALREADY_PUBLISHED_SIGNALS_IN_MEMORY_ONLY",
+  "validation": {
+    "independent_reader_template_binding": true,
+    "in_memory_application": {
+      "review_id": "pulso_actual_final12_assigned7_published_review_2026_10_11",
+      "review_sha256": "1a08eeb947162a921756546f82a704db18371c066a2065b31042222ac69a544c",
+      "reviewed_count": 4,
+      "applied_count": 4,
+      "unchanged_on_replay": 0,
+      "decisions": {
+        "accept": 1,
+        "reject": 0,
+        "group": 0,
+        "correct": 3
+      },
+      "ai_calls": 0,
+      "primary_evidence_mutations": 0,
+      "queue_attempt_resets": 0
+    },
+    "in_memory_reapplication": {
+      "review_id": "pulso_actual_final12_assigned7_published_review_2026_10_11",
+      "review_sha256": "1a08eeb947162a921756546f82a704db18371c066a2065b31042222ac69a544c",
+      "reviewed_count": 4,
+      "applied_count": 0,
+      "unchanged_on_replay": 4,
+      "decisions": {
+        "accept": 1,
+        "reject": 0,
+        "group": 0,
+        "correct": 3
+      },
+      "ai_calls": 0,
+      "primary_evidence_mutations": 0,
+      "queue_attempt_resets": 0
+    },
+    "actual_registry_plus_own_registration_only_temporary": true,
+    "independent_QA_fullcontext_verified": 57,
+    "independent_QA_fullcontext_failures": [],
+    "independent_QA_exact_four_verified": 4,
+    "independent_QA_exact_four_failures": [],
+    "APS_source_attribution_and_Prestadores_category": true,
+    "Colmed_RegLegal_category_copy_unchanged": true,
+    "Enlace_different_contracts_context_corrected_only_in_WHY": true,
+    "all_four_prospective_true_preserved": true,
+    "all_two_retry_and_one_rejected_entries_byte_identical": true,
+    "all_other_sources_and_signals_exactly_preserved": true,
+    "original_models_full_primary_bodies_and_scores_intact": true,
+    "retained_908_models_have_verified_double_provenance": true
+  },
+  "actual_state_writes": 0,
+  "AI_calls": 0,
+  "acceptance_pass": false,
+  "limitations": [
+    "No real registration or state application performed by this in-memory check.",
+    "Only four genuine published signals enter this template; pending and rejected entries stay unchanged.",
+    "Hanta needs new contextual FAST; a guard false negative does not establish novelty.",
+    "Publisher peer and real parent application remain required, followed by independent actual confirmation."
+  ]
+}

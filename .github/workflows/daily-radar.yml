@@ -27,7 +27,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 95
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       RADAR_FAST_MODEL: gpt-5.6-luna
@@ -40,6 +40,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: staging
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -77,12 +78,35 @@ jobs:
           echo "Beta source failures remain repair-required but do not suppress independent core collection." >> "$GITHUB_STEP_SUMMARY"
       - name: Snapshot reviewer after collection
         run: python -m pytest -q tests/test_reviewer.py
+      - name: Observe Global snapshot freshness without collecting or publishing
+        if: always()
+        continue-on-error: true
+        env:
+          OPENAI_API_KEY: ''
+        run: python scripts/check_global_source_freshness.py --output "data/audits/global_integration_2026_10_11/freshness/${GITHUB_RUN_ID}.json"
+      - name: Read explicit Global daily activation policy
+        id: global_policy
+        if: always()
+        run: python -c 'import json; c=json.load(open("config/global_discovery.json")); print("enabled=" + ("true" if c.get("daily_collection_enabled") is True else "false"))' >> "$GITHUB_OUTPUT"
+      - name: Independent Global metadata discovery (no paid AI or publication)
+        id: global_discovery
+        if: ${{ always() && steps.global_policy.outputs.enabled == 'true' }}
+        continue-on-error: true
+        timeout-minutes: 50
+        env:
+          OPENAI_API_KEY: ''
+        run: python scripts/discover_global_sources.py
+      - name: Preserve Global discovery health after independent core exports
+        if: ${{ always() && steps.global_discovery.outcome == 'success' }}
+        run: python scripts/discover_global_sources.py --mirror-health
       - name: Preserve queue, paid usage and checkpoints on failure
         if: always()
         run: |
           git config user.name "alicanto-salud-bot"
           git config user.email "alicanto-salud-bot@users.noreply.github.com"
           git add data/state data/history data/analysis_cache data/ai_usage data/source_health.json data/inbox data/outbox
+          git add data/global_intelligence data/audits/global_source_recovery_2026_10_11/runs web/data/source_health.json web/data/product.json
+          git add data/audits/global_integration_2026_10_11
           if [ "${{ job.status }}" = success ]; then git add web/data; fi
           git diff --cached --quiet || git commit -m "chore: refresh Alicanto Salud"
           git push origin HEAD:staging

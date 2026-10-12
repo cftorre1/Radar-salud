@@ -1,0 +1,702 @@
+{
+  "schema_version": "1.0",
+  "source": "pulso_latercera",
+  "verdict": "PASS_ORIGINAL_PRIMARY_TAXONOMY_PROCESSING_NOT_RUNTIME_ACCEPTANCE",
+  "mode": "offline_original_byte_verified_legacy_queue_replay_no_network_no_ai",
+  "fixture_manifest": "tests/fixtures/pulso_editorial_exception_real/manifest.json",
+  "fixture_manifest_sha256": "1e1b2330786c2ec9dc6d46d5af90f6af1467977a1c64f8852410d454e5e441ba",
+  "original_discovery_run_sha256": "660f979b34a7ba9025ee0ddfc7d41f5edf89bb145939fb290ae4c37d48b38131",
+  "source_nonfactual_original_count": 12,
+  "original_revalidation_count": 12,
+  "disposition_counts": {
+    "publisher_conflicting_publication_dates": 1,
+    "publisher_opinion_taxonomy": 8,
+    "publisher_sponsored_content_review_required": 3
+  },
+  "network_requests": 0,
+  "ai_calls": 0,
+  "editorial_media_gate": 72,
+  "gate_changed": false,
+  "publication_approved": false,
+  "legacy_duplicate_holds_unchanged": true,
+  "real_legacy_video_wrapper_revalidation": {
+    "url": "https://www.latercera.com/videos/noticia/radar-lt-descubren-doble-avance-que-podria-cambiar-el-diagnostico-y-tratamiento-del-alzheimer/",
+    "legacy_self_consistent_wrapper_chars": 251,
+    "verified_original_primary_chars": 84,
+    "requires_primary_refetch_even_when_legacy_hash_matches": true,
+    "result": "pending",
+    "reason": "publisher_video_text_unavailable",
+    "ai_calls": 0,
+    "regression_test": "test_hash_consistent_legacy_alzheimer_wrapper_requires_original_and_exact_availability_hold"
+  },
+  "validation": {
+    "command": "PYTHONPATH=src /workspace/work/venv/bin/pytest -q tests/test_pulso_publisher_exception_processing.py tests/test_pulso_date_conflict_processing.py tests/test_pulso_video_processing.py tests/test_pulso_complete_body.py tests/test_pulso_media_network_materiality.py tests/test_pulso_core_runtime.py tests/test_beta_source_package.py tests/test_pulso_incremental_review.py tests/test_pulso_source.py",
+    "result": "192 passed"
+  },
+  "records": [
+    {
+      "url": "https://www.latercera.com/branded/noticia/atencion-medica-domiciliaria-cuando-conviene-llamar-a-un-medico-a-casa-en-lugar-de-ir-a-urgencias/",
+      "title": "Atención médica domiciliaria: cuándo conviene llamar a un médico a casa en lugar de ir a urgencias",
+      "original_bytes_verified": true,
+      "original_html_sha256": "2bf12005a8a796390535942897933b7088faae307a1b48eb7677ec4d4fb5a44e",
+      "original_gzip_sha256": "e039d0e7472d107b02a4559d623d683bd6670c575012d6673b1b00d81a0350a3",
+      "captured_at": "2026-10-11T06:16:32.822141+00:00",
+      "legacy_assigned_day": "2026-07-31",
+      "publication_date": null,
+      "publication_date_verified": false,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-07-28T19:48:35.118Z",
+          "publisher_day": null,
+          "timestamp_calendar_day": "2026-07-28",
+          "america_santiago_day": "2026-07-28"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-07-28T19:48:35.118Z",
+          "publisher_day": null,
+          "timestamp_calendar_day": "2026-07-28",
+          "america_santiago_day": "2026-07-28"
+        }
+      ],
+      "possible_publication_days": [
+        "2026-07-28",
+        "2026-07-31"
+      ],
+      "publisher_taxonomy": {
+        "source": "url_bound_json_ld",
+        "canonical_url": "https://www.latercera.com/branded/noticia/atencion-medica-domiciliaria-cuando-conviene-llamar-a-un-medico-a-casa-en-lugar-de-ir-a-urgencias/",
+        "article_type": "NewsArticle",
+        "section": "Branded",
+        "labels": [
+          "Atención médica domiciliaria",
+          "Medplus",
+          "Medicina",
+          "urgencias",
+          "salud",
+          "branded-tendencias"
+        ],
+        "matched_opinion_labels": [],
+        "classification": "sponsored"
+      },
+      "article_body_complete": true,
+      "article_body_sha256": "8229f49f44b19e9c0526f5b0fe8d3b2570010c5c020292a8da00cf618ec4fa21",
+      "article_body_characters": 6190,
+      "source_quality_gate": "deferred_publication_date",
+      "decision": "pending",
+      "reason": "publisher_conflicting_publication_dates",
+      "original_refetch_count": 1,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "bookkeeping_preserved": true
+    },
+    {
+      "url": "https://www.latercera.com/branded/noticia/cardenal-chomali-presidenta-de-sofofa-y-rector-de-inacap-dialogan-sobre-el-rol-de-las-empresas-en-la-sociedad/",
+      "title": "Cardenal Chomali, presidenta de SOFOFA y rector de INACAP dialogan sobre el rol de las empresas en la sociedad",
+      "original_bytes_verified": true,
+      "original_html_sha256": "c4d47c304ad96988f013739fa0eab27520fe499aeca530f67fe833aa626c1627",
+      "original_gzip_sha256": "cb0b6123134d1fc126584a1afe1e3894b0a87d389b71d97d1b3689ff3f63f07f",
+      "captured_at": "2026-10-11T06:23:39.236688+00:00",
+      "legacy_assigned_day": "2026-09-30",
+      "publication_date": "2026-09-30",
+      "publication_date_verified": true,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-09-30T21:22:01.23Z",
+          "publisher_day": "2026-09-30",
+          "timestamp_calendar_day": "2026-09-30",
+          "america_santiago_day": "2026-09-30"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-09-30T21:22:01.23Z",
+          "publisher_day": "2026-09-30",
+          "timestamp_calendar_day": "2026-09-30",
+          "america_santiago_day": "2026-09-30"
+        }
+      ],
+      "possible_publication_days": null,
+      "publisher_taxonomy": {
+        "source": "url_bound_json_ld",
+        "canonical_url": "https://www.latercera.com/branded/noticia/cardenal-chomali-presidenta-de-sofofa-y-rector-de-inacap-dialogan-sobre-el-rol-de-las-empresas-en-la-sociedad/",
+        "article_type": "NewsArticle",
+        "section": "Branded",
+        "labels": [
+          "branded-pulso"
+        ],
+        "matched_opinion_labels": [],
+        "classification": "sponsored"
+      },
+      "article_body_complete": true,
+      "article_body_sha256": "400415afdde3497347fc1391a07eeb204dd4d5703f2d42e6e297fd0994027830",
+      "article_body_characters": 1124,
+      "source_quality_gate": "deferred_sponsored_content_review",
+      "decision": "pending",
+      "reason": "publisher_sponsored_content_review_required",
+      "original_refetch_count": 1,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "bookkeeping_preserved": true
+    },
+    {
+      "url": "https://www.latercera.com/branded/noticia/revive-el-primer-capitulo-de-empresas-en-accion-los-desafios-para-conectar-la-educacion-tecnico-profesional-con-el-empleo/",
+      "title": "Revive el primer capítulo de “Empresas en acción”: los desafíos para conectar la educación técnico-profesional con el empleo",
+      "original_bytes_verified": true,
+      "original_html_sha256": "6174d42d8b00f0450ba8a189e515812cd29bea330d52c8f8aa8a24a3022f56ec",
+      "original_gzip_sha256": "1982b392af4885d769b1421ce17173ed06f57d2e802951ec1de04a56da73411a",
+      "captured_at": "2026-10-11T06:23:37.374342+00:00",
+      "legacy_assigned_day": "2026-10-06",
+      "publication_date": "2026-10-06",
+      "publication_date_verified": true,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-10-06T12:36:45.576Z",
+          "publisher_day": "2026-10-06",
+          "timestamp_calendar_day": "2026-10-06",
+          "america_santiago_day": "2026-10-06"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-10-06T12:36:45.576Z",
+          "publisher_day": "2026-10-06",
+          "timestamp_calendar_day": "2026-10-06",
+          "america_santiago_day": "2026-10-06"
+        }
+      ],
+      "possible_publication_days": null,
+      "publisher_taxonomy": {
+        "source": "url_bound_json_ld",
+        "canonical_url": "https://www.latercera.com/branded/noticia/revive-el-primer-capitulo-de-empresas-en-accion-los-desafios-para-conectar-la-educacion-tecnico-profesional-con-el-empleo/",
+        "article_type": "NewsArticle",
+        "section": "Branded",
+        "labels": [
+          "Presentado por Empresas x Chile",
+          "Empresas en acción",
+          "branded-pulso"
+        ],
+        "matched_opinion_labels": [],
+        "classification": "sponsored"
+      },
+      "article_body_complete": true,
+      "article_body_sha256": "59d88f46a0084d88d65ace856eb44c2da84f72b961e30ca8b7ac844bdf8e9b36",
+      "article_body_characters": 1857,
+      "source_quality_gate": "deferred_sponsored_content_review",
+      "decision": "pending",
+      "reason": "publisher_sponsored_content_review_required",
+      "original_refetch_count": 1,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "bookkeeping_preserved": true
+    },
+    {
+      "url": "https://www.latercera.com/paula/noticia/conservadurismo-y-el-regreso-de-la-vieja-obsesion-por-controlar-el-cuerpo-femenino/",
+      "title": "Conservadurismo y el regreso de la vieja obsesión por controlar el cuerpo femenino",
+      "original_bytes_verified": true,
+      "original_html_sha256": "3f3d4e3e7be642483ec621ef56ef3a50125641c5cf8072963f3fa030d8010909",
+      "original_gzip_sha256": "a3d7c3df06c6080dbe5e41505965834573cf947450ca804dfb319a99879e132b",
+      "captured_at": "2026-10-11T06:07:04.273681+00:00",
+      "legacy_assigned_day": "2026-07-17",
+      "publication_date": "2026-07-17",
+      "publication_date_verified": true,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-07-17T17:19:32.459Z",
+          "publisher_day": "2026-07-17",
+          "timestamp_calendar_day": "2026-07-17",
+          "america_santiago_day": "2026-07-17"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-07-17T17:19:32.459Z",
+          "publisher_day": "2026-07-17",
+          "timestamp_calendar_day": "2026-07-17",
+          "america_santiago_day": "2026-07-17"
+        }
+      ],
+      "possible_publication_days": null,
+      "publisher_taxonomy": {
+        "source": "url_bound_json_ld",
+        "canonical_url": "https://www.latercera.com/paula/noticia/conservadurismo-y-el-regreso-de-la-vieja-obsesion-por-controlar-el-cuerpo-femenino/",
+        "article_type": "NewsArticle",
+        "section": "Paula",
+        "labels": [
+          "Opinión",
+          "Feminismo",
+          "Cuerpo femenino",
+          "Imagen corporal",
+          "Tradwives",
+          "Mujeres de alto valor",
+          "Redes sociales",
+          "Conservadurismo"
+        ],
+        "matched_opinion_labels": [
+          "Opinión"
+        ],
+        "classification": "opinion"
+      },
+      "article_body_complete": true,
+      "article_body_sha256": "0d47681eabe6985ffd9828580fb7852bf0527feb270a927133d1dce7edce89a1",
+      "article_body_characters": 4726,
+      "source_quality_gate": "excluded_publisher_opinion",
+      "decision": "rejected",
+      "reason": "publisher_opinion_taxonomy",
+      "original_refetch_count": 1,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "bookkeeping_preserved": true
+    },
+    {
+      "url": "https://www.latercera.com/paula/noticia/la-reivindicacion-de-los-psicofarmacos/",
+      "title": "La reivindicación de los psicofármacos",
+      "original_bytes_verified": true,
+      "original_html_sha256": "70c066c6073c87d367878fa2ba36effaa480a484ec48a6f520214193f24d9ada",
+      "original_gzip_sha256": "22e39b24f5b0de38b28927342e12431a6a94e705e65967e16d23e3bc9c92f46b",
+      "captured_at": "2026-10-11T06:07:02.503257+00:00",
+      "legacy_assigned_day": "2026-07-27",
+      "publication_date": "2026-07-27",
+      "publication_date_verified": true,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-07-27T14:31:17.351Z",
+          "publisher_day": "2026-07-27",
+          "timestamp_calendar_day": "2026-07-27",
+          "america_santiago_day": "2026-07-27"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-07-27T14:31:17.351Z",
+          "publisher_day": "2026-07-27",
+          "timestamp_calendar_day": "2026-07-27",
+          "america_santiago_day": "2026-07-27"
+        }
+      ],
+      "possible_publication_days": null,
+      "publisher_taxonomy": {
+        "source": "url_bound_json_ld",
+        "canonical_url": "https://www.latercera.com/paula/noticia/la-reivindicacion-de-los-psicofarmacos/",
+        "article_type": "NewsArticle",
+        "section": "Paula",
+        "labels": [
+          "Salud mental",
+          "Psicología",
+          "Psicofármacos",
+          "Ansiedad",
+          "Depresión",
+          "Psiquiatría",
+          "Terapia",
+          "Bienestar emocional",
+          "Salud",
+          "Opinión"
+        ],
+        "matched_opinion_labels": [
+          "Opinión"
+        ],
+        "classification": "opinion"
+      },
+      "article_body_complete": true,
+      "article_body_sha256": "73dde3e3058dbb314b72aaf556a33ba0599e7f7e6caade9fa24e7b12dc708048",
+      "article_body_characters": 4470,
+      "source_quality_gate": "excluded_publisher_opinion",
+      "decision": "rejected",
+      "reason": "publisher_opinion_taxonomy",
+      "original_refetch_count": 1,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "bookkeeping_preserved": true
+    },
+    {
+      "url": "https://www.latercera.com/publirreportajes/noticia/fundacion-coanil-impulsa-colecta-2026-relevando-los-desafios-de-la-discapacidad-intelectual-y-la-inclusion-en-chile/",
+      "title": "Fundación Coanil impulsa Colecta 2026 relevando los desafíos de la discapacidad intelectual y la inclusión en Chile",
+      "original_bytes_verified": true,
+      "original_html_sha256": "50262a2adb9648b236fca80ca8ddc596f79d723d5b73320578f774693275e7da",
+      "original_gzip_sha256": "785c0ae40bff58c14b8985a4cc671b2d3b48af10ca5a828b5f22d360d31e631f",
+      "captured_at": "2026-10-11T06:09:33.798553+00:00",
+      "legacy_assigned_day": "2026-07-31",
+      "publication_date": "2026-07-31",
+      "publication_date_verified": true,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-07-31T16:42:14.352Z",
+          "publisher_day": "2026-07-31",
+          "timestamp_calendar_day": "2026-07-31",
+          "america_santiago_day": "2026-07-31"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-07-31T16:42:14.352Z",
+          "publisher_day": "2026-07-31",
+          "timestamp_calendar_day": "2026-07-31",
+          "america_santiago_day": "2026-07-31"
+        }
+      ],
+      "possible_publication_days": null,
+      "publisher_taxonomy": {
+        "source": "url_bound_json_ld",
+        "canonical_url": "https://www.latercera.com/publirreportajes/noticia/fundacion-coanil-impulsa-colecta-2026-relevando-los-desafios-de-la-discapacidad-intelectual-y-la-inclusion-en-chile/",
+        "article_type": "NewsArticle",
+        "section": "Publirreportajes",
+        "labels": [
+          "Fundación Coanil",
+          "Colecta 2026",
+          "discapacidad intelectual",
+          "inclusión en Chile"
+        ],
+        "matched_opinion_labels": [],
+        "classification": "sponsored"
+      },
+      "article_body_complete": true,
+      "article_body_sha256": "adc13620d3916907b10a482584d6d8a936e5a3c23af13d9cc52d22c8d9ee14f1",
+      "article_body_characters": 3373,
+      "source_quality_gate": "deferred_sponsored_content_review",
+      "decision": "pending",
+      "reason": "publisher_sponsored_content_review_required",
+      "original_refetch_count": 1,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "bookkeeping_preserved": true
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/donde-va-todo-ese-tiempo/",
+      "title": "¿Dónde va todo ese tiempo?",
+      "original_bytes_verified": true,
+      "original_html_sha256": "87981a1af3ed01d8917cb5abacea05cf4ea85da45d9e8ea89184768078918dc3",
+      "original_gzip_sha256": "3fca3394e68920f0ec1d97414f6f11a04e117200cf624a84d1e7d85a0f82c4a6",
+      "captured_at": "2026-10-11T05:51:07.510685+00:00",
+      "legacy_assigned_day": "2026-09-08",
+      "publication_date": "2026-09-08",
+      "publication_date_verified": true,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-09-08T14:36:30.035Z",
+          "publisher_day": "2026-09-08",
+          "timestamp_calendar_day": "2026-09-08",
+          "america_santiago_day": "2026-09-08"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-09-08T14:36:30.035Z",
+          "publisher_day": "2026-09-08",
+          "timestamp_calendar_day": "2026-09-08",
+          "america_santiago_day": "2026-09-08"
+        }
+      ],
+      "possible_publication_days": null,
+      "publisher_taxonomy": {
+        "source": "url_bound_json_ld",
+        "canonical_url": "https://www.latercera.com/pulso/noticia/donde-va-todo-ese-tiempo/",
+        "article_type": "NewsArticle",
+        "section": "Opinión",
+        "labels": [
+          "Opinión",
+          "Economía",
+          "IA"
+        ],
+        "matched_opinion_labels": [
+          "Opinión"
+        ],
+        "classification": "opinion"
+      },
+      "article_body_complete": true,
+      "article_body_sha256": "0f03193323234d65e018eb6219ebf70fc75428d71e2d625e727a7c802b203db5",
+      "article_body_characters": 2818,
+      "source_quality_gate": "excluded_publisher_opinion",
+      "decision": "rejected",
+      "reason": "publisher_opinion_taxonomy",
+      "original_refetch_count": 1,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "bookkeeping_preserved": true
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/la-inversion-como-politica-ambiental/",
+      "title": "La inversión como política ambiental",
+      "original_bytes_verified": true,
+      "original_html_sha256": "cc27218262704573b1002903d6053e20d00965e990ff2ed4fb0d9fdb7cb9b070",
+      "original_gzip_sha256": "d2b96e8adb0c3d4e618f0c940a523ea0b6b946fad5fb92ac83ab2fef0ac912e5",
+      "captured_at": "2026-10-11T05:50:20.395766+00:00",
+      "legacy_assigned_day": "2026-09-17",
+      "publication_date": "2026-09-17",
+      "publication_date_verified": true,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-09-17T15:08:52.834Z",
+          "publisher_day": "2026-09-17",
+          "timestamp_calendar_day": "2026-09-17",
+          "america_santiago_day": "2026-09-17"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-09-17T15:08:52.834Z",
+          "publisher_day": "2026-09-17",
+          "timestamp_calendar_day": "2026-09-17",
+          "america_santiago_day": "2026-09-17"
+        }
+      ],
+      "possible_publication_days": null,
+      "publisher_taxonomy": {
+        "source": "url_bound_json_ld",
+        "canonical_url": "https://www.latercera.com/pulso/noticia/la-inversion-como-politica-ambiental/",
+        "article_type": "NewsArticle",
+        "section": "Pulso",
+        "labels": [
+          "Opinión",
+          "Empresas"
+        ],
+        "matched_opinion_labels": [
+          "Opinión"
+        ],
+        "classification": "opinion"
+      },
+      "article_body_complete": true,
+      "article_body_sha256": "27e63a30cad091c3d87367c1c479f5b3fdcca0119a3e7467a146d097821fe208",
+      "article_body_characters": 3964,
+      "source_quality_gate": "excluded_publisher_opinion",
+      "decision": "rejected",
+      "reason": "publisher_opinion_taxonomy",
+      "original_refetch_count": 1,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "bookkeeping_preserved": true
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/los-campeones-de-la-ia-buscan-un-paraguas/",
+      "title": "Los campeones de la IA buscan un paraguas",
+      "original_bytes_verified": true,
+      "original_html_sha256": "d5ba0110805887a4a524f69eaa4ba486c237a8e5ef445177486325b3b988303a",
+      "original_gzip_sha256": "4c01d901dec4dace54f309d1a4b5eaa3f7cb76e37ca1b43cdbfd57aa38ba0783",
+      "captured_at": "2026-10-11T05:49:28.718069+00:00",
+      "legacy_assigned_day": "2026-09-30",
+      "publication_date": "2026-09-30",
+      "publication_date_verified": true,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-09-30T14:24:12.786Z",
+          "publisher_day": "2026-09-30",
+          "timestamp_calendar_day": "2026-09-30",
+          "america_santiago_day": "2026-09-30"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-09-30T14:24:12.786Z",
+          "publisher_day": "2026-09-30",
+          "timestamp_calendar_day": "2026-09-30",
+          "america_santiago_day": "2026-09-30"
+        }
+      ],
+      "possible_publication_days": null,
+      "publisher_taxonomy": {
+        "source": "url_bound_json_ld",
+        "canonical_url": "https://www.latercera.com/pulso/noticia/los-campeones-de-la-ia-buscan-un-paraguas/",
+        "article_type": "NewsArticle",
+        "section": "Opinión",
+        "labels": [
+          "Opinión",
+          "IA",
+          "Regulación"
+        ],
+        "matched_opinion_labels": [
+          "Opinión"
+        ],
+        "classification": "opinion"
+      },
+      "article_body_complete": true,
+      "article_body_sha256": "2e00ba95f7b7ca15b607039a6375e8276347e5d601a318f41087392004d54251",
+      "article_body_characters": 2797,
+      "source_quality_gate": "excluded_publisher_opinion",
+      "decision": "rejected",
+      "reason": "publisher_opinion_taxonomy",
+      "original_refetch_count": 1,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "bookkeeping_preserved": true
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/nada-es-imposible/",
+      "title": "Nada es Imposible",
+      "original_bytes_verified": true,
+      "original_html_sha256": "f7a6022a93dcfc521bdf204961a61831e08873fd64543e9c624ee0aa7c5ac324",
+      "original_gzip_sha256": "306b52f5ae5f49bd6d288f5cadd9f578432a2fcdbcf460e7b5c6d3200604f8fa",
+      "captured_at": "2026-10-11T05:50:13.610555+00:00",
+      "legacy_assigned_day": "2026-09-20",
+      "publication_date": "2026-09-20",
+      "publication_date_verified": true,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-09-20T10:00:00Z",
+          "publisher_day": "2026-09-20",
+          "timestamp_calendar_day": "2026-09-20",
+          "america_santiago_day": "2026-09-20"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-09-20T10:00:00Z",
+          "publisher_day": "2026-09-20",
+          "timestamp_calendar_day": "2026-09-20",
+          "america_santiago_day": "2026-09-20"
+        }
+      ],
+      "possible_publication_days": null,
+      "publisher_taxonomy": {
+        "source": "url_bound_json_ld",
+        "canonical_url": "https://www.latercera.com/pulso/noticia/nada-es-imposible/",
+        "article_type": "NewsArticle",
+        "section": "Pulso",
+        "labels": [
+          "Opinión",
+          "Columna",
+          "Mercado",
+          "Finanzas",
+          "MK4"
+        ],
+        "matched_opinion_labels": [
+          "Opinión",
+          "Columna"
+        ],
+        "classification": "opinion"
+      },
+      "article_body_complete": true,
+      "article_body_sha256": "9357b1bc04b7ba3e165e5661301375e178692b38ac47bc15c445c39e0bfe0c2e",
+      "article_body_characters": 5933,
+      "source_quality_gate": "excluded_publisher_opinion",
+      "decision": "rejected",
+      "reason": "publisher_opinion_taxonomy",
+      "original_refetch_count": 1,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "bookkeeping_preserved": true
+    },
+    {
+      "url": "https://www.latercera.com/sustentabilidad/noticia/la-montana-como-socio-estrategico-el-valor-del-capital-natural-para-las-empresas-y-la-sociedad/",
+      "title": "La Montaña como Socio Estratégico: el valor del capital natural para las empresas y la sociedad",
+      "original_bytes_verified": true,
+      "original_html_sha256": "cbfe2b9bab93964a1f738dc3cc4616e552c9a21f94d799165fbe89e506a4634e",
+      "original_gzip_sha256": "1b03121913451bfedef8adbe86a7887364aa850d8569775726efb15dc8f41a32",
+      "captured_at": "2026-10-11T06:08:33.129917+00:00",
+      "legacy_assigned_day": "2026-10-02",
+      "publication_date": "2026-10-02",
+      "publication_date_verified": true,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-10-02T17:28:34.691Z",
+          "publisher_day": "2026-10-02",
+          "timestamp_calendar_day": "2026-10-02",
+          "america_santiago_day": "2026-10-02"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-10-02T17:28:34.691Z",
+          "publisher_day": "2026-10-02",
+          "timestamp_calendar_day": "2026-10-02",
+          "america_santiago_day": "2026-10-02"
+        }
+      ],
+      "possible_publication_days": null,
+      "publisher_taxonomy": {
+        "source": "url_bound_json_ld",
+        "canonical_url": "https://www.latercera.com/sustentabilidad/noticia/la-montana-como-socio-estrategico-el-valor-del-capital-natural-para-las-empresas-y-la-sociedad/",
+        "article_type": "NewsArticle",
+        "section": "Sustentabilidad",
+        "labels": [
+          "Hub Sustentabilidad",
+          "FSC Chile",
+          "Capital Natural",
+          "Cámara de Comercio de Santiago",
+          "Montaña",
+          "Columna"
+        ],
+        "matched_opinion_labels": [
+          "Columna"
+        ],
+        "classification": "opinion"
+      },
+      "article_body_complete": true,
+      "article_body_sha256": "2c2458c82a3c867ca951452eb80baad64d50327670a32b5f91245b0caf7757bc",
+      "article_body_characters": 5881,
+      "source_quality_gate": "excluded_publisher_opinion",
+      "decision": "rejected",
+      "reason": "publisher_opinion_taxonomy",
+      "original_refetch_count": 1,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "bookkeeping_preserved": true
+    },
+    {
+      "url": "https://www.latercera.com/sustentabilidad/noticia/lo-dijimos/",
+      "title": "Lo dijimos",
+      "original_bytes_verified": true,
+      "original_html_sha256": "dce9ed5886d93c62dbedb5db534324af39d9c3c81c9e37eff86f7636e511990a",
+      "original_gzip_sha256": "dbcf589b991d84afe594f6fc5db20064b3a31cc48102d99bc6000efbc828e0c0",
+      "captured_at": "2026-10-11T06:08:37.121022+00:00",
+      "legacy_assigned_day": "2026-09-08",
+      "publication_date": "2026-09-08",
+      "publication_date_verified": true,
+      "publication_evidence": [
+        {
+          "source": "json_ld_datePublished",
+          "timestamp": "2026-09-08T14:10:39.726Z",
+          "publisher_day": "2026-09-08",
+          "timestamp_calendar_day": "2026-09-08",
+          "america_santiago_day": "2026-09-08"
+        },
+        {
+          "source": "article_published_time",
+          "timestamp": "2026-09-08T14:10:39.726Z",
+          "publisher_day": "2026-09-08",
+          "timestamp_calendar_day": "2026-09-08",
+          "america_santiago_day": "2026-09-08"
+        }
+      ],
+      "possible_publication_days": null,
+      "publisher_taxonomy": {
+        "source": "url_bound_json_ld",
+        "canonical_url": "https://www.latercera.com/sustentabilidad/noticia/lo-dijimos/",
+        "article_type": "NewsArticle",
+        "section": "Sustentabilidad",
+        "labels": [
+          "Hub Sustentabilidad",
+          "Crisis de natalidad",
+          "Natalidad",
+          "Cambio Climático",
+          "Envejecimiento",
+          "Economía",
+          "Columna",
+          "Columna de opinión",
+          "Baja natalidad"
+        ],
+        "matched_opinion_labels": [
+          "Columna",
+          "Columna de opinión"
+        ],
+        "classification": "opinion"
+      },
+      "article_body_complete": true,
+      "article_body_sha256": "dfd31e343ab79e9e2abc68003400737a00843abd6361ed57da61f4118cc4f500",
+      "article_body_characters": 10724,
+      "source_quality_gate": "excluded_publisher_opinion",
+      "decision": "rejected",
+      "reason": "publisher_opinion_taxonomy",
+      "original_refetch_count": 1,
+      "materiality_prefilter_calls": 0,
+      "ai_calls": 0,
+      "bookkeeping_preserved": true
+    }
+  ],
+  "limitations": [
+    "Legacy records are reconstructed from exact captured publisher text; this replay does not claim a genuine processing run.",
+    "Publisher labels are primary URL-bound metadata, never words inferred from an article body.",
+    "The commercial page with conflicting dates remains pending with no adopted publication day, ahead of its sponsor hold.",
+    "A fresh original factual classification can clear only obsolete publisher exception flags; reviewed duplicate holds remain unchanged.",
+    "Actual discovery recall, production model outcomes, history/feed and staging acceptance must be checked independently."
+  ]
+}

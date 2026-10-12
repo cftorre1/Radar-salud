@@ -1,0 +1,51 @@
+{
+  "schema_version": "pulso_independent_semantic_peer_validation_v1",
+  "recorded_at": "2026-10-11T19:50:22.078134+00:00",
+  "producer_commit": "9083056a7127656e90ff40d4fcd7aef0ac407dbc",
+  "producer_run": 38166157093,
+  "review_files": [
+    {
+      "path": "data/audits/pulso_mixed12_independent_peer_2026_10_11.json",
+      "sha256": "9f7dba641312afa5b8ea18ed99916080367b74531c9741dc9d0f1437b848b665"
+    },
+    {
+      "path": "data/audits/pulso_mixed25_first8_four_publications_independent_peer_2026_10_11.json",
+      "sha256": "e2b243d0196d91812250fb5757b8cc044e69c05334d8b09ff9405f489078631a"
+    }
+  ],
+  "proof_replay": {
+    "held_rows": 12,
+    "held_primary_gzip_html_identity_body_byline_replayed": 12,
+    "held_new_model_body_request_response_and_actual_event_matches": 12,
+    "all_held_statuses_retry": true,
+    "zero_AI_candidates": [
+      14,
+      38
+    ],
+    "other_ten_require_new_FAST": true,
+    "actual_publications": 4,
+    "publication_original_gzip_html_identity_body_byline_replayed": 4,
+    "publication_new_FAST_event_matches": 4,
+    "published_signal_matches_immutable_history": 4,
+    "decisions": {
+      "accept": 3,
+      "group_recommended": 1
+    },
+    "existing_budget_original_fullbody_and_signal_read": true,
+    "duplicate_literal_contrasts": 6
+  },
+  "minimum_tests": {
+    "command": "python -m pytest -q tests/test_pulso_editorial_proof.py::test_context_repetition_or_uncertain_increment_never_becomes_approved tests/test_pulso_editorial_proof.py::test_pipeline_keeps_threshold72_original_date_press_maturity_and_single_assessment tests/test_pulso_editorial_proof.py::test_pipeline_cross_article_response_cannot_bypass_body_request_binding tests/test_pulso_editorial_proof.py::test_real_proposed_2027_fonasa_budget_cannot_be_mislabeled_as_implemented_funding",
+    "passed": 5,
+    "failed": 0,
+    "elapsed_seconds": 0.13
+  },
+  "scope_claim": "Independent evidence and routing recommendation only; no actual publication approval for retry rows, no source-wide PASS.",
+  "original_AI_outputs_changed": false,
+  "scores_changed": false,
+  "threshold": 72,
+  "reviewer_AI_calls": 0,
+  "source_or_state_writes": 0,
+  "shared_script_or_test_changes": 0,
+  "acceptance_pass": false
+}

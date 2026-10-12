@@ -1,0 +1,175 @@
+{
+  "result": "PASS_SCOPED_BOTH_REGISTERS_WITH_FINAL_CI_HOLD",
+  "created_at": "2026-10-12T03:52:01.748655+00:00",
+  "reviewer": "independent /root/reviewer",
+  "reviewed_base_HEAD": "05e0f78fc5e0b494a35c8ae01bc35d2e40c9a2a2",
+  "findings_open": [],
+  "material_finding_resolved": {
+    "id": "REGISTER_EFFECT_NUMERIC_BOUNDARY",
+    "observed_reproduction": "Replacing2with12 in actual SIS narrative passed the substring toContain2 matcher.",
+    "status": "FIXED_IN_TEST_AND_INDEPENDENTLY_COUNTERCHECKED",
+    "resolution": "Integer boundary regex excludes digit/dot/comma prefix and enforces word end; actual final assertions reject12 and2.2 while correct2and4 pass at respective snapshots.",
+    "browser_and_post_matcher_test_hashes_separately_bound": true
+  },
+  "scope": "Only final SIS native/date/effect test control, screenshot output location, focal receipts/handoff and preservation. No product/source change or broad requalification.",
+  "fourth_CI_receipt": {
+    "run": "38198581790",
+    "head": "05e0f78fc5e0b494a35c8ae01bc35d2e40c9a2a2",
+    "reported_result": "1202Python+94subcases+1skip,43Node,60browserPASS/2FAIL;same register case advanced to uncorrected SIS18/4 expectation;automaticReviewer skipped",
+    "partial_previous_repair_acknowledged": true,
+    "not_claimed_as_a_fourth_distinct_unrelated_root_cause": true
+  },
+  "test_control_review": {
+    "SUSESO92_and_SIS18_original_cohorts_independent_of_runtime_counters": true,
+    "exact_original_SIS_URLs_emission_event_publication_dates_compared": true,
+    "rolling30_90_eligibility_anchored_to_valid_snapshot_date": true,
+    "SIS_substitution_count_from_legal_history_event_types_on_recent_original_URLs": true,
+    "Doris_actor_report93070_original_dom_navigation_and_layout_assertions_retained": true,
+    "aggregate_publication_null_and_individual_original_publication_dates_preserved": true,
+    "internal_ledger_published_disposition_not_claimed_as_official_publication_date": true,
+    "screenshot_uses_testInfo_outputPath_and_leaves_signed_historical_PNG_untouched": true,
+    "no_test_skip_gate_change_or_product_guard_relaxation": true
+  },
+  "independent_validation": {
+    "syntax_check": "PASS",
+    "actual_final_nonDOM_case_assertions_extracted_and_executed": true,
+    "temporal_snapshots": [
+      {
+        "date": "2026-10-11",
+        "SUSESO30_90": [
+          20,
+          75
+        ],
+        "contexts": 17,
+        "SIS30_90": [
+          10,
+          18
+        ],
+        "substitutions": 4
+      },
+      {
+        "date": "2026-10-12",
+        "SUSESO30_90": [
+          20,
+          72
+        ],
+        "contexts": 20,
+        "SIS30_90": [
+          10,
+          16
+        ],
+        "substitutions": 2
+      },
+      {
+        "date": "2026-10-13",
+        "SUSESO30_90": [
+          20,
+          72
+        ],
+        "contexts": 13,
+        "SIS30_90": [
+          10,
+          16
+        ],
+        "substitutions": 2
+      }
+    ],
+    "independent_datetime_URL_date_control": "PASS",
+    "nine_corruptions_rejected": [
+      "missing_office",
+      "recycled_issuance",
+      "invented_publication",
+      "missing_agent",
+      "recycled_agent_date",
+      "changed_agent_publication",
+      "expired_substitution_as_recent",
+      "inflated_substitutions12",
+      "fractional_substitutions2.2"
+    ],
+    "reviewer_browser_repeats": 0,
+    "other_product_suites": 0,
+    "network_or_publisher_requests": 0,
+    "scoped_diff_check": "PASS"
+  },
+  "actual_parent_focal_browser": {
+    "report_verified_by_sha": "975fa7298330dbba560f1555d7092170a4e82f5ab09c0d6a916c66cccc484909",
+    "reported_passed": 2,
+    "projects": [
+      "desktop",
+      "mobile"
+    ],
+    "unexpected_flaky_skipped": 0,
+    "retries": 0,
+    "duration_ms": 6524.443,
+    "browser_run_test_sha256": "13eb207519e79ec91eac84d507913174a3e63b8a00373177e6ce5dd71a3b998d",
+    "current_final_test_sha256": "dc8e989691ab73c9f7441674bc82e7a6b29fea111e05e87cba0c496abe470e4f",
+    "attribution": "Two actual desktop/mobile cases ran before the assertion-only numeric boundary correction. No old browser result is attributed to the new test hash; final nonDOM controls qualify that matcher, and obligatory CI must run final hash.",
+    "environment": "Reported Node24/systemChromium154/Playwright1.56.1; differs from mandatoryCI environment.",
+    "ephemeral_source_assets_compared": 33,
+    "copied_assets_all_byte_exact_except_actual_offline_Oct12_95signal_snapshot": true,
+    "screenshots_viewed_locally": "Desktop/mobile show72issued-window records and20active older contexts, original emission labels and publication unverified; no UI/image edits.",
+    "local_server_setup404_pretest_and_fixed_absolute_path_not_application_retry": true
+  },
+  "preservation": {
+    "all18_Global_packet_hashes_and_signed_packet_intact": true,
+    "signed_packet_sha256": "c04e7c79fa5e996b47defcb7fcc43e26d4bd8f0cf871adf0f7100166c7a27545",
+    "32mandatory_workflows_byte_exact_to05e0f78": true,
+    "two_original_Fiscalizacion_PNG_byte_exact_to05e0f78": {
+      "data/audits/fiscalizacion/native-register-desktop.png": "6285f96a54c862f97fe6bfc2387391ffda4329e04fb2f7e739c3ad6c3b2eb3af",
+      "data/audits/fiscalizacion/native-register-mobile.png": "73060abb023b69e229ecde0d2fedb5601c05008f60a02a0a88ab91036315dc36"
+    },
+    "native_control_and_legal_history_original_dates_byte_exact": {
+      "data/audits/fiscalizacion/native_stock_ledger_2026_10_11.json": "a4c0d3abbbb4dc0615846a7f1524d206d6561fe7b8f15ecbb64ab56ed4d8462e",
+      "data/history/superintendencia_signals.json": "1ac04a6809963bca457d97df73aab24598eab3ecaaf02fbf0d3f91703e082039"
+    },
+    "previous_Python_Node_and_daily_gate_repairs_unchanged": true,
+    "source_counts_30_90": {
+      "who": {
+        "30": 84,
+        "90": 241
+      },
+      "paho": {
+        "30": 185,
+        "90": 530
+      }
+    },
+    "14approved_themes_no_new_cards_UI_and_feed_intact": true,
+    "daily_and_Reuters_activation_disabled": true
+  },
+  "reviewed_test_hashes": {
+    "superseded_05e0f78_sha256": "73d58241e4aa26fcf5ef8927fae88104375cef8446ff10b1000a597e2000b586",
+    "actual_local_browser13eb_sha256": "13eb207519e79ec91eac84d507913174a3e63b8a00373177e6ce5dd71a3b998d",
+    "final_reviewed_sha256": "dc8e989691ab73c9f7441674bc82e7a6b29fea111e05e87cba0c496abe470e4f"
+  },
+  "durable_evidence_sha256": {
+    "data/audits/global_integration_2026_10_11/ci_both_register_control_qa.json": "b9912364ef7f2368781bc5c6b66a238476c06475224464a4b184eff6695cbf12",
+    "data/audits/global_integration_2026_10_11/ci_both_register_control_assertions.json": "9808c5464358e49f63aeeb00aa2bafbc770463bb57e8ceb61d943326d10388a5",
+    "data/audits/global_integration_2026_10_11/ci_register_effect_boundary.json": "b471493ab4b92347cac803adeacd2cdedfaf1477fc5ef05e6624b0a203b13b54",
+    "data/audits/global_integration_2026_10_11/ci_register_focal_browser.json": "975fa7298330dbba560f1555d7092170a4e82f5ab09c0d6a916c66cccc484909",
+    "docs/GLOBAL_INTEGRATION_HANDOFF_2026_10_11.md": "4b4eb86b0935a72b42b2f7b1c5f8c3808b2603cccf66ecb430571a59586d42a4",
+    "data/audits/global_integration_2026_10_11/ci_register_focal_desktop.png": "6964419d769d8a51ef6c3398583039db4e4d71cfd78716e52a5161a6b4c14dcc",
+    "data/audits/global_integration_2026_10_11/ci_register_focal_mobile.png": "c3a277cbc228814392303ba91f297d7b59975192c6b15a0732d87ef5e6b4356d"
+  },
+  "stop_loss_and_attribution": {
+    "whole_case_qualification_before_fifth_CI": true,
+    "prior_partial_SUSESO_only_repair_no_longer_claimed_complete": true,
+    "two_Forbidden_workflow_inspections_and_denied_CDN_HEAD_stopped_no_download": true,
+    "optional_workflow_extension_reverted_and_no_gate_removed": true,
+    "one_manual_focal_desktop_mobile_run_not_full_browser_suite": true,
+    "final_candidate_CI_still_pending": true
+  },
+  "conditions": [
+    "Copy this immutable receipt byte-exact to data/audits/global_integration_2026_10_11/ci_both_register_control_reviewer.json; commit only the reviewed test/evidence/handoff delta and push the isolated branch.",
+    "The whole-case focal proof and resolved matcher now support the obligatory exact-candidate criticalCI. Final integration approval still requires that real result including desktop/mobile and automaticReviewer; no blind repeat or skipped gate.",
+    "Keep all source/data/workflow/historical-image hashes and previous receipts immutable. No new publisher poll, connector, canonical snapshot generation or broader manual QA is needed.",
+    "Daily First30-day runtime/cadence/licensing/editorial and main/production activation remain separate held gates."
+  ],
+  "reviewer_actions": {
+    "publisher_or_network_research": 0,
+    "paid_AI_calls": 0,
+    "browser_launches": 0,
+    "other_suites": 0,
+    "canonical_implementation_index_or_commits": 0,
+    "only_write": "work/reviewer_global_both_registers.json"
+  }
+}

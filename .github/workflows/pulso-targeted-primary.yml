@@ -1,0 +1,100 @@
+name: Pulso isolated targeted original primary capture
+on:
+  push:
+    branches: [codex/b-pulso-runtime-20261011]
+    paths:
+      - '.github/run-pulso-targeted-primary-now'
+      - '.github/workflows/pulso-targeted-primary.yml'
+      - 'scripts/capture_pulso_targeted_primary.py'
+      - 'scripts/audit_pulso_primary_corpus.py'
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: pulso-isolated-targeted-primary-capture
+  cancel-in-progress: false
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/b-pulso-runtime-20261011
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Assert exclusive isolated branch
+        run: test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
+      - run: pip install -e . pytest
+      - name: Verify unconditional original retention and date diagnostics
+        run: python -m pytest -q tests/test_pulso_targeted_primary_capture.py tests/test_pulso_primary_corpus_audit.py
+      - name: Read optional additional original corpus run
+        id: additional_capture
+        run: |
+          python - <<'PY'
+          import json, os
+          value=json.load(open('.github/run-pulso-targeted-primary-now')).get('additional_capture_run_id', '')
+          if value and (not str(value).isdigit() or int(value)<=0):
+              raise SystemExit('Invalid additional capture run ID')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('run_id='+str(value)+'\n')
+          PY
+      - name: Read every original response from the genuine cold core artifact
+        uses: actions/download-artifact@v4
+        with:
+          pattern: pulso-real-core-*
+          merge-multiple: true
+          path: .scratch/pulso-primary-corpus/cold
+          github-token: ${{ github.token }}
+          run-id: 38115982275
+      - name: Read additional genuine core originals without replacing cold manifests
+        if: steps.additional_capture.outputs.run_id != ''
+        uses: actions/download-artifact@v4
+        with:
+          pattern: pulso-real-core-*
+          merge-multiple: true
+          path: .scratch/pulso-primary-corpus/additional
+          github-token: ${{ github.token }}
+          run-id: ${{ steps.additional_capture.outputs.run_id }}
+      - name: Audit complete retained original corpus and preserve all thin documents
+        run: |
+          python - <<'PY'
+          import json, subprocess, sys
+          additional=json.load(open('.github/run-pulso-targeted-primary-now')).get('additional_capture_run_id')
+          output='data/audits/pulso_primary_corpus_union_2026_10_11.json' if additional else 'data/audits/pulso_primary_corpus_2026_10_11.json'
+          subprocess.run([sys.executable, 'scripts/audit_pulso_primary_corpus.py', '--capture-artifact',
+                          '.scratch/pulso-primary-corpus', '--output', output], check=True)
+          PY
+      - name: Capture seven diagnosed original details without editorial processing
+        run: python scripts/capture_pulso_targeted_primary.py
+      - name: Preserve targeted originals exclusively on isolated branch
+        if: always()
+        run: |
+          test "$GITHUB_REF" = refs/heads/codex/b-pulso-runtime-20261011
+          git config user.name alicanto-salud-bot
+          git config user.email alicanto-salud-bot@users.noreply.github.com
+          if test -f tests/fixtures/pulso_targeted_primary_real/manifest.json; then git add tests/fixtures/pulso_targeted_primary_real; fi
+          if test -f data/audits/pulso_targeted_primary_date_audit_2026_10_11.json; then git add data/audits/pulso_targeted_primary_date_audit_2026_10_11.json; fi
+          if test -f data/audits/pulso_primary_corpus_2026_10_11.json; then git add data/audits/pulso_primary_corpus_2026_10_11.json; fi
+          if test -f data/audits/pulso_primary_corpus_union_2026_10_11.json; then git add data/audits/pulso_primary_corpus_union_2026_10_11.json; fi
+          if test -f tests/fixtures/pulso_thin_primary_real/manifest.json; then git add tests/fixtures/pulso_thin_primary_real; fi
+          if test -f tests/fixtures/pulso_editorial_exception_real/manifest.json; then git add tests/fixtures/pulso_editorial_exception_real; fi
+          git diff --cached --quiet || git commit -m "audit(pulso): preserve targeted original dates and full bodies [skip ci]"
+          git fetch origin codex/b-pulso-runtime-20261011
+          git rebase origin/codex/b-pulso-runtime-20261011
+          git push origin HEAD:codex/b-pulso-runtime-20261011
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pulso-targeted-original-primary-${{ github.sha }}
+          retention-days: 90
+          path: |
+            tests/fixtures/pulso_targeted_primary_real/
+            data/audits/pulso_targeted_primary_date_audit_2026_10_11.json
+            data/audits/pulso_primary_corpus_2026_10_11.json
+            data/audits/pulso_primary_corpus_union_2026_10_11.json
+            tests/fixtures/pulso_thin_primary_real/
+            tests/fixtures/pulso_editorial_exception_real/
+          if-no-files-found: error

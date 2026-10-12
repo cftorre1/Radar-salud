@@ -1,0 +1,306 @@
+{
+  "schema_version": 1,
+  "reviewer": "historical_discovery_independent_of_merge_script",
+  "captured_at": "2026-10-11T16:02:39.761250+00:00",
+  "mode": "read_only_frozen_actual_merge_git_objects_no_network_no_ai_no_shared_edits",
+  "own_parent_sha": "0713ca9a327b4c09932345aff1353c5d87662332",
+  "staging_parent_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+  "base_sha": "aa8bb30582786ec31a62b604cb9919770b10e948",
+  "reviewed_merge_sha": "01aef4c32595acdfc4f8b2e6585bab240f37e320",
+  "head_at_review_end": "6a63bef7e3cfad301b88d9cfd667252a402010c5",
+  "source_parent_proof_sha256": "c13e07bdfc7165508d1fd93c7eac61506d4e3a3825350fbc0426183402ebef22",
+  "verdict": "PASS_SCOPED_PRESERVATION_WITH_INHERITED_TELEMETRY_GAPS",
+  "findings": [],
+  "inherited_warnings": [
+    {
+      "code": "inherited_monthly_counter_central_telemetry_gap",
+      "tier": "fast",
+      "combined_gap": 34,
+      "base_gap": 34,
+      "new_staging_counter_increment": 1,
+      "new_staging_central_events": 1,
+      "staging_provider_receipt_path": "data/audits/integration_20261011/provider-usage-reconciliation.json",
+      "receipt": {
+        "base": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 31,
+            "successful": 31,
+            "failed": 0
+          }
+        },
+        "integrated": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 188,
+            "successful": 188,
+            "failed": 0
+          }
+        },
+        "providers": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 51,
+            "successful": 51,
+            "failed": 0
+          }
+        },
+        "combined": {
+          "deep": {
+            "attempted": 14,
+            "successful": 14,
+            "failed": 0
+          },
+          "fast": {
+            "attempted": 208,
+            "successful": 208,
+            "failed": 0
+          }
+        }
+      },
+      "interpretation": "Preserve conservative actual counters and every available event. Missing central response records remain inherited/unknown; no fabricated response IDs, timestamps or full global accounting PASS."
+    }
+  ],
+  "checks": {
+    "queue": {
+      "non_pulso_exact_staging": 5293,
+      "pulso_exact_own": 1752,
+      "total": 7045,
+      "non_pulso_semantic_sha256": "5cb14750690838fafb531533e400e2a914c2b312772859d9d71903cadb72eadd",
+      "pulso_semantic_sha256": "d56a196b1f838250bedc59d079996a85bb67c8b52f3fe47c719b4b1f0c1b2a94"
+    },
+    "history": {
+      "non_pulso_exact_staging": 897,
+      "pulso_exact_own": 37,
+      "total": 934,
+      "own_history_is_not_new_publication": true,
+      "own_row_editorial_flags_preserved": true
+    },
+    "source_health": {
+      "last_actual_pulso_observation_preserved": true,
+      "checked_at": "2026-10-11T15:36:29.368156+00:00",
+      "technical_status": "ok",
+      "error": null,
+      "fresh_check_claimed": false
+    },
+    "polls": {
+      "current_raw_poll_exact_own": true,
+      "two_original_parent_polls_retained": true,
+      "combined_poll_not_fabricated": true,
+      "next_actual_runtime_required": true
+    },
+    "governance": {
+      "non_pulso_exact_staging": 85,
+      "own_pulso_checkpoint_exact": true,
+      "protected_work2_work3_work4_master_autonomy_sha256": {
+        "autonomy_continuity_hardening_v1_1_2026_09_29": "0bd4e2071f0115cc346fb4530e6b94a75e781775ec820c8c74eff6a601edf0ae",
+        "independent_auditor_and_autonomy_controller_2026_10_07": "5f5e1f45bdde139824a8cad85ac9cbc1823266071da7bbd7e382c4fa162d927b",
+        "autonomy_architecture_redesign_2026_10_07": "7cd6c2939b5a5c1f5c8613dc10244a72327b2c4f963bd8615a592c41502380d1",
+        "source_audit_issue5_master_2026_10_09": "26600073877c66f16e3c7031552c490b82901f57c5cb7db5c0da97c1c78563c3",
+        "source_audit_issue5_iteration3_editorial_2026_10_09": "05dbc5aff5a5594b3b16fcd024a4b01a2d4842ceba5cd817d33768216050a640",
+        "source_audit_issue5_iteration4_autonomy_2026_10_09": "14a7c23a9109a107eccf1844e62a35bc42d08504cdff6947101998ec2cf33e1c",
+        "source_audit_issue5_iteration5_expansion_2026_10_09": "9dfb79556df0cc593d8354f96d67c57e171884c71e1db0bd9e3a4738ebabf590",
+        "w4_isapres_2026_10_11": "22d7369610534144c270ac13a600305d9c86c02dfbf23ce467e5a61509fc30db",
+        "w4_cmf_2026_10_11": "379b170715fe27a392fea31c588ab193c8f912ff3bf57a7c1313179d17f92839",
+        "w4_dipres_2026_10_11": "3a75cae3a7a4c1b0711520c889431baee23db34f8a19edcda18ad5461457d250",
+        "w4_fne_2026_10_11": "d2a562a29a5da5cc0e2f27a8e4808b530574b862f592d07e69695d1e37c34a2e",
+        "w4_cenabast_2026_10_11": "ac447119b99fc097ee5db993686237e220a122c6d51ea2803008e3a448c07d9e",
+        "w4_procurement_2026_10_11": "b829d875892bd330eebce8ff1abcc8cf8a04534d3e102b494a547b93b04c33b3",
+        "w4_who_2026_10_11": "26405bde6112e2e85ca449728647984d7f42b5572a5e6781ec47afcbf1203709",
+        "w4_reuters_2026_10_11": "0a8297678bcb201b7e408be72e5438f2aa007147d81bbc27264604e2dafe95b1",
+        "w4_paho_2026_10_11": "04101e8174690812259229af9f3854133b77ae7cbbc092250f634159d9e16124",
+        "w4_legal_2026_10_11": "004c93674629d18835b0a5478573a5ee46da660d9b6a4c8dcfbcd67d5aca6d2d",
+        "w4_providers_2026_10_11": "b45467b0141b0506ff6010f9b71d3c8f85c61802faea493e1d28fe2c28aefa03",
+        "w4_provider_data_2026_10_11": "39c04837cc3570f583aaaea9015920047f8ffbb6b9dc23f2241340bffcfb5454",
+        "w4_socioeconomic_2026_10_11": "9cd0bc87b25c18315c9cde5a98d0fdff97e2b6bcaf13fc9aedb418c2008803ae",
+        "w4_occupational_2026_10_11": "b3e087e7ef4b76bcee90df96c341ab41cd11978bdc19b43ecd47fe7b0da69701",
+        "w4_innovation_2026_10_11": "70bba6c4be3fa7f4afe859801b86518f8a2fc1a7e490918105d2cf55e4084907",
+        "source_recovery_reconciliation_gate_2026_10_11": "0695b158233e9bc294cfe03b9994f22b1da88507c35a72808a81bc1c067202de"
+      },
+      "all_non_pulso_semantic_sha256": "c025b01f918e45d9afb41a3bbbbef1f8f8a058746cb0e0b321c9e5616a04a452"
+    },
+    "pmo": {
+      "all_latest_staging_fields_preserved": true,
+      "staging_observations": 8,
+      "own_additions": [
+        "pulso_exhaustive_recovery_2026_10_11"
+      ]
+    },
+    "learning": {
+      "exact_staging_prefix": 32,
+      "own_additions": 2,
+      "total": 34
+    },
+    "monthly_usage": {
+      "base": {
+        "deep": {
+          "attempted": 14,
+          "successful": 14,
+          "failed": 0
+        },
+        "fast": {
+          "attempted": 208,
+          "successful": 208,
+          "failed": 0
+        }
+      },
+      "own": {
+        "deep": {
+          "attempted": 14,
+          "successful": 14,
+          "failed": 0
+        },
+        "fast": {
+          "attempted": 409,
+          "successful": 409,
+          "failed": 0
+        }
+      },
+      "staging": {
+        "deep": {
+          "attempted": 14,
+          "successful": 14,
+          "failed": 0
+        },
+        "fast": {
+          "attempted": 209,
+          "successful": 209,
+          "failed": 0
+        }
+      },
+      "merged": {
+        "deep": {
+          "attempted": 14,
+          "successful": 14,
+          "failed": 0
+        },
+        "fast": {
+          "attempted": 410,
+          "successful": 410,
+          "failed": 0
+        }
+      },
+      "formula": "base + (own-base) + (staging-base)",
+      "merge_ai_calls": 0,
+      "full_global_response_audit_pass_claimed": false
+    },
+    "telemetry": {
+      "staging_events": 239,
+      "own_events": 439,
+      "actual_unique_union": 440,
+      "duplicate_response_ids": 0,
+      "all_original_event_fields_preserved": true,
+      "invented_events": 0,
+      "own_new_events_vs_base": 201,
+      "staging_new_events_vs_base": 1,
+      "october_attempt_events": {
+        "deep": 14,
+        "fast": 376
+      },
+      "ledger_minus_central_telemetry": {
+        "fast": 34,
+        "deep": 0
+      },
+      "gap_origin": {
+        "prior_stage_sha": "f883abeab6ac808ca82982fbaead353eca9b04bd",
+        "prior_base_gap": 14,
+        "prior_base_FAST": 188,
+        "prior_base_central_FAST": 174,
+        "new_upstream_gap20": 20,
+        "missing_response_ids_status": "UNKNOWN_NOT_FABRICATED",
+        "staging_bc_actual_additional_attempts": 1,
+        "staging_bc_actual_additional_events": 1
+      }
+    },
+    "offline_feed": {
+      "path": "web/data/radar_today.json",
+      "sha256": "f9e99abd2f6c0bf81edfc569c958e7c8dcb99c0cf3420f27d45ba40d2be415b6",
+      "total": 110,
+      "pulso": 17,
+      "all_five_new_focus_publications_present": true,
+      "temporal_findings_NOT_resolved_by_export": true,
+      "no_source_observation_refresh_from_export": true
+    }
+  },
+  "checked_file_sha256": {
+    "data/state/pending_queue.json": {
+      "current_sha256": "85f088de2209420f42d1cff5711dbf00da18db6830412da387004b1852ca8b93",
+      "own_sha256": "964f4d34c72869194fa6201064c5352197f38e262ff3784a5794ab294af9b6fe",
+      "staging_sha256": "746ba9edc1fe203c5d182f68296afefc3be767a7a8f9487876d9345adf2a5556",
+      "base_sha256": "dc118be93656d217425a04676f2e4adb0e85a578ea3062dda412ab3d9bae2c37"
+    },
+    "data/history/superintendencia_signals.json": {
+      "current_sha256": "08e7b099a3d4420e5abcbfa6f77ea5c25f4a07ca4f308380642fccdbcf1e23b9",
+      "own_sha256": "942ac05cec59dd697c238b699534dc81fb23be5dde18d84552138e0acd3bf97b",
+      "staging_sha256": "1ac04a6809963bca457d97df73aab24598eab3ecaaf02fbf0d3f91703e082039",
+      "base_sha256": "1ac04a6809963bca457d97df73aab24598eab3ecaaf02fbf0d3f91703e082039"
+    },
+    "data/source_health.json": {
+      "current_sha256": "4fd4817e963e1f249e9ca614b0116e353a66e675cc0241a307093f96d5530195",
+      "own_sha256": "6cc5fb99b1f7cf9e4e8ea8f8defacc192b51312b4826af3b47b7c1583fd9d3a4",
+      "staging_sha256": "937f8fcd145d4a0fadddaa4fb6ed740b59f95308f00472ec31e62b44adb2c842",
+      "base_sha256": "d2de76011f0add2e502a516d8564cc82abaa7738c7053c19fa952690daefdc1b"
+    },
+    "data/state/discovery_watermarks.json": {
+      "current_sha256": "c56813c4e28ab214b813103456554f8a5ac09379d660ed45986396547c71863f",
+      "own_sha256": "90425f6d47116d0abbbcef1e0370e82209fc8554f39dd3d313fc59ebd4546493",
+      "staging_sha256": "4014cce2172be74d141577ac730a728104fcba3317575d4a89f286b26c265896",
+      "base_sha256": "3363eb0e30f8bae5ea5a6c67d8f988ee35651c1f50b77805ae32ef1db029efa6"
+    },
+    "config/orchestrator_queue.json": {
+      "current_sha256": "e5a3b55381beb57e15e15f57f6796fe8978fcc05c53eb2d35a64c98535158cdc",
+      "own_sha256": "02a4b98000e13dae551792bb3a5b572d1b325a829a6c139da1f661dc4f23fef9",
+      "staging_sha256": "08d0b5506d8ff5711ece644f0e2d57602ad77cd6125a4ced50652cd58ba7d174",
+      "base_sha256": "12210f760aa37bedd6f4b7b9aec3bfe784a23e9a7579f7176714372255c0ae0c"
+    },
+    "config/pmo_baseline.json": {
+      "current_sha256": "0aa53a4a242cd2f1b58dd48746b164999bbe714eaea08c37f9b4dda9d91bc6ab",
+      "own_sha256": "19ed8c6badb44ed290faf6f40a3a723b5eb2ddf2fa02e73714540640694593c9",
+      "staging_sha256": "29e38a59043af06320b7d7e8e5e2ec69b8bebcc714cc0a7b414e51f4a8b576b5",
+      "base_sha256": "f213d091688932fdb8a7f937348696cccba944a154242e8ee04a7a721d7b718f"
+    },
+    "data/autopilot/learning_ledger.json": {
+      "current_sha256": "6010b9e388c083452f3982290c8a91c3cea3751be112f22e324684f2312d794b",
+      "own_sha256": "dd4a4bf6b697fdc9b2f3428b2f17a6145fa8a547129a5889281f2091636238a4",
+      "staging_sha256": "4cd36d6badbd4b77954d455865b67f0a97333110f674acdbf6c73458c787a6f9",
+      "base_sha256": "76795c63dbfe1aa57737888c3202df42543fda490fb9145ba36a76b9ecd10bd1"
+    },
+    "data/ai_usage/2026-10.json": {
+      "current_sha256": "eede55020fde42bc9ed520490d6499bdb7fbb0aae91b607d975c3d6a8f163877",
+      "own_sha256": "f469bdaf869c0a3c7722b127feb2250456889ed28c386fc16a083fbe183f724b",
+      "staging_sha256": "7894a3606b9cb8262fa98b61e0292251c11604976c64dfb21017d133ac15d4e8",
+      "base_sha256": "825bea907d929cb7c22127c9e73f948b4537274d9c4b3b9a4a20dad03325f09f"
+    }
+  },
+  "limits": [
+    "Read-only frozen merge01aef4c preservation; subsequent authorized editorial corrections are outside this snapshot. Not runtime/editorial/staging acceptance.",
+    "No source-health freshness fabricated; next real core run remains required.",
+    "Offline feed export is separately owned/validated by root and does not refresh source-health.",
+    "Monthly counter reconciliation is preserved; incomplete central telemetry prevents full global accounting certification."
+  ],
+  "validation": {
+    "independent_full_preservation_assertions": "PASS",
+    "directed_tests": {
+      "paths": [
+        "tests/test_pmo_readiness.py",
+        "tests/test_orchestrator_liveness.py"
+      ],
+      "passed": 9,
+      "failed": 0
+    },
+    "actual_state_mutations": 0,
+    "AI_calls": 0
+  }
+}

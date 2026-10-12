@@ -1,0 +1,60 @@
+{
+  "result": "PASS_INDEPENDENT_ROLLING_CONTROL_PENDING_BROWSER_CI",
+  "observed_at": "2026-10-12T03:02:24.546918+00:00",
+  "third_automatic_CI": {
+    "run": 38197336548,
+    "head": "0f8f6042ec68ed32c0be1a1020340a3a520939a2",
+    "test_merge": "f01f912449d32b6e802e79d0ff9a6c671e9ea802",
+    "identical_tree": "a3732e855aa630c086d898a0e646f90e727b85f2",
+    "python_pass": 1202,
+    "subcases_pass": 94,
+    "python_skipped": 1,
+    "node_pass": 43,
+    "browser_pass": 60,
+    "browser_failed": 2,
+    "only_failed_case": "recovered registers retain offices, actors, effects and issuance dates in grouped details; desktop and mobile",
+    "stage_job": 114643105213,
+    "automatic_reviewer": "skipped",
+    "artifact_id": 11723921791,
+    "artifact_sha256": "46c5dbd5ef51aca487690f0646443ec2f0ece92a208dfe61bba9e90481adc901"
+  },
+  "baseline_proof": {
+    "sha": "88979eb5bfa7497b40a9325536637a2e06d76cdb",
+    "read_only_offline_baseline_exporter_has_counts_20_72_context20_against_test75_17": true,
+    "receipt_ref": "data/audits/global_integration_2026_10_11/ci_baseline_register_counts.json",
+    "receipt_sha256": "ccca2bac458fb4671a53efae10e41c69da42ba0c105452a9af17804c42b1da4a"
+  },
+  "root_cause": "Fixed test cardinality from Oct11 qualification conflicts with correctly aged Oct12 snapshot: three original July13 emissions reachedday91 and remain only active suspension context; source dates must not change.",
+  "repair": "Test only; derive exact expected IDs and original emission dates from immutable native control published92, compare rolling30/90 and active suspension context using snapshotdate. Every office/material/effect/date/UI assertion retained; no production collector/renderer/data change.",
+  "independent_control": {
+    "native_stock_ledger": {
+      "path": "data/audits/fiscalizacion/native_stock_ledger_2026_10_11.json",
+      "sha256": "a4c0d3abbbb4dc0615846a7f1524d206d6561fe7b8f15ecbb64ab56ed4d8462e",
+      "published_original_cohort": 92
+    },
+    "original_history": {
+      "path": "data/history/superintendencia_signals.json",
+      "sha256": "1ac04a6809963bca457d97df73aab24598eab3ecaaf02fbf0d3f91703e082039"
+    },
+    "expected_is_not_derived_from_rendered_register_counts": true
+  },
+  "targeted_validation": {
+    "syntax": "node --check PASS",
+    "exact_non_DOM_assertions_original_cases": 3,
+    "negative_mutation_rejections": 3,
+    "receipt_ref": "data/audits/global_integration_2026_10_11/ci_register_control_assertions.json",
+    "receipt_sha256": "3c9e5f64220d7e1f44a0ccd1aa6cba092579b0eb7177e1cfe56024f3e1003fad",
+    "local_browser_execution": false,
+    "reason": "Parent Playwright package present; Chromium1194 cache executable absent. No install/network retry performed.",
+    "test_file": "tests/browser/fiscalization.spec.cjs",
+    "test_sha256": "73d58241e4aa26fcf5ef8927fae88104375cef8446ff10b1000a597e2000b586"
+  },
+  "all18_Global_protected_hashes_intact": true,
+  "UI_data_original_dates_canonical_writes": 0,
+  "new_publisher_polls": 0,
+  "paid_AI_API_calls": 0,
+  "manual_full_product_suite_or_browser_runs": 0,
+  "stop_loss": "Third failure is a different layer/root fixture defect. No equivalent unmodified retries; fourthCI necessary only after this actual repaired test.",
+  "reviewer_ref": "data/audits/global_integration_2026_10_11/ci_register_control_reviewer.json",
+  "new_CI_result_ref": "PR26 and issue5 exact candidate HEAD"
+}

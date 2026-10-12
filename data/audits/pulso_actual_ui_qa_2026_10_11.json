@@ -1,0 +1,445 @@
+{
+  "status": "PASS_SCOPED_ACTUAL_PULSO_UI",
+  "captured_at": "2026-10-11T16:41:24.612064+00:00",
+  "candidate_code_sha_before_qa_commit": "fe5bb4ac4d5b6b796cd368dd2dcb04b85175665c",
+  "actual_snapshot_generated_at": "2026-10-11T16:32:47.249448+00:00",
+  "scope": "Actual local exported feed rendering, metadata and queue/history propagation; desktop and mobile. This does not replace publisher30/90day reconciliation, semantic review or final staging QA.",
+  "no_synthetic_rows": true,
+  "no_network_response_stubs": true,
+  "no_publishing_or_gate_changes": true,
+  "input_sha256": [
+    {
+      "path": "web/app.js",
+      "sha256": "abf31e197e6bd96e2eb8226d59f6eeddd7927b845d52323e8ebb1bdaecbc3d7d"
+    },
+    {
+      "path": "web/data/radar_today.json",
+      "sha256": "00144b3e8f00730337e65f7d217ab07169baf78ac3885e09e00f797790cccbf2"
+    },
+    {
+      "path": "web/data/product.json",
+      "sha256": "19c248b81bd813a8cdeb6b088945e26dfec30f7bdbfc4b4b1204310192bb4e76"
+    },
+    {
+      "path": "data/history/superintendencia_signals.json",
+      "sha256": "ff1d416b6e85a743834024b90b212533db02d1ca081ad5bba8abbaebc66bada9"
+    },
+    {
+      "path": "data/state/pending_queue.json",
+      "sha256": "8bd7c9260571b00bd41f5e1da4cc0b1895c4588b9b5fa3e8ce57730080898796"
+    },
+    {
+      "path": "data/source_health.json",
+      "sha256": "4fd4817e963e1f249e9ca614b0116e353a66e675cc0241a307093f96d5530195"
+    },
+    {
+      "path": "scripts/qa_pulso_actual_ui.spec.cjs",
+      "sha256": "3cb3ab7dac9a57c825252b2f852946db0dc8ea91e17b202d7f634543ddbfe7a3"
+    },
+    {
+      "path": "scripts/qa_pulso_actual_ui.config.cjs",
+      "sha256": "ad61de3a56253a9aff67286bbb6bc110068056eb6adfc96b25f83c9cd51bd16e"
+    }
+  ],
+  "browser_report_sha256": "711d8afe377282a7f2c1903496c8cd43d25126f9e5fe8de07fa70d6cb4df1405",
+  "command": "PULSO_QA_CHROMIUM=/usr/bin/chromium PULSO_QA_PYTHON=/workspace/work/venv/bin/python npx playwright test --config scripts/qa_pulso_actual_ui.config.cjs",
+  "browser_version": "Chromium available in managed environment; Playwright1.56.1",
+  "stats": {
+    "startTime": "2026-10-11T16:38:34.910Z",
+    "duration": 12470.807,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "project": "desktop",
+      "test": "real Pulso news preserves source, dates, attribution and metadata in desktop/mobile feed",
+      "status": "passed",
+      "duration_ms": 4834
+    },
+    {
+      "project": "desktop",
+      "test": "real Pulso source registry links actual core and selected signal without stale or mismatched names",
+      "status": "passed",
+      "duration_ms": 2173
+    },
+    {
+      "project": "desktop",
+      "test": "real Pulso published URLs follow30/90day and scope filters without changing editorial outcomes",
+      "status": "passed",
+      "duration_ms": 3067
+    },
+    {
+      "project": "mobile",
+      "test": "real Pulso news preserves source, dates, attribution and metadata in desktop/mobile feed",
+      "status": "passed",
+      "duration_ms": 5498
+    },
+    {
+      "project": "mobile",
+      "test": "real Pulso source registry links actual core and selected signal without stale or mismatched names",
+      "status": "passed",
+      "duration_ms": 2301
+    },
+    {
+      "project": "mobile",
+      "test": "real Pulso published URLs follow30/90day and scope filters without changing editorial outcomes",
+      "status": "passed",
+      "duration_ms": 2926
+    }
+  ],
+  "actual_feed": {
+    "global_signals": 110,
+    "pulso_signals": 17,
+    "pulso_30day": 13,
+    "pulso_90day": 17,
+    "tested_scope_filter": "Prestadores",
+    "all_pulso_cards_rendered": true
+  },
+  "actual_registry": {
+    "name": "Pulso / La Tercera",
+    "checked_at_unchanged_from_real_core": "2026-10-11T15:36:29.368156+00:00",
+    "runtime": "daily_core",
+    "selected_sources": [
+      "pulso_latercera"
+    ],
+    "media_group": "Noticias y mercado",
+    "last_selected_date_from_actual_feed": "2026-10-10",
+    "last_selected_not_empty_in_UI": true
+  },
+  "verified_published_rows": [
+    {
+      "url": "https://www.latercera.com/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
+      "publication_date": "2026-10-10",
+      "publication_date_source": "visible_article_byline",
+      "evidence_maturity": "media_reported",
+      "editorial_relevance": 90,
+      "gate_threshold": 72,
+      "queue_key": "7bfc4ad998061775d555d47d72f51fd34f9eddaf51181d339f55b90a79ea011f",
+      "queue_status": "published",
+      "article_verified": true,
+      "history_url_match": true,
+      "history_date_match": true,
+      "scopes": [
+        "Sistema de salud"
+      ],
+      "feed_visibility": true,
+      "committee_verdict": "PASS"
+    },
+    {
+      "url": "https://www.latercera.com/sustentabilidad/noticia/el-costo-de-no-anticiparse-a-los-riesgos-climaticos-en-el-sistema-de-salud/",
+      "publication_date": "2026-10-10",
+      "publication_date_source": "visible_article_byline",
+      "evidence_maturity": "media_reported",
+      "editorial_relevance": 74,
+      "gate_threshold": 72,
+      "queue_key": "5b2acd2e8e966d0862ab87d8b294e9e634f4b80d365c47a214fe06da3a13fa5f",
+      "queue_status": "published",
+      "article_verified": true,
+      "history_url_match": true,
+      "history_date_match": true,
+      "scopes": [
+        "Sistema de salud"
+      ],
+      "feed_visibility": true,
+      "committee_verdict": "PASS"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+      "publication_date": "2026-10-10",
+      "publication_date_source": "visible_article_byline",
+      "evidence_maturity": "media_reported",
+      "editorial_relevance": 72,
+      "gate_threshold": 72,
+      "queue_key": "94214f41868a2bdb4052f5954bce686ee3a87aa60d008b2d7ebba1ceca199d1b",
+      "queue_status": "published",
+      "article_verified": true,
+      "history_url_match": true,
+      "history_date_match": true,
+      "scopes": [
+        "Prestadores"
+      ],
+      "feed_visibility": true,
+      "committee_verdict": "PASS"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+      "publication_date": "2026-10-09",
+      "publication_date_source": "visible_article_byline",
+      "evidence_maturity": "media_reported",
+      "editorial_relevance": 72,
+      "gate_threshold": 72,
+      "queue_key": "afdbdd25888f8e326609a30c24e8a2d5d44dc4cb35fc9c8b52f9f42ef9197abb",
+      "queue_status": "published",
+      "article_verified": true,
+      "history_url_match": true,
+      "history_date_match": true,
+      "scopes": [
+        "Isapres",
+        "Fonasa"
+      ],
+      "feed_visibility": true,
+      "committee_verdict": "PASS"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/medicos-sin-vinculo-con-hospital-de-talagante-emitieron-1045-recetas-por-fentanilo-y-otros-farmacos-controlados/",
+      "publication_date": "2026-10-08",
+      "publication_date_source": "visible_article_byline",
+      "evidence_maturity": "media_reported",
+      "editorial_relevance": 84,
+      "gate_threshold": 72,
+      "queue_key": "ea56ce4e6cc6fcdf3dea9dc124620a0c6b4df46cf90ad4c719466e2cb7a92f91",
+      "queue_status": "published",
+      "article_verified": true,
+      "history_url_match": true,
+      "history_date_match": true,
+      "scopes": [
+        "Prestadores",
+        "Farma / medicamentos"
+      ],
+      "feed_visibility": true,
+      "committee_verdict": "PASS"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/sigue-en-vivo-aluvion-las-condes-lluvias/",
+      "publication_date": "2026-10-08",
+      "publication_date_source": "article_published_time",
+      "evidence_maturity": "media_reported",
+      "editorial_relevance": 82,
+      "gate_threshold": 72,
+      "queue_key": "020e3bc472e9edb9e3aff783b1d559a528babe1eb8dd9a2eb4509d08d72b2919",
+      "queue_status": "published",
+      "article_verified": true,
+      "history_url_match": true,
+      "history_date_match": true,
+      "scopes": [
+        "Sistema de salud"
+      ],
+      "feed_visibility": true,
+      "committee_verdict": "PASS"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/comite-social-salud-y-mideso-destacan-avances-en-certificacion-de-discapacidad-y-ampliacion-de-la-red-de-apoyos-y-cuidados/",
+      "publication_date": "2026-10-08",
+      "publication_date_source": "visible_article_byline",
+      "evidence_maturity": "media_reported",
+      "editorial_relevance": 78,
+      "gate_threshold": 72,
+      "queue_key": "dcc083acad14e88d79111f4435560be08d992737c23ab87021685f376c62a422",
+      "queue_status": "published",
+      "article_verified": true,
+      "history_url_match": true,
+      "history_date_match": true,
+      "scopes": [
+        "Farma / medicamentos"
+      ],
+      "feed_visibility": true,
+      "committee_verdict": "PASS"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/presupuesto-salud-2027-rebajas-al-ajuar-del-recien-nacido-y-a-la-ley-ricarte-soto-y-foco-en-atencion-primaria/",
+      "publication_date": "2026-10-07",
+      "publication_date_source": "visible_article_byline",
+      "evidence_maturity": "media_reported",
+      "editorial_relevance": 88,
+      "gate_threshold": 72,
+      "queue_key": "f6452437b7a9a85ed286ed014c1c3b200798bc64e766b4b0ca6ad32e589a3461",
+      "queue_status": "published",
+      "article_verified": true,
+      "history_url_match": true,
+      "history_date_match": true,
+      "scopes": [
+        "Fonasa",
+        "Prestadores",
+        "Farma / medicamentos"
+      ],
+      "feed_visibility": true,
+      "committee_verdict": "PASS"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/presupuesto-2027-minuta-politica-del-gobierno-reporta-alza-del-gasto-distinta-de-la-informada/",
+      "publication_date": "2026-10-06",
+      "publication_date_source": "visible_article_byline",
+      "evidence_maturity": "media_reported",
+      "editorial_relevance": 89,
+      "gate_threshold": 72,
+      "queue_key": "0caefeb6bac75b19e65f6d97bfb0d34c301416a3d69fbd930c6617574e2894c3",
+      "queue_status": "published",
+      "article_verified": true,
+      "history_url_match": true,
+      "history_date_match": true,
+      "scopes": [
+        "Sistema de salud"
+      ],
+      "feed_visibility": true,
+      "committee_verdict": "PASS"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/cambios-estructurales-no-maquillajes-gobierno-lanza-plan-para-agilizar-proceso-de-certificacion-de-discapacidad/",
+      "publication_date": "2026-10-06",
+      "publication_date_source": "visible_article_byline",
+      "evidence_maturity": "media_reported",
+      "editorial_relevance": 86,
+      "gate_threshold": 72,
+      "queue_key": "d3d8d90cddfdc6eeb87b4fee44087c559681e1bf9bb26a277f9918a133cf9af0",
+      "queue_status": "published",
+      "article_verified": true,
+      "history_url_match": true,
+      "history_date_match": true,
+      "scopes": [
+        "Sistema de salud"
+      ],
+      "feed_visibility": true,
+      "committee_verdict": "PASS"
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/gobernador-de-valparaiso-revela-detalles-de-tensa-cita-con-quiroz-por-presupuesto-y-su-advertencia-al-titular-de-hacienda/",
+      "publication_date": "2026-10-06",
+      "publication_date_source": "visible_article_byline",
+      "evidence_maturity": "media_reported",
+      "editorial_relevance": 84,
+      "gate_threshold": 72,
+      "queue_key": "2e51eb84243dc17726d73f4658fe46002e8ed6f26f7ca15dddffa45c63d2e18b",
+      "queue_status": "published",
+      "article_verified": true,
+      "history_url_match": true,
+      "history_date_match": true,
+      "scopes": [
+        "Sistema de salud"
+      ],
+      "feed_visibility": true,
+      "committee_verdict": "PASS"
+    },
+    {
+      "url": "https://www.latercera.com/politica/noticia/senadores-de-oposicion-presentan-indicaciones-a-infraestructura-critica-y-marcan-diferencias-con-mociones-del-ejecutivo/",
+      "publication_date": "2026-10-06",
+      "publication_date_source": "visible_article_byline",
+      "evidence_maturity": "media_reported",
+      "editorial_relevance": 78,
+      "gate_threshold": 72,
+      "queue_key": "a8fb4287b0840616650de424b367845dfe72d1e97606e5a164d69aa56c2b4f60",
+      "queue_status": "published",
+      "article_verified": true,
+      "history_url_match": true,
+      "history_date_match": true,
+      "scopes": [
+        "Sistema de salud"
+      ],
+      "feed_visibility": true,
+      "committee_verdict": "PASS"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/chomali-por-listas-de-espera-yo-no-esperaba-que-disminuyeran-lo-que-yo-espero-es-que-disminuyan-los-tiempos/",
+      "publication_date": "2026-09-23",
+      "publication_date_source": "visible_article_byline",
+      "evidence_maturity": "media_reported",
+      "editorial_relevance": 84,
+      "gate_threshold": 72,
+      "queue_key": "3f432d78c49713a8cf9d3e5e1a6675dbdd56bc006dfac9abda8eca7d23aaff54",
+      "queue_status": "published",
+      "article_verified": true,
+      "history_url_match": true,
+      "history_date_match": true,
+      "scopes": [
+        "Prestadores"
+      ],
+      "feed_visibility": true,
+      "committee_verdict": "PASS"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/siete-de-cada-10-hogares-gastan-mas-de-30-mil-al-mes-en-medicamentos/",
+      "publication_date": "2026-08-24",
+      "publication_date_source": "visible_article_byline",
+      "evidence_maturity": "media_reported",
+      "editorial_relevance": 88,
+      "gate_threshold": 72,
+      "queue_key": "246feb53db9d486e260fc32c96d9d49d7c3c1f002cca663ee00c5b2788ccf5ab",
+      "queue_status": "published",
+      "article_verified": true,
+      "history_url_match": true,
+      "history_date_match": true,
+      "scopes": [
+        "Isapres",
+        "Fonasa",
+        "Prestadores",
+        "Farma / medicamentos"
+      ],
+      "feed_visibility": true,
+      "committee_verdict": "PASS"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/minsal-amplia-alerta-sanitaria-a-las-regiones-de-tarapaca-y-antofagasta-tras-afectaciones-por-el-sistema-frontal/",
+      "publication_date": "2026-08-20",
+      "publication_date_source": "visible_article_byline",
+      "evidence_maturity": "media_reported",
+      "editorial_relevance": 84,
+      "gate_threshold": 72,
+      "queue_key": "c0513552aef9295829e8537ec1bcce03c43ea053c45a1905656d80502b08a80c",
+      "queue_status": "published",
+      "article_verified": true,
+      "history_url_match": true,
+      "history_date_match": true,
+      "scopes": [
+        "Sistema de salud"
+      ],
+      "feed_visibility": true,
+      "committee_verdict": "PASS"
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/banmedica-y-vida-tres-demandan-al-fisco-por-desfase-en-el-cobro-del-ges-y-exigen-casi-9000-millones/",
+      "publication_date": "2026-08-10",
+      "publication_date_source": "visible_article_byline",
+      "evidence_maturity": "media_reported",
+      "editorial_relevance": 87,
+      "gate_threshold": 72,
+      "queue_key": "5af2b9cee6d18a213d387ab1d23676beb4e26e69e3f45391f3dcd940e84971d2",
+      "queue_status": "published",
+      "article_verified": true,
+      "history_url_match": true,
+      "history_date_match": true,
+      "scopes": [
+        "Isapres"
+      ],
+      "feed_visibility": true,
+      "committee_verdict": "PASS"
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/posta-central-obtiene-911-en-evaluacion-de-gestion-y-lidera-desempeno-de-hospitales-publicos-mas-de-la-mitad-no-cumplio-la-meta/",
+      "publication_date": "2026-08-04",
+      "publication_date_source": "visible_article_byline",
+      "evidence_maturity": "media_reported",
+      "editorial_relevance": 84,
+      "gate_threshold": 72,
+      "queue_key": "52e7781894d04131908e7dd27c979ce874016088c469fdf6ec538d06889f3923",
+      "queue_status": "published",
+      "article_verified": true,
+      "history_url_match": true,
+      "history_date_match": true,
+      "scopes": [
+        "Prestadores"
+      ],
+      "feed_visibility": true,
+      "committee_verdict": "PASS"
+    }
+  ],
+  "checks": {
+    "media_reported_metadata": true,
+    "publisher_attribution": true,
+    "press_high_trust": true,
+    "gate72_preserved": true,
+    "publication_date_and_history_URL_propagation": true,
+    "published_queue_lineage": true,
+    "original_source_link": true,
+    "30_and90day_filters": true,
+    "actual_scope_filter": true,
+    "core_source_registry_and_media_group": true,
+    "desktop_mobile_layout": true
+  },
+  "limitations": [
+    "QA inspected publisher dates/provenance already captured and verified by the source runtime; it did not recrawl original article HTML.",
+    "No assertion that these17publications constitute the complete publisher inventory or resolve all external-control editorial findings.",
+    "The actual core registry checked_at remains15:36:29; this QA did not manufacture a fresh source consultation."
+  ]
+}

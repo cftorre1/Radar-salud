@@ -1,0 +1,375 @@
+{
+  "schema_version": "1.0",
+  "source": "pulso_latercera",
+  "mode": "original_detail_capture_without_analysis_discovery_queue_or_publishing",
+  "captured_at": "2026-10-11T12:51:31.149498+00:00",
+  "ai_calls": 0,
+  "control_sha256": "b9c3ce2aea38107797fc19572581f27884d15611214fd2328d458bd35e906374",
+  "rss_manifest_sha256": "8fc68829a014da6fbfd2faba4e760296746e6235b70d5e18b36bc8747e469f1f",
+  "target_count": 4,
+  "captured_response_count": 4,
+  "status": "ORIGINAL_RESPONSES_CAPTURED_NOT_SOURCE_ACCEPTANCE",
+  "requests": [
+    {
+      "url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+      "title": "Kast anuncia uso de inteligencia artificial en Salud para priorizar atención de pacientes de mayor gravedad",
+      "expected_publication_date": "2026-10-01",
+      "target_reason": "frozen_original_byline_vs_midnight_utc_chile_day",
+      "inventory_source": "independent_frozen_control",
+      "requested_at": "2026-10-11T12:51:30.041463+00:00",
+      "status": 200,
+      "final_url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+      "charset": "utf-8",
+      "content_type": "text/html; charset=utf-8",
+      "captured_at": "2026-10-11T12:51:30.426467+00:00",
+      "bytes": 429818,
+      "sha256": "820e36c9cfd572e7f6ce4301ba5ef5bb7f374056d6fed2d60d72629aa242a143",
+      "gzip_file": "820e36c9cfd572e7f6ce4301ba5ef5bb7f374056d6fed2d60d72629aa242a143.html.gz",
+      "gzip_sha256": "22851c91cd054501d328eddaf7e7b8458db882795f477d1798b7b0b855f5a0b6",
+      "original_bytes_retained": true,
+      "returned_text_utf8_sha256": "820e36c9cfd572e7f6ce4301ba5ef5bb7f374056d6fed2d60d72629aa242a143",
+      "primary_date_and_body_audit": {
+        "canonical": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+        "visible_byline_text": "1 OCTUBRE 2026",
+        "visible_byline_day": "2026-10-01",
+        "visible_byline_error": null,
+        "publication_timestamps": [
+          {
+            "source": "url_bound_json_ld_datePublished",
+            "timestamp": "2026-10-01T00:46:24.224Z",
+            "timestamp_calendar_day": "2026-10-01",
+            "utc_day": "2026-10-01",
+            "chile_day": "2026-09-30"
+          },
+          {
+            "source": "article_published_time",
+            "timestamp": "2026-10-01T00:46:24.224Z",
+            "timestamp_calendar_day": "2026-10-01",
+            "utc_day": "2026-10-01",
+            "chile_day": "2026-09-30"
+          }
+        ],
+        "expected_frozen_byline_day": "2026-10-01",
+        "visible_matches_frozen_control": true,
+        "chile_day_disagrees_with_visible_byline": true,
+        "primary_body_chars": 1471,
+        "primary_body_sha256": "9ebcde885d7d2e49ff545494d589d91aa4308eb5281b4de97ba3354ed1d4f7af",
+        "body_after_5500_chars": 0,
+        "body_after_5500_text": "",
+        "health_anchor_full_body": true,
+        "health_anchor_first_5500": true,
+        "current_parser": {
+          "status": "verified",
+          "title": "Kast anuncia uso de inteligencia artificial en Salud para priorizar atención de pacientes de mayor gravedad",
+          "body_chars": 1471,
+          "metadata": {
+            "section": "Nacional",
+            "keywords": [
+              "Presupuesto 2027",
+              "Gobierno",
+              "José Antonio Kast",
+              "Minsal",
+              "Salud"
+            ],
+            "description": "En la presentación del Presupuesto 2027, el Presidente informó que los recursos para el sector crecerán un 4,7%. También adelantó una ficha clínica compartida entre las redes pública y privada, una canasta esencial de medicamentos y mayor financiamiento para reducir las listas de espera.",
+            "body_source": "url_bound_json_ld_articleBody",
+            "publication_date": "2026-10-01",
+            "publication_timestamp": "2026-10-01T00:46:24.224Z",
+            "publication_date_source": "visible_article_byline",
+            "visible_publication_date": "2026-10-01",
+            "publisher_date_convention": "timestamp_calendar",
+            "publication_evidence": [
+              {
+                "source": "json_ld_datePublished",
+                "timestamp": "2026-10-01T00:46:24.224Z",
+                "publisher_day": "2026-10-01",
+                "timestamp_calendar_day": "2026-10-01",
+                "america_santiago_day": "2026-09-30"
+              },
+              {
+                "source": "article_published_time",
+                "timestamp": "2026-10-01T00:46:24.224Z",
+                "publisher_day": "2026-10-01",
+                "timestamp_calendar_day": "2026-10-01",
+                "america_santiago_day": "2026-09-30"
+              }
+            ],
+            "canonical_url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+            "primary_identity_verified": true,
+            "publication_date_verified": true,
+            "article_verified": true,
+            "publisher_taxonomy": {
+              "source": "url_bound_json_ld",
+              "canonical_url": "https://www.latercera.com/nacional/noticia/kast-anuncia-uso-de-inteligencia-artificial-en-salud-para-priorizar-atencion-de-pacientes-de-mayor-gravedad/",
+              "article_type": "NewsArticle",
+              "section": "Nacional",
+              "labels": [
+                "Presupuesto 2027",
+                "Gobierno",
+                "José Antonio Kast",
+                "Minsal",
+                "Salud"
+              ],
+              "matched_opinion_labels": [],
+              "classification": "factual"
+            },
+            "publisher_content_classification": "factual"
+          }
+        }
+      }
+    },
+    {
+      "url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+      "title": "Licencias médicas anotan en agosto su mayor alza en año y medio, debido a baja base de comparación",
+      "expected_publication_date": "2026-10-09",
+      "target_reason": "frozen_original_byline_vs_midnight_utc_chile_day",
+      "inventory_source": "independent_frozen_control",
+      "requested_at": "2026-10-11T12:51:30.465071+00:00",
+      "status": 200,
+      "final_url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+      "charset": "utf-8",
+      "content_type": "text/html; charset=utf-8",
+      "captured_at": "2026-10-11T12:51:30.621910+00:00",
+      "bytes": 446359,
+      "sha256": "6cda5aa17b85cd9f487fe20363aa5a89442d595db12ac3ee6198faa6709dc6ad",
+      "gzip_file": "6cda5aa17b85cd9f487fe20363aa5a89442d595db12ac3ee6198faa6709dc6ad.html.gz",
+      "gzip_sha256": "e8dd153058c01a32c2e7e36fc712801a1cdf3b75f7b7992349b9c2b19388a121",
+      "original_bytes_retained": true,
+      "returned_text_utf8_sha256": "6cda5aa17b85cd9f487fe20363aa5a89442d595db12ac3ee6198faa6709dc6ad",
+      "primary_date_and_body_audit": {
+        "canonical": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+        "visible_byline_text": "9 OCTUBRE 2026",
+        "visible_byline_day": "2026-10-09",
+        "visible_byline_error": null,
+        "publication_timestamps": [
+          {
+            "source": "url_bound_json_ld_datePublished",
+            "timestamp": "2026-10-09T00:04:37.079Z",
+            "timestamp_calendar_day": "2026-10-09",
+            "utc_day": "2026-10-09",
+            "chile_day": "2026-10-08"
+          },
+          {
+            "source": "article_published_time",
+            "timestamp": "2026-10-09T00:04:37.079Z",
+            "timestamp_calendar_day": "2026-10-09",
+            "utc_day": "2026-10-09",
+            "chile_day": "2026-10-08"
+          }
+        ],
+        "expected_frozen_byline_day": "2026-10-09",
+        "visible_matches_frozen_control": true,
+        "chile_day_disagrees_with_visible_byline": true,
+        "primary_body_chars": 4883,
+        "primary_body_sha256": "545cb1a0653662a7c24b6b651a48229199252eeb540207464ec7e43864ec03a3",
+        "body_after_5500_chars": 0,
+        "body_after_5500_text": "",
+        "health_anchor_full_body": true,
+        "health_anchor_first_5500": true,
+        "current_parser": {
+          "status": "verified",
+          "title": "Licencias médicas anotan en agosto su mayor alza en año y medio, debido a baja base de comparación",
+          "body_chars": 4883,
+          "metadata": {
+            "section": "Pulso",
+            "keywords": [
+              "Licencias",
+              "Licencias médicas"
+            ],
+            "description": "Según la Superintendencia de Seguridad Social (Suseso), en agosto se registraron 596.422 licencias de origen común, un aumento de 4,6%. \"Este resultado es esperable\", dado que en igual mes de 2025 ya se habían reducido por las medidas de fiscalización, dijo la Suseso. Igualmente marcan una baja de 14% en el año.",
+            "body_source": "url_bound_json_ld_articleBody",
+            "publication_date": "2026-10-09",
+            "publication_timestamp": "2026-10-09T00:04:37.079Z",
+            "publication_date_source": "visible_article_byline",
+            "visible_publication_date": "2026-10-09",
+            "publisher_date_convention": "timestamp_calendar",
+            "publication_evidence": [
+              {
+                "source": "json_ld_datePublished",
+                "timestamp": "2026-10-09T00:04:37.079Z",
+                "publisher_day": "2026-10-09",
+                "timestamp_calendar_day": "2026-10-09",
+                "america_santiago_day": "2026-10-08"
+              },
+              {
+                "source": "article_published_time",
+                "timestamp": "2026-10-09T00:04:37.079Z",
+                "publisher_day": "2026-10-09",
+                "timestamp_calendar_day": "2026-10-09",
+                "america_santiago_day": "2026-10-08"
+              }
+            ],
+            "canonical_url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+            "primary_identity_verified": true,
+            "publication_date_verified": true,
+            "article_verified": true,
+            "publisher_taxonomy": {
+              "source": "url_bound_json_ld",
+              "canonical_url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+              "article_type": "NewsArticle",
+              "section": "Pulso",
+              "labels": [
+                "Licencias",
+                "Licencias médicas"
+              ],
+              "matched_opinion_labels": [],
+              "classification": "factual"
+            },
+            "publisher_content_classification": "factual"
+          }
+        }
+      }
+    },
+    {
+      "url": "https://www.latercera.com/nacional/noticia/mas-de-2000-viviendas-afectadas-las-condes-despliega-maquinaria-y-equipos-de-emergencia-para-retirar-barro-tras-aluvion/",
+      "title": "Más de 2.000 viviendas afectadas: Las Condes despliega maquinaria y equipos de emergencia para retirar barro tras aluvión",
+      "rss_publication_timestamp": "Fri, 09 Oct 2026 12:32:14 +0000",
+      "target_reason": "full_primary_body_health_evidence_after_5500",
+      "inventory_source": "captured_official_rss_not_final_date_evidence",
+      "requested_at": "2026-10-11T12:51:30.659273+00:00",
+      "status": 200,
+      "final_url": "https://www.latercera.com/nacional/noticia/mas-de-2000-viviendas-afectadas-las-condes-despliega-maquinaria-y-equipos-de-emergencia-para-retirar-barro-tras-aluvion/",
+      "charset": "utf-8",
+      "content_type": "text/html; charset=utf-8",
+      "captured_at": "2026-10-11T12:51:30.867369+00:00",
+      "bytes": 450710,
+      "sha256": "e2bcd3465a27c31896ebc8bb8422525d6cdf658ee158d71cac339192d850d5b0",
+      "gzip_file": "e2bcd3465a27c31896ebc8bb8422525d6cdf658ee158d71cac339192d850d5b0.html.gz",
+      "gzip_sha256": "d1d904b5852c66d7e5bd0e70206f345ec18e64d3e8bf44bdd5b8e67f8e852ab5",
+      "original_bytes_retained": true,
+      "returned_text_utf8_sha256": "e2bcd3465a27c31896ebc8bb8422525d6cdf658ee158d71cac339192d850d5b0",
+      "primary_date_and_body_audit": {
+        "canonical": "https://www.latercera.com/nacional/noticia/mas-de-2000-viviendas-afectadas-las-condes-despliega-maquinaria-y-equipos-de-emergencia-para-retirar-barro-tras-aluvion/",
+        "visible_byline_text": "9 OCTUBRE 2026",
+        "visible_byline_day": "2026-10-09",
+        "visible_byline_error": null,
+        "publication_timestamps": [
+          {
+            "source": "url_bound_json_ld_datePublished",
+            "timestamp": "2026-10-09T12:32:14.119Z",
+            "timestamp_calendar_day": "2026-10-09",
+            "utc_day": "2026-10-09",
+            "chile_day": "2026-10-09"
+          },
+          {
+            "source": "article_published_time",
+            "timestamp": "2026-10-09T12:32:14.119Z",
+            "timestamp_calendar_day": "2026-10-09",
+            "utc_day": "2026-10-09",
+            "chile_day": "2026-10-09"
+          }
+        ],
+        "expected_frozen_byline_day": null,
+        "visible_matches_frozen_control": null,
+        "chile_day_disagrees_with_visible_byline": false,
+        "primary_body_chars": 5781,
+        "primary_body_sha256": "a5f00cd9b803e4241fed5d029d7ee84d5725a588168eb87fbbe3219b2f715fbb",
+        "body_after_5500_chars": 281,
+        "body_after_5500_text": "ue la UC San Carlos de Apoquindo presentó inundación del primer piso y debió realizar una evacuación horizontal. La Clínica Las Condes permanece operativa, al igual que el Hospital Dipreca, la Clínica Universidad de los Andes y RedSalud Vitacura, según los antecedentes entregados.",
+        "health_anchor_full_body": true,
+        "health_anchor_first_5500": true,
+        "current_parser": {
+          "status": "verified",
+          "title": "Más de 2.000 viviendas afectadas: Las Condes despliega maquinaria y equipos de emergencia para retirar barro tras aluvión",
+          "body_chars": 5781,
+          "metadata": {
+            "section": "Nacional",
+            "keywords": [
+              "Las Condes",
+              "Catalina San Martín"
+            ],
+            "description": "El municipio gestiona la contratación de cuatro camiones especializados para retirar el lodo acumulado en las viviendas, mientras excavadoras trabajan en el despeje de las quebradas. ",
+            "body_source": "url_bound_json_ld_articleBody",
+            "publication_date": "2026-10-09",
+            "publication_timestamp": "2026-10-09T12:32:14.119Z",
+            "publication_date_source": "visible_article_byline",
+            "visible_publication_date": "2026-10-09",
+            "publisher_date_convention": "calendar_agreement",
+            "publication_evidence": [
+              {
+                "source": "json_ld_datePublished",
+                "timestamp": "2026-10-09T12:32:14.119Z",
+                "publisher_day": "2026-10-09",
+                "timestamp_calendar_day": "2026-10-09",
+                "america_santiago_day": "2026-10-09"
+              },
+              {
+                "source": "article_published_time",
+                "timestamp": "2026-10-09T12:32:14.119Z",
+                "publisher_day": "2026-10-09",
+                "timestamp_calendar_day": "2026-10-09",
+                "america_santiago_day": "2026-10-09"
+              }
+            ],
+            "canonical_url": "https://www.latercera.com/nacional/noticia/mas-de-2000-viviendas-afectadas-las-condes-despliega-maquinaria-y-equipos-de-emergencia-para-retirar-barro-tras-aluvion/",
+            "primary_identity_verified": true,
+            "publication_date_verified": true,
+            "article_verified": true,
+            "publisher_taxonomy": {
+              "source": "url_bound_json_ld",
+              "canonical_url": "https://www.latercera.com/nacional/noticia/mas-de-2000-viviendas-afectadas-las-condes-despliega-maquinaria-y-equipos-de-emergencia-para-retirar-barro-tras-aluvion/",
+              "article_type": "NewsArticle",
+              "section": "Nacional",
+              "labels": [
+                "Las Condes",
+                "Catalina San Martín"
+              ],
+              "matched_opinion_labels": [],
+              "classification": "factual"
+            },
+            "publisher_content_classification": "factual"
+          }
+        }
+      }
+    },
+    {
+      "url": "https://www.latercera.com/branded/noticia/empresas-x-chile-el-movimiento-empresarial-que-busca-fomentar-el-empleo-juvenil-impulsando-practicas-tp/",
+      "target_reason": "core_detail_error_incomplete_article_evidence",
+      "inventory_source": "core_diagnostic_not_frozen_control",
+      "source_run_id": 38134030226,
+      "requested_at": "2026-10-11T12:51:30.910596+00:00",
+      "status": 200,
+      "final_url": "https://www.latercera.com/branded/noticia/empresas-x-chile-el-movimiento-empresarial-que-busca-fomentar-el-empleo-juvenil-impulsando-practicas-tp/",
+      "charset": "utf-8",
+      "content_type": "text/html; charset=utf-8",
+      "captured_at": "2026-10-11T12:51:31.101640+00:00",
+      "bytes": 410950,
+      "sha256": "eec1ca11083227a69b3691afe92422d5d20332eae39afee234f43d027c63535d",
+      "gzip_file": "eec1ca11083227a69b3691afe92422d5d20332eae39afee234f43d027c63535d.html.gz",
+      "gzip_sha256": "ed63afdaa4c421c037b50ab09a9545db0cc2cf6184fbdf6453699ea9f22e645b",
+      "original_bytes_retained": true,
+      "returned_text_utf8_sha256": "eec1ca11083227a69b3691afe92422d5d20332eae39afee234f43d027c63535d",
+      "primary_date_and_body_audit": {
+        "canonical": "https://www.latercera.com/branded/noticia/empresas-x-chile-el-movimiento-empresarial-que-busca-fomentar-el-empleo-juvenil-impulsando-practicas-tp/",
+        "visible_byline_text": "11 OCTUBRE 2026",
+        "visible_byline_day": "2026-10-11",
+        "visible_byline_error": null,
+        "publication_timestamps": [
+          {
+            "source": "url_bound_json_ld_datePublished",
+            "timestamp": "2026-10-11T09:00:00Z",
+            "timestamp_calendar_day": "2026-10-11",
+            "utc_day": "2026-10-11",
+            "chile_day": "2026-10-11"
+          },
+          {
+            "source": "article_published_time",
+            "timestamp": "2026-10-11T09:00:00Z",
+            "timestamp_calendar_day": "2026-10-11",
+            "utc_day": "2026-10-11",
+            "chile_day": "2026-10-11"
+          }
+        ],
+        "expected_frozen_byline_day": null,
+        "visible_matches_frozen_control": null,
+        "chile_day_disagrees_with_visible_byline": false,
+        "current_parser": {
+          "status": "error",
+          "error_type": "ValueError",
+          "reason": "incomplete_article_evidence"
+        }
+      }
+    }
+  ],
+  "acceptance_note": "Capture retains original bytes even if the current parser rejects them; RSS dates remain provisional."
+}

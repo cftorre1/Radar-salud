@@ -1,0 +1,458 @@
+{
+  "task_id": "w4_who_2026_10_11",
+  "source": "WHO",
+  "branch": "codex/global-intelligence-recurrent-20261011",
+  "as_of": "2026-10-11",
+  "run_id": "38153425336",
+  "run_mode": "projection_replay",
+  "fresh_capture_mode": "live_discovery",
+  "metadata_projection": {
+    "projected_at": "2026-10-11T16:27:21.528411+00:00",
+    "qa_run_id": "38155456354",
+    "code_commit": "a74323b5d69654855cd17dc6f54013f76a4f10da",
+    "fresh_capture_run_id": "38153425336",
+    "fresh_inventory_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json",
+    "fresh_inventory_sha256": "434dec044c79ade78f82f82271121753685cdf5b4a80888cc1c52831efcff831",
+    "inventory_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json",
+    "inventory_csv_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.csv",
+    "publisher_requests": 0,
+    "does_not_prove_fresh_capture_or_cadence": true
+  },
+  "coverage_projection": {
+    "qualified_at": "2026-10-11T16:49:17.399446+00:00",
+    "qa_run_id": "38156977778",
+    "code_commit": "aee4ed3dff0c6cd900751e89a219548b261308a1",
+    "fresh_capture_run_id": "38153425336",
+    "fresh_inventory_sha256": "434dec044c79ade78f82f82271121753685cdf5b4a80888cc1c52831efcff831",
+    "metadata_inventory_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json",
+    "metadata_inventory_sha256": "83fa7e2150d07c0e7ee2d7c2afd9d9e03abcc92d62f90ec0211a456960774063",
+    "inventory_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.json",
+    "inventory_csv_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.csv",
+    "publisher_requests": 0,
+    "does_not_prove_fresh_capture_or_cadence": true
+  },
+  "source_health": {
+    "name": "WHO",
+    "checked_at": "2026-10-11T16:07:31.827873+00:00",
+    "status": "warning",
+    "technical_status": "ok",
+    "coverage_status": "complete",
+    "outcome": "READY_FOR_INTEGRATION",
+    "operation_mode": "isolated_qualification",
+    "discovery_scope": "global_intelligence",
+    "recurrent_operation_proven": false,
+    "cadence_seconds": 86400,
+    "cadence_validation_pending": true,
+    "coverage_contract_id": "e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56",
+    "next_cadence_validation_not_before": "2026-10-12T16:07:31.827873+00:00",
+    "coverage_completeness": "complete",
+    "coverage_window_days": 90,
+    "coverage_from": "2026-07-14",
+    "coverage_to": "2026-10-11",
+    "pages_checked": 7,
+    "recent_items": 84,
+    "discovery_recall_30": {
+      "basis": "independent_native_index_control_on_declared_surfaces",
+      "inventory_url_count": 84,
+      "detected": 84,
+      "omitted_urls": [],
+      "recall": 1.0,
+      "whole_source_archive_claim": false
+    },
+    "discovery_recall_90": {
+      "basis": "independent_native_index_control_on_declared_surfaces",
+      "inventory_url_count": 241,
+      "detected": 241,
+      "omitted_urls": [],
+      "recall": 1.0,
+      "whole_source_archive_claim": false
+    },
+    "window_completeness": {
+      "30": "complete_on_declared_surfaces",
+      "90": "complete_on_declared_surfaces"
+    },
+    "unique_language_urls_90": 241,
+    "unique_items": 241,
+    "counts": {
+      "30": 84,
+      "90": 241
+    },
+    "indexed_counts": {
+      "30": 84,
+      "90": 241
+    },
+    "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
+    "material_items": 148,
+    "published": 0,
+    "rejected": 4,
+    "deferred": 237,
+    "pending_date_items": 0,
+    "technical_failures": [],
+    "discovered": 241,
+    "new": 0,
+    "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
+    "parser_routes": [
+      "news",
+      "publications",
+      "disease_outbreak_news"
+    ],
+    "boundary_evidence": [
+      {
+        "section": "news",
+        "stop": "verified_older_boundary",
+        "pages": 3
+      },
+      {
+        "section": "publications",
+        "stop": "verified_older_boundary",
+        "pages": 3
+      },
+      {
+        "section": "disease_outbreak_news",
+        "stop": "verified_older_boundary",
+        "pages": 1
+      }
+    ],
+    "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json",
+    "source_quality_disposition": "pass_data",
+    "publication_activation": false,
+    "content_freshness": "recent",
+    "editorial_outcome": "discovery_only_pending_editorial_and_rights_review",
+    "materiality_evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json",
+    "materiality_projection_run_id": "38155456354"
+  },
+  "outcome": "READY_FOR_INTEGRATION",
+  "quality_disposition": "pass_data",
+  "activation": false,
+  "paid_ai_calls": 0,
+  "published": 0,
+  "baseline": {
+    "collector": "absent",
+    "curated_refs_30": 0,
+    "curated_refs_90": 0
+  },
+  "reconciliation": {
+    "indexed": {
+      "30": 84,
+      "90": 241
+    },
+    "detail_verified": {
+      "30": 84,
+      "90": 241
+    },
+    "baseline_detected_30": 0,
+    "baseline_detected_90": 0,
+    "recovered_discovery_unique": 241,
+    "missing_from_previous_inventory": 0,
+    "omitted_from_observed_native_control": {
+      "30": [],
+      "90": []
+    },
+    "whole_publisher_coverage_claim": false,
+    "window_completeness": {
+      "30": "complete_on_declared_surfaces",
+      "90": "complete_on_declared_surfaces"
+    },
+    "all_items_with_reason": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.json",
+    "csv": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.csv",
+    "original_fresh_inventory": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json",
+    "metadata_projection": {
+      "projected_at": "2026-10-11T16:27:21.528411+00:00",
+      "qa_run_id": "38155456354",
+      "code_commit": "a74323b5d69654855cd17dc6f54013f76a4f10da",
+      "fresh_capture_run_id": "38153425336",
+      "fresh_inventory_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json",
+      "fresh_inventory_sha256": "434dec044c79ade78f82f82271121753685cdf5b4a80888cc1c52831efcff831",
+      "inventory_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json",
+      "inventory_csv_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.csv",
+      "publisher_requests": 0,
+      "does_not_prove_fresh_capture_or_cadence": true
+    },
+    "coverage_projection": {
+      "qualified_at": "2026-10-11T16:49:17.399446+00:00",
+      "qa_run_id": "38156977778",
+      "code_commit": "aee4ed3dff0c6cd900751e89a219548b261308a1",
+      "fresh_capture_run_id": "38153425336",
+      "fresh_inventory_sha256": "434dec044c79ade78f82f82271121753685cdf5b4a80888cc1c52831efcff831",
+      "metadata_inventory_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json",
+      "metadata_inventory_sha256": "83fa7e2150d07c0e7ee2d7c2afd9d9e03abcc92d62f90ec0211a456960774063",
+      "inventory_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.json",
+      "inventory_csv_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.csv",
+      "publisher_requests": 0,
+      "does_not_prove_fresh_capture_or_cadence": true
+    },
+    "repair_delta": {
+      "comparison_run": "38145510005",
+      "basis": "identity_alias_sets_before_date_partition_repair_and_429_recovery; not approved editorial publications",
+      "previous_detail_verified": {
+        "30": 81,
+        "90": 178
+      },
+      "recovered_new_identities_30": 0,
+      "recovered_new_identities_90": 0,
+      "recovered_potentially_material_identities": 0,
+      "restored_detail_verifications": 63,
+      "restored_potentially_material_detail_verifications": 50,
+      "all_recovered_urls": [],
+      "material_recovered_urls": [],
+      "restored_detail_urls": [
+        "https://www.who.int/publications/i/item/9789290222606",
+        "https://www.who.int/publications/i/item/B09865",
+        "https://www.who.int/publications/i/item/9789290222576",
+        "https://www.who.int/publications/i/item/9789290222583",
+        "https://www.who.int/publications/i/item/9789290222590",
+        "https://www.who.int/publications/i/item/9789290222538",
+        "https://www.who.int/publications/i/item/9789290222552",
+        "https://www.who.int/publications/i/item/9789290222521",
+        "https://www.who.int/publications/i/item/9789290222545",
+        "https://www.who.int/publications/i/item/9789290222569",
+        "https://www.who.int/publications/i/item/WHO-DGO-EVL-2025.72",
+        "https://www.who.int/publications/i/item/sea-hdc-5",
+        "https://www.who.int/publications/i/item/9789292800109",
+        "https://www.who.int/publications/i/item/9789240114562",
+        "https://www.who.int/publications/i/item/B09861",
+        "https://www.who.int/publications/i/item/who-wer10130-138-156",
+        "https://www.who.int/publications/i/item/B09843",
+        "https://www.who.int/publications/i/item/B09859",
+        "https://www.who.int/publications/i/item/B09858",
+        "https://www.who.int/publications/i/item/B09842",
+        "https://www.who.int/publications/i/item/B09841",
+        "https://www.who.int/publications/i/item/B09860",
+        "https://www.who.int/publications/i/item/B09857",
+        "https://www.who.int/publications/i/item/9789240122321",
+        "https://www.who.int/publications/i/item/9789240122307",
+        "https://www.who.int/publications/i/item/B09790",
+        "https://www.who.int/publications/i/item/WHO-AFRO-2026-13439-53213-83244",
+        "https://www.who.int/publications/i/item/9789240123106",
+        "https://www.who.int/publications/i/item/9789240124370",
+        "https://www.who.int/publications/i/item/9789292800147",
+        "https://www.who.int/publications/i/item/WPR-2026-DPC-001-Mekong_Elimination_Programme_vol31",
+        "https://www.who.int/publications/i/item/9789240123298",
+        "https://www.who.int/publications/i/item/9789240123175",
+        "https://www.who.int/publications/i/item/9789240124479",
+        "https://www.who.int/publications/i/item/9789240124271",
+        "https://www.who.int/publications/i/item/9789290316046",
+        "https://www.who.int/publications/i/item/9789240123632",
+        "https://www.who.int/publications/i/item/9789240123779",
+        "https://www.who.int/publications/i/item/9789292800093",
+        "https://www.who.int/publications/i/item/9789240124233",
+        "https://www.who.int/publications/i/item/9789292741754",
+        "https://www.who.int/publications/i/item/35th-meeting-of-the-technical-advisory-group-(tag)-on-immunization-and-vaccine-preventable-diseases-in-the-western-pacific-region--manila--philippines--16-18-june-2026--meeting-report",
+        "https://www.who.int/publications/i/item/9789240124073",
+        "https://www.who.int/publications/i/item/9789240123656",
+        "https://www.who.int/publications/i/item/WHO-DGO-EVL-2025.86",
+        "https://www.who.int/publications/i/item/consultation-on-achieving-measles-and-rubella-elimination-by-2030-in-the-western-pacific--hybrid-meeting--manila--philippines--12-14-may-2026--meeting-report",
+        "https://www.who.int/publications/i/item/9789240123991",
+        "https://www.who.int/publications/i/item/9789240123151",
+        "https://www.who.int/publications/i/item/sea-hdc-3",
+        "https://www.who.int/publications/i/item/9789240123557",
+        "https://www.who.int/publications/i/item/9789240116153",
+        "https://www.who.int/publications/i/item/9789292800116",
+        "https://www.who.int/publications/i/item/B09835",
+        "https://www.who.int/publications/i/item/9789240124110",
+        "https://www.who.int/publications/i/item/9789240124172",
+        "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON620",
+        "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON619",
+        "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON618",
+        "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON617",
+        "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON616",
+        "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON615",
+        "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON614",
+        "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON613"
+      ]
+    }
+  },
+  "dispositions": {
+    "material_candidates_verified": 148,
+    "rejected": 4,
+    "deferred": 237,
+    "unverified_details": 0,
+    "published": 0,
+    "explanation": "Metadata discovery cannot become approved substantive analysis. All candidates require a verified business consequence, independent corroboration, rights and editorial approval."
+  },
+  "material_examples": [
+    {
+      "url": "https://www.who.int/news/item/28-08-2026-second-meeting-of-the-ihr-emergency-committee-on-the-epidemic-of-ebola-bundibugyo-virus-disease-in-the-democratic-republic-of-the-congo---meeting-report",
+      "title": "Second meeting of the IHR Emergency Committee on the epidemic of Ebola Bundibugyo virus disease in the Democratic Republic of the Congo – Meeting report",
+      "published_at": "2026-08-28",
+      "classification": {
+        "materiality": "candidate",
+        "priority": 95,
+        "category": "emergency",
+        "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+      },
+      "status": "pending",
+      "reason": "awaiting_editorial_corroboration_and_rights_review",
+      "detail_verified": true
+    },
+    {
+      "url": "https://www.who.int/news/item/24-08-2026-second-meeting-of-the-ihr-emergency-committee-on-the-epidemic-of-ebola-bundibugyo-virus-disease-in-the-democratic-republic-of-the-congo-temporary-recommendations",
+      "title": "Second meeting of the IHR Emergency Committee on the epidemic of Ebola Bundibugyo virus disease in the Democratic Republic of the Congo – Temporary recommendations",
+      "published_at": "2026-08-24",
+      "classification": {
+        "materiality": "candidate",
+        "priority": 95,
+        "category": "emergency",
+        "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+      },
+      "status": "pending",
+      "reason": "awaiting_editorial_corroboration_and_rights_review",
+      "detail_verified": true
+    },
+    {
+      "url": "https://www.who.int/news/item/20-08-2026-who-and-africa-cdc-welcome-the-allocation-of-ebola-vaccines-to-the-democratic-republic-of-the-congo",
+      "title": "WHO and Africa CDC welcome the allocation of Ebola vaccines to the Democratic Republic of the Congo",
+      "published_at": "2026-08-20",
+      "classification": {
+        "materiality": "candidate",
+        "priority": 95,
+        "category": "emergency",
+        "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+      },
+      "status": "pending",
+      "reason": "awaiting_editorial_corroboration_and_rights_review",
+      "detail_verified": true
+    },
+    {
+      "url": "https://www.who.int/news/item/06-08-2026-africa-cdc-and-who-call-for-urgent--community-led-action-to-contain-ebola-in-the-drc",
+      "title": "Africa CDC and WHO call for urgent, community-led action to contain Ebola in the DRC",
+      "published_at": "2026-08-06",
+      "classification": {
+        "materiality": "candidate",
+        "priority": 95,
+        "category": "emergency",
+        "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+      },
+      "status": "pending",
+      "reason": "awaiting_editorial_corroboration_and_rights_review",
+      "detail_verified": true
+    },
+    {
+      "url": "https://www.who.int/publications/i/item/RS-2026-GE-08-INO-hybrid",
+      "title": "Fourteenth Annual Meeting of the Regional Verification Commission for Measles and Rubella Elimination in the Western Pacific, Jakarta, Indonesia, 7-11 September 2026: meeting report",
+      "published_at": "2026-09-30",
+      "classification": {
+        "materiality": "candidate",
+        "priority": 95,
+        "category": "emergency",
+        "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+      },
+      "status": "pending",
+      "reason": "awaiting_editorial_corroboration_and_rights_review",
+      "detail_verified": true
+    },
+    {
+      "url": "https://www.who.int/publications/i/item/B09906",
+      "title": "Filovirus collaborative open research consortium research priorities for the ongoing Bundibugyo virus disease outbreak",
+      "published_at": "2026-09-21",
+      "classification": {
+        "materiality": "candidate",
+        "priority": 95,
+        "category": "emergency",
+        "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+      },
+      "status": "pending",
+      "reason": "awaiting_editorial_corroboration_and_rights_review",
+      "detail_verified": true
+    },
+    {
+      "url": "https://www.who.int/publications/i/item/9789240125445",
+      "title": "Global framework to accelerate action on avian influenza",
+      "published_at": "2026-09-21",
+      "classification": {
+        "materiality": "candidate",
+        "priority": 95,
+        "category": "emergency",
+        "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+      },
+      "status": "pending",
+      "reason": "awaiting_editorial_corroboration_and_rights_review",
+      "detail_verified": true
+    },
+    {
+      "url": "https://www.who.int/publications/i/item/B09884",
+      "title": "WHO emergency guidance on the use of licensed Ebola vaccine during Bundibugyo virus disease outbreaks, 31 August 2026",
+      "published_at": "2026-09-01",
+      "classification": {
+        "materiality": "candidate",
+        "priority": 95,
+        "category": "emergency",
+        "reason": "material_topic_requires_editorial_fact_and_consequence_review"
+      },
+      "status": "pending",
+      "reason": "awaiting_editorial_corroboration_and_rights_review",
+      "detail_verified": true
+    }
+  ],
+  "quality_gate": {
+    "authority": "official_host_and_robots_verified",
+    "stable_discovery": "complete",
+    "verified_date": "index_and_detail_concordance; unknown/conflicting/future stays pending",
+    "material_signal_density": "discovery_priority_not_final_editorial_score",
+    "traceable_detail": "recorded HTTP/TLS/redirect/UA/hash metadata; original bytes in runtime artifact",
+    "noise_control": "bilingual materiality and routine rejection",
+    "duplicate_control": "canonical URLs plus reciprocal publisher language aliases"
+  },
+  "qa": {
+    "python_qa": {
+      "result": "PASS",
+      "baseline_sha": "bc723e08200ada1cfb0146c6ce6da0d6f1ad11af",
+      "passed": 1178,
+      "failed": 0,
+      "inherited_failures": [],
+      "new_regressions": 0,
+      "upstream_reproduction": null
+    },
+    "browser_qa": {
+      "result": "PASS",
+      "qa_run_id": "38156977778",
+      "tested_commit": "aee4ed3dff0c6cd900751e89a219548b261308a1",
+      "capture_run_id": "38153425336",
+      "directed_python_passed": 184,
+      "node_passed": 43,
+      "node_failed": 0,
+      "browser_passed": 12,
+      "browser_failed": 0,
+      "projects": [
+        "desktop",
+        "mobile"
+      ]
+    },
+    "replay": {
+      "result": "PASS",
+      "run_id": "38153425336",
+      "inventory_mode": "projection_replay",
+      "canonical_inventory_sha256": "0c9c225fb64e2a40e84c7a4240df41c513044f4a8ec01dc53709ed3fc29c432d",
+      "metadata_projection_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json",
+      "coverage_projection_ref": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/coverage_requalification/38156977778/inventory.json",
+      "items": 771,
+      "network_requests": 0,
+      "paid_ai_calls": 0,
+      "canonical_state_unchanged": true,
+      "metadata_and_native_control_identical": true
+    },
+    "independent_capture_audit": {
+      "result": "PASS",
+      "run_id": "38153425336",
+      "auditor_script_sha256": "d630a5b616299915bdb0ca804f0338291f2ec42ea3596923e5d7574c50cd9de2",
+      "inventory_sha256": "0c9c225fb64e2a40e84c7a4240df41c513044f4a8ec01dc53709ed3fc29c432d",
+      "captures": 1053,
+      "native_pages": 132,
+      "verified_language_detail_checks": 914,
+      "network_requests": 0,
+      "paid_ai_calls": 0
+    }
+  },
+  "reviewer_evidence": "data/audits/global_source_recovery_2026_10_11/reviewer_final.json",
+  "cadence_proven": false,
+  "capture_reuse": {
+    "reused_url_count": 0,
+    "maximum_campaign_capture_age_hours": 1,
+    "does_not_prove_cadence": true
+  },
+  "fresh_runtime_qa_evidence": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/fresh_qa",
+  "metadata_qa_evidence": "data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_qa/38155456354",
+  "captured_coverage_qualification_qa": "38156977778",
+  "core_activation_dependencies_preserved": true,
+  "next_action": "Run the isolated fresh workflow no earlier than 2026-10-12T16:07:31.827873+00:00; require complete coverage under the identical contract. Keep core recovery/balance, commercial rights and editorial gates; no production activation."
+}
