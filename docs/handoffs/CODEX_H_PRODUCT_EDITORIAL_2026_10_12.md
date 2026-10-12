@@ -43,7 +43,7 @@ Cinco candidatos editoriales conservan original/base_version, identidad, evidenc
 |---|---|
 | IF10670 | Alcance del informe EMP tras concluir octubre; suspensión y artículo57; recursos jerárquicos remitidos, sin afirmar pendencia actual. Peticiones atribuidas a lo que recoge el regulador, sin fingir lectura de los escritos completos. |
 | IF534 | Vigencia futura1-dic-2026 separada de publicación; identidad y efecto normativo. |
-| Félix Bulnes | Cambio de operador30-sep separado de publicación7-oct; términos y alcance verificables. |
+| Félix Bulnes | Intervención realizada el 30-sep, separada de publicación el 7-oct; técnica y alcance verificables. |
 | Presupuesto2027 | Publicación6-oct; fecha del acto no conocida permanece null, sin conversión ficticia en hecho ocurrido ese día. |
 | San Carlos | Continuidad y capacidad de reemplazo con fuentes DF/LaTercera/UCCHRISTUS ya registradas; sin inventar nueva captura. |
 
