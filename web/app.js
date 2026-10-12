@@ -35,7 +35,8 @@ function weeklyFresh(w,now=new Date()){
  return [event,anchor].every(d=>Number.isFinite(d)&&today>=d&&today-d<7*86400000)&&(!('expires_on' in w)||today<day(w.expires_on));
 }
 function currentWeekly(){return weeklyFresh(freeValue.weekly_insight)?freeValue.weekly_insight:null}
-function specials(){const out=[],g=freeValue.global_teaser,w=currentWeekly();if(g)out.push({kind:'global',id:globalId(g.theme_id),title:g.title,summary:g.excerpt,date:g.published_at,source:g.source_label||(g.publishers||[]).join(' · '),href:g.premium_href});if(w){const base=allSignals.find(s=>s.source_url===w.source_url);out.push({kind:'weekly',id:weeklyId(w),title:w.insight_title||w.title,summary:w.insight_teaser||w.insight_reading,date:w.event_date,source:w.source_name,href:w.source_url})}return out}
+function globalPreview(g){return g?.theme_id==='global-ai-coding-payer-cost-2026'?{...g,title:'BCBSA estima US$942 millones adicionales por codificación; atribución a IA no verificada',excerpt:'Estimación atribuida en Reuters. Informe técnico primario, método y denominadores pendientes de verificación.'}:g}
+function specials(){const out=[],g=globalPreview(freeValue.global_teaser),w=currentWeekly();if(g)out.push({kind:'global',id:globalId(g.theme_id),title:g.title,summary:g.excerpt,date:g.published_at,source:g.source_label||(g.publishers||[]).join(' · '),href:g.premium_href});if(w){const base=allSignals.find(s=>s.source_url===w.source_url);out.push({kind:'weekly',id:weeklyId(w),title:w.insight_title||w.title,summary:w.insight_teaser||w.insight_reading,date:w.event_date,source:w.source_name,href:w.source_url})}return out}
 function specialRead(x){return readSet.has(x.id)}
 function specialInPeriod(x){if(periodMode==='last')return false;if(x.kind==='global')return true;return inPeriod({event_date:x.date})}
 const checkIcon='<svg class="action-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 6 9 7 9-7"></path></svg>';
@@ -93,6 +94,7 @@ function distinct(a,b){const norm=x=>String(x||'').toLowerCase().normalize('NFD'
 function substantivePoints(s){return arr(s.key_points).filter(x=>distinct(x,s.what_happened)&&distinct(x,s.title)&&distinct(x,s.why_it_matters)&&!/(no (se )?(inform[aó]|entreg[aó]|detall[aó]|especific[aó]|precis[aó])|sin detalles|no hay detalles|falta(n)? detalles)/i.test(x))}
 function detailKind(s){if(s.statistical_value_level==='deep_analysis'&&s.summary_table?.rows?.length)return 'summary';if(substantivePoints(s).length||arr(s.data_insights).length)return 'summary';if(s.normative_context||arr(s.related_context).length||arr(s.source_alternatives).length||arr(s.editorial_enrichment).length||arr(s.historical_connections).length)return 'context';return null}
 function cardDepth(s){return detailKind(s)!==null}
+function httpsSource(value){try{const url=new URL(value);return url.protocol==='https:'&&Boolean(url.hostname)}catch{return false}}
 function detailHtml(s){
  const v3=String(s.editorial_schema_version)==='3';const title=triageTitle(s),seen=new Set([String(title).trim().toLowerCase()]);
  const fresh=x=>{if(!x)return false;const n=String(x).trim().toLowerCase();if(seen.has(n))return false;seen.add(n);return true};
@@ -100,8 +102,9 @@ function detailHtml(s){
  if(!s.statistical_view&&String(s.source_url||'').includes('estadisticas-financieras-del-sistema-isapre-a-marzo-2026/'))s={...s,statistical_view:{publication_status:'HOLD',limitations:['La nota de cobertura contradice cifras institucionales de Esencial; comparaciones y agregados afectados pendientes de aclaración.'],source_url:s.source_url}};
  if(s.statistical_view){
   body=AlicantoStats.render(s.statistical_view);
-  const complementary=arr(s.data_insight_evidence).filter(x=>!['beneficiary_stock_change','beneficiary_streak'].includes(x.analysis_kind)&&x.sha256===s.data_insight_meta?.sha256?.[x.family]);
-  if(s.statistical_view.publication_status!=='HOLD'&&s.data_insight_meta?.status==='validated'&&complementary.length){
+  const kinds={portfolio_mix_shift:'cartera',subscriptions_voluntary_gap:'suscripciones',mobility_interval:'movilidad'};
+  const complementary=arr(s.data_insight_evidence).filter(x=>Object.hasOwn(kinds,x.analysis_kind)&&kinds[x.analysis_kind]===x.family&&/^[a-f0-9]{64}$/.test(x.sha256||'')&&x.sha256===s.data_insight_meta?.sha256?.[x.family]&&httpsSource(x.source_url));
+  if(!v3&&s.statistical_view.publication_status!=='HOLD'&&s.data_insight_meta?.status==='validated'&&complementary.length){
    body+=`<details class='related statistical-calculations'><summary>Cálculos adicionales verificados</summary>${insightBlock({...s,data_insight_evidence:complementary})}</details>`;
   }
  }

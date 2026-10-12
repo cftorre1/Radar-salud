@@ -1,9 +1,23 @@
 const {test}=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs');const vm=require('node:vm');
 const source=fs.readFileSync('web/app.js','utf8').split("fetch('data/radar_today.json'")[0];
-function context(Clock=Date){const c={AlicantoRead:{readSet:new Set(),ready:Promise.resolve(),migrate:async function(marker,entries){for(const [id,aliases] of entries)if(aliases.some(x=>this.readSet.has(x)))this.readSet.add(id)}},AlicantoStats:{render:()=>'',wire:()=>{}},localStorage:{getItem:()=>null,setItem:()=>{}},btoa:s=>Buffer.from(s,'binary').toString('base64'),atob:s=>Buffer.from(s,'base64').toString('binary'),escape,unescape,decodeURIComponent,encodeURIComponent,Intl,Date:Clock,Set,Map};vm.createContext(c);vm.runInContext(source,c);return c}
+function context(Clock=Date){const c={AlicantoRead:{readSet:new Set(),ready:Promise.resolve(),migrate:async function(marker,entries){for(const [id,aliases] of entries)if(aliases.some(x=>this.readSet.has(x)))this.readSet.add(id)}},AlicantoStats:{render:()=>'',wire:()=>{}},localStorage:{getItem:()=>null,setItem:()=>{}},btoa:s=>Buffer.from(s,'binary').toString('base64'),atob:s=>Buffer.from(s,'base64').toString('binary'),escape,unescape,decodeURIComponent,encodeURIComponent,Intl,URL,Date:Clock,Set,Map};vm.createContext(c);vm.runInContext(source,c);return c}
 test('full card IDs do not collide for long URLs',()=>{const c=context();assert.notEqual(c.idFor({source_url:'https://example.org/'+ 'a'.repeat(160)+'1'}),c.idFor({source_url:'https://example.org/'+ 'a'.repeat(160)+'2'}))});
 test('date-only publication keeps calendar date in Chile',()=>{const c=context();assert.match(c.fmtDate('2026-09-23'),/23/)});
 test('update label is direct and does not overstate source review',()=>{const c=context();assert.match(c.fmtUpdated('2026-09-24T12:00:00Z'),/^Última actualización:/);assert.doesNotMatch(c.fmtUpdated('2026-09-24T12:00:00Z'),/Portada generada|revisión de las fuentes/)});
+test('legacy statistical complements require valid matching source hashes and stay outside reviewed v3 copy',()=>{
+ const c=context(),hash='a'.repeat(64),view={family:'cartera'},e={text:'Dato complementario',family:'cartera',analysis_kind:'portfolio_mix_shift',sha256:hash,source_url:'https://example.org/book',period:'2026-07',sheet:'Julio',formula:'1/2'};
+ const s={title:'Stock verificado',statistical_view:view,data_insight_evidence:[e],data_insight_meta:{status:'validated',sha256:{cartera:hash}}};
+ assert.match(c.detailHtml(s),/Dato complementario/);
+ for(const bad of [undefined,'bad','b'.repeat(64)]){const x={...s,data_insight_evidence:[{...e,sha256:bad}],data_insight_meta:{status:'validated',sha256:{cartera:bad}}};if(bad==='b'.repeat(64))x.data_insight_meta.sha256.cartera=hash;assert.doesNotMatch(c.detailHtml(x),/Dato complementario/);}
+ assert.doesNotMatch(c.detailHtml({...s,editorial_schema_version:'3'}),/Dato complementario/);
+ assert.doesNotMatch(c.detailHtml({...s,statistical_view:{...view,publication_status:'HOLD'}}),/Dato complementario/);
+ assert.doesNotMatch(c.detailHtml({...s,data_insight_evidence:[{...e,analysis_kind:'arbitrary'}]}),/Dato complementario/);
+ assert.doesNotMatch(c.detailHtml({...s,data_insight_evidence:[{...e,source_url:'https://'}]}),/Dato complementario/);
+});
+test('Home Global teaser preserves attribution, exact historical amount and method hold',()=>{
+ const c=context(),before={theme_id:'global-ai-coding-payer-cost-2026',title:'La IA clínica infla gasto',excerpt:'Causalidad no validada'};
+ const projected=c.globalPreview(before);assert.match(projected.title,/BCBSA.*942/);assert.match(projected.excerpt,/pendientes de verificación/);assert.equal(before.title,'La IA clínica infla gasto');
+});
 test('Signal Density defaults and fiscalizacion',()=>{const c=context();assert.equal(vm.runInContext('periodMode',c),'30');assert.equal(vm.runInContext('sortMode',c),'date');assert.match(source,/Fiscalización/);assert.match(fs.readFileSync('web/index.html','utf8'),/<option value="30" selected>30 días<\/option>/)});
 test('BACKFILL never counts as new since visit',()=>{const c=context();vm.runInContext("periodMode='last';previousVisit='2026-09-22T00:00:00Z'",c);assert.equal(c.inPeriod({ingestion_mode:'BACKFILL',event_date:'2026-09-23',detected_at:'2026-09-23T12:00:00Z'}),false);assert.equal(c.inPeriod({ingestion_mode:'LIVE',event_date:'2026-09-23',detected_at:'2026-09-23T12:00:00Z'}),true)});
 
