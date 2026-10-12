@@ -265,7 +265,7 @@
       }
     },
     "73151b689aa164db2345c273d3f1919c2c061b4bce506781cf215751265c21d3": {
-      "before_sha256": "b0b283650ee006fcd7b9e10907569449aa00c104582b5cebd39603cdd29a5963",
+      "before_sha256": "c15f483cdda371be8b3160862413ba0a2778197ec290352854fd12c5b91c3d1a",
       "after": {
         "raw": {
           "source_slug": "pulso_latercera",
@@ -476,7 +476,8 @@
               "reason": "pulso_editorial_future_copy_not_grounded",
               "threshold": 72,
               "proof_version": "pulso_editorial_proof_v5"
-            }
+            },
+            "editorial_hold": "pulso_editorial_future_copy_not_grounded"
           }
         },
         "source": "pulso_latercera",
@@ -3618,5 +3619,19 @@
       "sha256": "5e96434be356f4c6312ff82e34fe1ffc51333bfe067c44516e8493e70f8b5e35",
       "new_responses": 0
     }
-  ]
+  ],
+  "editorial_import_review": {
+    "recorded_at": "2026-10-12T05:27:54.656533+00:00",
+    "queue_key": "73151b689aa164db2345c273d3f1919c2c061b4bce506781cf215751265c21d3",
+    "action": "retain_paid_output_and_hold_pending_grounding_repair",
+    "reason": "pulso_editorial_future_copy_not_grounded",
+    "response_id": "resp_0a5eaf662b6f6ef5006acc6b003aec87d1b14d1c2b01885a04",
+    "primary_and_model_unchanged": true,
+    "verified_processor_replay": {
+      "network_calls": 0,
+      "ai_calls": 0,
+      "publication": false
+    },
+    "original_runtime_queue_record_sha256": "c15f483cdda371be8b3160862413ba0a2778197ec290352854fd12c5b91c3d1a"
+  }
 }
