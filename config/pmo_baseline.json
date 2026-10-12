@@ -3341,7 +3341,7 @@
     }
   ],
   "current_main_workflows_sha": "083d2f761e829de49ddd5ef9bc41bbeb494aaad4",
-  "current_staging_candidate_sha": "14b536ff5d9a56f2494bf5dc38c5b9ca95c580e3",
+  "current_staging_candidate_sha": "de24f95febb4f137d7c32b5eaf584839bb1f0aea",
   "product_qa_notes": [
     {
       "id": "home_ux_data_visibility_followup_2026_09_24",
@@ -4297,7 +4297,7 @@
       ]
     }
   ],
-  "updated_at": "2026-10-12T05:25:05.668828+00:00",
+  "updated_at": "2026-10-12T05:30:34.647602+00:00",
   "closed_beta": {
     "status": "pending_validation",
     "scope": "Beta read-only distribuida por invitación operativa: Home/feed, filtros, detalle, Fuentes y teaser Global. No activa email, analytics centralizado, auth, pricing ni pagos. La preview staging es accesible a quien tenga la URL y no incorpora autenticación.",
@@ -4366,8 +4366,8 @@
     }
   },
   "integration_commander_checkpoint": {
-    "recorded_at": "2026-10-12T05:25:05.668828+00:00",
-    "staging_sha": "14b536ff5d9a56f2494bf5dc38c5b9ca95c580e3",
+    "recorded_at": "2026-10-12T05:30:34.647602+00:00",
+    "staging_sha": "de24f95febb4f137d7c32b5eaf584839bb1f0aea",
     "merged_prs": [
       10,
       26,
@@ -4419,6 +4419,14 @@
       "validation_age_not_separated_from_attempt_age",
       "valid_empty_capture_not_representable"
     ],
-    "essential_freshness_receipt": "data/audits/integration_commander_2026_10_12/essential_freshness.json"
+    "essential_freshness_receipt": "data/audits/integration_commander_2026_10_12/essential_freshness.json",
+    "paid_retry_hold": {
+      "workflow_run": 38208053410,
+      "result": "PASS",
+      "state_commit": "de24f95febb4f137d7c32b5eaf584839bb1f0aea",
+      "new_ai_calls": 0,
+      "new_receipts": 0,
+      "rediscovery_and_processor_replay": "PASS_0network_0AI_no_publication"
+    }
   }
 }
