@@ -1,0 +1,187 @@
+{
+  "reviewer": "independent_reviewer",
+  "review_type": "technical_scoped",
+  "verdict": "PASS_SCOPED",
+  "baseline_sha": "74da1c6d33b9e5746e79e0f481be3057f33d45df",
+  "reviewed_code_sha": "6048a1d5def99e060dd973fd9640c508d1ec853d",
+  "branch": "codex/h-contract-followup-20261012",
+  "open_p0": [],
+  "open_p1": [],
+  "closed_findings": [
+    {
+      "id": "P1-SIGNED-TITLE",
+      "severity": "P1",
+      "baseline_reproduced": true,
+      "candidate_reproduced_fixed": true,
+      "code_location": "web/app.js:151",
+      "description": "Unsigned legacy fields can no longer replace v3 title on feed, inbox, detail, ARIA or share metadata."
+    }
+  ],
+  "checks": {
+    "python_product_editorial_v3": {
+      "pass": 47,
+      "fail": 0
+    },
+    "node_direct": {
+      "pass": 50,
+      "fail": 0
+    },
+    "independent_chromium": {
+      "viewports": [
+        [
+          1440,
+          900
+        ],
+        [
+          390,
+          844
+        ]
+      ],
+      "signed_title": true,
+      "same_title_and_more_info_detail": true,
+      "unsigned_copy_visible": false
+    },
+    "legacy_compatibility": {
+      "signals": 165,
+      "differences": 0
+    },
+    "existing_editorial_receipts": {
+      "count": 5,
+      "bytes_unchanged": true,
+      "hashes_match": true,
+      "depth_pass": true
+    },
+    "protected_trees_unchanged": [
+      "data",
+      "config",
+      ".github",
+      "web/data"
+    ]
+  },
+  "builder_reported_validation": {
+    "focal_browser_pass": 28,
+    "not_independently_reexecuted_entire_suite": true
+  },
+  "holds_preserved": [
+    "IF10670 legacy REVISE/publication",
+    "HOLD_COVERAGE_ESENCIAL FEFI",
+    "HOLD_SOURCE_METHOD BCBSA",
+    "SE37 contradictory indicator",
+    "Reuters license",
+    "source preflight"
+  ],
+  "p2_and_limits": [
+    "Work6 family precision/tolerance policy",
+    "W6-04 IF7312/IF11076 legal fixtures and substituted decisions",
+    "Native specialized adapters",
+    "AT/zoom/user study unexecuted",
+    "Whitespace-only display_title inherited input boundary; no affected valid published piece corroborated"
+  ],
+  "publication_authorized": false,
+  "merge_authorized": false,
+  "paid_ai_calls": 0,
+  "source_recaptures": 0,
+  "reviewer_code_mutations": 0,
+  "evidence": [
+    {
+      "path": "REVIEW_BASELINE_2026_10_12.md",
+      "sha256": "c9a366a6503233000504b5ea99e3578799434f802cf802d1b065e4a654c6af91",
+      "bytes": 5224
+    },
+    {
+      "path": "signed-surface-probe.py",
+      "sha256": "b2e2f2afdf8af277eedbbf81a234042d08da09f1e58788dff6848cf44527fb04",
+      "bytes": 1500
+    },
+    {
+      "path": "signed-surface-probe.json",
+      "sha256": "9e5d3ad8cb961cf4b301b75ad863421dd1fe4a4b82687f38cd2c1cc7ff45d2f8",
+      "bytes": 34640
+    },
+    {
+      "path": "signed-surface-probe.cjs",
+      "sha256": "2bb4011876e80e6d73428635d85e6bea235117ec54419d2c5ff6b3e8bdb07b5a",
+      "bytes": 1292
+    },
+    {
+      "path": "signed-surface-render-results.json",
+      "sha256": "9a2c8b09bf0219166b4eaf7294c249d8ec286edc2a7d5918cf49b7fd903a19cd",
+      "bytes": 1176
+    },
+    {
+      "path": "signed-title-browser-probe.cjs",
+      "sha256": "f5fd9a4867793f95f63c2f59fd637ec5c0f15bc1b3e302a2a63f1a0301b70137",
+      "bytes": 3815
+    },
+    {
+      "path": "signed-title-browser-baseline.json",
+      "sha256": "edbdba6ba05b0eb3f510f001e6cd3a781dbfd53ce00762ae1aea441858602f4c",
+      "bytes": 1213
+    },
+    {
+      "path": "signed-title-baseline-1440.png",
+      "sha256": "b9a90aa8035d16a29b8196bc2eff0729464446602637671b5462c16dc8037a48",
+      "bytes": 95329
+    },
+    {
+      "path": "signed-title-baseline-390.png",
+      "sha256": "20c703efbaf35d9a0eb4b81e7f1c97a65a8b227e00d9f6fe2ccd50043baa64c5",
+      "bytes": 57518
+    },
+    {
+      "path": "signed-surface-render-results-6048a1d5.json",
+      "sha256": "d097da80b50cd6a5167ee06cc5ccac8d937a001daf355a1835b9aeef7c3cbe8a",
+      "bytes": 914
+    },
+    {
+      "path": "signed-title-browser-final-6048a1d5.json",
+      "sha256": "10d60fc71158a023f128d1f0ef6ef24cd4ae8686903b1ce291e5790685bf2084",
+      "bytes": 1539
+    },
+    {
+      "path": "signed-title-final-6048a1d5-1440.png",
+      "sha256": "a8770cb038e3ffc0715e338cb94048f6a9c03ddf35849994a8095f0a0941b479",
+      "bytes": 91043
+    },
+    {
+      "path": "signed-title-final-6048a1d5-390.png",
+      "sha256": "1472075a47a0297cf36b38a818f56e7e2147fd3c1bab62bf1672a7b8fa0118e2",
+      "bytes": 56021
+    },
+    {
+      "path": "focal-python-final-6048a1d5.log",
+      "sha256": "a5f300453e786ffc4749f48ad50efff6a21ca5b98f3041201eca29626854735d",
+      "bytes": 99
+    },
+    {
+      "path": "focal-node-final-6048a1d5.log",
+      "sha256": "88d766c1ebc2dc895a3690f8be750af8fcf84aec1d168b01b793bf909f564354",
+      "bytes": 4661
+    },
+    {
+      "path": "compatibility-probe.cjs",
+      "sha256": "697feca468dce1525bf022f8bc8f480e95387703d8d036c162247ebcdab7a3e3",
+      "bytes": 1618
+    },
+    {
+      "path": "legacy-compatibility-6048a1d5.json",
+      "sha256": "32b4e3cc370dba3a4204e2a906798dfd2c426b1ae8cd32304be1c512b64b93e0",
+      "bytes": 272
+    },
+    {
+      "path": "receipt-integrity-probe.py",
+      "sha256": "9fc4d4fd3cb9e14228ab0356b5c4a283c8840ec312ba82402f1faf84d5814ef3",
+      "bytes": 1777
+    },
+    {
+      "path": "receipt-integrity-6048a1d5.json",
+      "sha256": "50e1f75b64fe1fe43cbe46a52de954fda6b59b511f090d1433f088c60c09ec4c",
+      "bytes": 2954
+    },
+    {
+      "path": "REVIEW_FINAL_2026_10_12.md",
+      "sha256": "5065f1a6e30eeb28631b243d71fde1ee866b0dd0a917e708bf342daea1995003",
+      "bytes": 5996
+    }
+  ]
+}
