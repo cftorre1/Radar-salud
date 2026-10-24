@@ -1,0 +1,1804 @@
+{
+  "at": "2026-10-24T19:31:48.312161+00:00",
+  "kind": "worker_result",
+  "operation_id": "140df9565b4046ecaf0d37f6f03dda36",
+  "report": {
+    "acceptance_proof": [],
+    "after_hash": "3e880378be5c55825f9cdb56b4299b0079eb5913482ead410844f0d84e4f221a",
+    "audit_fingerprint": "952c6691cefee88fda56789738d9c70d4196f2b0f592820e36b851a9315b93dc",
+    "before_hash": "3e880378be5c55825f9cdb56b4299b0079eb5913482ead410844f0d84e4f221a",
+    "blocker": {
+      "evidence": [
+        {
+          "command": [
+            "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "-q",
+            "-rs",
+            "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+            "-m",
+            "not integration",
+            "tests"
+          ],
+          "failure_hash": "4ab40446aa60419a5be1b713d13c0fe980a66702e6a7746ebffbbc194500ff71",
+          "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+          "log_sha256": "0c08a701a6a1d60220e686af4e4f98d24488ad9a331a38c80f46440df7c01828",
+          "name": "targeted_deterministic_tests",
+          "pytest": {
+            "cases": [],
+            "collected": 0,
+            "failed": 0,
+            "passed": 0,
+            "proof": false,
+            "skipped": 0
+          },
+          "returncode": 124,
+          "status": "FAIL"
+        },
+        {
+          "baseline_full_gate": {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q"
+            ],
+            "output": "Validation command unavailable or timed out: TimeoutExpired",
+            "returncode": 124
+          },
+          "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
+          "blocker_kind": "executor_capability_missing",
+          "changed_paths": [],
+          "context": [
+            {
+              "editable": false,
+              "path": "tests/test_reviewer.py",
+              "sha256": "40c652792e4dcc032942bc1d6e189ac7d2bbe45637bcdeac503f1393406e0f3a"
+            },
+            {
+              "editable": false,
+              "path": "tests/test_web_snapshot.py",
+              "sha256": "9125e69fa24fd7edd51847ffb97baf66fba2c7ef90aac59b7ea0a0c6caad4688"
+            },
+            {
+              "editable": false,
+              "path": "tests/test_beta_source_runtime_fast.py",
+              "sha256": "9e6a9bb5da888dde256fd51183eafaf9463408906a7d029f9482d363ed34b131"
+            },
+            {
+              "editable": false,
+              "path": "scripts/review_candidate.py",
+              "sha256": "474acbcf90c395fc80b0db05d7c8062385939dd75364037e99e58cbeb494b5df"
+            },
+            {
+              "editable": false,
+              "path": "src/radar_salud/editorial_gate.py",
+              "sha256": "9e4669e7e57bc22b70c6f89298d03a34de64ce56c7c61ba6024609df6f46ac38"
+            },
+            {
+              "editable": true,
+              "path": "scripts/export_web_snapshot.py",
+              "sha256": "485f4e2c3250a98d668441bcfae4d0b566d5e7d14006d37e7e21746b47cf5419"
+            },
+            {
+              "editable": true,
+              "path": "src/radar_salud/beta_source_engine_fast.py",
+              "sha256": "bf41467a8f8ee2c7a7cf81f51f483646bfb4335964f98e72e209bf8ed4044c37"
+            },
+            {
+              "editable": true,
+              "path": "src/radar_salud/pending_queue.py",
+              "sha256": "dcb6e6069620b832564a4a2d3556447190e8516228535211ddd0c667afab01ca"
+            }
+          ],
+          "deterministic_planning": {
+            "diagnostic": {
+              "human_required": false,
+              "kind": "executor_capability_missing",
+              "reason": "No deterministic strategy is registered for this source/failure"
+            },
+            "evidence": [],
+            "material_progress": false,
+            "paid_calls": 0,
+            "plan": null,
+            "product_files_written": false,
+            "status": "UNSUPPORTED",
+            "strategy": null
+          },
+          "evidence": [
+            {
+              "captured_stdout_bytes": 2491,
+              "captured_stdout_sha256": "7aa48f3df1b1db660afdc9772694d45c3b6fc85714743954d89df295bfdcdbbb",
+              "command": [
+                "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                "-m",
+                "pytest",
+                "-q",
+                "tests/test_reviewer.py::test_current_snapshot_passes_existing_editorial_gate",
+                "tests/test_web_snapshot.py::test_real_prestador_pulse_keeps_material_and_all_three_resolutions"
+              ],
+              "output": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n_____________ test_current_snapshot_passes_existing_editorial_gate _____________\n\n    def test_current_snapshot_passes_existing_editorial_gate():\n        r=reviewer.review(Path(\"web\"),\"abc\")\n        assert r[\"checks\"][\"editorial\"]\n>       assert not [f for f in r[\"findings\"] if f[\"category\"]==\"data\" and f[\"code\"]!=\"stale_snapshot\"]\nE       AssertionError: assert not [{'category': 'data', 'code': 'stale_source_check', 'path': 'data/source_health.json#sources/superintendencia_normativ...ce_health.json#sources/superintendencia_fiscalizacion', 'detail': 'Source was not polled within seven days', ...}, ...]\n\ntests/test_reviewer.py:16: AssertionError\n______ test_real_prestador_pulse_keeps_material_and_all_three_resolutions ______\n\n    def test_real_prestador_pulse_keeps_material_and_all_three_resolutions():\n        history=json.loads(Path(\"data/history/superintendencia_signals.json\").read_text())[\"signals\"]\n        pulse=next(s for s in m.curate(history,resolve_external=False) if s.get(\"sanction_count\") and \"Prestadores\" in s[\"title\"])\n>       assert pulse[\"sanction_count\"]==len(pulse[\"source_alternatives\"])==3\nE       AssertionError: assert 9 == 3\nE        +  where 9 = len([{'title': 'Resolución Exenta IP/N°6836 - Emisión: 08/09/2026', 'source_name': 'Superintendencia de Salud', 'url': 'ht...w.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n5946-emision-21-08-2026/', 'event_date': '2026-08-21', ...}, ...])\n\ntests/test_web_snapshot.py:112: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_reviewer.py::test_current_snapshot_passes_existing_editorial_gate - AssertionError: assert not [{'category': 'data', 'code': 'stale_source_check', 'path': 'data/source_health.json#sources/superintendencia_normativ...ce_health.json#sources/superintendencia_fiscalizacion', 'detail': 'Source was not polled within seven days', ...}, ...]\nFAILED tests/test_web_snapshot.py::test_real_prestador_pulse_keeps_material_and_all_three_resolutions - AssertionError: assert 9 == 3\n +  where 9 = len([{'title': 'Resolución Exenta IP/N°6836 - Emisión: 08/09/2026', 'source_name': 'Superintendencia de Salud', 'url': 'ht...w.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n5946-emision-21-08-2026/', 'event_date': '2026-08-21', ...}, ...])\n2 failed in 0.51s\n",
+              "returncode": 1
+            },
+            {
+              "command": [
+                "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                "-m",
+                "pytest",
+                "-q"
+              ],
+              "output": "Validation command unavailable or timed out: TimeoutExpired",
+              "returncode": 124
+            }
+          ],
+          "failure_sha256": "06e9254b8ce26f851240f529b4ede7a465c82781c45415ee79398d84b9b745d4",
+          "material_progress": false,
+          "signature": null,
+          "source_run_id": null,
+          "status": "BLOCKED",
+          "validated": false
+        }
+      ],
+      "fingerprint": "777c72c89b42520300169cd7f59bfebd14663038268a92c44a96022842f62b0d",
+      "human_required": false,
+      "kind": "technical",
+      "reason": "Targeted deterministic gate failed; no validated repair candidate",
+      "source_urls": []
+    },
+    "blockers": [
+      {
+        "evidence": [
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q",
+              "-rs",
+              "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+              "-m",
+              "not integration",
+              "tests"
+            ],
+            "failure_hash": "4ab40446aa60419a5be1b713d13c0fe980a66702e6a7746ebffbbc194500ff71",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+            "log_sha256": "0c08a701a6a1d60220e686af4e4f98d24488ad9a331a38c80f46440df7c01828",
+            "name": "targeted_deterministic_tests",
+            "pytest": {
+              "cases": [],
+              "collected": 0,
+              "failed": 0,
+              "passed": 0,
+              "proof": false,
+              "skipped": 0
+            },
+            "returncode": 124,
+            "status": "FAIL"
+          },
+          {
+            "baseline_full_gate": {
+              "command": [
+                "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                "-m",
+                "pytest",
+                "-q"
+              ],
+              "output": "Validation command unavailable or timed out: TimeoutExpired",
+              "returncode": 124
+            },
+            "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
+            "blocker_kind": "executor_capability_missing",
+            "changed_paths": [],
+            "context": [
+              {
+                "editable": false,
+                "path": "tests/test_reviewer.py",
+                "sha256": "40c652792e4dcc032942bc1d6e189ac7d2bbe45637bcdeac503f1393406e0f3a"
+              },
+              {
+                "editable": false,
+                "path": "tests/test_web_snapshot.py",
+                "sha256": "9125e69fa24fd7edd51847ffb97baf66fba2c7ef90aac59b7ea0a0c6caad4688"
+              },
+              {
+                "editable": false,
+                "path": "tests/test_beta_source_runtime_fast.py",
+                "sha256": "9e6a9bb5da888dde256fd51183eafaf9463408906a7d029f9482d363ed34b131"
+              },
+              {
+                "editable": false,
+                "path": "scripts/review_candidate.py",
+                "sha256": "474acbcf90c395fc80b0db05d7c8062385939dd75364037e99e58cbeb494b5df"
+              },
+              {
+                "editable": false,
+                "path": "src/radar_salud/editorial_gate.py",
+                "sha256": "9e4669e7e57bc22b70c6f89298d03a34de64ce56c7c61ba6024609df6f46ac38"
+              },
+              {
+                "editable": true,
+                "path": "scripts/export_web_snapshot.py",
+                "sha256": "485f4e2c3250a98d668441bcfae4d0b566d5e7d14006d37e7e21746b47cf5419"
+              },
+              {
+                "editable": true,
+                "path": "src/radar_salud/beta_source_engine_fast.py",
+                "sha256": "bf41467a8f8ee2c7a7cf81f51f483646bfb4335964f98e72e209bf8ed4044c37"
+              },
+              {
+                "editable": true,
+                "path": "src/radar_salud/pending_queue.py",
+                "sha256": "dcb6e6069620b832564a4a2d3556447190e8516228535211ddd0c667afab01ca"
+              }
+            ],
+            "deterministic_planning": {
+              "diagnostic": {
+                "human_required": false,
+                "kind": "executor_capability_missing",
+                "reason": "No deterministic strategy is registered for this source/failure"
+              },
+              "evidence": [],
+              "material_progress": false,
+              "paid_calls": 0,
+              "plan": null,
+              "product_files_written": false,
+              "status": "UNSUPPORTED",
+              "strategy": null
+            },
+            "evidence": [
+              {
+                "captured_stdout_bytes": 2491,
+                "captured_stdout_sha256": "7aa48f3df1b1db660afdc9772694d45c3b6fc85714743954d89df295bfdcdbbb",
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q",
+                  "tests/test_reviewer.py::test_current_snapshot_passes_existing_editorial_gate",
+                  "tests/test_web_snapshot.py::test_real_prestador_pulse_keeps_material_and_all_three_resolutions"
+                ],
+                "output": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n_____________ test_current_snapshot_passes_existing_editorial_gate _____________\n\n    def test_current_snapshot_passes_existing_editorial_gate():\n        r=reviewer.review(Path(\"web\"),\"abc\")\n        assert r[\"checks\"][\"editorial\"]\n>       assert not [f for f in r[\"findings\"] if f[\"category\"]==\"data\" and f[\"code\"]!=\"stale_snapshot\"]\nE       AssertionError: assert not [{'category': 'data', 'code': 'stale_source_check', 'path': 'data/source_health.json#sources/superintendencia_normativ...ce_health.json#sources/superintendencia_fiscalizacion', 'detail': 'Source was not polled within seven days', ...}, ...]\n\ntests/test_reviewer.py:16: AssertionError\n______ test_real_prestador_pulse_keeps_material_and_all_three_resolutions ______\n\n    def test_real_prestador_pulse_keeps_material_and_all_three_resolutions():\n        history=json.loads(Path(\"data/history/superintendencia_signals.json\").read_text())[\"signals\"]\n        pulse=next(s for s in m.curate(history,resolve_external=False) if s.get(\"sanction_count\") and \"Prestadores\" in s[\"title\"])\n>       assert pulse[\"sanction_count\"]==len(pulse[\"source_alternatives\"])==3\nE       AssertionError: assert 9 == 3\nE        +  where 9 = len([{'title': 'Resolución Exenta IP/N°6836 - Emisión: 08/09/2026', 'source_name': 'Superintendencia de Salud', 'url': 'ht...w.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n5946-emision-21-08-2026/', 'event_date': '2026-08-21', ...}, ...])\n\ntests/test_web_snapshot.py:112: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_reviewer.py::test_current_snapshot_passes_existing_editorial_gate - AssertionError: assert not [{'category': 'data', 'code': 'stale_source_check', 'path': 'data/source_health.json#sources/superintendencia_normativ...ce_health.json#sources/superintendencia_fiscalizacion', 'detail': 'Source was not polled within seven days', ...}, ...]\nFAILED tests/test_web_snapshot.py::test_real_prestador_pulse_keeps_material_and_all_three_resolutions - AssertionError: assert 9 == 3\n +  where 9 = len([{'title': 'Resolución Exenta IP/N°6836 - Emisión: 08/09/2026', 'source_name': 'Superintendencia de Salud', 'url': 'ht...w.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n5946-emision-21-08-2026/', 'event_date': '2026-08-21', ...}, ...])\n2 failed in 0.51s\n",
+                "returncode": 1
+              },
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q"
+                ],
+                "output": "Validation command unavailable or timed out: TimeoutExpired",
+                "returncode": 124
+              }
+            ],
+            "failure_sha256": "06e9254b8ce26f851240f529b4ede7a465c82781c45415ee79398d84b9b745d4",
+            "material_progress": false,
+            "signature": null,
+            "source_run_id": null,
+            "status": "BLOCKED",
+            "validated": false
+          }
+        ],
+        "fingerprint": "777c72c89b42520300169cd7f59bfebd14663038268a92c44a96022842f62b0d",
+        "human_required": false,
+        "kind": "technical",
+        "reason": "Targeted deterministic gate failed; no validated repair candidate",
+        "source_urls": []
+      },
+      {
+        "evidence": [
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "scripts/review_candidate.py",
+              "--web",
+              "web",
+              "--sha",
+              "d31314e5d25913f3bdb6eaabbf03858f4f3d3f2c",
+              "--output",
+              "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/reviewer.json"
+            ],
+            "failure_hash": "497228af8e47b79f483de5c4a6dbff7a92fbe755d42edf8ff52ce28c586856dc",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/independent_reviewer.log",
+            "log_sha256": "c887e6368b980bfb49e79e784a8b70447be6bec9a560baa874079a81a238a933",
+            "name": "independent_reviewer",
+            "returncode": 1,
+            "reviewer_proof": {
+              "candidate_sha": "d31314e5d25913f3bdb6eaabbf03858f4f3d3f2c",
+              "checks": {
+                "data": false,
+                "editorial": true,
+                "statistics": true,
+                "ux": true
+              },
+              "findings": [
+                {
+                  "category": "data",
+                  "code": "stale_snapshot",
+                  "detail": "Snapshot older than seven days",
+                  "path": "data/radar_today.json",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/superintendencia_normativa",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/minsal",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/suseso",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/diario_financiero",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/diario_oficial",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/superintendencia_fiscalizacion",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/superintendencia",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/deis",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/redsalud",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/bupa_chile",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/pfizer_chile",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/suseso_news",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/suseso_fiscalizacion",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/prestadores_data",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/red_davila",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/andes_salud",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/clinicas_achs_salud",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/achs_seguro_laboral",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/mutual_seguridad",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/ist",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/pulso_latercera",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/clinicas_chile",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/dipres_health_budget",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/cmf_health_ecosystem",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/sis_isapre_universe",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/global_who",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/global_paho",
+                  "severity": "critical"
+                }
+              ],
+              "limitations": [
+                "Semantic/legal accuracy is not certified by deterministic checks.",
+                "Browser evidence is required separately for desktop/mobile.",
+                "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+              ],
+              "reviewed_at": "2026-10-24T19:30:14.290954+00:00",
+              "reviewer": "deterministic-reviewer"
+            },
+            "status": "FAIL"
+          }
+        ],
+        "fingerprint": "24230cdc888d16d373a798a9764a4b678449e5ca74b74cd44353abf86e346f7f",
+        "human_required": false,
+        "kind": "technical",
+        "reason": "Independent candidate gate rejected or could not execute: independent_reviewer",
+        "source_urls": []
+      },
+      {
+        "evidence": [
+          {
+            "browser_proof": {
+              "cases": [
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 22,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 433
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#detailBody').locator('#entityComparison')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#detailBody').locator('#entityComparison')\u001b[22m\n\n\n  431 |  await expect(pulse).toHaveCount(1);await pulse.locator('[data-detail]').first().click();\n  432 |  const detail=page.locator('#detailBody'),table=detail.locator('#entityComparison');\n> 433 |  await expect(table).toBeVisible();\n      |                      ^\n  434 |  const stock=radar.signals.find(s=>s.title.startsWith('Pulso Isapre')).statistical_view;\n  435 |  if(stock.entity_status==='verified')for(const label of ['Beneficiarios','Cotizantes','Cargas'])await expect(table).toContainText(label);\n  436 |  else{await expect(table).toContainText('desglose no verificado');await expect(table.locator('table')).toHaveCount(0);}\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:433:22"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Pulso Isapre presents stock KPIs with separate contracts and mobility views"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 32,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 520
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"boundary_evidence\": [{\"pages\": 3, \"section\": \"news\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 3, \"section\": \"publications\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 1, \"section\": \"disease_outbreak_news\", \"stop\": \"verified_older_boundary\"}], \"cadence_seconds\": 86400, \"cadence_validation_pending\": true, \"checked_at\": \"2026-10-11T16:07:31.827873+00:00\", \"content_freshness\": \"recent\", \"count_basis\": \"deduplicated_detail_identity_and_publication_verified_items\", \"counts\": {\"30\": 84, \"90\": 241}, \"coverage_completeness\": \"complete\", \"coverage_contract_id\": \"e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56\", \"coverage_from\": \"2026-07-14\", \"coverage_status\": \"complete\", \"coverage_to\": \"2026-10-11\", \"coverage_window_days\": 90, \"deferred\": 237, \"discovered\": 241, \"discovery_recall_30\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 84, \"inventory_url_count\": 84, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_recall_90\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 241, \"inventory_url_count\": 241, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_scope\": \"global_intelligence\", \"editorial_outcome\": \"discovery_only_pending_editorial_and_rights_review\", \"evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json\", \"indexed_counts\": {\"30\": 84, \"90\": 241}, \"material_items\": 148, \"materiality_evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json\", \"materiality_projection_run_id\": \"38155456354\", \"name\": \"WHO\", \"new\": 0, \"new_basis\": \"identities_absent_from_previous_discovery_inventory_not_live_publications\", \"next_cadence_validation_not_before\": \"2026-10-12T16:07:31.827873+00:00\", \"operation_mode\": \"isolated_qualification\", \"outcome\": \"READY_FOR_INTEGRATION\", \"pages_checked\": 7, \"parser_routes\": [\"news\", \"publications\", \"disease_outbreak_news\"], \"pending_date_items\": 0, \"publication_activation\": false, \"published\": 0, \"recent_items\": 84, \"recurrent_operation_proven\": false, \"rejected\": 4, \"source_quality_disposition\": \"pass_data\", \"status\": \"warning\", \"technical_failures\": [], \"technical_status\": \"ok\", \"unique_items\": 241, \"unique_language_urls_90\": 241, \"window_completeness\": {\"30\": \"complete_on_declared_surfaces\", \"90\": \"complete_on_declared_surfaces\"}}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  518 |   const row=health.sources[key];expect(row.discovery_scope).toBe('global_intelligence');\n  519 |   expect(row.publication_activation).toBe(false);expect(row.published).toBe(0);\n> 520 |   expect(product.sources[key]).toEqual(row);\n      |                                ^\n  521 |  }\n  522 |  expect(health.sources.global_reuters.counts).toEqual({'30':null,'90':null});\n  523 |  expect(health.sources.global_reuters.technical_status).toBe('not_polled_license_hold');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:520:32"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Global metadata health stays separate from Chile LIVE coverage"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 91,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 285
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#detailBody .statistical-calculations .intel').locator('li')\nExpected: \u001b[32m3\u001b[39m\nReceived: \u001b[31m0\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#detailBody .statistical-calculations .intel').locator('li')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\u001b[2m      - unexpected value \"0\"\u001b[22m\n\n\n  283 |  await expect(isapre.locator('.card-meta')).toContainText('Validado 24 sept 2026');\n  284 |  await isapre.locator('[data-detail]').first().click();\n> 285 |  await expect(page.locator('#detailBody .statistical-calculations .intel').locator('li')).toHaveCount(3);\n      |                                                                                           ^\n  286 |  await expect(page.locator('#detailBody')).toContainText('2026-01 → 2026-07');\n  287 |  await expect(page.locator('#detailBody')).toContainText('0.615 → 0.605');\n  288 |  await expect(page.locator('#detailBody')).toContainText('72.9%');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:285:91"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 22,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 433
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#detailBody').locator('#entityComparison')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#detailBody').locator('#entityComparison')\u001b[22m\n\n\n  431 |  await expect(pulse).toHaveCount(1);await pulse.locator('[data-detail]').first().click();\n  432 |  const detail=page.locator('#detailBody'),table=detail.locator('#entityComparison');\n> 433 |  await expect(table).toBeVisible();\n      |                      ^\n  434 |  const stock=radar.signals.find(s=>s.title.startsWith('Pulso Isapre')).statistical_view;\n  435 |  if(stock.entity_status==='verified')for(const label of ['Beneficiarios','Cotizantes','Cargas'])await expect(table).toContainText(label);\n  436 |  else{await expect(table).toContainText('desglose no verificado');await expect(table.locator('table')).toHaveCount(0);}\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:433:22"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Pulso Isapre presents stock KPIs with separate contracts and mobility views"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 32,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 520
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"boundary_evidence\": [{\"pages\": 3, \"section\": \"news\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 3, \"section\": \"publications\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 1, \"section\": \"disease_outbreak_news\", \"stop\": \"verified_older_boundary\"}], \"cadence_seconds\": 86400, \"cadence_validation_pending\": true, \"checked_at\": \"2026-10-11T16:07:31.827873+00:00\", \"content_freshness\": \"recent\", \"count_basis\": \"deduplicated_detail_identity_and_publication_verified_items\", \"counts\": {\"30\": 84, \"90\": 241}, \"coverage_completeness\": \"complete\", \"coverage_contract_id\": \"e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56\", \"coverage_from\": \"2026-07-14\", \"coverage_status\": \"complete\", \"coverage_to\": \"2026-10-11\", \"coverage_window_days\": 90, \"deferred\": 237, \"discovered\": 241, \"discovery_recall_30\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 84, \"inventory_url_count\": 84, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_recall_90\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 241, \"inventory_url_count\": 241, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_scope\": \"global_intelligence\", \"editorial_outcome\": \"discovery_only_pending_editorial_and_rights_review\", \"evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json\", \"indexed_counts\": {\"30\": 84, \"90\": 241}, \"material_items\": 148, \"materiality_evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json\", \"materiality_projection_run_id\": \"38155456354\", \"name\": \"WHO\", \"new\": 0, \"new_basis\": \"identities_absent_from_previous_discovery_inventory_not_live_publications\", \"next_cadence_validation_not_before\": \"2026-10-12T16:07:31.827873+00:00\", \"operation_mode\": \"isolated_qualification\", \"outcome\": \"READY_FOR_INTEGRATION\", \"pages_checked\": 7, \"parser_routes\": [\"news\", \"publications\", \"disease_outbreak_news\"], \"pending_date_items\": 0, \"publication_activation\": false, \"published\": 0, \"recent_items\": 84, \"recurrent_operation_proven\": false, \"rejected\": 4, \"source_quality_disposition\": \"pass_data\", \"status\": \"warning\", \"technical_failures\": [], \"technical_status\": \"ok\", \"unique_items\": 241, \"unique_language_urls_90\": 241, \"window_completeness\": {\"30\": \"complete_on_declared_surfaces\", \"90\": \"complete_on_declared_surfaces\"}}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  518 |   const row=health.sources[key];expect(row.discovery_scope).toBe('global_intelligence');\n  519 |   expect(row.publication_activation).toBe(false);expect(row.published).toBe(0);\n> 520 |   expect(product.sources[key]).toEqual(row);\n      |                                ^\n  521 |  }\n  522 |  expect(health.sources.global_reuters.counts).toEqual({'30':null,'90':null});\n  523 |  expect(health.sources.global_reuters.technical_status).toBe('not_polled_license_hold');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:520:32"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Global metadata health stays separate from Chile LIVE coverage"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 91,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 285
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#detailBody .statistical-calculations .intel').locator('li')\nExpected: \u001b[32m3\u001b[39m\nReceived: \u001b[31m0\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#detailBody .statistical-calculations .intel').locator('li')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\u001b[2m      - unexpected value \"0\"\u001b[22m\n\n\n  283 |  await expect(isapre.locator('.card-meta')).toContainText('Validado 24 sept 2026');\n  284 |  await isapre.locator('[data-detail]').first().click();\n> 285 |  await expect(page.locator('#detailBody .statistical-calculations .intel').locator('li')).toHaveCount(3);\n      |                                                                                           ^\n  286 |  await expect(page.locator('#detailBody')).toContainText('2026-01 → 2026-07');\n  287 |  await expect(page.locator('#detailBody')).toContainText('0.615 → 0.605');\n  288 |  await expect(page.locator('#detailBody')).toContainText('72.9%');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:285:91"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                }
+              ],
+              "projects": [
+                "desktop",
+                "mobile"
+              ],
+              "stats": {
+                "duration": 84916.31599999999,
+                "expected": 88,
+                "flaky": 0,
+                "skipped": 0,
+                "startTime": "2026-10-24T19:30:14.992Z",
+                "unexpected": 6
+              }
+            },
+            "command": [
+              "npm",
+              "run",
+              "test:browser"
+            ],
+            "failure_hash": "b432a7357d477c36013a675ab79a43b5dd2ed1288dece030ed281eb8da2a7295",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+            "log_sha256": "bf6363f5228119021077a01c84f96a9fe887e40f7ad309b944b514718eb5eff5",
+            "name": "browser_desktop_and_mobile",
+            "returncode": 1,
+            "status": "FAIL"
+          }
+        ],
+        "fingerprint": "27c9a8d8b66a773836a92d5a62ed04dd9b870f97cd1634e8f30cf46046f3d146",
+        "human_required": false,
+        "kind": "technical",
+        "reason": "Independent candidate gate rejected or could not execute: browser_desktop_and_mobile",
+        "source_urls": []
+      },
+      {
+        "evidence": [
+          {
+            "diagnostics_are_acceptance": false,
+            "family": "staging_qa",
+            "task_id": "staging_qa_failed_run_40123646028"
+          }
+        ],
+        "fingerprint": "c92ed895e508b3fe52ef3b5f2eb43bf94f49338e43d777ca318061c3d7fb9778",
+        "human_required": false,
+        "kind": "acceptance",
+        "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+        "source_urls": []
+      }
+    ],
+    "changed_paths": [],
+    "evidence": [
+      {
+        "failed_workflow_log": "/home/runner/work/Radar-salud/Radar-salud/candidate/artifacts/autonomy/demonstrated-failure.log",
+        "sha256": "06e9254b8ce26f851240f529b4ede7a465c82781c45415ee79398d84b9b745d4",
+        "source_run_id": 40123646028,
+        "source_run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/40123646028"
+      },
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+          "-m",
+          "not integration",
+          "tests"
+        ],
+        "failure_hash": "4ab40446aa60419a5be1b713d13c0fe980a66702e6a7746ebffbbc194500ff71",
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+        "log_sha256": "0c08a701a6a1d60220e686af4e4f98d24488ad9a331a38c80f46440df7c01828",
+        "name": "targeted_deterministic_tests",
+        "pytest": {
+          "cases": [],
+          "collected": 0,
+          "failed": 0,
+          "passed": 0,
+          "proof": false,
+          "skipped": 0
+        },
+        "returncode": 124,
+        "status": "FAIL"
+      },
+      {
+        "recovery_attempt": {
+          "baseline_full_gate": {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q"
+            ],
+            "output": "Validation command unavailable or timed out: TimeoutExpired",
+            "returncode": 124
+          },
+          "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
+          "blocker_kind": "executor_capability_missing",
+          "changed_paths": [],
+          "context": [
+            {
+              "editable": false,
+              "path": "tests/test_reviewer.py",
+              "sha256": "40c652792e4dcc032942bc1d6e189ac7d2bbe45637bcdeac503f1393406e0f3a"
+            },
+            {
+              "editable": false,
+              "path": "tests/test_web_snapshot.py",
+              "sha256": "9125e69fa24fd7edd51847ffb97baf66fba2c7ef90aac59b7ea0a0c6caad4688"
+            },
+            {
+              "editable": false,
+              "path": "tests/test_beta_source_runtime_fast.py",
+              "sha256": "9e6a9bb5da888dde256fd51183eafaf9463408906a7d029f9482d363ed34b131"
+            },
+            {
+              "editable": false,
+              "path": "scripts/review_candidate.py",
+              "sha256": "474acbcf90c395fc80b0db05d7c8062385939dd75364037e99e58cbeb494b5df"
+            },
+            {
+              "editable": false,
+              "path": "src/radar_salud/editorial_gate.py",
+              "sha256": "9e4669e7e57bc22b70c6f89298d03a34de64ce56c7c61ba6024609df6f46ac38"
+            },
+            {
+              "editable": true,
+              "path": "scripts/export_web_snapshot.py",
+              "sha256": "485f4e2c3250a98d668441bcfae4d0b566d5e7d14006d37e7e21746b47cf5419"
+            },
+            {
+              "editable": true,
+              "path": "src/radar_salud/beta_source_engine_fast.py",
+              "sha256": "bf41467a8f8ee2c7a7cf81f51f483646bfb4335964f98e72e209bf8ed4044c37"
+            },
+            {
+              "editable": true,
+              "path": "src/radar_salud/pending_queue.py",
+              "sha256": "dcb6e6069620b832564a4a2d3556447190e8516228535211ddd0c667afab01ca"
+            }
+          ],
+          "deterministic_planning": {
+            "diagnostic": {
+              "human_required": false,
+              "kind": "executor_capability_missing",
+              "reason": "No deterministic strategy is registered for this source/failure"
+            },
+            "evidence": [],
+            "material_progress": false,
+            "paid_calls": 0,
+            "plan": null,
+            "product_files_written": false,
+            "status": "UNSUPPORTED",
+            "strategy": null
+          },
+          "evidence": [
+            {
+              "captured_stdout_bytes": 2491,
+              "captured_stdout_sha256": "7aa48f3df1b1db660afdc9772694d45c3b6fc85714743954d89df295bfdcdbbb",
+              "command": [
+                "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                "-m",
+                "pytest",
+                "-q",
+                "tests/test_reviewer.py::test_current_snapshot_passes_existing_editorial_gate",
+                "tests/test_web_snapshot.py::test_real_prestador_pulse_keeps_material_and_all_three_resolutions"
+              ],
+              "output": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n_____________ test_current_snapshot_passes_existing_editorial_gate _____________\n\n    def test_current_snapshot_passes_existing_editorial_gate():\n        r=reviewer.review(Path(\"web\"),\"abc\")\n        assert r[\"checks\"][\"editorial\"]\n>       assert not [f for f in r[\"findings\"] if f[\"category\"]==\"data\" and f[\"code\"]!=\"stale_snapshot\"]\nE       AssertionError: assert not [{'category': 'data', 'code': 'stale_source_check', 'path': 'data/source_health.json#sources/superintendencia_normativ...ce_health.json#sources/superintendencia_fiscalizacion', 'detail': 'Source was not polled within seven days', ...}, ...]\n\ntests/test_reviewer.py:16: AssertionError\n______ test_real_prestador_pulse_keeps_material_and_all_three_resolutions ______\n\n    def test_real_prestador_pulse_keeps_material_and_all_three_resolutions():\n        history=json.loads(Path(\"data/history/superintendencia_signals.json\").read_text())[\"signals\"]\n        pulse=next(s for s in m.curate(history,resolve_external=False) if s.get(\"sanction_count\") and \"Prestadores\" in s[\"title\"])\n>       assert pulse[\"sanction_count\"]==len(pulse[\"source_alternatives\"])==3\nE       AssertionError: assert 9 == 3\nE        +  where 9 = len([{'title': 'Resolución Exenta IP/N°6836 - Emisión: 08/09/2026', 'source_name': 'Superintendencia de Salud', 'url': 'ht...w.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n5946-emision-21-08-2026/', 'event_date': '2026-08-21', ...}, ...])\n\ntests/test_web_snapshot.py:112: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_reviewer.py::test_current_snapshot_passes_existing_editorial_gate - AssertionError: assert not [{'category': 'data', 'code': 'stale_source_check', 'path': 'data/source_health.json#sources/superintendencia_normativ...ce_health.json#sources/superintendencia_fiscalizacion', 'detail': 'Source was not polled within seven days', ...}, ...]\nFAILED tests/test_web_snapshot.py::test_real_prestador_pulse_keeps_material_and_all_three_resolutions - AssertionError: assert 9 == 3\n +  where 9 = len([{'title': 'Resolución Exenta IP/N°6836 - Emisión: 08/09/2026', 'source_name': 'Superintendencia de Salud', 'url': 'ht...w.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n5946-emision-21-08-2026/', 'event_date': '2026-08-21', ...}, ...])\n2 failed in 0.51s\n",
+              "returncode": 1
+            },
+            {
+              "command": [
+                "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                "-m",
+                "pytest",
+                "-q"
+              ],
+              "output": "Validation command unavailable or timed out: TimeoutExpired",
+              "returncode": 124
+            }
+          ],
+          "failure_sha256": "06e9254b8ce26f851240f529b4ede7a465c82781c45415ee79398d84b9b745d4",
+          "material_progress": false,
+          "signature": null,
+          "source_run_id": null,
+          "status": "BLOCKED",
+          "validated": false
+        }
+      },
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "scripts/review_candidate.py",
+          "--web",
+          "web",
+          "--sha",
+          "d31314e5d25913f3bdb6eaabbf03858f4f3d3f2c",
+          "--output",
+          "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/reviewer.json"
+        ],
+        "failure_hash": "497228af8e47b79f483de5c4a6dbff7a92fbe755d42edf8ff52ce28c586856dc",
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/independent_reviewer.log",
+        "log_sha256": "c887e6368b980bfb49e79e784a8b70447be6bec9a560baa874079a81a238a933",
+        "name": "independent_reviewer",
+        "returncode": 1,
+        "reviewer_proof": {
+          "candidate_sha": "d31314e5d25913f3bdb6eaabbf03858f4f3d3f2c",
+          "checks": {
+            "data": false,
+            "editorial": true,
+            "statistics": true,
+            "ux": true
+          },
+          "findings": [
+            {
+              "category": "data",
+              "code": "stale_snapshot",
+              "detail": "Snapshot older than seven days",
+              "path": "data/radar_today.json",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/superintendencia_normativa",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/minsal",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/suseso",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/diario_financiero",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/diario_oficial",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/superintendencia_fiscalizacion",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/superintendencia",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/deis",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/redsalud",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/bupa_chile",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/pfizer_chile",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/suseso_news",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/suseso_fiscalizacion",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/prestadores_data",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/red_davila",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/andes_salud",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/clinicas_achs_salud",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/achs_seguro_laboral",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/mutual_seguridad",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/ist",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/pulso_latercera",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/clinicas_chile",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/dipres_health_budget",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/cmf_health_ecosystem",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/sis_isapre_universe",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/global_who",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/global_paho",
+              "severity": "critical"
+            }
+          ],
+          "limitations": [
+            "Semantic/legal accuracy is not certified by deterministic checks.",
+            "Browser evidence is required separately for desktop/mobile.",
+            "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+          ],
+          "reviewed_at": "2026-10-24T19:30:14.290954+00:00",
+          "reviewer": "deterministic-reviewer"
+        },
+        "status": "FAIL"
+      },
+      {
+        "browser_proof": {
+          "cases": [
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 22,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 433
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#detailBody').locator('#entityComparison')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#detailBody').locator('#entityComparison')\u001b[22m\n\n\n  431 |  await expect(pulse).toHaveCount(1);await pulse.locator('[data-detail]').first().click();\n  432 |  const detail=page.locator('#detailBody'),table=detail.locator('#entityComparison');\n> 433 |  await expect(table).toBeVisible();\n      |                      ^\n  434 |  const stock=radar.signals.find(s=>s.title.startsWith('Pulso Isapre')).statistical_view;\n  435 |  if(stock.entity_status==='verified')for(const label of ['Beneficiarios','Cotizantes','Cargas'])await expect(table).toContainText(label);\n  436 |  else{await expect(table).toContainText('desglose no verificado');await expect(table.locator('table')).toHaveCount(0);}\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:433:22"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Pulso Isapre presents stock KPIs with separate contracts and mobility views"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 32,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 520
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"boundary_evidence\": [{\"pages\": 3, \"section\": \"news\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 3, \"section\": \"publications\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 1, \"section\": \"disease_outbreak_news\", \"stop\": \"verified_older_boundary\"}], \"cadence_seconds\": 86400, \"cadence_validation_pending\": true, \"checked_at\": \"2026-10-11T16:07:31.827873+00:00\", \"content_freshness\": \"recent\", \"count_basis\": \"deduplicated_detail_identity_and_publication_verified_items\", \"counts\": {\"30\": 84, \"90\": 241}, \"coverage_completeness\": \"complete\", \"coverage_contract_id\": \"e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56\", \"coverage_from\": \"2026-07-14\", \"coverage_status\": \"complete\", \"coverage_to\": \"2026-10-11\", \"coverage_window_days\": 90, \"deferred\": 237, \"discovered\": 241, \"discovery_recall_30\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 84, \"inventory_url_count\": 84, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_recall_90\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 241, \"inventory_url_count\": 241, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_scope\": \"global_intelligence\", \"editorial_outcome\": \"discovery_only_pending_editorial_and_rights_review\", \"evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json\", \"indexed_counts\": {\"30\": 84, \"90\": 241}, \"material_items\": 148, \"materiality_evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json\", \"materiality_projection_run_id\": \"38155456354\", \"name\": \"WHO\", \"new\": 0, \"new_basis\": \"identities_absent_from_previous_discovery_inventory_not_live_publications\", \"next_cadence_validation_not_before\": \"2026-10-12T16:07:31.827873+00:00\", \"operation_mode\": \"isolated_qualification\", \"outcome\": \"READY_FOR_INTEGRATION\", \"pages_checked\": 7, \"parser_routes\": [\"news\", \"publications\", \"disease_outbreak_news\"], \"pending_date_items\": 0, \"publication_activation\": false, \"published\": 0, \"recent_items\": 84, \"recurrent_operation_proven\": false, \"rejected\": 4, \"source_quality_disposition\": \"pass_data\", \"status\": \"warning\", \"technical_failures\": [], \"technical_status\": \"ok\", \"unique_items\": 241, \"unique_language_urls_90\": 241, \"window_completeness\": {\"30\": \"complete_on_declared_surfaces\", \"90\": \"complete_on_declared_surfaces\"}}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  518 |   const row=health.sources[key];expect(row.discovery_scope).toBe('global_intelligence');\n  519 |   expect(row.publication_activation).toBe(false);expect(row.published).toBe(0);\n> 520 |   expect(product.sources[key]).toEqual(row);\n      |                                ^\n  521 |  }\n  522 |  expect(health.sources.global_reuters.counts).toEqual({'30':null,'90':null});\n  523 |  expect(health.sources.global_reuters.technical_status).toBe('not_polled_license_hold');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:520:32"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Global metadata health stays separate from Chile LIVE coverage"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 91,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 285
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#detailBody .statistical-calculations .intel').locator('li')\nExpected: \u001b[32m3\u001b[39m\nReceived: \u001b[31m0\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#detailBody .statistical-calculations .intel').locator('li')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\u001b[2m      - unexpected value \"0\"\u001b[22m\n\n\n  283 |  await expect(isapre.locator('.card-meta')).toContainText('Validado 24 sept 2026');\n  284 |  await isapre.locator('[data-detail]').first().click();\n> 285 |  await expect(page.locator('#detailBody .statistical-calculations .intel').locator('li')).toHaveCount(3);\n      |                                                                                           ^\n  286 |  await expect(page.locator('#detailBody')).toContainText('2026-01 → 2026-07');\n  287 |  await expect(page.locator('#detailBody')).toContainText('0.615 → 0.605');\n  288 |  await expect(page.locator('#detailBody')).toContainText('72.9%');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:285:91"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 22,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 433
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#detailBody').locator('#entityComparison')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#detailBody').locator('#entityComparison')\u001b[22m\n\n\n  431 |  await expect(pulse).toHaveCount(1);await pulse.locator('[data-detail]').first().click();\n  432 |  const detail=page.locator('#detailBody'),table=detail.locator('#entityComparison');\n> 433 |  await expect(table).toBeVisible();\n      |                      ^\n  434 |  const stock=radar.signals.find(s=>s.title.startsWith('Pulso Isapre')).statistical_view;\n  435 |  if(stock.entity_status==='verified')for(const label of ['Beneficiarios','Cotizantes','Cargas'])await expect(table).toContainText(label);\n  436 |  else{await expect(table).toContainText('desglose no verificado');await expect(table.locator('table')).toHaveCount(0);}\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:433:22"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Pulso Isapre presents stock KPIs with separate contracts and mobility views"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 32,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 520
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"boundary_evidence\": [{\"pages\": 3, \"section\": \"news\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 3, \"section\": \"publications\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 1, \"section\": \"disease_outbreak_news\", \"stop\": \"verified_older_boundary\"}], \"cadence_seconds\": 86400, \"cadence_validation_pending\": true, \"checked_at\": \"2026-10-11T16:07:31.827873+00:00\", \"content_freshness\": \"recent\", \"count_basis\": \"deduplicated_detail_identity_and_publication_verified_items\", \"counts\": {\"30\": 84, \"90\": 241}, \"coverage_completeness\": \"complete\", \"coverage_contract_id\": \"e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56\", \"coverage_from\": \"2026-07-14\", \"coverage_status\": \"complete\", \"coverage_to\": \"2026-10-11\", \"coverage_window_days\": 90, \"deferred\": 237, \"discovered\": 241, \"discovery_recall_30\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 84, \"inventory_url_count\": 84, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_recall_90\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 241, \"inventory_url_count\": 241, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_scope\": \"global_intelligence\", \"editorial_outcome\": \"discovery_only_pending_editorial_and_rights_review\", \"evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json\", \"indexed_counts\": {\"30\": 84, \"90\": 241}, \"material_items\": 148, \"materiality_evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json\", \"materiality_projection_run_id\": \"38155456354\", \"name\": \"WHO\", \"new\": 0, \"new_basis\": \"identities_absent_from_previous_discovery_inventory_not_live_publications\", \"next_cadence_validation_not_before\": \"2026-10-12T16:07:31.827873+00:00\", \"operation_mode\": \"isolated_qualification\", \"outcome\": \"READY_FOR_INTEGRATION\", \"pages_checked\": 7, \"parser_routes\": [\"news\", \"publications\", \"disease_outbreak_news\"], \"pending_date_items\": 0, \"publication_activation\": false, \"published\": 0, \"recent_items\": 84, \"recurrent_operation_proven\": false, \"rejected\": 4, \"source_quality_disposition\": \"pass_data\", \"status\": \"warning\", \"technical_failures\": [], \"technical_status\": \"ok\", \"unique_items\": 241, \"unique_language_urls_90\": 241, \"window_completeness\": {\"30\": \"complete_on_declared_surfaces\", \"90\": \"complete_on_declared_surfaces\"}}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  518 |   const row=health.sources[key];expect(row.discovery_scope).toBe('global_intelligence');\n  519 |   expect(row.publication_activation).toBe(false);expect(row.published).toBe(0);\n> 520 |   expect(product.sources[key]).toEqual(row);\n      |                                ^\n  521 |  }\n  522 |  expect(health.sources.global_reuters.counts).toEqual({'30':null,'90':null});\n  523 |  expect(health.sources.global_reuters.technical_status).toBe('not_polled_license_hold');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:520:32"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Global metadata health stays separate from Chile LIVE coverage"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 91,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 285
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#detailBody .statistical-calculations .intel').locator('li')\nExpected: \u001b[32m3\u001b[39m\nReceived: \u001b[31m0\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#detailBody .statistical-calculations .intel').locator('li')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\u001b[2m      - unexpected value \"0\"\u001b[22m\n\n\n  283 |  await expect(isapre.locator('.card-meta')).toContainText('Validado 24 sept 2026');\n  284 |  await isapre.locator('[data-detail]').first().click();\n> 285 |  await expect(page.locator('#detailBody .statistical-calculations .intel').locator('li')).toHaveCount(3);\n      |                                                                                           ^\n  286 |  await expect(page.locator('#detailBody')).toContainText('2026-01 → 2026-07');\n  287 |  await expect(page.locator('#detailBody')).toContainText('0.615 → 0.605');\n  288 |  await expect(page.locator('#detailBody')).toContainText('72.9%');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:285:91"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+            }
+          ],
+          "projects": [
+            "desktop",
+            "mobile"
+          ],
+          "stats": {
+            "duration": 84916.31599999999,
+            "expected": 88,
+            "flaky": 0,
+            "skipped": 0,
+            "startTime": "2026-10-24T19:30:14.992Z",
+            "unexpected": 6
+          }
+        },
+        "command": [
+          "npm",
+          "run",
+          "test:browser"
+        ],
+        "failure_hash": "b432a7357d477c36013a675ab79a43b5dd2ed1288dece030ed281eb8da2a7295",
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+        "log_sha256": "bf6363f5228119021077a01c84f96a9fe887e40f7ad309b944b514718eb5eff5",
+        "name": "browser_desktop_and_mobile",
+        "returncode": 1,
+        "status": "FAIL"
+      }
+    ],
+    "evidence_revision": "9ac299e1e1247afcc4961e39ad26ce413ae031e6c4851742d31c5b43635985be",
+    "family": "staging_qa",
+    "family_live_validated": false,
+    "gates": [
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+          "-m",
+          "not integration",
+          "tests"
+        ],
+        "failure_hash": "4ab40446aa60419a5be1b713d13c0fe980a66702e6a7746ebffbbc194500ff71",
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+        "log_sha256": "0c08a701a6a1d60220e686af4e4f98d24488ad9a331a38c80f46440df7c01828",
+        "name": "targeted_deterministic_tests",
+        "pytest": {
+          "cases": [],
+          "collected": 0,
+          "failed": 0,
+          "passed": 0,
+          "proof": false,
+          "skipped": 0
+        },
+        "returncode": 124,
+        "status": "FAIL"
+      },
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "scripts/review_candidate.py",
+          "--web",
+          "web",
+          "--sha",
+          "d31314e5d25913f3bdb6eaabbf03858f4f3d3f2c",
+          "--output",
+          "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/reviewer.json"
+        ],
+        "failure_hash": "497228af8e47b79f483de5c4a6dbff7a92fbe755d42edf8ff52ce28c586856dc",
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/independent_reviewer.log",
+        "log_sha256": "c887e6368b980bfb49e79e784a8b70447be6bec9a560baa874079a81a238a933",
+        "name": "independent_reviewer",
+        "returncode": 1,
+        "reviewer_proof": {
+          "candidate_sha": "d31314e5d25913f3bdb6eaabbf03858f4f3d3f2c",
+          "checks": {
+            "data": false,
+            "editorial": true,
+            "statistics": true,
+            "ux": true
+          },
+          "findings": [
+            {
+              "category": "data",
+              "code": "stale_snapshot",
+              "detail": "Snapshot older than seven days",
+              "path": "data/radar_today.json",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/superintendencia_normativa",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/minsal",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/suseso",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/diario_financiero",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/diario_oficial",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/superintendencia_fiscalizacion",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/superintendencia",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/deis",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/redsalud",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/bupa_chile",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/pfizer_chile",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/suseso_news",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/suseso_fiscalizacion",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/prestadores_data",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/red_davila",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/andes_salud",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/clinicas_achs_salud",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/achs_seguro_laboral",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/mutual_seguridad",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/ist",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/pulso_latercera",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/clinicas_chile",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/dipres_health_budget",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/cmf_health_ecosystem",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/sis_isapre_universe",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/global_who",
+              "severity": "critical"
+            },
+            {
+              "category": "data",
+              "code": "stale_source_check",
+              "detail": "Source was not polled within seven days",
+              "path": "data/source_health.json#sources/global_paho",
+              "severity": "critical"
+            }
+          ],
+          "limitations": [
+            "Semantic/legal accuracy is not certified by deterministic checks.",
+            "Browser evidence is required separately for desktop/mobile.",
+            "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+          ],
+          "reviewed_at": "2026-10-24T19:30:14.290954+00:00",
+          "reviewer": "deterministic-reviewer"
+        },
+        "status": "FAIL"
+      },
+      {
+        "browser_proof": {
+          "cases": [
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 22,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 433
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#detailBody').locator('#entityComparison')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#detailBody').locator('#entityComparison')\u001b[22m\n\n\n  431 |  await expect(pulse).toHaveCount(1);await pulse.locator('[data-detail]').first().click();\n  432 |  const detail=page.locator('#detailBody'),table=detail.locator('#entityComparison');\n> 433 |  await expect(table).toBeVisible();\n      |                      ^\n  434 |  const stock=radar.signals.find(s=>s.title.startsWith('Pulso Isapre')).statistical_view;\n  435 |  if(stock.entity_status==='verified')for(const label of ['Beneficiarios','Cotizantes','Cargas'])await expect(table).toContainText(label);\n  436 |  else{await expect(table).toContainText('desglose no verificado');await expect(table.locator('table')).toHaveCount(0);}\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:433:22"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Pulso Isapre presents stock KPIs with separate contracts and mobility views"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 32,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 520
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"boundary_evidence\": [{\"pages\": 3, \"section\": \"news\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 3, \"section\": \"publications\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 1, \"section\": \"disease_outbreak_news\", \"stop\": \"verified_older_boundary\"}], \"cadence_seconds\": 86400, \"cadence_validation_pending\": true, \"checked_at\": \"2026-10-11T16:07:31.827873+00:00\", \"content_freshness\": \"recent\", \"count_basis\": \"deduplicated_detail_identity_and_publication_verified_items\", \"counts\": {\"30\": 84, \"90\": 241}, \"coverage_completeness\": \"complete\", \"coverage_contract_id\": \"e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56\", \"coverage_from\": \"2026-07-14\", \"coverage_status\": \"complete\", \"coverage_to\": \"2026-10-11\", \"coverage_window_days\": 90, \"deferred\": 237, \"discovered\": 241, \"discovery_recall_30\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 84, \"inventory_url_count\": 84, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_recall_90\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 241, \"inventory_url_count\": 241, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_scope\": \"global_intelligence\", \"editorial_outcome\": \"discovery_only_pending_editorial_and_rights_review\", \"evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json\", \"indexed_counts\": {\"30\": 84, \"90\": 241}, \"material_items\": 148, \"materiality_evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json\", \"materiality_projection_run_id\": \"38155456354\", \"name\": \"WHO\", \"new\": 0, \"new_basis\": \"identities_absent_from_previous_discovery_inventory_not_live_publications\", \"next_cadence_validation_not_before\": \"2026-10-12T16:07:31.827873+00:00\", \"operation_mode\": \"isolated_qualification\", \"outcome\": \"READY_FOR_INTEGRATION\", \"pages_checked\": 7, \"parser_routes\": [\"news\", \"publications\", \"disease_outbreak_news\"], \"pending_date_items\": 0, \"publication_activation\": false, \"published\": 0, \"recent_items\": 84, \"recurrent_operation_proven\": false, \"rejected\": 4, \"source_quality_disposition\": \"pass_data\", \"status\": \"warning\", \"technical_failures\": [], \"technical_status\": \"ok\", \"unique_items\": 241, \"unique_language_urls_90\": 241, \"window_completeness\": {\"30\": \"complete_on_declared_surfaces\", \"90\": \"complete_on_declared_surfaces\"}}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  518 |   const row=health.sources[key];expect(row.discovery_scope).toBe('global_intelligence');\n  519 |   expect(row.publication_activation).toBe(false);expect(row.published).toBe(0);\n> 520 |   expect(product.sources[key]).toEqual(row);\n      |                                ^\n  521 |  }\n  522 |  expect(health.sources.global_reuters.counts).toEqual({'30':null,'90':null});\n  523 |  expect(health.sources.global_reuters.technical_status).toBe('not_polled_license_hold');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:520:32"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Global metadata health stays separate from Chile LIVE coverage"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 91,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 285
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#detailBody .statistical-calculations .intel').locator('li')\nExpected: \u001b[32m3\u001b[39m\nReceived: \u001b[31m0\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#detailBody .statistical-calculations .intel').locator('li')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\u001b[2m      - unexpected value \"0\"\u001b[22m\n\n\n  283 |  await expect(isapre.locator('.card-meta')).toContainText('Validado 24 sept 2026');\n  284 |  await isapre.locator('[data-detail]').first().click();\n> 285 |  await expect(page.locator('#detailBody .statistical-calculations .intel').locator('li')).toHaveCount(3);\n      |                                                                                           ^\n  286 |  await expect(page.locator('#detailBody')).toContainText('2026-01 → 2026-07');\n  287 |  await expect(page.locator('#detailBody')).toContainText('0.615 → 0.605');\n  288 |  await expect(page.locator('#detailBody')).toContainText('72.9%');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:285:91"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 22,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 433
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#detailBody').locator('#entityComparison')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#detailBody').locator('#entityComparison')\u001b[22m\n\n\n  431 |  await expect(pulse).toHaveCount(1);await pulse.locator('[data-detail]').first().click();\n  432 |  const detail=page.locator('#detailBody'),table=detail.locator('#entityComparison');\n> 433 |  await expect(table).toBeVisible();\n      |                      ^\n  434 |  const stock=radar.signals.find(s=>s.title.startsWith('Pulso Isapre')).statistical_view;\n  435 |  if(stock.entity_status==='verified')for(const label of ['Beneficiarios','Cotizantes','Cargas'])await expect(table).toContainText(label);\n  436 |  else{await expect(table).toContainText('desglose no verificado');await expect(table.locator('table')).toHaveCount(0);}\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:433:22"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Pulso Isapre presents stock KPIs with separate contracts and mobility views"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 32,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 520
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"boundary_evidence\": [{\"pages\": 3, \"section\": \"news\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 3, \"section\": \"publications\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 1, \"section\": \"disease_outbreak_news\", \"stop\": \"verified_older_boundary\"}], \"cadence_seconds\": 86400, \"cadence_validation_pending\": true, \"checked_at\": \"2026-10-11T16:07:31.827873+00:00\", \"content_freshness\": \"recent\", \"count_basis\": \"deduplicated_detail_identity_and_publication_verified_items\", \"counts\": {\"30\": 84, \"90\": 241}, \"coverage_completeness\": \"complete\", \"coverage_contract_id\": \"e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56\", \"coverage_from\": \"2026-07-14\", \"coverage_status\": \"complete\", \"coverage_to\": \"2026-10-11\", \"coverage_window_days\": 90, \"deferred\": 237, \"discovered\": 241, \"discovery_recall_30\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 84, \"inventory_url_count\": 84, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_recall_90\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 241, \"inventory_url_count\": 241, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_scope\": \"global_intelligence\", \"editorial_outcome\": \"discovery_only_pending_editorial_and_rights_review\", \"evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json\", \"indexed_counts\": {\"30\": 84, \"90\": 241}, \"material_items\": 148, \"materiality_evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json\", \"materiality_projection_run_id\": \"38155456354\", \"name\": \"WHO\", \"new\": 0, \"new_basis\": \"identities_absent_from_previous_discovery_inventory_not_live_publications\", \"next_cadence_validation_not_before\": \"2026-10-12T16:07:31.827873+00:00\", \"operation_mode\": \"isolated_qualification\", \"outcome\": \"READY_FOR_INTEGRATION\", \"pages_checked\": 7, \"parser_routes\": [\"news\", \"publications\", \"disease_outbreak_news\"], \"pending_date_items\": 0, \"publication_activation\": false, \"published\": 0, \"recent_items\": 84, \"recurrent_operation_proven\": false, \"rejected\": 4, \"source_quality_disposition\": \"pass_data\", \"status\": \"warning\", \"technical_failures\": [], \"technical_status\": \"ok\", \"unique_items\": 241, \"unique_language_urls_90\": 241, \"window_completeness\": {\"30\": \"complete_on_declared_surfaces\", \"90\": \"complete_on_declared_surfaces\"}}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  518 |   const row=health.sources[key];expect(row.discovery_scope).toBe('global_intelligence');\n  519 |   expect(row.publication_activation).toBe(false);expect(row.published).toBe(0);\n> 520 |   expect(product.sources[key]).toEqual(row);\n      |                                ^\n  521 |  }\n  522 |  expect(health.sources.global_reuters.counts).toEqual({'30':null,'90':null});\n  523 |  expect(health.sources.global_reuters.technical_status).toBe('not_polled_license_hold');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:520:32"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Global metadata health stays separate from Chile LIVE coverage"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 91,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 285
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#detailBody .statistical-calculations .intel').locator('li')\nExpected: \u001b[32m3\u001b[39m\nReceived: \u001b[31m0\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#detailBody .statistical-calculations .intel').locator('li')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\u001b[2m      - unexpected value \"0\"\u001b[22m\n\n\n  283 |  await expect(isapre.locator('.card-meta')).toContainText('Validado 24 sept 2026');\n  284 |  await isapre.locator('[data-detail]').first().click();\n> 285 |  await expect(page.locator('#detailBody .statistical-calculations .intel').locator('li')).toHaveCount(3);\n      |                                                                                           ^\n  286 |  await expect(page.locator('#detailBody')).toContainText('2026-01 → 2026-07');\n  287 |  await expect(page.locator('#detailBody')).toContainText('0.615 → 0.605');\n  288 |  await expect(page.locator('#detailBody')).toContainText('72.9%');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:285:91"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+            }
+          ],
+          "projects": [
+            "desktop",
+            "mobile"
+          ],
+          "stats": {
+            "duration": 84916.31599999999,
+            "expected": 88,
+            "flaky": 0,
+            "skipped": 0,
+            "startTime": "2026-10-24T19:30:14.992Z",
+            "unexpected": 6
+          }
+        },
+        "command": [
+          "npm",
+          "run",
+          "test:browser"
+        ],
+        "failure_hash": "b432a7357d477c36013a675ab79a43b5dd2ed1288dece030ed281eb8da2a7295",
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+        "log_sha256": "bf6363f5228119021077a01c84f96a9fe887e40f7ad309b944b514718eb5eff5",
+        "name": "browser_desktop_and_mobile",
+        "returncode": 1,
+        "status": "FAIL"
+      }
+    ],
+    "generated_at": "2026-10-24T19:21:46.160348+00:00",
+    "ignored_observation_paths": [],
+    "input_sha": "d31314e5d25913f3bdb6eaabbf03858f4f3d3f2c",
+    "live_validated": false,
+    "material_progress": {
+      "blocker_candidate": true,
+      "mutation_candidate": false,
+      "requires_durable_comparison": true,
+      "verified_closure": false,
+      "workflow_success": false
+    },
+    "raw_after_hash": "0ccafa40f6effeb918fa336b641b15e36f241fbe86c5cc2cbb8456fa48c8eae1",
+    "raw_before_hash": "0ccafa40f6effeb918fa336b641b15e36f241fbe86c5cc2cbb8456fa48c8eae1",
+    "raw_changed_paths": [],
+    "recovery": {
+      "baseline_full_gate": {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "-m",
+          "pytest",
+          "-q"
+        ],
+        "output": "Validation command unavailable or timed out: TimeoutExpired",
+        "returncode": 124
+      },
+      "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
+      "blocker_kind": "executor_capability_missing",
+      "changed_paths": [],
+      "context": [
+        {
+          "editable": false,
+          "path": "tests/test_reviewer.py",
+          "sha256": "40c652792e4dcc032942bc1d6e189ac7d2bbe45637bcdeac503f1393406e0f3a"
+        },
+        {
+          "editable": false,
+          "path": "tests/test_web_snapshot.py",
+          "sha256": "9125e69fa24fd7edd51847ffb97baf66fba2c7ef90aac59b7ea0a0c6caad4688"
+        },
+        {
+          "editable": false,
+          "path": "tests/test_beta_source_runtime_fast.py",
+          "sha256": "9e6a9bb5da888dde256fd51183eafaf9463408906a7d029f9482d363ed34b131"
+        },
+        {
+          "editable": false,
+          "path": "scripts/review_candidate.py",
+          "sha256": "474acbcf90c395fc80b0db05d7c8062385939dd75364037e99e58cbeb494b5df"
+        },
+        {
+          "editable": false,
+          "path": "src/radar_salud/editorial_gate.py",
+          "sha256": "9e4669e7e57bc22b70c6f89298d03a34de64ce56c7c61ba6024609df6f46ac38"
+        },
+        {
+          "editable": true,
+          "path": "scripts/export_web_snapshot.py",
+          "sha256": "485f4e2c3250a98d668441bcfae4d0b566d5e7d14006d37e7e21746b47cf5419"
+        },
+        {
+          "editable": true,
+          "path": "src/radar_salud/beta_source_engine_fast.py",
+          "sha256": "bf41467a8f8ee2c7a7cf81f51f483646bfb4335964f98e72e209bf8ed4044c37"
+        },
+        {
+          "editable": true,
+          "path": "src/radar_salud/pending_queue.py",
+          "sha256": "dcb6e6069620b832564a4a2d3556447190e8516228535211ddd0c667afab01ca"
+        }
+      ],
+      "deterministic_planning": {
+        "diagnostic": {
+          "human_required": false,
+          "kind": "executor_capability_missing",
+          "reason": "No deterministic strategy is registered for this source/failure"
+        },
+        "evidence": [],
+        "material_progress": false,
+        "paid_calls": 0,
+        "plan": null,
+        "product_files_written": false,
+        "status": "UNSUPPORTED",
+        "strategy": null
+      },
+      "evidence": [
+        {
+          "captured_stdout_bytes": 2491,
+          "captured_stdout_sha256": "7aa48f3df1b1db660afdc9772694d45c3b6fc85714743954d89df295bfdcdbbb",
+          "command": [
+            "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_reviewer.py::test_current_snapshot_passes_existing_editorial_gate",
+            "tests/test_web_snapshot.py::test_real_prestador_pulse_keeps_material_and_all_three_resolutions"
+          ],
+          "output": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n_____________ test_current_snapshot_passes_existing_editorial_gate _____________\n\n    def test_current_snapshot_passes_existing_editorial_gate():\n        r=reviewer.review(Path(\"web\"),\"abc\")\n        assert r[\"checks\"][\"editorial\"]\n>       assert not [f for f in r[\"findings\"] if f[\"category\"]==\"data\" and f[\"code\"]!=\"stale_snapshot\"]\nE       AssertionError: assert not [{'category': 'data', 'code': 'stale_source_check', 'path': 'data/source_health.json#sources/superintendencia_normativ...ce_health.json#sources/superintendencia_fiscalizacion', 'detail': 'Source was not polled within seven days', ...}, ...]\n\ntests/test_reviewer.py:16: AssertionError\n______ test_real_prestador_pulse_keeps_material_and_all_three_resolutions ______\n\n    def test_real_prestador_pulse_keeps_material_and_all_three_resolutions():\n        history=json.loads(Path(\"data/history/superintendencia_signals.json\").read_text())[\"signals\"]\n        pulse=next(s for s in m.curate(history,resolve_external=False) if s.get(\"sanction_count\") and \"Prestadores\" in s[\"title\"])\n>       assert pulse[\"sanction_count\"]==len(pulse[\"source_alternatives\"])==3\nE       AssertionError: assert 9 == 3\nE        +  where 9 = len([{'title': 'Resolución Exenta IP/N°6836 - Emisión: 08/09/2026', 'source_name': 'Superintendencia de Salud', 'url': 'ht...w.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n5946-emision-21-08-2026/', 'event_date': '2026-08-21', ...}, ...])\n\ntests/test_web_snapshot.py:112: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_reviewer.py::test_current_snapshot_passes_existing_editorial_gate - AssertionError: assert not [{'category': 'data', 'code': 'stale_source_check', 'path': 'data/source_health.json#sources/superintendencia_normativ...ce_health.json#sources/superintendencia_fiscalizacion', 'detail': 'Source was not polled within seven days', ...}, ...]\nFAILED tests/test_web_snapshot.py::test_real_prestador_pulse_keeps_material_and_all_three_resolutions - AssertionError: assert 9 == 3\n +  where 9 = len([{'title': 'Resolución Exenta IP/N°6836 - Emisión: 08/09/2026', 'source_name': 'Superintendencia de Salud', 'url': 'ht...w.superdesalud.gob.cl/normativa/resolucion-exenta-ip-n5946-emision-21-08-2026/', 'event_date': '2026-08-21', ...}, ...])\n2 failed in 0.51s\n",
+          "returncode": 1
+        },
+        {
+          "command": [
+            "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "-q"
+          ],
+          "output": "Validation command unavailable or timed out: TimeoutExpired",
+          "returncode": 124
+        }
+      ],
+      "failure_sha256": "06e9254b8ce26f851240f529b4ede7a465c82781c45415ee79398d84b9b745d4",
+      "material_progress": false,
+      "signature": null,
+      "source_run_id": null,
+      "status": "BLOCKED",
+      "validated": false
+    },
+    "run_id": "40124849726-1-staging_qa",
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/40124849726",
+    "semantic_hash": "8323c5e0f3bf8883746c6d5d909203549429c838dd90936aa39c040e3c48cdad",
+    "semantic_noop": false,
+    "semantic_unknown_paths": [],
+    "source_results": [],
+    "status": "BLOCKED",
+    "targeted_validated": false,
+    "task_id": "staging_qa_failed_run_40123646028",
+    "validated": false,
+    "version": 1,
+    "workflow_success_is_progress": false
+  }
+}
