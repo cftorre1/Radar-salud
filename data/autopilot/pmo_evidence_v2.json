@@ -5,16 +5,16 @@
     "learning_ledger_sha256": "28951f5a7ea04d60cfe1e077d15b8e54133f2d2087e0d3473efe6778fcc8e6d1",
     "queue_blob_sha": "3283d05d02b25efdca1da5e0f16397390352d8ee",
     "queue_sha256": "3dcdca0a953b4641b4918cd673f45baccdc0a0552e5e8b2af2c663a4afbfb424",
-    "staging_sha": "74da1c6d33b9e5746e79e0f481be3057f33d45df",
-    "state_control_sha256": "12219390bb9e9ee3667dc9738cd2ba0c2883c0c3d332f8fadf5e7ac5f5bd9ca2",
-    "state_sha": "4a52995078ceab0fa59888d58d1f360b92ceece4"
+    "staging_sha": "d31314e5d25913f3bdb6eaabbf03858f4f3d3f2c",
+    "state_control_sha256": "3ced1ca34ecbda978da6bb60f13ae10583b0686c0141c30189ae4fc45741018d",
+    "state_sha": "e1f6f3bf28e535c21321c342fdb674ceb481dcc2"
   },
   "canonical_pmo_updated": false,
   "corrected_material_event_count": 8,
   "correction_is_material_progress": false,
   "criteria": {
     "autonomous_pickup": {
-      "declared_pickups": 53,
+      "declared_pickups": 54,
       "reason": "Worker event/actor causality has not been independently verified.",
       "status": "NOT_PROVEN"
     },
@@ -44,25 +44,23 @@
     },
     "legacy_stage_a": {
       "metrics": {
-        "autonomous_pickups": 0,
-        "material_event_count": 0,
-        "max_material_gap_seconds": 14400.0,
+        "autonomous_pickups": 1,
+        "material_event_count": 1,
+        "max_material_gap_seconds": 14387.148153,
         "mode": "live",
         "observed_seconds": 14400.0,
         "original_started_at": "2026-10-11T05:29:46.231497Z",
         "owner_observation_verified": false,
         "owner_prompts": 0,
         "owner_restarts": 0,
-        "total_elapsed_seconds": 1169220.21718,
-        "window_started_at": "2026-10-24T14:16:46.448677Z"
+        "total_elapsed_seconds": 1173126.063576,
+        "window_started_at": "2026-10-24T15:21:52.295073Z"
       },
-      "observed_until": "2026-10-24T18:16:46.448677Z",
+      "observed_until": "2026-10-24T19:21:52.295073Z",
       "reasons": [
         "owner_intervention_observation_not_verified",
-        "autonomous_pickup_not_observed",
         "durable_verified_mutation_not_observed",
         "real_failure_verified_repair_not_observed",
-        "automatic_independent_transition_not_observed",
         "material_progress_gap_exceeded_30m",
         "owner_prompt_source_not_connected"
       ],
@@ -75,23 +73,23 @@
     "useful_work_window": {
       "is_live_proof": false,
       "metrics": {
-        "autonomous_pickups": 0,
-        "material_event_count": 0,
-        "max_material_gap_seconds": 14400.0,
+        "autonomous_pickups": 1,
+        "material_event_count": 1,
+        "max_material_gap_seconds": 14387.148153,
         "mode": "live",
         "observed_seconds": 14400.0,
         "original_started_at": "2026-10-11T05:29:46.231497Z",
         "owner_observation_verified": false,
         "owner_prompts": 0,
         "owner_restarts": 0,
-        "total_elapsed_seconds": 1169220.21718,
-        "window_started_at": "2026-10-24T14:16:46.448677Z"
+        "total_elapsed_seconds": 1173126.063576,
+        "window_started_at": "2026-10-24T15:21:52.295073Z"
       }
     }
   },
-  "effective_material_event_count": 87,
+  "effective_material_event_count": 88,
   "kind": "autonomy_pmo_evidence",
-  "last_material_progress_at": "2026-10-12T05:00:15.428406Z",
+  "last_material_progress_at": "2026-10-24T19:21:39.443226Z",
   "legacy_stage_a_status": "NOT_PROVEN",
   "material_event_correction_count": 8,
   "material_event_correction_signature": "14cbca971a3efea245f05e6d7fdd2c121166557d1e33476e8a1396c7251c746e",
@@ -475,24 +473,25 @@
       "terminal_event_sha256": "2ed9d38034f7a28cb43693792f1013a279c04b1cd51de5dad4a9db2039469f4a"
     }
   ],
-  "material_event_count": 87,
-  "material_signature": "eec18b6edc89b26e5a3f8d1120149ff095c839d9046cf4cad8ede92a87ff368f",
+  "material_event_count": 88,
+  "material_signature": "44ded42f8cd89d6143ec5dc427c754e0718f269025a6b40d0678c485ebf90c94",
   "observation": {
-    "path": "data/autopilot/evidence/observation-ecd1f0b095f844abaa5a7d0ff20d4c21.json",
-    "sha256": "68cf1d97c2ebe790a8806417504503eb69de728ef76939661395180ea7d2ceb9",
-    "staging_sha": "74da1c6d33b9e5746e79e0f481be3057f33d45df",
-    "state_sha": "4a52995078ceab0fa59888d58d1f360b92ceece4"
+    "path": "data/autopilot/evidence/observation-c50de21cc5c448bf9c3b4c17f5ba3f8f.json",
+    "sha256": "34d47f4508f94e95779615fc0674f30bb2a2e7a3cc49a1740bfc20068b413f4e",
+    "staging_sha": "d31314e5d25913f3bdb6eaabbf03858f4f3d3f2c",
+    "state_sha": "e1f6f3bf28e535c21321c342fdb674ceb481dcc2"
   },
   "owner_followup_count": null,
   "owner_followups": "UNKNOWN",
-  "raw_last_material_progress_at": "2026-10-12T05:00:15.428406Z",
-  "raw_material_event_count": 95,
-  "raw_material_signature": "308f3754077fb1b156d159ff4663f41b4db8be5f1e36104cb4100ebb577ba77a",
+  "raw_last_material_progress_at": "2026-10-24T19:21:39.443226Z",
+  "raw_material_event_count": 96,
+  "raw_material_signature": "f3982f6223a948701ce00d5f1de0164d98dfc2af118724283014c383cfe3400d",
   "schema_version": 2,
   "stalls": [],
   "task_counts": {
     "BLOCKED": 40,
     "READY": 1,
-    "REVOKED": 1
+    "REVOKED": 1,
+    "RUNNING": 1
   }
 }
