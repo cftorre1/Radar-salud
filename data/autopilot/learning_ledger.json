@@ -4158,5 +4158,30 @@
     "source": "Integration Commander",
     "specific_fix": "Copy the actual canonical source-health snapshot to web/data/source_health.json after import; preserve per-source capture timestamps and partial/error states. No new capture or publication.",
     "status": "mirror_reconciled"
+  },
+  {
+    "blocker_fingerprint": "4e5945eb371d9102e4db50df27768cf58df63fc44148283247fa071acefa612a",
+    "class": "evidenced_task_blocker",
+    "evidence": [
+      {
+        "path": "data/autopilot/evidence/observation-86d6fc9bddcb402ea9e38c0bf5262828.json",
+        "sha256": "02fcdef24feea0ceed4b749d9d639cefdfa4c2846e90a4c1f0a00da3380dfa12",
+        "staging_sha": "d31314e5d25913f3bdb6eaabbf03858f4f3d3f2c",
+        "state_sha": "47f4fccf099547cc99c5158879f3f767dfb01ca0"
+      }
+    ],
+    "finding": "Observed canonical task BLOCKED: staging_qa_failed_run_40123646028",
+    "id": "autonomy_observed_1ad7906535daa745ace2318094f5b408e32495d4a15bdae0e213b2a859ad96c2",
+    "observed_status": "BLOCKED",
+    "preventive_controls": [
+      "task_lease",
+      "heartbeat",
+      "scoped_material_progress",
+      "independent_family_continuation"
+    ],
+    "root_cause": "See hashed canonical state observation; cause is not inferred from workflow conclusions.",
+    "source": "Autonomy hosted observation",
+    "status": "observed_open",
+    "task_id": "staging_qa_failed_run_40123646028"
   }
 ]

@@ -6,8 +6,8 @@
     "queue_blob_sha": "3283d05d02b25efdca1da5e0f16397390352d8ee",
     "queue_sha256": "3dcdca0a953b4641b4918cd673f45baccdc0a0552e5e8b2af2c663a4afbfb424",
     "staging_sha": "d31314e5d25913f3bdb6eaabbf03858f4f3d3f2c",
-    "state_control_sha256": "3ced1ca34ecbda978da6bb60f13ae10583b0686c0141c30189ae4fc45741018d",
-    "state_sha": "e1f6f3bf28e535c21321c342fdb674ceb481dcc2"
+    "state_control_sha256": "7ee48f37a467b82c9ab2134487c7781147d66ac6deac2811b63ddf34b1a9fd88",
+    "state_sha": "47f4fccf099547cc99c5158879f3f767dfb01ca0"
   },
   "canonical_queue_updated": false,
   "derived_runtime_tasks": [
@@ -253,8 +253,8 @@
     },
     {
       "attempts": 1,
-      "blocker_evidence_count": 0,
-      "blocker_fingerprint": null,
+      "blocker_evidence_count": 5,
+      "blocker_fingerprint": "4e5945eb371d9102e4db50df27768cf58df63fc44148283247fa071acefa612a",
       "candidate_review": {
         "candidate_branch": null,
         "candidate_commit": null,
@@ -265,7 +265,7 @@
         "superseded": null
       },
       "candidate_reviews": {},
-      "canonical_material_progress_at": "2026-10-24T19:21:39.443226Z",
+      "canonical_material_progress_at": "2026-10-24T19:31:52.753564Z",
       "evidence_revision": "cc35ce0595e23b38c553acd4ce61e20ad429af1b2ed36dcad266a51cb321e84c",
       "failure_signature": "c4e8887e5c0e3be313ad9aa9e2207d38ddf0ee431bd4a683adf5ec7c457b2673",
       "failure_verified": true,
@@ -275,29 +275,29 @@
       "input_sha": "d31314e5d25913f3bdb6eaabbf03858f4f3d3f2c",
       "last_ready_at": "2026-10-24T19:21:06.764459Z",
       "lease": {
-        "claimed_at": "2026-10-24T19:21:39.443226Z",
-        "expires_at": "2026-10-24T19:31:39.443226Z",
-        "fence": 1,
-        "heartbeat_at": "2026-10-24T19:21:39.443226Z",
-        "owner": "40124849726-1-staging_qa",
+        "claimed_at": null,
+        "expires_at": null,
+        "fence": null,
+        "heartbeat_at": null,
+        "owner": null,
         "recovery_deadline_at": null,
-        "token_sha256": "3ba5c81187291f8681b3d477099f60ea4590f393d99254ae9113baffde849db2"
+        "token_sha256": null
       },
-      "material_progress_at": "2026-10-24T19:21:39.443226Z",
-      "raw_material_progress_at": "2026-10-24T19:21:39.443226Z",
+      "material_progress_at": "2026-10-24T19:31:52.753564Z",
+      "raw_material_progress_at": "2026-10-24T19:31:52.753564Z",
       "reason": null,
-      "recovery_episode": "80afcf2e10d9e931ad824aa4b90d10c996a8f027cf6759576689e30ae523f038",
+      "recovery_episode": "64b6dbca426e1b5da1bba00d59bc3fe9f7cf674f9189f16ec0053557421729da",
       "recovery_reclaims": 0,
-      "status": "RUNNING",
+      "status": "BLOCKED",
       "task_id": "staging_qa_failed_run_40123646028"
     }
   ],
   "kind": "queue_runtime_projection",
   "observation": {
-    "path": "data/autopilot/evidence/observation-c50de21cc5c448bf9c3b4c17f5ba3f8f.json",
-    "sha256": "34d47f4508f94e95779615fc0674f30bb2a2e7a3cc49a1740bfc20068b413f4e",
+    "path": "data/autopilot/evidence/observation-86d6fc9bddcb402ea9e38c0bf5262828.json",
+    "sha256": "02fcdef24feea0ceed4b749d9d639cefdfa4c2846e90a4c1f0a00da3380dfa12",
     "staging_sha": "d31314e5d25913f3bdb6eaabbf03858f4f3d3f2c",
-    "state_sha": "e1f6f3bf28e535c21321c342fdb674ceb481dcc2"
+    "state_sha": "47f4fccf099547cc99c5158879f3f767dfb01ca0"
   },
   "owner_followups": "UNKNOWN",
   "schema_version": 2,
