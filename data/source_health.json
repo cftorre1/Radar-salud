@@ -20,23 +20,65 @@
       "editorial_outcome": "no_new_signals"
     },
     "minsal": {
-      "name": "Minsal",
-      "checked_at": "2026-10-10T22:24:44.395941+00:00",
-      "last_signal_at": "2026-10-07",
-      "discovered": 53,
-      "new": 4,
-      "published": 0,
+      "name": "Ministerio de Salud",
+      "checked_at": "2026-10-12T04:42:56.212220+00:00",
+      "last_signal_at": "2026-10-09",
+      "discovered": 10,
+      "new": 0,
+      "published": 3,
       "live_pending": 0,
-      "backfill_pending": 4,
-      "pending": 4,
+      "backfill_pending": 0,
+      "pending": 0,
       "deferred": 0,
-      "rejected": 14,
-      "status": "ok",
+      "rejected": 15,
+      "status": "warning",
       "error": null,
       "technical_status": "ok",
-      "coverage_status": "observed",
+      "coverage_status": "partial",
       "content_freshness": "recent",
-      "editorial_outcome": "pending"
+      "latest_original_at": "2026-10-09",
+      "editorial_outcome": "published",
+      "evaluation_performed": true,
+      "processed_rejections": 1,
+      "counts_scope": {
+        "discovered": "this_run",
+        "new": "this_run",
+        "published": "this_run",
+        "processed_rejections": "this_run",
+        "rejected": "cumulative_queue"
+      },
+      "discovery_diagnostics": {
+        "verified_publications": 10,
+        "latest_verified_publication_date": "2026-10-09",
+        "poll_mode": "daily_engine"
+      },
+      "engine_checked_at": "2026-10-12T04:42:56.212220+00:00",
+      "poll_mode": "native_capture_then_retained_editorial_assessment",
+      "latest_verified_publication_at": "2026-10-09",
+      "last_attempt_at": "2026-10-12T04:42:56.212220+00:00",
+      "assessed_at": "2026-10-12T04:42:56.212220+00:00",
+      "last_successful_capture_at": "2026-10-12T04:42:56.212220+00:00",
+      "last_verified_discovery_at": "2026-10-12T04:42:56.212220+00:00",
+      "pages_checked": 11,
+      "held_surfaces": 0,
+      "items_discovered": 10,
+      "unique_items": 10,
+      "items_recent": 3,
+      "items_material": 3,
+      "materiality_status": "primary_bound_editorial_assessment",
+      "parse_errors": 0,
+      "coverage_complete": false,
+      "coverage_reason": "official_rss10_and_primary_details_verified; 72h_priority; full30d_inventory_not_reconciled",
+      "recovery_outcome": "OPERATIVE_DEGRADED",
+      "zero_publication_reason": null,
+      "next_retry_at": null,
+      "poll_age_hours": 0.0,
+      "daily_check_state": "checked_within_24h",
+      "recovery_cadence_validated": false,
+      "latest_detected_at": "2026-10-09",
+      "items_evaluated": 4,
+      "native_runtime_run": 38204748188,
+      "evidence": "data/audits/daily_first_20261012/verified-native-runtime.zip"
     },
     "suseso": {
       "name": "Suseso",
@@ -266,7 +308,7 @@
     },
     "fonasa": {
       "name": "Fondo Nacional de Salud (FONASA)",
-      "checked_at": "2026-10-11T14:45:26.442065+00:00",
+      "checked_at": "2026-10-12T04:14:22.317724+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -277,9 +319,9 @@
       "deferred": 0,
       "rejected": 0,
       "status": "error",
-      "error": "FonasaDiscoveryError",
+      "error": "HTTP403_ALB",
       "technical_status": "error",
-      "coverage_status": "unverified",
+      "coverage_status": "blocked",
       "content_freshness": "unknown",
       "latest_original_at": null,
       "editorial_outcome": "not_evaluated",
@@ -293,25 +335,10 @@
         "rejected": "cumulative_queue"
       },
       "error_details": {
-        "exception_chain": [
-          {
-            "type": "FonasaDiscoveryError"
-          },
-          {
-            "type": "HTTPError",
-            "http_status": 403,
-            "url": "https://www.fonasa.gob.cl/noticias/",
-            "reason": "Forbidden"
-          }
-        ],
-        "failure_signature": "FonasaDiscoveryError > HTTPError:403:Forbidden > HTTPError:HTTP Error 403: Forbidden",
-        "endpoint_failures": [
-          {
-            "url": "https://www.fonasa.gob.cl/noticias/",
-            "type": "HTTPError",
-            "reason": "HTTP Error 403: Forbidden"
-          }
-        ]
+        "failure_signature": "HTTP403_ALB",
+        "origin_tls_observed": true,
+        "trace_scope": "native_official_probe",
+        "details": null
       },
       "discovery_diagnostics": {
         "surfaces": [
@@ -328,12 +355,63 @@
         "poll_mode": "daily_engine"
       },
       "engine_checked_at": "2026-10-11T14:45:26.442065+00:00",
-      "poll_mode": "daily_engine",
-      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/fonasa/summary.json"
+      "poll_mode": "independent_official_probe",
+      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/fonasa/summary.json",
+      "last_attempt_at": "2026-10-12T04:14:22.317724+00:00",
+      "assessed_at": "2026-10-12T04:47:21.713778+00:00",
+      "recovery_outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "coverage_complete": false,
+      "coverage_reason": "official_http403_ALB",
+      "pages_checked": 1,
+      "items_discovered": null,
+      "unique_items": null,
+      "items_recent": null,
+      "items_material": null,
+      "parse_errors": 0,
+      "zero_publication_reason": "blocked_surface_not_evidence_of_absence",
+      "native_probe_outcomes": [
+        {
+          "source": "fonasa",
+          "url": "https://www.fonasa.gob.cl/noticias/",
+          "host": "www.fonasa.gob.cl",
+          "captured_at": "2026-10-12T04:14:22.317724+00:00",
+          "method": "GET",
+          "redirects": [],
+          "http_status": 403,
+          "origin_tls_observed": true,
+          "dns": {
+            "addresses": [
+              "166.117.237.103",
+              "166.117.45.213"
+            ]
+          },
+          "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+          "final_url": "https://www.fonasa.gob.cl/noticias/",
+          "headers": {
+            "Server": "awselb/2.0",
+            "Date": "Mon, 12 Oct 2026 04:14:22 GMT",
+            "Content-Type": "text/html",
+            "Content-Length": "118"
+          },
+          "capture_limit_mib": 8,
+          "sha256": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4",
+          "bytes": 118,
+          "body_path": "captures/58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4.html",
+          "waf_challenge": false,
+          "outcome": "http"
+        }
+      ],
+      "evidence": "data/audits/daily_first_20261012/verified-native-runtime.zip",
+      "stop_loss": "No further equivalent recovery probes; existing core circuit permits controlled probe after24h",
+      "poll_age_hours": 0.55,
+      "daily_check_state": "checked_within_24h",
+      "last_verified_discovery_at": null,
+      "recovery_cadence_validated": false,
+      "probe_checked_at": "2026-10-12T04:14:22.317724+00:00"
     },
     "isp_anamed": {
       "name": "Instituto de Salud Pública de Chile (ISP) / ANAMED",
-      "checked_at": "2026-10-11T14:50:26.450101+00:00",
+      "checked_at": "2026-10-12T04:41:41.136843+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -344,9 +422,9 @@
       "deferred": 0,
       "rejected": 0,
       "status": "error",
-      "error": "RuntimeError",
+      "error": "TLSCertificateChainVerificationFailed",
       "technical_status": "error",
-      "coverage_status": "unverified",
+      "coverage_status": "blocked",
       "content_freshness": "unknown",
       "latest_original_at": null,
       "editorial_outcome": "not_evaluated",
@@ -360,20 +438,10 @@
         "rejected": "cumulative_queue"
       },
       "error_details": {
-        "exception_chain": [
-          {
-            "type": "RuntimeError"
-          },
-          {
-            "type": "URLError",
-            "reason": "timed out"
-          },
-          {
-            "type": "TimeoutError",
-            "reason": "timed out"
-          }
-        ],
-        "failure_signature": "RuntimeError > URLError:timed out > TimeoutError:timed out"
+        "failure_signature": "TLS_unable_to_get_local_issuer_certificate",
+        "origin_tls_observed": false,
+        "trace_scope": "native_official_probe",
+        "details": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)>"
       },
       "discovery_diagnostics": {
         "surfaces": [
@@ -410,8 +478,68 @@
         "poll_mode": "daily_engine"
       },
       "engine_checked_at": "2026-10-11T14:50:26.450101+00:00",
-      "poll_mode": "daily_engine",
-      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/isp_anamed/summary.json"
+      "poll_mode": "independent_official_probe",
+      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/isp_anamed/summary.json",
+      "last_attempt_at": "2026-10-12T04:41:41.136843+00:00",
+      "assessed_at": "2026-10-12T04:47:21.713810+00:00",
+      "recovery_outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "coverage_complete": false,
+      "coverage_reason": "official_primary_and_gob_alias_TLS_chain_verification_failed",
+      "pages_checked": 2,
+      "items_discovered": null,
+      "unique_items": null,
+      "items_recent": null,
+      "items_material": null,
+      "parse_errors": 0,
+      "zero_publication_reason": "blocked_surface_not_evidence_of_absence",
+      "native_probe_outcomes": [
+        {
+          "source": "isp_anamed",
+          "url": "https://www.ispch.cl/categorias-alertas/anamed/",
+          "host": "www.ispch.cl",
+          "captured_at": "2026-10-12T04:14:22.318392+00:00",
+          "method": "GET",
+          "redirects": [],
+          "http_status": null,
+          "origin_tls_observed": false,
+          "dns": {
+            "addresses": [
+              "200.68.11.20"
+            ]
+          },
+          "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+          "outcome": "tls",
+          "error_type": "URLError",
+          "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)>"
+        },
+        {
+          "source": "isp_anamed",
+          "url": "https://www.ispch.gob.cl/categorias-alertas/anamed/",
+          "host": "www.ispch.gob.cl",
+          "captured_at": "2026-10-12T04:41:41.136843+00:00",
+          "method": "GET",
+          "redirects": [],
+          "http_status": null,
+          "origin_tls_observed": false,
+          "dns": {
+            "addresses": [
+              "200.54.12.61",
+              "200.68.11.20"
+            ]
+          },
+          "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+          "outcome": "tls",
+          "error_type": "URLError",
+          "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)>"
+        }
+      ],
+      "evidence": "data/audits/daily_first_20261012/verified-native-runtime.zip",
+      "stop_loss": "No further equivalent recovery probes; existing core circuit permits controlled probe after24h",
+      "poll_age_hours": 0.09,
+      "daily_check_state": "checked_within_24h",
+      "last_verified_discovery_at": null,
+      "recovery_cadence_validated": false,
+      "probe_checked_at": "2026-10-12T04:41:41.136843+00:00"
     },
     "deis": {
       "name": "Departamento de Estadísticas e Información de Salud",
@@ -997,7 +1125,7 @@
     },
     "fonasa_datos_abiertos": {
       "name": "Fondo Nacional de Salud (FONASA)",
-      "checked_at": "2026-10-11T14:45:30.511053+00:00",
+      "checked_at": "2026-10-12T04:14:22.318142+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -1008,9 +1136,9 @@
       "deferred": 0,
       "rejected": 0,
       "status": "error",
-      "error": "FonasaDiscoveryError",
+      "error": "HTTP403_ALB",
       "technical_status": "error",
-      "coverage_status": "unverified",
+      "coverage_status": "blocked",
       "content_freshness": "unknown",
       "latest_original_at": null,
       "editorial_outcome": "not_evaluated",
@@ -1024,34 +1152,10 @@
         "rejected": "cumulative_queue"
       },
       "error_details": {
-        "exception_chain": [
-          {
-            "type": "FonasaDiscoveryError"
-          }
-        ],
-        "failure_signature": "FonasaDiscoveryError > HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden; HTTPError:HTTP Error 403: Forbidden",
-        "endpoint_failures": [
-          {
-            "url": "https://datosabiertos.fonasa.cl/noticias/",
-            "type": "HTTPError",
-            "reason": "HTTP Error 403: Forbidden"
-          },
-          {
-            "url": "https://datosabiertos.fonasa.cl/biblioteca-cuenta-publica/",
-            "type": "HTTPError",
-            "reason": "HTTP Error 403: Forbidden"
-          },
-          {
-            "url": "https://datosabiertos.fonasa.cl/boletines-estadisticos/",
-            "type": "HTTPError",
-            "reason": "HTTP Error 403: Forbidden"
-          },
-          {
-            "url": "https://datosabiertos.fonasa.cl/analysis/",
-            "type": "HTTPError",
-            "reason": "HTTP Error 403: Forbidden"
-          }
-        ]
+        "failure_signature": "HTTP403_ALB",
+        "origin_tls_observed": true,
+        "trace_scope": "native_official_probe",
+        "details": null
       },
       "discovery_diagnostics": {
         "surfaces": [
@@ -1092,8 +1196,59 @@
         "poll_mode": "daily_engine"
       },
       "engine_checked_at": "2026-10-11T14:45:30.511053+00:00",
-      "poll_mode": "daily_engine",
-      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/fonasa_datos_abiertos/summary.json"
+      "poll_mode": "independent_official_probe",
+      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/fonasa_datos_abiertos/summary.json",
+      "last_attempt_at": "2026-10-12T04:14:22.318142+00:00",
+      "assessed_at": "2026-10-12T04:47:21.713802+00:00",
+      "recovery_outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "coverage_complete": false,
+      "coverage_reason": "official_http403_ALB",
+      "pages_checked": 1,
+      "items_discovered": null,
+      "unique_items": null,
+      "items_recent": null,
+      "items_material": null,
+      "parse_errors": 0,
+      "zero_publication_reason": "blocked_surface_not_evidence_of_absence",
+      "native_probe_outcomes": [
+        {
+          "source": "fonasa_datos_abiertos",
+          "url": "https://datosabiertos.fonasa.cl/noticias/",
+          "host": "datosabiertos.fonasa.cl",
+          "captured_at": "2026-10-12T04:14:22.318142+00:00",
+          "method": "GET",
+          "redirects": [],
+          "http_status": 403,
+          "origin_tls_observed": true,
+          "dns": {
+            "addresses": [
+              "13.223.130.10",
+              "3.93.122.73"
+            ]
+          },
+          "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+          "final_url": "https://datosabiertos.fonasa.cl/noticias/",
+          "headers": {
+            "Server": "awselb/2.0",
+            "Date": "Mon, 12 Oct 2026 04:14:22 GMT",
+            "Content-Type": "text/html",
+            "Content-Length": "118"
+          },
+          "capture_limit_mib": 8,
+          "sha256": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4",
+          "bytes": 118,
+          "body_path": "captures/58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4.html",
+          "waf_challenge": false,
+          "outcome": "http"
+        }
+      ],
+      "evidence": "data/audits/daily_first_20261012/verified-native-runtime.zip",
+      "stop_loss": "No further equivalent recovery probes; existing core circuit permits controlled probe after24h",
+      "poll_age_hours": 0.55,
+      "daily_check_state": "checked_within_24h",
+      "last_verified_discovery_at": null,
+      "recovery_cadence_validated": false,
+      "probe_checked_at": "2026-10-12T04:14:22.318142+00:00"
     },
     "suseso_news": {
       "name": "Suseso News",
@@ -2094,7 +2249,7 @@
     },
     "isp_surveillance": {
       "name": "Instituto de Salud Pública de Chile (ISP)",
-      "checked_at": "2026-10-11T14:55:34.964795+00:00",
+      "checked_at": "2026-10-12T04:41:41.137149+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -2105,9 +2260,9 @@
       "deferred": 0,
       "rejected": 0,
       "status": "error",
-      "error": "RuntimeError",
+      "error": "TLSCertificateChainVerificationFailed",
       "technical_status": "error",
-      "coverage_status": "unverified",
+      "coverage_status": "blocked",
       "content_freshness": "unknown",
       "latest_original_at": null,
       "editorial_outcome": "not_evaluated",
@@ -2121,20 +2276,10 @@
         "rejected": "cumulative_queue"
       },
       "error_details": {
-        "exception_chain": [
-          {
-            "type": "RuntimeError"
-          },
-          {
-            "type": "URLError",
-            "reason": "timed out"
-          },
-          {
-            "type": "TimeoutError",
-            "reason": "timed out"
-          }
-        ],
-        "failure_signature": "RuntimeError > URLError:timed out > TimeoutError:timed out"
+        "failure_signature": "TLS_unable_to_get_local_issuer_certificate",
+        "origin_tls_observed": false,
+        "trace_scope": "native_official_probe",
+        "details": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)>"
       },
       "discovery_diagnostics": {
         "surfaces": [
@@ -2211,8 +2356,68 @@
         "poll_mode": "daily_engine"
       },
       "engine_checked_at": "2026-10-11T14:55:34.964795+00:00",
-      "poll_mode": "daily_engine",
-      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/isp_surveillance/summary.json"
+      "poll_mode": "independent_official_probe",
+      "integration_runtime_receipt": "data/audits/integration_20261011/postmerge-aa8bb305/isp_surveillance/summary.json",
+      "last_attempt_at": "2026-10-12T04:41:41.137149+00:00",
+      "assessed_at": "2026-10-12T04:47:21.713816+00:00",
+      "recovery_outcome": "EXTERNAL_BLOCKER_PROVEN",
+      "coverage_complete": false,
+      "coverage_reason": "official_primary_and_gob_alias_TLS_chain_verification_failed",
+      "pages_checked": 2,
+      "items_discovered": null,
+      "unique_items": null,
+      "items_recent": null,
+      "items_material": null,
+      "parse_errors": 0,
+      "zero_publication_reason": "blocked_surface_not_evidence_of_absence",
+      "native_probe_outcomes": [
+        {
+          "source": "isp_surveillance",
+          "url": "https://www.ispch.cl/boletin/",
+          "host": "www.ispch.cl",
+          "captured_at": "2026-10-12T04:14:22.318626+00:00",
+          "method": "GET",
+          "redirects": [],
+          "http_status": null,
+          "origin_tls_observed": false,
+          "dns": {
+            "addresses": [
+              "200.68.11.20"
+            ]
+          },
+          "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+          "outcome": "tls",
+          "error_type": "URLError",
+          "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)>"
+        },
+        {
+          "source": "isp_surveillance",
+          "url": "https://www.ispch.gob.cl/boletin/",
+          "host": "www.ispch.gob.cl",
+          "captured_at": "2026-10-12T04:41:41.137149+00:00",
+          "method": "GET",
+          "redirects": [],
+          "http_status": null,
+          "origin_tls_observed": false,
+          "dns": {
+            "addresses": [
+              "200.54.12.61",
+              "200.68.11.20"
+            ]
+          },
+          "user_agent": "RadarSaludBot/0.3 (+public-source-monitor)",
+          "outcome": "tls",
+          "error_type": "URLError",
+          "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)>"
+        }
+      ],
+      "evidence": "data/audits/daily_first_20261012/verified-native-runtime.zip",
+      "stop_loss": "No further equivalent recovery probes; existing core circuit permits controlled probe after24h",
+      "poll_age_hours": 0.09,
+      "daily_check_state": "checked_within_24h",
+      "last_verified_discovery_at": null,
+      "recovery_cadence_validated": false,
+      "probe_checked_at": "2026-10-12T04:41:41.137149+00:00"
     },
     "clinicas_chile": {
       "name": "Clínicas de Chile A.G.",

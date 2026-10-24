@@ -37,6 +37,12 @@ class OfficialRedirectHandler(HTTPRedirectHandler):
 
 
 def download_official(url, slug, *, timeout=25, max_bytes=20 * 1024 * 1024, capture_metadata=None):
+    from .daily_first import controlled_download
+    return controlled_download(url, slug, lambda: _download_official(url, slug,
+        timeout=timeout, max_bytes=max_bytes, capture_metadata=capture_metadata))
+
+
+def _download_official(url, slug, *, timeout=25, max_bytes=20 * 1024 * 1024, capture_metadata=None):
     if not official_url(url, slug):
         raise ValueError("Public-source URL must be official HTTPS")
     requested_url = normalized_official_url(url, slug)
@@ -63,6 +69,13 @@ def fetch_official_html(url, slug, *, timeout=25):
     if content_type not in {"text/html", "application/xhtml+xml"}:
         raise ValueError("Public-source HTML capture has an unexpected content type")
     return body.decode(headers.get_content_charset() or "utf-8", errors="replace")
+
+
+def fetch_official_feed(url, slug, *, timeout=15):
+    body, headers = download_official(url, slug, timeout=timeout, max_bytes=2 * 1024 * 1024)
+    if headers.get_content_type() not in {'application/rss+xml','application/xml','text/xml'}:
+        raise ValueError('Official RSS has an unexpected content type')
+    return body.decode(headers.get_content_charset() or 'utf-8', errors='replace')
 
 
 def extract_public_source_pdf(url, slug, *, max_pages=12, capture_metadata=None):
