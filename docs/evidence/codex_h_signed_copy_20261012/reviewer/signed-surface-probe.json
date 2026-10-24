@@ -1,0 +1,822 @@
+[
+  {
+    "id": "signed_title",
+    "content_version_unchanged": true,
+    "before_depth": {
+      "ok": true,
+      "reason_codes": [],
+      "content_version": "881b90bfe7558ae0ce75548ba1867ba3d90908c9e9e1ae6c13fde456c7e47f8f",
+      "diagnostics": []
+    },
+    "after_depth": {
+      "ok": true,
+      "reason_codes": [],
+      "content_version": "881b90bfe7558ae0ce75548ba1867ba3d90908c9e9e1ae6c13fde456c7e47f8f",
+      "diagnostics": []
+    },
+    "publication_ready": [
+      true,
+      "ok",
+      100
+    ],
+    "exported": [
+      {
+        "editorial_schema_version": "3",
+        "piece_id": "synthetic:legal",
+        "title": "Resolución IF/N°1 rechaza reposición",
+        "detail_body": "Aplica el artículo 57 porque no se acreditó daño irreparable.",
+        "event_date": "2026-10-12",
+        "source_url": "https://example.org/resolution",
+        "source_name": "Prueba",
+        "signal_types": [
+          "Legal"
+        ],
+        "scopes": [
+          "Isapres"
+        ],
+        "claims": [
+          {
+            "id": "c1",
+            "kind": "fact",
+            "text": "No se acreditó daño irreparable.",
+            "evidence_refs": [
+              "e1"
+            ],
+            "adds_to": "title",
+            "incremental_value": "Fundamento cautelar"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "e1",
+            "url": "https://example.org/resolution",
+            "locator": "resuelvo 2",
+            "observed_at": "2026-10-12T10:00:00Z"
+          }
+        ],
+        "paragraph_claim_ids": {
+          "0": [
+            "c1"
+          ]
+        },
+        "review": {
+          "author": "writer",
+          "reviewer": "independent",
+          "verdict": "PASS",
+          "content_version": "881b90bfe7558ae0ce75548ba1867ba3d90908c9e9e1ae6c13fde456c7e47f8f",
+          "claim_verdicts": {
+            "c1": "SUPPORTED"
+          },
+          "paragraph_verdicts": {
+            "0": {
+              "verdict": "NEW",
+              "new_claim_ids": [
+                "c1"
+              ]
+            }
+          }
+        },
+        "card_what": "Resolución IF/N°1 acoge reposición y levanta la sanción.",
+        "depth_gate": {
+          "ok": true,
+          "reason_codes": [],
+          "content_version": "881b90bfe7558ae0ce75548ba1867ba3d90908c9e9e1ae6c13fde456c7e47f8f",
+          "diagnostics": []
+        },
+        "publication_gate_reason": "ok",
+        "publication_ready_score": 100
+      }
+    ],
+    "before": {
+      "editorial_schema_version": "3",
+      "piece_id": "synthetic:legal",
+      "title": "Resolución IF/N°1 rechaza reposición",
+      "detail_body": "Aplica el artículo 57 porque no se acreditó daño irreparable.",
+      "event_date": "2026-10-12",
+      "source_url": "https://example.org/resolution",
+      "source_name": "Prueba",
+      "signal_types": [
+        "Legal"
+      ],
+      "scopes": [
+        "Isapres"
+      ],
+      "claims": [
+        {
+          "id": "c1",
+          "kind": "fact",
+          "text": "No se acreditó daño irreparable.",
+          "evidence_refs": [
+            "e1"
+          ],
+          "adds_to": "title",
+          "incremental_value": "Fundamento cautelar"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "e1",
+          "url": "https://example.org/resolution",
+          "locator": "resuelvo 2",
+          "observed_at": "2026-10-12T10:00:00Z"
+        }
+      ],
+      "paragraph_claim_ids": {
+        "0": [
+          "c1"
+        ]
+      },
+      "review": {
+        "author": "writer",
+        "reviewer": "independent",
+        "verdict": "PASS",
+        "content_version": "881b90bfe7558ae0ce75548ba1867ba3d90908c9e9e1ae6c13fde456c7e47f8f",
+        "claim_verdicts": {
+          "c1": "SUPPORTED"
+        },
+        "paragraph_verdicts": {
+          "0": {
+            "verdict": "NEW",
+            "new_claim_ids": [
+              "c1"
+            ]
+          }
+        }
+      }
+    },
+    "after": {
+      "editorial_schema_version": "3",
+      "piece_id": "synthetic:legal",
+      "title": "Resolución IF/N°1 rechaza reposición",
+      "detail_body": "Aplica el artículo 57 porque no se acreditó daño irreparable.",
+      "event_date": "2026-10-12",
+      "source_url": "https://example.org/resolution",
+      "source_name": "Prueba",
+      "signal_types": [
+        "Legal"
+      ],
+      "scopes": [
+        "Isapres"
+      ],
+      "claims": [
+        {
+          "id": "c1",
+          "kind": "fact",
+          "text": "No se acreditó daño irreparable.",
+          "evidence_refs": [
+            "e1"
+          ],
+          "adds_to": "title",
+          "incremental_value": "Fundamento cautelar"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "e1",
+          "url": "https://example.org/resolution",
+          "locator": "resuelvo 2",
+          "observed_at": "2026-10-12T10:00:00Z"
+        }
+      ],
+      "paragraph_claim_ids": {
+        "0": [
+          "c1"
+        ]
+      },
+      "review": {
+        "author": "writer",
+        "reviewer": "independent",
+        "verdict": "PASS",
+        "content_version": "881b90bfe7558ae0ce75548ba1867ba3d90908c9e9e1ae6c13fde456c7e47f8f",
+        "claim_verdicts": {
+          "c1": "SUPPORTED"
+        },
+        "paragraph_verdicts": {
+          "0": {
+            "verdict": "NEW",
+            "new_claim_ids": [
+              "c1"
+            ]
+          }
+        }
+      },
+      "card_what": "Resolución IF/N°1 acoge reposición y levanta la sanción."
+    }
+  },
+  {
+    "id": "signed_fixture_brief",
+    "content_version_unchanged": true,
+    "before_depth": {
+      "ok": true,
+      "reason_codes": [],
+      "content_version": "cdab9e14929a0a5c8b03d61ee6915e7330b721d9961d6fe90b833f1a8ea97f6d",
+      "diagnostics": []
+    },
+    "after_depth": {
+      "ok": true,
+      "reason_codes": [],
+      "content_version": "cdab9e14929a0a5c8b03d61ee6915e7330b721d9961d6fe90b833f1a8ea97f6d",
+      "diagnostics": []
+    },
+    "publication_ready": [
+      true,
+      "ok",
+      100
+    ],
+    "exported": [
+      {
+        "title": "Félix Bulnes realiza la primera mastectomía robótica reportada en Chile, junto a Barros Luco.",
+        "source_name": "Ministerio de Salud",
+        "source_type": "official",
+        "source_url": "https://www.minsal.cl/hospital-clinico-felix-bulnes-realiza-la-primera-cirugia-robotica-de-cancer-de-mama-en-nuestro-pais-junto-a-equipo-medico-del-hospital-barros-luco/",
+        "category": "Prestadores",
+        "subcategory": "General",
+        "system_domain": "PUBLIC_HEALTH",
+        "what_happened": "El Hospital Clínico Félix Bulnes realizó la primera cirugía robótica de cáncer de mama reportada en Chile, con participación de un equipo médico del Hospital Barros Luco.",
+        "event_date": "2026-10-07",
+        "detected_at": "2026-10-08T08:36:38.723606+00:00",
+        "primary_source_url": null,
+        "event_type": "OTHER",
+        "strategic_theme": [],
+        "institution_types": [],
+        "entity_refs": [],
+        "country": "CL",
+        "topics": [],
+        "entities": [],
+        "people": [],
+        "geography": [],
+        "key_facts": [],
+        "key_numbers": [],
+        "why_it_matters": "La intervención muestra una nueva aplicación de cirugía robótica dentro de la red pública y una colaboración entre dos hospitales públicos. Merece atención por su posible relevancia para la capacidad quirúrgica oncológica, aunque la información no indica aún una expansión del procedimiento, cambios de cobertura ni impacto en el acceso.",
+        "who_cares": [],
+        "possible_implications": [],
+        "watch_tags": [
+          "minsal",
+          "salud pública"
+        ],
+        "connection_keys": [],
+        "trend_keys": [],
+        "prospective_evidence": false,
+        "economic_impact_score": 45,
+        "regulatory_impact_score": 55,
+        "scope_score": 68,
+        "novelty_score": 68,
+        "actionability_score": 60,
+        "source_quality_score": 100,
+        "radar_score": 62,
+        "confidence_score": 100,
+        "distribution": "archive",
+        "validation_status": "automatic",
+        "corroboration_status": "unknown",
+        "additional_sources": [],
+        "source_documents": [],
+        "key_points": [],
+        "risk_notes": [],
+        "data_insights": [],
+        "data_insight_meta": {},
+        "validity_text": null,
+        "related_reference_ids": [],
+        "original_language": "es",
+        "display_language": "es",
+        "translation_status": "not_required",
+        "original_title": null,
+        "original_what_happened": null,
+        "original_why_it_matters": null,
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Salud pública"
+        ],
+        "editorial_relevance": 68,
+        "ingestion_mode": "BACKFILL",
+        "publication_ready_score": 100,
+        "publication_gate_reason": "ok",
+        "related_context": [],
+        "source_alternatives": [],
+        "editorial_decision": "accept",
+        "editorial_committee": {
+          "committee_version": "1.0",
+          "signal_type": "Noticias",
+          "members": [
+            "editorial_intelligence",
+            "health_business",
+            "evidence_research"
+          ],
+          "materiality_decision": "accept",
+          "public_title": "Hospital Clínico Félix Bulnes realiza la primera cirugía robótica de cáncer de mama en nuestro país junto a equipo médico del Hospital Barros Luco",
+          "what_happened": "El Hospital Clínico Félix Bulnes realizó la primera cirugía robótica de cáncer de mama reportada en Chile, con participación de un equipo médico del Hospital Barros Luco.",
+          "why_it_matters": "La intervención muestra una nueva aplicación de cirugía robótica dentro de la red pública y una colaboración entre dos hospitales públicos. Merece atención por su posible relevancia para la capacidad quirúrgica oncológica, aunque la información no indica aún una expansión del procedimiento, cambios de cobertura ni impacto en el acceso.",
+          "evidence_map": [
+            {
+              "source": "Ministerio de Salud",
+              "url": "https://www.minsal.cl/hospital-clinico-felix-bulnes-realiza-la-primera-cirugia-robotica-de-cancer-de-mama-en-nuestro-pais-junto-a-equipo-medico-del-hospital-barros-luco/"
+            }
+          ],
+          "uncertainties": [],
+          "value_level": null,
+          "publication_decision": "accept",
+          "critical_objections": [],
+          "verdict": "PASS",
+          "parser_or_research_debt_if_any": null
+        },
+        "feed_visibility": true,
+        "editorial_schema_version": "3",
+        "piece_id": "aHR0cHM6Ly93d3cubWluc2FsLmNsL2hvc3BpdGFsLWNsaW5pY28tZmVsaXgtYnVsbmVzLXJlYWxpemEtbGEtcHJpbWVyYS1jaXJ1Z2lhLXJvYm90aWNhLWRlLWNhbmNlci1kZS1tYW1hLWVuLW51ZXN0cm8tcGFpcy1qdW50by1hLWVxdWlwby1tZWRpY28tZGVsLWhvc3BpdGFsLWJhcnJvcy1sdWNvL3wyMDI2LTEwLTA3fE9USEVS",
+        "display_title": "Félix Bulnes realiza la primera mastectomía robótica reportada en Chile, junto a Barros Luco.",
+        "brief_deck": null,
+        "detail_body": "La intervención se realizó el 30 de septiembre y combinó conservación del pezón con reconstrucción inmediata. Participaron especialistas de ambos hospitales y se utilizó el robot Da Vinci.\n\nEl jefe de Patología Mamaria del Félix Bulnes explicó que esta primera experiencia busca evaluar factibilidad y resultados antes de avanzar hacia un eventual programa de cirugía mamaria mínimamente invasiva. La comunicación institucional no presenta una evaluación comparativa de resultados ni costos.",
+        "claims": [
+          {
+            "id": "c1",
+            "kind": "fact",
+            "text": "La intervención se realizó el 30 de septiembre y combinó conservación del pezón con reconstrucción inmediata. Participaron especialistas de ambos hospitales y se utilizó el robot Da Vinci.",
+            "evidence_refs": [
+              "e1",
+              "e2"
+            ],
+            "adds_to": "title",
+            "incremental_value": "Fecha operatoria, técnica y colaboración"
+          },
+          {
+            "id": "c2",
+            "kind": "fact",
+            "text": "El jefe de Patología Mamaria del Félix Bulnes explicó que esta primera experiencia busca evaluar factibilidad y resultados antes de avanzar hacia un eventual programa de cirugía mamaria mínimamente invasiva. La comunicación institucional no presenta una evaluación comparativa de resultados ni costos.",
+            "evidence_refs": [
+              "e1"
+            ],
+            "adds_to": "title",
+            "incremental_value": "Primera experiencia frente a programa consolidado y límites"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "e1",
+            "url": "https://www.minsal.cl/hospital-clinico-felix-bulnes-realiza-la-primera-cirugia-robotica-de-cancer-de-mama-en-nuestro-pais-junto-a-equipo-medico-del-hospital-barros-luco/",
+            "locator": "cuerpo; fecha intervención, técnica y declaraciones",
+            "observed_at": "2026-10-12",
+            "observation_precision": "date",
+            "receipt": "Work5 approved handoff a3e254d9; reused observation"
+          },
+          {
+            "id": "e2",
+            "url": "https://www.hospitalbarrosluco.gob.cl/jefe-de-patologia-mamaria-del-hospital-barros-luco-participa-en-historica-cirugia-robotica-de-cancer-de-mama/",
+            "locator": "cuerpo; colaboración y técnica",
+            "observed_at": "2026-10-12",
+            "observation_precision": "date",
+            "receipt": "Work5 approved handoff a3e254d9; reused observation"
+          }
+        ],
+        "depth_modules": [],
+        "paragraph_claim_ids": {
+          "0": [
+            "c1"
+          ],
+          "1": [
+            "c2"
+          ]
+        },
+        "dates": {
+          "occurred_at": "2026-09-30",
+          "published_at": "2026-10-07",
+          "observed_at": "2026-10-12"
+        },
+        "selection_rationale": "Reuses approved Work5/Work6 evidence. Candidate only; no pipeline calls.",
+        "review": {
+          "author": "CodexH",
+          "reviewer": "CodexH-IndependentReviewer",
+          "verdict": "PASS",
+          "content_version": "cdab9e14929a0a5c8b03d61ee6915e7330b721d9961d6fe90b833f1a8ea97f6d",
+          "claim_verdicts": {
+            "c1": "SUPPORTED",
+            "c2": "SUPPORTED"
+          },
+          "paragraph_verdicts": {
+            "0": {
+              "verdict": "NEW",
+              "new_claim_ids": [
+                "c1"
+              ]
+            },
+            "1": {
+              "verdict": "NEW",
+              "new_claim_ids": [
+                "c2"
+              ]
+            }
+          },
+          "module_verdicts": {},
+          "reason_codes": [],
+          "review_scope": "SCOPED_CANDIDATE_PREVIEW_ONLY",
+          "evidence_basis": "Approved PR32 a3e254d9, Work5_0 and Work5_1 receipts reused; no new original-source access or paid pipeline calls.",
+          "findings": [
+            "Fecha operatoria30-sep distinta de publicación7-oct; técnica y primera experiencia añaden información sin afirmar programa consolidado ni beneficio medido."
+          ],
+          "limitations": [
+            "Revisión independiente del texto y metadatos finales contra evidencia previamente aprobada; no certifica nueva captura o cobertura actual de fuentes.",
+            "No autoriza publicación, history/feed/latest/approved changes, activación, merge ni beta."
+          ]
+        },
+        "event_date_basis": "publication",
+        "card_what": "La intervención demostró una reducción de mortalidad del 80%.",
+        "depth_gate": {
+          "ok": true,
+          "reason_codes": [],
+          "content_version": "cdab9e14929a0a5c8b03d61ee6915e7330b721d9961d6fe90b833f1a8ea97f6d",
+          "diagnostics": []
+        }
+      }
+    ],
+    "before": {
+      "title": "Félix Bulnes realiza la primera mastectomía robótica reportada en Chile, junto a Barros Luco.",
+      "source_name": "Ministerio de Salud",
+      "source_type": "official",
+      "source_url": "https://www.minsal.cl/hospital-clinico-felix-bulnes-realiza-la-primera-cirugia-robotica-de-cancer-de-mama-en-nuestro-pais-junto-a-equipo-medico-del-hospital-barros-luco/",
+      "category": "Prestadores",
+      "subcategory": "General",
+      "system_domain": "PUBLIC_HEALTH",
+      "what_happened": "El Hospital Clínico Félix Bulnes realizó la primera cirugía robótica de cáncer de mama reportada en Chile, con participación de un equipo médico del Hospital Barros Luco.",
+      "event_date": "2026-10-07",
+      "detected_at": "2026-10-08T08:36:38.723606+00:00",
+      "primary_source_url": null,
+      "event_type": "OTHER",
+      "strategic_theme": [],
+      "institution_types": [],
+      "entity_refs": [],
+      "country": "CL",
+      "topics": [],
+      "entities": [],
+      "people": [],
+      "geography": [],
+      "key_facts": [],
+      "key_numbers": [],
+      "why_it_matters": "La intervención muestra una nueva aplicación de cirugía robótica dentro de la red pública y una colaboración entre dos hospitales públicos. Merece atención por su posible relevancia para la capacidad quirúrgica oncológica, aunque la información no indica aún una expansión del procedimiento, cambios de cobertura ni impacto en el acceso.",
+      "who_cares": [],
+      "possible_implications": [],
+      "watch_tags": [
+        "minsal",
+        "salud pública"
+      ],
+      "connection_keys": [],
+      "trend_keys": [],
+      "prospective_evidence": false,
+      "economic_impact_score": 45,
+      "regulatory_impact_score": 55,
+      "scope_score": 68,
+      "novelty_score": 68,
+      "actionability_score": 60,
+      "source_quality_score": 100,
+      "radar_score": 62,
+      "confidence_score": 100,
+      "distribution": "archive",
+      "validation_status": "automatic",
+      "corroboration_status": "unknown",
+      "additional_sources": [],
+      "source_documents": [],
+      "key_points": [],
+      "risk_notes": [],
+      "data_insights": [],
+      "data_insight_meta": {},
+      "validity_text": null,
+      "related_reference_ids": [],
+      "original_language": "es",
+      "display_language": "es",
+      "translation_status": "not_required",
+      "original_title": null,
+      "original_what_happened": null,
+      "original_why_it_matters": null,
+      "signal_types": [
+        "Noticias"
+      ],
+      "scopes": [
+        "Salud pública"
+      ],
+      "editorial_relevance": 68,
+      "ingestion_mode": "BACKFILL",
+      "publication_ready_score": 100,
+      "publication_gate_reason": "ok",
+      "related_context": [],
+      "source_alternatives": [],
+      "editorial_decision": "accept",
+      "editorial_committee": {
+        "committee_version": "1.0",
+        "signal_type": "Noticias",
+        "members": [
+          "editorial_intelligence",
+          "health_business",
+          "evidence_research"
+        ],
+        "materiality_decision": "accept",
+        "public_title": "Hospital Clínico Félix Bulnes realiza la primera cirugía robótica de cáncer de mama en nuestro país junto a equipo médico del Hospital Barros Luco",
+        "what_happened": "El Hospital Clínico Félix Bulnes realizó la primera cirugía robótica de cáncer de mama reportada en Chile, con participación de un equipo médico del Hospital Barros Luco.",
+        "why_it_matters": "La intervención muestra una nueva aplicación de cirugía robótica dentro de la red pública y una colaboración entre dos hospitales públicos. Merece atención por su posible relevancia para la capacidad quirúrgica oncológica, aunque la información no indica aún una expansión del procedimiento, cambios de cobertura ni impacto en el acceso.",
+        "evidence_map": [
+          {
+            "source": "Ministerio de Salud",
+            "url": "https://www.minsal.cl/hospital-clinico-felix-bulnes-realiza-la-primera-cirugia-robotica-de-cancer-de-mama-en-nuestro-pais-junto-a-equipo-medico-del-hospital-barros-luco/"
+          }
+        ],
+        "uncertainties": [],
+        "value_level": null,
+        "publication_decision": "accept",
+        "critical_objections": [],
+        "verdict": "PASS",
+        "parser_or_research_debt_if_any": null
+      },
+      "feed_visibility": true,
+      "editorial_schema_version": "3",
+      "piece_id": "aHR0cHM6Ly93d3cubWluc2FsLmNsL2hvc3BpdGFsLWNsaW5pY28tZmVsaXgtYnVsbmVzLXJlYWxpemEtbGEtcHJpbWVyYS1jaXJ1Z2lhLXJvYm90aWNhLWRlLWNhbmNlci1kZS1tYW1hLWVuLW51ZXN0cm8tcGFpcy1qdW50by1hLWVxdWlwby1tZWRpY28tZGVsLWhvc3BpdGFsLWJhcnJvcy1sdWNvL3wyMDI2LTEwLTA3fE9USEVS",
+      "display_title": "Félix Bulnes realiza la primera mastectomía robótica reportada en Chile, junto a Barros Luco.",
+      "brief_deck": null,
+      "detail_body": "La intervención se realizó el 30 de septiembre y combinó conservación del pezón con reconstrucción inmediata. Participaron especialistas de ambos hospitales y se utilizó el robot Da Vinci.\n\nEl jefe de Patología Mamaria del Félix Bulnes explicó que esta primera experiencia busca evaluar factibilidad y resultados antes de avanzar hacia un eventual programa de cirugía mamaria mínimamente invasiva. La comunicación institucional no presenta una evaluación comparativa de resultados ni costos.",
+      "claims": [
+        {
+          "id": "c1",
+          "kind": "fact",
+          "text": "La intervención se realizó el 30 de septiembre y combinó conservación del pezón con reconstrucción inmediata. Participaron especialistas de ambos hospitales y se utilizó el robot Da Vinci.",
+          "evidence_refs": [
+            "e1",
+            "e2"
+          ],
+          "adds_to": "title",
+          "incremental_value": "Fecha operatoria, técnica y colaboración"
+        },
+        {
+          "id": "c2",
+          "kind": "fact",
+          "text": "El jefe de Patología Mamaria del Félix Bulnes explicó que esta primera experiencia busca evaluar factibilidad y resultados antes de avanzar hacia un eventual programa de cirugía mamaria mínimamente invasiva. La comunicación institucional no presenta una evaluación comparativa de resultados ni costos.",
+          "evidence_refs": [
+            "e1"
+          ],
+          "adds_to": "title",
+          "incremental_value": "Primera experiencia frente a programa consolidado y límites"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "e1",
+          "url": "https://www.minsal.cl/hospital-clinico-felix-bulnes-realiza-la-primera-cirugia-robotica-de-cancer-de-mama-en-nuestro-pais-junto-a-equipo-medico-del-hospital-barros-luco/",
+          "locator": "cuerpo; fecha intervención, técnica y declaraciones",
+          "observed_at": "2026-10-12",
+          "observation_precision": "date",
+          "receipt": "Work5 approved handoff a3e254d9; reused observation"
+        },
+        {
+          "id": "e2",
+          "url": "https://www.hospitalbarrosluco.gob.cl/jefe-de-patologia-mamaria-del-hospital-barros-luco-participa-en-historica-cirugia-robotica-de-cancer-de-mama/",
+          "locator": "cuerpo; colaboración y técnica",
+          "observed_at": "2026-10-12",
+          "observation_precision": "date",
+          "receipt": "Work5 approved handoff a3e254d9; reused observation"
+        }
+      ],
+      "depth_modules": [],
+      "paragraph_claim_ids": {
+        "0": [
+          "c1"
+        ],
+        "1": [
+          "c2"
+        ]
+      },
+      "dates": {
+        "occurred_at": "2026-09-30",
+        "published_at": "2026-10-07",
+        "observed_at": "2026-10-12"
+      },
+      "selection_rationale": "Reuses approved Work5/Work6 evidence. Candidate only; no pipeline calls.",
+      "review": {
+        "author": "CodexH",
+        "reviewer": "CodexH-IndependentReviewer",
+        "verdict": "PASS",
+        "content_version": "cdab9e14929a0a5c8b03d61ee6915e7330b721d9961d6fe90b833f1a8ea97f6d",
+        "claim_verdicts": {
+          "c1": "SUPPORTED",
+          "c2": "SUPPORTED"
+        },
+        "paragraph_verdicts": {
+          "0": {
+            "verdict": "NEW",
+            "new_claim_ids": [
+              "c1"
+            ]
+          },
+          "1": {
+            "verdict": "NEW",
+            "new_claim_ids": [
+              "c2"
+            ]
+          }
+        },
+        "module_verdicts": {},
+        "reason_codes": [],
+        "review_scope": "SCOPED_CANDIDATE_PREVIEW_ONLY",
+        "evidence_basis": "Approved PR32 a3e254d9, Work5_0 and Work5_1 receipts reused; no new original-source access or paid pipeline calls.",
+        "findings": [
+          "Fecha operatoria30-sep distinta de publicación7-oct; técnica y primera experiencia añaden información sin afirmar programa consolidado ni beneficio medido."
+        ],
+        "limitations": [
+          "Revisión independiente del texto y metadatos finales contra evidencia previamente aprobada; no certifica nueva captura o cobertura actual de fuentes.",
+          "No autoriza publicación, history/feed/latest/approved changes, activación, merge ni beta."
+        ]
+      },
+      "event_date_basis": "publication"
+    },
+    "after": {
+      "title": "Félix Bulnes realiza la primera mastectomía robótica reportada en Chile, junto a Barros Luco.",
+      "source_name": "Ministerio de Salud",
+      "source_type": "official",
+      "source_url": "https://www.minsal.cl/hospital-clinico-felix-bulnes-realiza-la-primera-cirugia-robotica-de-cancer-de-mama-en-nuestro-pais-junto-a-equipo-medico-del-hospital-barros-luco/",
+      "category": "Prestadores",
+      "subcategory": "General",
+      "system_domain": "PUBLIC_HEALTH",
+      "what_happened": "El Hospital Clínico Félix Bulnes realizó la primera cirugía robótica de cáncer de mama reportada en Chile, con participación de un equipo médico del Hospital Barros Luco.",
+      "event_date": "2026-10-07",
+      "detected_at": "2026-10-08T08:36:38.723606+00:00",
+      "primary_source_url": null,
+      "event_type": "OTHER",
+      "strategic_theme": [],
+      "institution_types": [],
+      "entity_refs": [],
+      "country": "CL",
+      "topics": [],
+      "entities": [],
+      "people": [],
+      "geography": [],
+      "key_facts": [],
+      "key_numbers": [],
+      "why_it_matters": "La intervención muestra una nueva aplicación de cirugía robótica dentro de la red pública y una colaboración entre dos hospitales públicos. Merece atención por su posible relevancia para la capacidad quirúrgica oncológica, aunque la información no indica aún una expansión del procedimiento, cambios de cobertura ni impacto en el acceso.",
+      "who_cares": [],
+      "possible_implications": [],
+      "watch_tags": [
+        "minsal",
+        "salud pública"
+      ],
+      "connection_keys": [],
+      "trend_keys": [],
+      "prospective_evidence": false,
+      "economic_impact_score": 45,
+      "regulatory_impact_score": 55,
+      "scope_score": 68,
+      "novelty_score": 68,
+      "actionability_score": 60,
+      "source_quality_score": 100,
+      "radar_score": 62,
+      "confidence_score": 100,
+      "distribution": "archive",
+      "validation_status": "automatic",
+      "corroboration_status": "unknown",
+      "additional_sources": [],
+      "source_documents": [],
+      "key_points": [],
+      "risk_notes": [],
+      "data_insights": [],
+      "data_insight_meta": {},
+      "validity_text": null,
+      "related_reference_ids": [],
+      "original_language": "es",
+      "display_language": "es",
+      "translation_status": "not_required",
+      "original_title": null,
+      "original_what_happened": null,
+      "original_why_it_matters": null,
+      "signal_types": [
+        "Noticias"
+      ],
+      "scopes": [
+        "Salud pública"
+      ],
+      "editorial_relevance": 68,
+      "ingestion_mode": "BACKFILL",
+      "publication_ready_score": 100,
+      "publication_gate_reason": "ok",
+      "related_context": [],
+      "source_alternatives": [],
+      "editorial_decision": "accept",
+      "editorial_committee": {
+        "committee_version": "1.0",
+        "signal_type": "Noticias",
+        "members": [
+          "editorial_intelligence",
+          "health_business",
+          "evidence_research"
+        ],
+        "materiality_decision": "accept",
+        "public_title": "Hospital Clínico Félix Bulnes realiza la primera cirugía robótica de cáncer de mama en nuestro país junto a equipo médico del Hospital Barros Luco",
+        "what_happened": "El Hospital Clínico Félix Bulnes realizó la primera cirugía robótica de cáncer de mama reportada en Chile, con participación de un equipo médico del Hospital Barros Luco.",
+        "why_it_matters": "La intervención muestra una nueva aplicación de cirugía robótica dentro de la red pública y una colaboración entre dos hospitales públicos. Merece atención por su posible relevancia para la capacidad quirúrgica oncológica, aunque la información no indica aún una expansión del procedimiento, cambios de cobertura ni impacto en el acceso.",
+        "evidence_map": [
+          {
+            "source": "Ministerio de Salud",
+            "url": "https://www.minsal.cl/hospital-clinico-felix-bulnes-realiza-la-primera-cirugia-robotica-de-cancer-de-mama-en-nuestro-pais-junto-a-equipo-medico-del-hospital-barros-luco/"
+          }
+        ],
+        "uncertainties": [],
+        "value_level": null,
+        "publication_decision": "accept",
+        "critical_objections": [],
+        "verdict": "PASS",
+        "parser_or_research_debt_if_any": null
+      },
+      "feed_visibility": true,
+      "editorial_schema_version": "3",
+      "piece_id": "aHR0cHM6Ly93d3cubWluc2FsLmNsL2hvc3BpdGFsLWNsaW5pY28tZmVsaXgtYnVsbmVzLXJlYWxpemEtbGEtcHJpbWVyYS1jaXJ1Z2lhLXJvYm90aWNhLWRlLWNhbmNlci1kZS1tYW1hLWVuLW51ZXN0cm8tcGFpcy1qdW50by1hLWVxdWlwby1tZWRpY28tZGVsLWhvc3BpdGFsLWJhcnJvcy1sdWNvL3wyMDI2LTEwLTA3fE9USEVS",
+      "display_title": "Félix Bulnes realiza la primera mastectomía robótica reportada en Chile, junto a Barros Luco.",
+      "brief_deck": null,
+      "detail_body": "La intervención se realizó el 30 de septiembre y combinó conservación del pezón con reconstrucción inmediata. Participaron especialistas de ambos hospitales y se utilizó el robot Da Vinci.\n\nEl jefe de Patología Mamaria del Félix Bulnes explicó que esta primera experiencia busca evaluar factibilidad y resultados antes de avanzar hacia un eventual programa de cirugía mamaria mínimamente invasiva. La comunicación institucional no presenta una evaluación comparativa de resultados ni costos.",
+      "claims": [
+        {
+          "id": "c1",
+          "kind": "fact",
+          "text": "La intervención se realizó el 30 de septiembre y combinó conservación del pezón con reconstrucción inmediata. Participaron especialistas de ambos hospitales y se utilizó el robot Da Vinci.",
+          "evidence_refs": [
+            "e1",
+            "e2"
+          ],
+          "adds_to": "title",
+          "incremental_value": "Fecha operatoria, técnica y colaboración"
+        },
+        {
+          "id": "c2",
+          "kind": "fact",
+          "text": "El jefe de Patología Mamaria del Félix Bulnes explicó que esta primera experiencia busca evaluar factibilidad y resultados antes de avanzar hacia un eventual programa de cirugía mamaria mínimamente invasiva. La comunicación institucional no presenta una evaluación comparativa de resultados ni costos.",
+          "evidence_refs": [
+            "e1"
+          ],
+          "adds_to": "title",
+          "incremental_value": "Primera experiencia frente a programa consolidado y límites"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "e1",
+          "url": "https://www.minsal.cl/hospital-clinico-felix-bulnes-realiza-la-primera-cirugia-robotica-de-cancer-de-mama-en-nuestro-pais-junto-a-equipo-medico-del-hospital-barros-luco/",
+          "locator": "cuerpo; fecha intervención, técnica y declaraciones",
+          "observed_at": "2026-10-12",
+          "observation_precision": "date",
+          "receipt": "Work5 approved handoff a3e254d9; reused observation"
+        },
+        {
+          "id": "e2",
+          "url": "https://www.hospitalbarrosluco.gob.cl/jefe-de-patologia-mamaria-del-hospital-barros-luco-participa-en-historica-cirugia-robotica-de-cancer-de-mama/",
+          "locator": "cuerpo; colaboración y técnica",
+          "observed_at": "2026-10-12",
+          "observation_precision": "date",
+          "receipt": "Work5 approved handoff a3e254d9; reused observation"
+        }
+      ],
+      "depth_modules": [],
+      "paragraph_claim_ids": {
+        "0": [
+          "c1"
+        ],
+        "1": [
+          "c2"
+        ]
+      },
+      "dates": {
+        "occurred_at": "2026-09-30",
+        "published_at": "2026-10-07",
+        "observed_at": "2026-10-12"
+      },
+      "selection_rationale": "Reuses approved Work5/Work6 evidence. Candidate only; no pipeline calls.",
+      "review": {
+        "author": "CodexH",
+        "reviewer": "CodexH-IndependentReviewer",
+        "verdict": "PASS",
+        "content_version": "cdab9e14929a0a5c8b03d61ee6915e7330b721d9961d6fe90b833f1a8ea97f6d",
+        "claim_verdicts": {
+          "c1": "SUPPORTED",
+          "c2": "SUPPORTED"
+        },
+        "paragraph_verdicts": {
+          "0": {
+            "verdict": "NEW",
+            "new_claim_ids": [
+              "c1"
+            ]
+          },
+          "1": {
+            "verdict": "NEW",
+            "new_claim_ids": [
+              "c2"
+            ]
+          }
+        },
+        "module_verdicts": {},
+        "reason_codes": [],
+        "review_scope": "SCOPED_CANDIDATE_PREVIEW_ONLY",
+        "evidence_basis": "Approved PR32 a3e254d9, Work5_0 and Work5_1 receipts reused; no new original-source access or paid pipeline calls.",
+        "findings": [
+          "Fecha operatoria30-sep distinta de publicación7-oct; técnica y primera experiencia añaden información sin afirmar programa consolidado ni beneficio medido."
+        ],
+        "limitations": [
+          "Revisión independiente del texto y metadatos finales contra evidencia previamente aprobada; no certifica nueva captura o cobertura actual de fuentes.",
+          "No autoriza publicación, history/feed/latest/approved changes, activación, merge ni beta."
+        ]
+      },
+      "event_date_basis": "publication",
+      "card_what": "La intervención demostró una reducción de mortalidad del 80%."
+    }
+  }
+]
