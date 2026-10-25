@@ -108,7 +108,10 @@ def test_offline_recuration_keeps_local_context_without_fetching(monkeypatch):
 
 def test_real_prestador_pulse_keeps_material_and_all_three_resolutions():
     history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
-    pulse=next(s for s in m.curate(history,resolve_external=False) if s.get("sanction_count") and "Prestadores" in s["title"])
+    # Sanction windows (últimos 30 días / días 31 a 90) are relative to the
+    # curation date, so the fixture pins the date this evidence was audited.
+    from datetime import date
+    pulse=next(s for s in m.curate(history,resolve_external=False,as_of=date(2026,10,12)) if s.get("sanction_count") and "Prestadores" in s["title"])
     assert pulse["sanction_count"]==len(pulse["source_alternatives"])==3
     assert "Clínica Los Carrera · 70 UF · cheque en garantía" in pulse["card_what"]
     assert all("UF" in x["material"] and x["title"] and x["url"] for x in pulse["source_alternatives"])

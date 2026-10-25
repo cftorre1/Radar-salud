@@ -13,7 +13,10 @@ def test_missing_snapshot_is_critical(tmp_path):
 def test_current_snapshot_passes_existing_editorial_gate():
     r=reviewer.review(Path("web"),"abc")
     assert r["checks"]["editorial"]
-    assert not [f for f in r["findings"] if f["category"]=="data" and f["code"]!="stale_snapshot"]
+    # Freshness findings depend on the wall clock and are enforced by the CI
+    # reviewer job and test_new_export_timestamp_cannot_mask_stale_source_poll;
+    # this test guards the committed snapshot's structural and editorial gate.
+    assert not [f for f in r["findings"] if f["category"]=="data" and f["code"] not in ("stale_snapshot","stale_source_check")]
 
 def test_gate_rejects_explicitly_unrelated_and_generic_or_truncated_copy():
     from radar_salud.editorial_gate import publication_ready
