@@ -51,14 +51,14 @@ jobs:
           REQUESTED_LIMIT: ${{ inputs.processing_limit || 30 }}
         run: |
           limit=$(python -c 'import os; n=int(os.environ["REQUESTED_LIMIT"]); print(n if 1 <= n <= 30 else 30)')
-          timeout --signal=TERM 20m python -m radar_salud.engine_cli --limit "$limit"
+          timeout --signal=TERM 45m python -m radar_salud.engine_cli --limit "$limit"
       - name: Controlled rebuild using cache and persistent pending queue
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.rebuild == true }}
         env:
           REQUESTED_LIMIT: ${{ inputs.processing_limit || 40 }}
         run: |
           limit=$(python -c 'import os; n=int(os.environ["REQUESTED_LIMIT"]); print(n if 1 <= n <= 40 else 40)')
-          timeout --signal=TERM 20m python -m radar_salud.engine_cli --limit "$limit"
+          timeout --signal=TERM 45m python -m radar_salud.engine_cli --limit "$limit"
       - name: Export public snapshot and source health
         run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json
       - name: Live beta source validation (degrades beta, never blocks core)
