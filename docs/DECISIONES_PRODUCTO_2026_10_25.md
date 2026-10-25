@@ -16,7 +16,7 @@ Fuente: auditoría con cuatro perspectivas expertas (editorial, negocios digital
 | 4 | Vista por defecto | Pendientes con tope 30 días y separador "Nuevas desde tu última visita"; período y orden dentro de Filtrar |
 | 5 | Relevancia | El puntaje no se muestra; se usa para filtrar lo que no interesa. Personalización por intereses con cuentas/PREMIUM |
 | 6 | Probadita Global | Cada semana debe haber una pieza valiosa: ampliar cobertura de fuentes globales |
-| 7 | Íconos por fila | Visibles, sutiles, minimalistas y autoexplicativos (fuente ↗, compartir) |
+| 7 | Íconos por fila | Visibles, sutiles, minimalistas y autoexplicativos (fuente ↗, compartir). La fila muestra "fuente · fecha con año"; la distinción publicación/evento y las fechas completas quedan en la ficha (pulsos de datos y sanciones conservan su metadata completa en la fila) |
 | 8 | FREE / PREMIUM | Insight gratis en beta (vitrina); PREMIUM = Watch por actor, series de datos, archivo y exportación |
 | 9 | Validación | 4 semanas con ~15 ejecutivos: correo semanal manual con consentimiento; medir retorno y reenvíos; entrevistar precio y quién paga. Envío sujeto a lista aprobada por Dirección |
 

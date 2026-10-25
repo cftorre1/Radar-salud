@@ -55,6 +55,7 @@
 .iconbtn .mini-icon{width:15px;height:15px;stroke-width:1.6}
 .iconbtn:hover,.iconbtn:focus-visible{color:var(--ink);opacity:1}
 .dotbtn{all:unset;cursor:pointer;position:absolute;left:0;top:0;bottom:0;width:44px;min-height:44px;display:flex;justify-content:center;padding-top:19px;box-sizing:border-box;color:var(--ink48)}
+.dotbtn[hidden]{display:none!important}
 .unread-dot{width:8px;height:8px;border-radius:50%;background:#E3A24F;display:block;transition:transform .15s ease}
 .dotbtn:hover .unread-dot{transform:scale(1.5)}
 .dotbtn .mini-icon{width:14px;height:14px}

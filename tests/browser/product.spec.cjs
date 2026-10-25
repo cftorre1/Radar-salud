@@ -681,3 +681,9 @@ test('a shared link is revealed once in a lane that shows it and never rewrites 
  await expect(page.locator('[data-lane="p"]')).toHaveAttribute('aria-pressed','true');await expect(page.locator(`[id="sig-${id}"]`)).toHaveCount(0);
  expect(JSON.parse(await page.evaluate(()=>localStorage.getItem('alicanto_filters'))).lane).toBe('p');
 });
+test('in Todas a dot marks read, disappears and keeps focus on the same row',async({page})=>{
+ await page.goto('/');await page.locator('[data-lane="t"]').click();
+ const row=page.locator('#local article[data-card]:not(.read)').first();const id=await row.getAttribute('data-card');const same=page.locator(`#local [data-card="${id}"]`);
+ await same.locator('[data-read]').click();await expect(same).toHaveClass(/read/);await expect(same.locator('[data-read]')).toBeHidden();
+ await expect(same.locator('.title-open')).toBeFocused();
+});
