@@ -60,9 +60,21 @@ def test_non_daily_sources_warn_but_daily_sources_still_block(tmp_path):
 
 def test_non_daily_policy_never_exempts_daily_capture_sources():
     policy=json.loads(Path("config/source_freshness_policy.json").read_text())
-    daily=json.loads(Path("config/sources.json").read_text())
+    daily=json.loads(Path("config/sources.json").read_text())+json.loads(Path("config/beta_source_configs.json").read_text())
     exempt=set(policy["non_daily_sources"])
     assert exempt <= {"dipres_health_budget","cmf_health_ecosystem","sis_isapre_universe"}
     ids={s.get("slug") or s.get("id") for s in daily if isinstance(s,dict)}
     assert len(ids)>20 and "suseso" in ids
     assert not (exempt & ids), "A source in the daily capture can never be exempted from the 7-day rule"
+
+
+def test_daily_source_declaring_a_non_daily_mode_still_blocks(tmp_path):
+    (tmp_path/"data").mkdir()
+    (tmp_path/"data/radar_today.json").write_text(json.dumps({"generated_at":datetime.now(timezone.utc).isoformat(),"signals":[]}),encoding="utf-8")
+    old="2020-01-01T00:00:00+00:00"
+    (tmp_path/"data/source_health.json").write_text(json.dumps({"sources":{
+        "suseso":{"status":"ok","checked_at":old,"operation_mode":"isolated_qualification"},
+        "prestadores_data":{"status":"ok","checked_at":old,"operation_mode":"manual_curated_only"},
+    }}),encoding="utf-8")
+    findings=[f for f in reviewer.review(tmp_path,"sha")["findings"] if "stale" in f["code"]]
+    assert {f["path"].rsplit("/",1)[-1] for f in findings if f["code"]=="stale_source_check" and f["severity"]=="critical"}=={"suseso","prestadores_data"}
