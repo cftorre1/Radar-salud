@@ -11,6 +11,7 @@ def test_copy_overrides_are_audited_non_empty_and_apply_to_every_surface():
     by_audit = {row["id"]: row for row in audit["items"]}
     by_signal = {row["source_url"]: row for row in snapshot["signals"]}
     assert len(overrides["items"]) == 11
+    applied = stale = 0
     for override in overrides["items"]:
         reviewed = by_audit[override["source_url"]]
         assert override["proposed"] == reviewed["proposed"]
@@ -20,7 +21,20 @@ def test_copy_overrides_are_audited_non_empty_and_apply_to_every_surface():
             # keep routine accreditation/context pieces out of the executive feed.
             continue
         assert override["event_date"] == rendered["event_date"]
-        assert override["signal_fingerprint_sha256"] == signal_fingerprint(rendered)
+        if override["signal_fingerprint_sha256"] != signal_fingerprint(rendered):
+            # The underlying signal changed after the 26-sep review (e.g. a rolling
+            # sanctions pulse moved from "últimos 30 días" to "días 31 a 90").
+            # Reviewed copy must then fail closed: never describe different facts.
+            for proposed_field, signal_field in {
+                "title": "title", "summary": "card_what", "why": "card_why"
+            }.items():
+                value = override["proposed"].get(proposed_field)
+                if value:
+                    assert rendered.get(signal_field) != value
+            assert rendered.get("editorial_review_id") != overrides["audit_id"]
+            stale += 1
+            continue
+        applied += 1
         for proposed_field, signal_field in {
             "title": "title", "summary": "card_what", "why": "card_why"
         }.items():
@@ -30,6 +44,9 @@ def test_copy_overrides_are_audited_non_empty_and_apply_to_every_surface():
         assert rendered["editorial_review_id"] == overrides["audit_id"]
         if override.get("legacy_title"):
             assert rendered["legacy_read_title"] == override["legacy_title"]
+    # Most reviewed copy must still reach the feed; a wholesale fingerprint drift
+    # would mean the pipeline changed, not that time passed.
+    assert applied >= stale
 
 
 def test_unknown_urls_and_empty_proposals_never_mutate_copy():
