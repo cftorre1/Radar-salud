@@ -3,11 +3,16 @@ const fs=require('node:fs');
 const snapshot=JSON.parse(fs.readFileSync('web/data/radar_today.json','utf8'));
 const fixture=snapshot.signals.find(s=>s.source_url.includes('circular-if-n534'));
 async function prepare(page){await page.clock.install({time:new Date('2026-10-12T15:00:00Z')});await page.route('**/data/radar_today.json',r=>r.fulfill({json:{...snapshot,signals:[fixture]}}));}
-test('brief row and card title resolve the same direct detail without a Más info button; read and unread survive reload',async({page})=>{
+test('row title opens the record without a Más info button; opening reads, the dot toggles, state survives reload',async({page})=>{
  await prepare(page);await page.goto('/');const card=page.locator('[data-card]');await expect(card).toHaveCount(1);const id=await card.getAttribute('data-card');
- await page.locator(`[data-brief="${id}"]`).first().click();await expect(page.locator('#signalDetail')).toBeVisible();const body=await page.locator('#detailBody').textContent();await expect(card).toHaveClass(/read/);await page.keyboard.press('Escape');
- await expect(page.getByRole('button',{name:'Más info',exact:true})).toHaveCount(0);await card.locator('.title-open').click();await expect(page.locator('#detailBody')).toHaveText(body);await page.keyboard.press('Escape');await card.locator('[data-read]').click();await expect(card).not.toHaveClass(/read/);await expect(page.locator(`[data-brief-read="${id}"]`)).toHaveCount(1);
- await page.reload();await expect(card).not.toHaveClass(/read/);await expect(page.locator(`[data-brief-read="${id}"]`)).toHaveCount(1);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+ await expect(page.getByRole('button',{name:'Más info',exact:true})).toHaveCount(0);
+ await card.locator('.title-open').click();await expect(page.locator('#signalDetail')).toBeVisible();const body=await page.locator('#detailBody').textContent();await expect(card).toHaveClass(/read/);
+ await expect(page.locator('#detailBar [aria-label="Marcar como no leído"]')).toHaveCount(1);await page.keyboard.press('Escape');
+ await expect(card).toHaveCount(0);await expect(page.locator('#undoBar')).toContainText('Marcada como leída');
+ await page.locator('[data-lane="t"]').click();await expect(card).toHaveClass(/read/);
+ await card.locator('.title-open').click();await expect(page.locator('#detailBody')).toHaveText(body);await page.keyboard.press('Escape');
+ await card.locator('[data-read]').click();await expect(card).not.toHaveClass(/read/);await expect(card.locator('[data-read]')).toHaveAttribute('aria-label',/^Marcar como leído/);
+ await page.reload();await expect(card).not.toHaveClass(/read/);await expect(page.locator('.lane.on')).toContainText('Todas');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  await page.screenshot({path:`artifacts/product-v3-${test.info().project.name}.png`,fullPage:true});
 });
 test('distinct concurrent writes and tombstones synchronize without lost updates',async({context,page})=>{

@@ -42,9 +42,11 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('#homeEmail')).toBeDisabled();
  await expect(page.locator('#newsletterDialog')).toContainText('Lo importante de la semana, directo a tu correo.');
  await page.getByRole('button',{name:'Cerrar resumen semanal'}).click();
- await expect(page.locator('#radarTitle')).toHaveText('Ponte al día en 30 segundos');
- await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ tarjetas · no leídos \d+$/);
- const initialMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
+ await expect(page.locator('#radarTitle')).toHaveText('Tu bandeja');
+ await expect(page.locator('#radarMetrics')).toHaveText(/^(\d+ por leer|Estás al día)$/);
+ const laneCount=async lane=>Number(await page.locator(`[data-lane="${lane}"] span`).innerText());
+ const initialMetrics=[await laneCount('t'),await laneCount('p')];
+ await expect(page.locator('[data-lane="p"]')).toHaveAttribute('aria-selected','true');
  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();
  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(0);
  await expect(page.locator('#sourcesDialog')).toContainText('¿Falta una fuente relevante?');
@@ -57,31 +59,38 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  const selectTops=await page.locator('.select-grid label').evaluateAll(xs=>xs.map(x=>Math.round(x.getBoundingClientRect().top)));
  expect(new Set(selectTops).size).toBe(1);
  await page.locator('#period').selectOption('90');
- const extendedMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
+ const extendedMetrics=[await laneCount('t'),await laneCount('p')];
  expect(extendedMetrics[0]).toBeGreaterThanOrEqual(initialMetrics[0]);
- const visibleTriage=await page.locator('.briefrow').evaluateAll(rows=>{const host=rows[0]?.parentElement?.getBoundingClientRect();return host?rows.filter(row=>{const r=row.getBoundingClientRect();return r.top>=host.top-1&&r.bottom<=host.bottom+1}).length:0});
- // Mobile deliberately avoids an inner scroll: two complete rows plus the explicit expand/feed controls remain readable.
- expect(visibleTriage).toBeGreaterThanOrEqual(test.info().project.name==='mobile'?2:3);
+ // Single inbox: no duplicated brief list; every row is a compact single-column item.
+ await expect(page.locator('.briefrow,.briefitem')).toHaveCount(0);
+ const visibleTriage=await page.locator('#local .signal.item').count();
+ expect(visibleTriage).toBeGreaterThanOrEqual(3);
  await expect(page.locator('article').first()).toBeVisible();
  if(test.info().project.name==='mobile'){
   const cards=await page.locator('article').evaluateAll(xs=>xs.slice(0,3).map(x=>({height:Math.round(x.getBoundingClientRect().height),title:x.querySelector('h2')?.textContent||''})));
   expect(cards.length).toBe(3);expect(Math.max(...cards.map(x=>x.height)),JSON.stringify(cards)).toBeLessThan(600);
  }
  await page.screenshot({path:`artifacts/${test.info().project.name}-browse.png`,fullPage:true});
- await page.locator('.briefitem').filter({hasNot:page.locator('.brief-kind')}).first().click();
- await expect(page.locator('article.read').first()).toBeVisible();
+ const opened=await page.locator('#local article[data-card]').first().getAttribute('data-card');
+ await page.locator('#local .title-open').first().click();
+ await expect(page.locator(`#local [data-card="${opened}"]`)).toHaveClass(/read/);
  await expect(page.locator('#signalDetail')).toBeVisible();await expect(page.locator('#closeDetail')).toBeFocused();await page.keyboard.press('Escape');
+ // Opening counts as reading: the row leaves Pendientes with an undo.
+ await expect(page.locator('#undoBar')).toContainText('Marcada como leída');await expect(page.locator(`#local [data-card="${opened}"]`)).toHaveCount(0);
+ await page.locator('[data-lane="t"]').click();await expect(page.locator(`#local [data-card="${opened}"]`)).toHaveClass(/read/);
  const ids=await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id));expect(new Set(ids).size).toBe(ids.length);
- await page.locator('article[data-card]').first().getByRole('button',{name:/Marcar/}).click();
+ // In Todas, marking read never reorders: the row folds in place.
+ const order=await page.locator('#local article[data-card]').evaluateAll(xs=>xs.map(x=>x.id));
+ await page.locator('#local article[data-card]:not(.read)').first().getByRole('button',{name:/Marcar/}).click();
+ expect(await page.locator('#local article[data-card]').evaluateAll(xs=>xs.map(x=>x.id))).toEqual(order);
  expect((await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id))).sort()).toEqual(ids.sort());
  await expect(page.locator('article').first().locator('.intel,.related')).toHaveCount(0);
  const withDepth=page.locator('article:has([data-detail])').first();await withDepth.locator('[data-detail]').first().click();
  await expect(page.locator('#signalDetail')).toBeVisible();await page.getByRole('button',{name:'Cerrar ficha'}).click();
  await page.locator('#typeFilters').getByRole('button',{name:'Fiscalización',exact:true}).click();
  await expect(page.locator('article').first()).toBeVisible();
- const filteredMetrics=(await page.locator('#radarMetrics').innerText()).match(/\d+/g).map(Number);
- expect(filteredMetrics[0]).toBe(await page.locator('article').count());
- expect(filteredMetrics[1]).toBe(await page.locator('article:not(.read)').count());
+ expect(await laneCount('t')).toBe(await page.locator('#local article[data-card]').count());
+ expect(await laneCount('p')).toBe(await page.locator('#local article[data-card]:not(.read)').count());
  await page.reload();await expect(page.locator('#period')).toHaveValue('90');
  await page.locator('#filterDetails summary').click();
  await expect(page.locator('#typeFilters').getByRole('button',{name:'Fiscalización',exact:true})).toHaveClass(/active/);
@@ -91,30 +100,29 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  expect(errors).toEqual([]);
  await page.screenshot({path:`artifacts/${test.info().project.name}-radar.png`,fullPage:true});
 });
-test('Inbox shows every unread signal, supports direct read and persists it',async({page})=>{
+test('Inbox shows every unread signal, supports direct read with undo and persists it',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
- const initial=await page.locator('.briefitem').count();
- const freeValue=await (await page.request.get('/data/free_value.json')).json();
- const radar=await (await page.request.get('/data/radar_today.json')).json();
- const weeklyRendered=await page.locator('article[data-special].weekly:not(.read)').count()>0;
- const dedupedInsightBase=weeklyRendered&&freeValue.weekly_insight&&radar.signals.some(s=>s.source_url===freeValue.weekly_insight.source_url)?1:0;
- const expected=await page.locator('article[data-card]:not(.read)').count()+await page.locator('article[data-special]:not(.read)').count();
- expect(initial).toBe(expected);expect(initial).toBeGreaterThan(4);
- const first=await page.locator('.briefitem').first().getAttribute('data-brief');
- await page.locator('[data-brief-read]').first().click();
- expect(await page.evaluate(()=>document.activeElement?.hasAttribute('data-brief-read'))).toBeTruthy();
- await expect(page.locator('.briefitem')).toHaveCount(initial-1);
- expect(await page.locator(`article[data-card="${first}"],article[data-special="${first}"]`).count()).toBeGreaterThan(0);expect(await page.locator(`article[data-card="${first}"],article[data-special="${first}"]`).evaluateAll(xs=>xs.every(x=>x.classList.contains('read')))).toBeTruthy();
+ const rows=page.locator('#local article[data-card]');await expect(rows.first()).toBeVisible();
+ const initial=await rows.count();
+ // Pendientes is the inbox: every visible unread signal, and only those; big things live outside it.
+ expect(initial).toBe(Number(await page.locator('[data-lane="p"] span').innerText()));expect(initial).toBeGreaterThan(4);
+ await expect(page.locator('#local article.read')).toHaveCount(0);await expect(page.locator('#local article[data-special]')).toHaveCount(0);
+ const first=await rows.first().getAttribute('data-card');
+ await rows.first().locator('[data-read]').click();
+ await expect(page.locator('#undoBar')).toContainText('Marcada como leída');
+ await expect(rows).toHaveCount(initial-1);
+ expect(await page.evaluate(()=>document.activeElement?.hasAttribute('data-read'))).toBeTruthy();
+ await page.locator('#undoRead').click();await expect(rows).toHaveCount(initial);await expect(page.locator(`#local [data-card="${first}"]`)).not.toHaveClass(/read/);
+ await page.locator(`#local [data-card="${first}"] [data-read]`).click();await expect(rows).toHaveCount(initial-1);
  await page.reload();await expect(page.locator('#meta')).toContainText('Última actualización:');
- await expect(page.locator('.briefitem')).toHaveCount(initial-1);
- expect(await page.locator(`article[data-card="${first}"],article[data-special="${first}"]`).count()).toBeGreaterThan(0);expect(await page.locator(`article[data-card="${first}"],article[data-special="${first}"]`).evaluateAll(xs=>xs.every(x=>x.classList.contains('read')))).toBeTruthy();
- await page.locator('#filterDetails summary').click();
- await page.locator('#period').selectOption('90');
- const inbox=page.locator('.brief-list');
- const deepCount=await page.locator('[data-brief-read]').count();
- expect(deepCount).toBeGreaterThan(4);
- await expect(page.locator('[data-brief-expand]')).toBeVisible();expect(await inbox.evaluate(el=>getComputedStyle(el).overflowY)).toBe('visible');await page.locator('[data-brief-expand]').click();await expect(inbox).toHaveClass(/expanded/);await page.locator('[data-brief-read]').last().click();await expect(inbox).toHaveClass(/expanded/);
- expect(await page.evaluate(()=>document.activeElement?.hasAttribute('data-brief-read'))).toBeTruthy();
+ await expect(rows).toHaveCount(initial-1);await expect(page.locator(`#local [data-card="${first}"]`)).toHaveCount(0);
+ await page.locator('[data-lane="l"]').click();await expect(page.locator(`#local [data-card="${first}"]`)).toHaveClass(/read/);
+ await page.locator('[data-lane="p"]').click();
+ await page.locator('#filterDetails summary').click();await page.locator('#period').selectOption('90');
+ const deep=await rows.count();expect(deep).toBeGreaterThan(4);
+ await page.locator('#markAllRead').click();await expect(rows).toHaveCount(0);await expect(page.locator('#local')).toContainText('Estás al día');
+ await expect(page.locator('#undoBar')).toContainText(`${deep} señales marcadas como leídas`);
+ await page.locator('#undoRead').click();await expect(rows).toHaveCount(deep);
 });
 test('operations dashboard loads without inventing measurements',async({page})=>{
  await page.goto('/admin/product.html');await expect(page.locator('#status')).toContainText('Actualizado:');
@@ -149,25 +157,25 @@ test('operations dashboard loads without inventing measurements',async({page})=>
  const response=await page.request.get('/data/excel_diagnostics.csv');expect(response.ok()).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-product.png`,fullPage:true});
 });
-test('Home V2 places unread Global and Insight in the brief, then retains subdued feed cards',async({page})=>{
+test('Big things open as a cover until read, then fold into header anchors',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  const source=await page.request.get('/data/free_value.json'),data=await source.json();
  const hasWeekly=await page.evaluate(w=>weeklyFresh(w),data.weekly_insight);
- const global=page.locator('.signal.special.global'),weekly=page.locator('.signal.special.weekly');
+ const global=page.locator('#bigThings .big-feature.global'),weekly=page.locator('#bigThings .big-feature.weekly');
  await expect(global).toHaveCount(1);await expect(weekly).toHaveCount(hasWeekly?1:0);
- await expect(page.locator('.brief-global')).toHaveCount(1);await expect(page.locator('.brief-weekly')).toHaveCount(hasWeekly?1:0);
- await expect(page.locator('.briefrow').nth(0)).toHaveClass(/brief-global/);if(hasWeekly){await expect(page.locator('.briefrow').nth(1)).toHaveClass(/brief-weekly/);await expect(page.locator('.brief-weekly .brief-meta')).toContainText('·')}
- await expect(page.locator('.brief-global .brief-meta')).toContainText('·');
- const firstKinds=await page.locator('.briefrow').evaluateAll((rows,count)=>rows.slice(0,count).map(row=>row.classList.contains('brief-weekly')?'weekly':row.classList.contains('brief-global')?'global':'ordinary'),hasWeekly?2:1);expect(firstKinds).toEqual(hasWeekly?['global','weekly']:['global']);
- await expect(page.locator('.briefrow .brief-meta')).toHaveCount(await page.locator('.briefrow').count());
- const fills=await page.locator('.signal.special').evaluateAll(rows=>rows.map(row=>getComputedStyle(row).backgroundColor));expect(new Set(fills).size).toBe(hasWeekly?2:1);
- const readTargets=await page.locator('.briefread').evaluateAll((buttons,count)=>buttons.slice(0,count).map(button=>({width:button.getBoundingClientRect().width,height:button.getBoundingClientRect().height})),hasWeekly?2:1);expect(readTargets.every(({width,height})=>width>=44&&height>=44)).toBeTruthy();
+ // The week's insight leads; the outside view follows. Neither repeats inside the inbox.
+ expect(await page.locator('#bigThings .big-feature').evaluateAll(xs=>xs.map(x=>x.classList.contains('weekly')?'weekly':'global'))).toEqual(hasWeekly?['weekly','global']:['global']);
+ await expect(page.locator('#local [data-special]')).toHaveCount(0);await expect(page.locator('#brief .big-anchor')).toHaveCount(0);
+ await expect(page.locator('#bigThings .big-feature .card-meta')).toHaveCount(hasWeekly?2:1);await expect(global.locator('.card-meta')).toContainText('·');
+ if(hasWeekly){const n=(data.weekly_insight.sources||[]).filter(x=>/^https:\/\//.test(x.url||'')).length;await expect(weekly.locator('.big-eyebrow')).toHaveText(n>1?`Insight de la semana · ${n} fuentes`:'Insight de la semana');await expect(weekly.locator('.big-eyebrow')).not.toContainText(/cruzad/i)}
+ const fills=await page.locator('#bigThings .big-feature').evaluateAll(rows=>rows.map(row=>getComputedStyle(row).backgroundColor));expect(new Set(fills).size).toBe(hasWeekly?2:1);
+ const readTargets=await page.locator('#bigThings [data-special-read]').evaluateAll(buttons=>buttons.map(button=>({width:button.getBoundingClientRect().width,height:button.getBoundingClientRect().height})));expect(readTargets.every(({width,height})=>width>=44&&height>=44)).toBeTruthy();
  await expect(page.locator('.hero-purpose')).toHaveText('Señales clave del sector salud, claras y a tiempo.');
- if(hasWeekly){await expect(weekly).toContainText(data.weekly_insight.insight_title);await page.locator('.brief-weekly [data-brief-read]').click();await expect(page.locator('.brief-weekly')).toHaveCount(0);await expect(weekly).toHaveClass(/read/);await weekly.getByRole('button',{name:'Más info',exact:true}).click();await expect(page.locator('#weeklyInsightDialog')).toContainText('Lectura Alicanto:');await expect(page.locator('#weeklyInsightDialog').getByRole('link',{name:/Revisar fuente original/})).toHaveAttribute('href',/^https:\/\//);await page.getByRole('button',{name:'Cerrar insight'}).click()}
- await page.locator('.brief-global [data-brief-read]').click();
- await expect(page.locator('.brief-global')).toHaveCount(0);await expect(global).toHaveClass(/read/);
- await page.reload();await expect(page.locator('.brief-global,.brief-weekly')).toHaveCount(0);
- await expect(page.locator('.signal.special.read')).toHaveCount(hasWeekly?2:1);
+ if(hasWeekly){await expect(weekly).toContainText(data.weekly_insight.insight_title);await weekly.locator('[data-special-read]').click();await expect(weekly).toHaveCount(0);const anchor=page.locator('#brief .big-anchor.weekly');await expect(anchor).toContainText(data.weekly_insight.insight_title);await expect(anchor.locator('.anchor-open')).toBeFocused();await anchor.locator('.anchor-open').click();await expect(page.locator('#weeklyInsightDialog')).toContainText('Lectura Alicanto:');await expect(page.locator('#weeklyInsightDialog').getByRole('link',{name:/Revisar fuente original/})).toHaveAttribute('href',/^https:\/\//);await page.getByRole('button',{name:'Cerrar insight'}).click()}
+ await global.locator('[data-special-read]').click();
+ await expect(global).toHaveCount(0);await expect(page.locator('#brief .big-anchor.global')).toHaveCount(1);await expect(page.locator('#bigThings')).toBeHidden();
+ await page.reload();await expect(page.locator('#bigThings .big-feature')).toHaveCount(0);
+ await expect(page.locator('#brief .big-anchor')).toHaveCount(hasWeekly?2:1);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-home-v2-final.png`,fullPage:true});
 });
@@ -175,9 +183,9 @@ test('Expired weekly insight stays hidden while its original signal remains in h
  await page.addInitScript(()=>{const NativeDate=Date,fixed=NativeDate.parse('2026-10-11T03:30:00Z');class FixedDate extends NativeDate{constructor(...args){super(...(args.length?args:[fixed]))}static now(){return fixed}}window.Date=FixedDate});
  await page.route('**/data/free_value.json',async route=>{const response=await route.fetch(),data=await response.json();data.weekly_insight={id:'stale-september',editorial_review_pass:true,event_date:'2026-09-14',freshness_anchor_date:'2026-09-14',title:'Expired',source_url:'https://www.superdesalud.gob.cl/normativa/circular-if-n535/'};await route.fulfill({response,json:data})});
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
- await expect(page.locator('.signal.special.weekly,.brief-weekly')).toHaveCount(0);
+ await expect(page.locator('.big-feature.weekly,.big-anchor.weekly')).toHaveCount(0);
  await page.locator('#period').selectOption('90');
- await expect(page.locator('.signal.special.weekly,.brief-weekly')).toHaveCount(0);
+ await expect(page.locator('.big-feature.weekly,.big-anchor.weekly')).toHaveCount(0);
  await expect(page.locator('article.signal').filter({hasText:'Circular IF/N°535'})).toHaveCount(1);
 });
 test('Feed-only share uses Web Share and clipboard fallback without analytics',async({page})=>{
@@ -185,20 +193,20 @@ test('Feed-only share uses Web Share and clipboard fallback without analytics',a
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await expect(page.locator('#brief [data-share]')).toHaveCount(0);
  const share=page.locator('#local [data-share]').first();await expect(share).toBeVisible();await expect(share).toHaveAttribute('aria-label',/Compartir:/);
- await expect(share.locator('xpath=..')).toHaveClass(/card-status-actions/);await expect(share.locator('xpath=..').locator('[data-read],[data-special-read]')).toHaveCount(1);await expect(page.locator('.card-actions [data-share]')).toHaveCount(0);
+ await expect(share.locator('xpath=ancestor::div[contains(@class,"card-meta")]')).toHaveCount(1);await expect(share.locator('xpath=ancestor::article[1]').locator('[data-read]')).toHaveCount(1);await expect(page.locator('.card-actions [data-share]')).toHaveCount(0);
  const targetSize=await share.evaluate(button=>({width:button.getBoundingClientRect().width,height:button.getBoundingClientRect().height}));expect(targetSize.width).toBeGreaterThanOrEqual(44);expect(targetSize.height).toBeGreaterThanOrEqual(44);
  await share.click();const shared=(await page.evaluate(()=>window.__shared))[0];expect(shared.url).toContain('#');await expect(share.locator('xpath=following-sibling::*[1]')).toHaveText('Compartido');
  await page.evaluate(()=>{delete navigator.share;window.__copied=[];Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:value=>{window.__copied.push(value);return Promise.resolve()}}})});
  await share.click();await expect(share).toHaveAttribute('data-share-result','copied');await expect(share.locator('xpath=following-sibling::*[1]')).toHaveText('Enlace copiado');expect((await page.evaluate(()=>window.__copied))[0]).toContain('#');
  await page.goto(shared.url);await expect(page.locator('#meta')).toContainText('Última actualización:');const target=new URL(shared.url).hash.slice(1),targetCard=page.locator(`[id="${target}"]`);await expect(targetCard).toBeVisible();await expect(targetCard).toBeFocused();await expect(targetCard).not.toHaveClass(/read/);await expect(page).toHaveURL(new RegExp(`#${target.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}$`));
- const specialShare=page.locator('.signal.special.global [data-share]');await expect(specialShare).toHaveAttribute('data-share',/^special-/);
+ const specialShare=page.locator('#bigThings .big-feature.global [data-share]');await expect(specialShare).toHaveAttribute('data-share',/^special-/);
  await page.goto('/#%E0%A4%A');await expect(page.locator('#meta')).toContainText('Última actualización:');await expect(page.locator('article').first()).toBeVisible();
 });
 test('Global read state is shared across Home and the research page',async({page})=>{
  const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,visibleCount=themeCount;
- await page.goto('/');await expect(page.locator('.brief-global')).toHaveCount(1);
+ await page.goto('/');await expect(page.locator('#bigThings .big-feature.global')).toHaveCount(1);
  const free=await (await page.request.get('/data/free_value.json')).json(),teaserId=free.global_teaser.theme_id;
- await page.locator('.signal.special.global .title-open[data-special-open]').first().click();
+ await page.locator('#bigThings .big-feature.global .title-open[data-special-open]').first().click();
  await expect(page).toHaveURL(/global\.html#theme-/);await expect(page.locator('#globalDetail')).toBeVisible();await page.keyboard.press('Escape');
  await page.locator('#globalPeriod').selectOption('all');
  // Filter its publisher to verify read-state persistence independently of rank.
@@ -212,9 +220,9 @@ test('Global read state is shared across Home and the research page',async({page
  const theme=page.locator(`#theme-${teaserId}`);
  await expect(theme).toHaveClass(/read/);
  await theme.locator('[data-read]').click();await expect(theme).not.toHaveClass(/read/);
- await page.goto('/');await expect(page.locator('.brief-global')).toHaveCount(1);
- await page.locator('.signal.special.global [data-special-read]').click();
- await expect(page.locator('.signal.special.global [data-special-read]')).toBeFocused();
+ await page.goto('/');await expect(page.locator('#bigThings .big-feature.global')).toHaveCount(1);
+ await page.locator('#bigThings .big-feature.global [data-special-read]').click();
+ await expect(page.locator('#brief .big-anchor.global .anchor-open')).toBeFocused();
 });
 test('source suggestion is visible, concise and fail-closed without provider',async({page})=>{
  let captured;
@@ -324,8 +332,8 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
 test('Global Intelligence mirrors Home while keeping global facts and Chile hypotheses distinct',async({page})=>{
  const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,visibleCount=themeCount;
  await page.goto('/');
- await expect(page.locator('.signal.special.global .title-open[data-special-open]')).toBeVisible();
- await page.locator('.signal.special.global .title-open[data-special-open]').first().click();
+ await expect(page.locator('#bigThings .big-feature.global .title-open[data-special-open]')).toBeVisible();
+ await page.locator('#bigThings .big-feature.global .title-open[data-special-open]').first().click();
  await expect(page.getByRole('heading',{name:'Global Intelligence',exact:true})).toBeVisible();await expect(page.locator('#globalDetail')).toBeVisible();await page.keyboard.press('Escape');
  await expect(page.getByRole('heading',{name:'Ponte al día en Global Intelligence'})).toBeVisible();
  await expect(page.locator('#globalPeriod')).toHaveValue('30');
@@ -336,7 +344,8 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await expect(page.locator('.theme')).toHaveCount(visibleCount);
  const initialUnread=visibleCount-await page.locator('.theme.read').count();
  await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${initialUnread}`);
- await page.locator('[data-open]').first().click();
+ // Open an unread theme that is not under the BCBSA editorial HOLD (its record carries no local-evidence block).
+ await page.locator('.theme:not(.read):not(#theme-global-ai-coding-payer-cost-2026) [data-open]').first().click();
  await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${initialUnread-1}`);
  const opened=page.locator('#globalDetail');await expect(opened).toBeVisible();await expect(opened).toContainText('Fuentes y evidencia');await expect(opened).not.toContainText(/Qué encontró:|Lectura estratégica|Qué mirar en Chile/);await expect(opened).toContainText('evidencia local');await page.keyboard.press('Escape');
  await page.reload();await expect(page.locator('#globalPeriod')).toHaveValue('all');
@@ -367,7 +376,7 @@ test('analytics never sends without explicit privacy approval even if a key is p
  await page.goto('/');
  await page.locator('#filterDetails summary').click();
  await page.locator('#period').selectOption('7');
- await expect(page.locator('#radarMetrics')).toHaveText(/^\d+ tarjetas · no leídos \d+$/);
+ await expect(page.locator('#radarMetrics')).toHaveText(/^(\d+ por leer|Estás al día)$/);
  expect(attempts).toBe(0);
 });
 test('authorized analytics fixture emits only anonymous event fields',async({page})=>{
@@ -403,7 +412,7 @@ test('persistent editorial contract is visible in feed and brief',async({page})=
  const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\/N°533 · SIL: actualiza el inventario mensual/})});
  await expect(c533).toHaveCount(1);
  await expect(c533).not.toContainText('Qué pasó:');await c533.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Circular');await page.keyboard.press('Escape');
- const briefOpaque=page.locator('.briefitem strong').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\d+$/});
+ const briefOpaque=page.locator('#bigThings h2,#brief .anchor-title').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\d+$/});
  await expect(briefOpaque).toHaveCount(0);
 });
 
