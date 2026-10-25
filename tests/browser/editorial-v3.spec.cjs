@@ -1,4 +1,4 @@
-const {test,expect}=require('./fixtures.cjs');
+const {test,expect,selectPeriod}=require('./fixtures.cjs');
 const fs=require('node:fs');
 const cases=JSON.parse(fs.readFileSync('tests/fixtures/product_editorial_v3_cases.json','utf8')).items;
 const portfolio=JSON.parse(fs.readFileSync('tests/fixtures/product_statistics_v3.json','utf8')).statistical_view;
@@ -6,7 +6,7 @@ async function data(page,signals){await page.clock.install({time:new Date('2026-
 for(const x of cases)test(`incremental editorial candidate ${x.id} retains facts and primary references`,async({page})=>{
  const candidate=x.candidate;expect(candidate.review.verdict).toBe('PASS');
  // Test-only preview of reviewed candidates, not mutation/publication of live data.
- await data(page,[{...candidate,depth_gate:{ok:true}}]);await page.goto('/');await page.locator('#period').selectOption('90');
+ await data(page,[{...candidate,depth_gate:{ok:true}}]);await page.goto('/');await selectPeriod(page,'90');
  const card=page.locator('[data-card]');await expect(card).toHaveCount(1);await card.locator('.title-open').click();const detail=page.locator('#detailBody');
  await expect(detail).toContainText(candidate.detail_body.split('\n\n')[0]);for(const e of candidate.evidence)await expect(detail.locator(`a[href="${e.url}"]`).first()).toHaveCount(1);
  await expect(detail).not.toContainText(/Qué pasó:|Por qué importa:|Qué encontró:|Lectura estratégica/);
@@ -16,7 +16,7 @@ for(const x of cases)test(`incremental editorial candidate ${x.id} retains facts
 });
 test('adaptive portfolio presents comparable entity groups, meaningful precise deltas and accessible series',async({page})=>{
  const signal={title:'Beneficiarios de isapres disminuyen en cada mes de febrero a julio de 2026',event_date:'2026-09-07',source_name:'Superintendencia de Salud',source_url:'https://www.superdesalud.gob.cl/biblioteca-digital/cartera/',signal_types:['Datos'],scopes:['Isapres'],what_happened:'Cartera verificada',why_it_matters:'Comparación de stocks provisionales con bases homogéneas.',statistical_view:portfolio};
- await data(page,[signal]);await page.goto('/');await page.locator('#period').selectOption('90');await page.locator('[data-detail]').first().click();const body=page.locator('#detailBody');
+ await data(page,[signal]);await page.goto('/');await selectPeriod(page,'90');await page.locator('[data-detail]').first().click();const body=page.locator('#detailBody');
  await expect(body.locator('.stat-kpi').first()).toContainText('2.487.497');await expect(body.locator('#entityComparison tbody tr')).toHaveCount(13);await expect(body).toContainText('Total sistema');await expect(body).toContainText('cerradas');await expect(body).toContainText('Isalud');await expect(body.locator('#entityComparison')).toContainText('-0,00436');
  await body.locator('[data-stat-sort="delta"]').click();await expect(body.locator('th[aria-sort]')).toContainText('Cambio personas');await body.getByText('Ver datos del gráfico',{exact:true}).click();await expect(body.locator('.stat-chart tbody tr')).toHaveCount(7);
  await expect(body.locator('.stat-chart svg')).toHaveAttribute('aria-label',/personas/);await expect(body.locator('details.statistical-methodology')).not.toHaveAttribute('open','');

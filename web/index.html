@@ -86,30 +86,28 @@
 <div id="detailBody">
 </div>
 </dialog>
+<p id="freshness" class="freshness" role="status" hidden></p>
 <section id="bigThings" class="big-things" aria-label="Lo esencial de la semana" hidden></section>
 <section class="radar-unit" aria-labelledby="radarTitle">
 <div class="radar-head">
 <h2 id="radarTitle">Tu bandeja</h2>
-</div>
-<div class="radar-status-row">
 <p class="radar-metrics" id="radarMetrics" role="status"></p>
-<label class="period-control"><span>Período</span>
-<select id="period">
-<option value="last">Desde mi última visita</option>
-<option value="7">7 días</option>
-<option value="14">14 días</option>
-<option value="30" selected>30 días</option>
-<option value="60">60 días</option>
-<option value="90">90 días</option>
-</select>
-</label>
+<button type="button" id="markAllRead" class="mark-all" aria-label="Marcar toda la bandeja como leída" hidden>Marcar todo como leído</button>
 </div>
 <div class="radar-control-row">
 <details class="filter-details" id="filterDetails">
 <summary>Filtrar u ordenar</summary>
 <div class="filter-body">
 <div class="filter-persist-row"><p class="filter-persist">Tus filtros se guardan automáticamente en este dispositivo.</p><button type="button" class="reset-filters" id="resetFilters">Restablecer</button></div>
-<div class="select-grid single">
+<div class="select-grid">
+<label>Período <select id="period">
+<option value="last">Desde mi última visita</option>
+<option value="7">7 días</option>
+<option value="14">14 días</option>
+<option value="30" selected>30 días</option>
+<option value="60">60 días</option>
+<option value="90">90 días</option>
+</select></label>
 <label>Orden <select id="sort">
 <option value="personalized">Relevancia para mí</option>
 <option value="date">Más recientes</option>
@@ -134,7 +132,7 @@
 </div>
 <div id="brief" class="big-anchors" hidden>
 </div>
-<div class="lane-row"><div id="lanes" class="lanes" role="group" aria-label="Mostrar en la bandeja"></div><button type="button" id="markAllRead" class="mark-all" aria-label="Marcar toda la bandeja como leída" hidden>Marcar todo como leído</button></div>
+<div class="lane-row"><div id="lanes" class="lanes" role="group" aria-label="Mostrar en la bandeja"></div></div>
 </section>
 <div id="undoBar" class="undo-bar" role="status" aria-live="polite" hidden></div>
 <div id="local">

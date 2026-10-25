@@ -1,4 +1,4 @@
-const {test,expect}=require('./fixtures.cjs');
+const {test,expect,selectPeriod}=require('./fixtures.cjs');
 const fs=require('node:fs');fs.mkdirSync('artifacts',{recursive:true});
 const path=require('node:path');
 const STATISTICAL_URLS={
@@ -43,7 +43,7 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('#newsletterDialog')).toContainText('Lo importante de la semana, directo a tu correo.');
  await page.getByRole('button',{name:'Cerrar resumen semanal'}).click();
  await expect(page.locator('#radarTitle')).toHaveText('Tu bandeja');
- await expect(page.locator('#radarMetrics')).toHaveText(/^(\d+ por leer|Estás al día)$/);
+ await expect(page.locator('#radarMetrics')).toHaveText(/^(\d+ pendientes|Estás al día)$/);
  const laneCount=async lane=>Number(await page.locator(`[data-lane="${lane}"] span`).innerText());
  const initialMetrics=[await laneCount('t'),await laneCount('p')];
  await expect(page.locator('[data-lane="p"]')).toHaveAttribute('aria-pressed','true');
@@ -58,7 +58,7 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('#period')).toBeVisible();await expect(page.locator('#sort')).toBeVisible();
  const selectTops=await page.locator('.select-grid label').evaluateAll(xs=>xs.map(x=>Math.round(x.getBoundingClientRect().top)));
  expect(new Set(selectTops).size).toBe(1);
- await page.locator('#period').selectOption('90');
+ await selectPeriod(page,'90');
  const extendedMetrics=[await laneCount('t'),await laneCount('p')];
  expect(extendedMetrics[0]).toBeGreaterThanOrEqual(initialMetrics[0]);
  // Single inbox: no duplicated brief list; every row is a compact single-column item.
@@ -118,7 +118,7 @@ test('Inbox shows every unread signal, supports direct read with undo and persis
  await expect(rows).toHaveCount(initial-1);await expect(page.locator(`#local [data-card="${first}"]`)).toHaveCount(0);
  await page.locator('[data-lane="l"]').click();await expect(page.locator(`#local [data-card="${first}"]`)).toHaveClass(/read/);
  await page.locator('[data-lane="p"]').click();
- await page.locator('#filterDetails summary').click();await page.locator('#period').selectOption('90');
+ await page.locator('#filterDetails summary').click();await selectPeriod(page,'90');
  const deep=await rows.count();expect(deep).toBeGreaterThan(4);
  await page.locator('#markAllRead').click();await expect(rows).toHaveCount(0);await expect(page.locator('#local')).toContainText('Estás al día');
  await expect(page.locator('#undoBar')).toContainText(`${deep} señales marcadas como leídas`);
@@ -157,27 +157,29 @@ test('operations dashboard loads without inventing measurements',async({page})=>
  const response=await page.request.get('/data/excel_diagnostics.csv');expect(response.ok()).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-product.png`,fullPage:true});
 });
-test('Big things open as a cover until read, then fold into header anchors',async({page})=>{
+test('Big things open as a cover until read, then leave it and live in Leídas',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  const source=await page.request.get('/data/free_value.json'),data=await source.json();
  const hasWeekly=await page.evaluate(w=>weeklyFresh(w),data.weekly_insight);
  const global=page.locator('#bigThings .big-feature.global'),weekly=page.locator('#bigThings .big-feature.weekly');
  await expect(global).toHaveCount(1);await expect(weekly).toHaveCount(hasWeekly?1:0);
- // The week's insight leads; the outside view follows. Neither repeats inside the inbox.
+ // The week's insight leads; the outside view follows. Neither repeats inside Pendientes.
  expect(await page.locator('#bigThings .big-feature').evaluateAll(xs=>xs.map(x=>x.classList.contains('weekly')?'weekly':'global'))).toEqual(hasWeekly?['weekly','global']:['global']);
- await expect(page.locator('#local [data-special]')).toHaveCount(0);await expect(page.locator('#brief .big-anchor')).toHaveCount(0);
- // A Global theme on editorial HOLD (BCBSA) is never promoted, folded or not.
+ await expect(page.locator('#local [data-special]')).toHaveCount(0);await expect(page.locator('.big-anchor')).toHaveCount(0);
+ // A Global theme on editorial HOLD (BCBSA) is never promoted.
  await expect(page.locator('[data-special="global:global-ai-coding-payer-cost-2026"]')).toHaveCount(0);
  await expect(page.locator('#bigThings .big-feature .card-meta')).toHaveCount(hasWeekly?2:1);await expect(global.locator('.card-meta')).toContainText('·');
  if(hasWeekly){const n=(data.weekly_insight.sources||[]).filter(x=>/^https:\/\//.test(x.url||'')).length;await expect(weekly.locator('.big-eyebrow')).toHaveText(n>1?`Insight de la semana · ${n} fuentes`:'Insight de la semana');await expect(weekly.locator('.big-eyebrow')).not.toContainText(/cruzad/i)}
  const fills=await page.locator('#bigThings .big-feature').evaluateAll(rows=>rows.map(row=>getComputedStyle(row).backgroundColor));expect(new Set(fills).size).toBe(hasWeekly?2:1);
  const readTargets=await page.locator('#bigThings [data-special-read]').evaluateAll(buttons=>buttons.map(button=>({width:button.getBoundingClientRect().width,height:button.getBoundingClientRect().height})));expect(readTargets.every(({width,height})=>width>=44&&height>=44)).toBeTruthy();
  await expect(page.locator('.hero-purpose')).toHaveText('Señales clave del sector salud, claras y a tiempo.');
- if(hasWeekly){await expect(weekly).toContainText(data.weekly_insight.insight_title);await weekly.locator('[data-special-read]').click();await expect(weekly).toHaveCount(0);const anchor=page.locator('#brief .big-anchor.weekly');await expect(anchor).toContainText(data.weekly_insight.insight_title);await expect(anchor.locator('.anchor-open')).toBeFocused();await anchor.locator('.anchor-open').click();await expect(page.locator('#weeklyInsightDialog')).toContainText('Lectura Alicanto:');await expect(page.locator('#weeklyInsightDialog').getByRole('link',{name:/Revisar fuente original/})).toHaveAttribute('href',/^https:\/\//);await page.getByRole('button',{name:'Cerrar insight'}).click()}
- await global.locator('[data-special-read]').click();
- await expect(global).toHaveCount(0);await expect(page.locator('#brief .big-anchor.global')).toHaveCount(1);await expect(page.locator('#bigThings')).toBeHidden();
- await page.reload();await expect(page.locator('#bigThings .big-feature')).toHaveCount(0);
- await expect(page.locator('#brief .big-anchor')).toHaveCount(hasWeekly?2:1);
+ if(hasWeekly){await expect(weekly).toContainText(data.weekly_insight.insight_title);await weekly.locator('[data-special-read]').click();await expect(weekly).toHaveCount(0)}
+ await global.locator('[data-special-read]').click();await expect(global).toHaveCount(0);await expect(page.locator('#bigThings')).toBeHidden();
+ await expect(page.locator('#local [data-special]')).toHaveCount(0);
+ await page.locator('[data-lane="l"]').click();
+ const rows=page.locator('#local .special-row');await expect(rows).toHaveCount(hasWeekly?2:1);await expect(page.locator('#local .group-head').first()).toHaveText('Ediciones de la semana');
+ if(hasWeekly){await page.locator('#local .special-row.weekly .title-open').click();await expect(page.locator('#weeklyInsightDialog')).toContainText('Lectura Alicanto:');await expect(page.locator('#weeklyInsightDialog').getByRole('link',{name:/Revisar fuente original/})).toHaveAttribute('href',/^https:\/\//);await page.getByRole('button',{name:'Cerrar insight'}).click()}
+ await page.reload();await expect(page.locator('#bigThings .big-feature')).toHaveCount(0);await expect(rows).toHaveCount(hasWeekly?2:1);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-home-v2-final.png`,fullPage:true});
 });
@@ -185,9 +187,9 @@ test('Expired weekly insight stays hidden while its original signal remains in h
  await page.addInitScript(()=>{const NativeDate=Date,fixed=NativeDate.parse('2026-10-11T03:30:00Z');class FixedDate extends NativeDate{constructor(...args){super(...(args.length?args:[fixed]))}static now(){return fixed}}window.Date=FixedDate});
  await page.route('**/data/free_value.json',async route=>{const response=await route.fetch(),data=await response.json();data.weekly_insight={id:'stale-september',editorial_review_pass:true,event_date:'2026-09-14',freshness_anchor_date:'2026-09-14',title:'Expired',source_url:'https://www.superdesalud.gob.cl/normativa/circular-if-n535/'};await route.fulfill({response,json:data})});
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
- await expect(page.locator('.big-feature.weekly,.big-anchor.weekly')).toHaveCount(0);
- await page.locator('#period').selectOption('90');
- await expect(page.locator('.big-feature.weekly,.big-anchor.weekly')).toHaveCount(0);
+ await expect(page.locator('.big-feature.weekly,.special-row.weekly')).toHaveCount(0);
+ await selectPeriod(page,'90');
+ await expect(page.locator('.big-feature.weekly,.special-row.weekly')).toHaveCount(0);
  await expect(page.locator('article.signal').filter({hasText:'Circular IF/N°535'})).toHaveCount(1);
 });
 test('Feed-only share uses Web Share and clipboard fallback without analytics',async({page})=>{
@@ -224,7 +226,7 @@ test('Global read state is shared across Home and the research page',async({page
  await theme.locator('[data-read]').click();await expect(theme).not.toHaveClass(/read/);
  await page.goto('/');await expect(page.locator('#bigThings .big-feature.global')).toHaveCount(1);
  await page.locator('#bigThings .big-feature.global [data-special-read]').click();
- await expect(page.locator('#brief .big-anchor.global .anchor-open')).toBeFocused();
+ await expect(page.locator('#bigThings .big-feature.global')).toHaveCount(0);await expect(page.locator('.lane.on')).toBeFocused();
 });
 test('source suggestion is visible, concise and fail-closed without provider',async({page})=>{
  let captured;
@@ -278,12 +280,12 @@ test('source suggestion never falls back to URL serialization without JavaScript
 test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await page.locator('#filterDetails summary').click();
- await page.locator('#period').selectOption('90');
+ await selectPeriod(page,'90');
  const bupa=page.locator('article').filter({has:page.getByRole('heading',{name:/Bupa refuerza su red/})});
  await bupa.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('La Dehesa');await expect(page.locator('#detailBody')).toContainText('Clínicas Huinganal');await expect(page.locator('#detailBody')).toContainText('Mindplace en San Damián');
  await expect(page.locator('#detailBody')).toContainText('No es solo expansión física');
  await expect(bupa).not.toContainText('…');
- await expect(bupa.locator('.card-meta')).toContainText('Publicado');
+ await expect(bupa.locator('.card-meta')).toContainText(/\d{1,2} \p{L}+\.? 2026/u);
  await expect(page.locator('#detailBody')).toContainText('La Dehesa: inauguración');
  await expect(page.locator('#detailBody')).toContainText('Clínicas Huinganal: crecimiento mediante adquisición');
  await expect(page.locator('#detailBody')).toContainText('Mindplace San Damián');
@@ -377,8 +379,8 @@ test('analytics never sends without explicit privacy approval even if a key is p
  await page.route('https://us.i.posthog.com/**',route=>{attempts++;return route.abort()});
  await page.goto('/');
  await page.locator('#filterDetails summary').click();
- await page.locator('#period').selectOption('7');
- await expect(page.locator('#radarMetrics')).toHaveText(/^(\d+ por leer|Estás al día)$/);
+ await selectPeriod(page,'7');
+ await expect(page.locator('#radarMetrics')).toHaveText(/^(\d+ pendientes|Estás al día)$/);
  expect(attempts).toBe(0);
 });
 test('authorized analytics fixture emits only anonymous event fields',async({page})=>{
@@ -405,7 +407,7 @@ test('authorized analytics fixture emits only anonymous event fields',async({pag
 
 test('persistent editorial contract is visible in feed and brief',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
- await page.locator('#filterDetails summary').click();await page.locator('#period').selectOption('90');
+ await page.locator('#filterDetails summary').click();await selectPeriod(page,'90');
  const pulse=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Pulso Isapre/})});
  await expect(pulse).toHaveCount(1);
  await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(0);
@@ -420,7 +422,7 @@ test('persistent editorial contract is visible in feed and brief',async({page})=
 
 test('Pulso Isapre presents stock KPIs with separate contracts and mobility views',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
- await page.locator('#filterDetails summary').click();await page.locator('#period').selectOption('90');
+ await page.locator('#filterDetails summary').click();await selectPeriod(page,'90');
  await expect(page.locator('article[data-card]').filter({hasText:'Resonancia Magnética del Biobío'})).toHaveCount(0);
  const radar=await (await page.request.get('/data/radar_today.json')).json();
  for(const [needle,copy,url] of [
@@ -475,12 +477,12 @@ test('committee HOLD/REJECT and failed publication contracts do not render as in
 });
 
 
-test('period is visible outside filters, persisted without duplicating metric copy, and resettable',async({page})=>{
+test('period lives inside Filtrar, persists without duplicating metric copy, and is resettable',async({page})=>{
  await page.goto('/');
  const period=page.locator('#period');
- await expect(period).toBeVisible();
- await expect(period.locator('xpath=ancestor::details')).toHaveCount(0);
- await period.selectOption('90');
+ await expect(period).toBeHidden();
+ expect(await period.locator('xpath=ancestor::details').getAttribute('id')).toBe('filterDetails');
+ await selectPeriod(page,'90');
  await expect(period).toHaveValue('90');
  await expect(page.locator('#radarMetrics')).not.toContainText('período');
  await page.reload();
@@ -491,7 +493,6 @@ test('period is visible outside filters, persisted without duplicating metric co
  await expect(period).toHaveValue('30');
  await expect(page.locator('#sort')).toHaveValue('date');
  await expect(page.locator('#radarMetrics')).not.toContainText('30 días');
- const box=await period.boundingBox();expect(box.width).toBeLessThanOrEqual(test.info().project.name==='mobile'?110:150);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
 });
 
@@ -562,7 +563,7 @@ test('sources are grouped by decision value and expose freshness layers',async({
 test('priority statistical releases use compact tables and collapsed traceability',async({page})=>{
  await page.goto('/');
  await page.locator('#filterDetails summary').click();
- await page.locator('#period').selectOption('90');
+ await selectPeriod(page,'90');
  const radar=await (await page.request.get('/data/radar_today.json')).json();
  const cases=[
   ['Estadística Trimestral de Casos GES',5,STATISTICAL_URLS.ges],
@@ -622,7 +623,7 @@ test('priority statistical releases use compact tables and collapsed traceabilit
 test('Normative V2.1 puts document, subject and action in each current headline',async({page})=>{
  await page.goto('/');
  await page.locator('#filterDetails summary').click();
- await page.locator('#period').selectOption('90');
+ await selectPeriod(page,'90');
  const radar=await (await page.request.get('/data/radar_today.json')).json();
  const expected=[
   ['11156',/TEA/i,/acoge|mantiene|proh[ií]be/i],

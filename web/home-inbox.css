@@ -2,7 +2,7 @@
    Actions never take a column beside the content: the unread dot is the read
    toggle (left gutter) and source/share sit in the date line. */
 .mini-icon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block}
-.big-things[hidden],.big-anchors[hidden],.undo-bar[hidden],.mark-all[hidden]{display:none!important}
+.big-things[hidden],#brief[hidden],.undo-bar[hidden],.mark-all[hidden]{display:none!important}
 
 /* Cover: the week's insight and the outside view, full until read */
 .big-things{display:grid;gap:10px;margin:8px 0 12px}
@@ -16,13 +16,14 @@
 .big-cta{all:unset;cursor:pointer;font-size:13px;font-weight:700;color:var(--ink);padding:13px 0 13px 10px;margin:-13px 0;min-height:44px;box-sizing:border-box;white-space:nowrap}
 .big-cta:hover{text-decoration:underline;text-underline-offset:3px}
 
-/* Folded big things: anchors inside the inbox header */
-.big-anchors{margin:12px 0 0;border-top:1px solid rgba(255,255,255,.14)}
-.anchor-open{all:unset;cursor:pointer;display:block;width:100%;box-sizing:border-box;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.1)}
-.anchor-label{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.02em;color:#F0B56D}
-.anchor-label .mini-icon{width:13px;height:13px}
-.anchor-title{display:block;font-size:14px;line-height:1.35;color:#d7dee5;margin-top:2px;overflow-wrap:anywhere}
-.anchor-open:hover .anchor-title{color:#fff;text-decoration:underline;text-underline-offset:3px}
+/* Freshness notice: shown only when no source was checked in the last 48h */
+.freshness{margin:8px 0 10px;padding:10px 14px;border-radius:12px;background:#FFF4E0;border:1px solid rgba(227,162,79,.55);color:#6b4510;font-size:13.5px;line-height:1.45}
+.freshness[hidden]{display:none!important}
+/* Compact inbox header: title and pending count on one line; period lives in Filtrar */
+.radar-unit .radar-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+.radar-unit .radar-head .radar-metrics{margin:0;font-size:13px;color:#aebccb}
+.radar-unit .radar-head .mark-all{margin-left:auto;padding:8px 0;min-height:44px;align-self:center}
+.radar-unit .radar-head h2{flex:none}
 
 /* Lanes: text tabs, no boxed buttons */
 .lane-row{display:flex;flex-wrap:wrap;align-items:flex-end;column-gap:12px;margin-top:2px}
@@ -49,8 +50,10 @@
 #local .item-actions{display:inline-flex;align-items:center;gap:0;margin-left:-6px;vertical-align:-4px;white-space:nowrap}
 .signal.big-feature .item-actions{display:inline-flex;align-items:center;gap:2px;flex:none}
 .item-actions .share-feedback:empty{display:none}
-.iconbtn{all:unset;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;padding:14px;margin:-14px 0;color:var(--ink48);border-radius:6px}
-.iconbtn:hover{color:var(--ink)}
+/* Subtle, self-explanatory icons (source ↗, share), as in reference newsletters */
+.iconbtn{all:unset;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;padding:14px;margin:-14px 0;color:var(--ink48);opacity:.8;border-radius:6px}
+.iconbtn .mini-icon{width:15px;height:15px;stroke-width:1.6}
+.iconbtn:hover,.iconbtn:focus-visible{color:var(--ink);opacity:1}
 .dotbtn{all:unset;cursor:pointer;position:absolute;left:0;top:0;bottom:0;width:44px;min-height:44px;display:flex;justify-content:center;padding-top:19px;box-sizing:border-box;color:var(--ink48)}
 .unread-dot{width:8px;height:8px;border-radius:50%;background:#E3A24F;display:block;transition:transform .15s ease}
 .dotbtn:hover .unread-dot{transform:scale(1.5)}
@@ -58,7 +61,9 @@
 #local .signal.item.read{padding-top:9px;padding-bottom:9px;min-height:44px;box-sizing:border-box}
 #local .signal.item.read h2{font-weight:400;font-size:14px;color:var(--ink68)}
 #local .signal.item.read .card-meta{display:none}
-#local .signal.item.read .dotbtn{padding-top:12px}
+#local .signal.item.read{padding-left:44px}
+#local .special-row h2{font-weight:400}
+#local .special-row .card-meta{display:block!important;font-size:11.5px}
 #local .signal.item.leaving{opacity:0;max-height:0;padding-top:0;padding-bottom:0}
 .inbox-empty{padding:18px;margin:0;color:var(--ink68);font-size:14px}
 
@@ -67,10 +72,10 @@
 #signalDetail .detail-close{all:unset;cursor:pointer;position:static!important;display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink68);padding:12px 6px 12px 2px;min-height:44px;box-sizing:border-box;float:none!important}
 .detail-bar{display:flex;flex-wrap:wrap;align-items:center;gap:0 4px;margin-left:auto;min-width:0}
 .detail-bar .iconbtn{margin:0;padding:14px}
-.read-ring .ring{width:14px;height:14px;border:1.6px solid currentColor;border-radius:50%;display:block;box-sizing:border-box}
-.read-ring.done{color:#2f7d4f}
+.textbtn{all:unset;cursor:pointer;font-size:12.5px;color:var(--ink68);text-decoration:underline;text-underline-offset:3px;padding:12px 6px;min-height:44px;box-sizing:border-box}
+.textbtn:hover{color:var(--ink)}
 
-.dotbtn:focus-visible,.iconbtn:focus-visible,.lane:focus-visible,.anchor-open:focus-visible,.big-cta:focus-visible,.mark-all:focus-visible,.undo-bar button:focus-visible,.signal .title-open:focus-visible,#signalDetail .detail-close:focus-visible{outline:2px solid #E3A24F;outline-offset:2px;border-radius:4px}
+.dotbtn:focus-visible,.iconbtn:focus-visible,.textbtn:focus-visible,.lane:focus-visible,.big-cta:focus-visible,.mark-all:focus-visible,.undo-bar button:focus-visible,.signal .title-open:focus-visible,#signalDetail .detail-close:focus-visible{outline:2px solid #E3A24F;outline-offset:2px;border-radius:4px}
 @media (prefers-reduced-motion:reduce){#local .signal.item,.unread-dot{transition:none}}
 @media (max-width:360px){.lanes{column-gap:14px}.lane{font-size:13px}.detail-bar .iconbtn{padding:14px 10px}}
 @media (max-width:600px){
@@ -81,3 +86,8 @@
  #local .signal.item{padding:12px 14px 12px 42px}
  #local .group-head{padding:12px 14px 2px}
 }
+
+/* Period and order side by side inside Filtrar, also on mobile */
+#filterDetails .select-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:end}
+#filterDetails .select-grid label{min-width:0}
+#filterDetails .select-grid select{width:100%;min-width:0}
