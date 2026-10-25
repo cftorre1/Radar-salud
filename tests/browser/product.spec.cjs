@@ -17,7 +17,10 @@ function withinSnapshotHorizon(radar,source){
  const days=historicalSignals.filter(s=>/^\d{4}-\d{2}-\d{2}$/.test(s.event_date||'')).map(s=>Date.parse(s.event_date+'T00:00:00Z'));
  expect(days.length,'Independent durable history needs a dated source to define the rolling window').toBeGreaterThan(0);
  expect(source.event_date,'Known source document needs its original publication date').toMatch(/^\d{4}-\d{2}-\d{2}$/);
- const age=(Math.max(...days)-Date.parse(source.event_date+'T00:00:00Z'))/86400000;
+ // The window is anchored to the snapshot under test (a dated fixture is curated
+ // as of ALICANTO_FIXTURE_AS_OF), not to the newest capture in durable history.
+ const asOf=/^\d{4}-\d{2}-\d{2}$/.test(radar?.date||'')?Date.parse(radar.date+'T00:00:00Z'):Math.max(...days);
+ const age=(asOf-Date.parse(source.event_date+'T00:00:00Z'))/86400000;
  return age>=0&&age<=90;
 }
 test('Home V2 loads, filters persist and compact triage remains stable',async({page})=>{
