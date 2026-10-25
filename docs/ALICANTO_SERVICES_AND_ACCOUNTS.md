@@ -12,9 +12,9 @@ Actualizado: 2026-10-24 (Claude). Titular, facturación y recuperación deben co
 | NIC Chile | Registro del dominio | CUENTA EXISTE | — | por completar | Anual | — | — | Verificar fecha de renovación |
 | Cloudflare | DNS del dominio | CUENTA EXISTE | — | por completar | — | — | — | Verificar registros, SPF/DKIM/DMARC |
 | Google Workspace | Correo `hola@alicantosalud.cl` | CUENTA EXISTE | — | por completar | — | — | — | Remitente previsto del newsletter, no verificado |
-| OpenAI API | Análisis FAST (gpt-5.6-luna) y DEEP (gpt-5.6-terra) | CONFIGURADO; última llamada registrada 12-oct | `OPENAI_API_KEY` | por completar | ~USD 2 histórico; tope declarado USD 10/semana | — | — | HOLD sin cambios hasta benchmark ciego vs Claude |
+| OpenAI API | Análisis FAST (gpt-5.6-luna) y DEEP (gpt-5.6-terra) | CONFIGURADO (único secreto del repo, verificado 24-oct); última llamada registrada 12-oct | `OPENAI_API_KEY` | por completar | ~USD 2 histórico; tope declarado USD 10/semana | — | — | HOLD sin cambios hasta benchmark ciego vs Claude |
 | Anthropic (Claude, Claude Code) | Orquestación, desarrollo, revisión | CUENTA EXISTE; GitHub conectado 24-oct | API no configurada | cftorre1 | Plan de suscripción | — | — | API solo tras aprobación y benchmark |
-| Buttondown | Envío semanal (código en `main`) | DESCONOCIDO | `BUTTONDOWN_API_KEY` | por completar | — | — | — | `weekly-digest.yml` de main publicaba directo; desactivado el 24-oct. Confirmar si la cuenta existe |
+| Buttondown | Envío semanal (código en `main`) | NO CONFIGURADO (secreto ausente, verificado por Dirección 24-oct) | `BUTTONDOWN_API_KEY` | — | — | — | — | `weekly-digest.yml` de main nunca pudo enviar; desactivado el 24-oct |
 | MailerLite | Suscripciones y resumen semanal | DESHABILITADO | `MAILERLITE_API_KEY` | — | — | — | — | `web/data/subscription.json`: captura y envío en false, sin grupos ni remitente verificado |
 | PostHog | Analítica | CONFIGURADO SIN KEY | project key | — | — | — | — | Requiere revisión de privacidad/consentimiento |
 | Supabase / PostgreSQL | Persistencia, usuarios, autenticación | PLANEADO | — | — | — | — | — | Solo `sql/001_schema.sql` |
