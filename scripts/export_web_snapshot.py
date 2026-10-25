@@ -674,7 +674,7 @@ def preserve_v3_copy(signals):
 
 
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument("--input",required=True);ap.add_argument("--output",default="web/data/radar_today.json");ap.add_argument("--offline",action="store_true",help="Rebuild only from recorded evidence");args=ap.parse_args()
+    ap=argparse.ArgumentParser();ap.add_argument("--input",required=True);ap.add_argument("--output",default="web/data/radar_today.json");ap.add_argument("--offline",action="store_true",help="Rebuild only from recorded evidence");ap.add_argument("--as-of",type=date.fromisoformat,default=None,help="Curation date for deterministic test fixtures (YYYY-MM-DD); omit for the real snapshot");args=ap.parse_args()
     raw=json.loads(Path(args.input).read_text(encoding="utf-8"));signals=raw.get("signals",raw) if isinstance(raw,dict) else raw
     signals=list(signals)
     canonical=Path("data/excel/validated_series.json")
@@ -689,7 +689,7 @@ def main():
             signals=add_material_epidemiology(signals,epidemiology)
         except (OSError,ValueError,TypeError):
             pass
-    payload={"date":date.today().isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"signals":preserve_v3_copy(curate(signals,resolve_external=not args.offline))}
+    payload={"date":(args.as_of or date.today()).isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"signals":preserve_v3_copy(curate(signals,resolve_external=not args.offline,as_of=args.as_of))}
     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
     health=Path("data/source_health.json")
     if health.exists():shutil.copyfile(health,out.parent/"source_health.json")

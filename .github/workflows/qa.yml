@@ -60,7 +60,14 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci && npx playwright install --with-deps chromium
+      - name: Build dated browser fixture (published web/ is not modified)
+        run: |
+          rm -rf "$RUNNER_TEMP/fixture-web" && cp -R web "$RUNNER_TEMP/fixture-web"
+          python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json --offline --as-of 2026-10-12 --output "$RUNNER_TEMP/fixture-web/data/radar_today.json"
       - run: npm run test:browser
+        env:
+          ALICANTO_BROWSER_WEB: ${{ runner.temp }}/fixture-web
+          ALICANTO_FIXTURE_AS_OF: '2026-10-12'
       - uses: actions/upload-artifact@v4
         if: always()
         with:

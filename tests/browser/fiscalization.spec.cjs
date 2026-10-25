@@ -1,4 +1,4 @@
-const {test,expect}=require('@playwright/test');
+const {test,expect}=require('./fixtures.cjs');
 const fs=require('node:fs');
 
 test('fiscalization reconciliation preserves act dates and separates reviewed normativa',async({page})=>{

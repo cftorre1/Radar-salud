@@ -1,4 +1,4 @@
-const {test,expect}=require('@playwright/test');
+const {test,expect}=require('./fixtures.cjs');
 const fs=require('node:fs');
 
 test('verified historical bulletin keeps its statistical UI contract after live-window expiry',async({page})=>{

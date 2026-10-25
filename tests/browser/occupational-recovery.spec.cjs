@@ -1,4 +1,4 @@
-const {test,expect}=require('@playwright/test');
+const {test,expect}=require('./fixtures.cjs');
 const fs=require('node:fs');
 const lanes=['clinicas_achs_salud','achs_seguro_laboral','mutual_seguridad','ist'];
 
