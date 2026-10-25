@@ -198,7 +198,7 @@ test('Global read state is shared across Home and the research page',async({page
  const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,visibleCount=themeCount;
  await page.goto('/');await expect(page.locator('.brief-global')).toHaveCount(1);
  const free=await (await page.request.get('/data/free_value.json')).json(),teaserId=free.global_teaser.theme_id;
- await page.locator('.signal.special.global .card-actions [data-special-open]').first().click();
+ await page.locator('.signal.special.global .title-open[data-special-open]').first().click();
  await expect(page).toHaveURL(/global\.html#theme-/);await expect(page.locator('#globalDetail')).toBeVisible();await page.keyboard.press('Escape');
  await page.locator('#globalPeriod').selectOption('all');
  // Filter its publisher to verify read-state persistence independently of rank.
@@ -324,8 +324,8 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
 test('Global Intelligence mirrors Home while keeping global facts and Chile hypotheses distinct',async({page})=>{
  const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,visibleCount=themeCount;
  await page.goto('/');
- await expect(page.locator('.signal.special.global .card-actions [data-special-open]')).toBeVisible();
- await page.locator('.signal.special.global .card-actions [data-special-open]').first().click();
+ await expect(page.locator('.signal.special.global .title-open[data-special-open]')).toBeVisible();
+ await page.locator('.signal.special.global .title-open[data-special-open]').first().click();
  await expect(page.getByRole('heading',{name:'Global Intelligence',exact:true})).toBeVisible();await expect(page.locator('#globalDetail')).toBeVisible();await page.keyboard.press('Escape');
  await expect(page.getByRole('heading',{name:'Ponte al día en Global Intelligence'})).toBeVisible();
  await expect(page.locator('#globalPeriod')).toHaveValue('30');
