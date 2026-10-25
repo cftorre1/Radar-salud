@@ -46,7 +46,7 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('#radarMetrics')).toHaveText(/^(\d+ por leer|Estás al día)$/);
  const laneCount=async lane=>Number(await page.locator(`[data-lane="${lane}"] span`).innerText());
  const initialMetrics=[await laneCount('t'),await laneCount('p')];
- await expect(page.locator('[data-lane="p"]')).toHaveAttribute('aria-selected','true');
+ await expect(page.locator('[data-lane="p"]')).toHaveAttribute('aria-pressed','true');
  await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesDialog')).toBeVisible();
  await expect.poll(()=>page.locator('#sourcesList .source-row').count()).toBeGreaterThan(0);
  await expect(page.locator('#sourcesDialog')).toContainText('¿Falta una fuente relevante?');
@@ -166,6 +166,8 @@ test('Big things open as a cover until read, then fold into header anchors',asyn
  // The week's insight leads; the outside view follows. Neither repeats inside the inbox.
  expect(await page.locator('#bigThings .big-feature').evaluateAll(xs=>xs.map(x=>x.classList.contains('weekly')?'weekly':'global'))).toEqual(hasWeekly?['weekly','global']:['global']);
  await expect(page.locator('#local [data-special]')).toHaveCount(0);await expect(page.locator('#brief .big-anchor')).toHaveCount(0);
+ // A Global theme on editorial HOLD (BCBSA) is never promoted, folded or not.
+ await expect(page.locator('[data-special="global:global-ai-coding-payer-cost-2026"]')).toHaveCount(0);
  await expect(page.locator('#bigThings .big-feature .card-meta')).toHaveCount(hasWeekly?2:1);await expect(global.locator('.card-meta')).toContainText('·');
  if(hasWeekly){const n=(data.weekly_insight.sources||[]).filter(x=>/^https:\/\//.test(x.url||'')).length;await expect(weekly.locator('.big-eyebrow')).toHaveText(n>1?`Insight de la semana · ${n} fuentes`:'Insight de la semana');await expect(weekly.locator('.big-eyebrow')).not.toContainText(/cruzad/i)}
  const fills=await page.locator('#bigThings .big-feature').evaluateAll(rows=>rows.map(row=>getComputedStyle(row).backgroundColor));expect(new Set(fills).size).toBe(hasWeekly?2:1);
@@ -412,7 +414,7 @@ test('persistent editorial contract is visible in feed and brief',async({page})=
  const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\/N°533 · SIL: actualiza el inventario mensual/})});
  await expect(c533).toHaveCount(1);
  await expect(c533).not.toContainText('Qué pasó:');await c533.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Circular');await page.keyboard.press('Escape');
- const briefOpaque=page.locator('#bigThings h2,#brief .anchor-title').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\d+$/});
+ const briefOpaque=page.locator('#local .signal.item h2,#bigThings h2,#brief .anchor-title').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\d+$/});
  await expect(briefOpaque).toHaveCount(0);
 });
 
@@ -665,4 +667,16 @@ test('Normative V2.1 puts document, subject and action in each current headline'
 test('source capture errors remain administrative and are excluded from the public catalog',async({page})=>{
  await page.route('**/data/public_sources.json',route=>route.fulfill({json:{sources:[]}}));
  await page.goto('/');await page.locator('#sourcesOpen').click();await expect(page.locator('#sourcesList')).toContainText('No hay fuentes activas verificadas');await expect(page.locator('#sourcesList')).not.toContainText('Fondo Nacional de Salud');
+});
+test('a shared link is revealed once in a lane that shows it and never rewrites lanes or filters again',async({page})=>{
+ await page.goto('/');const rows=page.locator('#local article[data-card]');await expect(rows.first()).toBeVisible();
+ const id=await rows.nth(2).getAttribute('data-card');
+ await page.locator('[data-lane="l"]').click();await expect(page.locator('[data-lane="l"]')).toHaveAttribute('aria-pressed','true');
+ await page.goto(`/#sig-${encodeURIComponent(id)}`);await page.reload();
+ const card=page.locator(`[id="sig-${id}"]`);await expect(card).toBeVisible();await expect(card).toBeFocused();await expect(card).not.toHaveClass(/read/);
+ await page.locator('[data-lane="p"]').click();await expect(page.locator('[data-lane="p"]')).toHaveAttribute('aria-pressed','true');
+ await card.locator('[data-read]').click();await expect(card).toHaveCount(0);
+ await rows.first().locator('[data-read]').click();await expect(page.locator('#undoBar')).toBeVisible();
+ await expect(page.locator('[data-lane="p"]')).toHaveAttribute('aria-pressed','true');await expect(page.locator(`[id="sig-${id}"]`)).toHaveCount(0);
+ expect(JSON.parse(await page.evaluate(()=>localStorage.getItem('alicanto_filters'))).lane).toBe('p');
 });

@@ -42,6 +42,7 @@ test('catalog excludes blocked paused and unverified; filter plus is adjacent an
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();await page.screenshot({path:`artifacts/sources-navigation-${test.info().project.name}.png`});
  await prepare(page);await page.goto('/');const summary=page.locator('#filterDetails>summary');expect(await summary.evaluate(el=>getComputedStyle(el).justifyContent)).toBe('flex-start');await expect(page.locator('article #backTop')).toHaveCount(0);expect(await page.locator('#backTop').evaluate(el=>getComputedStyle(el).position)).toBe('fixed');
  await expect(page.locator('#backTop')).toBeHidden();await page.emulateMedia({reducedMotion:'reduce'});
+ // One fixture card is shorter than the viewport; extra height lets the test scroll past the controls it checks.
  await page.evaluate(()=>{document.body.style.paddingBottom='2000px'});await page.locator('.radar-head').evaluate(el=>window.scrollTo(0,el.getBoundingClientRect().bottom+window.scrollY+1));await expect(page.locator('#backTop')).toBeVisible();
  await page.evaluate(()=>{window.__scrollBehavior=null;const native=Element.prototype.scrollIntoView;Element.prototype.scrollIntoView=function(options){window.__scrollBehavior=options?.behavior;return native.call(this,options)}});
  await page.locator('#backTop').click();expect(await page.evaluate(()=>window.__scrollBehavior)).toBe('auto');await expect(page.locator('main')).toBeFocused();
