@@ -1,4 +1,4 @@
-const {test,expect}=require('@playwright/test');
+const {test,expect}=require('./fixtures.cjs');
 const fs=require('node:fs');fs.mkdirSync('artifacts',{recursive:true});
 const path=require('node:path');
 const STATISTICAL_URLS={

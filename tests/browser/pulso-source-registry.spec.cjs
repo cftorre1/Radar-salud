@@ -1,6 +1,6 @@
 // Synthetic registry-linkage fixtures only; these tests never prove live Pulso
 // discovery, materiality, publication, or date verification.
-const {test,expect}=require('@playwright/test');
+const {test,expect}=require('./fixtures.cjs');
 
 for(const name of ['Pulso Latercera','Pulso / La Tercera']){
  test(`synthetic Pulso registry fixture links ${name} to canonical publisher selection`,async({page})=>{

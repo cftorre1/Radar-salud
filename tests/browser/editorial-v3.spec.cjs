@@ -1,4 +1,4 @@
-const {test,expect}=require('@playwright/test');
+const {test,expect}=require('./fixtures.cjs');
 const fs=require('node:fs');
 const cases=JSON.parse(fs.readFileSync('tests/fixtures/product_editorial_v3_cases.json','utf8')).items;
 const portfolio=JSON.parse(fs.readFileSync('tests/fixtures/product_statistics_v3.json','utf8')).statistical_view;
