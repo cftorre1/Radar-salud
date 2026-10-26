@@ -34,14 +34,27 @@ def review(web, sha):
         if not health:raise ValueError("No monitored sources")
         if not any(source.get("status") in ("ok","warning") for source in health.values()):
             fail("data","no_healthy_sources","data/source_health.json","No source has a successful or partial poll")
+        policy=json.loads((Path(__file__).resolve().parents[1]/"config/source_freshness_policy.json").read_text())
+        max_age=int(policy["daily_max_age_days"])*86400
+        non_daily_modes=set(policy.get("non_daily_operation_modes") or [])
+        non_daily=set(policy.get("non_daily_sources") or {})
+        root=Path(__file__).resolve().parents[1]
+        # Sources of the daily capture are never exempted, whatever mode a
+        # published health record declares.
+        daily={s.get("slug") for name in ("config/sources.json","config/beta_source_configs.json")
+               for s in json.loads((root/name).read_text()) if isinstance(s,dict)}
         for slug,source in health.items():
             if source.get("status") not in ("ok","warning"):continue
             checked=datetime.fromisoformat(source["checked_at"].replace("Z","+00:00"))
             age=(datetime.now(timezone.utc)-checked).total_seconds() if checked.tzinfo else float("inf")
             if age < -300:
                 fail("data","future_source_check",f"data/source_health.json#sources/{slug}","Source poll timestamp is in the future")
-            elif age>7*86400:
-                fail("data","stale_source_check",f"data/source_health.json#sources/{slug}","Source was not polled within seven days")
+            elif age>max_age:
+                if slug not in daily and (slug in non_daily or source.get("operation_mode") in non_daily_modes):
+                    # Outside the daily capture by explicit policy: visible, non-blocking.
+                    fail("data","stale_non_daily_source",f"data/source_health.json#sources/{slug}","Non-daily source not polled within seven days",severity="warning")
+                else:
+                    fail("data","stale_source_check",f"data/source_health.json#sources/{slug}","Source was not polled within seven days")
     except (OSError,KeyError,TypeError,ValueError) as exc:
         fail("data","unverified_source_checks","data/source_health.json",str(exc))
     try:
