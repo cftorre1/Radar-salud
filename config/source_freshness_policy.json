@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "decided_at": "2026-10-25",
+  "daily_max_age_days": 7,
+  "non_daily_operation_modes": ["isolated_qualification", "manual_curated_only"],
+  "non_daily_sources": {
+    "dipres_health_budget": "Mercado: calificación aislada con cadencia propia aún no verificada; sus candidatos quedan retenidos para activación editorial y no publican en el feed.",
+    "cmf_health_ecosystem": "Mercado: calificación aislada con cadencia propia aún no verificada; sus candidatos quedan retenidos para activación editorial y no publican en el feed.",
+    "sis_isapre_universe": "Mercado: calificación aislada con cadencia propia aún no verificada; sus candidatos quedan retenidos para activación editorial y no publican en el feed."
+  },
+  "note": "Fuera de la operación diaria, la antigüedad se reporta como advertencia visible (stale_non_daily_source), no bloquea la vista previa. Toda fuente de la captura diaria sigue bloqueando si no se consulta en 7 días. Al activar una fuente en la captura diaria, retirarla de esta lista."
+}
