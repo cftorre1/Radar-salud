@@ -10,6 +10,32 @@
     "window_started_by": "first_durable_pickup"
   },
   "failure_history": {
+    "0494336a5df8c7ee58cb68ed0c7e32e9e6bc5ee76f6fdbf248998ca2ecc49153": {
+      "attempt_contexts": [
+        {
+          "completed_at": "2026-10-26T00:45:22.526667Z",
+          "identity": {
+            "declared_repair_inputs": {},
+            "executor_fingerprint": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
+            "failure_signature": "dfa600f830f61508710935d123914961e09b42a7832266ee5b12b1e016970500",
+            "family": "staging_qa",
+            "input_fingerprint": "0599777e690616874778e45d45e48e195d37a8bed2738aad467fb054ffe4f9f9",
+            "product_input_fingerprint": "ba2c91fa6aeb7d3ade737f66300797794fa9392b9e18c24d6071cb287bb2f852"
+          },
+          "task_id": "staging_qa_failed_run_40248532779"
+        }
+      ],
+      "attempts": 1,
+      "failure_signature": "dfa600f830f61508710935d123914961e09b42a7832266ee5b12b1e016970500",
+      "input_fingerprint": "0599777e690616874778e45d45e48e195d37a8bed2738aad467fb054ffe4f9f9",
+      "last_attempt_at": "2026-10-26T00:45:22.526667Z",
+      "task_ids": [
+        "staging_qa_failed_run_40248532779"
+      ],
+      "tokens": [
+        "d5efe25dba8bfe71cea3eed02baddb4d358c6cf462a4c76165f74559e4a5bc09"
+      ]
+    },
     "0e05e90904a359a07a3792d1c1b4e9b53cbfbdb4890f37f48ac9ca3dcde3bc02": {
       "attempts": 1,
       "failure_signature": "72996ac38587716785fbb2512ec610775123f89cd0f6d40aea1f479e890d0a5f",
@@ -451,7 +477,8 @@
     "bec9a80e464a269cab831fa4a3c20afacfc27314bed4609dd7a57ef7dcc56120",
     "8df396f2c9adcc04b97d66ac40be7be271d58e32d248d9e4a8c88f69d699c696",
     "bbb6ec1f38ec00c6a28a0aee3f9fb0d2ac32f3d442d72dc69ec31a6d2b9bc623",
-    "96c65b32ca04331e92bbf856c497ddcdcbbd6b2d5ea3f14fd8b9f14ede3d8bb1"
+    "96c65b32ca04331e92bbf856c497ddcdcbbd6b2d5ea3f14fd8b9f14ede3d8bb1",
+    "beb092493d8ba4dbd24b8abe5e5c44b27c58d53fe57bb454cb1e6bcaa7d1e0d9"
   ],
   "lease_events": [
     {
@@ -90411,6 +90438,665 @@
       "id": "460eb8a06e762bd29cb071b1706497b4f0e0be39343e1a6f0757be676eea2ab4",
       "kind": "transition",
       "task_id": "staging_qa_failed_run_40248532779"
+    },
+    {
+      "at": "2026-10-26T00:45:22.526667Z",
+      "details": {
+        "blockers": [
+          {
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q",
+                  "-rs",
+                  "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+                  "-m",
+                  "not integration",
+                  "tests"
+                ],
+                "failure_hash": "8d13772a05da1a1d97582e1f0b83808ffe1dd5fe2c6f09449ec7128e82ffa69a",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+                "log_sha256": "998583de508eeaf0fd4cefb1f4f7788167904382a849debdc9bfd44321841022",
+                "name": "targeted_deterministic_tests",
+                "pytest": {
+                  "cases": [],
+                  "collected": 0,
+                  "failed": 0,
+                  "passed": 0,
+                  "proof": false,
+                  "skipped": 0
+                },
+                "returncode": 124,
+                "status": "FAIL"
+              },
+              {
+                "blocker": "Failure is infrastructure/unclassified; no demonstrated test failure to repair",
+                "changed_paths": [],
+                "evidence": [
+                  {
+                    "command": [
+                      "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                      "-m",
+                      "pytest",
+                      "-q"
+                    ],
+                    "output": "Validation command unavailable or timed out: TimeoutExpired",
+                    "returncode": 124
+                  }
+                ],
+                "failure_sha256": "64758d9a0ce5c1b3d0246f4f922b5e57f30aa16c7b3306121dc98150577f43a3",
+                "material_progress": false,
+                "signature": null,
+                "source_run_id": null,
+                "status": "BLOCKED",
+                "validated": false
+              }
+            ],
+            "fingerprint": "c230dc431d4cd1bce61d0a3d4fa1cbc12b736fef22401e7baf0d0383346e9ff0",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Targeted deterministic gate failed; no validated repair candidate",
+            "source_urls": []
+          },
+          {
+            "evidence": [
+              {
+                "diagnostics_are_acceptance": false,
+                "family": "staging_qa",
+                "task_id": "staging_qa_failed_run_40248532779"
+              }
+            ],
+            "fingerprint": "7b5d61d1b54767af6577f709ae8e03109794027c38f321fbea35fe0e0de8a82f",
+            "human_required": false,
+            "kind": "acceptance",
+            "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+            "source_urls": []
+          },
+          {
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "scripts/review_candidate.py",
+                  "--web",
+                  "web",
+                  "--sha",
+                  "998a938185cd7adcea041dbbf7bdde89fd15ba7b",
+                  "--output",
+                  "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/reviewer.json"
+                ],
+                "failure_hash": "7451cb53ded6a07136dd7da4616e34be08e32d81237651f6f62601b395046e2b",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/independent_reviewer.log",
+                "log_sha256": "ee7a593a30503d318b9fc30f5fc905586ab700de0c53f7237eaaebb0b3ea2e6f",
+                "name": "independent_reviewer",
+                "returncode": 1,
+                "reviewer_proof": {
+                  "candidate_sha": "998a938185cd7adcea041dbbf7bdde89fd15ba7b",
+                  "checks": {
+                    "data": false,
+                    "editorial": true,
+                    "statistics": true,
+                    "ux": true
+                  },
+                  "findings": [
+                    {
+                      "category": "data",
+                      "code": "stale_source_check",
+                      "detail": "Source was not polled within seven days",
+                      "path": "data/source_health.json#sources/prestadores_data",
+                      "severity": "critical"
+                    },
+                    {
+                      "category": "data",
+                      "code": "stale_non_daily_source",
+                      "detail": "Non-daily source not polled within seven days",
+                      "path": "data/source_health.json#sources/dipres_health_budget",
+                      "severity": "warning"
+                    },
+                    {
+                      "category": "data",
+                      "code": "stale_non_daily_source",
+                      "detail": "Non-daily source not polled within seven days",
+                      "path": "data/source_health.json#sources/cmf_health_ecosystem",
+                      "severity": "warning"
+                    },
+                    {
+                      "category": "data",
+                      "code": "stale_non_daily_source",
+                      "detail": "Non-daily source not polled within seven days",
+                      "path": "data/source_health.json#sources/sis_isapre_universe",
+                      "severity": "warning"
+                    },
+                    {
+                      "category": "data",
+                      "code": "stale_non_daily_source",
+                      "detail": "Non-daily source not polled within seven days",
+                      "path": "data/source_health.json#sources/global_who",
+                      "severity": "warning"
+                    },
+                    {
+                      "category": "data",
+                      "code": "stale_non_daily_source",
+                      "detail": "Non-daily source not polled within seven days",
+                      "path": "data/source_health.json#sources/global_paho",
+                      "severity": "warning"
+                    }
+                  ],
+                  "limitations": [
+                    "Semantic/legal accuracy is not certified by deterministic checks.",
+                    "Browser evidence is required separately for desktop/mobile.",
+                    "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+                  ],
+                  "reviewed_at": "2026-10-26T00:43:20.142726+00:00",
+                  "reviewer": "deterministic-reviewer"
+                },
+                "status": "FAIL"
+              }
+            ],
+            "fingerprint": "1e12b89fa8f41988b25b22dcb159745705f8220fcd5364ee9256a0a5996eaf92",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Independent candidate gate rejected or could not execute: independent_reviewer",
+            "source_urls": []
+          },
+          {
+            "evidence": [
+              {
+                "browser_proof": {
+                  "cases": [
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 16,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 12
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  10 |  const radar=await (await page.request.get('/data/radar_today.json')).json();\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n> 12 |  expect(pulse).toBeTruthy();\n     |                ^\n  13 |  expect(pulse.publication_date).toBe('2026-09-15');\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:12:16"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 16,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 12
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  10 |  const radar=await (await page.request.get('/data/radar_today.json')).json();\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n> 12 |  expect(pulse).toBeTruthy();\n     |                ^\n  13 |  expect(pulse.publication_date).toBe('2026-09-15');\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:12:16"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 32,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 523
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"boundary_evidence\": [{\"pages\": 3, \"section\": \"news\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 3, \"section\": \"publications\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 1, \"section\": \"disease_outbreak_news\", \"stop\": \"verified_older_boundary\"}], \"cadence_seconds\": 86400, \"cadence_validation_pending\": true, \"checked_at\": \"2026-10-11T16:07:31.827873+00:00\", \"content_freshness\": \"recent\", \"count_basis\": \"deduplicated_detail_identity_and_publication_verified_items\", \"counts\": {\"30\": 84, \"90\": 241}, \"coverage_completeness\": \"complete\", \"coverage_contract_id\": \"e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56\", \"coverage_from\": \"2026-07-14\", \"coverage_status\": \"complete\", \"coverage_to\": \"2026-10-11\", \"coverage_window_days\": 90, \"deferred\": 237, \"discovered\": 241, \"discovery_recall_30\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 84, \"inventory_url_count\": 84, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_recall_90\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 241, \"inventory_url_count\": 241, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_scope\": \"global_intelligence\", \"editorial_outcome\": \"discovery_only_pending_editorial_and_rights_review\", \"evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json\", \"indexed_counts\": {\"30\": 84, \"90\": 241}, \"material_items\": 148, \"materiality_evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json\", \"materiality_projection_run_id\": \"38155456354\", \"name\": \"WHO\", \"new\": 0, \"new_basis\": \"identities_absent_from_previous_discovery_inventory_not_live_publications\", \"next_cadence_validation_not_before\": \"2026-10-12T16:07:31.827873+00:00\", \"operation_mode\": \"isolated_qualification\", \"outcome\": \"READY_FOR_INTEGRATION\", \"pages_checked\": 7, \"parser_routes\": [\"news\", \"publications\", \"disease_outbreak_news\"], \"pending_date_items\": 0, \"publication_activation\": false, \"published\": 0, \"recent_items\": 84, \"recurrent_operation_proven\": false, \"rejected\": 4, \"source_quality_disposition\": \"pass_data\", \"status\": \"warning\", \"technical_failures\": [], \"technical_status\": \"ok\", \"unique_items\": 241, \"unique_language_urls_90\": 241, \"window_completeness\": {\"30\": \"complete_on_declared_surfaces\", \"90\": \"complete_on_declared_surfaces\"}}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  521 |   const row=health.sources[key];expect(row.discovery_scope).toBe('global_intelligence');\n  522 |   expect(row.publication_activation).toBe(false);expect(row.published).toBe(0);\n> 523 |   expect(product.sources[key]).toEqual(row);\n      |                                ^\n  524 |  }\n  525 |  expect(health.sources.global_reuters.counts).toEqual({'30':null,'90':null});\n  526 |  expect(health.sources.global_reuters.technical_status).toBe('not_polled_license_hold');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:523:32"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "Global metadata health stays separate from Chile LIVE coverage"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "column": 47,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 303
+                              },
+                              "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  301 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  302 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 303 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  304 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  305 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  306 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:303:47"
+                            }
+                          ],
+                          "status": "timedOut"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 32,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 523
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"boundary_evidence\": [{\"pages\": 3, \"section\": \"news\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 3, \"section\": \"publications\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 1, \"section\": \"disease_outbreak_news\", \"stop\": \"verified_older_boundary\"}], \"cadence_seconds\": 86400, \"cadence_validation_pending\": true, \"checked_at\": \"2026-10-11T16:07:31.827873+00:00\", \"content_freshness\": \"recent\", \"count_basis\": \"deduplicated_detail_identity_and_publication_verified_items\", \"counts\": {\"30\": 84, \"90\": 241}, \"coverage_completeness\": \"complete\", \"coverage_contract_id\": \"e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56\", \"coverage_from\": \"2026-07-14\", \"coverage_status\": \"complete\", \"coverage_to\": \"2026-10-11\", \"coverage_window_days\": 90, \"deferred\": 237, \"discovered\": 241, \"discovery_recall_30\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 84, \"inventory_url_count\": 84, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_recall_90\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 241, \"inventory_url_count\": 241, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_scope\": \"global_intelligence\", \"editorial_outcome\": \"discovery_only_pending_editorial_and_rights_review\", \"evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json\", \"indexed_counts\": {\"30\": 84, \"90\": 241}, \"material_items\": 148, \"materiality_evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json\", \"materiality_projection_run_id\": \"38155456354\", \"name\": \"WHO\", \"new\": 0, \"new_basis\": \"identities_absent_from_previous_discovery_inventory_not_live_publications\", \"next_cadence_validation_not_before\": \"2026-10-12T16:07:31.827873+00:00\", \"operation_mode\": \"isolated_qualification\", \"outcome\": \"READY_FOR_INTEGRATION\", \"pages_checked\": 7, \"parser_routes\": [\"news\", \"publications\", \"disease_outbreak_news\"], \"pending_date_items\": 0, \"publication_activation\": false, \"published\": 0, \"recent_items\": 84, \"recurrent_operation_proven\": false, \"rejected\": 4, \"source_quality_disposition\": \"pass_data\", \"status\": \"warning\", \"technical_failures\": [], \"technical_status\": \"ok\", \"unique_items\": 241, \"unique_language_urls_90\": 241, \"window_completeness\": {\"30\": \"complete_on_declared_surfaces\", \"90\": \"complete_on_declared_surfaces\"}}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  521 |   const row=health.sources[key];expect(row.discovery_scope).toBe('global_intelligence');\n  522 |   expect(row.publication_activation).toBe(false);expect(row.published).toBe(0);\n> 523 |   expect(product.sources[key]).toEqual(row);\n      |                                ^\n  524 |  }\n  525 |  expect(health.sources.global_reuters.counts).toEqual({'30':null,'90':null});\n  526 |  expect(health.sources.global_reuters.technical_status).toBe('not_polled_license_hold');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:523:32"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "Global metadata health stays separate from Chile LIVE coverage"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "column": 47,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 303
+                              },
+                              "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  301 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  302 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 303 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  304 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  305 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  306 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:303:47"
+                            }
+                          ],
+                          "status": "timedOut"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                    }
+                  ],
+                  "projects": [
+                    "desktop",
+                    "mobile"
+                  ],
+                  "stats": {
+                    "duration": 109643.00899999999,
+                    "expected": 88,
+                    "flaky": 0,
+                    "skipped": 0,
+                    "startTime": "2026-10-26T00:43:20.881Z",
+                    "unexpected": 6
+                  }
+                },
+                "command": [
+                  "npm",
+                  "run",
+                  "test:browser"
+                ],
+                "failure_hash": "931db514d2b8a43cfcc961d03bc44d1ad7751a92834ea569965b497f2dabb224",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+                "log_sha256": "fd2799fa3f231f541053c75482b9a3320b325aaa2f380fbcdad4a55a77fbe411",
+                "name": "browser_desktop_and_mobile",
+                "returncode": 1,
+                "status": "FAIL"
+              }
+            ],
+            "fingerprint": "0f0f8208e68d491c7391c47c7758e8d6d920122014dce308080f6101069b18e8",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Independent candidate gate rejected or could not execute: browser_desktop_and_mobile",
+            "source_urls": []
+          }
+        ],
+        "canonical_material_signature": "bfae0add76e0726e406767870e0db2be452de486eb53b51fc0022b3b1d56db6d",
+        "evidence": [
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q",
+              "-rs",
+              "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+              "-m",
+              "not integration",
+              "tests"
+            ],
+            "failure_hash": "8d13772a05da1a1d97582e1f0b83808ffe1dd5fe2c6f09449ec7128e82ffa69a",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+            "log_sha256": "998583de508eeaf0fd4cefb1f4f7788167904382a849debdc9bfd44321841022",
+            "name": "targeted_deterministic_tests",
+            "pytest": {
+              "cases": [],
+              "collected": 0,
+              "failed": 0,
+              "passed": 0,
+              "proof": false,
+              "skipped": 0
+            },
+            "returncode": 124,
+            "status": "FAIL"
+          },
+          {
+            "blocker": "Failure is infrastructure/unclassified; no demonstrated test failure to repair",
+            "changed_paths": [],
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q"
+                ],
+                "output": "Validation command unavailable or timed out: TimeoutExpired",
+                "returncode": 124
+              }
+            ],
+            "failure_sha256": "64758d9a0ce5c1b3d0246f4f922b5e57f30aa16c7b3306121dc98150577f43a3",
+            "material_progress": false,
+            "signature": null,
+            "source_run_id": null,
+            "status": "BLOCKED",
+            "validated": false
+          },
+          {
+            "diagnostics_are_acceptance": false,
+            "family": "staging_qa",
+            "task_id": "staging_qa_failed_run_40248532779"
+          },
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "scripts/review_candidate.py",
+              "--web",
+              "web",
+              "--sha",
+              "998a938185cd7adcea041dbbf7bdde89fd15ba7b",
+              "--output",
+              "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/reviewer.json"
+            ],
+            "failure_hash": "7451cb53ded6a07136dd7da4616e34be08e32d81237651f6f62601b395046e2b",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/independent_reviewer.log",
+            "log_sha256": "ee7a593a30503d318b9fc30f5fc905586ab700de0c53f7237eaaebb0b3ea2e6f",
+            "name": "independent_reviewer",
+            "returncode": 1,
+            "reviewer_proof": {
+              "candidate_sha": "998a938185cd7adcea041dbbf7bdde89fd15ba7b",
+              "checks": {
+                "data": false,
+                "editorial": true,
+                "statistics": true,
+                "ux": true
+              },
+              "findings": [
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/prestadores_data",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_non_daily_source",
+                  "detail": "Non-daily source not polled within seven days",
+                  "path": "data/source_health.json#sources/dipres_health_budget",
+                  "severity": "warning"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_non_daily_source",
+                  "detail": "Non-daily source not polled within seven days",
+                  "path": "data/source_health.json#sources/cmf_health_ecosystem",
+                  "severity": "warning"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_non_daily_source",
+                  "detail": "Non-daily source not polled within seven days",
+                  "path": "data/source_health.json#sources/sis_isapre_universe",
+                  "severity": "warning"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_non_daily_source",
+                  "detail": "Non-daily source not polled within seven days",
+                  "path": "data/source_health.json#sources/global_who",
+                  "severity": "warning"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_non_daily_source",
+                  "detail": "Non-daily source not polled within seven days",
+                  "path": "data/source_health.json#sources/global_paho",
+                  "severity": "warning"
+                }
+              ],
+              "limitations": [
+                "Semantic/legal accuracy is not certified by deterministic checks.",
+                "Browser evidence is required separately for desktop/mobile.",
+                "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+              ],
+              "reviewed_at": "2026-10-26T00:43:20.142726+00:00",
+              "reviewer": "deterministic-reviewer"
+            },
+            "status": "FAIL"
+          },
+          {
+            "browser_proof": {
+              "cases": [
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 16,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 12
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  10 |  const radar=await (await page.request.get('/data/radar_today.json')).json();\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n> 12 |  expect(pulse).toBeTruthy();\n     |                ^\n  13 |  expect(pulse.publication_date).toBe('2026-09-15');\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:12:16"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 16,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 12
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  10 |  const radar=await (await page.request.get('/data/radar_today.json')).json();\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n> 12 |  expect(pulse).toBeTruthy();\n     |                ^\n  13 |  expect(pulse.publication_date).toBe('2026-09-15');\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:12:16"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 32,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 523
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"boundary_evidence\": [{\"pages\": 3, \"section\": \"news\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 3, \"section\": \"publications\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 1, \"section\": \"disease_outbreak_news\", \"stop\": \"verified_older_boundary\"}], \"cadence_seconds\": 86400, \"cadence_validation_pending\": true, \"checked_at\": \"2026-10-11T16:07:31.827873+00:00\", \"content_freshness\": \"recent\", \"count_basis\": \"deduplicated_detail_identity_and_publication_verified_items\", \"counts\": {\"30\": 84, \"90\": 241}, \"coverage_completeness\": \"complete\", \"coverage_contract_id\": \"e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56\", \"coverage_from\": \"2026-07-14\", \"coverage_status\": \"complete\", \"coverage_to\": \"2026-10-11\", \"coverage_window_days\": 90, \"deferred\": 237, \"discovered\": 241, \"discovery_recall_30\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 84, \"inventory_url_count\": 84, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_recall_90\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 241, \"inventory_url_count\": 241, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_scope\": \"global_intelligence\", \"editorial_outcome\": \"discovery_only_pending_editorial_and_rights_review\", \"evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json\", \"indexed_counts\": {\"30\": 84, \"90\": 241}, \"material_items\": 148, \"materiality_evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json\", \"materiality_projection_run_id\": \"38155456354\", \"name\": \"WHO\", \"new\": 0, \"new_basis\": \"identities_absent_from_previous_discovery_inventory_not_live_publications\", \"next_cadence_validation_not_before\": \"2026-10-12T16:07:31.827873+00:00\", \"operation_mode\": \"isolated_qualification\", \"outcome\": \"READY_FOR_INTEGRATION\", \"pages_checked\": 7, \"parser_routes\": [\"news\", \"publications\", \"disease_outbreak_news\"], \"pending_date_items\": 0, \"publication_activation\": false, \"published\": 0, \"recent_items\": 84, \"recurrent_operation_proven\": false, \"rejected\": 4, \"source_quality_disposition\": \"pass_data\", \"status\": \"warning\", \"technical_failures\": [], \"technical_status\": \"ok\", \"unique_items\": 241, \"unique_language_urls_90\": 241, \"window_completeness\": {\"30\": \"complete_on_declared_surfaces\", \"90\": \"complete_on_declared_surfaces\"}}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  521 |   const row=health.sources[key];expect(row.discovery_scope).toBe('global_intelligence');\n  522 |   expect(row.publication_activation).toBe(false);expect(row.published).toBe(0);\n> 523 |   expect(product.sources[key]).toEqual(row);\n      |                                ^\n  524 |  }\n  525 |  expect(health.sources.global_reuters.counts).toEqual({'30':null,'90':null});\n  526 |  expect(health.sources.global_reuters.technical_status).toBe('not_polled_license_hold');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:523:32"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Global metadata health stays separate from Chile LIVE coverage"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "column": 47,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 303
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  301 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  302 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 303 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  304 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  305 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  306 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:303:47"
+                        }
+                      ],
+                      "status": "timedOut"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 32,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 523
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"boundary_evidence\": [{\"pages\": 3, \"section\": \"news\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 3, \"section\": \"publications\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 1, \"section\": \"disease_outbreak_news\", \"stop\": \"verified_older_boundary\"}], \"cadence_seconds\": 86400, \"cadence_validation_pending\": true, \"checked_at\": \"2026-10-11T16:07:31.827873+00:00\", \"content_freshness\": \"recent\", \"count_basis\": \"deduplicated_detail_identity_and_publication_verified_items\", \"counts\": {\"30\": 84, \"90\": 241}, \"coverage_completeness\": \"complete\", \"coverage_contract_id\": \"e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56\", \"coverage_from\": \"2026-07-14\", \"coverage_status\": \"complete\", \"coverage_to\": \"2026-10-11\", \"coverage_window_days\": 90, \"deferred\": 237, \"discovered\": 241, \"discovery_recall_30\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 84, \"inventory_url_count\": 84, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_recall_90\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 241, \"inventory_url_count\": 241, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_scope\": \"global_intelligence\", \"editorial_outcome\": \"discovery_only_pending_editorial_and_rights_review\", \"evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json\", \"indexed_counts\": {\"30\": 84, \"90\": 241}, \"material_items\": 148, \"materiality_evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json\", \"materiality_projection_run_id\": \"38155456354\", \"name\": \"WHO\", \"new\": 0, \"new_basis\": \"identities_absent_from_previous_discovery_inventory_not_live_publications\", \"next_cadence_validation_not_before\": \"2026-10-12T16:07:31.827873+00:00\", \"operation_mode\": \"isolated_qualification\", \"outcome\": \"READY_FOR_INTEGRATION\", \"pages_checked\": 7, \"parser_routes\": [\"news\", \"publications\", \"disease_outbreak_news\"], \"pending_date_items\": 0, \"publication_activation\": false, \"published\": 0, \"recent_items\": 84, \"recurrent_operation_proven\": false, \"rejected\": 4, \"source_quality_disposition\": \"pass_data\", \"status\": \"warning\", \"technical_failures\": [], \"technical_status\": \"ok\", \"unique_items\": 241, \"unique_language_urls_90\": 241, \"window_completeness\": {\"30\": \"complete_on_declared_surfaces\", \"90\": \"complete_on_declared_surfaces\"}}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  521 |   const row=health.sources[key];expect(row.discovery_scope).toBe('global_intelligence');\n  522 |   expect(row.publication_activation).toBe(false);expect(row.published).toBe(0);\n> 523 |   expect(product.sources[key]).toEqual(row);\n      |                                ^\n  524 |  }\n  525 |  expect(health.sources.global_reuters.counts).toEqual({'30':null,'90':null});\n  526 |  expect(health.sources.global_reuters.technical_status).toBe('not_polled_license_hold');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:523:32"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Global metadata health stays separate from Chile LIVE coverage"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "column": 47,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 303
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  301 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  302 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 303 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  304 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  305 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  306 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:303:47"
+                        }
+                      ],
+                      "status": "timedOut"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                }
+              ],
+              "projects": [
+                "desktop",
+                "mobile"
+              ],
+              "stats": {
+                "duration": 109643.00899999999,
+                "expected": 88,
+                "flaky": 0,
+                "skipped": 0,
+                "startTime": "2026-10-26T00:43:20.881Z",
+                "unexpected": 6
+              }
+            },
+            "command": [
+              "npm",
+              "run",
+              "test:browser"
+            ],
+            "failure_hash": "931db514d2b8a43cfcc961d03bc44d1ad7751a92834ea569965b497f2dabb224",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+            "log_sha256": "fd2799fa3f231f541053c75482b9a3320b325aaa2f380fbcdad4a55a77fbe411",
+            "name": "browser_desktop_and_mobile",
+            "returncode": 1,
+            "status": "FAIL"
+          }
+        ],
+        "failure_action": "blocked",
+        "fingerprint": "a22b927c6005cc4456b3357aa974afdc0f6f142e6a2c531a2a576bf3b31d9198",
+        "product_input_fingerprint": "ba2c91fa6aeb7d3ade737f66300797794fa9392b9e18c24d6071cb287bb2f852",
+        "real_failure": {
+          "conclusion": "failure",
+          "failure_signature": "dfa600f830f61508710935d123914961e09b42a7832266ee5b12b1e016970500",
+          "head_sha": "b61d93f7ba8d8ae4f31eed5e223da5eb8c42cffb",
+          "run_id": 40248532779,
+          "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/40248532779"
+        },
+        "reason": "Targeted deterministic gate failed; no validated repair candidate; Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256; Independent candidate gate rejected or could not execute: independent_reviewer; Independent candidate gate rejected or could not execute: browser_desktop_and_mobile"
+      },
+      "family": "staging_qa",
+      "id": "3c1e2ee4595c64a8e4b5cafeec2b3050e69014f9a1101ea80a8e536706b6e401",
+      "kind": "blocker",
+      "task_id": "staging_qa_failed_run_40248532779"
     }
   ],
   "pending_transitions": [
@@ -90419,6 +91105,12 @@
       "event_id": "df0d5c4c222f4fc8a29a96e6aca65f618f3e8665c6c03a0b4a11c1a29a1e054e",
       "family": "staging_qa",
       "task_id": "staging_qa_failed_run_40246895465"
+    },
+    {
+      "at": "2026-10-26T00:45:22.526667Z",
+      "event_id": "3c1e2ee4595c64a8e4b5cafeec2b3050e69014f9a1101ea80a8e536706b6e401",
+      "family": "staging_qa",
+      "task_id": "staging_qa_failed_run_40248532779"
     }
   ],
   "schema_version": 2,
@@ -115727,7 +116419,665 @@
       "approved": true,
       "attempts": 1,
       "audit_counts": {},
-      "blocker_signatures": [],
+      "blocked_revision": [
+        "998a938185cd7adcea041dbbf7bdde89fd15ba7b",
+        "841aaf10b955b6ff899b4be2568487632e6c0d7e04e3e2970c48fdf932540193"
+      ],
+      "blocker": {
+        "blockers": [
+          {
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q",
+                  "-rs",
+                  "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+                  "-m",
+                  "not integration",
+                  "tests"
+                ],
+                "failure_hash": "8d13772a05da1a1d97582e1f0b83808ffe1dd5fe2c6f09449ec7128e82ffa69a",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+                "log_sha256": "998583de508eeaf0fd4cefb1f4f7788167904382a849debdc9bfd44321841022",
+                "name": "targeted_deterministic_tests",
+                "pytest": {
+                  "cases": [],
+                  "collected": 0,
+                  "failed": 0,
+                  "passed": 0,
+                  "proof": false,
+                  "skipped": 0
+                },
+                "returncode": 124,
+                "status": "FAIL"
+              },
+              {
+                "blocker": "Failure is infrastructure/unclassified; no demonstrated test failure to repair",
+                "changed_paths": [],
+                "evidence": [
+                  {
+                    "command": [
+                      "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                      "-m",
+                      "pytest",
+                      "-q"
+                    ],
+                    "output": "Validation command unavailable or timed out: TimeoutExpired",
+                    "returncode": 124
+                  }
+                ],
+                "failure_sha256": "64758d9a0ce5c1b3d0246f4f922b5e57f30aa16c7b3306121dc98150577f43a3",
+                "material_progress": false,
+                "signature": null,
+                "source_run_id": null,
+                "status": "BLOCKED",
+                "validated": false
+              }
+            ],
+            "fingerprint": "c230dc431d4cd1bce61d0a3d4fa1cbc12b736fef22401e7baf0d0383346e9ff0",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Targeted deterministic gate failed; no validated repair candidate",
+            "source_urls": []
+          },
+          {
+            "evidence": [
+              {
+                "diagnostics_are_acceptance": false,
+                "family": "staging_qa",
+                "task_id": "staging_qa_failed_run_40248532779"
+              }
+            ],
+            "fingerprint": "7b5d61d1b54767af6577f709ae8e03109794027c38f321fbea35fe0e0de8a82f",
+            "human_required": false,
+            "kind": "acceptance",
+            "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+            "source_urls": []
+          },
+          {
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "scripts/review_candidate.py",
+                  "--web",
+                  "web",
+                  "--sha",
+                  "998a938185cd7adcea041dbbf7bdde89fd15ba7b",
+                  "--output",
+                  "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/reviewer.json"
+                ],
+                "failure_hash": "7451cb53ded6a07136dd7da4616e34be08e32d81237651f6f62601b395046e2b",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/independent_reviewer.log",
+                "log_sha256": "ee7a593a30503d318b9fc30f5fc905586ab700de0c53f7237eaaebb0b3ea2e6f",
+                "name": "independent_reviewer",
+                "returncode": 1,
+                "reviewer_proof": {
+                  "candidate_sha": "998a938185cd7adcea041dbbf7bdde89fd15ba7b",
+                  "checks": {
+                    "data": false,
+                    "editorial": true,
+                    "statistics": true,
+                    "ux": true
+                  },
+                  "findings": [
+                    {
+                      "category": "data",
+                      "code": "stale_source_check",
+                      "detail": "Source was not polled within seven days",
+                      "path": "data/source_health.json#sources/prestadores_data",
+                      "severity": "critical"
+                    },
+                    {
+                      "category": "data",
+                      "code": "stale_non_daily_source",
+                      "detail": "Non-daily source not polled within seven days",
+                      "path": "data/source_health.json#sources/dipres_health_budget",
+                      "severity": "warning"
+                    },
+                    {
+                      "category": "data",
+                      "code": "stale_non_daily_source",
+                      "detail": "Non-daily source not polled within seven days",
+                      "path": "data/source_health.json#sources/cmf_health_ecosystem",
+                      "severity": "warning"
+                    },
+                    {
+                      "category": "data",
+                      "code": "stale_non_daily_source",
+                      "detail": "Non-daily source not polled within seven days",
+                      "path": "data/source_health.json#sources/sis_isapre_universe",
+                      "severity": "warning"
+                    },
+                    {
+                      "category": "data",
+                      "code": "stale_non_daily_source",
+                      "detail": "Non-daily source not polled within seven days",
+                      "path": "data/source_health.json#sources/global_who",
+                      "severity": "warning"
+                    },
+                    {
+                      "category": "data",
+                      "code": "stale_non_daily_source",
+                      "detail": "Non-daily source not polled within seven days",
+                      "path": "data/source_health.json#sources/global_paho",
+                      "severity": "warning"
+                    }
+                  ],
+                  "limitations": [
+                    "Semantic/legal accuracy is not certified by deterministic checks.",
+                    "Browser evidence is required separately for desktop/mobile.",
+                    "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+                  ],
+                  "reviewed_at": "2026-10-26T00:43:20.142726+00:00",
+                  "reviewer": "deterministic-reviewer"
+                },
+                "status": "FAIL"
+              }
+            ],
+            "fingerprint": "1e12b89fa8f41988b25b22dcb159745705f8220fcd5364ee9256a0a5996eaf92",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Independent candidate gate rejected or could not execute: independent_reviewer",
+            "source_urls": []
+          },
+          {
+            "evidence": [
+              {
+                "browser_proof": {
+                  "cases": [
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 16,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 12
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  10 |  const radar=await (await page.request.get('/data/radar_today.json')).json();\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n> 12 |  expect(pulse).toBeTruthy();\n     |                ^\n  13 |  expect(pulse.publication_date).toBe('2026-09-15');\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:12:16"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 16,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 12
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  10 |  const radar=await (await page.request.get('/data/radar_today.json')).json();\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n> 12 |  expect(pulse).toBeTruthy();\n     |                ^\n  13 |  expect(pulse.publication_date).toBe('2026-09-15');\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:12:16"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 32,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 523
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"boundary_evidence\": [{\"pages\": 3, \"section\": \"news\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 3, \"section\": \"publications\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 1, \"section\": \"disease_outbreak_news\", \"stop\": \"verified_older_boundary\"}], \"cadence_seconds\": 86400, \"cadence_validation_pending\": true, \"checked_at\": \"2026-10-11T16:07:31.827873+00:00\", \"content_freshness\": \"recent\", \"count_basis\": \"deduplicated_detail_identity_and_publication_verified_items\", \"counts\": {\"30\": 84, \"90\": 241}, \"coverage_completeness\": \"complete\", \"coverage_contract_id\": \"e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56\", \"coverage_from\": \"2026-07-14\", \"coverage_status\": \"complete\", \"coverage_to\": \"2026-10-11\", \"coverage_window_days\": 90, \"deferred\": 237, \"discovered\": 241, \"discovery_recall_30\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 84, \"inventory_url_count\": 84, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_recall_90\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 241, \"inventory_url_count\": 241, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_scope\": \"global_intelligence\", \"editorial_outcome\": \"discovery_only_pending_editorial_and_rights_review\", \"evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json\", \"indexed_counts\": {\"30\": 84, \"90\": 241}, \"material_items\": 148, \"materiality_evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json\", \"materiality_projection_run_id\": \"38155456354\", \"name\": \"WHO\", \"new\": 0, \"new_basis\": \"identities_absent_from_previous_discovery_inventory_not_live_publications\", \"next_cadence_validation_not_before\": \"2026-10-12T16:07:31.827873+00:00\", \"operation_mode\": \"isolated_qualification\", \"outcome\": \"READY_FOR_INTEGRATION\", \"pages_checked\": 7, \"parser_routes\": [\"news\", \"publications\", \"disease_outbreak_news\"], \"pending_date_items\": 0, \"publication_activation\": false, \"published\": 0, \"recent_items\": 84, \"recurrent_operation_proven\": false, \"rejected\": 4, \"source_quality_disposition\": \"pass_data\", \"status\": \"warning\", \"technical_failures\": [], \"technical_status\": \"ok\", \"unique_items\": 241, \"unique_language_urls_90\": 241, \"window_completeness\": {\"30\": \"complete_on_declared_surfaces\", \"90\": \"complete_on_declared_surfaces\"}}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  521 |   const row=health.sources[key];expect(row.discovery_scope).toBe('global_intelligence');\n  522 |   expect(row.publication_activation).toBe(false);expect(row.published).toBe(0);\n> 523 |   expect(product.sources[key]).toEqual(row);\n      |                                ^\n  524 |  }\n  525 |  expect(health.sources.global_reuters.counts).toEqual({'30':null,'90':null});\n  526 |  expect(health.sources.global_reuters.technical_status).toBe('not_polled_license_hold');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:523:32"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "Global metadata health stays separate from Chile LIVE coverage"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "column": 47,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 303
+                              },
+                              "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  301 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  302 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 303 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  304 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  305 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  306 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:303:47"
+                            }
+                          ],
+                          "status": "timedOut"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 32,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 523
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"boundary_evidence\": [{\"pages\": 3, \"section\": \"news\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 3, \"section\": \"publications\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 1, \"section\": \"disease_outbreak_news\", \"stop\": \"verified_older_boundary\"}], \"cadence_seconds\": 86400, \"cadence_validation_pending\": true, \"checked_at\": \"2026-10-11T16:07:31.827873+00:00\", \"content_freshness\": \"recent\", \"count_basis\": \"deduplicated_detail_identity_and_publication_verified_items\", \"counts\": {\"30\": 84, \"90\": 241}, \"coverage_completeness\": \"complete\", \"coverage_contract_id\": \"e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56\", \"coverage_from\": \"2026-07-14\", \"coverage_status\": \"complete\", \"coverage_to\": \"2026-10-11\", \"coverage_window_days\": 90, \"deferred\": 237, \"discovered\": 241, \"discovery_recall_30\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 84, \"inventory_url_count\": 84, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_recall_90\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 241, \"inventory_url_count\": 241, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_scope\": \"global_intelligence\", \"editorial_outcome\": \"discovery_only_pending_editorial_and_rights_review\", \"evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json\", \"indexed_counts\": {\"30\": 84, \"90\": 241}, \"material_items\": 148, \"materiality_evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json\", \"materiality_projection_run_id\": \"38155456354\", \"name\": \"WHO\", \"new\": 0, \"new_basis\": \"identities_absent_from_previous_discovery_inventory_not_live_publications\", \"next_cadence_validation_not_before\": \"2026-10-12T16:07:31.827873+00:00\", \"operation_mode\": \"isolated_qualification\", \"outcome\": \"READY_FOR_INTEGRATION\", \"pages_checked\": 7, \"parser_routes\": [\"news\", \"publications\", \"disease_outbreak_news\"], \"pending_date_items\": 0, \"publication_activation\": false, \"published\": 0, \"recent_items\": 84, \"recurrent_operation_proven\": false, \"rejected\": 4, \"source_quality_disposition\": \"pass_data\", \"status\": \"warning\", \"technical_failures\": [], \"technical_status\": \"ok\", \"unique_items\": 241, \"unique_language_urls_90\": 241, \"window_completeness\": {\"30\": \"complete_on_declared_surfaces\", \"90\": \"complete_on_declared_surfaces\"}}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  521 |   const row=health.sources[key];expect(row.discovery_scope).toBe('global_intelligence');\n  522 |   expect(row.publication_activation).toBe(false);expect(row.published).toBe(0);\n> 523 |   expect(product.sources[key]).toEqual(row);\n      |                                ^\n  524 |  }\n  525 |  expect(health.sources.global_reuters.counts).toEqual({'30':null,'90':null});\n  526 |  expect(health.sources.global_reuters.technical_status).toBe('not_polled_license_hold');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:523:32"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "Global metadata health stays separate from Chile LIVE coverage"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "column": 47,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 303
+                              },
+                              "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  301 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  302 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 303 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  304 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  305 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  306 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:303:47"
+                            }
+                          ],
+                          "status": "timedOut"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                    }
+                  ],
+                  "projects": [
+                    "desktop",
+                    "mobile"
+                  ],
+                  "stats": {
+                    "duration": 109643.00899999999,
+                    "expected": 88,
+                    "flaky": 0,
+                    "skipped": 0,
+                    "startTime": "2026-10-26T00:43:20.881Z",
+                    "unexpected": 6
+                  }
+                },
+                "command": [
+                  "npm",
+                  "run",
+                  "test:browser"
+                ],
+                "failure_hash": "931db514d2b8a43cfcc961d03bc44d1ad7751a92834ea569965b497f2dabb224",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+                "log_sha256": "fd2799fa3f231f541053c75482b9a3320b325aaa2f380fbcdad4a55a77fbe411",
+                "name": "browser_desktop_and_mobile",
+                "returncode": 1,
+                "status": "FAIL"
+              }
+            ],
+            "fingerprint": "0f0f8208e68d491c7391c47c7758e8d6d920122014dce308080f6101069b18e8",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Independent candidate gate rejected or could not execute: browser_desktop_and_mobile",
+            "source_urls": []
+          }
+        ],
+        "canonical_material_signature": "bfae0add76e0726e406767870e0db2be452de486eb53b51fc0022b3b1d56db6d",
+        "evidence": [
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q",
+              "-rs",
+              "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+              "-m",
+              "not integration",
+              "tests"
+            ],
+            "failure_hash": "8d13772a05da1a1d97582e1f0b83808ffe1dd5fe2c6f09449ec7128e82ffa69a",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+            "log_sha256": "998583de508eeaf0fd4cefb1f4f7788167904382a849debdc9bfd44321841022",
+            "name": "targeted_deterministic_tests",
+            "pytest": {
+              "cases": [],
+              "collected": 0,
+              "failed": 0,
+              "passed": 0,
+              "proof": false,
+              "skipped": 0
+            },
+            "returncode": 124,
+            "status": "FAIL"
+          },
+          {
+            "blocker": "Failure is infrastructure/unclassified; no demonstrated test failure to repair",
+            "changed_paths": [],
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q"
+                ],
+                "output": "Validation command unavailable or timed out: TimeoutExpired",
+                "returncode": 124
+              }
+            ],
+            "failure_sha256": "64758d9a0ce5c1b3d0246f4f922b5e57f30aa16c7b3306121dc98150577f43a3",
+            "material_progress": false,
+            "signature": null,
+            "source_run_id": null,
+            "status": "BLOCKED",
+            "validated": false
+          },
+          {
+            "diagnostics_are_acceptance": false,
+            "family": "staging_qa",
+            "task_id": "staging_qa_failed_run_40248532779"
+          },
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "scripts/review_candidate.py",
+              "--web",
+              "web",
+              "--sha",
+              "998a938185cd7adcea041dbbf7bdde89fd15ba7b",
+              "--output",
+              "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/reviewer.json"
+            ],
+            "failure_hash": "7451cb53ded6a07136dd7da4616e34be08e32d81237651f6f62601b395046e2b",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/independent_reviewer.log",
+            "log_sha256": "ee7a593a30503d318b9fc30f5fc905586ab700de0c53f7237eaaebb0b3ea2e6f",
+            "name": "independent_reviewer",
+            "returncode": 1,
+            "reviewer_proof": {
+              "candidate_sha": "998a938185cd7adcea041dbbf7bdde89fd15ba7b",
+              "checks": {
+                "data": false,
+                "editorial": true,
+                "statistics": true,
+                "ux": true
+              },
+              "findings": [
+                {
+                  "category": "data",
+                  "code": "stale_source_check",
+                  "detail": "Source was not polled within seven days",
+                  "path": "data/source_health.json#sources/prestadores_data",
+                  "severity": "critical"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_non_daily_source",
+                  "detail": "Non-daily source not polled within seven days",
+                  "path": "data/source_health.json#sources/dipres_health_budget",
+                  "severity": "warning"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_non_daily_source",
+                  "detail": "Non-daily source not polled within seven days",
+                  "path": "data/source_health.json#sources/cmf_health_ecosystem",
+                  "severity": "warning"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_non_daily_source",
+                  "detail": "Non-daily source not polled within seven days",
+                  "path": "data/source_health.json#sources/sis_isapre_universe",
+                  "severity": "warning"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_non_daily_source",
+                  "detail": "Non-daily source not polled within seven days",
+                  "path": "data/source_health.json#sources/global_who",
+                  "severity": "warning"
+                },
+                {
+                  "category": "data",
+                  "code": "stale_non_daily_source",
+                  "detail": "Non-daily source not polled within seven days",
+                  "path": "data/source_health.json#sources/global_paho",
+                  "severity": "warning"
+                }
+              ],
+              "limitations": [
+                "Semantic/legal accuracy is not certified by deterministic checks.",
+                "Browser evidence is required separately for desktop/mobile.",
+                "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+              ],
+              "reviewed_at": "2026-10-26T00:43:20.142726+00:00",
+              "reviewer": "deterministic-reviewer"
+            },
+            "status": "FAIL"
+          },
+          {
+            "browser_proof": {
+              "cases": [
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 16,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 12
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  10 |  const radar=await (await page.request.get('/data/radar_today.json')).json();\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n> 12 |  expect(pulse).toBeTruthy();\n     |                ^\n  13 |  expect(pulse.publication_date).toBe('2026-09-15');\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:12:16"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 16,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 12
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  10 |  const radar=await (await page.request.get('/data/radar_today.json')).json();\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n> 12 |  expect(pulse).toBeTruthy();\n     |                ^\n  13 |  expect(pulse.publication_date).toBe('2026-09-15');\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:12:16"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 32,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 523
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"boundary_evidence\": [{\"pages\": 3, \"section\": \"news\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 3, \"section\": \"publications\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 1, \"section\": \"disease_outbreak_news\", \"stop\": \"verified_older_boundary\"}], \"cadence_seconds\": 86400, \"cadence_validation_pending\": true, \"checked_at\": \"2026-10-11T16:07:31.827873+00:00\", \"content_freshness\": \"recent\", \"count_basis\": \"deduplicated_detail_identity_and_publication_verified_items\", \"counts\": {\"30\": 84, \"90\": 241}, \"coverage_completeness\": \"complete\", \"coverage_contract_id\": \"e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56\", \"coverage_from\": \"2026-07-14\", \"coverage_status\": \"complete\", \"coverage_to\": \"2026-10-11\", \"coverage_window_days\": 90, \"deferred\": 237, \"discovered\": 241, \"discovery_recall_30\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 84, \"inventory_url_count\": 84, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_recall_90\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 241, \"inventory_url_count\": 241, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_scope\": \"global_intelligence\", \"editorial_outcome\": \"discovery_only_pending_editorial_and_rights_review\", \"evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json\", \"indexed_counts\": {\"30\": 84, \"90\": 241}, \"material_items\": 148, \"materiality_evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json\", \"materiality_projection_run_id\": \"38155456354\", \"name\": \"WHO\", \"new\": 0, \"new_basis\": \"identities_absent_from_previous_discovery_inventory_not_live_publications\", \"next_cadence_validation_not_before\": \"2026-10-12T16:07:31.827873+00:00\", \"operation_mode\": \"isolated_qualification\", \"outcome\": \"READY_FOR_INTEGRATION\", \"pages_checked\": 7, \"parser_routes\": [\"news\", \"publications\", \"disease_outbreak_news\"], \"pending_date_items\": 0, \"publication_activation\": false, \"published\": 0, \"recent_items\": 84, \"recurrent_operation_proven\": false, \"rejected\": 4, \"source_quality_disposition\": \"pass_data\", \"status\": \"warning\", \"technical_failures\": [], \"technical_status\": \"ok\", \"unique_items\": 241, \"unique_language_urls_90\": 241, \"window_completeness\": {\"30\": \"complete_on_declared_surfaces\", \"90\": \"complete_on_declared_surfaces\"}}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  521 |   const row=health.sources[key];expect(row.discovery_scope).toBe('global_intelligence');\n  522 |   expect(row.publication_activation).toBe(false);expect(row.published).toBe(0);\n> 523 |   expect(product.sources[key]).toEqual(row);\n      |                                ^\n  524 |  }\n  525 |  expect(health.sources.global_reuters.counts).toEqual({'30':null,'90':null});\n  526 |  expect(health.sources.global_reuters.technical_status).toBe('not_polled_license_hold');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:523:32"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Global metadata health stays separate from Chile LIVE coverage"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "column": 47,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 303
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  301 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  302 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 303 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  304 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  305 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  306 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:303:47"
+                        }
+                      ],
+                      "status": "timedOut"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 32,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 523
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"boundary_evidence\": [{\"pages\": 3, \"section\": \"news\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 3, \"section\": \"publications\", \"stop\": \"verified_older_boundary\"}, {\"pages\": 1, \"section\": \"disease_outbreak_news\", \"stop\": \"verified_older_boundary\"}], \"cadence_seconds\": 86400, \"cadence_validation_pending\": true, \"checked_at\": \"2026-10-11T16:07:31.827873+00:00\", \"content_freshness\": \"recent\", \"count_basis\": \"deduplicated_detail_identity_and_publication_verified_items\", \"counts\": {\"30\": 84, \"90\": 241}, \"coverage_completeness\": \"complete\", \"coverage_contract_id\": \"e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56\", \"coverage_from\": \"2026-07-14\", \"coverage_status\": \"complete\", \"coverage_to\": \"2026-10-11\", \"coverage_window_days\": 90, \"deferred\": 237, \"discovered\": 241, \"discovery_recall_30\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 84, \"inventory_url_count\": 84, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_recall_90\": {\"basis\": \"independent_native_index_control_on_declared_surfaces\", \"detected\": 241, \"inventory_url_count\": 241, \"omitted_urls\": [], \"recall\": 1, \"whole_source_archive_claim\": false}, \"discovery_scope\": \"global_intelligence\", \"editorial_outcome\": \"discovery_only_pending_editorial_and_rights_review\", \"evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/inventory.json\", \"indexed_counts\": {\"30\": 84, \"90\": 241}, \"material_items\": 148, \"materiality_evidence_ref\": \"data/audits/global_source_recovery_2026_10_11/runs/38153425336/metadata_requalification/38155456354/inventory.json\", \"materiality_projection_run_id\": \"38155456354\", \"name\": \"WHO\", \"new\": 0, \"new_basis\": \"identities_absent_from_previous_discovery_inventory_not_live_publications\", \"next_cadence_validation_not_before\": \"2026-10-12T16:07:31.827873+00:00\", \"operation_mode\": \"isolated_qualification\", \"outcome\": \"READY_FOR_INTEGRATION\", \"pages_checked\": 7, \"parser_routes\": [\"news\", \"publications\", \"disease_outbreak_news\"], \"pending_date_items\": 0, \"publication_activation\": false, \"published\": 0, \"recent_items\": 84, \"recurrent_operation_proven\": false, \"rejected\": 4, \"source_quality_disposition\": \"pass_data\", \"status\": \"warning\", \"technical_failures\": [], \"technical_status\": \"ok\", \"unique_items\": 241, \"unique_language_urls_90\": 241, \"window_completeness\": {\"30\": \"complete_on_declared_surfaces\", \"90\": \"complete_on_declared_surfaces\"}}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  521 |   const row=health.sources[key];expect(row.discovery_scope).toBe('global_intelligence');\n  522 |   expect(row.publication_activation).toBe(false);expect(row.published).toBe(0);\n> 523 |   expect(product.sources[key]).toEqual(row);\n      |                                ^\n  524 |  }\n  525 |  expect(health.sources.global_reuters.counts).toEqual({'30':null,'90':null});\n  526 |  expect(health.sources.global_reuters.technical_status).toBe('not_polled_license_hold');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:523:32"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Global metadata health stays separate from Chile LIVE coverage"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "column": 47,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 303
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  301 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  302 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 303 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  304 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  305 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  306 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:303:47"
+                        }
+                      ],
+                      "status": "timedOut"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                }
+              ],
+              "projects": [
+                "desktop",
+                "mobile"
+              ],
+              "stats": {
+                "duration": 109643.00899999999,
+                "expected": 88,
+                "flaky": 0,
+                "skipped": 0,
+                "startTime": "2026-10-26T00:43:20.881Z",
+                "unexpected": 6
+              }
+            },
+            "command": [
+              "npm",
+              "run",
+              "test:browser"
+            ],
+            "failure_hash": "931db514d2b8a43cfcc961d03bc44d1ad7751a92834ea569965b497f2dabb224",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+            "log_sha256": "fd2799fa3f231f541053c75482b9a3320b325aaa2f380fbcdad4a55a77fbe411",
+            "name": "browser_desktop_and_mobile",
+            "returncode": 1,
+            "status": "FAIL"
+          }
+        ],
+        "failure_action": "blocked",
+        "fingerprint": "a22b927c6005cc4456b3357aa974afdc0f6f142e6a2c531a2a576bf3b31d9198",
+        "product_input_fingerprint": "ba2c91fa6aeb7d3ade737f66300797794fa9392b9e18c24d6071cb287bb2f852",
+        "real_failure": {
+          "conclusion": "failure",
+          "failure_signature": "dfa600f830f61508710935d123914961e09b42a7832266ee5b12b1e016970500",
+          "head_sha": "b61d93f7ba8d8ae4f31eed5e223da5eb8c42cffb",
+          "run_id": 40248532779,
+          "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/40248532779"
+        },
+        "reason": "Targeted deterministic gate failed; no validated repair candidate; Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256; Independent candidate gate rejected or could not execute: independent_reviewer; Independent candidate gate rejected or could not execute: browser_desktop_and_mobile"
+      },
+      "blocker_signatures": [
+        "03cfbe7dc13ec33c239aeb8d051ae4a3c015a4d37f9f74c531a28e1e9fc33d99"
+      ],
       "created_at": "2026-10-26T00:34:47.587645Z",
       "declared_repair_inputs": {},
       "depends_on": [],
@@ -115745,26 +117095,26 @@
       "id": "staging_qa_failed_run_40248532779",
       "input_fingerprint": "0599777e690616874778e45d45e48e195d37a8bed2738aad467fb054ffe4f9f9",
       "input_sha": "998a938185cd7adcea041dbbf7bdde89fd15ba7b",
-      "last_ready_at": "2026-10-26T00:34:47.587645Z",
-      "lease": {
-        "claimed_at": "2026-10-26T00:34:47.587645Z",
-        "expires_at": "2026-10-26T00:55:15.943607Z",
-        "fence": 1,
-        "heartbeat_at": "2026-10-26T00:45:15.943607Z",
-        "owner": "40249931002-1-staging_qa",
-        "token": "d5efe25dba8bfe71cea3eed02baddb4d358c6cf462a4c76165f74559e4a5bc09"
+      "last_failure": {
+        "conclusion": "failure",
+        "failure_signature": "dfa600f830f61508710935d123914961e09b42a7832266ee5b12b1e016970500",
+        "head_sha": "b61d93f7ba8d8ae4f31eed5e223da5eb8c42cffb",
+        "run_id": 40248532779,
+        "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/40248532779"
       },
-      "material_progress_at": "2026-10-26T00:34:47.587645Z",
-      "material_watch_started_at": "2026-10-26T00:34:47.587645Z",
+      "last_ready_at": "2026-10-26T00:34:47.587645Z",
+      "lease": null,
+      "material_progress_at": "2026-10-26T00:45:22.526667Z",
+      "material_watch_started_at": "2026-10-26T00:45:22.526667Z",
       "objective": "Recover the demonstrated staging gate; preserve product contracts.",
       "pickup_ready_since": "2026-10-26T00:34:47.587645Z",
       "priority": "critical",
       "product_input_fingerprint": "ba2c91fa6aeb7d3ade737f66300797794fa9392b9e18c24d6071cb287bb2f852",
       "queue_status": "approved",
-      "recovery_episode": "460eb8a06e762bd29cb071b1706497b4f0e0be39343e1a6f0757be676eea2ab4",
+      "recovery_episode": "3c1e2ee4595c64a8e4b5cafeec2b3050e69014f9a1101ea80a8e536706b6e401",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-26T00:34:47.587645Z",
-      "status": "RUNNING"
+      "state_changed_at": "2026-10-26T00:45:22.526667Z",
+      "status": "BLOCKED"
     },
     "w4_cenabast_2026_10_11": {
       "approved": true,
