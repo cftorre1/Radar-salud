@@ -49,9 +49,18 @@
    sessionChanges.delete(id);persistent=sessionChanges.size===0;await refresh();broadcast();return true;
   }catch{sessionChanges.set(id,!!read);if(read)readSet.add(id);else readSet.delete(id);unavailable();return false}
  }
+ // One transaction for bulk actions (mark all, undo all) instead of one write and refresh per piece.
+ async function setMany(ids,read){
+  await ready;ids=[...new Set(ids)];if(!ids.length)return true;
+  if(!db){for(const id of ids){sessionChanges.set(id,!!read);if(read)readSet.add(id);else readSet.delete(id)}notify();return false}
+  try{
+   await transaction('readwrite',(pieces,meta)=>{const seq=meta.get('sequence');seq.onsuccess=()=>{let sequence=seq.result?.value||0;const at=new Date().toISOString();for(const id of ids)pieces.put({piece_id:id,read:!!read,sequence:++sequence,updated_at:at});meta.put({id:'sequence',value:sequence})}});
+   for(const id of ids)sessionChanges.delete(id);persistent=sessionChanges.size===0;await refresh();broadcast();return true;
+  }catch{for(const id of ids){sessionChanges.set(id,!!read);if(read)readSet.add(id);else readSet.delete(id)}unavailable();return false}
+ }
  if(typeof BroadcastChannel!=='undefined'){channel=new BroadcastChannel('alicanto_read_v3');channel.onmessage=()=>ready.then(refresh).catch(unavailable)}
  root.addEventListener?.('storage',e=>{if(e.key===noticeKey)ready.then(refresh).catch(unavailable)});
  root.addEventListener?.('pageshow',()=>ready.then(refresh).catch(unavailable));
  root.document?.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')ready.then(refresh).catch(unavailable)});
- root.AlicantoRead={readSet,ready,set,migrate,refresh,subscribe(fn){listeners.add(fn);return()=>listeners.delete(fn)},get persistent(){return persistent}};
+ root.AlicantoRead={readSet,ready,set,setMany,migrate,refresh,subscribe(fn){listeners.add(fn);return()=>listeners.delete(fn)},get persistent(){return persistent}};
 })(typeof window==='undefined'?globalThis:window);

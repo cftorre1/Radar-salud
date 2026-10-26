@@ -10,4 +10,6 @@ const test=base.test.extend({
     await use(page);
   },
 });
-module.exports={...base,test,FIXTURE_AS_OF};
+// The period selector lives inside 'Filtrar u ordenar' (Dirección 25-oct): open it first when closed.
+async function selectPeriod(page,value){const details=page.locator('#filterDetails');if(!(await details.evaluate(el=>el.open)))await details.locator('summary').click();await page.locator('#period').selectOption(value)}
+module.exports={...base,test,FIXTURE_AS_OF,selectPeriod};

@@ -133,3 +133,25 @@ def test_spoofed_global_source_never_becomes_verified_teaser():
     result = build_free_value({"signals": []}, {"themes": [fake]}, today=date(2026, 9, 24))
     assert result["global_teaser"] is None and result["status"] == "partial"
 
+
+
+def _theme(theme_id, title):
+    return {"id": theme_id, "kind": "global_theme", "title": title, "global_finding": "Hallazgo verificable. Detalle.",
+            "why_it_matters": "Importa.", "cross_analysis": {},
+            "chile_watch": {"kind": "hypothesis", "trend_chile_status": "not_established", "text": "Hipótesis."},
+            "sources": [{"publisher": "WHO", "title": "Informe", "url": "https://who.int/report",
+                         "published_at": "2026-09-18", "captured_at": "2026-09-24", "evidence": "Hallazgo explícito"}]}
+
+
+def test_global_theme_on_editorial_hold_is_never_the_home_teaser(monkeypatch):
+    import radar_salud.free_value as fv
+    snapshot = {"generated_at": "2026-09-24T18:00:00Z", "signals": [tea_signal()]}
+    themes = {"themes": [_theme("global-ai-coding-payer-cost-2026", "Tema en HOLD"), _theme("theme-ok", "Tema publicable")]}
+    monkeypatch.setattr(fv, "score_global_teaser", lambda theme, sources, today: {"eligible": True, "score": 99 if "HOLD" in theme["title"] else 50})
+    result = build_free_value(snapshot, themes, today=date(2026, 9, 24))
+    assert result["global_teaser"]["theme_id"] == "theme-ok"
+    assert result["selection_policy"]["global_teaser_excluded_by_hold"] == ["global-ai-coding-payer-cost-2026"]
+    monkeypatch.setattr(fv, "_active_holds", lambda: {})
+    assert build_free_value(snapshot, themes, today=date(2026, 9, 24))["global_teaser"]["theme_id"] == "global-ai-coding-payer-cost-2026"
+    monkeypatch.setattr(fv, "_active_holds", lambda: None)
+    assert build_free_value(snapshot, themes, today=date(2026, 9, 24))["global_teaser"]["theme_id"] == "theme-ok"

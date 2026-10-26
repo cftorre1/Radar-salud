@@ -3,11 +3,17 @@ const fs=require('node:fs');
 const snapshot=JSON.parse(fs.readFileSync('web/data/radar_today.json','utf8'));
 const fixture=snapshot.signals.find(s=>s.source_url.includes('circular-if-n534'));
 async function prepare(page){await page.clock.install({time:new Date('2026-10-12T15:00:00Z')});await page.route('**/data/radar_today.json',r=>r.fulfill({json:{...snapshot,signals:[fixture]}}));}
-test('title and Más info resolve the same direct detail; read and unread survive reload',async({page})=>{
+test('row title opens the record without a Más info button; opening reads, the dot toggles, state survives reload',async({page})=>{
  await prepare(page);await page.goto('/');const card=page.locator('[data-card]');await expect(card).toHaveCount(1);const id=await card.getAttribute('data-card');
- await page.locator(`[data-brief="${id}"]`).first().click();await expect(page.locator('#signalDetail')).toBeVisible();const body=await page.locator('#detailBody').textContent();await expect(card).toHaveClass(/read/);await page.keyboard.press('Escape');
- await card.getByRole('button',{name:'Más info',exact:true}).click();await expect(page.locator('#detailBody')).toHaveText(body);await page.keyboard.press('Escape');await card.locator('[data-read]').click();await expect(card).not.toHaveClass(/read/);await expect(page.locator(`[data-brief-read="${id}"]`)).toHaveCount(1);
- await page.reload();await expect(card).not.toHaveClass(/read/);await expect(page.locator(`[data-brief-read="${id}"]`)).toHaveCount(1);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+ await expect(page.getByRole('button',{name:'Más info',exact:true})).toHaveCount(0);
+ await card.locator('.title-open').click();await expect(page.locator('#signalDetail')).toBeVisible();const body=await page.locator('#detailBody').textContent();await expect(card).toHaveClass(/read/);
+ await expect(page.locator('#detailRead')).toHaveText('Marcar no leída');await page.keyboard.press('Escape');
+ await expect(card).toHaveCount(0);await expect(page.locator('#undoBar')).toContainText('Marcada como leída');
+ await page.locator('[data-lane="t"]').click();await expect(card).toHaveClass(/read/);
+ await card.locator('.title-open').click();await expect(page.locator('#detailBody')).toHaveText(body);await page.keyboard.press('Escape');
+ // Read rows carry no mark; the record's text control marks them unread again.
+ await expect(card.locator('[data-read]')).toHaveCount(0);await card.locator('.title-open').click();await page.locator('#detailRead').click();await expect(page.locator('#detailRead')).toHaveText('Marcar leída');await page.keyboard.press('Escape');await expect(card).not.toHaveClass(/read/);await expect(card.locator('[data-read]')).toHaveAttribute('aria-label',/^Marcar como leído/);
+ await page.reload();await expect(card).not.toHaveClass(/read/);await expect(page.locator('.lane.on')).toContainText('Todas');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  await page.screenshot({path:`artifacts/product-v3-${test.info().project.name}.png`,fullPage:true});
 });
 test('distinct concurrent writes and tombstones synchronize without lost updates',async({context,page})=>{
@@ -28,7 +34,7 @@ test('corrected ID preserves explicit unread over stale imported title alias',as
 });
 test('Global Home teaser and Global canonical detail share read state',async({context,page})=>{
  await prepare(page);const data=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8'));const t=data.themes[0];await page.route('**/data/free_value.json',r=>r.fulfill({json:{global_teaser:{theme_id:t.id,title:t.title,published_at:'2026-10-12',premium_href:`global.html#theme-${t.id}`}}}));await page.goto('/');const other=await context.newPage();await prepare(other);await other.goto('/global.html');await other.locator('#globalPeriod').selectOption('all');
- await other.locator(`[data-open="${t.id}"]`).first().click();await expect(other.locator('#globalDetail')).toBeVisible();await expect(page.locator(`[data-special="global:${t.id}"]`)).toHaveClass(/read/);await other.keyboard.press('Escape');await other.locator(`[data-read="${t.id}"]`).click();await expect(page.locator(`[data-special="global:${t.id}"]`)).not.toHaveClass(/read/);
+ await other.locator(`[data-open="${t.id}"]`).first().click();await expect(other.locator('#globalDetail')).toBeVisible();await expect(page.locator(`#bigThings [data-special="global:${t.id}"]`)).toHaveCount(0);await page.locator('[data-lane="l"]').click();await expect(page.locator(`#local [data-special="global:${t.id}"]`)).toHaveClass(/read/);await other.keyboard.press('Escape');await other.locator(`[data-read="${t.id}"]`).click();await expect(page.locator(`#bigThings [data-special="global:${t.id}"]`)).toHaveCount(1);await expect(page.locator(`#bigThings [data-special="global:${t.id}"]`)).not.toHaveClass(/read/);await expect(page.locator(`#local [data-special="global:${t.id}"]`)).toHaveCount(0);
 });
 test('catalog excludes blocked paused and unverified; filter plus is adjacent and floating action outside cards',async({page})=>{
  await page.route('**/data/public_sources.json',r=>r.fulfill({json:{sources:[{id:'minsal',name:'Activa',group:'Organismos públicos',url:'https://www.minsal.cl/',description:'Noticias'}]}}));await page.goto('/sources.html');await expect(page.locator('#catalog')).toContainText('Activa');await expect(page.locator('#catalog')).not.toContainText(/Bloqueada|Pausada|Desconocida/);
@@ -37,7 +43,8 @@ test('catalog excludes blocked paused and unverified; filter plus is adjacent an
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();await page.screenshot({path:`artifacts/sources-navigation-${test.info().project.name}.png`});
  await prepare(page);await page.goto('/');const summary=page.locator('#filterDetails>summary');expect(await summary.evaluate(el=>getComputedStyle(el).justifyContent)).toBe('flex-start');await expect(page.locator('article #backTop')).toHaveCount(0);expect(await page.locator('#backTop').evaluate(el=>getComputedStyle(el).position)).toBe('fixed');
  await expect(page.locator('#backTop')).toBeHidden();await page.emulateMedia({reducedMotion:'reduce'});
- await page.locator('.radar-head').evaluate(el=>window.scrollTo(0,el.getBoundingClientRect().bottom+window.scrollY+1));await expect(page.locator('#backTop')).toBeVisible();
+ // One fixture card is shorter than the viewport; extra height lets the test scroll past the controls it checks.
+ await page.evaluate(()=>{document.body.style.paddingBottom='2000px'});await page.locator('.radar-head').evaluate(el=>window.scrollTo(0,el.getBoundingClientRect().bottom+window.scrollY+1));await expect(page.locator('#backTop')).toBeVisible();
  await page.evaluate(()=>{window.__scrollBehavior=null;const native=Element.prototype.scrollIntoView;Element.prototype.scrollIntoView=function(options){window.__scrollBehavior=options?.behavior;return native.call(this,options)}});
  await page.locator('#backTop').click();expect(await page.evaluate(()=>window.__scrollBehavior)).toBe('auto');await expect(page.locator('main')).toBeFocused();
 });

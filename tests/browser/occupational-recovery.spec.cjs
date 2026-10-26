@@ -1,4 +1,4 @@
-const {test,expect}=require('./fixtures.cjs');
+const {test,expect,selectPeriod}=require('./fixtures.cjs');
 const fs=require('node:fs');
 const lanes=['clinicas_achs_salud','achs_seguro_laboral','mutual_seguridad','ist'];
 
@@ -39,7 +39,7 @@ test('occupational backfills retain their publisher and original publication yea
   await page.goto('/');
   const recovered=snapshot.signals.filter(s=>(s.watch_tags||[]).some(t=>lanes.includes(t)));
   expect(recovered.length).toBeGreaterThanOrEqual(4);
-  await page.locator('#period').selectOption('90');
+  await selectPeriod(page,'90');
   for(const signal of recovered){
     expect(signal.ingestion_mode).toBe('BACKFILL');
     expect(signal.event_date).toBe(signal.publication_date);

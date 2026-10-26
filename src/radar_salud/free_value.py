@@ -46,6 +46,26 @@ def _day(value: Any) -> date | None:
         return None
 
 
+# Global themes under an editorial HOLD in config/editorial_rules_v3.json must not be
+# promoted as the free Home teaser. The hold key is looked up in the live rules, so
+# lifting the hold there releases the theme; unreadable rules fail closed.
+HELD_GLOBAL_THEMES = {"global-ai-coding-payer-cost-2026": "global_ai_coding"}
+
+
+def _active_holds() -> dict[str, Any] | None:
+    path = Path(__file__).resolve().parents[2] / "config/editorial_rules_v3.json"
+    try:
+        holds = json.loads(path.read_text(encoding="utf-8")).get("holds")
+    except (OSError, ValueError, AttributeError):
+        return None
+    return holds if isinstance(holds, dict) else None
+
+
+def _theme_on_hold(theme_id: str, holds: dict[str, Any] | None) -> bool:
+    key = HELD_GLOBAL_THEMES.get(theme_id)
+    return bool(key) and (holds is None or key in holds)
+
+
 def _verified_theme(theme: dict[str, Any], today: date) -> tuple[dict[str, Any], list[dict[str, Any]]] | None:
     watch = theme.get("chile_watch") or {}
     if (theme.get("kind") != "global_theme" or not theme.get("id") or not theme.get("title")
@@ -239,7 +259,9 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
     week_start = monday.isoformat()
     current = next((x for x in reversed(history) if x.get("week_start") == week_start), None)
     prior_history = [x for x in history if x.get("week_start") != week_start]
-    theme_rows = [row for x in themes.get("themes", []) if (row := _verified_theme(x, today))]
+    holds = _active_holds()
+    held = [x.get("id") for x in themes.get("themes", []) if _theme_on_hold(str(x.get("id")), holds)]
+    theme_rows = [row for x in themes.get("themes", []) if x.get("id") not in held and (row := _verified_theme(x, today))]
     scored_themes = [
         (score_global_teaser(theme, verified_sources, today), theme, verified_sources)
         for theme, verified_sources in theme_rows
@@ -292,6 +314,7 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
             "recent_history_count": len(prior_history[-6:]),
             "current_week_locked": False,
             "selection_method": "strategic_relevance_first_then_commercial_hook_v3",
+            "global_teaser_excluded_by_hold": held,
             "strategic_dimensions": ["financial_impact","operational_impact","regulatory_or_competitive_shift","affected_scope","urgency_time_horizon","actionability","evidence_strength","novelty_non_repetition"],
             "penalizes": ["repetition_in_novelty_dimension"],
             "fallback": "hide_without_reproducible_evidence_tied_insight",

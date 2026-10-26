@@ -43,7 +43,7 @@
 /* Final polish: stronger category identity, compact accessible actions and mobile page continuity. */
 .hero{padding-bottom:3px}.briefrow.brief-global{background:rgba(211,154,88,.25);border-left-color:#F0B56D}.briefrow.brief-weekly{background:rgba(155,168,181,.27);border-left-color:#C4D1DC}.signal.special.global{background:#F8EEDC;border-left-color:#C98A40}.signal.special.weekly{background:#E9EFF4;border-left-color:#8799AA}.signal.special.global.read{background:#FAF6EF}.signal.special.weekly.read{background:#F4F6F8}.action-icon{width:16px;height:16px;display:block;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}.card-status-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}.readbtn{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:44px;padding:4px 8px;font-size:10.5px}.briefread{display:inline-flex;align-items:center;justify-content:center}.briefread .action-icon{width:18px;height:18px}.card-status-actions .sharebtn{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:44px;padding:5px 8px;border:1px solid var(--ink18);border-radius:8px;background:transparent;color:var(--ink);font-size:11px;cursor:pointer}.card-status-actions .sharebtn .action-icon{width:15px;height:15px}.brief-continuation{display:none}.brief-meta{font-size:10.5px;color:rgba(255,255,255,.7)}
 @media(max-width:760px){.hero{padding-bottom:1px}.radar-unit .brief-list{max-height:220px!important;overflow:hidden!important;overscroll-behavior:auto}.radar-unit .brief-list.expanded{max-height:none!important}.brief-continuation{display:flex;justify-content:space-between;gap:8px;align-items:center;padding-top:7px;border-top:1px solid rgba(255,255,255,.14)}.brief-continuation button{min-height:44px;border:0;background:transparent;color:#fff;font-size:10.5px;font-weight:800;text-decoration:underline;text-underline-offset:3px;cursor:pointer}.readbtn .read-label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.signal .cardhead{flex-direction:row;align-items:flex-start}.signal .readbtn{flex:0 0 44px;width:44px;padding:0}.card-status-actions{flex:0 0 auto;gap:4px}.card-status-actions .sharebtn span{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.card-status-actions .sharebtn{flex:0 0 44px;width:44px;padding:0}.brief-meta{font-size:10px}}
-</style><style>.share-feedback{font-size:10.5px;color:var(--ink68)}.share-feedback:empty{display:none}@media(max-width:760px){.radar-unit .brief-list{max-height:285px!important}.briefread{width:44px!important;min-width:44px!important;min-height:44px!important}}.normative-context{margin:12px 0;padding:12px 14px;border-left:3px solid #456a7c;background:#f2f6f6;border-radius:0 8px 8px 0}.normative-context strong{font-size:11px;letter-spacing:.02em}.normative-context p{margin:5px 0 0;line-height:1.55}.signal h2{margin-top:0}</style><link rel="stylesheet" href="product-ui.css"/></head>
+</style><style>.share-feedback{font-size:10.5px;color:var(--ink68)}.share-feedback:empty{display:none}@media(max-width:760px){.radar-unit .brief-list{max-height:285px!important}.briefread{width:44px!important;min-width:44px!important;min-height:44px!important}}.normative-context{margin:12px 0;padding:12px 14px;border-left:3px solid #456a7c;background:#f2f6f6;border-radius:0 8px 8px 0}.normative-context strong{font-size:11px;letter-spacing:.02em}.normative-context p{margin:5px 0 0;line-height:1.55}.signal h2{margin-top:0}</style><link rel="stylesheet" href="product-ui.css"/><link rel="stylesheet" href="home-inbox.css"/></head>
 <body>
 <main>
 <header class="brandbar">
@@ -82,33 +82,32 @@
 </form>
 </dialog>
 <dialog id="signalDetail" aria-labelledby="detailTitle">
-<button type="button" id="closeDetail" class="detail-close" aria-label="Cerrar ficha">Cerrar ×</button>
+<div class="detail-top"><button type="button" id="closeDetail" class="detail-close" aria-label="Cerrar ficha"><svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"></path></svg><span>Volver</span></button><div class="detail-bar" id="detailBar"></div></div>
 <div id="detailBody">
 </div>
 </dialog>
+<p id="freshness" class="freshness" role="status" hidden></p>
+<section id="bigThings" class="big-things" aria-label="Lo esencial de la semana" hidden></section>
 <section class="radar-unit" aria-labelledby="radarTitle">
 <div class="radar-head">
-<h2 id="radarTitle">Ponte al día en 30 segundos</h2>
-</div>
-<div class="radar-status-row">
+<h2 id="radarTitle">Tu bandeja</h2>
 <p class="radar-metrics" id="radarMetrics" role="status"></p>
-<label class="period-control"><span>Período</span>
-<select id="period">
-<option value="last">Desde mi última visita</option>
-<option value="7">7 días</option>
-<option value="14">14 días</option>
-<option value="30" selected>30 días</option>
-<option value="60">60 días</option>
-<option value="90">90 días</option>
-</select>
-</label>
+<button type="button" id="markAllRead" class="mark-all" aria-label="Marcar toda la bandeja como leída" hidden>Marcar todo como leído</button>
 </div>
 <div class="radar-control-row">
 <details class="filter-details" id="filterDetails">
 <summary>Filtrar u ordenar</summary>
 <div class="filter-body">
 <div class="filter-persist-row"><p class="filter-persist">Tus filtros se guardan automáticamente en este dispositivo.</p><button type="button" class="reset-filters" id="resetFilters">Restablecer</button></div>
-<div class="select-grid single">
+<div class="select-grid">
+<label>Período <select id="period">
+<option value="last">Desde mi última visita</option>
+<option value="7">7 días</option>
+<option value="14">14 días</option>
+<option value="30" selected>30 días</option>
+<option value="60">60 días</option>
+<option value="90">90 días</option>
+</select></label>
 <label>Orden <select id="sort">
 <option value="personalized">Relevancia para mí</option>
 <option value="date">Más recientes</option>
@@ -131,9 +130,11 @@
 </details>
 <button type="button" class="method-link" id="sourcesOpen">Fuentes</button>
 </div>
-<div id="brief">
+<div id="brief" class="big-anchors" hidden>
 </div>
+<div class="lane-row"><div id="lanes" class="lanes" role="group" aria-label="Mostrar en la bandeja"></div></div>
 </section>
+<div id="undoBar" class="undo-bar" role="status" aria-live="polite" hidden></div>
 <div id="local">
 </div>
 <footer class="footer">Alicanto Salud · Información seleccionada desde fuentes oficiales y verificadas para que no te pierdas lo que importa</footer>

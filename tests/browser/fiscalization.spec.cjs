@@ -1,4 +1,4 @@
-const {test,expect}=require('./fixtures.cjs');
+const {test,expect,selectPeriod}=require('./fixtures.cjs');
 const fs=require('node:fs');
 
 test('fiscalization reconciliation preserves act dates and separates reviewed normativa',async({page})=>{
@@ -6,7 +6,7 @@ test('fiscalization reconciliation preserves act dates and separates reviewed no
  await page.goto('/');
  await expect(page.locator('#meta')).toContainText('Última actualización:');
  await page.locator('#filterDetails summary').click();
- await page.locator('#period').selectOption('90');
+ await selectPeriod(page,'90');
  const radar=await (await page.request.get('/data/radar_today.json')).json();
  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));
  expect(pulse).toBeTruthy();
@@ -45,7 +45,7 @@ test('fiscalization reconciliation preserves act dates and separates reviewed no
 test('recovered registers retain offices, actors, effects and issuance dates in grouped details',async({page},testInfo)=>{
  const errors=[];page.on('pageerror',error=>errors.push(error.message));await page.goto('/');
  await expect(page.locator('#meta')).toContainText('Última actualización:');
- await page.locator('#filterDetails summary').click();await page.locator('#period').selectOption('90');
+ await page.locator('#filterDetails summary').click();await selectPeriod(page,'90');
  const radar=await (await page.request.get('/data/radar_today.json')).json();
  const register=radar.signals.find(s=>s.source_record_id==='suseso_emisores:rolling90');
  // The original native control stays fixed; its rolling window ages with the
