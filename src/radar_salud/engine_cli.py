@@ -95,6 +95,7 @@ def main():
     ap.add_argument("--reset-state",action="store_true")
     ap.add_argument("--sources",nargs="+",help="Run selected core source slugs; other queue records remain untouched")
     ap.add_argument("--discovery-only",action="store_true",help="Persist genuine core discovery without consuming analysis or altering processing attempts")
+    ap.add_argument("--process-only",action="store_true",help="Hourly batch: process the pending queue without running discovery (Dirección 27-oct-2026)")
     ap.add_argument("--queue-selection",type=Path,help="Process only canonical URLs already present in the selected Pulso queue; discovery remains complete")
     args=ap.parse_args()
     if args.sources and args.source:
@@ -171,7 +172,7 @@ def main():
     occupational_audit={}
     original_dates={}
     # Complete discovery for every source before any budget-consuming processing.
-    for name,_,discover,_ in specs:
+    for name,_,discover,_ in (() if args.process_only else specs):
         owner=getattr(discover,"__self__",None)
         try:
             items=discover()
@@ -257,27 +258,31 @@ def main():
         previous_audit.update(occupational_audit)
         atomic_json(audit_path,previous_audit)
     run_path=root/"data/state/discovery_run.json"
-    previous_run=json.loads(run_path.read_text()) if selected_sources and run_path.exists() else {}
-    run_sources=previous_run.get("sources",{})
-    diagnostic_details={name:details for name,details in discovery_details.items() if isinstance(details,dict)}
-    run_sources.update({name:{"discovered":found,"new":added,"technical_status":"error" if error else "degraded" if (diagnostic_details.get(name,{}).get("diagnostics") or {}).get("partial_failure") else "ok","error_type":error,
-                             "checked_at":datetime.now(timezone.utc).isoformat(),**discovery_evidence.get(name,{}),**diagnostic_details.get(name,{})}
-                        for name,(found,added,error) in discoveries.items()})
-    run_details=previous_run.get("source_details",{})
-    run_details.update(discovery_details)
-    atomic_json(run_path,{
-        "at":datetime.now(timezone.utc).isoformat(),
-        "sources":run_sources,
-        "run_scope":list(processors),
-        "source_details":run_details,
-        "runtime":"daily_core",
-        "selected_sources":selected_sources,
-        "successful_sources":sum(row.get("technical_status")!="error" for row in run_sources.values()),
-        "failed_sources":sum(row.get("technical_status")=="error" for row in run_sources.values()),
-    })
+    # A process-only batch keeps the last discovery record; only processing fields change below.
+    if not (args.process_only and run_path.exists()):
+        previous_run=json.loads(run_path.read_text()) if selected_sources and run_path.exists() else {}
+        run_sources=previous_run.get("sources",{})
+        diagnostic_details={name:details for name,details in discovery_details.items() if isinstance(details,dict)}
+        run_sources.update({name:{"discovered":found,"new":added,"technical_status":"error" if error else "degraded" if (diagnostic_details.get(name,{}).get("diagnostics") or {}).get("partial_failure") else "ok","error_type":error,
+                                 "checked_at":datetime.now(timezone.utc).isoformat(),**discovery_evidence.get(name,{}),**diagnostic_details.get(name,{})}
+                            for name,(found,added,error) in discoveries.items()})
+        run_details=previous_run.get("source_details",{})
+        run_details.update(discovery_details)
+        atomic_json(run_path,{
+            "at":datetime.now(timezone.utc).isoformat(),
+            "sources":run_sources,
+            "run_scope":list(processors),
+            "source_details":run_details,
+            "runtime":"daily_core",
+            "selected_sources":selected_sources,
+            "successful_sources":sum(row.get("technical_status")!="error" for row in run_sources.values()),
+            "failed_sources":sum(row.get("technical_status")=="error" for row in run_sources.values()),
+        })
     produced={name:[] for name in processors}
     processed_rejections={name:0 for name in processors}
     queue.enforce_backfill_horizon(sources=set(selected_sources) if selected_sources else None)
+    if not selected_sources:
+        queue.archive_sources(retired, reason="source_retired")
     from .daily_window import requested_window_days
     if requested_window_days() < 90:
         queue.archive_outside_daily_window(requested_window_days(), sources=set(selected_sources) if selected_sources else None)

@@ -17,7 +17,9 @@ on:
         default: 0
         type: number
   schedule:
-    - cron: '30 9 * * 1-5'
+    # Dirección 27-oct-2026: discover four times a day, every day (07:30, 11:30, 15:30, 19:30 Chile);
+    # the hourly queue batch processes what is found in between.
+    - cron: '30 10,14,18,22 * * *'
 permissions:
   contents: write
   actions: write
