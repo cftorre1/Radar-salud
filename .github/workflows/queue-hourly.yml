@@ -4,7 +4,9 @@ name: Queue hourly batch
 # Daily Radar runs discover); same AI guardrails (USD 10/month) and same gates.
 on:
   schedule:
-    - cron: '15 * * * *'
+    # Skips the four discovery hours (10, 14, 18, 22 UTC) so a waiting Daily Radar is never
+    # replaced in the shared concurrency group by an hourly batch.
+    - cron: '15 0-9,11-13,15-17,19-21,23 * * *'
   workflow_dispatch:
 permissions:
   contents: write
@@ -16,7 +18,7 @@ concurrency:
 jobs:
   batch:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 150
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       RADAR_FAST_MODEL: gpt-5.6-luna
@@ -39,15 +41,25 @@ jobs:
           python-version: '3.11'
       - name: Install package
         run: pip install -e . pytest
-      - name: Skip when nothing is pending inside the 30-day window
+      - name: Self-healing discovery when the last one is older than 6 hours
+        id: mode
+        run: python scripts/discovery_due.py 6 >> "$GITHUB_OUTPUT"
+      - name: Skip when nothing is ready inside the 30-day window
         id: work
-        run: python scripts/queue_backlog.py --github-output >> "$GITHUB_OUTPUT"
+        run: |
+          if [ "${{ steps.mode.outputs.mode }}" = discover ]; then echo "pending=discover" >> "$GITHUB_OUTPUT"
+          else python scripts/queue_backlog.py --github-output >> "$GITHUB_OUTPUT"; fi
       - name: Preserve paid Terra analyses
         if: steps.work.outputs.pending != '0'
         run: python scripts/seed_analysis_cache.py
       - name: Process pending queue (no discovery)
-        if: steps.work.outputs.pending != '0'
+        if: steps.work.outputs.pending != '0' && steps.mode.outputs.mode == 'process'
         run: timeout --signal=TERM 40m python -m radar_salud.engine_cli --process-only --limit 120
+      - name: Discovery fallback (last Daily Radar missing)
+        if: steps.mode.outputs.mode == 'discover'
+        env:
+          RADAR_PROCESSING_SECONDS: 3600
+        run: timeout --signal=TERM 90m python -m radar_salud.engine_cli --limit 200
       - name: Export public snapshot
         if: steps.work.outputs.pending != '0'
         run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json
@@ -55,16 +67,24 @@ jobs:
         if: steps.work.outputs.pending != '0'
         run: python -m pytest -q tests/test_reviewer.py
       - name: Commit queue, history and snapshot
+        id: commit
         if: always() && steps.work.outputs.pending != '0'
         run: |
           git config user.name "alicanto-salud-bot"
           git config user.email "alicanto-salud-bot@users.noreply.github.com"
           git add data/state data/history data/analysis_cache data/ai_usage
           if [ "${{ job.status }}" = success ]; then git add web/data; fi
-          git diff --cached --quiet || git commit -m "chore: hourly queue batch"
-          git push origin HEAD:staging
+          if git diff --cached --quiet; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          git commit -m "chore: hourly queue batch"
+          for attempt in 1 2 3; do
+            git pull --rebase origin staging && git push origin HEAD:staging && break
+            git rebase --abort 2>/dev/null || true
+            sleep $((attempt * 20))
+          done
+          git push --dry-run origin HEAD:staging
+          echo "changed=true" >> "$GITHUB_OUTPUT"
       - name: Request checked staging preview
-        if: success() && steps.work.outputs.pending != '0'
+        if: success() && steps.commit.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run staging-preview.yml --ref staging

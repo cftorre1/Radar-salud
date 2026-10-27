@@ -30,3 +30,17 @@ def test_hourly_batch_shares_the_writer_lock_and_never_discovers():
         assert "group: alicanto-staging-writer" in text and "cancel-in-progress: false" in text
     assert "--process-only" in wf and "tests/test_reviewer.py" in wf and "RADAR_MONTHLY_USD: 10" in wf
     assert "--process-only" not in daily
+
+
+def test_budget_is_paced_over_the_month():
+    from datetime import datetime, timezone
+    from radar_salud.ai_pricing import paced_budget_usd
+    assert paced_budget_usd(datetime(2026, 10, 1, tzinfo=timezone.utc)) < 1.4
+    assert paced_budget_usd(datetime(2026, 10, 31, tzinfo=timezone.utc)) == 10
+
+
+def test_hourly_skips_discovery_hours_and_retries_push():
+    wf = open(".github/workflows/queue-hourly.yml", encoding="utf-8").read()
+    assert "'15 0-9,11-13,15-17,19-21,23 * * *'" in wf and "discovery_due.py" in wf
+    for path in (".github/workflows/queue-hourly.yml", ".github/workflows/daily-radar.yml"):
+        assert "git pull --rebase origin staging" in open(path, encoding="utf-8").read()

@@ -119,7 +119,13 @@ jobs:
           git add data/audits/global_integration_2026_10_11
           if [ "${{ job.status }}" = success ]; then git add web/data; fi
           git diff --cached --quiet || git commit -m "chore: refresh Alicanto Salud"
-          git push origin HEAD:staging
+          # Retry with rebase: a staging merge during the run must not lose queue state or the AI ledger.
+          for attempt in 1 2 3; do
+            git pull --rebase origin staging && git push origin HEAD:staging && break
+            git rebase --abort 2>/dev/null || true
+            sleep $((attempt * 20))
+          done
+          git push --dry-run origin HEAD:staging
       - name: Request checked staging preview
         env:
           GH_TOKEN: ${{ github.token }}

@@ -258,6 +258,7 @@ def main():
         previous_audit.update(occupational_audit)
         atomic_json(audit_path,previous_audit)
     run_path=root/"data/state/discovery_run.json"
+    diagnostic_details={}
     # A process-only batch keeps the last discovery record; only processing fields change below.
     if not (args.process_only and run_path.exists()):
         previous_run=json.loads(run_path.read_text()) if selected_sources and run_path.exists() else {}

@@ -13,16 +13,16 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from radar_salud.daily_window import eligible_daily_item, requested_window_days  # noqa: E402
+from radar_salud.daily_window import eligible_daily_item  # noqa: E402
+from radar_salud.pending_queue import PendingQueue  # noqa: E402
 from radar_salud.source_health import load_retired_sources  # noqa: E402
 
 
-def backlog(root: Path = ROOT, days: int | None = None) -> dict:
-    days = days or requested_window_days()
-    items = json.loads((root / "data/state/pending_queue.json").read_text(encoding="utf-8"))
+def backlog(root: Path = ROOT, days: int = 30) -> dict:
+    """Items a batch could process right now (respects retry_at), inside the window."""
+    queue = PendingQueue(root / "data/state/pending_queue.json")
     retired = load_retired_sources(root)
-    live = [i for i in items.values() if i.get("status") in ("pending", "retry", "processing")
-            and i.get("source") not in retired and eligible_daily_item(i, days=days)]
+    live = [i for _, i in queue.ready() if i.get("source") not in retired and eligible_daily_item(i, days=days)]
     return {"window_days": days, "pending": len(live), "by_source": dict(Counter(i.get("source") for i in live).most_common())}
 
 
@@ -30,7 +30,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--github-output", action="store_true")
     args = ap.parse_args()
-    report = backlog(days=30 if args.github_output else None)
+    report = backlog()
     if args.github_output:
         print(f"pending={report['pending']}")
     else:
