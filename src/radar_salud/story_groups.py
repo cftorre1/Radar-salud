@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 CONFIG = Path("config/editorial_story_groups.json")
 
@@ -26,7 +26,16 @@ def load_groups(root: Path | str = ".") -> list[dict[str, Any]]:
         data = json.loads((Path(root) / CONFIG).read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return []
-    return [g for g in data.get("groups", []) if isinstance(g, dict) and g.get("member_urls")]
+    groups = [g for g in data.get("groups", []) if isinstance(g, dict) and g.get("member_urls")]
+    seen: set[str] = set()
+    valid = []
+    for g in groups:  # a URL may belong to one story only; a lead must be one of its members
+        urls = set(g["member_urls"])
+        if urls & seen or (g.get("mode") == "lead" and g.get("lead_url") not in urls):
+            continue
+        seen |= urls
+        valid.append(g)
+    return valid
 
 
 def _alt(s: dict[str, Any]) -> dict[str, Any]:
@@ -34,8 +43,12 @@ def _alt(s: dict[str, Any]) -> dict[str, Any]:
             "event_date": s.get("event_date")}
 
 
-def apply_story_groups(cards: list[dict[str, Any]], groups: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """Return (cards without grouped members, synthesis cards to gate and append)."""
+def apply_story_groups(cards: list[dict[str, Any]], groups: list[dict[str, Any]],
+                       gate: Callable[[dict[str, Any]], bool] | None = None) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Return (cards without grouped members, synthesis cards that passed ``gate``).
+
+    Members of a synthesis are hidden only when its card passes the gate, so a
+    rejected synthesis never makes the story disappear from the feed."""
     by_url = {c.get("source_url"): c for c in cards if c.get("source_url")}
     hidden: set[str] = set()
     summaries: list[dict[str, Any]] = []
@@ -68,8 +81,11 @@ def apply_story_groups(cards: list[dict[str, Any]], groups: list[dict[str, Any]]
                 "event_type": "STORY_SUMMARY", "story_group": g.get("id"),
                 "source_alternatives": [_alt(m) for m in members],
                 "derived_from": "editorial_story_group",
+                "source_url": card.get("source_url") or members[0].get("source_url"),
                 "ingestion_mode": "LIVE" if any(m.get("ingestion_mode") == "LIVE" for m in members) else "BACKFILL",
             })
+            if gate is not None and not gate(card):
+                continue
             summaries.append(card)
             hidden |= {m.get("source_url") for m in members}
     return [c for c in cards if c.get("source_url") not in hidden], summaries

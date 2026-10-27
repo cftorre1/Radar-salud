@@ -25,3 +25,23 @@ def test_summary_needs_two_live_members_and_lead_needs_its_lead():
     out, sums = apply_story_groups(cards, [{"id": "p", "mode": "summary", "member_urls": ["a"], "card": {"title": "T"}},
                                             {"id": "l", "mode": "lead", "lead_url": "zz", "member_urls": ["a", "x"]}])
     assert len(out) == 2 and not sums
+
+
+def test_rejected_synthesis_keeps_members_visible():
+    cards = [_c("a", "2026-10-01"), _c("b", "2026-10-22")]
+    g = {"id": "p", "mode": "summary", "member_urls": ["a", "b"], "card": {"title": "T"}}
+    out, sums = apply_story_groups(cards, [g], gate=lambda c: False)
+    assert len(out) == 2 and not sums
+    out, sums = apply_story_groups(cards, [g], gate=lambda c: True)
+    assert not out and sums[0]["source_url"] == "b"
+
+
+def test_overlapping_groups_are_rejected(tmp_path):
+    import json
+    from radar_salud.story_groups import CONFIG, load_groups
+    (tmp_path / "config").mkdir()
+    (tmp_path / CONFIG).write_text(json.dumps({"groups": [
+        {"id": "1", "mode": "summary", "member_urls": ["a", "b"]},
+        {"id": "2", "mode": "lead", "lead_url": "b", "member_urls": ["b", "c"]},
+        {"id": "3", "mode": "lead", "lead_url": "z", "member_urls": ["d", "e"]}]}), encoding="utf-8")
+    assert [g["id"] for g in load_groups(tmp_path)] == ["1"]
