@@ -1,0 +1,188 @@
+import importlib.util
+import json
+import shutil
+from datetime import date
+from pathlib import Path
+from types import SimpleNamespace
+
+import scripts.export_web_snapshot as exporter
+from src.radar_salud import normative_autorecord as auto
+from src.radar_salud.normative_evidence import EVIDENCE_DIR, _key
+
+URL = "https://www.superdesalud.gob.cl/normativa/circular-if-n537/"
+PDF = "https://www.superdesalud.gob.cl/app/uploads/2026/10/circular-if-n-537-2026.pdf"
+EVIDENCE = ("CIRCULAR IF/N°537. Imparte instrucciones sobre el procedimiento interno de notificación de casos de "
+            "urgencia vital o de secuela funcional grave GES y Ley Ricarte Soto. Los prestadores deberán contar con "
+            "un procedimiento interno escrito de notificación. La notificación deberá efectuarse dentro de 24 horas. "
+            "Las presentes instrucciones entrarán en vigencia a contar del 1 de marzo de 2027. " * 3)
+GOOD = {"plain_language_title": "Circular IF/N°537 · Urgencias GES: exige a prestadores notificar en 24 horas",
+        "subject_terms": ["Urgencias GES"], "action_terms": ["notificar"],
+        "normative_context": "Obliga a los prestadores a tener un procedimiento escrito para notificar casos de urgencia vital GES y Ricarte Soto dentro de 24 horas. Rige desde el 1 de marzo de 2027.",
+        "evidence_quotes": ["La notificación deberá efectuarse dentro de 24 horas.",
+                            "Las presentes instrucciones entrarán en vigencia a contar del 1 de marzo de 2027."]}
+
+
+def test_verify_accepts_faithful_record_and_rejects_invented_numbers():
+    assert auto.verify(GOOD, "Circular IF/N°537", EVIDENCE) == []
+    bad = {**GOOD, "normative_context": GOOD["normative_context"].replace("24 horas", "48 horas")}
+    assert any(p.startswith("number_not_in_official_text") for p in auto.verify(bad, "Circular IF/N°537", EVIDENCE))
+    assert "quote_not_literal" in auto.verify({**GOOD, "evidence_quotes": ["Esta cita completamente inventada no aparece en el texto oficial.", "Otra frase larga que tampoco existe en la circular oficial."]}, "Circular IF/N°537", EVIDENCE)
+    assert "identity_must_head_title_once" in auto.verify({**GOOD, "plain_language_title": "Urgencias GES: notificar"}, "Circular IF/N°537", EVIDENCE)
+
+
+def _repo(tmp_path):
+    (tmp_path / "config").mkdir()
+    shutil.copy("config/normative_editorial_v2.json", tmp_path / "config")
+    (tmp_path / EVIDENCE_DIR).mkdir(parents=True)
+    (tmp_path / EVIDENCE_DIR / f"{_key(PDF)}.json").write_text(json.dumps({"text": EVIDENCE}), encoding="utf-8")
+    return [{"title": "Circular IF/N°537", "normative_document_label": "Circular IF/N°537", "source_url": URL,
+             "source_name": "Superintendencia de Salud", "signal_types": ["Normativa"], "event_date": "2026-10-19",
+             "official_subject": "Imparte instrucciones sobre el procedimiento interno de notificación de casos de urgencia vital",
+             "source_documents": [{"url": PDF}]}]
+
+
+def test_build_writes_only_records_that_pass_both_checks(tmp_path):
+    signals = _repo(tmp_path)
+    calls = []
+    def fake(prompt, *, feature, preferred_model, allow_luna_fallback=True):
+        calls.append(feature)
+        return SimpleNamespace(output=GOOD if feature == "normative_autorecord" else {"verdict": "PASS"})
+    assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == [URL]
+    assert calls == ["normative_autorecord", "normative_autorecord_review"]
+    assert auto.load_auto_records(tmp_path)[URL]["origin"] == "auto_verified"
+    # Idempotent: no new model calls for an act that already has a record.
+    assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == [] and len(calls) == 2
+
+
+def test_failed_review_is_recorded_and_not_published(tmp_path):
+    signals = _repo(tmp_path)
+    def fake(prompt, *, feature, preferred_model, allow_luna_fallback=True):
+        return SimpleNamespace(output=GOOD if feature == "normative_autorecord" else {"verdict": "FAIL", "reason": "exagera"})
+    assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == []
+    store = json.loads((tmp_path / auto.AUTO_PATH).read_text())
+    assert URL in store["rejected"] and not store["source_records"]
+
+
+def test_human_record_wins_and_auto_record_feeds_the_contract(tmp_path, monkeypatch):
+    human = {"records": {}, "source_records": {URL: {"plain_language_title": "humano"}}}
+    (tmp_path / "data/analysis_cache").mkdir(parents=True)
+    (tmp_path / auto.AUTO_PATH).write_text(json.dumps({"source_records": {URL: {"plain_language_title": "auto"}, "x": {"plain_language_title": "solo auto"}}}))
+    cfg = auto.merged_config(tmp_path, human)
+    assert cfg["source_records"][URL]["plain_language_title"] == "humano" and cfg["source_records"]["x"]["plain_language_title"] == "solo auto"
+
+
+
+def test_review_findings_are_now_rejected():
+    L = "Circular IF/N°537"
+    def bad(**kw): return auto.verify({**GOOD, **kw}, L, EVIDENCE)
+    # number as substring of 2027 ("2 horas") is not accepted
+    assert any(p.startswith("number_not_in_official_text:2") or p.startswith("number_not_backed") for p in
+               bad(normative_context=GOOD["normative_context"].replace("24 horas", "2 horas")))
+    # wrong month in words
+    assert any(p.startswith("month_not_in_official_text:abril") for p in
+               bad(normative_context=GOOD["normative_context"].replace("1 de marzo de 2027", "abril")))
+    # one-character terms given as a string
+    assert "terms_must_be_lists_of_words" in bad(subject_terms="U", action_terms="n")
+    # short, generic quotes
+    assert "quote_too_short" in bad(evidence_quotes=["GES", "urgencia"])
+    # exaggerated legal effect absent from the text
+    assert any(p.startswith("strong_effect_not_in_text:prohíbe") for p in
+               bad(plain_language_title="Circular IF/N°537 · Urgencias GES: prohíbe y obliga a notificar en 24 horas"))
+    # Nº and N.° labels normalize like N°
+    assert auto.verify({**GOOD, "plain_language_title": GOOD["plain_language_title"].replace("N°", "Nº")}, L, EVIDENCE) == []
+
+
+def test_numbered_human_records_are_never_shadowed(tmp_path):
+    (tmp_path / "data/analysis_cache").mkdir(parents=True)
+    (tmp_path / auto.AUTO_PATH).write_text(json.dumps({"source_records": {
+        "https://x/535": {"legal_identity": "Circular IF/N°535", "plain_language_title": "auto"},
+        "https://x/537": {"legal_identity": "Circular IF/N°537", "plain_language_title": "auto 537"}}}))
+    cfg = auto.merged_config(tmp_path, {"records": {"535": {"plain_language_title": "humano"}}})
+    assert "https://x/535" not in cfg["source_records"] and "https://x/537" in cfg["source_records"]
+
+
+def test_builder_skips_numbered_human_act_and_survives_bad_evidence(tmp_path):
+    signals = _repo(tmp_path)
+    human = json.loads((tmp_path / "config/normative_editorial_v2.json").read_text())
+    human.setdefault("records", {})["537"] = {"plain_language_title": "humano"}
+    (tmp_path / "config/normative_editorial_v2.json").write_text(json.dumps(human))
+    calls = []
+    fake = lambda *a, **k: calls.append(1) or SimpleNamespace(output=GOOD)
+    assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == [] and not calls
+    del human["records"]["537"]; (tmp_path / "config/normative_editorial_v2.json").write_text(json.dumps(human))
+    (tmp_path / EVIDENCE_DIR / f"{_key(PDF)}.json").write_text("{not json")
+    assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == []
+    assert (tmp_path / auto.AUTO_PATH).exists()
+
+
+def test_rejected_act_is_retried_only_when_official_text_changes(tmp_path):
+    signals = _repo(tmp_path)
+    verdicts = iter([{"verdict": "FAIL", "reason": "x"}, {"verdict": "PASS"}])
+    def fake(prompt, *, feature, preferred_model, allow_luna_fallback=True):
+        return SimpleNamespace(output=GOOD if feature == "normative_autorecord" else next(verdicts))
+    assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == []
+    assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == []  # same text: no retry
+    (tmp_path / EVIDENCE_DIR / f"{_key(PDF)}.json").write_text(json.dumps({"text": EVIDENCE + " Texto corregido."}))
+    assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == [URL]
+
+
+def test_verify_checks_full_dates_actors_and_subjects_as_units():
+    L = "Circular IF/N°537"
+    moved = {**GOOD, "normative_context": GOOD["normative_context"].replace("1 de marzo", "24 de marzo")}
+    assert any(p.startswith("date_or_quantity_not_literal_in_quote") for p in auto.verify(moved, L, EVIDENCE))
+    invented_party = {**GOOD, "normative_context": GOOD["normative_context"].replace("a los prestadores", "a isapres y FONASA")}
+    probs = auto.verify(invented_party, L, EVIDENCE)
+    assert "actor_not_in_official_text:isapre" in probs and "actor_not_in_official_text:fonasa" in probs
+    invented_subject = {**GOOD, "subject_terms": ["Isapres"],
+                        "plain_language_title": "Circular IF/N°537 · Isapres: exige notificar en 24 horas"}
+    assert "subject_not_in_official_text:Isapres" in auto.verify(invented_subject, L, EVIDENCE)
+    exempt = {**GOOD, "normative_context": GOOD["normative_context"] + " Exime a los hospitales."}
+    assert "strong_effect_not_in_text:exime" in auto.verify(exempt, L, EVIDENCE)
+
+
+def test_unparseable_draft_is_recorded_as_rejection(tmp_path):
+    signals = _repo(tmp_path)
+    calls = []
+    def fake(prompt, *, feature, preferred_model, allow_luna_fallback=True):
+        calls.append(feature)
+        raise ValueError("model_output_not_object")
+    assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == []
+    store = json.loads((tmp_path / auto.AUTO_PATH).read_text(encoding="utf-8"))
+    assert store["rejected"][URL]["problems"][0].startswith("unparseable_model_output")
+    auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27))
+    assert calls == ["normative_autorecord"]  # not retried while the official text is unchanged
+
+
+def test_dates_and_quantities_need_a_boundary_in_the_quote():
+    text = EVIDENCE.replace("1 de marzo de 2027", "21 de marzo de 2027") + " Véase el numeral 1 del capítulo. " * 3
+    rec = {**GOOD, "evidence_quotes": ["La notificación deberá efectuarse dentro de 24 horas.",
+                                       "Las presentes instrucciones entrarán en vigencia a contar del 21 de marzo de 2027."]}
+    assert any(p.startswith("date_or_quantity_not_literal_in_quote:1 de marzo")
+               for p in auto.verify(rec, "Circular IF/N°537", text))
+    isla = {**GOOD, "normative_context": GOOD["normative_context"] + " Incluye la isla de Pascua."}
+    assert not any("actor_not_in_official_text:isl" == p for p in auto.verify(isla, "Circular IF/N°537", EVIDENCE))
+
+
+def test_runtime_wrapped_parse_failure_is_a_rejection_but_budget_stops(tmp_path):
+    signals = _repo(tmp_path)
+    def unparseable(prompt, **kw):
+        raise RuntimeError("model_call_failed:JSONDecodeError:Expecting value")
+    auto.build_auto_records(tmp_path, signals, call=unparseable, today=date(2026, 10, 27))
+    store = json.loads((tmp_path / auto.AUTO_PATH).read_text(encoding="utf-8"))
+    assert URL in store["rejected"]
+    (tmp_path / "b").mkdir()
+    signals2 = _repo(tmp_path / "b")
+    def broke(prompt, **kw):
+        raise RuntimeError("monthly_api_budget_exhausted")
+    auto.build_auto_records(tmp_path / "b", signals2, call=broke, today=date(2026, 10, 27))
+    assert URL not in json.loads((tmp_path / "b" / auto.AUTO_PATH).read_text(encoding="utf-8")).get("rejected", {})
+
+
+def test_dropped_qualifier_or_year_is_rejected():
+    text = EVIDENCE + " El plazo será de 10 días hábiles para responder a la Superintendencia de Salud. " * 2
+    rec = {**GOOD, "normative_context": GOOD["normative_context"] + " Hay 10 días para responder.",
+           "evidence_quotes": GOOD["evidence_quotes"] + ["El plazo será de 10 días hábiles para responder a la Superintendencia de Salud."]}
+    assert any(p.startswith("date_or_quantity_not_literal_in_quote:10 días") for p in auto.verify(rec, "Circular IF/N°537", text))
+    no_year = {**GOOD, "normative_context": GOOD["normative_context"].replace("1 de marzo de 2027", "1 de marzo")}
+    assert any(p.startswith("date_or_quantity_not_literal_in_quote:1 de marzo") for p in auto.verify(no_year, "Circular IF/N°537", EVIDENCE))
+    assert auto.verify(GOOD, "Circular IF/N°537", EVIDENCE) == []

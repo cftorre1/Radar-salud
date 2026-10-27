@@ -11,8 +11,11 @@ from radar_salud.editorial_committee import build_committee_artifact
 
 _NORMATIVE_V2_PATH=Path(__file__).resolve().parents[1]/"config"/"normative_editorial_v2.json"
 def _normative_v2_config():
-    try:return json.loads(_NORMATIVE_V2_PATH.read_text(encoding="utf-8"))
-    except Exception:return {"records":{},"title_contract":{}}
+    try:human=json.loads(_NORMATIVE_V2_PATH.read_text(encoding="utf-8"))
+    except Exception:human={"records":{},"title_contract":{}}
+    # Verified automatic records (official text + literal checks + 2nd model) fill gaps; human wins.
+    from radar_salud.normative_autorecord import merged_config
+    return merged_config(_NORMATIVE_V2_PATH.parents[1],human)
 
 TYPES=("Normativa","Legal","Noticias","Datos","Fiscalización")
 
@@ -210,7 +213,7 @@ def _normative_contract(s):
         kind=" ".join(m.group(1).split());prefix=(m.group(2) or "").upper();raw_number=m.group(3);number=re.sub(r"\D","",raw_number)
         label=f"{kind} {prefix+'/' if prefix else ''}N°{raw_number}"
         r.update({"normative_document_type":kind,"normative_document_number":f"{prefix+'/' if prefix else ''}N°{raw_number}","normative_document_label":label,"legal_identity":label})
-        record=cfg.get("records",{}).get(number,{})
+        record=cfg.get("source_records",{}).get(str(r.get("source_url") or "")) or cfg.get("records",{}).get(number,{})
     plain=str(record.get("plain_language_title") or "").strip();context=str(record.get("normative_context") or "").strip()
     subtitle=str(record.get("legal_subtitle") or label).strip()
     norm=lambda x:re.sub(r"[^a-z0-9]+"," ",str(x or "").lower().translate(str.maketrans("áéíóúüñ","aeiouun"))).strip()

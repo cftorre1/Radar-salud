@@ -444,6 +444,10 @@ def main():
         history=json.loads((root/"data/history/superintendencia_signals.json").read_text(encoding="utf-8")).get("signals",[])
         captured=capture_missing(root,history)
         print(f"normative_evidence captured={len(captured)}")
+        # Immediate editorial control: verified automatic records (budget-capped).
+        from .normative_autorecord import build_auto_records
+        recorded=build_auto_records(root,history)
+        print(f"normative_autorecord written={len(recorded)}")
     except Exception as exc:
         print("normative_evidence skipped:",type(exc).__name__)
     print({"queue":queue.counts(),"budget":ai_budget_status()})
