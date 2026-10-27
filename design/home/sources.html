@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Alicanto · Fuentes</title>
+<!-- Rediseño minimalista de "Fuentes" (diálogo #sourcesDialog y página sources.html).
+     Datos reales: public_sources.json (12 fuentes públicas) + source_health.json (estado y fecha), vía mock-data.js. -->
+<style>
+:root{
+  --ink:#1D3345;--ink84:rgba(29,51,69,.84);--ink68:rgba(29,51,69,.68);--ink50:rgba(29,51,69,.5);--ink12:rgba(29,51,69,.12);--ink08:rgba(29,51,69,.08);--ink04:rgba(29,51,69,.04);
+  --ivory:#FAF9F5;--paper:#fff;--accent:#C37C37;--accent-ink:#8A5420;
+  --ok:#3E7C5A;--active:#8FA0AE;--partial:#C37C37;--trial:#6E8BA6;
+  --serif:Georgia,"Times New Roman",serif;--sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font:13.5px/1.3 var(--sans);background:var(--ivory)}
+.backdrop{position:fixed;inset:0;background:url(proposal-b-desktop.png) center top/cover no-repeat;filter:blur(1px)}
+.backdrop::after{content:"";position:absolute;inset:0;background:rgba(29,51,69,.42)}
+.panel{position:relative;z-index:1;background:var(--paper);min-height:100vh;padding:14px 16px 20px}
+.top{display:flex;align-items:center;gap:10px}
+.top h1{font-family:var(--serif);font-weight:400;font-size:22px;margin:0;line-height:1.1}
+.close{margin-left:auto;border:0;background:var(--ink04);border-radius:999px;width:36px;height:36px;font-size:18px;line-height:1;cursor:pointer;color:var(--ink68)}
+.sub{margin:4px 0 0;font-size:12.5px;color:var(--ink68)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;margin:10px 0 2px;font-size:11.5px;color:var(--ink68)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.d{width:7px;height:7px;border-radius:50%;flex:none;background:var(--active)}
+.d.fresh{background:var(--ok)}.d.partial{background:var(--partial)}.d.trial{background:transparent;box-shadow:inset 0 0 0 1.5px var(--trial)}.d.error{background:#B5483B}
+.grp{margin-top:14px}
+.grp h2{display:flex;justify-content:space-between;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink50);margin:0 0 2px;padding-bottom:4px;border-bottom:1px solid var(--ink12)}
+.source-row{display:grid;grid-template-columns:7px minmax(0,1fr) auto;align-items:center;gap:10px;height:34px;border-bottom:1px solid var(--ink08)}
+.source-row .nm{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.source-row a{color:var(--ink);text-decoration:none;font-weight:600}
+.source-row a:hover{text-decoration:underline;text-underline-offset:2px}
+.source-row .ds{color:var(--ink50);font-weight:400}
+.source-row time{font-size:12px;color:var(--ink68);font-variant-numeric:tabular-nums;white-space:nowrap}
+.foot{margin-top:16px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12.5px;color:var(--ink68);border-top:1px solid var(--ink12);padding-top:12px}
+.foot button{border:0;background:none;padding:8px 0;font-weight:700;color:var(--accent-ink);cursor:pointer;font-size:12.5px;white-space:nowrap}
+.foot a{color:var(--ink68)}
+@media (min-width:700px){
+  body{display:flex;align-items:flex-start;justify-content:center;padding:56px 16px}
+  .panel{min-height:0;width:600px;border-radius:16px;padding:20px 24px 18px;box-shadow:0 24px 70px rgba(29,51,69,.28)}
+  .top h1{font-size:24px}
+}
+</style>
+</head>
+<body>
+<div class="backdrop" aria-hidden="true"></div>
+<section class="panel" role="dialog" aria-labelledby="sourcesTitle">
+  <div class="top"><h1 id="sourcesTitle">Fuentes</h1><button class="close" aria-label="Cerrar fuentes">×</button></div>
+  <p class="sub" id="sub"></p>
+  <div class="legend"><span><i class="d fresh"></i>Al día</span><span><i class="d"></i>Activa</span><span><i class="d partial"></i>Parcial</span><span><i class="d trial"></i>En prueba</span><span style="color:var(--ink50)">Fecha = contenido más reciente capturado</span></div>
+  <div id="sourcesList"></div>
+  <div class="foot" id="source-suggestion"><span>¿Falta una fuente relevante?</span><button id="sourceSuggestionOpen">Sugerir fuente →</button></div>
+</section>
+<script src="mock-data.js"></script>
+<script>
+const D=window.ALICANTO_MOCK,esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SHORT={'Superintendencia de Seguridad Social (SUSESO)':'SUSESO','Departamento de Estadísticas e Información de Salud':'DEIS · Minsal','Superintendencia de Salud · Intendencia de Prestadores':'Superintendencia de Salud · Prestadores'};
+const ORDER=['Organismos públicos y reguladores','Datos oficiales','Noticias y mercado','Prestadores e industria','Seguridad laboral','Global · evidencia internacional'];
+const DESC=s=>s.replace(/;.*$/,'').replace(/\.$/,'').replace(/^Publicaciones OPS.*/,'Publicaciones OPS');
+const ST={fresh:'Al día',active:'Activa',partial:'Parcial',trial:'En prueba',error:'Con error'};
+const groups=new Map(ORDER.map(g=>[g,[]]));for(const s of D.sources){if(!groups.has(s.group))groups.set(s.group,[]);groups.get(s.group).push(s)}
+document.getElementById('sourcesList').innerHTML=[...groups].filter(([,xs])=>xs.length).map(([g,xs])=>`<section class="grp"><h2><span>${esc(g.replace(' · evidencia internacional',''))}</span><span>${xs.length}</span></h2>${xs.map(s=>`<div class="source-row" title="${esc(s.desc)}"><i class="d ${s.st}" role="img" aria-label="${ST[s.st]}"></i><span class="nm"><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(SHORT[s.name]||s.name)}</a> <span class="ds">· ${esc(DESC(s.desc))}</span></span><time>${s.d}</time></div>`).join('')}</section>`).join('');
+const fresh=D.sources.filter(s=>s.st==='fresh').length;
+document.getElementById('sub').textContent=`${D.sources.length} fuentes públicas verificadas · ${fresh} al día · revisadas hoy 09:04`;
+</script>
+</body>
+</html>

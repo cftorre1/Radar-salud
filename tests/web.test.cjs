@@ -136,12 +136,32 @@ test('weekly freshness expires at Chile midnight and rejects invalid or recycled
  assert.equal(c.weeklyFresh({...w,freshness_anchor_date:'2026-09-14'},new Date('2026-10-11T12:00:00Z')),false);
  assert.equal(c.weeklyFresh({...w,editorial_review_pass:false},new Date('2026-10-11T12:00:00Z')),false);
 });
-test('approved insight detail exposes figures decisions limits and all evidence links',()=>{
+// Dirección 27-oct-2026 approved presentation A for the weekly insight: headline → charts → short essay
+// (facts | Lectura Alicanto) → Qué mirar → numbered evidence notes → sources. The old list sections
+// (Actores, Decisiones que cambia, Límites de la evidencia…) are no longer rendered when the new fields exist.
+test('approved insight renders presentation A with charts, footnoted limits and all evidence links',()=>{
  const c=context(),w=JSON.parse(fs.readFileSync('data/weekly_insight/editorial_approved.json')).weekly_insight,body={innerHTML:''};
  c.document={getElementById:id=>body};c.renderWeeklyDetail(w);
+ const html=body.innerHTML;
+ assert.ok(html.includes(w.headline.slice(0,40)));
+ for(const label of ['Qué pasó','Lectura Alicanto','Qué mirar en las próximas semanas','Notas sobre la evidencia','Fuentes'])assert.ok(html.includes(label),label);
+ for(const label of ['Actores','Decisiones que cambia','Límites de la evidencia','Cifras y alcance','Inferencia Alicanto'])assert.ok(!html.includes(label),label);
+ for(const url of w.source_refs)assert.ok(html.includes(url));
+ // Every footnote marker resolves to a numbered note; no raw [^n] markers leak.
+ assert.doesNotMatch(html,/\[\^n\d+\]/);
+ for(const n of w.notes)assert.ok(html.includes(`id="wi-note-${n.id}"`));
+ assert.equal((html.match(/class="wi-ref"/g)||[]).length,5);
+ // Paired bars draw the deterministic delta (−12,3 − (−14,0) = +1,7 pp); the partial month is labelled.
+ assert.match(html,/\+1,7 pp/);assert.match(html,/\+1,0 pp/);assert.match(html,/\+1,3 pp/);
+ assert.match(html,/parcial · al día 16/);assert.match(html,/stroke-dasharray="4 3"/);
+ assert.match(html,/lectura de 2 min/);
+});
+test('older list-schema insights keep their original sections',()=>{
+ const c=context(),w=JSON.parse(fs.readFileSync('data/weekly_insight/editorial_approved.json')).weekly_insight,body={innerHTML:''};
+ const legacy={...w,charts:w.legacy_charts};for(const k of ['headline','dek','essay','watch','notes','estimates'])delete legacy[k];
+ c.document={getElementById:id=>body};c.renderWeeklyDetail(legacy);
  for(const label of ['Cifras y alcance','Actores','Lectura Alicanto:','Decisiones que cambia','Qué observar','Límites de la evidencia'])assert.ok(body.innerHTML.includes(label));
  for(const url of w.source_refs)assert.ok(body.innerHTML.includes(url));
- assert.ok(body.innerHTML.includes('Límites de la evidencia'));
 });
 
 test('enforcement dates display issuance and preserve separately verified publication',()=>{const c=context();const s={signal_types:['Fiscalización'],event_date:'2026-09-23',emission_date:'2026-09-23',publication_date:null,event_date_basis:'verified_primary_emission'};assert.match(c.cardMetadata(s),/Emitido/);assert.match(c.cardMetadata(s),/Publicación no verificada/);assert.doesNotMatch(c.cardMetadata(s),/Publicado/);assert.match(c.cardMetadata({...s,publication_date:'2026-09-25'}),/Publicado.*25.*Emitido.*23/);assert.match(c.sourceBlock([{...s,url:'https://example.org',title:'Acto'}],true),/Emitido/)});

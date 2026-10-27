@@ -86,3 +86,42 @@ def test_stale_reviewed_publication_hides_ranking_and_model_with_new_draft():
     assert output['status']=='hidden_fail_closed' and output['weekly_insight'] is None
     assert output['top3']==[] and output['model'] is None
     assert output['audit']['verdict']=='HOLD' and output['generation_attempt']==attempt
+
+
+def test_presentation_a_rules_pass_for_the_approved_insight():
+    from radar_salud.weekly_freshness import presentation_a, presentation_a_errors
+    payload = approved()
+    assert presentation_a(payload['weekly_insight'])
+    assert presentation_a_errors(payload['weekly_insight']) == []
+    assert reviewed_weekly(payload, date(2026,10,11))
+
+
+def test_presentation_a_breaks_fail_closed():
+    from radar_salud.weekly_freshness import presentation_a_errors
+    cases = {
+        'footnote_ref_unresolved': lambda w: w['essay']['reading']['paragraphs'].append('Otra lectura.[^n9]'),
+        'note_never_referenced': lambda w: w['notes'].append({'id': 'n6', 'kind': 'press', 'text': 'Nota sin uso.'}),
+        'facts_contain_inference_marker': lambda w: w['essay']['facts']['paragraphs'].append('Esto sugiere un cambio.'),
+        'reading_contains_fact_prefix': lambda w: w['essay']['reading']['paragraphs'].append('Hecho: algo.'),
+        'essay_words_out_of_range': lambda w: w['essay'].update(reading={'heading': 'Lectura Alicanto', 'paragraphs': ['Corto.[^n1][^n2][^n3]']}),
+        'partial_row_without_label': lambda w: w['charts'][1]['rows'][2].pop('partial_label'),
+        'watch_explanation_too_short': lambda w: w['watch'][0].update(explanation='Muy corta.'),
+        'estimate_mismatch': lambda w: w['estimates'][0].update(value=-30.0),
+        'dek_over_40_words': lambda w: w.update(dek=' '.join(['palabra'] * 41)),
+    }
+    for expected, mutate in cases.items():
+        payload = approved()
+        mutate(payload['weekly_insight'])
+        errors = presentation_a_errors(payload['weekly_insight'])
+        assert any(e.startswith(expected) for e in errors), (expected, errors)
+        assert reviewed_weekly(payload, date(2026,10,11)) is None, expected
+
+
+def test_legacy_list_schema_still_requires_its_sections():
+    payload = approved()
+    weekly = payload['weekly_insight']
+    for key in ('headline', 'dek', 'essay', 'notes', 'watch', 'estimates'):
+        weekly.pop(key)
+    assert reviewed_weekly(payload, date(2026,10,11))
+    weekly.pop('decision_use')
+    assert reviewed_weekly(payload, date(2026,10,11)) is None

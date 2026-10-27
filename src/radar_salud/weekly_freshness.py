@@ -1,4 +1,5 @@
 """Fail-closed weekly publication contract, evaluated in Chile local time."""
+import re
 from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 
@@ -28,6 +29,74 @@ def freshness_gate(signal, as_of=None):
             "anchor_date": anchor.isoformat() if anchor else None,
             "expires_on": min(anchor+timedelta(days=WINDOW_DAYS), expiry or date.max).isoformat() if anchor else None}
 
+# Presentation A (Dirección, 27-oct-2026): headline → charts → short essay → watch → notes.
+# Cheap deterministic rules from design/insight/panel.md §4; a failing insight stays hidden.
+FOOTNOTE = re.compile(r"\[\^(n\d+)\]")
+INFERENCE_MARKERS = re.compile(r"\b(sugiere|sugieren|podría|podrían|estimamos|alicanto)\b", re.I)
+SAFE_FORMULA = re.compile(r"^[0-9.\s+\-*/()]+$")
+
+def presentation_a(weekly):
+    return isinstance(weekly, dict) and isinstance(weekly.get("essay"), dict)
+
+def _words(text):
+    return len(FOOTNOTE.sub("", str(text or "")).split())
+
+def _paragraphs(section):
+    xs = (section or {}).get("paragraphs") if isinstance(section, dict) else None
+    return [str(x) for x in xs] if isinstance(xs, list) else []
+
+def presentation_a_errors(weekly):
+    """Return the list of broken presentation-A rules (empty list means PASS)."""
+    errors = []
+    essay = weekly.get("essay") or {}
+    facts, reading = _paragraphs(essay.get("facts")), _paragraphs(essay.get("reading"))
+    if not facts or not reading:
+        errors.append("essay_facts_and_reading_required")
+    if any(INFERENCE_MARKERS.search(FOOTNOTE.sub("", x)) for x in facts):
+        errors.append("facts_contain_inference_marker")
+    if any(re.match(r"\s*hecho\s*:", x, re.I) for x in reading):
+        errors.append("reading_contains_fact_prefix")
+    words = sum(_words(x) for x in facts + reading)
+    if not 150 <= words <= 250:
+        errors.append(f"essay_words_out_of_range:{words}")
+    if _words(weekly.get("dek")) > 40:
+        errors.append("dek_over_40_words")
+    if len(str(weekly.get("headline") or "")) > 140:
+        errors.append("headline_over_140_chars")
+    notes = weekly.get("notes") if isinstance(weekly.get("notes"), list) else []
+    note_ids = [n.get("id") for n in notes if isinstance(n, dict)]
+    if len(set(note_ids)) != len(note_ids) or not all(isinstance(n, dict) and n.get("text") for n in notes):
+        errors.append("notes_invalid_or_duplicated")
+    charts = weekly.get("charts") if isinstance(weekly.get("charts"), list) else []
+    estimates = weekly.get("estimates") if isinstance(weekly.get("estimates"), list) else []
+    refs = [m for x in facts + reading for m in FOOTNOTE.findall(x)]
+    refs += [r for c in charts if isinstance(c, dict) for r in (c.get("note_refs") or [])]
+    refs += [e.get("note_ref") for e in estimates if isinstance(e, dict) and e.get("note_ref")]
+    if any(r not in note_ids for r in refs):
+        errors.append("footnote_ref_unresolved")
+    if any(n not in refs for n in note_ids):
+        errors.append("note_never_referenced")
+    for chart in charts:
+        for row in (chart.get("rows") or []) if isinstance(chart, dict) else []:
+            if isinstance(row, dict) and row.get("style") == "partial" and not row.get("partial_label"):
+                errors.append("partial_row_without_label")
+    for item in weekly.get("watch") or []:
+        if not isinstance(item, dict) or _words(item.get("explanation")) < 12:
+            errors.append("watch_explanation_too_short")
+    for estimate in estimates:
+        formula = str((estimate or {}).get("formula") or "")
+        if formula and SAFE_FORMULA.match(formula):
+            try:
+                value = eval(formula, {"__builtins__": {}}, {})  # digits and arithmetic only (SAFE_FORMULA)
+            except Exception:
+                errors.append("estimate_formula_invalid")
+                continue
+            if abs(value - float(estimate.get("value"))) > 0.05:
+                errors.append(f"estimate_mismatch:{estimate.get('id')}")
+        elif formula:
+            errors.append("estimate_formula_not_deterministic")
+    return errors
+
 def reviewed_weekly(payload, as_of=None):
     if not isinstance(payload, dict):
         return None
@@ -37,7 +106,12 @@ def reviewed_weekly(payload, as_of=None):
         return None
     if not freshness_gate(weekly, as_of)["eligible"]:
         return None
-    required = ("summary", "insight_reading", "decision_use", "what_to_watch", "uncertainties", "source_refs")
+    if presentation_a(weekly):
+        if presentation_a_errors(weekly):
+            return None
+        required = ("headline", "dek", "essay", "notes", "source_refs")
+    else:
+        required = ("summary", "insight_reading", "decision_use", "what_to_watch", "uncertainties", "source_refs")
     if not all(weekly.get(k) for k in required):
         return None
     refs = weekly["source_refs"]
