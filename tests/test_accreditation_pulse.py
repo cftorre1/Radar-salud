@@ -55,3 +55,12 @@ def test_window_is_thirty_calendar_days():
     outside = _act(9, "Inscríbase … al Prestador Institucional Fuera, de la Ciudad de Arica", day="2026-09-27")
     p = accreditation_pulse([inside, outside], date(2026, 10, 27))
     assert "Borde" in p["what_happened"] and "Fuera" not in p["what_happened"]
+
+
+def test_every_curated_card_carries_committee_pass_like_the_web_contract():
+    """Mirror of web.test.cjs 'visible stock obeys committee…' at curate() time."""
+    history = json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
+    for row in exporter.curate(history, resolve_external=False):
+        if row.get("feed_visibility") is False:
+            continue
+        assert (row.get("editorial_committee") or {}).get("verdict") == "PASS", row.get("source_url")
