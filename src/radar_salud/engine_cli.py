@@ -28,6 +28,19 @@ from .public_source_evidence import failure_details, discovery_diagnostics, HOST
 from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
 from .occupational_sources import SOURCES as OCCUPATIONAL_SOURCES
 
+# Regulators are the product core (panel de expertos, 26-oct-2026). Their low-volume
+# BACKFILL must not wait behind press LIVE floods (Pulso: decenas por día).
+OFFICIAL_PRIORITY = ("superintendencia_normativa", "superintendencia_fiscalizacion", "superintendencia",
+                     "suseso", "suseso_news", "suseso_fiscalizacion", "minsal", "diario_oficial")
+
+
+def _prioritize_official(ready):
+    """Stable partition: official regulator items first, all relative orders kept."""
+    ordered = list(ready)
+    return ([pair for pair in ordered if pair[1].get("source") in OFFICIAL_PRIORITY]
+            + [pair for pair in ordered if pair[1].get("source") not in OFFICIAL_PRIORITY])
+
+
 def _prioritize_pulso_ready(ready):
     """Order publisher dates only inside Pulso's existing scheduling slots.
 
@@ -252,7 +265,7 @@ def main():
     processed_rejections={name:0 for name in processors}
     queue.enforce_backfill_horizon(sources=set(selected_sources) if selected_sources else None)
     from .daily_window import eligible_daily_item
-    ready=((key,item) for key,item in _prioritize_pulso_ready(queue.ready())
+    ready=((key,item) for key,item in _prioritize_official(_prioritize_pulso_ready(queue.ready()))
            if item['source'] in processors and eligible_daily_item(item) and
            (not selected_sources or item['source'] in selected_sources or
             ('suseso_fiscalizacion' in selected_sources and item['raw'].get('metadata',{}).get('routed_from')=='suseso_fiscalizacion')))
