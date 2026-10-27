@@ -30,6 +30,36 @@ _REGULATORS=("Superintendencia de Seguridad Social (SUSESO)","Superintendencia d
 def is_institutional_agenda(r:Dict[str,Any])->bool:
     return r.get("source_name") in _REGULATORS and bool(_AGENDA.search(str(r.get("title") or "")))
 
+# Health must be the main subject of a general-press piece (Dirección 27-oct-2026):
+# the automated summary must not rescue a story about something else through an
+# incidental health angle. The title carries the subject; terms live in config.
+def _nexus_config()->Dict[str,Any]:
+    import json
+    from pathlib import Path
+    p=Path(__file__).resolve().parents[2]/"config"/"editorial_health_nexus.json"
+    try:return json.loads(p.read_text(encoding="utf-8"))
+    except (OSError,ValueError):return {}
+
+_NEXUS=None
+def _nexus_regex():
+    global _NEXUS
+    if _NEXUS is None:
+        cfg=_nexus_config();terms=cfg.get("title_terms") or []
+        _NEXUS=(set(cfg.get("applies_to_source_types") or []),
+                re.compile(r"(?<![\w])(?:"+"|".join(re.escape(t) for t in sorted(terms,key=len,reverse=True))+r")",re.I) if terms else None)
+    return _NEXUS
+
+def health_not_main_subject(r:Dict[str,Any])->bool:
+    types,rx=_nexus_regex()
+    if rx is None or r.get("source_type") not in types:return False
+    from .story_groups import load_groups
+    from pathlib import Path
+    if any(r.get("source_url") in g.get("member_urls",[]) for g in load_groups(Path(__file__).resolve().parents[2])):
+        return False  # covered by a reviewed synthesis that links it
+    title=str(r.get("display_title") or r.get("title") or "")
+    original=str(r.get("title") or "")
+    return not (rx.search(title) or rx.search(original))
+
 def invalid_validity(r:Dict[str,Any])->bool:
     v=str(r.get("validity_text") or "").lower();return any(x in v for x in ('nj:','"529"','"535"','propertyvalue','javascript','schema.org'))
 
@@ -72,6 +102,7 @@ def publication_ready(r:Dict[str,Any])->Tuple[bool,str,int]:
     if has_garbage(r):return False,"binary_or_markup",q
     if is_minsal_noise(r):return False,"editorial_noise",q
     if is_institutional_agenda(r):return False,"institutional_agenda",q
+    if health_not_main_subject(r):return False,"health_not_main_subject",q
     why=str(r.get("why_it_matters") or "").lower()
     what=str(r.get("what_happened") or "").lower()
     if any(x in why for x in _UNRELATED):return False,"unrelated_to_health",q

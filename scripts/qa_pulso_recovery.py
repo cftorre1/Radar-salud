@@ -2688,7 +2688,10 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
         if decision not in {"reject", "group"}:
             from copy import deepcopy
             from radar_salud.editorial_gate import publication_ready
-            if not publication_ready(deepcopy(effective))[0]:
+            ok, reason, _ = publication_ready(deepcopy(effective))
+            # Later Dirección relevance rules (27-oct-2026) withdraw a card from the feed;
+            # they do not invalidate the provenance of the reviewed copy being verified here.
+            if not ok and reason not in {"health_not_main_subject", "institutional_agenda"}:
                 raise ValueError("editorial_effective_copy_fails_existing_publication_gate")
         result = effective, provenance, paid, effective_assessment
         cache[identity] = result
