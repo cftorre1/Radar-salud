@@ -46,7 +46,8 @@ def test_real_deis_releases_inside_window_become_labelled_data_release_items():
     dates = sorted(raw.event_date for raw in items)
     assert dates == ["2026-09-25", "2026-10-06", "2026-10-06", "2026-10-07"]  # Chile calendar day
     raw = next(r for r in items if "Establecimientos" in r.title)
-    assert raw.url.startswith("https://datos.gob.cl/dataset/") and raw.source_name == "DEIS-MINSAL (datos.gob.cl)"
+    assert raw.url.startswith("https://datos.gob.cl/dataset/") and raw.url.endswith("#liberacion-2026-10")
+    assert raw.source_name == "DEIS-MINSAL (datos.gob.cl)" and raw.metadata["data_release_scope"] == "data"
     meta = raw.metadata
     assert meta["date_basis"] == "data_release" and meta["release_kind"] == "dataset_update"
     assert meta["publication_date_evidence"]["kind"] == "ckan:metadata_modified"
@@ -110,3 +111,16 @@ def test_lane_never_runs_inside_tests_unless_forced():
     assert live_lane_enabled({"RADAR_CAPTURE_EVIDENCE": "1"}) is True
     assert live_lane_enabled({"RADAR_DATOS_GOB": "0", "RADAR_CAPTURE_EVIDENCE": "1"}) is False
     assert DatosGobScout().discover() == []
+
+
+def test_metadata_only_change_is_labelled_catalog_update():
+    payload = deis_payload()
+    for row in payload["result"]["results"]:
+        for resource in row["resources"]:
+            resource["last_modified"] = resource["created"] = "2024-01-01T00:00:00"
+    items, _ = parse_package_search(payload, "ministerio_de_salud", api_url=query_url("ministerio_de_salud"),
+                                    today=date(2026, 10, 11), window_days=30)
+    raw = items[0]
+    assert raw.metadata["data_release_scope"] == "catalog" and "ficha de catálogo" in raw.title
+    row = process_datos_gob(raw, CFG)
+    assert row["data_release_scope"] == "catalog" and "sin recurso nuevo" in row["what_happened"]

@@ -136,14 +136,21 @@ def parse_package_search(payload, organization, *, api_url, today, window_days, 
                               "updated_in_window": bool(updated and start <= updated <= today)})
         is_new = start <= created <= today
         title = " ".join(str(row.get("title") or row.get("name") or "").split())
-        action = "publicó un nuevo conjunto de datos" if is_new else "actualizó el conjunto de datos"
+        # "Datos actualizados" only when the dataset is new or a resource changed
+        # inside the window; a metadata-only edit is a catalog update.
+        scope = "data" if is_new or any(r["updated_in_window"] for r in resources) else "catalog"
+        action = ("publicó un nuevo conjunto de datos" if is_new else
+                  "actualizó el conjunto de datos" if scope == "data" else "actualizó la ficha de catálogo de")
+        # Identity = dataset + release month (also the history key): weekly
+        # refreshes inside one month replace each other; a new month is a new card.
+        release_url = f"{dataset_url}#liberacion-{modified:%Y-%m}"
         evidence = {"kind": EVIDENCE_KIND, "url": api_url, "dataset_url": dataset_url,
                     "value": row["metadata_modified"], "date": modified.isoformat(),
                     "basis": "data_release_not_news_publication"}
         if capture:
             evidence.update(api_sha256=capture.get("sha256"), captured_at=capture.get("captured_at"))
         items.append(RawItem(
-            SLUG, f"{publisher['label']} {action} «{title}» en datos.gob.cl"[:350], dataset_url,
+            SLUG, f"{publisher['label']} {action} «{title}» en datos.gob.cl"[:350], release_url,
             publisher["source_name"], "official", event_date=modified.isoformat(),
             raw_text=" ".join(str(row.get("notes") or "").split())[:1800],
             metadata={"organization": organization, "publisher_label": publisher["label"],
@@ -153,8 +160,11 @@ def parse_package_search(payload, organization, *, api_url, today, window_days, 
                       "license_id": row.get("license_id"), "license_title": row.get("license_title"),
                       "resources": resources, "scopes": publisher["scopes"],
                       "date_basis": DATA_RELEASE, "data_release_date": modified.isoformat(),
+                      "data_release_scope": scope, "dataset_url": dataset_url, "release_month": f"{modified:%Y-%m}",
                       "publication_date_source": EVIDENCE_KIND, "publication_date_evidence": evidence,
-                      "date_label": "Fecha de liberación del dato en datos.gob.cl (metadata_modified), no fecha de noticia",
+                      "date_label": ("Fecha de liberación del dato en datos.gob.cl (metadata_modified), no fecha de noticia"
+                                     if scope == "data" else
+                                     "Fecha de actualización de la ficha del catálogo (metadata_modified); sin recurso nuevo"),
                       "terms_policy": "catalog_metadata_and_links_only"}))
     oldest = min(modified_days) if modified_days else None
     # Sorted by metadata_modified desc: the window is fully covered when the
@@ -239,8 +249,11 @@ def process_datos_gob(raw, cfg):
     names = "; ".join(f"{r['name']} ({r['format']})" if r.get("format") else r["name"]
                       for r in updated[:4] if r.get("name"))
     new = raw.metadata.get("release_kind") == "new_dataset"
-    what = (f"{label} {'publicó en datos.gob.cl el nuevo conjunto de datos' if new else 'actualizó en datos.gob.cl el conjunto de datos'} "
-            f"«{title}» ({raw.event_date})." + (f" Recursos actualizados: {names}." if names else ""))
+    catalog_only = raw.metadata.get("data_release_scope") == "catalog"
+    verb = ("publicó en datos.gob.cl el nuevo conjunto de datos" if new else
+            "actualizó en datos.gob.cl la ficha de catálogo (sin recurso nuevo) del conjunto de datos" if catalog_only else
+            "actualizó en datos.gob.cl el conjunto de datos")
+    what = f"{label} {verb} «{title}» ({raw.event_date})." + (f" Recursos actualizados: {names}." if names else "")
     notes = " ".join(str(raw.raw_text or "").split())
     why = ((notes[:260].rstrip(" ,;") + ". ") if len(notes) >= 40 else "")
     why += ("Es una liberación oficial de datos, no una noticia: permite actualizar series de seguimiento "
@@ -253,6 +266,7 @@ def process_datos_gob(raw, cfg):
     row = build_signal(raw, cfg).to_dict()
     row.update(signal_types=["Datos"], scopes=raw.metadata["scopes"], source_channel="datos.gob.cl",
                date_basis=DATA_RELEASE, data_release_date=raw.event_date, publication_date=None,
+               data_release_scope=raw.metadata.get("data_release_scope", "data"),
                publication_date_source=EVIDENCE_KIND, publication_date_evidence=evidence,
                date_label=raw.metadata["date_label"], dataset_id=raw.metadata.get("dataset_id"),
                license_id=raw.metadata.get("license_id"),
