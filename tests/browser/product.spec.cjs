@@ -1,4 +1,4 @@
-const {test,expect,selectPeriod}=require('./fixtures.cjs');
+const {test,expect,selectPeriod,selectLane}=require('./fixtures.cjs');
 const fs=require('node:fs');fs.mkdirSync('artifacts',{recursive:true});
 const path=require('node:path');
 const STATISTICAL_URLS={
@@ -79,7 +79,7 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('#signalDetail')).toBeVisible();await expect(page.locator('#closeDetail')).toBeFocused();await page.keyboard.press('Escape');
  // Opening counts as reading: the row leaves Pendientes with an undo.
  await expect(page.locator('#undoBar')).toContainText('Marcada como leída');await expect(page.locator(`#local [data-card="${opened}"]`)).toHaveCount(0);
- await page.locator('[data-lane="t"]').click();await expect(page.locator(`#local [data-card="${opened}"]`)).toHaveClass(/read/);
+ await selectLane(page,'t');await expect(page.locator(`#local [data-card="${opened}"]`)).toHaveClass(/read/);
  const ids=await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id));expect(new Set(ids).size).toBe(ids.length);
  // In Todas, marking read never reorders: the row folds in place.
  const order=await page.locator('#local article[data-card]').evaluateAll(xs=>xs.map(x=>x.id));
@@ -118,8 +118,8 @@ test('Inbox shows every unread signal, supports direct read with undo and persis
  await page.locator(`#local [data-card="${first}"] [data-read]`).click();await expect(rows).toHaveCount(initial-1);
  await page.reload();await expect(page.locator('#meta')).toContainText('Última actualización:');
  await expect(rows).toHaveCount(initial-1);await expect(page.locator(`#local [data-card="${first}"]`)).toHaveCount(0);
- await page.locator('[data-lane="l"]').click();await expect(page.locator(`#local [data-card="${first}"]`)).toHaveClass(/read/);
- await page.locator('[data-lane="p"]').click();
+ await selectLane(page,'l');await expect(page.locator(`#local [data-card="${first}"]`)).toHaveClass(/read/);
+ await selectLane(page,'p');
  await page.locator('#filterDetails summary').click();await selectPeriod(page,'90');
  const deep=await rows.count();expect(deep).toBeGreaterThan(4);
  await page.locator('#markAllRead').click();await expect(rows).toHaveCount(0);await expect(page.locator('#local')).toContainText('Estás al día');
@@ -184,7 +184,7 @@ test('Big things stay as accordions with a read mark that persists',async({page}
  if(hasWeekly){await expect(weekly).toContainText(data.weekly_insight.insight_title);await weekly.locator('[data-special-read]').click();await expect(weekly).toHaveClass(/read/);await expect(weekly.locator('.acc-state')).toHaveText('Leído')}
  await global.locator('[data-special-read]').click();await expect(global).toHaveClass(/read/);await expect(global).toHaveCount(1);await expect(global.locator('.acc-state')).toHaveText('Leído');
  await expect(page.locator('#bigThings')).toBeVisible();await expect(global.locator('[data-special-read]')).toBeFocused();
- await page.locator('[data-lane="l"]').click();await expect(page.locator('#local [data-special]')).toHaveCount(0);
+ await selectLane(page,'l');await expect(page.locator('#local [data-special]')).toHaveCount(0);
  if(hasWeekly){await weekly.locator('.title-open').click();await expect(page.locator('#weeklyInsightDialog')).toContainText('Lectura Alicanto');await expect(page.locator('#weeklyInsightDialog .wi-notes a').first()).toHaveAttribute('href',/^https:\/\//);await page.getByRole('button',{name:'Cerrar insight'}).click()}
  await page.reload();await expect(page.locator('#bigThings .big-feature')).toHaveCount(hasWeekly?2:1);await expect(page.locator('#bigThings .big-feature.read')).toHaveCount(hasWeekly?2:1);await expect(page.locator('#bigThings .acc-body:visible')).toHaveCount(0);
  // Marking unread restores the mark.
@@ -682,18 +682,35 @@ test('source capture errors remain administrative and are excluded from the publ
 test('a shared link is revealed once in a lane that shows it and never rewrites lanes or filters again',async({page})=>{
  await page.goto('/');const rows=page.locator('#local article[data-card]');await expect(rows.first()).toBeVisible();
  const id=await rows.nth(2).getAttribute('data-card');
- await page.locator('[data-lane="l"]').click();await expect(page.locator('[data-lane="l"]')).toHaveAttribute('aria-pressed','true');
+ await selectLane(page,'l');await expect(page.locator('[data-lane="l"]')).toHaveAttribute('aria-pressed','true');
  await page.goto(`/#sig-${encodeURIComponent(id)}`);await page.reload();
  const card=page.locator(`[id="sig-${id}"]`);await expect(card).toBeVisible();await expect(card).toBeFocused();await expect(card).not.toHaveClass(/read/);
- await page.locator('[data-lane="p"]').click();await expect(page.locator('[data-lane="p"]')).toHaveAttribute('aria-pressed','true');
+ await selectLane(page,'p');await expect(page.locator('[data-lane="p"]')).toHaveAttribute('aria-pressed','true');
  await card.locator('[data-read]').click();await expect(card).toHaveCount(0);
  await rows.first().locator('[data-read]').click();await expect(page.locator('#undoBar')).toBeVisible();
  await expect(page.locator('[data-lane="p"]')).toHaveAttribute('aria-pressed','true');await expect(page.locator(`[id="sig-${id}"]`)).toHaveCount(0);
  expect(JSON.parse(await page.evaluate(()=>localStorage.getItem('alicanto_filters'))).lane).toBe('p');
 });
 test('in Todas a dot marks read, disappears and keeps focus on the same row',async({page})=>{
- await page.goto('/');await page.locator('[data-lane="t"]').click();
+ await page.goto('/');await selectLane(page,'t');
  const row=page.locator('#local article[data-card]:not(.read)').first();const id=await row.getAttribute('data-card');const same=page.locator(`#local [data-card="${id}"]`);
  await same.locator('[data-read]').click();await expect(same).toHaveClass(/read/);await expect(same.locator('[data-read]')).toBeHidden();
  await expect(same.locator('.title-open')).toBeFocused();
+});
+// Review N1/N2 of PR #72: below 1000px "N pendientes ▾" opens the lanes as a menu (interest chips keep
+// the second line); wide screens show them as tabs. Feed titles clamp to two lines on the button itself.
+test('lanes open from the pending count on narrow screens and feed titles clamp to two lines',async({page})=>{
+ await page.goto('/');await expect(page.locator('#local article[data-card]').first()).toBeVisible();
+ const toggle=page.locator('#laneToggle'),todas=page.locator('[data-lane="t"]');
+ if(test.info().project.name==='mobile'){
+  await expect(todas).toBeHidden();await expect(toggle).toHaveAttribute('aria-expanded','false');
+  const chipsTop=await page.locator('#interestChips .chip').first().evaluate(el=>el.getBoundingClientRect().left);expect(chipsTop).toBeLessThan(40);
+  await toggle.click();await expect(toggle).toHaveAttribute('aria-expanded','true');await expect(todas).toBeVisible();
+  await page.keyboard.press('Escape');await expect(todas).toBeHidden();await expect(toggle).toBeFocused();
+  await toggle.click();await todas.click();await expect(todas).toBeHidden();await expect(todas).toHaveAttribute('aria-pressed','true');await expect(toggle).toBeFocused();
+ }else{
+  await expect(todas).toBeVisible();await expect(toggle).toBeDisabled();
+ }
+ const lines=await page.locator('#local .signal.item .title-open').evaluateAll(xs=>xs.map(x=>Math.round(x.getBoundingClientRect().height/parseFloat(getComputedStyle(x).lineHeight))));
+ expect(Math.max(...lines)).toBeLessThanOrEqual(2);
 });

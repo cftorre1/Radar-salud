@@ -27,6 +27,13 @@ CATALOG={
  'pfizer_chile':('Prestadores e industria','https://www.pfizer.cl/','Noticias institucionales.'),
  'ist':('Seguridad laboral','https://www.ist.cl/','Noticias institucionales.')}
 
+# Short public labels for narrow screens; the official name stays in the row for screen readers
+# and search (review N3, 27-oct-2026). Sources without an entry show their official name.
+SHORT_NAMES={'deis':'DEIS · Minsal','suseso':'SUSESO','suseso_news':'SUSESO','suseso_fiscalizacion':'SUSESO',
+ 'prestadores_data':'Intendencia de Prestadores','superintendencia':'Superintendencia de Salud',
+ 'superintendencia_normativa':'Superintendencia de Salud','superintendencia_fiscalizacion':'Superintendencia de Salud',
+ 'global_who':'OMS','global_paho':'OPS','minsal':'Minsal'}
+
 TRIAL_MODES={'isolated_qualification','manual_curated_only'}
 
 def eligible(row,now=None):
@@ -50,7 +57,9 @@ def build_catalog(sources,now=None):
         if row.get('operation_mode') in TRIAL_MODES:
             # Honest label: verified once, not polled by the daily capture.
             description=description.replace('superficie de metadatos verificada','metadatos verificados en prueba')+' En prueba: sin consulta diaria.'
-        rows.append({'id':key,'name':row['name'],'group':group,'url':url,'description':description})
+        item={'id':key,'name':row['name'],'group':group,'url':url,'description':description}
+        if SHORT_NAMES.get(key) and SHORT_NAMES[key]!=row['name']:item['short_name']=SHORT_NAMES[key]
+        rows.append(item)
     return {'schema_version':1,'sources':sorted(rows,key=lambda x:(x['group'],x['name']))}
 
 def export_public_sources(source_path=Path('data/source_health.json'),output=Path('web/data/public_sources.json')):

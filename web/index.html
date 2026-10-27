@@ -69,13 +69,13 @@
 <section class="radar-unit" aria-labelledby="radarTitle">
 <div class="radar-head">
 <h2 id="radarTitle">Tu bandeja</h2>
-<p class="radar-metrics" id="radarMetrics" role="status"></p>
+<button type="button" class="lane-toggle" id="laneToggle" aria-expanded="false" aria-controls="lanes"><span class="radar-metrics" id="radarMetrics" role="status"></span><svg class="mini-icon lane-chev" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></button>
 <button type="button" class="period-pill" id="periodPill" aria-controls="filterDetails"><span id="periodPillText">30 días</span><svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></button>
 </div>
 <button type="button" id="markAllRead" class="mark-all" aria-label="Marcar toda la bandeja como leída" title="Marcar todo como leído" hidden><svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M2 12.5 6 16.5 14 8.5M10 15.5l1 1 9-9"></path></svg><span class="sr-only">Marcar todo como leído</span></button>
+<div id="lanes" class="lanes" role="group" aria-label="Mostrar en la bandeja"></div>
 <div class="lane-row">
 <div id="interestChips" class="interest-chips" role="group" aria-label="Intereses"></div>
-<div id="lanes" class="lanes" role="group" aria-label="Mostrar en la bandeja"></div>
 </div>
 <details class="filter-details" id="filterDetails">
 <summary title="Intereses, período y orden"><svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"></path><circle cx="16" cy="6" r="2"></circle><circle cx="10" cy="12" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg><span class="sr-only">Filtrar u ordenar</span><span class="filter-dot" id="filterDot" hidden></span></summary>

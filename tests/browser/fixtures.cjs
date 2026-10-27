@@ -12,4 +12,7 @@ const test=base.test.extend({
 });
 // The period selector lives inside 'Filtrar u ordenar' (Dirección 25-oct): open it first when closed.
 async function selectPeriod(page,value){const details=page.locator('#filterDetails');if(!(await details.evaluate(el=>el.open)))await details.locator('summary').click();await page.locator('#period').selectOption(value)}
-module.exports={...base,test,FIXTURE_AS_OF,selectPeriod};
+// Below 1000px the lanes live in the "N pendientes ▾" menu (review N1 of PR #72, design B §6):
+// open it first when the lane is not visible.
+async function selectLane(page,lane){const target=page.locator(`[data-lane="${lane}"]`);await target.waitFor({state:'attached'});if(!(await target.isVisible()))await page.locator('#laneToggle').click();await target.click()}
+module.exports={...base,test,FIXTURE_AS_OF,selectPeriod,selectLane};
