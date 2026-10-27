@@ -318,7 +318,9 @@ def test_pulso_fast_stop_does_not_starve_other_tier_or_consume_processing_limit(
         return None
     monkeypatch.setattr(engine_cli, 'process_curated_beta_source', unexpected)
     monkeypatch.setattr(engine_cli, 'process_diario_oficial', process_deep)
-    argv=['engine_cli','--limit','1']
+    # Regulators are processed first (PR #50); a limit of 2 still proves the
+    # deferred Pulso item neither starves the regulator nor consumes the limit.
+    argv=['engine_cli','--limit','2']
     if not unscoped:
         argv += ['--sources','pulso_latercera','diario_oficial']
     monkeypatch.setattr(sys,'argv',argv)
