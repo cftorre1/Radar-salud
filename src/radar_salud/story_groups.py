@@ -44,7 +44,7 @@ def load_groups(root: Path | str = ".") -> list[dict[str, Any]]:
 
 # Explicit non-publication date bases (Dirección 27-oct-2026) travel with every
 # alternative so the UI never shows a detection or data-release day as "Publicado".
-DATE_BASIS_KEYS = ("date_basis", "first_detected_at", "data_release_date")
+DATE_BASIS_KEYS = ("date_basis", "first_detected_at", "data_release_date", "data_release_scope")
 
 
 def date_basis_fields(s: dict[str, Any]) -> dict[str, Any]:

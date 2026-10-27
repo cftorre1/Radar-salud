@@ -150,13 +150,15 @@ def parse_package_search(payload, organization, *, api_url, today, window_days, 
         if capture:
             evidence.update(api_sha256=capture.get("sha256"), captured_at=capture.get("captured_at"))
         items.append(RawItem(
-            SLUG, f"{publisher['label']} {action} «{title}» en datos.gob.cl"[:350], release_url,
+            # Queue identity is slug|url|title: the title carries no action, so a
+            # catalog->data change in the same month never creates a second card.
+            SLUG, f"{publisher['label']} en datos.gob.cl: «{title}»"[:350], release_url,
             publisher["source_name"], "official", event_date=modified.isoformat(),
             raw_text=" ".join(str(row.get("notes") or "").split())[:1800],
             metadata={"organization": organization, "publisher_label": publisher["label"],
                       "dataset_id": row.get("id"), "dataset_name": row.get("name"), "dataset_title": title,
                       "metadata_modified": row["metadata_modified"], "metadata_created": row.get("metadata_created"),
-                      "release_kind": "new_dataset" if is_new else "dataset_update",
+                      "release_kind": "new_dataset" if is_new else "dataset_update", "release_action": action,
                       "license_id": row.get("license_id"), "license_title": row.get("license_title"),
                       "resources": resources, "scopes": publisher["scopes"],
                       "date_basis": DATA_RELEASE, "data_release_date": modified.isoformat(),

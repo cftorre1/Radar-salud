@@ -121,6 +121,12 @@ def test_metadata_only_change_is_labelled_catalog_update():
     items, _ = parse_package_search(payload, "ministerio_de_salud", api_url=query_url("ministerio_de_salud"),
                                     today=date(2026, 10, 11), window_days=30)
     raw = items[0]
-    assert raw.metadata["data_release_scope"] == "catalog" and "ficha de catálogo" in raw.title
+    assert raw.metadata["data_release_scope"] == "catalog" and "ficha de catálogo" in raw.metadata["release_action"]
+    # Same identity (url + title) as the data-update variant of that month.
+    data_items, _ = parse_package_search(deis_payload(), "ministerio_de_salud", api_url=query_url("ministerio_de_salud"),
+                                         today=date(2026, 10, 11), window_days=30)
+    twin = next(r for r in data_items if r.metadata["dataset_id"] == raw.metadata["dataset_id"])
+    from radar_salud.pending_queue import fingerprint
+    assert twin.metadata["data_release_scope"] == "data" and fingerprint(twin) == fingerprint(raw)
     row = process_datos_gob(raw, CFG)
     assert row["data_release_scope"] == "catalog" and "sin recurso nuevo" in row["what_happened"]

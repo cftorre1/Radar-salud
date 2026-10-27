@@ -1211,14 +1211,14 @@ def process_prestadores_bulletin(raw, cfg):
     """Deterministic 'Datos' card dated by first detection (never as publication)."""
     from .date_basis import apply_first_detected, label_first_detected
     from .pipeline import build_signal
-    from .processing import DeferredProcessing, RejectedProcessing
+    from .processing import DeferredProcessing
     try:
         data = download_prestadores_pdf(raw.url)
         text = prestadores_pdf_text(data)
-    except ValueError as exc:
-        raise RejectedProcessing(f"prestadores_bulletin_invalid: {exc}") from exc
     except Exception as exc:
-        raise DeferredProcessing("Prestadores bulletin unavailable") from exc
+        # Off-host redirect, non-PDF or oversize response: transient/unverified
+        # evidence, deferred for retry, never a durable rejection.
+        raise DeferredProcessing(f"Prestadores bulletin unavailable: {exc}"[:200]) from exc
     if len(" ".join(text.split())) < 250 or "intendencia de prestadores" not in " ".join(text.split()).casefold():
         raise DeferredProcessing("Prestadores bulletin unreadable")
     raw.metadata.update(validated_document=True, document_sha256=hashlib.sha256(data).hexdigest(),

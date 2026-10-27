@@ -174,3 +174,21 @@ def test_bupa_requires_baseline_and_never_publishes_baseline_items_by_detection(
         apply_first_detected(raw, today=TODAY, window_days=30)
     new = item(url="https://www.bupa.cl/sala-de-prensa/nueva", detected="2026-10-26T12:00:00+00:00", slug="bupa_chile")
     assert apply_first_detected(new, today=TODAY, window_days=30) == "2026-10-26"
+
+
+def test_prestadores_off_host_or_non_pdf_defers_not_rejects(monkeypatch):
+    from radar_salud.beta_sources import process_prestadores_bulletin
+    def bad(url):
+        raise ValueError("Prestadores redirect left the official HTTPS host")
+    monkeypatch.setattr("radar_salud.beta_sources.download_prestadores_pdf", bad)
+    raw = RawItem("prestadores_data", "Boletín N°3-2026", "https://www.superdesalud.gob.cl/app/uploads/b.pdf",
+                  "Superintendencia de Salud · Intendencia de Prestadores", "official", metadata={"first_detected_at": recent(0)})
+    with pytest.raises(DeferredProcessing, match="unavailable"):
+        process_prestadores_bulletin(raw, {"slug": "prestadores_data"})
+
+
+def test_date_basis_keys_include_release_scope():
+    from radar_salud.story_groups import _alt
+    alt = _alt({"source_url": "https://datos.gob.cl/dataset/x#liberacion-2026-10", "date_basis": "data_release",
+                "data_release_date": "2026-10-07", "data_release_scope": "catalog"})
+    assert alt["data_release_scope"] == "catalog"
