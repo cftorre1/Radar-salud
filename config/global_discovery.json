@@ -87,9 +87,11 @@
     "fallback": "Editor may submit a Reuters link without fetching Reuters, and an original description supported by independently verified primary evidence. No body, excerpts or automated title/metadata collection; publication remains held for rights and editorial review."
   },
   "activation_record": {
-    "decided_by": "Dirección (pendiente de confirmación)",
+    "decided_by": "Dirección (autorizado 27-oct-2026)",
     "proposed_at": "2026-10-26",
+    "authorized_at": "2026-10-27",
     "scope": "OMS y OPS: solo metadatos y enlace, sin IA pagada ni publicación automática",
-    "reason": "Reemplazar la dependencia de Reuters en Global (8 de 14 temas)"
+    "reason": "Reemplazar la dependencia de Reuters en Global (8 de 14 temas)",
+    "batching": "El paso corre después de la captura núcleo, con continue-on-error y presupuesto interno live_capture_budget_seconds; nunca bloquea la captura ni la publicación."
   }
 }
