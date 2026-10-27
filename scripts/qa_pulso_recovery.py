@@ -2688,10 +2688,11 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
         if decision not in {"reject", "group"}:
             from copy import deepcopy
             from radar_salud.editorial_gate import publication_ready
+            from radar_salud.editorial_gate import RELEVANCE_WITHDRAWAL_REASONS
             ok, reason, _ = publication_ready(deepcopy(effective))
             # Later Dirección relevance rules (27-oct-2026) withdraw a card from the feed;
             # they do not invalidate the provenance of the reviewed copy being verified here.
-            if not ok and reason not in {"health_not_main_subject", "institutional_agenda"}:
+            if not ok and reason not in RELEVANCE_WITHDRAWAL_REASONS:
                 raise ValueError("editorial_effective_copy_fails_existing_publication_gate")
         result = effective, provenance, paid, effective_assessment
         cache[identity] = result
@@ -2728,7 +2729,10 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
                     or rejected and (metadata.get("rejection_reason") != assessment["reason"] or item.get("last_error") != assessment["reason"])):
                 raise ValueError("editorial_effective_state_model_primary_or_bookkeeping_changed")
             present = [row for row in snapshot.get("signals", []) if (row.get("source_url"), row.get("event_date")) == key]
-            if rejected and present or not rejected and len(present) != 1:
+            from copy import deepcopy
+            from radar_salud.editorial_gate import RELEVANCE_WITHDRAWAL_REASONS, publication_ready
+            withdrawn = not rejected and publication_ready(deepcopy(effective))[1] in RELEVANCE_WITHDRAWAL_REASONS
+            if (rejected or withdrawn) and present or not (rejected or withdrawn) and len(present) != 1:
                 raise ValueError("editorial_effective_serialized_feed_presence_changed")
             if present and any(row.get(field) != effective.get(field) for row in present for field in (
                     "what_happened", "why_it_matters", "event_date", "publication_date", "editorial_relevance",

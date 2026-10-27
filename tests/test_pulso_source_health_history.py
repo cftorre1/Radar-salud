@@ -56,7 +56,8 @@ def test_all37_actual_history_removes_withdrawn_oct11_and_keeps17_publications_w
     assert original_health["pulso_latercera"]["last_signal_at"] == "2026-10-11"
     current = poll(tmp_path, history, queue)
     assert current["last_signal_at"] == "2026-10-10"
-    assert current["published_total"] == 17
+    # 16 since Dirección 27-oct-2026: "Senadores de oposición … infraestructura crítica" fails the health-nexus rule.
+    assert current["published_total"] == 16
     assert current["published"] == 0 and current["new"] == 0
     assert current["last_signal_at_basis"] == "effective_verified_published_history"
     assert current["latest_original_at"] == "2026-10-11"
@@ -180,7 +181,7 @@ def test_core_empty_poll_passes_full934_history_and_preserves_all897_native_reco
     assert len(native) == 897 and canonical_sha(native) == MANIFEST["native_history_canonical_sha256"]
     assert json.loads((tmp_path / "data/state/pending_queue.json").read_bytes()) == OBSERVED["pulso_queue"]
     current = json.loads((tmp_path / "data/source_health.json").read_bytes())["sources"]["pulso_latercera"]
-    assert current["last_signal_at"] == "2026-10-10" and current["published_total"] == 17
+    assert current["last_signal_at"] == "2026-10-10" and current["published_total"] == 16
     assert current["latest_original_at"] == "2026-10-11"
 
 

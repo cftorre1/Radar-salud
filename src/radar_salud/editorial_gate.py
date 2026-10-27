@@ -41,24 +41,43 @@ def _nexus_config()->Dict[str,Any]:
     except (OSError,ValueError):return {}
 
 _NEXUS=None
+_GROUP_URLS=None
+# Feed-relevance withdrawals: a card leaves the feed; its provenance stays valid.
+RELEVANCE_WITHDRAWAL_REASONS=frozenset({"health_not_main_subject"})
+
 def _nexus_regex():
     global _NEXUS
     if _NEXUS is None:
-        cfg=_nexus_config();terms=cfg.get("title_terms") or []
+        cfg=_nexus_config();terms=cfg.get("title_terms") or [];whole=cfg.get("whole_word_terms") or []
+        alts=[re.escape(t) for t in sorted(terms,key=len,reverse=True)]+[re.escape(t)+r"(?![\w])" for t in whole]
         _NEXUS=(set(cfg.get("applies_to_source_types") or []),
-                re.compile(r"(?<![\w])(?:"+"|".join(re.escape(t) for t in sorted(terms,key=len,reverse=True))+r")",re.I) if terms else None)
+                re.compile(r"(?<![\w])(?:"+"|".join(alts)+r")",re.I) if alts else None)
     return _NEXUS
+
+def _story_member_urls()->set:
+    global _GROUP_URLS
+    if _GROUP_URLS is None:
+        from datetime import date
+        from pathlib import Path
+        from .story_groups import CONFIG
+        import json
+        try:groups=json.loads((Path(__file__).resolve().parents[2]/CONFIG).read_text(encoding="utf-8")).get("groups",[])
+        except (OSError,ValueError):groups=[]
+        today=date.today().isoformat()
+        _GROUP_URLS={u for g in groups if isinstance(g,dict) and str(g.get("review_by") or "9999")>=today
+                     for u in g.get("member_urls") or []}
+    return _GROUP_URLS
+
+def title_has_health_nexus(title:str)->bool:
+    _,rx=_nexus_regex()
+    return rx is None or bool(rx.search(str(title or "")))
 
 def health_not_main_subject(r:Dict[str,Any])->bool:
     types,rx=_nexus_regex()
     if rx is None or r.get("source_type") not in types:return False
-    from .story_groups import load_groups
-    from pathlib import Path
-    if any(r.get("source_url") in g.get("member_urls",[]) for g in load_groups(Path(__file__).resolve().parents[2])):
-        return False  # covered by a reviewed synthesis that links it
-    title=str(r.get("display_title") or r.get("title") or "")
-    original=str(r.get("title") or "")
-    return not (rx.search(title) or rx.search(original))
+    if r.get("source_url") in _story_member_urls():
+        return False  # covered by a reviewed, current synthesis that links it
+    return not (title_has_health_nexus(r.get("display_title") or "") or title_has_health_nexus(r.get("title") or ""))
 
 def invalid_validity(r:Dict[str,Any])->bool:
     v=str(r.get("validity_text") or "").lower();return any(x in v for x in ('nj:','"529"','"535"','propertyvalue','javascript','schema.org'))
