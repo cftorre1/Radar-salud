@@ -44,6 +44,8 @@ _NEXUS=None
 _GROUP_URLS=None
 # Feed-relevance withdrawals: a card leaves the feed; its provenance stays valid.
 RELEVANCE_WITHDRAWAL_REASONS=frozenset({"health_not_main_subject"})
+# Snapshots exported before this instant predate the relevance rule (Dirección 27-oct-2026).
+RELEVANCE_RULE_SINCE="2026-10-27T16:00:00"
 
 def _nexus_regex():
     global _NEXUS

@@ -2730,10 +2730,12 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
                 raise ValueError("editorial_effective_state_model_primary_or_bookkeeping_changed")
             present = [row for row in snapshot.get("signals", []) if (row.get("source_url"), row.get("event_date")) == key]
             from copy import deepcopy
-            from radar_salud.editorial_gate import RELEVANCE_WITHDRAWAL_REASONS, publication_ready
+            from radar_salud.editorial_gate import RELEVANCE_RULE_SINCE, RELEVANCE_WITHDRAWAL_REASONS, publication_ready
             withdrawn = not rejected and publication_ready(deepcopy(effective))[1] in RELEVANCE_WITHDRAWAL_REASONS
-            # Withdrawn cards may still be present in snapshots exported before the relevance rule existed.
-            if rejected and present or withdrawn and len(present) > 1 or not (rejected or withdrawn) and len(present) != 1:
+            # Withdrawn cards may still be present only in snapshots exported before the relevance rule existed.
+            legacy_snapshot = str(snapshot.get("generated_at") or "") < RELEVANCE_RULE_SINCE
+            allowed = (0, 1) if withdrawn and legacy_snapshot else (0,) if withdrawn else (1,)
+            if rejected and present or not rejected and len(present) not in allowed:
                 raise ValueError("editorial_effective_serialized_feed_presence_changed")
             if present and any(row.get(field) != effective.get(field) for row in present for field in (
                     "what_happened", "why_it_matters", "event_date", "publication_date", "editorial_relevance",
@@ -2793,10 +2795,10 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
                     target_original, target_paid = original_targets[0], paid_targets[0]
                     target_assessment = target_paid.get("raw", {}).get("metadata", {}).get("editorial_assessment") or {}
                 from copy import deepcopy
-                from radar_salud.editorial_gate import RELEVANCE_WITHDRAWAL_REASONS, publication_ready
+                from radar_salud.editorial_gate import RELEVANCE_RULE_SINCE, RELEVANCE_WITHDRAWAL_REASONS, publication_ready
                 # A survivor withdrawn by a later Dirección relevance rule takes its whole group out of the feed.
                 survivor_withdrawn = len(survivors) == 1 and publication_ready(deepcopy(survivors[0]))[1] in RELEVANCE_WITHDRAWAL_REASONS
-                if (target_key == key or len(survivors) != 1 or len(survivor_items) != 1 or (len(feeds) > 1 if survivor_withdrawn else len(feeds) != 1)
+                if (target_key == key or len(survivors) != 1 or len(survivor_items) != 1 or len(feeds) not in ((0, 1) if survivor_withdrawn and str(snapshot.get("generated_at") or "") < RELEVANCE_RULE_SINCE else (0,) if survivor_withdrawn else (1,))
                         or survivor_items[0].get("status") != "published" or survivors[0].get("feed_visibility") is False
                         or survivors[0].get("editorial_decision") in {"reject", "group"}
                         or type(survivors[0].get("editorial_relevance")) is not int or survivors[0]["editorial_relevance"] < 72
