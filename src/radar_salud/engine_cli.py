@@ -1,5 +1,5 @@
 from __future__ import annotations
-import argparse,hashlib,json
+import argparse,hashlib,json,re
 from dataclasses import asdict
 from copy import deepcopy
 from datetime import date, datetime, timezone
@@ -41,6 +41,18 @@ def _prioritize_official(ready):
             + [pair for pair in ordered if pair[1].get("source") not in OFFICIAL_PRIORITY])
 
 
+_HEALTH_HINT = re.compile(
+    r"salud|cl[ií]nic|isapre|fonasa|hospital|m[eé]dic|farmac|laborator|licencia|minsal|superintendencia|"
+    r"\bges\b|c[aá]ncer|pacient|urgenc|vacun|sanitari|prestador|mutual|achs|bupa|redsalud|banm[eé]dica|"
+    r"colmena|consalud|nueva masvida|cruz blanca|caec|listas? de espera|christus|hanta|di[aá]lisis|cenabast|"
+    r"anamed|oncol|telemedicina|ilc\b|psiqui|epidem|virus", re.I)
+
+
+def _likely_health(item):
+    raw = item.get("raw", {}) or {}
+    return bool(_HEALTH_HINT.search(str(raw.get("title") or "")))
+
+
 def _prioritize_pulso_ready(ready):
     """Order publisher dates only inside Pulso's existing scheduling slots.
 
@@ -65,8 +77,10 @@ def _prioritize_pulso_ready(ready):
 
     for indexes in slots.values():
         # Python's stable sort retains ties and unknown-date relative order.
+        # Likely-health items first (ordering only: nothing is discarded; a keyword
+        # filter would have lost 30% of published Pulso items), then newest first.
         rows = sorted((ordered[index] for index in indexes),
-                      key=publication_priority, reverse=True)
+                      key=lambda pair: (_likely_health(pair[1]), publication_priority(pair)), reverse=True)
         for index, row in zip(indexes, rows):
             ordered[index] = row
     return ordered
