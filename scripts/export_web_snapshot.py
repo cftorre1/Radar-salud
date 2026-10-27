@@ -690,6 +690,18 @@ def curate(signals,resolve_external=True,as_of=None):
     recent=[s for s in recent if s.get("feed_visibility") is not False]
     from radar_salud.normative_minimal import strip_interpretation
     recent=[strip_interpretation(dict(s)) for s in recent]
+    # One card per story (Dirección, punto II): same-event coverage folds into a lead card;
+    # long running stories become one reviewed synthesis. Members stay in history.
+    from radar_salud.story_groups import apply_story_groups, load_groups
+    def story_gate(card):
+        ok,reason,score=publication_ready(card)
+        if not ok:return False
+        card["publication_gate_reason"]=reason;card["publication_ready_score"]=score
+        card["editorial_decision"]="accept"
+        card["editorial_committee"]=build_committee_artifact(card)
+        return card["editorial_committee"].get("verdict")=="PASS"
+    recent,summaries=apply_story_groups(recent,load_groups(),gate=story_gate)
+    recent.extend(summaries)
     # Individual accreditation acts stay out of the feed; one verifiable rolling pulse instead.
     from radar_salud.accreditation_pulse import accreditation_pulse
     pulse=accreditation_pulse(signals,latest)
