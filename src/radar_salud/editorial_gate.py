@@ -30,6 +30,57 @@ _REGULATORS=("Superintendencia de Seguridad Social (SUSESO)","Superintendencia d
 def is_institutional_agenda(r:Dict[str,Any])->bool:
     return r.get("source_name") in _REGULATORS and bool(_AGENDA.search(str(r.get("title") or "")))
 
+# Health must be the main subject of a general-press piece (Dirección 27-oct-2026):
+# the automated summary must not rescue a story about something else through an
+# incidental health angle. The title carries the subject; terms live in config.
+def _nexus_config()->Dict[str,Any]:
+    import json
+    from pathlib import Path
+    p=Path(__file__).resolve().parents[2]/"config"/"editorial_health_nexus.json"
+    try:return json.loads(p.read_text(encoding="utf-8"))
+    except (OSError,ValueError):return {}
+
+_NEXUS=None
+_GROUP_URLS=None
+# Feed-relevance withdrawals: a card leaves the feed; its provenance stays valid.
+RELEVANCE_WITHDRAWAL_REASONS=frozenset({"health_not_main_subject"})
+# Snapshots exported before this instant predate the relevance rule (Dirección 27-oct-2026).
+RELEVANCE_RULE_SINCE="2026-10-27T16:00:00"
+
+def _nexus_regex():
+    global _NEXUS
+    if _NEXUS is None:
+        cfg=_nexus_config();terms=cfg.get("title_terms") or [];whole=cfg.get("whole_word_terms") or []
+        alts=[re.escape(t) for t in sorted(terms,key=len,reverse=True)]+[re.escape(t)+r"(?![\w])" for t in whole]
+        _NEXUS=(set(cfg.get("applies_to_source_types") or []),
+                re.compile(r"(?<![\w])(?:"+"|".join(alts)+r")",re.I) if alts else None)
+    return _NEXUS
+
+def _story_member_urls()->set:
+    global _GROUP_URLS
+    if _GROUP_URLS is None:
+        from datetime import date
+        from pathlib import Path
+        from .story_groups import CONFIG
+        import json
+        try:groups=json.loads((Path(__file__).resolve().parents[2]/CONFIG).read_text(encoding="utf-8")).get("groups",[])
+        except (OSError,ValueError):groups=[]
+        today=date.today().isoformat()
+        _GROUP_URLS={u for g in groups if isinstance(g,dict) and str(g.get("review_by") or "9999")>=today
+                     for u in g.get("member_urls") or []}
+    return _GROUP_URLS
+
+def title_has_health_nexus(title:str)->bool:
+    _,rx=_nexus_regex()
+    return rx is None or bool(rx.search(str(title or "")))
+
+def health_not_main_subject(r:Dict[str,Any])->bool:
+    types,rx=_nexus_regex()
+    if rx is None or r.get("source_type") not in types:return False
+    if r.get("source_url") in _story_member_urls():
+        return False  # covered by a reviewed, current synthesis that links it
+    return not (title_has_health_nexus(r.get("display_title") or "") or title_has_health_nexus(r.get("title") or ""))
+
 _DO_TITLE=re.compile(r"^(?:Extracto de\s+)?(?:Ley|Decreto|Resoluci[oó]n|Circular|Reglamento)\b",re.I)
 def malformed_official_listing_title(r:Dict[str,Any])->bool:
     """Diario Oficial titles built by the old reader can carry markup or the previous act
@@ -81,6 +132,8 @@ def publication_ready(r:Dict[str,Any])->Tuple[bool,str,int]:
     if has_garbage(r):return False,"binary_or_markup",q
     if is_minsal_noise(r):return False,"editorial_noise",q
     if is_institutional_agenda(r):return False,"institutional_agenda",q
+    if health_not_main_subject(r):return False,"health_not_main_subject",q
+
     if malformed_official_listing_title(r):return False,"malformed_official_listing_title",q
     why=str(r.get("why_it_matters") or "").lower()
     what=str(r.get("what_happened") or "").lower()

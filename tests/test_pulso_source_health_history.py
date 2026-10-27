@@ -56,7 +56,8 @@ def test_all37_actual_history_removes_withdrawn_oct11_and_keeps17_publications_w
     assert original_health["pulso_latercera"]["last_signal_at"] == "2026-10-11"
     current = poll(tmp_path, history, queue)
     assert current["last_signal_at"] == "2026-10-10"
-    assert current["published_total"] == 17
+    # 15 since Dirección 27-oct-2026: "Senadores de oposición … infraestructura crítica" and the Las Condes aluvión liveblog fail the health-nexus rule.
+    assert current["published_total"] == 15
     assert current["published"] == 0 and current["new"] == 0
     assert current["last_signal_at_basis"] == "effective_verified_published_history"
     assert current["latest_original_at"] == "2026-10-11"
@@ -180,7 +181,7 @@ def test_core_empty_poll_passes_full934_history_and_preserves_all897_native_reco
     assert len(native) == 897 and canonical_sha(native) == MANIFEST["native_history_canonical_sha256"]
     assert json.loads((tmp_path / "data/state/pending_queue.json").read_bytes()) == OBSERVED["pulso_queue"]
     current = json.loads((tmp_path / "data/source_health.json").read_bytes())["sources"]["pulso_latercera"]
-    assert current["last_signal_at"] == "2026-10-10" and current["published_total"] == 17
+    assert current["last_signal_at"] == "2026-10-10" and current["published_total"] == 15
     assert current["latest_original_at"] == "2026-10-11"
 
 
@@ -229,4 +230,8 @@ def test_actual_legacy_without_new_binding_and_liveblog_augmented_request_remain
     metadata = live_entry["raw"]["metadata"]
     assert metadata["analysis_input_body_sha256"] != metadata["analysis_base_article_body_sha256"]
     assert metadata["analysis_base_article_body_sha256"] == live_row["editorial_review"]["original_body_sha256"]
-    assert poll(tmp_path / "liveblog", [live_row], [live_entry])["published_total"] == 1
+    # The only actual liveblog (Las Condes aluvión) is withdrawn from the feed since Dirección 27-oct-2026
+    # (health must be the title's subject); its binding stays eligible, the relevance rule removes it.
+    from radar_salud.editorial_gate import title_has_health_nexus
+    expected = 1 if title_has_health_nexus(live_row["title"]) else 0
+    assert poll(tmp_path / "liveblog", [live_row], [live_entry])["published_total"] == expected

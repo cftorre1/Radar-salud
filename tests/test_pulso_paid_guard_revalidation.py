@@ -125,7 +125,13 @@ def test_real18_reuse_same_paid_answer_in_normal_processor_with_zero_model_calls
         raw = RawItem(**deepcopy(queue.items[pin["queue_fingerprint"]]["raw"]))
         original_ai = deepcopy(raw.metadata["analysis_model_output"])
         row = beta_sources.process_curated_beta_source(raw, {})
-        assert row is not None
+        if row is None:
+            # Dirección 27-oct-2026: a later feed-relevance rule (health must be the title's subject)
+            # may withdraw a replayed card; the paid answer is still reused without a new model call.
+            from radar_salud.editorial_gate import title_has_health_nexus
+            assert not title_has_health_nexus(raw.title)
+            assert raw.metadata["analysis_model_output"] == original_ai
+            continue
         assert row["source_url"] == raw.url and row["event_date"] == raw.event_date
         assert row["evidence_maturity"] == "media_reported" and row["editorial_relevance"] == original_ai["relevance_score"] >= 72
         assert raw.metadata["analysis_model_output"] == original_ai
