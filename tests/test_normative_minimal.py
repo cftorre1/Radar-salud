@@ -91,3 +91,11 @@ def test_reviewer_accepts_real_minimal_card_and_rejects_leaks(tmp_path):
                 {"key_points": ["interpretación"]}, {"validity_text": "desde marzo"}, {"card_why": None},
                 {"display_title": "Circular IF/N°537 · Nuevo deber de notificar en 24 horas"}):
         assert "normative_minimal_contract" in codes({**base, **bad}), bad
+
+
+def test_minimal_scope_and_relevance_never_come_from_automated_analysis():
+    minimal = [r for r in _curated_by_url().values() if r.get("normative_minimal")]
+    assert all(r["radar_score"] == 65 and not r.get("actionability_score") for r in minimal)
+    suseso = [r for r in minimal if "SUSESO" in r["source_name"]]
+    assert suseso and all(r["scopes"] == ["Seguridad social"] for r in suseso)
+    assert all(not r["normative_context"].endswith("….") for r in minimal)

@@ -18,14 +18,19 @@ def main() -> None:
         raw = item.get("raw") or {}
         text = str(raw.get("raw_text") or "").strip()
         if raw.get("source_slug") in SLUGS and text and text != str(raw.get("title") or "").strip() and len(text) <= 600:
-            subjects[raw.get("url")] = text
+            subjects[raw.get("url")] = (text, (raw.get("metadata") or {}).get("scope"))
     payload = json.loads(HISTORY.read_text(encoding="utf-8"))
     filled = 0
     for signal in payload["signals"]:
-        subject = subjects.get(signal.get("source_url"))
-        if subject and not signal.get("official_subject"):
+        found = subjects.get(signal.get("source_url"))
+        if not found:
+            continue
+        subject, scope = found
+        if not signal.get("official_subject"):
             signal["official_subject"] = subject
             filled += 1
+        if scope and not signal.get("official_listing_scope"):
+            signal["official_listing_scope"] = scope
     HISTORY.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"official_subject filled={filled}")
 

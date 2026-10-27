@@ -20,7 +20,12 @@ INTERPRETIVE_FIELDS = (
     "possible_implications", "who_cares", "related_context", "related_reference_contexts",
     "related_reference_ids", "data_insights", "data_insight_evidence", "normative_subject",
     "source_documents", "summary_table", "affected_processes", "source_alternatives",
-    "card_why_optional", "legacy_read_title")
+    "card_why_optional", "legacy_read_title", "watch_tags", "actionability_score",
+    "regulatory_impact_score", "economic_impact_score", "scope_score", "novelty_score",
+    "editorial_relevance")
+# Neutral relevance until an editor reads the act: "Relevante", never "Esencial".
+UNREVIEWED_RADAR_SCORE = 65
+_LISTING_SCOPES = {"Prestadores": ["Prestadores"], "Isapres / Fonasa": ["Isapres", "Fonasa"]}
 DISCLAIMER = ("Aún sin lectura editorial: los datos provienen del documento oficial; "
               "revisa el texto antes de decidir.")
 # Diario Oficial stays held until its reader stops producing truncated titles
@@ -75,16 +80,16 @@ def _modified_acts(r: dict[str, Any]) -> list[str]:
     return [x for x in dict.fromkeys(out) if x][:2]
 
 
-def _trim(text: str, limit: int = 160) -> str:
+def _trim(text: str, limit: int | None = 160) -> str:
     text = re.sub(r"\s+", " ", text).strip().rstrip(".")
-    return text if len(text) <= limit else text[:limit].rsplit(" ", 1)[0] + "…"
+    return text if limit is None or len(text) <= limit else text[:limit].rsplit(" ", 1)[0] + "…"
 
 
-def _official_subject(r: dict[str, Any], label: str) -> str:
+def _official_subject(r: dict[str, Any], label: str, limit: int | None = 160) -> str:
     """Verbatim regulator subject: SIS listing summary or SUSESO capitalised heading."""
     listed = str(r.get("official_subject") or "").strip()
     if listed:
-        return _trim(listed[0].upper() + listed[1:])
+        return _trim(listed[0].upper() + listed[1:], limit)
     raw = str(r.get("what_happened") or "")
     m = re.match(r"^\s*Circular\s+\d+\s+(.+)$", raw)
     if not m or r.get("source_name") != "Superintendencia de Seguridad Social (SUSESO)":
@@ -92,7 +97,7 @@ def _official_subject(r: dict[str, Any], label: str) -> str:
     subject = m.group(1).strip().rstrip(".")
     if subject.upper() != subject:  # not the verbatim official heading
         return ""
-    return _trim(_sentence_case(subject))
+    return _trim(_sentence_case(subject), limit)
 
 
 _ACRONYMS = ("C.C.A.F.", "CCAF", "SENCE", "SUSESO", "ISL", "COMPIN", "SIL", "FONASA", "ISAPRE", "ISAPRES", "GES", "MINSAL")
@@ -121,10 +126,15 @@ def minimal_card(r: dict[str, Any], label: str) -> dict[str, Any] | None:
     if not subject:
         return None  # nothing verifiable to say beyond the number: keep held
     title = f"{label} · {short}: {subject}"
+    full = _official_subject(r, label, limit=None)
+    if issuer.endswith("(SUSESO)"):
+        scopes = ["Seguridad social"]
+    else:
+        scopes = _LISTING_SCOPES.get(str(r.get("official_listing_scope") or ""), ["Sistema de salud"])
     # Only facts read from the regulator's own listing. Referenced acts and
     # scopes come from automated PDF analysis (once bound to the wrong PDF), so
     # they never appear on a minimal card.
-    context = f"Emitida por {issuer} con fecha {r['event_date']}. Asunto oficial: {subject or 'ver documento'}."
+    context = f"Emitida por {issuer} con fecha {r['event_date']}. Asunto oficial: {full}."
     card = {field: None for field in INTERPRETIVE_FIELDS}
     card.update({
         "display_title": title,
@@ -136,6 +146,9 @@ def minimal_card(r: dict[str, Any], label: str) -> dict[str, Any] | None:
         "normative_minimal": True,
         "editorial_badge": BADGE,
         "normative_act_scope": "general",
+        # From the regulator's listing page (or the issuer), never from automated analysis.
+        "scopes": scopes,
+        "radar_score": UNREVIEWED_RADAR_SCORE,
     })
     return card
 

@@ -48,4 +48,5 @@ def process_superintendencia_normativa(raw:RawItem,source_cfg):
     s=build_signal(raw,source_cfg);row=s.to_dict();row["signal_types"]=["Normativa"];row["scopes"]=actors or ["Sistema de salud"];row["affected_processes"]=processes;row["category"]="Regulación & Legal";row["radar_score"]=max(row["radar_score"],82);row["related_reference_ids"]=refs;row["related_reference_contexts"]=contexts
     # Verbatim official subject from the regulator's listing (verifiable; used by minimal cards).
     if raw.raw_text and raw.raw_text.strip()!=raw.title.strip() and len(raw.raw_text)<=600:row["official_subject"]=raw.raw_text.strip()
+    if (raw.metadata or {}).get("scope"):row["official_listing_scope"]=raw.metadata["scope"]
     return row
