@@ -124,3 +124,30 @@ def test_rejected_act_is_retried_only_when_official_text_changes(tmp_path):
     assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == []  # same text: no retry
     (tmp_path / EVIDENCE_DIR / f"{_key(PDF)}.json").write_text(json.dumps({"text": EVIDENCE + " Texto corregido."}))
     assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == [URL]
+
+
+def test_verify_checks_full_dates_actors_and_subjects_as_units():
+    L = "Circular IF/N°537"
+    moved = {**GOOD, "normative_context": GOOD["normative_context"].replace("1 de marzo", "24 de marzo")}
+    assert any(p.startswith("date_or_quantity_not_literal_in_quote") for p in auto.verify(moved, L, EVIDENCE))
+    invented_party = {**GOOD, "normative_context": GOOD["normative_context"].replace("a los prestadores", "a isapres y FONASA")}
+    probs = auto.verify(invented_party, L, EVIDENCE)
+    assert "actor_not_in_official_text:isapre" in probs and "actor_not_in_official_text:fonasa" in probs
+    invented_subject = {**GOOD, "subject_terms": ["Isapres"],
+                        "plain_language_title": "Circular IF/N°537 · Isapres: exige notificar en 24 horas"}
+    assert "subject_not_in_official_text:Isapres" in auto.verify(invented_subject, L, EVIDENCE)
+    exempt = {**GOOD, "normative_context": GOOD["normative_context"] + " Exime a los hospitales."}
+    assert "strong_effect_not_in_text:exime" in auto.verify(exempt, L, EVIDENCE)
+
+
+def test_unparseable_draft_is_recorded_as_rejection(tmp_path):
+    signals = _repo(tmp_path)
+    calls = []
+    def fake(prompt, *, feature, preferred_model, allow_luna_fallback=True):
+        calls.append(feature)
+        raise ValueError("model_output_not_object")
+    assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == []
+    store = json.loads((tmp_path / auto.AUTO_PATH).read_text(encoding="utf-8"))
+    assert store["rejected"][URL]["problems"][0].startswith("unparseable_model_output")
+    auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27))
+    assert calls == ["normative_autorecord"]  # not retried while the official text is unchanged

@@ -45,7 +45,16 @@ def _has_token(token: str, text: str) -> bool:
 _MONTHS = ("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre",
            "noviembre", "diciembre")
 # Strong legal effects may only be stated when the official text uses them.
-_STRONG = ("prohíbe", "prohibe", "sanciona", "multa", "deroga", "suspende", "revoca", "cancela")
+_STRONG = ("prohíbe", "prohibe", "sanciona", "multa", "deroga", "suspende", "revoca", "cancela", "exime",
+           "deja sin efecto", "no exige")
+# Obligated parties may only be named when the official text names them.
+_ACTORS = ("isapre", "fonasa", "prestador", "clínica", "clinica", "hospital", "empleador", "mutualidad", "mutual",
+           "compin", "aseguradora", "farmacia", "laboratorio", "médico", "medico", "dentista", "matrona",
+           "trabajador", "beneficiario", "afiliado", "cotizante", "isl", "ccaf", "caja de compensación")
+# Full dates and number+unit phrases are checked as one unit, literally in a quote.
+_UNIT_RE = re.compile(r"\b\d{1,2} de (?:" + "|".join(("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
+                      "agosto", "septiembre", "octubre", "noviembre", "diciembre")) + r")(?: de \d{4})?\b"
+                      r"|\b\d[\d.,]* (?:horas|días hábiles|dias habiles|días|dias|meses|años|anos|semanas|uf|%)")
 
 
 def _stem(word: str) -> str:
@@ -75,7 +84,7 @@ def merged_config(root: Path, human: dict[str, Any]) -> dict[str, Any]:
     return cfg
 
 
-def verify(record: dict[str, Any], label: str, evidence: str) -> list[str]:
+def verify(record: dict[str, Any], label: str, evidence: str, official_subject: str = "") -> list[str]:
     problems = []
     title = str(record.get("plain_language_title") or "")
     context = str(record.get("normative_context") or "")
@@ -91,6 +100,10 @@ def verify(record: dict[str, Any], label: str, evidence: str) -> list[str]:
         problems.append("subject_term_missing_in_title")
     if not act or not any(_norm(t) in nt for t in act):
         problems.append("action_term_missing_in_title")
+    ns = _norm(official_subject)
+    for t in subj:
+        if _stem(t) not in ne and _stem(t) not in ns:
+            problems.append(f"subject_not_in_official_text:{t}")
     for t in act:
         if _stem(t) not in ne:
             problems.append(f"action_not_in_official_text:{t}")
@@ -108,11 +121,17 @@ def verify(record: dict[str, Any], label: str, evidence: str) -> list[str]:
         elif _norm(q) not in ne:
             problems.append("quote_not_literal")
     nq = " ".join(_norm(q) for q in quotes)
+    for actor in _ACTORS:
+        if re.search(rf"\b{re.escape(actor)}", nt + " " + nc) and not re.search(rf"\b{re.escape(actor)}", ne):
+            problems.append(f"actor_not_in_official_text:{actor}")
+    for unit in set(_UNIT_RE.findall(nt + " " + nc)):
+        if unit not in nq:
+            problems.append(f"date_or_quantity_not_literal_in_quote:{unit}")
     label_numbers = _numbers(label)
     for n in (_numbers(title) | _numbers(context)) - label_numbers:
         if not _has_token(n, ne):
             problems.append(f"number_not_in_official_text:{n}")
-        elif n in _numbers(context) and not _has_token(n, nq):
+        elif not _has_token(n, nq):
             problems.append(f"number_not_backed_by_quote:{n}")
     for month in _MONTHS:
         if re.search(rf"\b{month}\b", nc):
@@ -196,13 +215,21 @@ def build_auto_records(root: Path, signals: list[dict[str, Any]], *, call: Calla
             try:
                 draft = call(_draft_prompt(label, str(s.get("source_name")), str(s.get("official_subject") or ""), evidence),
                              feature="normative_autorecord", preferred_model="gpt-5.6-terra")
-                record = dict(draft.output)
-                problems = verify(record, label, evidence)
+                try:
+                    record = dict(draft.output)
+                    problems = verify(record, label, evidence, str(s.get("official_subject") or ""))
+                except (TypeError, ValueError, AttributeError) as exc:
+                    record, problems = {}, [f"unparseable_draft:{type(exc).__name__}"]
                 if not problems:
                     review = call(_review_prompt(record, evidence), feature="normative_autorecord_review",
                                   preferred_model="gpt-5.6-terra", allow_luna_fallback=False).output
                     if str(review.get("verdict")).upper() != "PASS":
                         problems.append("independent_review:" + str(review.get("reason"))[:200])
+            except ValueError as exc:  # unparseable model output: record it so the act is not retried forever
+                if "pricing" in str(exc):
+                    print("normative_autorecord deferred:", type(exc).__name__)
+                    break
+                problems = [f"unparseable_model_output:{str(exc)[:80]}"]
             except Exception as exc:  # budget exhausted or model failure: stop, keep what was done
                 print("normative_autorecord deferred:", type(exc).__name__)
                 break
