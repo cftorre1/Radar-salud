@@ -687,6 +687,10 @@ def curate(signals,resolve_external=True,as_of=None):
         ok,reason,score=publication_ready(pulse)
         if ok:
             pulse["publication_gate_reason"]=reason;pulse["publication_ready_score"]=score
+            # Same committee gate as every visible card (web contract requires a PASS artifact).
+            pulse["editorial_decision"]="accept"
+            pulse["editorial_committee"]=build_committee_artifact(pulse)
+            pulse["feed_visibility"]=pulse["editorial_committee"].get("verdict")=="PASS"
             recent.append(pulse)
     recent.extend(v3)
     recent.sort(key=lambda s:(_d(s.get("event_date")) or date.min,s.get("radar_score",0)),reverse=True);return recent
