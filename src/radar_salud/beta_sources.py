@@ -1100,5 +1100,77 @@ def process_prestadores_data(raw, cfg):
     return None
 
 
+class PrestadoresDailyScout:
+    """Daily-engine view of the bulletins with a first-detection baseline.
+
+    The listing exposes no publication date (Dirección 27-oct-2026, decision
+    d). The first daily run records every bulletin already listed as a
+    baseline and queues nothing, so a backlog is never presented as
+    "detected today"; later runs queue only bulletins absent from it.
+    """
+    SOURCE_SLUG = PrestadoresDataScout.SOURCE_SLUG
+
+    def __init__(self, root=None, scout=None, enabled=None):
+        from pathlib import Path
+        from .paths import project_root
+        self.root = Path(root or project_root())
+        self.scout = scout or PrestadoresDataScout()
+        self.enabled = enabled
+        self.surface_results = []
+
+    def discover(self):
+        import json
+        from datetime import datetime, timezone
+        from .live_lanes import enabled as lane_enabled
+        from .pending_queue import atomic_json
+        enabled = lane_enabled("RADAR_PRESTADORES_DAILY") if self.enabled is None else self.enabled
+        if not enabled:
+            self.surface_results = [{"status": "not_run_outside_engine_runtime"}]
+            return []
+        items = self.scout.discover()
+        path = self.root / "data/state/prestadores_data_baseline.json"
+        if not path.exists():
+            atomic_json(path, {"established_at": datetime.now(timezone.utc).isoformat(),
+                               "reason": "first_detection_baseline_dated_items_unavailable",
+                               "urls": sorted(raw.url for raw in items)})
+            self.surface_results = [{"status": "baseline_established", "baseline_items": len(items)}]
+            return []
+        baseline = set(json.loads(path.read_text()).get("urls", []))
+        fresh = [raw for raw in items if raw.url not in baseline]
+        self.surface_results = [{"status": "ok", "listed": len(items), "new_since_baseline": len(fresh)}]
+        return fresh
+
+
+def process_prestadores_bulletin(raw, cfg):
+    """Deterministic 'Datos' card dated by first detection (never as publication)."""
+    from .date_basis import apply_first_detected, label_first_detected
+    from .pipeline import build_signal
+    from .processing import DeferredProcessing
+    from .document_intelligence import extract_pdf_text
+    try:
+        text = extract_pdf_text(raw.url, max_pages=3)
+    except Exception as exc:
+        raise DeferredProcessing("Prestadores bulletin unavailable") from exc
+    if not text or len(text) < 250 or "Intendencia de Prestadores" not in text:
+        raise DeferredProcessing("Prestadores bulletin unreadable")
+    raw.metadata["validated_document"] = True
+    apply_first_detected(raw)
+    family = raw.metadata.get("data_family") or "prestadores"
+    period = raw.metadata.get("data_period") or "2026"
+    raw.metadata.update({
+        "what_happened": (f"La Intendencia de Prestadores de la Superintendencia de Salud tiene disponible el "
+                          f"{raw.title} (tema: {family}; período de datos: {period})."),
+        "why_it_matters": (f"Boletín estadístico oficial sobre {family} de prestadores: insumo para seguir "
+                           "acreditación, reclamos y registro. La fuente no informa fecha de publicación; "
+                           "se muestra la fecha en que Alicanto lo detectó."),
+        "signal_types": ["Datos"], "scopes": ["Prestadores"],
+        "watch_tags": ["prestadores", "superintendencia de salud", family],
+        "scores": {"economic": 45, "regulatory": 60, "scope": 60, "novelty": 60, "actionability": 55},
+    })
+    row = build_signal(raw, cfg).to_dict()
+    row.update(signal_types=["Datos"], scopes=["Prestadores"], data_period=period, deterministic_processing=True)
+    return label_first_detected(row, raw)
+
+
 def media_gate_accepts(title, body=""):
     return _material("media", title, body)
