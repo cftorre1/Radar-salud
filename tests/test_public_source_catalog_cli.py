@@ -23,7 +23,7 @@ def test_offline_snapshot_cli_exports_public_catalog_without_repository_pythonpa
     assert snapshot['signals'] and 'snapshot=' in result.stdout
     catalog=json.loads((tmp_path/'public_sources.json').read_text())
     assert catalog['sources']
-    assert all(set(row)=={'id','name','group','url','description'} for row in catalog['sources'])
+    assert all({'id','name','group','url','description'}<=set(row)<={'id','name','short_name','group','url','description'} for row in catalog['sources'])
     assert 'global_reuters' not in {row['id'] for row in catalog['sources']}
     assert (tmp_path/'source_health.json').read_bytes()==(ROOT/'data/source_health.json').read_bytes()
 
@@ -38,5 +38,5 @@ def test_standalone_catalog_cli_preserves_input_and_excludes_blocked_source(tmp_
     run_cli('export_public_sources.py',cwd=tmp_path)
     catalog=json.loads((tmp_path/'web/data/public_sources.json').read_text())
     assert [row['id'] for row in catalog['sources']]==['minsal']
-    assert set(catalog['sources'][0])=={'id','name','group','url','description'}
+    assert {'id','name','group','url','description'}<=set(catalog['sources'][0])<={'id','name','short_name','group','url','description'}
     assert health.read_bytes()==original

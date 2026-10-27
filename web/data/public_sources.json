@@ -2,13 +2,6 @@
   "schema_version": 1,
   "sources": [
     {
-      "id": "deis",
-      "name": "Departamento de Estadísticas e Información de Salud",
-      "group": "Datos oficiales",
-      "url": "https://deis.minsal.cl/",
-      "description": "Estadísticas oficiales de salud."
-    },
-    {
       "id": "superintendencia",
       "name": "Superintendencia de Salud",
       "group": "Datos oficiales",
@@ -20,14 +13,31 @@
       "name": "Superintendencia de Salud · Intendencia de Prestadores",
       "group": "Datos oficiales",
       "url": "https://www.superdesalud.gob.cl/",
-      "description": "Datos públicos de prestadores; superficie verificada."
+      "description": "Datos públicos de prestadores; superficie verificada.",
+      "short_name": "Intendencia de Prestadores"
     },
     {
       "id": "global_paho",
       "name": "PAHO",
       "group": "Global · evidencia internacional",
       "url": "https://www.paho.org/es/publicaciones",
-      "description": "Publicaciones OPS; metadatos verificados en prueba. En prueba: sin consulta diaria."
+      "description": "Publicaciones OPS; metadatos verificados en prueba. En prueba: sin consulta diaria.",
+      "short_name": "OPS"
+    },
+    {
+      "id": "global_who",
+      "name": "WHO",
+      "group": "Global · evidencia internacional",
+      "url": "https://www.who.int/publications/",
+      "description": "Publicaciones OMS; metadatos verificados en prueba. En prueba: sin consulta diaria.",
+      "short_name": "OMS"
+    },
+    {
+      "id": "global_who",
+      "name": "WHO",
+      "group": "Global · evidencia internacional",
+      "url": "https://www.who.int/publications/",
+      "description": "Publicaciones OMS; metadatos verificados en prueba. En prueba: sin consulta diaria."
     },
     {
       "id": "diario_financiero",
@@ -51,6 +61,14 @@
       "description": "Publicaciones oficiales."
     },
     {
+      "id": "minsal",
+      "name": "Ministerio de Salud",
+      "group": "Organismos públicos y reguladores",
+      "url": "https://www.minsal.cl/",
+      "description": "Noticias del Ministerio de Salud.",
+      "short_name": "Minsal"
+    },
+    {
       "id": "superintendencia_normativa",
       "name": "Superintendencia de Salud",
       "group": "Organismos públicos y reguladores",
@@ -62,14 +80,16 @@
       "name": "Superintendencia de Seguridad Social (SUSESO)",
       "group": "Organismos públicos y reguladores",
       "url": "https://www.suseso.cl/",
-      "description": "Normativa de seguridad social."
+      "description": "Normativa de seguridad social.",
+      "short_name": "SUSESO"
     },
     {
       "id": "suseso_news",
       "name": "Superintendencia de Seguridad Social (SUSESO)",
       "group": "Organismos públicos y reguladores",
       "url": "https://www.suseso.cl/",
-      "description": "Noticias institucionales."
+      "description": "Noticias institucionales.",
+      "short_name": "SUSESO"
     },
     {
       "id": "andes_salud",
