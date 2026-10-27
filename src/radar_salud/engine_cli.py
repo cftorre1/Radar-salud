@@ -1,5 +1,5 @@
 from __future__ import annotations
-import argparse,hashlib,json
+import argparse,hashlib,json,os
 from dataclasses import asdict
 from copy import deepcopy
 from datetime import date, datetime, timezone
@@ -289,8 +289,16 @@ def main():
     evaluated={name:0 for name in processors}
     processed_count=0
     processing_deferrals={}
+    import time as _time
+    processing_started=_time.monotonic()
+    processing_budget=float(os.getenv("RADAR_PROCESSING_SECONDS","0") or 0)
     for key,item in ready:
         if args.limit and processed_count>=args.limit:break
+        if processing_budget and _time.monotonic()-processing_started>=processing_budget:
+            # Batch closes cleanly: remaining items wait for the next run, nothing is lost.
+            processing_deferrals["_time_budget"]={"reason":"processing_time_budget_reached",
+                "budget_seconds":processing_budget,"processed":processed_count}
+            break
         fast_available=has_capacity("fast")
         if item["source"] == "pulso_latercera" and not fast_available:
             # Pulso uses fast analysis; capacity exhaustion is not an attempt.

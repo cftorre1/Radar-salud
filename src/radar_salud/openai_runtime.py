@@ -67,6 +67,8 @@ def call_json(prompt,*,feature,preferred_model="gpt-5.6-terra",allow_luna_fallba
     if not key:raise RuntimeError("OPENAI_API_KEY_missing")
     cfg=_cfg(routing_path);limit=float(cfg.get("weekly_budget_usd") or cfg.get("cost_policy",{}).get("hard_application_guard_usd_rolling_7d",10))
     if rolling_7d_spend(ledger_path)>=limit:raise RuntimeError("weekly_api_budget_exhausted")
+    from .ai_pricing import within_budget
+    if not within_budget(Path(__file__).resolve().parents[2]):raise RuntimeError("monthly_api_budget_exhausted")
     client=OpenAI(api_key=key);models=[preferred_model]+(["gpt-5.6-luna"] if allow_luna_fallback and preferred_model!="gpt-5.6-luna" else [])
     last=None
     for idx,model in enumerate(models):
