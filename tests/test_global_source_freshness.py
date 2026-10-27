@@ -105,7 +105,12 @@ def test_cli_observation_writes_only_requested_new_work_receipt(tmp_path):
 
 def test_package_merge_cannot_implicitly_activate_global_collection():
     config = json.loads(Path("config/global_discovery.json").read_text())
-    assert config["daily_collection_enabled"] is False
+    # Activation only with an explicit, recorded Dirección decision; never paid AI or publication.
+    if config["daily_collection_enabled"] is not False:
+        record = config["activation_record"]
+        assert record["decided_by"].startswith("Dirección") and record["proposed_at"]
+        assert config["paid_ai_calls"] == 0 and config["publication_mode"] == "editorial_review_required"
+        assert config["content_use"] == "metadata_and_link_only"
     assert config["reuters"]["enabled"] is False
     text = Path(".github/workflows/daily-radar.yml").read_text()
     discovery = text.split("- name: Independent Global metadata discovery", 1)[1].split("- name:", 1)[0]
