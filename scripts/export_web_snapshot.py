@@ -22,9 +22,16 @@ def _audit_map(path=Path("data/editorial_audit_90d_2026_09_26.json")):
     except Exception: return {}
     return {str(x.get("id") or ""):x for x in payload.get("items",[]) if isinstance(x,dict) and x.get("id")}
 
+def _exclusions(path=Path("config/editorial_exclusions.json")):
+    try:return {str(x["url"]):x for x in json.loads(path.read_text(encoding="utf-8")).get("items",[]) if x.get("url")}
+    except (OSError,ValueError,KeyError):return {}
+
 def _apply_persistent_editorial_decisions(signals):
-    audit=_audit_map();out=[]
+    audit=_audit_map();excluded=_exclusions();out=[]
     for s in signals:
+        if str(s.get("source_url") or "") in excluded:
+            # Dirección exclusion: kept in history, never shown in the feed.
+            r=dict(s);r["feed_visibility"]=False;r["editorial_exclusion"]=excluded[str(s["source_url"])]["reason"];out.append(r);continue
         r=dict(s);row=audit.get(str(r.get("source_url") or ""))
         if row:
             source_decision=str(row.get("decision") or "accept")
