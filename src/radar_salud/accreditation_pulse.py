@@ -15,8 +15,9 @@ from typing import Any, Iterable
 SOURCE = "Superintendencia de Salud"
 REGISTRY_URL = "https://www.superdesalud.gob.cl/registro/"
 WINDOW_DAYS = 30
-WHY = ("La acreditación vigente es la garantía de calidad que exige la ley para otorgar "
-       "prestaciones GES; cada acto se verifica en el registro oficial de la Superintendencia.")
+WHY = ("La Garantía de Calidad GES (Ley 19.966) exige, de forma gradual según tipo y complejidad, que "
+       "los prestadores institucionales que otorgan prestaciones GES estén acreditados; cada acto modifica "
+       "el Registro Público de Prestadores Institucionales Acreditados de la Superintendencia.")
 
 _PROVIDER = re.compile(
     r"al Prestador Institucional\s+(?P<name>.+?),\s+de la (?:Ciudad|Comuna|ciudad|comuna) de\s+(?P<place>[^,.]+)")
@@ -25,7 +26,7 @@ _KINDS = (
     ("new", re.compile(r"^\s*Inscr[íi]base\b", re.I)),
     ("kept", re.compile(r"^\s*Mant[ée]ngase\b", re.I)),
     ("entity", re.compile(r"^\s*Autor[íi]zase a la sociedad\b", re.I)),
-    ("fix", re.compile(r"^\s*Rectif[íi]quese\b", re.I)),
+    ("fix", re.compile(r"^\s*Rectif[íi]quese\b.*\b(acreditaci[óo]n|Prestador Institucional)\b", re.I | re.S)),
 )
 
 
@@ -41,7 +42,7 @@ def _classify(subject: str) -> tuple[str, str] | None:
         if pattern.match(subject):
             if kind in ("new", "kept"):
                 m = _PROVIDER.search(subject)
-                return (kind, f"{m['name'].strip()} ({m['place'].strip()})") if m else None
+                return (kind, f"{m['name'].strip()}, {m['place'].strip()}") if m else None
             if kind == "entity":
                 m = _ENTITY.search(subject)
                 return (kind, m["name"].strip()) if m else None
@@ -50,18 +51,23 @@ def _classify(subject: str) -> tuple[str, str] | None:
 
 
 def _names(items: list[str], limit: int = 4) -> str:
-    shown = ", ".join(items[:limit])
+    shown = "; ".join(items[:limit])
     return shown + (f" y {len(items) - limit} más" if len(items) > limit else "")
 
 
 def accreditation_pulse(signals: Iterable[dict[str, Any]], as_of: date) -> dict[str, Any] | None:
-    acts = []
+    acts, seen = [], set()
     for s in signals:
         if s.get("source_name") != SOURCE or not s.get("official_subject"):
             continue
-        day = _day(s.get("event_date"))
-        if not day or not 0 <= (as_of - day).days <= WINDOW_DAYS:
+        url = s.get("source_url")
+        if not url or url in seen:  # a re-ingested act is counted once
             continue
+        day = _day(s.get("event_date"))
+        # Window: the WINDOW_DAYS calendar days ending at the feed's reference date (as_of).
+        if not day or not 0 <= (as_of - day).days < WINDOW_DAYS:
+            continue
+        seen.add(url)
         found = _classify(str(s["official_subject"]))
         if found:
             acts.append((day, found[0], found[1], s))
@@ -69,20 +75,22 @@ def accreditation_pulse(signals: Iterable[dict[str, Any]], as_of: date) -> dict[
         return None
     acts.sort(key=lambda x: x[0], reverse=True)
     by = {k: [name for _, kind, name, _ in acts if kind == k] for k, _ in _KINDS}
+    def n(count, one, many):
+        return f"{count} {one if count == 1 else many}"
     parts = []
     if by["new"]:
-        parts.append(f"{len(by['new'])} nuevas inscripciones ({_names(by['new'])})")
+        parts.append(f"{n(len(by['new']), 'nueva inscripción', 'nuevas inscripciones')}: {_names(by['new'])}")
     if by["kept"]:
-        parts.append(f"{len(by['kept'])} mantienen su acreditación ({_names(by['kept'])})")
+        parts.append(f"{n(len(by['kept']), 'mantiene', 'mantienen')} su acreditación: {_names(by['kept'])}")
     if by["entity"]:
-        parts.append(f"{len(by['entity'])} nuevas entidades acreditadoras ({_names(by['entity'])})")
+        parts.append(f"{n(len(by['entity']), 'entidad acreditadora autorizada', 'entidades acreditadoras autorizadas')}: {_names(by['entity'])}")
     if by["fix"]:
-        parts.append(f"{len(by['fix'])} rectificaciones")
+        parts.append(n(len(by["fix"]), "rectificación", "rectificaciones"))
     total = len(acts)
-    what = (f"En los últimos {WINDOW_DAYS} días la Superintendencia de Salud publicó {total} actos de "
-            "acreditación: " + "; ".join(parts) + ".")
+    what = (f"En los últimos {WINDOW_DAYS} días la Superintendencia de Salud publicó "
+            f"{n(total, 'acto', 'actos')} de acreditación. " + ". ".join(p[0].upper() + p[1:] for p in parts) + ".")
     latest = acts[0][0].isoformat()
-    title = f"Acreditación de prestadores · últimos {WINDOW_DAYS} días: {total} actos"
+    title = f"Acreditación de prestadores · últimos {WINDOW_DAYS} días: {n(total, 'acto', 'actos')}"
     return {
         "title": title, "display_title": title, "source_name": SOURCE, "source_type": "official",
         "source_url": REGISTRY_URL, "event_date": latest, "publication_date": latest,
@@ -90,7 +98,7 @@ def accreditation_pulse(signals: Iterable[dict[str, Any]], as_of: date) -> dict[
         "category": "Calidad y acreditación", "what_happened": what, "card_what": what,
         "why_it_matters": WHY, "card_why": WHY, "radar_score": 60, "confidence_score": 100,
         "accreditation_counts": {k: len(v) for k, v in by.items()},
-        "source_alternatives": [{"title": s.get("title"), "url": s.get("source_url"), "event_date": s.get("event_date")}
+        "source_alternatives": [{"title": s.get("title"), "source_name": SOURCE, "url": s.get("source_url"), "event_date": s.get("event_date")}
                                 for _, _, _, s in acts if s.get("source_url")],
         "ingestion_mode": "LIVE" if any(s.get("ingestion_mode") == "LIVE" for *_, s in acts) else "BACKFILL",
         "derived_from": "official_listing_subject",
