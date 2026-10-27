@@ -14,7 +14,51 @@ def utcnow():
     return datetime.now(timezone.utc).isoformat()
 
 
+USER_AGENT='RadarSaludBot/0.1 (+public-source-monitor)'
+# Per-response byte ceiling (curl --max-filesize); official PDFs here are well below it.
+MAX_FILESIZE=int(os.environ.get('RADAR_PROBE_MAX_FILESIZE', str(40*1024*1024)))
+ROBOTS={}
+ROBOTS_LOCK=Lock()
+
+
+def robots_policy(url):
+    """RFC 9309: 2xx -> parsed rules; 4xx -> no restrictions; 5xx/unreachable -> disallow all."""
+    from urllib.robotparser import RobotFileParser
+    parts=urlsplit(url);origin=f'{parts.scheme}://{parts.netloc}'
+    with ROBOTS_LOCK:
+        if origin in ROBOTS:return ROBOTS[origin]
+        command=['curl','--silent','--location','--proto','=https','--proto-redir','=https','--connect-timeout','15',
+                 '--max-time','30','--max-filesize','524288','--user-agent',USER_AGENT,'--write-out','\n%{http_code}',origin+'/robots.txt']
+        try:
+            result=subprocess.run(command,capture_output=True,text=True,encoding='utf-8',errors='replace',timeout=40)
+            body,_,code=result.stdout.rpartition('\n');status=int(code or 0) if result.returncode==0 else 0
+        except (subprocess.TimeoutExpired,ValueError):
+            body,status='',0
+        if 200<=status<300:
+            parser=RobotFileParser();parser.parse(body.splitlines());policy=('rules',parser)
+        elif 400<=status<500:policy=('allow_all',None)
+        else:policy=('disallow_all',None)
+        ROBOTS[origin]=policy
+        return policy
+
+
+def robots_allowed(url):
+    kind,parser=robots_policy(url)
+    return kind=='allow_all' or (kind=='rules' and parser.can_fetch(USER_AGENT,url))
+
+
+def blocked_receipt(url, output, post, reason):
+    output.mkdir(parents=True, exist_ok=True)
+    now=utcnow()
+    return dict(url=url, request_method='POST' if post else 'GET', request_body=post, started_at=now, completed_at=now,
+                curl_returncode=None, network={'http_code':0,'errormsg':reason}, body_file=None, header_file=None,
+                tls_trace_file=None, bytes=0, sha256=hashlib.sha256(b'').hexdigest(), waf_hints=[],
+                transport_ok=False, blocked_reason=reason, proxy_environment_names=[]), ''
+
+
 def fetch(url, output, post=None):
+    if not robots_allowed(url):
+        return blocked_receipt(url, output, post, 'robots_disallowed')
     if urlsplit(url).hostname in ('www.cmfchile.cl', 'cmfchile.cl'):
         with CMF_LOCK: return fetch_verified(url, output, post)
     return fetch_verified(url, output, post)
@@ -29,8 +73,8 @@ def fetch_verified(url, output, post=None):
     body, headers, trace = (output / (key + suffix) for suffix in ('.body', '.headers', '.tls.txt'))
     started = utcnow()
     command = ['curl', '--location', '--proto', '=https', '--proto-redir', '=https',
-        '--connect-timeout', '15', '--max-time', '60', '--max-redirs', '8',
-        '--user-agent', 'RadarSaludBot/0.1 (+public-source-monitor)',
+        '--connect-timeout', '15', '--max-time', '60', '--max-redirs', '8', '--max-filesize', str(MAX_FILESIZE),
+        '--user-agent', USER_AGENT,
         '--dump-header', str(headers), '--output', str(body), '--write-out', '%{json}',
         '--verbose', url]
     if post: command[1:1] = ['--data', post]

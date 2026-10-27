@@ -166,8 +166,9 @@ def collect_cmf(captures, root):
             observations.extend(financial_results(captures.html(r),actor=actor,source_url=r['url'],sha256=r['sha256'],reporting_period=period))
     # Transport must have reached at least one issuer's essential-facts index:
     # a poll where every CMF request failed is an error, never an "ok" snapshot.
+    # (A deliberately partial poll without essential-facts requests is not a failure.)
     essential=[r for r in receipts if r['kind']=='essential_90d']
-    if not any(r['transport_ok'] for r in essential):
+    if (receipts and not any(r['transport_ok'] for r in receipts)) or (essential and not any(r['transport_ok'] for r in essential)):
         raise RuntimeError('CMF transport failed for every issuer essential-facts index')
     # Preserve first detection across polls and replays; transient CMF token URLs do not identify events.
     old_path=root/'data/market/cmf_disclosures.json'

@@ -29,7 +29,7 @@ def prepare(output):
                 raise ValueError('Invalid retained archive path')
         archive.extractall(output)
     payload = json.loads((output / 'receipts.json').read_text())
-    missing = [r for r in payload['receipts'] if not (output / r['body_file']).is_file()]
+    missing = [r for r in payload['receipts'] if r.get('body_file') and not (output / r['body_file']).is_file()]
     by_hash = {}
     for receipt in missing:
         target = (output / receipt['body_file']).resolve()
