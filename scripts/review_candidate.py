@@ -69,6 +69,15 @@ def review(web, sha):
             title=str(signal.get("display_title") or signal.get("title") or "")
             identity=str(signal.get("normative_document_label") or signal.get("legal_identity") or "")
             context=str(signal.get("normative_context") or "")
+            if signal.get("normative_minimal"):
+                # Opción A (Dirección 26-oct-2026): verifiable facts only + visible badge.
+                from radar_salud.normative_minimal import BADGE, DISCLAIMER, ISSUERS, _official
+                if (signal.get("editorial_badge")!=BADGE or signal.get("normative_act_scope")!="general"
+                        or signal.get("source_name") not in ISSUERS or not _official(signal.get("source_url"),signal.get("source_name"))
+                        or not identity or identity.casefold() not in title.casefold() or not context
+                        or str(signal.get("why_it_matters") or "")!=DISCLAIMER or str(signal.get("card_why") or DISCLAIMER)!=DISCLAIMER):
+                    fail("editorial","normative_minimal_contract",path,"Minimal normative card must carry only verifiable facts, the badge and the fixed disclaimer")
+                continue
             if not record or signal.get("normative_title_review_required"):
                 fail("editorial","normative_title_needs_review",path,"Normative act has no approved V2.1 editorial record")
             elif (not identity or identity.casefold() not in title.casefold()

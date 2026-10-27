@@ -213,6 +213,15 @@ def _normative_contract(s):
     has_action=any(norm(x) in title_norm for x in record.get("action_terms",[]))
     reviewed=bool(record and plain and context and has_identity and has_subject and has_action and title_norm.count(identity_norm)==1)
     if not reviewed:
+        from radar_salud.normative_minimal import minimal_card
+        if r.get("normative_minimal"):return r  # already reduced to verifiable facts
+        minimal=minimal_card(r,label)
+        if minimal:
+            # Opción A: verifiable facts only, badge visible; interpretation waits for review.
+            r.pop("normative_title_review_required",None)
+            r.update(minimal);r["legal_subtitle"]=subtitle
+            r["normative_editorial"]={"legal_identity":label,"plain_language_title":minimal["display_title"],"legal_subtitle":subtitle,"editorial_state":"minimal_unreviewed","affected_actor":r.get("scopes") or []}
+            return r
         r["normative_title_review_required"]=True
         if not plain:
             plain=str(r.get("display_title") or r.get("title") or label).strip()
@@ -336,6 +345,8 @@ def _resolution_relation_titles(signals):
     out=[]
     for s in signals:
         r=dict(s)
+        if r.get("normative_minimal"):
+            out.append(r);continue  # Opción A: never compose a headline from unreviewed copy
         kind=str(r.get("normative_document_type") or "")
         visible_title=str(r.get("title") or "")
         opaque=bool(re.fullmatch(r"(?:Resolución(?:\s+Exenta)?)\s+(?:(?:IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*[\d\.]+",visible_title,re.I))

@@ -205,6 +205,11 @@ def test_all_opaque_normative_acts_get_identity_plus_subject_for_public_title():
         assert row["display_title"] != row["normative_document_label"]
         assert row["normative_document_number"] in row["display_title"]
         assert row["normative_context"] and row["normative_context"].casefold() not in row["display_title"].casefold()
+        if row.get("normative_minimal"):
+            # Opción A: verifiable facts + badge; no approved V2.1 record yet.
+            assert row["editorial_badge"]=="Sin lectura editorial" and row["normative_act_scope"]=="general"
+            assert row["normative_editorial"]["plain_language_title"] == row["display_title"]
+            continue
         check=cfg.get("source_records",{}).get(row["source_url"]) or cfg["records"][row["normative_document_number"].replace("IF/N°","").replace("IP/N°","").replace(".","")]
         if check.get("resolution_review"):
             for group in ("decision_terms","affected_act_terms","effect_terms"):
