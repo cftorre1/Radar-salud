@@ -1,5 +1,5 @@
 from __future__ import annotations
-import argparse,hashlib,json
+import argparse,hashlib,json,os,re
 from dataclasses import asdict
 from copy import deepcopy
 from datetime import date, datetime, timezone
@@ -41,6 +41,18 @@ def _prioritize_official(ready):
             + [pair for pair in ordered if pair[1].get("source") not in OFFICIAL_PRIORITY])
 
 
+_HEALTH_HINT = re.compile(
+    r"salud|cl[ií]nic|isapre|fonasa|hospital|m[eé]dic|farmac|laborator|licencia|minsal|superintendencia|"
+    r"\bges\b|c[aá]ncer|pacient|urgenc|vacun|sanitari|prestador|mutual|achs|bupa|redsalud|banm[eé]dica|"
+    r"colmena|consalud|nueva masvida|cruz blanca|caec|listas? de espera|christus|hanta|di[aá]lisis|cenabast|"
+    r"anamed|oncol|telemedicina|ilc\b|psiqui|epidem|virus", re.I)
+
+
+def _likely_health(item):
+    raw = item.get("raw", {}) or {}
+    return bool(_HEALTH_HINT.search(str(raw.get("title") or "")))
+
+
 def _prioritize_pulso_ready(ready):
     """Order publisher dates only inside Pulso's existing scheduling slots.
 
@@ -65,8 +77,10 @@ def _prioritize_pulso_ready(ready):
 
     for indexes in slots.values():
         # Python's stable sort retains ties and unknown-date relative order.
+        # Likely-health items first (ordering only: nothing is discarded; a keyword
+        # filter would have lost 30% of published Pulso items), then newest first.
         rows = sorted((ordered[index] for index in indexes),
-                      key=publication_priority, reverse=True)
+                      key=lambda pair: (_likely_health(pair[1]), publication_priority(pair)), reverse=True)
         for index, row in zip(indexes, rows):
             ordered[index] = row
     return ordered
@@ -289,8 +303,16 @@ def main():
     evaluated={name:0 for name in processors}
     processed_count=0
     processing_deferrals={}
+    import time as _time
+    processing_started=_time.monotonic()
+    processing_budget=float(os.getenv("RADAR_PROCESSING_SECONDS","0") or 0)
     for key,item in ready:
         if args.limit and processed_count>=args.limit:break
+        if processing_budget and _time.monotonic()-processing_started>=processing_budget:
+            # Batch closes cleanly: remaining items wait for the next run, nothing is lost.
+            processing_deferrals["_time_budget"]={"reason":"processing_time_budget_reached",
+                "budget_seconds":processing_budget,"processed":processed_count}
+            break
         fast_available=has_capacity("fast")
         if item["source"] == "pulso_latercera" and not fast_available:
             # Pulso uses fast analysis; capacity exhaustion is not an attempt.
@@ -411,6 +433,16 @@ def main():
             **({"error_detail":occupational_audit[name].get("error"), "inventory":occupational_audit[name].get("inventory", {})} if name in OCCUPATIONAL_SOURCES else {}),
             **{k:v for k,v in diagnostic_details.get(name,{}).items() if v},
             latest_original_at=original_dates.get(name),evaluation_performed=evaluated[name]>0)
+    try:
+        # Verifiable official text for recent normative acts (no AI, bounded, never fails the run).
+        # Enabled only in the daily workflow (RADAR_CAPTURE_EVIDENCE=1): tests never download.
+        if os.getenv("RADAR_CAPTURE_EVIDENCE")!="1":raise LookupError("disabled")
+        from .normative_evidence import capture_missing
+        history=json.loads((root/"data/history/superintendencia_signals.json").read_text(encoding="utf-8")).get("signals",[])
+        captured=capture_missing(root,history)
+        print(f"normative_evidence captured={len(captured)}")
+    except Exception as exc:
+        print("normative_evidence skipped:",type(exc).__name__)
     print({"queue":queue.counts(),"budget":ai_budget_status()})
 
 if __name__=="__main__":main()

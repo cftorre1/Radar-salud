@@ -12,7 +12,7 @@ on:
         default: false
         type: boolean
       processing_limit:
-        description: 'Máximo procesado; 0 usa 30 normal o 40 reconstrucción'
+        description: 'Máximo procesado; 0 usa 200 (con presupuesto de 60 min y USD 10/mes)'
         required: false
         default: 0
         type: number
@@ -27,15 +27,22 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 95
+    timeout-minutes: 180
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       RADAR_FAST_MODEL: gpt-5.6-luna
       RADAR_DEEP_MODEL: gpt-5.6-terra
-      RADAR_DEEP_PER_RUN: 15
-      RADAR_FAST_PER_RUN: 120
-      RADAR_DEEP_PER_MONTH: 180
-      RADAR_FAST_PER_MONTH: 1500
+      # Store official text of recent normative acts as evidence (no AI).
+      RADAR_CAPTURE_EVIDENCE: '1'
+      # Dirección 27-oct-2026: the real limit is USD 10/month of AI spend (ai_pricing),
+      # not call counts; counts stay as loose safety rails.
+      RADAR_MONTHLY_USD: 10
+      RADAR_DEEP_PER_RUN: 40
+      RADAR_FAST_PER_RUN: 400
+      RADAR_DEEP_PER_MONTH: 1000
+      RADAR_FAST_PER_MONTH: 20000
+      # Batches: stop taking new items after 60 min; the rest waits for the next run.
+      RADAR_PROCESSING_SECONDS: 3600
     steps:
       - uses: actions/checkout@v4
         with:
@@ -54,17 +61,17 @@ jobs:
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.rebuild != true }}
         env:
           RADAR_DAILY_WINDOW_DAYS: 30
-          REQUESTED_LIMIT: ${{ inputs.processing_limit || 30 }}
+          REQUESTED_LIMIT: ${{ inputs.processing_limit || 200 }}
         run: |
-          limit=$(python -c 'import os; n=int(os.environ["REQUESTED_LIMIT"]); print(n if 1 <= n <= 30 else 30)')
-          timeout --signal=TERM 45m python -m radar_salud.engine_cli --limit "$limit"
+          limit=$(python -c 'import os; n=int(os.environ["REQUESTED_LIMIT"]); print(n if 1 <= n <= 400 else 200)')
+          timeout --signal=TERM 90m python -m radar_salud.engine_cli --limit "$limit"
       - name: Controlled rebuild using cache and persistent pending queue
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.rebuild == true }}
         env:
-          REQUESTED_LIMIT: ${{ inputs.processing_limit || 40 }}
+          REQUESTED_LIMIT: ${{ inputs.processing_limit || 200 }}
         run: |
-          limit=$(python -c 'import os; n=int(os.environ["REQUESTED_LIMIT"]); print(n if 1 <= n <= 40 else 40)')
-          timeout --signal=TERM 45m python -m radar_salud.engine_cli --limit "$limit"
+          limit=$(python -c 'import os; n=int(os.environ["REQUESTED_LIMIT"]); print(n if 1 <= n <= 400 else 200)')
+          timeout --signal=TERM 90m python -m radar_salud.engine_cli --limit "$limit"
       - name: Export public snapshot and source health
         run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json
       - name: Live beta source validation (degrades beta, never blocks core)
