@@ -15,7 +15,9 @@ def test_bupa_root_article_requires_newsroom_card_and_date(monkeypatch):
     html = f'<h1 class="enc-main__title">{title}</h1><div class="CUERPO"><p>' + "Capacidad ambulatoria y nueva infraestructura clínica. " * 20 + '</p></div>'
     monkeypatch.setattr("radar_salud.public_source_pipeline.fetch_html", lambda _: html)
     monkeypatch.setattr("radar_salud.public_source_pipeline.analyze_news", lambda **kw: None)
-    with pytest.raises(DeferredProcessing, match="publication date unavailable"):
+    # Dirección 27-oct-2026: an undated Bupa article may use its labelled first
+    # detection; without the queue's detection record it still defers.
+    with pytest.raises(DeferredProcessing, match="first_detection_timestamp_unavailable"):
         process_corporate_news(raw, cfg)
     html = '<meta property="article:published_time" content="2026-09-21">' + html
     with pytest.raises(DeferredProcessing, match="pending assessment"):

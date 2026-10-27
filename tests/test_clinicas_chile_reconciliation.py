@@ -27,9 +27,17 @@ def test_clinicas_news_binds_listing_stamp_without_borrowing_body_dates(monkeypa
                 "Clínicas de Chile A.G.","sector_association",metadata={"clinicas_channel":"Memorias"},
                 raw_text="Cita legal del 31 de agosto de 2004. "*20)
     monkeypatch.setattr("radar_salud.public_source_pipeline.extract_pdf_text",lambda *a,**k:pytest.fail("An undated PDF must not be evaluated"))
-    with pytest.raises(DeferredProcessing,match="without verified date"):
+    # Dirección 27-oct-2026: undated library documents use a labelled first-detection
+    # date; without the queue's detection record they still defer, never evaluated.
+    with pytest.raises(DeferredProcessing,match="first_detection_timestamp_unavailable"):
         process_clinicas_chile(pdf,{})
     assert pdf.event_date is None
+    # A 2026/03 upload first detected now is an old document, not new information.
+    from radar_salud.processing import RejectedProcessing
+    from datetime import datetime, timezone
+    pdf.metadata["first_detected_at"]=datetime.now(timezone.utc).isoformat()
+    with pytest.raises(RejectedProcessing,match="uploaded_before_window"):
+        process_clinicas_chile(pdf,{})
 
 
 def test_clinicas_undated_card_cannot_inherit_previous_stamp():

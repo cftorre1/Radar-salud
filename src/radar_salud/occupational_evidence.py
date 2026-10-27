@@ -2,6 +2,8 @@
 from __future__ import annotations
 import hashlib
 import json
+import os
+from datetime import datetime, timezone
 from pathlib import Path
 import re
 from urllib.parse import urlsplit, parse_qs, unquote
@@ -74,8 +76,83 @@ def _captured(evidence, url, hosts):
     return data.decode("utf-8", errors="replace")
 
 
-def verify_capture(raw, hosts):
+def artifact_available(evidence):
+    """True when the declared capture body still exists under the audit root.
+
+    Discovery captures live in a run-scoped runtime directory that the daily
+    workflow does not commit; a later run (hourly queue, next daily) cannot
+    reread them. Absence is not a verification failure: it triggers a fresh
+    same-run capture (Dirección 27-oct-2026), never a weaker check.
+    """
+    if not isinstance(evidence, dict) or not evidence.get("artifact"):
+        return False
+    try:
+        root = project_root().resolve()
+        path = Path(evidence["artifact"])
+        path = path.resolve() if path.is_absolute() else (root / path).resolve()
+        return path.is_file() and path.is_relative_to(root / "data/audits/source_e_recovery")
+    except (OSError, TypeError, ValueError):
+        return False
+
+
+_SAME_RUN_LOADER = None
+
+
+def same_run_loader():
+    """One processing-scoped capture loader per engine run (robots + verified TLS)."""
+    global _SAME_RUN_LOADER
+    if _SAME_RUN_LOADER is None:
+        from .occupational_capture import CaptureLoader
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%f")
+        _SAME_RUN_LOADER = CaptureLoader(project_root() / "data/audits/source_e_recovery/runtime" / f"{stamp}-processing")
+    return _SAME_RUN_LOADER
+
+
+def _recapture(raw, key, url, loader):
+    """Capture ``url`` now and store its verified evidence in item metadata.
+
+    The stored record is what the manual artifact used to prove: exact bytes
+    (sha256 + length), verified TLS on every hop, HTTP 200, the final public
+    URL and the fetch time. The superseded evidence is kept for audit.
+    """
+    try:
+        loader(url)
+        evidence = loader.evidence(url)
+        last = loader.records[url]["hops"][-1]
+    except DeferredProcessing:
+        raise
+    except Exception as exc:
+        code = getattr(exc, "code", None) or type(exc).__name__
+        raise DeferredProcessing(f"occupational same-run capture failed: {code}") from exc
+    evidence.update(capture_mode="same_run_verified", fetched_at=evidence["captured_at"],
+                    bytes=last.get("bytes"),
+                    environment="github_actions" if os.getenv("GITHUB_ACTIONS") == "true" else "local")
+    previous = raw.metadata.get(key)
+    if isinstance(previous, dict) and previous:
+        history = raw.metadata.setdefault("capture_evidence_history", [])
+        stale = dict(previous, superseded_reason="artifact_unavailable_in_this_run", key=key)
+        if stale not in history:
+            history.append(stale)
+    raw.metadata[key] = evidence
+    return evidence
+
+
+VISIBLE_DATE_TOLERANCE_DAYS = 3
+
+
+def verify_capture(raw, hosts, *, loader=None):
+    """Verify the item against captured bytes.
+
+    ``loader`` (a callable returning a CaptureLoader) enables the daily-cycle
+    standard: when the declared artifact is not present in this run, the page
+    is captured again now and every content check runs against those bytes.
+    Without ``loader`` (offline replay/snapshots) the strict artifact rule holds.
+    """
     evidence = raw.metadata.get("publication_evidence") or raw.metadata.get("publication_date_evidence") or {}
+    recaptured = False
+    if loader is not None and not artifact_available(raw.metadata.get("capture_evidence")):
+        _recapture(raw, "capture_evidence", raw.url, loader())
+        recaptured = True
     html = _captured(raw.metadata.get("capture_evidence"), raw.url, hosts)
     if raw.source_slug == "mutual_seguridad":
         from .mutual_sources import parse_detail, parse_listing, _detail_url
@@ -84,7 +161,17 @@ def verify_capture(raw, hosts):
         parsed = parse_detail(html, raw.url)
         if evidence.get("kind") == "publisher:mutual_card_fecha":
             listing_url = evidence.get("url")
+            if loader is not None and not artifact_available(raw.metadata.get("listing_capture_evidence")):
+                _recapture(raw, "listing_capture_evidence", listing_url, loader())
+                recaptured = True
             listing = _captured(raw.metadata.get("listing_capture_evidence"), listing_url, hosts)
+            if recaptured:
+                # Rebind the card date to the bytes captured in this run; the
+                # card lookup below still requires the same URL, title and date.
+                evidence = dict(evidence, detail_sha256=raw.metadata["capture_evidence"]["sha256"],
+                                listing_sha256=raw.metadata["listing_capture_evidence"]["sha256"])
+                key = "publication_evidence" if raw.metadata.get("publication_evidence") else "publication_date_evidence"
+                raw.metadata[key] = evidence
             if (evidence.get("detail_sha256") != raw.metadata["capture_evidence"]["sha256"]
                     or evidence.get("listing_sha256") != raw.metadata["listing_capture_evidence"]["sha256"]
                     or evidence.get("item_url") != raw.url):
@@ -107,8 +194,38 @@ def verify_capture(raw, hosts):
         article.feed(html)
         title, published, body, _ = article.result()
         actual = article.publication_evidence()
-        if actual != evidence:
+        if evidence.get("kind") == "publisher:visible_header_date":
+            # IST: the visible header date replaces a WordPress post date that
+            # differs by <= 3 days (Dirección 27-oct-2026). The captured page
+            # must still carry the CMS date and show the visible stamp.
+            published = verify_visible_header_date(evidence, actual, body)
+        elif actual != evidence:
             raise DeferredProcessing("occupational publisher field differs from capture")
-    if (published != raw.event_date or valid_date(published) != published or fold(title) != fold(raw.title)
-            or raw.metadata.get("page_text") != body[:18000]):
+    if published != raw.event_date or valid_date(published) != published or fold(title) != fold(raw.title):
         raise DeferredProcessing("occupational article content differs from capture")
+    if raw.metadata.get("page_text") != body[:18000]:
+        if not recaptured:
+            raise DeferredProcessing("occupational article content differs from capture")
+        # Same URL, title and publication date verified on fresh bytes: the
+        # fresh body is the evidence analysed from now on (edits are recorded).
+        raw.metadata["same_run_capture_body_changed"] = True
+        raw.metadata["page_text"] = body[:18000]
+    if recaptured and raw.metadata.get("supporting_documents"):
+        from .occupational_documents import attach_documents
+        attach_documents(raw, loader())
+
+
+def verify_visible_header_date(evidence, cms_evidence, body):
+    """Return the visible date when it is within tolerance of the CMS date."""
+    visible = valid_date(evidence.get("value"))
+    cms = evidence.get("cms_date")
+    if (not visible or visible != evidence.get("date") or not isinstance(cms_evidence, dict)
+            or cms_evidence.get("date") != cms or not cms):
+        raise DeferredProcessing("occupational visible header date unverified")
+    try:
+        gap = abs((datetime.fromisoformat(visible) - datetime.fromisoformat(cms)).days)
+    except ValueError as exc:
+        raise DeferredProcessing("occupational visible header date unverified") from exc
+    if gap > VISIBLE_DATE_TOLERANCE_DAYS or str(evidence.get("value")) not in body[:1200]:
+        raise DeferredProcessing("occupational visible header date unverified")
+    return visible

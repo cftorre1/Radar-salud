@@ -27,6 +27,14 @@ from .processing import DeferredProcessing, RejectedProcessing, OutsideBackfillH
 from .public_source_evidence import failure_details, discovery_diagnostics, HOSTS as PUBLIC_DATA_SOURCES
 from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
 from .occupational_sources import SOURCES as OCCUPATIONAL_SOURCES
+# Dirección 27-oct-2026: datos.gob.cl (FONASA/DEIS), CMF in the daily cycle and
+# Prestadores bulletins dated by first detection. Deterministic, no AI.
+from .datos_gob_sources import DatosGobScout, process_datos_gob
+from .cmf_daily import CmfDailyScout, process_cmf_event
+from .beta_sources import PrestadoresDailyScout, process_prestadores_bulletin
+DETERMINISTIC_SOURCES = ("datos_gob_cl", "cmf_health_ecosystem", "prestadores_data")
+FIRST_DETECTED_SOURCES = ("bupa_chile", "clinicas_chile", "prestadores_data")
+from .date_basis import BASELINE_SOURCES as FIRST_DETECTION_BASELINE_SOURCES
 
 # Regulators are the product core (panel de expertos, 26-oct-2026). Their low-volume
 # BACKFILL must not wait behind press LIVE floods (Pulso: decenas por día).
@@ -169,7 +177,10 @@ def main():
       ("suseso_fiscalizacion","suseso_fiscalizacion",SusesoFiscalizacionScout().discover,process_suseso_fiscalizacion),
       ("diario_financiero","diario_financiero",DfHealthScout().discover,process_df),
       ("pulso_latercera","pulso_latercera",CuratedBetaSourceScout("pulso_latercera").discover,process_curated_beta_source),
-      ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial)]
+      ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial),
+      ("datos_gob_cl","datos_gob_cl",DatosGobScout().discover,process_datos_gob),
+      ("cmf_health_ecosystem","cmf_health_ecosystem",CmfDailyScout().discover,process_cmf_event),
+      ("prestadores_data","prestadores_data",PrestadoresDailyScout().discover,process_prestadores_bulletin)]
     specs += [(slug,slug,CuratedBetaSourceScout(slug).discover,process_curated_beta_source)
               for slug in sorted(OCCUPATIONAL_SOURCES) if not selected_sources or slug in selected_sources]
     specs.extend((slug,slug,CuratedBetaSourceScout(slug).discover,process_curated_beta_source)
@@ -199,6 +210,11 @@ def main():
         owner=getattr(discover,"__self__",None)
         try:
             items=discover()
+            if name in FIRST_DETECTION_BASELINE_SOURCES:
+                # Baseline of URLs known before the first-detection rule (27-oct-2026); created once.
+                from .date_basis import ensure_first_detection_baseline
+                ensure_first_detection_baseline(root,name,[raw.url for raw in items]+
+                    [i["raw"]["url"] for i in queue.items.values() if i.get("source")==name])
             observed[name]=[dict(url=raw.url,event_date=raw.event_date,metadata=raw.metadata) for raw in items]
             surfaces[name]=getattr(getattr(discover,"__self__",None),"surface_results",None)
             scout=getattr(discover,"__self__",None)
@@ -354,11 +370,15 @@ def main():
             }
             if set(processors)=={"pulso_latercera"}:break
             continue
-        deterministic = item["source"] in FISCALIZATION_SOURCES or item["raw"].get("metadata",{}).get("reviewed_normative")
+        deterministic = (item["source"] in FISCALIZATION_SOURCES or item["source"] in DETERMINISTIC_SOURCES
+                         or item["raw"].get("metadata",{}).get("reviewed_normative"))
         if not deterministic and not fast_available and not has_capacity("deep"):continue
         queue.start(key)
         processed_count+=1
         processing_raw=RawItem(**deepcopy(item["raw"]))
+        # First detection is the queue's own record; undated sources may use it, labelled (27-oct-2026).
+        if item["source"] in FIRST_DETECTED_SOURCES:
+            processing_raw.metadata.setdefault("first_detected_at",item["detected_at"])
         prior_assessment=deepcopy(processing_raw.metadata.get('editorial_assessment'))
         try:
             cfg,processor=processors[item["source"]]

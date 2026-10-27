@@ -35,15 +35,18 @@ class Captures:
         return data.decode(encoding, errors='replace')
 
 
+RUNTIME_ACTIVATION = 'held_for_core_quality_gate'
+
+
 def health(captures, package, *, discovered, unique, recent=0, material=0, published=0,
-           rejected=0, deferred=0, errors=0, complete=False, reason):
+           rejected=0, deferred=0, errors=0, complete=False, reason, runtime_activation=None):
     receipts = [r for r in captures.receipts if r['package'] == package]
     return dict(pages_checked=len(receipts), items_discovered=discovered, unique_items=unique,
                 items_recent=recent, items_material=material, published=published, rejected=rejected,
                 deferred=deferred, parse_errors=errors, coverage_complete=complete, coverage_reason=reason,
                 technical_status='error' if errors else 'ok' if receipts and all(r['transport_ok'] for r in receipts) else 'degraded',
                 snapshot_semantics='Data observations; published is news cards, never table rows',
-                recurrence_validated=False, runtime_activation='held_for_core_quality_gate')
+                recurrence_validated=False, runtime_activation=runtime_activation or RUNTIME_ACTIVATION)
 
 
 def collect_isapres(captures, root):
@@ -152,7 +155,7 @@ def collect_cmf(captures, root):
                         from .primary_documents import extract_primary_pdf
                         text,method=extract_primary_pdf(content)
                         doc.update(primary_sha256=primary['sha256'], primary_verified=True,
-                                   primary_fetched_this_poll=True,
+                                   primary_fetched_this_poll=True, primary_receipt_completed_at=primary['completed_at'],
                                    primary_excerpt=' '.join(text.split())[:1000], primary_extraction_method=method,
                                    primary_content_usable=len(text.strip())>=80, materiality=classify_primary(text))
                         doc['disposition']=doc['materiality']['disposition'];doc['reason']=doc['materiality']['reason']
@@ -161,9 +164,18 @@ def collect_cmf(captures, root):
             query=parse_qs(urlsplit(r['url']).query); period=query['aa'][0]+'-'+query['mm'][0]
             statements.extend(financial_documents(captures.html(r),actor=actor,source_url=r['url'],reporting_period=period,sha256=r['sha256']))
             observations.extend(financial_results(captures.html(r),actor=actor,source_url=r['url'],sha256=r['sha256'],reporting_period=period))
+    # Transport must have reached at least one issuer's essential-facts index:
+    # a poll where every CMF request failed is an error, never an "ok" snapshot.
+    # (A deliberately partial poll without essential-facts requests is not a failure.)
+    essential=[r for r in receipts if r['kind']=='essential_90d']
+    if (receipts and not any(r['transport_ok'] for r in receipts)) or (essential and not any(r['transport_ok'] for r in essential)):
+        raise RuntimeError('CMF transport failed for every issuer essential-facts index')
     # Preserve first detection across polls and replays; transient CMF token URLs do not identify events.
     old_path=root/'data/market/cmf_disclosures.json'
     old={d['record_id']:d for d in json.loads(old_path.read_text()).get('documents',[])} if old_path.exists() else {}
+    # Stored documents were fetched in an earlier poll, whatever their saved flag says.
+    for prior_doc in old.values():
+        prior_doc['primary_fetched_this_poll']=False
     for doc in documents:
         prior=old.get(doc['record_id'],{})
         if not doc.get('primary_sha256') and prior.get('primary_sha256'):
@@ -203,6 +215,7 @@ def collect_cmf(captures, root):
                     primary_documents_reverified=sum(d.get('primary_fetched_this_poll',False) for d in documents),
                     actor_coverage=actor_coverage,material_events=len(events), transport_failures=[{'url':r['url'],'http':r['network']['http_code'],'reason':r['network'].get('errormsg')} for r in receipts if not r['transport_ok']])
     evidence['issuer_reported_health_relationships']=len(group_relationships)
+    evidence['collected_record_ids']=sorted({d['record_id'] for d in documents})
     record_data_adapter(root,'cmf_health_ecosystem',evidence)
     return evidence
 

@@ -5,6 +5,7 @@ from datetime import datetime,timezone,date
 from pathlib import Path
 from radar_salud.reference_resolver import resolve_reference
 from radar_salud.editorial_gate import publication_ready
+from radar_salud.story_groups import date_basis_fields
 from radar_salud.editorial_copy import apply_reviewed_copy
 from radar_salud.isapre_pulse import build_pulse
 from radar_salud.editorial_committee import build_committee_artifact
@@ -269,7 +270,7 @@ def _merge_duplicates(signals):
             if x is base:continue
             u=x.get("source_url")
             if u and u not in seen:
-                alts.append({"title":x.get("title"),"source_name":x.get("source_name"),"url":u,"event_date":x.get("event_date")});seen.add(u)
+                alts.append({"title":x.get("title"),"source_name":x.get("source_name"),"url":u,"event_date":x.get("event_date"),**date_basis_fields(x)});seen.add(u)
         r["source_alternatives"]=alts;merged.append(r)
     return other+merged
 
@@ -291,7 +292,7 @@ def _related_context(signals,resolve_external=True):
             target=idx.get(k) if k else None
             if target and target.get("source_url")!=r.get("source_url"):
                 item={"title":target.get("title"),"summary":target.get("what_happened"),"relationship":relationship,
-                      "url":target.get("source_url"),"event_date":target.get("event_date"),"verified":True}
+                      "url":target.get("source_url"),"event_date":target.get("event_date"),"verified":True,**date_basis_fields(target)}
             else:item=resolve_reference(ref,relationship) if resolve_external else None
             if not item:item={"title":ref,"summary":None,"relationship":relationship,"url":None,"event_date":None,"verified":False}
             identity=item.get("url") or item.get("title")

@@ -387,6 +387,30 @@ class _IstHeaderDateObservation(HTMLParser):
             self.parts = None
 
 
+IST_VISIBLE_DATE_TOLERANCE_DAYS = 3
+
+
+def tolerated_visible_date(api_day, observed_dates, api_url, url):
+    """IST: accept the visible date when it differs from the WP API by <= 3 days.
+
+    Dirección 27-oct-2026: use the visible date and record the conflict. All
+    visible observations must agree; larger gaps keep failing closed.
+    """
+    days = {item.get("date") for item in observed_dates}
+    if len(days) != 1 or None in days:
+        return None, None
+    visible = days.pop()
+    try:
+        gap = abs((date.fromisoformat(visible) - date.fromisoformat(api_day)).days)
+    except (TypeError, ValueError):
+        return None, None
+    if gap > IST_VISIBLE_DATE_TOLERANCE_DAYS:
+        return None, None
+    return visible, {"code": "api_visible_publication_date_conflict_tolerated", "url": url, "api_url": api_url,
+                     "api_date": api_day, "visible_date": visible, "visible_value": observed_dates[0]["value"],
+                     "gap_days": gap, "date_basis": "visible_header", "tolerance_days": IST_VISIBLE_DATE_TOLERANCE_DAYS}
+
+
 def _api_headers(headers):
     result = {}
     for values in headers if isinstance(headers, list) else [headers or {}]:
@@ -514,18 +538,24 @@ def enrich_inventory_from_ist_api(report, scout, loader, *, api_url=None,
                     row["data_period"] = re.search(r"\b20\d{2}\b", api_post["title"])[0]
                     row["data_period_source"] = "document_title; separate from publication date"
                 conflict = any(item["date"] != native_day for item in observed_dates)
+                visible_day, date_conflict = None, None
+                if conflict and native_day:
+                    visible_day, date_conflict = tolerated_visible_date(native_day, observed_dates, current, url)
+                    if visible_day:
+                        conflict = False
+                        row["date_conflict"] = date_conflict
                 if not native_day or conflict:
                     reason = "api_visible_publication_date_conflict" if conflict and native_day else "api_publication_date_invalid"
                     row.update(publication_date=None, event_date=None, status="pending", reason=reason,
                                conflicting_date_observations=observed_dates)
                     api["errors"].append({"code": reason, "url": url, "api_date": native_day, "observed_dates": observed_dates})
                     continue
-                if not starts[90] <= date.fromisoformat(native_day) <= today:
+                if not starts[90] <= date.fromisoformat(visible_day or native_day) <= today:
                     reason = "api_publication_outside_requested_window"
                     row.update(publication_date=None, event_date=None, status="pending", reason=reason)
                     api["errors"].append({"code": reason, "url": url, "api_date": native_day})
                     continue
-                if row.get("publication_date") == native_day and row["status"] != "pending":
+                if row.get("publication_date") == (visible_day or native_day) and row["status"] != "pending":
                     continue
                 try:
                     detail = loader(url)
@@ -538,6 +568,17 @@ def enrich_inventory_from_ist_api(report, scout, loader, *, api_url=None,
                                                            f"native={native_day}; detail={published}; evidence={evidence}")
                     accepted, material_reason = sources.materiality("mutuality", title, body)
                     publication_evidence = article.publication_evidence(today=today)
+                    if visible_day:
+                        # Visible header date governs; the CMS date is kept as a
+                        # recorded conflict, never silently discarded.
+                        visible_value = date_conflict["visible_value"]
+                        if visible_value not in body[:1200]:
+                            raise sources.SourceDiscoveryError("visible_header_date_not_in_detail", url, visible_value)
+                        publication_evidence = {"url": url, "kind": "publisher:visible_header_date",
+                                                "value": visible_value, "date": visible_day,
+                                                "cms_date": published, "cms_evidence_kind": evidence,
+                                                "date_conflict": date_conflict}
+                        published, evidence = visible_day, "publisher:visible_header_date"
                     row.update(title=title, publication_date=published, event_date=published,
                                date_evidence=evidence, publication_evidence=publication_evidence,
                                detail_sha256=hashlib.sha256(detail.encode("utf-8")).hexdigest(),
@@ -551,7 +592,8 @@ def enrich_inventory_from_ist_api(report, scout, loader, *, api_url=None,
                         "publication_date": published, "publication_date_source": evidence,
                         "publication_evidence": publication_evidence, "api_publication_evidence": native_evidence,
                         "source_quality_gate": "audit_pending_90_day", "materiality_accepted": accepted,
-                        "materiality_reason": material_reason, "section": row["section"], "data_period": row.get("data_period")}))
+                        "materiality_reason": material_reason, "section": row["section"], "data_period": row.get("data_period"),
+                        **({"date_conflict": date_conflict} if visible_day else {})}))
                 except Exception as exc:
                     error = _failure(exc, url, "api_detail_fetch")
                     api["errors"].append(error)

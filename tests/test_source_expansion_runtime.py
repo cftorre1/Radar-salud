@@ -116,3 +116,19 @@ def test_parser_failure_replaces_canonical_health_without_claiming_zero_content(
     assert evidence['status']=='error' and evidence['technical_status']=='error'
     assert evidence['parse_errors']==1 and evidence['items_discovered'] is None
     assert evidence['items_recent'] is None and not evidence['coverage_complete']
+
+
+def test_stored_documents_never_keep_this_poll_flags_and_receipts_are_recorded(captures,tmp_path,monkeypatch):
+    # Revisión PR #71 (B1): a later poll that does not refetch a primary must
+    # not inherit primary_fetched_this_poll=True from the stored file.
+    monkeypatch.setattr('radar_salud.primary_documents.extract_primary_pdf',lambda content:('aumento de capital '+('x'*100),'fixture'))
+    health=collect_cmf(captures,tmp_path)
+    docs=json.loads((tmp_path/'data/market/cmf_disclosures.json').read_text())['documents']
+    fetched=[d for d in docs if d.get('primary_fetched_this_poll')]
+    assert fetched and all(d.get('primary_receipt_completed_at') for d in fetched)
+    assert set(health['collected_record_ids'])=={d['record_id'] for d in docs}
+    partial=Captures(captures.path)
+    partial.receipts=[r for r in captures.receipts if 'rut=93930000' in r['url'] and r['kind']=='1']
+    health=collect_cmf(partial,tmp_path)
+    remaining=json.loads((tmp_path/'data/market/cmf_disclosures.json').read_text())['documents']
+    assert not any(d.get('primary_fetched_this_poll') for d in remaining) and health['collected_record_ids']==[]

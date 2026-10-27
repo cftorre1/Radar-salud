@@ -492,9 +492,17 @@ class _VisibleArticle(HTMLParser):
 
 def process_clinicas_chile(raw,cfg):
     """Clínicas de Chile sector intelligence with channel-aware materiality."""
+    first_detected=False
     if (not raw.event_date or raw.metadata.get("publication_date_source")
             not in ("article:published_time","dated_news_listing","verified_document_release")):
-        raise DeferredProcessing("Clínicas de Chile without verified date")
+        channel=raw.metadata.get("clinicas_channel") or "Noticias"
+        if channel=="Noticias" or raw.event_date:
+            # News carry dates; an unverified explicit date is never replaced.
+            raise DeferredProcessing("Clínicas de Chile without verified date")
+        # Library documents have no per-document date (Dirección 27-oct-2026):
+        # first-detection date, explicitly labelled; old uploads are refused.
+        from .date_basis import apply_first_detected
+        apply_first_detected(raw);first_detected=True
     from datetime import date
     from .processing import OutsideBackfillHorizon
     published=date.fromisoformat(raw.event_date)
@@ -536,6 +544,9 @@ def process_clinicas_chile(raw,cfg):
     row=build_signal(raw,cfg).to_dict()
     row["signal_types"]=[signal_type];row["scopes"]=["Prestadores"];row["source_channel"]=channel;row["editorial_relevance"]=score
     row['editorial_assessment']=raw.metadata['editorial_assessment']
+    if first_detected:
+        from .date_basis import label_first_detected
+        label_first_detected(row,raw)
     return row
 
 def process_corporate_news(raw,cfg):
@@ -571,7 +582,14 @@ def process_corporate_news(raw,cfg):
                                  and article.title.lower() not in raw.title.lower()):
             raise DeferredProcessing("Bupa headline mismatch between listing and article")
         raw.event_date=_date(article.published)
-        if not raw.event_date:raise DeferredProcessing("Bupa article publication date unavailable")
+        if not raw.event_date:
+            if str(article.published or "").strip():
+                # A date field exists but is unreadable: keep deferring, never replace it.
+                raise DeferredProcessing("Bupa article publication date unavailable")
+            # No date in H1/meta/JSON-LD/feed (EXTERNAL_BLOCKER_PROVEN). Dirección
+            # 27-oct-2026: first-detection date, explicitly labelled.
+            from .date_basis import apply_first_detected
+            apply_first_detected(raw)
         raw.raw_text=" ".join(article.body.split())[:9000]
         raw.metadata["page_text"]=raw.raw_text
     elif raw.source_slug=="pfizer_chile":
@@ -639,7 +657,10 @@ def process_corporate_news(raw,cfg):
     scope_text=re.sub(r"ex[aá]menes? de laboratorio", "exámenes diagnósticos", f"{raw.title} {what}", flags=re.I)
     scopes=(["Prestadores"]+(["Isapres"] if re.search(r"\bisapre(?:s)?\b",scope_text,re.I) else [])
             if raw.source_slug=="redsalud" else _scopes(scope_text))
-    if (date.today()-published).days>14:
+    first_detected=raw.metadata.get("date_basis")=="first_detected"
+    if first_detected:
+        why=re.sub(r"\bvigente ahora\b",f"vigente al detectarse el {raw.event_date} (vigencia actual no verificada)",why,flags=re.I)
+    elif (date.today()-published).days>14:
         why=re.sub(r"vigente ahora y condicionado a la inscripción en la FIBE",
                    "condicionado a la inscripción en la FIBE al momento de publicarse (vigencia actual no verificada)",why,flags=re.I)
         why=re.sub(r"\bvigente ahora\b",f"vigente al publicarse el {raw.event_date} (vigencia actual no verificada)",why,flags=re.I)
@@ -649,6 +670,9 @@ def process_corporate_news(raw,cfg):
     row=build_signal(raw,cfg).to_dict()
     row.update(signal_types=["Noticias"],scopes=scopes,editorial_relevance=score)
     row['editorial_assessment']=raw.metadata['editorial_assessment']
+    if first_detected:
+        from .date_basis import label_first_detected
+        label_first_detected(row,raw)
     if raw.url.rstrip('/').endswith('/personas-damnificadas-recibiran-atencion-gratuita-en-clinicas-privadas'):
         row.update(source_title_full=raw.title,
                    title="Fonasa activa SAFED para atención gratuita en clínicas privadas tras temporal",

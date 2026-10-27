@@ -277,5 +277,40 @@
     "default_category": "Mercado",
     "cadence": "daily",
     "method": "verified_newsroom_listing_and_article_date"
+  },
+  {
+    "slug": "datos_gob_cl",
+    "name": "datos.gob.cl (FONASA y DEIS-MINSAL)",
+    "source_type": "official",
+    "system_domain": "HEALTH_INSURANCE",
+    "base_confidence": 100,
+    "cadence": "daily",
+    "method": "ckan_package_search_metadata_modified_data_release",
+    "default_category": "Datos sectoriales",
+    "force_category": true,
+    "note": "Dirección 27-oct-2026: sustituto de fonasa.cl (403 WAF). Solo metadatos y enlaces; fecha = liberación del dato, no noticia."
+  },
+  {
+    "slug": "cmf_health_ecosystem",
+    "name": "Comisión para el Mercado Financiero (CMF)",
+    "source_type": "official",
+    "system_domain": "PROVIDERS",
+    "base_confidence": 100,
+    "cadence": "daily",
+    "method": "verified_issuer_essential_facts",
+    "default_category": "Mercado",
+    "note": "Dirección 27-oct-2026: activado en el ciclo diario (antes held_for_core_quality_gate)."
+  },
+  {
+    "slug": "prestadores_data",
+    "name": "Superintendencia de Salud · Intendencia de Prestadores",
+    "source_type": "official",
+    "system_domain": "HEALTH_PROVIDERS",
+    "base_confidence": 100,
+    "cadence": "daily",
+    "method": "statistical_bulletins_first_detected",
+    "default_category": "Datos sectoriales",
+    "force_category": true,
+    "note": "Dirección 27-oct-2026: sin fecha de publicación; se publica con fecha de primera detección rotulada."
   }
 ]

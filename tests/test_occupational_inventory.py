@@ -305,10 +305,30 @@ def test_api_adds_official_report_with_verified_detail_and_keeps_data_period_sep
     assert result["metrics"]["90"]["dated_articles"] == 2
 
 
-def test_api_visible_header_date_conflict_removes_existing_raw_and_leaves_pending():
+def test_api_visible_header_date_conflict_within_three_days_uses_visible_date_and_records_conflict():
+    # Dirección 27-oct-2026: WP API 12-ago vs visible 10/08 (observed live on
+    # IST) uses the visible date and records the conflict; coverage stays complete.
     scout, baseline = ist_baseline("2026-08-12")
     endpoint = ist_api_url(AS_OF)
     post = api_post(published="2026-08-12T11:38:53", visible="10/08/2026")
+    load, visited = loader_for({endpoint: json.dumps([post]),
+                                IST_FIRST: detail(published="2026-08-12", body="10/08/2026 " + BODY)})
+    result = enrich_inventory_from_ist_api(baseline, scout, load, api_headers={"x-wp-total": "1", "x-wp-totalpages": "1"})
+    row = next(row for row in result["rows"] if row["url"] == IST_FIRST)
+    assert row["publication_date"] == "2026-08-10" and row["status"] != "pending"
+    assert row["date_conflict"]["api_date"] == "2026-08-12" and row["date_conflict"]["gap_days"] == 2
+    raw = next(item for item in result["raw_items"] if item.url == IST_FIRST)
+    assert raw.event_date == "2026-08-10" and raw.metadata["date_conflict"]["date_basis"] == "visible_header"
+    evidence = raw.metadata["publication_evidence"]
+    assert evidence["kind"] == "publisher:visible_header_date" and evidence["cms_date"] == "2026-08-12"
+    assert not any(e.get("code") == "api_visible_publication_date_conflict" for e in result["errors"])
+    assert result["coverage_complete"]
+
+
+def test_api_visible_header_date_conflict_beyond_three_days_still_fails_closed():
+    scout, baseline = ist_baseline("2026-08-12")
+    endpoint = ist_api_url(AS_OF)
+    post = api_post(published="2026-08-12T11:38:53", visible="05/08/2026")
     load, visited = loader_for({endpoint: json.dumps([post])})
     result = enrich_inventory_from_ist_api(baseline, scout, load, api_headers={"x-wp-total": "1", "x-wp-totalpages": "1"})
     row = next(row for row in result["rows"] if row["url"] == IST_FIRST)
@@ -427,7 +447,10 @@ def test_captured_live_api_keeps_all_twenty_one_posts_and_pending_unverified_det
     assert report_row["data_period"] == "2025" and report_row["status"] == "pending"
     tps_url = "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/"
     tps = next(row for row in result["rows"] if row["url"] == tps_url)
-    assert tps["reason"] == "api_visible_publication_date_conflict" and tps_url not in visited
+    # 2-day API/visible gap is tolerated (27-oct-2026); its detail was not
+    # captured in this route probe, so it stays pending on the detail fetch.
+    assert tps["date_conflict"]["gap_days"] == 2 and tps_url in visited
+    assert tps["status"] == "pending" and tps["reason"] != "api_visible_publication_date_conflict"
     assert not result["raw_items"] and not result["coverage_complete"]
 
 
@@ -456,19 +479,25 @@ def test_real_ist_details_recover_cms_months_without_promoting_conflict_or_missi
     result = enrich_inventory_from_ist_api(baseline, CuratedBetaSourceScout("ist"), load,
         api_url=api_record["url"], api_headers=api_hop["headers"])
     assert len(result["ist_api"]["posts"]) == 21 and result["ist_api"]["response_complete"]
-    assert len(result["raw_items"]) == 19
-    assert result["metrics"]["90"]["dated_articles"] == 19
+    assert len(result["raw_items"]) == 20
+    assert result["metrics"]["90"]["dated_articles"] == 20
     rows = {row["url"]: row for row in result["rows"]}
     tps = "https://ist.cl/realizamos-una-exitosa-jornada-preventiva-en-tps/"
-    assert rows[tps]["reason"] == "api_visible_publication_date_conflict"
-    assert rows[tps]["publication_date"] is None and tps not in visited
+    # Real captured bytes: WP API 2026-08-12, visible header 10/08/2026 in the
+    # detail page. Tolerated (<=3 days): visible date used, conflict recorded.
+    assert rows[tps]["publication_date"] == "2026-08-10" and tps in visited
+    assert rows[tps]["date_conflict"]["api_date"] == "2026-08-12"
+    tps_raw = next(item for item in result["raw_items"] if item.url == tps)
+    assert tps_raw.metadata["publication_evidence"]["kind"] == "publisher:visible_header_date"
     assert rows[IST_REPORT]["status"] == "pending" and rows[IST_REPORT]["data_period"] == "2025"
     assert rows[IST_REPORT]["publication_date"] is None
     assert rows[IST_REPORT]["api_publication_evidence"]["date"] == "2026-07-14"
     ebco = "https://ist.cl/dimos-inicio-a-la-semana-de-la-seguridad-junto-a-ebco/"
     assert rows[ebco]["publication_date"] == "2026-10-05"
     for item in result["raw_items"]:
-        assert item.metadata["publication_date"] == rows[item.url]["api_publication_evidence"]["date"]
+        expected = (rows[item.url]["date_conflict"]["visible_date"] if rows[item.url].get("date_conflict")
+                    else rows[item.url]["api_publication_evidence"]["date"])
+        assert item.metadata["publication_date"] == expected
         assert item.metadata["publication_evidence"]["url"] == item.url
     assert not result["coverage_complete"] and not result["ist_api"]["inclusive_90_day_bounds"]
 
@@ -481,11 +510,13 @@ def test_current_run6_ist_api_closes_calendar_bounds_and_verifies_report_publica
     result = inventory(CuratedBetaSourceScout("ist"), loader, as_of=AS_OF)
     assert result["ist_api"]["response_complete"] and result["ist_api"]["inclusive_90_day_bounds"]
     assert len(result["ist_api"]["posts"]) == 21 and result["ist_api"]["pages"][0]["total"] == 21
-    assert result["metrics"]["90"]["dated_articles"] == 20 and len(result["raw_items"]) == 20
-    assert result["unknown_publication_dates"] == 1
+    assert result["metrics"]["90"]["dated_articles"] == 21 and len(result["raw_items"]) == 21
+    assert result["unknown_publication_dates"] == 0
     pending = [row for row in result["rows"] if row["status"] == "pending"]
-    assert {row["reason"] for row in pending} == {"api_visible_publication_date_conflict", "required_supporting_document_pending"}
-    assert len(pending) == 2
+    # The API/visible 2-day conflict is tolerated (27-oct-2026); only the
+    # supporting-document requirement remains pending.
+    assert {row["reason"] for row in pending} == {"required_supporting_document_pending"}
+    assert len(pending) == 1
     report = next(row for row in result["rows"] if row["url"] == IST_REPORT)
     assert report["publication_date"] == "2026-07-14" and report["data_period"] == "2025"
     assert report["publication_evidence"]["date"] == report["api_publication_evidence"]["date"]

@@ -381,7 +381,7 @@ class MutualNewsScout:
 
     def discover_inventory(self):
         cutoff = self.as_of - timedelta(days=90)
-        pages, errors, observed, state = [], [], {}, {}
+        pages, errors, observed, state, pagination_notes = [], [], {}, {}, []
         queue = deque([(self.PAGE, None)])
         fetched = {}
         while queue and len(pages) < self.max_pages:
@@ -417,8 +417,19 @@ class MutualNewsScout:
                     errors.extend(branch["errors"])
                 fingerprint = tuple((card["url"], card["listing_date"]) for card in cards)
                 if fingerprint in current["seen"]:
-                    current.update(done=True, complete=False, reason="repeated_pagination_page")
-                    errors.append({"url": url, "branch": branch_id, "reason": "repeated_pagination_page"})
+                    # The IBM portal returns the same card set again once its
+                    # paginator stops advancing. Dirección 27-oct-2026: stop the
+                    # branch cleanly (no inventory failure) and record how far
+                    # back the verified cards reach.
+                    # Complete only when the verified cards already reach the
+                    # 90-day cutoff; otherwise the stop is clean but a gap.
+                    reached = bool(current["oldest"] and current["oldest"] <= cutoff.isoformat())
+                    current.update(done=True, complete=current["complete"] and reached,
+                                   reason="repeated_pagination_page_stop",
+                                   oldest_verified_listing_date=current["oldest"])
+                    pagination_notes.append({"url": url, "branch": branch_id, "code": "repeated_pagination_page_stop",
+                                             "oldest_verified_listing_date": current["oldest"],
+                                             "reached_90_day_cutoff": reached})
                     continue
                 current["seen"].add(fingerprint)
                 dates = [card["listing_date"] for card in cards]
@@ -509,11 +520,14 @@ class MutualNewsScout:
                     and not any(row["status"] == "pending" for row in rows))
         for diagnostic in errors:
             diagnostic.setdefault("code", diagnostic["reason"])
-        summary = [{"branch": key, "complete": value["complete"], "done": value["done"], "reason": value.get("reason")}
+        summary = [{"branch": key, "complete": value["complete"], "done": value["done"], "reason": value.get("reason"),
+                    **({"oldest_verified_listing_date": value.get("oldest_verified_listing_date")}
+                       if value.get("reason") == "repeated_pagination_page_stop" else {})}
                    for key, value in state.items()]
         self.report = {"source_slug": self.SOURCE_SLUG, "raw_items": raws, "rows": rows, "pages": pages,
             "metrics": _metrics(rows, self.as_of), "coverage_complete": complete, "errors": errors,
             "stop_reason": "all_category_branches_exhausted_or_cutoff" if complete else "inventory_incomplete",
+            "pagination_notes": pagination_notes,
             "window": {"as_of_chile": self.as_of.isoformat(), "30_day_start": (self.as_of - timedelta(days=30)).isoformat(),
                        "90_day_start": cutoff.isoformat()}, "branches": summary}
         for metric in self.report["metrics"].values():
