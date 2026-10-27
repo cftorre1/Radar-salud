@@ -123,3 +123,14 @@ def test_prestadores_baseline_then_only_new_bulletins(tmp_path, monkeypatch):
     assert row["signal_types"] == ["Datos"] and "no informa fecha de publicación" in row["why_it_matters"]
     from radar_salud.editorial_gate import publication_ready
     assert publication_ready(row)[0]
+
+
+def test_first_detection_is_capped_at_30_days_when_window_env_is_unset(monkeypatch):
+    from radar_salud.date_basis import FIRST_DETECTED_MAX_DAYS
+    monkeypatch.delenv("RADAR_DAILY_WINDOW_DAYS", raising=False)  # default window is 90
+    assert FIRST_DETECTED_MAX_DAYS == 30
+    with pytest.raises(RejectedProcessing, match="outside_daily_window"):
+        apply_first_detected(item(detected="2026-09-20T12:00:00+00:00"), today=TODAY)
+    with pytest.raises(RejectedProcessing):
+        apply_first_detected(item(detected="2026-09-20T12:00:00+00:00"), today=TODAY, window_days=90)
+    assert apply_first_detected(item(detected="2026-10-20T12:00:00+00:00"), today=TODAY) == "2026-10-20"

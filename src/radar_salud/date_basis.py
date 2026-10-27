@@ -17,6 +17,9 @@ from .processing import DeferredProcessing, RejectedProcessing
 CHILE = ZoneInfo("America/Santiago")
 FIRST_DETECTED = "first_detected"
 DATA_RELEASE = "data_release"
+# Dirección 27-oct-2026: first-detection dating never reaches beyond 30 days,
+# whatever RADAR_DAILY_WINDOW_DAYS says (its default is 90).
+FIRST_DETECTED_MAX_DAYS = 30
 _UPLOAD_PATH = re.compile(r"/wp-content/uploads/(20\d{2})/(0[1-9]|1[0-2])/")
 
 
@@ -56,7 +59,7 @@ def apply_first_detected(raw, *, today=None, window_days=None):
         raise DeferredProcessing("first_detection_timestamp_unavailable")
     day = chile_day(detected)
     today = today or datetime.now(CHILE).date()
-    window_days = window_days or _window_days()
+    window_days = min(window_days or _window_days(), FIRST_DETECTED_MAX_DAYS)
     start = today - timedelta(days=window_days)
     if day > today:
         raise DeferredProcessing("first_detection_in_future")
