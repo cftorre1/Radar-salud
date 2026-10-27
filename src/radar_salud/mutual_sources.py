@@ -421,10 +421,15 @@ class MutualNewsScout:
                     # paginator stops advancing. Dirección 27-oct-2026: stop the
                     # branch cleanly (no inventory failure) and record how far
                     # back the verified cards reach.
-                    current.update(done=True, reason="repeated_pagination_page_stop",
+                    # Complete only when the verified cards already reach the
+                    # 90-day cutoff; otherwise the stop is clean but a gap.
+                    reached = bool(current["oldest"] and current["oldest"] <= cutoff.isoformat())
+                    current.update(done=True, complete=current["complete"] and reached,
+                                   reason="repeated_pagination_page_stop",
                                    oldest_verified_listing_date=current["oldest"])
                     pagination_notes.append({"url": url, "branch": branch_id, "code": "repeated_pagination_page_stop",
-                                             "oldest_verified_listing_date": current["oldest"]})
+                                             "oldest_verified_listing_date": current["oldest"],
+                                             "reached_90_day_cutoff": reached})
                     continue
                 current["seen"].add(fingerprint)
                 dates = [card["listing_date"] for card in cards]

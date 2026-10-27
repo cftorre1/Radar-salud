@@ -451,12 +451,28 @@ def test_repeated_paging_stops_cleanly_without_infinite_requests():
     page = listing(branch(0, card("one"), "p0/NEXT=/"))
     source, calls = scout({PAGE: page, next_url: page, detail_url("one"): detail()})
     report = source.discover_inventory()
-    assert report["coverage_complete"] and len(report["raw_items"]) == 1
+    # Clean stop (no error, no loop), but the cards never reached the 90-day
+    # cutoff, so the inventory is honestly incomplete (revisión PR #71).
+    assert not report["coverage_complete"] and len(report["raw_items"]) == 1
     assert not any(error.get("reason") == "repeated_pagination_page" for error in report["errors"])
     note = report["pagination_notes"][0]
-    assert note["code"] == "repeated_pagination_page_stop" and note["oldest_verified_listing_date"]
+    assert note["code"] == "repeated_pagination_page_stop" and note["reached_90_day_cutoff"] is False
     assert report["branches"][0]["reason"] == "repeated_pagination_page_stop"
     assert calls.count(next_url) == 1
+
+
+def test_repeated_paging_after_reaching_the_cutoff_is_complete():
+    from datetime import timedelta
+    months = ["ene.", "feb.", "mar.", "abr.", "may.", "jun.", "jul.", "ago.", "sept.", "oct.", "nov.", "dic."]
+    cutoff = TODAY - timedelta(days=90)
+    stamp = f"{cutoff.day} {months[cutoff.month - 1]} {cutoff.year}"
+    next_url = urljoin(PAGE, "p0/NEXT=/")
+    page = listing(branch(0, card("one") + card("old", published=stamp, title="Nota antigua de Mutual de Seguridad"), "p0/NEXT=/"))
+    source, calls = scout({PAGE: page, next_url: page, detail_url("one"): detail(), detail_url("old"): detail()})
+    report = source.discover_inventory()
+    note = report["pagination_notes"][0]
+    assert note["reached_90_day_cutoff"] is True and note["oldest_verified_listing_date"] == cutoff.isoformat()
+    assert report["branches"][0]["complete"]
 
 
 def test_repeated_experimental_theme_response_preserves_valid_editorial_rejection_and_stops():
@@ -468,9 +484,10 @@ def test_repeated_experimental_theme_response_preserves_valid_editorial_rejectio
     source, calls = scout({PAGE: page, next_url: page, detail_url("one"): native_detail(title=title, body=body)})
     report = source.discover_inventory()
     assert report["rows"][0]["date_verified"] and report["rows"][0]["status"] == "rejected"
-    assert report["metrics"]["90"]["candidates"] == 0 and report["metrics"]["90"]["complete"]
-    assert report["technical_status"] == "ok" and report["coverage_complete"] and not report["errors"]
+    assert report["metrics"]["90"]["candidates"] == 0 and not report["metrics"]["90"]["complete"]
+    assert not report["coverage_complete"] and not report["errors"]
     assert report["pagination_notes"][0]["code"] == "repeated_pagination_page_stop"
+    assert report["pagination_notes"][0]["reached_90_day_cutoff"] is False
     assert calls.count(next_url) == 1
     assert report["pages"][1]["pagination_base_evidence"]["purpose"] == "experimental_archive_fallback"
 
