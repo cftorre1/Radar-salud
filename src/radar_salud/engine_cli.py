@@ -34,6 +34,7 @@ from .cmf_daily import CmfDailyScout, process_cmf_event
 from .beta_sources import PrestadoresDailyScout, process_prestadores_bulletin
 DETERMINISTIC_SOURCES = ("datos_gob_cl", "cmf_health_ecosystem", "prestadores_data")
 FIRST_DETECTED_SOURCES = ("bupa_chile", "clinicas_chile", "prestadores_data")
+from .date_basis import BASELINE_SOURCES as FIRST_DETECTION_BASELINE_SOURCES
 
 # Regulators are the product core (panel de expertos, 26-oct-2026). Their low-volume
 # BACKFILL must not wait behind press LIVE floods (Pulso: decenas por día).
@@ -209,6 +210,11 @@ def main():
         owner=getattr(discover,"__self__",None)
         try:
             items=discover()
+            if name in FIRST_DETECTION_BASELINE_SOURCES:
+                # Baseline of URLs known before the first-detection rule (27-oct-2026); created once.
+                from .date_basis import ensure_first_detection_baseline
+                ensure_first_detection_baseline(root,name,[raw.url for raw in items]+
+                    [i["raw"]["url"] for i in queue.items.values() if i.get("source")==name])
             observed[name]=[dict(url=raw.url,event_date=raw.event_date,metadata=raw.metadata) for raw in items]
             surfaces[name]=getattr(getattr(discover,"__self__",None),"surface_results",None)
             scout=getattr(discover,"__self__",None)

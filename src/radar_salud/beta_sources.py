@@ -1100,22 +1100,85 @@ def process_prestadores_data(raw, cfg):
     return None
 
 
+_PRESTADORES_HOSTS = ("www.superdesalud.gob.cl", "superdesalud.gob.cl")
+_PRESTADORES_MAX_BYTES = 15 * 1024 * 1024
+
+
+def _prestadores_official(url):
+    try:
+        parsed = urlparse(url)
+        return (parsed.scheme == "https" and parsed.hostname in _PRESTADORES_HOSTS and parsed.port in (None, 443)
+                and not parsed.username and not parsed.password)
+    except (TypeError, ValueError):
+        return False
+
+
+def prestadores_listing_pdf_urls(html):
+    """Every official PDF linked by the bulletin listing (baseline = whole listing)."""
+    parser = _Links()
+    parser.feed(html)
+    urls = set()
+    for href, _ in parser.links:
+        url = urljoin(PrestadoresDataScout.PAGE, href or "")
+        if _prestadores_official(url) and urlparse(url).path.lower().endswith(".pdf"):
+            urls.add(url)
+    return sorted(urls)
+
+
+def download_prestadores_pdf(url, *, timeout=30, max_bytes=_PRESTADORES_MAX_BYTES):
+    """Verified-TLS PDF download bounded in bytes; redirects stay on the official host."""
+    from urllib.request import HTTPRedirectHandler, Request, build_opener
+
+    class _SameHost(HTTPRedirectHandler):
+        def redirect_request(self, req, fp, code, msg, headers, newurl):
+            if not _prestadores_official(newurl):
+                raise ValueError("Prestadores redirect left the official HTTPS host")
+            return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+    if not _prestadores_official(url):
+        raise ValueError("Prestadores bulletin URL must be official HTTPS")
+    request = Request(url, headers={"User-Agent": "RadarSaludBot/0.3 (+public-source-monitor)"})
+    with build_opener(_SameHost()).open(request, timeout=timeout) as response:
+        if not _prestadores_official(response.geturl()):
+            raise ValueError("Prestadores response left the official HTTPS host")
+        declared = response.headers.get("Content-Length")
+        if declared and declared.isdigit() and int(declared) > max_bytes:
+            raise ValueError("Prestadores bulletin exceeds the byte limit")
+        data = response.read(max_bytes + 1)
+    if len(data) > max_bytes:
+        raise ValueError("Prestadores bulletin exceeds the byte limit")
+    if not data.startswith(b"%PDF-"):
+        raise ValueError("Prestadores bulletin is not a PDF")
+    return data
+
+
+def prestadores_pdf_text(data, max_pages=3):
+    """Unfiltered text of the first pages (the shared extractor drops short
+    'Superintendencia de Salud' header lines, which can carry the issuer)."""
+    import io
+    from pypdf import PdfReader
+    reader = PdfReader(io.BytesIO(data))
+    return "\n".join((page.extract_text() or "") for page in reader.pages[:max_pages])
+
+
 class PrestadoresDailyScout:
     """Daily-engine view of the bulletins with a first-detection baseline.
 
     The listing exposes no publication date (Dirección 27-oct-2026, decision
-    d). The first daily run records every bulletin already listed as a
-    baseline and queues nothing, so a backlog is never presented as
-    "detected today"; later runs queue only bulletins absent from it.
+    d). The first daily run records every PDF linked by the listing (the whole
+    listing, not only the 2026 subset) as a baseline and queues nothing, so a
+    backlog is never presented as "detected today"; later runs queue only
+    bulletins absent from it.
     """
     SOURCE_SLUG = PrestadoresDataScout.SOURCE_SLUG
 
-    def __init__(self, root=None, scout=None, enabled=None):
+    def __init__(self, root=None, scout=None, enabled=None, fetch=None):
         from pathlib import Path
         from .paths import project_root
         self.root = Path(root or project_root())
         self.scout = scout or PrestadoresDataScout()
         self.enabled = enabled
+        self.fetch = fetch or fetch_html
         self.surface_results = []
 
     def discover(self):
@@ -1127,17 +1190,20 @@ class PrestadoresDailyScout:
         if not enabled:
             self.surface_results = [{"status": "not_run_outside_engine_runtime"}]
             return []
-        items = self.scout.discover()
+        html = self.fetch(self.scout.PAGE)
+        listed = prestadores_listing_pdf_urls(html)
+        items = self.scout.discover_from_html(html)
         path = self.root / "data/state/prestadores_data_baseline.json"
         if not path.exists():
             atomic_json(path, {"established_at": datetime.now(timezone.utc).isoformat(),
                                "reason": "first_detection_baseline_dated_items_unavailable",
-                               "urls": sorted(raw.url for raw in items)})
-            self.surface_results = [{"status": "baseline_established", "baseline_items": len(items)}]
+                               "urls": sorted(set(listed) | {raw.url for raw in items})})
+            self.surface_results = [{"status": "baseline_established", "baseline_items": len(listed)}]
             return []
         baseline = set(json.loads(path.read_text()).get("urls", []))
         fresh = [raw for raw in items if raw.url not in baseline]
-        self.surface_results = [{"status": "ok", "listed": len(items), "new_since_baseline": len(fresh)}]
+        self.surface_results = [{"status": "ok", "listed_pdfs": len(listed), "candidates": len(items),
+                                 "new_since_baseline": len(fresh)}]
         return fresh
 
 
@@ -1145,15 +1211,18 @@ def process_prestadores_bulletin(raw, cfg):
     """Deterministic 'Datos' card dated by first detection (never as publication)."""
     from .date_basis import apply_first_detected, label_first_detected
     from .pipeline import build_signal
-    from .processing import DeferredProcessing
-    from .document_intelligence import extract_pdf_text
+    from .processing import DeferredProcessing, RejectedProcessing
     try:
-        text = extract_pdf_text(raw.url, max_pages=3)
+        data = download_prestadores_pdf(raw.url)
+        text = prestadores_pdf_text(data)
+    except ValueError as exc:
+        raise RejectedProcessing(f"prestadores_bulletin_invalid: {exc}") from exc
     except Exception as exc:
         raise DeferredProcessing("Prestadores bulletin unavailable") from exc
-    if not text or len(text) < 250 or "Intendencia de Prestadores" not in text:
+    if len(" ".join(text.split())) < 250 or "intendencia de prestadores" not in " ".join(text.split()).casefold():
         raise DeferredProcessing("Prestadores bulletin unreadable")
-    raw.metadata["validated_document"] = True
+    raw.metadata.update(validated_document=True, document_sha256=hashlib.sha256(data).hexdigest(),
+                        document_bytes=len(data))
     apply_first_detected(raw)
     family = raw.metadata.get("data_family") or "prestadores"
     period = raw.metadata.get("data_period") or "2026"
@@ -1168,7 +1237,8 @@ def process_prestadores_bulletin(raw, cfg):
         "scores": {"economic": 45, "regulatory": 60, "scope": 60, "novelty": 60, "actionability": 55},
     })
     row = build_signal(raw, cfg).to_dict()
-    row.update(signal_types=["Datos"], scopes=["Prestadores"], data_period=period, deterministic_processing=True)
+    row.update(signal_types=["Datos"], scopes=["Prestadores"], data_period=period, deterministic_processing=True,
+               document_sha256=raw.metadata["document_sha256"])
     return label_first_detected(row, raw)
 
 

@@ -45,6 +45,42 @@ def upload_path_month(url):
     return (int(match[1]), int(match[2])) if match else None
 
 
+# Sources whose discovered stock predates this rule: the first daily discovery
+# records every URL already known as a baseline that never publishes by
+# detection (otherwise an old article would appear as "detectado hoy").
+BASELINE_SOURCES = ("bupa_chile",)
+
+
+def baseline_path(root, slug):
+    from pathlib import Path
+    return Path(root) / "data/state" / f"{slug}_first_detection_baseline.json"
+
+
+def ensure_first_detection_baseline(root, slug, urls):
+    """Create the baseline once (idempotent); returns True when it was created now."""
+    import json
+    path = baseline_path(root, slug)
+    if path.exists():
+        return False
+    from .pending_queue import atomic_json
+    atomic_json(path, {"established_at": datetime.now(ZoneInfo("UTC")).isoformat(),
+                       "reason": "first_detection_rule_activation_2026_10_27",
+                       "urls": sorted(set(urls))})
+    return True
+
+
+def _check_baseline(raw):
+    import json
+    if raw.source_slug not in BASELINE_SOURCES:
+        return
+    from .paths import project_root
+    path = baseline_path(project_root(), raw.source_slug)
+    if not path.exists():
+        raise DeferredProcessing("first_detection_baseline_not_established")
+    if raw.url in set(json.loads(path.read_text()).get("urls", [])):
+        raise RejectedProcessing("first_detection_baseline_existing_item")
+
+
 def apply_first_detected(raw, *, today=None, window_days=None):
     """Date an undated item by its first detection, or refuse it.
 
@@ -57,6 +93,7 @@ def apply_first_detected(raw, *, today=None, window_days=None):
     detected = raw.metadata.get("first_detected_at")
     if not detected:
         raise DeferredProcessing("first_detection_timestamp_unavailable")
+    _check_baseline(raw)
     day = chile_day(detected)
     today = today or datetime.now(CHILE).date()
     window_days = min(window_days or _window_days(), FIRST_DETECTED_MAX_DAYS)

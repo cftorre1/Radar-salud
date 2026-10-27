@@ -13,8 +13,8 @@ from radar_salud.sources import load_sources, source_index
 TODAY = date(2026, 10, 27)
 
 
-def item(url="https://www.bupa.cl/sala-de-prensa/nota", detected="2026-10-25T21:17:56+00:00", **meta):
-    return RawItem("bupa_chile", "Titular de prueba suficientemente largo", url, "Bupa Chile", "corporate",
+def item(url="https://www.clinicasdechile.cl/documento", detected="2026-10-25T21:17:56+00:00", slug="clinicas_chile", **meta):
+    return RawItem(slug, "Titular de prueba suficientemente largo", url, "Fuente", "corporate",
                    metadata={"first_detected_at": detected, **meta})
 
 
@@ -29,7 +29,7 @@ def test_detection_outside_window_or_missing_is_never_published():
     with pytest.raises(RejectedProcessing, match="outside_daily_window"):
         apply_first_detected(item(detected="2026-09-20T12:00:00+00:00"), today=TODAY, window_days=30)
     with pytest.raises(DeferredProcessing):
-        apply_first_detected(RawItem("bupa_chile", "t", "https://www.bupa.cl/x", "Bupa Chile", "corporate"), today=TODAY)
+        apply_first_detected(RawItem("clinicas_chile", "t", "https://www.clinicasdechile.cl/x", "C", "corporate"), today=TODAY)
 
 
 def test_late_detection_of_an_old_wordpress_upload_is_refused():
@@ -50,7 +50,10 @@ def recent(days=2):
     return (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
 
 
-def test_undated_bupa_article_publishes_with_detection_label(monkeypatch):
+def test_undated_bupa_article_publishes_with_detection_label(monkeypatch, tmp_path):
+    from radar_salud.date_basis import ensure_first_detection_baseline
+    monkeypatch.setattr("radar_salud.paths.project_root", lambda: tmp_path)
+    assert ensure_first_detection_baseline(tmp_path, "bupa_chile", ["https://www.bupa.cl/sala-de-prensa/antigua"])
     monkeypatch.setenv("RADAR_DAILY_WINDOW_DAYS", "30")
     cfg = source_index(load_sources(Path("config/sources.json")))["bupa_chile"]
     raw = RawItem("bupa_chile", "Clínica Bupa Santiago incorpora cirugía robótica y amplía el acceso a intervenciones de alta precisión en Chile",
@@ -94,27 +97,28 @@ def test_clinicas_library_document_uses_detection_but_news_still_requires_date(m
         process_clinicas_chile(news, {})
 
 
-def test_prestadores_baseline_then_only_new_bulletins(tmp_path, monkeypatch):
+def test_prestadores_baseline_covers_whole_listing_then_only_new_bulletins(tmp_path, monkeypatch):
     from radar_salud.beta_sources import PrestadoresDailyScout, process_prestadores_bulletin
+    page = "https://www.superdesalud.gob.cl/tax-observatorio-de-calidad-en-salud/boletines-estadisticos-7994/"
 
-    class Listing:
-        def __init__(self, urls):
-            self.urls = urls
-
-        def discover(self):
-            return [RawItem("prestadores_data", f"Boletín Estadístico de Acreditación N°{i}-2026", url,
-                            "Superintendencia de Salud · Intendencia de Prestadores", "official",
-                            metadata={"data_family": "acreditación", "data_period": "2026"})
-                    for i, url in enumerate(self.urls, 1)]
-    base = "https://www.superdesalud.gob.cl/app/uploads/2026/"
-    first = PrestadoresDailyScout(root=tmp_path, scout=Listing([base + "a.pdf", base + "b.pdf"]), enabled=True)
-    assert first.discover() == [] and first.surface_results[0]["status"] == "baseline_established"
-    later = PrestadoresDailyScout(root=tmp_path, scout=Listing([base + "a.pdf", base + "b.pdf", base + "c.pdf"]), enabled=True)
+    def listing(*names):
+        return "".join(f'<a href="/app/uploads/{n}.pdf">{t}</a>' for n, t in names)
+    old = [("2019-acred", "Boletín Estadístico de Acreditación 2019")] + [
+        (f"2026-{i}", f"Boletín Estadístico de Acreditación N°{i}-2026") for i in range(1, 15)]
+    first = PrestadoresDailyScout(root=tmp_path, enabled=True, fetch=lambda url: listing(*old))
+    assert first.discover() == [] and first.surface_results[0]["baseline_items"] == 15
+    import json
+    baseline = json.loads((tmp_path / "data/state/prestadores_data_baseline.json").read_text())["urls"]
+    assert any("2019-acred" in u for u in baseline) and any("2026-14" in u for u in baseline)  # beyond out[:12]
+    fresh_name = ("2026-15", "Boletín Estadístico de Mediación N°15-2026")
+    later = PrestadoresDailyScout(root=tmp_path, enabled=True, fetch=lambda url: listing(fresh_name, *old))
     fresh = later.discover()
-    assert [raw.url for raw in fresh] == [base + "c.pdf"]
+    assert [raw.url for raw in fresh] == ["https://www.superdesalud.gob.cl/app/uploads/2026-15.pdf"]
     monkeypatch.setenv("RADAR_DAILY_WINDOW_DAYS", "30")
-    monkeypatch.setattr("radar_salud.document_intelligence.extract_pdf_text",
-                        lambda *a, **k: "Intendencia de Prestadores de Salud. Boletín estadístico. " * 10)
+    monkeypatch.setattr("radar_salud.beta_sources.download_prestadores_pdf", lambda url: b"%PDF-1.4 fixture")
+    # Header line carries the issuer: the unfiltered extractor keeps it.
+    monkeypatch.setattr("radar_salud.beta_sources.prestadores_pdf_text",
+                        lambda data: "Intendencia de Prestadores · Superintendencia de Salud\n" + "Boletín estadístico. " * 20)
     raw = fresh[0]
     raw.metadata["first_detected_at"] = recent(0)
     cfg = source_index(load_sources(Path("config/sources.json")))["prestadores_data"]
@@ -123,6 +127,14 @@ def test_prestadores_baseline_then_only_new_bulletins(tmp_path, monkeypatch):
     assert row["signal_types"] == ["Datos"] and "no informa fecha de publicación" in row["why_it_matters"]
     from radar_salud.editorial_gate import publication_ready
     assert publication_ready(row)[0]
+
+
+def test_prestadores_download_is_bounded_and_host_restricted():
+    from radar_salud.beta_sources import download_prestadores_pdf
+    with pytest.raises(ValueError, match="official"):
+        download_prestadores_pdf("https://evil.example/boletin.pdf")
+    with pytest.raises(ValueError, match="official"):
+        download_prestadores_pdf("http://www.superdesalud.gob.cl/boletin.pdf")
 
 
 def test_first_detection_is_capped_at_30_days_when_window_env_is_unset(monkeypatch):
@@ -134,3 +146,31 @@ def test_first_detection_is_capped_at_30_days_when_window_env_is_unset(monkeypat
     with pytest.raises(RejectedProcessing):
         apply_first_detected(item(detected="2026-09-20T12:00:00+00:00"), today=TODAY, window_days=90)
     assert apply_first_detected(item(detected="2026-10-20T12:00:00+00:00"), today=TODAY) == "2026-10-20"
+
+
+def test_story_groups_carry_date_basis_and_never_borrow_publication_date():
+    from radar_salud.story_groups import apply_story_groups, _alt
+    detected = {"title": "Memoria", "source_name": "Clínicas de Chile A.G.", "source_url": "https://a.cl/1",
+                "event_date": "2026-10-20", "date_basis": "first_detected", "first_detected_at": "2026-10-20T12:00:00+00:00"}
+    dated = {"title": "Nota", "source_name": "DF", "source_url": "https://a.cl/2", "event_date": "2026-10-19"}
+    assert _alt(detected)["date_basis"] == "first_detected" and "date_basis" not in _alt(dated)
+    groups = [{"id": "g", "mode": "summary", "member_urls": ["https://a.cl/1", "https://a.cl/2"],
+               "card": {"title": "Síntesis", "what_happened": "x", "why_it_matters": "y"}}]
+    _, summaries = apply_story_groups([detected, dated], groups)
+    card = summaries[0]
+    assert card["publication_date"] is None and card["date_basis"] == "first_detected"
+    assert card["source_alternatives"][0]["first_detected_at"] == "2026-10-20T12:00:00+00:00"
+
+
+def test_bupa_requires_baseline_and_never_publishes_baseline_items_by_detection(monkeypatch, tmp_path):
+    from radar_salud.date_basis import ensure_first_detection_baseline
+    monkeypatch.setattr("radar_salud.paths.project_root", lambda: tmp_path)
+    raw = item(url="https://www.bupa.cl/sala-de-prensa/nota", slug="bupa_chile")
+    with pytest.raises(DeferredProcessing, match="baseline_not_established"):
+        apply_first_detected(raw, today=TODAY, window_days=30)
+    assert ensure_first_detection_baseline(tmp_path, "bupa_chile", [raw.url, raw.url])
+    assert not ensure_first_detection_baseline(tmp_path, "bupa_chile", ["https://www.bupa.cl/otra"])  # created once
+    with pytest.raises(RejectedProcessing, match="baseline_existing_item"):
+        apply_first_detected(raw, today=TODAY, window_days=30)
+    new = item(url="https://www.bupa.cl/sala-de-prensa/nueva", detected="2026-10-26T12:00:00+00:00", slug="bupa_chile")
+    assert apply_first_detected(new, today=TODAY, window_days=30) == "2026-10-26"
