@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Alicanto · Propuesta B</title>
+<!-- Propuesta B (recomendada): header compacto fijo, "Esta semana" como acordeones finos con estado de lectura,
+     barra de bandeja en una línea + intereses en chips, feed denso. Datos reales: mock-data.js (web/data, 27 oct 2026). -->
+<style>
+:root{
+  --ink:#1D3345;--ink84:rgba(29,51,69,.84);--ink68:rgba(29,51,69,.68);--ink50:rgba(29,51,69,.5);--ink12:rgba(29,51,69,.12);--ink08:rgba(29,51,69,.08);--ink04:rgba(29,51,69,.04);
+  --ivory:#FAF9F5;--paper:#fff;--accent:#C37C37;--accent-ink:#8A5420;--accent-soft:#F6EBDD;--weekly-soft:#EEF2F5;
+  --serif:Georgia,"Times New Roman",serif;--sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --gutter:16px;--hdr:52px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ivory);color:var(--ink);font:14px/1.45 var(--sans)}
+button{font:inherit;color:inherit}
+a{color:inherit}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block}
+
+/* ---------- Header: one 52px sticky line ---------- */
+.hdr{position:sticky;top:0;z-index:20;background:rgba(250,249,245,.94);backdrop-filter:saturate(1.4) blur(8px);border-bottom:1px solid var(--ink08)}
+.hdr-in{height:var(--hdr);display:flex;align-items:center;gap:12px;padding:0 var(--gutter);max-width:1240px;margin:0 auto}
+.logo{height:32px;width:auto;display:block}
+.tagline{display:none;font-size:12px;color:var(--ink68);padding-left:12px;border-left:1px solid var(--ink12);white-space:nowrap}
+.nav{margin-left:auto;display:flex;align-items:center;gap:2px}
+.nav a,.nav button{border:0;background:none;text-decoration:none;font-size:12.5px;font-weight:600;color:var(--ink68);padding:0 8px;height:44px;display:inline-flex;align-items:center;cursor:pointer;white-space:nowrap}
+.nav a[aria-current]{color:var(--ink)}
+.nav a[aria-current]::after{content:"";position:absolute}
+.nav .premium{margin-left:4px;height:30px;padding:0 11px;border-radius:999px;border:1px solid var(--accent);color:var(--accent-ink);font-weight:700;font-size:11.5px;letter-spacing:.02em}
+.nav .only-d{display:none}
+
+.wrap{max-width:1240px;margin:0 auto;padding:0 var(--gutter)}
+.layout{display:block}
+
+/* ---------- Esta semana: slim accordion rows, always present ---------- */
+.week{margin:8px 0 0}
+.week-label{display:flex;justify-content:space-between;align-items:baseline;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink50);margin:0 2px 4px}
+.week-label time{font-weight:500;letter-spacing:.02em;text-transform:none}
+.acc{border:1px solid var(--ink08);border-radius:12px;background:var(--paper);overflow:hidden}
+.acc + .acc{margin-top:5px}
+.acc.weekly{background:var(--weekly-soft)}
+.acc.global{background:var(--accent-soft)}
+.acc.read{background:var(--paper)}
+.acc-sum{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:12px 1fr auto 16px;column-gap:10px;align-items:center;width:100%;min-height:50px;padding:6px 12px}
+.acc-sum:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:12px}
+.rdot{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.read .rdot{background:transparent;box-shadow:inset 0 0 0 1.5px var(--ink50)}
+.acc-txt{min-width:0}
+.kick{display:block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);line-height:1.2}
+.weekly .kick{color:#46637A}
+.read .kick{color:var(--ink50)}
+.acc-title{display:block;font-family:var(--serif);font-size:15.5px;line-height:1.3;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.read .acc-title{color:var(--ink68)}
+.badge-new{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--accent);border-radius:999px;padding:3px 7px}
+.badge-read{font-size:11px;font-weight:600;color:var(--ink50)}
+.chev{transition:transform .2s;color:var(--ink50)}
+.acc.open .chev{transform:rotate(180deg)}
+.acc-body{display:none;padding:0 14px 12px 34px}
+.acc.open .acc-body{display:block}
+.acc.open .acc-title{white-space:normal}
+.acc-body p{margin:0 0 8px;color:var(--ink84);font-size:14px;line-height:1.5}
+.acc-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--ink68)}
+.acc-foot .cta{font-weight:700;color:var(--ink);text-decoration:none;font-size:13px;white-space:nowrap}
+.linkbtn{border:0;background:none;padding:0;cursor:pointer;color:var(--ink68);text-decoration:underline;text-underline-offset:2px;font-size:12px}
+
+/* ---------- Tu bandeja: one-line sticky bar + interest chips ---------- */
+.bar{position:sticky;top:var(--hdr);z-index:10;background:var(--ivory);margin:6px calc(-1 * var(--gutter)) 0;padding:6px var(--gutter) 0;border-bottom:1px solid var(--ink08)}
+.bar-row{display:flex;align-items:center;gap:2px;min-height:40px}
+.bar-row h2{margin-right:4px!important}
+.bar h2{font-family:var(--serif);font-weight:400;font-size:19px;margin:0;white-space:nowrap}
+.pill{border:0;background:none;cursor:pointer;display:inline-flex;align-items:center;gap:3px;height:36px;padding:0 6px;font-size:13px;color:var(--ink68);white-space:nowrap;border-radius:8px}
+.pill b{color:var(--ink);font-weight:700}
+.pill:hover{background:var(--ink04)}
+.pill svg.i{width:13px;height:13px}
+.sep{color:var(--ink12);display:none}
+.bar-tools{margin-left:auto;display:flex;align-items:center}
+.iconbtn{border:0;background:none;cursor:pointer;width:38px;height:40px;display:inline-flex;align-items:center;justify-content:center;color:var(--ink68);border-radius:10px;position:relative}
+.iconbtn:hover{background:var(--ink04);color:var(--ink)}
+.iconbtn .dotn{position:absolute;top:8px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.lanes-d{display:none}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:1px 0 8px;margin-right:calc(-1 * var(--gutter));padding-right:var(--gutter);mask-image:linear-gradient(90deg,#000 88%,transparent)}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--ink12);background:var(--paper);border-radius:999px;height:32px;padding:0 11px;font-size:12.5px;font-weight:600;color:var(--ink84);cursor:pointer;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.chip small{font-size:11px;font-weight:600;color:var(--ink50)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip[aria-pressed="true"] small{color:rgba(255,255,255,.7)}
+.chip.more{border-style:dashed;color:var(--ink68)}
+
+/* ---------- Feed: dense rows ---------- */
+.feed{margin:0 calc(-1 * var(--gutter))}
+.ghead{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink50);padding:10px var(--gutter) 2px}
+.row{position:relative;display:grid;grid-template-columns:22px 1fr;padding:9px var(--gutter) 9px 8px;border-bottom:1px solid var(--ink08)}
+.row .udot{width:22px;display:flex;justify-content:center;padding-top:7px}
+.row .udot i{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.row.read .udot i{background:transparent}
+.row h3{margin:0;font-size:15px;line-height:1.36;font-weight:600;letter-spacing:-.005em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.row.read h3{font-weight:500;color:var(--ink68)}
+.row .meta{display:flex;align-items:center;gap:6px;margin-top:3px;font-size:12px;color:var(--ink68);min-height:20px}
+.row .meta .acts{margin-left:auto;display:flex;gap:2px;color:var(--ink50)}
+.row .meta .acts svg.i{width:15px;height:15px}
+.tag{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#46637A;background:var(--weekly-soft);border-radius:4px;padding:1px 5px}
+.promo{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px var(--gutter);background:var(--paper);border-bottom:1px solid var(--ink08);font-size:12.5px;color:var(--ink68)}
+.promo button{border:0;background:none;font-weight:700;color:var(--accent-ink);cursor:pointer;white-space:nowrap;padding:8px 0}
+.feed-end{padding:16px var(--gutter) 40px;font-size:12px;color:var(--ink50);display:flex;gap:14px;flex-wrap:wrap}
+.feed-end button{border:0;background:none;padding:0;color:var(--ink68);text-decoration:underline;cursor:pointer;font-size:12px}
+.rail{display:none}
+
+/* ---------- Intereses sheet ---------- */
+.scrim{position:fixed;inset:0;background:rgba(29,51,69,.36);z-index:40;display:none}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--paper);border-radius:18px 18px 0 0;padding:8px 18px 18px;display:none;max-height:86vh;overflow:auto;box-shadow:0 -10px 40px rgba(29,51,69,.18)}
+.open-sheet .scrim,.open-sheet .sheet{display:block}
+.grab{width:36px;height:4px;border-radius:2px;background:var(--ink12);margin:0 auto 10px}
+.sheet h2{font-family:var(--serif);font-weight:400;font-size:20px;margin:0}
+.sheet .sub{font-size:12.5px;color:var(--ink68);margin:2px 0 12px}
+.sheet h4{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink50);margin:14px 0 6px}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.tog{border:1px solid var(--ink12);background:var(--paper);border-radius:10px;min-height:44px;padding:6px 10px;text-align:left;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:13px;font-weight:600}
+.tog small{color:var(--ink50);font-weight:600}
+.tog[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
+.tog[aria-pressed="true"] small{color:rgba(255,255,255,.7)}
+.seg{display:flex;border:1px solid var(--ink12);border-radius:10px;overflow:hidden}
+.seg button{flex:1;border:0;background:var(--paper);height:38px;font-size:12.5px;font-weight:600;cursor:pointer;color:var(--ink68)}
+.seg button+button{border-left:1px solid var(--ink12)}
+.seg button[aria-pressed="true"]{background:var(--ink04);color:var(--ink);box-shadow:inset 0 -2px 0 var(--accent)}
+.sheet-foot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px}
+.sheet-foot .primary{border:0;background:var(--ink);color:#fff;border-radius:10px;height:44px;padding:0 18px;font-weight:700;cursor:pointer}
+.menu{position:absolute;z-index:30;background:var(--paper);border:1px solid var(--ink12);border-radius:10px;box-shadow:0 8px 24px rgba(29,51,69,.14);padding:4px;display:none;min-width:170px}
+.menu.on{display:block}
+.menu button{display:flex;justify-content:space-between;width:100%;border:0;background:none;height:38px;padding:0 10px;border-radius:7px;cursor:pointer;font-size:13px}
+.menu button[aria-pressed="true"]{background:var(--ink04);font-weight:700}
+
+/* ---------- Desktop ---------- */
+@media (min-width:900px){
+  :root{--gutter:24px;--hdr:56px}
+  .logo{height:38px}
+  .tagline{display:block}
+  .nav .only-d{display:inline-flex}
+  .nav a,.nav button{font-size:13px;padding:0 10px}
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 288px;gap:32px;align-items:start}
+  .week{margin-top:14px}
+  .acc-sum{min-height:46px;grid-template-columns:12px auto 1fr auto 16px;padding:6px 14px}
+  .acc-sum .acc-txt{display:contents}
+  .kick{white-space:nowrap}
+  .acc-title{margin-top:0;font-size:16px}
+  .acc-body{padding-left:36px}
+  .bar{margin:12px 0 0;padding:4px 0 0;border-bottom:1px solid var(--ink12)}
+  .bar-row{min-height:46px}
+  .bar h2{font-size:21px;margin-right:6px}
+  .sep{display:inline}
+  .lanes-d{display:flex;gap:2px;margin-left:8px}
+  .lanes-d button{border:0;background:none;height:44px;padding:0 9px;font-size:13px;font-weight:600;color:var(--ink50);cursor:pointer;box-shadow:inset 0 -2px 0 transparent}
+  .lanes-d button span{font-weight:500;margin-left:3px}
+  .lanes-d button[aria-pressed="true"]{color:var(--ink);box-shadow:inset 0 -2px 0 var(--accent)}
+  .lanepill,.chips,.filterbtn{display:none!important}
+  .feed{margin:0}
+  .row{padding:10px 8px 10px 0;grid-template-columns:26px 1fr}
+  .row h3{font-size:15.5px}
+  .ghead{padding:12px 0 2px 26px}
+  .promo{padding:10px 8px 10px 26px}
+  .feed-end{padding-left:26px}
+  .rail{display:block;position:sticky;top:calc(var(--hdr) + 14px);padding-top:0;font-size:13px}
+  .rail-box{background:var(--paper);border:1px solid var(--ink08);border-radius:14px;padding:14px 14px 10px;margin-bottom:12px}
+  .rail h3{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink50);margin:0 0 6px;display:flex;justify-content:space-between}
+  .rail h3 button{border:0;background:none;padding:0;font-size:11px;letter-spacing:0;text-transform:none;color:var(--ink68);text-decoration:underline;cursor:pointer}
+  .ilist{list-style:none;margin:0 0 6px;padding:0}
+  .ilist button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:16px 1fr auto;gap:8px;align-items:center;width:100%;height:30px;padding:0 6px;border-radius:7px;font-size:13px;color:var(--ink84)}
+  .ilist button:hover{background:var(--ink04)}
+  .ilist .box{width:14px;height:14px;border-radius:4px;box-shadow:inset 0 0 0 1.5px var(--ink50)}
+  .ilist button[aria-pressed="true"] .box{background:var(--ink);box-shadow:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+  .ilist button[aria-pressed="true"]{color:var(--ink);font-weight:600}
+  .ilist small{color:var(--ink50);font-size:12px}
+  .ilist .zero{opacity:.45}
+  .rail .sel{width:100%;height:36px;border:1px solid var(--ink12);border-radius:9px;background:var(--paper);padding:0 10px;font:inherit;color:var(--ink)}
+  .rail .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .rail label{font-size:11.5px;color:var(--ink68);display:grid;gap:4px}
+  .rail .src{display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--ink68);font-size:12.5px}
+  .rail .src button{border:0;background:none;padding:0;font-weight:700;color:var(--ink);cursor:pointer;white-space:nowrap}
+  .rail .news{font-size:12.5px;color:var(--ink68);line-height:1.45}
+  .rail .news button{display:block;margin-top:8px;border:1px solid var(--ink12);background:var(--paper);border-radius:9px;height:34px;padding:0 12px;font-weight:700;cursor:pointer;font-size:12.5px}
+  .promo.mobile-only{display:none}
+  .sheet{left:auto;right:24px;bottom:auto;top:70px;width:420px;border-radius:16px}
+}
+</style>
+</head>
+<body>
+<header class="hdr"><div class="hdr-in">
+  <img class="logo" src="../../web/assets/alicanto-logo-header.png" alt="Alicanto Salud"/>
+  <span class="tagline">Señales clave del sector salud, claras y a tiempo.</span>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="#" aria-current="page">Chile</a><a href="#">Global</a><button type="button" class="only-d" data-open-sources>Fuentes</button>
+    <button type="button" class="premium">PREMIUM</button>
+  </nav>
+</div></header>
+
+<div class="wrap"><div class="layout">
+<main>
+  <section class="week" aria-label="Esta semana">
+    <div class="week-label"><span>Esta semana</span><time id="updated"></time></div>
+    <div id="specials"></div>
+  </section>
+
+  <section class="bar" aria-labelledby="radarTitle">
+    <div class="bar-row">
+      <h2 id="radarTitle">Tu bandeja</h2>
+      <button type="button" class="pill lanepill" id="lanePill" aria-haspopup="menu"><b id="pendN">79</b>&nbsp;pendientes<svg class="i" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="lanes-d" id="lanesD" role="group" aria-label="Mostrar"></div>
+      <span class="sep">·</span>
+      <button type="button" class="pill" id="periodPill" aria-haspopup="menu"><span id="periodTxt">30 días</span><svg class="i" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="bar-tools">
+        <button type="button" class="iconbtn" title="Marcar todo como leído" aria-label="Marcar todo como leído" id="markAll"><svg class="i" viewBox="0 0 24 24"><path d="M2 12.5 6 16.5 14 8.5M10 15.5l1 1 9-9"/></svg></button>
+        <button type="button" class="iconbtn filterbtn" aria-label="Intereses y filtros" id="openSheet"><svg class="i" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><span class="dotn" id="filtDot" hidden></span></button>
+      </div>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Intereses"></div>
+  </section>
+
+  <div class="feed" id="feed"></div>
+</main>
+
+<aside class="rail" aria-label="Intereses y ajustes">
+  <div class="rail-box">
+    <h3><span>Mis intereses</span><button type="button" id="clearRail">Todo</button></h3>
+    <ul class="ilist" id="ilistA"></ul>
+    <h3 style="margin-top:8px"><span>Temas</span></h3>
+    <ul class="ilist" id="ilistL"></ul>
+  </div>
+  <div class="rail-box">
+    <div class="two">
+      <label>Período<select class="sel"><option>Desde mi última visita</option><option>7 días</option><option selected>30 días</option><option>90 días</option></select></label>
+      <label>Orden<select class="sel"><option selected>Más recientes</option><option>Relevancia para mí</option></select></label>
+    </div>
+  </div>
+  <div class="rail-box"><div class="src"><span id="srcSummary"></span><button type="button" data-open-sources>Ver fuentes →</button></div></div>
+  <div class="rail-box news">Lo importante de la semana, directo a tu correo.<button type="button">Suscríbete</button></div>
+</aside>
+</div></div>
+
+<div class="menu" id="laneMenu" role="menu"></div>
+<div class="menu" id="periodMenu" role="menu"></div>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" role="dialog" aria-labelledby="sheetTitle" id="sheet">
+  <div class="grab"></div>
+  <h2 id="sheetTitle">Intereses</h2>
+  <p class="sub">Elige lo que sigues. Se guarda en este dispositivo.</p>
+  <h4>Actores</h4><div class="tgrid" id="tgA"></div>
+  <h4>Temas</h4><div class="tgrid" id="tgL"></div>
+  <h4>Período</h4><div class="seg" id="segP"></div>
+  <h4>Orden</h4><div class="seg" id="segO"><button aria-pressed="true">Más recientes</button><button aria-pressed="false">Relevancia para mí</button></div>
+  <div class="sheet-foot"><button type="button" class="linkbtn" data-open-sources>Fuentes y cobertura</button><button type="button" class="primary" id="applySheet">Ver 79 señales</button></div>
+</div>
+
+<script src="mock-data.js"></script>
+<script>
+const D=window.ALICANTO_MOCK,$=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const P=new URLSearchParams(location.search);
+const sel=new Set((P.get('i')||'').split(',').filter(Boolean));
+const readSpecial={weekly:P.get('wr')==='1',global:P.get('gr')!=='0'}; // demo: weekly sin leer, global leído
+let lane='p';
+const ICON={link:'<svg class="i" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>',share:'<svg class="i" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"/></svg>',chev:'<svg class="i chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>'};
+$('#updated').textContent='Actualizado hoy 11:12';
+function specials(){
+  const xs=[['weekly','Insight · '+D.weekly.n+' fuentes',D.weekly,'Ver análisis'],['global','Global Intelligence',D.global,'Explorar Global']];
+  $('#specials').innerHTML=xs.map(([k,kick,x,cta])=>{const r=readSpecial[k];return `<div class="acc ${k} ${r?'read':''}" data-k="${k}"><button class="acc-sum" aria-expanded="false"><span class="rdot" aria-hidden="true"></span><span class="acc-txt"><span class="kick">${kick}</span><span class="acc-title">${esc(x.title)}</span></span>${r?'<span class="badge-read">Leído</span>':'<span class="badge-new">Nuevo</span>'}${ICON.chev}</button><div class="acc-body"><p>${esc(x.summary)}</p><div class="acc-foot"><span>${esc(x.src)} · ${x.d} · <button class="linkbtn" data-unread="${k}">${r?'Marcar no leído':'Marcar leído'}</button></span><a class="cta" href="#">${cta} →</a></div></div></div>`}).join('');
+  document.querySelectorAll('.acc').forEach(a=>{a.querySelector('.acc-sum').onclick=()=>{const o=!a.classList.contains('open');a.classList.toggle('open',o);a.querySelector('.acc-sum').setAttribute('aria-expanded',o)}});
+  document.querySelectorAll('[data-unread]').forEach(b=>b.onclick=e=>{const k=b.dataset.unread;readSpecial[k]=!readSpecial[k];specials();document.querySelector(`.acc[data-k=${k}]`).classList.add('open')});
+}
+function matches(x){return !sel.size||x.i.some(k=>sel.has(k))}
+function shown(){return D.feed.filter(matches)}
+function chips(){
+  const vis=D.interests.filter(x=>x.n>0);
+  $('#chips').innerHTML=`<button class="chip" aria-pressed="${!sel.size}" data-c="">Todo <small>${D.feed.length}</small></button>`+vis.map(x=>`<button class="chip" aria-pressed="${sel.has(x.k)}" data-c="${x.k}">${x.label} <small>${x.n}</small></button>`).join('')+`<button class="chip more" id="moreChip">Ajustar…</button>`;
+  $('#chips').querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{const k=b.dataset.c;if(!k)sel.clear();else sel.has(k)?sel.delete(k):sel.add(k);render()});
+  $('#moreChip').onclick=openSheet;
+  const li=x=>`<li><button aria-pressed="${sel.has(x.k)}" data-r="${x.k}" class="${x.n?'':'zero'}"><span class="box"></span><span>${x.label}</span><small>${x.n}</small></button></li>`;
+  $('#ilistA').innerHTML=D.interests.filter(x=>x.kind==='actor').map(li).join('');
+  $('#ilistL').innerHTML=D.interests.filter(x=>x.kind==='lens').map(li).join('');
+  document.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{const k=b.dataset.r;sel.has(k)?sel.delete(k):sel.add(k);render()});
+  const tg=x=>`<button class="tog" aria-pressed="${sel.has(x.k)}" data-t="${x.k}"><span>${x.label}</span><small>${x.n}</small></button>`;
+  $('#tgA').innerHTML=D.interests.filter(x=>x.kind==='actor').map(tg).join('');
+  $('#tgL').innerHTML=D.interests.filter(x=>x.kind==='lens').map(tg).join('');
+  document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{const k=b.dataset.t;sel.has(k)?sel.delete(k):sel.add(k);render()});
+  $('#segP').innerHTML=['Última visita','7 días','30 días','90 días'].map(p=>`<button aria-pressed="${p==='30 días'}">${p}</button>`).join('');
+}
+function feed(){
+  const xs=shown(),names=['Hoy y ayer','Últimos 7 días','Anteriores'];let html='',n=0;
+  names.forEach((nm,g)=>{const gx=xs.filter(x=>x.g===g);if(!gx.length)return;html+=`<div class="ghead">${nm}</div>`;gx.forEach(x=>{n++;html+=`<article class="row feed-card"><span class="udot" aria-hidden="true"><i></i></span><div><h3>${esc(x.t)}</h3><div class="meta"><span>${esc(x.src)} · ${x.d}</span>${x.k?`<span class="tag">${x.k}</span>`:''}<span class="acts">${ICON.link}${ICON.share}</span></div></div></article>`;if(n===7)html+=`<div class="promo mobile-only"><span>Lo importante de la semana, en tu correo.</span><button>Suscríbete →</button></div>`})});
+  html+=`<div class="feed-end"><span>${xs.length} señales · 30 días</span><button data-open-sources>Fuentes</button><a href="#">Volver arriba ↑</a></div>`;
+  $('#feed').innerHTML=html;
+  $('#pendN').textContent=xs.length;
+  $('#lanesD').innerHTML=[['p','Pendientes',xs.length],['l','Leídas',0],['t','Todas',xs.length]].map(([k,l,c])=>`<button data-lane="${k}" aria-pressed="${lane===k}">${l}<span>${c}</span></button>`).join('');
+  $('#applySheet').textContent=`Ver ${xs.length} señales`;
+  $('#filtDot').hidden=!sel.size;
+  document.querySelectorAll('[data-open-sources]').forEach(b=>b.onclick=()=>location.href='sources.html');
+}
+function render(){chips();feed()}
+function openSheet(){document.body.classList.add('open-sheet')}
+$('#openSheet').onclick=openSheet;$('#scrim').onclick=$('#applySheet').onclick=()=>document.body.classList.remove('open-sheet');
+$('#clearRail').onclick=()=>{sel.clear();render()};
+function menu(id,btn,items){const m=$(id);m.innerHTML=items.map(([l,c,on])=>`<button aria-pressed="${on}"><span>${l}</span><span>${c??''}</span></button>`).join('');const r=btn.getBoundingClientRect();m.style.left=Math.min(r.left,innerWidth-180)+'px';m.style.top=(r.bottom+scrollY+4)+'px';m.classList.toggle('on');m.querySelectorAll('button').forEach(b=>b.onclick=()=>m.classList.remove('on'))}
+$('#lanePill').onclick=e=>menu('#laneMenu',e.currentTarget,[['Pendientes',shown().length,true],['Leídas',0,false],['Todas',shown().length,false]]);
+$('#periodPill').onclick=e=>menu('#periodMenu',e.currentTarget,[['Desde mi última visita','',false],['7 días','',false],['30 días','',true],['90 días','',false]]);
+const ok=D.sources.filter(s=>s.st==='fresh').length;$('#srcSummary').textContent=`${D.sources.length} fuentes · ${ok} al día`;
+specials();render();
+if(P.get('sheet')==='1')openSheet();
+if(P.get('open')==='weekly')document.querySelector('.acc.weekly .acc-sum').click();
+</script>
+</body>
+</html>
