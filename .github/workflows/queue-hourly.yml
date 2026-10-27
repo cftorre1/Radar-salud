@@ -1,0 +1,91 @@
+name: Queue hourly batch
+# Dirección 27-oct-2026: process the pending queue every hour so news reaches the
+# feed the same day, instead of long once-a-day batches. No discovery here (the
+# Daily Radar runs discover); same AI guardrails (USD 10/month) and same gates.
+on:
+  schedule:
+    # Skips the four discovery hours (10, 14, 18, 22 UTC) so a waiting Daily Radar is never
+    # replaced in the shared concurrency group by an hourly batch.
+    - cron: '15 0-9,11-13,15-17,19-21,23 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  # Shared with Daily Radar: never two writers on staging at the same time.
+  group: alicanto-staging-writer
+  cancel-in-progress: false
+jobs:
+  batch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      RADAR_FAST_MODEL: gpt-5.6-luna
+      RADAR_DEEP_MODEL: gpt-5.6-terra
+      RADAR_CAPTURE_EVIDENCE: '1'
+      RADAR_MONTHLY_USD: 10
+      RADAR_DEEP_PER_RUN: 40
+      RADAR_FAST_PER_RUN: 400
+      RADAR_DEEP_PER_MONTH: 1000
+      RADAR_FAST_PER_MONTH: 20000
+      RADAR_DAILY_WINDOW_DAYS: 30
+      RADAR_PROCESSING_SECONDS: 1800
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install package
+        run: pip install -e . pytest
+      - name: Self-healing discovery when the last one is older than 13 hours (a Daily Radar was missed)
+        id: mode
+        run: python scripts/discovery_due.py 13 >> "$GITHUB_OUTPUT"
+      - name: Skip when nothing is ready inside the 30-day window
+        id: work
+        run: |
+          if [ "${{ steps.mode.outputs.mode }}" = discover ]; then echo "pending=discover" >> "$GITHUB_OUTPUT"
+          else python scripts/queue_backlog.py --github-output >> "$GITHUB_OUTPUT"; fi
+      - name: Preserve paid Terra analyses
+        if: steps.work.outputs.pending != '0'
+        run: python scripts/seed_analysis_cache.py
+      - name: Process pending queue (no discovery)
+        if: steps.work.outputs.pending != '0' && steps.mode.outputs.mode == 'process'
+        run: timeout --signal=TERM 40m python -m radar_salud.engine_cli --process-only --limit 120
+      - name: Discovery fallback (last Daily Radar missing)
+        if: steps.mode.outputs.mode == 'discover'
+        env:
+          RADAR_PROCESSING_SECONDS: 3600
+        run: timeout --signal=TERM 90m python -m radar_salud.engine_cli --limit 200
+      - name: Export public snapshot
+        if: steps.work.outputs.pending != '0'
+        run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json
+      - name: Snapshot reviewer and web contract
+        if: steps.work.outputs.pending != '0'
+        run: python -m pytest -q tests/test_reviewer.py
+      - name: Commit queue, history and snapshot
+        id: commit
+        if: always() && steps.work.outputs.pending != '0'
+        run: |
+          git config user.name "alicanto-salud-bot"
+          git config user.email "alicanto-salud-bot@users.noreply.github.com"
+          git add data/state data/history data/analysis_cache data/ai_usage data/source_health.json data/inbox data/outbox
+          if [ "${{ job.status }}" = success ]; then git add web/data; fi
+          if git diff --cached --quiet; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          web_changed=false; git diff --cached --quiet -- web/data || web_changed=true
+          git commit -m "chore: hourly queue batch"
+          for attempt in 1 2 3; do
+            git pull --rebase origin staging && git push origin HEAD:staging && break
+            git rebase --abort 2>/dev/null || true
+            sleep $((attempt * 20))
+          done
+          git push --dry-run origin HEAD:staging
+          echo "changed=$web_changed" >> "$GITHUB_OUTPUT"
+      - name: Request checked staging preview
+        if: success() && steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run staging-preview.yml --ref staging

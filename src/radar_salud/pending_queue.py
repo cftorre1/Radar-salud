@@ -567,6 +567,16 @@ class PendingQueue:
         if changed:self.save()
         return changed
 
+    def archive_sources(self, slugs, reason):
+        """Pending items of sources retired by a recorded decision are kept, archived."""
+        changed = 0
+        for item in self.items.values():
+            if item.get("source") in slugs and item.get("status") in ("pending", "retry"):
+                item.update(status="archived", reason=reason)
+                changed += 1
+        if changed:self.save()
+        return changed
+
     def archive_outside_daily_window(self, days, now=None, sources=None):
         """Items older than the daily processing window can never be processed by the
         daily run; keep them (archived, with a reason) instead of counting them as pending."""
@@ -579,9 +589,9 @@ class PendingQueue:
             if raw.get('source_slug') == 'suseso_fiscalizacion':
                 from .models import RawItem
                 if current_sanction_stock(RawItem(**raw), now):continue
-            try:
-                published = datetime.fromisoformat(str(raw.get("event_date"))[:10]).date()
-            except (TypeError, ValueError):
+            from .daily_window import item_date
+            published = item_date(item)
+            if published is None:
                 continue
             if (now.date() - published).days > days:
                 item.update(status="archived", reason=f"outside_daily_window_{days}d")
