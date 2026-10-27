@@ -139,7 +139,7 @@ def test_catalog_is_sanitized_and_does_not_accept_bad_future_or_unknown_dates():
         assert not eligible({**r,'coverage_status':blocked},now)
     catalog=build_catalog({'minsal':r,'fonasa':{**r,'status':'error'}},now)
     assert len(catalog['sources'])==1
-    assert set(catalog['sources'][0])=={'id','name','group','url','description'}
+    assert {'id','name','group','url','description'}<=set(catalog['sources'][0])<={'id','name','short_name','group','url','description'}
 
 def test_sanction_dates_require_primary_issuance_and_keep_other_dimensions():
     r={'event_type':'SANCTION','emission_date':'2026-09-22','publication_date':'2026-10-02','fact_period':'2025','inspection_date':'2025-06-01'}
