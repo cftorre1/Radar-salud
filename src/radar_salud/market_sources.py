@@ -155,7 +155,7 @@ def collect_cmf(captures, root):
                         from .primary_documents import extract_primary_pdf
                         text,method=extract_primary_pdf(content)
                         doc.update(primary_sha256=primary['sha256'], primary_verified=True,
-                                   primary_fetched_this_poll=True,
+                                   primary_fetched_this_poll=True, primary_receipt_completed_at=primary['completed_at'],
                                    primary_excerpt=' '.join(text.split())[:1000], primary_extraction_method=method,
                                    primary_content_usable=len(text.strip())>=80, materiality=classify_primary(text))
                         doc['disposition']=doc['materiality']['disposition'];doc['reason']=doc['materiality']['reason']
@@ -164,9 +164,17 @@ def collect_cmf(captures, root):
             query=parse_qs(urlsplit(r['url']).query); period=query['aa'][0]+'-'+query['mm'][0]
             statements.extend(financial_documents(captures.html(r),actor=actor,source_url=r['url'],reporting_period=period,sha256=r['sha256']))
             observations.extend(financial_results(captures.html(r),actor=actor,source_url=r['url'],sha256=r['sha256'],reporting_period=period))
+    # Transport must have reached at least one issuer's essential-facts index:
+    # a poll where every CMF request failed is an error, never an "ok" snapshot.
+    essential=[r for r in receipts if r['kind']=='essential_90d']
+    if not any(r['transport_ok'] for r in essential):
+        raise RuntimeError('CMF transport failed for every issuer essential-facts index')
     # Preserve first detection across polls and replays; transient CMF token URLs do not identify events.
     old_path=root/'data/market/cmf_disclosures.json'
     old={d['record_id']:d for d in json.loads(old_path.read_text()).get('documents',[])} if old_path.exists() else {}
+    # Stored documents were fetched in an earlier poll, whatever their saved flag says.
+    for prior_doc in old.values():
+        prior_doc['primary_fetched_this_poll']=False
     for doc in documents:
         prior=old.get(doc['record_id'],{})
         if not doc.get('primary_sha256') and prior.get('primary_sha256'):
@@ -206,6 +214,7 @@ def collect_cmf(captures, root):
                     primary_documents_reverified=sum(d.get('primary_fetched_this_poll',False) for d in documents),
                     actor_coverage=actor_coverage,material_events=len(events), transport_failures=[{'url':r['url'],'http':r['network']['http_code'],'reason':r['network'].get('errormsg')} for r in receipts if not r['transport_ok']])
     evidence['issuer_reported_health_relationships']=len(group_relationships)
+    evidence['collected_record_ids']=sorted({d['record_id'] for d in documents})
     record_data_adapter(root,'cmf_health_ecosystem',evidence)
     return evidence
 

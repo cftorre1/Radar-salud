@@ -55,9 +55,42 @@ def capture(root, output, budget_seconds, runner=subprocess.run):
     return output
 
 
-def verified_items(root):
-    """Queue items for verified, material CMF events (supporting updates excluded)."""
+# Dirección 27-oct-2026: CMF is a mandatory daily monitor from its activation
+# day; only new hechos esenciales publish. Hard limits, independent of
+# RADAR_DAILY_WINDOW_DAYS (even at 90 days the five 2-ago..14-sep events stay out).
+ACTIVATION_DATE = "2026-10-27"
+MAX_EVENT_AGE_DAYS = 30
+
+
+def _chile_today():
+    from zoneinfo import ZoneInfo
+    return datetime.now(ZoneInfo("America/Santiago")).date()
+
+
+def publishable_event_date(event_date, today=None):
+    """Event date on/after activation and within 30 Chile days (not in the future)."""
+    from datetime import date, timedelta
+    try:
+        day = date.fromisoformat(str(event_date))
+    except (TypeError, ValueError):
+        return False
+    today = today or _chile_today()
+    return (day >= date.fromisoformat(ACTIVATION_DATE) and day <= today
+            and today - day <= timedelta(days=MAX_EVENT_AGE_DAYS))
+
+
+def verified_items(root, *, collected_ids, run_started, today=None, skipped=None):
+    """Queue items for verified, material CMF events collected in this run.
+
+    A lead disclosure qualifies only when its record was collected in this
+    poll (``collected_ids``) and its primary PDF receipt completed at or after
+    ``run_started`` with bytes matching the reviewed record. The event date
+    must equal the lead document's CMF date, and pass ``publishable_event_date``.
+    """
     root = Path(root)
+    skipped = [] if skipped is None else skipped
+    collected_ids = set(collected_ids or ())
+    run_started = run_started if isinstance(run_started, str) else run_started.isoformat()
     events = json.loads((root / "data/market/cmf_events.json").read_text()).get("events", [])
     documents = {d["record_id"]: d for d in json.loads((root / "data/market/cmf_disclosures.json").read_text()).get("documents", [])}
     items = []
@@ -66,11 +99,22 @@ def verified_items(root):
             continue
         disclosures = [documents.get(record) for record in event.get("primary_disclosures", [])]
         lead = next((d for d in disclosures if d and d.get("official_document_number") == event.get("official_document_number")), None)
+        reason = None
         # Existing verification, re-run in this poll: the primary PDF bytes were
         # fetched now and their sha256 matched the reviewed record.
         if (lead is None or lead.get("primary_verified") is not True or not lead.get("verified_event")
-                or lead.get("primary_fetched_this_poll") is not True
                 or not _official_cmf(lead.get("discovered_from")) or not _official_cmf(lead.get("source_url"))):
+            reason = "lead_disclosure_unverified"
+        elif (lead["record_id"] not in collected_ids or lead.get("primary_fetched_this_poll") is not True
+              or not lead.get("primary_receipt_completed_at")
+              or _utc(lead["primary_receipt_completed_at"]) < _utc(run_started)):
+            reason = "lead_primary_not_fetched_this_run"
+        elif lead.get("published_at") != event["event_date"]:
+            reason = "event_date_differs_from_lead_document_date"
+        elif not publishable_event_date(event["event_date"], today):
+            reason = "before_activation_or_older_than_30_days"
+        if reason:
+            skipped.append({"event_id": event.get("event_id"), "event_date": event.get("event_date"), "reason": reason})
             continue
         number = event["official_document_number"]
         issuer = ISSUER_LABELS.get(event.get("issuer_entity_id"), lead.get("issuer_name") or "Emisor")
@@ -83,7 +127,8 @@ def verified_items(root):
             metadata={"verified_event": event, "official_document_number": number,
                       "issuer_entity_id": event.get("issuer_entity_id"), "issuer_label": issuer,
                       "primary_document_url": lead["source_url"], "primary_sha256": lead.get("primary_sha256"),
-                      "primary_fetched_this_poll": lead.get("primary_fetched_this_poll"),
+                      "primary_fetched_this_poll": True,
+                      "primary_receipt_completed_at": lead["primary_receipt_completed_at"],
                       "primary_disclosures": event.get("primary_disclosures", []),
                       "publication_date_source": "cmf_hecho_esencial_fecha",
                       "publication_date_evidence": {"kind": "cmf_hecho_esencial_fecha", "date": lead.get("published_at"),
@@ -143,9 +188,12 @@ class CmfDailyScout:
         collectors = self.collectors or {"sis_isapre_universe": collect_isapres, SLUG: collect_cmf}
         outcomes = {}
         failed = set()
+        collected = []
         for slug, collector in collectors.items():
             try:
                 evidence = collector(captures, self.root)
+                if slug == SLUG:
+                    collected = evidence.get("collected_record_ids", [])
                 evidence.update(runtime_activation=ACTIVATION, recurrence_validated=False,
                                 poll_mode="daily_engine")
                 record_data_adapter(self.root, slug, evidence)
@@ -162,7 +210,15 @@ class CmfDailyScout:
         self.surface_results = [summary]
         if outcomes.get(SLUG, {}).get("status") != "ok":
             raise RuntimeError("CMF collection failed in this run; no item is emitted from stale evidence")
-        return verified_items(self.root)
+        skipped = []
+        items = verified_items(self.root, collected_ids=collected, run_started=started, skipped=skipped)
+        summary.update(emitted=len(items), skipped_events=skipped)
+        return items
+
+
+def _utc(value):
+    stamp = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    return stamp if stamp.tzinfo else stamp.replace(tzinfo=timezone.utc)
 
 
 def _lane_failure_evidence(reason):
@@ -182,6 +238,9 @@ def process_cmf_event(raw, cfg):
     if (raw.source_slug != SLUG or raw.metadata.get("verification") != "primary_pdf_sha256_matches_reviewed_record"
             or event.get("event_date") != raw.event_date or not _official_cmf(raw.metadata.get("primary_document_url"))):
         raise DeferredProcessing("CMF verified event binding unavailable")
+    if not publishable_event_date(raw.event_date):
+        # Dirección 27-oct-2026: pre-activation or >30-day events never publish.
+        raise RejectedProcessing("cmf_event_before_activation_or_older_than_30_days")
     effect = " ".join(str(event.get("effect") or "").split())
     number = raw.metadata["official_document_number"]
     why = (f"{effect} " if effect else "") + (
