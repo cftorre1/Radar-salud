@@ -11,7 +11,7 @@ import json
 import re
 
 from .pulso_source import article_url
-from .editorial_gate import publication_ready
+from .editorial_gate import RELEVANCE_WITHDRAWAL_REASONS, publication_ready
 
 
 def canonical_sha(value):
@@ -152,7 +152,8 @@ def apply_review(history, queue, audit, *, audit_sha256, audit_path):
             if reviewed.get(target, {}).get("decision") == "correct":
                 survivor.update(reviewed[target].get("proposed") or {})
             if (survivor.get("feed_visibility") is False or survivor.get("editorial_decision") in {"reject", "group"}
-                    or not publication_ready(deepcopy(survivor))[0]
+                    or not (publication_ready(deepcopy(survivor))[0]
+                            or publication_ready(deepcopy(survivor))[1] in RELEVANCE_WITHDRAWAL_REASONS)
                     or int(survivor.get("editorial_relevance") or 0) < 72
                     or (article_url(target[0]) and survivor.get("evidence_maturity") != "media_reported")):
                 raise ValueError("group_surviving_signal_not_eligible")
@@ -181,7 +182,9 @@ def apply_review(history, queue, audit, *, audit_sha256, audit_path):
                 raise ValueError("invalid_reviewed_copy_correction")
             corrected = deepcopy(original)
             corrected.update(proposed)
-            if not publication_ready(corrected)[0]:
+            ok, gate_reason, _ = publication_ready(corrected)
+            # A later Dirección relevance rule withdraws the card from the feed; the correction stays valid.
+            if not ok and gate_reason not in RELEVANCE_WITHDRAWAL_REASONS:
                 raise ValueError("reviewed_copy_fails_existing_publication_gate")
         original_assessment = record.get("original_model_assessment")
         provenance = dict(schema_version="pulso_editorial_review_v1", review_id=audit["review_id"],

@@ -2791,7 +2791,11 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
                         raise ValueError("editorial_group_target_not_in_immutable_published_producer")
                     target_original, target_paid = original_targets[0], paid_targets[0]
                     target_assessment = target_paid.get("raw", {}).get("metadata", {}).get("editorial_assessment") or {}
-                if (target_key == key or len(survivors) != 1 or len(survivor_items) != 1 or len(feeds) != 1
+                from copy import deepcopy
+                from radar_salud.editorial_gate import RELEVANCE_WITHDRAWAL_REASONS, publication_ready
+                # A survivor withdrawn by a later Dirección relevance rule takes its whole group out of the feed.
+                survivor_withdrawn = len(survivors) == 1 and publication_ready(deepcopy(survivors[0]))[1] in RELEVANCE_WITHDRAWAL_REASONS
+                if (target_key == key or len(survivors) != 1 or len(survivor_items) != 1 or len(feeds) != (0 if survivor_withdrawn else 1)
                         or survivor_items[0].get("status") != "published" or survivors[0].get("feed_visibility") is False
                         or survivors[0].get("editorial_decision") in {"reject", "group"}
                         or type(survivors[0].get("editorial_relevance")) is not int or survivors[0]["editorial_relevance"] < 72
@@ -2828,13 +2832,11 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
                                 or len(" ".join(quote["text"].split())) < 20
                                 or " ".join(quote["text"].split()) not in " ".join(reader["target_full_primary_content"].split())
                                 for quote in reader["target_supporting_verbatim_quotes"]))
-                        or any(feeds[0].get(field) != survivors[0].get(field) for field in (
+                        or feeds and any(feeds[0].get(field) != survivors[0].get(field) for field in (
                             "what_happened", "why_it_matters", "event_date", "publication_date", "editorial_relevance", "evidence_maturity",
                             "category", "event_status", "prospective_evidence"))):
                     raise ValueError("editorial_group_target_not_actual_unique_published_survivor")
-                from copy import deepcopy
-                from radar_salud.editorial_gate import publication_ready
-                if not publication_ready(deepcopy(survivors[0]))[0]:
+                if not survivor_withdrawn and not publication_ready(deepcopy(survivors[0]))[0]:
                     raise ValueError("editorial_group_target_fails_existing_publication_gate")
             verified[key[0]] = provenance
         except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:

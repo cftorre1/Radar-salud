@@ -28,3 +28,12 @@ def test_health_led_press_and_official_sources_pass():
 def test_story_group_members_are_left_to_their_synthesis():
     url = "https://www.latercera.com/pulso/noticia/presupuesto-2027-minuta-politica-del-gobierno-reporta-alza-del-gasto-distinta-de-la-informada/"
     assert not health_not_main_subject(_press("Presupuesto 2027: minuta política", source_url=url))
+
+
+def test_common_words_do_not_count_as_health():
+    from radar_salud.editorial_gate import title_has_health_nexus
+    for title in ("Gestión municipal mejora", "Nueva medición de pobreza", "Empresas sanitarias suben tarifas",
+                  "Senado aprueba suma urgencia", "Aluvión en Las Condes", "Licencia de conducir digital"):
+        assert not title_has_health_nexus(title), title
+    for title in ("Clínica Las Condes reporta pérdidas", "GES suma patologías", "Salcobrand abre locales"):
+        assert title_has_health_nexus(title), title
