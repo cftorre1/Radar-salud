@@ -56,10 +56,15 @@ def _section_urls(day):
         for m in re.finditer(r'href=["\']([^"\']*'+re.escape(name)+r'[^"\']*)["\']',html,re.I):urls.append(urljoin(idx,m.group(1)))
     return list(dict.fromkeys(urls))
 
+_ACT_START=re.compile(r"(?:Extracto de\s+)?(?:Ley|Decreto(?:\s+(?:exento|supremo|con fuerza de ley))?|Resoluci[oó]n(?:\s+exenta)?|Circular|Reglamento)\b",re.I)
+
 def _title(context_html):
-    clean=_strip(context_html)
-    m=re.search(r"((?:Ley|Decreto(?:\s+exento)?|Resoluci[oó]n(?:\s+exenta)?|Circular|Reglamento)[^.]{3,650})$",clean,re.I)
-    if m:return " ".join(m.group(1).split())
+    # The context is one listing entry (text since the previous PDF link): the act title
+    # runs from its first act keyword to the end, numbers like "3.955" included.
+    clean=re.sub(r"\bVer PDF\b.*$","",_strip(context_html)).strip()
+    clean=re.sub(r"^\(?CVE-\d+\)?\s*","",clean)
+    m=_ACT_START.search(clean)
+    if m:return " ".join(clean[m.start():].split())[:650]
     bits=[x.strip() for x in re.split(r"\s{2,}|\|",clean) if len(x.strip())>12]
     return bits[-1][:650] if bits else ""
 
@@ -72,10 +77,16 @@ class DiarioOficialHealthScout:
             for section in _section_urls(d):
                 try:html=_fetch_with_retry(section)
                 except Exception:continue
+                previous_end=0
                 for m in re.finditer(r'href=["\']([^"\']+\.pdf(?:\?[^"\']*)?)["\'][^>]*>.*?</a>',html,re.I|re.S):
                     pdf=urljoin(section,m.group(1))
+                    # One entry = everything since the previous PDF link (never half a tag or the previous act).
+                    start=max(previous_end,m.start()-1800);previous_end=m.end()
+                    context_html=html[start:html.rfind("<a",start,m.start()) if html.rfind("<a",start,m.start())>=0 else m.start()]
+                    if context_html[:1]!="<" and ">" in context_html[:200] and "<" not in context_html[:context_html.find(">")]:
+                        context_html=context_html[context_html.find(">")+1:]
                     if pdf in seen:continue
-                    context_html=html[max(0,m.start()-1800):m.start()];context=_strip(context_html);issuer=_issuer(context)
+                    context=_strip(context_html);issuer=_issuer(context)
                     if not issuer:continue
                     title=_title(context_html)
                     if not title or not ACT_RE.search(title):continue

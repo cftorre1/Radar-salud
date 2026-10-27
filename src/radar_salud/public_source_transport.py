@@ -36,6 +36,45 @@ class OfficialRedirectHandler(HTTPRedirectHandler):
                                         normalized_official_url(newurl, self.slug))
 
 
+_AIA_CONTEXTS = {}
+
+
+def _aia_context(host, timeout=20):
+    """TLS context that completes a server chain missing its intermediate (AIA "CA Issuers").
+
+    Browsers fetch the missing intermediate named by the leaf certificate; Python does not.
+    Verification stays fully on: the intermediate is only an extra candidate, and the chain
+    must still end in a trusted root and match the hostname (ISP, audit 27-oct-2026)."""
+    if host in _AIA_CONTEXTS:
+        return _AIA_CONTEXTS[host]
+    import ssl
+    from urllib.request import urlopen
+    from cryptography import x509
+    from cryptography.hazmat.primitives.serialization import Encoding
+    from cryptography.x509.oid import AuthorityInformationAccessOID, ExtensionOID
+    leaf = x509.load_pem_x509_certificate(ssl.get_server_certificate((host, 443), timeout=timeout).encode())
+    aia = leaf.extensions.get_extension_for_oid(ExtensionOID.AUTHORITY_INFORMATION_ACCESS).value
+    issuers = [d.access_location.value for d in aia if d.access_method == AuthorityInformationAccessOID.CA_ISSUERS]
+    if not issuers:
+        raise ValueError("certificate has no AIA CA Issuers URL")
+    with urlopen(issuers[0], timeout=timeout) as response:
+        raw = response.read(200_000)
+    try:
+        intermediate = x509.load_der_x509_certificate(raw)
+    except ValueError:
+        intermediate = x509.load_pem_x509_certificate(raw)
+    context = ssl.create_default_context()
+    context.load_verify_locations(cadata=intermediate.public_bytes(Encoding.PEM).decode())
+    _AIA_CONTEXTS[host] = context
+    return context
+
+
+def _is_missing_issuer(exc):
+    import ssl
+    reason = getattr(exc, "reason", exc)
+    return isinstance(reason, ssl.SSLCertVerificationError) and "local issuer" in str(reason)
+
+
 def download_official(url, slug, *, timeout=25, max_bytes=20 * 1024 * 1024, capture_metadata=None):
     if not official_url(url, slug):
         raise ValueError("Public-source URL must be official HTTPS")
@@ -44,7 +83,15 @@ def download_official(url, slug, *, timeout=25, max_bytes=20 * 1024 * 1024, capt
                                     "Accept": "text/html,application/pdf,application/xml;q=0.9,*/*;q=0.5"})
     # The default ProxyHandler and HTTPSHandler preserve runtime proxy and CA
     # trust. Redirects are checked before the next HTTP request is issued.
-    with build_opener(OfficialRedirectHandler(slug)).open(request, timeout=timeout) as response:
+    try:
+        response = build_opener(OfficialRedirectHandler(slug)).open(request, timeout=timeout)
+    except Exception as exc:
+        if not _is_missing_issuer(exc):
+            raise
+        from urllib.request import HTTPSHandler
+        context = _aia_context(urlsplit(requested_url).hostname)
+        response = build_opener(OfficialRedirectHandler(slug), HTTPSHandler(context=context)).open(request, timeout=timeout)
+    with response:
         if not official_url(response.geturl(), slug):
             raise ValueError("Public-source response left the official HTTPS allowlist")
         body = response.read(max_bytes + 1)

@@ -47,3 +47,19 @@ def test_section_urls_does_not_convert_index_failure_into_zero_signals(monkeypat
 
     with pytest.raises(RuntimeError, match="unavailable"):
         diario._section_urls(diario.date(2026, 9, 27))
+
+
+def test_titles_come_from_their_own_listing_entry(monkeypatch):
+    from radar_salud import diario_oficial as do
+    html = ('<table><tr><td>MINISTERIO DE SALUD</td></tr><tr><td>Instituto de Salud Pública</td></tr>'
+            '<tr><td><span class="border dotted">Extracto de resolución exenta número 3.955, de 2026.- Requiere envío digitalizado de folletos de información que indica</span></td>'
+            '<td><a target="_blank" href="/pdf/a.pdf">Ver PDF</a> (CVE-2885722)</td></tr><!-- reach -->'
+            '<tr><td>MINISTERIO DE SALUD</td></tr><tr><td>Subsecretaría de Redes Asistenciales</td></tr>'
+            '<tr><td>Resolución exenta número 732, de 2026.- Fija metas sanitarias y de mejoramiento de la atención</td>'
+            '<td><a target="_blank" href="/pdf/b.pdf">Ver PDF</a> (CVE-2880923)</td></tr></table>')
+    monkeypatch.setattr(do, "_section_urls", lambda d: ["https://www.diariooficial.interior.gob.cl/edicionelectronica/index.php"])
+    monkeypatch.setattr(do, "_fetch_with_retry", lambda url, **kw: html)
+    items = do.DiarioOficialHealthScout().discover(days_back=1)
+    titles = [i.title for i in items]
+    assert titles == ["Extracto de resolución exenta número 3.955, de 2026.- Requiere envío digitalizado de folletos de información que indica",
+                      "Resolución exenta número 732, de 2026.- Fija metas sanitarias y de mejoramiento de la atención"]

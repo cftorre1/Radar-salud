@@ -219,8 +219,17 @@ class MinsalNewsScout:
         return items
 
     def discover(self, url: Optional[str] = None) -> List[RawItem]:
+        # Timeouts since 27-oct-2026: retry with a longer timeout and backoff before failing.
+        import time
         target=url or self.DEFAULT_URL
-        return self.discover_from_html(fetch_html(target),target)
+        last=None
+        for attempt in range(3):
+            try:
+                return self.discover_from_html(fetch_html(target, timeout=45),target)
+            except Exception as exc:
+                last=exc
+                if attempt<2:time.sleep(5*(2**attempt))
+        raise last
 
     def discover_new(self, store: SeenStore, url: Optional[str] = None) -> List[RawItem]:
         items=self.discover(url); new_items=[]; fps=[]

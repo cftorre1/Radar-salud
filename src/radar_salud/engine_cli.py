@@ -443,7 +443,10 @@ def main():
             rejection_reasons=dict(Counter(item.get("reason") for item in source_items if item.get("status")=="rejected")),
             **({"error_detail":occupational_audit[name].get("error"), "inventory":occupational_audit[name].get("inventory", {})} if name in OCCUPATIONAL_SOURCES else {}),
             **{k:v for k,v in diagnostic_details.get(name,{}).items() if v},
-            latest_original_at=original_dates.get(name),evaluation_performed=evaluated[name]>0)
+            latest_original_at=original_dates.get(name),evaluation_performed=evaluated[name]>0,
+            history_last_signal=max((str(row.get("event_date"))[:10] for row in history if row.get("source_name")==label
+                                     and row.get("event_date") and row.get("editorial_decision")!="reject"
+                                     and str(row.get("event_date"))[:10]<=datetime.now(timezone.utc).date().isoformat()),default=None))
     try:
         # Verifiable official text for recent normative acts (no AI, bounded, never fails the run).
         # Enabled only in the daily workflow (RADAR_CAPTURE_EVIDENCE=1): tests never download.

@@ -204,7 +204,10 @@ class CaptureClient:
             time.sleep(self.delay)
             self.check_live_budget()
             self.network_requests += 1
-            request = Request(url, headers={"User-Agent": USER_AGENT, "Accept": "text/html,application/json,application/xml"})
+            from urllib.parse import quote
+            # Non-ASCII characters in a URL (e.g. an en dash in a WHO slug) are percent-encoded for
+            # transport; the URL identity used for robots, evidence and dedup is unchanged.
+            request = Request(quote(url, safe=":/?&=%+#;,@!$()*[]~"), headers={"User-Agent": USER_AGENT, "Accept": "text/html,application/json,application/xml"})
             request._global_is_robots = robots
             request._global_redirect_chain = []
             try:
