@@ -29,10 +29,27 @@ def _deterministic_actors(text:str,source_scope:str)->list[str]:
     if not out and source_scope in VALID_SCOPES:out.append(source_scope)
     return list(dict.fromkeys(out))
 
+def pdf_identity_mismatch(title,pdf_url):
+    """True when the PDF file name carries act numbers and none is this act's number."""
+    import re
+    from urllib.parse import unquote, urlparse
+    m=re.search(r"N[°º]?\s*([\d\.]{2,})",str(title or ""))
+    if not m or not pdf_url:return False
+    number=re.sub(r"\D","",m.group(1))
+    name=unquote(urlparse(str(pdf_url)).path.rsplit("/",1)[-1]).lower()
+    # Only numbers the file itself marks as an act number ("if-n11156", "ip-n-7676");
+    # CMS ids ("articles-26549") and gazette editions carry no act identity.
+    found=re.findall(r"(?:^|[-_])n-?(\d{2,6})(?!\d)",name)
+    return bool(found) and number not in found
+
 def process_superintendencia_normativa(raw:RawItem,source_cfg):
     source_scope=raw.metadata.get("scope","Sistema de salud")
     attachments=raw.metadata.get("attachments",[]) or []
     pdf_url=next((a.get("url") for a in attachments if a.get("url") and ".pdf" in a.get("url","").lower()),None)
+    # The regulator's listing sometimes links another act's PDF (IF/11168 -> IF/11156).
+    # Never analyse (or pay for) a document whose file names a different act.
+    mismatch=pdf_identity_mismatch(raw.title,pdf_url)
+    if mismatch:pdf_url=None
     summary=raw.raw_text if raw.raw_text and raw.raw_text!=raw.title else f"La autoridad publicó {raw.title}."
     root=Path(__file__).resolve().parents[2];cached=get_cached(root,pdf_url) if pdf_url else None;intelligent=(cached or {}).get("analysis") if cached else None
     if pdf_url and (not intelligent or needs_upgrade(cached)):
@@ -46,6 +63,7 @@ def process_superintendencia_normativa(raw:RawItem,source_cfg):
     processes=[str(x).strip() for x in (intelligent.get("affected_processes") or []) if str(x).strip()][:3]
     raw.metadata.update({"what_happened":what,"why_it_matters":why,"key_facts":[what],"watch_tags":["normativa"]+[x.lower() for x in actors]+[raw.source_name.lower()],"signal_types":["Normativa"],"scopes":actors or ["Sistema de salud"],"affected_processes":processes,"event_type":"REGULATION","scores":{"economic":55,"regulatory":95,"scope":82,"novelty":85,"actionability":90},"subcategory":"Acto regulatorio","key_points":[x.strip() for x in intelligent.get("key_points",[]) if x and "vigencia" not in x.lower()][:3],"risk_notes":[x.strip() for x in intelligent.get("review_points",[]) if x][:3],"validity_text":intelligent.get("validity_text"),"related_reference_ids":refs,"source_documents":attachments})
     s=build_signal(raw,source_cfg);row=s.to_dict();row["signal_types"]=["Normativa"];row["scopes"]=actors or ["Sistema de salud"];row["affected_processes"]=processes;row["category"]="Regulación & Legal";row["radar_score"]=max(row["radar_score"],82);row["related_reference_ids"]=refs;row["related_reference_contexts"]=contexts
+    if mismatch:row["pdf_identity_mismatch"]=True
     # Verbatim official subject from the regulator's listing (verifiable; used by minimal cards).
     if raw.raw_text and raw.raw_text.strip()!=raw.title.strip() and len(raw.raw_text)<=600:row["official_subject"]=raw.raw_text.strip()
     if (raw.metadata or {}).get("scope"):row["official_listing_scope"]=raw.metadata["scope"]
