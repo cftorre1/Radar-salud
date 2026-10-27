@@ -69,6 +69,25 @@ def review(web, sha):
             title=str(signal.get("display_title") or signal.get("title") or "")
             identity=str(signal.get("normative_document_label") or signal.get("legal_identity") or "")
             context=str(signal.get("normative_context") or "")
+            if signal.get("normative_minimal"):
+                # Opción A (Dirección 26-oct-2026): verifiable listing facts only + badge + fixed disclaimer.
+                from radar_salud.normative_minimal import BADGE, DISCLAIMER, INTERPRETIVE_FIELDS, ISSUERS, _official
+                issuer=str(signal.get("source_name") or "")
+                short="SUSESO" if "SUSESO" in issuer else "Superintendencia de Salud"
+                expected_context=f"Emitida por {issuer} con fecha {signal.get('event_date')}. Asunto oficial: "
+                problems=[]
+                if record:problems.append("has an approved V2.1 record; must use it")
+                if signal.get("editorial_badge")!=BADGE or signal.get("normative_act_scope")!="general":problems.append("badge/scope")
+                if issuer not in ISSUERS or not _official(signal.get("source_url"),issuer):problems.append("issuer/official link")
+                if not identity or not title.startswith(f"{identity} · {short}: "):problems.append("title template")
+                if not context.startswith(expected_context):problems.append("context template")
+                if not (signal.get("card_what")==context==signal.get("what_happened")):problems.append("card copy")
+                if not (signal.get("why_it_matters")==DISCLAIMER==signal.get("card_why")):problems.append("disclaimer")
+                leaked=[f for f in INTERPRETIVE_FIELDS if signal.get(f)]
+                if leaked:problems.append("interpretive fields: "+",".join(leaked))
+                if problems:
+                    fail("editorial","normative_minimal_contract",path,"Minimal normative card: "+"; ".join(problems))
+                continue
             if not record or signal.get("normative_title_review_required"):
                 fail("editorial","normative_title_needs_review",path,"Normative act has no approved V2.1 editorial record")
             elif (not identity or identity.casefold() not in title.casefold()
