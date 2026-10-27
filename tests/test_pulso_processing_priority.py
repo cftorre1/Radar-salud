@@ -92,7 +92,8 @@ def test_core_processes_recent_pulso_before_older_backfill_without_changing_othe
         argv += ['--sources', 'pulso_latercera']
     monkeypatch.setattr(sys, 'argv', argv)
     engine_cli.main()
-    assert calls == [('pulso_latercera', new.url)] + ([] if selected else [('minsal', other.url)])
+    # Official regulators go first (PR #50); Pulso still prefers its recent item over the old backfill.
+    assert calls == ([('pulso_latercera', new.url)] if selected else [('minsal', other.url), ('pulso_latercera', new.url)])
     saved = PendingQueue(state/'pending_queue.json').items
     by_url = {item['raw']['url']: item for item in saved.values()}
     assert by_url[old.url]['status'] == 'pending' and by_url[old.url]['attempts'] == 0
