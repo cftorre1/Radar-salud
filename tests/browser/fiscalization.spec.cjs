@@ -64,16 +64,26 @@ test('recovered registers retain offices, actors, effects and issuance dates in 
  const metadata=new Map(history.map(s=>[s.source_record_id,s]));
  const context=original.filter(s=>{const m=metadata.get(s.source_record_id);return s.emission_date<start90&&m?.suspension_start<=radar.date&&m?.suspension_end>=radar.date});
  expect(recent.length).toBeGreaterThan(0);
- expect(register.counts).toEqual({'30':issued30.length,'90':recent.length});expect(register.publication_date).toBeNull();
- expect(register.source_alternatives.map(s=>s.source_record_id).sort()).toEqual(recent.map(s=>s.source_record_id).sort());
+ // The fixed 2026-10-11 control must be fully present. Later captures may add
+ // sanctions detected after that control (e.g. the 12–24 oct backlog); those
+ // extras must be durable history rows detected after the control, in window.
+ const shown=register.source_alternatives.map(s=>s.source_record_id);
+ const controlIds=new Set(recent.map(s=>s.source_record_id));
+ expect(recent.map(s=>s.source_record_id).filter(id=>!shown.includes(id))).toEqual([]);
+ const extras=shown.filter(id=>!controlIds.has(id));
+ for(const id of extras){const m=metadata.get(id);expect(m,id).toBeTruthy();expect(String(m.detected_at)>'2026-10-12',id).toBe(true);expect(m.emission_date>=start90&&m.emission_date<=radar.date,id).toBe(true)}
+ const extras30=extras.filter(id=>metadata.get(id).emission_date>=start30).length;
+ expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();
  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});
  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');
  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');
  await card.locator('[data-detail]').first().click();
- await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length);
+ await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);
  expect(register.historical_sanction_context.map(s=>s.source_record_id).sort()).toEqual(context.map(s=>s.source_record_id).sort());
  expect(register.historical_sanction_context.every(s=>s.emission_date<start90&&s.publication_date===null)).toBe(true);
  const originalDates=new Map(original.map(s=>[s.source_record_id,s.emission_date]));
+ // Extras detected after the control take their issuance date from durable history.
+ for(const id of extras)originalDates.set(id,metadata.get(id).emission_date);
  expect([...register.source_alternatives,...register.historical_sanction_context].every(s=>s.emission_date===originalDates.get(s.source_record_id)&&s.event_date===s.emission_date&&s.publication_date===null)).toBe(true);
  await expect(page.locator('#detailBody .historical-sanctions .related-item')).toHaveCount(context.length);
  await expect(page.locator('#detailBody .historical-sanctions summary')).toContainText('Suspensiones de oficios históricos');
