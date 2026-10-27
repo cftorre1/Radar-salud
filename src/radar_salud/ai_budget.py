@@ -50,6 +50,11 @@ def allow_call(kind: str) -> bool:
     per_run=int(os.getenv("RADAR_DEEP_PER_RUN","5") if kind=="deep" else os.getenv("RADAR_FAST_PER_RUN","40"))
     monthly=int(os.getenv("RADAR_DEEP_PER_MONTH","60") if kind=="deep" else os.getenv("RADAR_FAST_PER_MONTH","400"))
     d=_load();run_attempted=_RUN[kind]["attempted"];month_attempted=int(d[kind]["attempted"])
+    from .ai_pricing import month_spend_usd, monthly_budget_usd
+    spent=month_spend_usd(_root())
+    if spent>=monthly_budget_usd():
+        print(f"AI budget: {kind} call deferred (month spend USD {spent:.2f} >= {monthly_budget_usd():.2f})")
+        return False
     if run_attempted>=per_run or month_attempted>=monthly:
         print(f"AI budget: {kind} call deferred (run={run_attempted}/{per_run}, month={month_attempted}/{monthly})")
         return False
@@ -68,4 +73,6 @@ def has_capacity(kind):
     prefix="RADAR_DEEP" if kind=="deep" else "RADAR_FAST"
     run_limit=int(os.getenv(prefix+"_PER_RUN", "5" if kind=="deep" else "40"))
     month_limit=int(os.getenv(prefix+"_PER_MONTH", "60" if kind=="deep" else "400"))
-    return _RUN[kind]["attempted"] < run_limit and _load()[kind]["attempted"] < month_limit
+    from .ai_pricing import within_budget
+    return (_RUN[kind]["attempted"] < run_limit and _load()[kind]["attempted"] < month_limit
+            and within_budget(_root()))
