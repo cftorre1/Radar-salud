@@ -83,5 +83,7 @@ def call_json(prompt,*,feature,preferred_model="gpt-5.6-terra",allow_luna_fallba
             if over:raise RuntimeError("call_would_exceed_weekly_budget")
             output=_parse(getattr(response,"output_text","") or "")
             return ModelResult(model,output,i,o,cost,row["response_id"],idx>0)
-        except Exception as exc:last=exc
+        except Exception as exc:
+            last=exc
+            if str(exc)=="call_would_exceed_weekly_budget":raise
     raise RuntimeError("model_call_failed:%s:%s"%(type(last).__name__,last))

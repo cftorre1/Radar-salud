@@ -176,3 +176,13 @@ def test_runtime_wrapped_parse_failure_is_a_rejection_but_budget_stops(tmp_path)
         raise RuntimeError("monthly_api_budget_exhausted")
     auto.build_auto_records(tmp_path / "b", signals2, call=broke, today=date(2026, 10, 27))
     assert URL not in json.loads((tmp_path / "b" / auto.AUTO_PATH).read_text(encoding="utf-8")).get("rejected", {})
+
+
+def test_dropped_qualifier_or_year_is_rejected():
+    text = EVIDENCE + " El plazo será de 10 días hábiles para responder a la Superintendencia de Salud. " * 2
+    rec = {**GOOD, "normative_context": GOOD["normative_context"] + " Hay 10 días para responder.",
+           "evidence_quotes": GOOD["evidence_quotes"] + ["El plazo será de 10 días hábiles para responder a la Superintendencia de Salud."]}
+    assert any(p.startswith("date_or_quantity_not_literal_in_quote:10 días") for p in auto.verify(rec, "Circular IF/N°537", text))
+    no_year = {**GOOD, "normative_context": GOOD["normative_context"].replace("1 de marzo de 2027", "1 de marzo")}
+    assert any(p.startswith("date_or_quantity_not_literal_in_quote:1 de marzo") for p in auto.verify(no_year, "Circular IF/N°537", EVIDENCE))
+    assert auto.verify(GOOD, "Circular IF/N°537", EVIDENCE) == []

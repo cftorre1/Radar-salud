@@ -123,10 +123,11 @@ def verify(record: dict[str, Any], label: str, evidence: str, official_subject: 
             problems.append("quote_not_literal")
     nq = " ".join(_norm(q) for q in quotes)
     for actor in _ACTORS:
-        if re.search(rf"\b{re.escape(actor)}(?:es|s)?\b", nt + " " + nc) and not re.search(rf"\b{re.escape(actor)}", ne):
+        if re.search(rf"\b{re.escape(actor)}(?:es|s)?\b", nt + " " + nc) and not re.search(rf"\b{re.escape(actor)}(?:es|s)?\b", ne):
             problems.append(f"actor_not_in_official_text:{actor}")
     for unit in set(_UNIT_RE.findall(nt + " " + nc)):
-        if not re.search(rf"(?<![\d.,]){re.escape(unit)}(?![\d])", nq):
+        if not re.search(rf"(?<![\d.,]){re.escape(unit)}(?!\d| h[aá]biles| corridos| de \d{{4}})", nq) and not (
+                re.search(r" de \d{4}$", unit) and re.search(rf"(?<![\d.,]){re.escape(unit)}", nq)):
             problems.append(f"date_or_quantity_not_literal_in_quote:{unit}")
     label_numbers = _numbers(label)
     for n in (_numbers(title) | _numbers(context)) - label_numbers:
@@ -215,7 +216,7 @@ def build_auto_records(root: Path, signals: list[dict[str, Any]], *, call: Calla
             attempts += 1
             try:
                 draft = call(_draft_prompt(label, str(s.get("source_name")), str(s.get("official_subject") or ""), evidence),
-                             feature="normative_autorecord", preferred_model="gpt-5.6-terra")
+                             feature="normative_autorecord", preferred_model="gpt-5.6-terra", allow_luna_fallback=False)
                 try:
                     record = dict(draft.output)
                     problems = verify(record, label, evidence, str(s.get("official_subject") or ""))
