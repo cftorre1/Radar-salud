@@ -278,6 +278,9 @@ def main():
     produced={name:[] for name in processors}
     processed_rejections={name:0 for name in processors}
     queue.enforce_backfill_horizon(sources=set(selected_sources) if selected_sources else None)
+    from .daily_window import requested_window_days
+    if requested_window_days() < 90:
+        queue.archive_outside_daily_window(requested_window_days(), sources=set(selected_sources) if selected_sources else None)
     from .daily_window import eligible_daily_item
     ready=((key,item) for key,item in _prioritize_official(_prioritize_pulso_ready(queue.ready()))
            if item['source'] in processors and eligible_daily_item(item) and
