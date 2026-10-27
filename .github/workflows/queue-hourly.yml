@@ -41,9 +41,9 @@ jobs:
           python-version: '3.11'
       - name: Install package
         run: pip install -e . pytest
-      - name: Self-healing discovery when the last one is older than 6 hours
+      - name: Self-healing discovery when the last one is older than 13 hours (a Daily Radar was missed)
         id: mode
-        run: python scripts/discovery_due.py 6 >> "$GITHUB_OUTPUT"
+        run: python scripts/discovery_due.py 13 >> "$GITHUB_OUTPUT"
       - name: Skip when nothing is ready inside the 30-day window
         id: work
         run: |
@@ -72,9 +72,10 @@ jobs:
         run: |
           git config user.name "alicanto-salud-bot"
           git config user.email "alicanto-salud-bot@users.noreply.github.com"
-          git add data/state data/history data/analysis_cache data/ai_usage
+          git add data/state data/history data/analysis_cache data/ai_usage data/source_health.json data/inbox data/outbox
           if [ "${{ job.status }}" = success ]; then git add web/data; fi
           if git diff --cached --quiet; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          web_changed=false; git diff --cached --quiet -- web/data || web_changed=true
           git commit -m "chore: hourly queue batch"
           for attempt in 1 2 3; do
             git pull --rebase origin staging && git push origin HEAD:staging && break
@@ -82,7 +83,7 @@ jobs:
             sleep $((attempt * 20))
           done
           git push --dry-run origin HEAD:staging
-          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "changed=$web_changed" >> "$GITHUB_OUTPUT"
       - name: Request checked staging preview
         if: success() && steps.commit.outputs.changed == 'true'
         env:
