@@ -32,6 +32,8 @@ jobs:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       RADAR_FAST_MODEL: gpt-5.6-luna
       RADAR_DEEP_MODEL: gpt-5.6-terra
+      # Store official text of recent normative acts as evidence (no AI).
+      RADAR_CAPTURE_EVIDENCE: '1'
       # Dirección 27-oct-2026: the real limit is USD 10/month of AI spend (ai_pricing),
       # not call counts; counts stay as loose safety rails.
       RADAR_MONTHLY_USD: 10

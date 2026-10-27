@@ -419,6 +419,16 @@ def main():
             **({"error_detail":occupational_audit[name].get("error"), "inventory":occupational_audit[name].get("inventory", {})} if name in OCCUPATIONAL_SOURCES else {}),
             **{k:v for k,v in diagnostic_details.get(name,{}).items() if v},
             latest_original_at=original_dates.get(name),evaluation_performed=evaluated[name]>0)
+    try:
+        # Verifiable official text for recent normative acts (no AI, bounded, never fails the run).
+        # Enabled only in the daily workflow (RADAR_CAPTURE_EVIDENCE=1): tests never download.
+        if os.getenv("RADAR_CAPTURE_EVIDENCE")!="1":raise LookupError("disabled")
+        from .normative_evidence import capture_missing
+        history=json.loads((root/"data/history/superintendencia_signals.json").read_text(encoding="utf-8")).get("signals",[])
+        captured=capture_missing(root,history)
+        print(f"normative_evidence captured={len(captured)}")
+    except Exception as exc:
+        print("normative_evidence skipped:",type(exc).__name__)
     print({"queue":queue.counts(),"budget":ai_budget_status()})
 
 if __name__=="__main__":main()
