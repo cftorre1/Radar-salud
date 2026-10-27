@@ -8,6 +8,24 @@ from typing import Any
 from .pending_queue import atomic_json
 
 def _path(root:Path)->Path:return root/"data"/"source_health.json"
+
+def load_retired_sources(root:Path)->dict[str,str]:
+    """Slugs retired from daily capture by an explicit, recorded decision."""
+    p=Path(root)/"config"/"retired_sources.json"
+    if not p.exists():return {}
+    return dict(json.loads(p.read_text(encoding="utf-8")).get("retired") or {})
+
+def mark_retired_sources(root:Path,retired:dict[str,str])->None:
+    """Keep history, but stop presenting retired sources as monitored."""
+    if not retired:return
+    data=_load(Path(root));changed=False
+    for slug,reason in retired.items():
+        row=data.setdefault("sources",{}).get(slug)
+        if row is None or row.get("status")=="retired":continue
+        row.update(status="retired",technical_status="retired",retired_reason=reason,
+                   retired_at=datetime.now(timezone.utc).isoformat(),error=None)
+        changed=True
+    if changed:atomic_json(_path(Path(root)),data)
 def _load(root:Path)->dict[str,Any]:
     p=_path(root)
     if not p.exists():return {"sources":{}}
