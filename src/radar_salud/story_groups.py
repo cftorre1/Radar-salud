@@ -42,9 +42,18 @@ def load_groups(root: Path | str = ".") -> list[dict[str, Any]]:
     return valid
 
 
+# Explicit non-publication date bases (Dirección 27-oct-2026) travel with every
+# alternative so the UI never shows a detection or data-release day as "Publicado".
+DATE_BASIS_KEYS = ("date_basis", "first_detected_at", "data_release_date")
+
+
+def date_basis_fields(s: dict[str, Any]) -> dict[str, Any]:
+    return {k: s[k] for k in DATE_BASIS_KEYS if s.get(k)}
+
+
 def _alt(s: dict[str, Any]) -> dict[str, Any]:
     return {"title": s.get("title"), "source_name": s.get("source_name"), "url": s.get("source_url"),
-            "event_date": s.get("event_date")}
+            "event_date": s.get("event_date"), **date_basis_fields(s)}
 
 
 def apply_story_groups(cards: list[dict[str, Any]], groups: list[dict[str, Any]],
@@ -79,9 +88,12 @@ def apply_story_groups(cards: list[dict[str, Any]], groups: list[dict[str, Any]]
                 continue  # a synthesis needs at least two live pieces
             members.sort(key=lambda m: str(m.get("event_date") or ""), reverse=True)
             latest = str(members[0].get("event_date") or "")[:10]
+            # A detection/data-release day is never a publication date.
+            explicit = date_basis_fields(members[0])
             card.update({
                 "display_title": card["title"], "card_what": card.get("what_happened"),
-                "card_why": card.get("why_it_matters"), "event_date": latest, "publication_date": latest,
+                "card_why": card.get("why_it_matters"), "event_date": latest,
+                "publication_date": None if explicit.get("date_basis") else latest, **explicit,
                 "event_type": "STORY_SUMMARY", "story_group": g.get("id"),
                 "source_alternatives": [_alt(m) for m in members],
                 "derived_from": "editorial_story_group",
