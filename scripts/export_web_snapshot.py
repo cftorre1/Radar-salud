@@ -273,6 +273,8 @@ def _ref_key(text):
 def _related_context(signals,resolve_external=True):
     idx={_doc_key(s):s for s in signals if _doc_key(s)};out=[]
     for s in signals:
+        if s.get("normative_minimal"):
+            out.append(dict(s));continue  # Opción A: no automated relations on unreviewed acts
         r=dict(s);rels=[];seen=set();relmap=_relmap(r)
         for ref in r.get("related_reference_ids",[]) or []:
             k=_ref_key(ref);relationship=relmap.get(ref) or "Antecedente normativo citado por el documento actual."
@@ -676,6 +678,8 @@ def curate(signals,resolve_external=True,as_of=None):
     recent=_apply_persistent_editorial_decisions(recent)
     recent=[_normative_contract(s) if s.get("event_type")=="REGULATION" or "Normativa" in (s.get("signal_types") or []) else s for s in recent]
     recent=[s for s in recent if s.get("feed_visibility") is not False]
+    from radar_salud.normative_minimal import strip_interpretation
+    recent=[strip_interpretation(dict(s)) for s in recent]
     recent.extend(v3)
     recent.sort(key=lambda s:(_d(s.get("event_date")) or date.min,s.get("radar_score",0)),reverse=True);return recent
 

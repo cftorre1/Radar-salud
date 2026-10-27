@@ -14,6 +14,13 @@ from typing import Any
 from urllib.parse import urlparse
 
 BADGE = "Sin lectura editorial"
+# Fields produced by automated analysis or enrichment. A minimal card carries none.
+INTERPRETIVE_FIELDS = (
+    "key_points", "key_facts", "key_numbers", "validity_text", "risk_notes", "review_points",
+    "possible_implications", "who_cares", "related_context", "related_reference_contexts",
+    "related_reference_ids", "data_insights", "data_insight_evidence", "normative_subject",
+    "source_documents", "summary_table", "affected_processes", "source_alternatives",
+    "card_why_optional", "legacy_read_title")
 DISCLAIMER = ("Aún sin lectura editorial: los datos provienen del documento oficial; "
               "revisa el texto antes de decidir.")
 # Diario Oficial stays held until its reader stops producing truncated titles
@@ -26,6 +33,8 @@ _PARTICULAR = re.compile(
     r"registro (?:público )?de prestadores|declara(?:r|do)? acreditad|mantiene su inscripci|mantuvo (?:a |al |la |bajo )|"
     r"inscrib(?:e|ió|irá)|entidad(?:es)? acreditadora|certificado de acreditaci|plan de corrección|"
     r"\brectifica\b|\bnombra\b|\bdesigna(?:ción)?\b|delega facultades", re.I)
+# Regulator listings open individual acts with an imperative on one party.
+_PARTICULAR_VERB = re.compile(r"^\s*(Inscr[íi]base|Mant[ée]ngase|Rectif[íi]quese|Autor[íi]zase|Autoriza|Des[íi]gnase|N[óo]mbrase|Ap[rR]u[ée]base el plan|Acr[ée]ditase|Canc[ée]lese)\b", re.I)
 _GENERAL_KIND = re.compile(r"^(Circular|Decreto|Norma Técnica)\b", re.I)
 _MODIFIES = re.compile(r"modific|deroga|sustituy|complementa|acto modificado", re.I)
 
@@ -43,7 +52,10 @@ def _as_list(value: Any) -> list:
 
 def act_scope(r: dict[str, Any], label: str) -> str:
     """'general', 'particular' or 'unknown' (unknown stays held)."""
-    text = " ".join(str(r.get(k) or "") for k in ("title", "source_title_full", "what_happened", "why_it_matters"))
+    official = str(r.get("official_subject") or "")
+    if _PARTICULAR_VERB.match(official):
+        return "particular"
+    text = " ".join(str(r.get(k) or "") for k in ("official_subject", "title", "source_title_full", "what_happened", "why_it_matters"))
     if _PARTICULAR.search(text):
         return "particular"
     if _GENERAL_KIND.search(label):
@@ -63,8 +75,16 @@ def _modified_acts(r: dict[str, Any]) -> list[str]:
     return [x for x in dict.fromkeys(out) if x][:2]
 
 
+def _trim(text: str, limit: int = 160) -> str:
+    text = re.sub(r"\s+", " ", text).strip().rstrip(".")
+    return text if len(text) <= limit else text[:limit].rsplit(" ", 1)[0] + "…"
+
+
 def _official_subject(r: dict[str, Any], label: str) -> str:
-    """SUSESO listings carry the official subject in capitals after the number."""
+    """Verbatim regulator subject: SIS listing summary or SUSESO capitalised heading."""
+    listed = str(r.get("official_subject") or "").strip()
+    if listed:
+        return _trim(listed[0].upper() + listed[1:])
     raw = str(r.get("what_happened") or "")
     m = re.match(r"^\s*Circular\s+\d+\s+(.+)$", raw)
     if not m or r.get("source_name") != "Superintendencia de Seguridad Social (SUSESO)":
@@ -72,10 +92,7 @@ def _official_subject(r: dict[str, Any], label: str) -> str:
     subject = m.group(1).strip().rstrip(".")
     if subject.upper() != subject:  # not the verbatim official heading
         return ""
-    subject = _sentence_case(subject)
-    if len(subject) > 120:
-        subject = subject[:120].rsplit(" ", 1)[0] + "…"
-    return subject
+    return _trim(_sentence_case(subject))
 
 
 _ACRONYMS = ("C.C.A.F.", "CCAF", "SENCE", "SUSESO", "ISL", "COMPIN", "SIL", "FONASA", "ISAPRE", "ISAPRES", "GES", "MINSAL")
@@ -99,23 +116,17 @@ def minimal_card(r: dict[str, Any], label: str) -> dict[str, Any] | None:
         return None
     if act_scope(r, label) != "general" or not r.get("event_date"):
         return None
-    modifies = _modified_acts(r)
     subject = _official_subject(r, label)
-    scopes = [str(x) for x in _as_list(r.get("scopes")) if x]
     short = "SUSESO" if "SUSESO" in issuer else "Superintendencia de Salud"
-    if subject:
-        title = f"{label} · {short}: {subject}"
-    elif modifies:
-        title = f"{label} · {short}: modifica {' y '.join(modifies)}"
-    else:
+    if not subject:
         return None  # nothing verifiable to say beyond the number: keep held
-    facts = [f"Emitida por {issuer} con fecha {r['event_date']}."]
-    if modifies:
-        facts.append("Modifica: " + "; ".join(modifies) + ".")
-    if scopes:
-        facts.append("Ámbito: " + ", ".join(scopes) + ".")
-    context = " ".join(facts)
-    return {
+    title = f"{label} · {short}: {subject}"
+    # Only facts read from the regulator's own listing. Referenced acts and
+    # scopes come from automated PDF analysis (once bound to the wrong PDF), so
+    # they never appear on a minimal card.
+    context = f"Emitida por {issuer} con fecha {r['event_date']}. Asunto oficial: {subject or 'ver documento'}."
+    card = {field: None for field in INTERPRETIVE_FIELDS}
+    card.update({
         "display_title": title,
         "normative_context": context,
         "what_happened": context,
@@ -125,4 +136,13 @@ def minimal_card(r: dict[str, Any], label: str) -> dict[str, Any] | None:
         "normative_minimal": True,
         "editorial_badge": BADGE,
         "normative_act_scope": "general",
-    }
+    })
+    return card
+
+
+def strip_interpretation(r: dict[str, Any]) -> dict[str, Any]:
+    """Re-apply the allow-list after any later enrichment step."""
+    if r.get("normative_minimal"):
+        for field in INTERPRETIVE_FIELDS:
+            r[field] = None
+    return r

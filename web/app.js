@@ -131,6 +131,8 @@ function detailHtml(s){
   body=String(s.detail_body||'').split('\n\n').filter(Boolean).map(x=>`<p>${esc(x)}</p>`).join('');
   body+=arr(s.depth_modules).map(m=>{const claims=arr(s.claims).filter(c=>arr(m.claim_ids).includes(c.id)&&!used.has(c.id));for(const c of claims)used.add(c.id);return claims.length?`<details class='related'><summary>${esc(m.label)}</summary>${claims.map(c=>`<p>${esc(c.text)}</p>`).join('')}</details>`:''}).join('');
  }else{
+  if(s.normative_minimal){body=`<p class="unreviewed-note"><strong>${esc(s.editorial_badge||'Sin lectura editorial')}.</strong> ${esc(s.card_why||s.why_it_matters||'')}</p><p>${esc(s.normative_context||'')}</p>`;
+   return `<h2 id='detailTitle'>${esc(title)}</h2>${body}${s.source_url&&/^https:\/\//.test(s.source_url)?`<p class='source'><a href="${esc(s.source_url)}" target="_blank" rel="noopener">Documento oficial</a></p>`:''}`}
   const texts=[s.card_what||s.what_happened,s.normative_context,...arr(s.key_points),...arr(s.key_facts)].filter(fresh);
   body=texts.map(x=>`<p>${esc(x)}</p>`).join('');
   if(!texts.length)body='<p>La fuente disponible no aporta más detalle verificado para esta ficha histórica.</p>';
