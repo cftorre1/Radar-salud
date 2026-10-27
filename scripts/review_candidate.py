@@ -50,7 +50,20 @@ def review(web, sha):
             if age < -300:
                 fail("data","future_source_check",f"data/source_health.json#sources/{slug}","Source poll timestamp is in the future")
             elif age>max_age:
-                if slug not in daily and (slug in non_daily or source.get("operation_mode") in non_daily_modes):
+                activated=[k[len("activated_daily_"):] for k,v in policy.items()
+                           if k.startswith("activated_daily_") and isinstance(v,list) and slug in v]
+                pending_first_poll=False
+                for day in activated:
+                    try:
+                        start=datetime.fromisoformat(day.replace("_","-")).replace(tzinfo=timezone.utc)
+                    except ValueError:
+                        continue
+                    # Newly activated daily sources get 3 days for their first daily poll; then they block.
+                    if checked<start and (datetime.now(timezone.utc)-start).total_seconds()<=3*86400:
+                        pending_first_poll=True
+                if pending_first_poll:
+                    fail("data","awaiting_first_daily_poll",f"data/source_health.json#sources/{slug}","Source activated for the daily capture; first daily poll pending",severity="warning")
+                elif slug not in daily and (slug in non_daily or source.get("operation_mode") in non_daily_modes):
                     # Outside the daily capture by explicit policy: visible, non-blocking.
                     fail("data","stale_non_daily_source",f"data/source_health.json#sources/{slug}","Non-daily source not polled within seven days",severity="warning")
                 else:
