@@ -213,6 +213,15 @@ def _normative_contract(s):
     has_action=any(norm(x) in title_norm for x in record.get("action_terms",[]))
     reviewed=bool(record and plain and context and has_identity and has_subject and has_action and title_norm.count(identity_norm)==1)
     if not reviewed:
+        from radar_salud.normative_minimal import minimal_card
+        if r.get("normative_minimal"):return r  # already reduced to verifiable facts
+        minimal=minimal_card(r,label)
+        if minimal:
+            # Opción A: verifiable facts only, badge visible; interpretation waits for review.
+            r.pop("normative_title_review_required",None)
+            r.update(minimal);r["legal_subtitle"]=subtitle
+            r["normative_editorial"]={"legal_identity":label,"plain_language_title":minimal["display_title"],"legal_subtitle":subtitle,"editorial_state":"minimal_unreviewed","affected_actor":r.get("scopes") or []}
+            return r
         r["normative_title_review_required"]=True
         if not plain:
             plain=str(r.get("display_title") or r.get("title") or label).strip()
@@ -264,6 +273,8 @@ def _ref_key(text):
 def _related_context(signals,resolve_external=True):
     idx={_doc_key(s):s for s in signals if _doc_key(s)};out=[]
     for s in signals:
+        if s.get("normative_minimal"):
+            out.append(dict(s));continue  # Opción A: no automated relations on unreviewed acts
         r=dict(s);rels=[];seen=set();relmap=_relmap(r)
         for ref in r.get("related_reference_ids",[]) or []:
             k=_ref_key(ref);relationship=relmap.get(ref) or "Antecedente normativo citado por el documento actual."
@@ -336,6 +347,8 @@ def _resolution_relation_titles(signals):
     out=[]
     for s in signals:
         r=dict(s)
+        if r.get("normative_minimal"):
+            out.append(r);continue  # Opción A: never compose a headline from unreviewed copy
         kind=str(r.get("normative_document_type") or "")
         visible_title=str(r.get("title") or "")
         opaque=bool(re.fullmatch(r"(?:Resolución(?:\s+Exenta)?)\s+(?:(?:IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*[\d\.]+",visible_title,re.I))
@@ -665,6 +678,8 @@ def curate(signals,resolve_external=True,as_of=None):
     recent=_apply_persistent_editorial_decisions(recent)
     recent=[_normative_contract(s) if s.get("event_type")=="REGULATION" or "Normativa" in (s.get("signal_types") or []) else s for s in recent]
     recent=[s for s in recent if s.get("feed_visibility") is not False]
+    from radar_salud.normative_minimal import strip_interpretation
+    recent=[strip_interpretation(dict(s)) for s in recent]
     recent.extend(v3)
     recent.sort(key=lambda s:(_d(s.get("event_date")) or date.min,s.get("radar_score",0)),reverse=True);return recent
 
