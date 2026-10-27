@@ -50,7 +50,8 @@ _STRONG = ("prohíbe", "prohibe", "sanciona", "multa", "deroga", "suspende", "re
 # Obligated parties may only be named when the official text names them.
 _ACTORS = ("isapre", "fonasa", "prestador", "clínica", "clinica", "hospital", "empleador", "mutualidad", "mutual",
            "compin", "aseguradora", "farmacia", "laboratorio", "médico", "medico", "dentista", "matrona",
-           "trabajador", "beneficiario", "afiliado", "cotizante", "isl", "ccaf", "caja de compensación")
+           "trabajador", "beneficiario", "afiliado", "cotizante", "isl", "ccaf", "caja de compensación", "seremi",
+           "establecimiento", "organismo administrador", "organismos administradores", "minsal", "superintendencia")
 # Full dates and number+unit phrases are checked as one unit, literally in a quote.
 _UNIT_RE = re.compile(r"\b\d{1,2} de (?:" + "|".join(("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
                       "agosto", "septiembre", "octubre", "noviembre", "diciembre")) + r")(?: de \d{4})?\b"
@@ -122,10 +123,10 @@ def verify(record: dict[str, Any], label: str, evidence: str, official_subject: 
             problems.append("quote_not_literal")
     nq = " ".join(_norm(q) for q in quotes)
     for actor in _ACTORS:
-        if re.search(rf"\b{re.escape(actor)}", nt + " " + nc) and not re.search(rf"\b{re.escape(actor)}", ne):
+        if re.search(rf"\b{re.escape(actor)}(?:es|s)?\b", nt + " " + nc) and not re.search(rf"\b{re.escape(actor)}", ne):
             problems.append(f"actor_not_in_official_text:{actor}")
     for unit in set(_UNIT_RE.findall(nt + " " + nc)):
-        if unit not in nq:
+        if not re.search(rf"(?<![\d.,]){re.escape(unit)}(?![\d])", nq):
             problems.append(f"date_or_quantity_not_literal_in_quote:{unit}")
     label_numbers = _numbers(label)
     for n in (_numbers(title) | _numbers(context)) - label_numbers:
@@ -225,11 +226,15 @@ def build_auto_records(root: Path, signals: list[dict[str, Any]], *, call: Calla
                                   preferred_model="gpt-5.6-terra", allow_luna_fallback=False).output
                     if str(review.get("verdict")).upper() != "PASS":
                         problems.append("independent_review:" + str(review.get("reason"))[:200])
-            except ValueError as exc:  # unparseable model output: record it so the act is not retried forever
-                if "pricing" in str(exc):
+            except (ValueError, RuntimeError) as exc:
+                # Unparseable model output (openai_runtime wraps it as model_call_failed:JSONDecodeError/ValueError):
+                # record it so the act is not retried forever. Budget or provider failures stop the run.
+                msg = str(exc)
+                if "pricing" in msg or not (isinstance(exc, ValueError) or
+                                            re.match(r"model_call_failed:(JSONDecodeError|ValueError)", msg)):
                     print("normative_autorecord deferred:", type(exc).__name__)
                     break
-                problems = [f"unparseable_model_output:{str(exc)[:80]}"]
+                problems = [f"unparseable_model_output:{msg[:80]}"]
             except Exception as exc:  # budget exhausted or model failure: stop, keep what was done
                 print("normative_autorecord deferred:", type(exc).__name__)
                 break

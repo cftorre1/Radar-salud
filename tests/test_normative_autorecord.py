@@ -151,3 +151,28 @@ def test_unparseable_draft_is_recorded_as_rejection(tmp_path):
     assert store["rejected"][URL]["problems"][0].startswith("unparseable_model_output")
     auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27))
     assert calls == ["normative_autorecord"]  # not retried while the official text is unchanged
+
+
+def test_dates_and_quantities_need_a_boundary_in_the_quote():
+    text = EVIDENCE.replace("1 de marzo de 2027", "21 de marzo de 2027") + " Véase el numeral 1 del capítulo. " * 3
+    rec = {**GOOD, "evidence_quotes": ["La notificación deberá efectuarse dentro de 24 horas.",
+                                       "Las presentes instrucciones entrarán en vigencia a contar del 21 de marzo de 2027."]}
+    assert any(p.startswith("date_or_quantity_not_literal_in_quote:1 de marzo")
+               for p in auto.verify(rec, "Circular IF/N°537", text))
+    isla = {**GOOD, "normative_context": GOOD["normative_context"] + " Incluye la isla de Pascua."}
+    assert not any("actor_not_in_official_text:isl" == p for p in auto.verify(isla, "Circular IF/N°537", EVIDENCE))
+
+
+def test_runtime_wrapped_parse_failure_is_a_rejection_but_budget_stops(tmp_path):
+    signals = _repo(tmp_path)
+    def unparseable(prompt, **kw):
+        raise RuntimeError("model_call_failed:JSONDecodeError:Expecting value")
+    auto.build_auto_records(tmp_path, signals, call=unparseable, today=date(2026, 10, 27))
+    store = json.loads((tmp_path / auto.AUTO_PATH).read_text(encoding="utf-8"))
+    assert URL in store["rejected"]
+    (tmp_path / "b").mkdir()
+    signals2 = _repo(tmp_path / "b")
+    def broke(prompt, **kw):
+        raise RuntimeError("monthly_api_budget_exhausted")
+    auto.build_auto_records(tmp_path / "b", signals2, call=broke, today=date(2026, 10, 27))
+    assert URL not in json.loads((tmp_path / "b" / auto.AUTO_PATH).read_text(encoding="utf-8")).get("rejected", {})
