@@ -1,5 +1,5 @@
 from __future__ import annotations
-import argparse,hashlib,json,re
+import argparse,hashlib,json,os,re
 from dataclasses import asdict
 from copy import deepcopy
 from datetime import date, datetime, timezone
@@ -303,8 +303,16 @@ def main():
     evaluated={name:0 for name in processors}
     processed_count=0
     processing_deferrals={}
+    import time as _time
+    processing_started=_time.monotonic()
+    processing_budget=float(os.getenv("RADAR_PROCESSING_SECONDS","0") or 0)
     for key,item in ready:
         if args.limit and processed_count>=args.limit:break
+        if processing_budget and _time.monotonic()-processing_started>=processing_budget:
+            # Batch closes cleanly: remaining items wait for the next run, nothing is lost.
+            processing_deferrals["_time_budget"]={"reason":"processing_time_budget_reached",
+                "budget_seconds":processing_budget,"processed":processed_count}
+            break
         fast_available=has_capacity("fast")
         if item["source"] == "pulso_latercera" and not fast_available:
             # Pulso uses fast analysis; capacity exhaustion is not an attempt.
@@ -425,6 +433,16 @@ def main():
             **({"error_detail":occupational_audit[name].get("error"), "inventory":occupational_audit[name].get("inventory", {})} if name in OCCUPATIONAL_SOURCES else {}),
             **{k:v for k,v in diagnostic_details.get(name,{}).items() if v},
             latest_original_at=original_dates.get(name),evaluation_performed=evaluated[name]>0)
+    try:
+        # Verifiable official text for recent normative acts (no AI, bounded, never fails the run).
+        # Enabled only in the daily workflow (RADAR_CAPTURE_EVIDENCE=1): tests never download.
+        if os.getenv("RADAR_CAPTURE_EVIDENCE")!="1":raise LookupError("disabled")
+        from .normative_evidence import capture_missing
+        history=json.loads((root/"data/history/superintendencia_signals.json").read_text(encoding="utf-8")).get("signals",[])
+        captured=capture_missing(root,history)
+        print(f"normative_evidence captured={len(captured)}")
+    except Exception as exc:
+        print("normative_evidence skipped:",type(exc).__name__)
     print({"queue":queue.counts(),"budget":ai_budget_status()})
 
 if __name__=="__main__":main()
