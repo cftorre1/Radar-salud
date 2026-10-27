@@ -225,10 +225,12 @@ class MinsalNewsScout:
         last=None
         for attempt in range(3):
             try:
-                return self.discover_from_html(fetch_html(target, timeout=45),target)
-            except Exception as exc:
+                html=fetch_html(target, timeout=45)
+            except (OSError, TimeoutError) as exc:  # URLError/HTTPError are OSError; parse errors are not retried
                 last=exc
                 if attempt<2:time.sleep(5*(2**attempt))
+                continue
+            return self.discover_from_html(html,target)
         raise last
 
     def discover_new(self, store: SeenStore, url: Optional[str] = None) -> List[RawItem]:

@@ -219,7 +219,9 @@ class CaptureClient:
                 if len(data) > 5000000:
                     raise ValueError("response_body_limit")
                 canonical_url(response.url)
-                record = {"requested_url": url, "final_url": response.url, "http_status": response.code,
+                # A transport-only percent-encoding of the requested URL is not a redirect: keep the identity.
+                final_url = url if response.url == request.full_url else response.url
+                record = {"requested_url": url, "final_url": final_url, "http_status": response.code,
                           "fetched_at": datetime.now(timezone.utc).isoformat(), "tls_verified": True,
                           "headers": {key.lower(): value for key, value in response.headers.items()
                                       if key.lower() in {"content-type", "last-modified", "date", "server", "retry-after"}},

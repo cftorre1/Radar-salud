@@ -46,3 +46,51 @@ def test_missing_intermediate_is_completed_without_disabling_verification(monkey
     assert t._is_missing_issuer(URLError(ssl.SSLCertVerificationError(1, "certificate verify failed: unable to get local issuer certificate")))
     assert not t._is_missing_issuer(URLError(ssl.SSLCertVerificationError(1, "certificate has expired")))
     assert not t._is_missing_issuer(TimeoutError("slow"))
+
+
+def test_aia_rejects_untrusted_or_foreign_certificates(monkeypatch):
+    import datetime, ssl
+    import pytest
+    from cryptography import x509
+    from cryptography.hazmat.primitives import hashes, serialization
+    from cryptography.hazmat.primitives.asymmetric import ec
+    from cryptography.x509.oid import NameOID, AuthorityInformationAccessOID
+    from radar_salud import public_source_transport as t
+    with pytest.raises(ValueError):
+        t._aia_context("evil.example.com")
+    now = datetime.datetime.now(datetime.timezone.utc)
+    def name(cn): return x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, cn)])
+    ca_key = ec.generate_private_key(ec.SECP256R1()); leaf_key = ec.generate_private_key(ec.SECP256R1())
+    ca = (x509.CertificateBuilder().subject_name(name("Fake CA")).issuer_name(name("Fake Root"))
+          .public_key(ca_key.public_key()).serial_number(1).not_valid_before(now).not_valid_after(now + datetime.timedelta(days=9))
+          .add_extension(x509.BasicConstraints(ca=True, path_length=None), critical=True).sign(ca_key, hashes.SHA256()))
+    leaf = (x509.CertificateBuilder().subject_name(name("www.ispch.cl")).issuer_name(name("Fake CA"))
+            .public_key(leaf_key.public_key()).serial_number(2).not_valid_before(now).not_valid_after(now + datetime.timedelta(days=9))
+            .add_extension(x509.SubjectAlternativeName([x509.DNSName("www.ispch.cl")]), critical=False)
+            .add_extension(x509.AuthorityInformationAccess([x509.AccessDescription(
+                AuthorityInformationAccessOID.CA_ISSUERS, x509.UniformResourceIdentifier("http://attacker.example/ca.der"))]), critical=False)
+            .sign(ca_key, hashes.SHA256()))
+    monkeypatch.setattr(ssl, "get_server_certificate", lambda addr, timeout=None: leaf.public_bytes(serialization.Encoding.PEM).decode())
+    class R:
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+        def read(self, n): return ca.public_bytes(serialization.Encoding.DER)
+    monkeypatch.setattr("urllib.request.urlopen", lambda url, timeout=None: R())
+    t._AIA_CONTEXTS.clear()
+    with pytest.raises(Exception):
+        t._aia_context("www.ispch.cl")  # the attacker's CA does not chain to a trusted root
+    assert "www.ispch.cl" not in t._AIA_CONTEXTS
+
+
+def test_history_freshness_is_per_slug_by_url():
+    from datetime import date
+    from radar_salud.engine_cli import _history_last_signal
+    history = [
+        {"source_name": "Superintendencia de Salud", "source_url": "https://www.superdesalud.gob.cl/normativa/x/", "event_date": "2026-10-19"},
+        {"source_name": "Superintendencia de Salud", "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/y/", "event_date": "2026-10-14"},
+        {"source_name": "Superintendencia de Salud", "source_url": "https://www.superdesalud.gob.cl/normativa/z/", "event_date": "2026-10-25", "feed_visibility": False},
+    ]
+    assert _history_last_signal(history, "superintendencia", date(2026, 10, 27)) == "2026-10-14"
+    assert _history_last_signal(history, "superintendencia_normativa", date(2026, 10, 27)) == "2026-10-19"
+    assert _history_last_signal(history, "superintendencia_fiscalizacion", date(2026, 10, 27)) is None
+    assert _history_last_signal(history, "pulso_latercera", date(2026, 10, 27)) is None

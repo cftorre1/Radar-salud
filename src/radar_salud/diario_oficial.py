@@ -42,11 +42,23 @@ def _strip(s):
     s=re.sub(r"<script.*?</script>"," ",s,flags=re.S|re.I);s=re.sub(r"<style.*?</style>"," ",s,flags=re.S|re.I);s=re.sub(r"<[^>]+>"," ",s)
     return " ".join(unescape(s).split())
 
-def _issuer(context):
+_SEREMI=re.compile(r"\bSECRETAR[IÍ]A\s+REGIONAL\s+MINISTERIAL\b",re.I)
+_MINISTRY=re.compile(r"\bMINISTERIO\s+DE(?:L)?\s+[A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ ,]+")  # listing headers are upper case
+
+def _issuer(context, current=None):
+    """Issuer of an entry: the latest health header inside it, else the header still in force
+    from earlier entries. A ministry header other than Salud ends the health block; a SEREMI
+    header counts as health only inside the Ministerio de Salud block."""
     matches=[]
     for name,pat in ISSUERS:
         for m in re.finditer(pat,context,re.I):matches.append((m.start(),name))
-    return max(matches)[1] if matches else None
+    for m in _MINISTRY.finditer(context):
+        if not re.match(r"MINISTERIO\s+DE\s+SALUD\b",m.group(0)):matches.append((m.start(),None))
+    if matches:
+        current=max(matches,key=lambda x:x[0])[1]
+    if current and _SEREMI.search(context) and current in ("Ministerio de Salud","Subsecretaría de Salud Pública","Subsecretaría de Redes Asistenciales"):
+        current="SEREMI de Salud"
+    return current
 
 def _section_urls(day):
     ds=day.strftime("%d-%m-%Y");idx=f"{BASE}?date={ds}"
@@ -77,16 +89,17 @@ class DiarioOficialHealthScout:
             for section in _section_urls(d):
                 try:html=_fetch_with_retry(section)
                 except Exception:continue
-                previous_end=0
+                previous_end=0;current_issuer=None
                 for m in re.finditer(r'href=["\']([^"\']+\.pdf(?:\?[^"\']*)?)["\'][^>]*>.*?</a>',html,re.I|re.S):
                     pdf=urljoin(section,m.group(1))
                     # One entry = everything since the previous PDF link (never half a tag or the previous act).
                     start=max(previous_end,m.start()-1800);previous_end=m.end()
-                    context_html=html[start:html.rfind("<a",start,m.start()) if html.rfind("<a",start,m.start())>=0 else m.start()]
+                    anchor=[x.start() for x in re.finditer(r"<a\b",html[start:m.start()],re.I)];context_html=html[start:start+anchor[-1]] if anchor else html[start:m.start()]
                     if context_html[:1]!="<" and ">" in context_html[:200] and "<" not in context_html[:context_html.find(">")]:
                         context_html=context_html[context_html.find(">")+1:]
                     if pdf in seen:continue
-                    context=_strip(context_html);issuer=_issuer(context)
+                    context=_strip(context_html);issuer=current_issuer=_issuer(context,current_issuer)
+                    if issuer=="SEREMI de Salud":current_issuer="Ministerio de Salud"
                     if not issuer:continue
                     title=_title(context_html)
                     if not title or not ACT_RE.search(title):continue

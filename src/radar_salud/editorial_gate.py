@@ -36,7 +36,8 @@ def malformed_official_listing_title(r:Dict[str,Any])->bool:
     ("Ver PDF (CVE-…)", '"> ', 'reach -->'). Such cards are held until rebuilt (audit 27-oct-2026)."""
     if r.get("source_name")!="Diario Oficial":return False
     t=str(r.get("title") or "")
-    return (not _DO_TITLE.match(t) or "Ver PDF" in t or "<" in t or "-->" in t or 'dotted"' in t)
+    truncated_id=re.search(r"n[uú]mero\s+(?:[A-Z]{1,3}[ -]?)?\d{1,2}$",t.strip(),re.I) is not None
+    return (not _DO_TITLE.match(t) or "Ver PDF" in t or "<" in t or "-->" in t or 'dotted"' in t or truncated_id)
 
 def invalid_validity(r:Dict[str,Any])->bool:
     v=str(r.get("validity_text") or "").lower();return any(x in v for x in ('nj:','"529"','"535"','propertyvalue','javascript','schema.org'))
