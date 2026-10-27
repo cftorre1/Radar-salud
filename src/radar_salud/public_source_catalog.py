@@ -27,6 +27,8 @@ CATALOG={
  'pfizer_chile':('Prestadores e industria','https://www.pfizer.cl/','Noticias institucionales.'),
  'ist':('Seguridad laboral','https://www.ist.cl/','Noticias institucionales.')}
 
+TRIAL_MODES={'isolated_qualification','manual_curated_only'}
+
 def eligible(row,now=None):
     if row.get('error') or row.get('error_type'):return False
     try:
@@ -45,6 +47,9 @@ def build_catalog(sources,now=None):
     for key,row in sources.items():
         if key not in CATALOG or not row.get('name') or not eligible(row,now):continue
         group,url,description=CATALOG[key]
+        if row.get('operation_mode') in TRIAL_MODES:
+            # Honest label: verified once, not polled by the daily capture.
+            description=description.replace('superficie de metadatos verificada','metadatos verificados en prueba')+' En prueba: sin consulta diaria.'
         rows.append({'id':key,'name':row['name'],'group':group,'url':url,'description':description})
     return {'schema_version':1,'sources':sorted(rows,key=lambda x:(x['group'],x['name']))}
 
