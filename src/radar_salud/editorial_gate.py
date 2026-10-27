@@ -81,6 +81,15 @@ def health_not_main_subject(r:Dict[str,Any])->bool:
         return False  # covered by a reviewed, current synthesis that links it
     return not (title_has_health_nexus(r.get("display_title") or "") or title_has_health_nexus(r.get("title") or ""))
 
+_DO_TITLE=re.compile(r"^(?:Extracto de\s+)?(?:Ley|Decreto|Resoluci[oó]n|Circular|Reglamento)\b",re.I)
+def malformed_official_listing_title(r:Dict[str,Any])->bool:
+    """Diario Oficial titles built by the old reader can carry markup or the previous act
+    ("Ver PDF (CVE-…)", '"> ', 'reach -->'). Such cards are held until rebuilt (audit 27-oct-2026)."""
+    if r.get("source_name")!="Diario Oficial":return False
+    t=str(r.get("title") or "")
+    truncated_id=re.search(r"n[uú]mero\s+(?:[A-Z]{1,3}[ -]?)?\d{1,2}$",t.strip(),re.I) is not None
+    return (not _DO_TITLE.match(t) or "Ver PDF" in t or "<" in t or "-->" in t or 'dotted"' in t or truncated_id)
+
 def invalid_validity(r:Dict[str,Any])->bool:
     v=str(r.get("validity_text") or "").lower();return any(x in v for x in ('nj:','"529"','"535"','propertyvalue','javascript','schema.org'))
 
@@ -124,6 +133,8 @@ def publication_ready(r:Dict[str,Any])->Tuple[bool,str,int]:
     if is_minsal_noise(r):return False,"editorial_noise",q
     if is_institutional_agenda(r):return False,"institutional_agenda",q
     if health_not_main_subject(r):return False,"health_not_main_subject",q
+
+    if malformed_official_listing_title(r):return False,"malformed_official_listing_title",q
     why=str(r.get("why_it_matters") or "").lower()
     what=str(r.get("what_happened") or "").lower()
     if any(x in why for x in _UNRELATED):return False,"unrelated_to_health",q

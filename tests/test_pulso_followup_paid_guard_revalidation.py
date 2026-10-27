@@ -150,7 +150,14 @@ def test_real3_reuse_same_followup_paid_answer_and_normal_media_pipeline_zero_ca
         old_receipts = deepcopy(raw.metadata[previous.NEW_FAST_RECEIPTS])
         current_receipts = deepcopy(raw.metadata[prior_current.NEW_FAST_RECEIPTS])
         signal = beta_sources.process_curated_beta_source(raw, {})
-        assert signal is not None and signal["evidence_maturity"] == "media_reported"
+        if signal is None:
+            # Dirección 27-oct-2026: a later feed-relevance rule (health must be the title's subject)
+            # may withdraw a replayed card; the paid answer is still reused without a new model call.
+            from radar_salud.editorial_gate import title_has_health_nexus
+            assert not title_has_health_nexus(raw.title)
+            assert raw.metadata["analysis_model_output"] == old
+            continue
+        assert signal["evidence_maturity"] == "media_reported"
         assert signal["source_type"] == "press_high_trust" and signal["editorial_relevance"] == old["relevance_score"] >= 72
         assert raw.metadata["analysis_model_output"] == old
         assert raw.metadata[previous.NEW_FAST_RECEIPTS] == old_receipts

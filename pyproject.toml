@@ -9,6 +9,8 @@ description = "Radar Salud intelligence engine"
 requires-python = ">=3.11"
 dependencies = [
   "pypdf[crypto]==6.20.0",
+  "cryptography>=43",
+  "certifi",
   "openpyxl>=3.1.0",
   "openai>=1.0.0"
 ]

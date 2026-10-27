@@ -85,6 +85,29 @@ def _prioritize_pulso_ready(ready):
             ordered[index] = row
     return ordered
 
+# Each slug's own published rows, by URL (several slugs share a source_name): audit 27-oct-2026.
+_SLUG_URL_PREFIXES={
+    "superintendencia":("https://www.superdesalud.gob.cl/biblioteca-digital",),
+    "superintendencia_normativa":("https://www.superdesalud.gob.cl/normativa",),
+    "superintendencia_fiscalizacion":("https://www.superdesalud.gob.cl/fiscalizacion",),
+    "suseso":("https://www.suseso.gob.cl/612/",),
+    "suseso_news":("https://www.suseso.gob.cl/605/",),
+    "suseso_fiscalizacion":("https://www.suseso.gob.cl/609/",),
+    "minsal":("https://www.minsal.cl/",),
+    "diario_oficial":("https://www.diariooficial.interior.gob.cl/",),
+}
+
+def _history_last_signal(history,slug,today=None):
+    prefixes=_SLUG_URL_PREFIXES.get(slug)
+    if not prefixes:return None
+    today=(today or datetime.now(timezone.utc).date()).isoformat()
+    dates=[str(row.get("event_date"))[:10] for row in history
+           if str(row.get("source_url") or "").startswith(prefixes) and row.get("event_date")
+           and row.get("editorial_decision")!="reject" and row.get("feed_visibility") is not False
+           and str(row.get("event_date"))[:10]<=today
+           and not (slug in ("superintendencia_normativa","suseso_news") and "Fiscalización" in (row.get("signal_types") or []))]
+    return max(dates,default=None)
+
 def main():
     from .models import RawItem
     from .pending_queue import PendingQueue, fingerprint, legacy_fingerprint, FISCALIZATION_SOURCES, atomic_json
@@ -443,7 +466,8 @@ def main():
             rejection_reasons=dict(Counter(item.get("reason") for item in source_items if item.get("status")=="rejected")),
             **({"error_detail":occupational_audit[name].get("error"), "inventory":occupational_audit[name].get("inventory", {})} if name in OCCUPATIONAL_SOURCES else {}),
             **{k:v for k,v in diagnostic_details.get(name,{}).items() if v},
-            latest_original_at=original_dates.get(name),evaluation_performed=evaluated[name]>0)
+            latest_original_at=original_dates.get(name),evaluation_performed=evaluated[name]>0,
+            history_last_signal=_history_last_signal(history,name))
     try:
         # Verifiable official text for recent normative acts (no AI, bounded, never fails the run).
         # Enabled only in the daily workflow (RADAR_CAPTURE_EVIDENCE=1): tests never download.
