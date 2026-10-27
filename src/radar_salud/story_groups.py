@@ -15,6 +15,7 @@ Deterministic: no AI, no new facts beyond the configured text.
 from __future__ import annotations
 
 import json
+from datetime import date
 from pathlib import Path
 from typing import Any, Callable
 
@@ -32,7 +33,10 @@ def load_groups(root: Path | str = ".") -> list[dict[str, Any]]:
     for g in groups:  # a URL may belong to one story only; a lead must be one of its members
         urls = set(g["member_urls"])
         if urls & seen or (g.get("mode") == "lead" and g.get("lead_url") not in urls):
+            print(f"story_groups: grupo {g.get('id')} descartado (URL repetida o lead fuera del grupo)")
             continue
+        if str(g.get("review_by") or "9999") < date.today().isoformat():
+            print(f"story_groups: grupo {g.get('id')} vencido (review_by {g['review_by']}): requiere re-revisión")
         seen |= urls
         valid.append(g)
     return valid
