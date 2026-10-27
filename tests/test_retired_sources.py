@@ -8,7 +8,8 @@ def test_directorate_retirements_are_explicit_and_reasoned():
     retired = load_retired_sources(Path("."))
     assert set(retired) == {"pfizer_chile", "indisa", "red_davila", "clinicas_achs_salud"}
     assert all(isinstance(r, str) and len(r) > 20 for r in retired.values())
-    # IST is critical for Dirección (26-oct-2026) and must never be retired here.
+    # IST stays active (not retired). Dirección 27-oct-2026: IST is no longer a
+    # critical source; it publishes through the normal daily cycle.
     assert "ist" not in retired
 
 

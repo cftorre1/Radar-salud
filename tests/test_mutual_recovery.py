@@ -444,17 +444,22 @@ def test_unordered_category_cannot_stop_early_at_older_item():
     assert len(report["raw_items"]) == 2 and report["branches"][0]["reason"] == "branch_exhausted"
 
 
-def test_repeated_paging_fails_coverage_without_infinite_requests():
+def test_repeated_paging_stops_cleanly_without_infinite_requests():
+    # Dirección 27-oct-2026: the IBM paginator repeating its page ends the
+    # branch cleanly; it is recorded as a pagination note, not an inventory gap.
     next_url = urljoin(PAGE, "p0/NEXT=/")
     page = listing(branch(0, card("one"), "p0/NEXT=/"))
     source, calls = scout({PAGE: page, next_url: page, detail_url("one"): detail()})
     report = source.discover_inventory()
-    assert not report["coverage_complete"] and len(report["raw_items"]) == 1
-    assert any(error["reason"] == "repeated_pagination_page" for error in report["errors"])
+    assert report["coverage_complete"] and len(report["raw_items"]) == 1
+    assert not any(error.get("reason") == "repeated_pagination_page" for error in report["errors"])
+    note = report["pagination_notes"][0]
+    assert note["code"] == "repeated_pagination_page_stop" and note["oldest_verified_listing_date"]
+    assert report["branches"][0]["reason"] == "repeated_pagination_page_stop"
     assert calls.count(next_url) == 1
 
 
-def test_repeated_experimental_theme_response_preserves_valid_editorial_rejection_and_gap():
+def test_repeated_experimental_theme_response_preserves_valid_editorial_rejection_and_stops():
     base = PAGE + "!ut/p/z1/OBSERVED_STATE/"
     next_url = base + "p0/OBSERVED=GH=/"
     title = "Mutual impulsa jornada de autocuidado"
@@ -463,10 +468,10 @@ def test_repeated_experimental_theme_response_preserves_valid_editorial_rejectio
     source, calls = scout({PAGE: page, next_url: page, detail_url("one"): native_detail(title=title, body=body)})
     report = source.discover_inventory()
     assert report["rows"][0]["date_verified"] and report["rows"][0]["status"] == "rejected"
-    assert report["metrics"]["90"]["candidates"] == 0 and not report["metrics"]["90"]["complete"]
-    assert report["technical_status"] == "partial" and not report["coverage_complete"]
-    assert report["errors"][0]["reason"] == "repeated_pagination_page"
-    assert "http_status" not in report["errors"][0] and calls.count(next_url) == 1
+    assert report["metrics"]["90"]["candidates"] == 0 and report["metrics"]["90"]["complete"]
+    assert report["technical_status"] == "ok" and report["coverage_complete"] and not report["errors"]
+    assert report["pagination_notes"][0]["code"] == "repeated_pagination_page_stop"
+    assert calls.count(next_url) == 1
     assert report["pages"][1]["pagination_base_evidence"]["purpose"] == "experimental_archive_fallback"
 
 

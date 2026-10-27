@@ -537,7 +537,8 @@ def process_curated_beta_source(raw, cfg):
         hosts = CuratedBetaSourceScout.SOURCES[raw.source_slug]["hosts"]
         evidence = raw.metadata.get("publication_evidence") or raw.metadata.get("publication_date_evidence") or {}
         kinds = {"article:published_time", "datePublished", "publishdate", "time.published@datetime",
-                 "publisher:achs_div_fecha", "publisher:publication_container", "publisher:mutual_div_fecha", "publisher:mutual_detail_fecha"}
+                 "publisher:achs_div_fecha", "publisher:publication_container", "publisher:mutual_div_fecha", "publisher:mutual_detail_fecha",
+                 "publisher:visible_header_date"}
         if (parsed.scheme != "https" or parsed.hostname not in hosts or parsed.username or parsed.password
                 or parsed.port not in (None, 443)):
             raise DeferredProcessing("occupational official article authority unverified")
@@ -553,8 +554,10 @@ def process_curated_beta_source(raw, cfg):
         if (not bound or evidence.get("date") != raw.event_date
                 or valid_date(evidence.get("value")) != raw.event_date or valid_date(raw.event_date) != raw.event_date):
             raise DeferredProcessing("occupational explicit publication evidence unverified")
-        from .occupational_evidence import verify_capture
-        verify_capture(raw, hosts)
+        from .occupational_evidence import verify_capture, same_run_loader
+        # Daily-cycle evidence standard (Dirección 27-oct-2026): a capture
+        # verified in this run replaces the manual recovery artifact.
+        verify_capture(raw, hosts, loader=same_run_loader)
     role = raw.metadata.get("market_role") or "provider"
     from .provider_assessment import assessed, prefilter_rejected
     if raw.source_slug == "pulso_latercera":
