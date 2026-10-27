@@ -408,6 +408,8 @@ def main():
         finally:
             item['raw']=asdict(processing_raw)
             queue.save()
+    exhausted=queue.defer_exhausted(int(os.getenv("RADAR_MAX_RETRY_ATTEMPTS","4") or 4))
+    if exhausted:print(f"queue: {exhausted} items deferred after repeated structural failures")
     discovery_run=json.loads(run_path.read_text())
     discovery_run.update(processing_deferrals=processing_deferrals,processing_attempts=processed_count)
     atomic_json(run_path,discovery_run)

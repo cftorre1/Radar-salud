@@ -567,6 +567,19 @@ class PendingQueue:
         if changed:self.save()
         return changed
 
+    def defer_exhausted(self, max_attempts=4):
+        """Items that keep failing for structural reasons (no verifiable date, video-only article,
+        missing capture artifact, ungrounded model output) stop counting as pending after
+        ``max_attempts``: they move to ``deferred`` with the last reason kept (Dirección 27-oct-2026:
+        pending must mean "still on its way to the feed")."""
+        changed = 0
+        for item in self.items.values():
+            if item.get("status") == "retry" and int(item.get("attempts") or 0) >= max_attempts:
+                item.update(status="deferred", reason=f"retry_exhausted:{item.get('reason')}", retry_at=None)
+                changed += 1
+        if changed:self.save()
+        return changed
+
     def archive_sources(self, slugs, reason):
         """Pending items of sources retired by a recorded decision are kept, archived."""
         changed = 0
