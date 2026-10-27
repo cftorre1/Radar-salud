@@ -2688,7 +2688,11 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
         if decision not in {"reject", "group"}:
             from copy import deepcopy
             from radar_salud.editorial_gate import publication_ready
-            if not publication_ready(deepcopy(effective))[0]:
+            from radar_salud.editorial_gate import RELEVANCE_WITHDRAWAL_REASONS
+            ok, reason, _ = publication_ready(deepcopy(effective))
+            # Later Dirección relevance rules (27-oct-2026) withdraw a card from the feed;
+            # they do not invalidate the provenance of the reviewed copy being verified here.
+            if not ok and reason not in RELEVANCE_WITHDRAWAL_REASONS:
                 raise ValueError("editorial_effective_copy_fails_existing_publication_gate")
         result = effective, provenance, paid, effective_assessment
         cache[identity] = result
@@ -2725,7 +2729,13 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
                     or rejected and (metadata.get("rejection_reason") != assessment["reason"] or item.get("last_error") != assessment["reason"])):
                 raise ValueError("editorial_effective_state_model_primary_or_bookkeeping_changed")
             present = [row for row in snapshot.get("signals", []) if (row.get("source_url"), row.get("event_date")) == key]
-            if rejected and present or not rejected and len(present) != 1:
+            from copy import deepcopy
+            from radar_salud.editorial_gate import RELEVANCE_RULE_SINCE, RELEVANCE_WITHDRAWAL_REASONS, publication_ready
+            withdrawn = not rejected and publication_ready(deepcopy(effective))[1] in RELEVANCE_WITHDRAWAL_REASONS
+            # Withdrawn cards may still be present only in snapshots exported before the relevance rule existed.
+            legacy_snapshot = str(snapshot.get("generated_at") or "") < RELEVANCE_RULE_SINCE
+            allowed = (0, 1) if withdrawn and legacy_snapshot else (0,) if withdrawn else (1,)
+            if rejected and present or not rejected and len(present) not in allowed:
                 raise ValueError("editorial_effective_serialized_feed_presence_changed")
             if present and any(row.get(field) != effective.get(field) for row in present for field in (
                     "what_happened", "why_it_matters", "event_date", "publication_date", "editorial_relevance",
@@ -2784,7 +2794,11 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
                         raise ValueError("editorial_group_target_not_in_immutable_published_producer")
                     target_original, target_paid = original_targets[0], paid_targets[0]
                     target_assessment = target_paid.get("raw", {}).get("metadata", {}).get("editorial_assessment") or {}
-                if (target_key == key or len(survivors) != 1 or len(survivor_items) != 1 or len(feeds) != 1
+                from copy import deepcopy
+                from radar_salud.editorial_gate import RELEVANCE_RULE_SINCE, RELEVANCE_WITHDRAWAL_REASONS, publication_ready
+                # A survivor withdrawn by a later Dirección relevance rule takes its whole group out of the feed.
+                survivor_withdrawn = len(survivors) == 1 and publication_ready(deepcopy(survivors[0]))[1] in RELEVANCE_WITHDRAWAL_REASONS
+                if (target_key == key or len(survivors) != 1 or len(survivor_items) != 1 or len(feeds) not in ((0, 1) if survivor_withdrawn and str(snapshot.get("generated_at") or "") < RELEVANCE_RULE_SINCE else (0,) if survivor_withdrawn else (1,))
                         or survivor_items[0].get("status") != "published" or survivors[0].get("feed_visibility") is False
                         or survivors[0].get("editorial_decision") in {"reject", "group"}
                         or type(survivors[0].get("editorial_relevance")) is not int or survivors[0]["editorial_relevance"] < 72
@@ -2821,13 +2835,11 @@ def verify_additional_editorial_reviews(queue, history, snapshot, root):
                                 or len(" ".join(quote["text"].split())) < 20
                                 or " ".join(quote["text"].split()) not in " ".join(reader["target_full_primary_content"].split())
                                 for quote in reader["target_supporting_verbatim_quotes"]))
-                        or any(feeds[0].get(field) != survivors[0].get(field) for field in (
+                        or feeds and any(feeds[0].get(field) != survivors[0].get(field) for field in (
                             "what_happened", "why_it_matters", "event_date", "publication_date", "editorial_relevance", "evidence_maturity",
                             "category", "event_status", "prospective_evidence"))):
                     raise ValueError("editorial_group_target_not_actual_unique_published_survivor")
-                from copy import deepcopy
-                from radar_salud.editorial_gate import publication_ready
-                if not publication_ready(deepcopy(survivors[0]))[0]:
+                if not survivor_withdrawn and not publication_ready(deepcopy(survivors[0]))[0]:
                     raise ValueError("editorial_group_target_fails_existing_publication_gate")
             verified[key[0]] = provenance
         except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
