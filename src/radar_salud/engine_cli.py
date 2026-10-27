@@ -20,6 +20,7 @@ from .diario_oficial import DiarioOficialHealthScout
 from .public_source_pipeline import process_suseso,process_suseso_news,process_suseso_fiscalizacion,process_minsal,process_df,process_diario_oficial,process_fonasa_data_hub,process_fonasa,process_isp_surveillance,process_isp_anamed,process_clinicas_chile,process_corporate_news,process_deis
 from .analysis_cache import seed_from_history
 from .ai_budget import status as ai_budget_status, has_capacity
+from .source_health import load_retired_sources, mark_retired_sources
 from .source_health import record as health_record
 from .superintendencia_fiscalizacion import SuperintendenciaFiscalizacionScout, process_fiscalizacion
 from .processing import DeferredProcessing, RejectedProcessing, OutsideBackfillHorizon
@@ -123,6 +124,11 @@ def main():
     specs.extend((slug,slug,CuratedBetaSourceScout(slug).discover,process_curated_beta_source)
                  for slug in ("red_davila","andes_salud")
                  if slug in cfgs and (not selected_sources or slug in selected_sources))
+    retired=load_retired_sources(root)
+    if selected_sources and set(selected_sources)&set(retired):
+        ap.error("Retired source(s): "+", ".join(sorted(set(selected_sources)&set(retired))))
+    specs=[spec for spec in specs if spec[0] not in retired]
+    mark_retired_sources(root,retired)
     if selected_sources:
         unknown=set(selected_sources)-{name for name,_,_,_ in specs}
         if unknown:ap.error("Unknown source(s): "+", ".join(sorted(unknown)))
