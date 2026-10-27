@@ -42,11 +42,28 @@ def _strip(s):
     s=re.sub(r"<script.*?</script>"," ",s,flags=re.S|re.I);s=re.sub(r"<style.*?</style>"," ",s,flags=re.S|re.I);s=re.sub(r"<[^>]+>"," ",s)
     return " ".join(unescape(s).split())
 
-def _issuer(context):
+_SEREMI=re.compile(r"\bSECRETAR[IÍ]A\s+REGIONAL\s+MINISTERIAL\b",re.I)
+_MINISTRY=re.compile(r"\bMINISTERIO\s+DE(?:L)?\s+[A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ ,]+")  # listing headers are upper case
+
+def _issuer(context, current=None):
+    """Issuer of an entry: the latest health header inside it, else the header still in force
+    from earlier entries. A ministry header other than Salud ends the health block; a SEREMI
+    header counts as health only inside the Ministerio de Salud block."""
     matches=[]
     for name,pat in ISSUERS:
         for m in re.finditer(pat,context,re.I):matches.append((m.start(),name))
-    return max(matches)[1] if matches else None
+    for m in _MINISTRY.finditer(context):
+        if not re.match(r"MINISTERIO\s+DE\s+SALUD\b",m.group(0)):matches.append((m.start(),None))
+    # Any other all-caps block header (CONSEJO PARA LA TRANSPARENCIA, MUNICIPALIDADES…) also ends the health block.
+    for m in re.finditer(r"(?<![a-záéíóúñ])[A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ ,.()]{5,}(?![a-záéíóúñ])",context):
+        header=m.group(0).strip()
+        if len(header)>=6 and not any(re.search(pat,header,re.I) for _,pat in ISSUERS) and " " in header:
+            matches.append((m.start(),None))
+    if matches:
+        current=max(matches,key=lambda x:x[0])[1]
+    if current and _SEREMI.search(context) and current in ("Ministerio de Salud","Subsecretaría de Salud Pública","Subsecretaría de Redes Asistenciales"):
+        current="SEREMI de Salud"
+    return current
 
 def _section_urls(day):
     ds=day.strftime("%d-%m-%Y");idx=f"{BASE}?date={ds}"
@@ -56,10 +73,15 @@ def _section_urls(day):
         for m in re.finditer(r'href=["\']([^"\']*'+re.escape(name)+r'[^"\']*)["\']',html,re.I):urls.append(urljoin(idx,m.group(1)))
     return list(dict.fromkeys(urls))
 
+_ACT_START=re.compile(r"(?:Extracto de\s+)?(?:Ley|Decreto(?:\s+(?:exento|supremo|con fuerza de ley))?|Resoluci[oó]n(?:\s+exenta)?|Circular|Reglamento)\b",re.I)
+
 def _title(context_html):
-    clean=_strip(context_html)
-    m=re.search(r"((?:Ley|Decreto(?:\s+exento)?|Resoluci[oó]n(?:\s+exenta)?|Circular|Reglamento)[^.]{3,650})$",clean,re.I)
-    if m:return " ".join(m.group(1).split())
+    # The context is one listing entry (text since the previous PDF link): the act title
+    # runs from its first act keyword to the end, numbers like "3.955" included.
+    clean=re.sub(r"\bVer PDF\b.*$","",_strip(context_html)).strip()
+    clean=re.sub(r"^\(?CVE-\d+\)?\s*","",clean)
+    m=_ACT_START.search(clean)
+    if m:return " ".join(clean[m.start():].split())[:650]
     bits=[x.strip() for x in re.split(r"\s{2,}|\|",clean) if len(x.strip())>12]
     return bits[-1][:650] if bits else ""
 
@@ -72,10 +94,17 @@ class DiarioOficialHealthScout:
             for section in _section_urls(d):
                 try:html=_fetch_with_retry(section)
                 except Exception:continue
+                previous_end=0;current_issuer=None
                 for m in re.finditer(r'href=["\']([^"\']+\.pdf(?:\?[^"\']*)?)["\'][^>]*>.*?</a>',html,re.I|re.S):
                     pdf=urljoin(section,m.group(1))
+                    # One entry = everything since the previous PDF link (never half a tag or the previous act).
+                    start=max(previous_end,m.start()-1800);previous_end=m.end()
+                    anchor=[x.start() for x in re.finditer(r"<a\b",html[start:m.start()],re.I)];context_html=html[start:start+anchor[-1]] if anchor else html[start:m.start()]
+                    if context_html[:1]!="<" and ">" in context_html[:200] and "<" not in context_html[:context_html.find(">")]:
+                        context_html=context_html[context_html.find(">")+1:]
                     if pdf in seen:continue
-                    context_html=html[max(0,m.start()-1800):m.start()];context=_strip(context_html);issuer=_issuer(context)
+                    context=_strip(context_html);issuer=current_issuer=_issuer(context,current_issuer)
+                    if issuer=="SEREMI de Salud":current_issuer="Ministerio de Salud"
                     if not issuer:continue
                     title=_title(context_html)
                     if not title or not ACT_RE.search(title):continue

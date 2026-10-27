@@ -155,12 +155,17 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
            pending:int=0,deferred:int=0,rejected:int=0,error:str|None=None,live_pending:int|None=None,backfill_pending:int|None=None,
            discovery_evidence:dict|None=None, observed_rows:list[dict]|None=None,
            surfaces:list[dict]|None=None, published_history:list[dict]|None=None,
-           archived:int=0, rejection_reasons:dict|None=None, source_queue:list[dict]|None=None, error_detail:dict|None=None,inventory:dict|None=None,error_details:dict|None=None,diagnostics:dict|None=None,evaluation_performed:bool=True,latest_original_at:str|None=None,processed_rejections:int=0)->None:
+           archived:int=0, rejection_reasons:dict|None=None, source_queue:list[dict]|None=None, error_detail:dict|None=None,inventory:dict|None=None,error_details:dict|None=None,diagnostics:dict|None=None,evaluation_performed:bool=True,latest_original_at:str|None=None,processed_rejections:int=0,history_last_signal:str|None=None)->None:
     d=_load(root);src=d.setdefault("sources",{});rows=rows or []
     dates=[x.get("event_date") for x in rows if x.get("event_date")]
     prev=src.get(slug) or (src.get("superintendencia_stats",{}) if slug=="superintendencia" else {})
     last_signal=max(dates+[prev.get("last_signal_at") or ""]) if dates else prev.get("last_signal_at")
     latest_original_at=latest_original_at or prev.get('latest_original_at')
+    # Items published by hourly/batch queue runs never pass through this source's own run:
+    # the newest published card in history is the truthful freshness (audit 27-oct-2026).
+    if history_last_signal:
+        last_signal=max(filter(None,[last_signal,history_last_signal]))
+        latest_original_at=max(filter(None,[latest_original_at,history_last_signal]))
     provider_stale=False
     if slug in ('redsalud','bupa_chile','indisa','red_davila','andes_salud','clinicas_chile','pfizer_chile','clinicas_achs_salud') and latest_original_at:
         try:provider_stale=(datetime.now(timezone.utc).date()-date.fromisoformat(latest_original_at[:10])).days>90
