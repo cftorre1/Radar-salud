@@ -78,3 +78,32 @@ def test_daily_source_declaring_a_non_daily_mode_still_blocks(tmp_path):
     }}),encoding="utf-8")
     findings=[f for f in reviewer.review(tmp_path,"sha")["findings"] if "stale" in f["code"]]
     assert {f["path"].rsplit("/",1)[-1] for f in findings if f["code"]=="stale_source_check" and f["severity"]=="critical"}=={"suseso","prestadores_data"}
+
+
+def _grace_findings(tmp_path, monkeypatch, now, checked):
+    class Frozen(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return now if tz else now.replace(tzinfo=None)
+    monkeypatch.setattr(reviewer, "datetime", Frozen)
+    (tmp_path/"data").mkdir(exist_ok=True)
+    (tmp_path/"data/radar_today.json").write_text(json.dumps({"generated_at":now.isoformat(),"signals":[]}),encoding="utf-8")
+    (tmp_path/"data/source_health.json").write_text(json.dumps({"sources":{
+        "cmf_health_ecosystem":{"status":"ok","checked_at":checked},"suseso":{"status":"ok","checked_at":now.isoformat()}}}),encoding="utf-8")
+    return {f["code"]:f["severity"] for f in reviewer.review(tmp_path,"sha")["findings"] if "cmf_health_ecosystem" in f.get("path","")}
+
+
+def test_newly_activated_daily_source_grace_is_bounded_to_three_days_after_activation(tmp_path, monkeypatch):
+    old = "2026-10-11T12:00:00+00:00"
+    within = _grace_findings(tmp_path, monkeypatch, datetime(2026,10,29,12,tzinfo=timezone.utc), old)
+    assert within == {"awaiting_first_daily_poll": "warning"}
+    after = _grace_findings(tmp_path, monkeypatch, datetime(2026,10,31,12,tzinfo=timezone.utc), old)
+    assert after.get("stale_source_check") == "critical"
+    # Before the activation date (clock earlier than start) there is no grace either.
+    before = _grace_findings(tmp_path, monkeypatch, datetime(2026,10,26,12,tzinfo=timezone.utc), old)
+    assert "awaiting_first_daily_poll" not in before and before.get("stale_source_check") == "critical"
+
+
+def test_naive_poll_timestamp_never_gets_activation_grace(tmp_path, monkeypatch):
+    found = _grace_findings(tmp_path, monkeypatch, datetime(2026,10,28,12,tzinfo=timezone.utc), "2026-10-11T12:00:00")
+    assert "awaiting_first_daily_poll" not in found and found.get("stale_source_check") == "critical"

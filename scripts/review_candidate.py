@@ -53,13 +53,16 @@ def review(web, sha):
                 activated=[k[len("activated_daily_"):] for k,v in policy.items()
                            if k.startswith("activated_daily_") and isinstance(v,list) and slug in v]
                 pending_first_poll=False
-                for day in activated:
+                # A naive (offset-less) poll timestamp cannot be compared: no grace, it blocks.
+                for day in (activated if checked.tzinfo else []):
                     try:
                         start=datetime.fromisoformat(day.replace("_","-")).replace(tzinfo=timezone.utc)
                     except ValueError:
                         continue
+                    since=(datetime.now(timezone.utc)-start).total_seconds()
                     # Newly activated daily sources get 3 days for their first daily poll; then they block.
-                    if checked<start and (datetime.now(timezone.utc)-start).total_seconds()<=3*86400:
+                    # A future activation date never grants grace.
+                    if checked<start and 0<=since<=3*86400:
                         pending_first_poll=True
                 if pending_first_poll:
                     fail("data","awaiting_first_daily_poll",f"data/source_health.json#sources/{slug}","Source activated for the daily capture; first daily poll pending",severity="warning")
