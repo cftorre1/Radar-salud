@@ -680,6 +680,14 @@ def curate(signals,resolve_external=True,as_of=None):
     recent=[s for s in recent if s.get("feed_visibility") is not False]
     from radar_salud.normative_minimal import strip_interpretation
     recent=[strip_interpretation(dict(s)) for s in recent]
+    # Individual accreditation acts stay out of the feed; one verifiable rolling pulse instead.
+    from radar_salud.accreditation_pulse import accreditation_pulse
+    pulse=accreditation_pulse(signals,latest)
+    if pulse:
+        ok,reason,score=publication_ready(pulse)
+        if ok:
+            pulse["publication_gate_reason"]=reason;pulse["publication_ready_score"]=score
+            recent.append(pulse)
     recent.extend(v3)
     recent.sort(key=lambda s:(_d(s.get("event_date")) or date.min,s.get("radar_score",0)),reverse=True);return recent
 
