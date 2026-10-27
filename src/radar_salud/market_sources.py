@@ -35,15 +35,18 @@ class Captures:
         return data.decode(encoding, errors='replace')
 
 
+RUNTIME_ACTIVATION = 'held_for_core_quality_gate'
+
+
 def health(captures, package, *, discovered, unique, recent=0, material=0, published=0,
-           rejected=0, deferred=0, errors=0, complete=False, reason):
+           rejected=0, deferred=0, errors=0, complete=False, reason, runtime_activation=None):
     receipts = [r for r in captures.receipts if r['package'] == package]
     return dict(pages_checked=len(receipts), items_discovered=discovered, unique_items=unique,
                 items_recent=recent, items_material=material, published=published, rejected=rejected,
                 deferred=deferred, parse_errors=errors, coverage_complete=complete, coverage_reason=reason,
                 technical_status='error' if errors else 'ok' if receipts and all(r['transport_ok'] for r in receipts) else 'degraded',
                 snapshot_semantics='Data observations; published is news cards, never table rows',
-                recurrence_validated=False, runtime_activation='held_for_core_quality_gate')
+                recurrence_validated=False, runtime_activation=runtime_activation or RUNTIME_ACTIVATION)
 
 
 def collect_isapres(captures, root):

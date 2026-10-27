@@ -112,8 +112,11 @@ def period_seeds(seeds, as_of):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--seeds',type=Path,default=Path('config/source_expansion_runtime.json'));p.add_argument('--as-of',type=date.fromisoformat,default=datetime.now(ZoneInfo('America/Santiago')).date());args=p.parse_args()
-    seeds=period_seeds(json.loads(args.seeds.read_text())['seeds'],args.as_of); receipts=[];seen=set();todo=seeds;truncated=[]
+    p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--seeds',type=Path,default=Path('config/source_expansion_runtime.json'));p.add_argument('--as-of',type=date.fromisoformat,default=datetime.now(ZoneInfo('America/Santiago')).date())
+    # Daily engine (Dirección 27-oct-2026) captures only the CMF and SIS-isapre packages.
+    p.add_argument('--packages',nargs='+',choices=['isapres','cmf','dipres'],default=None);args=p.parse_args()
+    seeds=[s for s in json.loads(args.seeds.read_text())['seeds'] if not args.packages or s['package'] in args.packages]
+    seeds=period_seeds(seeds,args.as_of); receipts=[];seen=set();todo=seeds;truncated=[]
     for depth in range(3):
         pending=list({(s['url'],s.get('post')):s for s in todo if (s['url'],s.get('post')) not in seen}.values())
         batch=pending[:180];truncated.extend(pending[180:])
