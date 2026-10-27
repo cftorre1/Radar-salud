@@ -27,8 +27,10 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await expect(page.locator('#period')).toHaveValue('30');await expect(page.locator('#sort')).toHaveValue('date');
- await expect(page.getByRole('heading',{name:'Encuentra lo que importa',exact:true})).toBeVisible();
- expect(await page.getByRole('heading',{name:'Encuentra lo que importa',exact:true}).evaluate(el=>el.getBoundingClientRect().height/parseFloat(getComputedStyle(el).lineHeight))).toBeLessThan(1.1);
+ // Dirección 27-oct-2026 (Home B): the hero title leaves the visible layout so news reach the first
+ // viewport; it stays as the page's only h1 for assistive technology.
+ await expect(page.getByRole('heading',{level:1,name:'Encuentra lo que importa',exact:true})).toHaveCount(1);
+ await expect(page.locator('h1')).toHaveClass(/sr-only/);
  await expect(page.locator('#filterDetails')).not.toHaveAttribute('open','');
  await expect(page.locator('.coverage,.toolbar,.weekly-cta,.preferences-panel')).toHaveCount(0);
  await expect(page.getByText('Personalizar mi radar',{exact:true})).toHaveCount(0);
@@ -157,13 +159,15 @@ test('operations dashboard loads without inventing measurements',async({page})=>
  const response=await page.request.get('/data/excel_diagnostics.csv');expect(response.ok()).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-product.png`,fullPage:true});
 });
-test('Big things open as a cover until read, then leave it and live in Leídas',async({page})=>{
+// Dirección 27-oct-2026 (Home B): Insight and Global are always-present accordion rows. Reading one
+// changes its mark (Nuevo → Leído) and keeps it in 'Esta semana'; it no longer moves to the Leídas lane.
+test('Big things stay as accordions with a read mark that persists',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  const source=await page.request.get('/data/free_value.json'),data=await source.json();
  const hasWeekly=await page.evaluate(w=>weeklyFresh(w),data.weekly_insight);
  const global=page.locator('#bigThings .big-feature.global'),weekly=page.locator('#bigThings .big-feature.weekly');
  await expect(global).toHaveCount(1);await expect(weekly).toHaveCount(hasWeekly?1:0);
- // The week's insight leads; the outside view follows. Neither repeats inside Pendientes.
+ // The week's insight leads; the outside view follows. Neither repeats inside the inbox.
  expect(await page.locator('#bigThings .big-feature').evaluateAll(xs=>xs.map(x=>x.classList.contains('weekly')?'weekly':'global'))).toEqual(hasWeekly?['weekly','global']:['global']);
  await expect(page.locator('#local [data-special]')).toHaveCount(0);await expect(page.locator('.big-anchor')).toHaveCount(0);
  // A Global theme on editorial HOLD (BCBSA) is never promoted.
@@ -173,13 +177,18 @@ test('Big things open as a cover until read, then leave it and live in Leídas',
  const fills=await page.locator('#bigThings .big-feature').evaluateAll(rows=>rows.map(row=>getComputedStyle(row).backgroundColor));expect(new Set(fills).size).toBe(hasWeekly?2:1);
  const readTargets=await page.locator('#bigThings [data-special-read]').evaluateAll(buttons=>buttons.map(button=>({width:button.getBoundingClientRect().width,height:button.getBoundingClientRect().height})));expect(readTargets.every(({width,height})=>width>=44&&height>=44)).toBeTruthy();
  await expect(page.locator('.hero-purpose')).toHaveText('Señales clave del sector salud, claras y a tiempo.');
- if(hasWeekly){await expect(weekly).toContainText(data.weekly_insight.insight_title);await weekly.locator('[data-special-read]').click();await expect(weekly).toHaveCount(0)}
- await global.locator('[data-special-read]').click();await expect(global).toHaveCount(0);await expect(page.locator('#bigThings')).toBeHidden();
- await expect(page.locator('#local [data-special]')).toHaveCount(0);
- await page.locator('[data-lane="l"]').click();
- const rows=page.locator('#local .special-row');await expect(rows).toHaveCount(hasWeekly?2:1);await expect(page.locator('#local .group-head').first()).toHaveText('Ediciones de la semana');
- if(hasWeekly){await page.locator('#local .special-row.weekly .title-open').click();await expect(page.locator('#weeklyInsightDialog')).toContainText('Lectura Alicanto:');await expect(page.locator('#weeklyInsightDialog').getByRole('link',{name:/Revisar fuente original/})).toHaveAttribute('href',/^https:\/\//);await page.getByRole('button',{name:'Cerrar insight'}).click()}
- await page.reload();await expect(page.locator('#bigThings .big-feature')).toHaveCount(0);await expect(rows).toHaveCount(hasWeekly?2:1);
+ // Collapsed by default: the chevron reveals the teaser without marking it read.
+ await expect(global.locator('.acc-state')).toHaveText('Nuevo');await expect(global.locator('.acc-body')).toBeHidden();
+ await global.locator('[data-special-toggle]').click();await expect(global.locator('.acc-body')).toBeVisible();await expect(global.locator('[data-special-toggle]')).toHaveAttribute('aria-expanded','true');await expect(global).not.toHaveClass(/read/);
+ await global.locator('[data-special-toggle]').click();await expect(global.locator('.acc-body')).toBeHidden();
+ if(hasWeekly){await expect(weekly).toContainText(data.weekly_insight.insight_title);await weekly.locator('[data-special-read]').click();await expect(weekly).toHaveClass(/read/);await expect(weekly.locator('.acc-state')).toHaveText('Leído')}
+ await global.locator('[data-special-read]').click();await expect(global).toHaveClass(/read/);await expect(global).toHaveCount(1);await expect(global.locator('.acc-state')).toHaveText('Leído');
+ await expect(page.locator('#bigThings')).toBeVisible();await expect(global.locator('[data-special-read]')).toBeFocused();
+ await page.locator('[data-lane="l"]').click();await expect(page.locator('#local [data-special]')).toHaveCount(0);
+ if(hasWeekly){await weekly.locator('.title-open').click();await expect(page.locator('#weeklyInsightDialog')).toContainText('Lectura Alicanto');await expect(page.locator('#weeklyInsightDialog .wi-notes a').first()).toHaveAttribute('href',/^https:\/\//);await page.getByRole('button',{name:'Cerrar insight'}).click()}
+ await page.reload();await expect(page.locator('#bigThings .big-feature')).toHaveCount(hasWeekly?2:1);await expect(page.locator('#bigThings .big-feature.read')).toHaveCount(hasWeekly?2:1);await expect(page.locator('#bigThings .acc-body:visible')).toHaveCount(0);
+ // Marking unread restores the mark.
+ await global.locator('[data-special-read]').click();await expect(global).not.toHaveClass(/read/);await expect(global.locator('.acc-state')).toHaveText('Nuevo');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  await page.screenshot({path:`artifacts/${test.info().project.name}-home-v2-final.png`,fullPage:true});
 });
@@ -226,7 +235,8 @@ test('Global read state is shared across Home and the research page',async({page
  await theme.locator('[data-read]').click();await expect(theme).not.toHaveClass(/read/);
  await page.goto('/');await expect(page.locator('#bigThings .big-feature.global')).toHaveCount(1);
  await page.locator('#bigThings .big-feature.global [data-special-read]').click();
- await expect(page.locator('#bigThings .big-feature.global')).toHaveCount(0);await expect(page.locator('.lane.on')).toBeFocused();
+ // Dirección 27-oct-2026: a read special stays in place with its read mark; focus stays on its toggle.
+ await expect(page.locator('#bigThings .big-feature.global')).toHaveClass(/read/);await expect(page.locator('#bigThings .big-feature.global [data-special-read]')).toBeFocused();
 });
 test('source suggestion is visible, concise and fail-closed without provider',async({page})=>{
  let captured;

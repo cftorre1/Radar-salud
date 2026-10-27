@@ -10,7 +10,7 @@ from radar_salud.pending_queue import PendingQueue, atomic_json
 from radar_salud.isapre_insights import derive as derive_isapre_insights
 from radar_salud.pmo import project as project_pmo
 from radar_salud.free_value import build_free_value
-from radar_salud.weekly_freshness import reviewed_weekly, freshness_gate
+from radar_salud.weekly_freshness import reviewed_weekly, freshness_gate, presentation_a, presentation_a_errors
 
 def read(path, fallback):
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else fallback
@@ -199,6 +199,10 @@ def merge_persisted_weekly_insight(root, free_value, as_of=None):
     policy["top3"]=payload.get("top3") or []
     policy["deep_intelligence"]=payload.get("model") or (weekly or {}).get("model_trace") or {"mode":"editorial_reviewed" if weekly else "unavailable"}
     policy["freshness_gate"]=freshness_gate(weekly, as_of)
+    candidate=(payload or {}).get("weekly_insight")
+    # Presentation A rules (panel.md §4) are reported even when they hide the insight.
+    policy["weekly_presentation"]={"format":"weekly_insight_a_v1" if presentation_a(candidate) else "legacy_lists",
+                                   "errors":presentation_a_errors(candidate) if presentation_a(candidate) else []}
     merged["selection_policy"]=policy
     merged["status"]="available" if weekly and merged.get("global_teaser") else "partial"
     return merged
