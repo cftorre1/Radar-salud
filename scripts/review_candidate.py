@@ -58,7 +58,8 @@ def review(web, sha):
     except (OSError,KeyError,TypeError,ValueError) as exc:
         fail("data","unverified_source_checks","data/source_health.json",str(exc))
     try:
-        contract=json.loads((Path(__file__).resolve().parents[1]/"config/normative_editorial_v2.json").read_text())
+        from radar_salud.normative_autorecord import merged_config
+        contract=merged_config(Path(__file__).resolve().parents[1],json.loads((Path(__file__).resolve().parents[1]/"config/normative_editorial_v2.json").read_text()))
         for index,signal in enumerate(signals):
             is_normative=signal.get("event_type")=="REGULATION" or "Normativa" in (signal.get("signal_types") or [])
             if not is_normative:

@@ -96,3 +96,10 @@
 /* Opción A: normativa con ficha mínima, aún sin lectura editorial */
 .unreviewed{color:#8f5f1c;font-weight:600}
 .unreviewed-note{padding:10px 12px;border-radius:10px;background:#FFF4E0;border:1px solid rgba(227,162,79,.55);color:#6b4510;font-size:13.5px}
+.insight-chart{margin:14px 0;padding:12px 14px;border:1px solid var(--ink09);border-radius:12px;background:#fff}
+.insight-chart figcaption{font-size:13px;font-weight:700;margin-bottom:8px;color:var(--ink)}
+.insight-chart svg{width:100%;max-width:420px;height:auto;display:block;overflow:visible}
+.insight-chart .ic-label{font-size:11px;fill:var(--ink68)}.insight-chart .ic-val{font-size:11px;font-weight:700;fill:var(--ink)}
+.insight-chart .ic-bar{fill:#2F6F8F}.insight-chart .ic-bar.neg{fill:#C2693E}
+.insight-chart .ic-source{font-size:11px;color:var(--ink48);margin:6px 0 0}
+.insight-chart .ic-bar.partial{fill-opacity:.35;stroke:#2F6F8F;stroke-width:1.5;stroke-dasharray:4 3}

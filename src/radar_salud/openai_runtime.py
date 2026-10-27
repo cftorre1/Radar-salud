@@ -74,12 +74,16 @@ def call_json(prompt,*,feature,preferred_model="gpt-5.6-terra",allow_luna_fallba
     for idx,model in enumerate(models):
         try:
             response=client.responses.create(model=model,input=prompt,max_output_tokens=1800)
-            output=_parse(getattr(response,"output_text","") or "")
             usage=getattr(response,"usage",None);i=int(getattr(usage,"input_tokens",0) or 0);o=int(getattr(usage,"output_tokens",0) or 0)
             cost=_estimate(model,i,o)
-            if rolling_7d_spend(ledger_path)+cost>limit:raise RuntimeError("call_would_exceed_weekly_budget")
+            over=rolling_7d_spend(ledger_path)+cost>limit
             row={"at":datetime.now(timezone.utc).isoformat(),"feature":feature,"model":model,"input_tokens":i,"output_tokens":o,"estimated_cost_usd":cost,"response_id":getattr(response,"id",None),"fallback_used":idx>0}
+            # Spend is recorded as soon as the provider bills it, even if the output is unusable.
             _append(row,ledger_path)
+            if over:raise RuntimeError("call_would_exceed_weekly_budget")
+            output=_parse(getattr(response,"output_text","") or "")
             return ModelResult(model,output,i,o,cost,row["response_id"],idx>0)
-        except Exception as exc:last=exc
+        except Exception as exc:
+            last=exc
+            if str(exc)=="call_would_exceed_weekly_budget":raise
     raise RuntimeError("model_call_failed:%s:%s"%(type(last).__name__,last))

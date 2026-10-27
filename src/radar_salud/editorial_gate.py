@@ -1,4 +1,5 @@
 from __future__ import annotations
+import re
 from typing import Any, Dict, Tuple
 
 from .editorial_rules_v2 import evaluate_editorial_v2
@@ -19,6 +20,15 @@ def is_minsal_noise(r:Dict[str,Any])->bool:
     if any(x in t for x in _MINSAL_NOISE):return True
     if any(x in t for x in ("alerta alimentaria","retiro de producto","lote de","marca ")) and int(r.get("editorial_relevance") or 0)<80:return True
     return False
+
+# Regulator institutional agenda (Dirección 27-oct-2026): attending sessions or
+# working tables is not market intelligence. Material outcomes ("presenta
+# avances", "fiscaliza", "sanciona", "instruye") are not matched.
+_AGENDA=re.compile(r"\b(participa|particip[óo]) (en|de)\b|\bse reúne\b|\bse reuni[óo]\b|\bconmemora\b|\bsaluda a\b|\bcelebra (su|el|la)\b",re.I)
+_REGULATORS=("Superintendencia de Seguridad Social (SUSESO)","Superintendencia de Salud","Ministerio de Salud")
+
+def is_institutional_agenda(r:Dict[str,Any])->bool:
+    return r.get("source_name") in _REGULATORS and bool(_AGENDA.search(str(r.get("title") or "")))
 
 def invalid_validity(r:Dict[str,Any])->bool:
     v=str(r.get("validity_text") or "").lower();return any(x in v for x in ('nj:','"529"','"535"','propertyvalue','javascript','schema.org'))
@@ -61,6 +71,7 @@ def publication_ready(r:Dict[str,Any])->Tuple[bool,str,int]:
     q=quality_score(r)
     if has_garbage(r):return False,"binary_or_markup",q
     if is_minsal_noise(r):return False,"editorial_noise",q
+    if is_institutional_agenda(r):return False,"institutional_agenda",q
     why=str(r.get("why_it_matters") or "").lower()
     what=str(r.get("what_happened") or "").lower()
     if any(x in why for x in _UNRELATED):return False,"unrelated_to_health",q

@@ -278,6 +278,9 @@ def main():
     produced={name:[] for name in processors}
     processed_rejections={name:0 for name in processors}
     queue.enforce_backfill_horizon(sources=set(selected_sources) if selected_sources else None)
+    from .daily_window import requested_window_days
+    if requested_window_days() < 90:
+        queue.archive_outside_daily_window(requested_window_days(), sources=set(selected_sources) if selected_sources else None)
     from .daily_window import eligible_daily_item
     ready=((key,item) for key,item in _prioritize_official(_prioritize_pulso_ready(queue.ready()))
            if item['source'] in processors and eligible_daily_item(item) and
@@ -441,6 +444,10 @@ def main():
         history=json.loads((root/"data/history/superintendencia_signals.json").read_text(encoding="utf-8")).get("signals",[])
         captured=capture_missing(root,history)
         print(f"normative_evidence captured={len(captured)}")
+        # Immediate editorial control: verified automatic records (budget-capped).
+        from .normative_autorecord import build_auto_records
+        recorded=build_auto_records(root,history)
+        print(f"normative_autorecord written={len(recorded)}")
     except Exception as exc:
         print("normative_evidence skipped:",type(exc).__name__)
     print({"queue":queue.counts(),"budget":ai_budget_status()})
