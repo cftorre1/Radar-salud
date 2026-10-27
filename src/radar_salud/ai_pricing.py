@@ -61,5 +61,17 @@ def month_spend_usd(root: Path, now: datetime | None = None) -> float:
     return round(total, 4)
 
 
+def paced_budget_usd(now: datetime | None = None) -> float:
+    """Budget available so far this month: spread evenly over the days, plus USD 1 of slack.
+
+    With hourly runs a burst could otherwise spend the whole month in a day or two and
+    leave the rest of the month unprocessed (reviewer, 27-oct-2026)."""
+    import calendar
+    now = now or datetime.now(timezone.utc)
+    days = calendar.monthrange(now.year, now.month)[1]
+    cap = monthly_budget_usd()
+    return min(cap, cap * now.day / days + 1.0)
+
+
 def within_budget(root: Path, now: datetime | None = None) -> bool:
-    return month_spend_usd(root, now) < monthly_budget_usd()
+    return month_spend_usd(root, now) < paced_budget_usd(now)

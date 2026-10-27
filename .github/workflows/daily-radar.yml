@@ -17,7 +17,9 @@ on:
         default: 0
         type: number
   schedule:
-    - cron: '30 9 * * 1-5'
+    # Dirección 27-oct-2026: discover four times a day, every day (07:30, 11:30, 15:30, 19:30 Chile);
+    # the hourly queue batch processes what is found in between.
+    - cron: '30 10,14,18,22 * * *'
 permissions:
   contents: write
   actions: write
@@ -117,7 +119,13 @@ jobs:
           git add data/audits/global_integration_2026_10_11
           if [ "${{ job.status }}" = success ]; then git add web/data; fi
           git diff --cached --quiet || git commit -m "chore: refresh Alicanto Salud"
-          git push origin HEAD:staging
+          # Retry with rebase: a staging merge during the run must not lose queue state or the AI ledger.
+          for attempt in 1 2 3; do
+            git pull --rebase origin staging && git push origin HEAD:staging && break
+            git rebase --abort 2>/dev/null || true
+            sleep $((attempt * 20))
+          done
+          git push --dry-run origin HEAD:staging
       - name: Request checked staging preview
         env:
           GH_TOKEN: ${{ github.token }}
