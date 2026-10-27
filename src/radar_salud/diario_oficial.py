@@ -54,6 +54,11 @@ def _issuer(context, current=None):
         for m in re.finditer(pat,context,re.I):matches.append((m.start(),name))
     for m in _MINISTRY.finditer(context):
         if not re.match(r"MINISTERIO\s+DE\s+SALUD\b",m.group(0)):matches.append((m.start(),None))
+    # Any other all-caps block header (CONSEJO PARA LA TRANSPARENCIA, MUNICIPALIDADES…) also ends the health block.
+    for m in re.finditer(r"(?<![a-záéíóúñ])[A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ ,.()]{5,}(?![a-záéíóúñ])",context):
+        header=m.group(0).strip()
+        if len(header)>=6 and not any(re.search(pat,header,re.I) for _,pat in ISSUERS) and " " in header:
+            matches.append((m.start(),None))
     if matches:
         current=max(matches,key=lambda x:x[0])[1]
     if current and _SEREMI.search(context) and current in ("Ministerio de Salud","Subsecretaría de Salud Pública","Subsecretaría de Redes Asistenciales"):

@@ -80,3 +80,14 @@ def test_issuer_header_carries_over_and_ends_at_another_ministry(monkeypatch):
     assert [i.title.split(",")[0] for i in items] == ["Resolución exenta número 691", "Resolución exenta número 692",
                                                      "Resolución exenta número CP 20.158"]
     assert items[2].metadata["issuer"] == "SEREMI de Salud"
+
+
+def test_non_ministry_headers_end_the_health_block(monkeypatch):
+    from radar_salud import diario_oficial as do
+    html = ('<p>MINISTERIO DE SALUD</p><p>Subsecretaría de Redes Asistenciales</p>'
+            '<p>Resolución exenta número 357, de 2026.- Aprueba arsenal farmacológico</p><a href="/a.pdf">Ver PDF</a> (CVE-1)'
+            '<p>CONSEJO PARA LA TRANSPARENCIA</p>'
+            '<p>Resolución exenta número 88, de 2026.- Aprueba instrucción general</p><a href="/b.pdf">Ver PDF</a> (CVE-2)')
+    monkeypatch.setattr(do, "_section_urls", lambda d: ["https://www.diariooficial.interior.gob.cl/edicionelectronica/index.php"])
+    monkeypatch.setattr(do, "_fetch_with_retry", lambda url, **kw: html)
+    assert [i.title.split(",")[0] for i in do.DiarioOficialHealthScout().discover(days_back=1)] == ["Resolución exenta número 357"]

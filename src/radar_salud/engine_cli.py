@@ -104,7 +104,8 @@ def _history_last_signal(history,slug,today=None):
     dates=[str(row.get("event_date"))[:10] for row in history
            if str(row.get("source_url") or "").startswith(prefixes) and row.get("event_date")
            and row.get("editorial_decision")!="reject" and row.get("feed_visibility") is not False
-           and str(row.get("event_date"))[:10]<=today]
+           and str(row.get("event_date"))[:10]<=today
+           and not (slug in ("superintendencia_normativa","suseso_news") and "Fiscalización" in (row.get("signal_types") or []))]
     return max(dates,default=None)
 
 def main():
