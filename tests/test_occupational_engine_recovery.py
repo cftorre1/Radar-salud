@@ -33,7 +33,7 @@ def test_partial_capture_enters_queue_without_advancing_watermark_or_blocking_ne
                 error.diagnostics = [{"code": "detail_fetch_failed", "url": error.url}]
                 raise error
             return []
-    for name in ("SuperintendenciaStatsScout", "SuperintendenciaNormativaScout", "SuperintendenciaFiscalizacionScout",
+    for name in ("SuperintendenciaStatsScout", "SuperintendenciaNoticiasScout", "SuperintendenciaNormativaScout", "SuperintendenciaFiscalizacionScout",
                  "MinsalNewsScout", "SusesoNormativeScout", "SusesoNewsScout", "SusesoFiscalizacionScout", "DfHealthScout",
                  "FonasaDataHubScout", "FonasaNewsScout", "IspSurveillanceScout", "IspAnamedAlertScout", "ClinicasChileScout",
                  "DeisDocumentScout", "DiarioOficialHealthScout", "CorporateNewsroomScout"):

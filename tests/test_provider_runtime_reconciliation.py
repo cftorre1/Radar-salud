@@ -25,7 +25,7 @@ def test_provider_sources_enter_daily_durable_queue_without_ai(tmp_path, monkeyp
             if self.slug not in expected: return []
             return [RawItem(self.slug, "Nueva capacidad clínica con convenio Fonasa",
                             f"https://example.org/{self.slug}", self.slug, "corporate", "2026-09-23")]
-    for name in ("SuperintendenciaStatsScout", "SuperintendenciaNormativaScout",
+    for name in ("SuperintendenciaStatsScout", "SuperintendenciaNoticiasScout", "SuperintendenciaNormativaScout",
                  "SuperintendenciaFiscalizacionScout", "MinsalNewsScout", "SusesoNormativeScout",
                  "SusesoNewsScout", "SusesoFiscalizacionScout", "DfHealthScout", "FonasaDataHubScout",
                  "FonasaNewsScout", "IspSurveillanceScout", "IspAnamedAlertScout", "ClinicasChileScout",

@@ -23,6 +23,7 @@ from .ai_budget import status as ai_budget_status, has_capacity
 from .source_health import load_retired_sources, mark_retired_sources
 from .source_health import record as health_record
 from .superintendencia_fiscalizacion import SuperintendenciaFiscalizacionScout, process_fiscalizacion
+from .sis_news import SuperintendenciaNoticiasScout, process_superintendencia_noticias
 from .processing import DeferredProcessing, RejectedProcessing, OutsideBackfillHorizon
 from .public_source_evidence import failure_details, discovery_diagnostics, HOSTS as _PUBLIC_HOSTS
 # Sources whose structured scout diagnostics (and exact failure cause) are
@@ -103,6 +104,7 @@ _SLUG_URL_PREFIXES={
     "superintendencia":("https://www.superdesalud.gob.cl/biblioteca-digital",),
     "superintendencia_normativa":("https://www.superdesalud.gob.cl/normativa",),
     "superintendencia_fiscalizacion":("https://www.superdesalud.gob.cl/fiscalizacion",),
+    "superintendencia_noticias":("https://www.superdesalud.gob.cl/noticias/",),
     "suseso":("https://www.suseso.gob.cl/612/",),
     "suseso_news":("https://www.suseso.gob.cl/605/",),
     "suseso_fiscalizacion":("https://www.suseso.gob.cl/609/",),
@@ -172,6 +174,7 @@ def main():
       ("superintendencia","superintendencia_salud",SuperintendenciaStatsScout().discover,stats),
       ("superintendencia_normativa","superintendencia_normativa",SuperintendenciaNormativaScout().discover,process_superintendencia_normativa),
       ("superintendencia_fiscalizacion","superintendencia_fiscalizacion",SuperintendenciaFiscalizacionScout().discover,process_fiscalizacion),
+      ("superintendencia_noticias","superintendencia_noticias",SuperintendenciaNoticiasScout().discover,process_superintendencia_noticias),
       ("minsal","minsal",MinsalNewsScout().discover,process_minsal),
       ("fonasa","fonasa",FonasaNewsScout().discover,process_fonasa),
       ("fonasa_datos_abiertos","fonasa_datos_abiertos",FonasaDataHubScout().discover,process_fonasa_data_hub),
@@ -231,6 +234,11 @@ def main():
             scout=getattr(discover,"__self__",None)
             if name == "deis" and getattr(scout, "catalog", None) is not None:
                 atomic_json(root/"data/state/deis_catalog.json", scout.catalog)
+            if name == "superintendencia_normativa" and getattr(scout, "listing_index", None):
+                # Official circular identities -> listing URLs; merged so a failed page keeps older rows.
+                from .regulatory import SIS_INDEX_PATH, merge_sis_index
+                try:merge_sis_index(root/SIS_INDEX_PATH,scout.listing_index)
+                except OSError as exc:print("SIS normative index not written:",type(exc).__name__)
             if name in PUBLIC_DATA_SOURCES:
                 # datos.gob.cl dates are data releases, never news publications:
                 # do not count them (as zero) against publication coverage.
@@ -339,6 +347,11 @@ def main():
     from .daily_window import requested_window_days
     if requested_window_days() < 90:
         queue.archive_outside_daily_window(requested_window_days(), sources=set(selected_sources) if selected_sources else None)
+    try:ai_available=bool(os.getenv("OPENAI_API_KEY")) and has_capacity("fast")
+    except Exception:ai_available=False  # unreadable ledger: no revival, never a crash
+    revived=queue.revive_unscored_sis_news(ai_available=ai_available,
+        max_attempts=int(os.getenv("RADAR_MAX_RETRY_ATTEMPTS","4") or 4))
+    if revived:print(f"queue: {revived} SIS news items revived for AI relevance scoring")
     from .daily_window import eligible_daily_item
     if not args.discovery_only and "pulso_latercera" in processors:
         # Bounded revival of paywalled items deferred after unbilled failures (history kept).

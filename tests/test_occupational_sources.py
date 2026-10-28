@@ -253,7 +253,7 @@ def test_core_collector_continues_after_mutual_blocker_and_records_noise_rejecti
                 return self.discover_from_html(f'<a href="{ACHS}campana">Ver detalle</a>',
                                                lambda url: detail("Campaña por salud mental laboral", body="Jornada de difusión de consejos generales de bienestar. " * 5))
             return []
-    for name in ("SuperintendenciaStatsScout", "SuperintendenciaNormativaScout", "SuperintendenciaFiscalizacionScout",
+    for name in ("SuperintendenciaStatsScout", "SuperintendenciaNoticiasScout", "SuperintendenciaNormativaScout", "SuperintendenciaFiscalizacionScout",
                  "MinsalNewsScout", "SusesoNormativeScout", "SusesoNewsScout", "SusesoFiscalizacionScout", "DfHealthScout",
                  "FonasaDataHubScout", "FonasaNewsScout", "IspSurveillanceScout", "IspAnamedAlertScout", "ClinicasChileScout",
                  "DeisDocumentScout", "DiarioOficialHealthScout", "CorporateNewsroomScout"):
