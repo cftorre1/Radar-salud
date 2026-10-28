@@ -457,6 +457,9 @@ test('authorized analytics fixture emits only anonymous event fields',async({pag
  }
 });
 
+// Dirección's rule: a title that is only the act identity (any N°/Nº, dotted number), optionally with
+// its emission date, is opaque. A descriptive title may still end in a cited norm ID.
+const OPAQUE_ACT_TITLE=/^(Circular|Resolución|Oficio|Decreto)(\s+Exenta)?(\s+(IF|IP|SS)\s*\/?)?\s*(N\s*[°º.]?\s*)?(\d{1,3}(\.\d{3})+|\d+)(\s*[-–,]?\s*(Emisión\s*:?\s*)?(del?\s+)?(\d{1,2}[\/.-]\d{1,2}[\/.-]\d{4}|\d{1,2} de \S+ de \d{4}))?\s*\.?$/i;
 test('persistent editorial contract is visible in feed and brief',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await page.locator('#filterDetails summary').click();await selectPeriod(page,'90');
@@ -469,12 +472,12 @@ test('persistent editorial contract is visible in feed and brief',async({page})=
   const regional=radar.signals.filter(s=>String(s.title).includes('Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'));
   const newer=regional.filter(s=>String(s.event_date||'')>pulseDay).length;
   await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(Math.min(newer,1));}
- const opaque=page.locator('article[data-card] h2').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\d+$/});
+ const opaque=page.locator('article[data-card] h2').filter({hasText:OPAQUE_ACT_TITLE});
  await expect(opaque).toHaveCount(0);
  const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\/N°533 · SIL: actualiza el inventario mensual/})});
  await expect(c533).toHaveCount(1);
  await expect(c533).not.toContainText('Qué pasó:');await c533.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Circular');await page.keyboard.press('Escape');
- const briefOpaque=page.locator('#local .signal.item h2,#bigThings h2,#brief .anchor-title').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\d+$/});
+ const briefOpaque=page.locator('#local .signal.item h2,#bigThings h2,#brief .anchor-title').filter({hasText:OPAQUE_ACT_TITLE});
  await expect(briefOpaque).toHaveCount(0);
 });
 

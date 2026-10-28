@@ -282,8 +282,9 @@ def test_bare_ip_sanction_title_uses_captured_entity_amount_and_ground():
     from radar_salud.superintendencia_fiscalizacion import sanction_card_title, is_bare_act_title
     assert is_bare_act_title('Resolución Exenta IP/N°7463')
     title = sanction_card_title(_qualis())
-    assert title == ('Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA por haber infringido el articulo 27 del Reglamento, '
-        'y la Circular IP/N°48, en el procedimiento de Acreditación del prestador Institucional Hospital Comunitario de Salud Familiar El Carmen')
+    # The full clause is longer than 140 characters: cut at the last ", " boundary and mark the cut.
+    assert title == 'Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA por haber infringido el articulo 27 del Reglamento, y la Circular IP/N°48…'
+    assert len(title) <= 140
     assert not is_bare_act_title(title)
     assert sanction_card_title(_qualis(fiscalization_topic='Acreditación')) == 'Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA: Acreditación'
 
@@ -298,3 +299,78 @@ def test_bare_sanction_title_without_descriptive_data_is_held_not_invented():
     shown, held = _individual_sanction_titles([_qualis(), _qualis(regulated_entity=None)])
     assert shown['display_title'].startswith('Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA')
     assert held['feed_visibility'] is False and held['publication_gate_reason'] == 'fiscalization_title_needs_description'
+
+
+def test_clause_ending_in_norm_id_is_not_rejected_as_bare():
+    from radar_salud.superintendencia_fiscalizacion import sanction_card_title
+    title = sanction_card_title(_qualis(what_happened='Se sanciona por haber infringido la Circular IF/N°77.'))
+    assert title == 'Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA por haber infringido la Circular IF/N°77'
+
+
+def test_clause_crosses_dotted_numbers_and_abbreviations():
+    from radar_salud.superintendencia_fiscalizacion import sanction_card_title
+    assert sanction_card_title(_qualis(what_happened='Multa por haber infringido la Ley 20.584. Notifíquese.')) == \
+        'Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA por haber infringido la Ley 20.584'
+    assert sanction_card_title(_qualis(what_happened='Multa por haber infringido el art. 27 del Reglamento y el inc. 2 del Nº 3. Fecha de emisión: 1 de octubre de 2026.')) == \
+        'Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA por haber infringido el art. 27 del Reglamento y el inc. 2 del Nº 3'
+    assert sanction_card_title(_qualis(what_happened='Multa por haber infringido la Ley N° 19.937, de 24 de febrero de 2004 Fecha de emisión: 1/10/2026')) == \
+        'Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA por haber infringido la Ley N° 19.937'
+
+
+def test_bare_id_regex_is_anchored_and_covers_number_variants():
+    from radar_salud.superintendencia_fiscalizacion import is_bare_act_title
+    assert not is_bare_act_title('Circular que modifica la Circular IF/N°48')
+    assert not is_bare_act_title('Resolución Exenta IF/N°12 que sanciona a Isapre X')
+    for bare in ('Resolución Exenta IP/N°7.463', 'Resolución Exenta IP/Nº7463', 'Resolución Exenta IP/N° 7462 - Emisión: 23/09/2026',
+                 'Resolución Exenta IF/N°11027- Emisión: 21/09/2026', 'Circular IF/N°48, de 19 de agosto de 2020', 'Oficio Ord. IF/N°5'):
+        assert is_bare_act_title(bare), bare
+    import sys; sys.path.insert(0, 'scripts')
+    from export_web_snapshot import _individual_sanction_titles
+    kept, = _individual_sanction_titles([_qualis(title='Circular que modifica la Circular IF/N°48')])
+    assert 'display_title' not in kept and kept.get('feed_visibility') is not False
+    dated, = _individual_sanction_titles([_qualis(title='Resolución Exenta IP/Nº 7.463 - Emisión: 23/09/2026')])
+    assert dated['display_title'].startswith('Resolución Exenta IP/N°7.463 · Multa de 20 UF a Qualis SpA')
+
+
+def test_fines_use_chilean_number_format():
+    from radar_salud.superintendencia_fiscalizacion import sanction_card_title
+    assert ' · Multa de 1.500.000 UTM a Qualis SpA: Acreditación' in sanction_card_title(_qualis(sanction_amount=1500000.0, sanction_unit='UTM', fiscalization_topic='Acreditación'))
+    assert ' · Multa de 20,5 UF a Qualis SpA: Acreditación' in sanction_card_title(_qualis(sanction_amount=20.5, fiscalization_topic='Acreditación'))
+
+
+def test_revocation_substitution_and_cancellation_are_titled_not_held():
+    from radar_salud.superintendencia_fiscalizacion import sanction_card_title
+    plain = dict(what_happened='DÉJESE SIN EFECTO la Resolución Exenta IP/N°7000.', sanction_amount=None)
+    assert sanction_card_title(_qualis(event_type='SANCTION_REVOCATION', **plain)) == 'Resolución Exenta IP/N°7463 · Revocación de sanción a Qualis SpA'
+    assert sanction_card_title(_qualis(event_type='SANCTION_SUBSTITUTION', **plain)) == 'Resolución Exenta IP/N°7463 · Sustitución de sanción a Qualis SpA'
+    assert sanction_card_title(_qualis(event_type='REGISTRATION_CANCELLATION', **plain)) == 'Resolución Exenta IP/N°7463 · Cancelación de registro de Qualis SpA'
+    assert sanction_card_title(_qualis(event_type='REGISTRATION_CANCELLATION', regulated_entity=None)) is None
+    # Amendments stay held unless both the previous and the new fine were captured.
+    assert sanction_card_title(_qualis(event_type='SANCTION_AMENDMENT')) is None
+    assert sanction_card_title(_qualis(event_type='SANCTION_AMENDMENT', replaced_fine_amount=40.0, replaced_fine_unit='UF', what_happened='REBÁJESE la multa.')) == \
+        'Resolución Exenta IP/N°7463 · Rebaja de multa a Qualis SpA: de 40 UF a 20 UF'
+
+
+def test_title_cap_falls_back_to_label_and_action_without_boundary():
+    from radar_salud.superintendencia_fiscalizacion import sanction_card_title
+    title = sanction_card_title(_qualis(what_happened='Multa por haber infringido ' + 'normas'*30 + '.'))
+    assert title == 'Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA'
+    long = sanction_card_title(_qualis(what_happened='Multa por haber infringido la norma A en la sede B, y la norma C en el registro D, ' * 3 + 'fin.'))
+    assert len(long) <= 140 and long.endswith('…') and long[:-1].rstrip()[-1] not in ',;'
+
+
+def test_amendment_fine_change_stated_in_captured_summary_is_titled():
+    from radar_salud.superintendencia_fiscalizacion import sanction_card_title
+    row = dict(title='Resolución Exenta IF/N°9774 - Emisión: 20/08/2026', event_type='SANCTION_AMENDMENT', regulated_entity='Red Salud Alameda',
+        sanction_amount=120, sanction_unit='UF', what_happened='SIS acogió parcialmente la reposición y redujo de 200 a 120 UF la multa por notificación GES.')
+    assert sanction_card_title(row) == 'Resolución Exenta IF/N°9774 · Rebaja de multa a Red Salud Alameda: de 200 UF a 120 UF'
+    # The stated new value must match the captured amount; otherwise the changed field is not trusted.
+    assert sanction_card_title(dict(row, sanction_amount=150)) is None
+
+
+def test_title_hold_survives_persistent_editorial_pass():
+    import sys; sys.path.insert(0, 'scripts')
+    from export_web_snapshot import _individual_sanction_titles, _apply_persistent_editorial_decisions
+    held, = _individual_sanction_titles([_qualis(regulated_entity=None, source_url='https://example.org/held')])
+    after, = _apply_persistent_editorial_decisions([held])
+    assert after['feed_visibility'] is False and after['publication_gate_reason'] == 'fiscalization_title_needs_description'

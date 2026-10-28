@@ -48,7 +48,10 @@ def _apply_persistent_editorial_decisions(signals):
         else:
             r.setdefault("editorial_decision","accept")
         r["editorial_committee"]=build_committee_artifact(r)
-        r["feed_visibility"]=False if r.get("editorial_decision")=="reject" else True
+        # A publication hold set earlier in curation (e.g. a sanction card without a descriptive
+        # title) must survive the editorial pass; only an explicit reject adds a new hold here.
+        held=r.get("feed_visibility") is False and r.get("publication_gate_reason")=="fiscalization_title_needs_description"
+        r["feed_visibility"]=False if held or r.get("editorial_decision")=="reject" else True
         out.append(r)
     return out
 
