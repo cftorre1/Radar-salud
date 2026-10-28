@@ -188,11 +188,15 @@ def test_pulso_premium_capture_keeps_lead_and_receipt_and_stays_complete():
     md = entry["metadata"]
     assert md["page_text"] == TEASER == entry["body"] and md["public_teaser_source"] == "jsonld:description"
     assert complete_article_body(md) and redacted_body_verified(md)
-    # Open sections are untouched.
-    open_entry = {"url": "https://www.latercera.com/nacional/noticia/x/", "title": "x", "body": BODY,
-                  "metadata": _pulso_metadata()}
-    public_capture(open_entry)
-    assert open_entry["metadata"]["page_text"] == BODY
+    # Metered sections are paid too (Dirección 28-oct, policy 1.3.0): same lead + receipt.
+    metered = {"url": "https://www.latercera.com/nacional/noticia/x/", "title": "x", "body": BODY,
+               "metadata": _pulso_metadata()}
+    public_capture(metered)
+    assert metered["metadata"]["page_text"] == TEASER and "exclusiva" not in json.dumps(metered, ensure_ascii=False)
+    # Open sources outside the policy are untouched.
+    other = {"url": "https://www.minsal.cl/x/", "title": "x", "body": BODY, "metadata": _pulso_metadata()}
+    public_capture(other)
+    assert other["metadata"]["page_text"] == BODY
 
 
 def test_pulso_processing_stores_only_lead_before_any_analysis(monkeypatch):

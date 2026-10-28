@@ -26,6 +26,20 @@ PREMIUM_OUTCOMES = {
 }
 
 
+def premium_under_path_scope(url: str) -> bool:
+    """Premium by the 1.2.0 path/section rule (the scope the pinned replays run under; see conftest).
+
+    For module-level selections computed at import, before the per-test policy fixture applies.
+    """
+    from urllib.parse import urlsplit
+    from radar_salud.source_rights import load_policy
+    path = urlsplit(url).path
+    for rule in load_policy()["sources"]:
+        if rule.get("metered_sections_paywalled") and urlsplit(url).hostname in rule["hosts"]:
+            return any(path.startswith(p) for p in rule.get("path_prefixes", []))
+    return paywall_policy(url, None) is not None
+
+
 def is_premium(raw) -> bool:
     return paywall_policy(raw.url, raw.metadata) is not None
 

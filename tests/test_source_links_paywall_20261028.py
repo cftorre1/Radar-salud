@@ -122,7 +122,8 @@ def test_paywall_policy_covers_df_premium_lt_and_preventive_outlets():
     assert paywall_policy(DF_URL)["id"] == "diario_financiero"
     assert paywall_policy("https://www.latercera.com/pulso/noticia/x/")["id"] == "la_tercera_premium"
     assert paywall_policy("https://www.latercera.com/la-tercera-pm/noticia/x/")["id"] == "la_tercera_premium"
-    assert paywall_policy("https://www.latercera.com/nacional/noticia/x/") is None
+    # Metered sections are paid since Dirección 28-oct (policy 1.3.0).
+    assert paywall_policy("https://www.latercera.com/nacional/noticia/x/")["id"] == "la_tercera_premium"
     assert is_paywalled("https://www.latercera.com/nacional/noticia/x/", {"isAccessibleForFree": False})
     assert is_paywalled("https://www.emol.com/noticias/x.html") and is_paywalled("https://www.ex-ante.cl/x/")
     assert not is_paywalled("https://www.minsal.cl/x/")

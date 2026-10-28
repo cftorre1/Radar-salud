@@ -21,6 +21,31 @@ def history():
     return json.loads((ROOT / "data/history/superintendencia_signals.json").read_text(encoding="utf-8"))["signals"]
 
 
+# The 2-nov candidate was written from four La Tercera rows (/horizontes/, /nacional/, /pulso/).
+# Since Dirección 28-oct (policy 1.3.0) every La Tercera section is paid, so those rows now
+# carry only title + public lead. The generator/validator mechanics below replay the history
+# as committed on staging dd94d38d (before the rights migration), read from git; the 2-nov
+# gate test checks the current history too.
+STAGING_HISTORY = ("dd94d38d96328f75ce766d4ab1d0980b53fff154", "data/history/superintendencia_signals.json")
+
+
+def _staging_blob(path):
+    import subprocess
+    out = subprocess.run(["git", "show", f"{STAGING_HISTORY[0]}:{path}"], cwd=ROOT, capture_output=True)
+    if out.returncode:
+        pytest.skip("staging blob unavailable (shallow clone)")
+    return json.loads(out.stdout)
+
+
+def historical_history():
+    return _staging_blob(STAGING_HISTORY[1])["signals"]
+
+
+def historical_draft():
+    """The 2-nov draft as committed on staging (its La Tercera-derived copy is now redacted)."""
+    return _staging_blob("data/weekly_insight/candidates/2026-11-02-draft.json")
+
+
 def approved_weekly():
     return json.loads((ROOT / "data/weekly_insight/editorial_approved.json").read_text(encoding="utf-8"))["weekly_insight"]
 
@@ -30,7 +55,7 @@ def draft():
 
 
 def ageing_signals():
-    sig = history()
+    sig = historical_history()
     find = lambda p: next(s for s in sig if s["title"].startswith(p))
     # Dirección 28-oct-2026: the topic must come from the 7 days before the Monday; move the
     # recorded lead story into that window (complements keep their real, older dates).
@@ -58,7 +83,7 @@ class FakeModels:
 def pipeline(monkeypatch):
     main, related = ageing_signals()
     monkeypatch.setattr(gen, "related_signals", lambda c, s, a, **kw: related if c is main else [])
-    raw = {**draft()["weekly_insight"], "event_date": "2026-10-28"}
+    raw = {**historical_draft()["weekly_insight"], "event_date": "2026-10-28"}
     return {"signals": [main] + related, "raw": raw}
 
 
@@ -186,17 +211,27 @@ def evidence_for(signals):
 
 
 def test_november_2_draft_passes_deterministic_rules_but_stays_on_hold(pipeline):
-    payload = draft()
-    weekly = payload["weekly_insight"]
-    # Re-run the gate on the stored draft instead of trusting its stored verdict.
-    weekly = {**weekly, "event_date": "2026-10-28"}  # its 23-oct lead is outside the 7-day rule (28-oct)
+    # As written (staging), against the history it was written from, the gate passes.
+    weekly = {**historical_draft()["weekly_insight"], "event_date": "2026-10-28"}  # 23-oct lead vs 7-day rule
     verification = gen.verify_candidate(weekly, evidence_for(pipeline["signals"]), ANCHOR)
     assert verification["verdict"] == "PASS", verification["errors"]
     assert presentation_a_errors(weekly) == []
     assert weekly["freshness_anchor_date"] == "2026-11-02" and date(2026, 11, 2).weekday() == 0
-    assert payload["audit"]["verdict"] == "HOLD" and weekly["editorial_review_pass"] is False
+    # Policy 1.3.0 (Dirección 28-oct): its four La Tercera sources are paid. The stored draft
+    # keeps only text the public leads support (the rest is receipted) and, against the current
+    # history, no longer traces its figures: it cannot leave HOLD as written.
+    payload = draft()
+    current_draft = {**payload["weekly_insight"], "event_date": "2026-10-28"}
+    assert current_draft["key_figures"] == [] and any(r["field"] == "key_figures"
+                                                      for r in current_draft["rights_redactions"])
+    current = {s["source_url"]: s for s in history()}
+    signals = [dict(current[s["source_url"]], event_date=s["event_date"]) for s in pipeline["signals"]]
+    assert all(s["paywalled"] is True for s in signals)
+    now = gen.verify_candidate(current_draft, evidence_for(signals), ANCHOR)
+    assert now["verdict"] == "FAIL"
+    assert payload["audit"]["verdict"] == "HOLD" and current_draft["editorial_review_pass"] is False
     assert reviewed_weekly(payload, ANCHOR) is None  # never published without independent review
-    assert all(s["url"].startswith("https://") for s in weekly["sources"])
+    assert all(s["url"].startswith("https://") for s in current_draft["sources"])
 
 
 # --- rule 3: traceability -------------------------------------------------------------------

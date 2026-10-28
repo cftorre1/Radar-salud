@@ -18,9 +18,9 @@ qa = importlib.util.module_from_spec(spec); spec.loader.exec_module(qa)
 ALL_URLS = [row['url'] for row in json.loads((ROOT / qa.FOLLOWUP_PAID_PATH).read_text())['rows']]
 # Premium sections never re-enter the full-body paid paths (rights policy, Dirección 28-oct-2026);
 # their policy outcome is checked in test_premium_member_keeps_its_paid_answer_without_any_request.
-from paywall_test_support import assert_premium_replay, is_premium
+from paywall_test_support import assert_premium_replay, is_premium, premium_under_path_scope
 from radar_salud.source_rights import paywall_policy
-PREMIUM_URLS = [url for url in ALL_URLS if paywall_policy(url, None)]
+PREMIUM_URLS = [url for url in ALL_URLS if premium_under_path_scope(url)]
 URLS = [url for url in ALL_URLS if url not in PREMIUM_URLS]
 
 

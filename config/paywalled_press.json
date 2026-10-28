@@ -1,5 +1,5 @@
 {
-  "version": "1.2.0",
+  "version": "1.3.0",
   "decided_at": "2026-10-28",
   "decided_by": "Dirección (reporte 28-oct: ficha DF con más información que la visible sin suscripción)",
   "policy": "public_teaser_only",
@@ -37,7 +37,7 @@
     },
     {
       "id": "la_tercera_premium",
-      "name": "La Tercera · Pulso / Pulso PM / La Tercera PM / LT Sábado y Domingo / Early Access",
+      "name": "La Tercera (todas las secciones: premium y medidas)",
       "source_slugs": [
         "pulso_latercera"
       ],
@@ -45,8 +45,8 @@
         "latercera.com",
         "www.latercera.com"
       ],
-      "paywall_model": "premium_sections_and_article_flag",
-      "scope": "path_prefix_section_or_article_flag",
+      "paywall_model": "premium_sections_and_metered_sections",
+      "scope": "host",
       "path_prefixes": [
         "/pulso/",
         "/pulso-pm/",
@@ -61,9 +61,8 @@
         "publisher_paywall=true",
         "content_tier=locked"
       ],
-      "evidence": "Pulso, Pulso PM, La Tercera PM, LT Board, Early Access y las ediciones LT Sábado / LT Domingo son secciones para suscriptores. Revisión 28-oct (inventario offline de 13.896 piezas del caché Pulso y la cola; latercera.com no es accesible desde el entorno de revisión): prefijos de ruta observados /pulso-pm/ (77), /earlyaccess/ (6), /la-tercera-sabado/ (9) y /la-tercera-domingo/ (2), y piezas de sección premium publicadas bajo otra ruta (p. ej. /sustentabilidad/ o /nacional/ con section=Pulso), que se reconocen por la sección declarada por el editor. Otras secciones de latercera.com son medidas (metered): se tratan como paywalled sólo cuando la propia pieza lo declara (isAccessibleForFree=false).",
+      "evidence": "Pulso, Pulso PM, La Tercera PM, LT Board, Early Access y las ediciones LT Sábado / LT Domingo son secciones para suscriptores. Revisión 28-oct (inventario offline de 13.896 piezas del caché Pulso y la cola; latercera.com no es accesible desde el entorno de revisión): prefijos de ruta observados /pulso-pm/ (77), /earlyaccess/ (6), /la-tercera-sabado/ (9) y /la-tercera-domingo/ (2), y piezas de sección premium publicadas bajo otra ruta (p. ej. /sustentabilidad/ o /nacional/ con section=Pulso), que se reconocen por la sección declarada por el editor. Otras secciones de latercera.com son medidas (metered): se tratan como paywalled sólo cuando la propia pieza lo declara (isAccessibleForFree=false). Decisión de Dirección 28-oct: las secciones medidas (metered: Qué Pasa, Nacional y toda sección que permite algunos artículos gratis al mes) se tratan como pagadas, por lo que la regla cubre el dominio completo. Los prefijos, secciones y banderas por artículo se conservan como evidencia de la base (access_classification), no como condición.",
       "in_pipeline": true,
-      "pending_decision": "Secciones no premium de latercera.com sin bandera por artículo (incluida Qué Pasa, /que-pasa/, 93 piezas) quedan 'unverified'; LT Domingo se incluyó por analogía con LT Sábado (edición impresa de fin de semana): confirmar con Dirección.",
       "sections": [
         "Pulso",
         "Pulso PM",
@@ -72,7 +71,9 @@
         "Early Access",
         "LT Sábado",
         "LT Domingo"
-      ]
+      ],
+      "metered_sections_paywalled": true,
+      "resolved_decision": "28-oct: Qué Pasa (/que-pasa/) y demás secciones medidas pasan a pagadas; LT Domingo queda cubierta por el dominio completo. Secciones de contenido de anunciantes (/branded/, /publirreportajes/, /patrocinado/, /comercial/, /laboratoriodecontenidos/) también: no hay evidencia verificada de que estén fuera del medidor."
     },
     {
       "id": "el_mercurio",
@@ -166,5 +167,10 @@
   "preserved_internal_fields": [
     "analysis_model_output"
   ],
-  "preserved_internal_note": "Las respuestas pagadas del modelo son producto de Alicanto: se conservan internamente (nunca se muestran) y se les retiran las oraciones literales del cuerpo bloqueado (huellas en data/audits/paywalled_body_fingerprints_2026_10_28.json)."
+  "preserved_internal_note": "Las respuestas pagadas del modelo son producto de Alicanto: se conservan internamente (nunca se muestran) y se les retiran las oraciones literales del cuerpo bloqueado (huellas en data/audits/paywalled_body_fingerprints_2026_10_28.json).",
+  "metered_decision": {
+    "decided_at": "2026-10-28",
+    "decided_by": "Dirección (instrucción 28-oct vía coordinación)",
+    "text": "Las secciones medidas (metered) de La Tercera —Qué Pasa, Nacional y cualquier sección que permita algunos artículos gratis al mes— se tratan como PAGADAS: sólo título, bajada pública, fecha, enlace y recibo; el análisis usa sólo eso."
+  }
 }

@@ -160,8 +160,10 @@ def test_real_queue_paid_outputs_are_verifiable_against_their_validations():
     ("https://www.latercera.com/la-tercera-sabado/noticia/x/", None, True),
     ("https://www.latercera.com/la-tercera-domingo/noticia/x/", None, True),
     ("https://www.latercera.com/sustentabilidad/noticia/x/", {"section": "Pulso"}, True),
-    ("https://www.latercera.com/nacional/noticia/x/", {"section": "Nacional"}, False),
-    ("https://www.latercera.com/nacional/noticia/x/", None, False),
+    # Metered sections are paid since Dirección 28-oct (policy 1.3.0).
+    ("https://www.latercera.com/nacional/noticia/x/", {"section": "Nacional"}, True),
+    ("https://www.latercera.com/nacional/noticia/x/", None, True),
+    ("https://www.latercera.com/que-pasa/noticia/x/", None, True),
 ])
 def test_la_tercera_premium_prefixes_and_sections(url, metadata, expected):
     assert is_paywalled(url, metadata) is expected

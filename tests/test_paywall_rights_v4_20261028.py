@@ -159,6 +159,17 @@ def test_run_cap_defers_further_reanalyses_without_a_call(monkeypatch):
 
 # --- 2. per-article access flags ---------------------------------------------------------
 
+@pytest.fixture
+def path_scoped_policy(monkeypatch):
+    """Policy 1.2.0 scope for La Tercera (premium prefixes/sections/article flag): the rules
+    that still decide for any path-scoped source, exercised here on La Tercera pages."""
+    from radar_salud.source_rights import load_policy
+    for rule in load_policy()["sources"]:
+        if rule.get("metered_sections_paywalled"):
+            monkeypatch.setitem(rule, "scope", "path_prefix_section_or_article_flag")
+            monkeypatch.setitem(rule, "metered_sections_paywalled", False)
+
+
 def _fixture(name):
     html = gzip.decompress((ROOT / "tests/fixtures" / name).read_bytes()).decode()
     return html, re.search(r'<link rel="canonical" href="([^"]+)"', html).group(1)
@@ -175,11 +186,18 @@ def test_capture_stores_lock_flags_as_booleans_and_flags_the_article():
     assert body[:80] not in json.dumps(record)
 
 
-def test_open_page_without_flags_stays_path_classified_and_unverified():
+def test_metered_page_without_flags_is_paid_by_section_and_unverified():
     html, url = _fixture("pulso_targeted_primary_real/5c3a703740c29e685be525adddb2a9773205b55fee43014cb0dde58035b6bfe0.html.gz")
     _, _, md = extract_article(html, url)
     assert md["access_verified"] is False and "publisher_paywall" not in md
     assert md["publisher_access"]["paywall_slot_present"] is True  # page chrome, never a flag
+    # Dirección 28-oct: metered sections (/nacional/...) are paid.
+    assert access_classification(url, md) == {"paywalled": True, "basis": "metered_section", "access_verified": False}
+
+
+def test_without_flags_the_path_scoped_rule_keeps_it_open_and_unverified(path_scoped_policy):
+    html, url = _fixture("pulso_targeted_primary_real/5c3a703740c29e685be525adddb2a9773205b55fee43014cb0dde58035b6bfe0.html.gz")
+    _, _, md = extract_article(html, url)
     assert access_classification(url, md) == {"paywalled": False, "basis": "open_path", "access_verified": False}
 
 
@@ -192,7 +210,7 @@ def test_open_page_without_flags_stays_path_classified_and_unverified():
     ({}, {"article:content_tier": "metered"}, "", False),
     ({}, {}, '<div id="lt-paywall-slot"></div>', False),
 ])
-def test_publisher_access_flags_drive_the_article_classification(node, metas, html, paywalled):
+def test_publisher_access_flags_drive_the_article_classification(node, metas, html, paywalled, path_scoped_policy):
     md = publisher_access_flags(node, metas, html)
     assert md["access_verified"] is (bool(node) or bool(metas))
     assert is_paywalled("https://www.latercera.com/nacional/noticia/x/", md) is paywalled
@@ -206,7 +224,7 @@ def _open_record(text):
                          "article_body_characters": len(text), "description": TEASER, "section": "Sustentabilidad"}}
 
 
-def test_open_path_reproducing_a_paywalled_body_is_paywalled_and_redacted():
+def test_open_path_reproducing_a_paywalled_body_is_paywalled_and_redacted(path_scoped_policy):
     fps = body_fingerprints(BODY, [TITLE, TEASER])
     record = _open_record(BODY)
     record["body"] = record.pop("raw_text")  # Pulso discovery cache shape
@@ -221,7 +239,7 @@ def test_open_path_reproducing_a_paywalled_body_is_paywalled_and_redacted():
     assert apply_overlap_policy(record, fps) is None  # idempotent
 
 
-def test_partial_overlap_redacts_only_the_overlapping_sentences_and_keeps_the_body_provable():
+def test_partial_overlap_redacts_only_the_overlapping_sentences_and_keeps_the_body_provable(path_scoped_policy):
     fps = body_fingerprints(BODY, [TITLE, TEASER])
     text = OPEN_SENTENCES + " " + QUOTE + " " + OPEN_SENTENCES
     record = _open_record(text)
@@ -247,10 +265,25 @@ def test_stored_fiestas_patrias_open_capture_is_paywalled_by_overlap():
         assert is_paywalled(raw["url"], md)
         assert access_classification(raw["url"], md)["basis"] == "sentence_overlap"
         assert md["body_redacted"] is True and len(md["page_text"]) <= 600
+
+
+
+@pytest.mark.parametrize("path", ["data/state/pending_queue.json", "data/state/pulso_discovery_cache.json"])
+def test_no_stored_la_tercera_item_is_open_and_every_one_carries_its_access_basis(path):
+    payload = json.loads((ROOT / path).read_text(encoding="utf-8"))
+    records = ([item.get("raw") or {} for item in payload.values()] if "queue" in path
+               else [dict(e, url=u) for u, e in payload["articles"].items()])
+    lt = [r for r in records if "latercera.com" in str(r.get("url"))]
+    assert lt
+    for record in lt:
+        md = record["metadata"]
+        assert is_paywalled(record["url"], md) and md["paywalled"] is True and md["access_verified"] in (True, False)
+        assert len(md.get("page_text") or "") <= 600
     receipt = json.loads((ROOT / "data/audits/rights_links_migration_2026_10_28.json").read_text(encoding="utf-8"))
-    access = receipt["counts"]["la_tercera_access"]
-    assert access["queue"]["open_by_path_only"] > 0 and access["cache"]["open_by_path_only"] > 0
-    assert receipt["counts"]["remaining_fingerprinted"]["characters"] == 0
+    access = receipt["counts"]["la_tercera_access"]["queue" if "queue" in path else "cache"]
+    assert access.get("open_by_path_only", 0) == 0 and access["total"] == len(lt)
+    assert not any(k.startswith("open_by_") for k in access)
+    assert receipt["counts"]["remaining_fingerprinted"]["paywalled_context_characters"] == 0
 
 
 # --- 3. 10-oct archive receipts ------------------------------------------------------------

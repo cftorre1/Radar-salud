@@ -543,8 +543,8 @@ def main():
               "links": [], "paywalled": [], "counts": {}, "not_migrated": [
                   "Git history keeps pre-redaction content; removing it requires a history rewrite (decision for Dirección).",
                   "tests/fixtures keep real publisher HTML/JSON used as parser regression inputs (see counts.fixtures_note).",
-                  "Non-premium latercera.com sections without an isAccessibleForFree=false flag are metered, "
-                  "not paywalled under the policy (pending_decision in config/paywalled_press.json)."]}
+                  "Dirección 28-oct: La Tercera metered sections are paid too (config/paywalled_press.json "
+                  "metered_decision); every latercera.com capture keeps title, lead, date, link and receipt."]}
     writes = {}
     csv_writes = {}
 

@@ -135,7 +135,7 @@ def access_classification(url: str, metadata: dict | None = None) -> dict:
     for rule in load_policy()["sources"]:
         if host not in rule["hosts"]:
             continue
-        if rule["scope"] == "host":
+        if rule["scope"] == "host" and not rule.get("metered_sections_paywalled"):
             return {"paywalled": True, "basis": "host", "access_verified": True}
         if any(path.startswith(p) for p in rule.get("path_prefixes", [])):
             return {"paywalled": True, "basis": "path_prefix", "access_verified": verified}
@@ -147,6 +147,10 @@ def access_classification(url: str, metadata: dict | None = None) -> dict:
         section = md.get("section")
         if isinstance(section, str) and section.strip() in rule.get("sections", []):
             return {"paywalled": True, "basis": "section", "access_verified": verified}
+        if rule.get("metered_sections_paywalled"):
+            # Dirección 28-oct: metered sections are treated as paid. A verified
+            # isAccessibleForFree=true does not reopen them (the meter still applies).
+            return {"paywalled": True, "basis": "metered_section", "access_verified": verified}
         return {"paywalled": False, "basis": "open_path", "access_verified": verified}
     return {"paywalled": False, "basis": "not_in_policy", "access_verified": False}
 
@@ -300,7 +304,7 @@ def apply_overlap_policy_raw(raw, fingerprints=None) -> str | None:
     record = {"url": raw.url, "metadata": raw.metadata, "raw_text": raw.raw_text}
     outcome = apply_overlap_policy(record, fingerprints)
     raw.raw_text = record["raw_text"]
-    if isinstance(raw.metadata, dict) and any(_host(raw.url) in r["hosts"] and r["scope"] != "host"
+    if isinstance(raw.metadata, dict) and any(_host(raw.url) in r["hosts"] and (r["scope"] != "host" or r.get("metered_sections_paywalled"))
                                               for r in load_policy()["sources"]):
         raw.metadata.setdefault("access_verified", False)
     return outcome
