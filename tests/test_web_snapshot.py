@@ -7,11 +7,13 @@ def sig(title,event="2026-09-14",score=70,url=None,cat="Aseguramiento"):
     return {"title":title,"source_name":"Superintendencia de Salud","source_url":url or "https://x/"+str(abs(hash(title))),"category":cat,"event_date":event,"radar_score":score,"confidence_score":100,"validation_status":"automatic","what_happened":"x","why_it_matters":"y","key_facts":["Información actualizada a julio 2026."],"system_domain":"HEALTH_INSURANCE"}
 
 def test_bupa_card_preserves_all_three_projects_without_ellipsis():
+    # DF is paywalled (Dirección 28-oct-2026): the card shows the public listing deck verbatim.
     rows=json.loads(Path("web/data/radar_today.json").read_text())["signals"]
     bupa=next(s for s in rows if s.get("source_url")=="https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos")
     card=m._card_micro(bupa)
-    assert all(x in card["card_what"] for x in ("La Dehesa","Huinganal","Mindplace","San Damián"))
-    assert "…" not in card["card_what"]
+    assert card["paywalled"] is True and not card.get("card_what")
+    assert all(x in card["what_happened"] for x in ("La Dehesa","Huinganal","Mindplace","San Damián"))
+    assert "…" not in card["what_happened"]
 
 
 def test_tea_resolution_card_keeps_outcome_requirement_and_deadline_compact():
@@ -174,11 +176,12 @@ def test_bupa_preproduction_copy_recovers_decision_depth_without_extra_sources()
     history=json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
     original=next(s for s in history if s.get("source_url")=="https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos")
     row=m._editorial_enrichment(m._card_micro(original))
-    assert row["title"].startswith("Bupa refuerza su red")
-    assert all(x in row["card_what"] for x in ("US$15 millones","La Dehesa","Huinganal","Mindplace"))
-    assert "No es solo expansión física" in row["card_why"]
-    assert len(row["key_points"]) == 4
-    assert "diversificación" in row["key_points"][-1]
+    # Paywalled DF (Dirección 28-oct-2026): the editorial rewrite built on the locked
+    # body no longer applies; only the publisher headline and public deck remain.
+    assert original["paywalled"] is True and original["why_it_matters"] == ""
+    assert not row["title"].startswith("Bupa refuerza su red")
+    assert not row.get("card_why") and not row.get("key_points")
+    assert all(x in row["what_happened"] for x in ("La Dehesa","Huinganal","Mindplace"))
     assert not row.get("editorial_enrichment")
     assert not row.get("historical_connections")
 

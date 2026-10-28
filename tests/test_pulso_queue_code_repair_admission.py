@@ -10,7 +10,7 @@ from pathlib import Path
 import pytest
 
 from radar_salud.models import RawItem
-from radar_salud.pending_queue import PendingQueue
+from radar_salud.pending_queue import persisted_items, PendingQueue
 from radar_salud.pulso_editorial_proof import VERSION, REPAIR_ADMISSION_PIN_SHA256
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -89,7 +89,8 @@ def test_all69_pinned_real_failures_admit_one_new_assessment_without_rewriting_p
         assert revision["code_repair_admission"] == evidence
         assert revision["body_completeness_derived_from_verified_hash"] is True
     assert [asdict(raw) for raw in inputs] == source_inputs
-    assert PendingQueue(queue.path).items == queue.items
+    # Persisted premium captures keep only lead + receipts (Dirección 28-oct-2026).
+    assert PendingQueue(queue.path).items == persisted_items(queue.items)
     saved = deepcopy(queue.items)
     queue.discover("pulso_latercera", inputs, now=NOW)
     assert queue.items == saved

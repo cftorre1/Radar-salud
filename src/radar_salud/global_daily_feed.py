@@ -238,5 +238,7 @@ def export(root: Path, as_of: date) -> dict:
     target = root / "web/data/global_feed.json"
     payload = build(_read(root / "data/global_intelligence/feed_discovery.json", {}), _read(root / "data/global_intelligence/discovery.json", {}),
                     config, _read(target, None), as_of)
+    from .source_rights import redact_public_payload
+    payload = redact_public_payload(payload)  # paywalled press: title + public lead only
     atomic_json(target, payload)
     return payload

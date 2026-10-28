@@ -12,6 +12,7 @@ from radar_salud.models import RawItem
 from radar_salud.pulso_source import _verified_detail
 from pulso_editorial_test_support import valid_assessment
 from pulso_editorial_real_test_witnesses import real_witness
+from paywall_test_support import assert_premium_replay, is_premium
 
 
 REAL = Path(__file__).parent / 'fixtures/pulso_runtime_real'
@@ -106,6 +107,12 @@ def test_additional_sha_bound_primary_actions_reach_full_body_analysis_without_s
                     reason='Incremento insuficiente sobre eventos previos.'),
                     kwargs, witness=real_witness(kwargs))
     monkeypatch.setattr(llm_analysis, 'analyze_news', assess)
+    if is_premium(raw):
+        # Premium section (rights policy, Dirección 28-oct-2026): the locked body never reaches
+        # the model; only title + public lead, once, with AI budget (none here: no call).
+        assert_premium_replay(beta_sources.process_curated_beta_source, raw, calls)
+        assert all(body not in json.dumps(call, ensure_ascii=False) for call in calls)
+        return
     assert beta_sources.process_curated_beta_source(raw, {}) is None
     assert len(calls) == 1 and calls[0]['text'] == body and calls[0]['full_text']
     assert 'no convertir reporte de prensa en hecho oficial' in calls[0]['kind']

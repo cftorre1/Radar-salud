@@ -33,6 +33,11 @@ def apply_reviewed_copy(
         row = dict(signal)
         reviewed = by_key.get((row.get("source_url"), row.get("event_date")))
         if reviewed and reviewed.get("signal_fingerprint_sha256") != signal_fingerprint(row):
+            # Stale copy must not apply, but the pre-review headline is still a
+            # read-state identity (e.g. paywalled rows redacted 28-oct-2026).
+            legacy_title = reviewed.get("legacy_title")
+            if isinstance(legacy_title, str) and legacy_title.strip():
+                row["legacy_read_title"] = legacy_title.strip()
             reviewed = None
         if reviewed:
             proposed = reviewed.get("proposed") or {}

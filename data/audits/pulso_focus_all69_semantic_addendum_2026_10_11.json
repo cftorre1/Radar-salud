@@ -34,12 +34,33 @@
       },
       "corrected_classification": "model_added_internal_punctuation_to_scope_citation",
       "corrected_reason": "The scope quote starts with Respecto and adds a closing curly quotation mark after 1.800 before omitting the continuation about utility services. It has no removable matching outer pair and does not occur contiguously in the primary input. Case and typography normalization cannot repair the added internal punctuation.",
-      "original_scope_quote": "Respecto a la situación de personas electrodependientes en el país, la autoridad detalló que hay 12.500 registradas en el país, de las cuáles 981 tendrían corte de suministro eléctrico, que por el momento mantendrían sus equipos en operación. “En materia de centros de salud, el total de los afectados son 92 de más de 1.800.”",
+      "original_scope_quote": {
+        "redacted": true,
+        "field": "original_scope_quote",
+        "sha256": "581f2e27c3efeab2b59abafc5d88fd311f5e07aa854c3691a59dc483ed93a648",
+        "characters": 326,
+        "reason": "paywalled_press_public_teaser_only",
+        "redacted_at": "2026-10-28"
+      },
       "original_scope_quote_sha256": "581f2e27c3efeab2b59abafc5d88fd311f5e07aa854c3691a59dc483ed93a648",
       "v5_quote_matches": false,
       "source_verbatim_citations": [
-        "Respecto a la situación de personas electrodependientes en el país, la autoridad detalló que hay 12.500 registradas en el país, de las cuáles 981 tendrían corte de suministro eléctrico, que por el momento mantendrían sus equipos en operación.",
-        "“En materia de centros de salud, el total de los afectados son 92 de más de 1.800. Servicios sanitarios con problemas son más de 3.000, y hay 1.068 con corte de suministro, pero con sus equipos funcionando”, detalló sobre la situación en materia de salud."
+        {
+          "redacted": true,
+          "field": "[0]",
+          "sha256": "6644395d547eb1fe2c9b0e825b2c5c055954b845e25390290812d1e8a336e624",
+          "characters": 242,
+          "reason": "paywalled_press_public_teaser_only",
+          "redacted_at": "2026-10-28"
+        },
+        {
+          "redacted": true,
+          "field": "[1]",
+          "sha256": "0b15570dadee18cca14d11a7ee7e74e11556183069ae47a052dde990e5e53691",
+          "characters": 255,
+          "reason": "paywalled_press_public_teaser_only",
+          "redacted_at": "2026-10-28"
+        }
       ],
       "semantic_findings": [
         "The model extends equipment remaining operational to the92 affected health centres; the source only assigns such equipment statements to electrodependent people and the separate utility-services group.",

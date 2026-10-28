@@ -23,6 +23,12 @@ from zoneinfo import ZoneInfo
 
 SOURCE = "pulso_latercera"
 ROOT = Path(__file__).resolve().parents[1]
+# Historical evidence: audits redacted under the rights policy (Dirección 28-oct-2026)
+# are re-verified from their exact pinned git blobs, never from the redacted tree.
+import sys as _sys
+_sys.path.insert(0, str(ROOT / "src"))
+from radar_salud.pinned_evidence import install_original_audit_reader  # noqa: E402
+install_original_audit_reader(ROOT)
 FROZEN_CONTROL_SHA256 = "b9c3ce2aea38107797fc19572581f27884d15611214fd2328d458bd35e906374"
 PROCESSING_COHORT_PATH = "data/audits/pulso_material_recovery_cohort_2026_10_11.json"
 PROCESSING_COHORT_SHA256 = "8ed358f0cd37ecc4b554ab96cd4366048b8e6180ad1c0ee0044fc5d5f6976514"

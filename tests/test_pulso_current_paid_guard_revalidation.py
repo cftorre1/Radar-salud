@@ -16,7 +16,12 @@ from radar_salud.models import RawItem
 from radar_salud.pending_queue import PendingQueue
 from radar_salud.processing import DeferredProcessing
 
+from paywall_test_support import assert_premium_replay, is_premium
+
 ROOT = Path(__file__).resolve().parents[1]
+# Pinned pieces in premium La Tercera sections (rights policy, Dirección 28-oct-2026).
+PREMIUM_DEFECT10 = 2
+PREMIUM_DEFECT10_NEW_FAST = 1  # premium defects that would have reached a new full-input request
 NOW = datetime(2026, 10, 11, 21, tzinfo=timezone.utc)
 
 
@@ -171,9 +176,15 @@ def test_real10_new_fast_receive_bound_context_and_unchanged_full_input(tmp_path
     monkeypatch.setattr(llm_analysis, "analyze_news", spy)
     rows = [row for row in actual[0]["rows"] if row["disposition"] == "assess_contract_or_semantic_defect"]
     assert len(rows) == 10
+    premium = 0
     for pin in rows:
         raw = RawItem(**deepcopy(queue.items[pin["queue_fingerprint"]]["raw"]))
         old = deepcopy(raw.metadata["analysis_model_output"])
+        if is_premium(raw):
+            # Premium section: a new FULL-input request is exactly what the rights policy forbids.
+            premium += 1
+            assert_premium_replay(beta_sources.process_curated_beta_source, raw, calls)
+            continue
         if followup.known_original_candidate(raw):
             # The current authority supersedes these five earlier paid
             # fixtures. Running today's processor must not reuse old context.
@@ -190,15 +201,21 @@ def test_real10_new_fast_receive_bound_context_and_unchanged_full_input(tmp_path
         assert calls[-1]["full_text"] is True and calls[-1]["pulso_editorial_proof"] is True
         assert pin["reassessment_context"]["context_text"] in calls[-1]["kind"]
         assert current.digest(calls[-1]["text"].encode()) == pin["body_sha256"]
-    assert len(calls) == 5
+    assert premium == PREMIUM_DEFECT10
+    assert len(calls) == 5 - PREMIUM_DEFECT10_NEW_FAST
 
 
 def test_current_new_fast_deferral_keeps_both_paid_chains_and_later_due_retry(tmp_path, actual, monkeypatch):
     """Actual article/model, explicitly synthetic unit API IDs, no paid events."""
     queue = admitted(tmp_path, actual)
     superseded = {entry["raw"]["url"] for entry in followup.producer(str(ROOT))["held"].values()}
+    # The former pin is a premium Pulso piece: under the rights policy it never gets a full-input
+    # request. This is the OPEN-section defect (/nacional/) whose bound context quote grounds the
+    # scope, so the unit answer still fails only on its actor, as the scenario requires.
     pin = next(row for row in actual[0]["rows"] if row["disposition"] == "assess_contract_or_semantic_defect"
-               and row["url"] not in superseded)
+               and row["url"] not in superseded
+               and row["url"].endswith("chomali-destaca-aumento-de-recursos-de-47-en-salud/"))
+    assert not is_premium(RawItem(**deepcopy(queue.items[pin["queue_fingerprint"]]["raw"])))
     key = pin["queue_fingerprint"]
     before = deepcopy(queue.items[key])
     model = deepcopy(before["raw"]["metadata"]["analysis_model_output"])

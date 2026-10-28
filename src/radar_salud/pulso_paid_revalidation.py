@@ -10,6 +10,8 @@ from functools import lru_cache
 import hashlib
 import json
 from pathlib import Path
+
+from .pinned_evidence import pinned_bytes
 import subprocess
 
 from .llm_analysis import news_analysis_input
@@ -100,7 +102,7 @@ def _producer(root):
 
 def load_manifest(root=ROOT):
     root = Path(root)
-    payload = (root / MANIFEST_REF).read_bytes()
+    payload = pinned_bytes(root, MANIFEST_REF, MANIFEST_SHA256)
     if digest(payload) != MANIFEST_SHA256:
         raise ValueError("paid_revalidation_manifest_unpinned")
     document = json.loads(payload)
@@ -115,7 +117,7 @@ def load_manifest(root=ROOT):
         raise ValueError("paid_revalidation_two_independent_semantic_reviews_required")
     for reference in references:
         path = (root / reference["path"]).resolve()
-        if not path.is_relative_to((root / "data/audits").resolve()) or digest(path.read_bytes()) != reference["sha256"]:
+        if not path.is_relative_to((root / "data/audits").resolve()) or digest(pinned_bytes(root, reference["path"], reference["sha256"])) != reference["sha256"]:
             raise ValueError("paid_revalidation_semantic_review_changed")
     originals = _producer(str(root))
     rows = document.get("rows", [])

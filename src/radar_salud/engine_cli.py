@@ -353,6 +353,13 @@ def main():
         max_attempts=int(os.getenv("RADAR_MAX_RETRY_ATTEMPTS","4") or 4))
     if revived:print(f"queue: {revived} SIS news items revived for AI relevance scoring")
     from .daily_window import eligible_daily_item
+    if not args.discovery_only and "pulso_latercera" in processors:
+        # Bounded revival of paywalled items deferred after unbilled failures (history kept).
+        from . import pulso_paywall
+        pulso_paywall.reset_run_counter()
+        revived=pulso_paywall.revive_deferred(queue.items)
+        if revived:
+            queue.save();print(f"queue: {len(revived)} paywalled items revived after unbilled failures")
     ready=((key,item) for key,item in _prioritize_official(_prioritize_pulso_ready(queue.ready()))
            if item['source'] in processors and eligible_daily_item(item) and
            (not selected_sources or item['source'] in selected_sources or
@@ -467,9 +474,13 @@ def main():
                 queue.save()
             else:
                 reason=exc.reason or str(exc) or "budget_or_analysis_deferred"
+                counted=True
                 if item["source"] == "pulso_latercera":
                     reason=processing_raw.metadata.get("editorial_assessment",{}).get("reason") or reason
-                queue.finish(key,"retry",reason)
+                    from .pulso_paywall import NOT_ATTEMPTED_REASONS
+                    # Run-cap, budget and backoff deferrals are not attempts (4-attempt limit).
+                    counted=reason not in NOT_ATTEMPTED_REASONS
+                queue.finish(key,"retry",reason,counted=counted)
         except Exception as exc:
             if item["source"] == "pulso_latercera":
                 item["raw"]=asdict(processing_raw)

@@ -15,7 +15,13 @@ from radar_salud.pending_queue import PendingQueue
 ROOT = Path(__file__).parents[1]
 spec = importlib.util.spec_from_file_location('followup_paid_independent_qa', ROOT / 'scripts/qa_pulso_recovery.py')
 qa = importlib.util.module_from_spec(spec); spec.loader.exec_module(qa)
-URLS = [row['url'] for row in json.loads((ROOT / qa.FOLLOWUP_PAID_PATH).read_text())['rows']]
+ALL_URLS = [row['url'] for row in json.loads((ROOT / qa.FOLLOWUP_PAID_PATH).read_text())['rows']]
+# Premium sections never re-enter the full-body paid paths (rights policy, Dirección 28-oct-2026);
+# their policy outcome is checked in test_premium_member_keeps_its_paid_answer_without_any_request.
+from paywall_test_support import assert_premium_replay, is_premium, premium_under_path_scope
+from radar_salud.source_rights import paywall_policy
+PREMIUM_URLS = [url for url in ALL_URLS if premium_under_path_scope(url)]
+URLS = [url for url in ALL_URLS if url not in PREMIUM_URLS]
 
 
 @pytest.fixture(scope='module')
@@ -76,6 +82,22 @@ def case(request, tmp_path, actual_origin, monkeypatch):
 
 def inspect(case):
     return qa.verify_followup_paid_revalidation(root=ROOT, **case)
+
+
+def test_premium_member_keeps_its_paid_answer_without_any_request(actual_origin, tmp_path, monkeypatch):
+    assert len(PREMIUM_URLS) == 1 and len(URLS) == 4
+    def forbidden(**kwargs):
+        pytest.fail('A premium piece cannot fetch the publisher or request a model without AI budget')
+    monkeypatch.setattr(beta_sources, 'fetch_html', forbidden)
+    monkeypatch.setattr(llm_analysis, 'analyze_news', forbidden)
+    for url in PREMIUM_URLS:
+        row = actual_origin['rows'][url]
+        original = actual_origin['originals'][row['queue_fingerprint']]
+        queue = PendingQueue(tmp_path / 'queue.json'); queue.items = {row['queue_fingerprint']: deepcopy(original)}
+        queue.discover(qa.SOURCE, [fresh(original)], now=datetime.now(timezone.utc))
+        raw = RawItem(**deepcopy(queue.items[row['queue_fingerprint']]['raw']))
+        assert is_premium(raw)
+        assert_premium_replay(beta_sources.process_curated_beta_source, raw)
 
 
 def test_original_five_are_genuine_deferred_premise_not_approved(actual_origin):

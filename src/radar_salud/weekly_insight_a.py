@@ -465,6 +465,9 @@ def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path =
                  model_call: Callable[..., Any] | None = None, previous: dict | None = None,
                  max_run_usd: float = MAX_RUN_USD) -> dict:
     as_of = as_of or chile_today()
+    # Paywalled press: the model sees only title + public lead (Dirección 28-oct-2026).
+    from .source_rights import redact_public_payload
+    signals = redact_public_payload(list(signals))
     anchor = monday_anchor(as_of)
     prev = (previous or {}).get("weekly_insight") or {}
     ranked = select_topic(signals, anchor, recent_urls=set(prev.get("source_refs") or []),
@@ -552,6 +555,8 @@ def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path =
 
 def publish(result: dict, root: Path = ROOT) -> dict:
     """Write files. Only a PASS replaces editorial_approved.json; FAIL never publishes."""
+    from .source_rights import redact_public_payload
+    result = redact_public_payload(result)
     folder = root / "data/weekly_insight"
     approved_path = folder / "editorial_approved.json"
     anchor = result.get("anchor_date") or "unknown"

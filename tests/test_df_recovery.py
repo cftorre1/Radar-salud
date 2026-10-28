@@ -171,11 +171,24 @@ NOW = datetime(2026, 10, 11, 5, tzinfo=timezone.utc)
 CAPTURE = datetime(2026, 10, 10, 22, 23, tzinfo=timezone.utc)
 
 
+# DF is paywalled (config/paywalled_press.json): raw_text is the public bajada
+# (og:description), distinct from the locked body in page_text.
+TEASER = "La Clínica San Carlos trasladó a todos sus pacientes hospitalizados y suspendió operaciones tras el aluvión."
+
+
 def _raw(title="Clínica San Carlos suspende operaciones", dated=False):
     return RawItem("diario_financiero", title, URL, "Diario Financiero", "press_high_trust",
-                   "2026-10-10" if dated else None, raw_text="La clínica trasladó todos sus pacientes.",
+                   "2026-10-10" if dated else None, raw_text=TEASER if dated else "La clínica trasladó todos sus pacientes.",
                    metadata={"page_text": "La clínica trasladó todos sus pacientes y suspendió operaciones. " * 5,
+                             "public_teaser": TEASER, "public_teaser_source": "og:description",
                              "publication_date_source": "cxenseparse:recs:publishtime"} if dated else {})
+
+
+def _lead(raw, text):
+    """The public bajada as the DF parser records it (og:description provenance)."""
+    raw.raw_text = text
+    raw.metadata.update(public_teaser=text, public_teaser_source="og:description")
+    return raw
 
 
 def test_seen_legacy_pending_rehydrated_live_without_erasing_capture(tmp_path):
@@ -268,7 +281,8 @@ def test_configured_media_threshold_and_attribution(monkeypatch):
     monkeypatch.setattr("radar_salud.public_source_pipeline.analyze_news", lambda **kw: _analysis(90))
     result = process_df(_raw(dated=True), DF_CFG)
     assert result["evidence_maturity"] == "media_reported"
-    assert result["what_happened"].startswith("Según Diario Financiero")
+    # Paywalled: the public card carries the publisher bajada, not the model summary.
+    assert result["what_happened"] == TEASER and result["paywalled"] is True
     assert result["publication_date_source"] == "cxenseparse:recs:publishtime"
 
 
@@ -297,8 +311,8 @@ def test_opinion_and_unrelated_have_specific_reasons_without_model_call(monkeypa
     assert process_df(opinion, DF_CFG) is None
     assert opinion.metadata["rejection_reason"] == "media_opinion_or_column"
     nonhealth = _raw("Terremoto de magnitud 7,7 sacude Panamá", dated=True)
-    nonhealth.raw_text = "El terremoto afectó a Panamá."
-    nonhealth.metadata["page_text"] = nonhealth.raw_text * 12
+    _lead(nonhealth, "Un terremoto de magnitud 7,7 sacudió Panamá y obligó a evacuar edificios de la capital.")
+    nonhealth.metadata["page_text"] = "El sismo se sintió en varias provincias. " * 12
     assert process_df(nonhealth, DF_CFG) is None
     assert nonhealth.metadata["rejection_reason"] == "df_unrelated_to_health"
 
@@ -328,7 +342,10 @@ def test_daily_df_replay_real_processor_to_history_feed_and_second_run(tmp_path,
     low_url = "https://www.df.cl/empresas/salud/inversion-secundaria"
     deferred_url = "https://www.df.cl/empresas/salud/analisis-pendiente"
     listing = f'<a href="{URL}">{_raw().title}</a><a href="{low_url}">Clínica anuncia una inversión secundaria</a><a href="{deferred_url}">Clínica con análisis pendiente de inversión</a>'
-    detail = '<meta name="cXenseParse:recs:publishtime" content="2026-10-10T16:29:59Z"><article><p>' + _raw(dated=True).metadata["page_text"] + '</p></article>'
+    # Real DF pages publish the bajada as og:description; only that lead is analysed (paywall policy).
+    detail = (f'<meta property="og:description" content="{TEASER}">'
+              '<meta name="cXenseParse:recs:publishtime" content="2026-10-10T16:29:59Z"><article><p>'
+              + _raw(dated=True).metadata["page_text"] + '</p></article>')
     monkeypatch.setattr("radar_salud.source_scouts.fetch_html", lambda url: listing if url in DfHealthScout.PAGES else detail)
     monkeypatch.setattr("radar_salud.public_source_pipeline.analyze_news", lambda **kw: None if "pendiente" in kw["title"] else _analysis(71 if "secundaria" in kw["title"] else 90))
     monkeypatch.setattr("radar_salud.paths.project_root", lambda: tmp_path)
@@ -430,6 +447,7 @@ def test_nonarticle_and_verified_nonhealth_rejections_do_not_require_fake_date(m
     assert raw.metadata['rejection_reason'] == 'df_not_article'
     raw = _raw('Banco compra oficinas')
     raw.metadata = {'page_text': 'El banco compra oficinas y amplía su negocio financiero. ' * 10, 'publication_date_conflict': True}
+    _lead(raw, 'El banco compra oficinas en Santiago y amplía su negocio financiero con nuevas sucursales.')
     assert process_df(raw, DF_CFG) is None
     assert raw.metadata['rejection_reason'] == 'df_unrelated_to_health'
 
@@ -607,6 +625,6 @@ def test_captured_nontext_format_defers_without_refetch_or_model(monkeypatch):
     monkeypatch.setattr('radar_salud.public_source_pipeline.enrich', lambda raw: pytest.fail('Known captured format must not refetch'))
     monkeypatch.setattr('radar_salud.public_source_pipeline.analyze_news', lambda **kw: pytest.fail('No readable body must not call AI'))
     for field, reason in [('primary_image_urls','df_image_only_requires_ocr'), ('primary_media_urls','df_media_transcript_unavailable')]:
-        raw=_raw(dated=True);raw.metadata.update(page_text='', **{field: ['https://www.df.cl/asset']})
+        raw=_raw(dated=True);raw.raw_text='';raw.metadata.update(page_text='', **{field: ['https://www.df.cl/asset']})
         with pytest.raises(DeferredProcessing) as error:process_df(raw,DF_CFG)
         assert error.value.reason == reason
