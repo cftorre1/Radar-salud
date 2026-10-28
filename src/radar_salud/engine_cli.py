@@ -23,6 +23,7 @@ from .ai_budget import status as ai_budget_status, has_capacity
 from .source_health import load_retired_sources, mark_retired_sources
 from .source_health import record as health_record
 from .superintendencia_fiscalizacion import SuperintendenciaFiscalizacionScout, process_fiscalizacion
+from .sis_news import SuperintendenciaNoticiasScout, process_superintendencia_noticias
 from .processing import DeferredProcessing, RejectedProcessing, OutsideBackfillHorizon
 from .public_source_evidence import failure_details, discovery_diagnostics, HOSTS as PUBLIC_DATA_SOURCES
 from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
@@ -98,6 +99,7 @@ _SLUG_URL_PREFIXES={
     "superintendencia":("https://www.superdesalud.gob.cl/biblioteca-digital",),
     "superintendencia_normativa":("https://www.superdesalud.gob.cl/normativa",),
     "superintendencia_fiscalizacion":("https://www.superdesalud.gob.cl/fiscalizacion",),
+    "superintendencia_noticias":("https://www.superdesalud.gob.cl/noticias/",),
     "suseso":("https://www.suseso.gob.cl/612/",),
     "suseso_news":("https://www.suseso.gob.cl/605/",),
     "suseso_fiscalizacion":("https://www.suseso.gob.cl/609/",),
@@ -167,6 +169,7 @@ def main():
       ("superintendencia","superintendencia_salud",SuperintendenciaStatsScout().discover,stats),
       ("superintendencia_normativa","superintendencia_normativa",SuperintendenciaNormativaScout().discover,process_superintendencia_normativa),
       ("superintendencia_fiscalizacion","superintendencia_fiscalizacion",SuperintendenciaFiscalizacionScout().discover,process_fiscalizacion),
+      ("superintendencia_noticias","superintendencia_noticias",SuperintendenciaNoticiasScout().discover,process_superintendencia_noticias),
       ("minsal","minsal",MinsalNewsScout().discover,process_minsal),
       ("fonasa","fonasa",FonasaNewsScout().discover,process_fonasa),
       ("fonasa_datos_abiertos","fonasa_datos_abiertos",FonasaDataHubScout().discover,process_fonasa_data_hub),
@@ -226,6 +229,14 @@ def main():
             scout=getattr(discover,"__self__",None)
             if name == "deis" and getattr(scout, "catalog", None) is not None:
                 atomic_json(root/"data/state/deis_catalog.json", scout.catalog)
+            if name == "superintendencia_normativa" and getattr(scout, "listing_index", None):
+                # Official circular identities -> listing URLs; merged so a failed page keeps older rows.
+                from .regulatory import SIS_INDEX_PATH
+                index_path=root/SIS_INDEX_PATH
+                previous=json.loads(index_path.read_text()) if index_path.exists() else {}
+                acts=dict(previous.get("acts",{}));acts.update(scout.listing_index)
+                atomic_json(index_path,{"captured_at":datetime.now(timezone.utc).isoformat(),
+                    "source":"Superintendencia de Salud · Instrucciones dictadas (listados oficiales)","acts":acts})
             if name in PUBLIC_DATA_SOURCES:
                 discovery_details[name]={"diagnostics":discovery_diagnostics(scout,items)}
                 discovery_details[name]["diagnostics"]["poll_mode"]="daily_engine"

@@ -6,6 +6,7 @@ from urllib.parse import urljoin
 from .models import RawItem
 from .scouts import fetch_html
 
+SIS_INDEX_PATH="data/state/sis_normative_index.json"
 MONTHS={"enero":"01","febrero":"02","marzo":"03","abril":"04","mayo":"05","junio":"06","julio":"07","agosto":"08","septiembre":"09","octubre":"10","noviembre":"11","diciembre":"12"}
 
 def _date(text:str)->Optional[str]:
@@ -38,6 +39,18 @@ class _TableParser(HTMLParser):
             if self._row:self.rows.append(self._row)
             self._row=None
 
+def record_listing_identity(index,title,url,event_date,subject,listing_url):
+    """Official identity -> URL, read from the regulator's own listing (no constructed URLs).
+    Used to link a late resolution to the circular it acts on when that circular is not in history."""
+    from .normative_relations import target_key
+    key=target_key(title or "")
+    if not key or not url or "superdesalud.gob.cl" not in url:return
+    if not key.startswith(("circular-","oficio-circular-")):return
+    current=index.get(key)
+    record={"id":" ".join(str(title).split()),"url":url,"event_date":event_date,
+            "official_subject":" ".join(str(subject or "").split())[:400] or None,"listing_url":listing_url}
+    if current is None or (event_date or "")>(current.get("event_date") or ""):index[key]=record
+
 class SuperintendenciaNormativaScout:
     SOURCE_SLUG="superintendencia_normativa";SOURCE_NAME="Superintendencia de Salud";SOURCE_TYPE="official"
     PAGES=[
@@ -53,10 +66,11 @@ class SuperintendenciaNormativaScout:
                  "mantenciones","mantenimiento","licencias hcl","tableau","data center","monitoreo de medios",
                  "concurso de personal","designa miembros")
     def discover(self)->List[RawItem]:
-        out=[];seen=set()
+        out=[];seen=set();self.listing_index={};self.discovery_errors=[]
         for page_name,page_url,scope in self.PAGES:
             try:html=fetch_html(page_url)
-            except Exception as e:print("SuperSalud regulatory fetch:",page_name,e);continue
+            except Exception as e:
+                print("SuperSalud regulatory fetch:",page_name,e);self.discovery_errors.append(f"{page_name}: {type(e).__name__}");continue
             p=_TableParser();p.feed(html)
             for row in p.rows:
                 row_text=" ".join(c["text"] for c in row if c.get("text"))
@@ -77,6 +91,7 @@ class SuperintendenciaNormativaScout:
                 if key in seen:continue
                 seen.add(key)
                 summary=row[-1]["text"] if row else row_text
+                record_listing_identity(self.listing_index,title,url,event_date,summary,page_url)
                 if len(summary)<15:summary=row_text
                 out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
                     event_date=event_date,raw_text=summary,

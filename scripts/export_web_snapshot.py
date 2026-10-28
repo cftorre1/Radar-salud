@@ -405,6 +405,23 @@ def _normative_status(recent, universe):
         out.append(r)
     return out
 
+def _late_related_documents(recent, history, index_path=Path("data/state/sis_normative_index.json")):
+    """A resolution/suspension/appeal that arrives after the instruction it acts on left the
+    visible window still links to it: our history record at any date, else the regulator's
+    listing URL, else the bare identity (never an invented URL)."""
+    from radar_salud.normative_relations import related_documents, load_listing_index
+    index=load_listing_index(index_path);feed={s.get("source_url") for s in recent}
+    out=[]
+    for s in recent:
+        r=dict(s);docs=related_documents(r,history,index,feed)
+        if docs:
+            r["official_related_documents"]=docs
+            if not r.get("normative_minimal"):
+                known={(x.get("url") or x.get("title")) for x in docs}
+                r["related_context"]=(docs+[x for x in (r.get("related_context") or []) if (x.get("url") or x.get("title")) not in known])[:6]
+        out.append(r)
+    return out
+
 def _stat_family(s):
     if s.get("source_name")!="Superintendencia de Salud" or "Datos" not in (s.get("signal_types") or []):return None
     t=(s.get("title") or "").lower()
@@ -699,6 +716,9 @@ def curate(signals,resolve_external=True,as_of=None):
     recent=[_statistical_value_ladder(s) for s in recent]
     recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent,today=as_of);recent=_related_context(recent,resolve_external);recent=_resolution_relation_titles(recent)
     recent=_normative_status(recent,normalized)
+    recent=_late_related_documents(recent,signals)
+    from radar_salud.sis_news import fold_news_into_acts
+    recent=fold_news_into_acts(recent)
     # An explicitly reviewed DF corroboration yields to its official event when
     # that counterpart is present. Keep both source records in durable history.
     counterpart_urls={s.get('source_url') for s in recent}
@@ -721,10 +741,10 @@ def curate(signals,resolve_external=True,as_of=None):
         return card["editorial_committee"].get("verdict")=="PASS"
     recent,summaries=apply_story_groups(recent,load_groups(),gate=story_gate)
     recent.extend(summaries)
-    # Individual accreditation acts stay out of the feed; one verifiable rolling pulse instead.
-    from radar_salud.accreditation_pulse import accreditation_pulse
-    pulse=accreditation_pulse(signals,latest)
-    if pulse:
+    # Individual accreditation acts stay out of the feed; verifiable rolling pulses instead
+    # (last 30 days and days 31-90: information stays available 90 days).
+    from radar_salud.accreditation_pulse import accreditation_pulses
+    for pulse in accreditation_pulses(signals,latest):
         ok,reason,score=publication_ready(pulse)
         if ok:
             pulse["publication_gate_reason"]=reason;pulse["publication_ready_score"]=score

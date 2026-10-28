@@ -33,7 +33,7 @@ def test_pulse_reads_names_only_from_official_listing():
     assert "1 entidad acreditadora autorizada" in p["what_happened"]
     assert "Antigua" not in p["what_happened"] and "Otra" not in p["what_happened"]
     assert "Análisis automático" not in json.dumps(p, ensure_ascii=False)
-    assert p["accreditation_counts"] == {"new": 1, "kept": 1, "entity": 1, "fix": 1}
+    assert p["accreditation_counts"] == {"new": 1, "kept": 1, "entity": 1, "fix": 1, "change": 0}
     assert len(p["source_alternatives"]) == 4 and p["scopes"] == ["Prestadores"]
 
 
@@ -45,8 +45,9 @@ def test_real_history_shows_one_pulse_and_no_individual_acts():
     history = json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
     curated = exporter.curate(history, resolve_external=False)
     pulses = [r for r in curated if r.get("event_type") == "ACCREDITATION_PULSE"]
-    assert len(pulses) == 1 and pulses[0]["source_alternatives"]
-    individual = {a["url"] for a in pulses[0]["source_alternatives"]}
+    # Dirección 28-oct-2026 (90-day availability): one card for the last 30 days and one for days 31-90.
+    assert [p["window_days"] for p in pulses] == [[0, 30], [30, 90]] and all(p["source_alternatives"] for p in pulses)
+    individual = {a["url"] for p in pulses for a in p["source_alternatives"]}
     assert not [r for r in curated if r.get("source_url") in individual]
 
 
