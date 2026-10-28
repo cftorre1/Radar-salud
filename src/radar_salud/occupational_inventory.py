@@ -194,6 +194,7 @@ def discover_inventory(scout, loader, as_of=None, max_pages=20):
     current, page_seen, article_seen, detail_cache = scout.cfg["page"], set(), set(), {}
     previous_day = None
     chronology_ok = True
+    pages_without_window_rows = 0
 
     def detail_loader(url):
         if not _official(url, scout.cfg):
@@ -323,15 +324,36 @@ def discover_inventory(scout, loader, as_of=None, max_pages=20):
             report["stop_reason"] = "listing_structure_unrecognized"
             break
         all_dated = all(row["publication_date"] and row["status"] != "pending" for row in report["rows"])
-        if report["outside_boundary"] and chronology_ok and all_dated and not report["errors"]:
+        # One dated row past the 90-day start is not a boundary: a featured or
+        # pinned older item can end page 1 while page 2 still lists in-window
+        # news. The boundary is reached only after a full listing page whose
+        # rows are all dated past the start, or two consecutive pages with no
+        # in-window row, or (after crossing the start) the archive's last page,
+        # since nothing can be listed beyond it. Otherwise keep paging, up to
+        # ``max_pages``.
+        page_rows = [row for row in report["rows"] if row["listing_url"] == current]
+        page_all_past = bool(page_rows) and all(
+            row["publication_date"] and date.fromisoformat(row["publication_date"]) < starts[90]
+            for row in page_rows)
+        in_window = any(day >= starts[90] for day in page_days)
+        pages_without_window_rows = 0 if in_window else pages_without_window_rows + 1
+        boundary_reached = bool(report["outside_boundary"]) and (
+            page_all_past or pages_without_window_rows >= 2 or not next_url)
+        if boundary_reached:
+            report["boundary_evidence"] = {"listing_url": current,
+                                           "rule": "full_page_past_start" if page_all_past
+                                           else "two_pages_without_window_rows" if pages_without_window_rows >= 2
+                                           else "archive_ended_after_start"}
+        if boundary_reached and chronology_ok and all_dated and not report["errors"]:
             report["coverage_complete"] = True
             report["stop_reason"] = "verified_older_boundary"
             break
-        if report["outside_boundary"] and chronology_ok:
-            # The ordered archive already crossed the 90-day start. Errors
-            # never clear, so older pages cannot complete the inventory; they
-            # only add ~10 detail requests each (28-oct-2026: 20 pages back to
-            # 2023 after five unreadable ACHS details). Stop, keep the gaps.
+        if boundary_reached:
+            # The archive has crossed the 90-day start. Errors never clear,
+            # so older pages cannot complete the inventory; they only add ~10
+            # detail requests each (28-oct-2026: 20 pages back to 2023 after
+            # five unreadable ACHS details). Stop, keep the gaps (including
+            # any publication_order_not_monotonic already recorded).
             report["stop_reason"] = "older_boundary_reached_with_gaps"
             break
         if not next_url:

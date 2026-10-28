@@ -177,3 +177,122 @@ def test_isp_empty_respiratory_listing_records_its_structure():
     message = str(caught.value)
     assert "tables=1, rows=0" in message and "semana_texts=1" in message
     assert "documento_links=1" in message and "semana-41-2026" in message
+
+
+# Review notes on cbf28f3c -------------------------------------------------
+
+@pytest.mark.parametrize("error, cause", [
+    (HTTPError(ROBOTS, 429, "Too Many Requests", {}, None), "HTTP 429"),
+    (HTTPError(ROBOTS, 503, "Unavailable", {}, None), "HTTP 503"),
+    (OSError("connection reset"), "OSError: connection reset"),
+])
+def test_datos_robots_429_5xx_and_network_fail_closed_once_per_run(error, cause):
+    from radar_salud.datos_gob_sources import PUBLISHERS
+    assert len(PUBLISHERS) > 1
+    scout, calls = _datos(error)
+    with pytest.raises(RuntimeError, match="robots_unavailable: " + cause):
+        scout.discover()
+    assert calls == [ROBOTS]  # fetched once for every publisher; no data fetch
+    assert scout.diagnostics["robots_status"] == "robots_unavailable"
+    errors = scout.diagnostics["errors"]
+    assert len(errors) == len(PUBLISHERS)
+    assert all(f"robots_unavailable: {cause}" in error["reason"] for error in errors)
+
+
+@pytest.mark.parametrize("status", [400, 418])
+def test_datos_other_4xx_still_mean_no_robots_file(status):
+    scout, calls = _datos(HTTPError(ROBOTS, status, "Client error", {}, None))
+    scout.discover()
+    assert scout.diagnostics["robots_status"] == f"http_{status}_no_robots_file"
+    assert calls.count(ROBOTS) == 1
+
+
+ACHS_PAGE = "https://www.achs.cl/centro-de-noticias"
+ACHS_NEWS = ACHS_PAGE + "/noticia/2026/"
+ACHS_BODY = ("La nueva guía de tratamiento de patologías laborales incorpora recomendaciones "
+             "para evaluación, atención clínica y reintegro laboral. Se implementa una nueva "
+             "herramienta operativa para equipos tratantes, con evaluación y reportes de resultados.")
+
+
+def _achs_detail(published):
+    meta = f'<meta property="article:published_time" content="{published}T10:00:00-03:00">' if published else ""
+    return (meta + f"<article><h1>Nueva guía de tratamiento en salud mental laboral</h1><p>{ACHS_BODY}</p></article>")
+
+
+def _achs_inventory(layout, dates, max_pages=20):
+    """layout: list of pages, each a list of article slugs; pages chain by /N."""
+    pages = {}
+    for index, slugs in enumerate(layout):
+        url = ACHS_PAGE if index == 0 else f"{ACHS_PAGE}/{index + 1}"
+        nxt = f'<a href="{ACHS_PAGE}/{index + 2}" rel="next">Siguiente</a>' if index + 1 < len(layout) else ""
+        pages[url] = "".join(f'<a href="{ACHS_NEWS}{slug}">Ver detalle</a>' for slug in slugs) + nxt
+    for slug, day in dates.items():
+        pages[ACHS_NEWS + slug] = _achs_detail(day)
+    visited = []
+
+    def load(url):
+        visited.append(url)
+        return pages[url]
+    report = discover_inventory(CuratedBetaSourceScout("achs_seguro_laboral"), load, as_of=AS_OF,
+                                max_pages=max_pages)
+    return report, visited
+
+
+def test_featured_old_item_ending_page_one_does_not_hide_in_window_news_on_page_two():
+    # 90-day start for 28-oct-2026 is 2026-07-31.
+    report, visited = _achs_inventory(
+        [["new1", "featured_old"], ["new2", "new3"], ["old1", "old2"], ["older"]],
+        {"new1": "2026-10-20", "featured_old": "2025-03-01", "new2": "2026-10-01",
+         "new3": "2026-08-15", "old1": "2026-07-01", "old2": "2026-06-01", "older": "2026-05-01"})
+    urls = {row["url"] for row in report["rows"]}
+    assert ACHS_NEWS + "new2" in urls and ACHS_NEWS + "new3" in urls
+    assert report["metrics"]["90"]["dated_articles"] == 3
+    assert any(error["code"] == "publication_order_not_monotonic" for error in report["errors"])
+    assert not report["coverage_complete"]
+    # Page 3 is a full page past the start: stop there, never page 4.
+    assert report["stop_reason"] == "older_boundary_reached_with_gaps"
+    assert report["boundary_evidence"]["rule"] == "full_page_past_start"
+    assert f"{ACHS_PAGE}/3" in visited and f"{ACHS_PAGE}/4" not in visited
+
+
+def test_mixed_page_alone_never_completes_the_inventory_even_when_monotonic():
+    report, visited = _achs_inventory(
+        [["new1", "old1"], ["old2", "old3"], ["older"]],
+        {"new1": "2026-10-20", "old1": "2026-07-01", "old2": "2026-06-01", "old3": "2026-05-01",
+         "older": "2026-04-01"})
+    assert report["coverage_complete"] and report["stop_reason"] == "verified_older_boundary"
+    assert f"{ACHS_PAGE}/2" in visited and f"{ACHS_PAGE}/3" not in visited
+    assert not any(error["code"] == "publication_order_not_monotonic" for error in report["errors"])
+
+
+def test_two_consecutive_pages_without_window_rows_stop_even_with_undated_rows():
+    # Pages 2 and 3 each hold an old dated row plus an undated one (not a
+    # full past page); two consecutive out-of-window pages end the crawl.
+    report, visited = _achs_inventory(
+        [["new1", "old1"], ["old2", "nodate2"], ["old3", "nodate3"], ["older"]],
+        {"new1": "2026-10-20", "old1": "2026-07-01", "old2": "2026-06-01", "nodate2": "",
+         "old3": "2026-05-01", "nodate3": "", "older": "2026-04-01"})
+    assert report["stop_reason"] == "older_boundary_reached_with_gaps"
+    assert report["boundary_evidence"]["rule"] == "two_pages_without_window_rows"
+    assert f"{ACHS_PAGE}/3" in visited and f"{ACHS_PAGE}/4" not in visited
+
+
+def test_no_boundary_page_keeps_paging_to_the_existing_cap():
+    layout = [[f"n{i}", f"o{i}"] for i in range(4)]
+    dates = {**{f"n{i}": "2026-10-20" for i in range(4)}, **{f"o{i}": "2025-01-01" for i in range(4)}}
+    report, visited = _achs_inventory(layout, dates, max_pages=3)
+    assert report["stop_reason"] == "max_pages_exhausted" and not report["coverage_complete"]
+    assert f"{ACHS_PAGE}/3" in visited and f"{ACHS_PAGE}/4" not in visited
+    assert any(error["code"] == "publication_order_not_monotonic" for error in report["errors"])
+
+
+def test_isp_listing_shape_truncates_each_sampled_href():
+    scout = IspSurveillanceScout()
+    channel, url = scout.PAGES[1]
+    long_href = "https://www.ispch.cl/documento/" + "x" * 500
+    html = f'<a href="{long_href}">Ver</a><a href="{long_href}y">Ver</a>'
+    with pytest.raises(RuntimeError) as caught:
+        scout.discover_from_html(html, url, channel)
+    message = str(caught.value)
+    assert long_href[:200] in message and long_href[:201] not in message
+    assert "documento_links=2" in message

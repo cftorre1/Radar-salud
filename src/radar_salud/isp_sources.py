@@ -130,7 +130,7 @@ def _listing_shape(html, parser, laboratory):
     headers = sorted({" / ".join(row.get("headers", [])) for row in rows if row.get("headers")})[:3]
     return (f" (bytes={len(html)}, tables={len(re.findall(r'<table', html, re.I))}, rows={len(rows)}, "
             f"headers={headers}, semana_texts={len(semana)} sample={semana[:2]}, "
-            f"{wanted.strip('/')}_links={len(links)} sample={links[:2]})")
+            f"{wanted.strip('/')}_links={len(links)} sample={[href[:200] for href in links[:2]]})")
 
 
 def _date_evidence(kind: str, value: str, day: str, url: str) -> dict:

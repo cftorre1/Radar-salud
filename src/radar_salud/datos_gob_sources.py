@@ -193,17 +193,22 @@ class DatosGobScout:
         self.robots = robots
         self.robots_status = "injected" if robots is not None else None
         self._robots = None
+        self._robots_failure = None
         self.diagnostics = {}
 
     def _robots_policy(self):
         """Fetch robots.txt once per run, following RFC 9309 status rules.
 
-        A 4xx other than 401/403 means "no robots file": crawling is allowed
-        (the same rule as ``RobotFileParser.read``). 401/403 disallow all.
-        Any other failure leaves the policy unknown, so discovery fails closed
-        and says so (``robots_unavailable``) instead of a bare RuntimeError.
+        A 4xx other than 401/403/429 means "no robots file": crawling is
+        allowed (the same rule as ``RobotFileParser.read``). 401/403 disallow
+        all. A 429, a 5xx or a network error leaves the policy unknown, so
+        discovery fails closed and says so (``robots_unavailable``). That
+        outcome is cached for the run too: robots.txt is requested once, not
+        once per publisher.
         """
         from urllib.error import HTTPError
+        if getattr(self, "_robots_failure", None) is not None:
+            raise PermissionError(self._robots_failure)
         if getattr(self, "_robots", None) is not None:
             return self._robots
         parser = RobotFileParser()
@@ -214,14 +219,19 @@ class DatosGobScout:
         except HTTPError as exc:
             if exc.code in (401, 403):
                 parser.disallow_all, status = True, f"http_{exc.code}_disallow_all"
-            elif 400 <= exc.code < 500:
+            elif 400 <= exc.code < 500 and exc.code != 429:
                 parser.allow_all, status = True, f"http_{exc.code}_no_robots_file"
             else:
-                raise PermissionError(f"robots_unavailable: HTTP {exc.code}") from exc
+                self._robots_unavailable(f"HTTP {exc.code}")
         except Exception as exc:
-            raise PermissionError(f"robots_unavailable: {type(exc).__name__}: {exc}"[:200]) from exc
+            self._robots_unavailable(f"{type(exc).__name__}: {exc}")
         self._robots, self.robots_status = parser, status
         return parser
+
+    def _robots_unavailable(self, cause):
+        self.robots_status = "robots_unavailable"
+        self._robots_failure = f"robots_unavailable: {cause}"[:200]
+        raise PermissionError(self._robots_failure)
 
     def _allowed(self, url):
         if self.robots is not None:
