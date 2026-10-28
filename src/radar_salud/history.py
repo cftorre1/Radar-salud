@@ -20,6 +20,9 @@ def _key(signal: dict) -> str:
         key = canonical_url(key)
     if 'Fiscalización' in (signal.get('signal_types') or []) and signal.get('source_record_id'):
         key += '|record:' + signal['source_record_id']
+    if 'Datos' in (signal.get('signal_types') or []) and signal.get('release_key'):
+        # Rolling statistic updated in place: keep every release, never overwrite the previous one.
+        key += '|release:' + str(signal['release_key'])
     return key
 
 
