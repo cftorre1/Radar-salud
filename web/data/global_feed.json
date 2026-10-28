@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "as_of": "2026-10-28",
-  "generated_at": "2026-10-28T12:37:01.825598+00:00",
+  "generated_at": "2026-10-28T18:11:58.019163+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -17,8 +17,8 @@
   "retention_days": 45,
   "freshness": {
     "newest_published_at": "2026-10-28",
-    "items_last_2_days": 3,
-    "items_last_7_days": 6,
+    "items_last_2_days": 4,
+    "items_last_7_days": 7,
     "status": "fresh",
     "stale_after_days": 2
   },
@@ -34,17 +34,31 @@
     [
       "ema",
       "EMA"
+    ],
+    [
+      "the_conversation",
+      "The Conversation"
     ]
   ],
   "held": {
-    "below_min_segment_matches": 8,
+    "below_min_segment_matches": 9,
     "feed_not_authorized_for_display": 17,
-    "not_relevant_or_undated": 56,
-    "publication_activation_pending_paho": 550,
-    "publication_activation_pending_who": 248
+    "not_relevant_or_undated": 55,
+    "publication_activation_pending_paho": 545,
+    "publication_activation_pending_who": 251
   },
   "capped_per_source_day": 0,
   "weekly_signal": [
+    {
+      "segment": "providers",
+      "label_es": "Prestadores",
+      "count": 3,
+      "item_ids": [
+        "d7fb141a2959e3dd925b",
+        "5bdb36cd4ca372a4d2e0",
+        "0acfc72ecc068e88b4a6"
+      ]
+    },
     {
       "segment": "regulation",
       "label_es": "Regulación",
@@ -56,25 +70,54 @@
       ]
     },
     {
-      "segment": "providers",
-      "label_es": "Prestadores",
+      "segment": "pharma",
+      "label_es": "Medicamentos y farma",
       "count": 2,
       "item_ids": [
-        "5bdb36cd4ca372a4d2e0",
-        "0acfc72ecc068e88b4a6"
-      ]
-    },
-    {
-      "segment": "healthtech",
-      "label_es": "Salud digital y dispositivos",
-      "count": 2,
-      "item_ids": [
-        "718f8cdb059d564a272c",
-        "93ba694c2e268873ff20"
+        "1e2dda4154b36b712837",
+        "d7fb141a2959e3dd925b"
       ]
     }
   ],
   "items": [
+    {
+      "id": "d7fb141a2959e3dd925b",
+      "source": "the_conversation",
+      "source_label": "The Conversation",
+      "attribution": "The Conversation",
+      "bylines": [
+        "Yashaswini Singh, Thomas J. and Alice M. Tisch Assistant Professor of Health Services, Policy and Practice, Brown University"
+      ],
+      "title": "Private equity is buying up more methadone clinics – access to the lifesaving drug isn’t getting easier",
+      "url": "https://theconversation.com/private-equity-is-buying-up-more-methadone-clinics-access-to-the-lifesaving-drug-isnt-getting-easier-286927",
+      "published_at": "2026-10-28",
+      "segments": [
+        "providers",
+        "pharma"
+      ],
+      "tags_es": [
+        "Prestadores",
+        "Medicamentos y farma"
+      ],
+      "summary_es": "Análisis de académicos (EE. UU.). Relevante para: Prestadores, Medicamentos y farma.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 76,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "CC BY-ND 4.0; commercial pages (ads/paywall) allowed, selling the material on its own is not",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://theconversation.com/republishing-guidelines"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "first_seen_on": "2026-10-28"
+    },
     {
       "id": "02931ac3579c63e2d47d",
       "source": "ecdc",
