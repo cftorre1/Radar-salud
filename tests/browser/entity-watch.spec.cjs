@@ -69,10 +69,10 @@ test('entity chips keep the feed share of the first viewport',async({page})=>{
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);
 });
 
-// Chips travel with the row icons so these never drop to a line of their own (review of PR #75).
-test('entity chips sit on the date line next to the row icons',async({page})=>{
+// Chips stay on the date line; since opción B (Dirección 28-oct 08:20) the actions are their own row right under it.
+test('entity chips sit on the date line, with the row actions right under it',async({page})=>{
  await page.goto('/');const chip=page.locator('#local [data-entity-chip]').first();await expect(chip).toBeVisible();
- const g=await chip.evaluate(el=>{const r=el.getBoundingClientRect(),row=el.closest('article'),t=row.querySelector('.title-open').getBoundingClientRect(),icons=[...row.querySelectorAll('.item-actions .iconbtn,.item-actions .sharebtn')].map(i=>{const b=i.getBoundingClientRect();return b.top+b.height/2});return{top:r.top,titleBottom:t.bottom,mid:r.top+r.height/2,icons}});
- expect(g.top).toBeGreaterThanOrEqual(g.titleBottom-0.5);
- expect(g.icons.length).toBeGreaterThan(0);for(const y of g.icons)expect(Math.abs(y-g.mid)).toBeLessThan(12);
+ const g=await chip.evaluate(el=>{const r=el.getBoundingClientRect(),row=el.closest('article'),t=row.querySelector('.title-open').getBoundingClientRect(),meta=row.querySelector('.meta-text').getBoundingClientRect(),acts=[...row.querySelectorAll('.row-acts .act')].map(i=>i.getBoundingClientRect().top);return{top:r.top,titleBottom:t.bottom,mid:r.top+r.height/2,metaMid:meta.top+meta.height/2,metaBottom:meta.bottom,acts}});
+ expect(g.top).toBeGreaterThanOrEqual(g.titleBottom-0.5);expect(Math.abs(g.mid-g.metaMid)).toBeLessThan(12);
+ expect(g.acts.length).toBeGreaterThan(0);for(const y of g.acts)expect(y).toBeGreaterThan(g.metaBottom-12);
 });

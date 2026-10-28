@@ -49,12 +49,16 @@
  .global-col{max-width:880px;margin:0 auto}
 }
 
-/* Al día afuera (28-oct): daily headline rows from licensed/official feeds; same row anatomy as the themes. */
-.global-daily{margin-bottom:6px}
-.global-feed .daily-item a.title-open{text-decoration:none}
-.global-feed .daily-item a.title-open:hover{text-decoration:underline;text-underline-offset:3px}
-.global-feed .daily-item .ext{color:var(--ink48);font-weight:400}
-.global-daily .daily-more{display:inline-flex;align-items:center;min-height:44px;margin-left:40px}
+/* Headline rows (formerly "Al día afuera", one inbox since Dirección 28-oct 08:20): same anatomy as the themes. */
 .global-feed .daily-item a.lic{color:inherit;text-decoration:underline;text-underline-offset:2px}
-.global-daily .daily-note{margin:2px 0 8px;font-size:11.5px;line-height:1.45;color:var(--ink48)}
-@media (min-width:760px){.global-daily .daily-more{margin-left:28px}}
+.global-foot{padding:0 0 12px}
+.global-foot .daily-note{margin:4px 0 0;font-size:11.5px;line-height:1.45;color:var(--ink48)}
+
+/* Global Premium identity (opción B): a matte gold band under the header, gold rule on unread rows, gold dots. */
+.premium-band{display:flex;align-items:baseline;gap:10px;padding:7px var(--gutter);background:linear-gradient(180deg,#F6EFDF 0%,#EFE4CA 100%);border-bottom:1px solid #E0CFA8;font-size:12px;color:#7A5A1E;overflow:hidden;white-space:nowrap;min-width:0}
+.premium-band span{font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:10.5px;flex:none}
+.premium-band em{font:italic 13px/1.3 Georgia,serif;overflow:hidden;text-overflow:ellipsis;min-width:0}
+@media (min-width:760px){.premium-band{padding:8px max(24px,calc((100vw - 1240px)/2 + 24px))}}
+.global-page .global-feed .item:not(.read)::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:2px;background:#C9A85A;border-radius:2px}
+.global-page .unread-dot{background:#A9802F}
+.global-page .brandbar .topnav a[aria-current=page]{text-decoration-color:#A9802F}

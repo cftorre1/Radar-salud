@@ -492,3 +492,31 @@ main{max-width:none;margin:0;padding:0 0 70px}
 /* Ficha titles share one style on Chile and Global (Dirección 28-oct, punto 5). */
 #signalDetail #detailTitle,.global-detail #globalDetailTitle{font:400 26px/1.22 var(--serif);letter-spacing:-.005em;margin:4px 0 12px;color:var(--ink)}
 @media (max-width:760px){#signalDetail #detailTitle,.global-detail #globalDetailTitle{font-size:23px}}
+
+/* Opción B (Dirección 28-oct 08:20): every row shows its actions in plain view, in a fixed order:
+   Ver ficha › · Fuente original ↗ · Compartir. Punto 3: the buttons are 44px tall through their own padding
+   (no margins around them); the row pulls them up into the meta line's leading and down into the row's bottom
+   padding, so the visible gap between "fuente · fecha" and the buttons stays small. */
+#local .signal.item .card-meta,.global-feed .card-meta{line-height:1.35}
+.row-acts{display:flex;flex-wrap:wrap;align-items:center;gap:0;margin:-7px 0 -9px -8px;min-width:0;position:relative}
+.act{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 8px;border-radius:8px;font:600 12.5px/1 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink68);white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.act .mini-icon{width:14px;height:14px;flex:none}
+.act:hover{color:var(--ink);background:rgba(29,51,69,.045)}
+.act:focus-visible{outline:2px solid #E3A24F;outline-offset:-5px}
+.act-open{color:var(--accent-ink);font-weight:700}
+.act-open .mini-icon{width:13px;height:13px;margin-left:-1px}
+.row-acts .share-feedback{font-size:11px;padding:0 4px}
+/* The meta line sits above the buttons' top padding; only its own interactive or titled pieces take the pointer,
+   so the rest of that strip still reaches the buttons. */
+#local .signal.item .card-meta,.global-feed .card-meta{position:relative;z-index:1;pointer-events:none}
+.card-meta a,.card-meta button,.card-meta .ent-chip,.card-meta .ent-more,.card-meta .follow-mark,.card-meta .row-undo,.card-meta .tag{pointer-events:auto}
+/* Narrow phones: the three labels stay on one line. */
+@media (max-width:360px){.act{padding:0 6px;gap:3px;font-size:12px}.act-share .mini-icon{display:none}}
+@media (min-width:760px){.row-acts{margin-left:-8px}}
+/* The ficha: Volver and the read toggle on top, its actions just under them (no "Ver ficha" inside the ficha). */
+.ficha-acts-host:empty{display:none}
+.ficha-acts{margin:-6px 0 6px -8px;padding:0 0 6px;border-bottom:1px solid var(--ink09)}
+/* News fichas (punto 4): headline, "Qué pasó", sources. Short section labels, no colon. */
+.ficha-h{margin:14px 0 4px;font:700 10.5px/1.3 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--ink48)}
+#detailBody .ficha-sources,.global-detail .ficha-sources{margin-top:14px;padding-top:2px;border-top:1px solid var(--ink09)}
+.ficha-note{margin:12px 0 0;font-size:11.5px;line-height:1.45;color:var(--ink48)}
