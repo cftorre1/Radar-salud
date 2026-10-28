@@ -86,7 +86,7 @@ Descartado tras la revisión: la comparación con el I trimestre (77.604 garant�
 | id | Fórmula | Valor | Uso |
 |---|---|---|---|
 | veces_presupuesto | 89.1 / 42.3 | 2,11 | "el doble" (titular, gráfico 1); nota n2 |
-| intensidad | (1.64 / 1.58 − 1) × 100 | 3,80 | "+3,8% prestaciones por persona" (lectura); nota n3 |
+| intensidad | ((1564084 / 953422) / (1135798 / 717432) − 1) × 100 | 3,62 | "+3,6% prestaciones por persona" (lectura); nota n3. Reemplaza la versión 1,64 / 1,58 (3,8%), que usaba promedios ya redondeados |
 | derivar_detectar | 52846 / 5387 | 9,81 | "9,8 veces" (lectura); nota n4 |
 
 ## 4. Revisión escéptica (segunda lectura): correcciones hechas
@@ -122,9 +122,9 @@ Se importa `verify_candidate` (`src/radar_salud/weekly_insight_a.py`) con un paq
  "gate": true,
  "gate_nov8": true,
  "gate_nov9": false,
- "headline_chars": 136,
+ "headline_chars": 138,
  "dek_words": 32,
- "essay_words_approx": 234,
+ "essay_words_approx": 246,
  "reading_time_min": 2,
  "warnings": []
 }
@@ -138,3 +138,24 @@ Se importa `verify_candidate` (`src/radar_salud/weekly_insight_a.py`) con un paq
 
 Sitio real (`web/app.js`, `renderWeeklyDetail`) servido desde una copia temporal. Allí `editorial_approved.json` se reemplazó por este candidato y `free_value.json` se regeneró con `scripts/product_report.py`, con la fecha fijada al 2026-11-02 para el gate del lunes. El worktree no se tocó.
 Capturas: `2026-11-02-wow-390.png` y `2026-11-02-wow-1280.png` (diálogo completo). Sin scroll horizontal a 390 px, 2 SVG y sin errores de página. A 1280 px se acortaron las etiquetas del gráfico 1 ("GES-Cáncer", "Minsal"), porque se superponían.
+
+## 7. Revisión editorial independiente: PASS_WITH_CORRECTIONS (27-oct)
+
+Se aplicaron las 6 correcciones pedidas:
+
+1. Titular, `title` e `insight_title`: "… 2027 suma más a derivar que a detectar" (138 caracteres).
+2. Lectura, primer párrafo: primera oración reemplazada ("dos vías de peso parecido: más personas atendidas (+32,9%) y un costo promedio por prestación cerca de 37% mayor … crecieron 3,6%").
+3. Estimación `intensidad`: valor 3,62, display "≈ +3,6%", n3 con el texto indicado. Los 4 insumos (1.135.798, 1.564.084, 717.432, 953.422) ya estaban en `key_figures`.
+4. Gráfico 1: rótulo "Minsal*" y el subtítulo indicado.
+5. Lectura, segundo párrafo: "…9,8 veces lo que asigna, en un monto que el Minsal no califica como adicional, a detectar a tiempo…".
+6. n4: se agregó la frase indicada. La cifra de $23.501 millones entró en `key_figures` y en las citas de la fuente del 19-oct ("23.501 millones de pesos para renovar equipos del Plan Nacional del Cáncer", releída el 27-oct). Advertencia: la nota del Minsal del 21-oct da "$22.843 millones para el Plan Nacional del Cáncer"; la n4 usa solo la cifra del 19-oct, que es la de equipos.
+
+Opcionales:
+- "deberían" pasó a "podrían" (Isapres y laboratorios).
+- **Cabecera "21 OCT 2026": no se corrigió.** `renderWeeklyA` en `web/app.js` muestra `fmtDate(w.event_date)`. Cambiar `event_date` al 2-nov falsearía la fecha de la noticia, y la regla de 14 días la usa. Se corrige en `web/app.js` (mostrar `freshness_anchor_date` si `anchor_kind === 'monday'`), junto con el bloqueo de `weeklyFresh` de la sección 5. Eso queda fuera de este commit, que solo incluye candidatos.
+
+Ajustes propios necesarios para volver a PASS, ambos sin cambiar el significado:
+- **Fórmula:** se escribió como `((1564084 / 953422) / (1135798 / 717432) - 1) * 100`, en vez de `… * 100 - 100`. Son equivalentes (3,6226). La n3 muestra "− 1", y con la forma original la regla 3 marcaba `number_untraced:notes:1`, porque solo los operandos de la fórmula cuentan como origen.
+- **Ensayo (257 palabras, límite 250):** se eliminó "Precio, tecnología y productividad pasan a ser las variables a gestionar, más que el volumen." Además, con la nueva lectura (la mitad del alza viene de más personas atendidas), "más que el volumen" ya no era correcto. Quedan 246 palabras.
+
+Resultado: `verify_candidate` PASS (0 errores), `presentation_a_errors` vacío, gate del 2 al 8-nov elegible y del 9-nov no elegible, `product_report` con estado `published_editorial_reviewed`. Capturas a 390 y 1280 px rehechas: sin scroll horizontal, 2 SVG, sin errores. No se instaló en `editorial_approved.json`.

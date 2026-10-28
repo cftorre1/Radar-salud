@@ -13,7 +13,7 @@
     "why": "Cruza 3 fuentes independientes (estudio académico con datos administrativos de Fonasa, proyecto de presupuesto oficial, informe oficial de listas de espera), toca decisiones de 2027 de Fonasa, prestadores públicos y privados, Isapres y laboratorios, y deja dos estimaciones deterministas nuevas (intensidad por paciente casi plana, ≈ 9,8 veces derivar vs detectar)."
   },
   "weekly_insight": {
-    "headline": "El gasto de Fonasa en cáncer GES subió 89% real en seis años, el doble que el presupuesto de Salud; 2027 prioriza derivar sobre detectar",
+    "headline": "El gasto de Fonasa en cáncer GES subió 89% real en seis años, el doble que el presupuesto de Salud; 2027 suma más a derivar que a detectar",
     "dek": "Entre 2018 y 2024, el financiamiento GES del cáncer en Fonasa pasó de $185.472 millones a $350.778 millones en pesos de 2026. Cada prestación cuesta cerca de 37% más en términos reales.",
     "dek_emphasis": "$350.778 millones",
     "key_figures": [
@@ -24,6 +24,7 @@
       "Por etapa: diagnóstico, confirmación y etapificación +109,6%; tratamiento +85,4%; seguimiento +80,2%; el tratamiento es entre 80% y 83% del financiamiento (mismo estudio).",
       "Proyecto de Presupuesto 2027, Partida 16: crece 4,7%, es 22,7% del gasto público y suma $829 mil millones adicionales; aprobado en la Tercera Subcomisión Mixta (Minsal, 19 y 21 oct).",
       "Proyecto 2027: $52.846 millones adicionales para derivaciones oncológicas y $5.387 millones para detectar a tiempo el cáncer cervicouterino, colorrectal y gástrico (Minsal, 19 oct).",
+      "Proyecto 2027: $23.501 millones para renovar equipos del Plan Nacional del Cáncer (Minsal, 19 oct: \"23.501 millones de pesos para renovar equipos del Plan Nacional del Cáncer\").",
       "Financiamiento hospitalario ligado a actividad asistencial valorizada: de 58,7% a 81,9% en 2027 (Minsal, 21 oct).",
       "Garantías GES retrasadas al 30 de junio de 2026: 68.878, 2,83% del total, 0,21 puntos menos que un año antes (Minsal, informe de listas de espera del II trimestre).",
       "Personas con garantía GES retrasada al 30 de junio de 2026: cáncer colorrectal 4.151; mama 2.614; cervicouterino 2.496; gástrico 1.471; próstata 792 (Minsal, informe de listas de espera del II trimestre, Tabla 4)."
@@ -45,12 +46,13 @@
       {
         "id": "intensidad",
         "label": "prestaciones por persona atendida, 2018–2024",
-        "value": 3.8,
+        "value": 3.62,
         "unit": "%",
-        "display": "≈ +3,8%",
-        "formula": "(1.64 / 1.58 - 1) * 100",
+        "display": "≈ +3,6%",
+        "formula": "((1564084 / 953422) / (1135798 / 717432) - 1) * 100",
         "inputs": [
-          "prestaciones por persona 1,58 → 1,64"
+          "prestaciones 1.135.798 → 1.564.084",
+          "personas atendidas 717.432 → 953.422"
         ],
         "note_ref": "n3"
       },
@@ -74,7 +76,7 @@
         "form": "columns",
         "digits": 1,
         "headline": "La cuenta del cáncer GES crece el doble que el presupuesto de Salud",
-        "subtitle": "Variación 2018–2024, %: gasto GES-Cáncer de Fonasa, presupuesto del Minsal, prestaciones y personas atendidas",
+        "subtitle": "Variación 2018–2024, %: gasto GES-Cáncer de Fonasa (real), presupuesto ajustado del Minsal (*la prensa no precisa si es real), prestaciones y personas atendidas",
         "unit": "%",
         "rows": [
           {
@@ -82,7 +84,7 @@
             "value": 89.1
           },
           {
-            "label": "Minsal",
+            "label": "Minsal*",
             "value": 42.3
           },
           {
@@ -146,9 +148,9 @@
       "reading": {
         "heading": "Lectura Alicanto",
         "paragraphs": [
-          "La cuenta del cáncer no sube porque cada paciente reciba más, sino porque cada prestación cuesta más: las prestaciones por persona crecieron apenas 3,8%.[^n3] Precio, tecnología y productividad pasan a ser las variables a gestionar, más que el volumen.",
-          "Si sigue creciendo al doble que el presupuesto, ese gasto desplazará otras prestaciones o se convertirá en deuda. Y el proyecto 2027 destina a derivaciones oncológicas adicionales 9,8 veces lo que asigna a detectar a tiempo los tres cánceres que, junto al de mama, más retrasos GES acumulan entre los oncológicos.[^n4] Para clínicas y centros oncológicos privados, esas derivaciones pueden ser demanda concreta en 2027, con un comprador que mirará el precio por prestación.",
-          "Isapres y laboratorios deberían leer la misma señal: en cáncer, la discusión pasa del acceso al costo unitario."
+          "La cuenta del cáncer sube por dos vías de peso parecido: más personas atendidas (+32,9%) y un costo promedio por prestación cerca de 37% mayor; lo que casi no cambió es cuánto recibe cada paciente: las prestaciones por persona crecieron 3,6%.[^n3]",
+          "Si sigue creciendo al doble que el presupuesto, ese gasto desplazará otras prestaciones o se convertirá en deuda. Y el proyecto 2027 destina a derivaciones oncológicas adicionales 9,8 veces lo que asigna, en un monto que el Minsal no califica como adicional, a detectar a tiempo los tres cánceres que, junto al de mama, más retrasos GES acumulan entre los oncológicos.[^n4] Para clínicas y centros oncológicos privados, esas derivaciones pueden ser demanda concreta en 2027, con un comprador que mirará el precio por prestación.",
+          "Isapres y laboratorios podrían leer la misma señal: en cáncer, la discusión pasa del acceso al costo unitario."
         ]
       }
     },
@@ -181,12 +183,12 @@
       {
         "id": "n3",
         "kind": "estimate",
-        "text": "Estimación Alicanto: 1,64 / 1,58 − 1 ≈ 3,8%. Que el alza venga del costo de cada prestación es aritmética; el estudio no separa cuánto se debe a precios, terapias nuevas, mayor complejidad o menor productividad."
+        "text": "Estimación Alicanto: (1.564.084 / 953.422) / (1.135.798 / 717.432) − 1 ≈ 3,6%. El costo promedio sube por razones que el estudio no separa: precios, terapias nuevas, mayor complejidad o menor productividad."
       },
       {
         "id": "n4",
         "kind": "estimate",
-        "text": "Estimación Alicanto: 52.846 / 5.387 ≈ 9,8. Compara solo las dos líneas oncológicas que el Minsal detalló; no es el gasto total en detección ni en tratamiento, y el Minsal no informa a qué prestadores irán las derivaciones."
+        "text": "Estimación Alicanto: 52.846 / 5.387 ≈ 9,8. Compara solo las dos líneas oncológicas que el Minsal detalló; no es el gasto total en detección ni en tratamiento, y el Minsal no informa a qué prestadores irán las derivaciones. El Minsal llama 'adicionales' solo a los $52.846 millones; la cifra de detección no se describe como incremento, y la comparación excluye los $23.501 millones para equipos del Plan Nacional del Cáncer."
       },
       {
         "id": "n5",
@@ -246,8 +248,8 @@
     ],
     "id": "weekly-insight:2026-11-02:cancer-ges-costo-unitario",
     "schema_version": "weekly_insight_a_v1",
-    "title": "El gasto de Fonasa en cáncer GES subió 89% real en seis años, el doble que el presupuesto de Salud; 2027 prioriza derivar sobre detectar",
-    "insight_title": "El gasto de Fonasa en cáncer GES subió 89% real en seis años, el doble que el presupuesto de Salud; 2027 prioriza derivar sobre detectar",
+    "title": "El gasto de Fonasa en cáncer GES subió 89% real en seis años, el doble que el presupuesto de Salud; 2027 suma más a derivar que a detectar",
+    "insight_title": "El gasto de Fonasa en cáncer GES subió 89% real en seis años, el doble que el presupuesto de Salud; 2027 suma más a derivar que a detectar",
     "event_date": "2026-10-21",
     "freshness_anchor_date": "2026-11-02",
     "anchor_kind": "monday",
@@ -312,5 +314,5 @@
       "format": "weekly_insight_a_v1"
     }
   },
-  "evidence_numbers_count": 41
+  "evidence_numbers_count": 42
 }
