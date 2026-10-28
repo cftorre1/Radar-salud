@@ -98,6 +98,34 @@ def test_appealed_instruction_named_right_after_contra(subject, relation, target
     assert [(r["relation"], r["target_id"]) for r in extract_relations(subject, "Resolución Exenta IF/N°1")] == [(relation, target)]
 
 
+@pytest.mark.parametrize("subject,relation", [
+    ("Ha lugar a la suspensión transitoria de los efectos de la Circular IF/N°534.", "suspende"),
+    ("Acoge la solicitud de suspensión temporal de los efectos de la Circular IF/N°534.", "suspende"),
+    ("Rechaza la solicitud de suspensión provisoria de los efectos de la Circular IF/N°534.", "rechaza_suspension"),
+    ("No ha lugar a la suspensión transitoria de los efectos de la Circular IF/N°534.", "rechaza_suspension"),
+    ("Se suspenden los efectos de la Circular IF/N°534 hasta que se resuelvan los recursos de reposición.", "suspende"),
+    ("Se suspende transitoriamente los efectos de la Circular IF/N°534.", "suspende"),
+])
+def test_fourth_review_recall(subject, relation):
+    assert [(r["relation"], r["target_id"]) for r in extract_relations(subject, "Resolución Exenta IF/N°1")] == [
+        (relation, "Circular IF/N°534")]
+
+
+def test_narrow_rule_accepts_adjective_after_suspension():
+    rels = extract_relations("Acoge la suspensión transitoria de la Circular IF/N°521 para tres Isapres.",
+                             "Resolución Exenta IF/N°5382", SIS)
+    assert [(r["relation"], r["target_id"]) for r in rels] == [("suspende", "Circular IF/N°521")]
+
+
+@pytest.mark.parametrize("subject", [
+    "No se suspenden los efectos de la Circular IF/N°534 mientras se resuelven los recursos.",
+    "Instruye a las isapres y se suspenden los efectos de la Circular IF/N°534.",
+    "Rechaza el recurso, por lo que no se suspenden los efectos de la Circular IF/N°534.",
+])
+def test_se_suspenden_only_clause_initial_and_never_negated(subject):
+    assert extract_relations(subject, "Resolución Exenta IF/N°1") == []
+
+
 def test_acoge_gap_never_crosses_a_rejection():
     rels = extract_relations("Acoge parcialmente el recurso y rechaza la solicitud de suspender los efectos de la "
                              "Circular IF/N°534 en lo demás.", "Resolución Exenta IF/N°3")

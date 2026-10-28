@@ -39,11 +39,14 @@ _ID = re.compile(
     r"(?:(IF|IP|SS)\s*[/\-]?\s*)?N?\s*[°º]?\s*(\d[\d\.]*)", re.I)
 _TARGET_KINDS = ("circular", "oficio circular")
 _EFFECTS = r"(?:los\s+)?efectos\s+de"
+_ADJ = r"(?:(?:transitoria|temporal|provisoria)\s+)?"  # "suspensión transitoria de los efectos de"
 # The appealed instruction must be named right after "contra (de) (la|el)".
 _AGAINST = (r"[^;]{0,300}?\b(?:en\s+)?contra\s+(?:de\s+)?(?:(?:la|el)\s+)?"
             r"(?=(?:Oficio\s+Circular|Circular)\s)")
 
 # A gap that never crosses another decision verb ("Acoge … y rechaza la solicitud de suspender …").
+_SE_SUSPENDE = r"(?:se\s+)?susp[eé]nd(?:e|en|ase|ense)"
+_START_ONLY = {_SE_SUSPENDE}
 _STOP = r"rechaz|acoge|no\s|deneg|ha\s+lugar|desist|retir|renunci|inadmisib|archiv"
 _GAP = r"(?:(?!\b(?:" + _STOP + r"))[^;])"
 # The request noun follows the verb within a few words ("Acoge solicitud de …", "Ha lugar, en parte,
@@ -57,15 +60,18 @@ _SUSPEND_INFINITIVE = (r"^(?:[\s,]+(?!(?:" + _STOP + r"))\S+){0,5}?[\s,]+(?:la\s
 # "… y deroga …" once a finite main verb opened the clause); never negated, never an infinitive.
 # "de suspender" / "solicitud de suspensión" only with acoge / ha lugar (suspende) or rechaza.
 _RULES = (
-    ("rechaza_suspension", r"no\s+ha\s+lugar", r"^[^;]{0,40}?\bsuspensi[oó]n\s+de\s+" + _EFFECTS),
-    ("suspende", r"ha\s+lugar", r"^" + _GAP + r"{0,40}?\bsuspensi[oó]n\s+de\s+" + _EFFECTS),
+    ("rechaza_suspension", r"no\s+ha\s+lugar", r"^[^;]{0,40}?\bsuspensi[oó]n\s+" + _ADJ + r"de\s+" + _EFFECTS),
+    ("suspende", r"ha\s+lugar", r"^" + _GAP + r"{0,40}?\bsuspensi[oó]n\s+" + _ADJ + r"de\s+" + _EFFECTS),
     ("suspende", r"ha\s+lugar", _SUSPEND_INFINITIVE),
     ("suspende", r"susp[eé]nd(?:e|ase|ense)",
      r"^\s+(?:(?:transitoria|temporal|provisoria)mente\s+)?" + _EFFECTS),
-    ("suspende", r"acoge(?:\s+parcialmente)?", r"^" + _GAP + r"{0,60}?\bsuspensi[oó]n\s+de\s+" + _EFFECTS),
+    # "Se suspenden los efectos de …": only where it opens the clause.
+    ("suspende", _SE_SUSPENDE,
+     r"^\s+(?:(?:transitoria|temporal|provisoria)mente\s+)?" + _EFFECTS),
+    ("suspende", r"acoge(?:\s+parcialmente)?", r"^" + _GAP + r"{0,60}?\bsuspensi[oó]n\s+" + _ADJ + r"de\s+" + _EFFECTS),
     ("suspende", r"acoge(?:\s+parcialmente)?", _SUSPEND_INFINITIVE),
     ("modifica_por_recurso", r"acoge(?:\s+parcialmente)?", r"^[^;]{0,40}?\brecursos?\b" + _AGAINST),
-    ("rechaza_suspension", r"rechaza", r"^[^;]{0,40}?\bsolicitud(?:es)?\s+de\s+suspensi[oó]n\s+de\s+" + _EFFECTS),
+    ("rechaza_suspension", r"rechaza", r"^[^;]{0,40}?\bsolicitud(?:es)?\s+de\s+suspensi[oó]n\s+" + _ADJ + r"de\s+" + _EFFECTS),
     ("rechaza_suspension", r"rechaza", _SUSPEND_INFINITIVE),
     ("confirma", r"rechaza(?:\s+en\s+todas\s+sus\s+partes)?", r"^[^;]{0,40}?\brecursos?\b" + _AGAINST),
     ("modifica", r"modif[ií]ca(?:se)?", r"^"),
@@ -80,7 +86,7 @@ _GATED_OPENER = re.compile(r"^\s*(?:modif[ií]ca(?:se)?|d[eé]ja(?:se)?\s+sin\s+
 # opened by acoge / ha lugar, the instruction named immediately after "suspensión".
 _NARROW_SUSPENSION = re.compile(
     r"^\s*(?:acoge(?:\s+parcialmente)?|ha\s+lugar)\b" + _GAP + r"{0,40}?"
-    r"\b(?:la\s+)?(?:solicitud\s+de\s+)?suspensi[oó]n\s+(?:de\s+(?:los\s+efectos\s+de\s+)?)?"
+    r"\b(?:la\s+)?(?:solicitud\s+de\s+)?suspensi[oó]n\s+" + _ADJ + r"(?:de\s+(?:los\s+efectos\s+de\s+)?)?"
     r"(?:(?:la|el)\s+)?(?=(?:Oficio\s+Circular|Circular)\s)", re.I)
 # Only acts whose subject IS that verb may modify/repeal/revoke (Resoluciones, or a Circular
 # whose own subject opens with the verb).
@@ -175,6 +181,8 @@ def extract_relations(subject: str, own_title: str = "", issuer: str | None = No
                 continue
             main = re.compile(r"(?:^\s*|(?P<comma>,)\s*y\s+|\sy\s+)(?P<v>" + verb + r")\b", re.I)
             for m in main.finditer(clause):
+                if verb in _START_ONLY and clause[:m.start("v")].strip():
+                    continue  # clause-initial form only
                 if m.start("v") > 0 and not m.group("comma") and not opened:
                     continue  # " y VERB" only after a comma or inside a clause a finite verb opened
                 if _NEGATED.search(clause[:m.start("v")]):
