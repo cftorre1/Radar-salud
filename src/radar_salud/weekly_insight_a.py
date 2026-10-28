@@ -354,23 +354,35 @@ def verify_candidate(weekly: dict, evidence: dict, anchor: date) -> dict:
         for token, value, decimals in numbers_in(fig):
             if not number_traces(value, decimals, pool):
                 errors.append(f"key_figure_not_in_evidence:{token}")
-    estimate_values = [abs(float(e.get("value"))) for e in weekly.get("estimates") or []
-                       if isinstance(e, dict) and isinstance(e.get("value"), (int, float))]
+    # Estimates: formula operands and inputs trace to the evidence, or to an EARLIER estimate's
+    # recomputed value — never to the estimate's own value (that would let '3717' prove '3717').
+    earlier: list[float] = []
     for est in weekly.get("estimates") or []:
         if not isinstance(est, dict):
+            errors.append("estimate_not_an_object")
             continue
         formula = str(est.get("formula") or "")
-        if _eval_formula(formula) is None:
+        computed = _eval_formula(formula)
+        if computed is None:
             errors.append(f"estimate_formula_invalid:{est.get('id')}")
             continue
+        allowed_pool = pool + earlier
         for token in re.findall(r"\d+(?:\.\d+)?", formula):
             value = float(token)
-            if value in (100.0, 1.0, 0.0) or number_traces(value, len(token.split(".")[1]) if "." in token else 0, pool + estimate_values):
+            if value in (100.0, 1.0, 0.0) or number_traces(value, len(token.split(".")[1]) if "." in token else 0, allowed_pool):
                 continue
             # rates written as factors (0.877 = 1 − 12,3%) trace through their complement
             if 0 < value < 1 and number_traces(round((1 - value) * 100, 6), 1, pool):
                 continue
             errors.append(f"estimate_input_not_in_evidence:{est.get('id')}:{token}")
+        for text in est.get("inputs") or []:
+            for token, value, decimals in numbers_in(str(text)):
+                if not number_traces(value, decimals, allowed_pool):
+                    errors.append(f"estimate_inputs_not_in_evidence:{est.get('id')}:{token}")
+        for token, value, decimals in numbers_in(str(est.get("display") or "")):
+            if not number_traces(value, decimals, [abs(computed)] + allowed_pool):
+                errors.append(f"estimate_display_not_traced:{est.get('id')}:{token}")
+        earlier.append(abs(computed))
     allowed = set(evidence.get("allowed_urls") or [])
     if not weekly.get("source_refs") or any(u not in allowed for u in weekly["source_refs"]):
         errors.append("sources_outside_evidence")
@@ -423,8 +435,30 @@ def estimate_run_cost(evidence: dict, routes: dict[str, str] | None = None, *, d
 
 
 def _default_model_call(prompt, **kw):
-    from .openai_runtime import call_json  # lazy: the openai package is only needed for live runs
-    return call_json(prompt, **kw)
+    from . import openai_runtime as rt  # lazy: the openai package is only needed for live runs
+    started = datetime.now(timezone.utc).isoformat()
+    try:
+        return rt.call_json(prompt, **kw)
+    except Exception as exc:
+        # call_json records billed calls in the ledger before parsing; attach what this call cost
+        # so a parse failure still counts in the run's total_cost_usd.
+        rows = [r for r in rt._load() if str(r.get("at") or "") >= started and r.get("feature") == kw.get("feature")]
+        exc.estimated_cost_usd = round(sum(float(r.get("estimated_cost_usd") or 0) for r in rows), 6)
+        exc.response_id = rows[-1].get("response_id") if rows else None
+        raise
+
+
+def _default_monthly_budget(root: Path = ROOT) -> dict | None:
+    """Month-to-date spend vs the paced monthly budget (ai_pricing); None if it cannot be read."""
+    try:
+        from .ai_pricing import month_spend_usd, paced_budget_usd
+        return {"spent_usd": float(month_spend_usd(root)), "paced_budget_usd": float(paced_budget_usd())}
+    except Exception:
+        return None
+
+
+# Overridable in tests; in weekly_insight_a only (global gates in openai_runtime are unchanged).
+monthly_budget: Callable[[], dict | None] = _default_monthly_budget
 
 
 def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path = ROOT,
@@ -452,10 +486,23 @@ def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path =
     def call(route: str, prompt: str, feature: str, max_out: int):
         nonlocal spent
         model = routes[route]
-        if spent + worst_case_cost(model, prompt, max_out) > max_run_usd:
+        worst = worst_case_cost(model, prompt, max_out)
+        if spent + worst > max_run_usd:
             raise RuntimeError("weekly_run_cap_would_be_exceeded")
-        result = model_call(prompt, feature=feature, preferred_model=model, allow_luna_fallback=False,
-                            max_output_tokens=max_out)
+        monthly = monthly_budget()
+        if monthly and monthly["spent_usd"] + worst > monthly["paced_budget_usd"]:
+            raise RuntimeError("weekly_monthly_paced_budget_would_be_exceeded")
+        try:
+            result = model_call(prompt, feature=feature, preferred_model=model, allow_luna_fallback=False,
+                                max_output_tokens=max_out)
+        except Exception as exc:
+            # A parse failure after a completed call is still paid: count it in the run total.
+            paid = float(getattr(exc, "estimated_cost_usd", 0) or 0)
+            if paid:
+                spent += paid
+                calls.append({"feature": feature, "model": model, "cost_usd": paid, "response_id":
+                              getattr(exc, "response_id", None), "error": type(exc).__name__})
+            raise
         cost = float(getattr(result, "estimated_cost_usd", 0) or 0)
         spent += cost
         calls.append({"feature": feature, "model": getattr(result, "model", model), "cost_usd": cost,
@@ -466,10 +513,11 @@ def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path =
         drafted = call(DRAFT_ROUTE, draft_prompt(evidence, anchor), "weekly_insight_a_draft", DRAFT_MAX_OUTPUT)
     except Exception as exc:  # budget, provider or parse error: nothing is published
         return {**base, "status": "generation_error", "error": f"{type(exc).__name__}:{exc}"[:300],
-                "weekly_insight": None, "model_calls": calls}
+                "weekly_insight": None, "model_calls": calls, "total_cost_usd": round(spent, 6)}
     weekly = normalize_draft(drafted.output, evidence, anchor)
     verification = verify_candidate(weekly, evidence, anchor)
-    out = {**base, "candidate": weekly, "verification": verification, "model_calls": calls}
+    out = {**base, "candidate": weekly, "verification": verification, "model_calls": calls,
+           "total_cost_usd": round(spent, 6)}
     if verification["verdict"] != "PASS":
         return {**out, "status": "deterministic_fail", "weekly_insight": None,
                 "review": {"verdict": "NOT_RUN", "reason": "deterministic_fail"}}
@@ -478,7 +526,7 @@ def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path =
         review = reviewed.output if isinstance(reviewed.output, dict) else {}
     except Exception as exc:
         return {**out, "status": "review_error", "weekly_insight": None, "model_calls": calls,
-                "review": {"verdict": "NOT_RUN", "reason": f"{type(exc).__name__}:{exc}"[:300]}}
+                "total_cost_usd": round(spent, 6), "review": {"verdict": "NOT_RUN", "reason": f"{type(exc).__name__}:{exc}"[:300]}}
     blockers = [i for i in review.get("issues") or [] if isinstance(i, dict) and i.get("severity") == "blocker"]
     review_model = calls[-1]["model"]
     independent = review_model != calls[0]["model"]

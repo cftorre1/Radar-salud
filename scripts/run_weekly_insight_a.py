@@ -47,6 +47,19 @@ def write_public(result: dict, approved: dict, as_of: date) -> dict:
     return out
 
 
+PAID_FAIL_STATUSES = {"deterministic_fail", "review_fail", "review_error"}
+
+
+def paid_fail_candidate(anchor: date, root: Path = ROOT) -> dict | None:
+    """A FAIL candidate already paid for this Monday: backstop runs must not pay again."""
+    record = read(root / "data/weekly_insight/candidates" / f"{anchor.isoformat()}-candidate.json", None)
+    if not isinstance(record, dict):
+        return None
+    if record.get("status") in PAID_FAIL_STATUSES or float(record.get("total_cost_usd") or 0) > 0:
+        return record
+    return None
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--as-of", type=date.fromisoformat, default=None)
@@ -78,6 +91,13 @@ def main() -> int:
     if current and current.get("anchor_kind") == "monday" and current.get("freshness_anchor_date") == anchor.isoformat() and not args.force:
         print(json.dumps({"status": "already_published_for_monday", "id": current.get("id")}, ensure_ascii=False))
         write_public({"status": "skipped_already_published"}, approved, as_of)
+        return 0
+    failed = paid_fail_candidate(anchor)
+    if failed and not args.force:
+        print(json.dumps({"status": "skipped_fail_candidate_exists", "anchor": anchor.isoformat(),
+                          "candidate_status": failed.get("status"), "hint": "use --force to pay for a new attempt"},
+                         ensure_ascii=False))
+        write_public({"status": "skipped_fail_candidate_exists"}, approved, as_of)
         return 0
     result = run_weekly_a(signals, as_of=as_of, previous=approved)
     written = publish(result)

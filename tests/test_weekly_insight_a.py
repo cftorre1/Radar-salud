@@ -179,10 +179,16 @@ def test_topic_selection_uses_14_days_before_monday_and_skips_last_week():
 
 # --- draft for Monday 2-nov-2026 ------------------------------------------------------------
 
-def test_november_2_draft_passes_deterministic_rules_but_stays_on_hold():
+def evidence_for(signals):
+    return gen.build_evidence({"signal": signals[0], "related": signals[1:]})
+
+
+def test_november_2_draft_passes_deterministic_rules_but_stays_on_hold(pipeline):
     payload = draft()
     weekly = payload["weekly_insight"]
-    assert payload["verification"]["verdict"] == "PASS"
+    # Re-run the gate on the stored draft instead of trusting its stored verdict.
+    verification = gen.verify_candidate(weekly, evidence_for(pipeline["signals"]), ANCHOR)
+    assert verification["verdict"] == "PASS", verification["errors"]
     assert presentation_a_errors(weekly) == []
     assert weekly["freshness_anchor_date"] == "2026-11-02" and date(2026, 11, 2).weekday() == 0
     assert payload["audit"]["verdict"] == "HOLD" and weekly["editorial_review_pass"] is False
@@ -191,6 +197,96 @@ def test_november_2_draft_passes_deterministic_rules_but_stays_on_hold():
 
 
 # --- rule 3: traceability -------------------------------------------------------------------
+
+def normalized(pipeline, raw=None):
+    evidence = evidence_for(pipeline["signals"])
+    return gen.normalize_draft(deepcopy(raw or pipeline["raw"]), evidence, ANCHOR), evidence
+
+
+def verify_errors(weekly, evidence):
+    result = gen.verify_candidate(weekly, evidence, ANCHOR)
+    assert result["verdict"] == "FAIL"
+    return result["errors"]
+
+
+def test_rule3_self_referencing_estimate_fails(pipeline):
+    weekly, evidence = normalized(pipeline)
+    weekly["estimates"].append({"id": "own", "label": "x", "value": 3717, "formula": "3717", "inputs": [],
+                                "note_ref": "n2"})
+    weekly["essay"]["reading"]["paragraphs"].append("Serían 3.717 personas.")
+    assert "estimate_input_not_in_evidence:own:3717" in verify_errors(weekly, evidence)
+
+
+def test_rule3_estimate_may_use_an_earlier_estimate_but_not_a_later_one(pipeline):
+    weekly, evidence = normalized(pipeline)
+    weekly["estimates"].append({"id": "chain", "label": "x", "value": 618.0, "formula": "309 * 2", "inputs": [],
+                                "note_ref": "n2"})
+    errors = gen.verify_candidate(weekly, evidence, ANCHOR)["errors"]
+    assert not any(":chain:" in e for e in errors)  # 309 = earlier estimate comunas_actuales
+    weekly["estimates"].insert(0, weekly["estimates"].pop())  # now it comes before 309 is derived
+    assert "estimate_input_not_in_evidence:chain:309" in verify_errors(weekly, evidence)
+
+
+def test_rule3_number_only_in_estimate_inputs_or_display_fails(pipeline):
+    weekly, evidence = normalized(pipeline)
+    weekly["estimates"][0]["inputs"].append("4.321 comunas rurales")
+    weekly["essay"]["reading"]["paragraphs"].append("Hay 4.321 comunas rurales.")
+    errors = verify_errors(weekly, evidence)
+    assert "estimate_inputs_not_in_evidence:cobertura_red:4.321" in errors
+    assert "number_untraced:essay.reading:4.321" in errors  # inputs are not a trace origin
+    weekly, evidence = normalized(pipeline)
+    weekly["estimates"][1]["display"] = "5.555"
+    weekly["dek"] += " Unas 5.555."
+    errors = verify_errors(weekly, evidence)
+    assert "estimate_display_not_traced:comunas_actuales:5.555" in errors
+    assert "number_untraced:dek:5.555" in errors
+    assert "number_untraced:estimate.comunas_actuales.display:5.555" in errors
+
+
+@pytest.mark.parametrize("where,mutate", [
+    ("chart.iniciativas.subtitle", lambda w: w["charts"][0].update(subtitle="Iniciativas, 47% de las analizadas")),
+    ("chart.iniciativas.headline", lambda w: w["charts"][0].update(headline="Solo 47 iniciativas miran el envejecimiento")),
+    ("chart.iniciativas.row_label", lambda w: w["charts"][0]["rows"][0].update(label="Todas (847)")),
+    ("chart.red_cuidados.partial_label", lambda w: w["charts"][1]["rows"][1].update(partial_label="meta a 47 meses")),
+    ("chart.iniciativas.source", lambda w: w["charts"][0].update(source="Estudio con 47 expertos.")),
+    ("notes", lambda w: w["notes"][0].update(text=w["notes"][0]["text"] + " Margen de error 47%.")),
+    ("insight_teaser", lambda w: w.update(insight_teaser="47% de los mayores dice no tener apoyo.")),
+    ("sources.label", lambda w: w["sources"][0].update(label="La Tercera · 47 claves del envejecimiento")),
+    ("sources.role", lambda w: w["sources"][1].update(role="Prensa: 47 comunas nuevas.")),
+    ("headline", lambda w: w.update(headline="47% sin apoyo")),
+    ("watch", lambda w: w["watch"][0].update(explanation=w["watch"][0]["explanation"] + " Hay 47 casos.")),
+])
+def test_rule3_invented_number_in_any_displayed_field_fails(pipeline, where, mutate):
+    weekly, evidence = normalized(pipeline)
+    mutate(weekly)
+    errors = verify_errors(weekly, evidence)
+    assert any(e.startswith(f"number_untraced:{where}:") and e.endswith(("47", "847")) for e in errors), errors
+    assert reviewed_weekly({"audit": {"verdict": "PASS", "editorial_business_review_pass": True},
+                            "weekly_insight": weekly}, ANCHOR) is None
+
+
+def test_rule3_short_press_dates_are_not_quantities():
+    assert numbers_in("La Tercera (23 oct) y Pulso, 9-10 oct.; 47 mayores") == [("47", 47.0, 0)]
+
+
+def test_parse_failed_call_cost_counts_in_run_total(pipeline):
+    class ParseError(RuntimeError):
+        estimated_cost_usd, response_id = 0.42, "resp-x"
+
+    def broken(prompt, **kw):
+        raise ParseError("model_call_failed:JSONDecodeError")
+    result = gen.run_weekly_a(pipeline["signals"], as_of=ANCHOR, model_call=broken)
+    assert result["status"] == "generation_error" and result["total_cost_usd"] == pytest.approx(0.42)
+    assert result["model_calls"][0]["cost_usd"] == pytest.approx(0.42)
+
+
+def test_monthly_paced_budget_blocks_call_before_spending(pipeline, monkeypatch):
+    monkeypatch.setattr(gen, "monthly_budget", lambda: {"spent_usd": 4.95, "paced_budget_usd": 5.0})
+    fake = FakeModels(pipeline["raw"], PASS_REVIEW)
+    result = gen.run_weekly_a(pipeline["signals"], as_of=ANCHOR, model_call=fake)
+    assert result["status"] == "generation_error" and "monthly_paced_budget" in result["error"]
+    assert fake.calls == []
+
 
 def test_rule3_number_parsing_ignores_dates_years_and_normative_ids():
     found = [t for t, _, _ in numbers_in("La Ley 21.822 rige desde el 1 de junio de 2027; Circular 3931 e IF/N°10670: 5.155.495 y −12,3%")]
@@ -293,15 +389,23 @@ def test_legacy_friday_anchor_keeps_its_own_rule():
 
 def test_weekly_insight_workflow_runs_monday_on_staging_writer():
     text = (ROOT / ".github/workflows/weekly-insight.yml").read_text(encoding="utf-8")
-    assert "cron: '30 9 * * 1'" in text
+    for cron in ("cron: '30 9 * * 1'", "cron: '45 11 * * 1'", "cron: '45 15 * * 1'"):
+        assert cron in text
     assert "group: alicanto-staging-writer" in text and "ref: staging" in text
     assert "scripts/run_weekly_insight_a.py" in text and "tests/test_reviewer.py" in text
     assert "git pull --rebase origin staging" in text and "staging-preview.yml" in text
     assert "web/data/free_value.json" in text and "data/weekly_insight" in text
     for forbidden in ("ref: main", "origin main", "HEAD:main", "--ref main"):
         assert forbidden not in text
+    # Approved/public files only on success; candidates + ledger always; key scoped to generation.
+    assert "if: always()" in text and "job.status == 'success'" in text
+    key_lines = [i for i, line in enumerate(text.splitlines()) if "OPENAI_API_KEY:" in line]
+    generate = next(i for i, line in enumerate(text.splitlines()) if "- name: Generate" in line)
+    assert len(key_lines) == 1 and generate < key_lines[0] < generate + 4  # only the generation step
+    assert "git rebase --abort" in text
     v2 = (ROOT / ".github/workflows/weekly-insight-v2.yml").read_text(encoding="utf-8")
-    assert "schedule:" not in v2
+    assert "schedule:" not in v2 and "push:" not in v2 and "workflow_dispatch" in v2
+    assert "group: alicanto-staging-writer" in v2
 
 
 def test_legacy_insight_bridges_to_the_next_monday_only():
@@ -311,3 +415,23 @@ def test_legacy_insight_bridges_to_the_next_monday_only():
     assert freshness_gate(sig, date(2026, 11, 1))["eligible"]
     assert not freshness_gate(sig, date(2026, 11, 2))["eligible"]
     assert not freshness_gate({**sig, "expires_on": "2026-11-09"}, date(2026, 11, 1))["eligible"]
+    # Sunset: the bridge is a one-off for 2-nov; a later Friday insight cannot stretch to Monday.
+    later = {"event_date": "2026-11-13", "freshness_anchor_date": "2026-11-13", "expires_on": "2026-11-23"}
+    assert not freshness_gate(later, date(2026, 11, 21))["eligible"]
+
+
+def test_runner_skips_a_paid_fail_candidate_unless_forced(tmp_path):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("run_weekly_insight_a", ROOT / "scripts/run_weekly_insight_a.py")
+    runner = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(runner)
+    folder = tmp_path / "data/weekly_insight/candidates"
+    folder.mkdir(parents=True)
+    assert runner.paid_fail_candidate(ANCHOR, tmp_path) is None
+    path = folder / "2026-11-02-candidate.json"
+    path.write_text(json.dumps({"status": "generation_error", "total_cost_usd": 0}))
+    assert runner.paid_fail_candidate(ANCHOR, tmp_path) is None  # nothing paid: a backstop may retry
+    for record in ({"status": "review_fail", "total_cost_usd": 0.3}, {"status": "deterministic_fail"},
+                   {"status": "generation_error", "total_cost_usd": 0.2}):
+        path.write_text(json.dumps(record))
+        assert runner.paid_fail_candidate(ANCHOR, tmp_path)["status"] == record["status"]

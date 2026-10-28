@@ -1,16 +1,13 @@
 name: Alicanto Weekly Insight V2
+# RETIRED (Dirección 27-oct-2026): the Monday format-A generator in weekly-insight.yml replaces it.
+# No schedule and no push trigger; manual dispatch kept only for comparison runs.
 on:
   workflow_dispatch:
-  # Daily schedule retired (Dirección 27-oct-2026): the Monday format-A generator in
-  # weekly-insight.yml replaces it. Manual dispatch kept for comparison runs.
-  push:
-    branches: [staging]
-    paths:
-      - '.github/run-weekly-insight-v2-now'
 permissions:
   contents: write
 concurrency:
-  group: weekly-insight-v2
+  # Same writer group as every other job that pushes to staging (no concurrent writers).
+  group: alicanto-staging-writer
   cancel-in-progress: false
 jobs:
   deep-intelligence:
