@@ -284,7 +284,9 @@ def test_legacy_friday_anchor_keeps_its_own_rule():
     w = approved_weekly()
     assert "anchor_kind" not in w
     assert freshness_gate(w, date(2026, 10, 29))["eligible"]
-    assert not freshness_gate(w, date(2026, 10, 30))["eligible"]
+    # Bridged until Monday 2-nov by Dirección's switch to Monday insights (27-oct-2026).
+    assert freshness_gate(w, date(2026, 11, 1))["eligible"]
+    assert not freshness_gate(w, date(2026, 11, 2))["eligible"]
 
 
 # --- schedule -------------------------------------------------------------------------------
