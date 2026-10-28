@@ -205,7 +205,7 @@ def editorial_topics(items, as_of, activation=None):
         topics.append({"topic_id": hashlib.sha256(topic.encode()).hexdigest()[:20], "representative_url": row["url"], "title": row["title"], "published_at": row["published_at"], "priority": row["classification"]["priority"],
                        "related_discovered_urls": [other["url"] for other in selected if (other.get("event_id") or other["url"]) == topic],
                        "selection_basis": "discovery_priority_not_editorial_publication_score", "status": "pending_editorial", "publication_ready": False,
-                       "executive_segments": executive_segments(row), "source_publication_activated": bool((activation or {}).get(row["source"])),
+                       "executive_segments": executive_segments(row), "source_publication_activated": bool((activation or {}).get(row.get("source"))),
                        "chile_transfer": "hypothesis_only", "independence_groups": ["WHO_UN_SYSTEM"], "requires": ["verified_business_consequence", "independent_corroboration", "rights_review", "editorial_approval"]})
     return topics
 
