@@ -1,0 +1,285 @@
+{
+  "status": "candidate_draft",
+  "anchor_date": "2026-11-02",
+  "expires_on": "2026-11-09",
+  "topic_choice": {
+    "chosen": "Chile, país poco preparado para envejecer (La Tercera, 23 oct) + 3 señales de contexto con cifras",
+    "rejected": "Tribunal Tributario permite a Nueva Masvida descontar costas (DF, 22 oct)",
+    "why": "Envejecimiento: 4 fuentes independientes en el historial con cifras verificables (82%, 82/814, $2.624 millones, 4,7%, 24 y 333/345 comunas, ~60%) que permiten 2 gráficos y estimaciones deterministas. Tribunal Tributario: una sola nota de prensa, un fallo de primera instancia en apelación, con 3 cifras ($600 millones; 8 fallos, 6 a favor del SII y 2 en contra), insuficiente para gráficos sin forzar series ajenas."
+  },
+  "weekly_insight": {
+    "headline": "Cuidados para mayores: la red pública casi completa su mapa, pero 82% dice no tener apoyo y la brecha pasa a ser de intensidad",
+    "dek": "En una encuesta con datos de 2025, el 82% de los mayores percibe poco o ningún apoyo ante enfermedades crónicas o pérdida de funcionalidad. La Ley 21.822, que obliga a dictar una política de envejecimiento, rige desde junio de 2027.",
+    "dek_emphasis": "el 82% de los mayores",
+    "key_figures": [
+      "82% de las personas mayores percibe poco o ningún apoyo ante pérdida de funcionalidad o enfermedades crónicas importantes (octava Encuesta Nacional sobre Inclusión y Exclusión Social de las Personas Mayores, datos 2025; La Tercera, 23 oct).",
+      "Ley 21.822 publicada: rige desde el 1 de junio de 2027 y desde esa fecha hay un máximo de seis meses para dictar la Política Nacional de Envejecimiento (La Tercera, 23 oct).",
+      "Red Local de Apoyos y Cuidados: aumento anunciado de $2.624 millones (4,7%), que permitiría sumar 24 comunas y llegar a 333 de las 345 previstas por ley (Desarrollo Social, vía La Tercera, 8 oct).",
+      "Estudio Centro UC de Estudios de Vejez y Envejecimiento e ILC: 82 iniciativas públicas con incidencia en envejecimiento entre 814 analizadas; 1 de 24 iniciativas laborales comparables y 0 de 9 de inclusión digital consideran el envejecimiento (La Tercera, 9 oct).",
+      "Acalis, Senior Suites y Hogares Alemanes concentran cerca del 60% de la oferta de residencias para adultos mayores; Inversiones Trentino (Angelini) y Rentas y Desarrollo Aconcagua (Salfacorp) notificaron a la FNE una asociación con Villa Soleares (Pulso, 10 oct)."
+    ],
+    "estimates": [
+      {
+        "id": "cobertura_red",
+        "label": "comunas de la red sobre las previstas por ley, con el aumento",
+        "unit": "%",
+        "display": "≈ 97%",
+        "formula": "333 / 345 * 100",
+        "inputs": [
+          "333 comunas (meta anunciada)",
+          "345 comunas previstas por ley"
+        ],
+        "note_ref": "n2",
+        "value": 96.52
+      },
+      {
+        "id": "comunas_actuales",
+        "label": "comunas de la red antes del aumento (deducido)",
+        "unit": "comunas",
+        "display": "309",
+        "formula": "333 - 24",
+        "inputs": [
+          "333 comunas con el aumento",
+          "24 comunas nuevas"
+        ],
+        "note_ref": "n2",
+        "value": 309.0
+      },
+      {
+        "id": "iniciativas_total",
+        "label": "iniciativas públicas con incidencia en envejecimiento",
+        "unit": "%",
+        "display": "10,1%",
+        "formula": "82 / 814 * 100",
+        "inputs": [
+          "82 iniciativas",
+          "814 analizadas"
+        ],
+        "note_ref": "n5",
+        "value": 10.07
+      },
+      {
+        "id": "iniciativas_laborales",
+        "label": "iniciativas laborales que consideran edades avanzadas",
+        "unit": "%",
+        "display": "4,2%",
+        "formula": "1 / 24 * 100",
+        "inputs": [
+          "1 iniciativa",
+          "24 laborales comparables"
+        ],
+        "note_ref": "n5",
+        "value": 4.17
+      },
+      {
+        "id": "iniciativas_digitales",
+        "label": "iniciativas de inclusión digital que consideran el envejecimiento",
+        "unit": "%",
+        "display": "0%",
+        "formula": "0 / 9 * 100",
+        "inputs": [
+          "0 iniciativas",
+          "9 de inclusión digital"
+        ],
+        "note_ref": "n5",
+        "value": 0.0
+      }
+    ],
+    "charts": [
+      {
+        "id": "iniciativas",
+        "form": "columns",
+        "digits": 1,
+        "headline": "Solo una de cada diez iniciativas públicas mira el envejecimiento",
+        "subtitle": "Iniciativas con incidencia en envejecimiento, % de las analizadas en cada grupo",
+        "unit": "%",
+        "rows": [
+          {
+            "label": "Todas (814)",
+            "value": 10.1
+          },
+          {
+            "label": "Laborales (24)",
+            "value": 4.2
+          },
+          {
+            "label": "Digitales (9)",
+            "value": 0.0
+          }
+        ],
+        "source": "Centro UC de Estudios de Vejez y Envejecimiento e ILC, citado por La Tercera (9 oct). Cálculo Alicanto.",
+        "note_refs": [
+          "n5"
+        ]
+      },
+      {
+        "id": "red_cuidados",
+        "form": "columns",
+        "digits": 0,
+        "headline": "La red de cuidados se acerca al total de comunas que fija la ley",
+        "subtitle": "Comunas de la Red Local de Apoyos y Cuidados",
+        "unit": "comunas",
+        "rows": [
+          {
+            "label": "Antes del aumento",
+            "value": 309
+          },
+          {
+            "label": "Con el aumento",
+            "value": 333,
+            "style": "partial",
+            "partial_label": "meta anunciada"
+          },
+          {
+            "label": "Previstas por ley",
+            "value": 345
+          }
+        ],
+        "source": "Desarrollo Social, citado por La Tercera (8 oct). La primera columna es una deducción Alicanto.",
+        "note_refs": [
+          "n2"
+        ]
+      }
+    ],
+    "essay": {
+      "facts": {
+        "heading": "Qué pasó",
+        "paragraphs": [
+          "Desarrollo Social anunció $2.624 millones adicionales para la Red Local de Apoyos y Cuidados, un alza de 4,7%, que sumaría 24 comunas.[^n3] Un estudio del Centro UC de Estudios de Vejez y Envejecimiento encontró 82 iniciativas públicas con incidencia en envejecimiento entre 814 analizadas; de las 24 iniciativas laborales comparables, solo una considera edades avanzadas, y ninguna de las nueve de inclusión digital. En el mercado privado, tres operadores concentran cerca del 60% de la oferta de residencias para mayores, y la FNE revisa la entrada de los grupos Angelini y Salfacorp.[^n4]"
+        ]
+      },
+      "reading": {
+        "heading": "Lectura Alicanto",
+        "paragraphs": [
+          "La cifra que ordena la discusión es la distancia entre cobertura y apoyo percibido. Con el aumento, la red llegaría a cerca del 97% de las comunas que fija la ley,[^n2] pero la mayoría de los mayores no se siente respaldada cuando aparece la enfermedad crónica o la dependencia.[^n1] Si ambas cifras se sostienen, el déficit que viene es de intensidad (horas de cuidado, profesionales, prestaciones por persona), no de presencia territorial.",
+          "Un alza de 4,7% no cambia esa escala. La política nacional se dictará a más tardar seis meses después de junio de 2027, y su base técnica es el diagnóstico que Senama y la Universidad de Chile preparan ahora. Para prestadores, Isapres y aseguradoras, esa es la ventana para aportar datos sobre quién financia los cuidados de largo plazo. El capital privado ya apuesta por esa demanda, aunque con precios que la prensa describe como inaccesibles para la mayoría."
+        ]
+      }
+    },
+    "watch_heading": "Qué mirar en las próximas semanas",
+    "watch": [
+      {
+        "headline": "Ley de Presupuestos 2027.",
+        "explanation": "Confirmar si los $2.624 millones adicionales para la Red Local de Apoyos y Cuidados sobreviven a la tramitación y en qué comunas se aplican."
+      },
+      {
+        "headline": "Diagnóstico Senama–Universidad de Chile.",
+        "explanation": "Es la base técnica de la política que la Ley 21.822 obliga a dictar; quien aporte ahora datos de costos y demanda de cuidados influirá en su diseño."
+      },
+      {
+        "headline": "Decisión de la FNE sobre residencias.",
+        "explanation": "Si aprueba la entrada de Angelini y Salfacorp, un mercado de residencias concentrado en tres operadores sumará capital y oferta nueva."
+      }
+    ],
+    "notes": [
+      {
+        "id": "n1",
+        "kind": "survey",
+        "text": "La encuesta mide percepción, con datos de 2025, y fue reportada por La Tercera; no mide dependencia funcional y es anterior a la ampliación anunciada de la red."
+      },
+      {
+        "id": "n2",
+        "kind": "estimate",
+        "text": "Estimación Alicanto: 333 ÷ 345 ≈ 96,5%. Las 333 comunas son una meta anunciada, no cobertura alcanzada; las 309 comunas actuales se deducen como 333 − 24."
+      },
+      {
+        "id": "n3",
+        "kind": "press",
+        "text": "Monto y comunas son anuncios ministeriales reportados por La Tercera; dependen de la Ley de Presupuestos 2027 y de su ejecución."
+      },
+      {
+        "id": "n4",
+        "kind": "press",
+        "text": "La concentración (cerca del 60%) y la referencia a precios provienen de prensa, no de un catastro oficial; la operación Angelini–Salfacorp está en revisión de la FNE, sin decisión."
+      },
+      {
+        "id": "n5",
+        "kind": "estimate",
+        "text": "Porcentajes calculados por Alicanto sobre los conteos del estudio (82/814, 1/24, 0/9); los grupos tienen denominadores distintos y no son comparables como tasas de un mismo universo."
+      }
+    ],
+    "sources": [
+      {
+        "label": "La Tercera · Chile, país poco preparado para envejecer: encuesta sobre personas mayores · 23 oct",
+        "url": "https://www.latercera.com/horizontes/noticia/chile-pais-poco-preparado-para-envejecer-las-percepciones-que-revela-una-encuesta-sobre-personas-mayores/",
+        "role": "Prensa: resultados de la octava encuesta (datos 2025), Ley 21.822 y memorándum Senama–U. de Chile.",
+        "short_label": "La Tercera · Chile, país poco preparado para envejecer (23 oct)",
+        "short_role": "encuesta y ley"
+      },
+      {
+        "label": "La Tercera · Comité Social: certificación de discapacidad y ampliación de la Red de Apoyos y Cuidados · 8 oct",
+        "url": "https://www.latercera.com/nacional/noticia/comite-social-salud-y-mideso-destacan-avances-en-certificacion-de-discapacidad-y-ampliacion-de-la-red-de-apoyos-y-cuidados/",
+        "role": "Prensa: aumento de $2.624 millones y meta de 333 de 345 comunas anunciados por Desarrollo Social.",
+        "short_label": "La Tercera · Comité Social: Red de Apoyos y Cuidados (8 oct)",
+        "short_role": "presupuesto y comunas"
+      },
+      {
+        "label": "La Tercera · Ministro Mas en Chile 100: personas mayores y vida económica · 9 oct",
+        "url": "https://www.latercera.com/horizontes/noticia/ministro-mas-en-chile-100-incorporar-a-las-personas-mayores-a-la-vida-economica-no-es-caridad/",
+        "role": "Prensa: estudio Centro UC–ILC sobre 814 iniciativas públicas.",
+        "short_label": "La Tercera · Chile 100: estudio Centro UC–ILC (9 oct)",
+        "short_role": "iniciativas públicas"
+      },
+      {
+        "label": "Pulso · Senior housing: los grupos que dominan el negocio de las residencias para adultos mayores · 10 oct",
+        "url": "https://www.latercera.com/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
+        "role": "Prensa: concentración de la oferta de residencias y operación notificada a la FNE.",
+        "short_label": "Pulso · Senior housing (10 oct)",
+        "short_role": "mercado de residencias"
+      }
+    ],
+    "insight_teaser": "82% de los mayores dice no tener apoyo mientras la red pública de cuidados se acerca a todas las comunas: la brecha que viene es de intensidad.",
+    "source_refs": [
+      "https://www.latercera.com/horizontes/noticia/chile-pais-poco-preparado-para-envejecer-las-percepciones-que-revela-una-encuesta-sobre-personas-mayores/",
+      "https://www.latercera.com/nacional/noticia/comite-social-salud-y-mideso-destacan-avances-en-certificacion-de-discapacidad-y-ampliacion-de-la-red-de-apoyos-y-cuidados/",
+      "https://www.latercera.com/horizontes/noticia/ministro-mas-en-chile-100-incorporar-a-las-personas-mayores-a-la-vida-economica-no-es-caridad/",
+      "https://www.latercera.com/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/"
+    ],
+    "id": "weekly-insight:2026-11-02:cuidados-para-mayores-la-red-pub",
+    "schema_version": "weekly_insight_a_v1",
+    "title": "Cuidados para mayores: la red pública casi completa su mapa, pero 82% dice no tener apoyo y la brecha pasa a ser de intensidad",
+    "insight_title": "Cuidados para mayores: la red pública casi completa su mapa, pero 82% dice no tener apoyo y la brecha pasa a ser de intensidad",
+    "event_date": "2026-10-23",
+    "freshness_anchor_date": "2026-11-02",
+    "anchor_kind": "monday",
+    "expires_on": "2026-11-09",
+    "source_name": "Pulso / La Tercera",
+    "source_url": "https://www.latercera.com/horizontes/noticia/chile-pais-poco-preparado-para-envejecer-las-percepciones-que-revela-una-encuesta-sobre-personas-mayores/",
+    "summary": "En una encuesta con datos de 2025, el 82% de los mayores percibe poco o ningún apoyo ante enfermedades crónicas o pérdida de funcionalidad. La Ley 21.822, que obliga a dictar una política de envejecimiento, rige desde junio de 2027.",
+    "weekly_mode": "monday_format_a",
+    "reading_time_min": 2,
+    "model_trace": {
+      "api_call": false,
+      "mode": "senior_editorial_work_session",
+      "model": "claude-opus-5-5 (sesión de ingeniería editorial)",
+      "note": "Borrador redactado a mano desde señales del historial; sin revisión independiente todavía."
+    },
+    "editorial_review_pass": false
+  },
+  "verification": {
+    "verdict": "PASS",
+    "errors": [],
+    "warnings": []
+  },
+  "audit": {
+    "verdict": "HOLD",
+    "editorial_business_review_pass": false,
+    "independent_second_reviewer": false,
+    "reason": "draft_requires_independent_review_and_coordinator_approval",
+    "open_points": [
+      "Todas las cifras provienen de prensa (La Tercera/Pulso); confirmar con fuente primaria (encuesta U. de Chile/Senama, Ley 21.822 en Diario Oficial, Mideso) antes de publicar.",
+      "La meta 333/345 depende del Presupuesto 2027; la columna de 309 comunas es una deducción.",
+      "Las señales de contexto (8–10 oct) tienen más de 14 días al 2 nov; el evento ancla (23 oct) está dentro de la ventana."
+    ]
+  },
+  "evidence_numbers_count": 21,
+  "cost_estimate_if_generated_by_pipeline": {
+    "draft_model": "gpt-6-astra",
+    "review_model": "gpt-5.6-terra",
+    "draft_input_tokens": 3528,
+    "review_input_tokens": 7028,
+    "typical_usd": 0.2387,
+    "worst_case_usd": 0.3853,
+    "cap_usd": 1.0
+  }
+}

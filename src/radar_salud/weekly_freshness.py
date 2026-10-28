@@ -14,10 +14,36 @@ def iso_day(value):
     except ValueError:
         return None
 
+# Dirección 27-oct-2026: the weekly insight is renewed every MONDAY. A Monday-anchored
+# insight is valid from its anchor Monday until (excluding) the next Monday, and may
+# analyse evidence published up to MONDAY_EVIDENCE_DAYS before the anchor.
+MONDAY_EVIDENCE_DAYS = 14
+
+def monday_anchor(day=None):
+    """The Monday (Chile calendar) that anchors the weekly insight for ``day``."""
+    day = day or chile_today()
+    return day - timedelta(days=day.weekday())
+
+def monday_freshness_gate(signal, as_of=None):
+    today = as_of or chile_today()
+    anchor = iso_day(signal.get("freshness_anchor_date"))
+    event = iso_day(signal.get("event_date"))
+    expiry = iso_day(signal.get("expires_on"))
+    valid = bool(anchor and event and expiry and anchor.weekday() == 0
+                 and expiry == anchor + timedelta(days=WINDOW_DAYS)
+                 and anchor <= today < expiry
+                 and 0 <= (anchor - event).days <= MONDAY_EVIDENCE_DAYS)
+    return {"eligible": valid, "reason": "fresh" if valid else "monday_window_closed_or_invalid",
+            "as_of": today.isoformat(), "timezone": "America/Santiago", "window_days": WINDOW_DAYS,
+            "anchor_kind": "monday", "anchor_date": anchor.isoformat() if anchor else None,
+            "expires_on": expiry.isoformat() if expiry else None}
+
 def freshness_gate(signal, as_of=None):
     today = as_of or chile_today()
     if not isinstance(signal, dict):
         return {"eligible": False, "reason": "missing_insight"}
+    if signal.get("anchor_kind") == "monday":
+        return monday_freshness_gate(signal, as_of)
     event = iso_day(signal.get("event_date"))
     anchor = iso_day(signal.get("freshness_anchor_date", signal.get("event_date")))
     expiry = iso_day(signal.get("expires_on")) if "expires_on" in signal else None
@@ -34,6 +60,123 @@ def freshness_gate(signal, as_of=None):
 FOOTNOTE = re.compile(r"\[\^(n\d+)\]")
 INFERENCE_MARKERS = re.compile(r"\b(sugiere|sugieren|podría|podrían|estimamos|alicanto)\b", re.I)
 SAFE_FORMULA = re.compile(r"^[0-9.\s+\-*/()]+$")
+
+# Rule 3 (traceability): every number shown must exist in key_figures, chart rows or a
+# declared estimate. Dates, years and normative IDs are not quantities and are removed first.
+MONTHS = r"(?:enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)"
+DATE_PHRASE = re.compile(r"\b\d{1,2}(?:\s*(?:y|al|–|-)\s*\d{1,2})?\s+de\s+" + MONTHS + r"(?:\s+(?:de|del)\s+\d{4})?", re.I)
+YEAR = re.compile(r"(?<![\d.,])(?:19|20)\d{2}(?![\d]|,\d)")
+NORMATIVE_ID = re.compile(
+    r"\b(?:circular(?:es)?|ley(?:es)?|d\.\s?s\.|ds|dfl|decreto(?:\s+supremo)?|resoluci[oó]n(?:\s+exenta)?|res\.\s?ex\.|"
+    r"oficio|art(?:\.|[ií]culos?)|inciso|norma\s+t[eé]cnica)\s*(?:n[°º.]?\s*)?(?:(?:IF|SS)/N?[°º]?\s*)?\d+(?:\.\d+)*(?:/\d+)?"
+    r"|\b(?:IF|SS)/N?[°º]?\s*\d+(?:\.\d+)*", re.I)
+NUMBER = re.compile(r"(?<![\w.,])[-−]?\d{1,3}(?:\.\d{3})+(?:,\d+)?(?![\d])|(?<![\w.,])[-−]?\d+(?:,\d+)?(?![\d])")
+RULE_VERBS = re.compile(
+    r"\b(?:obliga|obligan|exige|exigen|permite|permiten|proh[ií]be|proh[ií]ben|limita|limitan|fija|fijan|establece|establecen|"
+    r"debe|deben|deber[aá]n?|rige|regir[aá]|regula|regulan|crea|ordena|impide|autoriza|restringe|define|dispone|sanciona|"
+    r"exime|elimina|reduce|ampl[ií]a|prorroga|posterga|sube|baja)\b", re.I)
+
+def _strip_non_quantities(text):
+    text = FOOTNOTE.sub("", str(text or ""))
+    text = NORMATIVE_ID.sub(" ", text)
+    text = DATE_PHRASE.sub(" ", text)
+    return YEAR.sub(" ", text)
+
+def parse_number(token):
+    t = token.replace("−", "-").replace(".", "").replace(",", ".")
+    return float(t)
+
+def numbers_in(text):
+    """Quantities written in Chilean format: 5.155.495 · 12,3 · −22 (dates, years and IDs excluded)."""
+    out = []
+    for m in NUMBER.finditer(_strip_non_quantities(text)):
+        token = m.group(0)
+        decimals = len(token.split(",", 1)[1]) if "," in token else 0
+        out.append((token, parse_number(token), decimals))
+    return out
+
+def _round_half_up(value, decimals):
+    from decimal import Decimal, ROUND_HALF_UP
+    q = Decimal(1).scaleb(-decimals)
+    return float(Decimal(str(abs(value))).quantize(q, rounding=ROUND_HALF_UP))
+
+def number_traces(value, decimals, corpus):
+    """A shown number traces when it equals a corpus value rounded to the shown precision."""
+    target = abs(value)
+    return any(abs(target - _round_half_up(c, decimals)) < 1e-9 for c in corpus)
+
+def trace_corpus(weekly):
+    corpus = []
+    for fig in weekly.get("key_figures") or []:
+        corpus += [n for _, n, _ in numbers_in(fig)]
+    for estimate in weekly.get("estimates") or []:
+        if not isinstance(estimate, dict):
+            continue
+        if isinstance(estimate.get("value"), (int, float)):
+            corpus.append(float(estimate["value"]))
+        for text in [estimate.get("display")] + list(estimate.get("inputs") or []):
+            corpus += [n for _, n, _ in numbers_in(text)]
+    return corpus
+
+def chart_values(chart):
+    for row in chart.get("rows") or []:
+        if not isinstance(row, dict):
+            continue
+        values = row.get("values") if isinstance(row.get("values"), dict) else {"value": row.get("value")}
+        for value in values.values():
+            if isinstance(value, (int, float)):
+                yield row.get("label"), float(value)
+
+def untraced_numbers(weekly, corpus=None):
+    """Rule 3: numbers in headline, dek, essay, watch and chart rows without a declared origin."""
+    corpus = trace_corpus(weekly) if corpus is None else corpus
+    essay = weekly.get("essay") or {}
+    texts = [("headline", weekly.get("headline")), ("dek", weekly.get("dek"))]
+    texts += [("essay.facts", x) for x in _paragraphs(essay.get("facts"))]
+    texts += [("essay.reading", x) for x in _paragraphs(essay.get("reading"))]
+    for item in weekly.get("watch") or []:
+        if isinstance(item, dict):
+            texts += [("watch", item.get("headline")), ("watch", item.get("explanation"))]
+    missing = [f"{where}:{token}" for where, text in texts for token, value, decimals in numbers_in(text)
+               if not number_traces(value, decimals, corpus)]
+    for chart in weekly.get("charts") or []:
+        if isinstance(chart, dict):
+            missing += [f"chart.{chart.get('id')}:{label}={value}" for label, value in chart_values(chart)
+                        if not number_traces(value, 1, corpus) and not number_traces(value, 0, corpus)]
+    return missing
+
+def chart_repetition_warnings(weekly):
+    """Rule 3 (warning only): a chart value repeated in essay.facts is redundant with the chart."""
+    shown = {round(abs(v), 1) for c in weekly.get("charts") or [] if isinstance(c, dict) for _, v in chart_values(c)}
+    facts = _paragraphs((weekly.get("essay") or {}).get("facts"))
+    return sorted({f"chart_value_repeated_in_facts:{t}" for x in facts for t, v, _ in numbers_in(x) if round(abs(v), 1) in shown})
+
+def _sentences(text):
+    return [x for x in re.split(r"(?<=[.;:!?])\s+", FOOTNOTE.sub("", str(text or ""))) if x.strip()]
+
+def _explains_rule(text):
+    plain = NORMATIVE_ID.sub(" ", text)
+    return bool(RULE_VERBS.search(plain)) and len(plain.split()) >= 8
+
+def unexplained_normative_ids(weekly):
+    """Rule 5: a normative ID (Circular, Ley, DS, art., Resolución…) is accepted only when the
+    same watch item, or the same sentence elsewhere, says in plain words what the rule does."""
+    errors = []
+    for i, item in enumerate(weekly.get("watch") or []):
+        if not isinstance(item, dict):
+            continue
+        ids = NORMATIVE_ID.findall(f"{item.get('headline') or ''} {item.get('explanation') or ''}")
+        if ids and not _explains_rule(str(item.get("explanation") or "")):
+            errors += [f"watch[{i}]:{x.strip()}" for x in ids]
+    essay = weekly.get("essay") or {}
+    texts = [("headline", weekly.get("headline")), ("dek", weekly.get("dek"))]
+    texts += [("essay", x) for x in _paragraphs(essay.get("facts")) + _paragraphs(essay.get("reading"))]
+    for where, text in texts:
+        for sentence in _sentences(text):
+            ids = NORMATIVE_ID.findall(sentence)
+            if ids and not _explains_rule(sentence):
+                errors += [f"{where}:{x.strip()}" for x in ids]
+    return errors
 
 def presentation_a(weekly):
     return isinstance(weekly, dict) and isinstance(weekly.get("essay"), dict)
@@ -83,6 +226,10 @@ def presentation_a_errors(weekly):
     for item in weekly.get("watch") or []:
         if not isinstance(item, dict) or _words(item.get("explanation")) < 12:
             errors.append("watch_explanation_too_short")
+    for item in untraced_numbers(weekly):
+        errors.append(f"number_untraced:{item}")
+    for item in unexplained_normative_ids(weekly):
+        errors.append(f"normative_id_unexplained:{item}")
     for estimate in estimates:
         formula = str((estimate or {}).get("formula") or "")
         if formula and SAFE_FORMULA.match(formula):
