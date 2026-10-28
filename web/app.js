@@ -246,12 +246,11 @@ const NEWSLETTER_AFTER=7;
 function placeNewsletter(host){const strip=document.querySelector('.newsletter-strip');if(!strip)return;const rows=host.querySelectorAll('article[data-card]'),after=rows[Math.min(NEWSLETTER_AFTER,rows.length)-1];if(after)after.after(strip);else host.querySelector('.inbox')?.append(strip)}
 function chips(id,values,current,setter){document.getElementById(id).innerHTML=values.map(v=>`<button class="chip ${v===current?'active':''}" data-v="${esc(v)}">${esc(v)}</button>`).join('');document.querySelectorAll(`#${id} .chip`).forEach(b=>b.onclick=()=>{setter(b.dataset.v);persistFilters();renderFilters();draw()})}
 function renderFilters(){const types=['Todos',...['Normativa','Legal','Noticias','Datos','Fiscalización'].filter(x=>allSignals.some(s=>typeTags(s).includes(x)))];chips('typeFilters',types,activeType,v=>activeType=v);renderInterests()}
-// One interest Set drives the inline chips, the sheet and the desktop rail.
+// One interest Set drives the filters dropdown and the desktop rail.
 function interestCounts(){const base=interestBase();return{total:base.length,by:Object.fromEntries(INTERESTS.map(x=>[x.k,base.filter(x.match).length]))}}
 function setInterest(k,on){if(!k)activeInterests.clear();else if(on)activeInterests.add(k);else activeInterests.delete(k);persistFilters();hideUndo();draw()}
 function renderInterests(){
  const c=interestCounts(),shown=INTERESTS.filter(x=>c.by[x.k]>0||activeInterests.has(x.k));
- const strip=document.getElementById('interestChips');if(strip){const row=strip.closest('.lane-row'),left=row?row.scrollLeft:0;strip.innerHTML=`<button type="button" class="chip ichip" data-interest="" aria-pressed="${!activeInterests.size}">Todos los temas</button>`+shown.map(x=>`<button type="button" class="chip ichip" data-interest="${x.k}" aria-pressed="${activeInterests.has(x.k)}">${esc(x.label)} <small>${c.by[x.k]}</small></button>`).join('');if(row)row.scrollLeft=left}
  const toggle=(cls,x)=>`<button type="button" class="${cls}" data-interest="${x.k}" aria-pressed="${activeInterests.has(x.k)}"><span class="box" aria-hidden="true"></span><span>${esc(x.label)}</span><small>${c.by[x.k]}</small></button>`;
  const grouped=cls=>['Actores','Temas'].map(g=>`<p class="interest-group">${g}</p><div class="interest-grid">${INTERESTS.filter(x=>x.group===g).map(x=>toggle(cls,x)).join('')}</div>`).join('');
  const sheet=document.getElementById('interestFilters');if(sheet)sheet.innerHTML=`<button type="button" class="tog tog-all" data-interest="" aria-pressed="${!activeInterests.size}"><span class="box" aria-hidden="true"></span><span>Todos los temas</span><small>${c.total}</small></button>${grouped('tog')}`;

@@ -220,7 +220,7 @@ main{max-width:none;margin:0;padding:0 0 70px}
 /* Tu bandeja (Dirección 27-oct 22:44): two short lines that keep the old height.
    Shared pieces: segmented read status (#lanes), period as its own native dropdown (#period),
    topics/format/order as a compact dropdown over the feed (#filterDetails), mark-all (#markAllRead).
-   data-bar="a|b|c" only re-arranges them (design/bandeja/notes.md). */
+   Final layout = proposal A (Dirección 27-oct 23:13); B and C remain as mockups in design/bandeja. */
 .feed-top{height:0}
 .radar-unit{position:sticky;top:var(--hdr);z-index:20;display:flex;flex-wrap:wrap;align-items:center;column-gap:6px;background:var(--ivory);color:var(--ink);margin:6px calc(-1 * var(--gutter)) 0;padding:2px var(--gutter) 4px;border-bottom:1px solid var(--ink09)}
 .radar-head{order:1;min-width:0;display:flex;align-items:baseline;gap:8px;min-height:44px;padding-top:12px}
@@ -280,10 +280,7 @@ main{max-width:none;margin:0;padding:0 0 70px}
 .linkbtn{border:0;background:transparent;text-decoration:underline;text-underline-offset:3px;color:var(--ink68);font-size:12.5px;font-weight:650;cursor:pointer;padding:0}
 .sheet-done{border:0;background:var(--ink);color:#fff;border-radius:10px;padding:0 16px;min-height:40px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 .filter-persist{font-size:11px;color:var(--ink48);margin:8px 0 0}
-/* Topic chips (proposal B only) */
-.lane-row{order:7;display:none;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;min-width:0}
-.lane-row::-webkit-scrollbar{display:none}
-.interest-chips{display:flex;gap:6px;flex:none}
+/* Chips (format filter inside the dropdown) */
 .chip{position:relative;flex:none;border:1px solid var(--ink12);background:#fff;border-radius:999px;min-height:32px;height:32px;padding:0 11px;font:inherit;font-size:12.5px;font-weight:600;color:var(--ink84);cursor:pointer;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
 .chip::after{content:"";position:absolute;inset:-6px -3px}
 .chip small{font-size:11px;font-weight:600;color:var(--ink48)}
@@ -296,33 +293,9 @@ main{max-width:none;margin:0;padding:0 0 70px}
 @media (max-width:340px){.lane{padding:0 7px;font-size:12px}.brandbar .topnav a{padding:0 4px}.brandbar .premium-access{padding:0 8px}}
 @media (max-width:300px){.brandbar .topnav .header-newsletter{display:none!important}.filter-details>summary{max-width:100%}}
 
-/* Proposal A · status beside the title, tools below. Inactive counts stay for screen readers only. */
-.radar-unit[data-bar="a"] .radar-metrics,.radar-unit[data-bar="a"] .lane:not(.on) span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
-/* Proposal B · underline tabs beside the title; period, topic chips and ⚙ below */
-.radar-unit[data-bar="b"] .radar-metrics{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
-.radar-unit[data-bar="b"] .lanes{background:none;padding:0;gap:0;order:2;margin-left:4px}
-.radar-unit[data-bar="b"] .lane{height:36px;padding:0 7px;border-radius:0;border-bottom:2px solid transparent;font-size:13px}
-.radar-unit[data-bar="b"] .lane.on{background:none;box-shadow:none;border-bottom-color:var(--accent)}
-.radar-unit[data-bar="b"] .lane:not(.on) span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
-.radar-unit[data-bar="b"] .mark-all{order:2}
-.radar-unit[data-bar="b"] .bar-break{order:3}
-.radar-unit[data-bar="b"] .lane-row{display:flex;order:5;flex:1 1 0;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent);padding:6px 0}
-.radar-unit[data-bar="b"] .filter-details{order:6}
-.radar-unit[data-bar="b"] .filter-details>summary{width:34px;padding:0;justify-content:center!important}
-.radar-unit[data-bar="b"] .filter-label,.radar-unit[data-bar="b"] .filter-chev{display:none}
-.radar-unit[data-bar="b"] .filter-dot{position:absolute;top:3px;right:3px}
-/* Proposal C · tools beside the title, full-width segmented status below */
-.radar-unit[data-bar="c"] .radar-metrics{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
-.radar-unit[data-bar="c"] .radar-head{order:1;margin-right:auto}
-.radar-unit[data-bar="c"] .period-pill{order:2}
-.radar-unit[data-bar="c"] .filter-details{order:2}
-.radar-unit[data-bar="c"] .mark-all{order:2;margin-left:0}
-.radar-unit[data-bar="c"] .bar-break{order:3}
-.radar-unit[data-bar="c"] .lanes{order:4;flex:1 1 100%;margin:2px 0 0}
-.radar-unit[data-bar="c"] .lane{flex:1 1 0;justify-content:center}
-.radar-unit[data-bar="c"] .filter-details>summary{max-width:none;padding:0 8px;font-size:12px}
-.radar-unit[data-bar="c"] .filter-details>summary>.mini-icon:first-child{display:none}
-@media (max-width:759px){.radar-unit[data-bar="c"] .radar-head h2{font-size:17px}}
+/* Proposal A · status beside the title, tools below. On phones only the active count is shown;
+   the others and #radarMetrics stay for screen readers. */
+.radar-unit .radar-metrics,.radar-unit .lane:not(.on) span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 
 /* Feed: dense rows, separators, no cards */
 #local .inbox{background:transparent;border:0;border-radius:0;margin:0 calc(-1 * var(--gutter));overflow:visible}
@@ -378,12 +351,6 @@ main{max-width:none;margin:0;padding:0 0 70px}
  .radar-unit .lanes{margin-left:10px}
  .radar-unit .lane span{position:static!important;width:auto!important;height:auto!important;clip:auto!important}
  .radar-unit .period-pill{margin-left:6px}
- .radar-unit[data-bar="b"] .lane-row{display:none}
- .radar-unit[data-bar="b"] .mark-all{order:6}
- .radar-unit[data-bar="c"] .lanes{order:6;flex:none;margin:0 0 0 auto}
- .radar-unit[data-bar="c"] .lane{flex:none}
- .radar-unit[data-bar="c"] .radar-head{margin-right:6px}
- .radar-unit[data-bar="c"] .mark-all{order:7;margin-left:4px}
  .rail{display:block;position:sticky;top:calc(var(--hdr) + 14px);padding-top:14px;font-size:13px}
  .rail-box{background:#fff;border:1px solid var(--ink09);border-radius:14px;padding:12px 14px;margin-bottom:12px}
  .rail h3{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink48);margin:0 0 2px}

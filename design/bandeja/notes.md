@@ -50,10 +50,10 @@ Medido con Playwright (Chromium) sobre estas maquetas: (alto del viewport − bo
 
 Sin desborde horizontal en ningún caso; sin errores de consola.
 
-## Implementación (paso B)
+## Decisión e implementación
 
-Las piezas compartidas están en `web/` de la rama `claude/home-ux-round2-20261027`; la propuesta se elige con un
-solo atributo: `<section class="radar-unit" data-bar="a|b|c">`. Tras la decisión se borra el CSS de las otras dos.
+**Dirección eligió A (27-oct 23:13).** A es el diseño final en `web/` (rama `claude/home-ux-round2-20261027`);
+el código de B y C se quitó de producción y solo quedan estas maquetas como referencia.
 
 ## Global (web/global.html) · qué tomaría homologarlo (NO hecho; después de la elección)
 
