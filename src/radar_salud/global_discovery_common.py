@@ -19,15 +19,18 @@ from urllib.robotparser import RobotFileParser
 
 USER_AGENT = "AlicantoHealthRadar/1.0 (+https://github.com/cftorre1/Radar-salud; metadata monitoring, no model training)"
 HOSTS = {"www.who.int", "who.int", "www.paho.org", "paho.org", "iris.paho.org"}
+# Licensed metadata feeds (config/global_discovery.json "feeds"). Kept separate so
+# WHO/PAHO identity checks never accept a feed publisher's URL and vice versa.
+FEED_HOSTS = {"kffhealthnews.org", "www.kffhealthnews.org", "www.ema.europa.eu", "www.fda.gov"}
 MONTHS = {name.lower(): number for number, names in enumerate([
     ("January", "Jan", "enero"), ("February", "Feb", "febrero"), ("March", "Mar", "marzo"),
     ("April", "Apr", "abril"), ("May", "mayo"), ("June", "Jun", "junio"),
     ("July", "Jul", "julio"), ("August", "Aug", "agosto"), ("September", "Sep", "Sept", "septiembre"),
     ("October", "Oct", "octubre"), ("November", "Nov", "noviembre"), ("December", "Dec", "diciembre")], 1) for name in names}
 
-def canonical_url(url: str, base: str = "") -> str:
+def canonical_url(url: str, base: str = "", hosts=None) -> str:
     parsed = urlsplit(urljoin(base, url))
-    if parsed.scheme != "https" or parsed.hostname not in HOSTS or parsed.username or parsed.password or parsed.port not in (None, 443):
+    if parsed.scheme != "https" or parsed.hostname not in (HOSTS if hosts is None else hosts) or parsed.username or parsed.password or parsed.port not in (None, 443):
         raise ValueError("unapproved public URL")
     query = [(key, val) for key, val in parse_qsl(parsed.query, keep_blank_values=True)
              if not key.lower().startswith("utm_") and key.lower() not in {"fbclid", "gclid"}]
@@ -95,7 +98,7 @@ class PublicRedirect(HTTPRedirectHandler):
     def __init__(self, client):
         self.client = client
     def redirect_request(self, req, fp, code, msg, headers, newurl):
-        target = canonical_url(newurl, req.full_url)
+        target = canonical_url(newurl, req.full_url, getattr(self.client, "hosts", None))
         self.client.check_cooldown(target)
         self.client.check_live_budget()
         is_robots = getattr(req, "_global_is_robots", False)
@@ -115,8 +118,10 @@ class PublicRedirect(HTTPRedirectHandler):
         return redirected
 
 class CaptureClient:
-    def __init__(self, directory: Path, replay: Path | None = None, delay: float = 1., cooldown_file: Path | None = None, resume: bool = False, live_budget_seconds: float = 1800.):
+    def __init__(self, directory: Path, replay: Path | None = None, delay: float = 1., cooldown_file: Path | None = None, resume: bool = False, live_budget_seconds: float = 1800., hosts=None, accept: str = "text/html,application/json,application/xml"):
         self.directory, self.replay, self.delay = directory, replay, delay
+        self.hosts = HOSTS if hosts is None else frozenset(hosts)
+        self.accept = accept
         directory.mkdir(parents=True, exist_ok=True)
         self.records, self.robots, self.network_requests = {}, {}, 0
         self._live_lock = RLock()
@@ -129,7 +134,7 @@ class CaptureClient:
         self.reused_urls = set()
         if resume and not replay:
             for path in directory.glob('*.json'):
-                record=json.loads(path.read_text());url=canonical_url(record['requested_url'])
+                record=json.loads(path.read_text());url=canonical_url_h(self, record['requested_url'])
                 key=hashlib.sha256(url.encode()).hexdigest()[:24]
                 if path.name!=key+'.json' or record['body_file']!=key+'.body': raise ValueError('resume capture filename mismatch')
                 raw=(directory/record['body_file']).read_bytes()
@@ -137,7 +142,7 @@ class CaptureClient:
                 if age<timedelta(0) or age>timedelta(hours=1): raise ValueError('resume campaign capture outside one-hour bound')
                 if record['tls_verified'] is not True or record['user_agent']!=USER_AGENT or hashlib.sha256(raw).hexdigest()!=record['body_sha256'] or len(raw)!=record['body_bytes']:
                     raise ValueError('resume capture integrity mismatch')
-                canonical_url(record['final_url'])
+                canonical_url_h(self, record['final_url'])
                 self.records[url]=record
         self.opener = build_opener(PublicRedirect(self), HTTPSHandler(context=ssl.create_default_context()))
     def check_robots(self, url):
@@ -154,7 +159,7 @@ class CaptureClient:
         # Serialize requests, including redirects/robots, so a 429 stops queued workers.
         # Replays reproduce historical bytes, including requests made by older collectors.
         with self._live_lock:
-            url = canonical_url(url)
+            url = canonical_url_h(self, url)
             if url not in self.records:
                 self.check_cooldown(url)
                 self.check_live_budget()
@@ -171,7 +176,7 @@ class CaptureClient:
             raise ValueError("rate_limit_deferred_without_request_until_" + cooldown["retry_until"])
 
     def _fetch(self, url: str, *, robots=False):
-        url = canonical_url(url)
+        url = canonical_url_h(self, url)
         if url in self.records:
             record = self.records[url]
             if self.resume and not robots:
@@ -181,7 +186,7 @@ class CaptureClient:
                 if hashlib.sha256(raw).hexdigest()!=record['body_sha256'] or len(raw)!=record['body_bytes']:
                     raise ValueError('resume capture integrity mismatch')
                 for target in [url]+[hop['location'] for hop in record.get('redirect_chain',[])]+[record['final_url']]:
-                    self.check_robots(canonical_url(target))
+                    self.check_robots(canonical_url_h(self, target))
                 self.reused_urls.add(url)
             if record["http_status"] != 200:
                 raise ValueError("http_" + str(record["http_status"]))
@@ -194,10 +199,10 @@ class CaptureClient:
                 raise ValueError("capture identity/hash mismatch")
             if record.get("tls_verified") is not True:
                 raise ValueError("capture TLS not verified")
-            canonical_url(record["final_url"])
+            canonical_url_h(self, record["final_url"])
             if not robots:
                 for target in [url] + [hop["location"] for hop in record.get("redirect_chain", [])] + [record["final_url"]]:
-                    self.check_robots(canonical_url(target))
+                    self.check_robots(canonical_url_h(self, target))
         else:
             if not robots:
                 self.check_robots(url)
@@ -207,7 +212,7 @@ class CaptureClient:
             from urllib.parse import quote
             # Non-ASCII characters in a URL (e.g. an en dash in a WHO slug) are percent-encoded for
             # transport; the URL identity used for robots, evidence and dedup is unchanged.
-            request = Request(quote(url, safe=":/?&=%+#;,@!$()*[]~"), headers={"User-Agent": USER_AGENT, "Accept": "text/html,application/json,application/xml"})
+            request = Request(quote(url, safe=":/?&=%+#;,@!$()*[]~"), headers={"User-Agent": USER_AGENT, "Accept": self.accept})
             request._global_is_robots = robots
             request._global_redirect_chain = []
             try:
@@ -218,7 +223,7 @@ class CaptureClient:
                 data = response.read(5000001)
                 if len(data) > 5000000:
                     raise ValueError("response_body_limit")
-                canonical_url(response.url)
+                canonical_url_h(self, response.url)
                 # A transport-only percent-encoding of the requested URL is not a redirect: keep the identity.
                 final_url = url if response.url == request.full_url else response.url
                 record = {"requested_url": url, "final_url": final_url, "http_status": response.code,
@@ -250,3 +255,7 @@ class CaptureClient:
         if record["http_status"] != 200:
             raise ValueError("http_" + str(record["http_status"]))
         return data, record
+
+
+def canonical_url_h(client, url, base=""):
+    return canonical_url(url, base, getattr(client, "hosts", None))

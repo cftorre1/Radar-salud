@@ -17,6 +17,10 @@ ALLOWED_PUBLISHERS = {
     "BCG": {"bcg.com"},
     "OECD": {"oecd.org"},
     "KFF": {"kff.org"},
+    # Licensed Global feeds (config/global_discovery.json "feeds"): metadata + link + byline only.
+    "KFF Health News": {"kffhealthnews.org"},
+    "EMA": {"ema.europa.eu"},
+    "FDA": {"fda.gov"},
 }
 MATERIAL_TYPES = {"research", "outlook", "report", "high_trust_press"}
 TREND_STATES = {"not_established", "candidate", "established"}

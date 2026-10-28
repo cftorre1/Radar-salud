@@ -13,6 +13,7 @@ from zoneinfo import ZoneInfo
 from radar_salud.global_discovery_common import CaptureClient
 from radar_salud.global_source_discovery import discover, in_window, deduplicate_translations
 from radar_salud.pending_queue import atomic_json
+from radar_salud.global_feed_discovery import classify_relevance
 
 def write(root, relative, payload):
     atomic_json(root / relative, payload)
@@ -59,6 +60,78 @@ def cadence_is_valid(ledger, source, checked, run_id, complete, cadence_seconds,
                 return True
     return False
 
+def successful_live_row(row, source, contract_id):
+    """A run counts toward activation only as fresh live capture with complete, error-free coverage."""
+    health = row.get("sources", {}).get(source, {})
+    return (row.get("mode") == "live_discovery" and row.get("capture_reuse", {}).get("reused_url_count") == 0
+            and health.get("coverage_completeness") == "complete" and health.get("technical_status") == "ok"
+            and health.get("source_quality_disposition") == "pass_data" and health.get("coverage_contract_id") == contract_id
+            and bool(health.get("checked_at")))
+
+def publication_activation_decision(ledger, source, current, run_id, mode, policy, contract_id):
+    """Dirección 27-oct: activate WHO/PAHO publication only after two consecutive successful daily runs.
+
+    "Consecutive daily" = a prior successful live run whose checked_at is within
+    [min_gap, max_gap] of the current successful run, with no failed live run for the
+    source in between. Once earned the activation is recorded (sticky evidence), but the
+    flag is suspended on any run that is not itself successful. Publication still
+    requires editorial approval: this never publishes a candidate."""
+    rule = (policy or {}).get(source) or {}
+    decision = {"rule": "two_consecutive_successful_daily_live_runs", "authorized": bool(rule.get("authorized")),
+                "authorized_by": rule.get("authorized_by"), "activated": False, "evidence_run_ids": [], "reason": None,
+                "publication_still_requires": ["editorial_approval", "rights_review"]}
+    if not rule.get("authorized"):
+        decision["reason"] = "no_direccion_authorization_for_source"; return decision
+    current_row = {"run_id": run_id, "mode": mode, "capture_reuse": {"reused_url_count": 0 if mode == "live_discovery" else None}, "sources": {source: current}}
+    if not successful_live_row(current_row, source, contract_id):
+        decision["reason"] = "current_run_not_successful_live_complete"; return decision
+    min_gap, max_gap = rule.get("min_gap_seconds", 79200), rule.get("max_gap_seconds", 172800)
+    now = datetime.fromisoformat(current["checked_at"])
+    prior = sorted([row for row in ledger.get("runs", []) if row.get("run_id") != run_id and row.get("mode") == "live_discovery"
+                    and row.get("sources", {}).get(source, {}).get("checked_at")],
+                   key=lambda row: row["sources"][source]["checked_at"])
+    for index in range(len(prior) - 1, -1, -1):
+        row = prior[index]
+        gap = (now - datetime.fromisoformat(row["sources"][source]["checked_at"])).total_seconds()
+        if gap < min_gap:
+            if not successful_live_row(row, source, contract_id):
+                decision["reason"] = "failed_live_run_since_previous_daily_success"; return decision
+            continue
+        if gap > max_gap or not successful_live_row(row, source, contract_id):
+            break
+        decision.update(activated=True, evidence_run_ids=[row["run_id"], run_id], reason="two_consecutive_successful_daily_live_runs",
+                        gap_seconds=int(gap))
+        return decision
+    decision["reason"] = "awaiting_second_consecutive_successful_daily_run"
+    return decision
+
+def apply_publication_activation(root, source_health, ledger, run_id, mode, config, replay):
+    """Persist the activation record; flip publication_activation only when the guard passes."""
+    path = root / "data/global_intelligence/publication_activation.json"
+    record = json.loads(path.read_text()) if path.exists() else {"sources": {}}
+    policy = config.get("publication_activation_policy", {})
+    for source in ("who", "paho"):
+        health = source_health[source]
+        decision = publication_activation_decision(ledger, source, health, run_id, mode, policy, health.get("coverage_contract_id"))
+        earned = record["sources"].get(source, {}).get("activated_at")
+        if decision["activated"] and not earned and not replay:
+            record["sources"][source] = {"activated_at": health["checked_at"], "evidence_run_ids": decision["evidence_run_ids"],
+                                         "authorized_by": decision["authorized_by"], "rule": decision["rule"],
+                                         "coverage_contract_id": health.get("coverage_contract_id")}
+            earned = health["checked_at"]
+        current_row = {"mode": mode, "capture_reuse": {"reused_url_count": 0}, "sources": {source: health}}
+        current_ok = successful_live_row(current_row, source, health.get("coverage_contract_id")) and decision["authorized"]
+        same_contract = bool(earned) and record["sources"][source].get("coverage_contract_id") == health.get("coverage_contract_id")
+        health["publication_activation"] = bool(earned and same_contract and current_ok and not replay)
+        if earned and not health["publication_activation"]:
+            health["publication_activation_suspended_reason"] = "current_run_not_successful_or_contract_changed"
+        health["publication_activation_decision"] = dict(decision, earned_at=earned, earned_evidence_run_ids=record["sources"].get(source, {}).get("evidence_run_ids", []))
+        if health["publication_activation"]:
+            health["editorial_outcome"] = "publication_activated_pending_editorial_approval"
+    if not replay:
+        write(root, "data/global_intelligence/publication_activation.json", record)
+    return record
+
 def mirror_health(root, source_health):
     if set(source_health) != {"who", "paho", "reuters"}:
         raise ValueError("unexpected owned Global health sources")
@@ -70,7 +143,15 @@ def mirror_health(root, source_health):
 def coverage_contract_id(config,source):
     return hashlib.sha256(json.dumps({"qualification_version":4 if source=="paho" else 2,"inventory_days":90,"routes":[route for route in config["routes"] if route["source"]==source]},sort_keys=True).encode()).hexdigest()
 
-def editorial_topics(items, as_of):
+WHO_CATEGORY_SEGMENTS = {"emergency": ["providers", "regulation"], "policy_guidelines": ["regulation"], "financing_systems": ["payers", "providers"],
+                         "epidemiology": ["providers"], "technical_document": ["regulation"]}
+
+def executive_segments(row):
+    """Deterministic Chilean-executive segment tags (title keywords, else WHO/PAHO category map)."""
+    result = classify_relevance(row["title"], (), default_segments=WHO_CATEGORY_SEGMENTS.get(row["classification"].get("category"), []))
+    return result["segments"]
+
+def editorial_topics(items, as_of, activation=None):
     selected = sorted([row for row in items if in_window(row["published_at"], as_of, 30) and row["detail_verified"] and row["classification"]["materiality"] == "candidate"], key=lambda row:(-row["classification"]["priority"], -date.fromisoformat(row["published_at"]).toordinal(), row["url"]))
     topics = []
     seen_topics = set()
@@ -81,6 +162,7 @@ def editorial_topics(items, as_of):
         topics.append({"topic_id": hashlib.sha256(topic.encode()).hexdigest()[:20], "representative_url": row["url"], "title": row["title"], "published_at": row["published_at"], "priority": row["classification"]["priority"],
                        "related_discovered_urls": [other["url"] for other in selected if (other.get("event_id") or other["url"]) == topic],
                        "selection_basis": "discovery_priority_not_editorial_publication_score", "status": "pending_editorial", "publication_ready": False,
+                       "executive_segments": executive_segments(row), "source_publication_activated": bool((activation or {}).get(row["source"])),
                        "chile_transfer": "hypothesis_only", "independence_groups": ["WHO_UN_SYSTEM"], "requires": ["verified_business_consequence", "independent_corroboration", "rights_review", "editorial_approval"]})
     return topics
 
@@ -156,9 +238,11 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, replay: Path | Non
         "technical_failures": [{"code": "prior_written_consent_required", "evidence_ref": config["reuters"]["robots_evidence"]}],
         "manual_reference_control": {"total": len(reuters_refs), "30": sum(in_window(s["published_at"],as_of,30) for s in reuters_refs.values()), "90": sum(in_window(s["published_at"],as_of,90) for s in reuters_refs.values()), "collector_recall": None},
         "reason": config["reuters"]["reason"], "publication_activation": False, "editorial_outcome": "rights_hold"}
-    topics = editorial_topics(items, as_of)
+    mode = "projection_replay" if replay else "live_resume" if resume else "live_discovery"
+    apply_publication_activation(root, source_health, ledger, run_id, mode, config, bool(replay or resume))
+    topics = editorial_topics(items, as_of, {s: source_health[s]["publication_activation"] for s in ("who", "paho")})
     payload = {"schema_version": 1, "as_of": as_of.isoformat(), "generated_at": generated, "run_id": run_id,
-               "mode": "projection_replay" if replay else "live_resume" if resume else "live_discovery", "network_requests": client.network_requests,
+               "mode": mode, "network_requests": client.network_requests,
                "capture_reuse": {"reused_url_count":len(client.reused_urls),"maximum_campaign_capture_age_hours":1,"does_not_prove_cadence":True},
                "paid_ai_calls": 0, "live_capture_budget_seconds":config['live_capture_budget_seconds'], "source_health": source_health, "items": items, "routes": routes, "technical_failures": failures,
                "publication_count": 0, "content_use": "metadata_and_link_only", "default_window_days": 30,
