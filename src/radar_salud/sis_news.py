@@ -8,8 +8,11 @@ Rules:
 * robots.txt is honoured before any request to the listing or an article
   (``robots_disallowed`` stops the surface; an unreadable robots file fails closed,
   a 404 robots file means no restriction, as RFC 9309 states).
-* Terms: public institutional news. We keep title, URL, date and a bounded text
-  excerpt for analysis; cards link to the official page. Nothing is republished in full.
+* Terms/rights: public institutional news. Stored state holds only title, date, URL, a
+  display excerpt (<= 600 chars) and the lead (<= 400 chars); the article text used to
+  score relevance is re-read at processing time and never persisted. Cards link out.
+* No article page (fetch error, robots refusal) = no item: discovery is marked partial and
+  the entry is retried on the next run; nothing is published from the listing alone.
 * The listing has been seen pairing a title with another entry's URL (15-06-2026), so
   the article page decides title and date; disagreements are recorded, never guessed.
   An entry with no verifiable date is not published (no first-detection dating here).
@@ -39,13 +42,18 @@ ARTICLE_PATH = re.compile(r"^/noticias/(20\d{2})/(0[1-9]|1[0-2])/[a-z0-9][a-z0-9
 _LISTED_DATE = re.compile(r"^\s*(\d{1,2})/(\d{1,2})/(20\d{2})\b")
 _LEER = re.compile(r"\s*Leer noticia\s*$", re.I)
 TERMS_POLICY = "public_institutional_news_title_link_and_bounded_excerpt"
+# Rights (review of 955a1461): only title, date, URL and a display excerpt are stored; the article
+# text used to score relevance is fetched again at processing time and never persisted.
+EXCERPT_MAX = 600
+LEAD_MAX = 400
 DETAIL_WINDOW_DAYS = 30  # article pages fetched only for entries that can still be processed
 CHILE = ZoneInfo("America/Santiago")
 
 _ACT = re.compile(r"\b(Oficio\s+Circular|Circular|Resoluci[oó]n\s+Exenta)\s+(?:(IF|IP|SS)\s*[/\-]?\s*)?N?\s*[°º]?\s*(\d[\d\.]*)", re.I)
 
 
-def robots_allows(url: str, fetch: Callable[[str], str] = fetch_html) -> bool:
+def robots_allows(url: str, fetch: Callable[[str], str] | None = None) -> bool:
+    fetch = fetch or (lambda u: fetch_html(u))
     try:
         body = fetch(ROBOTS)
     except HTTPError as exc:
@@ -99,8 +107,9 @@ def parse_article(html: str) -> dict:
         visible = _iso(*m.groups())
     if not visible:
         visible = _date(text[:4000])
+    lead = meta.description or next((t for t in meta.text if len(t) >= 60), "")
     return {"title": meta.ogtitle or None, "published": published, "visible_date": visible,
-            "description": meta.description, "text": text}
+            "description": meta.description, "lead": " ".join(lead.split())[:LEAD_MAX], "text": text}
 
 
 def _norm(text: str) -> str:
@@ -124,8 +133,8 @@ class SuperintendenciaNoticiasScout:
     SOURCE_NAME = SOURCE_NAME
     SOURCE_TYPE = "official"
 
-    def __init__(self, fetch: Callable[[str], str] = fetch_html, today: date | None = None, robots=None):
-        self.fetch = fetch
+    def __init__(self, fetch: Callable[[str], str] | None = None, today: date | None = None, robots=None):
+        self.fetch = fetch or (lambda u: fetch_html(u))
         self.today = today
         self.robots = robots or (lambda url: robots_allows(url, self.fetch))
         self.surface_results = []
@@ -161,47 +170,60 @@ class SuperintendenciaNoticiasScout:
             meta = {"listing_url": urljoin(entry["url"], f"/noticias/{entry['url_month'][:4]}/"),
                     "listing_title": entry["listing_title"], "listing_date": listed,
                     "terms_policy": TERMS_POLICY}
-            title, event_date = entry["listing_title"], listed
+            title = entry["listing_title"]
             try:
                 if not self.robots(entry["url"]):
                     raise PermissionError("robots_disallowed")
                 article = parse_article(self.fetch(entry["url"]))
             except Exception as exc:
+                # No article, no item: never published from the listing alone. Recording the error
+                # marks discovery partial, so the watermark stays and the entry is retried next run.
                 self.discovery_errors.append(f"{entry['url']}: {type(exc).__name__}")
-                meta["fetch_error"] = type(exc).__name__
-                article = None
-            if article:
-                page_date = article["published"] or article["visible_date"]
-                if article["title"]:
-                    if _norm(article["title"]) != _norm(title):
-                        meta["listing_title_mismatch"] = True  # listing paired another entry's title
-                    title = article["title"]
-                if page_date and listed and page_date != listed:
-                    meta["listing_date_conflict"] = {"listing": listed, "article": page_date}
-                event_date = page_date or (listed if not meta.get("listing_title_mismatch") else None)
-                meta.update(page_text=article["text"][:18000], publication_date_source=(
-                    "article:published_time" if article["published"] else "article_visible_date" if article["visible_date"]
-                    else "listing_date" if event_date else None))
-                summary = article["description"] or article["text"][:1800]
-            else:
-                summary = ""
-            meta["mentioned_acts"] = mentioned_acts(" ".join([title, meta.get("page_text", "")[:6000]]))
+                continue
+            page_date = article["published"] or article["visible_date"]
+            if article["title"]:
+                if _norm(article["title"]) != _norm(title):
+                    meta["listing_title_mismatch"] = True  # listing paired another entry's title
+                title = article["title"]
+            if page_date and listed and page_date != listed:
+                meta["listing_date_conflict"] = {"listing": listed, "article": page_date}
+            event_date = page_date or (listed if not meta.get("listing_title_mismatch") else None)
+            lead = article["lead"]
+            excerpt = " ".join((article["description"] or article["text"]).split())[:EXCERPT_MAX]
+            meta.update(lead=lead, publication_date_source=(
+                "article:published_time" if article["published"] else "article_visible_date" if article["visible_date"]
+                else "listing_date" if event_date else None))
+            # Same act only when the title or the lead names it (not a passing mention in the body).
+            meta["mentioned_acts"] = mentioned_acts(" ".join([title, lead]))
             out.append(RawItem(SLUG, title, entry["url"], SOURCE_NAME, self.SOURCE_TYPE,
-                               event_date=event_date, raw_text=summary, metadata=meta))
+                               event_date=event_date, raw_text=excerpt, metadata=meta))
         out.sort(key=lambda r: r.event_date or "", reverse=True)
         return out
 
 
-_MATERIAL = ("isapre", "fonasa", "ges", "auge", "caec", "circular", "resolución", "resolucion", "licencia",
-             "prestador", "acreditación", "acreditacion", "multa", "sanci", "cobertura", "ley ", "precio",
-             "tabla de factores", "restitución", "restitucion", "deuda", "utilidades", "pérdidas", "perdidas",
-             "plan de salud", "cotizantes", "beneficiarios", "garantías", "garantias", "superintendente")
-_NOISE = ("seminario", "ceremonia", "visita", "punto de vacunación", "punto de vacunacion", "celebra",
-          "conmemora", "participa", "asume como", "es nombrado", "subrogante")
+_MATERIAL = re.compile(
+    r"\b(?:isapres?|fonasa|ges|auge|caec|circular(?:es)?|resoluci[oó]n|licencias?\s+m[eé]dicas?|prestador(?:es)?|"
+    r"acreditaci[oó]n|multas?|sanci[oó]n(?:es)?|cobertura|ley\s+n?[°º]?\s*\d|precios?|tabla\s+de\s+factores|"
+    r"restituci[oó]n|deuda|utilidades|p[eé]rdidas|planes?\s+de\s+salud|cotizantes|beneficiarios|garant[ií]as)\b", re.I)
+# Deterministic positive signal in the title/lead: names an act, or a market-moving regulatory topic.
+_STRONG = re.compile(
+    r"\b(?:isapres?|fonasa|ges|auge|caec|multas?|sanci[oó]n(?:es)?|tabla\s+de\s+factores|restituci[oó]n|"
+    r"circular(?:es)?|alza\s+de\s+precios?|precio\s+base|deuda)\b", re.I)
+_NOISE = re.compile(r"\b(?:seminario|ceremonia|visita|punto\s+de\s+vacunaci[oó]n|celebra|conmemora|participa|"
+                    r"asume\s+como|es\s+nombrad[oa]|subrogante)\b", re.I)
+_NOISE_EXEMPT = re.compile(r"\b(?:isapres?|ges|multas?)\b", re.I)
+
+
+def _transient_article_text(url: str) -> str:
+    """Article text for relevance scoring only; fetched at processing time, never stored."""
+    if not robots_allows(url):
+        raise PermissionError("robots_disallowed")
+    return parse_article(fetch_html(url))["text"][:9000]
 
 
 def process_superintendencia_noticias(raw, cfg):
-    """Usual editorial gate for official news: materiality, AI relevance >= 65 within budget."""
+    """Editorial gate for SIS news: materiality, then a real AI relevance score >= 65, or a
+    deterministic positive signal in the title/lead; without either the item stays pending."""
     from .llm_analysis import analyze_official_news
     from .pipeline import build_signal
     from .processing import DeferredProcessing, RejectedProcessing
@@ -211,22 +233,32 @@ def process_superintendencia_noticias(raw, cfg):
         raise DeferredProcessing("sis_news_without_verified_publication_date")
     if raw.metadata.get("listing_title_mismatch") and raw.metadata.get("publication_date_source") == "listing_date":
         raise DeferredProcessing("sis_news_listing_identity_mismatch_without_article_date")
-    body = raw.metadata.get("page_text") or raw.raw_text or ""
-    low = f"{raw.title} {body[:4000]}".lower()
-    if any(x in raw.title.lower() for x in _NOISE) and not any(x in raw.title.lower() for x in ("isapre", "ges", "multa")):
+    head = f"{raw.title} {raw.metadata.get('lead') or ''}"
+    if _NOISE.search(raw.title) and not _NOISE_EXEMPT.search(raw.title):
         raise RejectedProcessing("institutional_agenda_not_market_signal")
-    if not any(x in low for x in _MATERIAL):
+    try:
+        body = _transient_article_text(raw.url)
+    except Exception as exc:
+        raise DeferredProcessing(f"sis_news_article_unavailable: {type(exc).__name__}") from exc
+    if not _MATERIAL.search(f"{head} {body[:4000]}"):
         raise RejectedProcessing("not_material_for_health_market")
-    ai = analyze_official_news(title=raw.title, text=body[:9000], source_name=SOURCE_NAME)
-    score = int(ai.get("relevance_score")) if ai else 66
-    if score < 65:
-        raise RejectedProcessing("editorial_relevance_below_threshold")
+    ai = analyze_official_news(title=raw.title, text=body, source_name=SOURCE_NAME)
+    score = ai.get("relevance_score") if isinstance(ai, dict) else None
+    if isinstance(score, (int, float)) and not isinstance(score, bool):
+        score, basis = int(score), "ai_relevance"
+        if score < 65:
+            raise RejectedProcessing("editorial_relevance_below_threshold")
+    elif raw.metadata.get("mentioned_acts") or _STRONG.search(head):
+        score, basis = 70, "deterministic_title_signal"
+    else:
+        raise DeferredProcessing("sis_news_relevance_unscored")
+    low = f"{head} {body[:4000]}".lower()
     scopes = []
     if re.search(r"\bisapres?\b", low):
         scopes.append("Isapres")
-    if "fonasa" in low:
+    if re.search(r"\bfonasa\b", low):
         scopes.append("Fonasa")
-    if re.search(r"prestador|cl[ií]nica|hospital|cesfam|acreditaci", low):
+    if re.search(r"\b(?:prestador(?:es)?|cl[ií]nicas?|hospital(?:es)?|cesfam|acreditaci[oó]n)\b", low):
         scopes.append("Prestadores")
     scopes = scopes or ["Sistema de salud"]
     what = ((ai or {}).get("what_happened") or raw.raw_text or raw.title).strip()
@@ -236,7 +268,7 @@ def process_superintendencia_noticias(raw, cfg):
                          "watch_tags": ["superintendencia de salud", "comunicado"] + [s.lower() for s in scopes],
                          "scores": {"economic": 50, "regulatory": 70, "scope": score, "novelty": score, "actionability": 66}})
     row = build_signal(raw, cfg).to_dict()
-    row.update(signal_types=["Noticias"], scopes=scopes, editorial_relevance=score,
+    row.update(signal_types=["Noticias"], scopes=scopes, editorial_relevance=score, relevance_basis=basis,
                mentioned_acts=raw.metadata.get("mentioned_acts") or [],
                publication_date_source=raw.metadata.get("publication_date_source"))
     if raw.metadata.get("listing_date_conflict"):
@@ -245,13 +277,16 @@ def process_superintendencia_noticias(raw, cfg):
 
 
 def fold_news_into_acts(cards: Iterable[dict]) -> list[dict]:
-    """A SIS news card about an act that has its own normativa card is the same story:
-    keep the act's card, attach the news as an official alternative source."""
+    """A SIS news card about an act (named in its title or lead) that has its own *visible*
+    normativa card is the same story: keep the act's card, attach the news as an official
+    alternative source. Runs after the feed's visibility/editorial/story gates; when the act
+    card is not in the feed the news stands on its own."""
     from .normative_relations import target_key
     cards = [dict(c) for c in cards]
     acts = {}
     for c in cards:
-        if c.get("source_name") == SOURCE_NAME and ("Normativa" in (c.get("signal_types") or []) or c.get("event_type") == "REGULATION"):
+        if (c.get("source_name") == SOURCE_NAME and c.get("feed_visibility") is not False
+                and ("Normativa" in (c.get("signal_types") or []) or c.get("event_type") == "REGULATION")):
             key = target_key(str(c.get("normative_document_label") or c.get("title") or ""))
             if key:
                 acts[key] = c

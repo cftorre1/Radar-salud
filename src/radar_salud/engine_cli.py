@@ -231,12 +231,9 @@ def main():
                 atomic_json(root/"data/state/deis_catalog.json", scout.catalog)
             if name == "superintendencia_normativa" and getattr(scout, "listing_index", None):
                 # Official circular identities -> listing URLs; merged so a failed page keeps older rows.
-                from .regulatory import SIS_INDEX_PATH
-                index_path=root/SIS_INDEX_PATH
-                previous=json.loads(index_path.read_text()) if index_path.exists() else {}
-                acts=dict(previous.get("acts",{}));acts.update(scout.listing_index)
-                atomic_json(index_path,{"captured_at":datetime.now(timezone.utc).isoformat(),
-                    "source":"Superintendencia de Salud · Instrucciones dictadas (listados oficiales)","acts":acts})
+                from .regulatory import SIS_INDEX_PATH, merge_sis_index
+                try:merge_sis_index(root/SIS_INDEX_PATH,scout.listing_index)
+                except OSError as exc:print("SIS normative index not written:",type(exc).__name__)
             if name in PUBLIC_DATA_SOURCES:
                 discovery_details[name]={"diagnostics":discovery_diagnostics(scout,items)}
                 discovery_details[name]["diagnostics"]["poll_mode"]="daily_engine"

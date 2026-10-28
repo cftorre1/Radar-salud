@@ -137,11 +137,12 @@ def test_discover_window_article_decides_title_and_date():
     scout = SuperintendenciaNoticiasScout(fetch=_fetcher(pages), today=date(2026, 10, 28))
     items = {i.url: i for i in scout.discover()}
     assert set(items) == {ges, comunicado, seminario}  # 20-08 and 15-06 entries are outside the window: not fetched
+    assert scout.discovery_errors == []
     assert items[ges].event_date == "2026-10-14"
     assert items[ges].metadata["publication_date_source"] == "article:published_time"
     c = items[comunicado]
     assert c.title == "Comunicado de prensa sobre la Circular IF/N°534" and c.metadata["listing_title_mismatch"]
-    assert c.metadata["mentioned_acts"] == ["circular-if-534"]
+    assert c.metadata["mentioned_acts"] == ["circular-if-534"]  # named in the title
     assert items[seminario].event_date is None  # undated listing and article: never dated by guess
 
 
@@ -162,12 +163,13 @@ def test_robots_policy():
 def _news(title, body, **meta):
     return RawItem("superintendencia_noticias", title, "https://www.superdesalud.gob.cl/noticias/2026/10/x/", SIS, "official",
                    event_date="2026-10-14", raw_text=body[:200],
-                   metadata={"page_text": body, "publication_date_source": "article:published_time", **meta})
+                   metadata={"lead": body[:400], "publication_date_source": "article:published_time", **meta})
 
 
 def test_editorial_gate(monkeypatch):
     import radar_salud.llm_analysis as llm
     monkeypatch.setattr(llm, "analyze_official_news", lambda **k: None)  # no paid call in tests
+    monkeypatch.setattr(sis_news, "_transient_article_text", lambda url: "Las isapres y Fonasa registran casos GES acumulados.")
     cfg = {"slug": "superintendencia_noticias", "name": SIS, "source_type": "official", "base_confidence": 100,
            "default_category": "Regulación & Legal"}
     row = process_superintendencia_noticias(_news("Más de 62 millones de casos GES desde 2005",
@@ -237,3 +239,120 @@ def test_export_retains_90_days_and_keeps_a_31_to_90_accreditation_card():
     assert "accreditation_pulses(signals,latest)" in source
     from radar_salud.accreditation_pulse import RETENTION_DAYS
     assert RETENTION_DAYS == 90
+
+
+# --- Review of 955a1461 ---------------------------------------------------------------------------
+
+GES_URL = "https://www.superdesalud.gob.cl/noticias/2026/10/mas-de-62-millones-de-casos-ges-desde-2005-salud-presenta-cifras-actualizadas-y-llama-a-ejercer-las-garantias/"
+
+
+@pytest.mark.parametrize("failure", ["timeout", "robots", "http"])
+def test_article_failure_drops_item_and_marks_discovery_partial(failure):
+    pages = {"https://www.superdesalud.gob.cl/noticias/2026/": LISTING}
+
+    def fetch(url):
+        if url == sis_news.ROBOTS:
+            return "User-agent: *\nDisallow: /noticias/2026/10/\n" if failure == "robots" else "User-agent: *\nAllow: /\n"
+        if url in pages:
+            return pages[url]
+        if failure == "http":
+            raise HTTPError(url, 503, "unavailable", None, None)
+        raise TimeoutError("read timeout")
+    scout = SuperintendenciaNoticiasScout(fetch=fetch, today=date(2026, 10, 28))
+    items = scout.discover()
+    assert GES_URL not in {i.url for i in items}  # never published from the listing alone
+    assert any(GES_URL in e for e in scout.discovery_errors)  # engine keeps the watermark: retried next run
+
+
+def _gate_cfg():
+    return {"slug": "superintendencia_noticias", "name": SIS, "source_type": "official", "base_confidence": 100,
+            "default_category": "Regulación & Legal"}
+
+
+def test_gestion_is_not_ges_and_agenda_news_is_rejected(monkeypatch):
+    import radar_salud.llm_analysis as llm
+    monkeypatch.setattr(llm, "analyze_official_news", lambda **k: None)
+    monkeypatch.setattr(sis_news, "_transient_article_text", lambda url: "Se abordó la gestión hospitalaria y la gestión clínica.")
+    with pytest.raises(RejectedProcessing):
+        process_superintendencia_noticias(_news("Superintendente participa en seminario sobre gestión hospitalaria",
+                                                "Gestión hospitalaria."), _gate_cfg())
+    assert not sis_news._MATERIAL.search("Seminario sobre gestión y sugestión")
+
+
+def test_unscored_news_stays_pending_without_deterministic_signal(monkeypatch):
+    import radar_salud.llm_analysis as llm
+    monkeypatch.setattr(llm, "analyze_official_news", lambda **k: None)
+    monkeypatch.setattr(sis_news, "_transient_article_text", lambda url: "Informe sobre beneficiarios del sistema de salud.")
+    with pytest.raises(DeferredProcessing):
+        process_superintendencia_noticias(_news("Nuevo informe sobre beneficiarios", "Informe."), _gate_cfg())
+    row = process_superintendencia_noticias(_news("Isapres deberán restituir cobros por Tabla de Factores", "Isapres."), _gate_cfg())
+    assert row["relevance_basis"] == "deterministic_title_signal"
+    monkeypatch.setattr(llm, "analyze_official_news", lambda **k: {"relevance_score": 81, "what_happened": "x" * 50})
+    row = process_superintendencia_noticias(_news("Nuevo informe sobre beneficiarios", "Informe."), _gate_cfg())
+    assert row["relevance_basis"] == "ai_relevance" and row["editorial_relevance"] == 81
+
+
+def test_article_unavailable_at_processing_stays_pending(monkeypatch):
+    def down(url):
+        raise TimeoutError
+    monkeypatch.setattr(sis_news, "_transient_article_text", down)
+    with pytest.raises(DeferredProcessing):
+        process_superintendencia_noticias(_news("Isapres: nuevas instrucciones", "Isapres."), _gate_cfg())
+
+
+def test_passing_mention_does_not_fold_and_hidden_act_lets_news_stand():
+    body = ("La Superintendencia de Salud presentó el balance GES 2005-2026 con más de 62 millones de casos atendidos. "
+            * 3 + "Entre otras materias, recordó la Circular IF/N°534 sobre bono electrónico.")
+    pages = {"https://www.superdesalud.gob.cl/noticias/2026/": LISTING,
+             GES_URL: _article("Más de 62 millones de casos GES desde 2005", "2026-10-14T10:00:00-03:00", body=body)}
+    scout = SuperintendenciaNoticiasScout(fetch=_fetcher(pages), today=date(2026, 10, 28))
+    item = next(i for i in scout.discover() if i.url == GES_URL)
+    assert item.metadata["mentioned_acts"] == []  # IF/534 only in passing, outside title and lead
+    act = dict(C534, signal_types=["Normativa"], event_type="REGULATION", normative_document_label="Circular IF/N°534")
+    news = {"title": "Comunicado sobre la Circular IF/N°534", "source_name": SIS, "event_date": "2026-09-30",
+            "source_url": "https://www.superdesalud.gob.cl/noticias/2026/09/comunicado-de-prensa-3/",
+            "signal_types": ["Noticias"], "mentioned_acts": ["circular-if-534"]}
+    assert len(fold_news_into_acts([dict(act, feed_visibility=False), news])) == 2  # hidden act: news stands
+    assert len(fold_news_into_acts([news])) == 1
+    source = Path("scripts/export_web_snapshot.py").read_text(encoding="utf-8")
+    assert source.index("fold_news_into_acts(recent)") > source.index("apply_story_groups(recent")
+
+
+def test_stored_state_stays_within_rights_cap(tmp_path):
+    long_body = "Las isapres deberán informar. " * 2000  # ~60k chars of article text
+    pages = {"https://www.superdesalud.gob.cl/noticias/2026/": LISTING,
+             GES_URL: _article("Más de 62 millones de casos GES desde 2005", "2026-10-14T10:00:00-03:00", body=long_body)}
+    scout = SuperintendenciaNoticiasScout(fetch=_fetcher(pages), today=date(2026, 10, 28))
+    items = scout.discover()
+    from radar_salud.pending_queue import PendingQueue
+    q = PendingQueue(tmp_path / "q.json")
+    q.discover("superintendencia_noticias", items)
+    stored = json.loads((tmp_path / "q.json").read_text(encoding="utf-8"))
+    for entry in stored.values():
+        raw = entry["raw"]
+        assert len(raw["raw_text"]) <= sis_news.EXCERPT_MAX
+        assert "page_text" not in raw["metadata"]
+        assert len(raw["metadata"].get("lead") or "") <= sis_news.LEAD_MAX
+        assert len(json.dumps(raw, ensure_ascii=False)) < 2500
+
+
+def test_listing_index_only_from_https_sis_hosts_and_survives_corruption(tmp_path):
+    from radar_salud.regulatory import merge_sis_index, official_sis_url, record_listing_identity
+    assert official_sis_url("https://www.superdesalud.gob.cl/normativa/circular-if-n534/")
+    assert not official_sis_url("http://www.superdesalud.gob.cl/normativa/circular-if-n534/")
+    assert not official_sis_url("https://superdesalud.gob.cl.evil.example/normativa/")
+    assert not official_sis_url("https://evil.example/?u=superdesalud.gob.cl")
+    index = {}
+    record_listing_identity(index, "Circular IF/N°534", "https://evil.example/superdesalud.gob.cl/x", "2026-09-14", "", "")
+    assert index == {}
+    path = tmp_path / "sis_normative_index.json"
+    path.write_text("{not json", encoding="utf-8")
+    acts = merge_sis_index(path, {"circular-if-534": {"id": "Circular IF/N°534", "url": C534["source_url"]}})
+    assert acts["circular-if-534"]["url"] == C534["source_url"]
+    assert json.loads(path.read_text(encoding="utf-8"))["acts"] == acts
+
+
+def test_ui_links_require_https_and_backlink_has_aria_label():
+    js = Path("web/app.js").read_text(encoding="utf-8")
+    assert "x.url&&x.verified&&/^https:\\/\\//.test(x.url)" in js
+    assert 'aria-label="${esc(\'Ver \'+(x.by||' in js

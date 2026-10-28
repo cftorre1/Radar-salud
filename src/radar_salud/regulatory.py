@@ -39,12 +39,34 @@ class _TableParser(HTMLParser):
             if self._row:self.rows.append(self._row)
             self._row=None
 
+def merge_sis_index(index_path,listing_index):
+    """Merge this run's listing identities into the persisted index; a corrupt index is
+    logged and rebuilt from this run, never a discovery failure."""
+    import json
+    from datetime import datetime, timezone
+    from .pending_queue import atomic_json
+    try:
+        previous=json.loads(index_path.read_text()) if index_path.exists() else {}
+        acts=dict(previous.get("acts",{}))
+    except (OSError,ValueError,AttributeError,TypeError) as exc:
+        print("SIS normative index unreadable; rebuilding:",type(exc).__name__)
+        acts={}
+    acts.update(listing_index)
+    atomic_json(index_path,{"captured_at":datetime.now(timezone.utc).isoformat(),
+        "source":"Superintendencia de Salud · Instrucciones dictadas (listados oficiales)","acts":acts})
+    return acts
+
+def official_sis_url(url):
+    from urllib.parse import urlsplit
+    parts=urlsplit(str(url or ""));host=(parts.hostname or "").lower()
+    return parts.scheme=="https" and (host=="superdesalud.gob.cl" or host.endswith(".superdesalud.gob.cl"))
+
 def record_listing_identity(index,title,url,event_date,subject,listing_url):
     """Official identity -> URL, read from the regulator's own listing (no constructed URLs).
     Used to link a late resolution to the circular it acts on when that circular is not in history."""
     from .normative_relations import target_key
     key=target_key(title or "")
-    if not key or not url or "superdesalud.gob.cl" not in url:return
+    if not key or not official_sis_url(url):return
     if not key.startswith(("circular-","oficio-circular-")):return
     current=index.get(key)
     record={"id":" ".join(str(title).split()),"url":url,"event_date":event_date,

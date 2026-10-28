@@ -717,8 +717,6 @@ def curate(signals,resolve_external=True,as_of=None):
     recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent,today=as_of);recent=_related_context(recent,resolve_external);recent=_resolution_relation_titles(recent)
     recent=_normative_status(recent,normalized)
     recent=_late_related_documents(recent,signals)
-    from radar_salud.sis_news import fold_news_into_acts
-    recent=fold_news_into_acts(recent)
     # An explicitly reviewed DF corroboration yields to its official event when
     # that counterpart is present. Keep both source records in durable history.
     counterpart_urls={s.get('source_url') for s in recent}
@@ -741,6 +739,9 @@ def curate(signals,resolve_external=True,as_of=None):
         return card["editorial_committee"].get("verdict")=="PASS"
     recent,summaries=apply_story_groups(recent,load_groups(),gate=story_gate)
     recent.extend(summaries)
+    # SIS news about an act with its own visible card folds into it (after every visibility gate).
+    from radar_salud.sis_news import fold_news_into_acts
+    recent=fold_news_into_acts(recent)
     # Individual accreditation acts stay out of the feed; verifiable rolling pulses instead
     # (last 30 days and days 31-90: information stays available 90 days).
     from radar_salud.accreditation_pulse import accreditation_pulses
