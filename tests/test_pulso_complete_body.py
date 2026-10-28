@@ -63,6 +63,7 @@ def actual_model_input(monkeypatch):
                                id='unit-test-response', model='unit-test-no-paid-call')
     monkeypatch.setattr(llm_analysis, '_client', lambda: SimpleNamespace(responses=SimpleNamespace(create=create)))
     monkeypatch.setattr(llm_analysis, 'allow_call', lambda kind: True)
+    monkeypatch.setattr('radar_salud.ai_budget.has_capacity', lambda kind: True)
     monkeypatch.setattr(llm_analysis, 'record_response', lambda *args, **kwargs: None)
     monkeypatch.setattr(llm_analysis, 'record_result', lambda *args, **kwargs: None)
     return requests

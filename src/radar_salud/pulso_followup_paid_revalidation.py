@@ -8,6 +8,8 @@ from copy import deepcopy
 from datetime import datetime, timezone
 from functools import lru_cache
 from pathlib import Path
+
+from .pinned_evidence import pinned_bytes
 import json
 import subprocess
 
@@ -165,7 +167,7 @@ def _verify_context(context, raw, origin):
 
 def load_manifest(root=ROOT):
     root = Path(root)
-    payload = (root / MANIFEST_REF).read_bytes()
+    payload = pinned_bytes(root, MANIFEST_REF, MANIFEST_SHA256)
     if digest(payload) != MANIFEST_SHA256:
         raise ValueError("followup_paid_revalidation_manifest_unpinned")
     document = json.loads(payload)
@@ -180,7 +182,7 @@ def load_manifest(root=ROOT):
         raise ValueError("followup_paid_two_independent_current_response_reviews_required")
     for ref in refs:
         path = (root / ref["path"]).resolve()
-        if not path.is_relative_to((root / "data/audits").resolve()) or digest(path.read_bytes()) != ref["sha256"]:
+        if not path.is_relative_to((root / "data/audits").resolve()) or digest(pinned_bytes(root, ref["path"], ref["sha256"])) != ref["sha256"]:
             raise ValueError("followup_paid_semantic_review_unavailable_or_changed")
     origin = producer(str(root))
     rows = document.get("rows", [])

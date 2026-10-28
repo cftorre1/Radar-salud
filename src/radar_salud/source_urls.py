@@ -18,19 +18,43 @@ HOST_ALIASES = {"minsal.cl": "www.minsal.cl", "df.cl": "www.df.cl", "latercera.c
 
 # Paths under www.minsal.cl that are not a specific publication. They are either
 # navigation (listings/archives/search/feeds) or retired portal layouts that now
-# 404 since the WordPress migration (Drupal /sites/default/files, /portal/url/).
+# 404 since the WordPress migration (/portal/url/). Legacy Drupal documents under
+# /sites/default/files/ are NOT presumed dead: many still resolve. Such a link is
+# withheld only when its row carries a verified failure (see
+# ``verified_link_failure``), never on the path alone.
 MINSAL_NON_ARTICLE = (
     (re.compile(r"^/?$"), "minsal_home"),
     (re.compile(r"^/(category|tag|author|page|feed|comments)(/|$)"), "minsal_listing"),
     (re.compile(r"^/\d{4}(/\d{2}(/\d{2})?)?/?$"), "minsal_date_archive"),
-    (re.compile(r"^/(sites/default/files|portal/url|portal/|noticias/|index\.php)"), "minsal_retired_path"),
+    (re.compile(r"^/(portal/url|portal/|noticias/|index\.php)"), "minsal_retired_path"),
     (re.compile(r"^/wp-(admin|json|login)"), "minsal_wp_internal"),
 )
 
 
 def _encode_path(path: str) -> str:
     # Decode once then re-encode, so "a b", "a%20b" and accented paths converge.
-    return quote(unquote(path), safe="/:@!$&'()*+,;=-._~")
+    # An encoded slash (%2F) is data inside one segment, not a separator: decoding
+    # it would change the resource. Decode each segment separately and keep it.
+    segments = re.split(r"(%2F)", path, flags=re.I)
+    return "".join(seg.upper() if seg.upper() == "%2F" else quote(unquote(seg), safe="/:@!$&'()*+,;=-._~")
+                   for seg in segments)
+
+
+LEGACY_MINSAL_FILES = re.compile(r"^/sites/default/files/")
+
+
+def verified_link_failure(row: dict | None) -> dict | None:
+    """A recorded, verified failure of this row's source link (404/410 over verified TLS), or None.
+
+    Shape (written by a link checker or a reviewed migration):
+    ``{"url": ..., "http_status": 404, "checked_at": "...", "tls_verified": true}``.
+    """
+    check = (row or {}).get("source_link_check")
+    if (isinstance(check, dict) and check.get("url") == (row or {}).get("source_url")
+            and check.get("http_status") in (404, 410) and check.get("tls_verified") is True
+            and isinstance(check.get("checked_at"), str) and check["checked_at"]):
+        return check
+    return None
 
 
 def normalize_source_url(url) -> str | None:
@@ -136,6 +160,8 @@ def minsal_article_url(href, base: str = "https://www.minsal.cl/") -> str | None
     if parts.query:
         return None
     path = parts.path
+    if LEGACY_MINSAL_FILES.match(path):
+        return None  # a legacy document, not a publication slug (the link itself may still be valid)
     if not path.startswith("/wp-content/uploads/") and not path.endswith("/"):
         path += "/"  # WordPress canonical slug form; avoids a redirect hop.
     fixed = urlunsplit(("https", "www.minsal.cl", path, "", ""))
@@ -157,12 +183,14 @@ def sanitize_card_links(card: dict) -> dict:
     out = dict(card)
     url = out.get("source_url")
     problem = source_url_problem(url)
+    if problem is None and verified_link_failure(out):
+        problem = "verified_link_failure"  # e.g. a legacy /sites/default/files/ document confirmed 404
     out.pop("source_link", None)
     if problem is None:
         out.pop("source_link_status", None)
         out.pop("source_link_problem", None)
     else:
-        fixed = safe_source_url(url)
+        fixed = None if problem == "verified_link_failure" else safe_source_url(url)
         if fixed:
             out.update(source_link=fixed, source_link_status="repaired", source_link_problem=problem)
         else:

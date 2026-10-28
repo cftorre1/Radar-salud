@@ -174,6 +174,8 @@ def _same_pulso_model_request(previous_raw, fresh):
     old = previous_raw.get("metadata", {})
     model = old.get("analysis_model_output")
     binding = model.get("_pulso_analysis_meta") if isinstance(model, dict) else None
+    if fresh.metadata.get("paywalled") is True:
+        return _same_paywalled_pulso_request(previous_raw, fresh, binding)
     if (not isinstance(binding, dict) or not binding.get("response_id")
             or old.get("analysis_input_complete") is not True
             or old.get("article_body_complete") is not True
@@ -195,6 +197,35 @@ def _same_pulso_model_request(previous_raw, fresh):
             and hashlib.sha256(request.encode()).hexdigest() == old.get("analysis_request_input_sha256")
             == binding.get("request_input_sha256")
             and binding.get("source_name") == fresh.source_name)
+
+
+def _same_paywalled_pulso_request(previous_raw, fresh, binding):
+    """Premium section: compare body receipts (sha256), never stored text.
+
+    The old paid answer is retained when the fresh capture proves the same body
+    (same sha256 receipt) and that answer was bound either to that full body
+    (pre-policy) or to this exact teaser request. Re-analysis is then decided
+    once by ``pulso_paywall``; an unchanged article is never paid again here.
+    """
+    from .source_rights import redacted_body_verified
+    old = previous_raw.get("metadata", {})
+    new = fresh.metadata
+    if (not isinstance(binding, dict) or not binding.get("response_id")
+            or previous_raw.get("url") != fresh.url or previous_raw.get("title") != fresh.title
+            or previous_raw.get("source_name") != fresh.source_name
+            or previous_raw.get("event_date") != fresh.event_date
+            or not redacted_body_verified(new)
+            or old.get("article_body_sha256") != new.get("article_body_sha256")
+            or old.get("article_body_characters") != new.get("article_body_characters")):
+        return False
+    if (old.get("analysis_base_article_body_sha256") == new.get("article_body_sha256")
+            and binding.get("analysis_text_sha256") == old.get("analysis_input_body_sha256")):
+        return True  # pre-policy full-body answer, bound to the receipt's body hash
+    from .llm_analysis import news_analysis_input
+    teaser = new.get("public_teaser") or ""
+    request = news_analysis_input(title=fresh.title, text=teaser, source_name=fresh.source_name, full_text=True)
+    return (binding.get("analysis_text_sha256") == hashlib.sha256(teaser.encode()).hexdigest()
+            and binding.get("request_input_sha256") == hashlib.sha256(request.encode()).hexdigest())
 
 
 def _final_paid_revalidation_pulso_admission(raw, previous):
@@ -245,6 +276,31 @@ def _paid_revalidation_pulso_admission(raw, previous):
     evidence = verified_paid_revalidation_admission(candidate, previous)
     return (candidate, evidence) if evidence is not None else None
 
+_FINGERPRINTS = None
+
+
+def _fingerprints():
+    global _FINGERPRINTS
+    if _FINGERPRINTS is None:
+        from .source_rights import load_fingerprints
+        _FINGERPRINTS = load_fingerprints()
+    return _FINGERPRINTS
+
+
+def persisted_items(items):
+    """What ``PendingQueue.save`` writes: paywalled captures keep only lead + receipts (Dirección 28-oct-2026)."""
+    from .source_rights import paywall_policy, scrub_queue_item
+    fingerprints = _fingerprints()
+    persisted = {}
+    for key, item in items.items():
+        raw = item.get("raw") or {} if isinstance(item, dict) else {}
+        if isinstance(item, dict) and paywall_policy(raw.get("url", ""), raw.get("metadata")):
+            item = deepcopy(item)
+            scrub_queue_item(item, fingerprints)
+        persisted[key] = item
+    return persisted
+
+
 class PendingQueue:
     def __init__(self, path):
         self.path = Path(path)
@@ -253,7 +309,11 @@ class PendingQueue:
             raise ValueError("Invalid pending queue; refusing to discard state")
 
     def save(self):
-        atomic_json(self.path, self.items)
+        # Rights policy (Dirección 28-oct-2026): whatever path wrote a paywalled
+        # capture (rediscovery merges, recovery observations, revisions, superseded
+        # records), the persisted queue keeps only public lead + receipts.
+        # The persisted copy is redacted; the in-memory items are left as the caller holds them.
+        atomic_json(self.path, persisted_items(self.items))
 
     def discover(self, source, items, seen=(), now=None, last_discovered_at=None, published_urls=()):
         now = now or now_utc()
@@ -317,28 +377,31 @@ class PendingQueue:
                             raw = deepcopy(raw)
                             metadata = raw.metadata
                             metadata["article_body_complete"] = complete_article_body(metadata)
+                        # Premium sections never enter the pinned full-body paid admissions:
+                        # their single teaser decision is made in processing (pulso_paywall).
+                        premium = metadata.get("paywalled") is True
                         reviewed_release = _reviewed_pulso_admission(raw, previous) if factual_verified else None
                         admission = reviewed_release if reviewed_release and reviewed_release[2] else None
                         if reviewed_release is not None:
                             raw, admission_evidence, _ = reviewed_release
                             metadata = raw.metadata
-                        code_repair = _code_repair_pulso_admission(raw, previous) if factual_verified else None
+                        code_repair = _code_repair_pulso_admission(raw, previous) if factual_verified and not premium else None
                         if code_repair is not None:
                             raw, code_repair_evidence = code_repair
                             metadata = raw.metadata
-                        paid_revalidation = _paid_revalidation_pulso_admission(raw, previous) if factual_verified else None
+                        paid_revalidation = _paid_revalidation_pulso_admission(raw, previous) if factual_verified and not premium else None
                         if paid_revalidation is not None:
                             raw, paid_revalidation_evidence = paid_revalidation
                             metadata = raw.metadata
-                        current_paid = _current_paid_revalidation_pulso_admission(raw, previous) if factual_verified else None
+                        current_paid = _current_paid_revalidation_pulso_admission(raw, previous) if factual_verified and not premium else None
                         if current_paid is not None:
                             raw, current_paid_evidence = current_paid
                             metadata = raw.metadata
-                        followup_paid = _followup_paid_revalidation_pulso_admission(raw, previous) if factual_verified else None
+                        followup_paid = _followup_paid_revalidation_pulso_admission(raw, previous) if factual_verified and not premium else None
                         if followup_paid is not None:
                             raw, followup_paid_evidence = followup_paid
                             metadata = raw.metadata
-                        final_paid = _final_paid_revalidation_pulso_admission(raw, previous) if factual_verified else None
+                        final_paid = _final_paid_revalidation_pulso_admission(raw, previous) if factual_verified and not premium else None
                         if final_paid is not None:
                             raw, final_paid_evidence = final_paid
                             metadata = raw.metadata

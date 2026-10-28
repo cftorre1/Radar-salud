@@ -30,7 +30,8 @@ def write_public(result: dict, approved: dict, as_of: date) -> dict:
     """latest.json + free_value.json always reflect the reviewed publication (or nothing)."""
     attempt = {k: result.get(k) for k in ("status", "anchor_date", "topic_ranking", "verification", "review",
                                           "total_cost_usd", "error")}
-    out = reconcile_weekly_publication(attempt, approved, as_of)
+    from radar_salud.source_rights import redact_public_payload
+    out = redact_public_payload(reconcile_weekly_publication(attempt, approved, as_of))
     prior = (approved or {}).get("weekly_insight") or {}
     if out.get("status") != "pass" and prior:
         out["last_approved"] = {"id": prior.get("id"), "expires_on": prior.get("expires_on"),
@@ -43,7 +44,7 @@ def write_public(result: dict, approved: dict, as_of: date) -> dict:
     policy["weekly_insight_status"] = "published_editorial_reviewed" if out.get("weekly_insight") else "hidden_fail_closed"
     policy["freshness_gate"] = freshness_gate(out.get("weekly_insight"), as_of)
     policy["weekly_schedule"] = {"anchor": "monday", "anchor_date": monday_anchor(as_of).isoformat()}
-    free_path.write_text(json.dumps(free, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    free_path.write_text(json.dumps(redact_public_payload(free), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return out
 
 

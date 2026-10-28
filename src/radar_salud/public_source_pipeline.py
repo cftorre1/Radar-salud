@@ -255,7 +255,10 @@ def process_df(raw,cfg):
     from .df_media_gate import policy, exclusion, material, assessment_exclusion
     from .editorial_gate import publication_ready
     known_format=bool(raw.metadata.get('primary_image_urls') or raw.metadata.get('primary_media_urls'))
-    if not raw.metadata.get("publication_date_source") or (not raw.metadata.get("page_text") and not known_format):
+    # A paywalled capture keeps only its lead (possibly empty: title only); its
+    # provenance proves the detail was read, so an empty page_text is no reason to refetch.
+    captured=bool(raw.metadata.get("public_teaser_source"))
+    if not raw.metadata.get("publication_date_source") or (not raw.metadata.get("page_text") and not known_format and not captured):
         raw=enrich(raw)
     if raw.metadata.get("fetch_error"):
         raise DeferredProcessing("DF detail capture failed",reason="df_detail_fetch_failed")
@@ -278,10 +281,23 @@ def process_df(raw,cfg):
         raise DeferredProcessing("DF publication dates conflict",reason="df_publication_date_conflict")
     if not raw.event_date:
         raise DeferredProcessing("DF has no verifiable publication date",reason="df_missing_publication_date")
+    captured=int(raw.metadata.get("article_body_characters") or 0) or max(
+        [r.get("characters",0) for r in raw.metadata.get("rights_redactions") or []
+         if isinstance(r,dict) and r.get("field") in ("page_text","metadata.page_text")] or [0])
+    if paywalled and captured<160 and (raw.metadata.get('primary_image_urls') or raw.metadata.get('primary_media_urls')):
+        # No captured article text at all: the known non-text format decides (unchanged rule).
+        raise DeferredProcessing("DF has insufficient readable primary evidence",
+                                 reason='df_image_only_requires_ocr' if raw.metadata.get('primary_image_urls')
+                                 else 'df_media_transcript_unavailable')
+    if paywalled and len(body)<min_body:
+        # Title-only paywalled piece: no public text to analyse. Terminal, so it
+        # is never retried (no loop, no model call).
+        raw.metadata["rejection_reason"]="df_paywalled_without_public_teaser"
+        return None
     if len(body)<min_body:
         reason=('df_image_only_requires_ocr' if raw.metadata.get('primary_image_urls') else
                 'df_media_transcript_unavailable' if raw.metadata.get('primary_media_urls') else
-                'df_paywalled_without_public_teaser' if paywalled else 'df_insufficient_article_evidence')
+                'df_insufficient_article_evidence')
         raise DeferredProcessing("DF has insufficient readable primary evidence",reason=reason)
     ai=analyze_news(title=raw.metadata.get("article_title") or raw.title,text=body,source_name=raw.source_name,
                     kind="prensa económica; exigir cambio material explícito de un actor, financiamiento, regulación o capacidad del sector salud. Macro/política genérica sin consecuencia sanitaria concreta no es señal elegible. Resumir sólo este artículo, atribuir a Diario Financiero, no convertir reporte en confirmación oficial"

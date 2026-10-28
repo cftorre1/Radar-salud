@@ -1,15 +1,8 @@
 {
   "migration": "rights_links_2026_10_28",
+  "version": 2,
   "policy": "config/paywalled_press.json",
   "links": [
-    {
-      "set": "history",
-      "source_name": "Ministerio de Salud",
-      "source_url": "https://www.minsal.cl/sites/default/files/ResolucionExenta211.pdf",
-      "problem": "minsal_retired_path",
-      "status": "invalid",
-      "source_link": null
-    },
     {
       "set": "history",
       "source_name": "Diario Financiero",
@@ -257,7 +250,7 @@
     {
       "set": "history",
       "source_url": "https://www.df.cl/internacional/economia/trump-se-reune-esta-tarde-con-lideres-de-nvidia-anthropic-y-palantir-para",
-      "has_public_teaser": true,
+      "has_public_teaser": false,
       "redacted_fields": [
         "df_body_reaudit_latest_assessment",
         "df_body_reaudit_observations",
@@ -335,7 +328,7 @@
     {
       "set": "history",
       "source_url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
-      "has_public_teaser": true,
+      "has_public_teaser": false,
       "redacted_fields": [
         "editorial_assessment.reason",
         "what_happened",
@@ -941,7 +934,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -952,7 +944,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -963,7 +954,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -974,7 +964,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -985,7 +974,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.analysis_reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -996,7 +984,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1007,7 +994,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.analysis_reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1018,7 +1004,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1028,7 +1013,6 @@
       "source_url": "https://www.latercera.com/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
       "has_public_teaser": true,
       "redacted_fields": [
-        "editorial_committee",
         "editorial_review",
         "what_happened",
         "why_it_matters"
@@ -1041,7 +1025,6 @@
       "redacted_fields": [
         "df_body_reaudit_observations",
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1052,7 +1035,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1062,7 +1044,6 @@
       "source_url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
       "has_public_teaser": true,
       "redacted_fields": [
-        "editorial_committee",
         "editorial_review",
         "what_happened",
         "why_it_matters"
@@ -1074,7 +1055,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1086,7 +1066,6 @@
       "redacted_fields": [
         "df_body_reaudit_observations",
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1097,7 +1076,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.analysis_reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1108,7 +1086,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.analysis_reason",
-        "editorial_committee",
         "editorial_review",
         "what_happened",
         "why_it_matters"
@@ -1120,7 +1097,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1131,7 +1107,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_business_review",
-        "editorial_committee",
         "source_title_full",
         "what_happened",
         "why_it_matters"
@@ -1143,7 +1118,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_business_review",
-        "editorial_committee",
         "source_title_full",
         "what_happened",
         "why_it_matters"
@@ -1155,7 +1129,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_business_review",
-        "editorial_committee",
         "source_title_full",
         "what_happened",
         "why_it_matters"
@@ -1167,7 +1140,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_business_review",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1178,7 +1150,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.analysis_reason",
-        "editorial_committee",
         "editorial_review",
         "what_happened",
         "why_it_matters"
@@ -1190,7 +1161,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_business_review",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1201,7 +1171,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_business_review",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1212,7 +1181,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.analysis_reason",
-        "editorial_committee",
         "editorial_review",
         "what_happened",
         "why_it_matters"
@@ -1224,7 +1192,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1236,7 +1203,6 @@
       "redacted_fields": [
         "df_body_reaudit_observations",
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1247,7 +1213,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_business_review",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1258,7 +1223,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.analysis_reason",
-        "editorial_committee",
         "editorial_review",
         "what_happened",
         "why_it_matters"
@@ -1270,7 +1234,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1281,7 +1244,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_business_review",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1292,7 +1254,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1303,7 +1264,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1314,7 +1274,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_business_review",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1325,7 +1284,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1336,7 +1294,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_business_review",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1347,7 +1304,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1358,7 +1314,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.analysis_reason",
-        "editorial_committee",
         "editorial_review",
         "what_happened",
         "why_it_matters"
@@ -1370,7 +1325,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_business_review",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1381,7 +1335,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1392,7 +1345,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.analysis_reason",
-        "editorial_committee",
         "editorial_review",
         "what_happened",
         "why_it_matters"
@@ -1404,7 +1356,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.analysis_reason",
-        "editorial_committee",
         "editorial_review",
         "what_happened",
         "why_it_matters"
@@ -1416,7 +1367,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_business_review",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1427,7 +1377,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.analysis_reason",
-        "editorial_committee",
         "editorial_review",
         "what_happened",
         "why_it_matters"
@@ -1439,7 +1388,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.analysis_reason",
-        "editorial_committee",
         "editorial_review",
         "what_happened",
         "why_it_matters"
@@ -1451,7 +1399,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1462,7 +1409,6 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_assessment.reason",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
@@ -1473,24 +1419,57 @@
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_business_review",
-        "editorial_committee",
         "what_happened",
         "why_it_matters"
       ]
     }
   ],
   "counts": {
+    "df_lead_provenance_established": {},
+    "queue": {
+      "items_scanned": 0,
+      "nested_records_redacted": 0,
+      "body_characters_removed": 0,
+      "fingerprint_strings": 0,
+      "fingerprint_characters": 0,
+      "items_changed": 0
+    },
+    "pulso_discovery_cache": {
+      "entries_redacted": 0,
+      "body_characters_removed": 0,
+      "fingerprint_strings": 0
+    },
     "history_rows_changed": 0,
     "snapshot_cards_changed": 0,
     "snapshot_link_problems_after": 0,
-    "df_queue_items_redacted": 0,
-    "df_audit_fields_redacted": {},
-    "link_problem_rows": 3,
+    "files": {
+      "changed": {
+        "data/weekly_insight/archive/2026-09-14.json": {
+          "strings": 0,
+          "characters": 0,
+          "public_payload_fields": 0
+        },
+        "data/weekly_insight/archive/2026-10-10.json": {
+          "strings": 0,
+          "characters": 0,
+          "public_payload_fields": 0
+        },
+        "data/weekly_insight/latest.json": {
+          "strings": 0,
+          "characters": 0,
+          "public_payload_fields": 0
+        }
+      },
+      "open_context_matches": 0
+    },
+    "fingerprint_segments": 34104,
+    "link_problem_rows": 2,
     "paywalled_rows": 137
   },
   "not_migrated": [
-    "La Tercera bodies in data/state/pending_queue.json, data/state/pulso_discovery_cache.json and data/audits/pulso_* (paid-revalidation receipts depend on them): Dirección decision required.",
-    "Git history keeps pre-redaction content; removing it requires a history rewrite or a private repo."
+    "Git history keeps pre-redaction content; removing it requires a history rewrite (decision for Dirección).",
+    "tests/fixtures keep real publisher HTML/JSON used as parser regression inputs (see counts.fixtures_note).",
+    "Non-premium latercera.com sections without an isAccessibleForFree=false flag are metered, not paywalled under the policy (pending_decision in config/paywalled_press.json)."
   ],
   "first_run_counts": {
     "history_rows_changed": 90,
@@ -1502,5 +1481,390 @@
     },
     "link_problem_rows": 3,
     "paywalled_rows": 137
+  },
+  "v2_first_run_counts": {
+    "df_lead_provenance_established": {
+      "legacy_description_verified": 409,
+      "title_only": 54
+    },
+    "queue": {
+      "items_scanned": 642,
+      "nested_records_redacted": 1069,
+      "body_characters_removed": 9046983,
+      "fingerprint_strings": 441,
+      "fingerprint_characters": 96005,
+      "items_changed": 642
+    },
+    "pulso_discovery_cache": {
+      "entries_redacted": 2699,
+      "body_characters_removed": 4515082,
+      "fingerprint_strings": 0
+    },
+    "history_rows_changed": 6,
+    "snapshot_cards_changed": 4,
+    "snapshot_link_problems_after": 0,
+    "files": {
+      "changed": {
+        "data/audits/df_original_capture_2026_10_11.json": {
+          "strings": 212,
+          "characters": 254400,
+          "public_payload_fields": 0
+        },
+        "data/audits/df_publications_review_2026_10_11.json": {
+          "strings": 26,
+          "characters": 10400,
+          "public_payload_fields": 0
+        },
+        "data/audits/df_reconciliation_2026_10_11.json": {
+          "strings": 354,
+          "characters": 420426,
+          "public_payload_fields": 0
+        },
+        "data/audits/integration_commander_2026_10_12/paid_runtime_delta.json": {
+          "strings": 14,
+          "characters": 11982,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_actual323_ilc_mask_independent_second_peer_2026_10_11.json": {
+          "strings": 1,
+          "characters": 3824,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_actual323_three_primary_semantic_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 7648,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_actual49_second_reader_reuse_context_2026_10_11.json": {
+          "strings": 1,
+          "characters": 154,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_actual_final12_assigned7_independent_semantic_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 8707,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_actual_mixed12_full_primary_model_diagnosis_2026_10_11.json": {
+          "strings": 5,
+          "characters": 9859,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_actual_v5_future_qualifier_repair_2026_10_11.json": {
+          "strings": 4,
+          "characters": 1020,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_all79_primary_independent_review_2026_10_11.json": {
+          "strings": 342,
+          "characters": 328034,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_capture/manifest.json": {
+          "strings": 38,
+          "characters": 56507,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_complete_primary_materiality_review_2026_10_11.json": {
+          "strings": 5,
+          "characters": 930,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_cross_source_hospital_ranking_independent_second_peer_2026_10_11.json": {
+          "strings": 1,
+          "characters": 5799,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_cross_source_three_duplicate_publications_independent_review_2026_10_11.json": {
+          "strings": 8,
+          "characters": 34230,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_cross_source_two_duplicate_publications_independent_review_2026_10_11.json": {
+          "strings": 6,
+          "characters": 22632,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_cross_source_two_events_independent_second_peer_2026_10_11.json": {
+          "strings": 1,
+          "characters": 1584,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_cross_source_waiting_provider_comparison_2026_10_11.json": {
+          "strings": 4,
+          "characters": 13751,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_current12_actual_technical_evidence_2026_10_11.json": {
+          "strings": 2,
+          "characters": 9256,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_current12_guard_independent_review_2026_10_11.json": {
+          "strings": 28,
+          "characters": 7464,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_current12_own5_independent_semantic_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 9256,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_current12_paid_guard_revalidation_manifest_2026_10_11.json": {
+          "strings": 61,
+          "characters": 73586,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_current5_guard_independent_diagnosis_2026_10_11.json": {
+          "strings": 1,
+          "characters": 3824,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_editorial_guard_independent_review_2026_10_11.json": {
+          "strings": 6,
+          "characters": 1098,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_editorial_guard_peer_2026_10_11.json": {
+          "strings": 21,
+          "characters": 29159,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_editorial_originals_independent_review_2026_10_11.json": {
+          "strings": 100,
+          "characters": 56648,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_expanded_editorial_originals_independent_review_2026_10_11.json": {
+          "strings": 85,
+          "characters": 92791,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json": {
+          "strings": 23,
+          "characters": 75240,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_final_editorial_settlement_and_idempotence_2026_10_11.json": {
+          "strings": 14,
+          "characters": 6480,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_financial_market_cross_source_review_2026_10_11.json": {
+          "strings": 22,
+          "characters": 75358,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_financial_three_native_checks_2026_10_11.json": {
+          "strings": 8,
+          "characters": 11838,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_first_paid_editorial_corrections_2026_10_11.json": {
+          "strings": 2,
+          "characters": 178,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_first_real_all32_semantic_review_2026_10_11.json": {
+          "strings": 10,
+          "characters": 55812,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus113_mixed49_outcome_matrix_2026_10_11.json": {
+          "strings": 84,
+          "characters": 17692,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus113_outcome_matrix_2026_10_11.json": {
+          "strings": 137,
+          "characters": 38010,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus113_prefilter_sourcehealth_review_2026_10_11.json": {
+          "strings": 9,
+          "characters": 2736,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus113_v5_outcome_matrix_2026_10_11.json": {
+          "strings": 65,
+          "characters": 13719,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus25_scope_proof_semantic_review_2026_10_11.json": {
+          "strings": 21,
+          "characters": 17530,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus9_status_future_consequence_review_2026_10_11.json": {
+          "strings": 7,
+          "characters": 1881,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus_all69_independent_semantic_review_2026_10_11.json": {
+          "strings": 10,
+          "characters": 1744,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus_highrisk30_semantic_review_2026_10_11.json": {
+          "strings": 16,
+          "characters": 4500,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus_new5_semantic_review_2026_10_11.json": {
+          "strings": 1,
+          "characters": 3253,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_followup5_actual323_independent_runtime_review_2026_10_11.json": {
+          "strings": 1,
+          "characters": 3824,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_followup5_actual_technical_evidence_2026_10_11.json": {
+          "strings": 1,
+          "characters": 3824,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_followup5_paid_guard_revalidation_manifest_2026_10_11.json": {
+          "strings": 1,
+          "characters": 3824,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_idempotence_baseline_2026_10_11.json": {
+          "strings": 25,
+          "characters": 5455,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_isapre104_102_primary_period_addendum_2026_10_11.json": {
+          "strings": 1,
+          "characters": 106,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed12_independent_peer_2026_10_11.json": {
+          "strings": 9,
+          "characters": 10584,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed25_assessment9_16_independent_semantic_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 8707,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed25_first8_actual_semantic_review_v2_2026_10_11.json": {
+          "strings": 1,
+          "characters": 255,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed25_first8_four_publications_independent_peer_2026_10_11.json": {
+          "strings": 2,
+          "characters": 8707,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed49_actual_core_verification_2026_10_11.json": {
+          "strings": 13,
+          "characters": 2612,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed49_rows81_113_semantic_review_2026_10_11.json": {
+          "strings": 23,
+          "characters": 39973,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed_reused18_editorial_corrections_2026_10_11.json": {
+          "strings": 6,
+          "characters": 3940,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed_reused18_independent_second_peer_2026_10_11.json": {
+          "strings": 2,
+          "characters": 170,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed_reused18_independent_semantic_review_2026_10_11.json": {
+          "strings": 35,
+          "characters": 34203,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_oct5_cross_source_comparison_proof_2026_10_11.json": {
+          "strings": 2,
+          "characters": 9381,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_paid_reader_independent_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 178,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_primary_corpus_2026_10_11.json": {
+          "strings": 699,
+          "characters": 3747293,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_primary_corpus_union_2026_10_11.json": {
+          "strings": 702,
+          "characters": 3772859,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_runtime_2026_10_11.json": {
+          "strings": 18,
+          "characters": 8746,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_v5_all24_nonfuture_holds_independent_review_2026_10_11.json": {
+          "strings": 16,
+          "characters": 18759,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_v5_all25_future_holds_independent_review_2026_10_11.json": {
+          "strings": 29,
+          "characters": 36933,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_v5_native_full_primary_dedupe_comparison_2026_10_11.json": {
+          "strings": 3,
+          "characters": 18231,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_v5_paid_guard_revalidation_manifest_2026_10_11.json": {
+          "strings": 40,
+          "characters": 54547,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_v5_rows81_113_semantic_review_2026_10_11.json": {
+          "strings": 31,
+          "characters": 29252,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_v5_three_actual_publication_confirmation_2026_10_11.json": {
+          "strings": 1,
+          "characters": 255,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_v5_three_paid_editorial_corrections_2026_10_11.json": {
+          "strings": 1,
+          "characters": 255,
+          "public_payload_fields": 0
+        },
+        "data/weekly_insight/archive/2026-09-14.json": {
+          "strings": 0,
+          "characters": 0,
+          "public_payload_fields": 1
+        },
+        "data/weekly_insight/candidates/2026-11-02-evidence.json": {
+          "strings": 0,
+          "characters": 0,
+          "public_payload_fields": 4
+        },
+        "design/bandeja/data/radar_today.json": {
+          "strings": 4,
+          "characters": 2197,
+          "public_payload_fields": 0
+        }
+      },
+      "open_context_matches": 0
+    },
+    "fingerprint_segments": 34101,
+    "link_problem_rows": 2,
+    "paywalled_rows": 138
   }
 }

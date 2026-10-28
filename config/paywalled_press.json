@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "decided_at": "2026-10-28",
   "decided_by": "Dirección (reporte 28-oct: ficha DF con más información que la visible sin suscripción)",
   "policy": "public_teaser_only",
@@ -140,5 +140,18 @@
     "why_it_matters",
     "public_title",
     "uncertainties"
-  ]
+  ],
+  "teaser_sources": [
+    "og:description",
+    "meta:description",
+    "jsonld:description",
+    "public_lead_element",
+    "df_listing_card",
+    "legacy_description_verified"
+  ],
+  "teaser_rule": "La bajada sólo puede provenir de og:description, la meta description (o la description JSON-LD ligada a la URL), un elemento de bajada explícito anterior al marcador de bloqueo, o la tarjeta pública del listado. Nunca del cuerpo, ni de texto dentro o después de #articleLock. Sin bajada pública: sólo título.",
+  "preserved_internal_fields": [
+    "analysis_model_output"
+  ],
+  "preserved_internal_note": "Las respuestas pagadas del modelo son producto de Alicanto: se conservan internamente (nunca se muestran) y se les retiran las oraciones literales del cuerpo bloqueado (huellas en data/audits/paywalled_body_fingerprints_2026_10_28.json)."
 }

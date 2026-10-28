@@ -127,6 +127,8 @@ def load(path: str | Path) -> dict:
 
 def export(source: str | Path, destination: str | Path) -> None:
     payload = load(source)
+    from .source_rights import redact_public_payload
+    payload = redact_public_payload(payload)  # paywalled press: title + public lead only
     target = Path(destination)
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

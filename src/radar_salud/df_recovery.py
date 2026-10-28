@@ -30,7 +30,21 @@ def resume_withdrawn_reassessments(queue, history, now):
 
 def _remember(item, now, action):
     observation = {k: deepcopy(v) for k, v in item.items() if k != "recovery_observations"}
+    # Paywalled DF: the observation keeps receipts, never the locked body (Dirección 28-oct).
+    from .source_rights import scrub_queue_item
+    scrub_queue_item(observation)
     item.setdefault("recovery_observations", []).append({"at": now.isoformat(), "action": action, "before": observation})
+
+
+def _public_only(raw_dict):
+    """After merging old and new captures, re-apply the paywall policy to the merged record.
+
+    ``{**original.metadata, **new}`` would otherwise resurrect keys from older
+    captures (``description_full``, ``article_body``, a full ``page_text``...).
+    """
+    from .source_rights import _purge_raw
+    _purge_raw(raw_dict)
+    return raw_dict
 
 
 def reconcile_existing(queue, raw, now, last_discovered_at, published_urls=()):
@@ -54,9 +68,9 @@ def reconcile_existing(queue, raw, now, last_discovered_at, published_urls=()):
                 and (not raw.metadata.get("publication_date_conflict") or raw.metadata.get("publication_date_conflict_resolution"))
                 and not raw.metadata.get("fetch_error"))
     # Paywalled DF keeps only the public bajada; the receipt proves the body existed.
-    verified=dated and (len(raw.metadata.get('page_text',''))>=160
-                        or (raw.metadata.get('paywalled') is True and bool(raw.metadata.get('public_teaser'))
-                            and int(raw.metadata.get('article_body_characters') or 0)>=160))
+    from .source_rights import redacted_body_verified
+    verified=dated and ((raw.metadata.get('paywalled') is not True and len(raw.metadata.get('page_text',''))>=160)
+                        or redacted_body_verified(raw.metadata))
     legacy_reject = (item["status"] == "rejected" and item.get("reason") == "processor_rejected"
                      and not item["raw"].get("event_date"))
     resume_format = item["status"] == "deferred" and verified
@@ -77,11 +91,13 @@ def reconcile_existing(queue, raw, now, last_discovered_at, published_urls=()):
         enriched["title"] = original["title"]
         enriched["metadata"] = {**original.get("metadata", {}), **enriched["metadata"]}
         enriched["metadata"].pop("fetch_error", None)
+        enriched = _public_only(enriched)
         capture_repaired=(verified and item["status"]=="retry" and item.get("reason") in
                           ("df_detail_fetch_failed","df_missing_publication_date","df_publication_date_conflict","df_insufficient_article_evidence")
                           and (original.get("event_date")!=raw.event_date
                                or original.get('metadata',{}).get('fetch_error')
-                               or len(original.get('metadata',{}).get('page_text',''))<160))
+                               or (len(original.get('metadata',{}).get('page_text',''))<160
+                                   and not redacted_body_verified(original.get('metadata',{})))))
         new_status = "pending" if legacy_reject or capture_repaired or resume_format else item["status"]
         reason = None if legacy_reject or capture_repaired or resume_format else item.get("reason")
         if beyond_backfill_horizon(raw, now):

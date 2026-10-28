@@ -100,6 +100,11 @@ def complete_article_body(metadata):
     Earlier caches retained only 18,000 characters while hashing the full
     article. Missing or inconsistent proof requires fresh original extraction.
     """
+    from .source_rights import redacted_body_verified
+    if redacted_body_verified(metadata):
+        # Paywalled section (Dirección 28-oct-2026): the complete body was verified
+        # at capture and only its sha256/length receipt is retained.
+        return True
     body, expected = metadata.get("page_text"), metadata.get("article_body_sha256")
     return (isinstance(body, str) and len(body.strip()) >= 160
             and isinstance(expected, str) and re.fullmatch(r"[0-9a-f]{64}", expected) is not None
@@ -438,6 +443,11 @@ def verified_liveblog_temporal_evidence(metadata):
 
 
 def liveblog_requires_revalidation(metadata):
+    from .source_rights import redacted_body_verified
+    if redacted_body_verified(metadata):
+        # Premium section: the entry timeline is never analysed (lead only), and
+        # its redacted bodies cannot be re-verified without storing them again.
+        return False
     if metadata.get("publisher_document_type") == "liveblog":
         return not verified_liveblog_temporal_evidence(metadata)
     if metadata.get("publisher_document_type") in {"article", "video"}:
@@ -1223,6 +1233,20 @@ def parse_fulltext_rss(xml):
     return out
 
 
+def public_capture(result):
+    """Apply the paywall policy to a detail/cache record in place (premium sections keep lead + receipt)."""
+    from .source_rights import is_paywalled, restrict_raw_to_public
+    metadata = result.get("metadata") if isinstance(result, dict) else None
+    if not isinstance(metadata, dict) or not is_paywalled(result.get("url", ""), metadata):
+        return result
+    raw = RawItem("pulso_latercera", result.get("title") or "", result["url"], "Pulso / La Tercera",
+                  "press_high_trust", raw_text=result.get("body") or "", metadata=metadata)
+    restrict_raw_to_public(raw)
+    if result.get("body"):
+        result["body"] = raw.raw_text
+    return result
+
+
 def _load_cache(path):
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
@@ -1485,6 +1509,7 @@ def discover_archive(detail_loader, audit, cache_path, *, today=None, workers=4,
                 page_errors = True
                 audit.append(result)
                 continue
+            public_capture(result)
             articles[result["url"]] = {key: value for key, value in result.items() if key != "cache_hit"}
             metadata = result["metadata"]
             day, status, reason = _inventory_disposition(result, cutoff, today)
@@ -1719,6 +1744,7 @@ def discover_public_feeds(loader, audit, cache_path, *, visited=None, today=None
                 else:
                     publisher_exceptions += 1
                     page_errors += 1  # date unknown, independently breaks boundary
+                public_capture(result)
                 articles[result["url"]] = {key: val for key, val in result.items() if key != "cache_hit"}
                 was_seen = result["url"] in visited
                 visited.add(result["url"])
@@ -1879,6 +1905,11 @@ def discover_pulso(detail_loader=None, audit=None, *, cache_path=None, today=Non
                       inventory_metadata_only_occurrences=metadata_occurrences,
                       inventory_health_occurrences=inventory_discoveries,
                       duplicate_inventory_occurrences=inventory_discoveries - len(diagnosed)))
+    # Rights policy (Dirección 28-oct-2026): premium sections leave discovery with
+    # their public lead and a body receipt only.
+    from .source_rights import restrict_raw_to_public
+    for item in unique.values():
+        restrict_raw_to_public(item)
     # Unknown publisher dates remain pending; they cannot be compared to ISO
     # dates or acquire a synthetic ingestion/publication day during sorting.
     return sorted(unique.values(), key=lambda item: item.event_date or "", reverse=True)

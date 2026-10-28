@@ -180,7 +180,15 @@ def _raw(title="Clínica San Carlos suspende operaciones", dated=False):
     return RawItem("diario_financiero", title, URL, "Diario Financiero", "press_high_trust",
                    "2026-10-10" if dated else None, raw_text=TEASER if dated else "La clínica trasladó todos sus pacientes.",
                    metadata={"page_text": "La clínica trasladó todos sus pacientes y suspendió operaciones. " * 5,
+                             "public_teaser": TEASER, "public_teaser_source": "og:description",
                              "publication_date_source": "cxenseparse:recs:publishtime"} if dated else {})
+
+
+def _lead(raw, text):
+    """The public bajada as the DF parser records it (og:description provenance)."""
+    raw.raw_text = text
+    raw.metadata.update(public_teaser=text, public_teaser_source="og:description")
+    return raw
 
 
 def test_seen_legacy_pending_rehydrated_live_without_erasing_capture(tmp_path):
@@ -303,7 +311,7 @@ def test_opinion_and_unrelated_have_specific_reasons_without_model_call(monkeypa
     assert process_df(opinion, DF_CFG) is None
     assert opinion.metadata["rejection_reason"] == "media_opinion_or_column"
     nonhealth = _raw("Terremoto de magnitud 7,7 sacude Panamá", dated=True)
-    nonhealth.raw_text = "Un terremoto de magnitud 7,7 sacudió Panamá y obligó a evacuar edificios de la capital."
+    _lead(nonhealth, "Un terremoto de magnitud 7,7 sacudió Panamá y obligó a evacuar edificios de la capital.")
     nonhealth.metadata["page_text"] = "El sismo se sintió en varias provincias. " * 12
     assert process_df(nonhealth, DF_CFG) is None
     assert nonhealth.metadata["rejection_reason"] == "df_unrelated_to_health"
@@ -334,7 +342,10 @@ def test_daily_df_replay_real_processor_to_history_feed_and_second_run(tmp_path,
     low_url = "https://www.df.cl/empresas/salud/inversion-secundaria"
     deferred_url = "https://www.df.cl/empresas/salud/analisis-pendiente"
     listing = f'<a href="{URL}">{_raw().title}</a><a href="{low_url}">Clínica anuncia una inversión secundaria</a><a href="{deferred_url}">Clínica con análisis pendiente de inversión</a>'
-    detail = '<meta name="cXenseParse:recs:publishtime" content="2026-10-10T16:29:59Z"><article><p>' + _raw(dated=True).metadata["page_text"] + '</p></article>'
+    # Real DF pages publish the bajada as og:description; only that lead is analysed (paywall policy).
+    detail = (f'<meta property="og:description" content="{TEASER}">'
+              '<meta name="cXenseParse:recs:publishtime" content="2026-10-10T16:29:59Z"><article><p>'
+              + _raw(dated=True).metadata["page_text"] + '</p></article>')
     monkeypatch.setattr("radar_salud.source_scouts.fetch_html", lambda url: listing if url in DfHealthScout.PAGES else detail)
     monkeypatch.setattr("radar_salud.public_source_pipeline.analyze_news", lambda **kw: None if "pendiente" in kw["title"] else _analysis(71 if "secundaria" in kw["title"] else 90))
     monkeypatch.setattr("radar_salud.paths.project_root", lambda: tmp_path)
@@ -435,8 +446,8 @@ def test_nonarticle_and_verified_nonhealth_rejections_do_not_require_fake_date(m
     assert process_df(raw, DF_CFG) is None
     assert raw.metadata['rejection_reason'] == 'df_not_article'
     raw = _raw('Banco compra oficinas')
-    raw.raw_text = 'El banco compra oficinas en Santiago y amplía su negocio financiero con nuevas sucursales.'
     raw.metadata = {'page_text': 'El banco compra oficinas y amplía su negocio financiero. ' * 10, 'publication_date_conflict': True}
+    _lead(raw, 'El banco compra oficinas en Santiago y amplía su negocio financiero con nuevas sucursales.')
     assert process_df(raw, DF_CFG) is None
     assert raw.metadata['rejection_reason'] == 'df_unrelated_to_health'
 
