@@ -258,7 +258,8 @@ test('Global shares header, bar A and mark-all with the Home',async({page})=>{
  await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('90');
  for(const [name,href] of [['Chile','index.html'],['Global','global.html'],['Newsletter','subscription.html']])expect(await page.locator(`.topnav a[href="${href}"]`).evaluate(el=>(el.dataset.short||el.textContent).trim())).toBe(name);
  await expect(page.locator('.topnav a[aria-current="page"]')).toHaveAttribute('href','global.html');
- const rows=page.locator('#themes .theme');await expect(rows.first()).toBeVisible();const total=await rows.count();expect(total).toBeGreaterThan(2);
+ // One inbox (Dirección 28-oct 08:20, punto 2): mark-all covers every visible row, themes and headlines alike.
+ const rows=page.locator('#themes article.item');await expect(rows.first()).toBeVisible();const total=await rows.count();expect(total).toBeGreaterThan(2);
  await expect(page.locator('#globalLanes [data-lane="p"]')).toHaveAttribute('aria-pressed','true');
  await page.locator('#globalMarkAll').click();await expect(rows).toHaveCount(0);await expect(page.locator('#themes .feed-undo')).toContainText(`${total} señales marcadas como leídas`);
  await expect(page.locator('#themes')).toContainText('Estás al día');
@@ -403,7 +404,8 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  // Bar A on Global (Dirección 27-oct 23:13): Todas shows every theme; Pendientes only the unread ones.
  await page.locator('#globalLanes [data-lane="t"]').click();
  await expect(page.locator('.theme')).toHaveCount(visibleCount);
- const initialUnread=visibleCount-await page.locator('.theme.read').count();
+ // "N pendientes" counts the whole inbox (themes and headlines share one list since Dirección 28-oct 08:20).
+ const initialUnread=await page.locator('#themes article.item').count()-await page.locator('#themes article.item.read').count();
  await expect(page.locator('#globalMetrics')).toHaveText(`${initialUnread} pendientes`);
  // Open an unread theme that is not under the BCBSA editorial HOLD (its record carries no local-evidence block).
  await page.locator('.theme:not(.read):not(#theme-global-ai-coding-payer-cost-2026) [data-open]').first().click();

@@ -18,7 +18,9 @@ test('fiscalization reconciliation preserves act dates and separates reviewed no
  await pulseCard.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera');
  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);
  await expect(page.locator('#detailBody')).toContainText('200 UF');
- await expect(page.locator('#detailBody')).toContainText('15 de septiembre');
+ // The act date used to be read from the card_why paragraph; news fichas no longer carry it (Dirección 28-oct
+ // 08:20, punto 4), so the pulse's own publication date is checked on the ficha's dated origin line.
+ await expect(page.locator('#detailBody .ficha-sources > p.source')).toContainText('Publicado 15 sept 2026');
  await page.getByRole('button',{name:'Cerrar ficha'}).click();
  const instruction=radar.signals.find(signal=>signal.source_url?.endsWith('w3-article-791293.html'));
  expect(instruction.signal_types).toEqual(['Normativa']);

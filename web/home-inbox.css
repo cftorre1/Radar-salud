@@ -510,8 +510,11 @@ main{max-width:none;margin:0;padding:0 0 70px}
    so the rest of that strip still reaches the buttons. */
 #local .signal.item .card-meta,.global-feed .card-meta{position:relative;z-index:1;pointer-events:none}
 .card-meta a,.card-meta button,.card-meta .ent-chip,.card-meta .ent-more,.card-meta .follow-mark,.card-meta .row-undo,.card-meta .tag{pointer-events:auto}
-/* Narrow phones: the three labels stay on one line. */
-@media (max-width:360px){.act{padding:0 6px;gap:3px;font-size:12px}.act-share .mini-icon{display:none}}
+.row-acts .share-feedback:empty{padding:0}
+/* Narrow phones: the three labels stay on one line. Inter is not served as a webfont, so this has to hold with a
+   wide fallback (DejaVu Sans on Linux, ~15% wider): only the "Ver ficha" chevron keeps its icon here, the labels
+   carry the meaning and the source link keeps "(abre en otra pestaña)" in its accessible name. */
+@media (max-width:360px){.row-acts{margin-left:-4px}.act{padding:0 4px;gap:2px;font-size:11.5px}.act-share .mini-icon,.act-src .mini-icon{display:none}}
 @media (min-width:760px){.row-acts{margin-left:-8px}}
 /* The ficha: Volver and the read toggle on top, its actions just under them (no "Ver ficha" inside the ficha). */
 .ficha-acts-host:empty{display:none}
