@@ -62,7 +62,7 @@ def _parse(text):
     if not isinstance(value,dict):raise ValueError("model_output_not_object")
     return value
 
-def call_json(prompt,*,feature,preferred_model="gpt-5.6-terra",allow_luna_fallback=True,ledger_path=DEFAULT_LEDGER,routing_path=DEFAULT_ROUTING):
+def call_json(prompt,*,feature,preferred_model="gpt-5.6-terra",allow_luna_fallback=True,ledger_path=DEFAULT_LEDGER,routing_path=DEFAULT_ROUTING,max_output_tokens=1800):
     key=os.getenv("OPENAI_API_KEY")
     if not key:raise RuntimeError("OPENAI_API_KEY_missing")
     cfg=_cfg(routing_path);limit=float(cfg.get("weekly_budget_usd") or cfg.get("cost_policy",{}).get("hard_application_guard_usd_rolling_7d",10))
@@ -73,7 +73,7 @@ def call_json(prompt,*,feature,preferred_model="gpt-5.6-terra",allow_luna_fallba
     last=None
     for idx,model in enumerate(models):
         try:
-            response=client.responses.create(model=model,input=prompt,max_output_tokens=1800)
+            response=client.responses.create(model=model,input=prompt,max_output_tokens=max_output_tokens)
             usage=getattr(response,"usage",None);i=int(getattr(usage,"input_tokens",0) or 0);o=int(getattr(usage,"output_tokens",0) or 0)
             cost=_estimate(model,i,o)
             over=rolling_7d_spend(ledger_path)+cost>limit
