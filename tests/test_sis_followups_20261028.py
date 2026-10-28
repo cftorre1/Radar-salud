@@ -23,6 +23,7 @@ FIX = Path(__file__).parent / "fixtures" / "sis"
 def _isolated_failure_ledger(tmp_path, monkeypatch):
     # Never write the article-failure ledger into the repository's data/state.
     monkeypatch.setattr(SuperintendenciaNoticiasScout, "_failures_path", lambda self: self.state_path or tmp_path / "news_failures.json")
+    monkeypatch.setattr(sis_news, "_ai_usage_path", lambda: tmp_path / "news_ai_usage.json")
 SIS = "Superintendencia de Salud"
 SUSPENSION_534 = ("Ha lugar a la suspensión de los efectos de la Circular IF/Nº534, de fecha 14 de septiembre de 2026, "
                   "hasta que se resuelvan los recursos de reposición de que conoce esta Intendencia.")
@@ -467,3 +468,74 @@ def test_unscored_news_revived_once_when_ai_budget_returns(tmp_path):
     assert q.items["old"]["status"] == "deferred" and q.items["other"]["status"] == "deferred"
     q.items["recent"].update(status="deferred", reason="retry_exhausted:sis_news_relevance_unscored", attempts=4)
     assert q.revive_unscored_sis_news(now, ai_available=True) == 0  # never a second revival
+
+
+# --- Notes on cf0f48cc ----------------------------------------------------------------------------
+
+def _always_failing(url):
+    if url == sis_news.ROBOTS:
+        return "User-agent: *\nAllow: /\n"
+    if url == "https://www.superdesalud.gob.cl/noticias/2026/":
+        return LISTING
+    raise TimeoutError("read timeout")
+
+
+def test_skipped_article_is_retried_after_seven_days_and_old_entries_pruned(tmp_path):
+    ledger = tmp_path / "ledger.json"
+    stale = "https://www.superdesalud.gob.cl/noticias/2026/08/vieja/"
+    ledger.write_text(json.dumps({
+        GES_URL: {"failures": 3, "skipped": True, "last_on": "2026-10-20", "last_error": "TimeoutError"},
+        stale: {"failures": 1, "skipped": False, "last_on": "2026-09-01"}}), encoding="utf-8")
+    calls = []
+    def fetch(url):
+        calls.append(url)
+        return _always_failing(url)
+    # 6 days after the skip: still skipped, no request for that article.
+    SuperintendenciaNoticiasScout(fetch=fetch, today=date(2026, 10, 26), state_path=ledger).discover()
+    assert GES_URL not in calls
+    stored = json.loads(ledger.read_text())
+    assert stale not in stored  # outside the 30-day window: pruned
+    # 7 days after the skip: one more request; failing again re-skips without making the source partial.
+    calls.clear()
+    scout = SuperintendenciaNoticiasScout(fetch=fetch, today=date(2026, 10, 27), state_path=ledger)
+    scout.discover()
+    assert GES_URL in calls and not any(GES_URL in e for e in scout.discovery_errors)
+    assert {"url": GES_URL, "status": "article_skipped", "reason": "TimeoutError", "failures": 4} in scout.discovery_audit
+    assert json.loads(ledger.read_text())[GES_URL]["last_on"] == "2026-10-27"
+
+
+def test_ai_scoring_daily_cap_from_config(monkeypatch):
+    import radar_salud.llm_analysis as llm
+    sources = json.loads(Path("config/sources.json").read_text(encoding="utf-8"))
+    rows = sources if isinstance(sources, list) else sources["sources"]
+    cfg = next(r for r in rows if r["slug"] == "superintendencia_noticias")
+    assert cfg["ai_scoring_daily_cap"] == 10
+    calls = []
+    def scorer(**k):
+        calls.append(k["title"])
+        return {"relevance_score": 80}
+    monkeypatch.setattr(llm, "analyze_official_news", scorer)
+    monkeypatch.setattr(sis_news, "_transient_article_text", lambda url: "Isapres y cobertura.")
+    for n in range(12):
+        try:
+            process_superintendencia_noticias(_news(f"Nuevo informe {n} sobre isapres", "Isapres."), cfg)
+        except DeferredProcessing as exc:
+            assert sis_news.UNSCORED in str(exc)  # over the cap: unscored -> pending, revived later
+    assert len(calls) == 10
+    small = dict(cfg, ai_scoring_daily_cap=0)
+    with pytest.raises(DeferredProcessing):
+        process_superintendencia_noticias(_news("Otro informe sobre isapres", "Isapres."), small)
+    # Over the cap, a deterministic signal still publishes without a paid call.
+    row = process_superintendencia_noticias(_news("Superintendencia sanciona a Isapre X con multa de 500 UF", "Isapres."), cfg)
+    assert row["relevance_basis"] == "deterministic_topic_and_action_in_clause" and len(calls) == 10
+
+
+def test_deterministic_signal_computed_once(monkeypatch):
+    import radar_salud.llm_analysis as llm
+    monkeypatch.setattr(llm, "analyze_official_news", lambda **k: None)
+    monkeypatch.setattr(sis_news, "_transient_article_text", lambda url: "Isapres y cobertura.")
+    seen = []
+    real = sis_news.deterministic_signal
+    monkeypatch.setattr(sis_news, "deterministic_signal", lambda *a: seen.append(a) or real(*a))
+    process_superintendencia_noticias(_news("Superintendencia sanciona a Isapre X con multa de 500 UF", "Isapres."), _gate_cfg())
+    assert len(seen) == 1

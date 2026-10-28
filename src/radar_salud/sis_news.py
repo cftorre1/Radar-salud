@@ -47,6 +47,15 @@ TERMS_POLICY = "public_institutional_news_title_link_and_bounded_excerpt"
 EXCERPT_MAX = 600
 UNSCORED = "sis_news_relevance_unscored"
 ARTICLE_FAILURE_LIMIT = 3  # consecutive runs before an article URL is skipped
+SKIP_RETRY_DAYS = 7  # a skipped article is tried again after a week
+
+
+def _days_since(record: dict, today: date) -> int:
+    stamp = str(record.get("last_on") or record.get("last_at") or "")[:10]
+    try:
+        return (today - date.fromisoformat(stamp)).days
+    except ValueError:
+        return 0
 LEAD_MAX = 400
 DETAIL_WINDOW_DAYS = 30  # article pages fetched only for entries that can still be processed
 CHILE = ZoneInfo("America/Santiago")
@@ -178,6 +187,8 @@ class SuperintendenciaNoticiasScout:
                     "terms_policy": TERMS_POLICY}
             title = entry["listing_title"]
             record = failures.get(entry["url"]) or {}
+            if record.get("skipped") and _days_since(record, today) >= SKIP_RETRY_DAYS:
+                record = dict(record, skipped=False, retried_after_skip=True)  # one more try after 7 days
             if record.get("skipped"):
                 self.discovery_audit.append({"url": entry["url"], "status": "article_skipped",
                                              "reason": record.get("last_error"), "failures": record.get("failures")})
@@ -193,7 +204,7 @@ class SuperintendenciaNoticiasScout:
                 # only), so one broken article cannot keep the source partial forever.
                 count = int(record.get("failures") or 0) + 1
                 failures[entry["url"]] = {"failures": count, "last_error": type(exc).__name__,
-                                          "last_at": datetime.now(CHILE).isoformat(),
+                                          "last_at": datetime.now(CHILE).isoformat(), "last_on": today.isoformat(),
                                           "skipped": count >= ARTICLE_FAILURE_LIMIT}
                 if count >= ARTICLE_FAILURE_LIMIT:
                     self.discovery_audit.append({"url": entry["url"], "status": "article_skipped",
@@ -219,6 +230,8 @@ class SuperintendenciaNoticiasScout:
             meta["mentioned_acts"] = mentioned_acts(" ".join([title, lead]))
             out.append(RawItem(SLUG, title, entry["url"], SOURCE_NAME, self.SOURCE_TYPE,
                                event_date=event_date, raw_text=excerpt, metadata=meta))
+        # Ledger entries outside the 30-day window can never be processed again: pruned.
+        failures = {url: r for url, r in failures.items() if _days_since(r, today) <= DETAIL_WINDOW_DAYS}
         self._save_failures(failures)
         out.sort(key=lambda r: r.event_date or "", reverse=True)
         return out
@@ -276,6 +289,35 @@ def deterministic_signal(title: str, lead: str = "", mentioned=()) -> str | None
     return None
 
 
+DEFAULT_AI_DAILY_CAP = 10  # config/sources.json: superintendencia_noticias.ai_scoring_daily_cap
+
+
+def _ai_usage_path():
+    from .paths import project_root
+    return project_root() / "data/state/superintendencia_noticias_ai_usage.json"
+
+
+def take_ai_scoring_slot(cap: int, today: date | None = None) -> bool:
+    """Daily cap on AI relevance calls for this source (Chile calendar day). Without a slot
+    the item is judged as unscored: deterministic fallback or pending (revived later)."""
+    import json
+    from .pending_queue import atomic_json
+    today = (today or datetime.now(CHILE).date()).isoformat()
+    path = _ai_usage_path()
+    try:
+        usage = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    except (OSError, ValueError):
+        return False  # unreadable ledger: no paid call
+    used = int(usage.get(today, 0) or 0)
+    if cap <= 0 or used >= cap:
+        return False
+    try:
+        atomic_json(path, {today: used + 1})  # only today's count is kept
+    except OSError:
+        return False
+    return True
+
+
 def _transient_article_text(url: str) -> str:
     """Article text for relevance scoring only; fetched at processing time, never stored."""
     if not robots_allows(url):
@@ -303,15 +345,18 @@ def process_superintendencia_noticias(raw, cfg):
         raise DeferredProcessing(f"sis_news_article_unavailable: {type(exc).__name__}") from exc
     if not _MATERIAL.search(f"{head} {body[:4000]}"):
         raise RejectedProcessing("not_material_for_health_market")
-    ai = analyze_official_news(title=raw.title, text=body, source_name=SOURCE_NAME)
+    signal = deterministic_signal(raw.title, raw.metadata.get("lead") or "", raw.metadata.get("mentioned_acts") or ())
+    ai = None
+    cap = int((cfg or {}).get("ai_scoring_daily_cap", DEFAULT_AI_DAILY_CAP))
+    if take_ai_scoring_slot(cap):
+        ai = analyze_official_news(title=raw.title, text=body, source_name=SOURCE_NAME)
     score = ai.get("relevance_score") if isinstance(ai, dict) else None
     if isinstance(score, (int, float)) and not isinstance(score, bool):
         score, basis = int(score), "ai_relevance"
         if score < 65:
             raise RejectedProcessing("editorial_relevance_below_threshold")
-    elif deterministic_signal(raw.title, raw.metadata.get("lead") or "", raw.metadata.get("mentioned_acts") or ()):
-        score, basis = 70, "deterministic_" + deterministic_signal(raw.title, raw.metadata.get("lead") or "",
-                                                                  raw.metadata.get("mentioned_acts") or ())
+    elif signal:
+        score, basis = 70, "deterministic_" + signal
     else:
         # Agenda items and unspecific news need a real AI score: kept pending, revived later
         # (PendingQueue.revive_unscored_sis_news) when the AI budget is available again.
