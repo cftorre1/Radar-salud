@@ -109,6 +109,13 @@ jobs:
       - name: Preserve Global discovery health after independent core exports
         if: ${{ always() && steps.global_discovery.outcome == 'success' }}
         run: python scripts/discover_global_sources.py --mirror-health
+      - name: Licensed Global feed metadata (KFF Health News, EMA, FDA; no paid AI or publication)
+        if: ${{ always() && steps.global_policy.outputs.enabled == 'true' }}
+        continue-on-error: true
+        timeout-minutes: 10
+        env:
+          OPENAI_API_KEY: ''
+        run: python scripts/discover_global_feeds.py
       - name: Preserve queue, paid usage and checkpoints on failure
         if: always()
         run: |
