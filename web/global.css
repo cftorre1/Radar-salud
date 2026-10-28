@@ -17,8 +17,9 @@
 .global-feed .title-open:focus-visible{outline:2px solid #E3A24F;outline-offset:2px;border-radius:4px}
 .global-feed .card-meta{display:block;margin:3px 0 0;padding:0;border:0;font-size:12px;line-height:1.5;color:var(--ink68)}
 .global-feed .item-actions{display:inline-flex;align-items:center;margin-left:-4px;vertical-align:-4px;white-space:nowrap}
-.global-feed .theme.read h2{font-weight:400;font-size:14px;color:var(--ink68)}
-.global-feed .theme.read .card-meta{display:none}
+/* Read rows keep publisher and date (Dirección 28-oct 03:49): only tone and weight change. */
+.global-feed .theme.read h2{font-weight:400;color:var(--ink68)}
+.global-feed .theme.read .card-meta{color:var(--ink48)}
 .global-feed .group-head{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink48);margin:0;padding:10px var(--gutter) 2px 40px}
 .global-feed .eyebrow{color:var(--accent-ink);font-weight:650}
 .global-premium-strip{margin:0 calc(-1 * var(--gutter))}
