@@ -10,17 +10,46 @@ async function feedShare(page){
  return page.evaluate(()=>{const H=innerHeight;const iv=[...document.querySelectorAll('#local article.signal')].map(e=>e.getBoundingClientRect()).map(r=>[Math.max(0,r.top),Math.min(H,r.bottom)]).filter(([a,b])=>b>a).sort((x,y)=>x[0]-y[0]);let total=0,cur=null;for(const [a,b] of iv){if(!cur||a>cur[1]){if(cur)total+=cur[1]-cur[0];cur=[a,b]}else cur[1]=Math.max(cur[1],b)}if(cur)total+=cur[1]-cur[0];return total/H});
 }
 
-test('filters offer only Actores and Temas; a saved entity or format selection is dropped',async({page})=>{
+test('filters offer only Actores and Temas; a saved format is dropped but saved follows are kept',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.addInitScript(()=>{if(!sessionStorage.getItem('seeded')){localStorage.setItem('alicanto_filters',JSON.stringify({type:'Fiscalización',entities:['cl:org:uc-christus'],interests:[],period:'30',sort:'date',lane:'p'}));sessionStorage.setItem('seeded','1')}});
  await page.goto('/');await expect(page.locator('#local article[data-card]').first()).toBeVisible();
+ // Following is not filtering: a saved follow leaves the inbox whole.
  await expect(page.locator('#filterLabel')).toHaveText('Todos los temas');
  await page.locator('#filterDetails summary').click();
  await expect(page.locator('#interestFilters .interest-group')).toHaveText(['Actores','Temas']);
+ await expect(page.locator('#interestFilters [data-interest="siguiendo"]')).toBeVisible();
  await expect(page.locator('#entitySearch,#entityList,#typeFilters')).toHaveCount(0);
  await expect(page.locator('#filterDetails')).not.toContainText(/Entidades|Formato/);
- const saved=JSON.parse(await page.evaluate(()=>localStorage.getItem('alicanto_filters')));expect(saved.entities).toBeUndefined();expect(saved.type).toBeUndefined();
- if(test.info().project.name==='desktop'){await expect(page.locator('#interestRail')).not.toContainText('Entidades');await expect(page.locator('#interestRail [data-entity],[data-find-entity]')).toHaveCount(0)}
+ const saved=JSON.parse(await page.evaluate(()=>localStorage.getItem('alicanto_filters')));expect(saved.entities).toEqual(['cl:org:uc-christus']);expect(saved.type).toBeUndefined();
+ expect(errors).toEqual([]);
+});
+
+// WATCH (Dirección 27-oct, restored 28-oct): follow from the ficha, rows of followed entities are marked,
+// Actores › Siguiendo shows them, and the follow survives a reload.
+test('follow an entity from the ficha, see the row marker, filter by Siguiendo and keep it after reload',async({page})=>{
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/');const chip=page.locator('#local [data-entity-chip]').first();await expect(chip).toBeVisible();
+ const id=await chip.getAttribute('data-entity-chip');const row=chip.locator('xpath=ancestor::article');const card=await row.getAttribute('data-card');
+ await expect(page.locator('#interestFilters [data-interest="siguiendo"]')).toHaveCount(0);
+ await row.locator('.title-open').click();await expect(page.locator('#signalDetail')).toBeVisible();
+ const toggle=page.locator(`#detailBody [data-follow="${id}"]`);await expect(toggle).toHaveAttribute('aria-pressed','false');await expect(toggle).toContainText('Seguir');
+ await toggle.click();await expect(page.locator(`#detailBody [data-follow="${id}"]`)).toHaveAttribute('aria-pressed','true');await expect(page.locator(`#detailBody [data-follow="${id}"]`)).toContainText('Siguiendo');await expect(page.locator(`#detailBody [data-follow="${id}"]`)).toBeFocused();
+ await page.keyboard.press('Escape');
+ await page.locator('#lanes [data-lane="t"]').click();
+ await expect(page.locator(`#local [data-card="${card}"] .follow-mark`)).toBeVisible();
+ await expect(page.locator('#filterLabel')).toHaveText('Todos los temas');
+ await page.reload();await expect(page.locator(`#local [data-card="${card}"] .follow-mark`)).toBeVisible();
+ await page.locator('#filterDetails summary').click();await page.locator('#interestFilters [data-interest="siguiendo"]').click();
+ await expect(page.locator('#filterLabel')).toHaveText('Siguiendo');
+ const refs=await page.evaluate(()=>[...document.querySelectorAll('#local article[data-card]')].map(r=>refIds(allSignals.find(x=>idFor(x)===r.dataset.card))));
+ expect(refs.length).toBeGreaterThan(0);for(const r of refs)expect(r).toContain(id);
+ await expect(page.locator('#local article[data-card]:not(:has(.follow-mark))')).toHaveCount(0);
+ await page.locator('#interestFilters .tog-all').click();await page.keyboard.press('Escape');
+ await page.locator(`#local [data-card="${card}"] .title-open`).click();await page.locator(`#detailBody [data-follow="${id}"]`).click();
+ await expect(page.locator(`#detailBody [data-follow="${id}"]`)).toHaveAttribute('aria-pressed','false');await page.keyboard.press('Escape');
+ expect(JSON.parse(await page.evaluate(()=>localStorage.getItem('alicanto_filters'))).entities).toEqual([]);
+ await expect(page.locator(`#local [data-card="${card}"] .follow-mark`)).toHaveCount(0);
  expect(errors).toEqual([]);
 });
 

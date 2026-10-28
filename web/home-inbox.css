@@ -477,3 +477,18 @@ main{max-width:none;margin:0;padding:0 0 70px}
 .rail-find .box{box-shadow:none!important;background:none!important;position:relative}
 .rail-find .box::before{content:"+";position:absolute;inset:-3px 0 0;text-align:center;font-size:15px;line-height:1;color:var(--ink48)}
 .chip.ent .ent-icon{width:13px;height:13px;margin-left:-2px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* WATCH restored (Dirección 28-oct): follow toggles live in the ficha; followed rows carry a small marker. */
+.follow-row{display:flex;flex-wrap:wrap;gap:6px;margin:-2px 0 12px}
+.follow-chip{all:unset;box-sizing:border-box;position:relative;cursor:pointer;display:inline-flex;align-items:center;gap:5px;min-height:32px;padding:0 11px;border:1px solid var(--ink12);border-radius:999px;background:#fff;font:600 12px/1 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink84)}
+.follow-chip::after{content:"";position:absolute;inset:-6px 0}
+.follow-chip .mini-icon{width:13px;height:13px}
+.follow-chip:hover{border-color:var(--ink48);color:var(--ink)}
+.follow-chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.follow-chip:focus-visible{outline:2px solid #E3A24F;outline-offset:2px}
+.follow-mark{display:inline-flex;vertical-align:-2px;margin-right:4px;color:var(--accent-ink)}
+.follow-mark .mini-icon{width:12px;height:12px;fill:currentColor;stroke:none}
+.ent-chip.on{background:var(--ink12);color:var(--ink)}
+/* Ficha titles share one style on Chile and Global (Dirección 28-oct, punto 5). */
+#signalDetail #detailTitle,.global-detail #globalDetailTitle{font:400 26px/1.22 var(--serif);letter-spacing:-.005em;margin:4px 0 12px;color:var(--ink)}
+@media (max-width:760px){#signalDetail #detailTitle,.global-detail #globalDetailTitle{font-size:23px}}

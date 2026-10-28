@@ -20,6 +20,9 @@ const INTERESTS=[
  {k:'laboral',label:'Salud laboral',group:'Actores',match:s=>has(s.scopes,['Salud laboral','Seguridad social','COMPIN'])},
  {k:'farma',label:'Farma e ISP',group:'Actores',match:s=>has(s.scopes,['Farma / medicamentos'])},
  {k:'publica',label:'Salud pública',group:'Actores',match:s=>has(s.scopes,['Salud pública'])},
+ // WATCH (Dirección 27-oct, restored 28-oct): following is its own service, not a filter; "Siguiendo" is the one
+ // Actores option that shows the items of followed entities, so there is still a single filter system.
+ {k:'siguiendo',label:'Siguiendo',group:'Actores',match:s=>refIds(s).some(id=>followed.has(id))},
  {k:'normativa',label:'Normativa y fiscalización',group:'Temas',match:s=>has(s.signal_types,['Normativa','Fiscalización','Acreditación'])},
  {k:'mercado',label:'Mercado e inversiones',group:'Temas',match:s=>has(s.topics,['investment_ma','competition'])},
  {k:'politica',label:'Política y presupuesto',group:'Temas',match:s=>has(s.scopes,['Política pública','Financiamiento'])||(has(s.scopes,['Sistema de salud'])&&has(s.topics,['financing','waiting_lists']))},
@@ -31,8 +34,10 @@ const SCOPE_TO_INTEREST={'Isapres':'isapres','Agentes de ventas':'isapres','Fona
 function storedInterests(f){if(Array.isArray(f.interests))return f.interests.filter(k=>INTERESTS.some(x=>x.k===k));const k=SCOPE_TO_INTEREST[f.scope];return k?[k]:[]}
 let allSignals=[],sortMode=filterStored.sort||'date';
 const activeInterests=new Set(storedInterests(filterStored));
-// Dirección 28-oct (punto 4): one filter system, Actores + Temas. "Entidades" and "Formato" are no longer
-// filters; a selection saved under them is dropped. Entity names stay on the rows as plain information.
+// Dirección 28-oct (punto 4): one filter system, Actores + Temas; "Formato" is gone and "Entidades" is no longer a
+// filter. WATCH stays: followed entities persist (same `entities` key as PR #75, so earlier follows survive),
+// are toggled from the ficha, mark their rows, and are reachable through Actores › Siguiendo.
+const followed=new Set(arr(filterStored.entities).filter(x=>typeof x==='string'));
 let entityCatalog=[];
 function refIds(s){return [...new Set(arr(s.entity_refs).map(r=>typeof r==='string'?r:r?.canonical_id).filter(Boolean))]}
 function entityInfo(id){return entityCatalog.find(e=>e.id===id)||{id,name:id,short:id}}
@@ -43,7 +48,7 @@ let previousVisit;try{previousVisit=localStorage.getItem('alicanto_last_visit')}
 let periodMode=filterStored.period||'30';
 let laneMode=['p','l','t'].includes(filterStored.lane)?filterStored.lane:'p',detailPending=null;
 const readSet=AlicantoRead.readSet;
-function persistFilters(){saveLocal('alicanto_filters',JSON.stringify({interests:[...activeInterests],period:periodMode,sort:sortMode,lane:laneMode}))}
+function persistFilters(){saveLocal('alicanto_filters',JSON.stringify({interests:[...activeInterests],entities:[...followed],period:periodMode,sort:sortMode,lane:laneMode}))}
 function encodedId(value){return btoa(unescape(encodeURIComponent(value)))}
 function idFor(s){if(s.piece_id)return s.piece_id;return encodedId((s.source_url||'')+'|'+(s.event_date||'')+'|'+(s.event_type||'OTHER'))}
 function legacyIdFor(s,title=s.title){return encodedId((s.source_url||'')+'|'+(title||''))}
@@ -188,14 +193,20 @@ function formatTag(s){const t=['Normativa','Fiscalización','Datos'].find(x=>typ
 // Entity chips: at most two, named in the card itself before acts aggregated in a pulse. Since Dirección 28-oct
 // (punto 4) they are plain labels: who is involved, at a glance; filtering lives only in Actores and Temas.
 const ENTITY_CHIPS=2;
-function entityChips(s){const order={text:0,source:1,pipeline:2,member:3},refs=arr(s.entity_refs).filter(r=>r&&r.canonical_id).sort((a,b)=>(order[a.basis]??4)-(order[b.basis]??4)),ids=[...new Set(refs.map(r=>r.canonical_id))],shown=ids.slice(0,ENTITY_CHIPS);if(!shown.length)return'';return `<span class="ent-chips">${shown.map(id=>{const e=entityInfo(id);return `<span class="ent-chip" data-entity-chip="${esc(id)}" title="${esc(e.name)}"><span class="ent-name">${esc(e.short||e.name)}</span></span>`}).join('')}${ids.length>shown.length?`<span class="ent-more" title="${esc(ids.slice(ENTITY_CHIPS).map(x=>entityInfo(x).name).join(', '))}">+${ids.length-shown.length}</span>`:''}</span>`}
+function entityChips(s){const order={text:0,source:1,pipeline:2,member:3},refs=arr(s.entity_refs).filter(r=>r&&r.canonical_id).sort((a,b)=>(order[a.basis]??4)-(order[b.basis]??4)),ids=[...new Set(refs.map(r=>r.canonical_id))],shown=ids.slice(0,ENTITY_CHIPS);if(!shown.length)return'';return `<span class="ent-chips">${shown.map(id=>{const e=entityInfo(id);return `<span class="ent-chip${followed.has(id)?' on':''}" data-entity-chip="${esc(id)}" title="${esc(followed.has(id)?`Sigues a ${e.name}`:e.name)}"><span class="ent-name">${esc(e.short||e.name)}</span></span>`}).join('')}${ids.length>shown.length?`<span class="ent-more" title="${esc(ids.slice(ENTITY_CHIPS).map(x=>entityInfo(x).name).join(', '))}">+${ids.length-shown.length}</span>`:''}</span>`}
 // Chips and the row actions travel together so the icons never drop to a line of their own.
 function metaTail(chips,actions){return chips?`<span class="meta-tail">${chips}${actions}</span>`:actions}
-function card(s){const rd=isRead(s),id=idFor(s),title=triageTitle(s);return `<article id="sig-${esc(id)}" tabindex="-1" data-card="${esc(id)}" data-rel="${rel(s.radar_score).cls}" class="signal item ${rd?'read':''}">${dotButton('data-read',id,rd,title)}<div class="item-body"><h2><button class="title-open" data-detail="${esc(id)}">${esc(title)}</button></h2><div class="card-meta"><span class="meta-text">${rowMeta(s)}</span>${formatTag(s)}${metaTail(entityChips(s),`<span class="item-actions">${sourceLink(s.source_url)}${miniShare(`sig-${id}`,title)}</span>`)}</div></div></article>`}
+const followIcon='<svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 4h12v17l-6-4-6 4z"></path></svg>';
+// A row that names a followed entity carries a small marker before its source (WATCH).
+function followMark(s){const ids=refIds(s).filter(id=>followed.has(id));return ids.length?`<span class="follow-mark" title="Sigues a ${esc(ids.map(id=>entityInfo(id).name).join(', '))}">${followIcon}<span class="sr-only">Sigues a ${esc(ids.map(id=>entityInfo(id).name).join(', '))}. </span></span>`:''}
+function card(s){const rd=isRead(s),id=idFor(s),title=triageTitle(s);return `<article id="sig-${esc(id)}" tabindex="-1" data-card="${esc(id)}" data-rel="${rel(s.radar_score).cls}" class="signal item ${rd?'read':''}">${dotButton('data-read',id,rd,title)}<div class="item-body"><h2><button class="title-open" data-detail="${esc(id)}">${esc(title)}</button></h2><div class="card-meta">${followMark(s)}<span class="meta-text">${rowMeta(s)}</span>${formatTag(s)}${metaTail(entityChips(s),`<span class="item-actions">${sourceLink(s.source_url)}${miniShare(`sig-${id}`,title)}</span>`)}</div></div></article>`}
 let detailOrigin=null;
 function detailBar(s){const id=idFor(s),r=isRead(s);return `${sourceLink(s.source_url)}${miniShare(`sig-${id}`,triageTitle(s))}<button type="button" class="textbtn" id="detailRead">${r?'Marcar no leída':'Marcar leída'}</button>`}
 function wireDetailBar(s){const bar=document.getElementById('detailBar');if(!bar)return;bar.innerHTML=detailBar(s);bar.querySelectorAll('[data-share]').forEach(b=>b.onclick=()=>shareCard(b));const t=document.getElementById('detailRead');if(t)t.onclick=async()=>{await AlicantoRead.set(idFor(s),!isRead(s));readStatus(isRead(s)?'Marcado como leído.':'Marcado como no leído.');wireDetailBar(s);document.getElementById('detailRead')?.focus()}}
-async function openDetail(s){const dialog=document.getElementById('signalDetail');detailOrigin=document.activeElement;detailPending={id:idFor(s),was:isRead(s)};try{document.getElementById('detailBody').innerHTML=detailHtml(s);if(s.statistical_view)AlicantoStats.wire(document.getElementById('detailBody'),s.statistical_view);if(!dialog.open)dialog.showModal();dialog.querySelector('#closeDetail').focus();await AlicantoRead.set(idFor(s),true);wireDetailBar(s);readStatus('Marcado como leído.')}catch{readStatus('No se pudo abrir la ficha.')}}
+// Inside the ficha every named entity gets a "Seguir <entidad>" toggle (WATCH). It never changes the filters.
+function followRow(s){const ids=refIds(s);if(!ids.length)return'';return `<div class="follow-row" role="group" aria-label="Seguir entidades">${ids.map(id=>{const e=entityInfo(id),on=followed.has(id);return `<button type="button" class="follow-chip" data-follow="${esc(id)}" aria-pressed="${on}">${on?tickIcon:followIcon}<span>${on?'Siguiendo':'Seguir'} ${esc(e.short||e.name)}</span></button>`}).join('')}</div>`}
+function wireFollow(host,s){host.querySelectorAll('[data-follow]').forEach(b=>b.onclick=()=>{const id=b.dataset.follow,on=!followed.has(id);if(on)followed.add(id);else followed.delete(id);persistFilters();const fresh=document.createElement('div');fresh.innerHTML=followRow(s);host.querySelector('.follow-row').replaceWith(fresh.firstElementChild);wireFollow(host,s);host.querySelector(`[data-follow="${CSS.escape(id)}"]`)?.focus();readStatus(on?`Siguiendo ${entityInfo(id).name}.`:`Dejaste de seguir ${entityInfo(id).name}.`);draw()})}
+async function openDetail(s){const dialog=document.getElementById('signalDetail');detailOrigin=document.activeElement;detailPending={id:idFor(s),was:isRead(s)};try{const body=document.getElementById('detailBody');body.innerHTML=detailHtml(s);body.querySelector('#detailTitle')?.insertAdjacentHTML('afterend',followRow(s));wireFollow(body,s);if(s.statistical_view)AlicantoStats.wire(document.getElementById('detailBody'),s.statistical_view);if(!dialog.open)dialog.showModal();dialog.querySelector('#closeDetail').focus();await AlicantoRead.set(idFor(s),true);wireDetailBar(s);readStatus('Marcado como leído.')}catch{readStatus('No se pudo abrir la ficha.')}}
 
 function dateVal(s){const raw=s.event_date||0,dateOnly=typeof raw==='string'&&raw.length===10&&raw[4]==='-'&&raw[7]==='-';const normalized=dateOnly?raw+'T12:00:00Z':raw;return new Date(normalized).getTime()||0}
 function ageDays(s,now=new Date()){const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/Santiago',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now).map(x=>[x.type,x.value]));const today=Date.parse(`${p.year}-${p.month}-${p.day}T00:00:00Z`),event=Date.parse(String(s.event_date||'').slice(0,10)+'T00:00:00Z');return Math.floor((today-event)/86400000)}
@@ -270,7 +281,8 @@ function setInterest(k,on){if(!k)activeInterests.clear();else if(on)activeIntere
 function renderInterests(){
  const c=interestCounts();
  const toggle=(cls,x)=>`<button type="button" class="${cls}" data-interest="${x.k}" aria-pressed="${activeInterests.has(x.k)}"><span class="box" aria-hidden="true"></span><span>${esc(x.label)}</span><small>${c.by[x.k]}</small></button>`;
- const grouped=cls=>['Actores','Temas'].map(g=>`<p class="interest-group">${g}</p><div class="interest-grid">${INTERESTS.filter(x=>x.group===g).map(x=>toggle(cls,x)).join('')}</div>`).join('');
+ const shown=x=>x.k!=='siguiendo'||followed.size>0||activeInterests.has('siguiendo');
+ const grouped=cls=>['Actores','Temas'].map(g=>`<p class="interest-group">${g}</p><div class="interest-grid">${INTERESTS.filter(x=>x.group===g&&shown(x)).map(x=>toggle(cls,x)).join('')}</div>`).join('');
  const sheet=document.getElementById('interestFilters');
  if(sheet)sheet.innerHTML=`<button type="button" class="tog tog-all" data-interest="" aria-pressed="${!filtersActive()}"><span class="box" aria-hidden="true"></span><span>Todos los temas</span><small>${c.total}</small></button>${grouped('tog')}`;
  const rail=document.getElementById('interestRail');if(rail)rail.innerHTML=grouped('rail-item');

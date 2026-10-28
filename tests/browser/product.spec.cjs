@@ -823,3 +823,11 @@ test('the Global teaser in Chile invites to Global Premium without saying limita
  await expect(g.locator('.big-invite')).toHaveText('El análisis completo, con sus fuentes, te espera en Global Premium.');await expect(g.locator('.big-cta')).toHaveText('Entrar a Global →');
  await expect(g).not.toContainText(/limitad/i);
 });
+
+// Dirección 28-oct (punto 5): the ficha title has one style on Chile and Global.
+test('ficha titles share the same font on Chile and Global',async({page})=>{
+ const style=sel=>page.locator(sel).evaluate(el=>{const c=getComputedStyle(el);return [c.fontFamily,c.fontWeight,c.fontSize,c.lineHeight].join('|')});
+ await page.goto('/');await page.locator('#local .title-open').first().click();await expect(page.locator('#detailTitle')).toBeVisible();const chile=await style('#detailTitle');
+ await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('all');await page.locator('#themes .title-open').first().click();await expect(page.locator('#globalDetailTitle')).toBeVisible();
+ expect(await style('#globalDetailTitle')).toBe(chile);expect(chile).toMatch(/Georgia/);
+});
