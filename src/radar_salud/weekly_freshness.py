@@ -47,13 +47,18 @@ def freshness_gate(signal, as_of=None):
     event = iso_day(signal.get("event_date"))
     anchor = iso_day(signal.get("freshness_anchor_date", signal.get("event_date")))
     expiry = iso_day(signal.get("expires_on")) if "expires_on" in signal else None
-    valid = bool(event and anchor and 0 <= (today-event).days < WINDOW_DAYS
-                 and 0 <= (today-anchor).days < WINDOW_DAYS
+    window = WINDOW_DAYS
+    # Transition to Monday insights (Dirección 27-oct-2026): a legacy insight may stay valid until the
+    # next Monday when its expires_on is that Monday and at most 10 days after the anchor.
+    if expiry and anchor and expiry.weekday() == 0 and WINDOW_DAYS < (expiry-anchor).days <= 10:
+        window = (expiry-anchor).days
+    valid = bool(event and anchor and 0 <= (today-event).days < window
+                 and 0 <= (today-anchor).days < window
                  and ("expires_on" not in signal or expiry and today < expiry))
     return {"eligible": valid, "reason": "fresh" if valid else "stale_future_or_unverified_date",
             "as_of": today.isoformat(), "timezone": "America/Santiago", "window_days": WINDOW_DAYS,
             "anchor_date": anchor.isoformat() if anchor else None,
-            "expires_on": min(anchor+timedelta(days=WINDOW_DAYS), expiry or date.max).isoformat() if anchor else None}
+            "expires_on": min(anchor+timedelta(days=window), expiry or date.max).isoformat() if anchor else None}
 
 # Presentation A (Dirección, 27-oct-2026): headline → charts → short essay → watch → notes.
 # Cheap deterministic rules from design/insight/panel.md §4; a failing insight stays hidden.

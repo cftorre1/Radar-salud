@@ -300,3 +300,12 @@ def test_weekly_insight_workflow_runs_monday_on_staging_writer():
         assert forbidden not in text
     v2 = (ROOT / ".github/workflows/weekly-insight-v2.yml").read_text(encoding="utf-8")
     assert "schedule:" not in v2
+
+
+def test_legacy_insight_bridges_to_the_next_monday_only():
+    from datetime import date
+    from radar_salud.weekly_freshness import freshness_gate
+    sig = {"event_date": "2026-10-23", "freshness_anchor_date": "2026-10-23", "expires_on": "2026-11-02"}
+    assert freshness_gate(sig, date(2026, 11, 1))["eligible"]
+    assert not freshness_gate(sig, date(2026, 11, 2))["eligible"]
+    assert not freshness_gate({**sig, "expires_on": "2026-11-09"}, date(2026, 11, 1))["eligible"]
