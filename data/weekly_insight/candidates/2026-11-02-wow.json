@@ -1,0 +1,316 @@
+{
+  "status": "candidate_wow",
+  "anchor_date": "2026-11-02",
+  "expires_on": "2026-11-09",
+  "topic_choice": {
+    "chosen": "Cáncer GES: el costo por prestación sube 37% real (CIPS-UDD con datos de Fonasa, La Tercera 21 oct) × presupuesto 2027 de Salud (+4,7%; derivaciones oncológicas vs detección precoz, Minsal 19 y 21 oct) × retrasos GES por cáncer (Glosa 06, II trimestre 2026).",
+    "rejected": [
+      "Envejecimiento + red de cuidados (borrador 2026-11-02-draft: solo prensa, cifras de percepción)",
+      "Genérico de semaglutida + obesidad + mercado farmacéutico (precio del genérico aún no publicado; solo prensa)",
+      "Cartera Isapre que se reduce + movilidad interisapres (estudio del gremio exploratorio, noticia fuera de la ventana de 14 días)",
+      "Licencias médicas (tema del insight anterior)"
+    ],
+    "why": "Cruza 3 fuentes independientes (estudio académico con datos administrativos de Fonasa, proyecto de presupuesto oficial, informe oficial de listas de espera), toca decisiones de 2027 de Fonasa, prestadores públicos y privados, Isapres y laboratorios, y deja dos estimaciones deterministas nuevas (intensidad por paciente casi plana, ≈ 9,8 veces derivar vs detectar)."
+  },
+  "weekly_insight": {
+    "headline": "El gasto de Fonasa en cáncer GES subió 89% real en seis años, el doble que el presupuesto de Salud; 2027 prioriza derivar sobre detectar",
+    "dek": "Entre 2018 y 2024, el financiamiento GES del cáncer en Fonasa pasó de $185.472 millones a $350.778 millones en pesos de 2026. Cada prestación cuesta cerca de 37% más en términos reales.",
+    "dek_emphasis": "$350.778 millones",
+    "key_figures": [
+      "Financiamiento GES-Cáncer de Fonasa: $185.472 millones en 2018 y $350.778 millones en 2024, en pesos constantes de 2026 (+89,1%), en 16 patologías oncológicas GES (estudio CIPS-UDD con datos de Fonasa; La Tercera, 21 oct; G5noticias, 24 oct).",
+      "Presupuesto ajustado del Ministerio de Salud en el mismo período: +42,3% (mismo estudio).",
+      "Prestaciones oncológicas GES: de 1.135.798 a 1.564.084 (+37,7%); personas atendidas: de 717.432 a 953.422 (+32,9%); prestaciones por persona: de 1,58 a 1,64 (mismo estudio).",
+      "Costo real por prestación: de cerca de $163.000 a $224.000, alza cercana a 37% (mismo estudio).",
+      "Por etapa: diagnóstico, confirmación y etapificación +109,6%; tratamiento +85,4%; seguimiento +80,2%; el tratamiento es entre 80% y 83% del financiamiento (mismo estudio).",
+      "Proyecto de Presupuesto 2027, Partida 16: crece 4,7%, es 22,7% del gasto público y suma $829 mil millones adicionales; aprobado en la Tercera Subcomisión Mixta (Minsal, 19 y 21 oct).",
+      "Proyecto 2027: $52.846 millones adicionales para derivaciones oncológicas y $5.387 millones para detectar a tiempo el cáncer cervicouterino, colorrectal y gástrico (Minsal, 19 oct).",
+      "Financiamiento hospitalario ligado a actividad asistencial valorizada: de 58,7% a 81,9% en 2027 (Minsal, 21 oct).",
+      "Garantías GES retrasadas al 30 de junio de 2026: 68.878, 2,83% del total, 0,21 puntos menos que un año antes (Minsal, informe de listas de espera del II trimestre).",
+      "Personas con garantía GES retrasada al 30 de junio de 2026: cáncer colorrectal 4.151; mama 2.614; cervicouterino 2.496; gástrico 1.471; próstata 792 (Minsal, informe de listas de espera del II trimestre, Tabla 4)."
+    ],
+    "estimates": [
+      {
+        "id": "veces_presupuesto",
+        "label": "crecimiento GES-Cáncer sobre crecimiento del presupuesto Minsal, 2018–2024",
+        "value": 2.11,
+        "unit": "veces",
+        "display": "≈ 2,1 veces",
+        "formula": "89.1 / 42.3",
+        "inputs": [
+          "GES-Cáncer +89,1%",
+          "presupuesto Minsal +42,3%"
+        ],
+        "note_ref": "n2"
+      },
+      {
+        "id": "intensidad",
+        "label": "prestaciones por persona atendida, 2018–2024",
+        "value": 3.8,
+        "unit": "%",
+        "display": "≈ +3,8%",
+        "formula": "(1.64 / 1.58 - 1) * 100",
+        "inputs": [
+          "prestaciones por persona 1,58 → 1,64"
+        ],
+        "note_ref": "n3"
+      },
+      {
+        "id": "derivar_detectar",
+        "label": "derivaciones oncológicas adicionales sobre detección precoz, proyecto 2027",
+        "value": 9.81,
+        "unit": "veces",
+        "display": "≈ 9,8 veces",
+        "formula": "52846 / 5387",
+        "inputs": [
+          "$52.846 millones derivaciones",
+          "$5.387 millones detección"
+        ],
+        "note_ref": "n4"
+      }
+    ],
+    "charts": [
+      {
+        "id": "cuenta_cancer",
+        "form": "columns",
+        "digits": 1,
+        "headline": "La cuenta del cáncer GES crece el doble que el presupuesto de Salud",
+        "subtitle": "Variación 2018–2024, %: gasto GES-Cáncer de Fonasa, presupuesto del Minsal, prestaciones y personas atendidas",
+        "unit": "%",
+        "rows": [
+          {
+            "label": "GES-Cáncer",
+            "value": 89.1
+          },
+          {
+            "label": "Minsal",
+            "value": 42.3
+          },
+          {
+            "label": "Prestaciones",
+            "value": 37.7
+          },
+          {
+            "label": "Personas",
+            "value": 32.9
+          }
+        ],
+        "source": "Estudio CIPS-UDD con datos de Fonasa, citado por La Tercera (21 oct) y G5noticias (24 oct).",
+        "note_refs": [
+          "n1",
+          "n2"
+        ]
+      },
+      {
+        "id": "retrasos_cancer",
+        "form": "columns",
+        "digits": 0,
+        "headline": "Colorrectal encabeza los retrasos GES en cáncer",
+        "subtitle": "Personas con garantía GES de oportunidad retrasada, al 30 de junio de 2026",
+        "unit": "personas",
+        "rows": [
+          {
+            "label": "Colorrectal",
+            "value": 4151
+          },
+          {
+            "label": "Mama",
+            "value": 2614
+          },
+          {
+            "label": "Cérvix",
+            "value": 2496
+          },
+          {
+            "label": "Gástrico",
+            "value": 1471
+          },
+          {
+            "label": "Próstata",
+            "value": 792
+          }
+        ],
+        "source": "Minsal, informe de listas de espera y garantías GES retrasadas del II trimestre (Tabla 4). Cérvix = cáncer cervicouterino.",
+        "note_refs": [
+          "n5"
+        ]
+      }
+    ],
+    "essay": {
+      "facts": {
+        "heading": "Qué pasó",
+        "paragraphs": [
+          "Un estudio del CIPS-UDD con datos de Fonasa encontró que el costo real por prestación oncológica GES subió de cerca de $163.000 a $224.000 entre 2018 y 2024, mientras cada paciente recibió casi las mismas prestaciones: 1,64 por persona frente a 1,58. El financiamiento del diagnóstico fue el que más creció, 109,6%, pero el tratamiento sigue siendo entre 80% y 83% del total.[^n1]",
+          "Para 2027, el Minsal propone $52.846 millones adicionales para derivaciones oncológicas y $5.387 millones para detectar a tiempo los cánceres cervicouterino, colorrectal y gástrico. La partida de Salud, que crece 4,7%, ya pasó la subcomisión mixta.[^n6]"
+        ]
+      },
+      "reading": {
+        "heading": "Lectura Alicanto",
+        "paragraphs": [
+          "La cuenta del cáncer no sube porque cada paciente reciba más, sino porque cada prestación cuesta más: las prestaciones por persona crecieron apenas 3,8%.[^n3] Precio, tecnología y productividad pasan a ser las variables a gestionar, más que el volumen.",
+          "Si sigue creciendo al doble que el presupuesto, ese gasto desplazará otras prestaciones o se convertirá en deuda. Y el proyecto 2027 destina a derivaciones oncológicas adicionales 9,8 veces lo que asigna a detectar a tiempo los tres cánceres que, junto al de mama, más retrasos GES acumulan entre los oncológicos.[^n4] Para clínicas y centros oncológicos privados, esas derivaciones pueden ser demanda concreta en 2027, con un comprador que mirará el precio por prestación.",
+          "Isapres y laboratorios deberían leer la misma señal: en cáncer, la discusión pasa del acceso al costo unitario."
+        ]
+      }
+    },
+    "watch_heading": "Qué mirar en las próximas semanas",
+    "watch": [
+      {
+        "headline": "Votación final de la partida de Salud.",
+        "explanation": "Faltan la Comisión Mixta y las dos cámaras; conviene ver si sobreviven los $52.846 millones para derivaciones oncológicas y los $5.387 millones para detección precoz."
+      },
+      {
+        "headline": "Informe de listas de espera del tercer trimestre.",
+        "explanation": "El próximo informe trimestral del Minsal dirá si bajan los retrasos GES en colorrectal, cervicouterino y gástrico, los mismos cánceres a los que apunta la línea de detección precoz."
+      },
+      {
+        "headline": "Pago por actividad en hospitales públicos.",
+        "explanation": "En 2027, la parte del financiamiento hospitalario ligada a la actividad realizada sube de 58,7% a 81,9%; eso puede cambiar cuánto le conviene a un hospital tratar un cáncer en vez de derivarlo."
+      }
+    ],
+    "notes": [
+      {
+        "id": "n1",
+        "kind": "press",
+        "text": "Estudio del CIPS-UDD con registros de Fonasa obtenidos por Transparencia, conocido por prensa; Alicanto no revisó el informe original. Cubre 16 problemas de salud oncológicos GES en Fonasa y no incluye Isapres. Montos en pesos de 2026."
+      },
+      {
+        "id": "n2",
+        "kind": "estimate",
+        "text": "Estimación Alicanto: 89,1 / 42,3 ≈ 2,1 veces. La prensa no precisa si el 42,3% del presupuesto del Minsal está en pesos constantes; si fuera nominal, la brecha real sería aún mayor."
+      },
+      {
+        "id": "n3",
+        "kind": "estimate",
+        "text": "Estimación Alicanto: 1,64 / 1,58 − 1 ≈ 3,8%. Que el alza venga del costo de cada prestación es aritmética; el estudio no separa cuánto se debe a precios, terapias nuevas, mayor complejidad o menor productividad."
+      },
+      {
+        "id": "n4",
+        "kind": "estimate",
+        "text": "Estimación Alicanto: 52.846 / 5.387 ≈ 9,8. Compara solo las dos líneas oncológicas que el Minsal detalló; no es el gasto total en detección ni en tratamiento, y el Minsal no informa a qué prestadores irán las derivaciones."
+      },
+      {
+        "id": "n5",
+        "kind": "coverage",
+        "text": "Personas con al menos una garantía de oportunidad GES retrasada en el sistema público al 30 de junio de 2026; una persona puede figurar en más de un problema de salud."
+      },
+      {
+        "id": "n6",
+        "kind": "non_final",
+        "text": "El presupuesto 2027 aún es un proyecto: falta su aprobación en la Comisión Mixta y en ambas cámaras."
+      }
+    ],
+    "sources": [
+      {
+        "label": "La Tercera · Estudio CIPS-UDD: el costo real por prestación oncológica GES aumentó 37% entre 2018 y 2024 · 21 oct",
+        "url": "https://www.latercera.com/nacional/noticia/estudio-revela-que-el-costo-real-por-prestacion-oncologica-ges-aumento-37-entre-2018-y-2024/",
+        "role": "Prensa: noticia gatillo en el feed de Alicanto; difunde el estudio CIPS-UDD con datos de Fonasa.",
+        "short_label": "La Tercera · Costo real por prestación oncológica GES +37% (21 oct)",
+        "short_role": "prensa: estudio CIPS-UDD"
+      },
+      {
+        "label": "G5noticias · Evolución del gasto GES-Cáncer: recursos aumentaron 89%, prestaciones crecieron menos de la mitad · 24 oct",
+        "url": "https://g5noticias.cl/2026/10/24/evolucion-del-gasto-ges-cancer-recursos-aumentaron-89-pero-las-prestaciones-crecieron-menos-de-la-mitad-entre-2018-y-2024/",
+        "role": "Prensa: detalle del estudio CIPS-UDD (personas, prestaciones por persona, presupuesto Minsal, etapas).",
+        "short_label": "G5noticias · Evolución del gasto GES-Cáncer (24 oct)",
+        "short_role": "prensa: detalle del estudio"
+      },
+      {
+        "label": "Minsal · Ministra Chomali y Presupuesto 2027: primer paso para la sostenibilidad financiera · 19 oct",
+        "url": "https://www.minsal.cl/ministra-chomali-y-presupuesto-2027-este-es-el-primer-paso-para-la-sostenibilidad-financiera-del-sistema/",
+        "role": "Fuente primaria: líneas oncológicas del proyecto 2027 (derivaciones y detección precoz).",
+        "short_label": "Minsal · Presupuesto 2027, presentación de la Partida 16 (19 oct)",
+        "short_role": "derivaciones y detección precoz"
+      },
+      {
+        "label": "Minsal · Tercera Subcomisión Mixta aprueba partida de Salud 2027: +4,7% · 21 oct",
+        "url": "https://www.minsal.cl/tercera-subcomision-mixta-de-presupuestos-aprueba-partida-del-ministerio-de-salud-para-2027-recursos-aumentan-47-y-superan-los-183-billones/",
+        "role": "Fuente primaria: aprobación en subcomisión, monto adicional y financiamiento hospitalario por actividad.",
+        "short_label": "Minsal · Subcomisión Mixta aprueba partida de Salud 2027 (21 oct)",
+        "short_role": "trámite y pago por actividad"
+      },
+      {
+        "label": "Minsal · Informe de lista de espera No GES y garantías GES retrasadas, II trimestre 2026 (corte al 30 de junio)",
+        "url": "https://www.minsal.cl/wp-content/uploads/2026/08/Glosa-06-LE-II-trimestre.pdf",
+        "role": "Fuente primaria: garantías GES retrasadas y personas con retraso por problema de salud oncológico.",
+        "short_label": "Minsal · Informe de listas de espera, II trimestre 2026",
+        "short_role": "retrasos GES por cáncer"
+      }
+    ],
+    "insight_teaser": "El gasto de Fonasa en cáncer GES subió 89% real entre 2018 y 2024, el doble que el presupuesto de Salud: qué significa el proyecto 2027 para Fonasa, clínicas, Isapres y laboratorios.",
+    "source_refs": [
+      "https://www.latercera.com/nacional/noticia/estudio-revela-que-el-costo-real-por-prestacion-oncologica-ges-aumento-37-entre-2018-y-2024/",
+      "https://g5noticias.cl/2026/10/24/evolucion-del-gasto-ges-cancer-recursos-aumentaron-89-pero-las-prestaciones-crecieron-menos-de-la-mitad-entre-2018-y-2024/",
+      "https://www.minsal.cl/ministra-chomali-y-presupuesto-2027-este-es-el-primer-paso-para-la-sostenibilidad-financiera-del-sistema/",
+      "https://www.minsal.cl/tercera-subcomision-mixta-de-presupuestos-aprueba-partida-del-ministerio-de-salud-para-2027-recursos-aumentan-47-y-superan-los-183-billones/",
+      "https://www.minsal.cl/wp-content/uploads/2026/08/Glosa-06-LE-II-trimestre.pdf"
+    ],
+    "id": "weekly-insight:2026-11-02:cancer-ges-costo-unitario",
+    "schema_version": "weekly_insight_a_v1",
+    "title": "El gasto de Fonasa en cáncer GES subió 89% real en seis años, el doble que el presupuesto de Salud; 2027 prioriza derivar sobre detectar",
+    "insight_title": "El gasto de Fonasa en cáncer GES subió 89% real en seis años, el doble que el presupuesto de Salud; 2027 prioriza derivar sobre detectar",
+    "event_date": "2026-10-21",
+    "freshness_anchor_date": "2026-11-02",
+    "anchor_kind": "monday",
+    "expires_on": "2026-11-09",
+    "source_name": "Estudio CIPS-UDD (La Tercera) · Minsal · listas de espera",
+    "source_url": "https://www.latercera.com/nacional/noticia/estudio-revela-que-el-costo-real-por-prestacion-oncologica-ges-aumento-37-entre-2018-y-2024/",
+    "summary": "Entre 2018 y 2024, el financiamiento GES del cáncer en Fonasa pasó de $185.472 millones a $350.778 millones en pesos de 2026. Cada prestación cuesta cerca de 37% más en términos reales.",
+    "weekly_mode": "monday_format_a",
+    "model_trace": {
+      "mode": "senior_editorial_work_session",
+      "api_call": false,
+      "model": "claude-opus-5-5 (sesión editorial)",
+      "note": "Redactado desde el feed de Alicanto (21 oct) y fuentes leídas el 27 oct; cifras citadas en 2026-11-02-wow-review.md."
+    },
+    "editorial_review_pass": true,
+    "reading_time_min": 2
+  },
+  "verification": {
+    "verdict": "PASS",
+    "errors": [],
+    "warnings": []
+  },
+  "presentation_a_errors": [],
+  "freshness": {
+    "at_anchor": {
+      "eligible": true,
+      "reason": "fresh",
+      "as_of": "2026-11-02",
+      "timezone": "America/Santiago",
+      "window_days": 7,
+      "anchor_kind": "monday",
+      "anchor_date": "2026-11-02",
+      "expires_on": "2026-11-09"
+    },
+    "on_2026_11_08": {
+      "eligible": true,
+      "reason": "fresh",
+      "as_of": "2026-11-08",
+      "timezone": "America/Santiago",
+      "window_days": 7,
+      "anchor_kind": "monday",
+      "anchor_date": "2026-11-02",
+      "expires_on": "2026-11-09"
+    },
+    "on_2026_11_09": {
+      "eligible": false,
+      "reason": "monday_window_closed_or_invalid",
+      "as_of": "2026-11-09",
+      "timezone": "America/Santiago",
+      "window_days": 7,
+      "anchor_kind": "monday",
+      "anchor_date": "2026-11-02",
+      "expires_on": "2026-11-09"
+    }
+  },
+  "audit": {
+    "verdict": "PASS",
+    "editorial_business_review_pass": true,
+    "independent_second_reviewer": false,
+    "reviewer": "Claude (sesión editorial): verificación determinista + autorrevisión escéptica cifra por cifra (ver 2026-11-02-wow-review.md). Falta revisor independiente y aprobación del coordinador.",
+    "presentation": {
+      "format": "weekly_insight_a_v1"
+    }
+  },
+  "evidence_numbers_count": 41
+}
