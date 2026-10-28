@@ -186,8 +186,7 @@ def mirror_health(root, source_health):
 def coverage_contract_id(config,source):
     return hashlib.sha256(json.dumps({"qualification_version":4 if source=="paho" else 2,"inventory_days":90,"routes":[route for route in config["routes"] if route["source"]==source]},sort_keys=True).encode()).hexdigest()
 
-WHO_CATEGORY_SEGMENTS = {"emergency": ["providers", "regulation"], "policy_guidelines": ["regulation"], "financing_systems": ["payers", "providers"],
-                         "epidemiology": ["providers"], "technical_document": ["regulation"]}
+from radar_salud.global_daily_feed import WHO_CATEGORY_SEGMENTS  # noqa: E402  (single definition)
 
 def executive_segments(row):
     """Deterministic Chilean-executive segment tags (title keywords, else WHO/PAHO category map)."""

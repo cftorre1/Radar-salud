@@ -49,7 +49,7 @@ def kff_rows():
 
 
 def test_every_feed_declares_a_rights_basis_that_permits_metadata_and_link_only():
-    assert {f["id"] for f in CONFIG["feeds"]} == {"kff_health_news", "ema", "fda"}
+    assert {f["id"] for f in CONFIG["feeds"]} == {"kff_health_news", "ema", "fda", "cdc", "nih", "federal_register_cms", "ecdc", "ec_health", "the_conversation"}
     for feed in CONFIG["feeds"]:
         validate_feed_config(feed)
         assert feed["rights"]["permitted_use"] == "metadata_title_link_byline_only"

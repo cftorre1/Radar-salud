@@ -118,7 +118,7 @@
       "effect": "health.publication_activation=true; candidates still require editorial approval and rights review; never auto-publishes"
     }
   },
-  "feeds_live_capture_budget_seconds": 300,
+  "feeds_live_capture_budget_seconds": 480,
   "feeds": [
     {
       "id": "kff_health_news",
@@ -165,6 +165,12 @@
         ],
         "verified_on": "2026-10-27",
         "verified_how": "syndication and rss-feeds pages read via web fetch 27-oct; robots.txt enforced at runtime (fail closed)"
+      },
+      "daily_feed": {
+        "display": true,
+        "label": "KFF Health News",
+        "kind_es": "Periodismo de política sanitaria (EE. UU.)",
+        "show_byline": true
       }
     },
     {
@@ -209,6 +215,11 @@
         ],
         "verified_on": "2026-10-27",
         "verified_how": "legal notice and RSS page read via web fetch 27-oct; robots.txt enforced at runtime (fail closed)"
+      },
+      "daily_feed": {
+        "display": true,
+        "label": "EMA",
+        "kind_es": "Regulador de medicamentos de la Unión Europea"
       }
     },
     {
@@ -245,6 +256,255 @@
         ],
         "verified_on": "2026-10-27",
         "verified_how": "RSS feed list page read via web fetch 27-oct; FDA website-policies page could not be fetched from this environment (legal basis is statutory); robots.txt enforced at runtime (fail closed)"
+      },
+      "daily_feed": {
+        "display": true,
+        "label": "FDA",
+        "kind_es": "Regulador de medicamentos y dispositivos de EE. UU."
+      }
+    },
+    {
+      "id": "cdc",
+      "name": "US CDC (newsroom + MMWR)",
+      "enabled": true,
+      "attribution": "U.S. Centers for Disease Control and Prevention (CDC)",
+      "allowed_link_hosts": [
+        "www.cdc.gov"
+      ],
+      "default_segments": [],
+      "routes": [
+        {
+          "section": "newsroom",
+          "url": "https://tools.cdc.gov/api/v2/resources/media/132608.rss",
+          "format": "rss"
+        },
+        {
+          "section": "mmwr",
+          "url": "https://tools.cdc.gov/api/v2/resources/media/342778.rss",
+          "format": "rss"
+        }
+      ],
+      "rights": {
+        "basis": "us_federal_government_work_17_usc_105",
+        "license": "Public domain (most CDC content); third-party/contractor material and logos excluded",
+        "evidence_urls": [
+          "https://cdc.gov/other/agencymaterials.html"
+        ],
+        "permitted_use": "metadata_title_link_byline_only",
+        "automated_access": "public_domain_government_feed",
+        "attribution": "Source: CDC, with link; use does not imply endorsement by CDC/HHS",
+        "restrictions": [
+          "no logo",
+          "no implied endorsement (disclaimer shown on the page)",
+          "do not alter substance (titles verbatim)",
+          "third-party content excluded"
+        ],
+        "verified_on": "2026-10-28",
+        "verified_how": "agencymaterials page read via web fetch 28-oct; feed URLs from a public feed directory (feeder.co); not fetched live (sandbox has no route); robots.txt enforced at runtime (fail closed)"
+      },
+      "daily_feed": {
+        "display": true,
+        "label": "CDC",
+        "kind_es": "Agencia de salud pública de EE. UU."
+      }
+    },
+    {
+      "id": "nih",
+      "name": "US NIH (news releases)",
+      "enabled": true,
+      "attribution": "U.S. National Institutes of Health (NIH)",
+      "allowed_link_hosts": [
+        "www.nih.gov"
+      ],
+      "default_segments": [],
+      "routes": [
+        {
+          "section": "news_releases",
+          "url": "https://www.nih.gov/news-releases/feed.xml",
+          "format": "rss"
+        }
+      ],
+      "rights": {
+        "basis": "us_federal_government_work_17_usc_105",
+        "license": "Works of NIH employees may be used for any purpose; third-party images excluded",
+        "evidence_urls": [
+          "https://www.nih.gov/node/24846"
+        ],
+        "permitted_use": "metadata_title_link_byline_only",
+        "automated_access": "public_domain_government_feed",
+        "attribution": "Source: NIH, with link",
+        "restrictions": [
+          "no logo",
+          "third-party images excluded"
+        ],
+        "verified_on": "2026-10-28",
+        "verified_how": "NIH copyright page read via web fetch 28-oct; feed structure confirmed on a public mirror of nih.gov/news-releases/feed.xml, not fetched live; robots.txt enforced at runtime"
+      },
+      "daily_feed": {
+        "display": true,
+        "label": "NIH",
+        "kind_es": "Institutos Nacionales de Salud de EE. UU.",
+        "min_segment_matches": 1
+      }
+    },
+    {
+      "id": "federal_register_cms",
+      "name": "Federal Register (CMS documents)",
+      "enabled": true,
+      "attribution": "Federal Register / Centers for Medicare & Medicaid Services (CMS)",
+      "allowed_link_hosts": [
+        "www.federalregister.gov"
+      ],
+      "default_segments": [],
+      "routes": [
+        {
+          "section": "cms_documents",
+          "url": "https://www.federalregister.gov/api/v1/documents.rss?conditions[agencies][]=centers-for-medicare-medicaid-services&order=newest",
+          "format": "rss"
+        }
+      ],
+      "rights": {
+        "basis": "us_federal_government_work_17_usc_105",
+        "license": "Federal Register documents are US government works (public domain)",
+        "evidence_urls": [
+          "https://feeder.co/discover/4bc3124b2e/federalregister-gov-api-v1-documents-rss-conditions-agencies-centers-for-medicare-medicaid-services-order-newest"
+        ],
+        "permitted_use": "metadata_title_link_byline_only",
+        "automated_access": "public_domain_government_feed",
+        "attribution": "Source: Federal Register (CMS), with link",
+        "restrictions": [
+          "official legal text is the published Federal Register/govinfo edition"
+        ],
+        "verified_on": "2026-10-28",
+        "verified_how": "Legal basis is statutory (17 U.S.C. §105, US government works); no FederalRegister.gov terms page was retrieved. Feed URL and cadence (~3/week, last item 21-oct) confirmed on a public feed directory 28-oct; not fetched live; robots.txt enforced at runtime (fail closed if /api is disallowed)"
+      },
+      "daily_feed": {
+        "display": true,
+        "label": "CMS · Federal Register",
+        "kind_es": "Normativa del pagador público de EE. UU. (Medicare/Medicaid)"
+      }
+    },
+    {
+      "id": "ecdc",
+      "name": "ECDC",
+      "enabled": true,
+      "attribution": "European Centre for Disease Prevention and Control (ECDC)",
+      "allowed_link_hosts": [
+        "www.ecdc.europa.eu"
+      ],
+      "default_segments": [],
+      "routes": [
+        {
+          "section": "news",
+          "url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
+          "format": "rss"
+        },
+        {
+          "section": "publications",
+          "url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
+          "format": "rss"
+        }
+      ],
+      "rights": {
+        "basis": "ecdc_intellectual_property_notice_cc_by_4_0",
+        "license": "CC BY 4.0 (ECDC-owned web content, commercial or non-commercial); logo and third-party material excluded",
+        "evidence_urls": [
+          "https://www.ecdc.europa.eu/en/copyright"
+        ],
+        "permitted_use": "metadata_title_link_byline_only",
+        "automated_access": "reuse_permitted_with_acknowledgement",
+        "attribution": "Source: ECDC, CC BY 4.0, with link; titles unmodified",
+        "restrictions": [
+          "no logo",
+          "third-party content excluded"
+        ],
+        "verified_on": "2026-10-28",
+        "verified_how": "copyright page read via web fetch 28-oct; feed URLs from a public feed directory; not fetched live; robots.txt enforced at runtime"
+      },
+      "daily_feed": {
+        "display": true,
+        "label": "ECDC",
+        "kind_es": "Agencia europea de control de enfermedades"
+      }
+    },
+    {
+      "id": "ec_health",
+      "name": "European Commission (Public Health)",
+      "enabled": true,
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "allowed_link_hosts": [
+        "health.ec.europa.eu",
+        "ec.europa.eu"
+      ],
+      "default_segments": [],
+      "routes": [
+        {
+          "section": "latest_updates",
+          "url": "https://health.ec.europa.eu/node/2/rss_en",
+          "format": "rss"
+        }
+      ],
+      "rights": {
+        "basis": "commission_legal_notice_cc_by_4_0_decision_2011_833",
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "evidence_urls": [
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "permitted_use": "metadata_title_link_byline_only",
+        "automated_access": "reuse_permitted_with_acknowledgement",
+        "attribution": "Source: European Commission, CC BY 4.0, with link",
+        "restrictions": [
+          "no logo/emblem",
+          "third-party content excluded"
+        ],
+        "verified_on": "2026-10-28",
+        "verified_how": "legal notice read via web fetch 28-oct; feed URL and cadence (~5/week) from a public feed directory; not fetched live; robots.txt enforced at runtime"
+      },
+      "daily_feed": {
+        "display": true,
+        "label": "Comisión Europea",
+        "kind_es": "Política sanitaria de la Comisión Europea"
+      }
+    },
+    {
+      "id": "the_conversation",
+      "name": "The Conversation (Health, US)",
+      "enabled": true,
+      "attribution": "The Conversation",
+      "allowed_link_hosts": [
+        "theconversation.com"
+      ],
+      "default_segments": [],
+      "routes": [
+        {
+          "section": "health_us",
+          "url": "https://theconversation.com/us/health/articles.atom",
+          "format": "atom"
+        }
+      ],
+      "rights": {
+        "basis": "publisher_cc_by_nd_republishing_guidelines",
+        "license": "CC BY-ND 4.0; commercial pages (ads/paywall) allowed, selling the material on its own is not",
+        "evidence_urls": [
+          "https://theconversation.com/republishing-guidelines"
+        ],
+        "permitted_use": "metadata_title_link_byline_only",
+        "automated_access": "rss_offered_by_publisher",
+        "attribution": "Author(s) + 'The Conversation' + link to the article",
+        "restrictions": [
+          "NoDerivatives: headline verbatim, never translated or reworded",
+          "credit authors",
+          "no body/excerpt"
+        ],
+        "verified_on": "2026-10-28",
+        "verified_how": "republishing guidelines read via web fetch 28-oct; feed URL from public feed directories (feedspot); not fetched live; robots.txt enforced at runtime"
+      },
+      "daily_feed": {
+        "display": true,
+        "label": "The Conversation",
+        "kind_es": "Análisis de académicos (EE. UU.)",
+        "show_byline": true,
+        "min_segment_matches": 2
       }
     }
   ],
@@ -287,6 +547,57 @@
       "reason": "Publications CC BY 4.0 since July 2024 (Open by Default), but no verified RSS/API route for health news located; deferred (candidate for an API route).",
       "evidence_url": "https://www.oecd.org/en/about/oecd-open-by-default-policy.html",
       "checked_on": "2026-10-27"
+    },
+    {
+      "name": "World Bank (news)",
+      "reason": "Site terms: Materials for non-commercial use; commercial use/derivatives need written consent (datasets/OKR are CC BY, news pages are not). Excluded for a PREMIUM product.",
+      "evidence_url": "https://www.worldbank.org/ext/en/legal/terms-conditions",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "Devex",
+      "reason": "Acceptable use policy B.18/B.19/B.22 prohibit scraping, bots and third-party aggregation without written consent. Excluded.",
+      "evidence_url": "https://support.devex.com/hc/en-us/articles/203927850-Acceptable-use-policy",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "Healthcare Dive / MedTech Dive / BioPharma Dive (Industry Dive)",
+      "reason": "Article licensing policy requires purchase and forbids syndication; no RSS/headline grant found. Excluded (manual curation only).",
+      "evidence_url": "https://www.industrydive.com/article-licensing-policy",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "Health Policy Watch",
+      "reason": "No terms/licence page retrievable via search; no reuse grant verified. Deferred until terms verified (fail closed).",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "CMS newsroom (cms.gov)",
+      "reason": "Public domain, but no current newsroom RSS URL verified (cms.gov/rss/33266 is an empty actuarial feed). Covered meanwhile by Federal Register CMS feed.",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "Reuters, Financial Times, The Economist, WSJ, Bloomberg, STAT",
+      "reason": "Paywalled/terms forbid automated collection; manual curation only (editor submits link + original description backed by primary evidence).",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "El País, Expansión, Diario Médico, ConSalud, Redacción Médica, Infobae, Valor Econômico",
+      "reason": "All rights reserved press (Spain art. 32 LPI opt-out for press aggregation; LatAm terms reserve rights); no automated reuse grant found. Manual curation only.",
+      "checked_on": "2026-10-28"
     }
-  ]
+  ],
+  "daily_feed": {
+    "enabled": true,
+    "authorized_by": null,
+    "authorization_note": "Mostrar titulares (metadatos + enlace) en Global es una decisión de publicación (CLAUDE.md §3): queda apagado hasta que Dirección registre aquí su autorización (authorized_by + authorized_at). Propuesto por Claude (líder Global) el 28-oct-2026 en respuesta a la pregunta de Dirección de las 03:49.",
+    "authorized_at": null,
+    "window_days": 14,
+    "retention_days": 45,
+    "max_per_source_per_day": 6,
+    "stale_after_days": 2,
+    "include_paid_tier_hold_items": false,
+    "card_contract": "publisher title verbatim + link + date + attribution (+ byline when the licence asks) + deterministic Spanish relevance line; never body/excerpt/photos; never an Alicanto analysis or Chile effect",
+    "ai_policy": "paid_ai_calls=0. Optional future: Spanish translation of titles only for CC BY / public-domain feeds (not KFF, not The Conversation: NoDerivatives), cheap model inside the USD 10/month cap, requires Dirección OK."
+  }
 }

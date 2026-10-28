@@ -92,3 +92,13 @@ Core recovery/balance, cadence and rights/editorial acceptance remain separate.
 ## Daily First integration follow-up · 11 October evening (Santiago)
 
 The Global daily step now requires `daily_collection_enabled: true`; the delivered candidate sets it **false**. The existing collector still scans 90 days, so merging the definitions does not authorize another historical qualification or activate daily collection. A read-only snapshot age observer adds 24h/48h controls without changing captured/publication timestamps or proving a daily cycle. See [the Commander handoff](../../docs/GLOBAL_INTEGRATION_HANDOFF_2026_10_11.md) for the required narrow 30-day qualification, proposed 7/7 staging-only recurrence, scoped QA and conditional alternatives. No new WHO/PAHO/Reuters poll or connector was run in this follow-up.
+
+## Daily Global headlines ("Al día afuera", 28-oct-2026)
+
+`scripts/discover_global_feeds.py` ends by writing `web/data/global_feed.json`
+(`src/radar_salud/global_daily_feed.py`; rebuild offline with `scripts/export_global_feed.py`).
+Cards are publisher title verbatim + link + date + attribution (+ byline where the licence asks)
+and a fixed-template Spanish relevance line; no body, no AI. Gates: `daily_feed.enabled` and a
+recorded `daily_feed.authorized_by` (Dirección), per-feed `daily_feed.display` and rights basis,
+KFF held out of PREMIUM until KFF confirms in writing, WHO/PAHO only while `publication_activation`
+is on and the title carries an executive keyword. History is kept `retention_days` (45).

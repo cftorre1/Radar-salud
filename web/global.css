@@ -10,14 +10,14 @@
 @media (max-width:360px){.brandbar .logo-link{flex:0 1 auto;min-width:48px}}
 
 /* Dense rows: same anatomy as #local .signal.item */
-.global-feed .theme{position:relative;margin:0;padding:9px var(--gutter) 9px 40px;border:0;border-bottom:1px solid var(--ink09);border-radius:0;background:transparent;scroll-margin-top:calc(var(--hdr) + 104px)}
+.global-feed .theme,.global-feed .daily-item{position:relative;margin:0;padding:9px var(--gutter) 9px 40px;border:0;border-bottom:1px solid var(--ink09);border-radius:0;background:transparent;scroll-margin-top:calc(var(--hdr) + 104px)}
 .global-feed{margin:0 calc(-1 * var(--gutter))}
-.global-feed .theme h2{font:600 15px/1.36 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:-.005em;margin:0;color:var(--ink)}
+.global-feed .theme h2,.global-feed .daily-item h2{font:600 15px/1.36 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:-.005em;margin:0;color:var(--ink)}
 .global-feed .title-open{all:unset;cursor:pointer;color:inherit;font:inherit;text-align:left;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .global-feed .title-open:focus-visible{outline:2px solid #E3A24F;outline-offset:2px;border-radius:4px}
 .global-feed .card-meta{display:block;margin:3px 0 0;padding:0;border:0;font-size:12px;line-height:1.5;color:var(--ink68)}
 .global-feed .item-actions{display:inline-flex;align-items:center;margin-left:-4px;vertical-align:-4px;white-space:nowrap}
-.global-feed .theme.read h2{font-weight:400;font-size:14px;color:var(--ink68)}
+.global-feed .daily-item.read h2,.global-feed .theme.read h2{font-weight:400;font-size:14px;color:var(--ink68)}
 .global-feed .theme.read .card-meta{display:none}
 .global-feed .group-head{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink48);margin:0;padding:10px var(--gutter) 2px 40px}
 .global-feed .eyebrow{color:var(--accent-ink);font-weight:650}
@@ -39,9 +39,9 @@
 
 @media (min-width:760px){
  .global-feed{margin:0}
- .global-feed .theme{padding:10px 8px 10px 28px}
- .global-feed .theme h2{font-size:15.5px}
- .global-feed .theme .dotbtn{width:28px}
+ .global-feed .theme,.global-feed .daily-item{padding:10px 8px 10px 28px}
+ .global-feed .theme h2,.global-feed .daily-item h2{font-size:15.5px}
+ .global-feed .theme .dotbtn,.global-feed .daily-item .dotbtn{width:28px}
  .global-feed .group-head{padding:8px 0 0 28px}
  .global-premium-strip{margin:0;padding:6px 8px 6px 28px}
  .global-col{max-width:880px;margin:0 auto}
@@ -49,3 +49,12 @@
 /* PREMIUM is a link here (no dialog on Global): keep the Home's pill. */
 .brandbar .topnav a.premium-access{position:relative;margin-left:6px;min-height:30px;height:30px;padding:0 11px;border-radius:999px;border:1px solid var(--accent);color:var(--accent-ink);font-size:11.5px;font-weight:750;letter-spacing:.02em}
 @media (max-width:360px){.brandbar .topnav a.premium-access{margin-left:2px;padding:0 8px;font-size:11px;letter-spacing:0}}
+
+/* Al día afuera (28-oct): daily headline rows from licensed/official feeds; same row anatomy as the themes. */
+.global-daily{margin-bottom:6px}
+.global-feed .daily-item a.title-open{text-decoration:none}
+.global-feed .daily-item a.title-open:hover{text-decoration:underline;text-underline-offset:3px}
+.global-feed .daily-item .ext{color:var(--ink48);font-weight:400}
+.global-daily .daily-more{display:inline-flex;align-items:center;min-height:44px;margin-left:40px}
+.global-daily .daily-note{margin:2px 0 8px;font-size:11.5px;line-height:1.45;color:var(--ink48)}
+@media (min-width:760px){.global-daily .daily-more{margin-left:28px}}

@@ -13,6 +13,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from radar_salud.global_discovery_common import FEED_HOSTS, CaptureClient
+from radar_salud.global_daily_feed import export as export_daily_feed
 from radar_salud.global_feed_discovery import collect_feeds, feed_health, validate_feed_config
 from radar_salud.pending_queue import atomic_json
 
@@ -70,8 +71,11 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, client=None) -> di
          "sources": {k: {f: v[f] for f in ("checked_at", "technical_status", "counts", "relevant_items", "excluded_items", "technical_failures")} for k, v in health.items()}}]
     atomic_json(ledger_path, ledger)
     mirror_feed_health(root, health)
+    # Daily Global headlines (web/data/global_feed.json): feeds + activated WHO/PAHO, rights-gated, no AI.
+    daily = export_daily_feed(root, as_of)
     print(json.dumps({"run_id": run_id, "items": len(items), "candidates": len(payload["editorial_candidates"]),
-                      "network_requests": client.network_requests, "status": {k: v["technical_status"] for k, v in health.items()}}))
+                      "network_requests": client.network_requests, "daily_feed_items": len(daily["items"]),
+                      "daily_feed_freshness": daily["freshness"]["status"], "status": {k: v["technical_status"] for k, v in health.items()}}))
     return payload
 
 
