@@ -53,7 +53,10 @@ def reconcile_existing(queue, raw, now, last_discovered_at, published_urls=()):
     dated = (raw.event_date and raw.metadata.get("publication_date_source")
                 and (not raw.metadata.get("publication_date_conflict") or raw.metadata.get("publication_date_conflict_resolution"))
                 and not raw.metadata.get("fetch_error"))
-    verified=dated and len(raw.metadata.get('page_text',''))>=160
+    # Paywalled DF keeps only the public bajada; the receipt proves the body existed.
+    verified=dated and (len(raw.metadata.get('page_text',''))>=160
+                        or (raw.metadata.get('paywalled') is True and bool(raw.metadata.get('public_teaser'))
+                            and int(raw.metadata.get('article_body_characters') or 0)>=160))
     legacy_reject = (item["status"] == "rejected" and item.get("reason") == "processor_rejected"
                      and not item["raw"].get("event_date"))
     resume_format = item["status"] == "deferred" and verified

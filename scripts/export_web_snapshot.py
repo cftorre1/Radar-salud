@@ -778,6 +778,11 @@ def main():
     # WATCH (Dirección 27-oct): every card carries explicit entity refs; aggregates inherit their acts.
     from radar_salud import entity_watch
     entity_watch.apply(cards,history=signals)
+    # Dirección 28-oct-2026: paywalled press shows only title + public lead; every
+    # rendered link must be a valid absolute URL or no link at all.
+    from radar_salud.source_rights import redact_signal
+    from radar_salud.source_urls import sanitize_card_links
+    cards=[sanitize_card_links(redact_signal(card)) for card in cards]
     payload={"date":(args.as_of or date.today()).isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"entities":entity_watch.public_catalog(),"signals":cards}
     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
     health=Path("data/source_health.json")

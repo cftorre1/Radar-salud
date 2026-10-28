@@ -265,12 +265,15 @@ class MinsalNewsScout:
         base_url = base_url or self.DEFAULT_URL
         parser = _AnchorParser(); parser.feed(html)
         items: List[RawItem] = []; seen_urls=set()
+        from .source_urls import minsal_article_url
         for href,text in parser.links:
             if not href or not text: continue
-            absolute=urljoin(base_url,href)
-            if not absolute.startswith("https://www.minsal.cl/"): continue
-            if any(x in absolute for x in ("/category/","/page/","/author/","/tag/","wp-content")): continue
-            if absolute.rstrip('/') == "https://www.minsal.cl": continue
+            # Dirección 28-oct-2026: whitespace/%20 tails, minsal.cl without www,
+            # tracking params, ?p= shortlinks, archives and retired portal paths
+            # produced dead "fuente original" links. Only canonical slugs pass.
+            absolute=minsal_article_url(href,base_url)
+            if not absolute: continue
+            if "/wp-content/" in absolute: continue
             if len(text) < 20 or absolute in seen_urls: continue
             seen_urls.add(absolute)
             items.append(RawItem(self.SOURCE_SLUG,text,absolute,self.SOURCE_NAME,self.SOURCE_TYPE,raw_text="",metadata={"discovered_from":base_url}))

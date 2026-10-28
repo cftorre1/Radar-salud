@@ -97,10 +97,14 @@ test('visible stock obeys committee and publication contract site-wide',()=>{
 
 test('Bupa and Pulso retain approved business depth without weak references',()=>{
  const radar=JSON.parse(fs.readFileSync('web/data/radar_today.json','utf8'));
- const bupa=radar.signals.find(s=>/Bupa refuerza/.test(s.title||''));
+ // DF is paywalled (Dirección 28-oct-2026): publisher headline + public deck only, no body-derived rewrite.
+ const bupa=radar.signals.find(s=>/^Bupa acelera inversiones/.test(s.title||''));
  assert.ok(bupa);
  assert.equal(bupa.source_name,'Diario Financiero');
- assert.match(bupa.what_happened,/US\$15 millones/);
+ assert.equal(bupa.paywalled,true);
+ assert.equal(bupa.why_it_matters,'');
+ assert.ok(!bupa.card_what&&!bupa.key_points);
+ assert.match(bupa.title,/US\$ 15 millones/);
  assert.match(bupa.what_happened,/La Dehesa/);
  assert.match(bupa.what_happened,/Huinganal/);
  assert.match(bupa.what_happened,/Mindplace/);

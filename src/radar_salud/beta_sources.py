@@ -757,6 +757,17 @@ def process_curated_beta_source(raw, cfg):
         if raw.metadata.get("fetch_error"):
             raise DeferredProcessing(f"Provider detail unavailable: {raw.url}: {raw.metadata['fetch_error']}")
     primary_body = raw.metadata.get("page_text") or raw.raw_text or ""
+    # Rights policy (Dirección 28-oct-2026): premium press (Pulso, La Tercera PM,
+    # isAccessibleForFree=false) is analysed only from its public lead.
+    from .source_rights import paywall_policy, teaser_from_raw, load_policy as rights_policy
+    paywall = paywall_policy(raw.url, raw.metadata) if raw.source_slug == "pulso_latercera" else None
+    min_body = 160
+    if paywall:
+        teaser = teaser_from_raw({"title": raw.title, "raw_text": "", "metadata": raw.metadata})
+        raw.metadata.update(public_teaser=teaser, paywalled=True, paywall_source=paywall["id"],
+                            access_policy=rights_policy()["policy"])
+        primary_body = teaser
+        min_body = int(rights_policy()["min_teaser_characters_for_analysis"])
     body, document_facts = primary_body, ""
     if scoped:
         from .occupational_documents import verified_document_text, additional_document_facts, documentary_materiality
@@ -785,8 +796,10 @@ def process_curated_beta_source(raw, cfg):
             return None
         if not raw.event_date:
             return reject("missing_publication_date")
-        if len(body) < 160:
-            return reject("incomplete_article_evidence")
+        if paywall and not scoped and not _material(role, raw.title, body):
+            return reject("media_materiality_prefilter" if role == "media" else "source_materiality_prefilter")
+        if len(body) < min_body:
+            return reject("paywalled_without_public_teaser" if paywall else "incomplete_article_evidence")
         if not scoped and not _material(role, raw.title, body):
             return reject("media_materiality_prefilter" if role == "media" else "source_materiality_prefilter")
     else:
@@ -856,8 +869,11 @@ def process_curated_beta_source(raw, cfg):
         # Keep the source's complete primary text through the model boundary;
         # strategic facts can occur after the general news excerpt limit.
         text = body
-        input_format = "full_primary_article_body"
-        if raw.metadata.get("publisher_document_type") == "liveblog":
+        input_format = "public_teaser_only_paywalled" if paywall else "full_primary_article_body"
+        if paywall:
+            kind += (". CONTENIDO CON MURO DE PAGO: sólo dispones del título y la bajada pública; "
+                     "no agregues ningún hecho, cifra o actor que no esté en ese texto")
+        elif raw.metadata.get("publisher_document_type") == "liveblog":
             text = liveblog_analysis_text(raw.metadata)
             input_format = "full_primary_body_with_verified_liveblog_entry_timeline_v1"
             kind += ". Cobertura en vivo: usa las fechas verificadas de cada entrada, separadas de la fecha del documento; conserva condiciones y no sumes balances repetidos."
@@ -1109,6 +1125,9 @@ def process_curated_beta_source(raw, cfg):
     if raw.source_slug == "pulso_latercera":
         raw.metadata["editorial_assessment"] = {"decision": "published", "relevance_score": score, "threshold": threshold, "analysis_reason": analysis_reason}
         row["editorial_assessment"] = raw.metadata["editorial_assessment"]
+        if paywall:
+            from .source_rights import redact_signal
+            row = redact_signal(row, raw.metadata.get("public_teaser") or "")
     return row
 
 
