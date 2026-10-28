@@ -72,9 +72,50 @@ def test_relation_main_verb_forms(subject, relation, target):
     ("Acoge parcialmente un recurso de reposición de Nueva Masvida contra el Oficio Ord. IF/N°27.377", "Resolución Exenta IF/N°1"),
     ("Modifica la Circular IF/N°534", "Circular IF/N°534"),  # never relates to itself
     ("Complementa las normas de la Circular IF/N°476 sobre bono electrónico.", "Circular IF/N°534"),
+    # Re-review 0554d270: infinitives joined by "y" are not main verbs.
+    ("Rechaza la solicitud de Isapre Colmena de invalidar y suspender los efectos de la Circular IF/N°534.", "Resolución Exenta IF/N°1"),
+    ("Rechaza solicitud de Isapre Cruz Blanca S.A. para dejar sin efecto y suspender los efectos de la Circular IF/N°534.", "Resolución Exenta IF/N°1"),
+    ("Acoge la suspensión del cobro de prestaciones, conforme a la Circular IF/N°534.", "Resolución Exenta IF/N°1"),
+    ("Instruye sobre bonos y suspende los efectos de la Circular IF/N°534.", "Resolución Exenta IF/N°1"),
 ])
 def test_no_invented_relations(subject, title):
     assert extract_relations(subject, title) == []
+
+
+def test_acoge_gap_never_crosses_a_rejection():
+    rels = extract_relations("Acoge parcialmente el recurso y rechaza la solicitud de suspender los efectos de la "
+                             "Circular IF/N°534 en lo demás.", "Resolución Exenta IF/N°3")
+    assert [(r["relation"], r["target_id"]) for r in rels] == [("rechaza_suspension", "Circular IF/N°534")]
+
+
+def test_circular_opening_with_allowed_verb_counts_coordinated_verbs():
+    rels = extract_relations("Modifica la Circular IF/N°77 y deroga la Circular IF/N°78.", "Circular IF/N°600")
+    assert [(r["relation"], r["target_id"]) for r in rels] == [("modifica", "Circular IF/N°77"), ("deroga", "Circular IF/N°78")]
+    # A circular whose subject does not open with the verb never modifies/repeals.
+    assert extract_relations("Imparte instrucciones y deroga la Circular IF/N°78.", "Circular IF/N°600") == []
+
+
+@pytest.mark.parametrize("subject,relation", [
+    ("Acoge solicitud de Isapre Esencial S.A. de suspender los efectos de la Circular IF/N°534.", "suspende"),
+    ("Rechaza solicitud de Isapre Esencial S.A. de suspender los efectos de la Circular IF/N°534.", "rechaza_suspension"),
+    ("Ha lugar a la solicitud de Isapre Colmena de suspender la Circular IF/N°534.", "suspende"),
+])
+def test_infinitive_suspend_object_after_decision_verbs(subject, relation):
+    assert [(r["relation"], r["target_id"]) for r in extract_relations(subject, "Resolución Exenta IF/N°1")] == [
+        (relation, "Circular IF/N°534")]
+
+
+def test_narrow_if5382_wording():
+    subject = "Acoge la suspensión de la Circular IF/N°521 para tres Isapres mientras se resuelven los recursos"
+    rels = extract_relations(subject, "Resolución Exenta IF/N°5382")
+    assert [(r["relation"], r["target_id"]) for r in rels] == [("suspende", "Circular IF/N°521")]
+    assert [(r["relation"], r["target_id"]) for r in extract_relations(
+        "Ha lugar a la solicitud de suspensión de la Circular IF/N°530.", "Resolución Exenta IF/N°9")] == [("suspende", "Circular IF/N°530")]
+    # Only SIS Resoluciones Exentas; never negated; never a later instruction in the sentence.
+    assert extract_relations(subject, "Resolución Exenta IF/N°5382", issuer="Superintendencia de Seguridad Social (SUSESO)") == []
+    assert extract_relations(subject, "Circular IF/N°999") == []
+    assert extract_relations("No acoge la suspensión de la Circular IF/N°521.", "Resolución Exenta IF/N°1") == []
+    assert extract_relations("Acoge la suspensión solicitada por Colmena, conforme a la Circular IF/N°521.", "Resolución Exenta IF/N°1") == []
 
 
 def test_modify_verbs_only_for_resolutions_or_circulars_opening_with_them():

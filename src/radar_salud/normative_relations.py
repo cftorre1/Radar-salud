@@ -41,17 +41,25 @@ _TARGET_KINDS = ("circular", "oficio circular")
 _EFFECTS = r"(?:los\s+)?efectos\s+de"
 _AGAINST = r"[^;]{0,300}?\b(?:en\s+)?contra\s+(?:de\s+)?"
 
-# (relation, main verb, object that must follow the verb; target named <= 15 words after it).
-# A verb only counts at the start of a clause or coordinated ("…, y suspende …"); never negated.
-# "solicitud de suspender/suspensión" yields a suspension only with acoge / ha lugar.
+# A gap that never crosses another decision verb ("Acoge … y rechaza la solicitud de suspender …").
+_GAP = r"(?:(?!\brechaz|\bacoge|\bno\s|\bdeneg|\bha\s+lugar)[^;])"
+_SUSPEND_INFINITIVE = r"^" + _GAP + r"{0,120}?\bde\s+suspender\s+(?:los\s+efectos\s+de\s+)?"
+
+# (relation, finite main verb, object that must follow the verb; target named <= 15 words after it).
+# A verb counts at the start of a clause, or coordinated ("…, y suspende …" after a comma, or
+# "… y deroga …" once a finite main verb opened the clause); never negated, never an infinitive.
+# "de suspender" / "solicitud de suspensión" only with acoge / ha lugar (suspende) or rechaza.
 _RULES = (
     ("rechaza_suspension", r"no\s+ha\s+lugar", r"^[^;]{0,40}?\bsuspensi[oó]n\s+de\s+" + _EFFECTS),
-    ("suspende", r"ha\s+lugar", r"^[^;]{0,40}?\bsuspensi[oó]n\s+de\s+" + _EFFECTS),
-    ("suspende", r"susp[eé]nd(?:e|ase|ense|er)",
+    ("suspende", r"ha\s+lugar", r"^" + _GAP + r"{0,40}?\bsuspensi[oó]n\s+de\s+" + _EFFECTS),
+    ("suspende", r"ha\s+lugar", _SUSPEND_INFINITIVE),
+    ("suspende", r"susp[eé]nd(?:e|ase|ense)",
      r"^\s+(?:(?:transitoria|temporal|provisoria)mente\s+)?" + _EFFECTS),
-    ("suspende", r"acoge(?:\s+parcialmente)?", r"^[^;]{0,60}?\bsuspensi[oó]n\s+de\s+" + _EFFECTS),
+    ("suspende", r"acoge(?:\s+parcialmente)?", r"^" + _GAP + r"{0,60}?\bsuspensi[oó]n\s+de\s+" + _EFFECTS),
+    ("suspende", r"acoge(?:\s+parcialmente)?", _SUSPEND_INFINITIVE),
     ("modifica_por_recurso", r"acoge(?:\s+parcialmente)?", r"^[^;]{0,40}?\brecursos?\b" + _AGAINST),
     ("rechaza_suspension", r"rechaza", r"^[^;]{0,40}?\bsolicitud(?:es)?\s+de\s+suspensi[oó]n\s+de\s+" + _EFFECTS),
+    ("rechaza_suspension", r"rechaza", _SUSPEND_INFINITIVE),
     ("confirma", r"rechaza(?:\s+en\s+todas\s+sus\s+partes)?", r"^[^;]{0,40}?\brecursos?\b" + _AGAINST),
     ("modifica", r"modif[ií]ca(?:se)?", r"^"),
     ("deja_sin_efecto", r"d[eé]ja(?:se)?\s+sin\s+efecto", r"^"),
@@ -59,6 +67,14 @@ _RULES = (
     ("posterga_vigencia", r"(?:posterga|prorroga|pror[oó]gase|posp[oó]ne)",
      r"^[^;]{0,60}?\b(?:entrada\s+en\s+vigencia|vigencia|plazo)\s+de\s+"),
 )
+_OPENER = re.compile(r"^\s*(?:" + "|".join(dict.fromkeys(v for _, v, _ in _RULES)) + r")\b", re.I)
+_GATED_OPENER = re.compile(r"^\s*(?:modif[ií]ca(?:se)?|d[eé]ja(?:se)?\s+sin\s+efecto|der[oó]ga(?:se)?)\b", re.I)
+# IF/5382 wording ("Acoge la suspensión de la Circular IF/N°521"): SIS Resoluciones only, clause
+# opened by acoge / ha lugar, the instruction named immediately after "suspensión".
+_NARROW_SUSPENSION = re.compile(
+    r"^\s*(?:acoge(?:\s+parcialmente)?|ha\s+lugar)\b" + _GAP + r"{0,40}?"
+    r"\b(?:la\s+)?(?:solicitud\s+de\s+)?suspensi[oó]n\s+(?:de\s+(?:los\s+efectos\s+de\s+)?)?"
+    r"(?:(?:la|el)\s+)?(?=(?:Oficio\s+Circular|Circular)\s)", re.I)
 # Only acts whose subject IS that verb may modify/repeal/revoke (Resoluciones, or a Circular
 # whose own subject opens with the verb).
 _ACTOR_GATED = ("modifica", "deja_sin_efecto", "deroga")
@@ -121,7 +137,7 @@ def _clauses(text: str) -> list[str]:
     return out
 
 
-def extract_relations(subject: str, own_title: str = "") -> list[dict[str, Any]]:
+def extract_relations(subject: str, own_title: str = "", issuer: str | None = ISSUER) -> list[dict[str, Any]]:
     """Relations stated by the official subject; empty when none is stated verbatim."""
     text = " ".join(str(subject or "").split())
     if not text:
@@ -130,32 +146,44 @@ def extract_relations(subject: str, own_title: str = "") -> list[dict[str, Any]]
     actor_prefix = issuer_prefix(own_title)
     own_key = target_key(own_title)
     out: list[dict[str, Any]] = []
+
+    def add(relation, target, clause):
+        key = target_key(target, actor_prefix)
+        if not key or key == own_key:
+            return
+        if not any(x["relation"] == relation and x["target_key"] == key for x in out):
+            out.append({"relation": relation, "target_id": target, "target_key": key,
+                        "evidence": clause, "basis": BASIS})
+
+    def first_target(window):
+        return next((normalize_id(t.group(1), t.group(2), t.group(3)) for t in _ID.finditer(window)
+                     if _kind(t.group(1)).lower() in _TARGET_KINDS), None)
+
     for index, clause in enumerate(_clauses(text)):
+        opened = bool(_OPENER.match(clause))
+        gated_ok = actor_kind == "Resolución Exenta" or (
+            actor_kind == "Circular" and index == 0 and bool(_GATED_OPENER.match(clause)))
         for relation, verb, obj in _RULES:
-            if relation in _ACTOR_GATED and not (
-                    actor_kind == "Resolución Exenta" or (actor_kind == "Circular" and index == 0)):
+            if relation in _ACTOR_GATED and not gated_ok:
                 continue
-            main = re.compile(r"(?:^\s*|(?:,\s*|\s)y\s+)(" + verb + r")\b", re.I)
+            main = re.compile(r"(?:^\s*|(?P<comma>,)\s*y\s+|\sy\s+)(?P<v>" + verb + r")\b", re.I)
             for m in main.finditer(clause):
-                if relation in _ACTOR_GATED and actor_kind == "Circular" and m.start(1) != 0:
-                    continue  # a circular's subject must open with the verb
-                if _NEGATED.search(clause[:m.start(1)]):
+                if m.start("v") > 0 and not m.group("comma") and not opened:
+                    continue  # " y VERB" only after a comma or inside a clause a finite verb opened
+                if _NEGATED.search(clause[:m.start("v")]):
                     continue
-                o = re.search(obj, clause[m.end(1):], re.I)
+                o = re.search(obj, clause[m.end("v"):], re.I)
                 if not o:
                     continue
-                window = _within_words(clause[m.end(1) + o.end():])
-                target = next((normalize_id(t.group(1), t.group(2), t.group(3)) for t in _ID.finditer(window)
-                               if _kind(t.group(1)).lower() in _TARGET_KINDS), None)
-                if not target:
-                    continue
-                key = target_key(target, actor_prefix)
-                if not key or key == own_key:
-                    continue
-                item = {"relation": relation, "target_id": target, "target_key": key,
-                        "evidence": clause, "basis": BASIS}
-                if not any(x["relation"] == relation and x["target_key"] == key for x in out):
-                    out.append(item)
+                target = first_target(_within_words(clause[m.end("v") + o.end():]))
+                if target:
+                    add(relation, target, clause)
+        if issuer == ISSUER and actor_kind == "Resolución Exenta":
+            n = _NARROW_SUSPENSION.match(clause)
+            if n:
+                t = _ID.match(clause, n.end())
+                if t and _kind(t.group(1)).lower() in _TARGET_KINDS:
+                    add("suspende", normalize_id(t.group(1), t.group(2), t.group(3)), clause)
     # "No ha lugar a la suspensión" also contains "ha lugar a la suspensión": the guard wins.
     rejected = {x["target_key"] for x in out if x["relation"] == "rechaza_suspension"}
     return [x for x in out if not (x["relation"] == "suspende" and x["target_key"] in rejected
@@ -168,9 +196,9 @@ def relationship_text(rel: dict[str, Any]) -> str:
             f"(según el asunto oficial publicado por la Superintendencia).")
 
 
-def is_general_relation(subject: str, own_title: str = "") -> bool:
+def is_general_relation(subject: str, own_title: str = "", issuer: str | None = ISSUER) -> bool:
     """A resolution acting on a general instruction (circular / oficio circular)."""
-    return any(r["relation"] in STATUS_RELATIONS for r in extract_relations(subject, own_title))
+    return any(r["relation"] in STATUS_RELATIONS for r in extract_relations(subject, own_title, issuer))
 
 
 def _act_label(s: dict[str, Any]) -> str:

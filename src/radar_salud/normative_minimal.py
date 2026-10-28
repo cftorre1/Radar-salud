@@ -66,7 +66,7 @@ def act_scope(r: dict[str, Any], label: str) -> str:
     if _GENERAL_KIND.search(label):
         return "general"
     from .normative_relations import is_general_relation
-    if label.lower().startswith("resolución") and is_general_relation(official, label):
+    if label.lower().startswith("resolución") and is_general_relation(official, label, str(r.get("source_name") or "")):
         # Suspends / modifies / confirms a circular, per the regulator's own listing subject.
         return "general"
     refs = [str(x.get("relationship") or "") for x in _as_list(r.get("related_reference_contexts")) if isinstance(x, dict)]
@@ -155,7 +155,7 @@ def minimal_card(r: dict[str, Any], label: str) -> dict[str, Any] | None:
         "radar_score": UNREVIEWED_RADAR_SCORE,
     })
     from .normative_relations import extract_relations
-    relations = extract_relations(str(r.get("official_subject") or ""), label)
+    relations = extract_relations(str(r.get("official_subject") or ""), label, issuer)
     if relations:
         # Verbatim from the regulator's listing subject (verifiable, not interpretation).
         card["normative_relations"] = relations
