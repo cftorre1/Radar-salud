@@ -168,8 +168,22 @@ def test_literal_or_semantic_defect_cannot_reuse_any_prior_paid_response_as_new_
 
 
 def test_new_fast_receipt_cannot_rehash_a_false_ready_result(actual_origin, tmp_path, monkeypatch):
+    # An OPEN-section defect that still reaches a new request: a premium piece never gets a
+    # full-input request (rights policy, Dirección 28-oct-2026) and a known original66 or
+    # final-two candidate defers to its later authority before any request.
+    from radar_salud import pulso_final_paid_revalidation as final
+    from radar_salud import pulso_followup_paid_revalidation as followup
+    from paywall_test_support import is_premium
+    from radar_salud.pulso_editorial_proof import validate_pulso_editorial_proof
+    def reaches_new_fast(row):
+        raw = RawItem(**deepcopy(actual_origin['originals'][row['queue_fingerprint']]['raw']))
+        if is_premium(raw) or followup.known_original_candidate(raw) or final.known_original_candidate(raw):
+            return False
+        # The scenario resends the unchanged answer, so it needs one the current guard still defers.
+        return validate_pulso_editorial_proof(raw.metadata['analysis_model_output'],
+                                              raw.metadata['page_text'])['decision'] == 'deferred'
     row = next(row for row in actual_origin['rows'].values()
-               if row['runtime_route'] == 'assess_contract_or_semantic_defect')
+               if row['runtime_route'] == 'assess_contract_or_semantic_defect' and reaches_new_fast(row))
     original = deepcopy(actual_origin['originals'][row['queue_fingerprint']])
     fresh = deepcopy(original['raw'])
     for field in list(fresh['metadata']):

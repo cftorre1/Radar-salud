@@ -179,7 +179,8 @@ def test_core_empty_poll_passes_full934_history_and_preserves_all897_native_reco
     actual = json.loads(history_path.read_bytes())["signals"]
     native = [row for row in actual if row.get("source_name") != "Pulso / La Tercera"]
     assert len(native) == 897 and canonical_sha(native) == MANIFEST["native_history_canonical_sha256"]
-    assert json.loads((tmp_path / "data/state/pending_queue.json").read_bytes()) == OBSERVED["pulso_queue"]
+    from radar_salud.pending_queue import persisted_items
+    assert json.loads((tmp_path / "data/state/pending_queue.json").read_bytes()) == persisted_items(OBSERVED["pulso_queue"])
     current = json.loads((tmp_path / "data/source_health.json").read_bytes())["sources"]["pulso_latercera"]
     assert current["last_signal_at"] == "2026-10-10" and current["published_total"] == 15
     assert current["latest_original_at"] == "2026-10-11"

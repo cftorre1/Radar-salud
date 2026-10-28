@@ -9,6 +9,7 @@ from .analysis import AnalysisResult
 from .models import RawItem, Signal
 from .pipeline import build_signal
 from .validation import validate_official_item
+from .source_urls import minsal_article_url, safe_source_url
 
 MONTHS = {
     'enero':'01','febrero':'02','marzo':'03','abril':'04','mayo':'05','junio':'06',
@@ -18,9 +19,11 @@ NUMBER_RE = re.compile(r"(?<!\w)(?:\$\s*)?\d[\d\.,]*(?:\s*(?:%|MM|mil|millones?|
 
 class _MinsalParser(HTMLParser):
     def __init__(self):
-        super().__init__(); self.text=[]; self.title=[]; self.links=[]; self._h1=False; self._href=None; self._a=[]
+        super().__init__(); self.text=[]; self.title=[]; self.links=[]; self._h1=False; self._href=None; self._a=[]; self.canonical=None
     def handle_starttag(self, tag, attrs):
         tag=tag.lower()
+        if tag=='link' and 'canonical' in (dict(attrs).get('rel') or '').lower().split(): self.canonical=dict(attrs).get('href')
+        if tag=='meta' and (dict(attrs).get('property') or '').lower()=='og:url' and not self.canonical: self.canonical=dict(attrs).get('content')
         if tag=='h1': self._h1=True
         if tag=='a': self._href=dict(attrs).get('href'); self._a=[]
     def handle_data(self, data):
@@ -52,14 +55,21 @@ def extract_minsal_detail(raw: RawItem, html: str) -> RawItem:
     for href,label in p.links:
         low=f"{href} {label}".lower()
         if any(x in low for x in ('.pdf','.xlsx','.xls','.csv','descargar')):
-            attachments.append({'url':urljoin(raw.url,href),'label':' '.join(label.split())})
+            # Hrefs on minsal.cl carry trailing spaces/%20 and http:// variants.
+            url=safe_source_url(urljoin(raw.url,(href or '').strip()))
+            if url: attachments.append({'url':url,'label':' '.join(label.split())})
     numbers=[]
     for x in NUMBER_RE.findall(evidence[:5000]):
         x=' '.join(x.split())
         if x and x not in numbers: numbers.append(x)
     meta=dict(raw.metadata)
+    url=minsal_article_url(raw.url) or raw.url
+    canonical=minsal_article_url(p.canonical) if p.canonical else None
+    if canonical and canonical!=url:
+        # The publisher's own canonical slug survives title edits; keep what we requested.
+        meta['requested_url']=raw.url; url=canonical
     meta.update({'description':evidence[:3000],'evidence_text':evidence[:12000],'attachments':attachments,'extracted_numbers':numbers[:25]})
-    return RawItem(raw.source_slug,title,raw.url,raw.source_name,raw.source_type,_date(evidence) or raw.event_date,evidence[:3000],meta)
+    return RawItem(raw.source_slug,title,url,raw.source_name,raw.source_type,_date(evidence) or raw.event_date,evidence[:3000],meta)
 
 def analyze_minsal(raw: RawItem) -> AnalysisResult:
     text=f"{raw.title} {raw.raw_text}".lower()

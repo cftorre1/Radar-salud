@@ -12,6 +12,7 @@ CATALOG={
  'superintendencia_normativa':('Organismos públicos y reguladores','https://www.superdesalud.gob.cl/normativa/','Normas y actos de la Superintendencia de Salud.'),
  'superintendencia':('Datos oficiales','https://www.superdesalud.gob.cl/biblioteca-digital/','Publicaciones estadísticas del sistema de salud.'),
  'superintendencia_fiscalizacion':('Organismos públicos y reguladores','https://www.superdesalud.gob.cl/','Resoluciones y fiscalización.'),
+ 'superintendencia_noticias':('Organismos públicos y reguladores','https://www.superdesalud.gob.cl/noticias/','Noticias y comunicados oficiales de la Superintendencia de Salud.'),
  'minsal':('Organismos públicos y reguladores','https://www.minsal.cl/','Noticias del Ministerio de Salud.'),
  'suseso':('Organismos públicos y reguladores','https://www.suseso.cl/','Normativa de seguridad social.'),
  'suseso_news':('Organismos públicos y reguladores','https://www.suseso.cl/','Noticias institucionales.'),
@@ -31,7 +32,7 @@ CATALOG={
 # and search (review N3, 27-oct-2026). Sources without an entry show their official name.
 SHORT_NAMES={'deis':'DEIS · Minsal','suseso':'SUSESO','suseso_news':'SUSESO','suseso_fiscalizacion':'SUSESO',
  'prestadores_data':'Intendencia de Prestadores','superintendencia':'Superintendencia de Salud',
- 'superintendencia_normativa':'Superintendencia de Salud','superintendencia_fiscalizacion':'Superintendencia de Salud',
+ 'superintendencia_normativa':'Superintendencia de Salud','superintendencia_fiscalizacion':'Superintendencia de Salud','superintendencia_noticias':'Superintendencia de Salud',
  'global_who':'OMS','global_paho':'OPS','minsal':'Minsal'}
 
 TRIAL_MODES={'isolated_qualification','manual_curated_only'}

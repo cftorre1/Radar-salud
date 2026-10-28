@@ -331,15 +331,15 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await page.locator('#filterDetails summary').click();
  await selectPeriod(page,'90');
- const bupa=page.locator('article').filter({has:page.getByRole('heading',{name:/Bupa refuerza su red/})});
+ // Rights policy (Dirección 28-oct-2026): the Bupa piece is paywalled DF, so the card keeps the
+ // publisher headline and public lead only; the editorial rewrite built on the locked body is gone.
+ const bupa=page.locator('article').filter({has:page.getByRole('heading',{name:/Bupa acelera inversiones/})});
  await bupa.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('La Dehesa');await expect(page.locator('#detailBody')).toContainText('Clínicas Huinganal');await expect(page.locator('#detailBody')).toContainText('Mindplace en San Damián');
- await expect(page.locator('#detailBody')).toContainText('No es solo expansión física');
+ await expect(page.locator('#detailBody')).toContainText('Mostramos sólo el titular y la bajada pública');
  await expect(bupa).not.toContainText('…');
  await expect(bupa.locator('.card-meta')).toContainText(/\d{1,2} \p{L}+\.? 2026/u);
- await expect(page.locator('#detailBody')).toContainText('La Dehesa: inauguración');
- await expect(page.locator('#detailBody')).toContainText('Clínicas Huinganal: crecimiento mediante adquisición');
- await expect(page.locator('#detailBody')).toContainText('Mindplace San Damián');
- await expect(page.locator('#detailBody')).toContainText('capacidad nueva, compra y diversificación de servicios');
+ for(const derived of ['No es solo expansión física','La Dehesa: inauguración','Clínicas Huinganal: crecimiento mediante adquisición','capacidad nueva, compra y diversificación de servicios','Bupa refuerza su red'])
+  await expect(page.locator('#detailBody')).not.toContainText(derived);
  await expect(page.locator('#detailBody')).not.toContainText('Enriquecimiento editorial');
  await page.getByRole('button',{name:'Cerrar ficha'}).click();
  // Dirección 28-oct-2026: the live F1 ficha (Cartera y movilidad) replaces the Pulso Isapre card.
@@ -522,13 +522,34 @@ test('committee HOLD/REJECT and failed publication contracts do not render as in
   const hidden=(data.signals||[]).filter(s=>{
     const verdict=String(s.editorial_committee?.verdict||'PASS').toUpperCase();
     const types=Array.isArray(s.signal_types)?s.signal_types.map(x=>String(x).toLowerCase()):[];
-    const core=Boolean((s.display_title||s.title)&&s.signal_types?.length&&s.scopes?.length&&s.event_date&&s.source_name&&s.source_url&&(s.card_what||s.what_happened)&&(s.card_why||s.why_it_matters));
+    // Mirrors web/app.js publicationContractOk: a paywalled title-only card (rights policy 28-oct)
+    // has card_why_optional and no "why"; it is still a valid PASS card. Verdict/visibility checks are unchanged.
+    const core=Boolean((s.display_title||s.title)&&s.signal_types?.length&&s.scopes?.length&&s.event_date&&s.source_name&&s.source_url&&(s.card_what||s.what_happened)&&(s.card_why_optional||s.card_why||s.why_it_matters));
     const contract=core&&(!types.includes('normativa')||Boolean(s.normative_document_label));
     return s.feed_visibility===false||['HOLD','REJECT'].includes(verdict)||!contract;
   });
   for(const signal of hidden.slice(0,12)){
     await expect(page.locator('.signal[data-card]').filter({hasText:signal.display_title||signal.title})).toHaveCount(0);
   }
+});
+
+// The exporter already drops HOLD/REJECT rows, so the real snapshot rarely contains one. Inject
+// redacted (paywalled, title-only) rows carrying committee HOLD/REJECT or feed_visibility=false:
+// none may render, while the same row with a PASS verdict does.
+test('redacted paywalled rows keep committee HOLD/REJECT out of the feed',async({page})=>{
+  const base={paywalled:true,card_why_optional:true,why_it_matters:'',signal_types:['Noticias'],scopes:['Prestadores'],
+    event_date:'2026-10-11',source_name:'Diario Financiero',access_policy:'public_teaser_only',analysis_basis:'public_teaser_only',
+    what_happened:'Bajada pública de prueba.',radar_score:99};
+  const rows=[['PASS','Prueba derechos PASS visible',true],['HOLD','Prueba derechos HOLD oculta',true],
+    ['REJECT','Prueba derechos REJECT oculta',true],['PASS','Prueba derechos feed oculta',false]]
+    .map(([verdict,title,visible],i)=>({...base,title,id:`rights-gate-${i}`,source_url:`https://www.df.cl/empresas/salud/rights-gate-${i}`,
+      feed_visibility:visible,editorial_committee:{verdict,publication_decision:verdict==='REJECT'?'reject':'accept',analysis_basis:'public_teaser_only'}}));
+  await page.route('**/data/radar_today.json',async route=>{const response=await route.fetch(),data=await response.json();
+    data.signals=[...rows,...(data.signals||[])];await route.fulfill({response,json:data})});
+  await page.goto('/');
+  await expect(page.locator('.signal[data-card]').filter({hasText:'Prueba derechos PASS visible'})).toHaveCount(1);
+  for(const title of ['Prueba derechos HOLD oculta','Prueba derechos REJECT oculta','Prueba derechos feed oculta'])
+    await expect(page.locator('.signal[data-card]').filter({hasText:title})).toHaveCount(0);
 });
 
 

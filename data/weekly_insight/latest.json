@@ -21,7 +21,7 @@
         "novelty_non_repetition": 95
       },
       "verdict": "PASS",
-      "reason": "Nueva evidencia Work3 antes del cierre. Suspensión por semanas y traslados concluidos10-oct: decisión inmediata de capacidad, derivación y reprogramación para prestador/aseguradores. Fuente oficial confirma restricción actual; no se conoce magnitud de camas/pacientes/pérdida. Supera a Cenabast por urgencia y accionabilidad, no por volumen mediático.",
+      "reason": "Nueva evidencia Work3 antes del cierre. Título y bajada públicos de DF (10-oct): cierre por semanas tras el aluvión, traslado completo de los pacientes hospitalizados y reapertura condicionada a limpieza y recuperación de las áreas afectadas. Decisión inmediata de capacidad, derivación y reprogramación para prestador/aseguradores. No se conoce magnitud de camas/pacientes/pérdida. Supera a Cenabast por urgencia y accionabilidad, no por volumen mediático.",
       "provenance": {
         "discovered_by": "work3_adversarial_2026_10_11",
         "first_evidence_sha": "645781d2f310fea2bb6b6c7b5385a93ea538c879",
@@ -29,7 +29,85 @@
         "original_pages_checked": "2026-10-11",
         "independence": "DF y LT amplifican un mismo comunicado; UC confirma situación operativa. No tres hechos independientes."
       },
-      "rank": 1
+      "rank": 1,
+      "public_teaser": "UC Christus completó el traslado de todos los pacientes hospitalizados y condicionó la reapertura a los trabajos de limpieza, despeje y recuperación de las áreas afectadas.",
+      "rights_redactions": [
+        {
+          "field": "reason",
+          "sha256": "cb97eeb63f4496956453b9c421921a37e398c03fdd8bef01ac62ca790565bfd1",
+          "characters": 351,
+          "reason": "rewritten_to_public_text_only",
+          "redacted_at": "2026-10-28"
+        },
+        {
+          "field": "reason",
+          "sha256": "40778162ed115aa60fe632a1263a9ece52c97ed86b11736acdbb4673475fe694",
+          "characters": 593,
+          "reason": "independent_qa_unsupported_claim_removed",
+          "redacted_at": "2026-10-28"
+        },
+        {
+          "field": "reason",
+          "sha256": "2d454ade942a2fdd2de82b5ea0f58e6704a36e6b9c095056ad129cfc9c4efab6",
+          "characters": 549,
+          "reason": "independent_review_4_claim_not_in_allowed_text",
+          "redacted_at": "2026-10-28"
+        }
+      ],
+      "rights_note": "28-oct: 'reason' reescrito sólo con título/bajada públicos; textos previos como recibos (sha256 + longitud). QA previo revocado (rights_review_revoked).",
+      "rights_review_revoked": [
+        {
+          "basis": "DF: sólo título y bajada públicos; La Tercera /nacional/ (abierta) y página oficial UC CHRISTUS. Contrastado con el cuerpo DF bloqueado: ningún hecho proviene sólo de él.",
+          "reviewer": "Claude (migración de derechos 28-oct-2026; QA independiente registrado)",
+          "reviewed_at": "2026-10-28",
+          "fields": {
+            "reason": "2d454ade942a2fdd2de82b5ea0f58e6704a36e6b9c095056ad129cfc9c4efab6"
+          },
+          "qa_status": "revoked",
+          "qa_by": "independent-qa-agent",
+          "qa_at": "2026-10-28",
+          "qa_method": "Live WebFetch of every cited URL was refused by the session allowlist (28-oct). Claims were checked against stored open captures: La Tercera /nacional/ full body in data/state/pulso_discovery_cache.json (open section), DF headline + public lead in data/state/pending_queue.json (public_teaser_source), and the open bupa.cl / redsalud.cl records in the queue. The UC CHRISTUS page has no stored capture (only an 11-oct audit note): claims resting on it alone were removed.",
+          "qa_evidence_urls": [
+            "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+            "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/"
+          ],
+          "qa_verified_claims": [
+            "cierre por semanas (titular DF)",
+            "traslado completo de hospitalizados y reapertura condicionada a limpieza/recuperación (bajada DF)",
+            "redistribución de atenciones agendadas en la red UC Christus (LT abierta)",
+            "fecha 10-oct (DF/LT)"
+          ],
+          "qa_removed_claims": [
+            "'Fuente oficial confirma restricción actual': página UC CHRISTUS sin captura verificable"
+          ],
+          "qa_unverified": [],
+          "revoked_at": "2026-10-28",
+          "revoked_reason": "basis_la_tercera_nacional_paid_since_policy_1_3_0_and_self_qa_not_independent",
+          "revoked_by_review": "Cuarta revisión independiente de la rama claude/source-links-paywall-20261028 @ c9ca95a4 (28-oct-2026), veredicto FAIL. QA de campos del revisor: Laboratorios 'reason' PASS sin cambios; San Carlos 'reason': quitar 'agendas redistribuidas en la red UC Christus'; insight San Carlos: quitar 'servicios de apoyo' y 'redistribución San Carlos/El Alba'. Base: La Tercera /nacional/ es pagada desde la política 1.3.0 (Dirección 28-oct) y el QA anterior ('independent-qa-agent') no era independiente.",
+          "qa_status_before_revocation": "approved"
+        }
+      ],
+      "rights_review": {
+        "basis": "DF: sólo título y bajada públicos (cierre por semanas, traslado completo, reapertura condicionada). La Tercera es pagada (política 1.3.0): ningún hecho de su cuerpo.",
+        "implemented_by": "claude-implementer:source-links-paywall-20261028",
+        "reviewer": "claude-rights-reviewer:source-links-paywall-20261028",
+        "reviewed_at": "2026-10-28",
+        "fields": {
+          "reason": "e7a09383b90517d7126a137e8d181ef57aecdeafd5b710acbb3636ddbead0bf3"
+        },
+        "qa_status": "approved",
+        "qa_by": "independent-reviewer-4th-review",
+        "qa_at": "2026-10-28",
+        "qa_review_ref": "Cuarta revisión independiente de la rama claude/source-links-paywall-20261028 @ c9ca95a4 (28-oct-2026), veredicto FAIL. QA de campos del revisor: Laboratorios 'reason' PASS sin cambios; San Carlos 'reason': quitar 'agendas redistribuidas en la red UC Christus'; insight San Carlos: quitar 'servicios de apoyo' y 'redistribución San Carlos/El Alba'. Base: La Tercera /nacional/ es pagada desde la política 1.3.0 (Dirección 28-oct) y el QA anterior ('independent-qa-agent') no era independiente.",
+        "qa_findings": [
+          "reason: se quitó 'agendas redistribuidas en la red UC Christus' (cuerpo La Tercera, ahora pagado)"
+        ],
+        "qa_evidence_urls": [
+          "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos"
+        ],
+        "qa_unverified": [],
+        "identity_note": "implemented_by y reviewer son roles de la sesión Claude que implementa la rama (identidades distintas por rol); la independencia la aporta sólo qa_by, que no puede coincidir con ninguno de los dos (source_rights.review_qa_approved)."
+      }
     },
     {
       "title": "Cenabast / Ahumada: escala de acceso y dispensación cercana",
@@ -68,7 +146,7 @@
         "novelty_non_repetition": 90
       },
       "verdict": "PASS_ALTERNATIVE_RECOVERED",
-      "reason": "Reporte DF verificado del9-oct: incumplimiento de hito Selfix del30-sep y rezago de registros/ensayos con implicaciones de acceso e inversión. 1.501 pendientes/413d son diagnóstico a febrero2026;112 vs147 ensayos y pérdida estimada US$20m corresponden a2025 y atribución CIF. No son mediciones nuevas de octubre ni causalidad certificada. Urgencia inferior a capacidad clínica suspendida y evidencia inferior a fuente pública primaria.",
+      "reason": "Reporte DF del 9-oct; sólo título y bajada públicos: cae la inversión de laboratorios internacionales ante el rezago en aprobaciones del ISP y se redirigen estudios a Argentina y Brasil; los ensayos clínicos retrocedieron 20% en 2025 y el ajuste se anticipa peor este año en una actividad con inversión directa en torno a US$130 millones anuales. Implicaciones de acceso e inversión; cifra 2025 y atribución según DF, no mediciones nuevas de octubre ni causalidad certificada. Urgencia inferior a capacidad clínica suspendida y evidencia inferior a fuente pública primaria.",
       "provenance": {
         "source_kind": "high_trust_press_single_family",
         "core_pipeline_status": "DF INTEGRATED_DEGRADED; publication accepted92, BACKFILL, publisher date verified",
@@ -81,7 +159,67 @@
         "source_record": "data/state/pending_queue.json",
         "publication_timestamp": "2026-10-09T13:22:21Z"
       },
-      "rank": 3
+      "rank": 3,
+      "public_teaser": "Tras el retroceso de 20% en el número de ensayos clínicos en 2025, el ajuste se anticipa peor para este año en una actividad que genera una inversión directa en torno a US$ 130 millones al año. La caída se atribuye al rezago en los procesos de aprobación del ISP.",
+      "rights_redactions": [
+        {
+          "field": "reason",
+          "sha256": "44e4c58792c8f0990df09c551df1d5a46aae9f04164be39258a4d6a1f1495f82",
+          "characters": 435,
+          "reason": "rewritten_to_public_text_only",
+          "redacted_at": "2026-10-28"
+        }
+      ],
+      "rights_note": "28-oct: 'reason' reescrito sólo con título/bajada públicos y fuentes abiertas; el texto original queda como recibo (sha256 + longitud, blob git de staging dd94d38d).",
+      "rights_review_revoked": [
+        {
+          "basis": "DF: sólo título y bajada públicos (cifras 20%, 2025 y US$130 millones están en la bajada; 9-oct es la fecha de publicación).",
+          "reviewer": "Claude (migración de derechos 28-oct-2026; QA independiente registrado)",
+          "reviewed_at": "2026-10-28",
+          "fields": {
+            "reason": "91804662d959b1fdccf98c5647c3fa3ef8b921870a080d17504808413df3dfa6"
+          },
+          "qa_status": "revoked",
+          "qa_by": "independent-qa-agent",
+          "qa_at": "2026-10-28",
+          "qa_method": "Live WebFetch of every cited URL was refused by the session allowlist (28-oct). Claims were checked against stored open captures: La Tercera /nacional/ full body in data/state/pulso_discovery_cache.json (open section), DF headline + public lead in data/state/pending_queue.json (public_teaser_source), and the open bupa.cl / redsalud.cl records in the queue. The UC CHRISTUS page has no stored capture (only an 11-oct audit note): claims resting on it alone were removed.",
+          "qa_evidence_urls": [
+            "https://www.df.cl/senal-df/el-deal/cae-inversion-de-laboratorios-internacionales-en-chile-ante-fuerte-rezago"
+          ],
+          "qa_verified_claims": [
+            "cae inversión de laboratorios internacionales y se redirigen a Argentina y Brasil (titular DF)",
+            "retroceso de 20% de ensayos clínicos en 2025, ajuste peor este año, inversión directa en torno a US$130 millones anuales, rezago en aprobaciones del ISP (bajada DF)",
+            "fecha 9-oct (publicación DF)"
+          ],
+          "qa_removed_claims": [],
+          "qa_unverified": [],
+          "revoked_at": "2026-10-28",
+          "revoked_reason": "basis_la_tercera_nacional_paid_since_policy_1_3_0_and_self_qa_not_independent",
+          "revoked_by_review": "Cuarta revisión independiente de la rama claude/source-links-paywall-20261028 @ c9ca95a4 (28-oct-2026), veredicto FAIL. QA de campos del revisor: Laboratorios 'reason' PASS sin cambios; San Carlos 'reason': quitar 'agendas redistribuidas en la red UC Christus'; insight San Carlos: quitar 'servicios de apoyo' y 'redistribución San Carlos/El Alba'. Base: La Tercera /nacional/ es pagada desde la política 1.3.0 (Dirección 28-oct) y el QA anterior ('independent-qa-agent') no era independiente.",
+          "qa_status_before_revocation": "approved"
+        }
+      ],
+      "rights_review": {
+        "basis": "DF: sólo título y bajada públicos (cifras 20%, 2025 y US$130 millones están en la bajada; 9-oct es la fecha de publicación).",
+        "implemented_by": "claude-implementer:source-links-paywall-20261028",
+        "reviewer": "claude-rights-reviewer:source-links-paywall-20261028",
+        "reviewed_at": "2026-10-28",
+        "fields": {
+          "reason": "91804662d959b1fdccf98c5647c3fa3ef8b921870a080d17504808413df3dfa6"
+        },
+        "qa_status": "approved",
+        "qa_by": "independent-reviewer-4th-review",
+        "qa_at": "2026-10-28",
+        "qa_review_ref": "Cuarta revisión independiente de la rama claude/source-links-paywall-20261028 @ c9ca95a4 (28-oct-2026), veredicto FAIL. QA de campos del revisor: Laboratorios 'reason' PASS sin cambios; San Carlos 'reason': quitar 'agendas redistribuidas en la red UC Christus'; insight San Carlos: quitar 'servicios de apoyo' y 'redistribución San Carlos/El Alba'. Base: La Tercera /nacional/ es pagada desde la política 1.3.0 (Dirección 28-oct) y el QA anterior ('independent-qa-agent') no era independiente.",
+        "qa_findings": [
+          "reason: PASS, sin cambios"
+        ],
+        "qa_evidence_urls": [
+          "https://www.df.cl/senal-df/el-deal/cae-inversion-de-laboratorios-internacionales-en-chile-ante-fuerte-rezago"
+        ],
+        "qa_unverified": [],
+        "identity_note": "implemented_by y reviewer son roles de la sesión Claude que implementa la rama (identidades distintas por rol); la independencia la aporta sólo qa_by, que no puede coincidir con ninguno de los dos (source_rights.review_qa_approved)."
+      }
     }
   ],
   "weekly_insight": {
@@ -99,7 +237,6 @@
     "insight_teaser": "La suspensión exige verificar reemplazos por prestación, reprogramar agendas y coordinar autorizaciones. El alcance financiero sigue sin cuantificarse.",
     "key_figures": [
       "8 de octubre: aluvión. 10 de octubre: comunicación de traslados concluidos y suspensión durante algunas semanas, según DF y La Tercera.",
-      "Dos recintos figuran sin atención ambulatoria ni de Urgencia en la página oficial consultada: Clínica San Carlos de Apoquindo y Centro Médico El Alba.",
       "No se informan en estas fuentes cifras completas de pacientes trasladados, camas fuera de servicio, atenciones postergadas o pérdidas. No se estima un impacto económico sin esos datos."
     ],
     "actors": [
@@ -108,9 +245,9 @@
       "Equipos de convenios, operaciones y atención de aseguradores y prestadores que deban coordinar continuidad."
     ],
     "insight_reading": [
-      "Hecho informado: la clínica suspendió operaciones porque sus servicios de apoyo no podían funcionar normalmente. La Tercera recoge que las atenciones agendadas se redistribuirán dentro de UC CHRISTUS.",
+      "Hecho informado: la clínica cerró por semanas tras el aluvión, completó el traslado de todos los pacientes hospitalizados y condicionó la reapertura a la limpieza, el despeje y la recuperación de las áreas afectadas (título y bajada públicos de DF; título público de La Tercera).",
       "Inferencia editorial: el cuello de botella debe evaluarse por tipo de prestación y soporte operativo. Una alternativa sólo es útil cuando tiene cupo, coordinación clínica, autorización y condiciones de cobertura verificadas.",
-      "Conexión con el stock: las inversiones Bupa/Andes y el convenio RedSalud–Nueva Masvida describen oferta o acceso contractual. Este episodio añade la dimensión de disponibilidad efectiva; no demuestra que esas instituciones puedan absorber pacientes ni que hayan firmado acuerdos de contingencia."
+      "Conexión con el stock: la inversión anunciada por Bupa en el sector oriente y el convenio RedSalud–Nueva Masvida describen oferta o acceso contractual. Este episodio añade la dimensión de disponibilidad efectiva; no demuestra que esas instituciones puedan absorber pacientes ni que hayan firmado acuerdos de contingencia."
     ],
     "decision_use": [
       "Identificar agendas y derivaciones expuestas por prestación, prioridad definida por los equipos clínicos y fecha, con responsable de seguimiento.",
@@ -123,7 +260,7 @@
       "Duración de la interrupción y costos incrementales documentados; no atribuir automáticamente mayores ingresos a competidores."
     ],
     "uncertainties": [
-      "“Algunas semanas” no entrega fecha cierta de reapertura. La página operativa oficial no presenta una fecha de publicación verificable; se usa para confirmar estado al 11-oct, no para rejuvenecer el episodio.",
+      "“Algunas semanas” no entrega fecha cierta de reapertura.",
       "DF y La Tercera recogen el mismo comunicado institucional: no se cuentan como dos mediciones independientes del daño.",
       "No hay cifras suficientes para estimar pérdida de capacidad regional, impacto en siniestralidad, daño financiero o resultados clínicos.",
       "Las acciones propuestas son análisis de gestión de red; las decisiones clínicas, coberturas y destinos requieren verificación caso a caso."
@@ -145,7 +282,7 @@
         "role": "Cronología del anuncio y cierre por semanas; señal pendiente recuperada desde auditoría Work3."
       },
       {
-        "label": "La Tercera · traslados y redistribución · 10 oct",
+        "label": "La Tercera · traslados · 10 oct",
         "url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
         "role": "Detalle del mismo comunicado; no corroboración independiente del impacto."
       }
@@ -156,7 +293,135 @@
       "api_call": false,
       "model": null,
       "note": "Sesión Work2, evidencia Work3 contrastada directamente; no ejecución TERRA ni segundo revisor del contenido final."
-    }
+    },
+    "public_teaser": "UC Christus completó el traslado de todos los pacientes hospitalizados y condicionó la reapertura a los trabajos de limpieza, despeje y recuperación de las áreas afectadas.",
+    "rights_redactions": [
+      {
+        "field": "key_figures",
+        "sha256": "4bdd526e9e616b1de883dfe52958f2a4438fc928d6c49252575dd8dc0332bda3",
+        "characters": 481,
+        "reason": "independent_qa_unsupported_claim_removed",
+        "redacted_at": "2026-10-28"
+      },
+      {
+        "field": "uncertainties",
+        "sha256": "a13ce0a1f0fb8cf1b94c3ababb766621dfd31f8fc373905bdebb87e61a4a470f",
+        "characters": 613,
+        "reason": "independent_qa_unsupported_claim_removed",
+        "redacted_at": "2026-10-28"
+      },
+      {
+        "field": "insight_reading",
+        "sha256": "67956e479e8281c3f9a8f59ce771e34674cd0240eb58dc525a3b3d5be914d39a",
+        "characters": 731,
+        "reason": "independent_qa_unsupported_claim_removed",
+        "redacted_at": "2026-10-28"
+      },
+      {
+        "field": "key_figures",
+        "sha256": "75b5c1cf2327d4ad6f7db27804bf1a2beeb06f3d5982d294cb35ed06dbdcd005",
+        "characters": 529,
+        "reason": "independent_review_4_claim_not_in_allowed_text",
+        "redacted_at": "2026-10-28"
+      },
+      {
+        "field": "insight_reading",
+        "sha256": "150dad0464ac5b0ea25bc9edc08047ba7da44df0f8ae971b948fb95f3ba99954",
+        "characters": 757,
+        "reason": "independent_review_4_claim_not_in_allowed_text",
+        "redacted_at": "2026-10-28"
+      },
+      {
+        "field": "sources[2].label",
+        "sha256": "768d05683a6ffc378bc0bd6c24779ce3b525aa4ec9ac8271b179f9bfe4f9f44f",
+        "characters": 48,
+        "reason": "independent_review_4_claim_not_in_allowed_text",
+        "redacted_at": "2026-10-28"
+      }
+    ],
+    "rights_review_revoked": [
+      {
+        "basis": "Hechos de la página oficial UC CHRISTUS (contingencias) y de La Tercera /nacional/ (abierta; servicios de apoyo, redistribución de agendas); de DF sólo título y bajada públicos (cierre por semanas, traslado concluido). Contrastado con el cuerpo DF bloqueado: ningún hecho proviene sólo de él.",
+        "reviewer": "Claude (migración de derechos 28-oct-2026; QA independiente registrado)",
+        "reviewed_at": "2026-10-28",
+        "fields": {
+          "summary": "c027c7db8c7bca40cc78cc1cb434692344469c97d6c2e3cf6860e6b825b0e825",
+          "insight_teaser": "4208f6f37bff2e949a53f71032fb538f65f5e65be7ab5d9dfad2ed5f13a00165",
+          "key_figures": "75b5c1cf2327d4ad6f7db27804bf1a2beeb06f3d5982d294cb35ed06dbdcd005",
+          "actors": "88f6de3058e917cdc61d067c61bedfebdb6652b394aabc7a913897449be93085",
+          "insight_reading": "150dad0464ac5b0ea25bc9edc08047ba7da44df0f8ae971b948fb95f3ba99954",
+          "decision_use": "85c2d6322a1242d5cff47400f2b3caf36613eecee5d75abd77d59cd1f250b032",
+          "what_to_watch": "09b7479d9f8faaad9be3993213f10f94f47fba807a1626413da90205fd7e6922",
+          "uncertainties": "b1907196f38755533ef6b902b110d8b420baab2fb7f2bc09457da808bbb3a82b"
+        },
+        "qa_status": "revoked",
+        "qa_by": "independent-qa-agent",
+        "qa_at": "2026-10-28",
+        "qa_method": "Live WebFetch of every cited URL was refused by the session allowlist (28-oct). Claims were checked against stored open captures: La Tercera /nacional/ full body in data/state/pulso_discovery_cache.json (open section), DF headline + public lead in data/state/pending_queue.json (public_teaser_source), and the open bupa.cl / redsalud.cl records in the queue. The UC CHRISTUS page has no stored capture (only an 11-oct audit note): claims resting on it alone were removed.",
+        "qa_evidence_urls": [
+          "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+          "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+          "https://www.bupa.cl/bupa-acelera-su-crecimiento-en-el-sector-oriente-de-santiago-con-inversion",
+          "https://www.redsalud.cl/noticias/redsalud-y-nueva-masvida-convenio"
+        ],
+        "qa_verified_claims": [
+          "suspensión por algunas semanas y traslado de todos los pacientes (LT abierta; bajada DF)",
+          "servicios de apoyo sin capacidad habitual como causa (LT abierta)",
+          "redistribución de consultas, exámenes y procedimientos de San Carlos y El Alba (LT abierta)",
+          "aluvión el 8-oct; balance del sábado 10-oct (LT abierta)",
+          "sin cifras de pacientes/camas/pérdidas en estas fuentes (LT abierta, bajada DF)",
+          "inversión de Bupa en el sector oriente (bupa.cl, título abierto)",
+          "convenio RedSalud–Nueva Masvida (redsalud.cl, abierta)"
+        ],
+        "qa_removed_claims": [
+          "key_figures[1]: estado de dos recintos 'en la página oficial consultada' (página UC sin captura) -> reescrito con la redistribución que informa La Tercera",
+          "uncertainties[0]: frase sobre la fecha/estado de la página operativa oficial (sin captura)",
+          "insight_reading[2]: 'inversiones Bupa/Andes' (Andes sin fuente abierta) -> 'inversión anunciada por Bupa en el sector oriente'"
+        ],
+        "qa_unverified": [
+          "UC CHRISTUS /contingencias: no alcanzable desde esta sesión ni capturada; ninguna afirmación depende ya de ella"
+        ],
+        "qa_unreachable_sources": [
+          "https://www.ucchristus.cl/contingencias"
+        ],
+        "revoked_at": "2026-10-28",
+        "revoked_reason": "basis_la_tercera_nacional_paid_since_policy_1_3_0_and_self_qa_not_independent",
+        "revoked_by_review": "Cuarta revisión independiente de la rama claude/source-links-paywall-20261028 @ c9ca95a4 (28-oct-2026), veredicto FAIL. QA de campos del revisor: Laboratorios 'reason' PASS sin cambios; San Carlos 'reason': quitar 'agendas redistribuidas en la red UC Christus'; insight San Carlos: quitar 'servicios de apoyo' y 'redistribución San Carlos/El Alba'. Base: La Tercera /nacional/ es pagada desde la política 1.3.0 (Dirección 28-oct) y el QA anterior ('independent-qa-agent') no era independiente.",
+        "qa_status_before_revocation": "approved"
+      }
+    ],
+    "rights_review": {
+      "basis": "De DF sólo título y bajada públicos (cierre por semanas, traslado concluido, reapertura condicionada); de La Tercera (pagada, política 1.3.0) sólo el título público; Bupa y RedSalud de sus páginas abiertas. Ningún hecho del cuerpo de La Tercera ni del cuerpo DF bloqueado.",
+      "implemented_by": "claude-implementer:source-links-paywall-20261028",
+      "reviewer": "claude-rights-reviewer:source-links-paywall-20261028",
+      "reviewed_at": "2026-10-28",
+      "fields": {
+        "summary": "c027c7db8c7bca40cc78cc1cb434692344469c97d6c2e3cf6860e6b825b0e825",
+        "insight_teaser": "4208f6f37bff2e949a53f71032fb538f65f5e65be7ab5d9dfad2ed5f13a00165",
+        "key_figures": "dd531a227ee8929982f242e600fded2b3059eb69dfd3d79a4418325ae04404ef",
+        "actors": "88f6de3058e917cdc61d067c61bedfebdb6652b394aabc7a913897449be93085",
+        "insight_reading": "a7a42de9a30acde0684d0a61696ee42ac9a59dce6cf5afdcb5c4dc8328a07445",
+        "decision_use": "85c2d6322a1242d5cff47400f2b3caf36613eecee5d75abd77d59cd1f250b032",
+        "what_to_watch": "09b7479d9f8faaad9be3993213f10f94f47fba807a1626413da90205fd7e6922",
+        "uncertainties": "b1907196f38755533ef6b902b110d8b420baab2fb7f2bc09457da808bbb3a82b"
+      },
+      "qa_status": "approved",
+      "qa_by": "independent-reviewer-4th-review",
+      "qa_at": "2026-10-28",
+      "qa_review_ref": "Cuarta revisión independiente de la rama claude/source-links-paywall-20261028 @ c9ca95a4 (28-oct-2026), veredicto FAIL. QA de campos del revisor: Laboratorios 'reason' PASS sin cambios; San Carlos 'reason': quitar 'agendas redistribuidas en la red UC Christus'; insight San Carlos: quitar 'servicios de apoyo' y 'redistribución San Carlos/El Alba'. Base: La Tercera /nacional/ es pagada desde la política 1.3.0 (Dirección 28-oct) y el QA anterior ('independent-qa-agent') no era independiente.",
+      "qa_findings": [
+        "key_figures: se quitó la redistribución de agendas de San Carlos/El Alba (cuerpo La Tercera)",
+        "insight_reading[0]: se quitaron 'servicios de apoyo' y la redistribución dentro de UC CHRISTUS (cuerpo La Tercera)"
+      ],
+      "qa_evidence_urls": [
+        "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+        "https://www.bupa.cl/bupa-acelera-su-crecimiento-en-el-sector-oriente-de-santiago-con-inversion",
+        "https://www.redsalud.cl/noticias/redsalud-y-nueva-masvida-convenio"
+      ],
+      "qa_unverified": [],
+      "identity_note": "implemented_by y reviewer son roles de la sesión Claude que implementa la rama (identidades distintas por rol); la independencia la aporta sólo qa_by, que no puede coincidir con ninguno de los dos (source_rights.review_qa_approved)."
+    },
+    "rights_note": "28-oct (cuarta revisión): textos con hechos del cuerpo de La Tercera reescritos; recibos sha256 + longitud en rights_redactions. QA previo revocado (rights_review_revoked)."
   },
   "freshness_gate": {
     "eligible": true,
@@ -222,8 +487,27 @@
         "source": "Diario Financiero",
         "url": "https://www.df.cl/senal-df/el-deal/cae-inversion-de-laboratorios-internacionales-en-chile-ante-fuerte-rezago",
         "event_date": "2026-10-09",
-        "what": "Diario Financiero reporta un rezago significativo del ISP en la aprobación de medicamentos: 1.501 solicitudes de registro estaban pendientes, con una espera promedio de 413 días; el 84% superaba el plazo legal y 106 casos llevaban más de dos años sin resolución. El artículo señala que solo el 30% de los registros aprobados entre 2015 y febrero de 2026 fue resuelto dentro del plazo, proporción que cayó a 9,9% en 2024. Entre los casos pendientes figura Selfix, genérico de semaglutida desarrollado por Laboratorio Chile y la argentina Elea. La demora también habría afectado la investigación clínica: los ensayos de laboratorios internacionales bajaron de 147 a 112 en un año, una caída cercana al 24%, con compañías que, según la Cámara de Innovación Farmacéutica, redirigieron estudios hacia Argentina y Brasil.",
-        "why": "El ISP enfrenta un cuello de botella que afecta a laboratorios nacionales e internacionales, retrasa la entrada de genéricos y medicamentos innovadores y puede limitar el acceso a tratamientos a menores precios, incluido el caso de Selfix. Para la industria de innovación, el artículo atribuye al rezago una pérdida estimada de US$20 millones en 2025 y un deterioro de la posición de Chile frente a Argentina y Brasil para captar ensayos clínicos. También compromete una actividad que genera inversión farmacéutica y ahorros estimados para el sistema público, por lo que merece seguimiento regulatorio y competitivo ahora."
+        "what": "",
+        "why": "",
+        "rights_redactions": [
+          {
+            "field": "what",
+            "sha256": "04b769e4f7b3cc18cbad79ffddd7103bdca30e603074cfea45387100e7423bb2",
+            "characters": 815,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
+          },
+          {
+            "field": "why",
+            "sha256": "80de757e7a1cf5d1b9bbce97c75bf94b6fae058fa783ad292d6755e3475ce2df",
+            "characters": 622,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
+          }
+        ],
+        "paywalled": true,
+        "rights_review_required": true,
+        "access_policy": "public_teaser_only"
       },
       {
         "rank": 2,
@@ -250,8 +534,27 @@
         "source": "Diario Financiero",
         "url": "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas",
         "event_date": "2026-10-05",
-        "what": "Diario Financiero reportó que Clínica Portada, prestador privado ligado a la Asociación Chilena de Seguridad (AChS), inició el cierre de su unidad de maternidad en Antofagasta como parte de una adecuación de su oferta asistencial. Es la segunda clínica de la ciudad que adopta esta medida en los últimos dos años, en un contexto de 6.252 nacimientos regionales en 2025, 19,5% menos que en 2019. La clínica mantendrá sus prestaciones ginecológicas y de salud de la mujer, y anunció un plan de transición para las pacientes vinculadas a maternidad.",
-        "why": "La decisión reduce la oferta privada de atención obstétrica y partos en Antofagasta, afectando directamente a Clínica Portada y a las pacientes que deberán ser orientadas hacia otras alternativas. El cambio merece atención porque ocurre junto con el cierre previo de maternidades privadas y una disminución sostenida de nacimientos, mientras el artículo señala que la mayoría de los nacimientos de madres extranjeras se atiende en el sistema público."
+        "what": "",
+        "why": "",
+        "rights_redactions": [
+          {
+            "field": "what",
+            "sha256": "cf8b8ce920412e6098068f78eac5e5f4ec37fbfd3ded5b895fbaf2b8110f3d74",
+            "characters": 546,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
+          },
+          {
+            "field": "why",
+            "sha256": "5d2eb6bd6548e2316b3bad6c56f8dd1c2f1012e909ecbf258c285c82380f711f",
+            "characters": 450,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
+          }
+        ],
+        "paywalled": true,
+        "rights_review_required": true,
+        "access_policy": "public_teaser_only"
       },
       {
         "rank": 3,
@@ -278,8 +581,28 @@
         "source": "Diario Financiero",
         "url": "https://www.df.cl/df-mas/por-dentro/despues-de-rotter-krauss-los-negocios-que-buscan-los-yarur-para-empresas",
         "event_date": "2026-10-10",
-        "what": "Diario Financiero reporta que Empresas SB, holding de la familia Yarur dueño de Salcobrand, Preunic y DBS, concretó la compra de Rotter & Krauss tras la aprobación de la Fiscalía Nacional Económica. La cadena óptica opera 104 tiendas y concentraba entre 30% y 40% de las ventas de productos ópticos en Chile, según los antecedentes citados por el medio. El grupo inició su integración y creó una gerencia de Nuevos Negocios para sumar al menos dos nuevas líneas en dos años, mientras evalúa rubros adyacentes como mascotas, veterinaria y ortopedia.",
-        "why": "La operación incorpora a un actor relevante de farmacia, salud y belleza a un negocio óptico de escala nacional, con potencial para generar eficiencias de compra, integración comercial y mayor diversificación de ingresos. También marca un cambio estratégico para Empresas SB: el holding busca crecer fuera de sus categorías tradicionales, aunque manteniendo negocios vinculados a atención y servicios al cliente. La eventual expansión hacia mascotas y otras categorías de salud podría aumentar la competencia y modificar las estrategias de actores establecidos; por ahora, esas iniciativas aparecen como evaluaciones descritas en el reportaje, no como anuncios confirmados."
+        "what": "",
+        "why": "",
+        "rights_redactions": [
+          {
+            "field": "what",
+            "sha256": "e7a280612e2ac2b2aa143e1131def2753faab37ebb980538cbaed37b79c2e21b",
+            "characters": 548,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
+          },
+          {
+            "field": "why",
+            "sha256": "eca10e0680d63f19198f7313796996f3c7e414825861d9e50f400d831e64ab53",
+            "characters": 673,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
+          }
+        ],
+        "paywalled": true,
+        "rights_review_required": true,
+        "access_policy": "public_teaser_only",
+        "public_teaser": "La compañía, dueña de Salcobrand, Preunic y una serie de filiales menos conocidas, está con hambre de crecer."
       }
     ],
     "evidence_package": {
@@ -290,24 +613,82 @@
           "source": "Diario Financiero",
           "url": "https://www.df.cl/empresas/salud/recortes-a-la-ley-ricarte-soto-es-un-ahorro-mal-entendido",
           "event_date": "2026-10-08",
-          "what": "Diario Financiero reportó que el Presupuesto 2027 contempla un alza de 4,7% para el Ministerio de Salud y de 4,8% para Fonasa, pero una disminución de 14,5% en el Fondo para Diagnósticos y Tratamientos de Alto Costo de la Ley Ricarte Soto. Mariela Formas, vicepresidenta ejecutiva de la Cámara de Innovación Farmacéutica, cuestionó que el fondo no refleje su gasto ejecutado y advirtió que su diseño limita la incorporación de nuevos medicamentos y terapias. También señaló que sigue pendiente el informe financiero de Dipres para un proyecto de modernización de la ley. La ministra de Salud, May Chomali, indicó que el recorte no dejaría actualmente a pacientes sin financiamiento para sus medicamentos.",
-          "why": "El cambio afecta la trayectoria de financiamiento de la cobertura pública para tratamientos de alto costo y la eventual incorporación de nuevas patologías y terapias. Para Fonasa, pacientes y proveedores farmacéuticos, la falta de expansión ordenada del fondo podría mantener presiones sobre el acceso y la judicialización, que la CIF estimó en torno a $98.000 millones en 2025. Merece atención ahora porque el presupuesto reduce este fondo mientras la modernización de la Ley Ricarte Soto continúa pendiente."
+          "what": "",
+          "why": "",
+          "rights_redactions": [
+            {
+              "field": "what",
+              "sha256": "412c8499922b567123738ae4aadc4a14d80c13d0a88fdb3ccfe9b17bc5d80b05",
+              "characters": 704,
+              "reason": "paywalled_press_public_teaser_only",
+              "redacted_at": "2026-10-28"
+            },
+            {
+              "field": "why",
+              "sha256": "7e22314c0d3d6a94c4023aaf93ea0f400fbd5b8c1192f273968ddfe06a272156",
+              "characters": 509,
+              "reason": "paywalled_press_public_teaser_only",
+              "redacted_at": "2026-10-28"
+            }
+          ],
+          "paywalled": true,
+          "rights_review_required": true,
+          "access_policy": "public_teaser_only"
         },
         {
           "title": "Medicamento para bajar de peso deberá advertir por riesgos de malnutrición para comercializarse en Chile",
           "source": "Diario Financiero",
           "url": "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion",
           "event_date": "2026-10-06",
-          "what": "Diario Financiero reportó que el ISP instruyó que Mounjaro y todos los productos farmacéuticos con tirzepatida incorporen folletos para profesionales y pacientes con advertencias sobre casos de malnutrición, incluidos eventos graves y mortales asociados a un uso inadecuado. Los titulares deberán someter los nuevos folletos a aprobación del ISP dentro de un plazo máximo de 90 días hábiles; la exigencia también aplicará a registros sanitarios solicitados o concedidos posteriormente.",
-          "why": "La medida modifica las exigencias regulatorias de comercialización para Eli Lilly y cualquier otro titular de productos con tirzepatida en Chile. También obliga a reforzar la información sobre deficiencias nutricionales, bajo peso, soporte alimentario y eventual interrupción del tratamiento, lo que puede cambiar las advertencias entregadas a médicos y pacientes y exigir ajustes de cumplimiento en los productos afectados."
+          "what": "",
+          "why": "",
+          "rights_redactions": [
+            {
+              "field": "what",
+              "sha256": "11a91c4400bc01c6cc95fd278b9ec580836c3d2ef531fa75643c77cd24ea6acd",
+              "characters": 485,
+              "reason": "paywalled_press_public_teaser_only",
+              "redacted_at": "2026-10-28"
+            },
+            {
+              "field": "why",
+              "sha256": "6b23ec28a0122d2f0f6ebd35abffe95426007e0ea8ece4fa25415edc68d852d6",
+              "characters": 424,
+              "reason": "paywalled_press_public_teaser_only",
+              "redacted_at": "2026-10-28"
+            }
+          ],
+          "paywalled": true,
+          "rights_review_required": true,
+          "access_policy": "public_teaser_only",
+          "public_teaser": "Se trata de todos los productos que incluyan el principio activo tirzepatida, lo que afecta a Mounjaro, de Eli Lilly."
         },
         {
           "title": "Cámara Baja despacha al Senado proyecto del PDG que compensa la compra de medicamentos y pañales",
           "source": "Diario Financiero",
           "url": "https://www.df.cl/economia-y-politica/congreso/camara-baja-despacha-al-senado-proyecto-del-pdg-que-compensa-la-compra-de",
           "event_date": "2026-09-29",
-          "what": "Según Diario Financiero, la Cámara de Diputadas y Diputados aprobó en primer trámite el proyecto del PDG que crea una compensación fiscal para la compra de medicamentos y pañales, y lo despachó al Senado. La iniciativa contempla a personas dentro del 80% más vulnerable, con requisitos asociados al Registro Social de Hogares, recetas médicas, dependencia y discapacidad. El beneficio tendría un costo fiscal anual máximo de US$100 millones durante los primeros 12 meses, aunque el financiamiento aún no cuenta con acuerdo generalizado y el proyecto no es ley.",
-          "why": "El Senado deberá definir el avance de una medida que podría ampliar el apoyo público al gasto de hogares vulnerables en medicamentos y pañales, afectando el acceso de pacientes, cuidadores y personas con dependencia, además de comprometer recursos fiscales de hasta US$100 millones anuales. Merece atención ahora porque inicia su segundo trámite constitucional, pero su alcance y viabilidad todavía dependen de la discusión legislativa y presupuestaria."
+          "what": "",
+          "why": "",
+          "rights_redactions": [
+            {
+              "field": "what",
+              "sha256": "74fabcb0233ea9db6318085d86c18009ef7cae53aef39c0713a39cde3274fc94",
+              "characters": 560,
+              "reason": "paywalled_press_public_teaser_only",
+              "redacted_at": "2026-10-28"
+            },
+            {
+              "field": "why",
+              "sha256": "3b7f5058e39eb2e3cdd4217cde96c6ddf0ed81bbd9fb8906c9c4439bf447f24c",
+              "characters": 453,
+              "reason": "paywalled_press_public_teaser_only",
+              "redacted_at": "2026-10-28"
+            }
+          ],
+          "paywalled": true,
+          "rights_review_required": true,
+          "access_policy": "public_teaser_only"
         },
         {
           "title": "Minsal informa que Chile erradicó la transmisión de rabia canina a humanos",
@@ -322,8 +703,28 @@
           "source": "Diario Financiero",
           "url": "https://www.df.cl/senal-df/el-deal/mercado-libre-y-cruz-verde-dan-el-vamos-a-un-acuerdo-que-marca-un-hito-en",
           "event_date": "2026-08-28",
-          "what": "Según Diario Financiero, Mercado Libre y Cruz Verde cerraron una alianza para vender medicamentos de venta directa a través de mercadolibre.cl y la aplicación de Mercado Libre. El ISP autorizó la incorporación de 13 locales de Cruz Verde, ubicados en Santiago y regiones, que ofrecerán los productos y realizarán los despachos; Mercado Libre aportará la plataforma tecnológica, pagos y logística. El acuerdo se suma a las siete farmacias independientes que ya vendían medicamentos en el marketplace desde 2025.",
-          "why": "La alianza incorpora por primera vez a una de las grandes cadenas farmacéuticas del país al marketplace de mayor escala regional, abriendo un canal digital adicional para la venta de medicamentos sin receta. Afecta directamente a Cruz Verde, a las farmacias independientes y a otros actores del comercio farmacéutico, que deberán observar la evolución de este modelo bajo la regulación vigente: la venta electrónica es un canal accesorio de una farmacia física autorizada y con dirección técnica farmacéutica, no una operación exclusivamente en línea."
+          "what": "",
+          "why": "",
+          "rights_redactions": [
+            {
+              "field": "what",
+              "sha256": "10e4444ee1fdd3fa6e671d4014707f2626c261b992d8a509692745774bf14bdb",
+              "characters": 510,
+              "reason": "paywalled_press_public_teaser_only",
+              "redacted_at": "2026-10-28"
+            },
+            {
+              "field": "why",
+              "sha256": "d6cffdbf32ed0fd3a8b3a49434e60e94797b7af8bc4e9eda66b15f9e1ac1700a",
+              "characters": 551,
+              "reason": "paywalled_press_public_teaser_only",
+              "redacted_at": "2026-10-28"
+            }
+          ],
+          "paywalled": true,
+          "rights_review_required": true,
+          "access_policy": "public_teaser_only",
+          "public_teaser": "Tras recibir la autorización del ISP, la operación habilita la comercialización de medicamentos de venta directa (sin receta) desde un conjunto de 13 de locales de la cadena –la mayor del país-, en Santiago y regiones a través de la plataforma de marketplace."
         }
       ],
       "committee": {
@@ -336,8 +737,8 @@
         ],
         "materiality_decision": "accept",
         "public_title": "Cae inversión de laboratorios internacionales en Chile ante fuerte rezago en aprobaciones: se redirigen a Argentina y Brasil",
-        "what_happened": "Diario Financiero reporta un rezago significativo del ISP en la aprobación de medicamentos: 1.501 solicitudes de registro estaban pendientes, con una espera promedio de 413 días; el 84% superaba el plazo legal y 106 casos llevaban más de dos años sin resolución. El artículo señala que solo el 30% de los registros aprobados entre 2015 y febrero de 2026 fue resuelto dentro del plazo, proporción que cayó a 9,9% en 2024. Entre los casos pendientes figura Selfix, genérico de semaglutida desarrollado por Laboratorio Chile y la argentina Elea. La demora también habría afectado la investigación clínica: los ensayos de laboratorios internacionales bajaron de 147 a 112 en un año, una caída cercana al 24%, con compañías que, según la Cámara de Innovación Farmacéutica, redirigieron estudios hacia Argentina y Brasil.",
-        "why_it_matters": "El ISP enfrenta un cuello de botella que afecta a laboratorios nacionales e internacionales, retrasa la entrada de genéricos y medicamentos innovadores y puede limitar el acceso a tratamientos a menores precios, incluido el caso de Selfix. Para la industria de innovación, el artículo atribuye al rezago una pérdida estimada de US$20 millones en 2025 y un deterioro de la posición de Chile frente a Argentina y Brasil para captar ensayos clínicos. También compromete una actividad que genera inversión farmacéutica y ahorros estimados para el sistema público, por lo que merece seguimiento regulatorio y competitivo ahora.",
+        "what_happened": "",
+        "why_it_matters": "",
         "evidence_map": [
           {
             "source": "Diario Financiero",
@@ -349,7 +750,26 @@
         "publication_decision": "accept",
         "critical_objections": [],
         "verdict": "PASS",
-        "parser_or_research_debt_if_any": null
+        "parser_or_research_debt_if_any": null,
+        "rights_redactions": [
+          {
+            "field": "what_happened",
+            "sha256": "04b769e4f7b3cc18cbad79ffddd7103bdca30e603074cfea45387100e7423bb2",
+            "characters": 815,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
+          },
+          {
+            "field": "why_it_matters",
+            "sha256": "80de757e7a1cf5d1b9bbce97c75bf94b6fae058fa783ad292d6755e3475ce2df",
+            "characters": 622,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
+          }
+        ],
+        "paywalled": true,
+        "rights_review_required": true,
+        "access_policy": "public_teaser_only"
       }
     },
     "weekly_insight": null

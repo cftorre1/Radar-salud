@@ -112,6 +112,12 @@ def _fallback_minsal_score(title,text):
 
 def process_minsal(raw,cfg):
     if _noise(raw.title):return None
+    from .source_urls import minsal_article_url
+    url=minsal_article_url(raw.url)
+    if not url:
+        # Listing/shortlink/retired path: no valid "fuente original" (Dirección 28-oct-2026).
+        raw.metadata["rejection_reason"]="minsal_invalid_source_url";return None
+    if url!=raw.url:raw.metadata.setdefault("requested_url",raw.url);raw.url=url
     raw=enrich(raw)
     if not raw.event_date:
         raw.event_date=_date(raw.metadata.get("page_text","")[:6000])
@@ -249,16 +255,25 @@ def process_df(raw,cfg):
     from .df_media_gate import policy, exclusion, material, assessment_exclusion
     from .editorial_gate import publication_ready
     known_format=bool(raw.metadata.get('primary_image_urls') or raw.metadata.get('primary_media_urls'))
-    if not raw.metadata.get("publication_date_source") or (not raw.metadata.get("page_text") and not known_format):
+    # A paywalled capture keeps only its lead (possibly empty: title only); its
+    # provenance proves the detail was read, so an empty page_text is no reason to refetch.
+    captured=bool(raw.metadata.get("public_teaser_source"))
+    if not raw.metadata.get("publication_date_source") or (not raw.metadata.get("page_text") and not known_format and not captured):
         raw=enrich(raw)
     if raw.metadata.get("fetch_error"):
         raise DeferredProcessing("DF detail capture failed",reason="df_detail_fetch_failed")
+    # Rights policy (Dirección 28-oct-2026): DF is paywalled. Gates and the model
+    # see only the public title + bajada; the locked body is never analysed.
+    from .source_rights import restrict_raw_to_public, load_policy as rights_policy
+    raw=restrict_raw_to_public(raw)
+    paywalled=raw.metadata.get("paywalled") is True
+    min_body=int(rights_policy()["min_teaser_characters_for_analysis"]) if paywalled else 160
     body=raw.metadata.get("page_text") or ""
     raw.metadata.pop("rejection_reason",None)
     reason=exclusion(raw)
     title=raw.metadata.get("article_title") or raw.title
-    if not reason and len(body)>=160 and not _health_relevance(title,body):reason="df_unrelated_to_health"
-    if not reason and len(body)>=160 and not material(title,body):reason="media_no_material_event"
+    if not reason and len(body)>=min_body and not _health_relevance(title,body):reason="df_unrelated_to_health"
+    if not reason and len(body)>=min_body and not material(title,body):reason="media_no_material_event"
     if reason:
         raw.metadata["rejection_reason"]=reason
         return None
@@ -266,12 +281,27 @@ def process_df(raw,cfg):
         raise DeferredProcessing("DF publication dates conflict",reason="df_publication_date_conflict")
     if not raw.event_date:
         raise DeferredProcessing("DF has no verifiable publication date",reason="df_missing_publication_date")
-    if len(body)<160:
+    captured=int(raw.metadata.get("article_body_characters") or 0) or max(
+        [r.get("characters",0) for r in raw.metadata.get("rights_redactions") or []
+         if isinstance(r,dict) and r.get("field") in ("page_text","metadata.page_text")] or [0])
+    if paywalled and captured<160 and (raw.metadata.get('primary_image_urls') or raw.metadata.get('primary_media_urls')):
+        # No captured article text at all: the known non-text format decides (unchanged rule).
+        raise DeferredProcessing("DF has insufficient readable primary evidence",
+                                 reason='df_image_only_requires_ocr' if raw.metadata.get('primary_image_urls')
+                                 else 'df_media_transcript_unavailable')
+    if paywalled and len(body)<min_body:
+        # Title-only paywalled piece: no public text to analyse. Terminal, so it
+        # is never retried (no loop, no model call).
+        raw.metadata["rejection_reason"]="df_paywalled_without_public_teaser"
+        return None
+    if len(body)<min_body:
         reason=('df_image_only_requires_ocr' if raw.metadata.get('primary_image_urls') else
-                'df_media_transcript_unavailable' if raw.metadata.get('primary_media_urls') else 'df_insufficient_article_evidence')
+                'df_media_transcript_unavailable' if raw.metadata.get('primary_media_urls') else
+                'df_insufficient_article_evidence')
         raise DeferredProcessing("DF has insufficient readable primary evidence",reason=reason)
     ai=analyze_news(title=raw.metadata.get("article_title") or raw.title,text=body,source_name=raw.source_name,
-                    kind="prensa económica; exigir cambio material explícito de un actor, financiamiento, regulación o capacidad del sector salud. Macro/política genérica sin consecuencia sanitaria concreta no es señal elegible. Resumir sólo este artículo, atribuir a Diario Financiero, no convertir reporte en confirmación oficial")
+                    kind="prensa económica; exigir cambio material explícito de un actor, financiamiento, regulación o capacidad del sector salud. Macro/política genérica sin consecuencia sanitaria concreta no es señal elegible. Resumir sólo este artículo, atribuir a Diario Financiero, no convertir reporte en confirmación oficial"
+                    +(". CONTENIDO CON MURO DE PAGO: sólo dispones del título y la bajada pública; no agregues ningún hecho, cifra o actor que no esté en ese texto" if paywalled else ""))
     if not ai:raise DeferredProcessing("DF pendiente de evaluación IA",reason="df_analysis_deferred")
     gate=policy();threshold=int(gate["minimum_relevance_score"])
     raw.metadata["editorial_assessment"]={"score":int(ai.get("relevance_score",0)),"reason":ai.get("reason"),
@@ -288,6 +318,8 @@ def process_df(raw,cfg):
 def df_signal_from_assessment(raw,cfg,ai):
     """Build from an already-paid assessment; usable for crash checkpoint recovery."""
     from .editorial_gate import publication_ready
+    from .source_rights import restrict_raw_to_public
+    raw=restrict_raw_to_public(raw)
     from .df_media_gate import policy, assessment_exclusion
     if not raw.event_date or not raw.metadata.get("publication_date_source") or (raw.metadata.get("publication_date_conflict") and not raw.metadata.get("publication_date_conflict_resolution")):
         raise ValueError("DF assessment recovery requires verified publisher date")
@@ -315,6 +347,10 @@ def df_signal_from_assessment(raw,cfg,ai):
     if not passed:
         raw.metadata["rejection_reason"]=reason
         return None
+    from .source_rights import redact_signal, is_paywalled
+    if raw.metadata.get("paywalled") or is_paywalled(raw.url):
+        # Public card = title + bajada + date + link (Dirección 28-oct-2026).
+        row=redact_signal(row,raw.metadata.get("public_teaser") or "")
     return row
 
 def process_diario_oficial(raw,cfg):

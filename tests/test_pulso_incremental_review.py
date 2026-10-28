@@ -13,6 +13,7 @@ from radar_salud import pulso_incremental_review as review
 from radar_salud.models import RawItem
 from radar_salud.pending_queue import fingerprint
 from pulso_editorial_test_support import valid_assessment
+from paywall_test_support import assert_premium_replay, is_premium
 
 
 AUDIT = json.loads(review.REVIEW_PATH.read_text(encoding="utf-8"))
@@ -289,6 +290,15 @@ def test_real_midnight_article_still_fails_unchanged_editorial_gate_at_71(monkey
         return valid_assessment({"relevance_score": 71, "what_happened": "", "why_it_matters": "",
                 "reason": "El antecedente no agrega un cambio material suficiente."}, kwargs)
     monkeypatch.setattr(llm_analysis, "analyze_news", analysis)
+    if is_premium(raw):
+        # /pulso/ is a premium section (rights policy, Dirección 28-oct-2026): the reviewed
+        # facts can no longer be checked against the locked body, so the legacy hold is not
+        # released and no body-derived review context ever reaches a model.
+        body_sha = raw.metadata["article_body_sha256"]
+        assert assert_premium_replay(process_curated_beta_source, raw, calls) == "Pulso pending incremental-value review"
+        assert raw.metadata["editorial_hold"] == review.LEGACY_HOLD and "editorial_review_context" not in raw.metadata
+        assert raw.metadata["article_body_sha256"] == body_sha and raw.metadata["body_redacted"] is True
+        return
     assert process_curated_beta_source(raw, {}) is None
     assert len(calls) == 1 and calls[0]["full_text"] is True
     assert calls[0]["text"] == raw.metadata["page_text"]

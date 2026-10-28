@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 from radar_salud.models import RawItem
-from radar_salud.pending_queue import PendingQueue, fingerprint
+from radar_salud.pending_queue import persisted_items, PendingQueue, fingerprint
 from radar_salud.pulso_source import _verified_detail, complete_article_body
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -97,7 +97,8 @@ def test_exact_original_rediscovery_cannot_drop_real_paid_model_proof_for_missin
     assert metadata["publisher_taxonomy"] == fresh.metadata["publisher_taxonomy"]
     assert metadata["evidence_revisions"][-1]["retained_processing_input_unchanged"] is True
     assert asdict(fresh) == source_input
-    assert PendingQueue(queue.path).items == queue.items
+    # Persisted premium captures keep only lead + receipts (Dirección 28-oct-2026).
+    assert PendingQueue(queue.path).items == persisted_items(queue.items)
     saved = deepcopy(current)
     queue.discover("pulso_latercera", [fresh], now=NOW)
     assert queue.items[key] == saved
