@@ -34,7 +34,7 @@ def test_deterministic_live_replay_through_feed_and_coverage(tmp_path,monkeypatc
         def discover(self,*args,**kwargs):return []
     class Minsal(Scout):
         def discover(self):return items
-    for name in ("SuperintendenciaStatsScout","SuperintendenciaNormativaScout","SuperintendenciaFiscalizacionScout",
+    for name in ("SuperintendenciaStatsScout", "SuperintendenciaNoticiasScout","SuperintendenciaNormativaScout","SuperintendenciaFiscalizacionScout",
                  "SusesoNormativeScout","SusesoNewsScout","SusesoFiscalizacionScout","DfHealthScout","FonasaDataHubScout","FonasaNewsScout","IspSurveillanceScout","IspAnamedAlertScout","ClinicasChileScout","DeisDocumentScout","DiarioOficialHealthScout","CuratedBetaSourceScout"):
         monkeypatch.setattr(engine_cli,name,Scout)
     monkeypatch.setattr(engine_cli,"CorporateNewsroomScout",Scout)
