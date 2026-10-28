@@ -7,7 +7,8 @@
 - **Decisions:**
   1. **One live ficha per family.** It is replaced each period, and the previous one goes to `archive/`. It replaces the loose SIS minimal cards of the series that belong to the family.
   2. **Auto-publish on PASS.** PASS means deterministic verification plus reconciliation. On FAIL the ficha goes to HOLD.
-  3. **The LLM writes only the "Lectura Alicanto".** It is limited to 90 words and may use only numbers that are already in the evidence package. With no budget, or when the verifier fails, the block is omitted and the ficha still publishes.
+  3. **The LLM writes only the "Lectura Alicanto".** It is limited to 60 words. With no budget, or when the verifier fails, the block is omitted and the ficha still publishes.
+     - **Figure rule, changed 28-oct-2026 15:25:** "Lectura Alicanto puede tener cifras, solo que no caiga en ser redundantes, debe aportar algo más." This replaces the no-numbers rule of the 28-oct review.
   4. **Build order.** F1 Cartera, then F2 Financieras, then F4 GES, then F3 Licencias.
 
 ## Scope
@@ -55,12 +56,14 @@
   - one call with the fast route (`luna`) per new release;
   - worst case ≤ USD 0.05 per run;
   - the shared counters in `ai_budget`, the paced monthly budget (`paced_budget_usd`) and the weekly cap enforced by `openai_runtime.call_json`.
-- **Verifier** (`verify_lectura`), which rejects:
-  - **any number at all** (`forbid_numbers`, review FAIL of 28-oct): digits, any Unicode numeric character and number words, fractions, multiples and ordinals (`number_words`: veinte, mil, millones, doble, triple, mitad, tercio, cuarto, segundo…). The KPI strip and "Qué muestran los datos" already carry every figure with its unit, sign and period, so the Lectura adds implication only; this closes every unit, sign, year and bag-of-values bypass by construction;
-  - causal wording without a causal note (`causal_patterns`, regular expressions over the folded text that cover conjugations: impuls…, origin…, responde a(l), provoc…, gener…, deb… a, explic…, caus…, atribu…, se traduce, lleva a, produce, porque…);
-  - any insurer (full catalog with aliases, Fonasa included) that is not in the package **and** named in "Qué muestran los datos";
-  - more than 90 words, and URLs.
+- **Verifier** (`verify_lectura`, parser in `src/radar_salud/lectura_verifier.py`):
+  - **Parse.** NFKC; insurer names are masked first (so "Vida Tres" is never a number); each figure becomes (value, decimals, sign, unit, entity, period). Sign comes from +/− or the nearest direction word; unit is %, pp, persons (personas/beneficiarios/cotizantes/cargas/contratos/desahucios), "veces" or none (ratio); entity is the insurers named in the sentence; period is the months/years named in the sentence.
+  - **Trace.** Every digit figure must equal a `lectura_pool` entry declared by the family builder (never the whole package), rounded half-up to the shown precision, with matching unit, sign, entity and period. A year counts only when it is a package period (`year_not_in_package`).
+  - **Number words.** A closed lexicon (doble, triple, quíntuple, mitad, tercio, cuarto, "un par", décima, centésimo, ordinals, Roman numerals such as "IV trimestre" or "siglo XXI", "medio punto", "una décima", "uno de cada N", decenas/miles) must equal a precomputed `derived_ratios` or `ranks` entry within display tolerance (±5 % for multiples and fractions; pp words and magnitudes may also match `lectura_pool`). Quarters and halves must be package periods. Any other number-like token fails (`number_unmapped`).
+  - **Adds something.** D = value ids traced from the headline, dek, KPIs (plus their refs), tab texts and facts; a derived entry with a single shown input is in D too. A sentence with figures must cite an id outside D (else `restates_shown`). A sentence without figures must have content-word Jaccard < 0.5 (accent-folded, 5-character stems, stopwords removed) against every displayed sentence (else `restates_shown_text`) and name an audience or implication from `implication_terms` (else `no_implication`).
+  - **Also rejects** causal wording without a causal note (`causal_patterns`, regular expressions over the folded text covering conjugations, preterite and infinitive forms: impuls…, origin…, responde a(l), provoc…, gener…, deb… a / deberse a / debido a, explic…, caus…, atribu…, se traduce / tradujo / traducirá en, lleva a, produce, porque…, and conlleva, incide, influye, repercute, contribuye, gatilla, desencadenó, propició, condujo a, dio lugar a in every conjugation); any insurer (full catalog with aliases, Fonasa included) that is not in the package **and** named in "Qué muestran los datos"; more than 60 words; URLs.
   - After the Lectura is attached, the whole ficha is verified again (repeated sentences, audience); a failure drops the Lectura and the ficha still publishes.
+- **Prompt** (`lectura_prompt`): lists what is already shown and, separately, the "Material nuevo" (pool entries, ratios and ranks outside D); the Lectura must add an implication, comparison or derived figure from that material and never restate what is shown.
 - **No repeat payment:** a paid attempt for the same `release_key` is never repeated automatically. Only `not_attempted` and `no_budget` are retried.
 
 ## Web
@@ -72,4 +75,4 @@
 
 ## Corrections
 
-- A withdrawn finding keeps its text verbatim in `superseded_meta` (`withdrawn_insight_texts`), with `corrected_at`, `reason` and the superseded and correcting parser versions (CLAUDE.md rule 6). The card shows a short dated note ("Corregido el 28-oct: …").
+- A withdrawn finding keeps its text verbatim in `superseded_meta` (`withdrawn_insight_texts`), with `corrected_at`, `reason` and the superseded and correcting parser versions (CLAUDE.md rule 6). The row tag ("Corregido el 28 oct") and the detail note ("Corregido el 28 oct: …") use the same `correction.label`.

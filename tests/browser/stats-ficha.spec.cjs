@@ -71,8 +71,8 @@ test('the withdrawn GES finding shows a dated public correction',async({page})=>
  await page.route('**/data/radar_today.json',route=>route.fulfill({json:{date:'2026-10-28',generated_at:'2026-10-28T12:00:00Z',signals:[ges]}}));
  await page.goto('/');
  const row=page.locator('article[data-card]').filter({hasText:ges.title});
- await expect(row.locator('.correction-tag')).toHaveText(/Corregido el 28.oct/);
+ await expect(row.locator('.correction-tag')).toHaveText('Corregido el 28 oct');
  await row.locator('[data-detail]').first().click();
- await expect(page.locator('#detailBody .stat-correction')).toContainText('Corregido el 28-oct:');
+ await expect(page.locator('#detailBody .stat-correction')).toContainText('Corregido el 28 oct:');
  await expect(page.locator('#detailBody')).not.toContainText('21 presenta');
 });

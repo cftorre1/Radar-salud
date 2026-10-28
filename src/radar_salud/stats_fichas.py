@@ -10,10 +10,11 @@ Framework shared by every family (F1 Cartera first; see ``stats_ficha_f1``):
 3. Triggers      new period, threshold crossed, revision (> 0,5 %), late release, and HOLD on a
                   reconciliation failure, an older period or a missing hash.
 4. Templates     headline / dek / facts filled by code from the package.
-5. Lectura       the only model-written block (≤ 90 words). ``verify_lectura`` rejects numbers
-                  outside the package, causal verbs without a causal note, Isapres outside the
-                  package and texts over 90 words. No budget or a FAIL → the block is omitted and the
-                  ficha still publishes (decision 3).
+5. Lectura       the only model-written block (≤ 60 words). ``verify_lectura`` traces every figure to
+                  the builder's ``lectura_pool`` / ``derived_ratios`` / ``ranks`` (value, unit, sign, entity,
+                  period), rejects sentences that only restate what the ficha shows, causal verbs without a
+                  causal note, Isapres outside the package and URLs. No budget or a FAIL → the block is
+                  omitted and the ficha still publishes (decision 3).
 6. Publication   PASS (deterministic verification + reconciliation) replaces the live ficha and
                   archives the previous one (decisions 1 and 2). FAIL → HOLD file, live untouched.
 7. Snapshot      ``apply_to_snapshot`` emits live fichas as feed cards and removes the loose cards
@@ -29,6 +30,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Callable
 
+from . import lectura_verifier as lv
 from .weekly_freshness import number_traces, numbers_in
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -125,6 +127,15 @@ def value(vid: str, val: float, *, unit: str, period: str, source: str | None, l
     """One evidence entry. ``kind`` is 'captured' (read from a file) or 'derived' (formula + inputs)."""
     return {"id": vid, "value": val, "unit": unit, "period": period, "source": source, "locator": locator,
             "formula": formula, "inputs": inputs or [], "kind": kind, "revised": None}
+
+
+def pool_entry(values: dict, vid: str, *, entity: int | None = None, metric: str | None = None,
+               signed: bool = True, periods: list[str] | None = None, requires_period: bool = False) -> dict:
+    """One figure the Lectura may cite: a package value with its unit, sign rule, entity and period(s)."""
+    v = values[vid]
+    per = periods or [p for p in re.split(r"→", str(v.get("period") or "")) if p]
+    return {"id": vid, "value": v["value"], "unit": v["unit"], "metric": metric, "entity": entity, "signed": signed,
+            "periods": per, "requires_period": requires_period}
 
 
 def number_pool(package: dict) -> list[float]:
@@ -282,24 +293,44 @@ def isapres_mentioned(text: str, catalog: list[dict]) -> set[int]:
     return {e["code"] for e in cat if e["key"] in keys and e["code"] is not None}
 
 
-def numeric_tokens(text: str, number_words: list[str]) -> list[str]:
-    """Digits, any Unicode numeric character (½, Ⅳ, ²…) and number words, fractions, multiples, ordinals."""
-    import unicodedata
-    found = [ch for ch in str(text or "") if ch.isdigit() or unicodedata.numeric(ch, None) is not None]
-    folded = _fold(text)
-    for pat in number_words:
-        found += [m.group(0) for m in _word_rx(pat).finditer(folded)]
-    return found
+def lectura_parser(package: dict, cat: list[dict]):
+    """Sentence parser bound to the package: insurer masking/catalog, package years and months."""
+    periods = list(package.get("periods") or [])
+    for e in [*(package.get("lectura_pool") or []), *(package.get("derived_ratios") or []), *(package.get("ranks") or [])]:
+        periods += lv.entry_periods(e)
+    years = {int(p[:4]) for p in periods if re.match(r"\d{4}", str(p))}
+    months = {(int(p[:4]), int(p[5:7])) for p in periods if re.match(r"\d{4}-\d{2}", str(p))}
+    by_key = {e["key"]: e["code"] for e in cat}
+
+    def codes(text: str) -> set:
+        return {by_key[k] for k in insurers_mentioned(text, cat) if by_key.get(k) is not None}
+
+    def parse(sentence: str) -> dict:
+        return lv.parse_sentence(sentence, catalog=cat, name_rx=_name_rx, insurers_in=codes, package_years=years,
+                                 package_months=months)
+    return parse
+
+
+def shown_blocks(ficha: dict | None) -> list[str]:
+    """What the reader already sees above the Lectura: headline, dek, KPIs, tab texts and facts."""
+    fi = ficha or {}
+    out = [fi.get("headline"), fi.get("dek")]
+    for k in fi.get("kpis") or []:
+        out += [k.get("value"), *(k.get("lines") or [])]
+    for tab in fi.get("tabs") or []:
+        out += list(tab.get("text") or [])
+    out += list((fi.get("facts") or {}).get("paragraphs") or [])
+    return [str(x) for x in out if x]
 
 
 def verify_lectura(text: str, package: dict, *, registry: dict | None = None, catalog: list[dict] | None = None,
                    ficha: dict | None = None) -> dict:
-    """Deterministic gate for the model-written Lectura (decision 3).
+    """Deterministic gate for the model-written Lectura (decision 3; figure rule of Dirección 28-oct 15:25).
 
-    Numbers: with ``forbid_numbers`` (the registry default) the Lectura may not carry ANY number: no digit or
-    Unicode numeric character and no number word, fraction, multiple or ordinal. The KPI strip and 'Qué muestran
-    los datos' already show every figure with its unit, sign and period, so the Lectura only adds implication;
-    this removes every unit/sign/period/year mismatch by construction instead of matching a bag of values.
+    Figures: every figure (digits or number words) must trace to the builder's ``lectura_pool`` (digits) or
+    ``derived_ratios``/``ranks`` (words) with matching unit, sign, entity and period (``lectura_verifier``).
+    Non-redundancy: each sentence adds a figure not shown in the headline/dek/KPIs/tabs/facts, or an implication
+    for a named audience in words that do not restate a displayed sentence.
     Insurers: only names in the package AND in the ficha's facts (Fonasa or an unlisted Isapre always fail).
     """
     registry = registry or load_registry()
@@ -311,19 +342,21 @@ def verify_lectura(text: str, package: dict, *, registry: dict | None = None, ca
     words = len(text.split())
     if words > int(cfg["max_words"]):
         errors.append(f"over_{cfg['max_words']}_words:{words}")
-    if cfg.get("forbid_numbers", True):
-        for tok in numeric_tokens(text, cfg.get("number_words") or []):
-            errors.append(f"number_in_lectura:{tok}")
-    else:  # legacy mode kept only for families that opt out explicitly
-        for tok in text_numbers_trace(text, number_pool(package)):
-            errors.append(f"number_not_in_evidence:{tok}")
+    cat = insurer_catalog(registry, catalog)
+    parse = lectura_parser(package, cat)
+    pool, ratios, ranks = (list(package.get(k) or []) for k in ("lectura_pool", "derived_ratios", "ranks"))
+    displayed = shown_blocks(ficha)
+    refs = [r for k in (ficha or {}).get("kpis") or [] for r in k.get("refs") or []]
+    shown = lv.shown_ids(displayed, refs, entries=pool + ratios + ranks, parse=parse)
+    errors += lv.check(text, pool=pool, ratios=ratios, ranks=ranks, displayed=displayed, shown=shown, parse=parse,
+                       implication_terms=list(cfg.get("implication_terms") or AUDIENCE),
+                       jaccard_max=float(cfg.get("jaccard_max", 0.5)))
     if not package.get("causal_note"):
         folded = _fold(text)
         for pat in cfg["causal_patterns"]:
             m = _word_rx(pat).search(folded)
             if m:
                 errors.append(f"causal_without_note:{m.group(0)}")
-    cat = insurer_catalog(registry, catalog)
     in_package = {int(c) for c in package.get("entity_codes") or []}
     facts = " ".join(((ficha or {}).get("facts") or {}).get("paragraphs") or [])
     allowed = {e["key"] for e in cat if e["code"] in in_package} & insurers_mentioned(facts, cat)
@@ -340,6 +373,19 @@ def verify_lectura(text: str, package: dict, *, registry: dict | None = None, ca
     return {"verdict": "PASS" if not errors else "FAIL", "errors": errors, "words": words}
 
 
+def lectura_material(ficha: dict, package: dict) -> dict:
+    """Figures the Lectura may add: the builder's pool minus what the ficha already shows, plus ratios and ranks."""
+    cat = insurer_catalog()
+    parse = lectura_parser(package, cat)
+    pool, ratios, ranks = (list(package.get(k) or []) for k in ("lectura_pool", "derived_ratios", "ranks"))
+    refs = [r for k in ficha.get("kpis") or [] for r in k.get("refs") or []]
+    shown = lv.shown_ids(shown_blocks(ficha), refs, entries=pool + ratios + ranks, parse=parse)
+    names = {e.get("code"): e.get("name") for e in package.get("entities") or []}
+    return {"nuevas": [lv.describe(e, names) for e in pool if e["id"] not in shown],
+            "razones": [lv.describe(e, names) for e in ratios if e["id"] not in shown],
+            "rankings": [lv.describe(e, names) for e in ranks if e["id"] not in shown]}
+
+
 def lectura_prompt(ficha: dict, package: dict) -> str:
     facts = " ".join(ficha.get("facts", {}).get("paragraphs") or [])
     tabs = [{"tema": t.get("label"), "lectura": t.get("text")} for t in ficha.get("tabs") or []]
@@ -348,27 +394,35 @@ def lectura_prompt(ficha: dict, package: dict) -> str:
     named = insurers_mentioned(facts, facts_cat)
     names = sorted({e.get("name") for e in package.get("entities") or [] if e.get("name")
                     and any(c["key"] in named and c["code"] == e.get("code") for c in facts_cat)})
+    material = lectura_material(ficha, package)
     return (
         "Escribe la 'Lectura Alicanto' de una ficha estadística de Alicanto Salud (inteligencia de negocios de salud en Chile). "
-        "Es lo que convierte los datos en una decisión: el valor está en la implicancia, no en repetir cifras.\n"
+        "Debe aportar algo más que lo que la ficha ya muestra: una implicancia, una comparación o una cifra derivada. "
+        "Nunca repitas el titular, la bajada, los KPI ni 'Qué muestran los datos'.\n"
         "Aplica a la vez cuatro miradas expertas:\n"
         "- Negocio de salud: qué significa para aseguradores, prestadores o inversionistas (ingresos, competencia, riesgo).\n"
         "- Analítica de datos: respeta denominadores y períodos; un stock no se suma; no confundas correlación con causa.\n"
-        "- Editorial: directo, sin repetir el titular ni 'Qué muestran los datos', sin relleno.\n"
+        "- Editorial: directo, sin repetir lo que ya se muestra, sin relleno.\n"
         "- UI/UX: dos o tres frases cortas que se lean en el celular de un vistazo.\n"
         "Reglas que se verifican de forma automática (si fallas, el texto se descarta):\n"
-        "1. Breve: dos frases, máximo 50 palabras, en español de Chile, sin títulos ni viñetas.\n"
-        "2. Sin cifras: ningún dígito, porcentaje, año ni palabra numérica (dos, mil, millones, doble, mitad, tercio, segundo…). "
-        "Los KPI ya muestran los números; tú das la implicancia.\n"
-        "3. No afirmes causas: no uses 'debido a', 'explica', 'provoca', 'impulsa', 'genera', 'lleva a', 'se traduce', 'responde a', "
-        "'porque', 'gracias a', 'producto de', 'se debe' ni sus conjugaciones.\n"
-        f"4. Solo puedes nombrar estas Isapres: {', '.join(names)}. No nombres Fonasa ni otras Isapres; no uses las palabras "
+        "1. Breve: dos o tres frases, máximo 60 palabras, en español de Chile, sin títulos ni viñetas.\n"
+        "2. Cifras: solo las de 'Material nuevo' (lectura_pool, razones y rankings), redondeadas como se muestran, con su "
+        "unidad (%, pp, beneficiarios, cotizantes, veces), su signo, la Isapre a la que pertenecen y su período. Una razón "
+        "puede escribirse en palabras (el doble, la mitad, uno de cada cuatro) solo si calza con una razón de la lista; un "
+        "ranking como ordinal (la segunda) solo con su Isapre. Ninguna otra cifra, año, trimestre ni palabra numérica.\n"
+        "3. Cada frase aporta algo: o cita una cifra de 'Material nuevo', o dice en palabras propias qué implica para un "
+        "actor (aseguradoras, Isapres, prestadores, inversionistas, regulador, competencia, precios, cartera). Una frase "
+        "que solo repite una cifra ya mostrada se descarta.\n"
+        "4. No afirmes causas: no uses 'debido a', 'explica', 'provoca', 'impulsa', 'genera', 'lleva a', 'se traduce', "
+        "'responde a', 'porque', 'gracias a', 'producto de', 'se debe', 'conlleva', 'incide', 'influye', 'repercute', "
+        "'contribuye', 'gatilla', 'desencadena', 'propicia', 'conduce a', 'da lugar a' ni sus conjugaciones.\n"
+        f"5. Solo puedes nombrar estas Isapres: {', '.join(names)}. No nombres Fonasa ni otras Isapres; no uses las palabras "
         "'esencial' ni 'fundación' salvo como nombre de esas Isapres.\n"
-        "5. Nombra al menos un actor afectado (Isapres, aseguradores, prestadores, inversionistas o cotizantes).\n"
-        "6. No inventes hechos, fechas ni fuentes.\n"
+        "6. No inventes hechos, fechas ni fuentes, ni enlaces.\n"
         'Devuelve solo JSON: {"lectura": "..."}\n\n'
-        f"Titular: {ficha.get('headline')}\nBajada: {ficha.get('dek')}\nQué muestran los datos: {facts}\n"
+        f"Ya mostrado — Titular: {ficha.get('headline')}\nBajada: {ficha.get('dek')}\nQué muestran los datos: {facts}\n"
         f"Temas: {json.dumps(tabs, ensure_ascii=False)}\nKPI: {json.dumps(kpis, ensure_ascii=False)}\n"
+        f"Material nuevo (puedes citarlo): {json.dumps(material, ensure_ascii=False)}\n"
     )
 
 
@@ -458,7 +512,7 @@ def all_charts(ficha: dict) -> list[dict]:
     return [c for tab in ficha.get("tabs") or [] for c in tab.get("charts") or []] + list(ficha.get("charts") or [])
 
 
-def displayed_texts(ficha: dict) -> list[str]:
+def displayed_texts(ficha: dict, include_lectura: bool = True) -> list[str]:
     out = [ficha.get("headline"), ficha.get("dek")]
     for k in ficha.get("kpis") or []:
         out += [k.get("value"), *(k.get("lines") or []), k.get("badge")]
@@ -473,7 +527,7 @@ def displayed_texts(ficha: dict) -> list[str]:
             out += [str(cell) for cell in row]
     out += [n.get("text") for n in ficha.get("notes") or []]
     lect = ficha.get("lectura") or {}
-    if lect.get("status") == "pass":
+    if include_lectura and lect.get("status") == "pass":
         out.append(lect.get("text"))
     return [str(x) for x in out if x]
 
@@ -558,7 +612,8 @@ def verify_ficha(ficha: dict, package: dict) -> dict:
         if not ficha.get(key):
             errors.append(f"missing:{key}")
     pool = number_pool(package)
-    for text in displayed_texts(ficha):
+    # The Lectura's figures are traced by verify_lectura (pool, unit, sign, entity, period), not by value alone.
+    for text in displayed_texts(ficha, include_lectura=False):
         for tok in text_numbers_trace(text, pool):
             errors.append(f"number_not_in_evidence:{tok}")
     values = package.get("values") or {}
@@ -814,9 +869,18 @@ GES_CORRECTION_DATE = "2026-10-28"
 GES_LEGACY_PARSER = "ges_first_sheet_v1"  # the parser that read the first sheet without pinning the year
 
 
-def _ges_correction_note(corrected_at: str) -> str:
+def correction_label(corrected_at: str) -> str:
+    """'28 oct': the same short date on the row tag and in the detail note."""
     d = date.fromisoformat(corrected_at[:10])
-    return (f"Corregido el {d.day}-{MONTHS_ES[d.month - 1][:3]}: se retiró un hallazgo automático que leía la hoja "
+    return f"{d.day} {MONTHS_ES[d.month - 1][:3]}"
+
+
+def correction_record(corrected_at: str) -> dict:
+    return {"corrected_at": corrected_at, "label": correction_label(corrected_at), "text": _ges_correction_note(corrected_at)}
+
+
+def _ges_correction_note(corrected_at: str) -> str:
+    return (f"Corregido el {correction_label(corrected_at)}: se retiró un hallazgo automático que leía la hoja "
             "de otro año de la planilla y no conciliaba con el total declarado; vuelve con la ficha GES.")
 
 
@@ -830,8 +894,12 @@ def sanitize_ges_signal(signal: dict, *, corrected_at: str = GES_CORRECTION_DATE
     if meta.get("family") != "ges" or ges_finding_valid(meta):
         return signal
     if meta.get("status") == "HOLD" and not signal.get("data_insights"):
-        if (meta.get("superseded_meta") or {}).get("corrected_at") and (signal.get("statistical_view") or {}).get("correction"):
-            return signal
+        done_at = (meta.get("superseded_meta") or {}).get("corrected_at")
+        view = signal.get("statistical_view") or {}
+        if done_at and view.get("correction"):
+            if view["correction"] == correction_record(done_at):
+                return signal
+            return {**signal, "statistical_view": {**view, "correction": correction_record(done_at)}}  # label refresh
         if not meta.get("superseded_meta"):
             return signal  # a HOLD from the corrected parser itself: nothing was withdrawn
     r = dict(signal)
@@ -856,7 +924,7 @@ def sanitize_ges_signal(signal: dict, *, corrected_at: str = GES_CORRECTION_DATE
         "family": "ges", "publication_status": "HOLD", "hold_reason": GES_HOLD_REASON,
         "limitations": ["La lectura automática de la planilla GES no fijó la hoja del año en curso ni concilió la suma "
                         "con el total declarado; el hallazgo queda retenido hasta la ficha GES (F4)."],
-        "correction": {"corrected_at": superseded["corrected_at"], "text": _ges_correction_note(superseded["corrected_at"])},
+        "correction": correction_record(superseded["corrected_at"]),
         "source_url": r.get("source_url")}
     return r
 

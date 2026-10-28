@@ -244,35 +244,134 @@ def test_verifier_accepts_clean_text_and_rejects_violations(root):
     assert "url_in_lectura" in sf.verify_lectura("Para la cartera ver www.example.cl", p, ficha=fi)["errors"]
 
 
-# Every bypass found by the independent review (28-oct): the Lectura carries no number at all.
-@pytest.mark.parametrize("text", [
-    "La cartera cayó 3% en el año.",                                # % that is not a package value
-    "Banmédica bajó 50% su cartera.",                               # % with a wrong unit/meaning
-    "La cartera perdió 2,5 millones de beneficiarios.",              # 'millones' with a numeral
-    "La cartera perdió millones de beneficiarios.",                  # 'millones' without a numeral
-    "La cartera anotó −27.355, o sea +27.355 para las Isapres.",     # signed mismatch
-    "Veinte mil beneficiarios dejaron la cartera de las Isapres.",   # number words
-    "Las Isapres perdieron mil beneficiarios en la cartera.",
-    "La baja de Banmédica es más del doble que la del resto de la cartera.",
-    "Un tercio de la cartera está en Banmédica.",
-    "La mitad de la baja de la cartera es de Banmédica.",
-    "Un cuarto de la cartera está en una Isapre.",
-    "La cartera es el triple que hace una década.",
-    "La cartera perdió 814 personas en 2027.",                       # year outside the data/publication period
-    "La cartera perdió 814 beneficiarios.",                          # even a traced value: numbers stay in KPIs
-    "La cartera de las Isapres baja por segundo mes.",               # ordinal
-    "La cartera de las Isapres cae ½ punto.",                        # Unicode numeric character
-    "La cartera de las Isapres cae ٣ puntos.",                       # non-ASCII digit
-    "La cartera Isapre se mueve unos puntos porcentuales.",
+# Figure rule (Dirección 28-oct 15:25): figures are allowed if they trace and add something.
+# Every probe of the second independent review, positive and negative.
+@pytest.mark.parametrize("text,error", [
+    # traced and new (Banmédica share change, not shown in the ficha)
+    ("Para la competencia, Banmédica cedió 0,6 pp de participación entre las abiertas desde enero.", None),
+    ("Para la competencia, Banmédica cedió −0,6 pp de participación entre las abiertas desde enero.", None),
+    ("Para la competencia, Esencial es la que más crece: 13,3% desde enero.", None),
+    ("Para la competencia, Nueva Masvida gana cuatro décimas de participación entre las abiertas desde enero.", None),
+    ("Para las Isapres, por cada entrada al sistema hubo 1,19 salidas entre los cortes.", None),  # derived ratio
+    ("Para las Isapres, las cerradas perdieron 1.433 beneficiarios desde enero.", None),
+    # wrong sign, unit, entity, period
+    ("Para la competencia, Banmédica ganó 0,6 pp de participación entre las abiertas desde enero.", "number_sign_mismatch"),
+    ("Para la competencia, Banmédica cedió +0,6 pp de participación entre las abiertas.", "number_sign_mismatch"),
+    ("La cartera anotó +27.355 beneficiarios desde enero para las Isapres.", "number_sign_mismatch"),
+    ("Para la competencia, Banmédica cedió 0,6% de participación entre las abiertas desde enero.", "number_unit_mismatch"),
+    ("Para la competencia, Banmédica perdió 20.948 cotizantes desde enero.", "number_unit_mismatch"),
+    ("Para la competencia, Esencial cedió 0,6 pp de participación entre las abiertas desde enero.", "number_entity_mismatch"),
+    ("Para la competencia, Banmédica tenía 22,5% de las abiertas en enero.", "number_period_mismatch"),
+    # restated figures (already in headline, dek, KPIs, tabs or facts)
+    ("Banmédica concentra el 77% de la baja neta de la cartera.", "restates_shown"),
+    ("La cartera perdió 814 beneficiarios.", "restates_shown"),
+    ("Para las Isapres, tres de cada cuatro beneficiarios perdidos vienen de Banmédica.", "restates_shown"),  # 77% in words
+    ("Para la competencia, Banmédica perdió miles de beneficiarios desde enero.", "restates_shown"),
+    # untraced figures and number words
+    ("La cartera cayó 3% en el año.", "number_"),  # 3 % is only an Isapre figure, not the system
+    ("Veinte mil beneficiarios dejaron la cartera de las Isapres.", "number_not_in_pool"),
+    ("La cartera perdió 814 personas en 2027.", "year_not_in_package"),
+    ("Para inversionistas, un par de Isapres abiertas sostiene la cartera.", "number_unit_mismatch"),  # 2 is a rank, not a count
+    ("Para las aseguradoras, el IV trimestre dirá si la cartera se estabiliza.", "period_not_in_package"),
+    ("Para las aseguradoras, la cartera del siglo XXI cambia.", "number_not_in_pool"),
+    ("Para la competencia, la baja de Banmédica es quíntuple que la de Esencial.", "number_not_in_pool"),
+    ("Para la competencia, Banmédica ocupa el centésimo lugar en cartera.", "number_not_in_pool"),
+    ("Para la competencia, Banmédica cede medio punto de participación entre las abiertas desde enero.", "number_not_in_pool"),
+    ("Para la competencia, Nueva Masvida gana una décima de participación entre las abiertas desde enero.", "number_"),
+    ("Para la competencia, uno de cada cuatro beneficiarios perdidos por la cartera son cargas.", "number_not_in_pool"),
+    ("Para la competencia, la baja de Banmédica es el doble que la de Esencial.", "number_not_in_pool"),
+    ("La cartera de las Isapres cae ½ punto.", "number_"),
+    ("La cartera de las Isapres cae ٣ puntos.", "number_"),
+    ("La cartera de las Isapres baja por segundo mes.", "restates_shown"),  # 'segundo mes' is the KPI
 ])
-def test_lectura_rejects_every_number_bypass(root, text):
+def test_lectura_figure_probes(root, text, error):
     fi = f1.run(root, today=TODAY, llm=False)["ficha"]
     r = sf.verify_lectura(text, f1.build_package(root), ficha=fi)
-    assert r["verdict"] == "FAIL" and any(e.startswith("number_in_lectura") for e in r["errors"]), r
+    if error is None:
+        assert r["verdict"] == "PASS", r
+    else:
+        assert r["verdict"] == "FAIL" and any(e.startswith(error) for e in r["errors"]), r
 
 
-def test_registry_forbids_numbers_in_lectura():
-    assert sf.load_registry()["lectura"]["forbid_numbers"] is True
+def _with_ratio(p, rid, value, unit, entity=None):
+    return {**p, "derived_ratios": [*p["derived_ratios"], {"id": rid, "value": value, "unit": unit, "entity": entity,
+                                                          "signed": False, "periods": [p["period"]], "requires_period": False}]}
+
+
+@pytest.mark.parametrize("text,ratio", [
+    ("Para la competencia, la baja de Banmédica es el doble que la de Esencial.", ("r.doble", 2.04, "x", 99)),
+    ("Para la competencia, la baja de Banmédica es quíntuple que la de Esencial.", ("r.q", 4.9, "x", 99)),
+    ("Para la competencia, uno de cada cinco beneficiarios perdidos por la cartera es de Banmédica.", ("r.f", 0.2, "share", 99)),
+    ("Para la competencia, Banmédica cede la mitad de lo que pierde la cartera de las abiertas.", ("r.m", 0.49, "share", 99)),
+    ("Para inversionistas, un par de Isapres abiertas sostiene la cartera.", ("r.c", 2, "count", None)),
+    ("Para la competencia, Banmédica cede medio punto de participación entre las abiertas.", ("r.pp", -0.5, "pp", 99)),
+])
+def test_lectura_number_words_pass_only_with_a_precomputed_ratio(root, text, ratio):
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    p = f1.build_package(root)
+    assert sf.verify_lectura(text, p, ficha=fi)["verdict"] == "FAIL"
+    rid, value, unit, entity = ratio
+    r = sf.verify_lectura(text, _with_ratio(p, rid, value, unit, entity), ficha=fi)
+    assert r["verdict"] == "PASS", r
+
+
+def test_lectura_ordinals_and_roman_numerals_trace_to_ranks_and_periods(root):
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    p = f1.build_package(root)
+    ok = sf.verify_lectura("Para la competencia, Nueva Masvida es la segunda Isapre que más crece desde enero.", p, ficha=fi)
+    assert ok["verdict"] == "PASS", ok  # rank.alza.81 = 2
+    bad = sf.verify_lectura("Para la competencia, Esencial es la segunda Isapre que más crece desde enero.", p, ficha=fi)
+    assert bad["verdict"] == "FAIL" and all(e.startswith("number_") for e in bad["errors"]), bad  # Esencial is first, not second
+    q3 = {**p, "periods": [*p["periods"], "2026-09"]}  # a package that covers the III quarter
+    assert not any(e.startswith("period") for e in sf.verify_lectura("Para las aseguradoras, el III trimestre definirá la cartera.", q3, ficha=fi)["errors"])
+    assert any(e.startswith("period_not_in_package") for e in sf.verify_lectura("Para las aseguradoras, el cuarto trimestre definirá la cartera.", p, ficha=fi)["errors"])
+    assert sf.verify_lectura("Para las aseguradoras, la cartera crece en 2026 solo en Esencial.", p, ficha=fi)["verdict"] == "PASS"
+
+
+def test_insurer_names_with_number_words_are_masked_before_parsing(root):
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    p = f1.build_package(root)
+    r = sf.verify_lectura("Para la competencia, Vida Tres mantiene su cartera.", p, ficha=fi)
+    assert r["errors"] == ["insurer_not_in_facts:vida_tres"], r  # an insurer error, never a number error
+    facts = {**fi["facts"], "paragraphs": [*fi["facts"]["paragraphs"], "Vida Tres registró −991 beneficiarios."]}
+    with_vt = {**fi, "facts": facts}
+    assert sf.verify_lectura("Para la competencia, Vida Tres mantiene su cartera.", p, ficha=with_vt)["verdict"] == "PASS"
+    r = sf.verify_lectura("Para la competencia, Vida Tres cedió 0,7% de su cartera desde enero.", p, ficha=with_vt)
+    assert r["verdict"] == "PASS", r  # delta.80.ytd_pct = −0,70 %
+    r = sf.verify_lectura("Para la competencia, VidaTres perdió tres beneficiarios.", p, ficha=with_vt)
+    assert any(e.startswith("number_") for e in r["errors"]) and not any("vida" in e for e in r["errors"]), r
+
+
+def test_sentences_without_figures_must_add_an_implication(root):
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    p = f1.build_package(root)
+    assert any(e.startswith("no_implication") for e in sf.verify_lectura("La serie se mantiene estable en el período.", p, ficha=fi)["errors"])
+    shown = "Una razón menor no implica menos ingreso: la cotización la paga el cotizante."
+    assert any(e.startswith("restates_shown_text") for e in sf.verify_lectura(shown, p, ficha=fi)["errors"])
+    reworded = "Para las Isapres, una razón menor no implica menos ingreso, porque paga el cotizante."
+    assert any(e.startswith("restates_shown_text") for e in sf.verify_lectura(reworded, {**p, "causal_note": "n"}, ficha=fi)["errors"])
+    two = ("Para la competencia, Banmédica cedió 0,6 pp de participación entre las abiertas desde enero. "
+           "Para los prestadores, el riesgo de la cartera se concentra en un solo asegurador.")
+    assert sf.verify_lectura(two, p, ficha=fi)["verdict"] == "PASS"
+    mixed = two + " La cartera perdió 814 beneficiarios."
+    assert any(e.startswith("restates_shown") for e in sf.verify_lectura(mixed, p, ficha=fi)["errors"])
+
+
+def test_lectura_pool_is_declared_by_the_builder_not_the_whole_package(root):
+    p = f1.build_package(root)
+    ids = {e["id"] for e in p["lectura_pool"]}
+    assert "share.99.delta_pp" in ids and "contrib.99" in ids and not any(i.startswith("cartera.declarado") for i in ids)
+    assert all(e["id"] in p["values"] for e in p["lectura_pool"])
+    # A package value outside the pool does not trace, even when it is in the package.
+    jan = p["values"]["sistema.beneficiarios.2026-01"]["value"]
+    text = f"Para las Isapres, en enero la cartera tenía {jan:,} beneficiarios.".replace(",", ".")
+    assert any(e.startswith("number_not_in_pool") for e in sf.verify_lectura(text, p)["errors"])
+
+
+def test_registry_declares_the_figure_rule():
+    cfg = sf.load_registry()["lectura"]
+    assert "forbid_numbers" not in cfg and "number_words" not in cfg and cfg["jaccard_max"] == 0.5
+    assert "Dirección 28-oct 15:25" in cfg["figure_rule"] and cfg["max_words"] == 60
 
 
 @pytest.mark.parametrize("text", [
@@ -286,6 +385,21 @@ def test_registry_forbids_numbers_in_lectura():
     "La baja de la cartera lleva a menos ingreso.", "La baja de la cartera llevó a las Isapres a ajustar.",
     "La baja de la cartera produce menos ingreso.", "La cartera cae porque suben los precios.",
     "La cartera cae, ya que suben los precios.", "La cartera cae por efecto de los precios.",
+    # second review (28-oct): preterite, future and infinitive forms, and the synonyms
+    "La baja de la cartera se tradujo en menos ingreso.", "La baja de la cartera tradujo en menos ingreso a las Isapres.",
+    "La baja de la cartera se traducirá en menos ingreso.", "La baja de la cartera traducirá en menos ingreso.",
+    "La baja de la cartera puede deberse a los precios.", "La cartera cae debido a los precios.",
+    "La baja de la cartera conlleva menos ingreso.", "La baja conllevó ajustes en la cartera.",
+    "Los precios inciden en la cartera.", "Los precios incidieron en la cartera.",
+    "Los precios influyen en la cartera.", "Los precios influyeron en la cartera.",
+    "La baja repercute en la cartera.", "La baja repercutió en la cartera.",
+    "Las cargas contribuyen a la baja de la cartera.", "Las cargas contribuyeron a la baja de la cartera.",
+    "Los precios gatillan salidas de la cartera.", "Los precios gatillaron salidas de la cartera.",
+    "La ley desencadenó salidas de la cartera.", "La ley desencadena salidas de la cartera.",
+    "La ley propició salidas de la cartera.", "La ley propicia salidas de la cartera.",
+    "La ley condujo a salidas de la cartera.", "La ley conduce a salidas de la cartera.", "La ley conducirá a salidas.",
+    "La ley dio lugar a salidas de la cartera.", "La ley da lugar a salidas de la cartera.",
+    "La ley dará lugar a salidas de la cartera.", "La ley ha dado lugar a salidas.", "La ley puede dar lugar a salidas.",
 ])
 def test_causal_conjugations_rejected_without_note(root, text):
     p = f1.build_package(root)
@@ -295,7 +409,9 @@ def test_causal_conjugations_rejected_without_note(root, text):
 
 
 @pytest.mark.parametrize("text", ["Las Isapres crecen en general.", "La cartera muestra una generación de ingreso estable.",
-                                  "La competencia entre Isapres se mantiene.", "Para la cartera, la duda es la rentabilidad."])
+                                  "La competencia entre Isapres se mantiene.", "Para la cartera, la duda es la rentabilidad.",
+                                  "La incidencia de cargas en la cartera es estable.", "La contribución de Banmédica al cambio neto domina.",
+                                  "La conducta de la cartera es estable.", "El lugar de Banmédica en la cartera se mantiene."])
 def test_causal_patterns_do_not_flag_plain_words(root, text):
     assert not any(e.startswith("causal") for e in sf.verify_lectura(text, f1.build_package(root))["errors"])
 
@@ -339,19 +455,22 @@ def test_reused_lectura_is_rechecked_with_the_current_verifier(root):
     model = fake_model(GOOD)
     r = f1.run(root, today=TODAY, llm=True, model_call=model, budget=ALLOW)
     assert r["ficha"]["lectura"]["status"] == "verifier_fail" and model.calls == []  # no repeat payment
-    assert any(e.startswith("number_in_lectura") for e in r["ficha"]["lectura"]["verification"]["errors"])
+    assert any(e.startswith("restates_shown") for e in r["ficha"]["lectura"]["verification"]["errors"])
 
 
-def test_lectura_repeating_a_ficha_sentence_is_dropped_after_attach(root):
+def test_lectura_repeating_a_ficha_sentence_is_dropped(root):
     fi = f1.run(root, today=TODAY, llm=False)["ficha"]
     repeated = next(x for tab in fi["tabs"] for x in tab.get("text") or [] if "ingreso" in x and not any(ch.isdigit() for ch in x.split(". ")[1]))
     sentence = repeated.split(". ", 1)[1]
     text = "Para las Isapres, la señal es de estabilidad en la cartera. " + sentence
-    assert sf.verify_lectura(text, f1.build_package(root), ficha=fi)["verdict"] == "PASS"  # passes alone…
+    v = sf.verify_lectura(text, f1.build_package(root), ficha=fi)
+    assert any(e.startswith("restates_shown_text") for e in v["errors"]), v  # caught by the Jaccard rule…
     r = f1.run(root, today=TODAY, llm=True, model_call=fake_model(text), budget=ALLOW)
-    assert r["status"] == "pass" and r["ficha"]["lectura"]["status"] == "verifier_fail"  # …but repeats the ficha
-    assert any("repeated_sentence" in e for e in r["ficha"]["lectura"]["verification"]["ficha_errors"])
+    assert r["status"] == "pass" and r["ficha"]["lectura"]["status"] == "verifier_fail"  # …and the ficha still publishes
     assert sf.public_ficha(r["ficha"])["lectura"] is None
+    # The post-attach whole-ficha check (repeated_sentence) still runs as a second gate.
+    attached = {**fi, "lectura": {"status": "pass", "text": text}}
+    assert any("repeated_sentence" in e for e in sf.verify_ficha(attached, f1.build_package(root))["errors"])
 
 
 def test_lectura_pass_is_published_and_not_paid_twice(root):
@@ -423,6 +542,12 @@ def test_lectura_prompt_encodes_four_lenses(root):
     for lens in ("Negocio de salud", "Analítica de datos", "Editorial", "UI/UX"):
         assert lens in prompt
     assert "Banmédica" in prompt and "Cartera total" in prompt
+    # Figure rule: the prompt lists only new material (not what the ficha shows) and asks for an implication.
+    assert "Material nuevo" in prompt and "share.99.delta_pp" in prompt and "nunca repitas" in prompt.lower()
+    material = sf.lectura_material(fi, f1.build_package(root))
+    ids = {x["id"] for x in material["nuevas"] + material["razones"] + material["rankings"]}
+    assert "contrib.99" not in ids and "sistema.beneficiarios.mm.2026-08" not in ids and "ratio.salidas_por_entrada" in ids
+    assert "Sin cifras" not in prompt and "máximo 60 palabras" in prompt
 
 
 def test_share_page_has_og_preview_and_deep_link(root, tmp_path):
@@ -485,7 +610,7 @@ def test_repo_snapshot_has_august_ficha_and_no_wrong_ges_finding():
     assert not any(str(s.get("title", "")).startswith("Pulso Isapre") for s in rows)
     ges = next(s for s in rows if "casos-ges-auge-de-fonasa-y-sistema-isapre-a-junio-2026" in str(s.get("source_url")))
     assert ges["data_insights"] == [] and ges["statistical_view"]["publication_status"] == "HOLD"
-    assert ges["statistical_view"]["correction"]["text"].startswith("Corregido el 28-oct:")
+    assert ges["statistical_view"]["correction"]["text"].startswith("Corregido el 28 oct:")
     # The withdrawn sentence survives only inside the correction record, never in a displayed field.
     shown = json.dumps([{k: v for k, v in s.items() if k != "data_insight_meta"} for s in rows], ensure_ascii=False)
     assert "presenta el mayor volumen" not in shown
@@ -562,9 +687,13 @@ def test_old_ges_finding_goes_to_hold_and_keeps_withdrawn_text_in_history():
     assert sup["corrected_at"] == "2026-10-28" and sup["reason"] == "parser leía hoja Año 2005"
     assert sup["superseded_parser"] == sf.GES_LEGACY_PARSER and sup["corrected_by_parser"] == sf.GES_PARSER
     view = out["statistical_view"]
-    assert view["publication_status"] == "HOLD" and view["correction"]["text"].startswith("Corregido el 28-oct:")
+    assert view["publication_status"] == "HOLD" and view["correction"]["text"].startswith("Corregido el 28 oct:")
     assert "21 presenta" not in json.dumps(view, ensure_ascii=False)  # shown text never repeats the withdrawn finding
     assert sf.sanitize_ges_signal(out) is out  # idempotent: the record is not rewritten again
+    assert view["correction"]["label"] == "28 oct"  # the row tag and the detail note share this label
+    old_label = {**out, "statistical_view": {**view, "correction": {"corrected_at": "2026-10-28", "text": "Corregido el 28-oct: x"}}}
+    relabeled = sf.sanitize_ges_signal(old_label)["statistical_view"]["correction"]
+    assert relabeled["label"] == "28 oct" and relabeled["text"].startswith("Corregido el 28 oct:")
     # An already-held record without the text (the first version of this fix) is upgraded, never emptied.
     legacy = {**old, "data_insights": [], "data_insight_meta": {"family": "ges", "status": "HOLD", "parser": sf.GES_PARSER,
               "superseded_meta": {"family": "ges", "sheet": "Año 2005", "withdrawn_insights": 1}}}

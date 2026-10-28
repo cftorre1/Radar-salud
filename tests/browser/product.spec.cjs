@@ -467,7 +467,8 @@ test('persistent editorial contract is visible in feed and brief',async({page})=
   const periodOf=t=>{const m=String(t).toLowerCase().match(/– (\p{L}+) (20\d\d)$/u);const i=m?MONTHS.indexOf(m[1]):-1;return i<0?null:`${m[2]}-${String(i+1).padStart(2,'0')}`;};
   const regional=radar.signals.filter(s=>String(s.title).includes('Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'));
   for(const s of regional)expect(periodOf(s.title)>ficha.data_period).toBe(true);
-  await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(Math.min(regional.length,1));}
+  const newer=regional.length;
+  await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(Math.min(newer,1));}
  const opaque=page.locator('article[data-card] h2').filter({hasText:OPAQUE_ACT_TITLE});
  await expect(opaque).toHaveCount(0);
  const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\/N°533 · SIL: actualiza el inventario mensual/})});

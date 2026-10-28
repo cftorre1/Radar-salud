@@ -109,5 +109,10 @@
   root.document.addEventListener('click',e=>{const b=e.target.closest?.('[data-ficha-share]');if(b){e.preventDefault();shareFicha(b);return}const t=e.target.closest?.('[data-sf-tab]');if(t)selectTab(t,false)});
   root.document.addEventListener('keydown',e=>{const t=e.target.closest?.('[data-sf-tab]');if(!t||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;const all=[...t.parentElement.querySelectorAll('[data-sf-tab]')],i=all.indexOf(t);const n=e.key==='Home'?0:e.key==='End'?all.length-1:(i+(e.key==='ArrowRight'?1:-1)+all.length)%all.length;e.preventDefault();selectTab(all[n],true)});
  }
- root.AlicantoFicha={render,shareFicha};
+ // Public correction (CLAUDE.md rule 6): a short dated mark on the row ("Corregido el 28 oct"), the same date label as
+ // the detail note; the export writes it as correction.label.
+ const MON=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+ function correctionLabel(c){if(c.label)return c.label;const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(String(c.corrected_at||''));return m?`${Number(m[3])} ${MON[Number(m[2])-1]}`:''}
+ function correctionTag(s){const c=s&&s.statistical_view&&s.statistical_view.correction;if(!c||!c.corrected_at)return'';const label=correctionLabel(c);return label?` <span class="tag correction-tag" title="${esc(c.text||'')}">Corregido el ${esc(label)}</span>`:''}
+ root.AlicantoFicha={render,shareFicha,correctionTag,correctionLabel};
 })(typeof window!=='undefined'?window:globalThis);
