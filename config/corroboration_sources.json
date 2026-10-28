@@ -189,17 +189,22 @@
     {
       "id": "fne",
       "name": "Fiscalía Nacional Económica (FNE)",
+      "attribution": "la Fiscalía Nacional Económica (FNE)",
       "kind": "official",
-      "status": "disabled_pending_verification",
-      "mode": "none",
+      "status": "enabled",
+      "mode": "corpus_only",
       "live_search": false,
       "excerpt_allowed": false,
       "hosts": ["fne.gob.cl", "www.fne.gob.cl"],
-      "source_slugs": [],
-      "reason": "Relevante para fusiones (p. ej. compra de Empresas Banmédica) pero no hay colector ni corpus. No se verificó si existe un listado abierto o feed de operaciones de concentración notificadas: fne.gob.cl no es accesible desde este entorno y la búsqueda web no devolvió la página oficial del listado.",
-      "evidence_urls": [],
+      "source_slugs": ["fne_competencia"],
+      "source_names": ["Fiscalía Nacional Económica (FNE)"],
+      "issuer_patterns": ["\\bFNE\\b", "(?i)\\bFiscalia Nacional Economica\\b"],
+      "match_on": ["parties", "issuer", "distinctive_terms", "date"],
+      "reason": "Dirección 28-oct-2026 17:08 ('Avanza con FNE y Congreso'). Colector fne_competencia (motor diario): listado oficial de noticias de la FNE, sólo casos del sector salud (fusiones: inicio de investigación/Fase 1, Fase 2, aprobada, aprobada con condiciones, prohibida; conductas, estudios de mercado). Se guarda sólo título, fecha, enlace y etapa/partes derivadas del título; el pie del sitio dice 'Todos los derechos reservados', por eso no se copian bajadas ni cuerpos. Empareja por partes de la operación (party:*), emisor FNE y términos distintivos.",
+      "evidence_urls": ["https://www.fne.gob.cl/comunicaciones/noticias-2/", "https://www.fne.gob.cl/comunicaciones/noticias-2/page/2/", "https://www.fne.gob.cl/fne-aprueba-adquisicion-de-rotter-krauss-por-parte-de-salcobrand/", "https://www.fne.gob.cl/fusiones/buscador/"],
+      "verified": {"in_corpus": "pendiente: el colector entra al motor diario con esta rama; hoy 0 piezas FNE en el historial", "listing_structure": "WebFetch 28-oct-2026: noticias-2 y page/2 leídas (6 ítems por página, fecha 'DD/ MM / YYYY', enlace h3 a /<slug>/, 261 páginas)", "robots_txt": "no leído a mano (WebFetch rechaza la URL de robots.txt por lista de permitidos); WebFetch sí obtuvo noticias-2, page/2 y fichas de noticias, sin bloqueo por robots. El colector lee robots.txt en cada corrida y falla cerrado.", "terms": "pie del sitio: 'Todos los derechos reservados, Fiscalía Nacional Económica'; sin licencia abierta encontrada", "merger_listing": "El 'Buscador' de fusiones no trae listado en el HTML servido (se arma en el navegador); no se halló RSS ni API REST pública. Gap: notificaciones sin comunicado no se ven.", "on": "2026-10-28"},
       "verified_at": "2026-10-28",
-      "next_step": "Ubicar el listado oficial de operaciones de concentración (y si tiene RSS), leer robots.txt y términos; luego un colector corpus_only.",
+      "next_step": "Tras 7 días de corrida diaria, medir piezas FNE capturadas y su aporte a la corroboración; ubicar una fuente estructurada del buscador de fusiones (expediente F-xxx) y leer robots.txt a mano.",
       "reevaluate_after": "2026-11-15"
     },
     {
@@ -228,15 +233,15 @@
       "excerpt_allowed": false,
       "hosts": ["camara.cl", "www.camara.cl"],
       "source_slugs": [],
-      "reason": "Útil para proyectos de ley (p. ej. PDG medicamentos), pero sin colector ni corpus; robots.txt, términos y servicio de datos abiertos no verificados desde aquí.",
-      "evidence_urls": [],
+      "reason": "Servicios web de datos abiertos de la Cámara (opendata.camara.cl/camaradiputados/WServices/*.asmx). WebFetch 28-oct-2026 informó la página del servicio WSLegislativo.asmx como bloqueada por robots.txt (robots_disallowed) y camara.cl/transparencia/datosAbiertos.aspx respondió error; sólo se pudo leer el esquema v1 (ProyectoLey: Id, NumeroBoletin, Nombre, FechaIngreso, ... sin tramitación) y la operación retornarMaterias. No se construye colector propio: los hitos de la Cámara llegan por el servicio de tramitación del Senado (CAMARATRAMITE).",
+      "evidence_urls": ["https://opendata.camara.cl/camaradiputados/v1/Index_ProyectoLey.html", "https://opendata.camara.cl/camaradiputados/WServices/WSLegislativo.asmx/retornarMaterias"],
       "verified_at": "2026-10-28",
-      "next_step": "Verificar servicio de datos abiertos de tramitación (boletín), robots.txt y términos.",
-      "reevaluate_after": "2026-11-15"
+      "next_step": "Leer robots.txt de opendata.camara.cl a mano y las condiciones de uso; si permiten los servicios, evaluar sesiones de la Comisión de Salud de la Cámara.",
+      "reevaluate_after": "2026-11-30"
     },
     {
       "id": "senado",
-      "name": "Senado de Chile",
+      "name": "Senado de Chile (sitio de noticias senado.cl)",
       "kind": "official",
       "status": "disabled_pending_verification",
       "mode": "none",
@@ -244,11 +249,33 @@
       "excerpt_allowed": false,
       "hosts": ["senado.cl", "www.senado.cl"],
       "source_slugs": [],
-      "reason": "Igual que Cámara: sin colector ni corpus; no verificado.",
+      "reason": "Las noticias de senado.cl no se capturan (WebFetch: error del sitio). La tramitación oficial sí: ver 'congreso_tramitacion'.",
       "evidence_urls": [],
       "verified_at": "2026-10-28",
-      "next_step": "Verificar servicio de tramitación por boletín, robots.txt y términos.",
-      "reevaluate_after": "2026-11-15"
+      "next_step": "Ninguno por ahora; la tramitación cubre los hitos.",
+      "reevaluate_after": "2026-12-31"
+    },
+    {
+      "id": "congreso_tramitacion",
+      "name": "Congreso Nacional · Tramitación (servicio web público del Senado)",
+      "attribution": "la tramitación oficial del Congreso (Senado, datos abiertos)",
+      "kind": "official",
+      "status": "enabled",
+      "mode": "corpus_only",
+      "live_search": false,
+      "excerpt_allowed": false,
+      "hosts": ["tramitacion.senado.cl"],
+      "source_slugs": ["congreso_tramitacion"],
+      "source_names": ["Congreso Nacional · Tramitación (Senado, datos abiertos)"],
+      "issuer_patterns": ["\\bSenado\\b", "\\bCamara (de Diputad|Baja)", "(?i)\\bdiputad[oa]s?\\b", "(?i)\\bsenador(a|es)?\\b", "(?i)\\bComision Mixta\\b"],
+      "match_on": ["bill_number", "issuer", "distinctive_terms", "date"],
+      "reason": "Dirección 28-oct-2026 17:08. Colector congreso_tramitacion (motor diario): servicio web público 'Datos Abiertos Legislativos' del Senado, tramitacion.php?fecha= (proyectos con movimiento desde una fecha, máx. un mes). Sólo proyectos de salud (título, materias o Comisión de Salud) y sólo hitos que cambian estado (ingreso, informe de comisión, aprobación en general/particular, rechazo, comisión mixta, despacho, TC, veto, publicación); cuentas, urgencias y citaciones se descartan. Se guardan boletín, título, fechas, etapa y la descripción oficial breve del trámite, con enlace. Empareja por número de boletín (boletin:*), emisor/actor legislativo y términos del título.",
+      "evidence_urls": ["https://tramitacion.senado.cl/wspublico/invoca_tramitacion_fecha.html", "https://tramitacion.senado.cl/wspublico/tramitacion.php?boletin=18623", "https://tramitacion.senado.cl/wspublico/comisiones.php", "https://tramitacion.senado.cl/datos-abiertos-legislativos"],
+      "verified": {"in_corpus": "pendiente: el colector entra al motor diario con esta rama; hoy 0 piezas en el historial", "structure": "WebFetch 28-oct-2026: tramitacion.php?boletin=18623 (XML proyectos/proyecto/descripcion + tramitacion/tramite SESION/FECHA/DESCRIPCIONTRAMITE/ETAPDESCRIPCION/CAMARATRAMITE), comisiones.php (Comisión de Salud = id 195) e invoca_tramitacion_fecha.html (parámetro fecha dd/mm/yyyy, máx. un mes)", "not_verified": "La respuesta de tramitacion.php?fecha= no se pudo leer (WebFetch rechaza la URL construida); se asume la misma raíz <proyectos> que la consulta por boletín. Tampoco se verificó en vivo un proyecto con origen en la Cámara (que CAMARATRAMITE traiga sus trámites).", "robots_txt": "no leído a mano (WebFetch rechaza la URL); WebFetch obtuvo /wspublico/ sin bloqueo por robots. El colector lee robots.txt en cada corrida y falla cerrado.", "terms": "La página 'Datos Abiertos Legislativos' publica el servicio para reutilización; no se encontró texto de licencia ni condiciones. Se guardan sólo metadatos oficiales y texto procedimental breve.", "on": "2026-10-28"},
+      "verified_at": "2026-10-28",
+      "next_step": "Primera corrida diaria: confirmar estructura de tramitacion.php?fecha= y que incluya trámites de la Cámara; leer robots.txt a mano.",
+      "reevaluate_after": "2026-11-15",
+      "issuer_note": "Sólo nombres de las cámaras y sus miembros: 'Congreso', 'proyecto de ley' o 'Comisión de Salud' aparecen en noticias del Minsal y otras fuentes y no identifican un hito legislativo."
     },
     {
       "id": "biobiochile",
@@ -464,5 +491,6 @@
     "max_what_characters": 300,
     "derived_from_paywalled_patterns": ["\\bDiario Financiero\\b", "\\bseg[uú]n (el )?DF\\b", "\\bPulso\\b", "\\bLa Tercera\\b", "\\bEl Mercurio\\b", "\\bEx-Ante\\b"],
     "places": ["Arica", "Iquique", "Antofagasta", "Calama", "Copiapó", "La Serena", "Coquimbo", "Valparaíso", "Viña del Mar", "Quillota", "San Antonio", "Rancagua", "Talca", "Curicó", "Linares", "Chillán", "Concepción", "Los Ángeles", "Temuco", "Valdivia", "Osorno", "Puerto Montt", "Puerto Varas", "Castro", "Coyhaique", "Punta Arenas", "Las Condes", "Vitacura", "Providencia", "Maipú", "Puente Alto", "La Florida", "Ñuñoa", "Colombia", "Perú", "España", "Argentina", "Brasil", "México", "Estados Unidos"]
-  }
+  },
+  "decided_by_fne_congreso": "Dirección (cftorre1), 28-oct-2026 17:08: \"Avanza con FNE y Congreso\". Prensa abierta sigue en inventario con su estado, sin habilitar."
 }

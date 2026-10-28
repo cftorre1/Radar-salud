@@ -16,7 +16,10 @@
   ],
   "direccion_2026_10_27_cmf": "CMF es fuente de monitoreo diario obligatorio (prestadores con valores inscritos: CLC, ILC/RedSalud, Indisa). Los 5 eventos verificados anteriores a la ventana de 30 días (2-ago a 14-sep) NO se publican; quedan archivados en historial. Solo se publican hechos esenciales nuevos.",
   "activated_daily_2026_10_28": [
-    "superintendencia_noticias"
+    "superintendencia_noticias",
+    "fne_competencia",
+    "congreso_tramitacion"
   ],
-  "direccion_2026_10_28_sis_noticias": "Noticias y comunicados de la Superintendencia de Salud entran a la captura diaria (motor diario): máximo 7 días sin consulta, como toda fuente diaria. La SIS publica pocas noticias (19 entre marzo y octubre de 2026); la frescura se mide por consulta exitosa del listado, no por publicación nueva."
+  "direccion_2026_10_28_sis_noticias": "Noticias y comunicados de la Superintendencia de Salud entran a la captura diaria (motor diario): máximo 7 días sin consulta, como toda fuente diaria. La SIS publica pocas noticias (19 entre marzo y octubre de 2026); la frescura se mide por consulta exitosa del listado, no por publicación nueva.",
+  "direccion_2026_10_28_fne_congreso": "Dirección 28-oct-2026 17:08: 'Avanza con FNE y Congreso'. fne_competencia (listado oficial de noticias FNE, sólo salud) y congreso_tramitacion (servicio web público de tramitación del Senado, proyectos de salud) entran a la captura diaria con regla de 7 días; primera consulta diaria con gracia de 3 días desde la activación. Ambas corren sólo en el motor diario (RADAR_FNE / RADAR_CONGRESO o RADAR_CAPTURE_EVIDENCE=1)."
 }

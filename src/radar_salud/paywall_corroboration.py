@@ -120,7 +120,8 @@ def act_ids(text: str) -> set[str]:
     for kind, num in _ACT.findall(fold(text)):
         k = re.sub(r"[^a-z ]", "", kind.casefold()).strip()
         k = "resolucion" if k.startswith("res") else _ACT_KIND.get(k, k.split(" ")[0])
-        n = re.sub(r"[^\d]", "", num)
+        # Boletín 18.255-31: the root number identifies the bill; the suffix is the committee code
+        n = re.sub(r"[^\d]", "", num.split("-")[0] if k == "boletin" else num)
         # "ley 2026" or a 1-2 digit "ley 5" is not an act id; laws in force are 5 digits (21.xxx)
         if k == "ley" and len(n) != 5:
             continue
@@ -214,6 +215,7 @@ class Doc:
     origin: str
     feat: Features | None = None
     excluded: str | None = None
+    parties: list[str] = field(default_factory=list)
 
     @property
     def attribution(self) -> str:
@@ -238,7 +240,7 @@ def _doc_from_signal(row: dict, registry: Registry, origin: str) -> Doc | None:
         return None
     return Doc(url=url, title=clean_teaser(row.get("title")), text=text, field="what_happened", source=source,
                source_name=row.get("source_name") or source["name"], event_date=_day(row.get("event_date")),
-               origin=origin)
+               origin=origin, parties=[p.get("name") for p in row.get("fne_parties") or [] if p.get("name")])
 
 
 def _doc_from_queue(item: dict, registry: Registry, statuses: set[str]) -> Doc | None:
@@ -256,7 +258,8 @@ def _doc_from_queue(item: dict, registry: Registry, statuses: set[str]) -> Doc |
     return Doc(url=url, title=clean_teaser(md.get("article_title") or raw.get("title")), text=text,
                field="raw.metadata.what_happened", source=source,
                source_name=raw.get("source_name") or source["name"], event_date=_day(raw.get("event_date")),
-               origin="data/state/pending_queue.json")
+               origin="data/state/pending_queue.json",
+               parties=[p.get("name") for p in md.get("parties") or [] if p.get("name")])
 
 
 def _docs_from_cmf(root: Path, registry: Registry) -> list[Doc]:
@@ -346,12 +349,18 @@ class CorpusIndex:
         self.catalog = catalog or entity_watch.load_catalog()
         fingerprints = load_fingerprints() if fingerprints is None else fingerprints
         self.docs = []
+        self.party_rx: dict[str, re.Pattern] = {}
         for doc in docs:
             if any(rx.search(fold(doc.text)) for rx in registry.derived):
                 doc.excluded = "derived_from_paywalled_press"  # not independent of the paywalled piece
             elif contains_fingerprinted(doc.text, fingerprints):
                 doc.excluded = "contains_paywalled_body"
             doc.feat = features(f"{doc.title} {doc.text}", registry, own_source=doc.source, catalog=self.catalog)
+            for name in doc.parties:  # FNE merging parties (Dirección 28-oct-2026 17:08)
+                key = party_key(name)
+                if key:
+                    self.party_rx.setdefault(key, party_regex(key))
+                    doc.feat.entities.add(key)
             self.docs.append(doc)
         counts: dict[str, int] = {}
         for doc in self.docs:
@@ -368,8 +377,29 @@ class CorpusIndex:
             names += [src.get("name") or "", src.get("attribution") or ""]
         self.name_terms = set().union(*(terms(x) for x in names)) if names else set()
 
+    def parties_in(self, text: str) -> set[str]:
+        folded = fold(text).casefold()
+        return {k for k, rx in self.party_rx.items() if rx.search(folded)}
+
     def distinctive(self, ts: set[str]) -> set[str]:
         return {t for t in ts if t not in self.common and t not in self.name_terms}
+
+
+_PARTY_GENERIC = {"grupo", "empresas", "holding", "fondo", "fondos", "sociedad", "inversiones", "chile", "clinica",
+                  "laboratorio", "laboratorios", "farmacia", "farmacias", "isapre", "hospital"}
+
+
+def party_key(name: str) -> str | None:
+    """Entity key for a merging party named by the FNE ("party:rotter & krauss"), or None if too generic."""
+    words = re.findall(r"[a-z0-9ñ&]+", fold(name).casefold())
+    if not words or all(w in _PARTY_GENERIC or w in _STOP for w in words) or len("".join(words)) < 4:
+        return None
+    return "party:" + " ".join(words)
+
+
+def party_regex(key: str) -> re.Pattern:
+    words = key.split(":", 1)[1].split(" ")
+    return re.compile(r"(?<![a-z0-9ñ])" + r"[\s.,\-]*".join(re.escape(w) for w in words) + r"(?![a-z0-9ñ])")
 
 
 def _same_amount(a: float, b: float) -> bool:
@@ -380,7 +410,11 @@ def _same_amount(a: float, b: float) -> bool:
 def conflicts(p: Features, d: Features) -> list[str]:
     """Facts in the paywalled title/lead that the candidate states differently."""
     out = []
-    if p.acts and d.acts and not (p.acts & d.acts):
+    # Only IDs of the same kind can disagree: a press "Ley 21.674" and a bill's
+    # "boletín 18255" name different things, not different versions of one act.
+    kinds = {a.split(":")[0] for a in p.acts} & {a.split(":")[0] for a in d.acts}
+    if any(not ({a for a in p.acts if a.startswith(k + ":")} & {a for a in d.acts if a.startswith(k + ":")})
+           for k in kinds):
         out.append("act_id")
     for unit, value in sorted(p.amounts):
         same_unit = {v for u, v in d.amounts if u == unit}
@@ -546,6 +580,7 @@ def corroborate(item: dict, index: CorpusIndex, *, judge: Judge | None = None) -
     m = registry.matching
     pf = features(f"{item['title']} {item.get('teaser') or ''}", registry, catalog=index.catalog)
     pf.terms = terms(item["title"])  # recall is measured on the headline: the lead may be a quote
+    pf.entities |= index.parties_in(f"{item['title']} {item.get('teaser') or ''}")
     original = f"Fuente original: {item.get('paywall_name') or 'prensa con muro de pago'} (contenido para suscriptores)"
     base = {"status": "none", "checked_at": CHECKED_AT, "original_label": original, "what": [], "related_sources": []}
     matches = []
