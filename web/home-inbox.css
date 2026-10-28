@@ -406,3 +406,24 @@ main{max-width:none;margin:0;padding:0 0 70px}
 .source-suggestion-cta strong{font-weight:600;color:var(--ink68)}
 .source-suggestion-cta button{border:0;background:none;color:var(--accent-ink);font-weight:700;padding:0;cursor:pointer;white-space:nowrap}
 .source-suggestion-cta button::after{content:" →"}
+
+/* WATCH · entidades (Dirección 27-oct-2026): chips inside the card's meta line and a searchable
+   "Entidades" group inside the existing Intereses sheet/rail. No rows are added above the feed. */
+.ent-chips{display:inline;white-space:normal}
+.ent-chip{position:relative;display:inline-flex;align-items:center;min-height:24px;max-width:15em;padding:0 8px;margin:0 0 0 5px;border:1px solid var(--ink12);border-radius:999px;background:#fff;font:inherit;font-size:11px;font-weight:650;line-height:1;color:var(--ink84);cursor:pointer;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ent-chip::after{content:"";position:absolute;inset:-5px -2px}
+.ent-chip:hover{border-color:var(--ink48);color:var(--ink)}
+.ent-chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.ent-chip:focus-visible{outline:2px solid #E3A24F;outline-offset:1px}
+.ent-more{margin-left:4px;font-size:11px;color:var(--ink48);vertical-align:middle}
+.chip.ent{border-color:var(--ink)}
+.entity-box{margin-top:4px}
+.entity-search{display:block;box-sizing:border-box;width:100%;min-height:44px;margin:0 0 8px;padding:0 12px;border:1px solid var(--ink18);border-radius:10px;background:#fff;font:inherit;font-size:14px;color:var(--ink)}
+.entity-search:focus-visible{outline:2px solid #E3A24F;outline-offset:1px}
+.entity-list .tog{font-size:12.5px}
+.entity-more,.entity-empty{margin:6px 0 0;font-size:11.5px;color:var(--ink48)}
+.entity-empty{grid-column:1/-1}
+.rail-find{color:var(--ink68)}
+.rail-find .box{box-shadow:none!important;background:none!important;position:relative}
+.rail-find .box::before{content:"+";position:absolute;inset:-3px 0 0;text-align:center;font-size:15px;line-height:1;color:var(--ink48)}
+.chip.ent .ent-icon{width:13px;height:13px;margin-left:-2px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
