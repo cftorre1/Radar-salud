@@ -731,11 +731,26 @@ test('a shared link is revealed once in a lane that shows it and never rewrites 
  await expect(page.locator('[data-lane="p"]')).toHaveAttribute('aria-pressed','true');await expect(page.locator(`[id="sig-${id}"]`)).toHaveCount(0);
  expect(JSON.parse(await page.evaluate(()=>localStorage.getItem('alicanto_filters'))).lane).toBe('p');
 });
-test('in Todas a dot marks read, disappears and keeps focus on the same row',async({page})=>{
+// Dirección 28-oct 03:49: a read row keeps source, date and its buttons (link, share, mark unread);
+// only tone and weight change. Supersedes 'the dot disappears' of design B.
+test('in Todas a read row keeps source, date and buttons, and the dot toggles back',async({page})=>{
  await page.goto('/');await selectLane(page,'t');
  const row=page.locator('#local article[data-card]:not(.read)').first();const id=await row.getAttribute('data-card');const same=page.locator(`#local [data-card="${id}"]`);
- await same.locator('[data-read]').click();await expect(same).toHaveClass(/read/);await expect(same.locator('[data-read]')).toBeHidden();
- await expect(same.locator('.title-open')).toBeFocused();
+ const meta=await same.locator('.meta-text').innerText();expect(meta.trim().length).toBeGreaterThan(4);
+ const dot=same.locator('[data-read]');await dot.click();await expect(same).toHaveClass(/read/);
+ await expect(dot).toBeVisible();await expect(dot).toBeFocused();await expect(dot).toHaveAttribute('aria-label',/^Marcar como no leído/);
+ await expect(same.locator('.card-meta')).toBeVisible();await expect(same.locator('.meta-text')).toHaveText(meta);
+ await expect(same.locator('.item-actions a[aria-label="Fuente original"]')).toBeVisible();await expect(same.locator('.item-actions [data-share]')).toBeVisible();
+ const size=await same.locator('h2').evaluate(el=>getComputedStyle(el).fontSize);expect(size).toBe(await page.locator('#local article[data-card]:not(.read) h2').first().evaluate(el=>getComputedStyle(el).fontSize));
+ await page.reload();await expect(same).toHaveClass(/read/);await expect(same.locator('.meta-text')).toHaveText(meta);await expect(same.locator('[data-read]')).toBeVisible();
+ await same.locator('[data-read]').click();await expect(same).not.toHaveClass(/read/);await expect(same.locator('[data-read]')).toHaveAttribute('aria-label',/^Marcar como leído/);
+});
+test('Global read rows keep publisher and date',async({page})=>{
+ await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('all');await page.locator('#globalLanes [data-lane="t"]').click();
+ const row=page.locator('#themes .theme:not(.read)').first();const id=await row.getAttribute('data-theme');const same=page.locator(`#theme-${id}`);
+ const meta=await same.locator('.meta-text').innerText();
+ await same.locator('[data-read]').click();await expect(same).toHaveClass(/read/);
+ await expect(same.locator('.meta-text')).toBeVisible();await expect(same.locator('.meta-text')).toHaveText(meta);await expect(same.locator('[data-read]')).toHaveAttribute('aria-label',/^Marcar como no leído/);
 });
 // Dirección 27-oct 22:44 (puntos 2, 3 y 5) supersede the lanes menu of PR #72 review N1: read status is an
 // always-visible segmented control; topics are one compact multi-select dropdown floating over the feed;

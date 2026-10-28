@@ -335,8 +335,10 @@ main{max-width:none;margin:0;padding:0 0 70px}
 #local .signal.item .card-meta{display:block;margin:3px 0 0;padding:0;border:0;font-size:12px;line-height:1.5;color:var(--ink68)}
 #local .item-actions{display:inline-flex;align-items:center;gap:0;margin-left:-4px;vertical-align:-4px;white-space:nowrap}
 #local .signal.item.read{padding-top:9px;padding-bottom:9px;min-height:44px}
-#local .signal.item.read h2{font-weight:400;font-size:14px;color:var(--ink68)}
-#local .signal.item.read .card-meta{display:none}
+/* Read rows keep source, date and actions (Dirección 28-oct 03:49): only tone and weight change. */
+#local .signal.item.read h2{font-weight:400;color:var(--ink68)}
+#local .signal.item.read .card-meta{color:var(--ink48)}
+#local .signal.item .dotbtn.done{color:var(--ink48)}
 #local .signal.item.leaving{opacity:0;max-height:0;padding-top:0;padding-bottom:0}
 .inbox-empty{padding:18px var(--gutter);margin:0;color:var(--ink68);font-size:14px}
 .newsletter-strip{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 calc(-1 * var(--gutter));padding:8px var(--gutter) 8px 40px;background:#fff;border-bottom:1px solid var(--ink09);font-size:12.5px;line-height:1.35;color:var(--ink68)}
