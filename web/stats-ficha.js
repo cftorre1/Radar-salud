@@ -1,5 +1,5 @@
 // Statistics ficha (Dirección 28-oct-2026), mirrors Insight format A: kicker → headline → dek → KPI strip →
-// two charts with "Ver datos" → Qué muestran los datos → Lectura Alicanto → Qué mirar → Notas → Fuentes.
+// tabs (charts + their own analysis) → Lectura Alicanto → Qué mirar (≤ 2) → 'Notas y fuentes' (collapsed).
 // Every number arrives formatted or as a value from the evidence package; this file only lays out.
 (function(root){
  const C={ink:'#1D3345',ink70:'#4F6170',ink50:'#6B7884',axis:'#B9B3A6',accent:'#C37C37'};
@@ -87,12 +87,14 @@
    `<p class="sf-dek">${dek(f)}</p>${share}`+
    `<section class="sf-kpis" aria-label="Indicadores clave">${arr(f.kpis).map(kpi).join('')}</section>`+
    tabs(f)+
-   `<div class="sf-essay"><section class="sf-facts"><h3>${esc(f.facts?.heading||'Qué muestran los datos')}</h3>${arr(f.facts?.paragraphs).map(p=>`<p>${esc(p)}</p>`).join('')}</section>`+
-   (lect?`<section class="sf-reading"><h3>Lectura Alicanto</h3><p>${esc(lect)}</p></section>`:'')+`</div>`+
-   (arr(f.watch).length?`<aside class="sf-watch"><h3>Qué mirar</h3><ol>${arr(f.watch).map(w=>`<li><strong>${esc(w.headline)}</strong> ${esc(w.explanation)}</li>`).join('')}</ol></aside>`:'')+
-   `<footer class="sf-notes">${arr(f.notes).length?`<h3>Notas sobre la evidencia</h3><ol>${arr(f.notes).map(n=>`<li>${esc(n.text)}</li>`).join('')}</ol>`:''}`+
+   // Dirección 28-oct 08:20: each tab carries its own analysis, so 'Qué muestran los datos' is not a separate
+   // section unless the ficha predates that layout; notes, sources and the machine note sit behind one toggle.
+   (f.facts?.rendered_in_tabs||!arr(f.facts?.paragraphs).length?'':`<section class="sf-facts"><h3>${esc(f.facts?.heading||'Qué muestran los datos')}</h3>${arr(f.facts?.paragraphs).map(p=>`<p>${esc(p)}</p>`).join('')}</section>`)+
+   (lect?`<section class="sf-reading"><h3>Lectura Alicanto</h3><p>${esc(lect)}</p></section>`:'')+
+   (arr(f.watch).length?`<aside class="sf-watch"><h3>Qué mirar</h3><ol>${arr(f.watch).slice(0,2).map(w=>`<li><strong>${esc(w.headline)}</strong> ${esc(w.explanation)}</li>`).join('')}</ol></aside>`:'')+
+   `<details class="sf-notes"><summary>Notas y fuentes</summary>${arr(f.notes).length?`<h3>Notas sobre la evidencia</h3><ol>${arr(f.notes).map(n=>`<li>${esc(n.text)}</li>`).join('')}</ol>`:''}`+
    `<h3>Fuentes</h3><ul>${sources.map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a> <span class="sf-role">· ${esc(s.role||'')}</span><br><code>sha256 ${esc(String(s.sha256||'').slice(0,12))}… · ${esc(s.locator||'')}${s.fetched_at?` · capturado ${fmtDay(String(s.fetched_at).slice(0,10))}`:''}</code></li>`).join('')}</ul>`+
-   (f.machine_note?`<p class="sf-machine">${esc(f.machine_note)}</p>`:'')+`</footer></article>`;
+   (f.machine_note?`<p class="sf-machine">${esc(f.machine_note)}</p>`:'')+`</details></article>`;
  }
  // "Compartir informe": stable deep link back to Alicanto; Web Share API with copy-link fallback. No email.
  async function shareFicha(button){

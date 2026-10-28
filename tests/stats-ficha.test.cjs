@@ -6,7 +6,10 @@ const pub={...live};delete pub.evidence;
 
 test('ficha renders the Insight A order with tabs, KPI strip and data tables',()=>{
  const html=load().render(pub,{shareId:'sig-stats-ficha:F1:2026-08',shareUrl:'data/fichas/f1_cartera.html'});
- const order=['sf-kicker','sf-headline','sf-dek','sf-share','sf-kpis','sf-tabs','sf-facts','sf-watch','sf-notes'];
+ const order=['sf-kicker','sf-headline','sf-dek','sf-share','sf-kpis','sf-tabs','sf-watch','sf-notes'];
+ // Dirección 28-oct 08:20: no separate 'Qué muestran los datos'; notes and sources behind one collapsed toggle.
+ assert.doesNotMatch(html,/class="sf-facts"/);assert.match(html,/<details class="sf-notes"><summary>Notas y fuentes<\/summary>/);
+ assert.equal((html.match(/<li><strong>/g)||[]).length,2);assert.doesNotMatch(html,/Por qué importa/);
  const at=order.map(k=>html.indexOf(k));assert.ok(at.every(i=>i>=0),JSON.stringify(at));assert.deepEqual([...at].sort((a,b)=>a-b),at);
  assert.match(html,/id="detailTitle"/);assert.match(html,/2\.486\.683/);assert.match(html,/agosto 2026/);
  assert.equal((html.match(/role="tab"/g)||[]).length,5);assert.equal((html.match(/role="tabpanel"/g)||[]).length,5);
@@ -39,5 +42,5 @@ test('snapshot carries the August ficha and its share page has an OG preview',()
  const snap=JSON.parse(fs.readFileSync('web/data/radar_today.json','utf8'));const card=snap.signals.find(s=>s.stats_ficha);
  assert.equal(card.data_period,'2026-08');assert.equal(card.share_url,'data/fichas/f1_cartera.html');assert.equal(card.stats_ficha.evidence,undefined);
  const page=fs.readFileSync('web/data/fichas/f1_cartera.html','utf8');
- assert.match(page,/<meta property="og:title" content="[^"]+· Alicanto Salud"/);assert.match(page,/url=\.\.\/\.\.\/index\.html#sig-stats-ficha:F1:2026-08/);
+ assert.match(page,/<meta property="og:title" content="[^"]+· Alicanto Salud"/);assert.match(page,/url=\.\.\/\.\.\/index\.html\?abrir=1#sig-stats-ficha:F1:2026-08/);assert.match(page,/twitter:card" content="summary"/);
 });

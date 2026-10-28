@@ -9,7 +9,7 @@
   "release_key": "2026-08:b1dc62eb1a40b0f3",
   "kicker": "Cartera y movilidad",
   "kicker_meta": "datos a agosto 2026 · publicado por la SIS el 2 oct · se actualiza cada mes",
-  "headline": "La salida de afiliados de las Isapres casi se detiene: en agosto perdieron 814 beneficiarios, la menor baja del año",
+  "headline": "La cartera Isapre casi deja de caer: −814 beneficiarios en agosto, la menor baja del año",
   "headline_type": "record_low_decline",
   "dek": "El sistema terminó agosto con 2.486.683 beneficiarios, 27.355 menos que en enero. Los cotizantes subieron por segundo mes consecutivo, y Banmédica concentra el 77% de la baja neta.",
   "dek_emphasis": "2.486.683 beneficiarios",
@@ -323,6 +323,7 @@
         }
       ],
       "text": [
+        "Entre enero y agosto, la cartera de Isapres bajó en 27.355 beneficiarios (−1,09%). La pérdida mensual tocó su máximo en abril (−6.188) y desde entonces se redujo en cada mes, hasta −814 en agosto.",
         "El stock más alto del período fue en enero (2.514.038) y el más bajo en agosto (2.486.683)."
       ]
     },
@@ -591,6 +592,7 @@
         }
       ],
       "text": [
+        "Por Isapre, Banmédica registró −20.948 beneficiarios desde enero y su participación entre las abiertas pasó de 23,1% a 22,5%. Esencial (+7.016) y Nueva Masvida (+5.461) crecieron.",
         "Banmédica aporta el 77% del cambio neto del sistema desde enero, medido sobre la variación total de la cartera."
       ]
     },
@@ -811,6 +813,7 @@
         }
       ],
       "text": [
+        "Las cargas corresponden al 78% de la variación (−21.460); los cotizantes cayeron 5.895 en el mismo período y en agosto anotaron +1.296 frente a julio.",
         "La razón de cargas por cotizante pasó de 0,615 a 0,603. Una razón menor no implica menos ingreso: la cotización la paga el cotizante."
       ]
     },
@@ -935,7 +938,8 @@
       "Entre enero y agosto, la cartera de Isapres bajó en 27.355 beneficiarios (−1,09%). La pérdida mensual tocó su máximo en abril (−6.188) y desde entonces se redujo en cada mes, hasta −814 en agosto.",
       "Las cargas corresponden al 78% de la variación (−21.460); los cotizantes cayeron 5.895 en el mismo período y en agosto anotaron +1.296 frente a julio.",
       "Por Isapre, Banmédica registró −20.948 beneficiarios desde enero y su participación entre las abiertas pasó de 23,1% a 22,5%. Esencial (+7.016) y Nueva Masvida (+5.461) crecieron."
-    ]
+    ],
+    "rendered_in_tabs": true
   },
   "watch": [
     {
@@ -945,10 +949,6 @@
     {
       "headline": "Participación de Banmédica entre las abiertas (22,5% en agosto).",
       "explanation": "Una variación de 0,30 pp o más, con 5.000 personas o más, frente al inicio del año marca un cruce de umbral en esta ficha."
-    },
-    {
-      "headline": "Resultados financieros de las Isapres (F2).",
-      "explanation": "Cuando Alicanto lea la planilla financiera de la SIS, esta cartera se cruzará con siniestralidad y margen por beneficiario."
     }
   ],
   "notes": [
@@ -1005,7 +1005,8 @@
   "featured": true,
   "triggers": [
     "new_period",
-    "threshold_crossed"
+    "threshold_crossed",
+    "format_update"
   ],
   "late_release": null,
   "revisions": [],
@@ -1015,8 +1016,8 @@
     "cost_usd": 0.0
   },
   "status": "PASS",
-  "generated_at": "2026-10-28T08:10:11.059707+00:00",
-  "builder_version": "f1_tabs_v2",
+  "generated_at": "2026-10-28T12:04:55.154120+00:00",
+  "builder_version": "f1_compact_v4",
   "verification": {
     "verdict": "PASS",
     "errors": [],

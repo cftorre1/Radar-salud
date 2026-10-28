@@ -21,7 +21,7 @@ from . import stats_fichas as sf
 from .stats_fichas import fmt_dec, fmt_int, fmt_signed, month_label, month_name, value
 
 FAMILY = "F1"
-BUILDER_VERSION = "f1_tabs_v2"  # a new builder republishes the same release (no archive, no new paid Lectura)
+BUILDER_VERSION = "f1_compact_v4"  # a new builder republishes the same release (no archive, no new paid Lectura)
 METRIC_COL = {"cotizantes": "C", "cargas": "D", "beneficiarios": "E"}
 
 
@@ -141,7 +141,10 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
 
     t, base = periods[-1], periods[0]
     prev = periods[-2] if len(periods) > 1 else None
-    entities = [{"code": c, "name": names.get(c, str(c)), "group": "abiertas" if c in open_codes else "cerradas"}
+    missing_names = sorted(c for c in open_codes | closed_codes if not names.get(c))
+    if missing_names:  # never show a code or a placeholder in place of a captured name
+        raise ValueError(f"entity_name_missing:{missing_names}")
+    entities = [{"code": c, "name": names[c], "group": "abiertas" if c in open_codes else "cerradas"}
                 for c in sorted(open_codes | closed_codes)]
 
     def derived(vid, val, formula, inputs, unit="personas", period=t):
@@ -339,7 +342,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     htype = pick["type"]
     head_tpl = tpl["headline"].get(htype) or tpl["headline"]["no_change"]
     kpi_label = kp.get(pick.get("kpi") or "", {}).get("label", "")
-    headline = head_tpl.format(month=month, delta_abs=fmt_int(abs(mm_t)), streak=pick.get("streak", ""),
+    headline = head_tpl.format(month=month, delta_abs=fmt_int(abs(mm_t)), delta_signed=fmt_signed(mm_t), streak=pick.get("streak", ""),
                                entity=names.get(pick.get("entity"), ""), share=fmt_dec(k["contributions"].get(pick.get("entity"), 0), 0),
                                year=sf.period_parts(t)[0], streak_word=sf.ordinal(k["cot_streak"]), kpi_label=kpi_label.lower())
     headline = headline[0].upper() + headline[1:]
@@ -482,12 +485,12 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                  "source": "Denominador: cotizantes del mismo mes."}
     tabs = [
         {"id": "total", "label": "Cartera total", "charts": [chart1, chart_stock],
-         "text": [f"El stock más alto del período fue en {month_name(smax)} ({fmt_int(k['B'][smax])}) y el más bajo en {month_name(smin)} ({fmt_int(k['B'][smin])})."]},
+         "text": [paragraphs[0], f"El stock más alto del período fue en {month_name(smax)} ({fmt_int(k['B'][smax])}) y el más bajo en {month_name(smin)} ({fmt_int(k['B'][smin])})."]},
         {"id": "isapres", "label": "Por Isapre", "charts": [chart2, chart_share],
-         "text": ([f"{names[conc['entity']]} aporta el {fmt_dec(k['contributions'][conc['entity']], 0)}% del cambio neto del sistema desde {base_month}, medido sobre la variación total de la cartera."]
+         "text": [paragraphs[-1]] + ([f"{names[conc['entity']]} aporta el {fmt_dec(k['contributions'][conc['entity']], 0)}% del cambio neto del sistema desde {base_month}, medido sobre la variación total de la cartera."]
                   if conc else ["Ninguna Isapre abierta concentra la mitad del cambio neto del sistema."])},
         {"id": "mezcla", "label": "Cotizantes y cargas", "charts": [chart_cot, chart_mix],
-         "text": [f"La razón de cargas por cotizante pasó de {fmt_dec(mix['base'], 3)} a {fmt_dec(mix['t'], 3)}. Una razón menor no implica menos ingreso: la cotización la paga el cotizante."]},
+         "text": ([paragraphs[1]] if len(paragraphs) == 3 else []) + [f"La razón de cargas por cotizante pasó de {fmt_dec(mix['base'], 3)} a {fmt_dec(mix['t'], 3)}. Una razón menor no implica menos ingreso: la cotización la paga el cotizante."]},
     ]
     if "movilidad.diferencia_intervalo" in v or package.get("suscripciones"):
         mov_charts, mov_text = [], []
@@ -536,8 +539,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     share_to = v[f"share.{top}.{t}"]["value"]
     watch.append({"headline": f"Participación de {names[top]} entre las abiertas ({fmt_dec(share_to, 1)}% en {month}).",
                   "explanation": "Una variación de 0,30 pp o más, con 5.000 personas o más, frente al inicio del año marca un cruce de umbral en esta ficha."})
-    watch.append({"headline": "Resultados financieros de las Isapres (F2).",
-                  "explanation": "Cuando Alicanto lea la planilla financiera de la SIS, esta cartera se cruzará con siniestralidad y margen por beneficiario."})
+    watch = watch[:2]  # Dirección 28-oct 08:20: a compact 'Qué mirar'
 
     # Notas sobre la evidencia (fixed pitfalls + dynamic)
     notes = [
@@ -569,7 +571,9 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         "kicker_meta": tpl["kicker_meta"].format(period_label=period_label, published_label=sf.day_label(package["published_at"]), cadence_phrase=cfg["cadence_phrase"]),
         "headline": headline, "headline_type": htype, "dek": dek, "dek_emphasis": dek_emphasis,
         "kpis": kpis, "tabs": tabs,
-        "facts": {"heading": "Qué muestran los datos", "paragraphs": paragraphs},
+        # 'Qué muestran los datos' is folded into the tabs (Dirección 28-oct 08:20); kept as data only, for the
+        # verifier and the Lectura prompt, and never rendered as its own section.
+        "facts": {"heading": "Qué muestran los datos", "paragraphs": paragraphs, "rendered_in_tabs": True},
         "watch": watch, "notes": notes, "sources": sources, "machine_note": machine,
         "featured": bool((decision or {}).get("featured")), "triggers": triggers, "late_release": late,
         "revisions": package.get("revisions") or [],
@@ -596,7 +600,7 @@ def run(root: Path, *, today: date, registry: dict | None = None, llm: bool = Tr
     if decision["decision"] == "HOLD":
         return {**base, "status": "hold", "errors": decision["holds"], "candidate": {"reconciliation": package.get("reconciliation")}}
     if decision["decision"] == "NO_CHANGE" and previous and previous.get("builder_version") != BUILDER_VERSION:
-        decision = {**decision, "decision": "PUBLISH", "triggers": [*(previous.get("triggers") or []), "format_update"]}
+        decision = {**decision, "decision": "PUBLISH", "triggers": list(dict.fromkeys([*(previous.get("triggers") or []), "format_update"]))}
         base["decision"] = decision
     retry_lectura = (decision["decision"] == "NO_CHANGE" and previous
                      and (previous.get("lectura") or {}).get("status") in {"not_attempted", "no_budget"} and llm)
@@ -616,6 +620,17 @@ def run(root: Path, *, today: date, registry: dict | None = None, llm: bool = Tr
     else:
         lect = sf.generate_lectura(ficha, package, registry=registry, enabled=llm, model_call=model_call, budget=budget)
     ficha["lectura"] = lect
+    if lect.get("status") == "pass":
+        # Re-run the whole deterministic verification with the Lectura attached (repeated sentences, audience,
+        # numbers): a Lectura that breaks it is dropped and the code-written ficha still publishes.
+        # A reused Lectura (same release, already paid) is re-checked with the current verifier too.
+        again = sf.verify_lectura(lect.get("text"), package, registry=registry, ficha=ficha)
+        with_lectura = sf.verify_ficha(ficha, package)
+        if with_lectura["verdict"] != "PASS" or again["verdict"] != "PASS":
+            lect = {**lect, "status": "verifier_fail", "rejected_text": lect.get("text"), "text": None,
+                    "verification": {**(lect.get("verification") or {}), "verdict": "FAIL", "errors": again["errors"],
+                                     "ficha_errors": with_lectura["errors"]}}
+            ficha["lectura"] = lect
     if lect.get("status") == "pass":
         ficha["machine_note"] += f" Costo de IA: USD {lect.get('cost_usd', 0):.4f}."
     else:

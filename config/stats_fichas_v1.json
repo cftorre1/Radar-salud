@@ -27,44 +27,203 @@
     "hold": "Falla la conciliación (Σ por Isapre ≠ total declarado), el período es anterior al publicado o falta el hash: HOLD, no se publica."
   },
   "lectura": {
-    "max_words": 90,
+    "max_words": 60,
     "route": "luna",
     "max_output_tokens": 400,
     "max_run_usd": 0.05,
-    "causal_patterns": [
-      "debido a",
-      "debida a",
-      "a causa de",
-      "causa",
-      "causó",
-      "causado",
-      "causada",
-      "provoca",
-      "provocó",
-      "provocado",
-      "explica",
-      "explican",
-      "explicado",
-      "explicó",
-      "se debe",
-      "se deben",
-      "gracias a",
-      "producto de",
-      "a raíz de",
-      "por efecto de",
-      "como consecuencia",
-      "consecuencia de",
-      "atribuible",
-      "atribuye",
-      "atribuido",
-      "impulsad*",
-      "motivad*",
-      "genera",
-      "generó",
-      "originad*",
-      "responde a"
+    "forbid_numbers": true,
+    "forbid_numbers_reason": "La Lectura no lleva cifras: el titular, los KPI y 'Qué muestran los datos' ya las traen con unidad, signo y período. Se rechaza cualquier dígito o carácter numérico Unicode y toda palabra numérica, fracción, múltiplo u ordinal (number_words).",
+    "number_words": [
+      "cero",
+      "dos",
+      "tres",
+      "cuatro",
+      "cinco",
+      "seis",
+      "siete",
+      "ocho",
+      "nueve",
+      "diez",
+      "once",
+      "doce",
+      "trece",
+      "catorce",
+      "quince",
+      "dieci\\w+",
+      "veint\\w*",
+      "trein\\w*",
+      "cuarent\\w*",
+      "cincuent\\w*",
+      "sesent\\w*",
+      "setent\\w*",
+      "ochent\\w*",
+      "novent\\w*",
+      "cien",
+      "ciento\\w*",
+      "\\w+cient[oa]s",
+      "mil",
+      "miles",
+      "millar\\w*",
+      "millon\\w*",
+      "billon\\w*",
+      "decena\\w*",
+      "docena\\w*",
+      "centena\\w*",
+      "centenar\\w*",
+      "doble\\w*",
+      "duplic\\w*",
+      "triple\\w*",
+      "triplic\\w*",
+      "cuadrupl\\w*",
+      "mitad\\w*",
+      "tercio\\w*",
+      "cuarto\\w*",
+      "quinto\\w*",
+      "sexto\\w*",
+      "septimo\\w*",
+      "octavo\\w*",
+      "noveno\\w*",
+      "decimo\\w*",
+      "primer\\w*",
+      "segund[oa]s?",
+      "tercer\\w*",
+      "porcentaje\\w*",
+      "por ciento",
+      "porcentual\\w*",
+      "pp",
+      "pb",
+      "mm"
     ],
-    "pattern_syntax": "Palabra o frase completa; un '*' final indica prefijo (impulsad* = impulsado, impulsada…)."
+    "causal_patterns": [
+      "debid[oa]s? a",
+      "a causa de",
+      "caus\\w*",
+      "provoc\\w*",
+      "explic\\w*",
+      "deb(?:e|en|ia|ian|io|ieron|era|eria|ido|ida)\\s+al?",
+      "se deb\\w*",
+      "gracias al?",
+      "producto de",
+      "fruto de",
+      "a raiz de",
+      "efecto de",
+      "consecuencia\\w*",
+      "atribu\\w*",
+      "impuls\\w*",
+      "motiv\\w*",
+      "origin\\w*",
+      "origen\\w*",
+      "respond\\w* al?",
+      "gener(?:a|an|aba|aban|o|aron|ado|ada|ados|adas|ando|ara|aran|aria|arian|e|en|ar)",
+      "se tradu\\w*",
+      "traduc\\w* en",
+      "llev\\w* al?",
+      "produc(?:e|en|ia|ian|io|ieron|ido|ida|idos|idas|iendo|ir|ira|iria)",
+      "produj\\w*",
+      "deriv\\w* de",
+      "obedec\\w*",
+      "detras de",
+      "empuj\\w*",
+      "arrastr\\w*",
+      "porque",
+      "ya que",
+      "dado que",
+      "puesto que",
+      "por (?:eso|ello|esto|lo tanto)",
+      "de ahi que",
+      "por culpa de",
+      "resultado de",
+      "como resultado"
+    ],
+    "pattern_syntax": "Expresiones regulares sobre el texto en minúsculas y sin tildes; cada una calza como palabra completa (\\w* final = cualquier conjugación).",
+    "insurers": [
+      {
+        "key": "fonasa",
+        "code": null,
+        "names": [
+          "Fonasa",
+          "Fondo Nacional de Salud"
+        ]
+      },
+      {
+        "key": "banmedica",
+        "code": 99,
+        "names": [
+          "Banmédica",
+          "Banmedica"
+        ]
+      },
+      {
+        "key": "colmena",
+        "code": 67,
+        "names": [
+          "Colmena",
+          "Golden Cross"
+        ]
+      },
+      {
+        "key": "consalud",
+        "code": 107,
+        "names": [
+          "Consalud"
+        ]
+      },
+      {
+        "key": "cruz_blanca",
+        "code": 78,
+        "names": [
+          "Cruz Blanca"
+        ]
+      },
+      {
+        "key": "nueva_masvida",
+        "code": 81,
+        "names": [
+          "Nueva Más Vida",
+          "Nueva Masvida",
+          "Masvida",
+          "Más Vida"
+        ]
+      },
+      {
+        "key": "vida_tres",
+        "code": 80,
+        "names": [
+          "Vida Tres"
+        ]
+      },
+      {
+        "key": "esencial",
+        "code": 108,
+        "names": [
+          "Esencial"
+        ]
+      },
+      {
+        "key": "isalud",
+        "code": 63,
+        "names": [
+          "Isalud",
+          "Fusat"
+        ]
+      },
+      {
+        "key": "fundacion",
+        "code": 76,
+        "names": [
+          "Fundación"
+        ]
+      },
+      {
+        "key": "cruz_del_norte",
+        "code": 94,
+        "names": [
+          "Cruz del Norte"
+        ]
+      }
+    ],
+    "insurers_rule": "Solo se pueden nombrar aseguradores del paquete (entity_codes) que además aparecen en 'Qué muestran los datos'. Fonasa no está en el paquete F1.",
+    "max_words_note": "Dirección 28-oct 08:20: Lectura corta (el prompt pide ≤ 50 palabras; el verificador corta en 60, dentro del tope de 90 de la decisión 3)."
   },
   "families": {
     "F1": {
@@ -212,14 +371,14 @@
       "templates": {
         "kicker": "{label}",
         "headline": {
-          "sign_change": "La cartera de las Isapres vuelve a crecer: en {month} sumó {delta_abs} beneficiarios tras {streak} meses de baja",
-          "record_low_decline": "La salida de afiliados de las Isapres casi se detiene: en {month} perdieron {delta_abs} beneficiarios, la menor baja del año",
-          "record_high_decline": "Las Isapres anotan su mayor baja del año: en {month} perdieron {delta_abs} beneficiarios",
+          "sign_change": "La cartera Isapre vuelve a crecer: {delta_signed} beneficiarios en {month} tras {streak} meses de baja",
+          "record_low_decline": "La cartera Isapre casi deja de caer: {delta_signed} beneficiarios en {month}, la menor baja del año",
+          "record_high_decline": "La cartera Isapre anota su mayor baja del año: {delta_signed} beneficiarios en {month}",
           "concentration": "{entity} concentra el {share}% de la baja neta de la cartera Isapre en lo que va de {year}",
           "sustained_sign_change": "Los cotizantes de Isapre suben por {streak_word} mes consecutivo y suman {delta_abs} en {month}",
           "threshold_crossed": "Cartera Isapre a {month}: {kpi_label} cruza su umbral de cambio",
           "no_change": "Cartera Isapre a {month}: sin cambios significativos en el mes",
-          "record_low_decline_moderate": "La baja de la cartera Isapre se modera: en {month} perdió {delta_abs} beneficiarios, la menor caída mensual del año"
+          "record_low_decline_moderate": "La baja de la cartera Isapre se modera: {delta_signed} beneficiarios en {month}, la menor caída mensual del año"
         },
         "dek": "El sistema terminó {month} con {benef} beneficiarios, {delta_ytd_abs} {more_less} que en {base_month}.{cot_clause}{concentration_clause}",
         "facts": {
@@ -228,7 +387,8 @@
           "entities": "Por Isapre, {top_entity} registró {top_delta} beneficiarios desde {base_month} y su participación entre las abiertas pasó de {top_share_from}% a {top_share_to}%.{gainers_clause}"
         },
         "kicker_meta": "datos a {period_label} · publicado por la SIS el {published_label} · {cadence_phrase}",
-        "dek_emphasis": "{benef} beneficiarios"
+        "dek_emphasis": "{benef} beneficiarios",
+        "headline_rule": "Los titulares describen el stock de beneficiarios al cierre de mes (cambio neto entre stocks), nunca flujos: 'salida de afiliados', 'salieron' o 'se fueron' quedan reservados a la pestaña de movilidad, que mide entradas y salidas entre cortes."
       },
       "tabs": [
         {
@@ -258,7 +418,7 @@
           "status": "se agrega cuando se capturen precios/planes"
         }
       ],
-      "builder_version": "f1_tabs_v2"
+      "builder_version": "f1_compact_v4"
     },
     "F2": {
       "slug": "f2_financieras",

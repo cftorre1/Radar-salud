@@ -31,7 +31,11 @@ test('F1 ficha opens with tabs, readable charts and a share link',async({page})=
  await expect(body.getByRole('tab',{name:'Cotizantes y cargas'})).toBeFocused();
  await body.getByRole('tab',{name:/Regional/}).click();
  await expect(body.locator('.sf-panel:not([hidden]) .sf-links a').first()).toHaveAttribute('href',/a-nivel-regional-agosto-2026/);
- await expect(body.locator('.sf-watch li')).toHaveCount(3);
+ await expect(body.locator('.sf-watch li')).toHaveCount(2);
+ await expect(body.locator('.sf-facts')).toHaveCount(0);
+ // Notes and sources stay behind one collapsed toggle until opened.
+ await expect(body.locator('details.sf-notes')).not.toHaveAttribute('open','');
+ await body.locator('details.sf-notes summary').click();
  await expect(body.locator('.sf-notes')).toContainText('denominador');
  // Touch targets for tabs and the share action.
  for(const loc of [body.locator('[role=tab]').first(),body.locator('.sf-share')]){const box=await loc.boundingBox();expect(box.height).toBeGreaterThanOrEqual(44)}
@@ -52,4 +56,23 @@ test('the F1 share page redirects to the ficha deep link',async({page})=>{
  await page.goto('/data/fichas/f1_cartera.html');
  await page.waitForURL(/index\.html#sig-stats-ficha/);
  await expect(page.locator('article[data-card]').filter({hasText:card.title})).toHaveCount(1);
+ // The share link opens the ficha detail, not just the row.
+ await expect(page.locator('#signalDetail')).toBeVisible();
+ await expect(page.locator('#detailBody .sf-headline')).toHaveText(card.stats_ficha.headline);
+ expect(page.url()).not.toContain('abrir=1');
+});
+
+test('the withdrawn GES finding shows a dated public correction',async({page})=>{
+ const snap=JSON.parse(fs.readFileSync('web/data/radar_today.json','utf8'));
+ const ges=snap.signals.find(s=>s.statistical_view&&s.statistical_view.correction);
+ expect(ges).toBeTruthy();
+ // The GES release (14-oct) is after the suite's pinned fixture day; pin the clock to the correction day.
+ await page.clock.setFixedTime(new Date('2026-10-28T12:00:00-03:00'));
+ await page.route('**/data/radar_today.json',route=>route.fulfill({json:{date:'2026-10-28',generated_at:'2026-10-28T12:00:00Z',signals:[ges]}}));
+ await page.goto('/');
+ const row=page.locator('article[data-card]').filter({hasText:ges.title});
+ await expect(row.locator('.correction-tag')).toHaveText(/Corregido el 28.oct/);
+ await row.locator('[data-detail]').first().click();
+ await expect(page.locator('#detailBody .stat-correction')).toContainText('Corregido el 28-oct:');
+ await expect(page.locator('#detailBody')).not.toContainText('21 presenta');
 });

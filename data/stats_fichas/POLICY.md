@@ -56,16 +56,20 @@
   - worst case ≤ USD 0.05 per run;
   - the shared counters in `ai_budget`, the paced monthly budget (`paced_budget_usd`) and the weekly cap enforced by `openai_runtime.call_json`.
 - **Verifier** (`verify_lectura`), which rejects:
-  - any number not in the package;
-  - causal verbs without a causal note;
-  - Isapres outside the package;
-  - more than 90 words;
-  - URLs.
+  - **any number at all** (`forbid_numbers`, review FAIL of 28-oct): digits, any Unicode numeric character and number words, fractions, multiples and ordinals (`number_words`: veinte, mil, millones, doble, triple, mitad, tercio, cuarto, segundo…). The KPI strip and "Qué muestran los datos" already carry every figure with its unit, sign and period, so the Lectura adds implication only; this closes every unit, sign, year and bag-of-values bypass by construction;
+  - causal wording without a causal note (`causal_patterns`, regular expressions over the folded text that cover conjugations: impuls…, origin…, responde a(l), provoc…, gener…, deb… a, explic…, caus…, atribu…, se traduce, lleva a, produce, porque…);
+  - any insurer (full catalog with aliases, Fonasa included) that is not in the package **and** named in "Qué muestran los datos";
+  - more than 90 words, and URLs.
+  - After the Lectura is attached, the whole ficha is verified again (repeated sentences, audience); a failure drops the Lectura and the ficha still publishes.
 - **No repeat payment:** a paid attempt for the same `release_key` is never repeated automatically. Only `not_attempted` and `no_budget` are retried.
 
 ## Web
 
 - `scripts/export_web_snapshot.py` emits each live ficha as a feed card (`stats_ficha`). It removes:
   - the legacy "Pulso Isapre" card;
-  - the loose cartera, regional cartera, suscripciones and movilidad cards that the ficha supersedes.
-- `web/stats-ficha.js` renders the ficha with a "Compartir informe" action. That action uses the Web Share API, falls back to copying the link, and sends no email.
+  - the loose cartera, regional cartera, suscripciones and movilidad cards whose release the ficha covers: monthly cards with a period ≤ the ficha's data period, and month-less yearly books published on or before the ficha's release (the #84 rule). A newer release stays visible until the ficha updates.
+- `web/stats-ficha.js` renders the ficha with a "Compartir informe" action. That action shares `data/fichas/<slug>.html` (OG preview, `twitter:card` summary), which redirects to `index.html?abrir=1#sig-…` and opens the ficha detail. It uses the Web Share API, falls back to copying the link, and sends no email.
+
+## Corrections
+
+- A withdrawn finding keeps its text verbatim in `superseded_meta` (`withdrawn_insight_texts`), with `corrected_at`, `reason` and the superseded and correcting parser versions (CLAUDE.md rule 6). The card shows a short dated note ("Corregido el 28-oct: …").

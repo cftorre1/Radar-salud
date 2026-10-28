@@ -66,3 +66,11 @@
 .sf-links a{color:var(--ink,#1D3345);text-decoration-color:var(--accent,#C37C37);text-underline-offset:2px}
 @media (min-width:820px){.sf-tablist{margin:0 0 14px;padding:0 0 4px}}
 @media (min-width:820px){.sf-kpis{grid-template-columns:repeat(4,1fr);gap:12px}.sf-charts{grid-template-columns:1fr 1fr;gap:20px}}
+/* Public correction note (CLAUDE.md rule 6): dated mark on the row, full note in the detail. */
+.correction-tag{margin-left:6px;background:#F4EFE6;color:var(--ink,#1D3345)}
+.stat-correction{font-size:13px;margin:0 0 10px;padding:8px 12px;border-radius:8px;background:#F4EFE6;color:var(--ink,#1D3345)}
+/* Dirección 28-oct 08:20: tab analysis carries the facts; notes and sources sit behind one toggle. */
+.sf-tab-text{max-width:640px}
+.sf-reading{max-width:640px}
+.sf-notes summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:650;font-size:14px;color:var(--ink,#1D3345)}
+.sf-notes[open] summary{margin-bottom:12px}

@@ -95597,7 +95597,17 @@
             "isapre_column": 4,
             "aggregation": "none"
           },
-          "withdrawn_insights": 1
+          "withdrawn_insight_texts": [
+            "21 presenta el mayor volumen combinado entre las filas comparables detectadas en la tabla GES del corte 2026-06; no se infiere prevalencia ni causalidad."
+          ],
+          "withdrawn_data_insights": [
+            "21 presenta el mayor volumen combinado entre las filas comparables detectadas en la tabla GES del corte 2026-06; no se infiere prevalencia ni causalidad."
+          ],
+          "withdrawn_insights": 1,
+          "corrected_at": "2026-10-28",
+          "reason": "parser leía hoja Año 2005",
+          "superseded_parser": "ges_first_sheet_v1",
+          "corrected_by_parser": "ges_pinned_year_reconciled_v2"
         }
       },
       "validity_text": null,
@@ -95616,7 +95626,20 @@
       "scopes": [
         "Isapres"
       ],
-      "ingestion_mode": "BACKFILL"
+      "ingestion_mode": "BACKFILL",
+      "statistical_view": {
+        "family": "ges",
+        "publication_status": "HOLD",
+        "hold_reason": "HOLD_GES_UNPINNED_OR_UNRECONCILED",
+        "limitations": [
+          "La lectura automática de la planilla GES no fijó la hoja del año en curso ni concilió la suma con el total declarado; el hallazgo queda retenido hasta la ficha GES (F4)."
+        ],
+        "correction": {
+          "corrected_at": "2026-10-28",
+          "text": "Corregido el 28-oct: se retiró un hallazgo automático que leía la hoja de otro año de la planilla y no conciliaba con el total declarado; vuelve con la ficha GES."
+        },
+        "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-a-junio-2026/"
+      }
     },
     {
       "title": "Tercera Subcomisión Mixta de Presupuestos aprueba partida del Ministerio de Salud para 2027: recursos aumentan 4,7% y superan los $18,3 billones",

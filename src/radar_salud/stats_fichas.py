@@ -239,24 +239,71 @@ def _isapre_catalog(root: Path = ROOT) -> list[dict]:
 
 
 def _fold(text: str) -> str:
-    return str(text or "").casefold().translate(str.maketrans("áéíóúü", "aeiouu"))
+    return str(text or "").casefold().translate(str.maketrans("áéíóúüñ", "aeiouun"))
+
+
+def _word_rx(pattern: str) -> re.Pattern:
+    """A registry pattern (regex over folded text) that must match whole words."""
+    return re.compile(r"(?<![a-z0-9])(?:" + pattern + r")(?![a-z0-9])")
+
+
+def _name_rx(name: str) -> re.Pattern:
+    """Insurer name, folded; spaces and hyphens optional ('Vida Tres' = 'VidaTres' = 'vida-tres')."""
+    parts = [re.escape(x) for x in re.split(r"[\s-]+", _fold(name)) if x]
+    return re.compile(r"(?<![a-z0-9])" + r"[\s-]*".join(parts) + r"(?![a-z0-9])")
+
+
+def insurer_catalog(registry: dict | None = None, catalog: list[dict] | None = None) -> list[dict]:
+    """Every insurer the Lectura could name: the registry list (Fonasa included) plus entity aliases."""
+    reg = (registry or load_registry())["lectura"].get("insurers") or []
+    out = [{"key": e["key"], "code": e.get("code"), "names": list(e.get("names") or [])} for e in reg]
+    by_code = {e["code"]: e for e in out if e["code"] is not None}
+    for e in (catalog if catalog is not None else _isapre_catalog()):
+        code = int(e.get("official_code"))
+        names = [n for n in {e.get("commercial_name"), *(e.get("aliases") or [])} if n]
+        if code in by_code:
+            by_code[code]["names"] += names
+        else:
+            out.append({"key": f"code_{code}", "code": code, "names": names})
+    for e in out:  # legal suffixes and the 'Isapre' prefix are not part of the matchable name
+        e["names"] = sorted({re.sub(r"(?i)^isapre\s+|\s+(s\.a\.|ltda\.|spa)$", "", n).strip() for n in e["names"]} - {""})
+    return out
+
+
+def insurers_mentioned(text: str, catalog: list[dict]) -> set[str]:
+    folded = _fold(text)
+    return {e["key"] for e in catalog if any(len(_fold(n)) >= 4 and _name_rx(n).search(folded) for n in e["names"])}
 
 
 def isapres_mentioned(text: str, catalog: list[dict]) -> set[int]:
+    """Official codes of the Isapres named in ``text`` (entities catalog format)."""
+    cat = insurer_catalog({"lectura": {"insurers": []}}, catalog)
+    keys = insurers_mentioned(text, cat)
+    return {e["code"] for e in cat if e["key"] in keys and e["code"] is not None}
+
+
+def numeric_tokens(text: str, number_words: list[str]) -> list[str]:
+    """Digits, any Unicode numeric character (½, Ⅳ, ²…) and number words, fractions, multiples, ordinals."""
+    import unicodedata
+    found = [ch for ch in str(text or "") if ch.isdigit() or unicodedata.numeric(ch, None) is not None]
     folded = _fold(text)
-    found = set()
-    for e in catalog:
-        names = {e.get("commercial_name"), *(e.get("aliases") or [])}
-        for name in filter(None, names):
-            n = _fold(name)
-            if len(n) >= 4 and re.search(r"(?<![a-z])" + re.escape(n) + r"(?![a-z])", folded):
-                found.add(int(e["official_code"]))
-                break
+    for pat in number_words:
+        found += [m.group(0) for m in _word_rx(pat).finditer(folded)]
     return found
 
 
-def verify_lectura(text: str, package: dict, *, registry: dict | None = None, catalog: list[dict] | None = None) -> dict:
-    cfg = (registry or load_registry())["lectura"]
+def verify_lectura(text: str, package: dict, *, registry: dict | None = None, catalog: list[dict] | None = None,
+                   ficha: dict | None = None) -> dict:
+    """Deterministic gate for the model-written Lectura (decision 3).
+
+    Numbers: with ``forbid_numbers`` (the registry default) the Lectura may not carry ANY number: no digit or
+    Unicode numeric character and no number word, fraction, multiple or ordinal. The KPI strip and 'Qué muestran
+    los datos' already show every figure with its unit, sign and period, so the Lectura only adds implication;
+    this removes every unit/sign/period/year mismatch by construction instead of matching a bag of values.
+    Insurers: only names in the package AND in the ficha's facts (Fonasa or an unlisted Isapre always fail).
+    """
+    registry = registry or load_registry()
+    cfg = registry["lectura"]
     errors: list[str] = []
     text = str(text or "").strip()
     if not text:
@@ -264,20 +311,29 @@ def verify_lectura(text: str, package: dict, *, registry: dict | None = None, ca
     words = len(text.split())
     if words > int(cfg["max_words"]):
         errors.append(f"over_{cfg['max_words']}_words:{words}")
-    for tok in text_numbers_trace(text, number_pool(package)):
-        errors.append(f"number_not_in_evidence:{tok}")
+    if cfg.get("forbid_numbers", True):
+        for tok in numeric_tokens(text, cfg.get("number_words") or []):
+            errors.append(f"number_in_lectura:{tok}")
+    else:  # legacy mode kept only for families that opt out explicitly
+        for tok in text_numbers_trace(text, number_pool(package)):
+            errors.append(f"number_not_in_evidence:{tok}")
     if not package.get("causal_note"):
         folded = _fold(text)
         for pat in cfg["causal_patterns"]:
-            stem = pat.endswith("*")
-            rx = r"(?<![a-z])" + re.escape(_fold(pat.rstrip("*"))) + ("" if stem else r"(?![a-z])")
-            if re.search(rx, folded):
-                errors.append(f"causal_without_note:{pat}")
-    allowed = {int(c) for c in package.get("entity_codes") or []}
-    for code in sorted(isapres_mentioned(text, catalog if catalog is not None else _isapre_catalog())):
-        if code not in allowed:
-            errors.append(f"isapre_not_in_package:{code}")
-    if re.search(r"https?://", text):
+            m = _word_rx(pat).search(folded)
+            if m:
+                errors.append(f"causal_without_note:{m.group(0)}")
+    cat = insurer_catalog(registry, catalog)
+    in_package = {int(c) for c in package.get("entity_codes") or []}
+    facts = " ".join(((ficha or {}).get("facts") or {}).get("paragraphs") or [])
+    allowed = {e["key"] for e in cat if e["code"] in in_package} & insurers_mentioned(facts, cat)
+    for key in sorted(insurers_mentioned(text, cat)):
+        entry = next(e for e in cat if e["key"] == key)
+        if entry["code"] not in in_package:
+            errors.append(f"insurer_not_in_package:{key}")
+        elif key not in allowed:
+            errors.append(f"insurer_not_in_facts:{key}")
+    if re.search(r"https?://|www\.", text):
         errors.append("url_in_lectura")
     if not any(a in _fold(text) for a in AUDIENCE):
         errors.append("business_lens_no_audience")
@@ -288,7 +344,10 @@ def lectura_prompt(ficha: dict, package: dict) -> str:
     facts = " ".join(ficha.get("facts", {}).get("paragraphs") or [])
     tabs = [{"tema": t.get("label"), "lectura": t.get("text")} for t in ficha.get("tabs") or []]
     kpis = [{"kpi": k.get("label"), "valor": k.get("value"), "detalle": k.get("lines")} for k in ficha.get("kpis") or []]
-    names = sorted({e.get("name") for e in package.get("entities") or [] if e.get("name")})
+    facts_cat = insurer_catalog()
+    named = insurers_mentioned(facts, facts_cat)
+    names = sorted({e.get("name") for e in package.get("entities") or [] if e.get("name")
+                    and any(c["key"] in named and c["code"] == e.get("code") for c in facts_cat)})
     return (
         "Escribe la 'Lectura Alicanto' de una ficha estadística de Alicanto Salud (inteligencia de negocios de salud en Chile). "
         "Es lo que convierte los datos en una decisión: el valor está en la implicancia, no en repetir cifras.\n"
@@ -298,10 +357,13 @@ def lectura_prompt(ficha: dict, package: dict) -> str:
         "- Editorial: directo, sin repetir el titular ni 'Qué muestran los datos', sin relleno.\n"
         "- UI/UX: dos o tres frases cortas que se lean en el celular de un vistazo.\n"
         "Reglas que se verifican de forma automática (si fallas, el texto se descarta):\n"
-        "1. Máximo 80 palabras, en español de Chile, sin títulos ni viñetas.\n"
-        "2. Solo puedes usar cifras que aparecen abajo, escritas igual (formato 1.234 y 12,3). Mejor si no usas cifras.\n"
-        "3. No afirmes causas: no uses 'debido a', 'explica', 'provoca', 'gracias a', 'producto de', 'se debe'.\n"
-        f"4. Solo puedes nombrar estas Isapres: {', '.join(names)}.\n"
+        "1. Breve: dos frases, máximo 50 palabras, en español de Chile, sin títulos ni viñetas.\n"
+        "2. Sin cifras: ningún dígito, porcentaje, año ni palabra numérica (dos, mil, millones, doble, mitad, tercio, segundo…). "
+        "Los KPI ya muestran los números; tú das la implicancia.\n"
+        "3. No afirmes causas: no uses 'debido a', 'explica', 'provoca', 'impulsa', 'genera', 'lleva a', 'se traduce', 'responde a', "
+        "'porque', 'gracias a', 'producto de', 'se debe' ni sus conjugaciones.\n"
+        f"4. Solo puedes nombrar estas Isapres: {', '.join(names)}. No nombres Fonasa ni otras Isapres; no uses las palabras "
+        "'esencial' ni 'fundación' salvo como nombre de esas Isapres.\n"
         "5. Nombra al menos un actor afectado (Isapres, aseguradores, prestadores, inversionistas o cotizantes).\n"
         "6. No inventes hechos, fechas ni fuentes.\n"
         'Devuelve solo JSON: {"lectura": "..."}\n\n'
@@ -379,7 +441,7 @@ def generate_lectura(ficha: dict, package: dict, *, registry: dict | None = None
     output = getattr(result, "output", None) or {}
     text = str(output.get("lectura") or "").strip() if isinstance(output, dict) else ""
     cost = float(getattr(result, "estimated_cost_usd", 0) or 0)
-    verification = verify_lectura(text, package, registry=registry, catalog=catalog)
+    verification = verify_lectura(text, package, registry=registry, catalog=catalog, ficha=ficha)
     _record(verification["verdict"] == "PASS")
     base = {"model": getattr(result, "model", model), "response_id": getattr(result, "response_id", None),
             "cost_usd": round(cost, 6), "verification": verification}
@@ -430,7 +492,7 @@ def lens_checks(ficha: dict, package: dict) -> dict:
     - editorial: headline ≤ 140, dek ≤ 40 words, no sentence repeated across blocks.
     - ui: 3–5 KPIs, 2–6 tabs, ≤ 2 charts per tab, ≤ 12 rows per chart, every chart has a data table,
       subtitle and short labels.
-    - business: 'Qué mirar' has 2–3 items with the next release; the Lectura (if any) names an audience.
+    - business: 'Qué mirar' has 1–2 items with the next release; the Lectura (if any) names an audience.
     """
     values = package.get("values") or {}
     out = {"data": [], "editorial": [], "ui": [], "business": []}
@@ -447,7 +509,8 @@ def lens_checks(ficha: dict, package: dict) -> dict:
         out["editorial"].append("headline_over_140")
     if len(str(ficha.get("dek") or "").split()) > 40:
         out["editorial"].append("dek_over_40_words")
-    blocks = [ficha.get("dek"), *((ficha.get("facts") or {}).get("paragraphs") or []),
+    facts = (ficha.get("facts") or {})
+    blocks = [ficha.get("dek"), *([] if facts.get("rendered_in_tabs") else (facts.get("paragraphs") or [])),
               *[x for tab in ficha.get("tabs") or [] for x in tab.get("text") or []],
               *[n.get("text") for n in ficha.get("notes") or []]]
     lect = ficha.get("lectura") or {}
@@ -482,7 +545,7 @@ def lens_checks(ficha: dict, package: dict) -> dict:
         if any(len(str(r.get("label") or "")) > 18 for r in rows):
             out["ui"].append(f"chart_label_long:{c.get('id')}")
     watch = ficha.get("watch") or []
-    if not 2 <= len(watch) <= 3:
+    if not 1 <= len(watch) <= 2:  # Dirección 28-oct 08:20: compact Qué mirar
         out["business"].append("watch_out_of_range")
     if lect.get("status") == "pass" and not any(a in _fold(lect.get("text")) for a in AUDIENCE):
         out["business"].append("lectura_without_audience")
@@ -507,9 +570,21 @@ def verify_ficha(ficha: dict, package: dict) -> dict:
                     continue
                 if ref not in values or values[ref]["value"] * row.get("sign", 1) != row.get(key):
                     errors.append(f"chart_row_not_in_evidence:{chart.get('id')}:{row.get('label')}")
+    captured = {s.get("url"): s.get("sha256") for s in (package.get("sources") or {}).values()}
     for src in ficha.get("sources") or []:
         if not str(src.get("url") or "").startswith("https://") or not HEX64.fullmatch(str(src.get("sha256") or "")):
             errors.append(f"source_without_hash:{src.get('label')}")
+        elif captured.get(src.get("url")) != src.get("sha256"):
+            errors.append(f"source_not_captured:{src.get('label')}")  # never invent a source
+    reg = package.get("regional") or {}
+    captured_links = {reg.get("url"), *(reg.get("documents") or [])} - {None}
+    for tab in ficha.get("tabs") or []:
+        for link in tab.get("links") or []:
+            if link.get("url") not in captured_links:
+                errors.append(f"link_not_captured:{tab.get('id')}")
+    for text in displayed_texts(ficha):
+        if re.search(r"\{[a-z_]+\}|lorem ipsum|placeholder|ejemplo ilustrativo|dato ilustrativo|\bn/d\b", text, re.I):
+            errors.append(f"template_placeholder:{text[:40]}")
     lenses = lens_checks(ficha, package)
     for lens, errs in lenses.items():
         errors += [f"{lens}:{e}" for e in errs]
@@ -596,7 +671,8 @@ def ficha_card(ficha: dict, cfg: dict) -> dict:
         "piece_id": f"stats-ficha:{ficha['family']}:{ficha['period']}",
         "title": ficha["headline"], "display_title": ficha["headline"],
         "source_name": "Superintendencia de Salud", "source_type": "official",
-        "source_url": cfg.get("release_page") or (ficha.get("sources") or [{}])[0].get("url"),
+            # Only a captured source (URL + SHA-256 in the evidence package) may back the card link.
+        "source_url": (ficha.get("sources") or [{}])[0].get("url"),
         "event_date": ficha["published_at"], "publication_date": ficha["published_at"],
         "validation_date": str(ficha.get("generated_at") or "")[:10] or None,
         "data_period": ficha["period"], "event_type": "DATA_PULSE", "category": "Datos sectoriales",
@@ -628,8 +704,36 @@ def _stat_family(s: dict) -> str | None:
     return None
 
 
+def loose_card_period(card: dict) -> str | None:
+    """Data period of a loose SIS statistics card: '… – Agosto 2026' → '2026-08'; None for yearly files."""
+    if card.get("data_period"):
+        try:
+            period_parts(card["data_period"])
+            return card["data_period"]
+        except ValueError:
+            pass
+    m = re.search(r"[–-]\s*([a-záéíóú]+)\s+(20\d{2})\s*$", _fold(card.get("title")))
+    if m and m[1] in MONTHS_ES:
+        return f"{m[2]}-{MONTHS_ES.index(m[1]) + 1:02d}"
+    return None
+
+
+def ficha_covers(card: dict, ficha: dict) -> bool:
+    """A loose card is absorbed only when the ficha already covers its release.
+
+    Monthly cards ('… – Agosto 2026'): absorbed when their period ≤ the ficha's data period. Cards without a
+    month (cumulative '– año 2026' books): absorbed when published on or before the ficha's release, as in the
+    pulse rule of #84 (commit 6099d0d8). A newer release (e.g. September) stays visible until the ficha updates.
+    """
+    period = loose_card_period(card)
+    if period:
+        return period_parts(period) <= period_parts(ficha["period"])
+    day = str(card.get("event_date") or card.get("publication_date") or "")[:10]
+    return bool(day) and day <= str(ficha.get("published_at") or "")[:10]
+
+
 def apply_to_snapshot(cards: list[dict], fichas: list[dict], registry: dict | None = None) -> list[dict]:
-    """One live ficha per family: add its card and drop the loose cards and pulses it supersedes."""
+    """One live ficha per family: add its card and drop the pulses and loose cards whose release it covers."""
     registry = registry or load_registry()
     out = list(cards)
     for ficha in fichas:
@@ -637,8 +741,15 @@ def apply_to_snapshot(cards: list[dict], fichas: list[dict], registry: dict | No
         sup = cfg.get("supersedes") or {}
         prefixes = tuple(sup.get("event_titles_prefix") or ())
         fams = set(sup.get("stat_families") or ())
-        out = [c for c in out if not ((prefixes and str(c.get("title") or "").startswith(prefixes) and c.get("event_type") == "DATA_PULSE")
-                                      or (_stat_family(c) in fams) or str(c.get("piece_id") or "").startswith(f"stats-ficha:{ficha['family']}:"))]
+
+        def superseded(c: dict) -> bool:
+            if str(c.get("piece_id") or "").startswith(f"stats-ficha:{ficha['family']}:"):
+                return True
+            if prefixes and str(c.get("title") or "").startswith(prefixes) and c.get("event_type") == "DATA_PULSE":
+                return True
+            return _stat_family(c) in fams and ficha_covers(c, ficha)
+
+        out = [c for c in out if not superseded(c)]
         out.append(ficha_card(ficha, cfg))
     return out
 
@@ -653,7 +764,8 @@ def share_page(card: dict) -> str:
     from html import escape
     ficha = card["stats_ficha"]
     target_id = "sig-" + (card.get("piece_id") or base64.b64encode(str(card.get("source_url")).encode()).decode())
-    target = "../../index.html#" + target_id
+    # '?abrir=1' makes the app open the ficha detail, not just scroll to its row.
+    target = "../../index.html?abrir=1#" + target_id
     page_url = SITE_URL + card["share_url"]
     title = escape(f"{ficha['headline']} · Alicanto Salud", quote=True)
     desc = escape(ficha.get("dek") or "", quote=True)
@@ -665,7 +777,7 @@ def share_page(card: dict) -> str:
         "<meta property=\"og:type\" content=\"article\"/><meta property=\"og:site_name\" content=\"Alicanto Salud\"/>"
         f"<meta property=\"og:title\" content=\"{title}\"/><meta property=\"og:description\" content=\"{desc}\"/>"
         f"<meta property=\"og:url\" content=\"{escape(page_url, quote=True)}\"/><meta property=\"og:image\" content=\"{OG_IMAGE}\"/>"
-        "<meta name=\"twitter:card\" content=\"summary_large_image\"/>"
+        "<meta name=\"twitter:card\" content=\"summary\"/>"  # no real preview image: the logo is a small square
         f"<meta http-equiv=\"refresh\" content=\"0; url={escape(target, quote=True)}\"/>"
         "<style>body{margin:0;padding:24px 16px;background:#FAF9F5;color:#1D3345;font-family:Inter,ui-sans-serif,system-ui,sans-serif}"
         "h1{font:400 26px/1.2 Georgia,serif;max-width:28ch}a{color:#1D3345;text-decoration-color:#C37C37}</style></head><body>"
@@ -698,23 +810,53 @@ def ges_finding_valid(meta: dict | None) -> bool:
             and (meta.get("reconciliation") or {}).get("ok") is True)
 
 
-def sanitize_ges_signal(signal: dict) -> dict:
-    """Old GES findings (e.g. sheet 'Año 2005' → '21 presenta el mayor volumen…') go to HOLD."""
+GES_CORRECTION_DATE = "2026-10-28"
+GES_LEGACY_PARSER = "ges_first_sheet_v1"  # the parser that read the first sheet without pinning the year
+
+
+def _ges_correction_note(corrected_at: str) -> str:
+    d = date.fromisoformat(corrected_at[:10])
+    return (f"Corregido el {d.day}-{MONTHS_ES[d.month - 1][:3]}: se retiró un hallazgo automático que leía la hoja "
+            "de otro año de la planilla y no conciliaba con el total declarado; vuelve con la ficha GES.")
+
+
+def sanitize_ges_signal(signal: dict, *, corrected_at: str = GES_CORRECTION_DATE) -> dict:
+    """Old GES findings (e.g. sheet 'Año 2005' → '21 presenta el mayor volumen…') go to HOLD.
+
+    History is preserved (CLAUDE.md rule 6): the withdrawn sentences stay verbatim in ``superseded_meta`` with
+    ``corrected_at``, ``reason`` and the parser versions, and the card shows a short public correction note.
+    """
     meta = signal.get("data_insight_meta") or {}
     if meta.get("family") != "ges" or ges_finding_valid(meta):
         return signal
     if meta.get("status") == "HOLD" and not signal.get("data_insights"):
-        return signal
+        if (meta.get("superseded_meta") or {}).get("corrected_at") and (signal.get("statistical_view") or {}).get("correction"):
+            return signal
+        if not meta.get("superseded_meta"):
+            return signal  # a HOLD from the corrected parser itself: nothing was withdrawn
     r = dict(signal)
+    prior = meta.get("superseded_meta") if meta.get("status") == "HOLD" else meta
+    prior = dict(prior or {})
+    withdrawn = list(prior.pop("withdrawn_insight_texts", None) or prior.get("insights") or [])
+    withdrawn_cards = list(prior.pop("withdrawn_data_insights", None) or signal.get("data_insights") or [])
+    sheet = prior.get("sheet")
+    superseded = {k: v for k, v in prior.items() if k not in ("insights", "withdrawn_insights")}
+    superseded.update(
+        withdrawn_insight_texts=withdrawn, withdrawn_data_insights=withdrawn_cards,
+        withdrawn_insights=len(withdrawn) if withdrawn else prior.get("withdrawn_insights", 0),
+        corrected_at=prior.get("corrected_at") or corrected_at,
+        reason=prior.get("reason") or (f"parser leía hoja {sheet}" if sheet else "parser sin hoja del año fijada ni total conciliado"),
+        superseded_parser=prior.get("superseded_parser") or prior.get("parser") or GES_LEGACY_PARSER,
+        corrected_by_parser=GES_PARSER)
     held = {"family": "ges", "status": "HOLD", "hold_reason": GES_HOLD_REASON, "parser": GES_PARSER,
-            "superseded_meta": {**{k: v for k, v in meta.items() if k not in ("superseded_meta", "insights")},
-                                "withdrawn_insights": len(meta.get("insights") or [])}}
+            "superseded_meta": superseded}
     r["data_insights"] = []
     r["data_insight_meta"] = held
     r["statistical_view"] = {
         "family": "ges", "publication_status": "HOLD", "hold_reason": GES_HOLD_REASON,
         "limitations": ["La lectura automática de la planilla GES no fijó la hoja del año en curso ni concilió la suma "
                         "con el total declarado; el hallazgo queda retenido hasta la ficha GES (F4)."],
+        "correction": {"corrected_at": superseded["corrected_at"], "text": _ges_correction_note(superseded["corrected_at"])},
         "source_url": r.get("source_url")}
     return r
 

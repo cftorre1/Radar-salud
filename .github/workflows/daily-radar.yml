@@ -114,7 +114,8 @@ jobs:
         run: |
           limit=$(python -c 'import os; n=int(os.environ["REQUESTED_LIMIT"]); print(n if 1 <= n <= 400 else 200)')
           timeout --signal=TERM 90m python -m radar_salud.engine_cli --limit "$limit"
-      - name: Statistics fichas (Dirección 28-oct-2026; PASS publishes, FAIL holds; see data/stats_fichas/POLICY.md)
+      # Dirección 28-oct-2026: PASS publishes, FAIL holds (data/stats_fichas/POLICY.md).
+      - name: Statistics fichas
         continue-on-error: true
         run: python scripts/run_stats_fichas.py
       - name: Export public snapshot and source health
