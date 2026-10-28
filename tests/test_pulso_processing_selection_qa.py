@@ -16,7 +16,7 @@ qa = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(qa)
 
 
-PRE_REDACTION = "3aa26270bf6c78910b6aed24e1a91f1dfd48e75c"  # last commit with Pulso bodies in the queue
+PRE_REDACTION = "063f86b8d6ab9b9a58beb44cfb91a25ab9e653cd"  # staging commit before the rights redaction (reachable from staging history; an earlier branch-only SHA is not fetched by CI)
 
 
 @pytest.fixture
