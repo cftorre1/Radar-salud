@@ -28,35 +28,41 @@ RELATIONS = {
     "deja_sin_efecto": ("deja sin efecto", "Sin efecto"),
     "deroga": ("deroga", "Derogada"),
     "posterga_vigencia": ("posterga la entrada en vigencia de", "Vigencia postergada"),
-    "complementa": ("complementa", None),
 }
 # Relations that change the legal status of the target act (shown on the target card).
-STATUS_RELATIONS = ("suspende", "rechaza_suspension", "modifica", "modifica_por_recurso",
-                    "confirma", "deja_sin_efecto", "deroga", "posterga_vigencia")
+STATUS_RELATIONS = tuple(RELATIONS)
+ISSUER = "Superintendencia de Salud"
+TARGET_MAX_WORDS = 15
 
 _ID = re.compile(
     r"\b(Oficio\s+Circular|Oficio\s+Ord(?:inario)?\.?|Circular|Resoluci[oó]n\s+Exenta)\s+"
     r"(?:(IF|IP|SS)\s*[/\-]?\s*)?N?\s*[°º]?\s*(\d[\d\.]*)", re.I)
-
-# Order matters: the first matching pattern decides the relation for a clause.
-_PATTERNS = (
-    ("rechaza_suspension", re.compile(
-        r"\brechaz\w*\b[^;]{0,160}?\bsuspen(?:der|si[oó]n|da)\b", re.I)),
-    ("rechaza_suspension", re.compile(
-        r"\bno\s+ha\s+lugar\b[^;]{0,120}?\bsuspen", re.I)),
-    ("suspende", re.compile(
-        r"\b(?:suspende(?:r)?|susp[eé]ndase|suspendi[oó]|acoge\w*\b[^;]{0,80}?\bsuspensi[oó]n)\b", re.I)),
-    ("deja_sin_efecto", re.compile(r"\b(?:deja(?:r)?|d[eé]jase|dejando)\s+sin\s+efecto\b", re.I)),
-    ("deroga", re.compile(r"\bderog\w*\b", re.I)),
-    ("posterga_vigencia", re.compile(
-        r"\b(?:posterg|prorrog|difier)\w*\b[^;]{0,80}?\b(?:vigencia|entrada\s+en\s+vigor|plazo)\b", re.I)),
-    ("modifica_por_recurso", re.compile(
-        r"\bacoge\w*\b[^;]{0,40}?\brecursos?\b", re.I)),
-    ("confirma", re.compile(r"\brechaz\w*\b[^;]{0,60}?\brecursos?\b", re.I)),
-    ("modifica", re.compile(r"\bmodific\w*\b|\breemplaz\w*\b|\bsustitu\w*\b", re.I)),
-    ("complementa", re.compile(r"\bcomplement\w*\b", re.I)),
-)
 _TARGET_KINDS = ("circular", "oficio circular")
+_EFFECTS = r"(?:los\s+)?efectos\s+de"
+_AGAINST = r"[^;]{0,300}?\b(?:en\s+)?contra\s+(?:de\s+)?"
+
+# (relation, main verb, object that must follow the verb; target named <= 15 words after it).
+# A verb only counts at the start of a clause or coordinated ("…, y suspende …"); never negated.
+# "solicitud de suspender/suspensión" yields a suspension only with acoge / ha lugar.
+_RULES = (
+    ("rechaza_suspension", r"no\s+ha\s+lugar", r"^[^;]{0,40}?\bsuspensi[oó]n\s+de\s+" + _EFFECTS),
+    ("suspende", r"ha\s+lugar", r"^[^;]{0,40}?\bsuspensi[oó]n\s+de\s+" + _EFFECTS),
+    ("suspende", r"susp[eé]nd(?:e|ase|ense|er)",
+     r"^\s+(?:(?:transitoria|temporal|provisoria)mente\s+)?" + _EFFECTS),
+    ("suspende", r"acoge(?:\s+parcialmente)?", r"^[^;]{0,60}?\bsuspensi[oó]n\s+de\s+" + _EFFECTS),
+    ("modifica_por_recurso", r"acoge(?:\s+parcialmente)?", r"^[^;]{0,40}?\brecursos?\b" + _AGAINST),
+    ("rechaza_suspension", r"rechaza", r"^[^;]{0,40}?\bsolicitud(?:es)?\s+de\s+suspensi[oó]n\s+de\s+" + _EFFECTS),
+    ("confirma", r"rechaza(?:\s+en\s+todas\s+sus\s+partes)?", r"^[^;]{0,40}?\brecursos?\b" + _AGAINST),
+    ("modifica", r"modif[ií]ca(?:se)?", r"^"),
+    ("deja_sin_efecto", r"d[eé]ja(?:se)?\s+sin\s+efecto", r"^"),
+    ("deroga", r"der[oó]ga(?:se)?", r"^"),
+    ("posterga_vigencia", r"(?:posterga|prorroga|pror[oó]gase|posp[oó]ne)",
+     r"^[^;]{0,60}?\b(?:entrada\s+en\s+vigencia|vigencia|plazo)\s+de\s+"),
+)
+# Only acts whose subject IS that verb may modify/repeal/revoke (Resoluciones, or a Circular
+# whose own subject opens with the verb).
+_ACTOR_GATED = ("modifica", "deja_sin_efecto", "deroga")
+_NEGATED = re.compile(r"\bno\s+(?:se\s+)?$", re.I)
 
 
 def _kind(raw: str) -> str:
@@ -75,18 +81,30 @@ def normalize_id(kind: str, prefix: str | None, number: str) -> str:
     return f"{_kind(kind)} {prefix + '/' if prefix else ''}N°{number.rstrip('.')}"
 
 
-def target_key(norm_id: str) -> str | None:
-    """Same identity convention as the web export (``circular-534``)."""
+def issuer_prefix(norm_id: str) -> str | None:
+    m = _ID.search(norm_id or "")
+    return (m.group(2) or "").upper() or None if m else None
+
+
+def target_key(norm_id: str, default_prefix: str | None = None) -> str | None:
+    """Identity including the issuing Intendencia (IF/IP/SS): ``circular-if-534``.
+
+    An id without prefix takes the actor's (same issuer); with neither it has no key,
+    so Circular IF/N°1 can never be confused with Circular IP/N°1.
+    """
     m = _ID.search(norm_id or "")
     if not m:
         return None
+    prefix = (m.group(2) or default_prefix or "").lower()
+    if not prefix:
+        return None
     number = re.sub(r"\D", "", m.group(3))
     kind = _kind(m.group(1)).lower().replace(".", "").replace(" ", "-")
-    return f"{kind}-{number}"
+    return f"{kind}-{prefix}-{number}"
 
 
-def _ids(text: str) -> list[tuple[int, str]]:
-    return [(m.start(), normalize_id(m.group(1), m.group(2), m.group(3))) for m in _ID.finditer(text or "")]
+def _within_words(text: str, limit: int = TARGET_MAX_WORDS) -> str:
+    return " ".join(text.split()[:limit])
 
 
 _ABBREV = re.compile(r"\b(?:S\.A|Ltda|Ord|N|Sr|Sra|Art|art|Res|Ex)\.$")
@@ -108,26 +126,40 @@ def extract_relations(subject: str, own_title: str = "") -> list[dict[str, Any]]
     text = " ".join(str(subject or "").split())
     if not text:
         return []
+    actor_kind = _kind(_ID.search(own_title).group(1)) if _ID.search(own_title or "") else ""
+    actor_prefix = issuer_prefix(own_title)
     own_key = target_key(own_title)
     out: list[dict[str, Any]] = []
-    for clause in _clauses(text):
-        targets = [(pos, i) for pos, i in _ids(clause)
-                   if _kind(i).lower() in _TARGET_KINDS and target_key(i) != own_key]
-        if not targets:
-            continue
-        for relation, pattern in _PATTERNS:
-            m = pattern.search(clause)
-            if not m:
+    for index, clause in enumerate(_clauses(text)):
+        for relation, verb, obj in _RULES:
+            if relation in _ACTOR_GATED and not (
+                    actor_kind == "Resolución Exenta" or (actor_kind == "Circular" and index == 0)):
                 continue
-            # The target is the first instruction named after the verb (or the only one).
-            after = [i for pos, i in targets if pos >= m.start()]
-            target = (after or [targets[0][1]])[0]
-            item = {"relation": relation, "target_id": target, "target_key": target_key(target),
-                    "evidence": clause, "basis": BASIS}
-            if item not in out:
-                out.append(item)
-            break
-    return out
+            main = re.compile(r"(?:^\s*|(?:,\s*|\s)y\s+)(" + verb + r")\b", re.I)
+            for m in main.finditer(clause):
+                if relation in _ACTOR_GATED and actor_kind == "Circular" and m.start(1) != 0:
+                    continue  # a circular's subject must open with the verb
+                if _NEGATED.search(clause[:m.start(1)]):
+                    continue
+                o = re.search(obj, clause[m.end(1):], re.I)
+                if not o:
+                    continue
+                window = _within_words(clause[m.end(1) + o.end():])
+                target = next((normalize_id(t.group(1), t.group(2), t.group(3)) for t in _ID.finditer(window)
+                               if _kind(t.group(1)).lower() in _TARGET_KINDS), None)
+                if not target:
+                    continue
+                key = target_key(target, actor_prefix)
+                if not key or key == own_key:
+                    continue
+                item = {"relation": relation, "target_id": target, "target_key": key,
+                        "evidence": clause, "basis": BASIS}
+                if not any(x["relation"] == relation and x["target_key"] == key for x in out):
+                    out.append(item)
+    # "No ha lugar a la suspensión" also contains "ha lugar a la suspensión": the guard wins.
+    rejected = {x["target_key"] for x in out if x["relation"] == "rechaza_suspension"}
+    return [x for x in out if not (x["relation"] == "suspende" and x["target_key"] in rejected
+                                   and re.search(r"\bno\s+ha\s+lugar\b", x["evidence"], re.I))]
 
 
 def relationship_text(rel: dict[str, Any]) -> str:
@@ -155,10 +187,12 @@ def apply_backlinks(signals: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
     rows = [dict(s) for s in signals]
     by_key: dict[str, list[dict[str, Any]]] = {}
     for r in rows:
-        key = target_key(_act_label(r))
+        key = target_key(_act_label(r)) if r.get("source_name") == ISSUER else None
         if key:
             by_key.setdefault(key, []).append(r)
     for actor in rows:
+        if actor.get("source_name") != ISSUER:
+            continue
         relations = actor.get("normative_relations")
         if relations is None and actor.get("official_subject"):
             # Acts processed before relations existed: same verbatim-subject rule.
@@ -172,7 +206,8 @@ def apply_backlinks(signals: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
                 event = {"relation": rel["relation"], "status": RELATIONS[rel["relation"]][1],
                          "by": _act_label(actor), "by_url": actor.get("source_url"),
                          "date": actor.get("event_date"), "evidence": rel.get("evidence"), "basis": BASIS}
-                events = [e for e in target.get("normative_status_events") or [] if e.get("by_url") != event["by_url"]]
+                events = [e for e in target.get("normative_status_events") or [] 
+                          if (e.get("by_url"), e.get("relation")) != (event["by_url"], event["relation"])]
                 events.append(event)
                 events.sort(key=lambda e: str(e.get("date") or ""), reverse=True)
                 target["normative_status_events"] = events

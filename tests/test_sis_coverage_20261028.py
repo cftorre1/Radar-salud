@@ -25,30 +25,106 @@ def _listing(name):
 
 # --- Normative relations (resolutions acting on circulars) ---------------------------------
 
-@pytest.mark.parametrize("subject,relation,target", [
-    ("Suspende los efectos de la Circular IF/N°529, de 10 de julio de 2026, hasta resolver los recursos de reposición.",
-     "suspende", "Circular IF/N°529"),
-    ("Rechaza la solicitud de Isapre Esencial S.A. de suspender los efectos de la Circular IF/N°532, de 31 de julio de 2026.",
-     "rechaza_suspension", "Circular IF/N°532"),
-    ("Acoge parcialmente los recursos de reposición interpuestos por las ISAPRES Banmédica S.A., en contra de la Circular IF/Nº528, de 26 de mayo de 2026.",
-     "modifica_por_recurso", "Circular IF/N°528"),
-    ("Rechaza recursos de reposición contra la Circular IF/N°531", "confirma", "Circular IF/N°531"),
-    ("Acoge la suspensión de la Circular IF/N°521 para tres Isapres mientras se resuelven los recursos", "suspende", "Circular IF/N°521"),
-    ("Rechaza solicitudes de suspensión de la Circular IF/N°513 y resuelve recursos de reposición de tres Isapres",
-     "rechaza_suspension", "Circular IF/N°513"),
-    ("Rechaza recursos contra el Oficio Circular IF/N°20 y lo confirma íntegramente", "confirma", "Oficio Circular IF/N°20"),
+REAL = {  # literal SIS listing subjects (see tests/fixtures/sis/aseguradoras_resoluciones_20261028.html)
+    "8760": ("Ha lugar a la suspensión de los efectos de la Circular IF/Nº529, de fecha 10 de julio de 2026, "
+             "hasta que se resuelvan los recursos de reposición de que conoce esta Intendencia."),
+    "9994": ("RECHAZA la solicitud de suspensión de los efectos de la Circular IF/Nº 532, de fecha 31 de julio de 2026, "
+             "efectuada por la Isapre Esencial S.A."),
+    "11156": ("Acoge parcialmente los recursos de reposición interpuestos por las ISAPRES Banmédica S.A., Vida Tres S.A., "
+              "Colmena Golden Cross S.A., Cruz Blanca S.A., Nueva Masvida S.A., y Esencial S.A., en contra de la "
+              "Circular IF/Nº528, de 26 de mayo de 2026."),
+}
+
+
+@pytest.mark.parametrize("number,relation,target", [
+    ("8760", "suspende", "Circular IF/N°529"),
+    ("9994", "rechaza_suspension", "Circular IF/N°532"),
+    ("11156", "modifica_por_recurso", "Circular IF/N°528"),
 ])
-def test_relation_read_from_official_subject(subject, relation, target):
-    rels = extract_relations(subject, "Resolución Exenta IF/N°1")
+def test_relation_read_from_real_sis_subjects(number, relation, target):
+    rels = extract_relations(REAL[number], f"Resolución Exenta IF/N°{number}")
     assert [(r["relation"], r["target_id"]) for r in rels] == [(relation, target)]
     assert rels[0]["evidence"] and rels[0]["basis"] == "official_listing_subject"
+    assert rels[0]["target_key"] == "circular-if-" + target.rsplit("°", 1)[1]
 
 
-def test_no_relation_without_a_named_instruction_or_for_particular_acts():
-    assert extract_relations("Modifica instrucciones sobre hospitalización domiciliaria CAEC.", "Circular IF/N°536") == []
-    assert extract_relations("Acoge parcialmente un recurso de reposición de Nueva Masvida contra el Oficio Ord. IF/N°27.377") == []
-    # A circular never relates to itself.
-    assert extract_relations("Modifica la Circular IF/N°534", "Circular IF/N°534") == []
+@pytest.mark.parametrize("subject,relation,target", [
+    ("Suspende los efectos de la Circular IF/N°529 hasta resolver los recursos de reposición.", "suspende", "Circular IF/N°529"),
+    ("Rechaza recursos de reposición contra la Circular IF/N°531", "confirma", "Circular IF/N°531"),
+    ("Rechaza recursos contra el Oficio Circular IF/N°20 y lo confirma íntegramente", "confirma", "Oficio Circular IF/N°20"),
+    ("No ha lugar a la suspensión de los efectos de la Circular IF/N°530, de fecha 24 de julio de 2026.",
+     "rechaza_suspension", "Circular IF/N°530"),
+    ("Deja sin efecto la Circular IF/N°470, de 2023.", "deja_sin_efecto", "Circular IF/N°470"),
+])
+def test_relation_main_verb_forms(subject, relation, target):
+    assert [(r["relation"], r["target_id"]) for r in extract_relations(subject, "Resolución Exenta IF/N°1")] == [(relation, target)]
+
+
+@pytest.mark.parametrize("subject,title", [
+    ("Resuelve solicitud de Isapre Colmena de suspender los efectos de la Circular IF/N°534.", "Resolución Exenta IF/N°1"),
+    ("No suspende los efectos de la Circular IF/N°534, de fecha 14 de septiembre de 2026.", "Resolución Exenta IF/N°1"),
+    ("Instruye a las isapres que suspende el cobro de la Circular IF/N°534 cuando corresponda.", "Resolución Exenta IF/N°1"),
+    ("Rechaza solicitud de modificar la Circular IF/N°534, de fecha 14 de septiembre de 2026.", "Resolución Exenta IF/N°1"),
+    ("Imparte instrucciones sobre modificación de contratos, conforme a la Circular IF/N°77.", "Circular IF/N°540"),
+    ("Suspende el cobro asociado a la Circular IF/N°534.", "Resolución Exenta IF/N°1"),
+    ("Acoge la solicitud de suspensión presentada por Esencial respecto del plan, conforme a la Circular IF/N°534.", "Resolución Exenta IF/N°1"),
+    ("Modifica instrucciones sobre hospitalización domiciliaria CAEC.", "Circular IF/N°536"),
+    ("Acoge parcialmente un recurso de reposición de Nueva Masvida contra el Oficio Ord. IF/N°27.377", "Resolución Exenta IF/N°1"),
+    ("Modifica la Circular IF/N°534", "Circular IF/N°534"),  # never relates to itself
+    ("Complementa las normas de la Circular IF/N°476 sobre bono electrónico.", "Circular IF/N°534"),
+])
+def test_no_invented_relations(subject, title):
+    assert extract_relations(subject, title) == []
+
+
+def test_modify_verbs_only_for_resolutions_or_circulars_opening_with_them():
+    assert extract_relations("Imparte instrucciones. Modifica la Circular IF/N°500.", "Circular IF/N°540") == []
+    assert [r["relation"] for r in extract_relations("Modifica la Circular IF/N°500.", "Circular IF/N°540")] == ["modifica"]
+    assert extract_relations("Modifica la Circular IF/N°500.", "Oficio Ord. IF/N°27.377") == []
+
+
+def test_target_beyond_fifteen_words_is_not_related():
+    far = "Suspende los efectos de " + "la instrucción impartida a las isapres sobre bonos y prestaciones de salud en general por el plazo " + "Circular IF/N°534"
+    assert extract_relations(far, "Resolución Exenta IF/N°1") == []
+
+
+def test_several_relations_in_one_clause_are_all_kept():
+    subject = ("Acoge parcialmente los recursos de reposición interpuestos en contra de la Circular IF/N°534, "
+               "y suspende los efectos de la Circular IF/N°534 hasta el 1 de enero de 2027.")
+    rels = extract_relations(subject, "Resolución Exenta IF/N°2")
+    assert {(r["relation"], r["target_id"]) for r in rels} == {
+        ("modifica_por_recurso", "Circular IF/N°534"), ("suspende", "Circular IF/N°534")}
+    circular = {"title": "Circular IF/N°534", "source_name": "Superintendencia de Salud", "source_url": "c534"}
+    actor = {"title": "Resolución Exenta IF/N°2", "source_name": "Superintendencia de Salud", "source_url": "r2",
+             "event_date": "2026-10-27", "normative_relations": rels}
+    out = {r["source_url"]: r for r in apply_backlinks([circular, actor])}
+    assert {e["relation"] for e in out["c534"]["normative_status_events"]} == {"modifica_por_recurso", "suspende"}
+
+
+def test_if_and_ip_circulars_with_same_number_never_collide():
+    rels = extract_relations("Suspende los efectos de la Circular IF/N°1, de 2026.", "Resolución Exenta IF/N°7")
+    assert rels[0]["target_key"] == "circular-if-1"
+    unprefixed = extract_relations("Suspende los efectos de la Circular N°1, de 2026.", "Resolución Exenta IP/N°7")
+    assert unprefixed[0]["target_key"] == "circular-ip-1"  # same issuer as the actor
+    assert extract_relations("Suspende los efectos de la Circular N°1.", "Resolución Exenta N°7") == []
+    sis = "Superintendencia de Salud"
+    cif = {"title": "Circular IF/N°1", "source_name": sis, "source_url": "if1"}
+    cip = {"title": "Circular IP/N°1", "source_name": sis, "source_url": "ip1"}
+    actor = {"title": "Resolución Exenta IF/N°7", "source_name": sis, "source_url": "r7", "event_date": "2026-10-27",
+             "normative_relations": rels}
+    out = {r["source_url"]: r for r in apply_backlinks([cif, cip, actor])}
+    assert out["if1"]["normative_status"] == "Suspendida transitoriamente"
+    assert "normative_status" not in out["ip1"]
+
+
+def test_backlinks_only_between_sis_acts():
+    rels = extract_relations("Suspende los efectos de la Circular IF/N°1.", "Resolución Exenta IF/N°7")
+    other = {"title": "Circular IF/N°1", "source_name": "Superintendencia de Seguridad Social (SUSESO)", "source_url": "s1"}
+    foreign_actor = {"title": "Resolución Exenta IF/N°7", "source_name": "Diario Financiero", "source_url": "df",
+                     "normative_relations": rels}
+    sis_target = {"title": "Circular IF/N°1", "source_name": "Superintendencia de Salud", "source_url": "c1"}
+    out = {r["source_url"]: r for r in apply_backlinks([other, foreign_actor, sis_target])}
+    assert all("normative_status" not in r for r in out.values())
 
 
 def test_listing_resolution_suspending_534_is_discovered_and_general(monkeypatch):
@@ -67,6 +143,11 @@ def test_listing_resolution_suspending_534_is_discovered_and_general(monkeypatch
     assert row["normative_act_relation"] == "suspende"
     ctx = row["related_reference_contexts"][0]
     assert "suspende transitoriamente" in ctx["relationship"] and "Circular IF/N°534" in ctx["relationship"]
+    by_title = {i.title: [(r["relation"], r["target_id"]) for r in extract_relations(i.raw_text, i.title)] for i in items}
+    assert by_title == {"Resolución Exenta IF/N°99999": [("suspende", "Circular IF/N°534")],
+                        "Resolución Exenta IF/N°11156": [("modifica_por_recurso", "Circular IF/N°528")],
+                        "Resolución Exenta IF/N°9994": [("rechaza_suspension", "Circular IF/N°532")],
+                        "Resolución Exenta IF/N°8760": [("suspende", "Circular IF/N°529")]}
     assert len(row["related_reference_ids"]) == 2  # target matched, not duplicated
     label = "Resolución Exenta IF/N°99999"
     assert is_general_relation(suspension.raw_text, label)
@@ -78,15 +159,17 @@ def test_listing_resolution_suspending_534_is_discovered_and_general(monkeypatch
 
 
 def test_target_circular_shows_its_suspension_and_older_history_counts():
+    sis = "Superintendencia de Salud"
     circular = {"title": "Circular IF/N°534", "source_url": "https://www.superdesalud.gob.cl/normativa/circular-if-n534/",
-                "event_date": "2026-09-14"}
-    suspension = {"title": "Resolución Exenta IF/N°99999", "event_date": "2026-10-27",
+                "event_date": "2026-09-14", "source_name": sis}
+    suspension = {"title": "Resolución Exenta IF/N°99999", "event_date": "2026-10-27", "source_name": sis,
                   "source_url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n99999/",
-                  "official_subject": "Suspende transitoriamente los efectos de la Circular IF/N°534, de 14 de septiembre de 2026."}
-    legacy = {"title": "Resolución Exenta IF/N°9994", "event_date": "2026-08-26",
+                  "official_subject": REAL["8760"].replace("Nº529", "Nº534").replace("10 de julio", "14 de septiembre")}
+    legacy = {"title": "Resolución Exenta IF/N°9994", "event_date": "2026-08-26", "source_name": sis,
               "source_url": "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n9994/",
-              "official_subject": "Rechaza la solicitud de Esencial de suspender la Circular IF/N°532"}
-    c532 = {"title": "Circular IF/N°532", "source_url": "https://www.superdesalud.gob.cl/normativa/circular-if-n532/"}
+              "official_subject": REAL["9994"]}
+    c532 = {"title": "Circular IF/N°532", "source_url": "https://www.superdesalud.gob.cl/normativa/circular-if-n532/",
+            "source_name": sis}
     out = {r["title"]: r for r in apply_backlinks([circular, suspension, legacy, c532])}
     assert out["Circular IF/N°534"]["normative_status"] == "Suspendida transitoriamente"
     assert out["Circular IF/N°534"]["normative_status_events"][0]["by"] == "Resolución Exenta IF/N°99999"
@@ -173,6 +256,12 @@ def test_detail_page_date_does_not_hide_a_newer_listing_release():
     assert out.event_date == "2026-10-02"
     assert out.metadata["detail_publication_date"] in ("2026-09-07", None)
     assert out.metadata["event_date_basis"] == "listing_publication"
+    # Without a rolling release the page's own publication date stays authoritative.
+    plain = RawItem(raw.source_slug, "Estadística Anual de Egresos Hospitalarios del Sistema ISAPRE año 2025", raw.url,
+                    raw.source_name, raw.source_type, event_date="2026-10-02",
+                    metadata={"listing_publication_date": "2026-10-02"})
+    kept = extract_superintendencia_detail(plain, html)
+    assert kept.event_date == "2026-09-07" and kept.metadata["event_date_basis"] == "detail_publication"
 
 
 def test_history_keeps_every_release_of_a_rolling_series():
@@ -181,6 +270,23 @@ def test_history_keeps_every_release_of_a_rolling_series():
     new = {"source_url": url, "signal_types": ["Datos"], "event_date": "2026-10-02", "release_key": "2026-10-02"}
     assert len(merge_history([old], [new])) == 2
     assert len(merge_history([old], [dict(old)])) == 1
+
+
+def test_isapre_pulse_fails_closed_without_a_release_up_to_validation():
+    import json
+    validation = json.loads(Path("data/excel/validated_series.json").read_text(encoding="utf-8"))
+    history = json.loads(Path("data/history/superintendencia_signals.json").read_text(encoding="utf-8"))["signals"]
+    from radar_salud.isapre_pulse import build_pulse
+    assert build_pulse(validation, history) is not None
+    # Only releases newer than the validation exist (e.g. the 02-oct updates): no pulse, no exception.
+    later = [dict(x, event_date="2026-10-02") if x.get("source_url") in RELEASE_URLS.values() else x for x in history]
+    assert build_pulse(validation, later) is None
+    with pytest.raises(ValueError):
+        _official_releases(later, not_after=datetime.fromisoformat(validation["validated_at"].replace("Z", "+00:00")).date())
+    # Old and new releases together: the pulse stays bound to the validated one.
+    both = history + [dict(x, event_date="2026-10-02", release_key="2026-10-02") for x in history
+                      if x.get("source_url") in RELEASE_URLS.values()]
+    assert build_pulse(validation, both)["publication_date"] == "2026-09-07"
 
 
 def test_isapre_pulse_binds_to_the_release_it_validated():

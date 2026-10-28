@@ -78,10 +78,11 @@ def apply_official_relations(row,official_subject,title):
     if not rels:return row
     row["normative_relations"]=rels
     ids=list(row.get("related_reference_ids") or []);contexts=[dict(x) for x in row.get("related_reference_contexts") or [] if isinstance(x,dict)]
-    from .normative_relations import target_key
+    from .normative_relations import target_key, issuer_prefix
+    actor_prefix=issuer_prefix(title)
     for rel in reversed(rels):
         text=relationship_text(rel)
-        same=[c for c in contexts if target_key(str(c.get("id") or ""))==rel["target_key"]]
+        same=[c for c in contexts if target_key(str(c.get("id") or ""),actor_prefix)==rel["target_key"]]
         if same:
             for c in same:c["relationship"]=text
         else:

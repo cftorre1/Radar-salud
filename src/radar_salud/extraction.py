@@ -87,9 +87,9 @@ def extract_superintendencia_detail(raw: RawItem, html: str) -> RawItem:
     title = " ".join(parser.title_parts).strip() or raw.title
     date_match = DATE_RE.search(all_text)
     event_date = _parse_spanish_date(date_match.group(1)) if date_match else raw.event_date
-    detail_date = event_date
+    detail_date = _parse_spanish_date(date_match.group(1)) if date_match else None
     listed = (raw.metadata or {}).get("listing_publication_date")
-    if listed and (not event_date or listed > event_date):
+    if listed and (raw.metadata or {}).get("release_key") and (not event_date or listed > event_date):
         # A rolling series re-dated on the listing by its monthly update: the update
         # (release) date is the listing's, never the page's first publication.
         event_date = listed
@@ -132,8 +132,8 @@ def extract_superintendencia_detail(raw: RawItem, html: str) -> RawItem:
         "extracted_numbers": numbers[:20],
         "evidence_text": evidence_text[:8000],
         "detail_publication_date": detail_date,
-        "event_date_basis": "listing_publication" if event_date != detail_date else
-            ("detail_publication" if detail_date else metadata.get("event_date_basis")),
+        "event_date_basis": "detail_publication" if detail_date and event_date == detail_date else
+            ("listing_publication" if event_date else None),
     })
 
     return RawItem(
