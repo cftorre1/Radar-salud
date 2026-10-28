@@ -72,6 +72,32 @@
         "bb10b5e0503f3f6b5456ddf2464ed703c707fcfe95a4d965a3d2f5b508ca5d36"
       ]
     },
+    "1b7b27ab0e5d14372432ed51b93a91ec70a3a02bf3e7b83f8d9bfa1100958a32": {
+      "attempt_contexts": [
+        {
+          "completed_at": "2026-10-28T13:36:33.524224Z",
+          "identity": {
+            "declared_repair_inputs": {},
+            "executor_fingerprint": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
+            "failure_signature": "f5699e72e419071d3e4bd9dc235b639ff67cf7be9abfdadc222d745728d96f0c",
+            "family": "staging_qa",
+            "input_fingerprint": "2f98acf9b79853c4a9fd16971b7b28139116b97a0967031d10ecaf4b9fcd5872",
+            "product_input_fingerprint": "004b87172b196be7649437628ecb9b19161756a520ba4c7f62bfc471970b2c03"
+          },
+          "task_id": "staging_qa_failed_run_40689568053"
+        }
+      ],
+      "attempts": 1,
+      "failure_signature": "f5699e72e419071d3e4bd9dc235b639ff67cf7be9abfdadc222d745728d96f0c",
+      "input_fingerprint": "2f98acf9b79853c4a9fd16971b7b28139116b97a0967031d10ecaf4b9fcd5872",
+      "last_attempt_at": "2026-10-28T13:36:33.524224Z",
+      "task_ids": [
+        "staging_qa_failed_run_40689568053"
+      ],
+      "tokens": [
+        "ed504c35554d70165df8c61a47475283a60c308d067db50ed6eb766f0013234d"
+      ]
+    },
     "1e196fa7c7131b59b17f79be6a6cff1c6b12df6950047ea316b0ad9563fba049": {
       "attempt_contexts": [
         {
@@ -478,7 +504,8 @@
     "8df396f2c9adcc04b97d66ac40be7be271d58e32d248d9e4a8c88f69d699c696",
     "bbb6ec1f38ec00c6a28a0aee3f9fb0d2ac32f3d442d72dc69ec31a6d2b9bc623",
     "96c65b32ca04331e92bbf856c497ddcdcbbd6b2d5ea3f14fd8b9f14ede3d8bb1",
-    "beb092493d8ba4dbd24b8abe5e5c44b27c58d53fe57bb454cb1e6bcaa7d1e0d9"
+    "beb092493d8ba4dbd24b8abe5e5c44b27c58d53fe57bb454cb1e6bcaa7d1e0d9",
+    "019d57298a68672ce3d56f36eae8f93960da7fcfc90a91af28b561db21943eb2"
   ],
   "lease_events": [
     {
@@ -91159,6 +91186,603 @@
       "id": "a9efb1b6bc34e5c064ce8bd72ab4e99b1dcf2c8ce78b0d9cbff295a592e35365",
       "kind": "transition",
       "task_id": "staging_qa_failed_run_40689568053"
+    },
+    {
+      "at": "2026-10-28T13:36:33.524224Z",
+      "details": {
+        "blockers": [
+          {
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q",
+                  "-rs",
+                  "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+                  "-m",
+                  "not integration",
+                  "tests"
+                ],
+                "failure_hash": "5a70c0ce0a5ddbeabbbd33d0d1c788d8ae6f141f8a1cffd45a0dd315be5e417a",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+                "log_sha256": "c16553dc5667b74784adcc1fbc5db0fd68f08fc80488806f34931112b8adf4c5",
+                "name": "targeted_deterministic_tests",
+                "pytest": {
+                  "cases": [],
+                  "collected": 0,
+                  "failed": 0,
+                  "passed": 0,
+                  "proof": false,
+                  "skipped": 0
+                },
+                "returncode": 124,
+                "status": "FAIL"
+              },
+              {
+                "blocker": "Failure is infrastructure/unclassified; no demonstrated test failure to repair",
+                "changed_paths": [],
+                "evidence": [
+                  {
+                    "command": [
+                      "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                      "-m",
+                      "pytest",
+                      "-q"
+                    ],
+                    "output": "Validation command unavailable or timed out: TimeoutExpired",
+                    "returncode": 124
+                  }
+                ],
+                "failure_sha256": "c16553dc5667b74784adcc1fbc5db0fd68f08fc80488806f34931112b8adf4c5",
+                "material_progress": false,
+                "signature": null,
+                "source_run_id": null,
+                "status": "BLOCKED",
+                "validated": false
+              }
+            ],
+            "fingerprint": "4abbaae38f85ec7aa76e79b27c43ce7cad4ef744388ed6d4ba163b7c3f8d4452",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Targeted deterministic gate failed; no validated repair candidate",
+            "source_urls": []
+          },
+          {
+            "evidence": [
+              {
+                "failure_log_path": "/home/runner/work/Radar-salud/Radar-salud/candidate/artifacts/autonomy/demonstrated-failure.log"
+              }
+            ],
+            "fingerprint": "1cb5b79f98511b26483c6ec3adb22c412540e064aa44c7925117891e166ca4d8",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Failed workflow log is missing, unsafe or exceeds bounded input size",
+            "source_urls": []
+          },
+          {
+            "evidence": [
+              {
+                "browser_proof": {
+                  "cases": [
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 21,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 78
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  76 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  77 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 78 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  79 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  80 |  await card.locator('[data-detail]').first().click();\n  81 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:78:21"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 33,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 13
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-0\u001b[7m9\u001b[27m-1\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m1\u001b[27m0-1\u001b[7m3\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 21,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 78
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  76 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  77 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 78 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  79 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  80 |  await card.locator('[data-detail]').first().click();\n  81 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:78:21"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 33,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 13
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-0\u001b[7m9\u001b[27m-1\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m1\u001b[27m0-1\u001b[7m3\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 23,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 473
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('article[data-card] h2').filter({ hasText: /^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/ })\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m2\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card] h2').filter({ hasText: /^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/ })\u001b[22m\n\u001b[2m    9 × locator resolved to 2 elements\u001b[22m\n\u001b[2m      - unexpected value \"2\"\u001b[22m\n\n\n  471 |   await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(Math.min(newer,1));}\n  472 |  const opaque=page.locator('article[data-card] h2').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/});\n> 473 |  await expect(opaque).toHaveCount(0);\n      |                       ^\n  474 |  const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\\/N°533 · SIL: actualiza el inventario mensual/})});\n  475 |  await expect(c533).toHaveCount(1);\n  476 |  await expect(c533).not.toContainText('Qué pasó:');await c533.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Circular');await page.keyboard.press('Escape');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:473:23"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "persistent editorial contract is visible in feed and brief"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "column": 47,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 365
+                              },
+                              "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  363 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  364 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 365 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  366 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  367 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  368 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:365:47"
+                            }
+                          ],
+                          "status": "timedOut"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 23,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 473
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('article[data-card] h2').filter({ hasText: /^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/ })\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m2\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card] h2').filter({ hasText: /^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/ })\u001b[22m\n\u001b[2m    9 × locator resolved to 2 elements\u001b[22m\n\u001b[2m      - unexpected value \"2\"\u001b[22m\n\n\n  471 |   await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(Math.min(newer,1));}\n  472 |  const opaque=page.locator('article[data-card] h2').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/});\n> 473 |  await expect(opaque).toHaveCount(0);\n      |                       ^\n  474 |  const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\\/N°533 · SIL: actualiza el inventario mensual/})});\n  475 |  await expect(c533).toHaveCount(1);\n  476 |  await expect(c533).not.toContainText('Qué pasó:');await c533.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Circular');await page.keyboard.press('Escape');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:473:23"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "persistent editorial contract is visible in feed and brief"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "column": 47,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 365
+                              },
+                              "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  363 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  364 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 365 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  366 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  367 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  368 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:365:47"
+                            }
+                          ],
+                          "status": "timedOut"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                    }
+                  ],
+                  "projects": [
+                    "desktop",
+                    "mobile"
+                  ],
+                  "stats": {
+                    "duration": 182854.547,
+                    "expected": 122,
+                    "flaky": 0,
+                    "skipped": 0,
+                    "startTime": "2026-10-28T13:33:04.792Z",
+                    "unexpected": 8
+                  }
+                },
+                "command": [
+                  "npm",
+                  "run",
+                  "test:browser"
+                ],
+                "failure_hash": "2d202a7dfedfc32f253b79b83d7e767d8ea2ffd6b31e4dc632b38ad314c4292e",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+                "log_sha256": "eb19085305bee1aa2d446d27ff972afe589ae6662a03c83dda719fd5ed0491e8",
+                "name": "browser_desktop_and_mobile",
+                "returncode": 1,
+                "status": "FAIL"
+              }
+            ],
+            "fingerprint": "392759ad5d53c9c84f193c109f369d9fa3a181c9076c7575b0325f4a565d637f",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Independent candidate gate rejected or could not execute: browser_desktop_and_mobile",
+            "source_urls": []
+          },
+          {
+            "evidence": [
+              {
+                "diagnostics_are_acceptance": false,
+                "family": "staging_qa",
+                "task_id": "staging_qa_failed_run_40689568053"
+              }
+            ],
+            "fingerprint": "608082cf6cd4afa9517930c3286f2ae6e9aeb2cdc09cf42e50351e88fe2cee03",
+            "human_required": false,
+            "kind": "acceptance",
+            "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+            "source_urls": []
+          }
+        ],
+        "canonical_material_signature": "8302a7e1475eb5855404da3168fb487da7bd0968702bbbe42d2a2b69780bc6b5",
+        "evidence": [
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q",
+              "-rs",
+              "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+              "-m",
+              "not integration",
+              "tests"
+            ],
+            "failure_hash": "5a70c0ce0a5ddbeabbbd33d0d1c788d8ae6f141f8a1cffd45a0dd315be5e417a",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+            "log_sha256": "c16553dc5667b74784adcc1fbc5db0fd68f08fc80488806f34931112b8adf4c5",
+            "name": "targeted_deterministic_tests",
+            "pytest": {
+              "cases": [],
+              "collected": 0,
+              "failed": 0,
+              "passed": 0,
+              "proof": false,
+              "skipped": 0
+            },
+            "returncode": 124,
+            "status": "FAIL"
+          },
+          {
+            "blocker": "Failure is infrastructure/unclassified; no demonstrated test failure to repair",
+            "changed_paths": [],
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q"
+                ],
+                "output": "Validation command unavailable or timed out: TimeoutExpired",
+                "returncode": 124
+              }
+            ],
+            "failure_sha256": "c16553dc5667b74784adcc1fbc5db0fd68f08fc80488806f34931112b8adf4c5",
+            "material_progress": false,
+            "signature": null,
+            "source_run_id": null,
+            "status": "BLOCKED",
+            "validated": false
+          },
+          {
+            "failure_log_path": "/home/runner/work/Radar-salud/Radar-salud/candidate/artifacts/autonomy/demonstrated-failure.log"
+          },
+          {
+            "browser_proof": {
+              "cases": [
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 21,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 78
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  76 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  77 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 78 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  79 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  80 |  await card.locator('[data-detail]').first().click();\n  81 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:78:21"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 33,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 13
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-0\u001b[7m9\u001b[27m-1\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m1\u001b[27m0-1\u001b[7m3\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 21,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 78
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  76 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  77 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 78 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  79 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  80 |  await card.locator('[data-detail]').first().click();\n  81 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:78:21"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 33,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 13
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-0\u001b[7m9\u001b[27m-1\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m1\u001b[27m0-1\u001b[7m3\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 23,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 473
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('article[data-card] h2').filter({ hasText: /^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/ })\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m2\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card] h2').filter({ hasText: /^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/ })\u001b[22m\n\u001b[2m    9 × locator resolved to 2 elements\u001b[22m\n\u001b[2m      - unexpected value \"2\"\u001b[22m\n\n\n  471 |   await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(Math.min(newer,1));}\n  472 |  const opaque=page.locator('article[data-card] h2').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/});\n> 473 |  await expect(opaque).toHaveCount(0);\n      |                       ^\n  474 |  const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\\/N°533 · SIL: actualiza el inventario mensual/})});\n  475 |  await expect(c533).toHaveCount(1);\n  476 |  await expect(c533).not.toContainText('Qué pasó:');await c533.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Circular');await page.keyboard.press('Escape');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:473:23"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "persistent editorial contract is visible in feed and brief"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "column": 47,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 365
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  363 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  364 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 365 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  366 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  367 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  368 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:365:47"
+                        }
+                      ],
+                      "status": "timedOut"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 23,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 473
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('article[data-card] h2').filter({ hasText: /^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/ })\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m2\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card] h2').filter({ hasText: /^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/ })\u001b[22m\n\u001b[2m    9 × locator resolved to 2 elements\u001b[22m\n\u001b[2m      - unexpected value \"2\"\u001b[22m\n\n\n  471 |   await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(Math.min(newer,1));}\n  472 |  const opaque=page.locator('article[data-card] h2').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/});\n> 473 |  await expect(opaque).toHaveCount(0);\n      |                       ^\n  474 |  const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\\/N°533 · SIL: actualiza el inventario mensual/})});\n  475 |  await expect(c533).toHaveCount(1);\n  476 |  await expect(c533).not.toContainText('Qué pasó:');await c533.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Circular');await page.keyboard.press('Escape');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:473:23"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "persistent editorial contract is visible in feed and brief"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "column": 47,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 365
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  363 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  364 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 365 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  366 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  367 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  368 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:365:47"
+                        }
+                      ],
+                      "status": "timedOut"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                }
+              ],
+              "projects": [
+                "desktop",
+                "mobile"
+              ],
+              "stats": {
+                "duration": 182854.547,
+                "expected": 122,
+                "flaky": 0,
+                "skipped": 0,
+                "startTime": "2026-10-28T13:33:04.792Z",
+                "unexpected": 8
+              }
+            },
+            "command": [
+              "npm",
+              "run",
+              "test:browser"
+            ],
+            "failure_hash": "2d202a7dfedfc32f253b79b83d7e767d8ea2ffd6b31e4dc632b38ad314c4292e",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+            "log_sha256": "eb19085305bee1aa2d446d27ff972afe589ae6662a03c83dda719fd5ed0491e8",
+            "name": "browser_desktop_and_mobile",
+            "returncode": 1,
+            "status": "FAIL"
+          },
+          {
+            "diagnostics_are_acceptance": false,
+            "family": "staging_qa",
+            "task_id": "staging_qa_failed_run_40689568053"
+          }
+        ],
+        "failure_action": "blocked",
+        "fingerprint": "51e4fb34e0b96ea955a051f1298728b401100d75d0c9f558169263e75fb371f1",
+        "product_input_fingerprint": "004b87172b196be7649437628ecb9b19161756a520ba4c7f62bfc471970b2c03",
+        "real_failure": {
+          "conclusion": "failure",
+          "failure_signature": "f5699e72e419071d3e4bd9dc235b639ff67cf7be9abfdadc222d745728d96f0c",
+          "head_sha": "dd94d38d96328f75ce766d4ab1d0980b53fff154",
+          "run_id": 40689568053,
+          "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/40689568053"
+        },
+        "reason": "Targeted deterministic gate failed; no validated repair candidate; Failed workflow log is missing, unsafe or exceeds bounded input size; Independent candidate gate rejected or could not execute: browser_desktop_and_mobile; Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256"
+      },
+      "family": "staging_qa",
+      "id": "eba8fa7cd47611f39de84b50e8c1a1948aed28edc4d06d5dba58497b876bd8bf",
+      "kind": "blocker",
+      "task_id": "staging_qa_failed_run_40689568053"
     }
   ],
   "pending_transitions": [
@@ -91167,6 +91791,12 @@
       "event_id": "3c1e2ee4595c64a8e4b5cafeec2b3050e69014f9a1101ea80a8e536706b6e401",
       "family": "staging_qa",
       "task_id": "staging_qa_failed_run_40248532779"
+    },
+    {
+      "at": "2026-10-28T13:36:33.524224Z",
+      "event_id": "eba8fa7cd47611f39de84b50e8c1a1948aed28edc4d06d5dba58497b876bd8bf",
+      "family": "staging_qa",
+      "task_id": "staging_qa_failed_run_40689568053"
     }
   ],
   "schema_version": 2,
@@ -117176,7 +117806,603 @@
       "approved": true,
       "attempts": 1,
       "audit_counts": {},
-      "blocker_signatures": [],
+      "blocked_revision": [
+        "dd94d38d96328f75ce766d4ab1d0980b53fff154",
+        "12f32e39af758c230f6ee256ad165535f174af18155960e9e5b0994991202415"
+      ],
+      "blocker": {
+        "blockers": [
+          {
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q",
+                  "-rs",
+                  "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+                  "-m",
+                  "not integration",
+                  "tests"
+                ],
+                "failure_hash": "5a70c0ce0a5ddbeabbbd33d0d1c788d8ae6f141f8a1cffd45a0dd315be5e417a",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+                "log_sha256": "c16553dc5667b74784adcc1fbc5db0fd68f08fc80488806f34931112b8adf4c5",
+                "name": "targeted_deterministic_tests",
+                "pytest": {
+                  "cases": [],
+                  "collected": 0,
+                  "failed": 0,
+                  "passed": 0,
+                  "proof": false,
+                  "skipped": 0
+                },
+                "returncode": 124,
+                "status": "FAIL"
+              },
+              {
+                "blocker": "Failure is infrastructure/unclassified; no demonstrated test failure to repair",
+                "changed_paths": [],
+                "evidence": [
+                  {
+                    "command": [
+                      "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                      "-m",
+                      "pytest",
+                      "-q"
+                    ],
+                    "output": "Validation command unavailable or timed out: TimeoutExpired",
+                    "returncode": 124
+                  }
+                ],
+                "failure_sha256": "c16553dc5667b74784adcc1fbc5db0fd68f08fc80488806f34931112b8adf4c5",
+                "material_progress": false,
+                "signature": null,
+                "source_run_id": null,
+                "status": "BLOCKED",
+                "validated": false
+              }
+            ],
+            "fingerprint": "4abbaae38f85ec7aa76e79b27c43ce7cad4ef744388ed6d4ba163b7c3f8d4452",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Targeted deterministic gate failed; no validated repair candidate",
+            "source_urls": []
+          },
+          {
+            "evidence": [
+              {
+                "failure_log_path": "/home/runner/work/Radar-salud/Radar-salud/candidate/artifacts/autonomy/demonstrated-failure.log"
+              }
+            ],
+            "fingerprint": "1cb5b79f98511b26483c6ec3adb22c412540e064aa44c7925117891e166ca4d8",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Failed workflow log is missing, unsafe or exceeds bounded input size",
+            "source_urls": []
+          },
+          {
+            "evidence": [
+              {
+                "browser_proof": {
+                  "cases": [
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 21,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 78
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  76 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  77 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 78 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  79 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  80 |  await card.locator('[data-detail]').first().click();\n  81 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:78:21"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 33,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 13
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-0\u001b[7m9\u001b[27m-1\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m1\u001b[27m0-1\u001b[7m3\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 21,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 78
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  76 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  77 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 78 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  79 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  80 |  await card.locator('[data-detail]').first().click();\n  81 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:78:21"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 33,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 13
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-0\u001b[7m9\u001b[27m-1\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m1\u001b[27m0-1\u001b[7m3\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 23,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 473
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('article[data-card] h2').filter({ hasText: /^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/ })\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m2\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card] h2').filter({ hasText: /^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/ })\u001b[22m\n\u001b[2m    9 × locator resolved to 2 elements\u001b[22m\n\u001b[2m      - unexpected value \"2\"\u001b[22m\n\n\n  471 |   await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(Math.min(newer,1));}\n  472 |  const opaque=page.locator('article[data-card] h2').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/});\n> 473 |  await expect(opaque).toHaveCount(0);\n      |                       ^\n  474 |  const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\\/N°533 · SIL: actualiza el inventario mensual/})});\n  475 |  await expect(c533).toHaveCount(1);\n  476 |  await expect(c533).not.toContainText('Qué pasó:');await c533.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Circular');await page.keyboard.press('Escape');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:473:23"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "persistent editorial contract is visible in feed and brief"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "column": 47,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 365
+                              },
+                              "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  363 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  364 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 365 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  366 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  367 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  368 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:365:47"
+                            }
+                          ],
+                          "status": "timedOut"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 23,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 473
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('article[data-card] h2').filter({ hasText: /^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/ })\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m2\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card] h2').filter({ hasText: /^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/ })\u001b[22m\n\u001b[2m    9 × locator resolved to 2 elements\u001b[22m\n\u001b[2m      - unexpected value \"2\"\u001b[22m\n\n\n  471 |   await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(Math.min(newer,1));}\n  472 |  const opaque=page.locator('article[data-card] h2').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/});\n> 473 |  await expect(opaque).toHaveCount(0);\n      |                       ^\n  474 |  const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\\/N°533 · SIL: actualiza el inventario mensual/})});\n  475 |  await expect(c533).toHaveCount(1);\n  476 |  await expect(c533).not.toContainText('Qué pasó:');await c533.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Circular');await page.keyboard.press('Escape');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:473:23"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "persistent editorial contract is visible in feed and brief"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "column": 47,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 365
+                              },
+                              "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  363 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  364 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 365 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  366 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  367 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  368 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:365:47"
+                            }
+                          ],
+                          "status": "timedOut"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                    }
+                  ],
+                  "projects": [
+                    "desktop",
+                    "mobile"
+                  ],
+                  "stats": {
+                    "duration": 182854.547,
+                    "expected": 122,
+                    "flaky": 0,
+                    "skipped": 0,
+                    "startTime": "2026-10-28T13:33:04.792Z",
+                    "unexpected": 8
+                  }
+                },
+                "command": [
+                  "npm",
+                  "run",
+                  "test:browser"
+                ],
+                "failure_hash": "2d202a7dfedfc32f253b79b83d7e767d8ea2ffd6b31e4dc632b38ad314c4292e",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+                "log_sha256": "eb19085305bee1aa2d446d27ff972afe589ae6662a03c83dda719fd5ed0491e8",
+                "name": "browser_desktop_and_mobile",
+                "returncode": 1,
+                "status": "FAIL"
+              }
+            ],
+            "fingerprint": "392759ad5d53c9c84f193c109f369d9fa3a181c9076c7575b0325f4a565d637f",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Independent candidate gate rejected or could not execute: browser_desktop_and_mobile",
+            "source_urls": []
+          },
+          {
+            "evidence": [
+              {
+                "diagnostics_are_acceptance": false,
+                "family": "staging_qa",
+                "task_id": "staging_qa_failed_run_40689568053"
+              }
+            ],
+            "fingerprint": "608082cf6cd4afa9517930c3286f2ae6e9aeb2cdc09cf42e50351e88fe2cee03",
+            "human_required": false,
+            "kind": "acceptance",
+            "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+            "source_urls": []
+          }
+        ],
+        "canonical_material_signature": "8302a7e1475eb5855404da3168fb487da7bd0968702bbbe42d2a2b69780bc6b5",
+        "evidence": [
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q",
+              "-rs",
+              "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+              "-m",
+              "not integration",
+              "tests"
+            ],
+            "failure_hash": "5a70c0ce0a5ddbeabbbd33d0d1c788d8ae6f141f8a1cffd45a0dd315be5e417a",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+            "log_sha256": "c16553dc5667b74784adcc1fbc5db0fd68f08fc80488806f34931112b8adf4c5",
+            "name": "targeted_deterministic_tests",
+            "pytest": {
+              "cases": [],
+              "collected": 0,
+              "failed": 0,
+              "passed": 0,
+              "proof": false,
+              "skipped": 0
+            },
+            "returncode": 124,
+            "status": "FAIL"
+          },
+          {
+            "blocker": "Failure is infrastructure/unclassified; no demonstrated test failure to repair",
+            "changed_paths": [],
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q"
+                ],
+                "output": "Validation command unavailable or timed out: TimeoutExpired",
+                "returncode": 124
+              }
+            ],
+            "failure_sha256": "c16553dc5667b74784adcc1fbc5db0fd68f08fc80488806f34931112b8adf4c5",
+            "material_progress": false,
+            "signature": null,
+            "source_run_id": null,
+            "status": "BLOCKED",
+            "validated": false
+          },
+          {
+            "failure_log_path": "/home/runner/work/Radar-salud/Radar-salud/candidate/artifacts/autonomy/demonstrated-failure.log"
+          },
+          {
+            "browser_proof": {
+              "cases": [
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 21,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 78
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  76 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  77 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 78 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  79 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  80 |  await card.locator('[data-detail]').first().click();\n  81 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:78:21"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 33,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 13
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-0\u001b[7m9\u001b[27m-1\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m1\u001b[27m0-1\u001b[7m3\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 21,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 78
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  76 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  77 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 78 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  79 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  80 |  await card.locator('[data-detail]').first().click();\n  81 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:78:21"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 33,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 13
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-0\u001b[7m9\u001b[27m-1\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m1\u001b[27m0-1\u001b[7m3\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 23,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 473
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('article[data-card] h2').filter({ hasText: /^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/ })\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m2\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card] h2').filter({ hasText: /^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/ })\u001b[22m\n\u001b[2m    9 × locator resolved to 2 elements\u001b[22m\n\u001b[2m      - unexpected value \"2\"\u001b[22m\n\n\n  471 |   await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(Math.min(newer,1));}\n  472 |  const opaque=page.locator('article[data-card] h2').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/});\n> 473 |  await expect(opaque).toHaveCount(0);\n      |                       ^\n  474 |  const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\\/N°533 · SIL: actualiza el inventario mensual/})});\n  475 |  await expect(c533).toHaveCount(1);\n  476 |  await expect(c533).not.toContainText('Qué pasó:');await c533.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Circular');await page.keyboard.press('Escape');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:473:23"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "persistent editorial contract is visible in feed and brief"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "column": 47,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 365
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  363 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  364 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 365 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  366 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  367 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  368 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:365:47"
+                        }
+                      ],
+                      "status": "timedOut"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 23,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 473
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('article[data-card] h2').filter({ hasText: /^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/ })\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m2\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card] h2').filter({ hasText: /^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/ })\u001b[22m\n\u001b[2m    9 × locator resolved to 2 elements\u001b[22m\n\u001b[2m      - unexpected value \"2\"\u001b[22m\n\n\n  471 |   await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(Math.min(newer,1));}\n  472 |  const opaque=page.locator('article[data-card] h2').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\\d+$/});\n> 473 |  await expect(opaque).toHaveCount(0);\n      |                       ^\n  474 |  const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\\/N°533 · SIL: actualiza el inventario mensual/})});\n  475 |  await expect(c533).toHaveCount(1);\n  476 |  await expect(c533).not.toContainText('Qué pasó:');await c533.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Circular');await page.keyboard.press('Escape');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:473:23"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "persistent editorial contract is visible in feed and brief"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "column": 47,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 365
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  363 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  364 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 365 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  366 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  367 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  368 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:365:47"
+                        }
+                      ],
+                      "status": "timedOut"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                }
+              ],
+              "projects": [
+                "desktop",
+                "mobile"
+              ],
+              "stats": {
+                "duration": 182854.547,
+                "expected": 122,
+                "flaky": 0,
+                "skipped": 0,
+                "startTime": "2026-10-28T13:33:04.792Z",
+                "unexpected": 8
+              }
+            },
+            "command": [
+              "npm",
+              "run",
+              "test:browser"
+            ],
+            "failure_hash": "2d202a7dfedfc32f253b79b83d7e767d8ea2ffd6b31e4dc632b38ad314c4292e",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+            "log_sha256": "eb19085305bee1aa2d446d27ff972afe589ae6662a03c83dda719fd5ed0491e8",
+            "name": "browser_desktop_and_mobile",
+            "returncode": 1,
+            "status": "FAIL"
+          },
+          {
+            "diagnostics_are_acceptance": false,
+            "family": "staging_qa",
+            "task_id": "staging_qa_failed_run_40689568053"
+          }
+        ],
+        "failure_action": "blocked",
+        "fingerprint": "51e4fb34e0b96ea955a051f1298728b401100d75d0c9f558169263e75fb371f1",
+        "product_input_fingerprint": "004b87172b196be7649437628ecb9b19161756a520ba4c7f62bfc471970b2c03",
+        "real_failure": {
+          "conclusion": "failure",
+          "failure_signature": "f5699e72e419071d3e4bd9dc235b639ff67cf7be9abfdadc222d745728d96f0c",
+          "head_sha": "dd94d38d96328f75ce766d4ab1d0980b53fff154",
+          "run_id": 40689568053,
+          "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/40689568053"
+        },
+        "reason": "Targeted deterministic gate failed; no validated repair candidate; Failed workflow log is missing, unsafe or exceeds bounded input size; Independent candidate gate rejected or could not execute: browser_desktop_and_mobile; Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256"
+      },
+      "blocker_signatures": [
+        "9f8a80c317699f21b5b1fc5851cb2ae405855e668d12232b74c6c1ee3575b1ce"
+      ],
       "created_at": "2026-10-28T13:24:19.803578Z",
       "declared_repair_inputs": {},
       "depends_on": [],
@@ -117194,26 +118420,26 @@
       "id": "staging_qa_failed_run_40689568053",
       "input_fingerprint": "2f98acf9b79853c4a9fd16971b7b28139116b97a0967031d10ecaf4b9fcd5872",
       "input_sha": "dd94d38d96328f75ce766d4ab1d0980b53fff154",
-      "last_ready_at": "2026-10-28T13:24:19.803578Z",
-      "lease": {
-        "claimed_at": "2026-10-28T13:24:19.803578Z",
-        "expires_at": "2026-10-28T13:46:23.761999Z",
-        "fence": 1,
-        "heartbeat_at": "2026-10-28T13:36:23.761999Z",
-        "owner": "40695884093-1-staging_qa",
-        "token": "ed504c35554d70165df8c61a47475283a60c308d067db50ed6eb766f0013234d"
+      "last_failure": {
+        "conclusion": "failure",
+        "failure_signature": "f5699e72e419071d3e4bd9dc235b639ff67cf7be9abfdadc222d745728d96f0c",
+        "head_sha": "dd94d38d96328f75ce766d4ab1d0980b53fff154",
+        "run_id": 40689568053,
+        "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/40689568053"
       },
-      "material_progress_at": "2026-10-28T13:24:19.803578Z",
-      "material_watch_started_at": "2026-10-28T13:24:19.803578Z",
+      "last_ready_at": "2026-10-28T13:24:19.803578Z",
+      "lease": null,
+      "material_progress_at": "2026-10-28T13:36:33.524224Z",
+      "material_watch_started_at": "2026-10-28T13:36:33.524224Z",
       "objective": "Recover the demonstrated staging gate; preserve product contracts.",
       "pickup_ready_since": "2026-10-28T13:24:19.803578Z",
       "priority": "critical",
       "product_input_fingerprint": "004b87172b196be7649437628ecb9b19161756a520ba4c7f62bfc471970b2c03",
       "queue_status": "approved",
-      "recovery_episode": "a9efb1b6bc34e5c064ce8bd72ab4e99b1dcf2c8ce78b0d9cbff295a592e35365",
+      "recovery_episode": "eba8fa7cd47611f39de84b50e8c1a1948aed28edc4d06d5dba58497b876bd8bf",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-10-28T13:24:19.803578Z",
-      "status": "RUNNING"
+      "state_changed_at": "2026-10-28T13:36:33.524224Z",
+      "status": "BLOCKED"
     },
     "w4_cenabast_2026_10_11": {
       "approved": true,
