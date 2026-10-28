@@ -217,10 +217,10 @@ test('weekly insight freshness mirrors the Monday rule and the legacy bridge (Di
   const m = src.match(/function weeklyFresh\(w,now=new Date\(\)\)\{[\s\S]*?\n\}/);
   const weeklyFresh = new Function(m[0] + '; return weeklyFresh;')();
   const at = d => new Date(d + 'T15:00:00Z');
-  const monday = {editorial_review_pass: true, anchor_kind: 'monday', freshness_anchor_date: '2026-11-02', event_date: '2026-10-21', expires_on: '2026-11-09'};
+  const monday = {editorial_review_pass: true, anchor_kind: 'monday', freshness_anchor_date: '2026-11-02', event_date: '2026-10-28', expires_on: '2026-11-09'};
   assert.ok(weeklyFresh(monday, at('2026-11-02')) && weeklyFresh(monday, at('2026-11-08')));
   assert.ok(!weeklyFresh(monday, at('2026-11-09')) && !weeklyFresh(monday, at('2026-11-01')));
-  assert.ok(!weeklyFresh({...monday, event_date: '2026-10-15'}, at('2026-11-03')));
+  assert.ok(!weeklyFresh({...monday, event_date: '2026-10-21'}, at('2026-11-03'))); // older than 7 days (Dirección 28-oct)
   const legacy = {editorial_review_pass: true, event_date: '2026-10-23', freshness_anchor_date: '2026-10-23', expires_on: '2026-11-02'};
   assert.ok(weeklyFresh(legacy, at('2026-11-01')) && !weeklyFresh(legacy, at('2026-11-02')));
 });

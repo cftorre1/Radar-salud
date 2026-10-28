@@ -63,7 +63,7 @@ function weeklyFresh(w,now=new Date()){
  const p=Object.fromEntries(parts.map(x=>[x.type,x.value])),today=day(`${p.year}-${p.month}-${p.day}`),event=day(w.event_date),anchor=day(w.freshness_anchor_date||w.event_date);
  const D=86400000,expiry=day(w.expires_on);
  // Monday insights (Dirección 27-oct-2026): mirror weekly_freshness.monday_freshness_gate.
- if(w.anchor_kind==='monday')return [anchor,event,expiry].every(Number.isFinite)&&new Date(anchor).getUTCDay()===1&&expiry===anchor+7*D&&anchor<=today&&today<expiry&&anchor-event>=0&&anchor-event<=14*D;
+ if(w.anchor_kind==='monday')return [anchor,event,expiry].every(Number.isFinite)&&new Date(anchor).getUTCDay()===1&&expiry===anchor+7*D&&anchor<=today&&today<expiry&&anchor-event>=0&&anchor-event<=7*D;
  // Friday→Monday bridge for the last legacy insight (sunset 2026-11-02), as in weekly_freshness.
  let win=7*D;if(Number.isFinite(expiry)&&Number.isFinite(anchor)&&new Date(expiry).getUTCDay()===1&&expiry<=day('2026-11-02')&&expiry-anchor>7*D&&expiry-anchor<=10*D)win=expiry-anchor;
  return [event,anchor].every(d=>Number.isFinite(d)&&today>=d&&today-d<win)&&(!('expires_on' in w)||today<expiry);
