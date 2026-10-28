@@ -201,3 +201,16 @@ test('datos.gob.cl releases are labelled as data updates, not news publication',
 test('alternatives and related context keep detection/data-release labels',()=>{const c=context();const alt={title:'Memoria',source_name:'Clínicas de Chile A.G.',url:'https://a.cl/1',event_date:'2026-10-20',date_basis:'first_detected',first_detected_at:'2026-10-20T12:00:00Z'};assert.match(c.sourceBlock([alt]),/Detectado el/);assert.doesNotMatch(c.sourceBlock([alt]),/Publicado/);assert.match(c.contextBlock([{...alt,verified:true}]),/Detectado el/);assert.match(c.contextBlock([{title:'Ley',event_date:'2026-10-01'}]),/Fecha:/)});
 test('metadata-only datos.gob.cl changes read as catalog updates',()=>{const c=context();assert.match(c.sourceTiming({event_date:'2026-10-07',date_basis:'data_release',data_release_scope:'catalog'}),/^Catálogo actualizado el/)});
 test('historical connections never label a detection or data-release day as Publicado',()=>{const c=context();const x={label:'Antecedente',url:'https://a.cl/1',title:'Memoria',note:'n',event_date:'2026-10-20',date_basis:'first_detected',first_detected_at:'2026-10-20T12:00:00Z'};const html=c.enrichmentBlock([],[x],null);assert.match(html,/Detectado el/);assert.doesNotMatch(html,/Publicado/);assert.match(c.enrichmentBlock([],[{...x,date_basis:undefined}],null),/Publicado/)});
+
+test('weekly insight freshness mirrors the Monday rule and the legacy bridge (Dirección 27-oct-2026)', () => {
+  const src = require('fs').readFileSync(require('path').join(__dirname, '../web/app.js'), 'utf8');
+  const m = src.match(/function weeklyFresh\(w,now=new Date\(\)\)\{[\s\S]*?\n\}/);
+  const weeklyFresh = new Function(m[0] + '; return weeklyFresh;')();
+  const at = d => new Date(d + 'T15:00:00Z');
+  const monday = {editorial_review_pass: true, anchor_kind: 'monday', freshness_anchor_date: '2026-11-02', event_date: '2026-10-21', expires_on: '2026-11-09'};
+  assert.ok(weeklyFresh(monday, at('2026-11-02')) && weeklyFresh(monday, at('2026-11-08')));
+  assert.ok(!weeklyFresh(monday, at('2026-11-09')) && !weeklyFresh(monday, at('2026-11-01')));
+  assert.ok(!weeklyFresh({...monday, event_date: '2026-10-15'}, at('2026-11-03')));
+  const legacy = {editorial_review_pass: true, event_date: '2026-10-23', freshness_anchor_date: '2026-10-23', expires_on: '2026-11-02'};
+  assert.ok(weeklyFresh(legacy, at('2026-11-01')) && !weeklyFresh(legacy, at('2026-11-02')));
+});

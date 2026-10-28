@@ -53,7 +53,12 @@ function weeklyFresh(w,now=new Date()){
  const day=v=>{if(typeof v!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(v))return NaN;const n=Date.parse(v+'T00:00:00Z');return Number.isFinite(n)&&new Date(n).toISOString().slice(0,10)===v?n:NaN};
  const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Santiago',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now);
  const p=Object.fromEntries(parts.map(x=>[x.type,x.value])),today=day(`${p.year}-${p.month}-${p.day}`),event=day(w.event_date),anchor=day(w.freshness_anchor_date||w.event_date);
- return [event,anchor].every(d=>Number.isFinite(d)&&today>=d&&today-d<7*86400000)&&(!('expires_on' in w)||today<day(w.expires_on));
+ const D=86400000,expiry=day(w.expires_on);
+ // Monday insights (Dirección 27-oct-2026): mirror weekly_freshness.monday_freshness_gate.
+ if(w.anchor_kind==='monday')return [anchor,event,expiry].every(Number.isFinite)&&new Date(anchor).getUTCDay()===1&&expiry===anchor+7*D&&anchor<=today&&today<expiry&&anchor-event>=0&&anchor-event<=14*D;
+ // Friday→Monday bridge for the last legacy insight (sunset 2026-11-02), as in weekly_freshness.
+ let win=7*D;if(Number.isFinite(expiry)&&Number.isFinite(anchor)&&new Date(expiry).getUTCDay()===1&&expiry<=day('2026-11-02')&&expiry-anchor>7*D&&expiry-anchor<=10*D)win=expiry-anchor;
+ return [event,anchor].every(d=>Number.isFinite(d)&&today>=d&&today-d<win)&&(!('expires_on' in w)||today<expiry);
 }
 function currentWeekly(){return weeklyFresh(freeValue.weekly_insight)?freeValue.weekly_insight:null}
 // Mirrors HELD_GLOBAL_THEMES in src/radar_salud/free_value.py (config/editorial_rules_v3.json holds):
