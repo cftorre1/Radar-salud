@@ -12,7 +12,7 @@ test('row title opens the record without a Más info button; opening reads, the 
  await selectLane(page,'t');await expect(card).toHaveClass(/read/);
  await card.locator('.title-open').click();await expect(page.locator('#detailBody')).toHaveText(body);await page.keyboard.press('Escape');
  // Read rows carry no mark; the record's text control marks them unread again.
- await expect(card.locator('[data-read]')).toHaveCount(0);await card.locator('.title-open').click();await page.locator('#detailRead').click();await expect(page.locator('#detailRead')).toHaveText('Marcar leída');await page.keyboard.press('Escape');await expect(card).not.toHaveClass(/read/);await expect(card.locator('[data-read]')).toHaveAttribute('aria-label',/^Marcar como leído/);
+ /* Dirección 28-oct 03:49: a read row keeps its toggle (now 'Marcar como no leído'). */await expect(card.locator('[data-read]')).toHaveAttribute('aria-label',/^Marcar como no leído/);await card.locator('.title-open').click();await page.locator('#detailRead').click();await expect(page.locator('#detailRead')).toHaveText('Marcar leída');await page.keyboard.press('Escape');await expect(card).not.toHaveClass(/read/);await expect(card.locator('[data-read]')).toHaveAttribute('aria-label',/^Marcar como leído/);
  await page.reload();await expect(card).not.toHaveClass(/read/);await expect(page.locator('.lane.on')).toContainText('Todas');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  await page.screenshot({path:`artifacts/product-v3-${test.info().project.name}.png`,fullPage:true});
 });

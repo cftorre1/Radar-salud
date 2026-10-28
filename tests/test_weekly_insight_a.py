@@ -32,7 +32,9 @@ def draft():
 def ageing_signals():
     sig = history()
     find = lambda p: next(s for s in sig if s["title"].startswith(p))
-    main = find("Chile, país poco preparado para envejecer")
+    # Dirección 28-oct-2026: the topic must come from the 7 days before the Monday; move the
+    # recorded lead story into that window (complements keep their real, older dates).
+    main = {**find("Chile, país poco preparado para envejecer"), "event_date": "2026-10-28"}
     return main, [find("Comité Social: Salud y Mideso"), find("Ministro Mas en Chile 100"), find("Senior housing")]
 
 
@@ -56,7 +58,7 @@ class FakeModels:
 def pipeline(monkeypatch):
     main, related = ageing_signals()
     monkeypatch.setattr(gen, "related_signals", lambda c, s, a, **kw: related if c is main else [])
-    raw = draft()["weekly_insight"]
+    raw = {**draft()["weekly_insight"], "event_date": "2026-10-28"}
     return {"signals": [main] + related, "raw": raw}
 
 
@@ -165,14 +167,14 @@ def test_model_error_is_fail_closed(pipeline):
     assert result["status"] == "generation_error" and result["weekly_insight"] is None
 
 
-def test_topic_selection_uses_14_days_before_monday_and_skips_last_week():
+def test_topic_selection_uses_7_days_before_monday_and_skips_last_week():
     sig = history()
     prev = approved_weekly()
     ranked = gen.select_topic(sig, ANCHOR, recent_urls=set(prev["source_refs"]), recent_text=prev["headline"])
     assert ranked
     for row in ranked:
         d = date.fromisoformat(row["signal"]["event_date"][:10])
-        assert 0 < (ANCHOR - d).days <= 14
+        assert 0 < (ANCHOR - d).days <= 7
         assert row["signal"]["source_url"] not in prev["source_refs"]
     assert ranked == gen.select_topic(sig, ANCHOR, recent_urls=set(prev["source_refs"]), recent_text=prev["headline"])
 
@@ -187,6 +189,7 @@ def test_november_2_draft_passes_deterministic_rules_but_stays_on_hold(pipeline)
     payload = draft()
     weekly = payload["weekly_insight"]
     # Re-run the gate on the stored draft instead of trusting its stored verdict.
+    weekly = {**weekly, "event_date": "2026-10-28"}  # its 23-oct lead is outside the 7-day rule (28-oct)
     verification = gen.verify_candidate(weekly, evidence_for(pipeline["signals"]), ANCHOR)
     assert verification["verdict"] == "PASS", verification["errors"]
     assert presentation_a_errors(weekly) == []
@@ -354,7 +357,7 @@ def test_monday_anchor_for_every_day_of_the_week():
 
 
 def monday_weekly(**kw):
-    w = {"anchor_kind": "monday", "freshness_anchor_date": "2026-11-02", "expires_on": "2026-11-09", "event_date": "2026-10-23"}
+    w = {"anchor_kind": "monday", "freshness_anchor_date": "2026-11-02", "expires_on": "2026-11-09", "event_date": "2026-10-28"}
     w.update(kw)
     return w
 
@@ -370,7 +373,7 @@ def test_monday_gate_window_and_expiry():
 def test_monday_gate_rejects_bad_anchor_expiry_or_old_event():
     for bad in (dict(freshness_anchor_date="2026-11-03", expires_on="2026-11-10"),   # not a Monday
                 dict(expires_on="2026-11-16"),                                       # longer than a week
-                dict(event_date="2026-10-18"),                                       # 15 days before anchor
+                dict(event_date="2026-10-25"),                                       # 8 days before anchor (7-day rule)
                 dict(event_date="2026-11-03"),                                       # after the anchor
                 dict(expires_on=None)):
         assert not freshness_gate(monday_weekly(**bad), date(2026, 11, 3))["eligible"], bad

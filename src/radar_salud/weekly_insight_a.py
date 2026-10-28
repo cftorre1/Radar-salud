@@ -2,7 +2,7 @@
 
 Pipeline (one run per Monday, fail-closed):
 
-1. ``select_topic``      deterministic ranking of the feed in the 14 days before the anchor Monday.
+1. ``select_topic``      deterministic ranking of the feed in the 7 days before the anchor Monday (Dirección 28-oct).
 2. ``build_evidence``    candidate + related signals + deterministic statistical series from the
                           repo; every number available to the writer is collected in ``numbers``.
 3. drafting model       writes format A as JSON (headline, dek, charts, essay.facts/reading,
@@ -83,7 +83,7 @@ def _stems(text: str) -> set[str]:
     return {w.casefold()[:6] for w in WORD.findall(text or "") if w.casefold() not in STOP}
 
 
-def related_signals(candidate: dict, signals: list[dict], anchor: date, days: int = 45, limit: int = 6,
+def related_signals(candidate: dict, signals: list[dict], anchor: date, days: int = 730, limit: int = 6,
                     min_weight: float = 9.0) -> list[dict]:
     """Context signals in the ``days`` before the anchor about the same subject: they must share at
     least one distinctive stem of the candidate's TITLE, and enough distinctive stems overall,

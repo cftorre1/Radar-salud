@@ -217,10 +217,11 @@ test('weekly insight freshness mirrors the Monday rule and the legacy bridge (Di
   const m = src.match(/function weeklyFresh\(w,now=new Date\(\)\)\{[\s\S]*?\n\}/);
   const weeklyFresh = new Function(m[0] + '; return weeklyFresh;')();
   const at = d => new Date(d + 'T15:00:00Z');
-  const monday = {editorial_review_pass: true, anchor_kind: 'monday', freshness_anchor_date: '2026-11-02', event_date: '2026-10-21', expires_on: '2026-11-09'};
+  const monday = {editorial_review_pass: true, anchor_kind: 'monday', freshness_anchor_date: '2026-11-02', event_date: '2026-10-28', expires_on: '2026-11-09'};
   assert.ok(weeklyFresh(monday, at('2026-11-02')) && weeklyFresh(monday, at('2026-11-08')));
   assert.ok(!weeklyFresh(monday, at('2026-11-09')) && !weeklyFresh(monday, at('2026-11-01')));
-  assert.ok(!weeklyFresh({...monday, event_date: '2026-10-15'}, at('2026-11-03')));
+  assert.ok(!weeklyFresh({...monday, event_date: '2026-10-21'}, at('2026-11-03'))); // older than 7 days (Dirección 28-oct)
   const legacy = {editorial_review_pass: true, event_date: '2026-10-23', freshness_anchor_date: '2026-10-23', expires_on: '2026-11-02'};
   assert.ok(weeklyFresh(legacy, at('2026-11-01')) && !weeklyFresh(legacy, at('2026-11-02')));
 });
+test('read rows keep their toggle, source and date (Dirección 28-oct 03:49)',()=>{const c=context();const s={title:'Circular de prueba',source_url:'https://example.org/c',source_name:'Superintendencia de Salud',event_date:'2026-10-20'};c.s=s;vm.runInContext('readSet.add(idFor(s))',c);const html=c.card(s);assert.match(html,/class="signal item read"/);assert.match(html,/data-read="[^"]+" aria-label="Marcar como no leído/);assert.match(html,/Superintendencia de Salud · 20 oct 2026/);assert.match(html,/aria-label="Fuente original"/);assert.match(html,/data-share=/);const css=fs.readFileSync('web/home-inbox.css','utf8')+fs.readFileSync('web/global.css','utf8');assert.doesNotMatch(css,/\.read \.card-meta\{display:none\}/)});

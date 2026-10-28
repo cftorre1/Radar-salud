@@ -17,7 +17,9 @@ def iso_day(value):
 # Dirección 27-oct-2026: the weekly insight is renewed every MONDAY. A Monday-anchored
 # insight is valid from its anchor Monday until (excluding) the next Monday, and may
 # analyse evidence published up to MONDAY_EVIDENCE_DAYS before the anchor.
-MONDAY_EVIDENCE_DAYS = 14
+# Dirección 28-oct-2026: the topic comes from something that happened in the last 7 days;
+# complements may come from any date (other news or open web sources).
+MONDAY_EVIDENCE_DAYS = 7
 # Sunset of the Friday→Monday bridge (legacy insights may stretch to the first Monday only).
 BRIDGE_SUNSET = date(2026, 11, 2)
 
