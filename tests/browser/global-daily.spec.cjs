@@ -3,7 +3,7 @@
 const {test,expect,FIXTURE_AS_OF}=require('./fixtures.cjs');
 const fs=require('fs');
 function day(offset=0){const d=new Date(Date.parse(FIXTURE_AS_OF+'T12:00:00Z')-offset*86400000);return d.toISOString().slice(0,10)}
-function feed(enabled=true){return {enabled,content_use:'metadata_and_link_only',window_days:14,freshness:{status:'fresh',newest_published_at:day()},
+function feed(enabled=true){return {schema_version:2,enabled,content_use:'metadata_and_link_only',window_days:14,freshness:{status:'fresh',newest_published_at:day()},
  items:[...Array(10)].map((_,i)=>({id:`d${i}`,source:i%2?'fda':'ema',source_label:i%2?'FDA':'EMA',attribution:i%2?'U.S. Food and Drug Administration':'European Medicines Agency',bylines:i===0?['Zoe Z','Al A','Mo M']:[],rights_basis:i===1?{license_label:'CC BY 4.0',license_url:'https://creativecommons.org/licenses/by/4.0/'}:{},
   title:`Headline number ${i} about drug approval and coverage policy`,url:`https://www.ema.europa.eu/en/news/item-${i}`,published_at:day(i*3),first_seen_on:day(i*3),
   tags_es:['Regulación','Medicamentos y farma'],summary_es:'Regulador. Relevante para: Regulación.',priority:80})).concat([

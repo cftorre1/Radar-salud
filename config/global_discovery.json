@@ -258,7 +258,9 @@
         {
           "section": "medwatch_safety_alerts",
           "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/medwatch/rss.xml",
-          "format": "rss"
+          "format": "rss",
+          "store_description": false,
+          "store_description_note": "MedWatch items often link to company recall announcements (third-party, not public domain): title + link only, never the summary."
         }
       ],
       "rights": {
@@ -276,9 +278,10 @@
           "third-party content excluded"
         ],
         "verified_on": "2026-10-27",
-        "verified_how": "RSS feed list page read via web fetch 27-oct; FDA website-policies page could not be fetched from this environment (legal basis is statutory); robots.txt enforced at runtime (fail closed); 28-oct (global-sources-more): RSS list page re-read via web fetch, routes What's New: Drugs, What's New: Vaccines, Blood and Biologics and MedWatch Safety Alerts added (food/consumer feeds left out)",
+        "verified_how": "RSS feed list page read via web fetch 27-oct; robots.txt enforced at runtime (fail closed); 28-oct (global-sources-more): RSS list page re-read via web fetch, routes What's New: Drugs, What's New: Vaccines, Blood and Biologics and MedWatch Safety Alerts added (food/consumer feeds left out). 28-oct review fix: https://www.fda.gov/about-fda/about-website/website-policies and https://www.fda.gov/robots.txt fetch re-attempted, blocked by the sandbox (web-fetch allowlist; proxy CONNECT 403) -> NOT verified; the rights basis relies on the statute (17 U.S.C. §105) alone, not on a page read; the drugs/biologics/medwatch feed URLs were not fetched live. MedWatch summaries withheld (company announcements are not public domain).",
         "paid_tier_requires_publisher_confirmation": false,
-        "description_basis": "US federal government work, public domain (17 U.S.C. §105)"
+        "description_basis": "US federal government work, public domain (17 U.S.C. §105)",
+        "website_policies_verified": false
       },
       "daily_feed": {
         "display": true,
@@ -599,7 +602,7 @@
         ],
         "description_basis": "OGL v3.0 permits copying and publishing the publisher's own summary with attribution",
         "verified_on": "2026-10-28",
-        "verified_how": "OGL v3 text and the GOV.UK organisation page footer read via web fetch 28-oct; gov.uk robots.txt read via web fetch 28-oct (disallows only /*/print and /search/all* for all agents; organisation .atom feeds allowed); feed URL and cadence from a public feed directory (feeder.co); not fetched live (sandbox has no route); robots.txt enforced at runtime (fail closed)",
+        "verified_how": "OGL v3 text (nationalarchives.gov.uk) and the GOV.UK footer on the DHSC organisation page read via web fetch 28-oct ('All content is available under the Open Government Licence v3.0, except where otherwise stated'); feed URL and cadence from a public feed directory (feeder.co); not fetched live. 28-oct review fix: https://www.gov.uk/robots.txt re-read via web fetch (User-agent * disallows only /*/print and /search/all*; specific bots blocked: deepcrawl, MS Search 6.0 Robot; /government/organisations/*.atom allowed) -> robots VERIFIED; the .atom feed URLs and the organisation page fetch re-attempted, blocked by the sandbox (web-fetch allowlist; proxy CONNECT 403) -> feeds NOT fetched live, entry format and summaries unverified; fixtures are constructed. robots.txt is also enforced at runtime (fail closed).",
         "paid_tier_requires_publisher_confirmation": false
       },
       "expected_items_per_week": {
@@ -626,7 +629,10 @@
       "exclude_title_patterns": [
         "^(transparency data|foi release|corporate information|form|correspondence|decision|notice|guidance: dhsc public appointments)\\b",
         "\\b(public appointments?|board minutes|spending over|gifts and hospitality|senior officials|organogram|workforce management information|register of interests)\\b",
-        "\\b(performance data|covid-19 test products)\\b"
+        "\\b(performance data|covid-19 test products)\\b",
+        "\\bclass [234] medicines? recall\\b",
+        "\\bclass [234] medicines? defect information\\b",
+        "\\bfield safety notices?\\b"
       ],
       "routes": [
         {
@@ -642,7 +648,8 @@
         "license_label": "OGL v3.0",
         "evidence_urls": [
           "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
-          "https://www.gov.uk/government/organisations/medicines-and-healthcare-products-regulatory-agency",
+          "https://www.gov.uk/government/organisations/department-of-health-and-social-care",
+          "https://www.gov.uk/government/organisations/uk-health-security-agency",
           "https://www.gov.uk/robots.txt"
         ],
         "permitted_use": "metadata_title_link_byline_only",
@@ -656,7 +663,7 @@
         ],
         "description_basis": "OGL v3.0 permits copying and publishing the publisher's own summary with attribution",
         "verified_on": "2026-10-28",
-        "verified_how": "OGL v3 text and the GOV.UK organisation page footer (DHSC and UKHSA pages) read via web fetch 28-oct; gov.uk robots.txt read via web fetch 28-oct (disallows only /*/print and /search/all* for all agents; organisation .atom feeds allowed); feed URL and cadence from a public feed directory (feeder.co); not fetched live (sandbox has no route); robots.txt enforced at runtime (fail closed)",
+        "verified_how": "OGL v3 text (nationalarchives.gov.uk) read via web fetch 28-oct. The MHRA organisation page itself was NOT read: the OGL footer was read on the GOV.UK DHSC and UKHSA organisation pages (the GOV.UK footer is site-wide; MHRA content is on the same www.gov.uk host), so the MHRA licence rests on the site-wide GOV.UK footer, not on an MHRA page read. Feed URL and cadence from a public feed directory (feeder.co); not fetched live. 28-oct review fix: https://www.gov.uk/robots.txt re-read via web fetch (User-agent * disallows only /*/print and /search/all*; specific bots blocked: deepcrawl, MS Search 6.0 Robot; /government/organisations/*.atom allowed) -> robots VERIFIED; the .atom feed URLs and the organisation page fetch re-attempted, blocked by the sandbox (web-fetch allowlist; proxy CONNECT 403) -> feeds NOT fetched live, entry format and summaries unverified; fixtures are constructed. robots.txt is also enforced at runtime (fail closed).",
         "paid_tier_requires_publisher_confirmation": false
       },
       "expected_items_per_week": {
@@ -668,7 +675,12 @@
         "display": true,
         "label": "MHRA (Reino Unido)",
         "kind_es": "Regulador de medicamentos y dispositivos del Reino Unido"
-      }
+      },
+      "include_title_patterns": [
+        "\\bnational patient safety alert\\b",
+        "\\bmedical (device )?safety alert\\b"
+      ],
+      "title_filter_note": "28-oct review: routine individual Class 2/3/4 medicines recalls / defect information and Field Safety Notices are excluded (kept in feed_discovery as rejected, category publisher_routine_document_type, countable per week); National Patient Safety Alerts and medical safety alerts always pass (include wins over exclude). Class 1 recalls follow the normal relevance rules."
     }
   ],
   "feed_candidates_excluded": [
@@ -771,7 +783,7 @@
     "ai_policy": "paid_ai_calls=0. Optional future: Spanish translation of titles only for CC BY / public-domain feeds (not KFF, not The Conversation: NoDerivatives), cheap model inside the USD 10/month cap, requires Dirección OK.",
     "kff_decision": "Dirección 28-oct-2026: KFF Health News queda fuera de Global (PREMIUM) por ahora; sigue como descubrimiento sin publicación.",
     "window_note": "Dirección 28-oct-2026: Global es una sola bandeja ordenada por fecha con 90 días de visibilidad y novedades diarias.",
-    "dedup": "same canonical URL or same normalized headline within 3 days across sources -> one card (earliest), other publishers listed in also_reported_by"
+    "dedup": "same canonical URL -> one card; same normalized headline (GOV.UK document-type prefixes kept, so 'Guidance: X' and 'Consultation outcome: X' stay distinct) within 3 days -> one card. A card already shown keeps its id (read state); otherwise the earliest wins. Other publishers go to also_reported_by; every merged copy, same publisher included, is recorded in the payload's duplicates ledger."
   },
   "feed_candidates_pending_direccion": [
     {

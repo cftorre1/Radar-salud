@@ -17,7 +17,7 @@ import unicodedata
 import xml.etree.ElementTree as ET
 from datetime import date, datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
-from html import unescape
+from html.parser import HTMLParser
 
 from .global_discovery_common import canonical_url
 
@@ -38,29 +38,60 @@ def _fold(text: str) -> str:
     return "".join(c for c in unicodedata.normalize("NFKD", (text or "").casefold()) if not unicodedata.combining(c))
 
 
+class _TextOnly(HTMLParser):
+    """Text outside real tags. Tags are tokenized first; character references in text are then
+    decoded exactly once by the parser (convert_charrefs), so decoded "<" can never become a tag."""
+
+    SKIP = {"script", "style"}
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.parts, self.skipping = [], 0
+
+    def handle_starttag(self, tag, attrs):
+        self.skipping += tag in self.SKIP
+        self.parts.append(" ")
+
+    def handle_endtag(self, tag):
+        if tag in self.SKIP and self.skipping:
+            self.skipping -= 1
+        self.parts.append(" ")
+
+    def handle_startendtag(self, tag, attrs):
+        self.parts.append(" ")
+
+    def handle_data(self, data):
+        if not self.skipping:
+            self.parts.append(data)
+
+
 def _clean(text) -> str:
-    # Decode entities (feeds often double-escape) and drop markup; never reword.
-    value = unescape(unescape(str(text or "")))
-    value = re.sub(r"<[^>]{0,500}>", " ", value)
-    return " ".join(value.split())
+    """Drop real markup first (HTML parser), then decode entities exactly once; never reword.
+
+    Decoding before stripping would turn an escaped "&lt;5 ... &gt;65" into a fake tag and
+    delete the words between them (a change of meaning)."""
+    parser = _TextOnly()
+    parser.feed(str(text or ""))
+    parser.close()
+    return " ".join("".join(parser.parts).split())
 
 
 def publisher_summary(raw) -> tuple[str | None, bool]:
     """Publisher's own short summary, verbatim (markup/entities removed), at most DESCRIPTION_MAX chars.
 
-    Longer summaries are cut at the last sentence end that fits, else at a word boundary with an
-    ellipsis (flagged as truncated). Text longer than DESCRIPTION_BODY_LIMIT is a body, not a
-    summary: it is dropped (title only)."""
+    Longer summaries are cut at the last sentence end that fits, else at a word boundary; a cut
+    summary ALWAYS ends with "…" (also after a sentence end) and is flagged as truncated. Text
+    longer than DESCRIPTION_BODY_LIMIT is a body, not a summary: it is dropped (title only)."""
     text = _clean(raw)
     if not text or len(text) > DESCRIPTION_BODY_LIMIT:
         return None, False
     if len(text) <= DESCRIPTION_MAX:
         return text, False
-    head = text[:DESCRIPTION_MAX]
+    head = text[:DESCRIPTION_MAX - 2]  # room for " …"
     ends = [m.end() for m in re.finditer(r"[.!?](?=\s)", head + " ")]
     if ends and ends[-1] >= 80:
-        return head[:ends[-1]].strip(), True
-    return head[:DESCRIPTION_MAX - 1].rsplit(" ", 1)[0].rstrip(" ,;:-") + "…", True
+        return head[:ends[-1]].rstrip() + " …", True
+    return head.rsplit(" ", 1)[0].rstrip(" ,;:-") + "…", True
 
 
 def validate_feed_config(feed: dict) -> None:
@@ -75,7 +106,7 @@ def validate_feed_config(feed: dict) -> None:
     if feed.get("store_description") and not rights.get("description_basis"):
         # Keeping the publisher's summary needs its own recorded rights basis (fail closed).
         raise ValueError("store_description without rights.description_basis")
-    for pattern in feed.get("exclude_title_patterns", []):
+    for pattern in feed.get("exclude_title_patterns", []) + feed.get("include_title_patterns", []):
         re.compile(pattern)
 
 
@@ -182,7 +213,8 @@ def parse_feed(raw: bytes, route: dict, feed: dict, as_of: date) -> list[dict]:
             rows.append(row)
             continue
         row["published_at"], row["publication_date_error"] = feed_day(entry["date"], as_of)
-        if feed.get("store_description"):
+        # A route may withhold summaries (FDA MedWatch links to company recall notices: not public domain).
+        if feed.get("store_description") and route.get("store_description", True) is not False:
             row["description"], row["description_truncated"] = publisher_summary(entry.get("summary"))
             row["description_basis"] = "publisher_feed_summary_verbatim" if row["description"] else None
         rows.append(row)
@@ -288,11 +320,22 @@ def collect_feeds(config: dict, client, as_of: date) -> tuple[list[dict], list[d
     result = []
     defaults = {feed["id"]: feed.get("default_segments", []) for feed in config.get("feeds", [])}
     title_exclusions = {feed["id"]: feed.get("exclude_title_patterns", []) for feed in config.get("feeds", [])}
+    title_inclusions = {feed["id"]: feed.get("include_title_patterns", []) for feed in config.get("feeds", [])}
     rights_by_feed = {feed["id"]: feed.get("rights") or {} for feed in config.get("feeds", [])}
     for row in items.values():
         row["classification"] = classify_relevance(row["title"], row["categories"], default_segments=defaults.get(row["source"], ()))
-        # Publisher-specific routine document types (e.g. GOV.UK "Transparency data:", "FOI release:").
-        if any(re.search(p, _fold(row["title"])) for p in title_exclusions.get(row["source"], [])):
+        # Publisher-specific priority document types (MHRA National Patient Safety Alerts, medical safety
+        # alerts) always reach the inbox; they win over the routine exclusions below.
+        if any(re.search(p, _fold(row["title"])) for p in title_inclusions.get(row["source"], [])):
+            base = row["classification"]
+            segments = base["segments"] if base.get("relevant") else ["regulation", "providers"]
+            row["classification"] = {"materiality": "candidate", "relevant": True, "segments": segments,
+                                     "priority": max(int(base.get("priority") or 0), 85), "category": "publisher_priority_document_type",
+                                     "reason": "publisher_priority_document_type", "method": "deterministic_rules_v1",
+                                     "ai_gate": {"invoked": False, "reason": "paid_ai_calls_contract_0"}, "chile_transfer": "hypothesis_only"}
+        # Publisher-specific routine document types (e.g. GOV.UK "Transparency data:", "FOI release:", MHRA
+        # class 2-4 recalls/defect notices and Field Safety Notices).
+        elif any(re.search(p, _fold(row["title"])) for p in title_exclusions.get(row["source"], [])):
             row["classification"] = {"materiality": "excluded", "relevant": False, "segments": [], "priority": 0,
                                      "category": "publisher_routine_document_type",
                                      "reason": "irrelevant_for_chilean_health_executives:publisher_routine_document_type",
