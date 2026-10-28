@@ -22,7 +22,9 @@ from radar_salud.pulso_source import (
 from pulso_editorial_test_support import valid_assessment
 
 REAL = Path(__file__).parent / 'fixtures/pulso_real'
-URL = 'https://www.latercera.com/pulso/noticia/gobierno-anuncia-nueva-gestion/'
+# An open (non-premium) section: premium /pulso/ pieces are analysed only from
+# their public lead (config/paywalled_press.json, Dirección 28-oct-2026).
+URL = 'https://www.latercera.com/nacional/noticia/gobierno-anuncia-nueva-gestion/'
 
 
 def synthetic_original():
@@ -66,23 +68,31 @@ def actual_model_input(monkeypatch):
     return requests
 
 
-def test_real_senior_housing_primary_tail_reaches_actual_response_input_without_lowering_gate(monkeypatch):
+def test_real_senior_housing_premium_pulso_body_never_reaches_model(monkeypatch):
     entry = next(entry for entry in json.loads((REAL / 'manifest.json').read_text())['fixtures']
                  if 'senior_housing.html.gz' in entry['path'])
     payload = gzip.decompress((REAL / 'senior_housing.html.gz').read_bytes())
     assert hashlib.sha256(payload).hexdigest() == entry['sha256']
     raw = raw_from_original(payload.decode('utf-8'), entry['url'])
     body = raw.metadata['page_text']
-    assert len(body) > 10000
+    assert '/pulso/' in entry['url'] and len(body) > 10000
     requests = actual_model_input(monkeypatch)
-    assert beta_sources.process_curated_beta_source(raw, {}) is None
-    assert requests[0]['input'].split('Contenido:\n', 1)[1] == body
-    assert body[-500:] in requests[0]['input']
-    assert raw.metadata['analysis_input_body_sha256'] == raw.metadata['article_body_sha256']
-    assert raw.metadata['analysis_input_characters'] == len(body)
-    assert raw.metadata['analysis_input_complete'] is True
-    assert raw.metadata['editorial_assessment']['threshold'] == 72
-    assert raw.metadata['rejection_reason'] == 'editorial_relevance_below_threshold'
+    from radar_salud.processing import DeferredProcessing
+    try:
+        # The unit stub grounds its proof quote in the full body, so it may not
+        # validate against a lead-only input; that only defers, never publishes.
+        assert beta_sources.process_curated_beta_source(raw, {}) is None
+    except DeferredProcessing:
+        pass
+    assert raw.metadata['paywalled'] is True
+    # Rights policy: the locked body is never model input; only title + public lead.
+    assert all(body[-500:] not in request['input'] and body[:2000] not in request['input'] for request in requests)
+    if requests:
+        assert raw.metadata['analysis_input_format'] == 'public_teaser_only_paywalled'
+        assert raw.metadata['analysis_input_characters'] == len(raw.metadata['public_teaser'])
+        assert requests[0]['input'].split('Contenido:\n', 1)[1] == raw.metadata['public_teaser']
+    else:
+        assert raw.metadata['rejection_reason'] in {'media_materiality_prefilter', 'paywalled_without_public_teaser'}
 
 
 def test_real_generic_aluvion_headline_preserves_clinical_tail_after_5500_in_actual_response_input(monkeypatch):

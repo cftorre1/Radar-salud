@@ -217,4 +217,9 @@ def bind_df_article(raw, html):
     raw.raw_text = evidence["raw_text"]
     raw.metadata.update(evidence["metadata"])
     raw.metadata.pop("fetch_error", None)
-    return raw
+    body = evidence["metadata"].get("page_text") or ""
+    raw.metadata["article_body_characters"] = len(body)
+    # DF ships the locked story in the HTML (#articleLock). Only the public
+    # bajada may be stored or analysed (rights policy, Dirección 28-oct-2026).
+    from .source_rights import restrict_raw_to_public
+    return restrict_raw_to_public(raw)

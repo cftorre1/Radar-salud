@@ -1,0 +1,144 @@
+{
+  "version": "1.0.0",
+  "decided_at": "2026-10-28",
+  "decided_by": "Dirección (reporte 28-oct: ficha DF con más información que la visible sin suscripción)",
+  "policy": "public_teaser_only",
+  "policy_text": "Para prensa con muro de pago sólo se almacena y muestra lo visible sin cuenta: título, bajada o lead público tal como se publicó, fecha y enlace. La pieza se marca como paywalled. Todo análisis usa sólo ese texto público u otras fuentes abiertas citadas. El cuerpo completo no se persiste en salidas públicas; queda un recibo de auditoría con hash y longitud, sin contenido.",
+  "public_fields": [
+    "title",
+    "public_teaser",
+    "event_date",
+    "source_url"
+  ],
+  "redacted_receipt_fields": [
+    "sha256",
+    "characters",
+    "field",
+    "reason",
+    "redacted_at"
+  ],
+  "teaser_max_characters": 600,
+  "min_teaser_characters_for_analysis": 60,
+  "sources": [
+    {
+      "id": "diario_financiero",
+      "name": "Diario Financiero",
+      "source_slugs": [
+        "diario_financiero"
+      ],
+      "hosts": [
+        "df.cl",
+        "www.df.cl"
+      ],
+      "paywall_model": "subscription",
+      "scope": "host",
+      "evidence": "DF sirve el cuerpo en #articleLock bajo muro de suscripción; sin cuenta sólo son visibles título, bajada, fecha y autor. La ficha IF del 22-oct (Nueva Masvida/costas) mostraba el cuerpo bloqueado.",
+      "in_pipeline": true
+    },
+    {
+      "id": "la_tercera_premium",
+      "name": "La Tercera · Pulso / La Tercera PM",
+      "source_slugs": [
+        "pulso_latercera"
+      ],
+      "hosts": [
+        "latercera.com",
+        "www.latercera.com"
+      ],
+      "paywall_model": "premium_sections_and_article_flag",
+      "scope": "path_prefix_or_article_flag",
+      "path_prefixes": [
+        "/pulso/",
+        "/la-tercera-pm/",
+        "/lt-board/"
+      ],
+      "article_flags": [
+        "isAccessibleForFree=false",
+        "publisher_paywall=true",
+        "content_tier=locked"
+      ],
+      "evidence": "Pulso, La Tercera PM y LT Board son secciones para suscriptores. Otras secciones de latercera.com son medidas (metered): se tratan como paywalled sólo cuando la propia pieza lo declara (isAccessibleForFree=false).",
+      "in_pipeline": true,
+      "pending_decision": "Secciones no premium de latercera.com sin bandera por artículo: estado 'unverified'; requieren decisión de Dirección antes de recortar su ficha."
+    },
+    {
+      "id": "el_mercurio",
+      "name": "El Mercurio / Emol",
+      "source_slugs": [],
+      "hosts": [
+        "elmercurio.com",
+        "www.elmercurio.com",
+        "digital.elmercurio.com",
+        "emol.com",
+        "www.emol.com"
+      ],
+      "paywall_model": "subscription",
+      "scope": "host",
+      "evidence": "No hay colector activo (verificado 28-oct en config/sources.json y src/). Regla preventiva para cualquier ingreso futuro o fuente adicional.",
+      "in_pipeline": false
+    },
+    {
+      "id": "ex_ante",
+      "name": "Ex-Ante",
+      "source_slugs": [],
+      "hosts": [
+        "ex-ante.cl",
+        "www.ex-ante.cl"
+      ],
+      "paywall_model": "subscription",
+      "scope": "host",
+      "evidence": "No hay colector activo (verificado 28-oct). Regla preventiva.",
+      "in_pipeline": false
+    }
+  ],
+  "redacted_signal_fields": [
+    "why_it_matters",
+    "card_what",
+    "card_why",
+    "display_title",
+    "key_facts",
+    "key_numbers",
+    "key_points",
+    "affected_actors",
+    "affected_processes",
+    "possible_implications",
+    "who_cares",
+    "risk_notes",
+    "review_points",
+    "original_what_happened",
+    "original_why_it_matters",
+    "detail_body",
+    "detail_sections",
+    "editorial_business_review",
+    "editorial_review",
+    "editorial_v2",
+    "df_body_reaudit_observations",
+    "df_body_reaudit_latest_assessment",
+    "data_insights",
+    "data_insight_evidence",
+    "analysis_trace",
+    "materiality_reason",
+    "summary_table",
+    "statistical_conclusion",
+    "source_title_full",
+    "legal_subtitle"
+  ],
+  "redacted_body_fields": [
+    "page_text",
+    "body",
+    "article_body",
+    "articleBody",
+    "description_full",
+    "full_text",
+    "text",
+    "what_happened",
+    "why_it_matters",
+    "analysis_model_output"
+  ],
+  "redacted_committee_fields": [
+    "what_happened",
+    "why_it_matters",
+    "public_title",
+    "uncertainties"
+  ]
+}
