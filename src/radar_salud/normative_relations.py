@@ -39,11 +39,18 @@ _ID = re.compile(
     r"(?:(IF|IP|SS)\s*[/\-]?\s*)?N?\s*[°º]?\s*(\d[\d\.]*)", re.I)
 _TARGET_KINDS = ("circular", "oficio circular")
 _EFFECTS = r"(?:los\s+)?efectos\s+de"
-_AGAINST = r"[^;]{0,300}?\b(?:en\s+)?contra\s+(?:de\s+)?"
+# The appealed instruction must be named right after "contra (de) (la|el)".
+_AGAINST = (r"[^;]{0,300}?\b(?:en\s+)?contra\s+(?:de\s+)?(?:(?:la|el)\s+)?"
+            r"(?=(?:Oficio\s+Circular|Circular)\s)")
 
 # A gap that never crosses another decision verb ("Acoge … y rechaza la solicitud de suspender …").
-_GAP = r"(?:(?!\brechaz|\bacoge|\bno\s|\bdeneg|\bha\s+lugar)[^;])"
-_SUSPEND_INFINITIVE = r"^" + _GAP + r"{0,120}?\bde\s+suspender\s+(?:los\s+efectos\s+de\s+)?"
+_STOP = r"rechaz|acoge|no\s|deneg|ha\s+lugar|desist|retir|renunci|inadmisib|archiv"
+_GAP = r"(?:(?!\b(?:" + _STOP + r"))[^;])"
+# The request noun follows the verb within a few words ("Acoge solicitud de …", "Ha lugar, en parte,
+# a lo solicitado de …"); a withdrawal/inadmissibility in between never reads as a suspension.
+_SUSPEND_INFINITIVE = (r"^(?:[\s,]+(?!(?:" + _STOP + r"))\S+){0,5}?[\s,]+(?:la\s+)?"
+                       r"(?:solicitud(?:es)?|petici[oó]n|lo\s+solicitado)\b" + _GAP +
+                       r"{0,80}?\bde\s+suspender\s+(?:los\s+efectos\s+de\s+)?")
 
 # (relation, finite main verb, object that must follow the verb; target named <= 15 words after it).
 # A verb counts at the start of a clause, or coordinated ("…, y suspende …" after a comma, or
@@ -137,7 +144,7 @@ def _clauses(text: str) -> list[str]:
     return out
 
 
-def extract_relations(subject: str, own_title: str = "", issuer: str | None = ISSUER) -> list[dict[str, Any]]:
+def extract_relations(subject: str, own_title: str = "", issuer: str | None = None) -> list[dict[str, Any]]:
     """Relations stated by the official subject; empty when none is stated verbatim."""
     text = " ".join(str(subject or "").split())
     if not text:
@@ -196,7 +203,7 @@ def relationship_text(rel: dict[str, Any]) -> str:
             f"(según el asunto oficial publicado por la Superintendencia).")
 
 
-def is_general_relation(subject: str, own_title: str = "", issuer: str | None = ISSUER) -> bool:
+def is_general_relation(subject: str, own_title: str = "", issuer: str | None = None) -> bool:
     """A resolution acting on a general instruction (circular / oficio circular)."""
     return any(r["relation"] in STATUS_RELATIONS for r in extract_relations(subject, own_title, issuer))
 
@@ -224,7 +231,7 @@ def apply_backlinks(signals: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
         relations = actor.get("normative_relations")
         if relations is None and actor.get("official_subject"):
             # Acts processed before relations existed: same verbatim-subject rule.
-            relations = extract_relations(actor["official_subject"], _act_label(actor))
+            relations = extract_relations(actor["official_subject"], _act_label(actor), ISSUER)
         for rel in relations or []:
             if rel.get("relation") not in STATUS_RELATIONS:
                 continue

@@ -73,8 +73,8 @@ def process_superintendencia_normativa(raw:RawItem,source_cfg):
 def apply_official_relations(row,official_subject,title):
     """General-scope acts on a circular (suspende / modifica / confirma ...): the relation and
     its target come verbatim from the regulator's listing subject, never from PDF analysis."""
-    from .normative_relations import extract_relations, relationship_text
-    rels=extract_relations(official_subject,title)
+    from .normative_relations import extract_relations, relationship_text, ISSUER
+    rels=extract_relations(official_subject,title,ISSUER)
     if not rels:return row
     row["normative_relations"]=rels
     ids=list(row.get("related_reference_ids") or []);contexts=[dict(x) for x in row.get("related_reference_contexts") or [] if isinstance(x,dict)]
