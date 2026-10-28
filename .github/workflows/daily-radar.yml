@@ -20,6 +20,9 @@ on:
     # Dirección 27-oct-2026: discover four times a day, every day (07:30, 11:30, 15:30, 19:30 Chile);
     # the hourly queue batch processes what is found in between.
     - cron: '30 10,14,18,22 * * *'
+    # Backstop (Dirección 28-oct): ~97 min after each slot; the gate runs it only if that slot's
+    # discovery never happened (a late primary run is skipped the same way). Never two per slot.
+    - cron: '7 0,12,16,20 * * *'
 permissions:
   contents: write
   actions: write
@@ -27,7 +30,32 @@ concurrency:
   group: alicanto-staging-writer
   cancel-in-progress: false
 jobs:
+  gate:
+    # Scheduler backstop (Dirección 28-oct "Respaldo en GitHub"): cheap no-checkout gate, see scripts/should_run.py.
+    # Fails open (run=true) if the gate itself cannot run.
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      run: ${{ steps.gate.outputs.run }}
+    steps:
+      - name: Gate (daily)
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          EVENT: ${{ github.event_name }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          if gh api -H 'Accept: application/vnd.github.raw' "repos/$REPO/contents/scripts/should_run.py?ref=staging" > "$RUNNER_TEMP/should_run.py" \
+            && out=$(python3 "$RUNNER_TEMP/should_run.py" daily --repo "$REPO" --event "$EVENT" --run-id "$RUN_ID"); then :
+          else out=$'run=true\nreason=gate_unavailable'; fi
+          echo "$out" | tee -a "$GITHUB_OUTPUT"
   build:
+    needs: gate
+    if: ${{ !cancelled() && needs.gate.outputs.run != 'false' }}
     runs-on: ubuntu-latest
     timeout-minutes: 180
     env:
