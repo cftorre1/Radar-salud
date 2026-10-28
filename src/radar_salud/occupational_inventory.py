@@ -264,6 +264,11 @@ def discover_inventory(scout, loader, as_of=None, max_pages=20):
                 article = sources.Article(url=url)
                 article.feed(detail_cache[url])
                 title, published, body, evidence = article.result(today=today)
+                # A CMS placeholder page has no article H1: keep the listing
+                # title and the explicit placeholder reason, not its template.
+                title = title or decision.get("title") or listing_title
+                if article.cms_placeholder and not published:
+                    evidence = "publisher_cms_placeholder"
             day = date.fromisoformat(published) if published else None
             role = sources.market_role(title, body) if scout.slug in {"achs_seguro_laboral", "clinicas_achs_salud"} else "mutuality"
             accepted, material_reason = sources.materiality(role, title, body) if day and body else (None, None)
@@ -321,6 +326,13 @@ def discover_inventory(scout, loader, as_of=None, max_pages=20):
         if report["outside_boundary"] and chronology_ok and all_dated and not report["errors"]:
             report["coverage_complete"] = True
             report["stop_reason"] = "verified_older_boundary"
+            break
+        if report["outside_boundary"] and chronology_ok:
+            # The ordered archive already crossed the 90-day start. Errors
+            # never clear, so older pages cannot complete the inventory; they
+            # only add ~10 detail requests each (28-oct-2026: 20 pages back to
+            # 2023 after five unreadable ACHS details). Stop, keep the gaps.
+            report["stop_reason"] = "older_boundary_reached_with_gaps"
             break
         if not next_url:
             report["stop_reason"] = (pagination_errors[0]["code"] if pagination_errors else

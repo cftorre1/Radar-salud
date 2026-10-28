@@ -36,6 +36,26 @@ class _Links(HTMLParser):
             self._parts = []
 
 
+def coverage_gap_diagnostics(inventory):
+    """Explain an incomplete inventory that recorded no per-URL error.
+
+    Mutual's IBM portal paginator can repeat a category page before its cards
+    reach the 90-day start (Dirección 27-oct-2026: a clean stop, not an
+    inventory error). Coverage is still incomplete, so name each stalled
+    branch instead of reporting a bare listing URL.
+    """
+    rows = [{"code": "pagination_stalled_before_90_day_cutoff", "url": note.get("url"),
+             "branch": note.get("branch"),
+             "oldest_verified_listing_date": note.get("oldest_verified_listing_date"),
+             "detail": "publisher paginator repeated the page before reaching the 90-day start"}
+            for note in inventory.get("pagination_notes") or []
+            if note.get("code") == "repeated_pagination_page_stop" and not note.get("reached_90_day_cutoff")]
+    if not rows:
+        rows = [{"code": "inventory_capture_incomplete", "url": None,
+                 "detail": "coverage incomplete: " + str(inventory.get("stop_reason"))}]
+    return rows
+
+
 class CuratedBetaSourceScout:
     """Small, explicit beta catalog for provider, mutuality and media signals.
 
@@ -215,8 +235,14 @@ class CuratedBetaSourceScout:
             self.decisions = self.inventory["rows"]
             if not self.inventory["coverage_complete"]:
                 errors = self.inventory["errors"]
-                code = errors[0].get("code", "inventory_capture_incomplete") if len(errors) == 1 and not rows else "inventory_capture_incomplete"
-                exc = SourceDiscoveryError(code, errors[0].get("url", self.cfg["page"]) if errors else self.cfg["page"])
+                if not errors:
+                    errors = self.inventory["coverage_gaps"] = coverage_gap_diagnostics(self.inventory)
+                codes = {error.get("code") or error.get("reason") for error in errors}
+                # One shared cause names the failure; mixed causes stay generic
+                # and every per-URL/branch diagnostic is kept either way.
+                code = (codes.pop() if len(codes) == 1 and None not in codes
+                        else "inventory_capture_incomplete")
+                exc = SourceDiscoveryError(code, (errors[0].get("url") if errors else None) or self.cfg["page"])
                 exc.partial_items = rows
                 exc.diagnostics = errors
                 raise exc

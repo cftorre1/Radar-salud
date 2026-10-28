@@ -191,15 +191,42 @@ class DatosGobScout:
         self.window_days = window_days
         self.enabled = enabled
         self.robots = robots
+        self.robots_status = "injected" if robots is not None else None
+        self._robots = None
         self.diagnostics = {}
+
+    def _robots_policy(self):
+        """Fetch robots.txt once per run, following RFC 9309 status rules.
+
+        A 4xx other than 401/403 means "no robots file": crawling is allowed
+        (the same rule as ``RobotFileParser.read``). 401/403 disallow all.
+        Any other failure leaves the policy unknown, so discovery fails closed
+        and says so (``robots_unavailable``) instead of a bare RuntimeError.
+        """
+        from urllib.error import HTTPError
+        if getattr(self, "_robots", None) is not None:
+            return self._robots
+        parser = RobotFileParser()
+        try:
+            body, _ = self.fetch(ROBOTS)
+            parser.parse(body.decode("utf-8", errors="replace").splitlines())
+            status = "parsed"
+        except HTTPError as exc:
+            if exc.code in (401, 403):
+                parser.disallow_all, status = True, f"http_{exc.code}_disallow_all"
+            elif 400 <= exc.code < 500:
+                parser.allow_all, status = True, f"http_{exc.code}_no_robots_file"
+            else:
+                raise PermissionError(f"robots_unavailable: HTTP {exc.code}") from exc
+        except Exception as exc:
+            raise PermissionError(f"robots_unavailable: {type(exc).__name__}: {exc}"[:200]) from exc
+        self._robots, self.robots_status = parser, status
+        return parser
 
     def _allowed(self, url):
         if self.robots is not None:
             return self.robots(url)
-        body, _ = self.fetch(ROBOTS)
-        parser = RobotFileParser()
-        parser.parse(body.decode("utf-8", errors="replace").splitlines())
-        return parser.can_fetch(USER_AGENT, url)
+        return self._robots_policy().can_fetch(USER_AGENT, url)
 
     def discover(self):
         enabled = live_lane_enabled() if self.enabled is None else self.enabled
@@ -214,7 +241,7 @@ class DatosGobScout:
             url = query_url(organization)
             try:
                 if not _official(url) or not self._allowed(url):
-                    raise PermissionError("robots_disallowed")
+                    raise PermissionError(f"robots_disallowed: {urlsplit(url).path} for {USER_AGENT}")
                 body, capture = self.fetch(url)
                 found, report = parse_package_search(json.loads(body), organization, api_url=url, today=today,
                                                      window_days=window, capture=capture)
@@ -225,6 +252,7 @@ class DatosGobScout:
             except Exception as exc:
                 errors.append({"organization": organization, "url": url, "reason": f"{type(exc).__name__}: {exc}"[:300]})
         self.diagnostics = {"surfaces": surfaces, "errors": errors, "partial_failure": bool(errors),
+                            "robots_status": self.robots_status,
                             "window_days": window, "date_basis": DATA_RELEASE,
                             "terms_policy": "catalog_metadata_and_links_only"}
         if errors and not surfaces:

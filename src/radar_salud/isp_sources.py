@@ -114,6 +114,25 @@ def _publication_cell(row):
     return (value, day) if day else None
 
 
+def _listing_shape(html, parser, laboratory):
+    """Structural fingerprint of a listing that yielded no rows.
+
+    The 28-oct-2026 respiratory listing answered on four hosts but matched no
+    row; only the bare message was kept. Record what the page *did* contain so
+    the next run separates a markup change (e.g. "Semana" cells or document
+    links outside a table, a renamed slug) from a script-rendered empty table.
+    """
+    rows = parser.rows
+    hrefs = re.findall(r"""href=["']([^"']+)["']""", html)
+    wanted = r"/boletin/" if laboratory else r"/documento/"
+    links = [href for href in hrefs if re.search(wanted, href)]
+    semana = re.findall(r"Semana\s*\d{1,2}[^<]{0,12}", html, re.I)
+    headers = sorted({" / ".join(row.get("headers", [])) for row in rows if row.get("headers")})[:3]
+    return (f" (bytes={len(html)}, tables={len(re.findall(r'<table', html, re.I))}, rows={len(rows)}, "
+            f"headers={headers}, semana_texts={len(semana)} sample={semana[:2]}, "
+            f"{wanted.strip('/')}_links={len(links)} sample={links[:2]})")
+
+
 def _date_evidence(kind: str, value: str, day: str, url: str) -> dict:
     return {"publication_date_source": kind,
             "publication_date_evidence": {"kind": kind, "value": value,
@@ -300,7 +319,8 @@ class IspSurveillanceScout:
                 items.append(RawItem(self.SOURCE_SLUG, title, url, self.SOURCE_NAME,
                                      self.SOURCE_TYPE, event_date=day, metadata=metadata))
         if not items:
-            raise RuntimeError(f"ISP {channel} listing has no verified document rows")
+            raise RuntimeError(f"ISP {channel} listing has no verified document rows"
+                               + _listing_shape(html, parser, laboratory))
         return items[:20]
 
     def document_from_html(self, item: RawItem, html: str):
