@@ -1,5 +1,8 @@
 """Scheduler backstop gate (Dirección 28-oct-2026): pure skip logic and workflow wiring."""
 import importlib.util
+import os
+import re
+import subprocess
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -40,17 +43,61 @@ def test_daily_backstop_runs_only_when_the_slot_discovery_is_missing():
     assert sr.daily_decision(utc(2026, 10, 28, 12, 7), "push", utc(2026, 10, 28, 11, 2), None)[0] is True
 
 
+def run(id_, wf, status="queued"):
+    return {"id": id_, "status": status, "path": f".github/workflows/{wf}"}
+
+
 def test_queue_gate_skips_recent_batches_and_active_writers():
     now = utc(2026, 10, 28, 3, 45)
-    assert sr.queue_decision(now, "schedule", 50, now - timedelta(minutes=25), [], []) == (False, "queue_batch_recent")
-    assert sr.queue_decision(now, "schedule", 50, now - timedelta(minutes=41), [], []) == (True, "no_recent_batch")
-    assert sr.queue_decision(now, "schedule", 50, None, [], [])[0] is True
-    assert sr.queue_decision(now, "schedule", 50, None, [{"id": 9, "status": "queued"}], []) == (False, "daily_radar_active")
-    assert sr.queue_decision(now, "schedule", 50, None, [], [{"id": 49, "status": "in_progress"}]) \
+    assert sr.queue_decision(now, "schedule", 50, now - timedelta(minutes=25), []) == (False, "queue_batch_recent")
+    assert sr.queue_decision(now, "schedule", 50, now - timedelta(minutes=41), []) == (True, "no_recent_batch")
+    assert sr.queue_decision(now, "schedule", 50, None, [])[0] is True
+    assert sr.queue_decision(now, "schedule", 50, None, [run(9, "daily-radar.yml")]) \
+        == (False, "writer_active_daily-radar")
+    assert sr.queue_decision(now, "schedule", 50, None, [run(49, "queue-hourly.yml", "in_progress")]) \
         == (False, "earlier_queue_run_active")
     # A later duplicate does not stop the earlier one (exactly one of a racing pair proceeds).
-    assert sr.queue_decision(now, "schedule", 50, None, [], [{"id": 51, "status": "queued"}])[0] is True
-    assert sr.queue_decision(now, "workflow_dispatch", 50, now, [{"id": 9, "status": "queued"}], [])[0] is True
+    assert sr.queue_decision(now, "schedule", 50, None, [run(51, "queue-hourly.yml")])[0] is True
+    assert sr.queue_decision(now, "workflow_dispatch", 50, now, [run(9, "daily-radar.yml")])[0] is True
+
+
+def test_queue_gate_skips_for_every_writer_in_the_group():
+    # Monday 11:45 UTC: weekly-insight backstop and the queue :45 backstop fire together.
+    now = utc(2026, 11, 2, 11, 45)
+    for wf in ("weekly-insight.yml", "weekly-insight-v2.yml", "import-commander-runtime.yml", "autopilot.yml",
+               "occupational-source-recovery.yml", "df-isolated-audit.yml", "clinic-connectivity-diagnostic.yml"):
+        for status in ("queued", "in_progress", "pending", "waiting"):
+            assert sr.queue_decision(now, "schedule", 50, None, sr.active_writer_runs([run(7, wf, status)], 50)) \
+                == (False, "writer_active_" + wf[:-4]), (wf, status)
+    # Manual (workflow_dispatch) writer runs count too: status, not event, decides.
+    manual = dict(run(8, "weekly-insight.yml", "in_progress"), event="workflow_dispatch")
+    assert sr.queue_decision(now, "schedule", 50, None, sr.active_writer_runs([manual], 50))[0] is False
+
+
+def test_active_writer_runs_filters_by_group_membership_and_status():
+    runs = [run(1, "weekly-insight.yml", "in_progress"),
+            dict(run(2, "import-commander-runtime.yml"), path=".github/workflows/import-commander-runtime.yml@refs/heads/staging"),
+            run(3, "weekly-insight.yml", "completed"),       # finished
+            run(4, "pages-build.yml", "in_progress"),        # not a writer
+            {"id": 5, "status": "queued", "path": "dynamic/pages/pages-build-deployment"},
+            run(50, "queue-hourly.yml", "in_progress"),       # this run
+            run(1, "weekly-insight.yml", "in_progress")]      # same run listed under two statuses
+    assert [r["id"] for r in sr.active_writer_runs(runs, exclude_id=50)] == [1, 2]
+    assert sr.queue_decision(utc(2026, 10, 28, 3, 45), "schedule", 50, None,
+                             sr.active_writer_runs([run(4, "pages-build.yml", "in_progress")], 50))[0] is True
+
+
+def test_writer_workflows_cover_every_workflow_declaring_the_group():
+    pattern = re.compile(r"^\s*group:\s*['\"]?" + re.escape(sr.WRITER_GROUP) + r"['\"]?\s*(#.*)?$", re.M)
+    declared = {p.name for p in (ROOT / ".github/workflows").glob("*.y*ml")
+                if pattern.search(p.read_text(encoding="utf-8"))}
+    assert {"daily-radar.yml", "queue-hourly.yml", "weekly-insight.yml"} <= declared
+    # Hardcoded list is the union over staging and main; a writer missing from it is a bug.
+    assert declared <= sr.WRITER_WORKFLOWS, sorted(declared - sr.WRITER_WORKFLOWS)
+    # Any other mention of the group name (e.g. a different YAML spelling) must also be covered.
+    mentioned = {p.name for p in (ROOT / ".github/workflows").glob("*.y*ml")
+                 if sr.WRITER_GROUP in p.read_text(encoding="utf-8")}
+    assert mentioned <= sr.WRITER_WORKFLOWS, sorted(mentioned - sr.WRITER_WORKFLOWS)
 
 
 def test_signal_parsers():
@@ -70,13 +117,80 @@ def test_signal_parsers():
     assert not sr.batch_executed([{"name": "batch", "conclusion": "skipped", "started_at": None}])
 
 
-def test_gate_fails_open(capsys, monkeypatch):
+PRIMARY = {"queue": "15 0-9,11-13,15-17,19-21,23 * * *", "daily": "30 10,14,18,22 * * *"}
+BACKSTOP = {"queue": sr.QUEUE_BACKSTOP_CRON, "daily": sr.DAILY_BACKSTOP_CRON}
+
+
+@pytest.mark.parametrize("mode", ["queue", "daily"])
+def test_gate_errors_fail_open_for_primary_and_closed_for_backstop(capsys, monkeypatch, mode):
     def boom(*_a, **_k):
         raise OSError("gh unavailable")
     monkeypatch.setattr(sr, "gh_json", boom)
-    sr.main(["queue", "--repo", "o/r", "--event", "schedule", "--run-id", "1"])
-    out = capsys.readouterr().out
-    assert "run=true" in out and "gate_error_OSError" in out
+    monkeypatch.setattr(sr, "gh_head", boom)
+    for schedule, expected in ((PRIMARY[mode], "run=true\nreason=gate_error_OSError"),
+                               ("", "run=true\nreason=gate_error_OSError"),
+                               (BACKSTOP[mode], "run=false\nreason=gate_error_backstop_OSError")):
+        sr.main([mode, "--repo", "o/r", "--event", "schedule", "--run-id", "1", "--schedule", schedule])
+        assert capsys.readouterr().out.strip() == expected, schedule
+
+
+def test_daily_backstop_closed_when_discovery_state_unreadable():
+    now = utc(2026, 10, 28, 12, 7)
+    assert sr.daily_decision(now, "schedule", None, None, backstop=True) == (False, "discovery_state_unreadable_backstop")
+    assert sr.daily_decision(now, "schedule", None, None, backstop=False) == (True, "slot_missing")
+    assert sr.daily_decision(now, "schedule", utc(2026, 10, 28, 1, 0), None, backstop=True) == (True, "slot_missing")
+
+
+def _gate_script(workflow):
+    yaml = pytest.importorskip("yaml")
+    wf = yaml.safe_load((ROOT / ".github/workflows" / workflow).read_text(encoding="utf-8"))
+    return wf["jobs"]["gate"]["steps"][0]["run"]
+
+
+@pytest.mark.parametrize("workflow,mode", [("queue-hourly.yml", "queue"), ("daily-radar.yml", "daily")])
+@pytest.mark.parametrize("fetch_ok", [False, True])
+def test_workflow_gate_shell_fallback(tmp_path, workflow, mode, fetch_ok):
+    """Run the real gate step with a stub ``gh``: a failed fetch (404/rate limit) or a failing API fails
+    closed for the backstop cron and open for the primary cron, and the script is read at $GITHUB_SHA."""
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    log = tmp_path / "gh.log"
+    serve = f'cat "{ROOT / "scripts/should_run.py"}"; exit 0' if fetch_ok else "exit 1"
+    (bin_dir / "gh").write_text(
+        "#!/bin/bash\n"
+        f'echo "$*" >> "{log}"\n'
+        f'case "$*" in *contents/scripts/should_run.py*) {serve} ;; esac\n'
+        'echo "HTTP 403: API rate limit exceeded" >&2; exit 1\n')
+    (bin_dir / "gh").chmod(0o755)
+    for schedule, expected in ((PRIMARY[mode], "run=true"), (BACKSTOP[mode], "run=false")):
+        out_file = tmp_path / f"out-{expected}"
+        env = dict(os.environ, PATH=f"{bin_dir}:{os.environ['PATH']}", GH_TOKEN="x", REPO="o/r", EVENT="schedule",
+                   RUN_ID="5", SCHEDULE=schedule, GITHUB_SHA="deadbeef", RUNNER_TEMP=str(tmp_path),
+                   GITHUB_OUTPUT=str(out_file))
+        subprocess.run(["bash", "-e", "-c", _gate_script(workflow)], env=env, check=True, capture_output=True)
+        lines = out_file.read_text().splitlines()
+        assert lines[0] == expected, (schedule, lines)
+        if fetch_ok:  # script fetched, but its API calls fail
+            reason = "reason=gate_error_backstop_" if expected == "run=false" else "reason=gate_error_"
+        else:         # script itself unavailable (404 / rate limit)
+            reason = "reason=gate_unavailable_backstop" if expected == "run=false" else "reason=gate_unavailable"
+        assert lines[1].startswith(reason) and len(lines) == 2, lines
+    calls = [c for c in log.read_text().splitlines() if "contents/scripts/should_run.py" in c]
+    assert calls and all(c.endswith("contents/scripts/should_run.py?ref=deadbeef") for c in calls)
+
+
+def test_workflow_gate_shell_passes_through_script_decision(tmp_path):
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    (bin_dir / "gh").write_text("#!/bin/bash\necho '#!/bin/sh'; exit 0\n")
+    (bin_dir / "gh").chmod(0o755)
+    (bin_dir / "python3").write_text("#!/bin/bash\nprintf 'run=false\\nreason=queue_batch_recent\\n'\n")
+    (bin_dir / "python3").chmod(0o755)
+    out_file = tmp_path / "out"
+    env = dict(os.environ, PATH=f"{bin_dir}:{os.environ['PATH']}", REPO="o/r", EVENT="schedule", RUN_ID="5",
+               SCHEDULE=PRIMARY["queue"], GITHUB_SHA="abc", RUNNER_TEMP=str(tmp_path), GITHUB_OUTPUT=str(out_file))
+    subprocess.run(["bash", "-e", "-c", _gate_script("queue-hourly.yml")], env=env, check=True, capture_output=True)
+    assert out_file.read_text().splitlines() == ["run=false", "reason=queue_batch_recent"]
 
 
 def test_workflow_text_keeps_both_crons():
@@ -85,6 +199,11 @@ def test_workflow_text_keeps_both_crons():
     assert "'45 0-9,11-13,15-17,19-21,23 * * *'" in queue and "'7 0,12,16,20 * * *'" in daily
     for text in (queue, daily):
         assert "needs: gate" in text and "should_run.py" in text and "fetch-depth: 0" in text
+        # Pinned to the running commit, never a moving branch; schedule passed for fail-closed backstops.
+        assert "should_run.py?ref=$GITHUB_SHA" in text and "should_run.py?ref=staging" not in text
+        assert "SCHEDULE: ${{ github.event.schedule }}" in text and '--schedule "$SCHEDULE"' in text
+        for cron in sr.BACKSTOP_CRONS:
+            assert f"'{cron}'" in text
 
 
 def test_workflows_wire_backstop_crons_and_gate():
