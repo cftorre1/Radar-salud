@@ -1,0 +1,1066 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-10-28",
+  "decided_by": "Dirección (cftorre1), 28-oct-2026 09:58",
+  "policy": "Fuentes conservadoras: solo corre una fuente 'enabled' (página de derechos y robots.txt leídos y verificados, o autorización expresa de Dirección). Toda fuente configurada en config/global_discovery.json tiene aquí una entrada; las demás quedan con su motivo, evidencia, próximo paso y fecha de reevaluación.",
+  "statuses": [
+    "enabled",
+    "disabled_pending_verification",
+    "needs_permission",
+    "needs_terms_review",
+    "rejected"
+  ],
+  "verification_gap": "Las fuentes 'enabled' heredadas (EMA, FDA press, CDC, NIH, ECDC, EC, The Conversation, KFF) tienen la página de derechos leída, pero robots.txt solo se comprueba en tiempo de ejecución (fail closed), no se leyó a mano: next_step lo pide.",
+  "sources": [
+    {
+      "id": "kff_health_news",
+      "name": "KFF Health News",
+      "kind": "feed",
+      "config_ref": {
+        "file": "config/global_discovery.json",
+        "feed": "kff_health_news"
+      },
+      "status": "enabled",
+      "published_in_global": false,
+      "reason": "Licencia CC BY-NC-ND y páginas de sindicación/RSS leídas 27-oct. Dirección 28-oct: KFF queda fuera de Global por ahora; corre solo como descubrimiento sin publicación (daily_feed.display=false; además NonCommercial exige confirmación escrita para PREMIUM).",
+      "evidence_urls": [
+        "https://kffhealthnews.org/syndication/",
+        "https://kffhealthnews.org/rss-feeds"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "runtime_check_fail_closed (robots.txt not read manually)",
+        "feed_live": "not_fetched_from_this_environment",
+        "on": "2026-10-27",
+        "how": "syndication and rss-feeds pages read via web fetch 27-oct; robots.txt enforced at runtime (fail closed)"
+      },
+      "next_step": "Pedir a KFF confirmación escrita para uso en producto pagado (syndication@kff.org); luego Dirección decide si entra a Global. Leer robots.txt del host a mano, registrar fecha y resultado aquí, y descargar el feed en vivo una vez.",
+      "reevaluate_after": "2026-11-28"
+    },
+    {
+      "id": "ema",
+      "name": "EMA (European Medicines Agency)",
+      "kind": "feed",
+      "config_ref": {
+        "file": "config/global_discovery.json",
+        "feed": "ema"
+      },
+      "status": "enabled",
+      "published_in_global": true,
+      "reason": "Aviso legal (reutilización comercial con reconocimiento) y página RSS leídos 27-oct.",
+      "evidence_urls": [
+        "https://www.ema.europa.eu/en/about-us/legal-notice",
+        "https://www.ema.europa.eu/en/news-event/rss-feeds"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "runtime_check_fail_closed (robots.txt not read manually)",
+        "feed_live": "not_fetched_from_this_environment",
+        "on": "2026-10-27",
+        "how": "legal notice and RSS page read via web fetch 27-oct; robots.txt enforced at runtime (fail closed)"
+      },
+      "next_step": "Leer robots.txt del host a mano, registrar fecha y resultado aquí, y descargar el feed en vivo una vez.",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "fda/press_releases",
+      "name": "US FDA – press releases",
+      "kind": "feed_route",
+      "config_ref": {
+        "file": "config/global_discovery.json",
+        "feed": "fda",
+        "section": "press_releases"
+      },
+      "status": "enabled",
+      "published_in_global": true,
+      "reason": "Feed original de press releases, como estaba antes del 28-oct (dominio público, 17 U.S.C. §105; página de RSS leída 27-oct). Dirección 28-oct 09:58: se mantiene.",
+      "evidence_urls": [
+        "https://fda.gov/AboutFDA/ContactFDA/StayInformed/RSSFeeds/default.htm",
+        "https://www.fda.gov/about-fda/about-website/website-policies"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "runtime_check_fail_closed (robots.txt not read manually)",
+        "feed_live": "not_fetched_from_this_environment",
+        "on": "2026-10-27",
+        "how": "RSS feed list page read via web fetch 27-oct; robots.txt enforced at runtime (fail closed); 28-oct (global-sources-more): RSS list page re-read via web fetch, routes What's New: Drugs, What's New: Vaccines, Blood and Biologics and MedWatch Safety Alerts added (food/consumer feeds left out). 28-oct review fix: https://www.fda.gov/about-fda/about-website/website-policies and https://www.fda.gov/robots.txt fetch re-attempted, blocked by the sandbox (web-fetch allowlist; proxy CONNECT 403) -> NOT verified; the rights basis relies on the statute (17 U.S.C. §105) alone, not on a page read; the drugs/biologics/medwatch feed URLs were not fetched live. MedWatch summaries withheld (company announcements are not public domain)."
+      },
+      "next_step": "Leer https://www.fda.gov/about-fda/about-website/website-policies y https://www.fda.gov/robots.txt a mano (bloqueados por el sandbox el 28-oct) y registrar.",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "fda/whats_new_drugs",
+      "name": "US FDA – What's New: Drugs",
+      "kind": "feed_route",
+      "config_ref": {
+        "file": "config/global_discovery.json",
+        "feed": "fda",
+        "section": "whats_new_drugs"
+      },
+      "status": "disabled_pending_verification",
+      "published_in_global": false,
+      "reason": "Ruta nueva del 28-oct: website-policies y robots.txt de fda.gov no se pudieron leer (sandbox) y el feed no se descargó en vivo. Dirección 28-oct 09:58: apagada.",
+      "evidence_urls": [
+        "https://fda.gov/AboutFDA/ContactFDA/StayInformed/RSSFeeds/default.htm",
+        "https://www.fda.gov/about-fda/about-website/website-policies",
+        "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/drugs/rss.xml"
+      ],
+      "verified": {
+        "rights_page": "not_read (statute 17 U.S.C. §105 only)",
+        "robots_txt": "not_read (blocked by sandbox 2026-10-28)",
+        "feed_live": "not_fetched_from_this_environment",
+        "on": "2026-10-27",
+        "how": "RSS feed list page read via web fetch 27-oct; robots.txt enforced at runtime (fail closed); 28-oct (global-sources-more): RSS list page re-read via web fetch, routes What's New: Drugs, What's New: Vaccines, Blood and Biologics and MedWatch Safety Alerts added (food/consumer feeds left out). 28-oct review fix: https://www.fda.gov/about-fda/about-website/website-policies and https://www.fda.gov/robots.txt fetch re-attempted, blocked by the sandbox (web-fetch allowlist; proxy CONNECT 403) -> NOT verified; the rights basis relies on the statute (17 U.S.C. §105) alone, not on a page read; the drugs/biologics/medwatch feed URLs were not fetched live. MedWatch summaries withheld (company announcements are not public domain)."
+      },
+      "next_step": "Leer website-policies y robots.txt de fda.gov a mano, descargar https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/drugs/rss.xml en vivo y revisar 2 semanas de títulos contra la regla de relevancia.",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "fda/whats_new_biologics",
+      "name": "US FDA – What's New: Vaccines, Blood and Biologics",
+      "kind": "feed_route",
+      "config_ref": {
+        "file": "config/global_discovery.json",
+        "feed": "fda",
+        "section": "whats_new_biologics"
+      },
+      "status": "disabled_pending_verification",
+      "published_in_global": false,
+      "reason": "Ruta nueva del 28-oct: website-policies y robots.txt de fda.gov no se pudieron leer (sandbox) y el feed no se descargó en vivo. Dirección 28-oct 09:58: apagada.",
+      "evidence_urls": [
+        "https://fda.gov/AboutFDA/ContactFDA/StayInformed/RSSFeeds/default.htm",
+        "https://www.fda.gov/about-fda/about-website/website-policies",
+        "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/biologics/rss.xml"
+      ],
+      "verified": {
+        "rights_page": "not_read (statute 17 U.S.C. §105 only)",
+        "robots_txt": "not_read (blocked by sandbox 2026-10-28)",
+        "feed_live": "not_fetched_from_this_environment",
+        "on": "2026-10-27",
+        "how": "RSS feed list page read via web fetch 27-oct; robots.txt enforced at runtime (fail closed); 28-oct (global-sources-more): RSS list page re-read via web fetch, routes What's New: Drugs, What's New: Vaccines, Blood and Biologics and MedWatch Safety Alerts added (food/consumer feeds left out). 28-oct review fix: https://www.fda.gov/about-fda/about-website/website-policies and https://www.fda.gov/robots.txt fetch re-attempted, blocked by the sandbox (web-fetch allowlist; proxy CONNECT 403) -> NOT verified; the rights basis relies on the statute (17 U.S.C. §105) alone, not on a page read; the drugs/biologics/medwatch feed URLs were not fetched live. MedWatch summaries withheld (company announcements are not public domain)."
+      },
+      "next_step": "Leer website-policies y robots.txt de fda.gov a mano, descargar https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/biologics/rss.xml en vivo y revisar 2 semanas de títulos contra la regla de relevancia.",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "fda/medwatch_safety_alerts",
+      "name": "US FDA – MedWatch Safety Alerts",
+      "kind": "feed_route",
+      "config_ref": {
+        "file": "config/global_discovery.json",
+        "feed": "fda",
+        "section": "medwatch_safety_alerts"
+      },
+      "status": "disabled_pending_verification",
+      "published_in_global": false,
+      "reason": "Ruta nueva del 28-oct: website-policies y robots.txt de fda.gov no se pudieron leer (sandbox) y el feed no se descargó en vivo. Dirección 28-oct 09:58: apagada. Además, MedWatch son alertas de seguridad y retiros: fuera de Global por la regla de relevancia del 28-oct.",
+      "evidence_urls": [
+        "https://fda.gov/AboutFDA/ContactFDA/StayInformed/RSSFeeds/default.htm",
+        "https://www.fda.gov/about-fda/about-website/website-policies",
+        "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/medwatch/rss.xml"
+      ],
+      "verified": {
+        "rights_page": "not_read (statute 17 U.S.C. §105 only)",
+        "robots_txt": "not_read (blocked by sandbox 2026-10-28)",
+        "feed_live": "not_fetched_from_this_environment",
+        "on": "2026-10-27",
+        "how": "RSS feed list page read via web fetch 27-oct; robots.txt enforced at runtime (fail closed); 28-oct (global-sources-more): RSS list page re-read via web fetch, routes What's New: Drugs, What's New: Vaccines, Blood and Biologics and MedWatch Safety Alerts added (food/consumer feeds left out). 28-oct review fix: https://www.fda.gov/about-fda/about-website/website-policies and https://www.fda.gov/robots.txt fetch re-attempted, blocked by the sandbox (web-fetch allowlist; proxy CONNECT 403) -> NOT verified; the rights basis relies on the statute (17 U.S.C. §105) alone, not on a page read; the drugs/biologics/medwatch feed URLs were not fetched live. MedWatch summaries withheld (company announcements are not public domain)."
+      },
+      "next_step": "Leer website-policies y robots.txt de fda.gov a mano, descargar https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/medwatch/rss.xml en vivo y revisar 2 semanas de títulos contra la regla de relevancia.",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "cdc",
+      "name": "US CDC (newsroom + MMWR)",
+      "kind": "feed",
+      "config_ref": {
+        "file": "config/global_discovery.json",
+        "feed": "cdc"
+      },
+      "status": "enabled",
+      "published_in_global": true,
+      "reason": "Página agencymaterials (dominio público, sin respaldo implícito) leída 28-oct.",
+      "evidence_urls": [
+        "https://cdc.gov/other/agencymaterials.html"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "runtime_check_fail_closed (robots.txt not read manually)",
+        "feed_live": "not_fetched_from_this_environment",
+        "on": "2026-10-28",
+        "how": "agencymaterials page read via web fetch 28-oct; feed URLs from a public feed directory (feeder.co); not fetched live (sandbox has no route); robots.txt enforced at runtime (fail closed)"
+      },
+      "next_step": "Leer robots.txt del host a mano, registrar fecha y resultado aquí, y descargar el feed en vivo una vez.",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "nih",
+      "name": "US NIH (news releases)",
+      "kind": "feed",
+      "config_ref": {
+        "file": "config/global_discovery.json",
+        "feed": "nih"
+      },
+      "status": "enabled",
+      "published_in_global": true,
+      "reason": "Página de copyright de NIH (obra del gobierno de EE. UU.) leída 28-oct.",
+      "evidence_urls": [
+        "https://www.nih.gov/node/24846"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "runtime_check_fail_closed (robots.txt not read manually)",
+        "feed_live": "not_fetched_from_this_environment",
+        "on": "2026-10-28",
+        "how": "NIH copyright page read via web fetch 28-oct; feed structure confirmed on a public mirror of nih.gov/news-releases/feed.xml, not fetched live; robots.txt enforced at runtime"
+      },
+      "next_step": "Leer robots.txt del host a mano, registrar fecha y resultado aquí, y descargar el feed en vivo una vez.",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "federal_register_cms",
+      "name": "Federal Register (CMS documents)",
+      "kind": "feed",
+      "config_ref": {
+        "file": "config/global_discovery.json",
+        "feed": "federal_register_cms"
+      },
+      "status": "disabled_pending_verification",
+      "published_in_global": false,
+      "reason": "robots.txt for www.federalregister.gov/api/ could not be verified from this environment (proxy/allowlist) on 2026-10-28; kept off (fail closed) until a probe confirms /api/ is allowed for automated clients",
+      "evidence_urls": [
+        "https://www.federalregister.gov/reader-aids/developer-resources/rest-api"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "not_verified (proxy/allowlist 2026-10-28)",
+        "feed_live": "not_fetched_from_this_environment",
+        "on": "2026-10-28",
+        "how": "Statutory basis 17 U.S.C. §105. FR developer page read via web fetch 28-oct: 'No API keys are needed'; 'Republishers of Federal Register material are not permitted to use official NARA or OFR logos or seals'; it does not mention the documents.rss endpoint; not fetched live; robots for /api/ unverified -> feed disabled"
+      },
+      "next_step": "Probar robots.txt de www.federalregister.gov (/api/) desde un entorno con salida y registrar; si permite, encender.",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "ecdc",
+      "name": "ECDC",
+      "kind": "feed",
+      "config_ref": {
+        "file": "config/global_discovery.json",
+        "feed": "ecdc"
+      },
+      "status": "enabled",
+      "published_in_global": true,
+      "reason": "Aviso de propiedad intelectual (CC BY 4.0) leído 28-oct.",
+      "evidence_urls": [
+        "https://www.ecdc.europa.eu/en/copyright"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "runtime_check_fail_closed (robots.txt not read manually)",
+        "feed_live": "not_fetched_from_this_environment",
+        "on": "2026-10-28",
+        "how": "copyright page read via web fetch 28-oct; feed URLs from a public feed directory; not fetched live; robots.txt enforced at runtime"
+      },
+      "next_step": "Leer robots.txt del host a mano, registrar fecha y resultado aquí, y descargar el feed en vivo una vez.",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "ec_health",
+      "name": "European Commission (Public Health)",
+      "kind": "feed",
+      "config_ref": {
+        "file": "config/global_discovery.json",
+        "feed": "ec_health"
+      },
+      "status": "enabled",
+      "published_in_global": true,
+      "reason": "Aviso legal de la Comisión (CC BY 4.0, Decisión 2011/833/UE) leído 28-oct; la página legal de health.ec.europa.eu no se pudo leer.",
+      "evidence_urls": [
+        "https://health.ec.europa.eu/legal-notice_en",
+        "https://commission.europa.eu/legal-notice_en"
+      ],
+      "verified": {
+        "rights_page": "read (commission.europa.eu legal notice; health.ec.europa.eu page not read)",
+        "robots_txt": "runtime_check_fail_closed (robots.txt not read manually)",
+        "feed_live": "not_fetched_from_this_environment",
+        "on": "2026-10-28",
+        "how": "health.ec.europa.eu uses the Europa legal notice; the health.ec.europa.eu/legal-notice_en page could not be fetched from this environment (allowlist), the Commission legal notice (CC BY 4.0, Decision 2011/833/EU) was read via web fetch 28-oct; feed URL and cadence (~5/week) from a public feed directory; not fetched live; robots.txt enforced at runtime"
+      },
+      "next_step": "Leer https://health.ec.europa.eu/legal-notice_en a mano. Leer robots.txt del host a mano, registrar fecha y resultado aquí, y descargar el feed en vivo una vez.",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "the_conversation",
+      "name": "The Conversation (Health, US)",
+      "kind": "feed",
+      "config_ref": {
+        "file": "config/global_discovery.json",
+        "feed": "the_conversation"
+      },
+      "status": "enabled",
+      "published_in_global": true,
+      "reason": "Guía de republicación (CC BY-ND 4.0) leída 28-oct; solo título verbatim, sin resumen.",
+      "evidence_urls": [
+        "https://theconversation.com/republishing-guidelines"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "runtime_check_fail_closed (robots.txt not read manually)",
+        "feed_live": "not_fetched_from_this_environment",
+        "on": "2026-10-28",
+        "how": "republishing guidelines read via web fetch 28-oct; feed URL from public feed directories (feedspot); not fetched live; robots.txt enforced at runtime"
+      },
+      "next_step": "Leer robots.txt del host a mano, registrar fecha y resultado aquí, y descargar el feed en vivo una vez.",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "uk_dhsc",
+      "name": "UK Department of Health and Social Care (GOV.UK activity)",
+      "kind": "feed",
+      "config_ref": {
+        "file": "config/global_discovery.json",
+        "feed": "uk_dhsc"
+      },
+      "status": "disabled_pending_verification",
+      "published_in_global": false,
+      "reason": "Dirección 28-oct-2026 09:58: fuentes conservadoras. La licencia OGL v3.0 y robots.txt de www.gov.uk se leyeron, pero la página de derechos de la organización y el feed .atom no se verificaron en vivo (sandbox). Apagado hasta verificar; ver config/global_source_candidates.json.",
+      "evidence_urls": [
+        "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+        "https://www.gov.uk/government/organisations/department-of-health-and-social-care",
+        "https://www.gov.uk/robots.txt"
+      ],
+      "verified": {
+        "rights_page": "partial (OGL v3 text read; organisation page read)",
+        "robots_txt": "read 2026-10-28 (gov.uk/robots.txt allows /government/organisations/*.atom)",
+        "feed_live": "not_fetched_from_this_environment",
+        "on": "2026-10-28",
+        "how": "OGL v3 text (nationalarchives.gov.uk) and the GOV.UK footer on the DHSC organisation page read via web fetch 28-oct ('All content is available under the Open Government Licence v3.0, except where otherwise stated'); feed URL and cadence from a public feed directory (feeder.co); not fetched live. 28-oct review fix: https://www.gov.uk/robots.txt re-read via web fetch (User-agent * disallows only /*/print and /search/all*; specific bots blocked: deepcrawl, MS Search 6.0 Robot; /government/organisations/*.atom allowed) -> robots VERIFIED; the .atom feed URLs and the organisation page fetch re-attempted, blocked by the sandbox (web-fetch allowlist; proxy CONNECT 403) -> feeds NOT fetched live, entry format and summaries unverified; fixtures are constructed. robots.txt is also enforced at runtime (fail closed)."
+      },
+      "next_step": "Leer la página de la organización en GOV.UK (pie OGL) y descargar el .atom en vivo; revisar 2 semanas de títulos contra la regla de relevancia (alertas y retiros quedan fuera).",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "uk_mhra",
+      "name": "UK MHRA (GOV.UK activity)",
+      "kind": "feed",
+      "config_ref": {
+        "file": "config/global_discovery.json",
+        "feed": "uk_mhra"
+      },
+      "status": "disabled_pending_verification",
+      "published_in_global": false,
+      "reason": "Dirección 28-oct-2026 09:58: fuentes conservadoras. La licencia OGL v3.0 y robots.txt de www.gov.uk se leyeron, pero la página de derechos de la organización (MHRA no se leyó; se apoya en el pie de GOV.UK) y el feed .atom no se verificaron en vivo (sandbox). Apagado hasta verificar; ver config/global_source_candidates.json.",
+      "evidence_urls": [
+        "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+        "https://www.gov.uk/government/organisations/department-of-health-and-social-care",
+        "https://www.gov.uk/government/organisations/uk-health-security-agency",
+        "https://www.gov.uk/robots.txt"
+      ],
+      "verified": {
+        "rights_page": "partial (OGL v3 text read; organisation page NOT read)",
+        "robots_txt": "read 2026-10-28 (gov.uk/robots.txt allows /government/organisations/*.atom)",
+        "feed_live": "not_fetched_from_this_environment",
+        "on": "2026-10-28",
+        "how": "OGL v3 text (nationalarchives.gov.uk) read via web fetch 28-oct. The MHRA organisation page itself was NOT read: the OGL footer was read on the GOV.UK DHSC and UKHSA organisation pages (the GOV.UK footer is site-wide; MHRA content is on the same www.gov.uk host), so the MHRA licence rests on the site-wide GOV.UK footer, not on an MHRA page read. Feed URL and cadence from a public feed directory (feeder.co); not fetched live. 28-oct review fix: https://www.gov.uk/robots.txt re-read via web fetch (User-agent * disallows only /*/print and /search/all*; specific bots blocked: deepcrawl, MS Search 6.0 Robot; /government/organisations/*.atom allowed) -> robots VERIFIED; the .atom feed URLs and the organisation page fetch re-attempted, blocked by the sandbox (web-fetch allowlist; proxy CONNECT 403) -> feeds NOT fetched live, entry format and summaries unverified; fixtures are constructed. robots.txt is also enforced at runtime (fail closed)."
+      },
+      "next_step": "Leer la página de la organización en GOV.UK (pie OGL) y descargar el .atom en vivo; revisar 2 semanas de títulos contra la regla de relevancia (alertas y retiros quedan fuera).",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "who",
+      "name": "OMS / WHO (news, publications, disease outbreak news)",
+      "kind": "crawl_routes",
+      "config_ref": {
+        "file": "config/global_discovery.json",
+        "routes_source": "who"
+      },
+      "status": "enabled",
+      "published_in_global": true,
+      "reason": "Autorizado por Dirección 27-oct-2026: solo metadatos y enlace (activation_record); robots.txt se verifica en cada captura (fail closed); publicación en Global solo con la guarda de dos corridas diarias.",
+      "evidence_urls": [
+        "https://www.who.int/news",
+        "https://www.who.int/publications/i",
+        "https://www.who.int/emergencies/disease-outbreak-news"
+      ],
+      "verified": {
+        "rights_page": "direccion_authorization_2026-10-27 (metadata and link only)",
+        "robots_txt": "runtime_check_fail_closed (robots.txt not read manually)",
+        "feed_live": "crawled_by_daily_job",
+        "on": "2026-10-27",
+        "how": "activation_record in config/global_discovery.json"
+      },
+      "next_step": "Registrar aquí la lectura manual de los términos de uso y robots.txt de who.int.",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "paho",
+      "name": "OPS / PAHO (noticias EN/ES, Chile, alertas, informes técnicos)",
+      "kind": "crawl_routes",
+      "config_ref": {
+        "file": "config/global_discovery.json",
+        "routes_source": "paho"
+      },
+      "status": "enabled",
+      "published_in_global": true,
+      "reason": "Autorizado por Dirección 27-oct-2026: solo metadatos y enlace (activation_record); robots.txt se verifica en cada captura (fail closed); publicación en Global solo con la guarda de dos corridas diarias.",
+      "evidence_urls": [
+        "https://www.paho.org/en/news",
+        "https://www.paho.org/es/noticias",
+        "https://www.paho.org/en/epidemiological-alerts-and-updates",
+        "https://www.paho.org/es/informes-tecnicos"
+      ],
+      "verified": {
+        "rights_page": "direccion_authorization_2026-10-27 (metadata and link only)",
+        "robots_txt": "runtime_check_fail_closed (robots.txt not read manually)",
+        "feed_live": "crawled_by_daily_job",
+        "on": "2026-10-27",
+        "how": "activation_record in config/global_discovery.json"
+      },
+      "next_step": "Registrar aquí la lectura manual de los términos de uso y robots.txt de paho.org.",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "stat_news",
+      "name": "STAT News",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "rejected",
+      "published_in_global": false,
+      "reason": "Términos §3.1 prohíben recolección automatizada y minería de datos; uso personal no comercial (§2.1, §4.2).",
+      "evidence_urls": [
+        "https://www.statnews.com/terms-condition/"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-27",
+        "how": null
+      },
+      "next_step": "Solo curaduría manual (editor envía enlace + descripción propia).",
+      "reevaluate_after": "2027-04-28"
+    },
+    {
+      "id": "modern_healthcare",
+      "name": "Modern Healthcare (Crain)",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "needs_terms_review",
+      "published_in_global": false,
+      "reason": "Con muro de pago; términos de Crain no se pudieron leer desde este entorno.",
+      "evidence_urls": [],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-27",
+        "how": null
+      },
+      "next_step": "Revisar términos de Crain Communications y pedir licencia si se quiere usar.",
+      "reevaluate_after": "2026-11-28"
+    },
+    {
+      "id": "world_bank_news",
+      "name": "World Bank (news)",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "rejected",
+      "published_in_global": false,
+      "reason": "Términos del sitio: materiales para uso no comercial; uso comercial requiere consentimiento escrito (CC BY solo para OKR/datos).",
+      "evidence_urls": [
+        "https://www.worldbank.org/ext/en/legal/terms-conditions"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Ninguno para PREMIUM; pedir permiso escrito si Dirección lo quiere.",
+      "reevaluate_after": "2027-04-28"
+    },
+    {
+      "id": "world_bank_blogs",
+      "name": "World Bank blogs",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "rejected",
+      "published_in_global": false,
+      "reason": "Re-chequeo 28-oct: CC BY aplica al Open Knowledge Repository, no a blogs/noticias, que siguen los términos del sitio (no comercial).",
+      "evidence_urls": [
+        "https://www.worldbank.org/ext/en/legal/terms-conditions/open-knowledge-repository"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Ninguno; usar publicaciones del OKR (CC BY) por curaduría si hace falta.",
+      "reevaluate_after": "2027-04-28"
+    },
+    {
+      "id": "devex",
+      "name": "Devex",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "rejected",
+      "published_in_global": false,
+      "reason": "Política de uso aceptable B.18/B.19/B.22 prohíbe scraping, bots y agregación de terceros sin consentimiento escrito.",
+      "evidence_urls": [
+        "https://support.devex.com/hc/en-us/articles/203927850-Acceptable-use-policy"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Solo curaduría manual.",
+      "reevaluate_after": "2027-04-28"
+    },
+    {
+      "id": "industry_dive",
+      "name": "Healthcare Dive / MedTech Dive / BioPharma Dive (Industry Dive)",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "rejected",
+      "published_in_global": false,
+      "reason": "La política de licencias exige compra y prohíbe sindicación; no hay concesión de RSS/titulares.",
+      "evidence_urls": [
+        "https://www.industrydive.com/article-licensing-policy"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Solo curaduría manual.",
+      "reevaluate_after": "2027-04-28"
+    },
+    {
+      "id": "health_policy_watch",
+      "name": "Health Policy Watch",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "needs_terms_review",
+      "published_in_global": false,
+      "reason": "No se encontró página de términos/licencia; sin concesión de reutilización verificada.",
+      "evidence_urls": [],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Buscar términos de uso del sitio o pedir permiso por email a la redacción.",
+      "reevaluate_after": "2026-11-28"
+    },
+    {
+      "id": "paywalled_press",
+      "name": "Reuters, Financial Times, The Economist, WSJ, Bloomberg",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "rejected",
+      "published_in_global": false,
+      "reason": "Muro de pago / términos prohíben recolección automatizada.",
+      "evidence_urls": [],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Solo curaduría manual (enlace + descripción original con evidencia primaria).",
+      "reevaluate_after": "2027-04-28"
+    },
+    {
+      "id": "iberoamerican_press",
+      "name": "El País, Expansión, Diario Médico, ConSalud, Redacción Médica, Infobae, Valor Econômico",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "rejected",
+      "published_in_global": false,
+      "reason": "Prensa con todos los derechos reservados (España art. 32 LPI: exclusión de agregación); sin concesión de reutilización automática.",
+      "evidence_urls": [],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Solo curaduría manual.",
+      "reevaluate_after": "2027-04-28"
+    },
+    {
+      "id": "commonwealth_fund",
+      "name": "Commonwealth Fund",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "rejected",
+      "published_in_global": false,
+      "reason": "Términos: uso no comercial 'with appropriate citation and permission'; prohibido 'harvesting data from the Site to populate databases'.",
+      "evidence_urls": [
+        "https://www.commonwealthfund.org/terms-use"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Pedir permiso escrito si Dirección lo quiere para PREMIUM.",
+      "reevaluate_after": "2027-04-28"
+    },
+    {
+      "id": "nejm",
+      "name": "NEJM (NEJM Group)",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "rejected",
+      "published_in_global": false,
+      "reason": "Términos §2/§4: uso personal no comercial; sin recuperación sistemática ni scraping; derechos de minería reservados.",
+      "evidence_urls": [
+        "https://www.nejmgroup.org/legal/terms-of-use.htm"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Solo curaduría manual.",
+      "reevaluate_after": "2027-04-28"
+    },
+    {
+      "id": "medpage_today",
+      "name": "MedPage Today",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "rejected",
+      "published_in_global": false,
+      "reason": "Términos: uso personal no comercial; prohíbe robots y uso para crear datasets; uso comercial requiere permiso escrito.",
+      "evidence_urls": [
+        "https://tostracker.app/document/medpagetodaycom-tos"
+      ],
+      "verified": {
+        "rights_page": "read (mirror)",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Solo curaduría manual.",
+      "reevaluate_after": "2027-04-28"
+    },
+    {
+      "id": "ihme",
+      "name": "IHME",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "rejected",
+      "published_in_global": false,
+      "reason": "Contenido CC BY-NC-ND 4.0; datos solo no comerciales; organizaciones comerciales deben pedir licencia.",
+      "evidence_urls": [
+        "https://www.healthdata.org/node/822"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Pedir licencia comercial a IHME si Dirección lo quiere.",
+      "reevaluate_after": "2027-04-28"
+    },
+    {
+      "id": "health_canada",
+      "name": "Health Canada / Public Health Agency of Canada (canada.ca)",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "rejected",
+      "published_in_global": false,
+      "reason": "Términos de canada.ca: reproducción solo no comercial; redistribución comercial requiere permiso previo.",
+      "evidence_urls": [
+        "https://www.canada.ca/en/transparency/terms"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Pedir permiso a Health Canada por email si Dirección lo quiere (feeds en api.io.canada.ca).",
+      "reevaluate_after": "2027-04-28"
+    },
+    {
+      "id": "who_paho_rss",
+      "name": "WHO news RSS / PAHO / OPS-OMS feeds en español",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "rejected",
+      "published_in_global": false,
+      "reason": "Duplicaría tarjetas: OMS y OPS ya se capturan por las rutas who/paho autorizadas el 27-oct.",
+      "evidence_urls": [],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Ninguno.",
+      "reevaluate_after": "2027-04-28"
+    },
+    {
+      "id": "health_affairs",
+      "name": "Health Affairs (Forefront)",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "needs_terms_review",
+      "published_in_global": false,
+      "reason": "La página de términos no cargó (28-oct); sin concesión de reutilización verificada.",
+      "evidence_urls": [
+        "https://www.healthaffairs.org/terms-of-use"
+      ],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Revisar términos en https://www.healthaffairs.org/terms-of-use o pedir permiso por email a Health Affairs.",
+      "reevaluate_after": "2026-11-28"
+    },
+    {
+      "id": "bmj",
+      "name": "BMJ (news, headlines only)",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "needs_permission",
+      "published_in_global": false,
+      "reason": "La página RSS invita a mostrar feeds pero no declara licencia.",
+      "evidence_urls": [
+        "https://ebm.bmj.com/pages/rss-feeds"
+      ],
+      "verified": {
+        "rights_page": "read (no licence stated)",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Pedir permiso por email a BMJ (permissions) para titulares + enlace en producto pagado.",
+      "reevaluate_after": "2026-11-28"
+    },
+    {
+      "id": "lancet",
+      "name": "The Lancet news (Elsevier, headlines only)",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "needs_permission",
+      "published_in_global": false,
+      "reason": "No se encontraron términos de reutilización de RSS de Elsevier/Lancet.",
+      "evidence_urls": [],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Pedir permiso por email a Elsevier (permissions) o mantener curaduría manual.",
+      "reevaluate_after": "2026-11-28"
+    },
+    {
+      "id": "fierce_healthcare",
+      "name": "Fierce Healthcare (Questex)",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "needs_terms_review",
+      "published_in_global": false,
+      "reason": "Términos de uso no recuperables (28-oct); sin concesión de RSS.",
+      "evidence_urls": [],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Revisar términos de Questex y pedir permiso por email.",
+      "reevaluate_after": "2026-11-28"
+    },
+    {
+      "id": "oecd_health",
+      "name": "OECD (health)",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "disabled_pending_verification",
+      "published_in_global": false,
+      "reason": "Contenido CC BY 4.0 (Open by Default, julio 2024), pero sin ruta RSS/API viva para noticias de salud; faltan parser HTML y chequeo de robots.",
+      "evidence_urls": [
+        "https://www.oecd.org/en/about/oecd-open-by-default-policy.html"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Buscar feed o API de noticias de salud de OECD; leer robots.txt de oecd.org.",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "cms_newsroom",
+      "name": "CMS.gov newsroom",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "disabled_pending_verification",
+      "published_in_global": false,
+      "reason": "Dominio público, pero el newsroom solo ofrece alertas por email (sin RSS, 28-oct).",
+      "evidence_urls": [
+        "https://cms.gov/newsroom/press-releases/medicaid-and-chip-release"
+      ],
+      "verified": {
+        "rights_page": "statute (17 U.S.C. §105)",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Buscar feed (o usar Federal Register CMS cuando se verifique robots /api/).",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "nhs_england",
+      "name": "NHS England news",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "disabled_pending_verification",
+      "published_in_global": false,
+      "reason": "Feed https://www.england.nhs.uk/feed/ existe, pero robots.txt y la página de licencia de england.nhs.uk no se pudieron leer.",
+      "evidence_urls": [
+        "https://www.england.nhs.uk/feed/"
+      ],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Leer robots.txt y la página de licencia de england.nhs.uk; descargar el feed en vivo.",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "australia_health",
+      "name": "Australian Department of Health, Disability and Ageing",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "disabled_pending_verification",
+      "published_in_global": false,
+      "reason": "Feed https://www.health.gov.au/news/rss.xml existe, pero la página de copyright devolvió robots_disallowed y la licencia (CC BY 4.0 esperada) no se pudo leer.",
+      "evidence_urls": [
+        "https://www.health.gov.au/news/rss.xml"
+      ],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "disallowed_for_copyright_page",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Leer la página de copyright y robots.txt de health.gov.au desde otro entorno.",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "ministerio_sanidad",
+      "name": "Ministerio de Sanidad (España)",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "disabled_pending_verification",
+      "published_in_global": false,
+      "reason": "Aviso legal permite reutilización comercial con cita (leído 28-oct), pero el gestor RSS no expone URL de feed sin sesión.",
+      "evidence_urls": [
+        "https://www.sanidad.gob.es/en/avisoLegal/home.htm"
+      ],
+      "verified": {
+        "rights_page": "read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Buscar la URL del feed de notas de prensa; leer robots.txt de sanidad.gob.es.",
+      "reevaluate_after": "2026-11-11"
+    },
+    {
+      "id": "aemps",
+      "name": "AEMPS (España)",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "needs_terms_review",
+      "published_in_global": false,
+      "reason": "Solo listas de correo (sin RSS, 28-oct); aviso legal no recuperable.",
+      "evidence_urls": [],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Revisar el aviso legal de aemps.gob.es y buscar feed.",
+      "reevaluate_after": "2026-11-28"
+    },
+    {
+      "id": "argentina_msal",
+      "name": "Argentina – Ministerio de Salud",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "needs_terms_review",
+      "published_in_global": false,
+      "reason": "Sin ruta RSS/Atom (28-oct; solo listados HTML) y términos del sitio no verificados (LIBRE USO MX cubre datos abiertos, no páginas de gob.mx).",
+      "evidence_urls": [],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Revisar términos del sitio y robots.txt; buscar feed o decidir un parser de listado HTML.",
+      "reevaluate_after": "2026-11-28"
+    },
+    {
+      "id": "colombia_minsalud",
+      "name": "Colombia – MinSalud",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "needs_terms_review",
+      "published_in_global": false,
+      "reason": "Sin ruta RSS/Atom (28-oct; solo listados HTML) y términos del sitio no verificados (LIBRE USO MX cubre datos abiertos, no páginas de gob.mx).",
+      "evidence_urls": [],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Revisar términos del sitio y robots.txt; buscar feed o decidir un parser de listado HTML.",
+      "reevaluate_after": "2026-11-28"
+    },
+    {
+      "id": "colombia_supersalud",
+      "name": "Colombia – Supersalud",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "needs_terms_review",
+      "published_in_global": false,
+      "reason": "Sin ruta RSS/Atom (28-oct; solo listados HTML) y términos del sitio no verificados (LIBRE USO MX cubre datos abiertos, no páginas de gob.mx).",
+      "evidence_urls": [],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Revisar términos del sitio y robots.txt; buscar feed o decidir un parser de listado HTML.",
+      "reevaluate_after": "2026-11-28"
+    },
+    {
+      "id": "mexico_cofepris",
+      "name": "México – Cofepris",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "needs_terms_review",
+      "published_in_global": false,
+      "reason": "Sin ruta RSS/Atom (28-oct; solo listados HTML) y términos del sitio no verificados (LIBRE USO MX cubre datos abiertos, no páginas de gob.mx).",
+      "evidence_urls": [],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Revisar términos del sitio y robots.txt; buscar feed o decidir un parser de listado HTML.",
+      "reevaluate_after": "2026-11-28"
+    },
+    {
+      "id": "mexico_imss",
+      "name": "México – IMSS",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "needs_terms_review",
+      "published_in_global": false,
+      "reason": "Sin ruta RSS/Atom (28-oct; solo listados HTML) y términos del sitio no verificados (LIBRE USO MX cubre datos abiertos, no páginas de gob.mx).",
+      "evidence_urls": [],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Revisar términos del sitio y robots.txt; buscar feed o decidir un parser de listado HTML.",
+      "reevaluate_after": "2026-11-28"
+    },
+    {
+      "id": "peru_susalud",
+      "name": "Perú – SUSALUD",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "needs_terms_review",
+      "published_in_global": false,
+      "reason": "Sin ruta RSS/Atom (28-oct; solo listados HTML) y términos del sitio no verificados (LIBRE USO MX cubre datos abiertos, no páginas de gob.mx).",
+      "evidence_urls": [],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Revisar términos del sitio y robots.txt; buscar feed o decidir un parser de listado HTML.",
+      "reevaluate_after": "2026-11-28"
+    },
+    {
+      "id": "issa",
+      "name": "ISSA (Asociación Internacional de la Seguridad Social)",
+      "kind": "candidate",
+      "config_ref": null,
+      "status": "needs_terms_review",
+      "published_in_global": false,
+      "reason": "Sin ruta RSS/Atom (28-oct; solo listados HTML) y términos del sitio no verificados (LIBRE USO MX cubre datos abiertos, no páginas de gob.mx).",
+      "evidence_urls": [],
+      "verified": {
+        "rights_page": "not_read",
+        "robots_txt": "not_read",
+        "feed_live": "not_fetched",
+        "on": "2026-10-28",
+        "how": null
+      },
+      "next_step": "Revisar términos del sitio y robots.txt; buscar feed o decidir un parser de listado HTML.",
+      "reevaluate_after": "2026-11-28"
+    }
+  ]
+}

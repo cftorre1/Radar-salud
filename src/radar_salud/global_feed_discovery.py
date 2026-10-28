@@ -17,9 +17,11 @@ import unicodedata
 import xml.etree.ElementTree as ET
 from datetime import date, datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
+from html import unescape
 from html.parser import HTMLParser
 
 from .global_discovery_common import canonical_url
+from .global_relevance import global_interest, source_rules, validate_rules
 
 NS = {
     "atom": "http://www.w3.org/2005/Atom",
@@ -65,15 +67,28 @@ class _TextOnly(HTMLParser):
             self.parts.append(data)
 
 
-def _clean(text) -> str:
-    """Drop real markup first (HTML parser), then decode entities exactly once; never reword.
+# Entity references left in the TEXT after the markup layer was decoded: the feed escaped twice
+# ("&amp;lt;5" -> "&lt;5"). Only these well-formed references count; a bare "&" is left alone.
+_RESIDUAL_ENTITY = re.compile(r"&(?:lt|gt|amp|quot|apos|nbsp|#\d{1,7}|#[xX][0-9A-Fa-f]{1,6});")
 
-    Decoding before stripping would turn an escaped "&lt;5 ... &gt;65" into a fake tag and
-    delete the words between them (a change of meaning)."""
+
+def _clean(text) -> str:
+    """Plain, readable text from a feed field; never reworded, nothing between "<" and ">" lost.
+
+    1. The markup layer is parsed first (HTML parser): real tags are dropped and character
+       references are decoded exactly once, so a decoded "<" can never become a tag.
+    2. If the resulting TEXT still holds entity references, the publisher escaped twice
+       ("Children &amp;lt;5" -> "Children &lt;5"): that text layer is decoded once with
+       html.unescape and is NOT parsed as markup again, so "<5 ... >65" stays as words.
+    The result is plain text (it may contain "<", ">" or "&"); the web UI escapes it exactly
+    once when rendering (esc() in web/global.js)."""
     parser = _TextOnly()
     parser.feed(str(text or ""))
     parser.close()
-    return " ".join("".join(parser.parts).split())
+    value = "".join(parser.parts)
+    if _RESIDUAL_ENTITY.search(value):
+        value = unescape(value)
+    return " ".join(value.split())
 
 
 def publisher_summary(raw) -> tuple[str | None, bool]:
@@ -106,8 +121,16 @@ def validate_feed_config(feed: dict) -> None:
     if feed.get("store_description") and not rights.get("description_basis"):
         # Keeping the publisher's summary needs its own recorded rights basis (fail closed).
         raise ValueError("store_description without rights.description_basis")
-    for pattern in feed.get("exclude_title_patterns", []) + feed.get("include_title_patterns", []):
+    if "include_title_patterns" in feed:
+        # Dirección 28-oct 09:58: no "always include" rule (safety alerts are excluded like any one-off).
+        raise ValueError("include_title_patterns is not allowed (Dirección 28-oct 09:58)")
+    for pattern in feed.get("exclude_title_patterns", []):
         re.compile(pattern)
+
+
+def enabled_routes(feed: dict) -> list[dict]:
+    """Routes that run: a route can be held off on its own (``"enabled": false``) while the feed runs."""
+    return [route for route in feed.get("routes", []) if route.get("enabled", True) is not False]
 
 
 def feed_day(raw: str | None, as_of: date) -> tuple[str | None, str | None]:
@@ -276,11 +299,12 @@ def classify_relevance(title: str, categories=(), *, default_segments=()) -> dic
 def collect_feeds(config: dict, client, as_of: date) -> tuple[list[dict], list[dict], dict]:
     window = int(config.get("inventory_window_days", 90))
     items, failures, routes = {}, [], {}
+    validate_rules(config)
     for feed in config.get("feeds", []):
         validate_feed_config(feed)
         if not feed.get("enabled", False):
             continue
-        for route in feed["routes"]:
+        for route in enabled_routes(feed):
             key = feed["id"] + "/" + route["section"]
             try:
                 raw, capture = client.fetch(route["url"])
@@ -320,26 +344,23 @@ def collect_feeds(config: dict, client, as_of: date) -> tuple[list[dict], list[d
     result = []
     defaults = {feed["id"]: feed.get("default_segments", []) for feed in config.get("feeds", [])}
     title_exclusions = {feed["id"]: feed.get("exclude_title_patterns", []) for feed in config.get("feeds", [])}
-    title_inclusions = {feed["id"]: feed.get("include_title_patterns", []) for feed in config.get("feeds", [])}
     rights_by_feed = {feed["id"]: feed.get("rights") or {} for feed in config.get("feeds", [])}
     for row in items.values():
         row["classification"] = classify_relevance(row["title"], row["categories"], default_segments=defaults.get(row["source"], ()))
-        # Publisher-specific priority document types (MHRA National Patient Safety Alerts, medical safety
-        # alerts) always reach the inbox; they win over the routine exclusions below.
-        if any(re.search(p, _fold(row["title"])) for p in title_inclusions.get(row["source"], [])):
-            base = row["classification"]
-            segments = base["segments"] if base.get("relevant") else ["regulation", "providers"]
-            row["classification"] = {"materiality": "candidate", "relevant": True, "segments": segments,
-                                     "priority": max(int(base.get("priority") or 0), 85), "category": "publisher_priority_document_type",
-                                     "reason": "publisher_priority_document_type", "method": "deterministic_rules_v1",
-                                     "ai_gate": {"invoked": False, "reason": "paid_ai_calls_contract_0"}, "chile_transfer": "hypothesis_only"}
-        # Publisher-specific routine document types (e.g. GOV.UK "Transparency data:", "FOI release:", MHRA
-        # class 2-4 recalls/defect notices and Field Safety Notices).
-        elif any(re.search(p, _fold(row["title"])) for p in title_exclusions.get(row["source"], [])):
+        # Publisher-specific routine document types (e.g. GOV.UK "Transparency data:", "FOI release:").
+        if any(re.search(p, _fold(row["title"])) for p in title_exclusions.get(row["source"], [])):
             row["classification"] = {"materiality": "excluded", "relevant": False, "segments": [], "priority": 0,
                                      "category": "publisher_routine_document_type",
                                      "reason": "irrelevant_for_chilean_health_executives:publisher_routine_document_type",
                                      "method": "deterministic_rules_v1", "ai_gate": {"invoked": False, "reason": "paid_ai_calls_contract_0"}}
+        # Dirección 28-oct 09:58: Global = trends and global interest (no recalls/alerts, beds, acquisitions,
+        # openings or single-product approvals). Recorded on every row; a relevant row must also pass it.
+        interest = global_interest(row["title"], row["categories"], source=row["source"], rules=source_rules(config, row["source"]))
+        row["global_interest"] = interest
+        if row["classification"]["relevant"] and not interest["relevant"]:
+            row["classification"] = {"materiality": "excluded", "relevant": False, "segments": [], "priority": 0,
+                                     "category": interest["category"], "reason": interest["reason"], "method": interest["method"],
+                                     "ai_gate": {"invoked": False, "reason": "paid_ai_calls_contract_0"}}
         row["publication_ready"] = False
         rights = rights_by_feed.get(row["source"], {})
         # Paid tiers need the publisher's written confirmation when the licence is NonCommercial (KFF).

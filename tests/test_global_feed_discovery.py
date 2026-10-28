@@ -64,7 +64,8 @@ def test_every_feed_declares_a_rights_basis_that_permits_metadata_and_link_only(
     assert "EMA information should not be displayed alongside advertising" in ema["restrictions"]
     assert "https://www.ema.europa.eu/en/about-us/legal-notice" in ema["evidence_urls"]
     assert not any("/hu/" in url for url in ema["evidence_urls"])
-    excluded = {row["name"].split(" ")[0] for row in CONFIG["feed_candidates_excluded"]}
+    registry = json.loads((Path(__file__).resolve().parents[1] / "config/global_source_candidates.json").read_text())
+    excluded = {row["name"].split(" ")[0] for row in registry["sources"] if row["status"] == "rejected"}
     assert "STAT" in excluded and CONFIG["reuters"]["enabled"] is False
 
 
@@ -174,8 +175,10 @@ def test_collect_feeds_merges_routes_excludes_noise_and_keeps_window():
     assert by_title["A Small Town Mourns Its Beloved Diner"]["status"] == "rejected"
     assert by_title["Future-Dated Embargoed Item"]["status"] == "pending"
     chmp = by_title["Meeting highlights from the Committee for Medicinal Products for Human Use (CHMP) 19-22 October 2026"]
-    assert chmp["classification"]["relevant"] and {"pharma", "regulation"} & set(chmp["classification"]["segments"])
-    assert by_title["FDA Roundup: October 22, 2026"]["classification"]["segments"] == ["regulation"]
+    # Dirección 28-oct 09:58: routine committee highlights and FDA roundups are not Global interest (source rules).
+    for routine in (chmp, by_title["FDA Roundup: October 22, 2026"]):
+        assert routine["classification"]["relevant"] is False and routine["status"] == "rejected"
+        assert routine["classification"]["category"] == "source_rule_exclusion" and routine["global_interest"]["relevant"] is False
     assert by_title["FDA Warns Consumers Not to Use Certain Tattoo Inks"]["status"] == "rejected"
     assert all(r["publication_ready"] is False and r["content_use"] == "metadata_and_link_only" for r in items)
     # EMA new-medicines fixture missing -> technical failure, never silent success.

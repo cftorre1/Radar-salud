@@ -33,7 +33,8 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from .global_feed_discovery import PERMITTED_USE, SEGMENTS, classify_relevance
+from .global_feed_discovery import PERMITTED_USE, SEGMENTS, classify_relevance, enabled_routes
+from .global_relevance import global_interest, source_rules
 
 SCHEMA_VERSION = 2
 DEFAULT_WINDOW_DAYS = 90
@@ -149,6 +150,11 @@ def feed_cards(feed_payload: dict, config: dict, as_of: date) -> tuple[list[dict
             held["not_relevant_or_undated"] += 1; continue
         if (urlsplit(row["url"]).hostname or "") not in set(feed["allowed_link_hosts"]):
             held["link_outside_licensed_hosts"] += 1; continue
+        if not route_enabled(feed, row.get("sections") or [row.get("section")]):
+            held["route_not_enabled"] += 1; continue
+        interest = interest_for(row["title"], row.get("categories") or (), row["source"], config)
+        if not interest["relevant"]:
+            held[interest["reason"]] += 1; continue
         if not paid_tier_eligible(feed):
             # Global is PREMIUM: a NonCommercial licence (KFF) stays out until the publisher confirms in writing.
             held["paid_tier_hold_" + row["source"]] += 1; continue
@@ -166,7 +172,20 @@ def feed_cards(feed_payload: dict, config: dict, as_of: date) -> tuple[list[dict
     return cards, held
 
 
-def official_cards(discovery: dict, as_of: date) -> tuple[list[dict], Counter]:
+def route_enabled(feed: dict, sections) -> bool:
+    """A card shows only while at least one of its routes is enabled (a held-off route hides its history too)."""
+    on = {r.get("section") for r in enabled_routes(feed)}
+    known = {s for s in sections or () if s}
+    # Schema-1 history cards carry no sections: they stay while the feed has an enabled route.
+    return bool(on & known) if known else bool(on)
+
+
+def interest_for(title: str, categories, source: str, config: dict) -> dict:
+    """Dirección 28-oct 09:58 gate (trends and global interest), with the source's own rules."""
+    return global_interest(title, categories, source=source, rules=source_rules(config, source))
+
+
+def official_cards(discovery: dict, as_of: date, config: dict | None = None) -> tuple[list[dict], Counter]:
     """WHO/PAHO cards, only for a publisher whose two-daily-run activation guard is currently on."""
     health = discovery.get("source_health") or {}
     held, cards, seen = Counter(), [], set()
@@ -192,6 +211,9 @@ def official_cards(discovery: dict, as_of: date) -> tuple[list[dict], Counter]:
         # (country capacity-building news). Those items stay available to the editorial candidates.
         if not relevance["relevant"] or relevance["reason"] != "segment_keyword_match":
             held["official_title_without_executive_keyword"] += 1; continue
+        interest = interest_for(row["title"], (), source, config or {})
+        if not interest["relevant"]:
+            held[interest["reason"]] += 1; continue
         segments = relevance["segments"]
         cards.append(_card(item_id=sha256(row["url"].encode()).hexdigest()[:20], source=source, label=meta["label"], attribution=meta["attribution"],
                            kind_es=meta["kind_es"], title=row["title"], url=row["url"], published_at=row["published_at"], segments=segments,
@@ -258,7 +280,7 @@ def build(feed_payload: dict, discovery: dict, config: dict, previous: dict | No
     new, held = [], Counter()
     if enabled:
         a, held_a = feed_cards(feed_payload or {}, config, as_of)
-        b, held_b = official_cards(discovery or {}, as_of)
+        b, held_b = official_cards(discovery or {}, as_of, config)
         new, held = a + b, held_a + held_b
     else:
         held["daily_feed_awaiting_direccion_authorization"] += 1
@@ -274,6 +296,12 @@ def build(feed_payload: dict, discovery: dict, config: dict, previous: dict | No
     for card in (previous or {}).get("items", []) if enabled else []:
         day = _day(card.get("published_at"))
         if card.get("source") in authorized and day and 0 <= (as_of - day).days < retention:
+            # History follows today's rules too: a disabled route or a headline outside the Global-interest rule
+            # (Dirección 28-oct 09:58) leaves the inbox; the read state of the rest is kept.
+            if card["source"] in feeds and not route_enabled(feeds[card["source"]], card.get("sections") or []):
+                continue
+            if not interest_for(card.get("title") or "", (), card["source"], config)["relevant"]:
+                continue
             card = dict(card)
             if card["source"] in feeds:
                 # Re-check today's rights: licence record (incl. required attribution) and the summary right.

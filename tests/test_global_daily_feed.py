@@ -57,6 +57,20 @@ def with_feed(config, fid, **changes):
     return config
 
 
+def govuk_on(config=CONFIG):
+    """DHSC/MHRA and the FDA What's New/MedWatch routes are OFF (Dirección 28-oct 09:58, pending verification).
+    Tests of their parser, OGL attribution and cross-source dedup switch them on explicitly, as a verified
+    re-enable would."""
+    config = copy.deepcopy(config)
+    for feed in config["feeds"]:
+        if feed["id"] in ("uk_dhsc", "uk_mhra"):
+            feed["enabled"] = True
+        if feed["id"] == "fda":
+            for route in feed["routes"]:
+                route.pop("enabled", None)
+    return config
+
+
 def feed_payload(config=CONFIG):
     items, _, _ = collect_feeds(config, FeedClient(), AS_OF)
     return {"items": items}
@@ -118,7 +132,7 @@ def blob_of(payload):
 
 
 def kff_card(i):
-    return {"id": f"kff{i}", "source": "kff_health_news", "source_label": "KFF Health News", "title": f"KFF story {i}",
+    return {"id": f"kff{i}", "source": "kff_health_news", "source_label": "KFF Health News", "title": f"Medicare Advantage payment trends, part {i}",
             "url": f"https://kffhealthnews.org/news/article/s{i}/", "published_at": "2026-10-27", "segments": ["payers"],
             "priority": 80, "summary_es": "x", "first_seen_on": "2026-10-27"}
 
@@ -215,7 +229,8 @@ def test_new_sources_declare_verified_rights_and_exclusions_are_explicit():
     assert fr["enabled"] is False and "robots" in fr["disabled_reason"] and not any("feeder.co" in u for u in fr["rights"]["evidence_urls"])
     assert "17 U.S.C. §105" in fr["rights"]["license"]
     assert "NoDerivatives" in " ".join(feeds["the_conversation"]["rights"]["restrictions"])
-    excluded = " ".join(r["name"] for r in CONFIG["feed_candidates_excluded"])
+    registry = json.loads(Path("config/global_source_candidates.json").read_text())
+    excluded = " ".join(r["name"] for r in registry["sources"] if r["status"] == "rejected")
     for name in ("World Bank", "Devex", "Industry Dive", "Reuters", "El País"):
         assert name in excluded
 
@@ -301,11 +316,14 @@ def test_govuk_atom_feeds_parse_with_ogl_rights_and_routine_filters():
     feeds = {f["id"]: f for f in CONFIG["feeds"]}
     for fid in ("uk_dhsc", "uk_mhra"):
         feed = feeds[fid]
-        assert feed["enabled"] and feed["allowed_link_hosts"] == ["www.gov.uk"] and feed["store_description"] is True
+        # Dirección 28-oct 09:58: off until the organisation page and the live feed are verified.
+        assert feed["enabled"] is False and "Dirección 28-oct-2026 09:58" in feed["disabled_reason"]
+        assert feed["allowed_link_hosts"] == ["www.gov.uk"] and feed["store_description"] is True
         assert feed["rights"]["basis"] == "uk_open_government_licence_v3" and feed["rights"]["license_label"] == "OGL v3.0"
         assert "https://www.gov.uk/robots.txt" in feed["rights"]["evidence_urls"] and "not fetched live" in feed["rights"]["verified_how"]
         assert "/search/all" not in feed["routes"][0]["url"]  # disallowed by gov.uk robots.txt
-    items, failures, _ = collect_feeds(CONFIG, FeedClient(), AS_OF)
+    assert not any(r["source"] in ("uk_dhsc", "uk_mhra") for r in collect_feeds(CONFIG, FeedClient(), AS_OF)[0])
+    items, failures, _ = collect_feeds(govuk_on(), FeedClient(), AS_OF)
     dhsc = {r["title"]: r for r in items if r["source"] == "uk_dhsc"}
     assert dhsc["Guidance: DHSC public appointments: 2026 to 2027"]["classification"]["relevant"] is False
     routine = dhsc["Transparency data: DHSC spending over £25,000: October 2026"]["classification"]
@@ -356,6 +374,9 @@ def test_publisher_summary_rules():
 def test_ninety_day_single_inbox_ordered_by_date_and_deduplicated_across_sources():
     assert CONFIG["daily_feed"]["window_days"] == 90 and CONFIG["daily_feed"]["retention_days"] >= 90
     payload = build(feed_payload(), {}, CONFIG, None, AS_OF)
+    assert not any(c["source"] in ("uk_dhsc", "uk_mhra") for c in payload["items"])
+    on = govuk_on()
+    payload = build(feed_payload(on), {}, on, None, AS_OF)
     assert payload["window_days"] == 90 and payload["retention_days"] == 90
     days = [c["published_at"] for c in payload["items"]]
     assert days == sorted(days, reverse=True)
@@ -404,7 +425,7 @@ def test_same_source_same_title_duplicates_are_recorded_not_silently_dropped():
     assert ledger == [{"kept_id": "a1", "merged_id": "a2", "source": "fda", "url": "https://x/a2", "published_at": "2026-10-25",
                        "title": again["title"], "reason": "same_source_same_title"}]
     # The ledger reaches the payload next to the count.
-    payload = build(feed_payload(), {}, CONFIG, None, AS_OF)
+    payload = build(feed_payload(govuk_on()), {}, govuk_on(), None, AS_OF)
     assert payload["duplicates_merged"] == len(payload["duplicates"]) >= 1
 
 
@@ -419,12 +440,13 @@ def test_visible_card_keeps_its_id_when_an_earlier_twin_arrives_later():
     kept, _ = dedupe([dict(shown), dict(earlier)])
     assert [c["id"] for c in kept] == ["early"]
     # End to end: the GOV.UK card shown yesterday keeps its id when an earlier-dated twin arrives today.
-    first = build(feed_payload(), {}, CONFIG, None, AS_OF)
+    on = govuk_on()
+    first = build(feed_payload(on), {}, on, None, AS_OF)
     shown = next(c for c in first["items"] if "AI scribes" in c["title"])
-    row = copy.deepcopy(next(r for r in feed_payload()["items"] if r["source"] == "uk_mhra" and "AI scribes" in r["title"]))
+    row = copy.deepcopy(next(r for r in feed_payload(on)["items"] if r["source"] == "uk_mhra" and "AI scribes" in r["title"]))
     row.update(item_id="earlier-twin", url="https://www.gov.uk/government/news/ai-scribes-earlier-copy",
                published_at=(_day_minus(shown["published_at"], 1)))
-    payload = build({"items": [row]}, {}, CONFIG, first, AS_OF)
+    payload = build({"items": [row]}, {}, on, first, AS_OF)
     ids = {c["id"] for c in payload["items"]}
     assert shown["id"] in ids and "earlier-twin" not in ids
     kept = next(c for c in payload["items"] if c["id"] == shown["id"])
@@ -438,8 +460,14 @@ def _day_minus(day, n):
 
 def test_clean_strips_real_tags_first_and_decodes_entities_once():
     from radar_salud.global_feed_discovery import _clean, publisher_summary
-    # Double-escaped text: decoded once, the words between "<" and ">" are never lost.
-    assert _clean("Children &amp;lt;5 years and adults &amp;gt;65 are at risk.") == "Children &lt;5 years and adults &gt;65 are at risk."
+    # Double-escaped text: markup layer decoded once, then the leftover text layer once (never re-parsed
+    # as markup): readable, and the words between "<" and ">" are never lost.
+    assert _clean("Children &amp;lt;5 years and adults &amp;gt;65 are at risk.") == "Children <5 years and adults >65 are at risk."
+    assert publisher_summary("<p>Children &amp;lt;5 years and adults &amp;gt;65 are at risk.</p>") == ("Children <5 years and adults >65 are at risk.", False)
+    assert _clean("A &amp;amp; B") == "A & B"
+    # A decoded "<script>" from the text layer stays text (the UI escapes it once); it never drops words.
+    assert _clean("Note &amp;lt;b&amp;gt;bold&amp;lt;/b&amp;gt; end") == "Note <b>bold</b> end"
+    assert _clean("R&D & AT&T") == "R&D & AT&T"
     assert _clean("<p>Children &lt;5 years and adults &gt;65 are at risk.</p>") == "Children <5 years and adults >65 are at risk."
     assert _clean("Children <5 years and adults >65 are at risk.") == "Children <5 years and adults >65 are at risk."
     assert _clean("A &amp; B <b>bold</b><script>alert(1)</script> end") == "A & B bold end"
@@ -456,7 +484,8 @@ def test_truncated_summary_always_ends_with_an_ellipsis():
 
 
 def test_ogl_cards_carry_the_licence_attribution_statement():
-    payload = build(feed_payload(), {}, CONFIG, None, AS_OF)
+    on = govuk_on()
+    payload = build(feed_payload(on), {}, on, None, AS_OF)
     ogl = [c for c in payload["items"] if c["source"] in ("uk_dhsc", "uk_mhra")]
     assert ogl
     for card in ogl:
@@ -465,8 +494,10 @@ def test_ogl_cards_carry_the_licence_attribution_statement():
         assert rb["attribution"].startswith("Contains public sector information licensed under the Open Government Licence v3.0")
     # History cards get today's attribution too (re-gated with today's config).
     old = [dict(c, rights_basis={"license": "x"}) for c in ogl]
-    again = build({"items": []}, {}, CONFIG, {"items": old}, AS_OF)
-    assert all(c["rights_basis"]["attribution"].startswith("Contains public sector information") for c in again["items"])
+    again = build({"items": []}, {}, on, {"items": old}, AS_OF)
+    assert again["items"] and all(c["rights_basis"]["attribution"].startswith("Contains public sector information") for c in again["items"])
+    # While the GOV.UK feeds are off, their history leaves the inbox.
+    assert build({"items": []}, {}, CONFIG, {"items": old}, AS_OF)["items"] == []
 
 
 def test_medwatch_route_never_keeps_a_summary():
@@ -496,46 +527,47 @@ def test_history_drops_a_summary_whose_right_was_withdrawn():
     later = build({"items": []}, {}, withdrawn, first, AS_OF)
     assert later["items"] and all(c["description"] is None and c["description_truncated"] is False for c in later["items"])
     # A summary withheld for the card's route (e.g. MedWatch) is dropped as well.
-    fda_card = dict(with_desc[0], source="fda", sections=["medwatch_safety_alerts"], url="https://www.fda.gov/x")
-    kept = build({"items": []}, {}, CONFIG, {"items": [fda_card]}, AS_OF)["items"]
+    fda_card = dict(with_desc[0], source="fda", sections=["medwatch_safety_alerts"], url="https://www.fda.gov/x",
+                    title="FDA finalizes guidance on artificial intelligence in clinical trials")
+    kept = build({"items": []}, {}, govuk_on(), {"items": [fda_card]}, AS_OF)["items"]
     assert kept and kept[0]["description"] is None
+    # With the MedWatch route off (Dirección 28-oct 09:58), its history card leaves the inbox.
+    assert build({"items": []}, {}, CONFIG, {"items": [fda_card]}, AS_OF)["items"] == []
 
 
+# Dirección 28-oct 09:58: safety alerts and recalls are one-offs for Chile -> all excluded; no "always include" rule.
 MHRA_TITLES = {
-    "Class 2 Medicines Recall: Zentiva Pharma UK Limited, Diazepam 10mg Tablets, EL(26)A/41": False,
-    "Class 3 Medicines Recall: Accord Healthcare Ltd, Amlodipine 5mg Tablets, EL(26)A/42": False,
-    "Class 4 Medicines Defect Information: Bristol Laboratories Ltd, Lansoprazole 30mg Capsules, EL(26)A/43": False,
-    "Field Safety Notices: 19 to 23 October 2026": False,
-    "Field Safety Notice: Philips infusion pump software update": False,
-    "National Patient Safety Alert: Valproate: organisations to implement new safety measures (NatPSA/2026/007/MHRA)": True,
-    "Medical safety alert: Insulin pens: risk of incorrect dosing when the needle is not attached": True,
-    "Class 1 Medicines Recall: Sandoz Limited, Co-amoxiclav 625mg Tablets, EL(26)A/44": True,
+    "Class 2 Medicines Recall: Zentiva Pharma UK Limited, Diazepam 10mg Tablets, EL(26)A/41": "publisher_routine_document_type",
+    "Class 3 Medicines Recall: Accord Healthcare Ltd, Amlodipine 5mg Tablets, EL(26)A/42": "publisher_routine_document_type",
+    "Class 4 Medicines Defect Information: Bristol Laboratories Ltd, Lansoprazole 30mg Capsules, EL(26)A/43": "publisher_routine_document_type",
+    "Field Safety Notices: 19 to 23 October 2026": "publisher_routine_document_type",
+    "Field Safety Notice: Philips infusion pump software update": "publisher_routine_document_type",
+    # No executive segment keyword: excluded by the base rule before the Global-interest gate (still out).
+    "National Patient Safety Alert: Valproate: organisations to implement new safety measures (NatPSA/2026/007/MHRA)": "no_segment_match",
+    "Medical safety alert: Insulin pens: risk of incorrect dosing when the needle is not attached": "safety_alert_or_recall",
+    "Class 1 Medicines Recall: Sandoz Limited, Co-amoxiclav 625mg Tablets, EL(26)A/44": "safety_alert_or_recall",
 }
 
 
-def test_mhra_routine_recalls_and_fsn_excluded_safety_alerts_included():
+def test_mhra_recalls_field_safety_notices_and_safety_alerts_are_all_excluded():
     entries = "".join(
         f'<entry><id>https://www.gov.uk/drug-device-alerts/a{i}</id><updated>2026-10-26T09:00:00+00:00</updated>'
         f'<link rel="alternate" type="text/html" href="https://www.gov.uk/drug-device-alerts/a{i}"/>'
         f'<title>{t.replace("&", "&amp;")}</title></entry>' for i, t in enumerate(MHRA_TITLES))
     raw = ('<?xml version="1.0" encoding="UTF-8"?><feed xmlns="http://www.w3.org/2005/Atom"><title>MHRA</title>' + entries + '</feed>').encode()
-    config = copy.deepcopy(CONFIG)
+    config = govuk_on()
     config["feeds"] = [f for f in config["feeds"] if f["id"] == "uk_mhra"]
+    assert "include_title_patterns" not in config["feeds"][0]
 
     class Client:
         def fetch(self, url):
             return raw, {"body_sha256": "x", "fetched_at": "2026-10-28T10:00:00+00:00", "http_status": 200, "tls_verified": True}
 
     items, failures, _ = collect_feeds(config, Client(), AS_OF)
-    got = {r["title"]: r["classification"]["relevant"] for r in items}
+    got = {r["title"]: r["classification"]["category"] for r in items}
     assert got == MHRA_TITLES, got
-    by_title = {r["title"]: r for r in items}
-    assert by_title["Field Safety Notices: 19 to 23 October 2026"]["classification"]["category"] == "publisher_routine_document_type"
-    alert = by_title["National Patient Safety Alert: Valproate: organisations to implement new safety measures (NatPSA/2026/007/MHRA)"]
-    assert alert["classification"]["priority"] >= 85 and alert["status"] == "pending"
-    cards = build({"items": items}, {}, config, None, AS_OF)["items"]
-    assert any(c["title"].startswith("Medical safety alert:") for c in cards)
-    assert not any(c["title"].startswith(("Class 2", "Class 3", "Class 4", "Field Safety")) for c in cards)
+    assert not any(r["classification"]["relevant"] for r in items) and all(r["status"] == "rejected" for r in items)
+    assert build({"items": items}, {}, config, None, AS_OF)["items"] == []
 
 
 def test_rights_evidence_matches_what_was_checked():
