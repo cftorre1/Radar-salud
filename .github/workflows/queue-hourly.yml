@@ -7,16 +7,45 @@ on:
     # Skips the four discovery hours (10, 14, 18, 22 UTC) so a waiting Daily Radar is never
     # replaced in the shared concurrency group by an hourly batch.
     - cron: '15 0-9,11-13,15-17,19-21,23 * * *'
+    # Backstop (Dirección 28-oct): GitHub drops scheduled events under load, so the same hours fire again
+    # at :45; the gate skips it when a batch ran in the last 40 min or another writer is active.
+    - cron: '45 0-9,11-13,15-17,19-21,23 * * *'
   workflow_dispatch:
 permissions:
   contents: write
   actions: write
-concurrency:
-  # Shared with Daily Radar: never two writers on staging at the same time.
-  group: alicanto-staging-writer
-  cancel-in-progress: false
 jobs:
+  gate:
+    # Scheduler backstop (Dirección 28-oct "Respaldo en GitHub"): cheap no-checkout gate, see scripts/should_run.py.
+    # Fails open (run=true) if the gate itself cannot run.
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      run: ${{ steps.gate.outputs.run }}
+    steps:
+      - name: Gate (queue)
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          EVENT: ${{ github.event_name }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          if gh api -H 'Accept: application/vnd.github.raw' "repos/$REPO/contents/scripts/should_run.py?ref=staging" > "$RUNNER_TEMP/should_run.py" \
+            && out=$(python3 "$RUNNER_TEMP/should_run.py" queue --repo "$REPO" --event "$EVENT" --run-id "$RUN_ID"); then :
+          else out=$'run=true\nreason=gate_unavailable'; fi
+          echo "$out" | tee -a "$GITHUB_OUTPUT"
   batch:
+    needs: gate
+    if: ${{ !cancelled() && needs.gate.outputs.run != 'false' }}
+    # Shared with Daily Radar: never two writers on staging at the same time. Job-level (not workflow-level)
+    # so a skipped gate never enters the group, where it would replace a pending Daily Radar.
+    concurrency:
+      group: alicanto-staging-writer
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 150
     env:
