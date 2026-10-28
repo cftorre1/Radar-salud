@@ -1,0 +1,980 @@
+{
+ "schema_version": 1,
+ "purpose": "WATCH: seguimiento determinista por entidad (Dirección 27-oct-2026). Etiqueta señales con entity_refs.",
+ "matching": {
+  "text_fields": [
+   "title",
+   "display_title",
+   "what_happened",
+   "card_what",
+   "official_subject",
+   "regulated_entity"
+  ],
+  "normalization": "NFKD sin tildes, espacios colapsados; se conserva mayúscula/minúscula. Los patrones se escriben sin tildes.",
+  "pattern": "re: expresión regular; ci: ignora mayúsculas; context: otra expresión (ignora mayúsculas) que debe aparecer en el mismo texto.",
+  "exclude": "Tramos que se borran antes de evaluar los patrones de esa entidad.",
+  "source_names": "Nombre de fuente (canal propio de la entidad) que asigna la entidad a toda la pieza.",
+  "urls": "Solo URLs ya presentes en datos del repositorio; null = por verificar. CMF solo desde data/entities/cmf_reporting_actors.json."
+ },
+ "kinds": [
+  "prestador",
+  "isapre",
+  "asegurador_publico",
+  "mutualidad",
+  "regulador",
+  "gremio",
+  "farma"
+ ],
+ "entities": [
+  {
+   "id": "cl:org:clinica-alemana",
+   "display_name": "Clínica Alemana",
+   "kind": "prestador",
+   "aliases": [
+    "Clínica Alemana",
+    "Grupo Alemana",
+    "Clínica Alemana de Santiago"
+   ],
+   "patterns": [
+    {
+     "re": "\\b(clinica|grupo) alemana\\b",
+     "ci": true
+    }
+   ],
+   "exclude": [
+    "\\bclinica alemana (de )?(temuco|valdivia|osorno|puerto varas|la serena)\\b"
+   ],
+   "urls": {
+    "website": "https://www.clinicaalemana.cl",
+    "sis_registry": null
+   },
+   "cmf": [],
+   "notes": "Clínica Alemana de Temuco/Valdivia/Osorno son prestadores distintos del grupo de Santiago; se excluyen. Sanatorio Alemán (Concepción) no coincide."
+  },
+  {
+   "id": "cl:org:clinica-las-condes",
+   "display_name": "Clínica Las Condes",
+   "kind": "prestador",
+   "aliases": [
+    "Clínica Las Condes",
+    "CLC"
+   ],
+   "patterns": [
+    {
+     "re": "\\bclinica las condes\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bCLC\\b",
+     "ci": false
+    }
+   ],
+   "urls": {
+    "website": null,
+    "sis_registry": null
+   },
+   "cmf": [
+    {
+     "rut": "93930000-7",
+     "legal_name": "CLINICA LAS CONDES S.A.",
+     "registration_status": "Vigente",
+     "ticker": "LAS CONDES",
+     "source_url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=0&mercado=V&pestania=1&row=AAAwy2ACTAAABy7AAk&rut=93930000&tipoentidad=RVEMI&vig=VI",
+     "evidence": "data/entities/cmf_reporting_actors.json"
+    }
+   ],
+   "notes": "\"Las Condes\" solo es comuna (p. ej. el aluvión); exige \"Clínica Las Condes\" o la sigla CLC en mayúsculas."
+  },
+  {
+   "id": "cl:org:empresas-banmedica",
+   "display_name": "Empresas Banmédica",
+   "kind": "prestador",
+   "kinds": [
+    "prestador",
+    "isapre"
+   ],
+   "aliases": [
+    "Empresas Banmédica",
+    "Grupo Banmédica",
+    "Banmédica S.A. (holding)"
+   ],
+   "patterns": [
+    {
+     "re": "\\b(empresas|grupo) banmedica\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bbanmedica\\b",
+     "ci": true,
+     "context": "unitedhealth|bordeaux|patria investments|\\bholding\\b"
+    }
+   ],
+   "urls": {
+    "website": null,
+    "sis_registry": null
+   },
+   "cmf": [
+    {
+     "rut": "96528990-9",
+     "legal_name": "BANMEDICA S.A.",
+     "registration_status": "No Vigente",
+     "ticker": null,
+     "source_url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=0&mercado=V&pestania=1&row=AAAwy2ACTAAABy9AAa&rut=96528990&tipoentidad=RVEMI&vig=NV",
+     "evidence": "data/entities/cmf_reporting_actors.json"
+    }
+   ],
+   "notes": "Holding (clínicas Santa María y Dávila, Vidaintegra, isapres Banmédica y Vida Tres). \"Banmédica\" solo o con contexto de isapre se asigna a la Isapre (cl:isapre:99)."
+  },
+  {
+   "id": "cl:org:clinica-santa-maria",
+   "display_name": "Clínica Santa María",
+   "kind": "prestador",
+   "aliases": [
+    "Clínica Santa María"
+   ],
+   "patterns": [
+    {
+     "re": "\\bclinica santa maria\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": null,
+    "sis_registry": null
+   },
+   "cmf": [],
+   "notes": "\"Santa María\" sola (CESFAM, comunas) no basta."
+  },
+  {
+   "id": "cl:org:uc-christus",
+   "display_name": "UC Christus",
+   "kind": "prestador",
+   "aliases": [
+    "Red de Salud UC Christus",
+    "Clínica UC",
+    "Hospital Clínico UC",
+    "Clínica UC San Carlos de Apoquindo"
+   ],
+   "patterns": [
+    {
+     "re": "\\buc ?christus\\b",
+     "ci": true
+    },
+    {
+     "re": "\\b(clinica|hospital clinico) uc\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bhospital clinico (de la )?(pontificia )?universidad catolica\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bclinica (uc )?san carlos de apoquindo\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": "https://www.ucchristus.cl",
+    "sis_registry": null
+   },
+   "cmf": []
+  },
+  {
+   "id": "cl:org:clinica-uandes",
+   "display_name": "Clínica Universidad de los Andes",
+   "short_name": "Clínica U. de los Andes",
+   "kind": "prestador",
+   "aliases": [
+    "Clínica Universidad de los Andes",
+    "Clínica UANDES"
+   ],
+   "patterns": [
+    {
+     "re": "\\bclinica (de la )?(universidad|u\\.?) de los andes\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bclinica uandes\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": "https://www.clinicauandes.cl",
+    "sis_registry": null
+   },
+   "cmf": [],
+   "notes": "La universidad sola no se asigna a la clínica."
+  },
+  {
+   "id": "cl:org:clinica-udd",
+   "display_name": "Clínica Universidad del Desarrollo",
+   "short_name": "Clínica UDD",
+   "kind": "prestador",
+   "aliases": [
+    "Clínica Universidad del Desarrollo",
+    "Clínica UDD"
+   ],
+   "patterns": [
+    {
+     "re": "\\bclinica (de la )?(universidad del desarrollo|udd)\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": null,
+    "sis_registry": null
+   },
+   "cmf": [],
+   "notes": "CIPS-UDD, la Facultad de Medicina Clínica Alemana-UDD y la universidad no se asignan a la clínica."
+  },
+  {
+   "id": "cl:org:meds",
+   "display_name": "Clínica MEDS",
+   "kind": "prestador",
+   "aliases": [
+    "MEDS",
+    "Clínica MEDS"
+   ],
+   "patterns": [
+    {
+     "re": "\\bMEDS\\b",
+     "ci": false
+    }
+   ],
+   "urls": {
+    "website": "https://www.meds.cl",
+    "sis_registry": null
+   },
+   "cmf": [],
+   "notes": "Solo la sigla en mayúsculas como palabra completa."
+  },
+  {
+   "id": "cl:org:hcuch",
+   "display_name": "Hospital Clínico Universidad de Chile",
+   "short_name": "Hospital Clínico U. de Chile",
+   "kind": "prestador",
+   "aliases": [
+    "Hospital Clínico de la Universidad de Chile",
+    "Hospital José Joaquín Aguirre",
+    "HCUCH"
+   ],
+   "patterns": [
+    {
+     "re": "\\bhospital clinico (de la )?(universidad|u\\.?) de chile\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bhospital (clinico )?(j\\. ?j\\.|jj|jose joaquin) aguirre\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bHCUCH\\b",
+     "ci": false
+    }
+   ],
+   "urls": {
+    "website": null,
+    "sis_registry": null
+   },
+   "cmf": []
+  },
+  {
+   "id": "cl:org:bupa",
+   "display_name": "Bupa Chile",
+   "kind": "prestador",
+   "aliases": [
+    "Bupa",
+    "Bupa Chile",
+    "Clínica Bupa Santiago"
+   ],
+   "patterns": [
+    {
+     "re": "\\bbupa\\b",
+     "ci": true
+    }
+   ],
+   "source_names": [
+    "Bupa Chile"
+   ],
+   "urls": {
+    "website": "https://www.bupa.cl",
+    "sis_registry": null
+   },
+   "cmf": [
+    {
+     "rut": "76005001-6",
+     "legal_name": "BUPA CHILE S.A.",
+     "registration_status": "No Vigente",
+     "ticker": null,
+     "source_url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&mercado=V&pestania=1&rut=76005001&tipoentidad=RVEMI&vig=NV&row=AAAwy2ACTAAABzMAAA&grupo=0",
+     "evidence": "data/entities/cmf_reporting_actors.json"
+    }
+   ],
+   "notes": "No se infiere la Isapre Cruz Blanca a partir de Bupa."
+  },
+  {
+   "id": "cl:org:interclinica",
+   "display_name": "Interclínica",
+   "kind": "prestador",
+   "aliases": [
+    "Interclínica"
+   ],
+   "patterns": [
+    {
+     "re": "\\binterclinica\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": "https://www.interclinica.cl",
+    "sis_registry": null
+   },
+   "cmf": []
+  },
+  {
+   "id": "cl:org:indisa",
+   "display_name": "Clínica Indisa",
+   "kind": "prestador",
+   "aliases": [
+    "Indisa",
+    "Clínica Indisa",
+    "Instituto de Diagnóstico S.A."
+   ],
+   "patterns": [
+    {
+     "re": "\\bindisa\\b",
+     "ci": true
+    },
+    {
+     "re": "\\binstituto de diagnostico s\\.?a\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": "https://indisa.cl",
+    "sis_registry": null
+   },
+   "cmf": [
+    {
+     "rut": "92051000-0",
+     "legal_name": "INSTITUTO DE DIAGNOSTICO S.A.",
+     "registration_status": "Vigente",
+     "ticker": "INDISA",
+     "source_url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=0&mercado=V&pestania=1&row=AABbBQABwAAAA5ZAAK&rut=92051000&tipoentidad=RVEMI&vig=VI",
+     "evidence": "data/entities/cmf_reporting_actors.json"
+    }
+   ]
+  },
+  {
+   "id": "cl:org:red-davila",
+   "display_name": "Red Dávila",
+   "kind": "prestador",
+   "aliases": [
+    "Clínica Dávila",
+    "Red Dávila",
+    "Clínica Dávila Vespucio"
+   ],
+   "patterns": [
+    {
+     "re": "\\b(clinica|red|centro medico) davila\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": "https://www.davila.cl",
+    "sis_registry": null
+   },
+   "cmf": [],
+   "notes": "\"Dávila\" solo es apellido; exige Clínica/Red/Centro Médico."
+  },
+  {
+   "id": "cl:org:achs-salud",
+   "display_name": "Achs Salud",
+   "kind": "prestador",
+   "aliases": [
+    "Achs Salud",
+    "Hospital del Trabajador",
+    "Clínica Portada"
+   ],
+   "patterns": [
+    {
+     "re": "\\bachs salud\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bhospital del trabajador\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bclinica portada\\b",
+     "ci": true,
+     "context": "\\bachs\\b"
+    }
+   ],
+   "urls": {
+    "website": "https://www.achssalud.cl",
+    "sis_registry": null
+   },
+   "cmf": []
+  },
+  {
+   "id": "cl:isapre:99",
+   "display_name": "Isapre Banmédica",
+   "kind": "isapre",
+   "aliases": [
+    "Banmedica",
+    "Banmédica S.A.",
+    "Isapre Banmédica"
+   ],
+   "patterns": [
+    {
+     "re": "\\bisapre banmedica\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bbanmedica\\b",
+     "ci": true,
+     "context": "\\bisapres?\\b|\\bges\\b|cotizantes|afiliad|vida ?tres|circular if"
+    }
+   ],
+   "exclude": [
+    "\\b(empresas|grupo) banmedica\\b"
+   ],
+   "urls": {
+    "website": "https://www.banmedica.cl",
+    "sis_registry": "https://www.superdesalud.gob.cl/registro/isapres/"
+   },
+   "cmf": [],
+   "notes": "\"Banmédica\" se asigna a la Isapre solo con contexto de seguro; \"Empresas Banmédica\" es el holding."
+  },
+  {
+   "id": "cl:isapre:67",
+   "display_name": "Isapre Colmena",
+   "kind": "isapre",
+   "aliases": [
+    "Colmena",
+    "Colmena Golden Cross",
+    "Colmena Golden Cross S.A."
+   ],
+   "patterns": [
+    {
+     "re": "\\b(Colmena|COLMENA)\\b",
+     "ci": false
+    },
+    {
+     "re": "\\bcolmena golden cross\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": "https://www.colmena.cl",
+    "sis_registry": "https://www.superdesalud.gob.cl/registro/isapres/"
+   },
+   "cmf": []
+  },
+  {
+   "id": "cl:isapre:107",
+   "display_name": "Isapre Consalud",
+   "kind": "isapre",
+   "aliases": [
+    "Consalud",
+    "Consalud S.A."
+   ],
+   "patterns": [
+    {
+     "re": "\\bconsalud\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": "https://www.consalud.cl",
+    "sis_registry": "https://www.superdesalud.gob.cl/registro/isapres/"
+   },
+   "cmf": []
+  },
+  {
+   "id": "cl:isapre:78",
+   "display_name": "Isapre Cruz Blanca",
+   "kind": "isapre",
+   "aliases": [
+    "Cruz Blanca",
+    "Cruz Blanca S.A.",
+    "CruzBlanca"
+   ],
+   "patterns": [
+    {
+     "re": "\\bcruz ?blanca\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": "https://www.cruzblanca.cl",
+    "sis_registry": "https://www.superdesalud.gob.cl/registro/isapres/"
+   },
+   "cmf": []
+  },
+  {
+   "id": "cl:isapre:81",
+   "display_name": "Isapre Nueva Masvida",
+   "kind": "isapre",
+   "aliases": [
+    "Nueva Masvida",
+    "Nueva Masvida S.A.",
+    "NuevaMasvida"
+   ],
+   "patterns": [
+    {
+     "re": "\\bnueva ?masvida\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bisapre masvida\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": "https://www.nuevamasvida.cl",
+    "sis_registry": "https://www.superdesalud.gob.cl/registro/isapres/"
+   },
+   "cmf": []
+  },
+  {
+   "id": "cl:isapre:80",
+   "display_name": "Isapre Vida Tres",
+   "kind": "isapre",
+   "aliases": [
+    "Vida Tres",
+    "Vida Tres S.A.",
+    "VidaTres"
+   ],
+   "patterns": [
+    {
+     "re": "\\b(Vida ?Tres|VIDA ?TRES)\\b",
+     "ci": false
+    },
+    {
+     "re": "\\bisapre vida ?tres\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": "https://www.vidatres.cl",
+    "sis_registry": "https://www.superdesalud.gob.cl/registro/isapres/"
+   },
+   "cmf": []
+  },
+  {
+   "id": "cl:isapre:108",
+   "display_name": "Isapre Esencial",
+   "kind": "isapre",
+   "aliases": [
+    "Esencial S.A.",
+    "Isapre Esencial",
+    "Somos Esencial"
+   ],
+   "patterns": [
+    {
+     "re": "\\bisapre esencial\\b",
+     "ci": true
+    },
+    {
+     "re": "\\besencial s\\.?a\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bsomos esencial\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bEsencial\\b",
+     "ci": false,
+     "context": "\\bisapres?\\b|colmena|consalud|cruz ?blanca|masvida|vida ?tres|\\bcircular if\\b"
+    }
+   ],
+   "urls": {
+    "website": "https://www.somosesencial.cl",
+    "sis_registry": "https://www.superdesalud.gob.cl/registro/isapres/"
+   },
+   "cmf": [],
+   "notes": "\"esencial\" es adjetivo; solo cuenta \"Esencial\" (inicial mayúscula) con contexto de isapres. En mayúsculas sostenidas exige \"Isapre ESENCIAL\" o \"ESENCIAL S.A.\"."
+  },
+  {
+   "id": "cl:isapre:76",
+   "display_name": "Isapre Fundación",
+   "kind": "isapre",
+   "aliases": [
+    "Fundación Ltda.",
+    "Isapre Fundación"
+   ],
+   "patterns": [
+    {
+     "re": "\\bisapre fundacion\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bfundacion ltda\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": "https://www.isaprefundacion.cl",
+    "sis_registry": "https://www.superdesalud.gob.cl/registro/isapres/"
+   },
+   "cmf": [],
+   "notes": "\"Fundación\" sola no basta."
+  },
+  {
+   "id": "cl:isapre:63",
+   "display_name": "Isapre Isalud",
+   "kind": "isapre",
+   "aliases": [
+    "Isalud",
+    "Isalud Isapre de Codelco SpA",
+    "Isalud Ltda.",
+    "Isapre Fusat",
+    "Isapre de Codelco"
+   ],
+   "patterns": [
+    {
+     "re": "\\bisalud\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bisapre (de )?codelco\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bisapre fusat\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": "https://www.isapredecodelco.cl",
+    "sis_registry": "https://www.superdesalud.gob.cl/registro/isapres/"
+   },
+   "cmf": []
+  },
+  {
+   "id": "cl:isapre:94",
+   "display_name": "Isapre Cruz del Norte",
+   "kind": "isapre",
+   "aliases": [
+    "Cruz del Norte",
+    "Cruz del Norte Ltda."
+   ],
+   "patterns": [
+    {
+     "re": "\\bcruz del norte\\b",
+     "ci": true,
+     "context": "\\bisapres?\\b|colmena|consalud|cruz ?blanca|masvida|vida ?tres|\\bcircular if\\b"
+    }
+   ],
+   "urls": {
+    "website": "https://www.isaprecruzdelnorte.cl",
+    "sis_registry": "https://www.superdesalud.gob.cl/registro/isapres/"
+   },
+   "cmf": []
+  },
+  {
+   "id": "cl:org:fonasa",
+   "display_name": "Fonasa",
+   "kind": "asegurador_publico",
+   "aliases": [
+    "Fonasa",
+    "Fondo Nacional de Salud"
+   ],
+   "patterns": [
+    {
+     "re": "\\bfonasa\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bfondo nacional de salud\\b",
+     "ci": true
+    }
+   ],
+   "exclude": [
+    "\\b(pacientes|beneficiarios|afiliados|usuarios|personas)( de| a)? fonasa(,| e| o| y) (a |de )?(las |los )?(isapres?|particulares)\\b",
+    "\\b(financiad[oa]s? por|cobertura de) fonasa (e|o|y) (las )?isapres?\\b",
+    "\\btanto (en|a|para) fonasa\\b[^.;]{0,60}?\\bcomo (en |a |para )?(las )?isapres?\\b",
+    "\\b[0-9][0-9.,]* [a-z ]{0,25}?en fonasa y [0-9][0-9.,]* [a-z ]{0,25}?en (las )?isapres?\\b"
+   ],
+   "urls": {
+    "website": "https://www.fonasa.gob.cl",
+    "sis_registry": null
+   },
+   "cmf": [],
+   "notes": "Las menciones de población genérica (\"pacientes Fonasa e Isapre\") no asignan la entidad."
+  },
+  {
+   "id": "cl:org:compin",
+   "display_name": "COMPIN",
+   "kind": "regulador",
+   "aliases": [
+    "COMPIN",
+    "Comisión de Medicina Preventiva e Invalidez"
+   ],
+   "patterns": [
+    {
+     "re": "\\bcompin\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bcomision de medicina preventiva e invalidez\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": null,
+    "sis_registry": null
+   },
+   "cmf": [],
+   "notes": "Contraloría médica de licencias (SEREMI de Salud)."
+  },
+  {
+   "id": "cl:org:achs",
+   "display_name": "ACHS",
+   "kind": "mutualidad",
+   "aliases": [
+    "ACHS",
+    "Asociación Chilena de Seguridad",
+    "Achs Seguro Laboral"
+   ],
+   "patterns": [
+    {
+     "re": "\\bachs\\b(?! salud)",
+     "ci": true
+    },
+    {
+     "re": "\\basociacion chilena de seguridad\\b",
+     "ci": true
+    }
+   ],
+   "source_names": [
+    "Achs Seguro Laboral"
+   ],
+   "urls": {
+    "website": "https://www.achs.cl",
+    "sis_registry": null
+   },
+   "cmf": [],
+   "notes": "\"Achs Salud\" (red de clínicas) es otra entidad."
+  },
+  {
+   "id": "cl:org:mutual-de-seguridad",
+   "display_name": "Mutual de Seguridad",
+   "kind": "mutualidad",
+   "aliases": [
+    "Mutual de Seguridad",
+    "Mutual de Seguridad CChC"
+   ],
+   "patterns": [
+    {
+     "re": "\\bmutual de seguridad\\b",
+     "ci": true
+    }
+   ],
+   "source_names": [
+    "Mutual de Seguridad CChC"
+   ],
+   "urls": {
+    "website": "https://www.mutual.cl",
+    "sis_registry": null
+   },
+   "cmf": []
+  },
+  {
+   "id": "cl:org:ist",
+   "display_name": "IST",
+   "kind": "mutualidad",
+   "aliases": [
+    "IST",
+    "Instituto de Seguridad del Trabajo"
+   ],
+   "patterns": [
+    {
+     "re": "\\bIST\\b",
+     "ci": false
+    },
+    {
+     "re": "\\binstituto de seguridad del trabajo\\b",
+     "ci": true
+    }
+   ],
+   "source_names": [
+    "Instituto de Seguridad del Trabajo (IST)"
+   ],
+   "urls": {
+    "website": "https://ist.cl",
+    "sis_registry": null
+   },
+   "cmf": []
+  },
+  {
+   "id": "cl:org:isl",
+   "display_name": "ISL",
+   "kind": "mutualidad",
+   "aliases": [
+    "ISL",
+    "Instituto de Seguridad Laboral"
+   ],
+   "patterns": [
+    {
+     "re": "\\bISL\\b",
+     "ci": false
+    },
+    {
+     "re": "\\binstituto de seguridad laboral\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": "https://www.isl.gob.cl",
+    "sis_registry": null
+   },
+   "cmf": [],
+   "notes": "Administrador público del seguro laboral."
+  },
+  {
+   "id": "cl:org:redsalud-ilc",
+   "display_name": "RedSalud / ILC",
+   "kind": "prestador",
+   "kinds": [
+    "prestador",
+    "isapre"
+   ],
+   "aliases": [
+    "RedSalud",
+    "Empresas Red Salud",
+    "ILC",
+    "Inversiones La Construcción"
+   ],
+   "patterns": [
+    {
+     "re": "\\bRed ?[Ss]alud\\b(?! [Mm]ental)",
+     "ci": false
+    },
+    {
+     "re": "\\bRED ?SALUD\\b(?! MENTAL)",
+     "ci": false
+    },
+    {
+     "re": "\\binversiones la construccion\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bILC\\b",
+     "ci": false,
+     "context": "inversiones la construccion|red ?salud|consalud|confuturo|camara chilena de la construccion|\\bcchc\\b"
+    }
+   ],
+   "exclude": [
+    "\\bred (de )?salud (uc|u\\.c\\.|catolica)"
+   ],
+   "source_names": [
+    "RedSalud"
+   ],
+   "urls": {
+    "website": "https://www.redsalud.cl",
+    "sis_registry": null
+   },
+   "cmf": [
+    {
+     "rut": "94139000-5",
+     "legal_name": "INVERSIONES LA CONSTRUCCION S.A.",
+     "registration_status": "Vigente",
+     "ticker": "ILC",
+     "source_url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=0&mercado=V&pestania=1&row=AAAwy2ACTAAABzMAAF&rut=94139000&tipoentidad=RVEMI&vig=VI",
+     "evidence": "data/entities/cmf_reporting_actors.json"
+    },
+    {
+     "rut": "76020458-7",
+     "legal_name": "EMPRESAS RED SALUD S.A.",
+     "registration_status": "Vigente",
+     "ticker": null,
+     "source_url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=0&mercado=V&pestania=1&row=AAAwy2ACTAAABzNAAU&rut=76020458&tipoentidad=RVEMI&vig=VI",
+     "evidence": "data/entities/cmf_reporting_actors.json"
+    }
+   ],
+   "notes": "\"ILC\" también es International Longevity Centre; exige contexto del grupo CChC. \"Red (de) Salud UC Christus\" es UC Christus, no RedSalud."
+  },
+  {
+   "id": "cl:org:clinicas-de-chile",
+   "display_name": "Clínicas de Chile A.G.",
+   "short_name": "Clínicas de Chile",
+   "kind": "gremio",
+   "aliases": [
+    "Clínicas de Chile",
+    "Clínicas de Chile A.G.",
+    "Asociación de Clínicas de Chile"
+   ],
+   "patterns": [
+    {
+     "re": "\\b(Clinicas de Chile|CLINICAS DE CHILE)\\b",
+     "ci": false
+    },
+    {
+     "re": "\\basociacion de clinicas de chile\\b",
+     "ci": true
+    }
+   ],
+   "source_names": [
+    "Clínicas de Chile A.G."
+   ],
+   "urls": {
+    "website": "https://www.clinicasdechile.cl",
+    "sis_registry": null
+   },
+   "cmf": [],
+   "notes": "\"las clínicas de Chile\" en minúscula es genérico."
+  },
+  {
+   "id": "cl:org:isp",
+   "display_name": "ISP",
+   "kind": "regulador",
+   "aliases": [
+    "ISP",
+    "Instituto de Salud Pública"
+   ],
+   "patterns": [
+    {
+     "re": "\\bISP\\b",
+     "ci": false
+    },
+    {
+     "re": "\\binstituto de salud publica\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": "https://www.ispch.gob.cl",
+    "sis_registry": null
+   },
+   "cmf": []
+  },
+  {
+   "id": "cl:org:cenabast",
+   "display_name": "Cenabast",
+   "kind": "farma",
+   "aliases": [
+    "Cenabast",
+    "Central de Abastecimiento del Sistema Nacional de Servicios de Salud"
+   ],
+   "patterns": [
+    {
+     "re": "\\bcenabast\\b",
+     "ci": true
+    },
+    {
+     "re": "\\bcentral de abastecimiento del sistema nacional de servicios de salud\\b",
+     "ci": true
+    }
+   ],
+   "urls": {
+    "website": "https://www.cenabast.cl",
+    "sis_registry": null
+   },
+   "cmf": []
+  }
+ ]
+}

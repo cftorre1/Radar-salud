@@ -739,7 +739,11 @@ def main():
             signals=add_material_epidemiology(signals,epidemiology)
         except (OSError,ValueError,TypeError):
             pass
-    payload={"date":(args.as_of or date.today()).isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"signals":preserve_v3_copy(curate(signals,resolve_external=not args.offline,as_of=args.as_of))}
+    cards=preserve_v3_copy(curate(signals,resolve_external=not args.offline,as_of=args.as_of))
+    # WATCH (Dirección 27-oct): every card carries explicit entity refs; aggregates inherit their acts.
+    from radar_salud import entity_watch
+    entity_watch.apply(cards,history=signals)
+    payload={"date":(args.as_of or date.today()).isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"entities":entity_watch.public_catalog(),"signals":cards}
     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
     health=Path("data/source_health.json")
     if health.exists():shutil.copyfile(health,out.parent/"source_health.json")
