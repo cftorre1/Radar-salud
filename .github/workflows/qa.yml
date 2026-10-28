@@ -18,7 +18,14 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -e . pytest
-      - run: python -m pytest -q
+      - name: python -m pytest -q
+        # Failing test names surface as check-run annotations (Actions logs are not readable from the agent environment).
+        run: |
+          set -o pipefail
+          python -m pytest -q -rfE 2>&1 | tee "$RUNNER_TEMP/pytest.log" || {
+            grep -E '^(FAILED|ERROR) ' "$RUNNER_TEMP/pytest.log" | head -20 | while IFS= read -r l; do echo "::error title=pytest::${l}"; done
+            grep -E '^E  ' "$RUNNER_TEMP/pytest.log" | head -15 | while IFS= read -r l; do echo "::error title=pytest-detail::${l}"; done
+            exit 1; }
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
