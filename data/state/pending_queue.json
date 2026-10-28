@@ -397933,14 +397933,14 @@
     },
     "source": "pulso_latercera",
     "lane": "BACKFILL",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-10-28T01:54:21.548545+00:00",
-    "attempts": 3,
-    "reason": "publisher_video_text_unavailable",
+    "attempts": 4,
+    "reason": "retry_exhausted:publisher_video_text_unavailable",
     "classification_watermark": "2026-10-27T19:54:50.804753+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-10-28T11:50:29.989179+00:00",
-    "retry_at": "2026-10-28T19:50:29.989185+00:00"
+    "updated_at": "2026-10-28T20:36:57.158785+00:00",
+    "retry_at": null
   },
   "662665ae805bdcfa21dfb9a851d6d259acd9cbe316afacdaa7e31b6d3cca7f9d": {
     "raw": {
@@ -720298,88 +720298,110 @@
           "analysis_text_sha256": "bd9724b1b6a3e0d7e592d46e49dc005f60e3e0c4edb2378ebe5b50e9cc669d15",
           "quote_validation_is_semantic_approval": false,
           "publication_approved": false,
-          "model_output_sha256": "cefadc12f6c2e01fe4e1905ba0ef42fd257151ce4c7392803a20dd449d4e285e",
+          "model_output_sha256": "bab1eb0d0c4eafb948e66155f6df0cdc8cb9823d75ae116e1b228003a792db0e",
           "proof": {
             "scope_decision": "human_health_specific",
-            "scope_reason": "La nota describe vacunación infantil contra una enfermedad humana, casos importados de sarampión, vigilancia epidemiológica y riesgo de contagio.",
-            "human_health_scope_quote": "continúan los niños que no están apropiadamente protegidos contra el sarampión",
-            "actor": "Ministerio de Salud (Minsal)",
+            "scope_reason": "La nota informa una campaña de vacunación infantil contra una enfermedad humana, una brecha de cobertura, casos importados y una alerta epidemiológica del Minsal.",
+            "human_health_scope_quote": "Minsal mantiene vigente una Alerta Epidemiológica por sarampión",
+            "actor": "el Ministerio de Salud (Minsal)",
             "action": "han logrado inmunizar a 44.386 niños y niñas de hasta 6 años desde julio",
-            "consequence": "más de 140 mil los niños y niñas que tienen su esquema de vacunación incompleto",
+            "consequence": "se cifran en más de 140 mil los niños y niñas que tienen su esquema de vacunación incompleto",
             "actor_quote": "Así, según informaron las autoridades, mediante la campaña del Ministerio de Salud (Minsal) “Chile contra el sarampión” han logrado inmunizar a 44.386 niños y niñas de hasta 6 años desde julio, quienes tenían solo una dosis o ninguna de la vacuna contra ese virus.",
             "action_quote": "Así, según informaron las autoridades, mediante la campaña del Ministerio de Salud (Minsal) “Chile contra el sarampión” han logrado inmunizar a 44.386 niños y niñas de hasta 6 años desde julio, quienes tenían solo una dosis o ninguna de la vacuna contra ese virus.",
             "consequence_quote": "Así, de acuerdo a los expertos, se cifran en más de 140 mil los niños y niñas que tienen su esquema de vacunación incompleto, y casi 62 mil de ellos vive en la Región Metropolitana.",
             "event_status": "actual",
             "event_status_quote": "han logrado inmunizar a 44.386 niños y niñas",
             "novelty_decision": "new_material_information",
-            "novelty_reason": "La nota aporta un resultado cuantificado de la campaña, el tamaño y distribución de la brecha de vacunación infantil y el balance de casos sospechosos e importados reportados para 2026.",
-            "novelty_quote": "han logrado inmunizar a 44.386 niños y niñas de hasta 6 años desde julio",
+            "novelty_reason": "La nota reporta un avance cuantificado de la campaña, una brecha actual de cobertura infantil, una alerta epidemiológica y tres casos importados confirmados, todos relevantes para la vigilancia de salud pública.",
+            "novelty_quote": "Asimismo, la OPS también calificó de “muy alto” el riesgo de contagio en los eventos masivos asociados a la visita del Papa León XIV a Argentina, Perú y Uruguay entre el 6 y el 17 de noviembre, y recomendó a quienes asistan verificar que están protegidos.",
             "future_claims": []
           },
-          "decision": "deferred",
-          "reason": "pulso_editorial_scope_not_grounded",
+          "decision": "ready",
+          "reason": "pulso_editorial_grounded_assessment",
+          "prospective_evidence": false,
           "primary_article_body_sha256": "bd9724b1b6a3e0d7e592d46e49dc005f60e3e0c4edb2378ebe5b50e9cc669d15",
           "request_input_sha256": "ded68797ba2f1edd14e2ce896ace56b63ace30887a25b1de7c7b9cbdf98e2849",
           "model_response": {
             "schema_version": "pulso_editorial_proof_v5",
             "source_name": "Pulso / La Tercera",
             "model": "gpt-5.6-luna",
-            "response_id": "resp_0e376d17006c5033006ae23093cfec87d1b401862cf7f0db08",
+            "response_id": "resp_0fc134d9ebdb4496006ae25cd1847887d084bd9cc2495fd13f",
             "analysis_text_sha256": "bd9724b1b6a3e0d7e592d46e49dc005f60e3e0c4edb2378ebe5b50e9cc669d15",
             "request_input_sha256": "ded68797ba2f1edd14e2ce896ace56b63ace30887a25b1de7c7b9cbdf98e2849",
-            "raw_model_output_sha256": "09db1bf3189081884335ca9baaa71068fd9e993fc36f5af56991b694a6dc5f85"
+            "raw_model_output_sha256": "e2475c6c655ae3cdb658d8dc09f58f04ba89e8f6081610ea51164ae736fef30c"
           }
         },
         "analysis_model_output": {
           "relevance_score": 88,
-          "what_happened": "Según la nota del 28 de octubre de 2026, las autoridades informaron que la campaña del Ministerio de Salud contra el sarampión logró inmunizar a 44.386 niños y niñas de hasta 6 años desde julio. Al mismo período reportado, más de 140 mil niños y niñas mantenían incompleto su esquema de vacunación, incluidos casi 62 mil en la Región Metropolitana. La nota también reportó 460 casos sospechosos monitoreados durante 2026 y tres casos importados confirmados.",
-          "why_it_matters": "Según la nota del 28 de octubre de 2026, el Minsal y la red de salud enfrentan una brecha de protección infantil que mantiene expuesta a la población a contagios ante casos importados: más de 140 mil niños y niñas no tenían el esquema completo. El riesgo merece atención porque el Minsal mantenía una Alerta Epidemiológica por sarampión y la OPS había reportado 56.700 casos confirmados en 17 países y territorios de las Américas, con 81 fallecidos.",
-          "reason": "Es una señal concreta de salud pública en Chile: reporta resultados de una campaña de inmunización, una brecha cuantificada de cobertura infantil, casos importados confirmados y una alerta epidemiológica vigente según la nota. La combinación afecta prevención, vigilancia y riesgo de transmisión del sarampión.",
+          "what_happened": "Según la nota del 28 de octubre de 2026, el Ministerio de Salud reportó que su campaña “Chile contra el sarampión” había inmunizado a 44.386 niños y niñas de hasta 6 años desde julio. A la misma fecha de publicación, la nota informó que más de 140 mil niños y niñas mantenían incompleto su esquema de vacunación, incluidos casi 62 mil en la Región Metropolitana. Minsal mantenía vigente una Alerta Epidemiológica y había monitoreado 460 casos sospechosos durante ese año, con tres casos importados confirmados.",
+          "why_it_matters": "Según la nota del 28 de octubre de 2026, la brecha de vacunación mantiene expuesta a una población infantil frente a posibles casos importados, pese a que Chile no registra transmisión local de sarampión desde 1993. El efecto para la salud pública es concreto: la autoridad debe sostener la búsqueda activa, la vigilancia y la vacunación para evitar la reintroducción y transmisión del virus; la nota reportó que más de 140 mil niños y niñas tenían el esquema incompleto a esa fecha.",
+          "reason": "Es una señal nacional de salud poblacional y vigilancia epidemiológica: combina una campaña que reporta 44.386 inmunizaciones con una brecha superior a 140 mil niños y niñas, además de una alerta vigente y tres casos importados confirmados. Merece radar por su impacto potencial en cobertura de vacunación, prevención de brotes y capacidad de respuesta sanitaria.",
           "pulso_editorial_proof": {
             "scope_decision": "human_health_specific",
-            "scope_reason": "La nota describe vacunación infantil contra una enfermedad humana, casos importados de sarampión, vigilancia epidemiológica y riesgo de contagio.",
-            "human_health_scope_quote": "continúan los niños que no están apropiadamente protegidos contra el sarampión",
-            "actor": "Ministerio de Salud (Minsal)",
+            "scope_reason": "La nota informa una campaña de vacunación infantil contra una enfermedad humana, una brecha de cobertura, casos importados y una alerta epidemiológica del Minsal.",
+            "human_health_scope_quote": "Minsal mantiene vigente una Alerta Epidemiológica por sarampión",
+            "actor": "el Ministerio de Salud (Minsal)",
             "action": "han logrado inmunizar a 44.386 niños y niñas de hasta 6 años desde julio",
-            "consequence": "más de 140 mil los niños y niñas que tienen su esquema de vacunación incompleto",
+            "consequence": "se cifran en más de 140 mil los niños y niñas que tienen su esquema de vacunación incompleto",
             "actor_quote": "Así, según informaron las autoridades, mediante la campaña del Ministerio de Salud (Minsal) “Chile contra el sarampión” han logrado inmunizar a 44.386 niños y niñas de hasta 6 años desde julio, quienes tenían solo una dosis o ninguna de la vacuna contra ese virus.",
             "action_quote": "Así, según informaron las autoridades, mediante la campaña del Ministerio de Salud (Minsal) “Chile contra el sarampión” han logrado inmunizar a 44.386 niños y niñas de hasta 6 años desde julio, quienes tenían solo una dosis o ninguna de la vacuna contra ese virus.",
             "consequence_quote": "Así, de acuerdo a los expertos, se cifran en más de 140 mil los niños y niñas que tienen su esquema de vacunación incompleto, y casi 62 mil de ellos vive en la Región Metropolitana.",
             "event_status": "actual",
             "event_status_quote": "han logrado inmunizar a 44.386 niños y niñas",
             "novelty_decision": "new_material_information",
-            "novelty_reason": "La nota aporta un resultado cuantificado de la campaña, el tamaño y distribución de la brecha de vacunación infantil y el balance de casos sospechosos e importados reportados para 2026.",
-            "novelty_quote": "han logrado inmunizar a 44.386 niños y niñas de hasta 6 años desde julio",
+            "novelty_reason": "La nota reporta un avance cuantificado de la campaña, una brecha actual de cobertura infantil, una alerta epidemiológica y tres casos importados confirmados, todos relevantes para la vigilancia de salud pública.",
+            "novelty_quote": "Asimismo, la OPS también calificó de “muy alto” el riesgo de contagio en los eventos masivos asociados a la visita del Papa León XIV a Argentina, Perú y Uruguay entre el 6 y el 17 de noviembre, y recomendó a quienes asistan verificar que están protegidos.",
             "future_claims": []
           },
           "_pulso_analysis_meta": {
             "schema_version": "pulso_editorial_proof_v5",
             "source_name": "Pulso / La Tercera",
             "model": "gpt-5.6-luna",
-            "response_id": "resp_0e376d17006c5033006ae23093cfec87d1b401862cf7f0db08",
+            "response_id": "resp_0fc134d9ebdb4496006ae25cd1847887d084bd9cc2495fd13f",
             "analysis_text_sha256": "bd9724b1b6a3e0d7e592d46e49dc005f60e3e0c4edb2378ebe5b50e9cc669d15",
             "request_input_sha256": "ded68797ba2f1edd14e2ce896ace56b63ace30887a25b1de7c7b9cbdf98e2849",
-            "raw_model_output_sha256": "09db1bf3189081884335ca9baaa71068fd9e993fc36f5af56991b694a6dc5f85"
+            "raw_model_output_sha256": "e2475c6c655ae3cdb658d8dc09f58f04ba89e8f6081610ea51164ae736fef30c"
           }
         },
         "editorial_assessment": {
-          "decision": "pending",
-          "reason": "pulso_editorial_scope_not_grounded",
+          "decision": "published",
+          "relevance_score": 88,
           "threshold": 72,
-          "proof_version": "pulso_editorial_proof_v5"
+          "analysis_reason": "Es una señal nacional de salud poblacional y vigilancia epidemiológica: combina una campaña que reporta 44.386 inmunizaciones con una brecha superior a 140 mil niños y niñas, además de una alerta vigente y tres casos importados confirmados. Merece radar por su impacto potencial en cobertura de vacunación, prevención de brotes y capacidad de respuesta sanitaria."
+        },
+        "prospective_evidence": false,
+        "what_happened": "Según Pulso / La Tercera, Según la nota del 28 de octubre de 2026, el Ministerio de Salud reportó que su campaña “Chile contra el sarampión” había inmunizado a 44.386 niños y niñas de hasta 6 años desde julio. A la misma fecha de publicación, la nota informó que más de 140 mil niños y niñas mantenían incompleto su esquema de vacunación, incluidos casi 62 mil en la Región Metropolitana. Minsal mantenía vigente una Alerta Epidemiológica y había monitoreado 460 casos sospechosos durante ese año, con tres casos importados confirmados.",
+        "why_it_matters": "Según la nota del 28 de octubre de 2026, la brecha de vacunación mantiene expuesta a una población infantil frente a posibles casos importados, pese a que Chile no registra transmisión local de sarampión desde 1993. El efecto para la salud pública es concreto: la autoridad debe sostener la búsqueda activa, la vigilancia y la vacunación para evitar la reintroducción y transmisión del virus; la nota reportó que más de 140 mil niños y niñas tenían el esquema incompleto a esa fecha.",
+        "signal_types": [
+          "Noticias"
+        ],
+        "scopes": [
+          "Sistema de salud"
+        ],
+        "watch_tags": [
+          "pulso_latercera",
+          "media",
+          "sistema de salud"
+        ],
+        "scores": {
+          "economic": 88,
+          "regulatory": 55,
+          "scope": 88,
+          "novelty": 88,
+          "actionability": 76
         }
       }
     },
     "source": "pulso_latercera",
     "lane": "LIVE",
-    "status": "retry",
+    "status": "published",
     "detected_at": "2026-10-28T17:16:25.887743+00:00",
-    "attempts": 1,
-    "reason": "pulso_editorial_scope_not_grounded",
+    "attempts": 2,
+    "reason": null,
     "classification_watermark": "2026-10-28T11:36:26.870858+00:00",
     "deferred_detail": "pulso_editorial_scope_not_grounded",
-    "updated_at": "2026-10-28T17:28:05.442731+00:00",
-    "retry_at": "2026-10-28T19:28:05.442739+00:00"
+    "updated_at": "2026-10-28T20:36:49.937142+00:00",
+    "retry_at": null
   },
   "70bcddca7ef072e1ccf9101457a146eb7de17ff80ed3d7b577546cb152d05e5f": {
     "raw": {
@@ -721590,12 +721612,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-10-28T17:16:25.887743+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "publisher_video_text_unavailable",
     "classification_watermark": "2026-10-28T11:36:26.870858+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-10-28T17:31:30.618083+00:00",
-    "retry_at": "2026-10-28T19:31:30.618090+00:00"
+    "updated_at": "2026-10-28T20:36:53.545209+00:00",
+    "retry_at": "2026-10-29T00:36:53.545218+00:00"
   },
   "edbb7d92e294c114f655bcb3c9b9be12f88666bf757602d1bc76096b9d81277e": {
     "raw": {
