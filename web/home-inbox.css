@@ -420,3 +420,29 @@ main{max-width:none;margin:0;padding:0 0 70px}
 .source-suggestion-cta strong{font-weight:600;color:var(--ink68)}
 .source-suggestion-cta button{border:0;background:none;color:var(--accent-ink);font-weight:700;padding:0;cursor:pointer;white-space:nowrap}
 .source-suggestion-cta button::after{content:" →"}
+
+/* WATCH · entidades (Dirección 27-oct-2026): chips inside the card's meta line and a searchable
+   "Entidades" group inside the existing Intereses sheet/rail. No rows are added above the feed. */
+.meta-tail{display:inline-flex;align-items:center;max-width:100%;min-width:0;white-space:nowrap;vertical-align:middle}
+.ent-chips{display:inline-flex;align-items:center;flex:0 1 auto;min-width:0;gap:5px;margin-left:5px}
+.ent-chip{position:relative;flex:0 1 auto;min-width:0;display:inline-flex;align-items:center;min-height:24px;max-width:15em;padding:0 8px;border:1px solid var(--ink12);border-radius:999px;background:#fff;font:inherit;font-size:11px;font-weight:650;line-height:1;color:var(--ink84);cursor:pointer}
+.ent-chip .ent-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* Invisible touch area: grows sideways and down to the card edge, never up into the title. */
+.ent-chip::after{content:"";position:absolute;left:-3px;right:0;top:-3px;bottom:-20px}
+#local .signal.item:has(.ent-chip){padding-bottom:19px}
+.ent-chip:hover{border-color:var(--ink48);color:var(--ink)}
+.ent-chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.ent-chip:focus-visible{outline:2px solid #E3A24F;outline-offset:1px}
+#local .meta-tail .item-actions{margin-left:2px;flex:none;vertical-align:baseline}
+.ent-more{flex:none;font-size:11px;color:var(--ink48)}
+.chip.ent{border-color:var(--ink)}
+.entity-box{margin-top:4px}
+.entity-search{display:block;box-sizing:border-box;width:100%;min-height:44px;margin:0 0 8px;padding:0 12px;border:1px solid var(--ink18);border-radius:10px;background:#fff;font:inherit;font-size:14px;color:var(--ink)}
+.entity-search:focus-visible{outline:2px solid #E3A24F;outline-offset:1px}
+.entity-list .tog{font-size:12.5px}
+.entity-more,.entity-empty{margin:6px 0 0;font-size:11.5px;color:var(--ink48)}
+.entity-empty{grid-column:1/-1}
+.rail-find{color:var(--ink68)}
+.rail-find .box{box-shadow:none!important;background:none!important;position:relative}
+.rail-find .box::before{content:"+";position:absolute;inset:-3px 0 0;text-align:center;font-size:15px;line-height:1;color:var(--ink48)}
+.chip.ent .ent-icon{width:13px;height:13px;margin-left:-2px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}

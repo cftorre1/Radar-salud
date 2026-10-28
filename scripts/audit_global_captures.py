@@ -763,7 +763,11 @@ def audit(captures, inventory_path, output):
         check(recall.get("inventory_url_count", recall.get("inventory_90_url_count")) == len(native_90[source]) and recall["detected"] == len(native_90[source] & detected[source])
               and recall["omitted_urls"] == sorted(native_90[source] - detected[source]), "native_recall_health", source)
         check(recall["whole_source_archive_claim"] is False, "whole_source_archive_claim", source)
-        check(health["published"] == 0 and health["publication_activation"] is False, "health_publication_activation", source)
+        # Dirección 27-oct: activation only via the recorded two-consecutive-daily-runs guard; never publishes.
+        decision = health.get("publication_activation_decision") or {}
+        check(health["published"] == 0 and (health["publication_activation"] is False or (decision.get("authorized") is True
+              and len(decision.get("earned_evidence_run_ids") or []) == 2 and health["coverage_completeness"] == "complete"
+              and health["technical_status"] == "ok")), "health_publication_activation", source)
         check(health["pages_checked"] == sum(page["source"] == source for page in pages), "pages_checked_health", source)
         if health["coverage_completeness"] == "complete" or health["outcome"] == "READY_FOR_INTEGRATION":
             source_routes = [result for result in inventory["routes"] if result["route"]["source"] == source]

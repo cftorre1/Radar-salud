@@ -1,0 +1,89 @@
+name: Alicanto Weekly Insight (Monday, format A)
+# Dirección 27-oct-2026: the weekly insight is renewed every MONDAY (anchor = Monday,
+# expires the next Monday). Scheduled workflows only run from the default branch: this file
+# must be copied to main by the coordinator in a separate PR.
+on:
+  schedule:
+    # 09:30 UTC = 06:30 America/Santiago in summer time (UTC-3, Sept–April); 05:30 in winter.
+    - cron: '30 9 * * 1'
+    # Backstops in case the first run is delayed or dropped by GitHub. They no-op once the Monday
+    # is published, and do not pay again after a FAIL candidate exists for that Monday.
+    - cron: '45 11 * * 1'
+    - cron: '45 15 * * 1'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Regenerar aunque el lunes ya esté publicado'
+        required: false
+        default: false
+        type: boolean
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: alicanto-staging-writer
+  cancel-in-progress: false
+jobs:
+  weekly-insight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      RADAR_MONTHLY_USD: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install package
+        run: pip install -e . pytest
+      - name: Require API secret
+        env:
+          HAS_KEY: ${{ secrets.OPENAI_API_KEY != '' }}
+        run: test "$HAS_KEY" = "true"
+      - name: Deterministic guards before any paid call
+        run: python -m pytest -q tests/test_weekly_insight_a.py tests/test_weekly_freshness.py tests/test_free_value.py
+      - name: Generate, verify and review the Monday insight (PASS publishes, FAIL writes a candidate)
+        # The API key is scoped to this step only.
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python scripts/run_weekly_insight_a.py ${{ inputs.force && '--force' || '' }}
+      - name: Snapshot reviewer
+        run: python -m pytest -q tests/test_reviewer.py
+      - name: Commit candidates and AI ledger (always), approved insight and public files (success only)
+        if: always()
+        env:
+          JOB_OK: ${{ job.status == 'success' }}
+        run: |
+          git config user.name "alicanto-salud-bot"
+          git config user.email "alicanto-salud-bot@users.noreply.github.com"
+          # Paid usage and candidates are recorded even when the run fails (paths may not exist yet).
+          for p in data/weekly_insight/candidates data/state/model_usage.json data/ai_usage; do
+            if [ -e "$p" ]; then git add "$p"; fi
+          done
+          if [ "$JOB_OK" = "true" ]; then
+            # Publication files only when generation, verification and the reviewer step passed.
+            for p in data/weekly_insight/editorial_approved.json data/weekly_insight/latest.json \
+                     data/weekly_insight/archive web/data/free_value.json; do
+              if [ -e "$p" ]; then git add "$p"; fi
+            done
+          fi
+          git diff --cached --quiet && exit 0
+          # Drop unstaged publication edits from a failed job so the rebase below is clean.
+          git stash push --keep-index --include-untracked -m weekly-insight-unstaged || true
+          git commit -m "chore: insight semanal del lunes (formato A)"
+          pushed=false
+          for attempt in 1 2 3; do
+            if git pull --rebase origin staging && git push origin HEAD:staging; then pushed=true; break; fi
+            git rebase --abort 2>/dev/null || true
+            sleep $((attempt * 20))
+          done
+          # Fail loudly if the publication never reached staging.
+          [ "$pushed" = true ] || { echo "push to staging failed after 3 attempts"; exit 1; }
+      - name: Request checked staging preview
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run staging-preview.yml --ref staging

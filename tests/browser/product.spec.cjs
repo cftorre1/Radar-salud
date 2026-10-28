@@ -564,7 +564,9 @@ test('Global metadata health stays separate from Chile LIVE coverage',async({pag
  const product=await(await page.request.get('/data/product.json')).json();
  for(const key of ['global_who','global_paho','global_reuters']){
   const row=health.sources[key];expect(row.discovery_scope).toBe('global_intelligence');
-  expect(row.publication_activation).toBe(false);expect(row.published).toBe(0);
+  expect(row.published).toBe(0);
+  if(key==='global_reuters')expect(row.publication_activation).toBe(false);
+  else expect(row.publication_activation===false||(row.publication_activation_decision?.earned_evidence_run_ids||[]).length===2).toBe(true);
   expect(product.sources[key]).toEqual(row);
  }
  expect(health.sources.global_reuters.counts).toEqual({'30':null,'90':null});

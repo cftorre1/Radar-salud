@@ -1,22 +1,20 @@
 {
-  "generated_at": "2026-10-27T20:25:26.983170+00:00",
+  "generated_at": "2026-10-28T02:26:10.984552+00:00",
   "sources": {
     "prestadores_data": {
-      "discovered": 8,
+      "validation_mode": "core_handoff",
+      "runtime": "daily_core",
+      "checked_at": "2026-10-28T02:12:52.132018+00:00",
+      "discovered": 0,
       "published": 0,
       "technical_status": "ok",
       "error": null,
-      "error_detail": null,
-      "decisions": [],
-      "validation_scope": "bounded_discovery_only_not_publication_or_90_day_inventory",
-      "newest_event_date": null,
-      "collection_mode": "discovery_only",
-      "evaluation_performed": false
+      "newest_event_date": null
     },
     "red_davila": {
       "validation_mode": "core_handoff",
       "runtime": "daily_core",
-      "checked_at": "2026-10-27T20:01:44.925380+00:00",
+      "checked_at": "2026-10-28T02:12:52.132018+00:00",
       "discovered": 0,
       "published": null,
       "technical_status": "error",
@@ -26,7 +24,7 @@
     "andes_salud": {
       "validation_mode": "core_handoff",
       "runtime": "daily_core",
-      "checked_at": "2026-10-27T20:01:44.925380+00:00",
+      "checked_at": "2026-10-28T02:12:52.132018+00:00",
       "discovered": 24,
       "published": 0,
       "technical_status": "ok",
@@ -36,7 +34,7 @@
     "clinicas_achs_salud": {
       "validation_mode": "core_handoff",
       "runtime": "daily_core",
-      "checked_at": "2026-10-27T20:01:44.925380+00:00",
+      "checked_at": "2026-10-28T02:12:52.132018+00:00",
       "discovered": 0,
       "published": null,
       "technical_status": "error",
@@ -46,17 +44,17 @@
     "achs_seguro_laboral": {
       "validation_mode": "core_handoff",
       "runtime": "daily_core",
-      "checked_at": "2026-10-27T20:01:44.925380+00:00",
-      "discovered": 25,
+      "checked_at": "2026-10-28T02:12:52.132018+00:00",
+      "discovered": 23,
       "published": 0,
-      "technical_status": "ok",
-      "error": null,
+      "technical_status": "error",
+      "error": "SourceDiscoveryError",
       "newest_event_date": null
     },
     "mutual_seguridad": {
       "validation_mode": "core_handoff",
       "runtime": "daily_core",
-      "checked_at": "2026-10-27T20:01:44.925380+00:00",
+      "checked_at": "2026-10-28T02:12:52.132018+00:00",
       "discovered": 53,
       "published": 0,
       "technical_status": "error",
@@ -66,19 +64,19 @@
     "ist": {
       "validation_mode": "core_handoff",
       "runtime": "daily_core",
-      "checked_at": "2026-10-27T20:01:44.925380+00:00",
-      "discovered": 22,
+      "checked_at": "2026-10-28T02:12:52.132018+00:00",
+      "discovered": 23,
       "published": 0,
-      "technical_status": "error",
-      "error": "SourceDiscoveryError",
+      "technical_status": "ok",
+      "error": null,
       "newest_event_date": null
     },
     "pulso_latercera": {
       "validation_mode": "core_handoff",
       "runtime": "daily_core",
-      "checked_at": "2026-10-27T20:01:44.925380+00:00",
+      "checked_at": "2026-10-28T02:12:52.132018+00:00",
       "discovered": 547,
-      "published": 5,
+      "published": 1,
       "technical_status": "ok",
       "error": null,
       "newest_event_date": "2026-10-27"
