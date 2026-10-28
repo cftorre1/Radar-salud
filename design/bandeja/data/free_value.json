@@ -1,0 +1,449 @@
+{
+  "generated_at": "2026-10-27T14:12:07.193257+00:00",
+  "status": "available",
+  "global_teaser": {
+    "theme_id": "global-health-ai-operating-model-2026",
+    "title": "La IA en salud entra a una fase de gobierno y retorno medible",
+    "excerpt": "Deloitte encontró que la IA no es prioridad principal para todos los sistemas, pero sí se espera que mejore eficiencia, tareas administrativas y apoyo clínico.",
+    "what_changed": "Deloitte encontró que la IA no es prioridad principal para todos los sistemas, pero sí se espera que mejore eficiencia, tareas administrativas y apoyo clínico.",
+    "why_it_matters": "La señal material no es adopción automática, sino el paso desde pilotos aislados hacia estrategia empresarial, responsables definidos, integración al flujo de trabajo, gobernanza y medición de resultados.",
+    "what_to_watch": "Permite evaluar iniciativas con dueño, línea base, resultado medible y controles, separando adopción declarada de capacidad operativa.",
+    "chile_hypothesis": "Hipótesis para Chile: observar casos con dueño, línea base, ahorro o resultado clínico medible y resguardos de privacidad. Anuncios de IA sin esas condiciones no bastan para declarar una tendencia chilena.",
+    "chile_hypothesis_status": "not_established",
+    "source_count": 3,
+    "publishers": [
+      "Deloitte",
+      "PwC"
+    ],
+    "source_label": "Deloitte · PwC",
+    "published_at": "2026-09-18",
+    "premium_href": "global.html#theme-global-health-ai-operating-model-2026",
+    "evidence_status": "verified_sources",
+    "teaser_score": {
+      "score": 96.35,
+      "eligible": true,
+      "freshness_gate_days": null,
+      "source_age_days": 39,
+      "latest_source_date": "2026-09-18",
+      "dimensions": {
+        "commercial_hook": 98.0,
+        "strategic_relevance": 96.0,
+        "decision_usefulness": 96.0,
+        "conversation_potential": 98.0,
+        "evidence_strength": 85.0
+      }
+    },
+    "model_trace": {
+      "mode": "deterministic_existing_evidence",
+      "api_call": false,
+      "model": null,
+      "output_id": "global-health-ai-operating-model-2026"
+    }
+  },
+  "weekly_insight": {
+    "id": "weekly-insight:2026-10-23:licencias-control-y-costo",
+    "title": "Licencias médicas caen 12,3% en plena ofensiva de control: la caída se modera y eso importa para 2027",
+    "insight_title": "Licencias médicas caen 12,3% en plena ofensiva de control: la caída se modera y eso importa para 2027",
+    "event_date": "2026-10-23",
+    "freshness_anchor_date": "2026-10-23",
+    "expires_on": "2026-10-30",
+    "editorial_review_pass": true,
+    "source_name": "SUSESO · registro de sanciones · DF y La Tercera",
+    "source_url": "https://www.suseso.gob.cl/605/w3-article-792643.html",
+    "schema_version": "weekly_insight_a_v1",
+    "headline": "Las licencias médicas caen 12,3%, pero la caída ya se frena: 2027 no debería presupuestarse con el ahorro de 2026",
+    "dek": "Entre enero y septiembre se emitieron 5.155.495 licencias médicas electrónicas, 12,3% menos que en 2025. Un mes antes, la baja acumulada era de 14%.",
+    "dek_emphasis": "5.155.495 licencias médicas electrónicas",
+    "estimates": [
+      {
+        "id": "dias_reposo",
+        "label": "días totales de reposo",
+        "value": -21.9,
+        "unit": "%",
+        "display": "≈ −22%",
+        "formula": "(0.877 * 0.891 - 1) * 100",
+        "inputs": [
+          "licencias -12,3%",
+          "días promedio 12,8→11,4"
+        ],
+        "note_ref": "n1"
+      },
+      {
+        "id": "moderacion_total",
+        "label": "moderación de la caída acumulada, Total",
+        "value": 1.7,
+        "unit": "pp",
+        "formula": "-12.3 - (-14.0)"
+      },
+      {
+        "id": "moderacion_fonasa",
+        "label": "moderación de la caída acumulada, Fonasa",
+        "value": 1.0,
+        "unit": "pp",
+        "formula": "-13.4 - (-14.4)"
+      },
+      {
+        "id": "moderacion_isapres",
+        "label": "moderación de la caída acumulada, Isapres",
+        "value": 1.3,
+        "unit": "pp",
+        "formula": "-12.2 - (-13.5)"
+      }
+    ],
+    "charts": [
+      {
+        "id": "moderacion",
+        "form": "paired_bars",
+        "headline": "La caída se achica en todos los seguros",
+        "subtitle": "Variación interanual acumulada de licencias emitidas",
+        "unit": "%",
+        "series": [
+          {
+            "key": "ago",
+            "label": "ene–ago",
+            "emphasis": false
+          },
+          {
+            "key": "sep",
+            "label": "ene–sep",
+            "emphasis": true
+          }
+        ],
+        "rows": [
+          {
+            "label": "Total",
+            "values": {
+              "ago": -14.0,
+              "sep": -12.3
+            },
+            "strong": true
+          },
+          {
+            "label": "Fonasa",
+            "values": {
+              "ago": -14.4,
+              "sep": -13.4
+            }
+          },
+          {
+            "label": "Isapres",
+            "values": {
+              "ago": -13.5,
+              "sep": -12.2
+            }
+          }
+        ],
+        "delta": {
+          "from": "ago",
+          "to": "sep",
+          "unit": "pp",
+          "label": "se modera"
+        },
+        "footnote": "Barra más corta = caída menor · pp = puntos porcentuales",
+        "source": "SUSESO (ene–sep, 23 oct) y datos SUSESO citados por Pulso (ene–ago, 9 oct).",
+        "note_refs": []
+      },
+      {
+        "id": "sanciones",
+        "form": "columns",
+        "headline": "Más de 30 sanciones a emisores al mes",
+        "subtitle": "Oficios de sanción a emisores de licencias, por mes",
+        "unit": "oficios",
+        "rows": [
+          {
+            "label": "Ago",
+            "value": 36
+          },
+          {
+            "label": "Sep",
+            "value": 32
+          },
+          {
+            "label": "Oct",
+            "value": 15,
+            "style": "partial",
+            "partial_label": "parcial · al día 16"
+          }
+        ],
+        "source": "Registro de sanciones SUSESO capturado por Alicanto.",
+        "note_refs": [
+          "n4"
+        ]
+      }
+    ],
+    "essay": {
+      "facts": {
+        "heading": "Qué pasó",
+        "paragraphs": [
+          "La baja es pareja entre seguros, sexo y sector. Los reposos también son más cortos, con 11,4 días promedio frente a 12,8 un año antes. Las licencias por trastornos mentales caen 24,3%. Todo ocurre en el ciclo de control más intenso registrado: la SUSESO observó 190.219 licencias de 114.099 personas por posibles usos indebidos, con un techo bruto de más de $85 mil millones en subsidios,[^n5] abrió 312 investigaciones a emisores y, desde el 23 de octubre, limita qué diagnósticos pueden certificar dentistas y matronas. La SUSESO no atribuye la baja a una sola causa."
+        ]
+      },
+      "reading": {
+        "heading": "Lectura Alicanto",
+        "paragraphs": [
+          "Para quien paga el subsidio, la cifra que importa son los días, no las licencias. Combinando menos licencias y reposos más cortos, estimamos que los días de reposo cayeron en torno a 22%.[^n1]",
+          "Ese ahorro es real, pero no es una tendencia. La caída perdió casi dos puntos en un mes, y agosto ya mostró un alza interanual de 4,6% por baja base de comparación. Si el control explica parte de la baja,[^n2] su efecto podría estar tocando piso. Las Isapres, cuyos planes más baratos la prensa atribuye en parte al menor gasto en licencias,[^n3] harían mal en proyectar a 2027 la caída de 2026.",
+          "La baja en salud mental pide cautela: puede mezclar abuso corregido con reposos legítimos que dejaron de otorgarse."
+        ]
+      }
+    },
+    "watch_heading": "Qué mirar en las próximas semanas",
+    "watch": [
+      {
+        "headline": "Cifras de licencias de octubre a diciembre.",
+        "explanation": "Si vuelven a superar a las del mismo mes de 2025, el efecto del control habría tocado piso y el ahorro de 2026 no se repetiría."
+      },
+      {
+        "headline": "Rechazos por competencia profesional.",
+        "explanation": "Desde el 23 de octubre, Isapres y COMPIN deben rechazar licencias de dentistas y matronas por diagnósticos que ya no pueden certificar (Circular 3931)."
+      },
+      {
+        "headline": "Precios de planes Isapre 2027.",
+        "explanation": "Conviene revisar si cada aseguradora explica cuánto pesa el gasto en licencias en su tarifa."
+      }
+    ],
+    "notes": [
+      {
+        "id": "n1",
+        "kind": "estimate",
+        "text": "Estimación Alicanto: 0,877 × 0,891 ≈ 0,78. Licencias emitidas y días autorizados tienen denominadores distintos; es un orden de magnitud, no una cifra oficial."
+      },
+      {
+        "id": "n2",
+        "kind": "causality",
+        "text": "La coincidencia entre fiscalización y menor emisión es temporal; no está demostrado que una cause la otra."
+      },
+      {
+        "id": "n3",
+        "kind": "press",
+        "text": "El vínculo entre gasto en licencias y precio de planes proviene de prensa, no de estados financieros verificados."
+      },
+      {
+        "id": "n4",
+        "kind": "coverage",
+        "text": "El registro es una ventana móvil de 90 días. Octubre es parcial (hasta el día 16) y julio se excluye por posible cobertura incompleta."
+      },
+      {
+        "id": "n5",
+        "kind": "non_final",
+        "text": "Las licencias observadas por fiscalización no son resoluciones firmes; el monto es un techo bruto entre todos los pagadores."
+      }
+    ],
+    "reading_time_min": 2,
+    "summary": "Entre enero y septiembre de 2026 se emitieron 5.155.495 licencias médicas electrónicas, 12,3% menos que en 2025 (Fonasa -13,4%, Isapres -12,2%), con reposos más cortos (11,4 días promedio vs 12,8). Combinando ambas cifras, los días de reposo habrían caído en torno a 22%, la variable que mueve el costo del subsidio. Pero la caída se está moderando: a agosto era de 14% y ese mes las licencias subieron 4,6% por baja base de comparación. Ocurre en el ciclo de fiscalización más intenso registrado (VigIA, sanciones a emisores, causas penales), sin que la SUSESO atribuya la baja a una sola causa.",
+    "insight_teaser": "−12,3% en licencias y ≈ −22% en días de reposo, pero la caída se modera: qué significa para Isapres, Fonasa y prestadores en 2027.",
+    "key_figures": [
+      "5.155.495 licencias electrónicas entre enero y septiembre de 2026: -12,3% interanual (Fonasa -13,4%, Isapres -12,2%).",
+      "Días promedio autorizados: de 12,8 a 11,4. Estimación Alicanto: días totales de reposo ≈ -22% (0,877 × 0,891; aproximado, porque licencias emitidas y días autorizados tienen denominadores distintos).",
+      "La caída se modera: -14% a agosto (Fonasa -14,4%, Isapres -13,5%) vs -12,3% a septiembre; agosto subió 4,6% interanual por baja base de comparación.",
+      "Trastornos mentales: -24,3% a septiembre (cerca de -26% a agosto); pasaron de 32,1% a 27,8% del total a agosto.",
+      "Fiscalización 2025–2026: 190.219 licencias de 114.099 personas observadas por posibles usos indebidos; techo bruto estimado de más de $85 mil millones en subsidios, entre todos los pagadores. 312 investigaciones a emisores con VigIA.",
+      "Registro de sanciones a emisores capturado por Alicanto: entre agosto y septiembre, 32–36 oficios mensuales; octubre lleva 15 al día 16."
+    ],
+    "actors": [
+      "Isapres y Fonasa: pagadores del subsidio por incapacidad laboral de origen común.",
+      "Médicos, dentistas y matronas emisores, y los prestadores donde emiten.",
+      "COMPIN y contralorías médicas de las Isapres, que dictaminan y ahora deben rechazar licencias fuera de competencia.",
+      "Empleadores públicos y privados."
+    ],
+    "insight_reading": [
+      "Hecho: la baja es transversal por seguro, sexo y sector, y viene con reposos más cortos y menos personas usuarias.",
+      "Inferencia Alicanto: ese patrón es consistente con un cambio en la conducta de emisión y autorización, no solo con menos enfermedad; la SUSESO no lo atribuye a una sola causa.",
+      "Hecho: el control cambió de escala en 2026 (cruces masivos con VigIA, oficios de sanción mensuales, derivaciones al Ministerio Público y condenas por emisión fraudulenta), y desde el 23 de octubre la Circular 3931 limita los diagnósticos que pueden certificar dentistas y matronas.",
+      "Inferencia Alicanto: la moderación de la caída sugiere que el ajuste de 2026 podría estar tocando su piso. Para las Isapres, cuya baja de precios de planes la prensa atribuye a la ley corta y a un gasto SIL 13,6% menor entre 2024 y 2025, proyectar a 2027 la misma intensidad de caída sería arriesgado.",
+      "Inferencia Alicanto: la caída en salud mental (-24,3%) es la cifra que requiere más cuidado: puede combinar uso indebido corregido con barreras a reposos legítimos."
+    ],
+    "decision_use": [
+      "Isapres: modelar el costo SIL 2027 por días (≈ -22% en 2026), no solo por número de licencias, y con un escenario de caída moderándose.",
+      "Prestadores y redes: revisar los perfiles de emisión de sus profesionales frente al registro de sanciones y a la Circular 3931; la exposición reputacional ya no es teórica.",
+      "Fonasa y empleadores públicos: priorizar la recuperación sobre el techo bruto observado y el seguimiento de los 5.646 funcionarios que viajaron durante su licencia.",
+      "COMPIN e Isapres: ajustar procesos para rechazar, con motivo explícito, licencias fuera de competencia profesional desde el 23 de octubre."
+    ],
+    "what_to_watch": [
+      "Cifras de octubre a diciembre: si la variación interanual vuelve a terreno positivo, el efecto del control habría tocado piso.",
+      "Aplicación de la Circular 3931 y rechazos por competencia; la Circular 3926 regirá el procedimiento del artículo 30 del DS 3 desde el 4 de enero de 2027.",
+      "Resultados de las 312 investigaciones VigIA: sanciones, suspensiones y casos penales.",
+      "Tarifas y planes de Isapres para 2027 y si explicitan el gasto en licencias."
+    ],
+    "uncertainties": [
+      "La relación entre fiscalización y caída de emisión es temporal, no causal demostrada.",
+      "La estimación de días (≈ -22%) combina dos indicadores con denominadores distintos; es un orden de magnitud, no una cifra oficial.",
+      "El registro de sanciones es una ventana móvil de 90 días; julio puede estar incompleto y no se usa para comparar.",
+      "El vínculo entre gasto en licencias y precios de planes proviene de prensa, no de estados financieros verificados.",
+      "Las licencias observadas por fiscalización no son resoluciones firmes."
+    ],
+    "source_refs": [
+      "https://www.suseso.gob.cl/605/w3-article-792643.html",
+      "https://www.suseso.gob.cl/605/w3-article-792305.html",
+      "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
+      "https://www.latercera.com/pulso/noticia/isapres-ofrecen-los-planes-mas-baratos-en-cinco-anos-gracias-a-la-ley-corta-y-menor-gasto-en-licencias/",
+      "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+      "https://www.suseso.gob.cl/605/w3-article-792754.html"
+    ],
+    "sources": [
+      {
+        "label": "SUSESO · Emisión de licencias médicas disminuyó 12,3% (ene–sep 2026) · 23 oct",
+        "url": "https://www.suseso.gob.cl/605/w3-article-792643.html",
+        "role": "Fuente primaria de volumen, días promedio y variación por seguro y diagnóstico.",
+        "short_label": "SUSESO · Emisión de licencias médicas disminuyó 12,3% (23 oct)",
+        "short_role": "volumen, días y variación por seguro"
+      },
+      {
+        "label": "SUSESO · Avances en fiscalización ante Comisión de Salud del Senado · 19 oct",
+        "url": "https://www.suseso.gob.cl/605/w3-article-792305.html",
+        "role": "Fuente primaria de licencias observadas, gasto estimado e investigaciones VigIA.",
+        "short_label": "SUSESO · Avances en fiscalización ante el Senado (19 oct)",
+        "short_role": "licencias observadas, VigIA"
+      },
+      {
+        "label": "SUSESO · Registro de sanciones a emisores de licencias",
+        "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
+        "role": "Oficios de sanción capturados por Alicanto (registro de 90 días).",
+        "short_label": "SUSESO · Registro de sanciones a emisores",
+        "short_role": "oficios mensuales"
+      },
+      {
+        "label": "SUSESO · Circular 3931: diagnósticos que pueden certificar dentistas y matronas (vigente desde 23 oct)",
+        "url": "https://www.suseso.gob.cl/605/w3-article-792754.html",
+        "role": "Fuente primaria de la nueva regla de emisión.",
+        "short_label": "SUSESO · Circular 3931 (vigente desde 23 oct)",
+        "short_role": "nueva regla de emisión"
+      },
+      {
+        "label": "La Tercera/Pulso · Licencias anotan en agosto su mayor alza en año y medio · 9 oct",
+        "url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+        "role": "Prensa: contrapunto de corto plazo por baja base de comparación.",
+        "short_label": "La Tercera/Pulso · Licencias anotan en agosto su mayor alza (9 oct)",
+        "short_role": "prensa"
+      },
+      {
+        "label": "La Tercera/Pulso · Isapres ofrecen los planes más baratos en cinco años · 30 ago",
+        "url": "https://www.latercera.com/pulso/noticia/isapres-ofrecen-los-planes-mas-baratos-en-cinco-anos-gracias-a-la-ley-corta-y-menor-gasto-en-licencias/",
+        "role": "Prensa: vínculo informado entre menor gasto en licencias y precios de planes.",
+        "short_label": "La Tercera/Pulso · Isapres ofrecen los planes más baratos en cinco años (30 ago)",
+        "short_role": "prensa"
+      }
+    ],
+    "weekly_mode": "reviewed_cross_source_deep_dive",
+    "model_trace": {
+      "mode": "senior_editorial_work_session",
+      "api_call": false,
+      "model": "claude-opus-5-5 (sesión de orquestación)",
+      "note": "Redactado desde señales verificadas del historial y fuentes primarias SUSESO; revisión independiente aparte."
+    },
+    "legacy_charts": [
+      {
+        "type": "bars",
+        "title": "La caída se modera: variación acumulada de licencias emitidas",
+        "unit": "%",
+        "rows": [
+          {
+            "label": "Total ene–ago",
+            "value": -14.0
+          },
+          {
+            "label": "Total ene–sep",
+            "value": -12.3
+          },
+          {
+            "label": "Fonasa ene–ago",
+            "value": -14.4
+          },
+          {
+            "label": "Fonasa ene–sep",
+            "value": -13.4
+          },
+          {
+            "label": "Isapres ene–ago",
+            "value": -13.5
+          },
+          {
+            "label": "Isapres ene–sep",
+            "value": -12.2
+          }
+        ],
+        "source": "SUSESO (ene–sep, 23 oct) y datos SUSESO citados por Pulso (ene–ago, 9 oct)"
+      },
+      {
+        "type": "bars",
+        "title": "Oficios de sanción a emisores de licencias por mes",
+        "unit": "oficios",
+        "rows": [
+          {
+            "label": "Ago",
+            "value": 36
+          },
+          {
+            "label": "Sep",
+            "value": 32
+          },
+          {
+            "label": "Oct (al 16)",
+            "value": 15,
+            "style": "partial"
+          }
+        ],
+        "source": "Registro SUSESO capturado por Alicanto (ventana de 90 días); octubre parcial"
+      }
+    ]
+  },
+  "selection_policy": {
+    "window_weeks": 6,
+    "recent_history_count": 1,
+    "current_week_locked": false,
+    "selection_method": "strategic_relevance_first_then_commercial_hook_v3",
+    "global_teaser_excluded_by_hold": [
+      "global-ai-coding-payer-cost-2026"
+    ],
+    "strategic_dimensions": [
+      "financial_impact",
+      "operational_impact",
+      "regulatory_or_competitive_shift",
+      "affected_scope",
+      "urgency_time_horizon",
+      "actionability",
+      "evidence_strength",
+      "novelty_non_repetition"
+    ],
+    "penalizes": [
+      "repetition_in_novelty_dimension"
+    ],
+    "fallback": "hide_without_reproducible_evidence_tied_insight",
+    "weekly_insight_status": "published_editorial_reviewed",
+    "minimum_insight_evidence": "two independent sources, or one high-quality source with reproducible deep analysis and explicit decision use",
+    "no_forced_frequency": true,
+    "top3": [
+      {
+        "url": "https://www.suseso.gob.cl/605/w3-article-792643.html",
+        "title": "SUSESO · Emisión de licencias médicas disminuyó 12,3% (ene–sep 2026) · 23 oct"
+      },
+      {
+        "url": "https://www.suseso.gob.cl/605/w3-article-792305.html",
+        "title": "SUSESO · Avances en fiscalización ante Comisión de Salud del Senado · 19 oct"
+      },
+      {
+        "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
+        "title": "SUSESO · Registro de sanciones a emisores de licencias"
+      }
+    ],
+    "deep_intelligence": {
+      "mode": "senior_editorial_work_session",
+      "api_call": false,
+      "model": "claude-opus-5-5 (sesión de orquestación)",
+      "note": "Redactado desde señales verificadas del historial y fuentes primarias SUSESO; revisión independiente aparte."
+    },
+    "freshness_gate": {
+      "eligible": true,
+      "reason": "fresh",
+      "as_of": "2026-10-27",
+      "timezone": "America/Santiago",
+      "window_days": 7,
+      "anchor_date": "2026-10-23",
+      "expires_on": "2026-10-30"
+    },
+    "weekly_presentation": {
+      "format": "weekly_insight_a_v1",
+      "errors": []
+    }
+  }
+}

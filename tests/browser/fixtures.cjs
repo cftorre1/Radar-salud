@@ -10,9 +10,8 @@ const test=base.test.extend({
     await use(page);
   },
 });
-// The period selector lives inside 'Filtrar u ordenar' (Dirección 25-oct): open it first when closed.
-async function selectPeriod(page,value){const details=page.locator('#filterDetails');if(!(await details.evaluate(el=>el.open)))await details.locator('summary').click();await page.locator('#period').selectOption(value)}
-// Below 1000px the lanes live in the "N pendientes ▾" menu (review N1 of PR #72, design B §6):
-// open it first when the lane is not visible.
-async function selectLane(page,lane){const target=page.locator(`[data-lane="${lane}"]`);await target.waitFor({state:'attached'});if(!(await target.isVisible()))await page.locator('#laneToggle').click();await target.click()}
+// The period is its own dropdown in the bar (Dirección 27-oct 22:44, punto 4); choosing it closes any open filters.
+async function selectPeriod(page,value){await page.locator('#period').selectOption(value)}
+// Read status is an always-visible segmented control (Dirección 27-oct 22:44, punto 5).
+async function selectLane(page,lane){await page.locator(`#lanes [data-lane="${lane}"]`).click()}
 module.exports={...base,test,FIXTURE_AS_OF,selectPeriod,selectLane};

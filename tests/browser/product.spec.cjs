@@ -89,6 +89,8 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('article').first().locator('.intel,.related')).toHaveCount(0);
  const withDepth=page.locator('article:has([data-detail])').first();await withDepth.locator('[data-detail]').first().click();
  await expect(page.locator('#signalDetail')).toBeVisible();await page.getByRole('button',{name:'Cerrar ficha'}).click();
+ // Choosing a period closes the filters dropdown (Dirección 27-oct 22:44, punto 4): reopen it to pick a format.
+ await page.locator('#filterDetails summary').click();
  await page.locator('#typeFilters').getByRole('button',{name:'Fiscalización',exact:true}).click();
  await expect(page.locator('article').first()).toBeVisible();
  expect(await laneCount('t')).toBe(await page.locator('#local article[data-card]').count());
@@ -225,11 +227,16 @@ test('Global read state is shared across Home and the research page',async({page
  // Filter its publisher to verify read-state persistence independently of rank.
  const teaser=globalData.themes.find(t=>t.id===teaserId);
  const publisher=teaser.sources.map(s=>s.publisher).sort((a,b)=>globalData.themes.filter(t=>t.sources.some(s=>s.publisher===a)).length-globalData.themes.filter(t=>t.sources.some(s=>s.publisher===b)).length)[0];
+ // Global homologated to the Home bar A (Dirección 27-oct 23:13): sources are a multi-select in the filters
+ // dropdown and read status is the Pendientes · Leídas · Todas control; Todas lists read and unread rows.
  await page.locator('#globalFilters summary').click();
- await page.locator('#globalPublisher').selectOption(publisher);
+ await page.locator(`#globalPublisher [data-publisher="${publisher}"]`).click();await page.keyboard.press('Escape');
+ await expect(page.locator('#globalFilterLabel')).toHaveText(publisher);
  const publisherCount=globalData.themes.filter(t=>t.sources.some(s=>s.publisher===publisher)).length;
+ await expect(page.locator('#globalLanes [data-lane="p"] span')).toHaveText(String(publisherCount-1));
+ await expect(page.locator('.theme')).toHaveCount(publisherCount-1);
+ await page.locator('#globalLanes [data-lane="t"]').click();
  await expect(page.locator('.theme')).toHaveCount(publisherCount);
- await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(publisherCount-1);
  const theme=page.locator(`#theme-${teaserId}`);
  await expect(theme).toHaveClass(/read/);
  await theme.locator('[data-read]').click();await expect(theme).not.toHaveClass(/read/);
@@ -237,6 +244,33 @@ test('Global read state is shared across Home and the research page',async({page
  await page.locator('#bigThings .big-feature.global [data-special-read]').click();
  // Dirección 27-oct-2026: a read special stays in place with its read mark; focus stays on its toggle.
  await expect(page.locator('#bigThings .big-feature.global')).toHaveClass(/read/);await expect(page.locator('#bigThings .big-feature.global [data-special-read]')).toBeFocused();
+});
+// Dirección 27-oct 23:13: Global uses the Home header and bar A; mark-all works on the visible themes with undo.
+test('Global shares header, bar A and mark-all with the Home',async({page})=>{
+ await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('all');
+ for(const [name,href] of [['Chile','index.html'],['Global','global.html'],['Newsletter','subscription.html'],['PREMIUM','index.html#premium']])expect(await page.locator(`.topnav a[href="${href}"]`).evaluate(el=>(el.dataset.short||el.textContent).trim())).toBe(name);
+ await expect(page.locator('.topnav a[aria-current="page"]')).toHaveAttribute('href','global.html');
+ const rows=page.locator('#themes .theme');await expect(rows.first()).toBeVisible();const total=await rows.count();expect(total).toBeGreaterThan(2);
+ await expect(page.locator('#globalLanes [data-lane="p"]')).toHaveAttribute('aria-pressed','true');
+ await page.locator('#globalMarkAll').click();await expect(rows).toHaveCount(0);await expect(page.locator('#globalUndo')).toContainText(`${total} temas marcados como leídos`);
+ await expect(page.locator('#themes')).toContainText('Estás al día');
+ await page.locator('#undoRead').click();await expect(rows).toHaveCount(total);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+});
+// Independent review of PR #80 (PASS_WITH_NOTES): header Newsletter opens the dialog, the dropdown closes when
+// focus leaves it, controls have 44px touch areas, and at 320px PREMIUM stays whole with a two-line bar.
+test('review notes: newsletter dialog, focus-out close, touch areas and 320px bar',async({page})=>{
+ await page.goto('/');await expect(page.locator('#local article[data-card]').first()).toBeVisible();
+ await page.locator('.topnav .header-newsletter').click();await expect(page.locator('#newsletterDialog')).toBeVisible();expect(page.url()).not.toContain('subscription.html');
+ await page.getByRole('button',{name:'Cerrar resumen semanal'}).click();
+ await page.locator('#filterDetails summary').click();await expect(page.locator('#filterDetails')).toHaveAttribute('open','');
+ const hit=await page.evaluate(()=>{const area=el=>{const r=el.getBoundingClientRect(),a=getComputedStyle(el,'::after'),b=getComputedStyle(el,'::before');const ext=p=>p.content&&p.content!=='none'&&p.position==='absolute'?Math.max(0,-parseFloat(p.top)||0)+Math.max(0,-parseFloat(p.bottom)||0):0;return r.height+Math.max(ext(a),ext(b))};return{period:area(document.querySelector('#period')),summary:area(document.querySelector('#filterDetails summary')),row:area(document.querySelector('#interestFilters .tog[data-interest]:not([data-interest=""])')),reset:area(document.querySelector('#resetFilters')),chip:area(document.querySelector('#typeFilters .chip')),done:area(document.querySelector('#filterDone'))}});
+ for(const [k,v] of Object.entries(hit))expect(v,k).toBeGreaterThanOrEqual(44);
+ await page.locator('#markAllRead').focus();await expect(page.locator('#filterDetails')).not.toHaveAttribute('open','');
+ await page.setViewportSize({width:320,height:700});
+ const bar=await page.evaluate(()=>({h:document.querySelector('.radar-unit').getBoundingClientRect().height,premium:document.querySelector('.premium-access').getBoundingClientRect().right,w:innerWidth}));
+ // Two lines with Inter; at most three with wider fallback fonts (CI runners have no Inter) — Dirección/review: 2 or 3 lines.
+ expect(bar.premium).toBeLessThanOrEqual(bar.w);expect(bar.h).toBeLessThanOrEqual(140);
 });
 test('source suggestion is visible, concise and fail-closed without provider',async({page})=>{
  let captured;
@@ -354,7 +388,9 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await page.locator('#globalFilters summary').click();
  await expect(page.locator('#globalPublisher')).toBeVisible();
  await expect(page.locator('#globalSort')).toBeVisible();
- await page.locator('#globalPeriod').selectOption('all');
+ await page.locator('#globalPeriod').selectOption('all');await expect(page.locator('#globalFilters')).not.toHaveAttribute('open','');
+ // Bar A on Global (Dirección 27-oct 23:13): Todas shows every theme; Pendientes only the unread ones.
+ await page.locator('#globalLanes [data-lane="t"]').click();
  await expect(page.locator('.theme')).toHaveCount(visibleCount);
  const initialUnread=visibleCount-await page.locator('.theme.read').count();
  await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${initialUnread}`);
@@ -362,7 +398,7 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await page.locator('.theme:not(.read):not(#theme-global-ai-coding-payer-cost-2026) [data-open]').first().click();
  await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${initialUnread-1}`);
  const opened=page.locator('#globalDetail');await expect(opened).toBeVisible();await expect(opened).toContainText('Fuentes y evidencia');await expect(opened).not.toContainText(/Qué encontró:|Lectura estratégica|Qué mirar en Chile/);await expect(opened).toContainText('evidencia local');await page.keyboard.press('Escape');
- await page.reload();await expect(page.locator('#globalPeriod')).toHaveValue('all');
+ await page.reload();await expect(page.locator('#globalPeriod')).toHaveValue('all');await expect(page.locator('#globalLanes [data-lane="t"]')).toHaveAttribute('aria-pressed','true');
  await expect(page.locator('.theme')).toHaveCount(visibleCount);
  const visibleIds=await page.locator('.theme').evaluateAll(nodes=>nodes.map(n=>n.id.replace(/^theme-/,'')));expect(visibleIds.length).toBe(themeCount);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);
@@ -487,18 +523,18 @@ test('committee HOLD/REJECT and failed publication contracts do not render as in
 });
 
 
-test('period lives inside Filtrar, persists without duplicating metric copy, and is resettable',async({page})=>{
+// Dirección 27-oct 22:44 (punto 4) supersedes the 25-oct 'period inside Filtrar': the period opens only itself.
+test('period is its own dropdown, never opens the filters, persists and is resettable',async({page})=>{
  await page.goto('/');
- const period=page.locator('#period');
- await expect(period).toBeHidden();
- expect(await period.locator('xpath=ancestor::details').getAttribute('id')).toBe('filterDetails');
- await selectPeriod(page,'90');
- await expect(period).toHaveValue('90');
+ const period=page.locator('#period'),filters=page.locator('#filterDetails');
+ await expect(period).toBeVisible();
+ expect(await period.locator('xpath=ancestor::details').count()).toBe(0);
+ await period.selectOption('90');
+ await expect(period).toHaveValue('90');await expect(filters).not.toHaveAttribute('open','');
  await expect(page.locator('#radarMetrics')).not.toContainText('período');
  await page.reload();
  await expect(period).toHaveValue('90');
- await expect(page.locator('#radarMetrics')).not.toContainText('período');
- await page.locator('#filterDetails summary').click();
+ await page.locator('#filterDetails summary').click();await expect(filters).toHaveAttribute('open','');
  await page.locator('#resetFilters').click();
  await expect(period).toHaveValue('30');
  await expect(page.locator('#sort')).toHaveValue('date');
@@ -516,9 +552,11 @@ test('Home hero is compact, one-line and exposes subscription plus Global Intell
  await expect(page.locator('button.premium-access')).toHaveText('Acceso PREMIUM');
  if(test.info().project.name==='mobile'){
    const title=await page.locator('#radarTitle').boundingBox();
-   const metrics=await page.locator('#radarMetrics').boundingBox();
+   // The pending count now lives in the segmented read status (Dirección 27-oct 22:44, punto 5);
+   // #radarMetrics stays as the screen-reader status, so the layout check uses the segmented control.
+   const metrics=await page.locator('#lanes [data-lane="p"]').boundingBox();
    const source=await page.locator('#sourcesOpen').boundingBox();
-   expect(metrics.y).toBeGreaterThan(title.y);
+   expect(metrics.y+metrics.height).toBeGreaterThan(title.y);
    expect(source.y).toBeGreaterThan(metrics.y);
    expect(await page.locator('.hero-purpose').evaluate(el=>el.scrollWidth<=el.clientWidth+1)).toBeTruthy();
  }
@@ -699,20 +737,29 @@ test('in Todas a dot marks read, disappears and keeps focus on the same row',asy
  await same.locator('[data-read]').click();await expect(same).toHaveClass(/read/);await expect(same.locator('[data-read]')).toBeHidden();
  await expect(same.locator('.title-open')).toBeFocused();
 });
-// Review N1/N2 of PR #72: below 1000px "N pendientes ▾" opens the lanes as a menu (interest chips keep
-// the second line); wide screens show them as tabs. Feed titles clamp to two lines on the button itself.
-test('lanes open from the pending count on narrow screens and feed titles clamp to two lines',async({page})=>{
- await page.goto('/');await expect(page.locator('#local article[data-card]').first()).toBeVisible();
- const toggle=page.locator('#laneToggle'),todas=page.locator('[data-lane="t"]');
- if(test.info().project.name==='mobile'){
-  await expect(todas).toBeHidden();await expect(toggle).toHaveAttribute('aria-expanded','false');
-  const chipsTop=await page.locator('#interestChips .chip').first().evaluate(el=>el.getBoundingClientRect().left);expect(chipsTop).toBeLessThan(40);
-  await toggle.click();await expect(toggle).toHaveAttribute('aria-expanded','true');await expect(todas).toBeVisible();
-  await page.keyboard.press('Escape');await expect(todas).toBeHidden();await expect(toggle).toBeFocused();
-  await toggle.click();await todas.click();await expect(todas).toBeHidden();await expect(todas).toHaveAttribute('aria-pressed','true');await expect(toggle).toBeFocused();
- }else{
-  await expect(todas).toBeVisible();await expect(toggle).toBeDisabled();
- }
+// Dirección 27-oct 22:44 (puntos 2, 3 y 5) supersede the lanes menu of PR #72 review N1: read status is an
+// always-visible segmented control; topics are one compact multi-select dropdown floating over the feed;
+// Insight/Global keep their silver/gold tone after reading. Feed titles still clamp to two lines (review N2).
+test('segmented read status, floating topics dropdown and toned weekly rows',async({page})=>{
+ await page.goto('/');const rows=page.locator('#local article[data-card]');await expect(rows.first()).toBeVisible();
+ for(const k of ['p','l','t'])await expect(page.locator(`#lanes [data-lane="${k}"]`)).toBeVisible();
+ await expect(page.locator('#laneToggle')).toHaveCount(0);
+ await page.locator('[data-lane="t"]').click();await expect(page.locator('[data-lane="t"]')).toHaveAttribute('aria-pressed','true');await expect(page.locator('[data-lane="p"]')).toHaveAttribute('aria-pressed','false');
+ await expect(page.locator('#filterLabel')).toHaveText('Todos los temas');
+ const before=await rows.first().boundingBox();
+ await page.locator('#filterDetails summary').click();await expect(page.locator('#filterDetails .filter-body')).toBeVisible();
+ expect(await page.locator('#filterDetails .filter-body').evaluate(el=>getComputedStyle(el).position)).toBe('absolute');
+ expect((await rows.first().boundingBox()).y).toBeCloseTo(before.y,0);
+ const picks=page.locator('#interestFilters .tog[data-interest]:not([data-interest=""])');
+ await picks.nth(0).click();await picks.nth(1).click();
+ await expect(page.locator('#filterLabel')).toHaveText('2 temas');await expect(page.locator('#interestFilters .tog-all')).toHaveAttribute('aria-pressed','false');
+ await page.locator('#interestFilters .tog-all').click();await expect(page.locator('#filterLabel')).toHaveText('Todos los temas');
+ await page.keyboard.press('Escape');await expect(page.locator('#filterDetails')).not.toHaveAttribute('open','');
+ const fills=await page.locator('#bigThings .big-feature').evaluateAll(xs=>xs.map(x=>getComputedStyle(x).backgroundImage));
+ for(const f of fills)expect(f).toContain('gradient');
+ const specialsCount=fills.length;
+ for(let i=0;i<specialsCount;i++){await page.locator('#bigThings .big-feature:not(.read) [data-special-read]').first().click();await expect(page.locator('#bigThings .big-feature.read')).toHaveCount(i+1)}
+ await expect.poll(()=>page.locator('#bigThings .big-feature').evaluateAll(xs=>xs.map(x=>getComputedStyle(x).backgroundImage))).toEqual(fills);
  const lines=await page.locator('#local .signal.item .title-open').evaluateAll(xs=>xs.map(x=>Math.round(x.getBoundingClientRect().height/parseFloat(getComputedStyle(x).lineHeight))));
  expect(Math.max(...lines)).toBeLessThanOrEqual(2);
 });

@@ -22,15 +22,17 @@ test('follow an entity from the Intereses sheet, persist it and unfollow from a 
  await toggle.click();
  await expect(page.locator(`#entityList [data-entity="${id}"]`)).toHaveAttribute('aria-pressed','true');
  await expect(page.locator(`#entityList [data-entity="${id}"]`)).toBeFocused();
- await expect(page.locator('#filterDot')).toBeVisible();
+ // Bar A (Dirección 27-oct 23:13): the filters dropdown names its selection instead of a dot.
+ await expect(page.locator('#filterLabel')).not.toHaveText('Todos los temas');
  expect(JSON.parse(await page.evaluate(()=>localStorage.getItem('alicanto_filters'))).entities).toEqual([id]);
  await page.locator('#filterDone').click();
  const refs=await visibleRefs(page);expect(refs.length).toBeGreaterThan(0);
  for(const r of refs)expect(r).toContain(id);
  // Survives a reload through the same persisted filter model.
  await page.reload();await expect(page.locator('#local article[data-card]').first()).toBeVisible();
- const active=test.info().project.name==='mobile'?page.locator(`#interestChips [data-entity="${id}"]`):page.locator(`#interestRail [data-entity="${id}"]`);
- await expect(active).toHaveAttribute('aria-pressed','true');
+ // Bar A has no chips row on phones: the followed entity is named by the filters dropdown (rail on desktop).
+ if(test.info().project.name==='mobile')await expect(page.locator('#filterLabel')).not.toHaveText('Todos los temas');
+ else await expect(page.locator(`#interestRail [data-entity="${id}"]`)).toHaveAttribute('aria-pressed','true');
  for(const r of await visibleRefs(page))expect(r).toContain(id);
  // The card chip is the same toggle: clicking it unfollows and restores the full inbox.
  const chip=page.locator(`#local [data-entity-chip="${id}"]`).first();await expect(chip).toHaveAttribute('aria-pressed','true');
