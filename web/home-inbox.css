@@ -110,11 +110,17 @@ a{overflow-wrap:anywhere}
 
 
 /* 3 · Row actions: the unread dot is the read toggle (left gutter); source/share sit in the date line */
-.big-things[hidden],#brief[hidden],.undo-bar[hidden],.mark-all[hidden]{display:none!important}
+.big-things[hidden],#brief[hidden],.mark-all[hidden]{display:none!important}
 .freshness{margin:6px 0 8px;padding:10px 14px;border-radius:12px;background:#FFF4E0;border:1px solid rgba(227,162,79,.55);color:#6b4510;font-size:13.5px;line-height:1.45}
 .freshness[hidden]{display:none!important}
-.undo-bar{flex:0 0 100%;order:5;display:flex;align-items:center;gap:14px;margin:0;font-size:13px;color:var(--ink68)}
-.undo-bar button{all:unset;cursor:pointer;font-weight:700;color:var(--ink);text-decoration:underline;text-underline-offset:3px;padding:12px 6px;min-height:44px;box-sizing:border-box}
+/* Inline undo (Dirección 28-oct, punto 3): "Leída · Deshacer" sits on the row that is about to leave its lane. */
+.row-undo{display:inline-flex;align-items:center;gap:2px;margin-left:8px;font-size:12px;font-weight:600;color:var(--ink68);white-space:nowrap;vertical-align:-1px}
+.row-undo>span::after{content:" ·";font-weight:400;color:var(--ink48)}
+.row-undo-btn{all:unset;position:relative;cursor:pointer;font-weight:700;color:var(--ink);text-decoration:underline;text-underline-offset:3px;padding:0 4px}
+.row-undo-btn::after{content:"";position:absolute;inset:-14px -6px}
+.row-undo-btn:focus-visible{outline:2px solid #E3A24F;outline-offset:2px;border-radius:4px}
+.feed-undo{display:flex;margin:0;padding:10px var(--gutter) 10px 40px;border-bottom:1px solid var(--ink09);font-size:13px}
+@media (min-width:760px){.feed-undo{padding:10px 8px 10px 28px}}
 .iconbtn{all:unset;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;padding:14px;margin:-14px 0;color:var(--ink48);opacity:.8;border-radius:6px}
 .iconbtn .mini-icon{width:15px;height:15px;stroke-width:1.6}
 .iconbtn:hover,.iconbtn:focus-visible{color:var(--ink);opacity:1}
@@ -126,8 +132,8 @@ a{overflow-wrap:anywhere}
 .share-feedback{font-size:10.5px;color:var(--ink68)}
 .share-feedback:empty{display:none}
 .item-actions .share-feedback:empty{display:none}
-#signalDetail .detail-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 8px;margin:0 0 8px;min-width:0}
-#signalDetail .detail-close{all:unset;cursor:pointer;position:static!important;display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink68);padding:12px 6px 12px 2px;min-height:44px;box-sizing:border-box;float:none!important}
+#signalDetail .detail-top,.global-detail .detail-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 8px;margin:0 0 8px;min-width:0}
+#signalDetail .detail-close,.global-detail .detail-top .detail-close{all:unset;cursor:pointer;position:static!important;display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink68);padding:12px 6px 12px 2px;min-height:44px;box-sizing:border-box;float:none!important}
 .detail-bar{display:flex;flex-wrap:wrap;align-items:center;gap:0 4px;margin-left:auto;min-width:0}
 .detail-bar .iconbtn{margin:0;padding:14px}
 .textbtn{all:unset;cursor:pointer;font-size:12.5px;color:var(--ink68);text-decoration:underline;text-underline-offset:3px;padding:12px 6px;min-height:44px;box-sizing:border-box}
@@ -142,7 +148,7 @@ a{overflow-wrap:anywhere}
 .insight-chart .ic-bar{fill:#2F6F8F}.insight-chart .ic-bar.neg{fill:#C2693E}
 .insight-chart .ic-source{font-size:11px;color:var(--ink48);margin:6px 0 0}
 .insight-chart .ic-bar.partial{fill-opacity:.35;stroke:#2F6F8F;stroke-width:1.5;stroke-dasharray:4 3}
-.dotbtn:focus-visible,.iconbtn:focus-visible,.textbtn:focus-visible,.lane:focus-visible,.big-cta:focus-visible,.mark-all:focus-visible,.undo-bar button:focus-visible,.signal .title-open:focus-visible,#signalDetail .detail-close:focus-visible,.acc-toggle:focus-visible,.chip:focus-visible,.period-pill:focus-visible{outline:2px solid #E3A24F;outline-offset:2px;border-radius:4px}
+.dotbtn:focus-visible,.iconbtn:focus-visible,.textbtn:focus-visible,.lane:focus-visible,.big-cta:focus-visible,.mark-all:focus-visible,.signal .title-open:focus-visible,#signalDetail .detail-close:focus-visible,.acc-toggle:focus-visible,.chip:focus-visible,.period-pill:focus-visible{outline:2px solid #E3A24F;outline-offset:2px;border-radius:4px}
 @media (prefers-reduced-motion:reduce){#local .signal.item,.unread-dot,.acc-toggle .mini-icon{transition:none}}
 @media (max-width:360px){.detail-bar .iconbtn{padding:14px 10px}}
 
@@ -211,6 +217,8 @@ main{max-width:none;margin:0;padding:0 0 70px}
 .acc-body{padding:0 14px 10px 40px}
 .acc-body[hidden]{display:none}
 .big-summary{font-size:14px;line-height:1.5;color:var(--ink84);margin:0 0 4px}
+/* Global teaser invitation (Dirección 28-oct, punto 8): one quiet serif line, no hard sell. */
+.big-invite{font:italic 13.5px/1.45 var(--serif);color:#7A5A1E;margin:2px 0 6px}
 .signal.big-feature .card-meta{display:flex;align-items:center;gap:6px;border:0;margin:0;padding:0;font-size:12px}
 .signal.big-feature .meta-text{flex:1 1 auto;min-width:0}
 .signal.big-feature .item-actions{display:inline-flex;align-items:center;gap:2px;flex:none}
@@ -293,7 +301,6 @@ main{max-width:none;margin:0;padding:0 0 70px}
 .chip small{font-size:11px;font-weight:600;color:var(--ink48)}
 .chip[aria-pressed="true"],.chip.active{background:var(--ink);border-color:var(--ink);color:#fff}
 .chip[aria-pressed="true"] small{color:rgba(255,255,255,.72)}
-.undo-bar{order:9}
 @media (max-width:300px){.interest-sheet .interest-grid{grid-template-columns:minmax(0,1fr)}}
 /* Zoomed or split-view widths: controls shrink or scroll inside the bar instead of widening the page. */
 .lanes{max-width:100%;overflow-x:auto;scrollbar-width:none}.period-pill{max-width:100%}.period-pill select{max-width:min(170px,100%)}
@@ -454,14 +461,9 @@ main{max-width:none;margin:0;padding:0 0 70px}
    "Entidades" group inside the existing Intereses sheet/rail. No rows are added above the feed. */
 .meta-tail{display:inline-flex;align-items:center;max-width:100%;min-width:0;white-space:nowrap;vertical-align:middle}
 .ent-chips{display:inline-flex;align-items:center;flex:0 1 auto;min-width:0;gap:5px;margin-left:5px}
-.ent-chip{position:relative;flex:0 1 auto;min-width:0;display:inline-flex;align-items:center;min-height:24px;max-width:15em;padding:0 8px;border:1px solid var(--ink12);border-radius:999px;background:#fff;font:inherit;font-size:11px;font-weight:650;line-height:1;color:var(--ink84);cursor:pointer}
+/* Since Dirección 28-oct (punto 4) chips are information, not a filter: no button, no pressed state. */
+.ent-chip{flex:0 1 auto;min-width:0;display:inline-flex;align-items:center;min-height:20px;max-width:15em;padding:0 7px;border-radius:999px;background:var(--ink05);font-size:11px;font-weight:600;line-height:1;color:var(--ink68)}
 .ent-chip .ent-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-/* Invisible touch area: grows sideways and down to the card edge, never up into the title. */
-.ent-chip::after{content:"";position:absolute;left:-3px;right:0;top:-3px;bottom:-20px}
-#local .signal.item:has(.ent-chip){padding-bottom:19px}
-.ent-chip:hover{border-color:var(--ink48);color:var(--ink)}
-.ent-chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
-.ent-chip:focus-visible{outline:2px solid #E3A24F;outline-offset:1px}
 #local .meta-tail .item-actions{margin-left:2px;flex:none;vertical-align:baseline}
 .ent-more{flex:none;font-size:11px;color:var(--ink48)}
 .chip.ent{border-color:var(--ink)}
@@ -475,3 +477,18 @@ main{max-width:none;margin:0;padding:0 0 70px}
 .rail-find .box{box-shadow:none!important;background:none!important;position:relative}
 .rail-find .box::before{content:"+";position:absolute;inset:-3px 0 0;text-align:center;font-size:15px;line-height:1;color:var(--ink48)}
 .chip.ent .ent-icon{width:13px;height:13px;margin-left:-2px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* WATCH restored (Dirección 28-oct): follow toggles live in the ficha; followed rows carry a small marker. */
+.follow-row{display:flex;flex-wrap:wrap;gap:6px;margin:-2px 0 12px}
+.follow-chip{all:unset;box-sizing:border-box;position:relative;cursor:pointer;display:inline-flex;align-items:center;gap:5px;min-height:32px;padding:0 11px;border:1px solid var(--ink12);border-radius:999px;background:#fff;font:600 12px/1 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink84)}
+.follow-chip::after{content:"";position:absolute;inset:-6px 0}
+.follow-chip .mini-icon{width:13px;height:13px}
+.follow-chip:hover{border-color:var(--ink48);color:var(--ink)}
+.follow-chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.follow-chip:focus-visible{outline:2px solid #E3A24F;outline-offset:2px}
+.follow-mark{display:inline-flex;vertical-align:-2px;margin-right:4px;color:var(--accent-ink)}
+.follow-mark .mini-icon{width:12px;height:12px;fill:currentColor;stroke:none}
+.ent-chip.on{background:var(--ink12);color:var(--ink)}
+/* Ficha titles share one style on Chile and Global (Dirección 28-oct, punto 5). */
+#signalDetail #detailTitle,.global-detail #globalDetailTitle{font:400 26px/1.22 var(--serif);letter-spacing:-.005em;margin:4px 0 12px;color:var(--ink)}
+@media (max-width:760px){#signalDetail #detailTitle,.global-detail #globalDetailTitle{font-size:23px}}
