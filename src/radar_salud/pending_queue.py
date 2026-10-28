@@ -615,6 +615,10 @@ class PendingQueue:
                 status="superseded" if already_published else "archived" if archived else "pending", detected_at=now.isoformat(),
                 attempts=0, reason="already_published_in_history" if already_published else "outside_90_day_backfill" if archived else None,
                 classification_watermark=last_discovered_at)
+            # Rights policy (Dirección 28-oct-2026): a new paywalled capture enters the queue
+            # already in its stored form (lead + receipts), so memory and disk agree.
+            from .source_rights import purge_raw_metadata
+            purge_raw_metadata(self.items[key]["raw"])
             if source in FISCALIZATION_SOURCES:
                 fiscal_index[(source, canonical_url(raw.url), identity)] = [key]
             added += 1

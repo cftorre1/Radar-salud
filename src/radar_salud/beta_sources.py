@@ -924,9 +924,17 @@ def process_curated_beta_source(raw, cfg):
                     raw.metadata["editorial_assessment"] = {"decision": "pending", "threshold": 72,
                                                             "reason": "pulso_paywalled_reanalysis_budget_deferred"}
                     raise DeferredProcessing("pulso_paywalled_reanalysis_budget_deferred")
+                from . import llm_analysis as _llm
                 pulso_paywall.mark_reanalysis(raw, paywall_outcome["detail"], text)
+                _llm.reset_last_call()
                 ai = analyze_news(title=raw.title, text=text, source_name=raw.source_name, kind=kind,
                                   full_text=True, pulso_editorial_proof=True)
+                outcome = pulso_paywall.record_outcome(raw, ai, _llm.last_call())
+                if not ai and outcome == "failed_unbilled":
+                    # Nothing was billed: keep the item for one bounded retry (pulso_paywall.decide).
+                    raw.metadata["editorial_assessment"] = {"decision": "pending", "threshold": 72,
+                                                            "reason": "pulso_paywalled_reanalysis_call_failed_unbilled"}
+                    raise DeferredProcessing("pulso_paywalled_reanalysis_call_failed_unbilled")
         elif final_paid.has_claim(raw.metadata) or final_paid.known_original_candidate(raw):
             try:
                 final_paid_revalidation, _ = final_paid.verified_processing_mode(raw)

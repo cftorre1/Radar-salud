@@ -1,6 +1,6 @@
 {
   "migration": "rights_links_2026_10_28",
-  "version": 2,
+  "version": 3,
   "policy": "config/paywalled_press.json",
   "links": [
     {
@@ -13,6 +13,14 @@
     },
     {
       "set": "web_snapshot",
+      "source_name": "Diario Financiero",
+      "source_url": "https://www.df.cl/https/www.df.cl/empresas/salud/euroamerica-vende-el-2-de-clinica-las-condes-por-us-5-6-millones",
+      "problem": "nested_url_in_path",
+      "status": "repaired",
+      "source_link": "https://www.df.cl/empresas/salud/euroamerica-vende-el-2-de-clinica-las-condes-por-us-5-6-millones"
+    },
+    {
+      "set": "design_snapshot",
       "source_name": "Diario Financiero",
       "source_url": "https://www.df.cl/https/www.df.cl/empresas/salud/euroamerica-vende-el-2-de-clinica-las-condes-por-us-5-6-millones",
       "problem": "nested_url_in_path",
@@ -929,6 +937,46 @@
       ]
     },
     {
+      "set": "history",
+      "source_url": "https://www.df.cl/empresas/salud/compra-de-empresas-banmedica-enfrenta-reves-regulatorio-en-colombia-y",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "history",
+      "source_url": "https://www.df.cl/economia-y-politica/laboral-personas/efecto-de-mas-fiscalizacion-licencias-medicas-por-salud-mental-se",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "web_snapshot",
+      "source_url": "https://www.df.cl/empresas/salud/compra-de-empresas-banmedica-enfrenta-reves-regulatorio-en-colombia-y",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "web_snapshot",
+      "source_url": "https://www.df.cl/economia-y-politica/laboral-personas/efecto-de-mas-fiscalizacion-licencias-medicas-por-salud-mental-se",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
       "set": "web_snapshot",
       "source_url": "https://www.df.cl/regiones/biobio/empresas/clinica-andes-salud-concepcion-incorpora-tecnologia-robotica-de-precision-y",
       "has_public_teaser": true,
@@ -1414,11 +1462,603 @@
       ]
     },
     {
-      "set": "web_snapshot",
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/regiones/biobio/empresas/clinica-andes-salud-concepcion-incorpora-tecnologia-robotica-de-precision-y",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/economia-y-politica/macro/presupuesto-2027-avanzan-los-recursos-para-salud-y-se-abre-negociacion-en",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "card_what",
+        "card_why",
+        "display_title",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "key_points",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/economia-y-politica/df-tax/tribunal-tributario-marca-un-hito-y-permite-a-una-isapre-descontar-de-sus",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/empresas/salud/buk-arremete-contra-licitacion-de-fonasa-para-recaudar-cotizaciones-y",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/empresas/salud/isp-aprueba-primer-generico-de-ozempic-en-chile-costaria-menos-que-el",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.latercera.com/pulso/noticia/gremio-encarga-estudio-para-evaluar-si-es-viable-la-libre-movilidad-de-los-afiliados-entre-las-isapres/",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.analysis_reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/empresas/salud/sudmedica-inicia-operaciones-en-quillota-y-busca-financiamiento-para",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/df-lab/tech-empresas/healthatom-abre-oficina-en-espana-y-prepara-su-llegada-a-otros-tres-paises",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.latercera.com/pulso/noticia/senior-housing-los-grupos-que-dominan-el-negocio-de-las-residencias-para-adultos-mayores/",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "editorial_review",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "df_body_reaudit_observations",
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/senal-df/el-deal/cae-inversion-de-laboratorios-internacionales-en-chile-ante-fuerte-rezago",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "editorial_review",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/empresas/salud/medicamento-para-bajar-de-peso-debera-advertir-por-riesgos-de-malnutricion",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "df_body_reaudit_observations",
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.latercera.com/pulso/noticia/carozzi-acude-a-la-corte-suprema-para-revocar-multa-de-seremi-de-salud-por-infringir-ley-de-etiquetado-y-lanza-dura-critica/",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.analysis_reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.latercera.com/pulso/noticia/empresas-banmedica-ejecuta-cambio-en-su-estructura-organizacional-y-designa-nuevo-gerente-general-de-clinica-santa-maria/",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.analysis_reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "editorial_review",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/economia-y-politica/congreso/camara-baja-despacha-al-senado-proyecto-del-pdg-que-compensa-la-compra-de",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/empresas/salud/bupa-acelera-inversiones-en-sector-oriente-de-santiago-con-tres-proyectos",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "affected_processes",
+        "card_what",
+        "card_why",
+        "editorial_business_review",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "key_points",
+        "source_title_full",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "card_what",
+        "card_why",
+        "editorial_business_review",
+        "editorial_committee.public_title",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "source_title_full",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/empresas/salud/pablo-yarmuch-gerente-general-de-clinica-las-condes-todas-nuestras",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_business_review",
+        "editorial_committee.public_title",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "source_title_full",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/empresas/salud/las-isapres-logran-el-punto-de-inflexion-y-registran-aumento-de-cotizantes",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_business_review",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.latercera.com/pulso/noticia/agencia-de-ciberseguridad-refuta-a-uc-christus-y-defiende-incorporarla-a-listado-un-ransomware-puede-tener-alcances-catastroficos/",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.analysis_reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "editorial_review",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/regiones/maule/empresas/andes-salud-inaugura-clinica-de-alta-complejidad-en-talca-y-proyecta-mas-de",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_business_review",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/empresas/salud/clinica-las-condes-reduce-perdidas-y-asegura-que-transitan-desde-una-etapa",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_business_review",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.latercera.com/pulso/noticia/ganancias-de-ilc-suben-45-a-165-mil-millones-en-el-primer-semestre-gracias-a-un-mejor-resultado-en-todas-sus-empresas/",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.analysis_reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "editorial_review",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/mercados/bolsa-monedas/clinica-indisa-alista-su-debut-en-el-mercado-de-bonos-con-emision-por",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/empresas/salud/clinica-meds-y-universidad-diego-portales-sellan-alianza-que-creara-centro",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "df_body_reaudit_observations",
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/regiones/valparaiso/empresas/sudmedica-prepara-apertura-de-su-nuevo-hospital-en-quillota-y-aplaza",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_business_review",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.latercera.com/pulso/noticia/isapres-ofrecen-los-planes-mas-baratos-en-cinco-anos-gracias-a-la-ley-corta-y-menor-gasto-en-licencias/",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.analysis_reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "editorial_review",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/senal-df/el-deal/mercado-libre-y-cruz-verde-dan-el-vamos-a-un-acuerdo-que-marca-un-hito-en",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_business_review",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/economia-y-politica/macro/fraude-en-licencias-medicas-han-concluido-3-mil-sumarios-y-600",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/economia-y-politica/macro/gobierno-le-subira-la-vara-de-eficiencia-a-los-hospitales-publicos-para",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/regiones/los-lagos/empresas/andes-salud-impulsa-inversiones-en-los-lagos-por-10-mil-millones-con",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_business_review",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/regiones/tarapaca/trece-empresas-se-interesan-por-obra-de-12-782-millones-para-el-quinto",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/empresas/salud/la-isapre-del-grupo-alemana-se-lanza-a-masificar-su-modelo-de-salud",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_business_review",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/economia-y-politica/laboral-personas/ya-hay-investigaciones-y-multas-gobierno-activa-plataforma-que-cruza-datos",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.latercera.com/pulso/noticia/isapres-han-pagado-en-un-ano-y-medio-el-21-de-la-deuda-que-tenian-con-sus-afiliados-tras-fallo-de-la-suprema/",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.analysis_reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "editorial_review",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/empresas/salud/las-acciones-de-moderna-se-duplican-tras-el-exito-de-ensayos-clinicos-de-la",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_business_review",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/senal-df/senales-financieras/kast-anuncia-convenio-entre-minsal-fonasa-y-caja-los-andes-para-reducir",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.latercera.com/pulso/noticia/corte-suprema-revoca-decreto-del-minsal-que-obligaba-a-exhibir-evita-su-consumo-en-publicidad-de-alimentos-con-sellos/",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.analysis_reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "editorial_review",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.latercera.com/pulso/noticia/banmedica-y-vida-tres-demandan-al-fisco-por-desfase-en-el-cobro-del-ges-y-exigen-casi-9000-millones/",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.analysis_reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "editorial_review",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/https/www.df.cl/empresas/salud/euroamerica-vende-el-2-de-clinica-las-condes-por-us-5-6-millones",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_business_review",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.latercera.com/pulso/noticia/clinica-las-condes-finaliza-aumento-de-capital-y-recauda-80-mil-millones/",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.analysis_reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "editorial_review",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.latercera.com/pulso/noticia/expertos-cuestionan-credito-tributario-para-el-financiamiento-de-enfermedades-catastroficas-aprobado-en-la-megarreforma/",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.analysis_reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "editorial_review",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/regiones/arica-y-parinacota/arica-entra-al-top-ten-y-la-serena-queda-ultima-en-ranking-nacional-de",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
+      "source_url": "https://www.df.cl/regiones/antofagasta/contraloria-objeta-11-contratos-del-servicio-de-salud-antofagasta-tras",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "design_snapshot",
       "source_url": "https://www.df.cl/empresas/salud/fundacion-nuestros-hijos-construira-centro-para-tratar-cancer",
       "has_public_teaser": true,
       "redacted_fields": [
         "editorial_business_review",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
         "what_happened",
         "why_it_matters"
       ]
@@ -1434,6 +2074,26 @@
       "fingerprint_characters": 0,
       "items_changed": 0
     },
+    "paid_model_outputs_with_redacted_quotes": {
+      "records": 73,
+      "top_level_items": 53,
+      "original_digest_unknown": 0,
+      "quote_receipts": 201
+    },
+    "paid_reuse_simulation": {
+      "paid_premium_items": 78,
+      "reusable_without_new_call": 0,
+      "reasons": {
+        "displayed_what_happened_not_supported_by_public_text": 71,
+        "prior_validation_not_terminal": 7
+      },
+      "by_queue_status": {
+        "deferred:prior_validation_not_terminal": 6,
+        "published:displayed_what_happened_not_supported_by_public_text": 21,
+        "rejected:displayed_what_happened_not_supported_by_public_text": 50,
+        "retry:prior_validation_not_terminal": 1
+      }
+    },
     "pulso_discovery_cache": {
       "entries_redacted": 0,
       "body_characters_removed": 0,
@@ -1442,29 +2102,119 @@
     "history_rows_changed": 0,
     "snapshot_cards_changed": 0,
     "snapshot_link_problems_after": 0,
+    "design_snapshot_cards_changed": 0,
     "files": {
-      "changed": {
-        "data/weekly_insight/archive/2026-09-14.json": {
-          "strings": 0,
-          "characters": 0,
-          "public_payload_fields": 0
-        },
-        "data/weekly_insight/archive/2026-10-10.json": {
-          "strings": 0,
-          "characters": 0,
-          "public_payload_fields": 0
-        },
-        "data/weekly_insight/latest.json": {
-          "strings": 0,
-          "characters": 0,
-          "public_payload_fields": 0
-        }
-      },
+      "changed": {},
       "open_context_matches": 0
     },
-    "fingerprint_segments": 34104,
-    "link_problem_rows": 2,
-    "paywalled_rows": 137
+    "fingerprint_segments": 40104,
+    "link_problem_rows": 3,
+    "paywalled_rows": 188,
+    "remaining_fingerprinted": {
+      "files_scanned": 3954,
+      "characters": 803730,
+      "strings": 220,
+      "open_context_characters": 803730,
+      "open_context_strings": 220,
+      "by_file": {
+        "data/audits/pulso_actual_v5_clinical_scope_repair_2026_10_11.json": {
+          "strings": 1,
+          "characters": 151,
+          "open_context_characters": 151
+        },
+        "data/audits/pulso_cross_source_three_duplicate_publications_independent_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 7383,
+          "open_context_characters": 7383
+        },
+        "data/audits/pulso_cross_source_two_duplicate_publications_independent_review_2026_10_11.json": {
+          "strings": 1,
+          "characters": 1584,
+          "open_context_characters": 1584
+        },
+        "data/audits/pulso_current12_paid_guard_revalidation_manifest_2026_10_11.json": {
+          "strings": 1,
+          "characters": 11785,
+          "open_context_characters": 11785
+        },
+        "data/audits/pulso_editorial_originals_independent_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 3274,
+          "open_context_characters": 3274
+        },
+        "data/audits/pulso_expanded_editorial_originals_independent_review_2026_10_11.json": {
+          "strings": 4,
+          "characters": 10364,
+          "open_context_characters": 10364
+        },
+        "data/audits/pulso_focus113_mixed49_outcome_matrix_2026_10_11.json": {
+          "strings": 4,
+          "characters": 604,
+          "open_context_characters": 604
+        },
+        "data/audits/pulso_focus113_v5_outcome_matrix_2026_10_11.json": {
+          "strings": 2,
+          "characters": 302,
+          "open_context_characters": 302
+        },
+        "data/audits/pulso_idempotence_baseline_2026_10_11.json": {
+          "strings": 1,
+          "characters": 151,
+          "open_context_characters": 151
+        },
+        "data/audits/pulso_mixed25_first8_actual_semantic_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 302,
+          "open_context_characters": 302
+        },
+        "data/audits/pulso_mixed25_first8_actual_semantic_review_v2_2026_10_11.json": {
+          "strings": 6,
+          "characters": 9334,
+          "open_context_characters": 9334
+        },
+        "data/audits/pulso_mixed25_first8_four_publications_independent_peer_2026_10_11.json": {
+          "strings": 4,
+          "characters": 604,
+          "open_context_characters": 604
+        },
+        "data/audits/pulso_mixed49_actual_core_verification_2026_10_11.json": {
+          "strings": 1,
+          "characters": 151,
+          "open_context_characters": 151
+        },
+        "data/audits/pulso_primary_corpus_2026_10_11.json": {
+          "strings": 50,
+          "characters": 243163,
+          "open_context_characters": 243163
+        },
+        "data/audits/pulso_primary_corpus_union_2026_10_11.json": {
+          "strings": 50,
+          "characters": 243163,
+          "open_context_characters": 243163
+        },
+        "data/audits/pulso_v5_all24_nonfuture_holds_independent_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 302,
+          "open_context_characters": 302
+        },
+        "data/audits/pulso_v5_paid_guard_revalidation_manifest_2026_10_11.json": {
+          "strings": 2,
+          "characters": 302,
+          "open_context_characters": 302
+        },
+        "data/state/pending_queue.json": {
+          "strings": 19,
+          "characters": 36490,
+          "open_context_characters": 36490
+        },
+        "data/state/pulso_discovery_cache.json": {
+          "strings": 66,
+          "characters": 234321,
+          "open_context_characters": 234321
+        }
+      },
+      "paywalled_context_characters": 0
+    }
   },
   "not_migrated": [
     "Git history keeps pre-redaction content; removing it requires a history rewrite (decision for Dirección).",
@@ -1866,5 +2616,511 @@
     "fingerprint_segments": 34101,
     "link_problem_rows": 2,
     "paywalled_rows": 138
+  },
+  "v3_first_run_counts": {
+    "df_lead_provenance_established": {
+      "legacy_description_verified": 414,
+      "title_only": 51
+    },
+    "queue": {
+      "items_scanned": 810,
+      "nested_records_redacted": 1535,
+      "body_characters_removed": 11255897,
+      "fingerprint_strings": 443,
+      "fingerprint_characters": 95899,
+      "items_changed": 810
+    },
+    "paid_model_outputs_with_redacted_quotes": {
+      "records": 73,
+      "top_level_items": 53,
+      "original_digest_unknown": 0,
+      "quote_receipts": 201
+    },
+    "paid_reuse_simulation": {
+      "paid_premium_items": 78,
+      "reusable_without_new_call": 0,
+      "reasons": {
+        "displayed_what_happened_not_supported_by_public_text": 71,
+        "prior_validation_not_terminal": 7
+      },
+      "by_queue_status": {
+        "deferred:prior_validation_not_terminal": 6,
+        "published:displayed_what_happened_not_supported_by_public_text": 21,
+        "rejected:displayed_what_happened_not_supported_by_public_text": 50,
+        "retry:prior_validation_not_terminal": 1
+      }
+    },
+    "pulso_discovery_cache": {
+      "entries_redacted": 2799,
+      "body_characters_removed": 4989999,
+      "fingerprint_strings": 0
+    },
+    "history_rows_changed": 91,
+    "snapshot_cards_changed": 50,
+    "snapshot_link_problems_after": 0,
+    "design_snapshot_cards_changed": 48,
+    "files": {
+      "changed": {
+        "data/audits/df_independent_controls_2026_10_11.json": {
+          "strings": 12,
+          "characters": 49579,
+          "public_payload_fields": 0
+        },
+        "data/audits/df_original_capture_2026_10_11.json": {
+          "strings": 212,
+          "characters": 254400,
+          "public_payload_fields": 0
+        },
+        "data/audits/df_publications_review_2026_10_11.json": {
+          "strings": 26,
+          "characters": 10400,
+          "public_payload_fields": 0
+        },
+        "data/audits/df_reconciliation_2026_10_11.json": {
+          "strings": 354,
+          "characters": 420426,
+          "public_payload_fields": 0
+        },
+        "data/audits/integration_commander_2026_10_12/paid_runtime_delta.json": {
+          "strings": 14,
+          "characters": 11982,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_actual323_ilc_mask_independent_second_peer_2026_10_11.json": {
+          "strings": 1,
+          "characters": 3824,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_actual323_three_primary_semantic_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 7648,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_actual49_second_reader_reuse_context_2026_10_11.json": {
+          "strings": 1,
+          "characters": 154,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_actual_final12_assigned7_independent_semantic_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 8707,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_actual_mixed12_full_primary_model_diagnosis_2026_10_11.json": {
+          "strings": 5,
+          "characters": 9859,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_actual_v5_future_qualifier_repair_2026_10_11.json": {
+          "strings": 4,
+          "characters": 1020,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_all79_primary_independent_review_2026_10_11.json": {
+          "strings": 342,
+          "characters": 328034,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_capture/manifest.json": {
+          "strings": 38,
+          "characters": 56507,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_complete_primary_materiality_review_2026_10_11.json": {
+          "strings": 5,
+          "characters": 930,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_cross_source_hospital_ranking_independent_second_peer_2026_10_11.json": {
+          "strings": 1,
+          "characters": 5799,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_cross_source_three_duplicate_publications_independent_review_2026_10_11.json": {
+          "strings": 8,
+          "characters": 34230,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_cross_source_two_duplicate_publications_independent_review_2026_10_11.json": {
+          "strings": 6,
+          "characters": 22632,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_cross_source_two_events_independent_second_peer_2026_10_11.json": {
+          "strings": 1,
+          "characters": 1584,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_cross_source_waiting_provider_comparison_2026_10_11.json": {
+          "strings": 4,
+          "characters": 13751,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_current12_actual_technical_evidence_2026_10_11.json": {
+          "strings": 2,
+          "characters": 9256,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_current12_guard_independent_review_2026_10_11.json": {
+          "strings": 28,
+          "characters": 7464,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_current12_own5_independent_semantic_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 9256,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_current12_paid_guard_revalidation_manifest_2026_10_11.json": {
+          "strings": 61,
+          "characters": 73586,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_current5_guard_independent_diagnosis_2026_10_11.json": {
+          "strings": 1,
+          "characters": 3824,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_editorial_guard_independent_review_2026_10_11.json": {
+          "strings": 6,
+          "characters": 1098,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_editorial_guard_peer_2026_10_11.json": {
+          "strings": 21,
+          "characters": 29159,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_editorial_originals_independent_review_2026_10_11.json": {
+          "strings": 100,
+          "characters": 56648,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_expanded_editorial_originals_independent_review_2026_10_11.json": {
+          "strings": 84,
+          "characters": 92501,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_expanded_primary_materiality_review_2026_10_11.json": {
+          "strings": 24,
+          "characters": 82135,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_final_editorial_settlement_and_idempotence_2026_10_11.json": {
+          "strings": 8,
+          "characters": 4292,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_financial_market_cross_source_review_2026_10_11.json": {
+          "strings": 22,
+          "characters": 75358,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_financial_three_native_checks_2026_10_11.json": {
+          "strings": 8,
+          "characters": 11838,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_first_paid_editorial_corrections_2026_10_11.json": {
+          "strings": 2,
+          "characters": 178,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_first_real_all32_semantic_review_2026_10_11.json": {
+          "strings": 10,
+          "characters": 55812,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus113_mixed49_outcome_matrix_2026_10_11.json": {
+          "strings": 84,
+          "characters": 17692,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus113_outcome_matrix_2026_10_11.json": {
+          "strings": 134,
+          "characters": 36916,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus113_prefilter_sourcehealth_review_2026_10_11.json": {
+          "strings": 6,
+          "characters": 1642,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus113_v5_outcome_matrix_2026_10_11.json": {
+          "strings": 65,
+          "characters": 13719,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus25_scope_proof_semantic_review_2026_10_11.json": {
+          "strings": 21,
+          "characters": 17530,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus9_status_future_consequence_review_2026_10_11.json": {
+          "strings": 6,
+          "characters": 1400,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus_all69_independent_semantic_review_2026_10_11.json": {
+          "strings": 10,
+          "characters": 1744,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus_highrisk30_semantic_review_2026_10_11.json": {
+          "strings": 16,
+          "characters": 4500,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus_new5_semantic_review_2026_10_11.json": {
+          "strings": 1,
+          "characters": 3253,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_followup5_actual323_independent_runtime_review_2026_10_11.json": {
+          "strings": 1,
+          "characters": 3824,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_followup5_actual_technical_evidence_2026_10_11.json": {
+          "strings": 1,
+          "characters": 3824,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_followup5_paid_guard_revalidation_manifest_2026_10_11.json": {
+          "strings": 1,
+          "characters": 3824,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_idempotence_baseline_2026_10_11.json": {
+          "strings": 25,
+          "characters": 5455,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_isapre104_102_primary_period_addendum_2026_10_11.json": {
+          "strings": 1,
+          "characters": 106,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed12_independent_peer_2026_10_11.json": {
+          "strings": 9,
+          "characters": 10584,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed25_assessment9_16_independent_semantic_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 8707,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed25_first8_actual_semantic_review_v2_2026_10_11.json": {
+          "strings": 1,
+          "characters": 255,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed25_first8_four_publications_independent_peer_2026_10_11.json": {
+          "strings": 2,
+          "characters": 8707,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed49_actual_core_verification_2026_10_11.json": {
+          "strings": 13,
+          "characters": 2612,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed49_rows81_113_semantic_review_2026_10_11.json": {
+          "strings": 23,
+          "characters": 39973,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed_reused18_editorial_corrections_2026_10_11.json": {
+          "strings": 6,
+          "characters": 3940,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed_reused18_independent_second_peer_2026_10_11.json": {
+          "strings": 2,
+          "characters": 170,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed_reused18_independent_semantic_review_2026_10_11.json": {
+          "strings": 35,
+          "characters": 34203,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_oct5_cross_source_comparison_proof_2026_10_11.json": {
+          "strings": 2,
+          "characters": 9381,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_paid_reader_independent_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 178,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_primary_corpus_2026_10_11.json": {
+          "strings": 822,
+          "characters": 4380616,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_primary_corpus_union_2026_10_11.json": {
+          "strings": 825,
+          "characters": 4406182,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_runtime_2026_10_11.json": {
+          "strings": 18,
+          "characters": 8746,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_v5_all24_nonfuture_holds_independent_review_2026_10_11.json": {
+          "strings": 16,
+          "characters": 18759,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_v5_all25_future_holds_independent_review_2026_10_11.json": {
+          "strings": 29,
+          "characters": 36933,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_v5_native_full_primary_dedupe_comparison_2026_10_11.json": {
+          "strings": 3,
+          "characters": 18231,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_v5_paid_guard_revalidation_manifest_2026_10_11.json": {
+          "strings": 40,
+          "characters": 54547,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_v5_rows81_113_semantic_review_2026_10_11.json": {
+          "strings": 28,
+          "characters": 28158,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_v5_three_actual_publication_confirmation_2026_10_11.json": {
+          "strings": 1,
+          "characters": 255,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_v5_three_paid_editorial_corrections_2026_10_11.json": {
+          "strings": 1,
+          "characters": 255,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus113_v5_outcome_matrix_2026_10_11.csv": {
+          "strings": 1,
+          "characters": 3138,
+          "public_payload_fields": 0
+        }
+      },
+      "open_context_matches": 0
+    },
+    "fingerprint_segments": 40104,
+    "link_problem_rows": 3,
+    "paywalled_rows": 189,
+    "remaining_fingerprinted": {
+      "files_scanned": 3954,
+      "characters": 803730,
+      "strings": 220,
+      "open_context_characters": 803730,
+      "open_context_strings": 220,
+      "by_file": {
+        "data/audits/pulso_actual_v5_clinical_scope_repair_2026_10_11.json": {
+          "strings": 1,
+          "characters": 151,
+          "open_context_characters": 151
+        },
+        "data/audits/pulso_cross_source_three_duplicate_publications_independent_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 7383,
+          "open_context_characters": 7383
+        },
+        "data/audits/pulso_cross_source_two_duplicate_publications_independent_review_2026_10_11.json": {
+          "strings": 1,
+          "characters": 1584,
+          "open_context_characters": 1584
+        },
+        "data/audits/pulso_current12_paid_guard_revalidation_manifest_2026_10_11.json": {
+          "strings": 1,
+          "characters": 11785,
+          "open_context_characters": 11785
+        },
+        "data/audits/pulso_editorial_originals_independent_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 3274,
+          "open_context_characters": 3274
+        },
+        "data/audits/pulso_expanded_editorial_originals_independent_review_2026_10_11.json": {
+          "strings": 4,
+          "characters": 10364,
+          "open_context_characters": 10364
+        },
+        "data/audits/pulso_focus113_mixed49_outcome_matrix_2026_10_11.json": {
+          "strings": 4,
+          "characters": 604,
+          "open_context_characters": 604
+        },
+        "data/audits/pulso_focus113_v5_outcome_matrix_2026_10_11.json": {
+          "strings": 2,
+          "characters": 302,
+          "open_context_characters": 302
+        },
+        "data/audits/pulso_idempotence_baseline_2026_10_11.json": {
+          "strings": 1,
+          "characters": 151,
+          "open_context_characters": 151
+        },
+        "data/audits/pulso_mixed25_first8_actual_semantic_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 302,
+          "open_context_characters": 302
+        },
+        "data/audits/pulso_mixed25_first8_actual_semantic_review_v2_2026_10_11.json": {
+          "strings": 6,
+          "characters": 9334,
+          "open_context_characters": 9334
+        },
+        "data/audits/pulso_mixed25_first8_four_publications_independent_peer_2026_10_11.json": {
+          "strings": 4,
+          "characters": 604,
+          "open_context_characters": 604
+        },
+        "data/audits/pulso_mixed49_actual_core_verification_2026_10_11.json": {
+          "strings": 1,
+          "characters": 151,
+          "open_context_characters": 151
+        },
+        "data/audits/pulso_primary_corpus_2026_10_11.json": {
+          "strings": 50,
+          "characters": 243163,
+          "open_context_characters": 243163
+        },
+        "data/audits/pulso_primary_corpus_union_2026_10_11.json": {
+          "strings": 50,
+          "characters": 243163,
+          "open_context_characters": 243163
+        },
+        "data/audits/pulso_v5_all24_nonfuture_holds_independent_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 302,
+          "open_context_characters": 302
+        },
+        "data/audits/pulso_v5_paid_guard_revalidation_manifest_2026_10_11.json": {
+          "strings": 2,
+          "characters": 302,
+          "open_context_characters": 302
+        },
+        "data/state/pending_queue.json": {
+          "strings": 19,
+          "characters": 36490,
+          "open_context_characters": 36490
+        },
+        "data/state/pulso_discovery_cache.json": {
+          "strings": 66,
+          "characters": 234321,
+          "open_context_characters": 234321
+        }
+      },
+      "paywalled_context_characters": 0
+    }
   }
 }

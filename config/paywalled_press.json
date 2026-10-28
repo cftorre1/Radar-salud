@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "decided_at": "2026-10-28",
   "decided_by": "Dirección (reporte 28-oct: ficha DF con más información que la visible sin suscripción)",
   "policy": "public_teaser_only",
@@ -37,7 +37,7 @@
     },
     {
       "id": "la_tercera_premium",
-      "name": "La Tercera · Pulso / La Tercera PM",
+      "name": "La Tercera · Pulso / Pulso PM / La Tercera PM / LT Sábado y Domingo / Early Access",
       "source_slugs": [
         "pulso_latercera"
       ],
@@ -46,20 +46,33 @@
         "www.latercera.com"
       ],
       "paywall_model": "premium_sections_and_article_flag",
-      "scope": "path_prefix_or_article_flag",
+      "scope": "path_prefix_section_or_article_flag",
       "path_prefixes": [
         "/pulso/",
+        "/pulso-pm/",
         "/la-tercera-pm/",
-        "/lt-board/"
+        "/lt-board/",
+        "/earlyaccess/",
+        "/la-tercera-sabado/",
+        "/la-tercera-domingo/"
       ],
       "article_flags": [
         "isAccessibleForFree=false",
         "publisher_paywall=true",
         "content_tier=locked"
       ],
-      "evidence": "Pulso, La Tercera PM y LT Board son secciones para suscriptores. Otras secciones de latercera.com son medidas (metered): se tratan como paywalled sólo cuando la propia pieza lo declara (isAccessibleForFree=false).",
+      "evidence": "Pulso, Pulso PM, La Tercera PM, LT Board, Early Access y las ediciones LT Sábado / LT Domingo son secciones para suscriptores. Revisión 28-oct (inventario offline de 13.896 piezas del caché Pulso y la cola; latercera.com no es accesible desde el entorno de revisión): prefijos de ruta observados /pulso-pm/ (77), /earlyaccess/ (6), /la-tercera-sabado/ (9) y /la-tercera-domingo/ (2), y piezas de sección premium publicadas bajo otra ruta (p. ej. /sustentabilidad/ o /nacional/ con section=Pulso), que se reconocen por la sección declarada por el editor. Otras secciones de latercera.com son medidas (metered): se tratan como paywalled sólo cuando la propia pieza lo declara (isAccessibleForFree=false).",
       "in_pipeline": true,
-      "pending_decision": "Secciones no premium de latercera.com sin bandera por artículo: estado 'unverified'; requieren decisión de Dirección antes de recortar su ficha."
+      "pending_decision": "Secciones no premium de latercera.com sin bandera por artículo (incluida Qué Pasa, /que-pasa/, 93 piezas) quedan 'unverified'; LT Domingo se incluyó por analogía con LT Sábado (edición impresa de fin de semana): confirmar con Dirección.",
+      "sections": [
+        "Pulso",
+        "Pulso PM",
+        "La Tercera PM",
+        "LT Board",
+        "Early Access",
+        "LT Sábado",
+        "LT Domingo"
+      ]
     },
     {
       "id": "el_mercurio",

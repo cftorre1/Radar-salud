@@ -209,7 +209,10 @@ def test_pulso_processing_stores_only_lead_before_any_analysis(monkeypatch):
 
 # --- 5. paid revalidation continuity ----------------------------------------
 
-def _paid(text_sha, request_sha, what="Isapre X anuncia alza de planes.", why="Afecta a afiliados de la isapre."):
+# The public-text check also requires content words (review 2, 28-oct): the default
+# "why" restates the public title/lead instead of adding "afiliados", absent from both.
+def _paid(text_sha, request_sha, what="Isapre X anuncia alza de planes.",
+          why="La institución anunció la suspensión temporal de sus operaciones."):
     return {"relevance_score": 80, "what_happened": what, "why_it_matters": why, "reason": "r",
             "_pulso_analysis_meta": {"response_id": "resp_1", "analysis_text_sha256": text_sha,
                                      "request_input_sha256": request_sha, "source_name": "Pulso / La Tercera",
@@ -347,7 +350,10 @@ def test_weekly_outputs_carry_only_public_or_reviewed_text(path):
     assert redact_public_payload(payload, public_teaser_index(history), stats) is payload  # nothing left to redact
     assert stats["fields"] == 0, path
     latest = json.loads(Path("data/weekly_insight/latest.json").read_text(encoding="utf-8"))
-    text = json.dumps(latest["top3"], ensure_ascii=False)
+    # Visible text only: review pins and receipts are hex digests that may contain "413" by chance.
+    visible = [{k: v for k, v in pick.items() if k not in ("rights_review", "rights_redactions")}
+               for pick in latest["top3"]]
+    text = json.dumps(visible, ensure_ascii=False)
     assert "1.501" not in text and "413" not in text and "Selfix" not in text
 
 

@@ -16,7 +16,13 @@ from radar_salud.models import RawItem
 from radar_salud.pending_queue import persisted_items, PendingQueue
 from radar_salud.processing import DeferredProcessing
 
+from paywall_test_support import assert_premium_replay, is_premium
+
 ROOT = Path(__file__).resolve().parents[1]
+# Pinned pieces in premium La Tercera sections (rights policy, Dirección 28-oct-2026).
+PREMIUM_REUSE18 = 5
+PREMIUM_DEFECT25 = 5
+PREMIUM_DEFECT25_NEW_FAST = 4  # premium defects that would have reached a new full-input request
 NOW = datetime(2026, 10, 11, 19, tzinfo=timezone.utc)
 
 
@@ -122,9 +128,16 @@ def test_real18_reuse_same_paid_answer_in_normal_processor_with_zero_model_calls
     monkeypatch.setattr(beta_sources, "fetch_html", forbidden)
     selected = [row for row in original[0]["rows"] if row["disposition"] == "reuse_code_fn"]
     assert len(selected) == 18
+    premium = 0
     for pin in selected:
         raw = RawItem(**deepcopy(queue.items[pin["queue_fingerprint"]]["raw"]))
         original_ai = deepcopy(raw.metadata["analysis_model_output"])
+        if is_premium(raw):
+            # Premium section: the locked body is never re-validated; the paid answer is kept
+            # and the single teaser decision waits for AI budget (no call here: analyze_news is forbidden).
+            premium += 1
+            assert_premium_replay(beta_sources.process_curated_beta_source, raw)
+            continue
         row = beta_sources.process_curated_beta_source(raw, {})
         if row is None:
             # Dirección 27-oct-2026: a later feed-relevance rule (health must be the title's subject)
@@ -144,6 +157,7 @@ def test_real18_reuse_same_paid_answer_in_normal_processor_with_zero_model_calls
         assert receipt["original_response_id"] == original_ai["_pulso_analysis_meta"]["response_id"]
         assert receipt["new_validation"]["decision"] == "ready" and receipt["previous_validation"]["decision"] == "deferred"
         assert receipt["publication_approved"] is False
+    assert premium == PREMIUM_REUSE18
 
 
 def test_real6_below_gate_reuse_rejects_original_score_without_new_model(tmp_path, original, monkeypatch):
@@ -174,9 +188,16 @@ def test_real25_contract_defects_reach_new_full_input_fast_branch_only(tmp_path,
     monkeypatch.setattr(llm_analysis, "analyze_news", spy)
     selected = [row for row in original[0]["rows"] if row["disposition"] == "assess_contract_or_semantic_defect"]
     assert len(selected) == 25
+    premium = 0
     for pin in selected:
         raw = RawItem(**deepcopy(queue.items[pin["queue_fingerprint"]]["raw"]))
         original_ai = deepcopy(raw.metadata["analysis_model_output"])
+        if is_premium(raw):
+            # Premium section: a new FULL-input request is exactly what the rights policy forbids.
+            premium += 1
+            assert_premium_replay(beta_sources.process_curated_beta_source, raw, calls)
+            assert paid.RECEIPT not in raw.metadata
+            continue
         if followup.known_original_candidate(raw):
             before_calls = len(calls)
             with pytest.raises(DeferredProcessing, match="evidence_unverified"):
@@ -190,7 +211,8 @@ def test_real25_contract_defects_reach_new_full_input_fast_branch_only(tmp_path,
         assert paid.RECEIPT not in raw.metadata
         assert calls[-1]["full_text"] is True and calls[-1]["pulso_editorial_proof"] is True
         assert paid.digest(calls[-1]["text"].encode()) == pin["body_sha256"]
-    assert len(calls) == 20
+    assert premium == PREMIUM_DEFECT25
+    assert len(calls) == 20 - PREMIUM_DEFECT25_NEW_FAST
 
 
 def test_bound_fonasa_comparison_enters_kind_without_changing_complete_primary_request(tmp_path, original, monkeypatch):
@@ -217,7 +239,11 @@ def test_bound_fonasa_comparison_enters_kind_without_changing_complete_primary_r
 def test_new_fast_deferred_output_is_retained_and_later_due_retry_is_not_poisoned(tmp_path, original, monkeypatch):
     """Actual source/model fixture, explicitly synthetic API IDs in a unit replay."""
     queue = admitted_queue(tmp_path,original)
-    pin = next(row for row in original[0]["rows"] if row["disposition"]=="assess_contract_or_semantic_defect")
+    # The first OPEN-section defect that still reaches a new request (a premium piece never gets
+    # a full-input request; a known original66 candidate defers before any request, see real25).
+    pin = next(row for row in original[0]["rows"] if row["disposition"]=="assess_contract_or_semantic_defect"
+               and not is_premium(RawItem(**deepcopy(original[1][row["queue_fingerprint"]]["raw"])))
+               and not followup.known_original_candidate(RawItem(**deepcopy(original[1][row["queue_fingerprint"]]["raw"]))))
     key = pin["queue_fingerprint"]
     source = fresh_primary(original[1][key])
     before_attempts = queue.items[key]["attempts"]

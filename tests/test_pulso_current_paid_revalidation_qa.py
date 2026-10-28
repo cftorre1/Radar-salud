@@ -40,7 +40,17 @@ def fresh(entry):
 
 @pytest.fixture(params=['reuse_code_fn', 'assess_contract_or_semantic_defect'])
 def case(request, tmp_path, actual_origin, monkeypatch):
-    row = next(row for row in actual_origin['rows'].values() if row['runtime_route'] == request.param)
+    # Premium sections never re-enter the full-body paid paths (rights policy, Dirección
+    # 28-oct-2026; see tests/paywall_test_support.py): the unit uses the first OPEN-section row
+    # that this current authority still governs (not superseded by the later followup/final ones).
+    from radar_salud import pulso_final_paid_revalidation as final
+    from radar_salud import pulso_followup_paid_revalidation as followup
+    from paywall_test_support import is_premium
+    def governed_open(row):
+        raw = RawItem(**deepcopy(actual_origin['originals'][row['queue_fingerprint']]['raw']))
+        return not (is_premium(raw) or followup.known_original_candidate(raw) or final.known_original_candidate(raw))
+    row = next(row for row in actual_origin['rows'].values() if row['runtime_route'] == request.param
+               and governed_open(row))
     key = row['queue_fingerprint']; original = actual_origin['originals'][key]
     queue = PendingQueue(tmp_path / 'queue.json'); queue.items = {key: deepcopy(original)}
     start = datetime.now(timezone.utc) - timedelta(seconds=1)

@@ -397,7 +397,7 @@
                       "field": "novelty_quote",
                       "sha256": "8262726456af8bca06d258dd170ca011bec266a13a8c5a763c4f570328f3bd26",
                       "characters": 178,
-                      "reason": "paywalled_press_public_teaser_only",
+                      "reason": "paywalled_body_quote_in_paid_output",
                       "redacted_at": "2026-10-28"
                     },
                     "future_claims": [
@@ -712,7 +712,7 @@
                               "field": "human_health_scope_quote",
                               "sha256": "5919c435f4181d040f2cb8da074152338b292307bf8c9cea0e86f22900c56cf5",
                               "characters": 188,
-                              "reason": "paywalled_press_public_teaser_only",
+                              "reason": "paywalled_body_quote_in_paid_output",
                               "redacted_at": "2026-10-28"
                             },
                             "actor": "las isapres",
@@ -721,7 +721,7 @@
                               "field": "actor_quote",
                               "sha256": "e4f4b74609f84469f8e8c886f8fdc3fff5b12b6023e1bdba199d0ebc3fdeb52e",
                               "characters": 147,
-                              "reason": "paywalled_press_public_teaser_only",
+                              "reason": "paywalled_body_quote_in_paid_output",
                               "redacted_at": "2026-10-28"
                             },
                             "action": "aumentaron su fuerza de ventas hasta 4.171 ejecutivos al cierre del primer trimestre de 2026",
@@ -730,7 +730,7 @@
                               "field": "action_quote",
                               "sha256": "483f6a91d9f76eb20454b834bc2ddbd3b93ddb492d45056cf26143f98d8c157e",
                               "characters": 318,
-                              "reason": "paywalled_press_public_teaser_only",
+                              "reason": "paywalled_body_quote_in_paid_output",
                               "redacted_at": "2026-10-28"
                             },
                             "consequence": "registraron 52 suscripciones netas de desafiliaciones, la primera variación positiva en cuatro años y medio",
@@ -739,7 +739,7 @@
                               "field": "consequence_quote",
                               "sha256": "d45384c6b0ac9ab3829e893612a63f4ab8ff270a1ff0b7c92b64cf0101feddce",
                               "characters": 186,
-                              "reason": "paywalled_press_public_teaser_only",
+                              "reason": "paywalled_body_quote_in_paid_output",
                               "redacted_at": "2026-10-28"
                             },
                             "event_status": "mixed_actual_and_future",
@@ -748,7 +748,7 @@
                               "field": "event_status_quote",
                               "sha256": "590dc8781c3df88a45efaf5150dc281cdf267ed6c5b593014f21eee1a5773895",
                               "characters": 360,
-                              "reason": "paywalled_press_public_teaser_only",
+                              "reason": "paywalled_body_quote_in_paid_output",
                               "redacted_at": "2026-10-28"
                             },
                             "novelty_decision": "new_material_information",
@@ -758,7 +758,7 @@
                               "field": "novelty_quote",
                               "sha256": "1fd6b68cd9f79a60556462bd4034ab3efb2475605ab9e67438461d80ff5f8fd2",
                               "characters": 85,
-                              "reason": "paywalled_press_public_teaser_only",
+                              "reason": "paywalled_body_quote_in_paid_output",
                               "redacted_at": "2026-10-28"
                             },
                             "future_claims": [
@@ -770,7 +770,7 @@
                                   "field": "source_quote",
                                   "sha256": "590dc8781c3df88a45efaf5150dc281cdf267ed6c5b593014f21eee1a5773895",
                                   "characters": 360,
-                                  "reason": "paywalled_press_public_teaser_only",
+                                  "reason": "paywalled_body_quote_in_paid_output",
                                   "redacted_at": "2026-10-28"
                                 }
                               },
@@ -782,7 +782,7 @@
                                   "field": "source_quote",
                                   "sha256": "590dc8781c3df88a45efaf5150dc281cdf267ed6c5b593014f21eee1a5773895",
                                   "characters": 360,
-                                  "reason": "paywalled_press_public_teaser_only",
+                                  "reason": "paywalled_body_quote_in_paid_output",
                                   "redacted_at": "2026-10-28"
                                 }
                               }
@@ -803,6 +803,56 @@
                           "reason": "pulso_editorial_action_not_grounded",
                           "threshold": 72,
                           "proof_version": "pulso_editorial_proof_v4"
+                        },
+                        "analysis_model_output_rights": {
+                          "original_model_output_sha256": "da46438c50420b852d087c48479537d84600d345740f36481476c52edc12e390",
+                          "original_basis": "digest_of_the_stored_output_before_redaction",
+                          "redacted_model_output_sha256": "748ca1d9771e6c5932379f70d6918e943f88ae6989111d49b99c6d09ba0ce330",
+                          "redactions": [
+                            {
+                              "path": "pulso_editorial_proof.action_quote",
+                              "sha256": "483f6a91d9f76eb20454b834bc2ddbd3b93ddb492d45056cf26143f98d8c157e",
+                              "characters": 318
+                            },
+                            {
+                              "path": "pulso_editorial_proof.actor_quote",
+                              "sha256": "e4f4b74609f84469f8e8c886f8fdc3fff5b12b6023e1bdba199d0ebc3fdeb52e",
+                              "characters": 147
+                            },
+                            {
+                              "path": "pulso_editorial_proof.consequence_quote",
+                              "sha256": "d45384c6b0ac9ab3829e893612a63f4ab8ff270a1ff0b7c92b64cf0101feddce",
+                              "characters": 186
+                            },
+                            {
+                              "path": "pulso_editorial_proof.event_status_quote",
+                              "sha256": "590dc8781c3df88a45efaf5150dc281cdf267ed6c5b593014f21eee1a5773895",
+                              "characters": 360
+                            },
+                            {
+                              "path": "pulso_editorial_proof.future_claims[0].source_quote",
+                              "sha256": "590dc8781c3df88a45efaf5150dc281cdf267ed6c5b593014f21eee1a5773895",
+                              "characters": 360
+                            },
+                            {
+                              "path": "pulso_editorial_proof.future_claims[1].source_quote",
+                              "sha256": "590dc8781c3df88a45efaf5150dc281cdf267ed6c5b593014f21eee1a5773895",
+                              "characters": 360
+                            },
+                            {
+                              "path": "pulso_editorial_proof.human_health_scope_quote",
+                              "sha256": "5919c435f4181d040f2cb8da074152338b292307bf8c9cea0e86f22900c56cf5",
+                              "characters": 188
+                            },
+                            {
+                              "path": "pulso_editorial_proof.novelty_quote",
+                              "sha256": "1fd6b68cd9f79a60556462bd4034ab3efb2475605ab9e67438461d80ff5f8fd2",
+                              "characters": 85
+                            }
+                          ],
+                          "reason": "paywalled_body_quote_in_paid_output",
+                          "redacted_at": "2026-10-28",
+                          "note": "Paid output preserved; verbatim paywalled-body quotes kept only as sha256 + length receipts."
                         }
                       }
                     },
@@ -1035,7 +1085,7 @@
                               "field": "consequence_quote",
                               "sha256": "d45384c6b0ac9ab3829e893612a63f4ab8ff270a1ff0b7c92b64cf0101feddce",
                               "characters": 186,
-                              "reason": "paywalled_press_public_teaser_only",
+                              "reason": "paywalled_body_quote_in_paid_output",
                               "redacted_at": "2026-10-28"
                             },
                             "event_status": "mixed_actual_and_future",
@@ -1044,7 +1094,7 @@
                               "field": "event_status_quote",
                               "sha256": "cec4b77069434efbbacd1f58057c5d3b94639411ee66518dae03384d07199006",
                               "characters": 219,
-                              "reason": "paywalled_press_public_teaser_only",
+                              "reason": "paywalled_body_quote_in_paid_output",
                               "redacted_at": "2026-10-28"
                             },
                             "novelty_decision": "new_material_information",
@@ -1054,7 +1104,7 @@
                               "field": "novelty_quote",
                               "sha256": "8262726456af8bca06d258dd170ca011bec266a13a8c5a763c4f570328f3bd26",
                               "characters": 178,
-                              "reason": "paywalled_press_public_teaser_only",
+                              "reason": "paywalled_body_quote_in_paid_output",
                               "redacted_at": "2026-10-28"
                             },
                             "future_claims": [
@@ -1066,7 +1116,7 @@
                                   "field": "source_quote",
                                   "sha256": "cec4b77069434efbbacd1f58057c5d3b94639411ee66518dae03384d07199006",
                                   "characters": 219,
-                                  "reason": "paywalled_press_public_teaser_only",
+                                  "reason": "paywalled_body_quote_in_paid_output",
                                   "redacted_at": "2026-10-28"
                                 }
                               },
@@ -1112,7 +1162,37 @@
                           "publication_approved": false,
                           "other_editorial_and_budget_gates_still_apply": true
                         },
-                        "queue_identity_fingerprint": "4253ceb9ffdc3a75a20c1f4b9a9902900cc3e97134aef098183a298f8cb0be4d"
+                        "queue_identity_fingerprint": "4253ceb9ffdc3a75a20c1f4b9a9902900cc3e97134aef098183a298f8cb0be4d",
+                        "analysis_model_output_rights": {
+                          "original_model_output_sha256": "c07c27093d9eadb99cc8e704aa1605c217763cbb6145671d7a8b6896bfd98776",
+                          "original_basis": "digest_of_the_stored_output_before_redaction",
+                          "redacted_model_output_sha256": "a998e0e0a5745b0c30d68edacf45e3effd0d9ae2eafb779354d2c0b5454cebbe",
+                          "redactions": [
+                            {
+                              "path": "pulso_editorial_proof.consequence_quote",
+                              "sha256": "d45384c6b0ac9ab3829e893612a63f4ab8ff270a1ff0b7c92b64cf0101feddce",
+                              "characters": 186
+                            },
+                            {
+                              "path": "pulso_editorial_proof.event_status_quote",
+                              "sha256": "cec4b77069434efbbacd1f58057c5d3b94639411ee66518dae03384d07199006",
+                              "characters": 219
+                            },
+                            {
+                              "path": "pulso_editorial_proof.future_claims[0].source_quote",
+                              "sha256": "cec4b77069434efbbacd1f58057c5d3b94639411ee66518dae03384d07199006",
+                              "characters": 219
+                            },
+                            {
+                              "path": "pulso_editorial_proof.novelty_quote",
+                              "sha256": "8262726456af8bca06d258dd170ca011bec266a13a8c5a763c4f570328f3bd26",
+                              "characters": 178
+                            }
+                          ],
+                          "reason": "paywalled_body_quote_in_paid_output",
+                          "redacted_at": "2026-10-28",
+                          "note": "Paid output preserved; verbatim paywalled-body quotes kept only as sha256 + length receipts."
+                        }
                       }
                     },
                     "retained_processing_input_unchanged": true,
@@ -1296,6 +1376,21 @@
                   "scope": 86,
                   "novelty": 86,
                   "actionability": 76
+                },
+                "analysis_model_output_rights": {
+                  "original_model_output_sha256": "61510b224ead8d94022babfeee5c5a15b70fdf59036a18675412f4d3f82e4304",
+                  "original_basis": "digest_of_the_stored_output_before_redaction",
+                  "redacted_model_output_sha256": "ff5b59b272c7a3a35be6bdcf3e43ccaba19b4edd24cb88e7c499c5e8b0574309",
+                  "redactions": [
+                    {
+                      "path": "pulso_editorial_proof.novelty_quote",
+                      "sha256": "8262726456af8bca06d258dd170ca011bec266a13a8c5a763c4f570328f3bd26",
+                      "characters": 178
+                    }
+                  ],
+                  "reason": "paywalled_body_quote_in_paid_output",
+                  "redacted_at": "2026-10-28",
+                  "note": "Paid output preserved; verbatim paywalled-body quotes kept only as sha256 + length receipts."
                 }
               }
             },
@@ -3290,7 +3385,7 @@
                       "field": "novelty_quote",
                       "sha256": "eeec8ecd1a11213f73d7ca3fb166bcea105b7bcb7e92715f0da36f1b4976026f",
                       "characters": 70,
-                      "reason": "paywalled_press_public_teaser_only",
+                      "reason": "paywalled_body_quote_in_paid_output",
                       "redacted_at": "2026-10-28"
                     },
                     "future_claims": [
@@ -3302,7 +3397,7 @@
                           "field": "source_quote",
                           "sha256": "1819218667301147ca298935bddadd1d10b61d789b4e42448c6071b7d889478c",
                           "characters": 255,
-                          "reason": "paywalled_press_public_teaser_only",
+                          "reason": "paywalled_body_quote_in_paid_output",
                           "redacted_at": "2026-10-28"
                         }
                       },
@@ -3549,7 +3644,7 @@
                               "field": "human_health_scope_quote",
                               "sha256": "70de0fea11d121fca57d99ada2458e00be88ef545ea055542883de979d478f80",
                               "characters": 155,
-                              "reason": "paywalled_press_public_teaser_only",
+                              "reason": "paywalled_body_quote_in_paid_output",
                               "redacted_at": "2026-10-28"
                             },
                             "actor": "el gobierno de José Antonio Kast",
@@ -3558,7 +3653,7 @@
                               "field": "actor_quote",
                               "sha256": "eeec8ecd1a11213f73d7ca3fb166bcea105b7bcb7e92715f0da36f1b4976026f",
                               "characters": 70,
-                              "reason": "paywalled_press_public_teaser_only",
+                              "reason": "paywalled_body_quote_in_paid_output",
                               "redacted_at": "2026-10-28"
                             },
                             "action": "aumenta el presupuesto para Salud en 4,7% y anuncia medidas de compra y gestión sanitaria",
@@ -3579,7 +3674,7 @@
                                   "field": "source_quote",
                                   "sha256": "e0cdcf94e0b05f37ccc1a4bf31657546d2c24134de2ec00c0456bd365e4c60fd",
                                   "characters": 466,
-                                  "reason": "paywalled_press_public_teaser_only",
+                                  "reason": "paywalled_body_quote_in_paid_output",
                                   "redacted_at": "2026-10-28"
                                 }
                               },
@@ -3591,7 +3686,7 @@
                                   "field": "source_quote",
                                   "sha256": "02d2cfb7bc2b05124c7eac64d86ce683439f318ad7c8904e2168a8eb0e59e4db",
                                   "characters": 439,
-                                  "reason": "paywalled_press_public_teaser_only",
+                                  "reason": "paywalled_body_quote_in_paid_output",
                                   "redacted_at": "2026-10-28"
                                 }
                               }
@@ -3612,6 +3707,36 @@
                           "reason": "pulso_editorial_action_not_grounded",
                           "threshold": 72,
                           "proof_version": "pulso_editorial_proof_v4"
+                        },
+                        "analysis_model_output_rights": {
+                          "original_model_output_sha256": "b546603b5c2e9cce9d07f2dc5c31913a94b2d77a6ded5139e1bd46ca0c9d45d6",
+                          "original_basis": "digest_of_the_stored_output_before_redaction",
+                          "redacted_model_output_sha256": "f84e86a4ad4597641b5b185692c8eee2b68b5260076b269a26979ce52a4aef03",
+                          "redactions": [
+                            {
+                              "path": "pulso_editorial_proof.actor_quote",
+                              "sha256": "eeec8ecd1a11213f73d7ca3fb166bcea105b7bcb7e92715f0da36f1b4976026f",
+                              "characters": 70
+                            },
+                            {
+                              "path": "pulso_editorial_proof.future_claims[0].source_quote",
+                              "sha256": "e0cdcf94e0b05f37ccc1a4bf31657546d2c24134de2ec00c0456bd365e4c60fd",
+                              "characters": 466
+                            },
+                            {
+                              "path": "pulso_editorial_proof.future_claims[1].source_quote",
+                              "sha256": "02d2cfb7bc2b05124c7eac64d86ce683439f318ad7c8904e2168a8eb0e59e4db",
+                              "characters": 439
+                            },
+                            {
+                              "path": "pulso_editorial_proof.human_health_scope_quote",
+                              "sha256": "70de0fea11d121fca57d99ada2458e00be88ef545ea055542883de979d478f80",
+                              "characters": 155
+                            }
+                          ],
+                          "reason": "paywalled_body_quote_in_paid_output",
+                          "redacted_at": "2026-10-28",
+                          "note": "Paid output preserved; verbatim paywalled-body quotes kept only as sha256 + length receipts."
                         }
                       }
                     },
@@ -3697,6 +3822,26 @@
                   },
                   "original_model_what_happened": "Según Pulso / La Tercera, Según la nota del 1 de octubre de 2026, el gobierno de José Antonio Kast presentó al Congreso su propuesta de Presupuesto 2027, con un aumento reportado de 4,7% para Salud. La propuesta contempla aumentar el financiamiento para reducir listas de espera mediante compra de atenciones a clínicas, inversión en hospitales de mayor complejidad y mayores aportes a consultorios, Cesfam y postas. También anunció medidas futuras como una canasta esencial de medicamentos, una ficha clínica compartida y uso de inteligencia artificial para priorizar a pacientes graves; al 1 de octubre, el proyecto aún debía discutirse en el Congreso.",
                   "original_model_why_it_matters": "Al 1 de octubre de 2026, según la nota, Fonasa se preparaba para modificar su compra de prestaciones y el gobierno proponía orientar recursos adicionales a atención oportuna, medicamentos y gestión de listas de espera. La eventual aprobación podría afectar el financiamiento y la relación de compra entre Fonasa, clínicas privadas, hospitales y la atención primaria, pero las medidas descritas seguían siendo parte de un presupuesto en discusión y no acreditan implementación vigente al 11 de octubre."
+                },
+                "analysis_model_output_rights": {
+                  "original_model_output_sha256": "a3393c78149a95d9594fa3e5147c363ae07c31ab88f52863cfc57bcbf28e4d24",
+                  "original_basis": "digest_of_the_stored_output_before_redaction",
+                  "redacted_model_output_sha256": "8de086f4f9585c13015ccd789639de5295e6b1547eefba750c071ffd504d0a8f",
+                  "redactions": [
+                    {
+                      "path": "pulso_editorial_proof.future_claims[0].source_quote",
+                      "sha256": "1819218667301147ca298935bddadd1d10b61d789b4e42448c6071b7d889478c",
+                      "characters": 255
+                    },
+                    {
+                      "path": "pulso_editorial_proof.novelty_quote",
+                      "sha256": "eeec8ecd1a11213f73d7ca3fb166bcea105b7bcb7e92715f0da36f1b4976026f",
+                      "characters": 70
+                    }
+                  ],
+                  "reason": "paywalled_body_quote_in_paid_output",
+                  "redacted_at": "2026-10-28",
+                  "note": "Paid output preserved; verbatim paywalled-body quotes kept only as sha256 + length receipts."
                 }
               }
             },
