@@ -176,7 +176,9 @@ test('Global keeps every eligible theme beyond ten while preserving publisher fi
  c.input=Array.from({length:14},(_,i)=>({id:String(i),sources:[{publisher:i%2?'WHO':'OECD',published_at:'2026-10-10'}]}));
  vm.runInContext("themes=input;periodMode='all'",c);
  assert.equal(c.visibleThemes().length,14);
- vm.runInContext("publisherMode='OECD'",c);assert.equal(c.visibleThemes().length,7);
+ // Sources are a multi-select since Global adopted bar A (Dirección 27-oct 23:13): OR between publishers.
+ vm.runInContext("activePublishers.add('OECD')",c);assert.equal(c.visibleThemes().length,7);
+ vm.runInContext("activePublishers.add('WHO')",c);assert.equal(c.visibleThemes().length,14);
 });
 
 test('source panel never equates transport errors or absent telemetry with no news',()=>{
@@ -205,3 +207,4 @@ test('datos.gob.cl releases are labelled as data updates, not news publication',
 test('alternatives and related context keep detection/data-release labels',()=>{const c=context();const alt={title:'Memoria',source_name:'Clínicas de Chile A.G.',url:'https://a.cl/1',event_date:'2026-10-20',date_basis:'first_detected',first_detected_at:'2026-10-20T12:00:00Z'};assert.match(c.sourceBlock([alt]),/Detectado el/);assert.doesNotMatch(c.sourceBlock([alt]),/Publicado/);assert.match(c.contextBlock([{...alt,verified:true}]),/Detectado el/);assert.match(c.contextBlock([{title:'Ley',event_date:'2026-10-01'}]),/Fecha:/)});
 test('metadata-only datos.gob.cl changes read as catalog updates',()=>{const c=context();assert.match(c.sourceTiming({event_date:'2026-10-07',date_basis:'data_release',data_release_scope:'catalog'}),/^Catálogo actualizado el/)});
 test('historical connections never label a detection or data-release day as Publicado',()=>{const c=context();const x={label:'Antecedente',url:'https://a.cl/1',title:'Memoria',note:'n',event_date:'2026-10-20',date_basis:'first_detected',first_detected_at:'2026-10-20T12:00:00Z'};const html=c.enrichmentBlock([],[x],null);assert.match(html,/Detectado el/);assert.doesNotMatch(html,/Publicado/);assert.match(c.enrichmentBlock([],[{...x,date_basis:undefined}],null),/Publicado/)});
+test('Global shares the Home header and bar A without inline CSS',()=>{const html=fs.readFileSync('web/global.html','utf8'),home=fs.readFileSync('web/index.html','utf8'),js=fs.readFileSync('web/global.js','utf8'),app=fs.readFileSync('web/app.js','utf8');assert.doesNotMatch(html,/<style/);for(const f of ['home-inbox.css','global.css'])assert.match(html,new RegExp(`href="${f}"`));for(const page of [html,home])assert.match(page,/<script src="inbox-bar\.js"><\/script>/);for(const short of ['Chile','Global','Newsletter'])assert.match(html,new RegExp(`data-short="${short}"`));assert.match(html,/href="subscription\.html"/);assert.match(html,/id="globalLanes"/);assert.match(html,/<details class="filter-details" id="globalFilters">/);assert.match(html,/id="globalMarkAll"/);for(const src of [js,app])assert.match(src,/AlicantoBar\.(syncLanes|wireLanes|dropdown)/);assert.match(js,/globalKey\(id\)\{return `global:\$\{id\}`\}/)});

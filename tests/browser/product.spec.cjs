@@ -227,11 +227,16 @@ test('Global read state is shared across Home and the research page',async({page
  // Filter its publisher to verify read-state persistence independently of rank.
  const teaser=globalData.themes.find(t=>t.id===teaserId);
  const publisher=teaser.sources.map(s=>s.publisher).sort((a,b)=>globalData.themes.filter(t=>t.sources.some(s=>s.publisher===a)).length-globalData.themes.filter(t=>t.sources.some(s=>s.publisher===b)).length)[0];
+ // Global homologated to the Home bar A (Dirección 27-oct 23:13): sources are a multi-select in the filters
+ // dropdown and read status is the Pendientes · Leídas · Todas control; Todas lists read and unread rows.
  await page.locator('#globalFilters summary').click();
- await page.locator('#globalPublisher').selectOption(publisher);
+ await page.locator(`#globalPublisher [data-publisher="${publisher}"]`).click();await page.keyboard.press('Escape');
+ await expect(page.locator('#globalFilterLabel')).toHaveText(publisher);
  const publisherCount=globalData.themes.filter(t=>t.sources.some(s=>s.publisher===publisher)).length;
+ await expect(page.locator('#globalLanes [data-lane="p"] span')).toHaveText(String(publisherCount-1));
+ await expect(page.locator('.theme')).toHaveCount(publisherCount-1);
+ await page.locator('#globalLanes [data-lane="t"]').click();
  await expect(page.locator('.theme')).toHaveCount(publisherCount);
- await expect(page.locator('#globalInbox .inbox-row')).toHaveCount(publisherCount-1);
  const theme=page.locator(`#theme-${teaserId}`);
  await expect(theme).toHaveClass(/read/);
  await theme.locator('[data-read]').click();await expect(theme).not.toHaveClass(/read/);
@@ -239,6 +244,18 @@ test('Global read state is shared across Home and the research page',async({page
  await page.locator('#bigThings .big-feature.global [data-special-read]').click();
  // Dirección 27-oct-2026: a read special stays in place with its read mark; focus stays on its toggle.
  await expect(page.locator('#bigThings .big-feature.global')).toHaveClass(/read/);await expect(page.locator('#bigThings .big-feature.global [data-special-read]')).toBeFocused();
+});
+// Dirección 27-oct 23:13: Global uses the Home header and bar A; mark-all works on the visible themes with undo.
+test('Global shares header, bar A and mark-all with the Home',async({page})=>{
+ await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('all');
+ for(const [name,href] of [['Chile','index.html'],['Global','global.html'],['Newsletter','subscription.html'],['PREMIUM','index.html#premium']])expect(await page.locator(`.topnav a[href="${href}"]`).evaluate(el=>(el.dataset.short||el.textContent).trim())).toBe(name);
+ await expect(page.locator('.topnav a[aria-current="page"]')).toHaveAttribute('href','global.html');
+ const rows=page.locator('#themes .theme');await expect(rows.first()).toBeVisible();const total=await rows.count();expect(total).toBeGreaterThan(2);
+ await expect(page.locator('#globalLanes [data-lane="p"]')).toHaveAttribute('aria-pressed','true');
+ await page.locator('#globalMarkAll').click();await expect(rows).toHaveCount(0);await expect(page.locator('#globalUndo')).toContainText(`${total} temas marcados como leídos`);
+ await expect(page.locator('#themes')).toContainText('Estás al día');
+ await page.locator('#undoRead').click();await expect(rows).toHaveCount(total);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
 });
 test('source suggestion is visible, concise and fail-closed without provider',async({page})=>{
  let captured;
@@ -356,7 +373,9 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await page.locator('#globalFilters summary').click();
  await expect(page.locator('#globalPublisher')).toBeVisible();
  await expect(page.locator('#globalSort')).toBeVisible();
- await page.locator('#globalPeriod').selectOption('all');
+ await page.locator('#globalPeriod').selectOption('all');await expect(page.locator('#globalFilters')).not.toHaveAttribute('open','');
+ // Bar A on Global (Dirección 27-oct 23:13): Todas shows every theme; Pendientes only the unread ones.
+ await page.locator('#globalLanes [data-lane="t"]').click();
  await expect(page.locator('.theme')).toHaveCount(visibleCount);
  const initialUnread=visibleCount-await page.locator('.theme.read').count();
  await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${initialUnread}`);
@@ -364,7 +383,7 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await page.locator('.theme:not(.read):not(#theme-global-ai-coding-payer-cost-2026) [data-open]').first().click();
  await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${initialUnread-1}`);
  const opened=page.locator('#globalDetail');await expect(opened).toBeVisible();await expect(opened).toContainText('Fuentes y evidencia');await expect(opened).not.toContainText(/Qué encontró:|Lectura estratégica|Qué mirar en Chile/);await expect(opened).toContainText('evidencia local');await page.keyboard.press('Escape');
- await page.reload();await expect(page.locator('#globalPeriod')).toHaveValue('all');
+ await page.reload();await expect(page.locator('#globalPeriod')).toHaveValue('all');await expect(page.locator('#globalLanes [data-lane="t"]')).toHaveAttribute('aria-pressed','true');
  await expect(page.locator('.theme')).toHaveCount(visibleCount);
  const visibleIds=await page.locator('.theme').evaluateAll(nodes=>nodes.map(n=>n.id.replace(/^theme-/,'')));expect(visibleIds.length).toBe(themeCount);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);

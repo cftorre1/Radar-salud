@@ -80,3 +80,19 @@ fila (`.inbox-read`) y temas en tarjetas grandes (`.theme`); persistencia en `al
 
 Estimación: 1 rama, ~1 día de implementación + QA; riesgo principal = divergencia de CSS inline vs `home-inbox.css`
 (conviene mover el CSS de Global a un archivo y borrar reglas duplicadas).
+
+## Global homologado (rama `claude/global-ux-homolog-20261027`, Dirección 27-oct 23:13)
+
+- CSS inline de `global.html` movido a `web/global.css` (solo lo propio de Global; cabecera, barra, filas y
+  diálogos salen de `home-inbox.css`). Cabecera igual al Home: Chile · Global · Newsletter (→ `subscription.html`) · PREMIUM.
+- Barra A: «Tu bandeja» + Pendientes · Leídas · Todas, período propio, desplegable «Todas las fuentes» multiselección
+  + Orden, ✓✓ marcar todo con Deshacer. Lógica compartida en `web/inbox-bar.js` (también la usa `app.js`).
+- Filas densas como el feed del Home. Lectura `global:<theme_id>` compartida con la fila dorada de la portada.
+- `alicanto_global_filters` migra `publisher` (uno) a `publishers` (lista) y guarda `lane`.
+
+Parte del primer viewport ocupada por el feed (datos reales 27-oct, `global-a-*.png`):
+
+| | 390×844 | 1440×900 |
+|---|---|---|
+| Global en staging (`283017ea`) | 48,5 % | 51,1 % |
+| Global homologado | **79,3 %** | **85,2 %** |

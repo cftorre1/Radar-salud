@@ -1,0 +1,49 @@
+/* Global Intelligence (Dirección 27-oct 23:13): same header, bar A and dense rows as the Home.
+   Layout, header, bar, rows and dialogs come from home-inbox.css; this file holds only what is Global's own.
+   Moved from the former inline <style> of global.html: the research detail rules (sources, watch, analysis). */
+
+/* Intro line: page name + update date, like "Esta semana" on the Home */
+.global-intro{margin-top:8px}
+.global-intro h1{margin:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--ink68)}
+.global-intro .meta{text-transform:none}
+.brandbar .logo-link{display:block;flex:none;min-height:0}
+
+/* Dense rows: same anatomy as #local .signal.item */
+.global-feed .theme{position:relative;margin:0;padding:9px var(--gutter) 9px 40px;border:0;border-bottom:1px solid var(--ink09);border-radius:0;background:transparent;scroll-margin-top:calc(var(--hdr) + 104px)}
+.global-feed{margin:0 calc(-1 * var(--gutter))}
+.global-feed .theme h2{font:600 15px/1.36 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:-.005em;margin:0;color:var(--ink)}
+.global-feed .title-open{all:unset;cursor:pointer;color:inherit;font:inherit;text-align:left;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.global-feed .title-open:focus-visible{outline:2px solid #E3A24F;outline-offset:2px;border-radius:4px}
+.global-feed .card-meta{display:block;margin:3px 0 0;padding:0;border:0;font-size:12px;line-height:1.5;color:var(--ink68)}
+.global-feed .item-actions{display:inline-flex;align-items:center;margin-left:-4px;vertical-align:-4px;white-space:nowrap}
+.global-feed .theme.read h2{font-weight:400;font-size:14px;color:var(--ink68)}
+.global-feed .theme.read .card-meta{display:none}
+.global-feed .group-head{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink48);margin:0;padding:10px var(--gutter) 2px 40px}
+.global-feed .eyebrow{color:var(--accent-ink);font-weight:650}
+.global-premium-strip{margin:0 calc(-1 * var(--gutter))}
+.global-premium-strip a.newsletter-open{text-decoration:none;display:inline-flex;align-items:center;min-height:32px}
+
+/* Research detail (moved from the inline style of global.html, scoped to the dialog) */
+.global-detail .theme-detail p,.global-detail .theme-detail li{font-size:13.5px;line-height:1.55}
+.global-detail details{border-top:1px solid var(--ink18);margin-top:12px;padding-top:10px}
+.global-detail summary{cursor:pointer;font-weight:850;font-size:12px}
+.global-detail .watch{background:var(--ink05);border-left:4px solid var(--accent);border-radius:9px;padding:11px 13px;margin:12px 0}
+.global-detail .watch strong{display:block;margin-bottom:4px}
+.global-detail .status{font-size:10.5px;font-weight:850}
+.global-detail .sources{border-top:1px solid var(--ink18);padding-top:10px;margin-top:12px}
+.global-detail .source{font-size:11.5px;line-height:1.45;margin:8px 0;padding:0;border:0;color:var(--ink);max-width:100%}
+.global-detail .source span{display:block;color:var(--ink68)}
+.global-detail .source a{display:block;max-width:100%;overflow-wrap:anywhere;word-break:normal}
+.global-detail .analysis-list li{margin:3px 0}
+
+@media (min-width:760px){
+ .global-feed{margin:0}
+ .global-feed .theme{padding:10px 8px 10px 28px}
+ .global-feed .theme h2{font-size:15.5px}
+ .global-feed .theme .dotbtn{width:28px}
+ .global-feed .group-head{padding:8px 0 0 28px}
+ .global-premium-strip{margin:0;padding:6px 8px 6px 28px}
+ .global-col{max-width:880px;margin:0 auto}
+}
+/* PREMIUM is a link here (no dialog on Global): keep the Home's pill. */
+.brandbar .topnav a.premium-access{position:relative;margin-left:6px;min-height:30px;height:30px;padding:0 11px;border-radius:999px;border:1px solid var(--accent);color:var(--accent-ink);font-size:11.5px;font-weight:750;letter-spacing:.02em}
