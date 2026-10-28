@@ -100,8 +100,10 @@
       "authorized_by": "Dirección (autorizado 27-oct-2026)",
       "rule": "two_consecutive_successful_daily_live_runs",
       "min_gap_seconds": 79200,
-      "max_gap_seconds": 172800,
+      "max_gap_seconds": 108000,
+      "revoke_after_seconds": 172800,
       "success_definition": "live_discovery, 0 reused captures, coverage complete, technical ok, pass_data, same coverage_contract_id",
+      "sequence_rule": "consecutive runs 22-30h apart; a missed day, a failed run (with or without checked_at) or a live_resume run breaks the sequence; activation revoked and must be re-earned if the last successful live run is older than 48h",
       "effect": "health.publication_activation=true; candidates still require editorial approval and rights review; never auto-publishes"
     },
     "paho": {
@@ -109,8 +111,10 @@
       "authorized_by": "Dirección (autorizado 27-oct-2026)",
       "rule": "two_consecutive_successful_daily_live_runs",
       "min_gap_seconds": 79200,
-      "max_gap_seconds": 172800,
+      "max_gap_seconds": 108000,
+      "revoke_after_seconds": 172800,
       "success_definition": "live_discovery, 0 reused captures, coverage complete, technical ok, pass_data, same coverage_contract_id",
+      "sequence_rule": "consecutive runs 22-30h apart; a missed day, a failed run (with or without checked_at) or a live_resume run breaks the sequence; activation revoked and must be re-earned if the last successful live run is older than 48h",
       "effect": "health.publication_activation=true; candidates still require editorial approval and rights review; never auto-publishes"
     }
   },
@@ -139,7 +143,11 @@
         }
       ],
       "rights": {
-        "basis": "publisher_license_and_rss_syndication_offer",
+        "basis": "headline + link only; CC BY-NC-ND 4.0 covers attribution; ask KFF before paid/commercial use",
+        "basis_code": "publisher_license_and_rss_syndication_offer",
+        "paid_tier_requires_publisher_confirmation": true,
+        "paid_tier_confirmation": null,
+        "paid_tier_note": "CC BY-NC-ND 4.0 is NonCommercial: KFF items stay out of paid tiers until KFF confirms in writing (record the confirmation here).",
         "license": "CC BY-NC-ND 4.0",
         "evidence_urls": [
           "https://kffhealthnews.org/syndication/",
@@ -187,7 +195,7 @@
         "basis": "ema_legal_notice_reuse_with_acknowledgement",
         "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
         "evidence_urls": [
-          "https://www.ema.europa.eu/hu/node/68705",
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
           "https://www.ema.europa.eu/en/news-event/rss-feeds"
         ],
         "permitted_use": "metadata_title_link_byline_only",
@@ -196,7 +204,8 @@
         "restrictions": [
           "no logo",
           "no third-party content",
-          "links must not alter information or imply endorsement"
+          "links must not alter information or imply endorsement",
+          "EMA information should not be displayed alongside advertising"
         ],
         "verified_on": "2026-10-27",
         "verified_how": "legal notice and RSS page read via web fetch 27-oct; robots.txt enforced at runtime (fail closed)"

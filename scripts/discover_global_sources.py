@@ -68,13 +68,27 @@ def successful_live_row(row, source, contract_id):
             and health.get("source_quality_disposition") == "pass_data" and health.get("coverage_contract_id") == contract_id
             and bool(health.get("checked_at")))
 
+def _when(value):
+    try:
+        moment = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except (TypeError, ValueError):
+        return None
+    return moment if moment.tzinfo else moment.replace(tzinfo=timezone.utc)
+
+def _row_time(row, source):
+    """When a ledger run happened: the source's checked_at, else the run's generated_at."""
+    return _when(row.get("sources", {}).get(source, {}).get("checked_at")) or _when(row.get("generated_at"))
+
 def publication_activation_decision(ledger, source, current, run_id, mode, policy, contract_id):
     """Dirección 27-oct: activate WHO/PAHO publication only after two consecutive successful daily runs.
 
-    "Consecutive daily" = a prior successful live run whose checked_at is within
-    [min_gap, max_gap] of the current successful run, with no failed live run for the
-    source in between. Once earned the activation is recorded (sticky evidence), but the
-    flag is suspended on any run that is not itself successful. Publication still
+    "Consecutive daily" = the most recent prior run that counts is a successful live run whose
+    checked_at is within [min_gap, max_gap] (22–30 h) of the current successful run. Walking the
+    ledger backwards from the current run, the sequence BREAKS on:
+      * any run that is not a successful fresh live run (failed, incomplete, reused captures,
+        live_resume, or without checked_at) — projection replays are not runs and are ignored;
+      * a gap larger than max_gap (a missed day).
+    Earlier successes on the same day (gap < min_gap) neither count nor break. Publication still
     requires editorial approval: this never publishes a candidate."""
     rule = (policy or {}).get(source) or {}
     decision = {"rule": "two_consecutive_successful_daily_live_runs", "authorized": bool(rule.get("authorized")),
@@ -85,47 +99,76 @@ def publication_activation_decision(ledger, source, current, run_id, mode, polic
     current_row = {"run_id": run_id, "mode": mode, "capture_reuse": {"reused_url_count": 0 if mode == "live_discovery" else None}, "sources": {source: current}}
     if not successful_live_row(current_row, source, contract_id):
         decision["reason"] = "current_run_not_successful_live_complete"; return decision
-    min_gap, max_gap = rule.get("min_gap_seconds", 79200), rule.get("max_gap_seconds", 172800)
-    now = datetime.fromisoformat(current["checked_at"])
-    prior = sorted([row for row in ledger.get("runs", []) if row.get("run_id") != run_id and row.get("mode") == "live_discovery"
-                    and row.get("sources", {}).get(source, {}).get("checked_at")],
-                   key=lambda row: row["sources"][source]["checked_at"])
-    for index in range(len(prior) - 1, -1, -1):
-        row = prior[index]
-        gap = (now - datetime.fromisoformat(row["sources"][source]["checked_at"])).total_seconds()
-        if gap < min_gap:
-            if not successful_live_row(row, source, contract_id):
-                decision["reason"] = "failed_live_run_since_previous_daily_success"; return decision
+    min_gap, max_gap = rule.get("min_gap_seconds", 79200), rule.get("max_gap_seconds", 108000)
+    now = _when(current["checked_at"])
+    for row in reversed(ledger.get("runs", [])):
+        if row.get("run_id") == run_id or row.get("mode") == "projection_replay":
             continue
-        if gap > max_gap or not successful_live_row(row, source, contract_id):
-            break
+        moment = _row_time(row, source)
+        if moment is not None and moment >= now:
+            continue  # not before the current run
+        if not successful_live_row(row, source, contract_id):
+            decision["reason"] = "failed_live_run_since_previous_daily_success"; return decision
+        gap = (now - moment).total_seconds()
+        if gap < min_gap:
+            continue
+        if gap > max_gap:
+            decision["reason"] = "missed_day_breaks_consecutive_sequence"; return decision
         decision.update(activated=True, evidence_run_ids=[row["run_id"], run_id], reason="two_consecutive_successful_daily_live_runs",
                         gap_seconds=int(gap))
         return decision
     decision["reason"] = "awaiting_second_consecutive_successful_daily_run"
     return decision
 
+def last_successful_live_at(ledger, source, run_id, contract_id, record_entry=None):
+    """Latest successful fresh live run for ``source`` before ``run_id`` (ledger or activation record)."""
+    times = [_when(row["sources"][source]["checked_at"]) for row in ledger.get("runs", [])
+             if row.get("run_id") != run_id and successful_live_row(row, source, contract_id)]
+    times.append(_when((record_entry or {}).get("last_successful_live_at")))
+    times = [t for t in times if t is not None]
+    return max(times) if times else None
+
 def apply_publication_activation(root, source_health, ledger, run_id, mode, config, replay):
-    """Persist the activation record; flip publication_activation only when the guard passes."""
+    """Persist the activation record; flip publication_activation only when the guard passes.
+
+    The activation is revoked (must be re-earned with two fresh consecutive runs) when the last
+    successful live run before this one is older than ``revoke_after_seconds`` (48 h), not only
+    when the current run fails."""
     path = root / "data/global_intelligence/publication_activation.json"
     record = json.loads(path.read_text()) if path.exists() else {"sources": {}}
+    record.setdefault("sources", {})
     policy = config.get("publication_activation_policy", {})
     for source in ("who", "paho"):
         health = source_health[source]
-        decision = publication_activation_decision(ledger, source, health, run_id, mode, policy, health.get("coverage_contract_id"))
-        earned = record["sources"].get(source, {}).get("activated_at")
+        rule = policy.get(source) or {}
+        contract = health.get("coverage_contract_id")
+        decision = publication_activation_decision(ledger, source, health, run_id, mode, policy, contract)
+        entry = record["sources"].get(source)
+        run_time = _when(health.get("checked_at")) or datetime.now(timezone.utc)
+        if entry and entry.get("activated_at") and not replay:
+            last = last_successful_live_at(ledger, source, run_id, contract, entry)
+            stale_after = rule.get("revoke_after_seconds", 172800)
+            if last is None or (run_time - last).total_seconds() > stale_after:
+                record.setdefault("revoked", []).append(dict(entry, source=source, revoked_at=run_time.isoformat(),
+                                                             reason="no_successful_live_run_within_48h"))
+                record["sources"].pop(source, None)
+                health["publication_activation_revoked_reason"] = "no_successful_live_run_within_48h"
+                entry = None
+        earned = (entry or {}).get("activated_at")
         if decision["activated"] and not earned and not replay:
-            record["sources"][source] = {"activated_at": health["checked_at"], "evidence_run_ids": decision["evidence_run_ids"],
-                                         "authorized_by": decision["authorized_by"], "rule": decision["rule"],
-                                         "coverage_contract_id": health.get("coverage_contract_id")}
+            entry = record["sources"][source] = {"activated_at": health["checked_at"], "evidence_run_ids": decision["evidence_run_ids"],
+                                                 "authorized_by": decision["authorized_by"], "rule": decision["rule"],
+                                                 "coverage_contract_id": contract}
             earned = health["checked_at"]
         current_row = {"mode": mode, "capture_reuse": {"reused_url_count": 0}, "sources": {source: health}}
-        current_ok = successful_live_row(current_row, source, health.get("coverage_contract_id")) and decision["authorized"]
-        same_contract = bool(earned) and record["sources"][source].get("coverage_contract_id") == health.get("coverage_contract_id")
+        current_ok = successful_live_row(current_row, source, contract) and decision["authorized"] and mode == "live_discovery"
+        if entry and current_ok and not replay:
+            entry["last_successful_live_at"] = health["checked_at"]
+        same_contract = bool(earned) and (entry or {}).get("coverage_contract_id") == contract
         health["publication_activation"] = bool(earned and same_contract and current_ok and not replay)
         if earned and not health["publication_activation"]:
             health["publication_activation_suspended_reason"] = "current_run_not_successful_or_contract_changed"
-        health["publication_activation_decision"] = dict(decision, earned_at=earned, earned_evidence_run_ids=record["sources"].get(source, {}).get("evidence_run_ids", []))
+        health["publication_activation_decision"] = dict(decision, earned_at=earned, earned_evidence_run_ids=(entry or {}).get("evidence_run_ids", []))
         if health["publication_activation"]:
             health["editorial_outcome"] = "publication_activated_pending_editorial_approval"
     if not replay:

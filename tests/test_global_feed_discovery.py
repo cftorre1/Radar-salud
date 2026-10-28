@@ -57,6 +57,13 @@ def test_every_feed_declares_a_rights_basis_that_permits_metadata_and_link_only(
         assert all(route["url"].startswith("https://") for route in feed["routes"])
     assert FEEDS["kff_health_news"]["rights"]["license"] == "CC BY-NC-ND 4.0"
     assert FEEDS["kff_health_news"]["attribution"] == "KFF Health News"
+    kff = FEEDS["kff_health_news"]["rights"]
+    assert kff["basis"] == "headline + link only; CC BY-NC-ND 4.0 covers attribution; ask KFF before paid/commercial use"
+    assert kff["paid_tier_requires_publisher_confirmation"] is True and not kff["paid_tier_confirmation"]
+    ema = FEEDS["ema"]["rights"]
+    assert "EMA information should not be displayed alongside advertising" in ema["restrictions"]
+    assert "https://www.ema.europa.eu/en/about-us/legal-notice" in ema["evidence_urls"]
+    assert not any("/hu/" in url for url in ema["evidence_urls"])
     excluded = {row["name"].split(" ")[0] for row in CONFIG["feed_candidates_excluded"]}
     assert "STAT" in excluded and CONFIG["reuters"]["enabled"] is False
 
@@ -104,6 +111,9 @@ def test_kff_wordpress_rss_keeps_title_link_date_byline_and_never_the_body():
 @pytest.mark.parametrize("body,error", [
     (b"<html><body>Just a moment...</body></html>", "not_a_feed_document"),
     (b"<?xml version='1.0'?><!DOCTYPE x [<!ENTITY a 'b'>]><rss/>", "doctype_or_entity"),
+    # A padded prolog (long comment / PIs past any fixed head window) cannot hide a DOCTYPE.
+    (b"<?xml version='1.0'?><!--" + b"x" * 9000 + b"--><?pi a?>\n<!DOCTYPE x [<!ENTITY a 'b'>]><rss/>", "doctype_or_entity"),
+    ("\ufeff<?xml version='1.0'?>".encode() + b" " * 8000 + b"<!ENTITY a 'b'><rss/>", "doctype_or_entity"),
     (b"<rss><channel><item>", "xml_parse_error"),
     (b"<rss version='2.0'></rss>", "rss_channel_missing"),
 ])
@@ -172,6 +182,9 @@ def test_collect_feeds_merges_routes_excludes_noise_and_keeps_window():
     assert any(f["source"] == "ema" and f["section"] == "new_human_medicines" for f in failures)
     assert routes["ema/new_human_medicines"]["status"] == "error"
     assert any(f.get("rejected_entry") for f in failures)
+    # KFF (CC BY-NC-ND) items are held out of paid tiers until KFF confirms; FDA/EMA are not.
+    assert merged["paid_tier_eligible"] is False and merged["paid_tier_hold"].startswith("publisher_confirmation")
+    assert chmp["paid_tier_eligible"] is True and "paid_tier_hold" not in chmp
 
 
 def test_feed_run_writes_discovery_health_and_never_publishes(tmp_path):
@@ -223,20 +236,71 @@ def test_activation_requires_two_consecutive_successful_daily_live_runs():
     # Back-to-back runs on the same day never prove daily cadence.
     ([run_row("d1", ok("2026-10-29T06:00:00+00:00"))], ok("2026-10-29T10:35:00+00:00"), "live_discovery", "awaiting_second_consecutive_successful_daily_run"),
     # A gap longer than two days is not consecutive.
-    ([run_row("d1", ok("2026-10-25T10:00:00+00:00"))], ok("2026-10-29T10:35:00+00:00"), "live_discovery", "awaiting_second_consecutive_successful_daily_run"),
+    ([run_row("d1", ok("2026-10-25T10:00:00+00:00"))], ok("2026-10-29T10:35:00+00:00"), "live_discovery", "missed_day_breaks_consecutive_sequence"),
+    # A missed day (≈47 h, inside the old 48 h window) breaks the sequence: max gap is 30 h.
+    ([run_row("d1", ok("2026-10-27T11:40:00+00:00"))], ok("2026-10-29T10:35:00+00:00"), "live_discovery", "missed_day_breaks_consecutive_sequence"),
+    # A failed run without checked_at (placed by generated_at) breaks the sequence.
+    ([run_row("d1", ok("2026-10-28T10:40:00+00:00")),
+      dict(run_row("x", {"technical_status": "error"}), generated_at="2026-10-28T22:40:00+00:00")],
+     ok("2026-10-29T10:35:00+00:00"), "live_discovery", "failed_live_run_since_previous_daily_success"),
+    # ...and so does a live_resume run in between, even if its coverage looked complete.
+    ([run_row("d1", ok("2026-10-28T10:40:00+00:00")), run_row("r", ok("2026-10-28T22:40:00+00:00"), mode="live_resume")],
+     ok("2026-10-29T10:35:00+00:00"), "live_discovery", "failed_live_run_since_previous_daily_success"),
     # A failed live run in between resets the sequence.
     ([run_row("d1", ok("2026-10-28T10:40:00+00:00")), run_row("x", dict(ok("2026-10-28T22:40:00+00:00"), technical_status="error"))],
      ok("2026-10-29T10:35:00+00:00"), "live_discovery", "failed_live_run_since_previous_daily_success"),
     # Coverage contract change invalidates the prior success.
-    ([run_row("d1", ok("2026-10-28T10:40:00+00:00", contract="OLD"))], ok("2026-10-29T10:35:00+00:00"), "live_discovery", "awaiting_second_consecutive_successful_daily_run"),
-    # Reused captures / replays never count.
-    ([run_row("d1", ok("2026-10-28T10:40:00+00:00"), reused=12)], ok("2026-10-29T10:35:00+00:00"), "live_discovery", "awaiting_second_consecutive_successful_daily_run"),
+    ([run_row("d1", ok("2026-10-28T10:40:00+00:00", contract="OLD"))], ok("2026-10-29T10:35:00+00:00"), "live_discovery", "failed_live_run_since_previous_daily_success"),
+    # Reused captures never count; projection replays are ignored (not runs).
+    ([run_row("d1", ok("2026-10-28T10:40:00+00:00"), reused=12)], ok("2026-10-29T10:35:00+00:00"), "live_discovery", "failed_live_run_since_previous_daily_success"),
+    ([run_row("p", ok("2026-10-28T10:40:00+00:00"), mode="projection_replay")], ok("2026-10-29T10:35:00+00:00"), "live_discovery", "awaiting_second_consecutive_successful_daily_run"),
     ([run_row("d1", ok("2026-10-28T10:40:00+00:00"))], ok("2026-10-29T10:35:00+00:00"), "live_resume", "current_run_not_successful_live_complete"),
     ([run_row("d1", ok("2026-10-28T10:40:00+00:00"))], dict(ok("2026-10-29T10:35:00+00:00"), coverage_completeness="incomplete"), "live_discovery", "current_run_not_successful_live_complete"),
 ])
 def test_activation_fails_closed(ledger_rows, current, mode, reason):
     decision = publication_activation_decision({"runs": ledger_rows}, "paho", current, "d2", mode, POLICY, "C")
     assert not decision["activated"] and decision["reason"] == reason
+
+
+def test_same_day_success_neither_counts_nor_breaks_and_window_is_22_to_30h():
+    ledger = {"runs": [run_row("d1", ok("2026-10-28T10:40:00+00:00")), run_row("d1b", ok("2026-10-28T16:00:00+00:00"))]}
+    decision = publication_activation_decision(ledger, "paho", ok("2026-10-29T10:35:00+00:00"), "d2", "live_discovery", POLICY, "C")
+    assert decision["activated"] and decision["evidence_run_ids"] == ["d1", "d2"]
+    assert POLICY["paho"]["max_gap_seconds"] == 30 * 3600 and POLICY["paho"]["min_gap_seconds"] == 22 * 3600
+    assert POLICY["paho"]["revoke_after_seconds"] == 48 * 3600
+
+
+def test_activation_is_revoked_when_last_success_is_older_than_48h_and_must_be_re_earned(tmp_path):
+    config = {"publication_activation_policy": POLICY}
+    ledger = {"runs": [run_row("d1", ok("2026-10-28T10:40:00+00:00"))]}
+    first = {"paho": ok("2026-10-29T10:35:00+00:00"), "who": dict(ok("2026-10-29T10:35:00+00:00"), technical_status="error")}
+    apply_publication_activation(tmp_path, first, ledger, "d2", "live_discovery", config, False)
+    assert first["paho"]["publication_activation"] is True
+    ledger["runs"].append(run_row("d2", first["paho"]))
+    # Three days without a successful run: a single fresh success does not restore the flag.
+    stale = {"paho": ok("2026-11-01T10:35:00+00:00"), "who": dict(first["who"])}
+    apply_publication_activation(tmp_path, stale, ledger, "d3", "live_discovery", config, False)
+    assert stale["paho"]["publication_activation"] is False
+    assert stale["paho"]["publication_activation_revoked_reason"] == "no_successful_live_run_within_48h"
+    record = json.loads((tmp_path / "data/global_intelligence/publication_activation.json").read_text())
+    assert "paho" not in record["sources"] and record["revoked"][0]["evidence_run_ids"] == ["d1", "d2"]
+    # Two fresh consecutive runs re-earn it.
+    ledger["runs"].append(run_row("d3", stale["paho"]))
+    fresh = {"paho": ok("2026-11-02T10:30:00+00:00"), "who": dict(first["who"])}
+    apply_publication_activation(tmp_path, fresh, ledger, "d4", "live_discovery", config, False)
+    assert fresh["paho"]["publication_activation"] is True
+    assert fresh["paho"]["publication_activation_decision"]["earned_evidence_run_ids"] == ["d3", "d4"]
+
+
+def test_activation_is_revoked_on_staleness_even_when_the_current_run_fails(tmp_path):
+    config = {"publication_activation_policy": POLICY}
+    ledger = {"runs": [run_row("d1", ok("2026-10-28T10:40:00+00:00"))]}
+    first = {"paho": ok("2026-10-29T10:35:00+00:00"), "who": dict(ok("2026-10-29T10:35:00+00:00"), technical_status="error")}
+    apply_publication_activation(tmp_path, first, ledger, "d2", "live_discovery", config, False)
+    late_fail = {"paho": dict(ok("2026-11-01T10:35:00+00:00"), technical_status="error"), "who": dict(first["who"])}
+    apply_publication_activation(tmp_path, late_fail, ledger, "d3", "live_discovery", config, False)
+    record = json.loads((tmp_path / "data/global_intelligence/publication_activation.json").read_text())
+    assert "paho" not in record["sources"] and late_fail["paho"]["publication_activation"] is False
 
 
 def test_activation_needs_direccion_authorization():

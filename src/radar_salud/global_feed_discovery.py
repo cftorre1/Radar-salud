@@ -74,10 +74,32 @@ def _text(node, path):
     return found.text if found is not None and found.text else ""
 
 
+PROLOG_SKIP = re.compile(r"\s+|<\?.*?\?>|<!--.*?-->", re.S)
+
+
+def xml_prolog(raw: bytes) -> str:
+    """Everything before the root element (XML declaration, PIs, comments, DOCTYPE), however long.
+
+    A fixed-size head window could be bypassed by padding the prolog (e.g. a long comment) before
+    a DOCTYPE/ENTITY; this walks the whole prolog instead."""
+    if raw.startswith((b"\xff\xfe", b"\xfe\xff")):
+        text = raw.decode("utf-16", errors="replace")
+    else:
+        text = raw.decode("utf-8", errors="replace").lstrip("\ufeff")
+    pos = 0
+    while pos < len(text):
+        match = PROLOG_SKIP.match(text, pos)
+        if match and match.end() > pos:
+            pos = match.end()
+            continue
+        break
+    return text[:pos] + text[pos:pos + 2] if text.startswith("<!", pos) else text[:pos]
+
+
 def parse_feed(raw: bytes, route: dict, feed: dict, as_of: date) -> list[dict]:
     """Parse RSS 2.0, RSS 1.0 (RDF) or Atom. Raises on non-feed bodies (e.g. HTML challenge)."""
-    head = raw[:4096].decode("utf-8", errors="replace")
-    if re.search(r"<!DOCTYPE|<!ENTITY", head, re.I):
+    prolog = xml_prolog(raw)
+    if re.search(r"<!DOCTYPE|<!ENTITY", prolog, re.I) or prolog.endswith("<!"):
         raise ValueError("feed_doctype_or_entity_rejected")
     try:
         root = ET.fromstring(raw)
@@ -223,9 +245,15 @@ def collect_feeds(config: dict, client, as_of: date) -> tuple[list[dict], list[d
                 items[identity] = row
     result = []
     defaults = {feed["id"]: feed.get("default_segments", []) for feed in config.get("feeds", [])}
+    rights_by_feed = {feed["id"]: feed.get("rights") or {} for feed in config.get("feeds", [])}
     for row in items.values():
         row["classification"] = classify_relevance(row["title"], row["categories"], default_segments=defaults.get(row["source"], ()))
         row["publication_ready"] = False
+        rights = rights_by_feed.get(row["source"], {})
+        # Paid tiers need the publisher's written confirmation when the licence is NonCommercial (KFF).
+        row["paid_tier_eligible"] = not rights.get("paid_tier_requires_publisher_confirmation") or bool(rights.get("paid_tier_confirmation"))
+        if not row["paid_tier_eligible"]:
+            row["paid_tier_hold"] = "publisher_confirmation_required_before_paid_or_commercial_use"
         if row.get("publication_date_error"):
             row.update(status="pending", reason=row["publication_date_error"])
         elif row["classification"]["relevant"]:
