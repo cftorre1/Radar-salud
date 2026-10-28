@@ -106,12 +106,12 @@ test('Bupa and Pulso retain approved business depth without weak references',()=
  assert.match(bupa.what_happened,/Mindplace/);
  assert.deepEqual(bupa.related_context||[],[]);
  assert.deepEqual(bupa.source_alternatives||[],[]);
- const pulso=radar.signals.find(s=>s.event_type==='DATA_PULSE'&&/Isapre/.test(s.title||''));
- assert.ok(pulso);
- assert.match(pulso.title,/Pulso Isapre/);
- assert.ok(pulso.summary_table?.rows?.length>=6);
- assert.match(pulso.why_it_matters,/no una explicación causal/);
- assert.ok((pulso.data_insight_evidence||[]).length>=5);
+ // Dirección 28-oct-2026: the live F1 ficha (Cartera y movilidad) replaces the Pulso Isapre card.
+ const ficha=radar.signals.find(s=>s.event_type==='DATA_PULSE'&&s.stats_ficha?.family==='F1');
+ assert.ok(ficha);
+ assert.equal(radar.signals.filter(s=>/^Pulso Isapre/.test(s.title||'')).length,0);
+ assert.ok(ficha.stats_ficha.tabs.length>=4);
+ assert.match(ficha.stats_ficha.notes.map(n=>n.text).join(' '),/no establece por qué cambia la cartera|establece por qué cambia/);
 });
 
 

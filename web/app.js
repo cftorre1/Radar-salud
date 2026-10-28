@@ -153,6 +153,8 @@ function detailKind(s){if(s.statistical_value_level==='deep_analysis'&&s.summary
 function cardDepth(s){return detailKind(s)!==null}
 function httpsSource(value){try{const url=new URL(value);return url.protocol==='https:'&&Boolean(url.hostname)}catch{return false}}
 function detailHtml(s){
+ // Statistics ficha (Dirección 28-oct-2026): self-contained renderer in stats-ficha.js.
+ if(s.stats_ficha&&typeof AlicantoFicha!=='undefined')return AlicantoFicha.render(s.stats_ficha,{shareId:`sig-${idFor(s)}`,shareUrl:s.share_url});
  const v3=String(s.editorial_schema_version)==='3';const title=triageTitle(s),seen=new Set([String(title).trim().toLowerCase()]);
  const fresh=x=>{if(!x)return false;const n=String(x).trim().toLowerCase();if(seen.has(n))return false;seen.add(n);return true};
  let body='';

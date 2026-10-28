@@ -342,24 +342,16 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(page.locator('#detailBody')).toContainText('capacidad nueva, compra y diversificación de servicios');
  await expect(page.locator('#detailBody')).not.toContainText('Enriquecimiento editorial');
  await page.getByRole('button',{name:'Cerrar ficha'}).click();
- const isapre=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso Isapre · datos/})});
- await expect(isapre.locator('.card-meta')).toContainText('Datos a 2026-07');
- await expect(isapre.locator('.card-meta')).toContainText('Publicado 07 sept 2026');
- await expect(isapre.locator('.card-meta')).toContainText('Validado 24 sept 2026');
+ // Dirección 28-oct-2026: the live F1 ficha (Cartera y movilidad) replaces the Pulso Isapre card.
+ const isapre=page.locator('article[data-card]').filter({hasText:'Datos a 2026-08'}).filter({hasText:'Superintendencia de Salud'});
+ await expect(isapre).toHaveCount(1);
+ await expect(isapre.locator('.card-meta')).toContainText('Publicado 02 oct 2026');
  await isapre.locator('[data-detail]').first().click();
- await expect(page.locator('#detailBody .statistical-calculations .intel').locator('li')).toHaveCount(3);
- await expect(page.locator('#detailBody')).toContainText('2026-01 → 2026-07');
- await expect(page.locator('#detailBody')).toContainText('0.615 → 0.605');
- await expect(page.locator('#detailBody')).toContainText('72.9%');
- await expect(page.locator('#detailBody')).toContainText('cotizantes');
- await expect(page.locator('#detailBody')).toContainText('brecha acumulada');
- await expect(page.locator('#detailBody')).toContainText('No es variación mensual');
- await expect(page.locator('#detailBody .intel a').first()).toHaveAttribute('href',/superdesalud\.gob\.cl/);
- await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);
- await expect(page.locator('#detailBody .sourceverify')).toContainText('Publicado 07 sept 2026');
- await expect(page.locator('#detailBody')).toContainText('Período de datos: 2026-07');
- await expect(page.locator('#detailBody')).toContainText('Publicado 07 sept 2026');
- await expect(page.locator('#detailBody')).toContainText('Validado: 24 sept 2026');
+ await expect(page.locator('#detailBody .sf-kicker')).toContainText('datos a agosto 2026');
+ await expect(page.locator('#detailBody .sf-kpis')).toContainText('2.486.683');
+ await expect(page.locator('#detailBody [role=tab]')).toHaveCount(5);
+ await expect(page.locator('#detailBody .sf-notes')).toContainText('denominador solo las 7 Isapres abiertas');
+ await expect(page.locator('#detailBody .sf-notes a').first()).toHaveAttribute('href',/superdesalud\.gob\.cl/);
  await page.getByRole('button',{name:'Cerrar ficha'}).click();
  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});
  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');
@@ -463,15 +455,19 @@ const OPAQUE_ACT_TITLE=/^(Circular|Resolución|Oficio|Decreto)(\s+Exenta)?(\s+(I
 test('persistent editorial contract is visible in feed and brief',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await page.locator('#filterDetails summary').click();await selectPeriod(page,'90');
- const pulse=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Pulso Isapre/})});
- await expect(pulse).toHaveCount(1);
- // A regional release published after the pulse's own release is new information the pulse does not
- // cover (the pulse only claims releases up to its validation day), so it may appear once; older ones stay folded.
+ // One live F1 ficha absorbs the Pulso and the loose cartera cards (Dirección 28-oct-2026). As in #84, a
+ // regional release for a period AFTER the ficha's data period is new information the ficha does not cover,
+ // so it may appear once until the ficha updates; releases for the ficha's period or earlier stay folded.
+ await expect(page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Pulso Isapre/})})).toHaveCount(0);
  {const radar=await (await page.request.get('/data/radar_today.json')).json();
-  const pulseDay=radar.signals.find(s=>String(s.title).startsWith('Pulso Isapre')).publication_date;
+  const ficha=radar.signals.find(s=>s.stats_ficha&&s.stats_ficha.family==='F1');
+  expect(ficha).toBeTruthy();
+  await expect(page.locator('article[data-card]').filter({hasText:`Datos a ${ficha.data_period}`})).toHaveCount(1);
+  const MONTHS=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const periodOf=t=>{const m=String(t).toLowerCase().match(/– (\p{L}+) (20\d\d)$/u);const i=m?MONTHS.indexOf(m[1]):-1;return i<0?null:`${m[2]}-${String(i+1).padStart(2,'0')}`;};
   const regional=radar.signals.filter(s=>String(s.title).includes('Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'));
-  const newer=regional.filter(s=>String(s.event_date||'')>pulseDay).length;
-  await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(Math.min(newer,1));}
+  for(const s of regional)expect(periodOf(s.title)>ficha.data_period).toBe(true);
+  await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(Math.min(regional.length,1));}
  const opaque=page.locator('article[data-card] h2').filter({hasText:OPAQUE_ACT_TITLE});
  await expect(opaque).toHaveCount(0);
  const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\/N°533 · SIL: actualiza el inventario mensual/})});
@@ -481,7 +477,7 @@ test('persistent editorial contract is visible in feed and brief',async({page})=
  await expect(briefOpaque).toHaveCount(0);
 });
 
-test('Pulso Isapre presents stock KPIs with separate contracts and mobility views',async({page})=>{
+test('F1 ficha presents stock KPIs with separate contracts and mobility views',async({page})=>{
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await page.locator('#filterDetails summary').click();await selectPeriod(page,'90');
  await expect(page.locator('article[data-card]').filter({hasText:'Resonancia Magnética del Biobío'})).toHaveCount(0);
@@ -504,19 +500,16 @@ test('Pulso Isapre presents stock KPIs with separate contracts and mobility view
      if(await card.count()){await card.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText(copy);await page.keyboard.press('Escape');}
    }
  }
- const pulse=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Pulso Isapre/})});
- await expect(pulse).toHaveCount(1);await pulse.locator('[data-detail]').first().click();
- const detail=page.locator('#detailBody'),table=detail.locator('#entityComparison');
- await expect(table).toBeVisible();
- const stock=radar.signals.find(s=>s.title.startsWith('Pulso Isapre')).statistical_view;
- if(stock.entity_status==='verified')for(const label of ['Beneficiarios','Cotizantes','Cargas'])await expect(table).toContainText(label);
- else{await expect(table).toContainText('desglose no verificado');await expect(table.locator('table')).toHaveCount(0);}
- await expect(detail.locator('.stat-kpis')).toContainText('2.487.497');
- await detail.getByText('Contratos · 2026-07',{exact:true}).click();
- await expect(detail).toContainText('Suscripciones');await expect(detail).toContainText('Desahucios voluntarios');
- await detail.getByText('Movilidad · cortes 2025-07 y 2026-07',{exact:true}).click();
- await expect(detail).toContainText('91.963');await expect(detail).toContainText('109.663');
- await expect(detail).toContainText('diferencia -17.700');
+ // F1 ficha: stock KPIs, contracts and mobility live in their own tab (between cuts, never monthly).
+ const ficha=page.locator('article[data-card]').filter({hasText:'Datos a 2026-08'});
+ await expect(ficha).toHaveCount(1);await ficha.locator('[data-detail]').first().click();
+ const detail=page.locator('#detailBody');
+ await expect(detail.locator('.sf-kpis')).toContainText('2.486.683');
+ await detail.getByRole('tab',{name:'Movilidad y desahucios'}).click();
+ const panel=detail.locator('.sf-panel:not([hidden])');
+ await expect(panel).toContainText('Contratos suscritos y desahucios voluntarios');
+ await expect(panel).toContainText('91.963');await expect(panel).toContainText('109.663');
+ await expect(panel).toContainText('la diferencia no es el cambio neto');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
 });
 

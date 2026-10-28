@@ -95579,23 +95579,25 @@
       ],
       "key_points": [],
       "risk_notes": [],
-      "data_insights": [
-        "21 presenta el mayor volumen combinado entre las filas comparables detectadas en la tabla GES del corte 2026-06; no se infiere prevalencia ni causalidad."
-      ],
+      "data_insights": [],
       "data_insight_meta": {
         "family": "ges",
-        "status": "validated",
-        "sheet": "Año 2005",
-        "period": "2026-06",
-        "rows": 24,
-        "insights": [
-          "21 presenta el mayor volumen combinado entre las filas comparables detectadas en la tabla GES del corte 2026-06; no se infiere prevalencia ni causalidad."
-        ],
-        "evidence": {
-          "header_row": 3,
-          "fonasa_column": 3,
-          "isapre_column": 4,
-          "aggregation": "none"
+        "status": "HOLD",
+        "hold_reason": "HOLD_GES_UNPINNED_OR_UNRECONCILED",
+        "parser": "ges_pinned_year_reconciled_v2",
+        "superseded_meta": {
+          "family": "ges",
+          "status": "validated",
+          "sheet": "Año 2005",
+          "period": "2026-06",
+          "rows": 24,
+          "evidence": {
+            "header_row": 3,
+            "fonasa_column": 3,
+            "isapre_column": 4,
+            "aggregation": "none"
+          },
+          "withdrawn_insights": 1
         }
       },
       "validity_text": null,

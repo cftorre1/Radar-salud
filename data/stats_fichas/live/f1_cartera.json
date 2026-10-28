@@ -1,0 +1,6042 @@
+{
+  "schema_version": "stats_ficha_v1",
+  "id": "stats-ficha:F1:2026-08",
+  "family": "F1",
+  "family_label": "Cartera y movilidad",
+  "slug": "f1_cartera",
+  "period": "2026-08",
+  "published_at": "2026-10-02",
+  "release_key": "2026-08:b1dc62eb1a40b0f3",
+  "kicker": "Cartera y movilidad",
+  "kicker_meta": "datos a agosto 2026 · publicado por la SIS el 2 oct · se actualiza cada mes",
+  "headline": "La salida de afiliados de las Isapres casi se detiene: en agosto perdieron 814 beneficiarios, la menor baja del año",
+  "headline_type": "record_low_decline",
+  "dek": "El sistema terminó agosto con 2.486.683 beneficiarios, 27.355 menos que en enero. Los cotizantes subieron por segundo mes consecutivo, y Banmédica concentra el 77% de la baja neta.",
+  "dek_emphasis": "2.486.683 beneficiarios",
+  "kpis": [
+    {
+      "id": "beneficiarios",
+      "label": "Beneficiarios",
+      "value": "2.486.683",
+      "prov": "C",
+      "lines": [
+        "−814 vs. julio (−0,03%)",
+        "−27.355 desde enero (−1,09%)"
+      ],
+      "badge": "Sin umbral cruzado · a/a pendiente",
+      "badge_kind": "muted",
+      "refs": [
+        "sistema.beneficiarios.2026-08",
+        "sistema.beneficiarios.mm.2026-08",
+        "sistema.beneficiarios.ytd"
+      ]
+    },
+    {
+      "id": "cotizantes",
+      "label": "Cotizantes",
+      "value": "1.551.169",
+      "prov": "C",
+      "lines": [
+        "+1.296 vs. julio",
+        "Segundo mes al alza (jul +475)"
+      ],
+      "badge": "Cambio de signo sostenido",
+      "badge_kind": "crossed",
+      "refs": [
+        "sistema.cotizantes.2026-08",
+        "sistema.cotizantes.mm.2026-08"
+      ]
+    },
+    {
+      "id": "mezcla",
+      "label": "Cargas por cotizante",
+      "value": "0,603",
+      "prov": "C",
+      "lines": [
+        "enero: 0,615 (−0,012)",
+        "Las cargas son el 78% de la baja"
+      ],
+      "badge": "Cruza umbral (0,005)",
+      "badge_kind": "crossed",
+      "refs": [
+        "mezcla.2026-08",
+        "mezcla.2026-01",
+        "mezcla.delta"
+      ]
+    },
+    {
+      "id": "movilidad",
+      "label": "Movilidad neta 12 m",
+      "value": "−17.700",
+      "prov": "C",
+      "lines": [
+        "cotizantes, cortes julio 2025 → julio 2026",
+        "entradas 91.963 · salidas 109.663"
+      ],
+      "badge": "Corte de agosto aún no leído",
+      "badge_kind": "muted",
+      "refs": [
+        "movilidad.diferencia_intervalo",
+        "movilidad.entradas_intervalo",
+        "movilidad.salidas_intervalo"
+      ]
+    }
+  ],
+  "tabs": [
+    {
+      "id": "total",
+      "label": "Cartera total",
+      "charts": [
+        {
+          "id": "f1-mm",
+          "form": "columns_signed",
+          "headline": "La baja mensual se achica desde abril",
+          "subtitle": "Cambio mensual de beneficiarios del sistema Isapre (personas)",
+          "unit": "personas",
+          "rows": [
+            {
+              "label": "Feb",
+              "period": "2026-02",
+              "value": -3653,
+              "ref": "sistema.beneficiarios.mm.2026-02",
+              "emphasis": false
+            },
+            {
+              "label": "Mar",
+              "period": "2026-03",
+              "value": -5548,
+              "ref": "sistema.beneficiarios.mm.2026-03",
+              "emphasis": false
+            },
+            {
+              "label": "Abr",
+              "period": "2026-04",
+              "value": -6188,
+              "ref": "sistema.beneficiarios.mm.2026-04",
+              "emphasis": false
+            },
+            {
+              "label": "May",
+              "period": "2026-05",
+              "value": -4965,
+              "ref": "sistema.beneficiarios.mm.2026-05",
+              "emphasis": false
+            },
+            {
+              "label": "Jun",
+              "period": "2026-06",
+              "value": -4426,
+              "ref": "sistema.beneficiarios.mm.2026-06",
+              "emphasis": false
+            },
+            {
+              "label": "Jul",
+              "period": "2026-07",
+              "value": -1761,
+              "ref": "sistema.beneficiarios.mm.2026-07",
+              "emphasis": false
+            },
+            {
+              "label": "Ago",
+              "period": "2026-08",
+              "value": -814,
+              "ref": "sistema.beneficiarios.mm.2026-08",
+              "emphasis": true
+            }
+          ],
+          "table": {
+            "columns": [
+              "Mes",
+              "Cambio",
+              "Stock final"
+            ],
+            "rows": [
+              [
+                "Ene",
+                "—",
+                "2.514.038"
+              ],
+              [
+                "Feb",
+                "−3.653",
+                "2.510.385"
+              ],
+              [
+                "Mar",
+                "−5.548",
+                "2.504.837"
+              ],
+              [
+                "Abr",
+                "−6.188",
+                "2.498.649"
+              ],
+              [
+                "May",
+                "−4.965",
+                "2.493.684"
+              ],
+              [
+                "Jun",
+                "−4.426",
+                "2.489.258"
+              ],
+              [
+                "Jul",
+                "−1.761",
+                "2.487.497"
+              ],
+              [
+                "Ago",
+                "−814",
+                "2.486.683"
+              ]
+            ]
+          },
+          "source": "SIS, estadística mensual de cartera (datos provisionales). Stock al cierre de cada mes; la diferencia la calcula Alicanto.",
+          "legend": "Columna más corta = baja menor · agosto en acento"
+        },
+        {
+          "id": "f1-stock",
+          "form": "line",
+          "headline": "Stock de beneficiarios al cierre de cada mes",
+          "subtitle": "Personas; eje sin partir de cero para mostrar la trayectoria",
+          "unit": "personas",
+          "digits": 0,
+          "rows": [
+            {
+              "label": "Ene",
+              "period": "2026-01",
+              "value": 2514038,
+              "ref": "sistema.beneficiarios.2026-01",
+              "emphasis": false
+            },
+            {
+              "label": "Feb",
+              "period": "2026-02",
+              "value": 2510385,
+              "ref": "sistema.beneficiarios.2026-02",
+              "emphasis": false
+            },
+            {
+              "label": "Mar",
+              "period": "2026-03",
+              "value": 2504837,
+              "ref": "sistema.beneficiarios.2026-03",
+              "emphasis": false
+            },
+            {
+              "label": "Abr",
+              "period": "2026-04",
+              "value": 2498649,
+              "ref": "sistema.beneficiarios.2026-04",
+              "emphasis": false
+            },
+            {
+              "label": "May",
+              "period": "2026-05",
+              "value": 2493684,
+              "ref": "sistema.beneficiarios.2026-05",
+              "emphasis": false
+            },
+            {
+              "label": "Jun",
+              "period": "2026-06",
+              "value": 2489258,
+              "ref": "sistema.beneficiarios.2026-06",
+              "emphasis": false
+            },
+            {
+              "label": "Jul",
+              "period": "2026-07",
+              "value": 2487497,
+              "ref": "sistema.beneficiarios.2026-07",
+              "emphasis": false
+            },
+            {
+              "label": "Ago",
+              "period": "2026-08",
+              "value": 2486683,
+              "ref": "sistema.beneficiarios.2026-08",
+              "emphasis": true
+            }
+          ],
+          "table": {
+            "columns": [
+              "Mes",
+              "Beneficiarios",
+              "Cotizantes",
+              "Cargas"
+            ],
+            "rows": [
+              [
+                "Ene",
+                "2.514.038",
+                "1.557.064",
+                "956.974"
+              ],
+              [
+                "Feb",
+                "2.510.385",
+                "1.555.751",
+                "954.634"
+              ],
+              [
+                "Mar",
+                "2.504.837",
+                "1.553.560",
+                "951.277"
+              ],
+              [
+                "Abr",
+                "2.498.649",
+                "1.550.891",
+                "947.758"
+              ],
+              [
+                "May",
+                "2.493.684",
+                "1.549.840",
+                "943.844"
+              ],
+              [
+                "Jun",
+                "2.489.258",
+                "1.549.398",
+                "939.860"
+              ],
+              [
+                "Jul",
+                "2.487.497",
+                "1.549.873",
+                "937.624"
+              ],
+              [
+                "Ago",
+                "2.486.683",
+                "1.551.169",
+                "935.514"
+              ]
+            ]
+          },
+          "source": "SIS, estadística mensual de cartera. Cada mes es un stock: no se suman."
+        }
+      ],
+      "text": [
+        "El stock más alto del período fue en enero (2.514.038) y el más bajo en agosto (2.486.683)."
+      ]
+    },
+    {
+      "id": "isapres",
+      "label": "Por Isapre",
+      "charts": [
+        {
+          "id": "f1-isapres",
+          "form": "diverging",
+          "headline": "Una Isapre concentra la baja; dos crecen",
+          "subtitle": "Cambio de beneficiarios entre enero y agosto, por Isapre",
+          "unit": "personas",
+          "rows": [
+            {
+              "label": "Banmédica",
+              "value": -20948,
+              "ref": "delta.99.ytd",
+              "base": 565481,
+              "pct_ref": "delta.99.ytd_pct",
+              "emphasis": false
+            },
+            {
+              "label": "Colmena",
+              "value": -8876,
+              "ref": "delta.67.ytd",
+              "base": 573597,
+              "pct_ref": "delta.67.ytd_pct",
+              "emphasis": false
+            },
+            {
+              "label": "Cruz Blanca",
+              "value": -7981,
+              "ref": "delta.78.ytd",
+              "base": 360643,
+              "pct_ref": "delta.78.ytd_pct",
+              "emphasis": false
+            },
+            {
+              "label": "Cerradas (3)",
+              "value": -1433,
+              "ref": "delta.cerradas.ytd",
+              "base": 68130,
+              "pct_ref": "delta.cerradas.ytd_pct",
+              "emphasis": false
+            },
+            {
+              "label": "Vida Tres",
+              "value": -991,
+              "ref": "delta.80.ytd",
+              "base": 140775,
+              "pct_ref": "delta.80.ytd_pct",
+              "emphasis": false
+            },
+            {
+              "label": "Consalud",
+              "value": 397,
+              "ref": "delta.107.ytd",
+              "base": 458571,
+              "pct_ref": "delta.107.ytd_pct",
+              "emphasis": true
+            },
+            {
+              "label": "Nueva Masvida",
+              "value": 5461,
+              "ref": "delta.81.ytd",
+              "base": 293968,
+              "pct_ref": "delta.81.ytd_pct",
+              "emphasis": true
+            },
+            {
+              "label": "Esencial",
+              "value": 7016,
+              "ref": "delta.108.ytd",
+              "base": 52873,
+              "pct_ref": "delta.108.ytd_pct",
+              "emphasis": true
+            }
+          ],
+          "table": {
+            "columns": [
+              "Isapre",
+              "Cambio",
+              "Enero",
+              "%"
+            ],
+            "rows": [
+              [
+                "Banmédica",
+                "−20.948",
+                "565.481",
+                "−3,70%"
+              ],
+              [
+                "Colmena",
+                "−8.876",
+                "573.597",
+                "−1,55%"
+              ],
+              [
+                "Cruz Blanca",
+                "−7.981",
+                "360.643",
+                "−2,21%"
+              ],
+              [
+                "Cerradas (3)",
+                "−1.433",
+                "68.130",
+                "−2,10%"
+              ],
+              [
+                "Vida Tres",
+                "−991",
+                "140.775",
+                "−0,70%"
+              ],
+              [
+                "Consalud",
+                "+397",
+                "458.571",
+                "+0,09%"
+              ],
+              [
+                "Nueva Masvida",
+                "+5.461",
+                "293.968",
+                "+1,86%"
+              ],
+              [
+                "Esencial",
+                "+7.016",
+                "52.873",
+                "+13,27%"
+              ],
+              [
+                "Sistema",
+                "−27.355",
+                "2.514.038",
+                "−1,09%"
+              ]
+            ]
+          },
+          "source": "SIS, cartera por Isapre. Las cerradas (Isalud, Fundación, Cruz del Norte) van agrupadas.",
+          "legend": "Tinta = pierde · acento = gana · negrita = 5.000 personas o más"
+        },
+        {
+          "id": "f1-share",
+          "form": "dots",
+          "headline": "Participación entre las Isapres abiertas",
+          "subtitle": "% de beneficiarios de las 7 abiertas · punto = agosto, aro = enero",
+          "unit": "%",
+          "digits": 1,
+          "rows": [
+            {
+              "label": "Colmena",
+              "value": 23.33571351239222,
+              "ref": "share.67.2026-08",
+              "base": 23.45129089074487,
+              "base_ref": "share.67.2026-01"
+            },
+            {
+              "label": "Banmédica",
+              "value": 22.50149381029477,
+              "ref": "share.99.2026-08",
+              "base": 23.119471378318398,
+              "base_ref": "share.99.2026-01"
+            },
+            {
+              "label": "Consalud",
+              "value": 18.965729553807336,
+              "ref": "share.107.2026-08",
+              "base": 18.748497490502505,
+              "base_ref": "share.107.2026-01"
+            },
+            {
+              "label": "Cruz Blanca",
+              "value": 14.572894223355012,
+              "ref": "share.78.2026-08",
+              "base": 14.74474918925814,
+              "base_ref": "share.78.2026-01"
+            },
+            {
+              "label": "Nueva Masvida",
+              "value": 12.373170753880395,
+              "ref": "share.81.2026-08",
+              "base": 12.018767672373613,
+              "base_ref": "share.81.2026-01"
+            },
+            {
+              "label": "Vida Tres",
+              "value": 5.776231763324251,
+              "ref": "share.80.2026-08",
+              "base": 5.755531279181392,
+              "base_ref": "share.80.2026-01"
+            },
+            {
+              "label": "Esencial",
+              "value": 2.474766382946017,
+              "ref": "share.108.2026-08",
+              "base": 2.161692099621081,
+              "base_ref": "share.108.2026-01"
+            }
+          ],
+          "table": {
+            "columns": [
+              "Isapre",
+              "Enero",
+              "Agosto",
+              "Δ pp",
+              "Aporte al cambio neto"
+            ],
+            "rows": [
+              [
+                "Colmena",
+                "23,5%",
+                "23,3%",
+                "−0,12",
+                "32%"
+              ],
+              [
+                "Banmédica",
+                "23,1%",
+                "22,5%",
+                "−0,62",
+                "77%"
+              ],
+              [
+                "Consalud",
+                "18,7%",
+                "19,0%",
+                "+0,22",
+                "−1%"
+              ],
+              [
+                "Cruz Blanca",
+                "14,7%",
+                "14,6%",
+                "−0,17",
+                "29%"
+              ],
+              [
+                "Nueva Masvida",
+                "12,0%",
+                "12,4%",
+                "+0,35",
+                "−20%"
+              ],
+              [
+                "Vida Tres",
+                "5,8%",
+                "5,8%",
+                "+0,02",
+                "4%"
+              ],
+              [
+                "Esencial",
+                "2,2%",
+                "2,5%",
+                "+0,31",
+                "−26%"
+              ]
+            ]
+          },
+          "source": "Denominador: solo las 7 Isapres abiertas. El aporte al cambio neto no se calcula si el sistema varía menos de 5.000 personas."
+        }
+      ],
+      "text": [
+        "Banmédica aporta el 77% del cambio neto del sistema desde enero, medido sobre la variación total de la cartera."
+      ]
+    },
+    {
+      "id": "mezcla",
+      "label": "Cotizantes y cargas",
+      "charts": [
+        {
+          "id": "f1-cot",
+          "form": "columns_signed",
+          "headline": "Cotizantes: cambio mensual",
+          "subtitle": "Personas que cotizan; diferencia entre stocks de meses consecutivos",
+          "unit": "personas",
+          "rows": [
+            {
+              "label": "Feb",
+              "period": "2026-02",
+              "value": -1313,
+              "ref": "sistema.cotizantes.mm.2026-02",
+              "emphasis": false
+            },
+            {
+              "label": "Mar",
+              "period": "2026-03",
+              "value": -2191,
+              "ref": "sistema.cotizantes.mm.2026-03",
+              "emphasis": false
+            },
+            {
+              "label": "Abr",
+              "period": "2026-04",
+              "value": -2669,
+              "ref": "sistema.cotizantes.mm.2026-04",
+              "emphasis": false
+            },
+            {
+              "label": "May",
+              "period": "2026-05",
+              "value": -1051,
+              "ref": "sistema.cotizantes.mm.2026-05",
+              "emphasis": false
+            },
+            {
+              "label": "Jun",
+              "period": "2026-06",
+              "value": -442,
+              "ref": "sistema.cotizantes.mm.2026-06",
+              "emphasis": false
+            },
+            {
+              "label": "Jul",
+              "period": "2026-07",
+              "value": 475,
+              "ref": "sistema.cotizantes.mm.2026-07",
+              "emphasis": false
+            },
+            {
+              "label": "Ago",
+              "period": "2026-08",
+              "value": 1296,
+              "ref": "sistema.cotizantes.mm.2026-08",
+              "emphasis": true
+            }
+          ],
+          "table": {
+            "columns": [
+              "Mes",
+              "Cambio",
+              "Cotizantes"
+            ],
+            "rows": [
+              [
+                "Feb",
+                "−1.313",
+                "1.555.751"
+              ],
+              [
+                "Mar",
+                "−2.191",
+                "1.553.560"
+              ],
+              [
+                "Abr",
+                "−2.669",
+                "1.550.891"
+              ],
+              [
+                "May",
+                "−1.051",
+                "1.549.840"
+              ],
+              [
+                "Jun",
+                "−442",
+                "1.549.398"
+              ],
+              [
+                "Jul",
+                "+475",
+                "1.549.873"
+              ],
+              [
+                "Ago",
+                "+1.296",
+                "1.551.169"
+              ]
+            ]
+          },
+          "source": "SIS, estadística mensual de cartera.",
+          "legend": "agosto en acento"
+        },
+        {
+          "id": "f1-mix",
+          "form": "line",
+          "headline": "Cargas por cotizante",
+          "subtitle": "Razón cargas / cotizantes del mismo mes",
+          "unit": "razón",
+          "digits": 3,
+          "rows": [
+            {
+              "label": "Ene",
+              "period": "2026-01",
+              "value": 0.6146015834930356,
+              "ref": "mezcla.2026-01",
+              "emphasis": false
+            },
+            {
+              "label": "Feb",
+              "period": "2026-02",
+              "value": 0.6136161892230826,
+              "ref": "mezcla.2026-02",
+              "emphasis": false
+            },
+            {
+              "label": "Mar",
+              "period": "2026-03",
+              "value": 0.6123207343134478,
+              "ref": "mezcla.2026-03",
+              "emphasis": false
+            },
+            {
+              "label": "Abr",
+              "period": "2026-04",
+              "value": 0.6111054871038648,
+              "ref": "mezcla.2026-04",
+              "emphasis": false
+            },
+            {
+              "label": "May",
+              "period": "2026-05",
+              "value": 0.6089944768492231,
+              "ref": "mezcla.2026-05",
+              "emphasis": false
+            },
+            {
+              "label": "Jun",
+              "period": "2026-06",
+              "value": 0.6065968847255515,
+              "ref": "mezcla.2026-06",
+              "emphasis": false
+            },
+            {
+              "label": "Jul",
+              "period": "2026-07",
+              "value": 0.6049682780460076,
+              "ref": "mezcla.2026-07",
+              "emphasis": false
+            },
+            {
+              "label": "Ago",
+              "period": "2026-08",
+              "value": 0.6031025632925877,
+              "ref": "mezcla.2026-08",
+              "emphasis": true
+            }
+          ],
+          "table": {
+            "columns": [
+              "Mes",
+              "Cargas por cotizante"
+            ],
+            "rows": [
+              [
+                "Ene",
+                "0,615"
+              ],
+              [
+                "Feb",
+                "0,614"
+              ],
+              [
+                "Mar",
+                "0,612"
+              ],
+              [
+                "Abr",
+                "0,611"
+              ],
+              [
+                "May",
+                "0,609"
+              ],
+              [
+                "Jun",
+                "0,607"
+              ],
+              [
+                "Jul",
+                "0,605"
+              ],
+              [
+                "Ago",
+                "0,603"
+              ]
+            ]
+          },
+          "source": "Denominador: cotizantes del mismo mes."
+        }
+      ],
+      "text": [
+        "La razón de cargas por cotizante pasó de 0,615 a 0,603. Una razón menor no implica menos ingreso: la cotización la paga el cotizante."
+      ]
+    },
+    {
+      "id": "movilidad",
+      "label": "Movilidad y desahucios",
+      "charts": [
+        {
+          "id": "f1-mob",
+          "form": "diverging",
+          "headline": "Entradas y salidas del sistema entre cortes",
+          "subtitle": "Cotizantes, julio 2025 → julio 2026",
+          "unit": "cotizantes",
+          "rows": [
+            {
+              "label": "Entradas",
+              "value": 91963,
+              "ref": "movilidad.entradas_intervalo",
+              "emphasis": true
+            },
+            {
+              "label": "Salidas",
+              "value": -109663,
+              "ref": "movilidad.salidas_intervalo",
+              "sign": -1
+            },
+            {
+              "label": "Neto",
+              "value": -17700,
+              "ref": "movilidad.diferencia_intervalo"
+            }
+          ],
+          "table": {
+            "columns": [
+              "Concepto",
+              "Cotizantes"
+            ],
+            "rows": [
+              [
+                "Entradas",
+                "91.963"
+              ],
+              [
+                "Salidas",
+                "109.663"
+              ],
+              [
+                "Neto",
+                "−17.700"
+              ]
+            ]
+          },
+          "source": "SIS, movilidad de cotizantes (hoja Nacional). Comparación entre dos cortes.",
+          "legend": "Salidas a la izquierda · entradas en acento"
+        },
+        {
+          "id": "f1-sub",
+          "form": "bars",
+          "headline": "Contratos suscritos y desahucios voluntarios",
+          "subtitle": "Contratos en julio 2026",
+          "unit": "contratos",
+          "rows": [
+            {
+              "label": "Suscritos",
+              "value": 19716,
+              "ref": "suscripciones.contratos_suscritos.2026-07",
+              "emphasis": true
+            },
+            {
+              "label": "Desahucios vol.",
+              "value": 15172,
+              "ref": "suscripciones.desahucios_voluntarios.2026-07"
+            }
+          ],
+          "table": {
+            "columns": [
+              "Concepto",
+              "Contratos"
+            ],
+            "rows": [
+              [
+                "Contratos suscritos",
+                "19.716"
+              ],
+              [
+                "Desahucios voluntarios",
+                "15.172"
+              ]
+            ]
+          },
+          "source": "SIS, suscripciones y desahucios. Los desahucios voluntarios no son todas las terminaciones."
+        }
+      ],
+      "text": [
+        "Entre los cortes de julio 2025 y julio 2026 salieron 109.663 cotizantes y entraron 91.963; la tasa sobre el corte inicial queda pendiente.",
+        "En julio 2026 se suscribieron 19.716 contratos y hubo 15.172 desahucios voluntarios; la diferencia no es el cambio neto, porque incluye cambios entre Isapres."
+      ]
+    },
+    {
+      "id": "regional",
+      "label": "Regional",
+      "charts": [],
+      "status": "pendiente",
+      "text": [
+        "Alicanto aún no extrae las cifras regionales: la publicación queda enlazada y su ficha suelta se absorbe aquí."
+      ],
+      "links": [
+        {
+          "label": "Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional – Agosto 2026",
+          "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-agosto-2026/"
+        },
+        {
+          "label": "Planilla regional (xlsx)",
+          "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-regional-202608.xlsx"
+        }
+      ]
+    }
+  ],
+  "facts": {
+    "heading": "Qué muestran los datos",
+    "paragraphs": [
+      "Entre enero y agosto, la cartera de Isapres bajó en 27.355 beneficiarios (−1,09%). La pérdida mensual tocó su máximo en abril (−6.188) y desde entonces se redujo en cada mes, hasta −814 en agosto.",
+      "Las cargas corresponden al 78% de la variación (−21.460); los cotizantes cayeron 5.895 en el mismo período y en agosto anotaron +1.296 frente a julio.",
+      "Por Isapre, Banmédica registró −20.948 beneficiarios desde enero y su participación entre las abiertas pasó de 23,1% a 22,5%. Esencial (+7.016) y Nueva Masvida (+5.461) crecieron."
+    ]
+  },
+  "watch": [
+    {
+      "headline": "Cartera a septiembre 2026 (la SIS la publicaría hacia el 2 nov).",
+      "explanation": "Si la variación mensual supera 0,25% del stock o los cotizantes cambian de signo, la ficha pasa a destacada."
+    },
+    {
+      "headline": "Participación de Banmédica entre las abiertas (22,5% en agosto).",
+      "explanation": "Una variación de 0,30 pp o más, con 5.000 personas o más, frente al inicio del año marca un cruce de umbral en esta ficha."
+    },
+    {
+      "headline": "Resultados financieros de las Isapres (F2).",
+      "explanation": "Cuando Alicanto lea la planilla financiera de la SIS, esta cartera se cruzará con siniestralidad y margen por beneficiario."
+    }
+  ],
+  "notes": [
+    {
+      "id": "n1",
+      "text": "Son stocks al cierre de mes y no se suman. Los datos de la SIS son provisionales. La comparación contra agosto del año anterior queda pendiente: Alicanto no tiene capturada la serie mensual del año anterior."
+    },
+    {
+      "id": "n2",
+      "text": "La participación usa como denominador solo las 7 Isapres abiertas (2.419.986 en agosto). Las cerradas (Isalud, Fundación, Cruz del Norte) atienden poblaciones cautivas y no compiten. 'Banmédica' es la Isapre, no el grupo controlador."
+    },
+    {
+      "id": "n3",
+      "text": "La movilidad compara dos cortes; no equivale a la suma de los movimientos intermedios ni a suscripciones menos desahucios, que incluyen cambios entre Isapres."
+    },
+    {
+      "id": "n5",
+      "text": "Ningún dato de esta ficha establece por qué cambia la cartera (precio, ley corta o calidad de servicio)."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
+      "sha256": "b1dc62eb1a40b0f34452f67e7fdecefb91adc175235ffc046b60a6e5e0c7e4ee",
+      "published_at": "2026-10-02",
+      "fetched_at": "2026-10-28T01:56:27.058481+00:00",
+      "label": "SIS · Estadística mensual de cartera de beneficiarios 2026 (xlsx)",
+      "role": "beneficiarios, cotizantes y cargas por Isapre, enero–agosto",
+      "locator": "Enero…Agosto!C8:E19 · fila Total Sistema",
+      "key": "cartera"
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-movilidad-de-cotizantes-202607.xlsx",
+      "sha256": "851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7",
+      "published_at": null,
+      "fetched_at": "2026-09-24T03:49:04.189181+00:00",
+      "label": "SIS · Movilidad de cotizantes, corte julio 2026 (xlsx)",
+      "role": "entradas y salidas del sistema entre cortes",
+      "locator": "Nacional!D19, D31, D43",
+      "key": "movilidad"
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
+      "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6",
+      "published_at": null,
+      "fetched_at": "2026-09-24T03:49:04.189181+00:00",
+      "label": "SIS · Suscripciones y desahucios 2026 (xlsx)",
+      "role": "contratos suscritos y desahucios voluntarios",
+      "locator": "Julio!C:D · fila Total Sistema",
+      "key": "suscripciones"
+    }
+  ],
+  "machine_note": "Ficha generada por la regla \"nuevo período\" (release del 2 oct). Las cifras las calcula el código desde el paquete de evidencia; solo la Lectura Alicanto puede escribirla un modelo, y pasa por un verificador. Lectura Alicanto omitida (sin modelo en esta corrida).",
+  "featured": true,
+  "triggers": [
+    "new_period",
+    "threshold_crossed"
+  ],
+  "late_release": null,
+  "revisions": [],
+  "lectura": {
+    "status": "not_attempted",
+    "text": null,
+    "cost_usd": 0.0
+  },
+  "status": "PASS",
+  "generated_at": "2026-10-28T08:10:11.059707+00:00",
+  "builder_version": "f1_tabs_v2",
+  "verification": {
+    "verdict": "PASS",
+    "errors": [],
+    "lenses": {
+      "data": "PASS",
+      "editorial": "PASS",
+      "ui": "PASS",
+      "business": "PASS"
+    }
+  },
+  "reconciliation": {
+    "ok": true,
+    "failures": [],
+    "checks": [
+      "10 códigos oficiales por mes",
+      "cotizantes + cargas = beneficiarios por Isapre",
+      "Σ beneficiarios por Isapre = Total Sistema declarado",
+      "meses contiguos",
+      "período informado = último mes del archivo",
+      "un solo hash por release"
+    ]
+  },
+  "evidence": {
+    "values": {
+      "cartera.63.beneficiarios.2026-01": {
+        "id": "cartera.63.beneficiarios.2026-01",
+        "value": 40490,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!E16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.63.cotizantes.2026-01": {
+        "id": "cartera.63.cotizantes.2026-01",
+        "value": 20175,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!C16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.63.cargas.2026-01": {
+        "id": "cartera.63.cargas.2026-01",
+        "value": 20315,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!D16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.beneficiarios.2026-01": {
+        "id": "cartera.67.beneficiarios.2026-01",
+        "value": 573597,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!E8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.cotizantes.2026-01": {
+        "id": "cartera.67.cotizantes.2026-01",
+        "value": 367541,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!C8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.cargas.2026-01": {
+        "id": "cartera.67.cargas.2026-01",
+        "value": 206056,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!D8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.beneficiarios.2026-01": {
+        "id": "cartera.76.beneficiarios.2026-01",
+        "value": 26522,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!E17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.cotizantes.2026-01": {
+        "id": "cartera.76.cotizantes.2026-01",
+        "value": 16034,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!C17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.cargas.2026-01": {
+        "id": "cartera.76.cargas.2026-01",
+        "value": 10488,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!D17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.beneficiarios.2026-01": {
+        "id": "cartera.78.beneficiarios.2026-01",
+        "value": 360643,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!E9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.cotizantes.2026-01": {
+        "id": "cartera.78.cotizantes.2026-01",
+        "value": 224823,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!C9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.cargas.2026-01": {
+        "id": "cartera.78.cargas.2026-01",
+        "value": 135820,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!D9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.beneficiarios.2026-01": {
+        "id": "cartera.80.beneficiarios.2026-01",
+        "value": 140775,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!E10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.cotizantes.2026-01": {
+        "id": "cartera.80.cotizantes.2026-01",
+        "value": 80281,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!C10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.cargas.2026-01": {
+        "id": "cartera.80.cargas.2026-01",
+        "value": 60494,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!D10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.beneficiarios.2026-01": {
+        "id": "cartera.81.beneficiarios.2026-01",
+        "value": 293968,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!E11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.cotizantes.2026-01": {
+        "id": "cartera.81.cotizantes.2026-01",
+        "value": 190217,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!C11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.cargas.2026-01": {
+        "id": "cartera.81.cargas.2026-01",
+        "value": 103751,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!D11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.beneficiarios.2026-01": {
+        "id": "cartera.94.beneficiarios.2026-01",
+        "value": 1118,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!E18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.cotizantes.2026-01": {
+        "id": "cartera.94.cotizantes.2026-01",
+        "value": 524,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!C18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.cargas.2026-01": {
+        "id": "cartera.94.cargas.2026-01",
+        "value": 594,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!D18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.beneficiarios.2026-01": {
+        "id": "cartera.99.beneficiarios.2026-01",
+        "value": 565481,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!E12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.cotizantes.2026-01": {
+        "id": "cartera.99.cotizantes.2026-01",
+        "value": 330961,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!C12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.cargas.2026-01": {
+        "id": "cartera.99.cargas.2026-01",
+        "value": 234520,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!D12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.beneficiarios.2026-01": {
+        "id": "cartera.107.beneficiarios.2026-01",
+        "value": 458571,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!E13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.cotizantes.2026-01": {
+        "id": "cartera.107.cotizantes.2026-01",
+        "value": 295170,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!C13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.cargas.2026-01": {
+        "id": "cartera.107.cargas.2026-01",
+        "value": 163401,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!D13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.beneficiarios.2026-01": {
+        "id": "cartera.108.beneficiarios.2026-01",
+        "value": 52873,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!E14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.cotizantes.2026-01": {
+        "id": "cartera.108.cotizantes.2026-01",
+        "value": 31338,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!C14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.cargas.2026-01": {
+        "id": "cartera.108.cargas.2026-01",
+        "value": 21535,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!D14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.declarado.beneficiarios.2026-01": {
+        "id": "cartera.declarado.beneficiarios.2026-01",
+        "value": 2514038,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": "Enero!E · Total Sistema",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "sistema.cotizantes.2026-01": {
+        "id": "sistema.cotizantes.2026-01",
+        "value": 1557064,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ cotizantes de los 10 códigos",
+        "inputs": [
+          "cartera.63.cotizantes.2026-01",
+          "cartera.67.cotizantes.2026-01",
+          "cartera.76.cotizantes.2026-01",
+          "cartera.78.cotizantes.2026-01",
+          "cartera.80.cotizantes.2026-01",
+          "cartera.81.cotizantes.2026-01",
+          "cartera.94.cotizantes.2026-01",
+          "cartera.99.cotizantes.2026-01",
+          "cartera.107.cotizantes.2026-01",
+          "cartera.108.cotizantes.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.cargas.2026-01": {
+        "id": "sistema.cargas.2026-01",
+        "value": 956974,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ cargas de los 10 códigos",
+        "inputs": [
+          "cartera.63.cargas.2026-01",
+          "cartera.67.cargas.2026-01",
+          "cartera.76.cargas.2026-01",
+          "cartera.78.cargas.2026-01",
+          "cartera.80.cargas.2026-01",
+          "cartera.81.cargas.2026-01",
+          "cartera.94.cargas.2026-01",
+          "cartera.99.cargas.2026-01",
+          "cartera.107.cargas.2026-01",
+          "cartera.108.cargas.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.2026-01": {
+        "id": "sistema.beneficiarios.2026-01",
+        "value": 2514038,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ beneficiarios de los 10 códigos",
+        "inputs": [
+          "cartera.63.beneficiarios.2026-01",
+          "cartera.67.beneficiarios.2026-01",
+          "cartera.76.beneficiarios.2026-01",
+          "cartera.78.beneficiarios.2026-01",
+          "cartera.80.beneficiarios.2026-01",
+          "cartera.81.beneficiarios.2026-01",
+          "cartera.94.beneficiarios.2026-01",
+          "cartera.99.beneficiarios.2026-01",
+          "cartera.107.beneficiarios.2026-01",
+          "cartera.108.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "abiertas.beneficiarios.2026-01": {
+        "id": "abiertas.beneficiarios.2026-01",
+        "value": 2445908,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ beneficiarios de las 7 Isapres abiertas",
+        "inputs": [
+          "cartera.67.beneficiarios.2026-01",
+          "cartera.78.beneficiarios.2026-01",
+          "cartera.80.beneficiarios.2026-01",
+          "cartera.81.beneficiarios.2026-01",
+          "cartera.99.beneficiarios.2026-01",
+          "cartera.107.beneficiarios.2026-01",
+          "cartera.108.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "cartera.63.beneficiarios.2026-02": {
+        "id": "cartera.63.beneficiarios.2026-02",
+        "value": 40404,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!E16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.63.cotizantes.2026-02": {
+        "id": "cartera.63.cotizantes.2026-02",
+        "value": 20122,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!C16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.63.cargas.2026-02": {
+        "id": "cartera.63.cargas.2026-02",
+        "value": 20282,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!D16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.beneficiarios.2026-02": {
+        "id": "cartera.67.beneficiarios.2026-02",
+        "value": 571775,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!E8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.cotizantes.2026-02": {
+        "id": "cartera.67.cotizantes.2026-02",
+        "value": 366520,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!C8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.cargas.2026-02": {
+        "id": "cartera.67.cargas.2026-02",
+        "value": 205255,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!D8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.beneficiarios.2026-02": {
+        "id": "cartera.76.beneficiarios.2026-02",
+        "value": 26462,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!E17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.cotizantes.2026-02": {
+        "id": "cartera.76.cotizantes.2026-02",
+        "value": 15987,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!C17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.cargas.2026-02": {
+        "id": "cartera.76.cargas.2026-02",
+        "value": 10475,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!D17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.beneficiarios.2026-02": {
+        "id": "cartera.78.beneficiarios.2026-02",
+        "value": 360921,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!E9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.cotizantes.2026-02": {
+        "id": "cartera.78.cotizantes.2026-02",
+        "value": 225266,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!C9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.cargas.2026-02": {
+        "id": "cartera.78.cargas.2026-02",
+        "value": 135655,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!D9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.beneficiarios.2026-02": {
+        "id": "cartera.80.beneficiarios.2026-02",
+        "value": 140602,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!E10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.cotizantes.2026-02": {
+        "id": "cartera.80.cotizantes.2026-02",
+        "value": 80284,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!C10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.cargas.2026-02": {
+        "id": "cartera.80.cargas.2026-02",
+        "value": 60318,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!D10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.beneficiarios.2026-02": {
+        "id": "cartera.81.beneficiarios.2026-02",
+        "value": 293809,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!E11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.cotizantes.2026-02": {
+        "id": "cartera.81.cotizantes.2026-02",
+        "value": 190191,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!C11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.cargas.2026-02": {
+        "id": "cartera.81.cargas.2026-02",
+        "value": 103618,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!D11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.beneficiarios.2026-02": {
+        "id": "cartera.94.beneficiarios.2026-02",
+        "value": 1115,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!E18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.cotizantes.2026-02": {
+        "id": "cartera.94.cotizantes.2026-02",
+        "value": 525,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!C18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.cargas.2026-02": {
+        "id": "cartera.94.cargas.2026-02",
+        "value": 590,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!D18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.beneficiarios.2026-02": {
+        "id": "cartera.99.beneficiarios.2026-02",
+        "value": 563762,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!E12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.cotizantes.2026-02": {
+        "id": "cartera.99.cotizantes.2026-02",
+        "value": 330190,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!C12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.cargas.2026-02": {
+        "id": "cartera.99.cargas.2026-02",
+        "value": 233572,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!D12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.beneficiarios.2026-02": {
+        "id": "cartera.107.beneficiarios.2026-02",
+        "value": 457787,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!E13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.cotizantes.2026-02": {
+        "id": "cartera.107.cotizantes.2026-02",
+        "value": 294774,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!C13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.cargas.2026-02": {
+        "id": "cartera.107.cargas.2026-02",
+        "value": 163013,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!D13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.beneficiarios.2026-02": {
+        "id": "cartera.108.beneficiarios.2026-02",
+        "value": 53748,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!E14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.cotizantes.2026-02": {
+        "id": "cartera.108.cotizantes.2026-02",
+        "value": 31892,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!C14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.cargas.2026-02": {
+        "id": "cartera.108.cargas.2026-02",
+        "value": 21856,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!D14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.declarado.beneficiarios.2026-02": {
+        "id": "cartera.declarado.beneficiarios.2026-02",
+        "value": 2510385,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": "Febrero!E · Total Sistema",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "sistema.cotizantes.2026-02": {
+        "id": "sistema.cotizantes.2026-02",
+        "value": 1555751,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ cotizantes de los 10 códigos",
+        "inputs": [
+          "cartera.63.cotizantes.2026-02",
+          "cartera.67.cotizantes.2026-02",
+          "cartera.76.cotizantes.2026-02",
+          "cartera.78.cotizantes.2026-02",
+          "cartera.80.cotizantes.2026-02",
+          "cartera.81.cotizantes.2026-02",
+          "cartera.94.cotizantes.2026-02",
+          "cartera.99.cotizantes.2026-02",
+          "cartera.107.cotizantes.2026-02",
+          "cartera.108.cotizantes.2026-02"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.cargas.2026-02": {
+        "id": "sistema.cargas.2026-02",
+        "value": 954634,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ cargas de los 10 códigos",
+        "inputs": [
+          "cartera.63.cargas.2026-02",
+          "cartera.67.cargas.2026-02",
+          "cartera.76.cargas.2026-02",
+          "cartera.78.cargas.2026-02",
+          "cartera.80.cargas.2026-02",
+          "cartera.81.cargas.2026-02",
+          "cartera.94.cargas.2026-02",
+          "cartera.99.cargas.2026-02",
+          "cartera.107.cargas.2026-02",
+          "cartera.108.cargas.2026-02"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.2026-02": {
+        "id": "sistema.beneficiarios.2026-02",
+        "value": 2510385,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ beneficiarios de los 10 códigos",
+        "inputs": [
+          "cartera.63.beneficiarios.2026-02",
+          "cartera.67.beneficiarios.2026-02",
+          "cartera.76.beneficiarios.2026-02",
+          "cartera.78.beneficiarios.2026-02",
+          "cartera.80.beneficiarios.2026-02",
+          "cartera.81.beneficiarios.2026-02",
+          "cartera.94.beneficiarios.2026-02",
+          "cartera.99.beneficiarios.2026-02",
+          "cartera.107.beneficiarios.2026-02",
+          "cartera.108.beneficiarios.2026-02"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "abiertas.beneficiarios.2026-02": {
+        "id": "abiertas.beneficiarios.2026-02",
+        "value": 2442404,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ beneficiarios de las 7 Isapres abiertas",
+        "inputs": [
+          "cartera.67.beneficiarios.2026-02",
+          "cartera.78.beneficiarios.2026-02",
+          "cartera.80.beneficiarios.2026-02",
+          "cartera.81.beneficiarios.2026-02",
+          "cartera.99.beneficiarios.2026-02",
+          "cartera.107.beneficiarios.2026-02",
+          "cartera.108.beneficiarios.2026-02"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "cartera.63.beneficiarios.2026-03": {
+        "id": "cartera.63.beneficiarios.2026-03",
+        "value": 40341,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!E16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.63.cotizantes.2026-03": {
+        "id": "cartera.63.cotizantes.2026-03",
+        "value": 20048,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!C16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.63.cargas.2026-03": {
+        "id": "cartera.63.cargas.2026-03",
+        "value": 20293,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!D16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.beneficiarios.2026-03": {
+        "id": "cartera.67.beneficiarios.2026-03",
+        "value": 568670,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!E8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.cotizantes.2026-03": {
+        "id": "cartera.67.cotizantes.2026-03",
+        "value": 364667,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!C8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.cargas.2026-03": {
+        "id": "cartera.67.cargas.2026-03",
+        "value": 204003,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!D8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.beneficiarios.2026-03": {
+        "id": "cartera.76.beneficiarios.2026-03",
+        "value": 26422,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!E17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.cotizantes.2026-03": {
+        "id": "cartera.76.cotizantes.2026-03",
+        "value": 15988,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!C17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.cargas.2026-03": {
+        "id": "cartera.76.cargas.2026-03",
+        "value": 10434,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!D17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.beneficiarios.2026-03": {
+        "id": "cartera.78.beneficiarios.2026-03",
+        "value": 360697,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!E9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.cotizantes.2026-03": {
+        "id": "cartera.78.cotizantes.2026-03",
+        "value": 225524,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!C9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.cargas.2026-03": {
+        "id": "cartera.78.cargas.2026-03",
+        "value": 135173,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!D9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.beneficiarios.2026-03": {
+        "id": "cartera.80.beneficiarios.2026-03",
+        "value": 140520,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!E10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.cotizantes.2026-03": {
+        "id": "cartera.80.cotizantes.2026-03",
+        "value": 80312,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!C10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.cargas.2026-03": {
+        "id": "cartera.80.cargas.2026-03",
+        "value": 60208,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!D10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.beneficiarios.2026-03": {
+        "id": "cartera.81.beneficiarios.2026-03",
+        "value": 293909,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!E11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.cotizantes.2026-03": {
+        "id": "cartera.81.cotizantes.2026-03",
+        "value": 190375,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!C11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.cargas.2026-03": {
+        "id": "cartera.81.cargas.2026-03",
+        "value": 103534,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!D11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.beneficiarios.2026-03": {
+        "id": "cartera.94.beneficiarios.2026-03",
+        "value": 1108,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!E18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.cotizantes.2026-03": {
+        "id": "cartera.94.cotizantes.2026-03",
+        "value": 519,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!C18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.cargas.2026-03": {
+        "id": "cartera.94.cargas.2026-03",
+        "value": 589,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!D18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.beneficiarios.2026-03": {
+        "id": "cartera.99.beneficiarios.2026-03",
+        "value": 560488,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!E12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.cotizantes.2026-03": {
+        "id": "cartera.99.cotizantes.2026-03",
+        "value": 328675,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!C12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.cargas.2026-03": {
+        "id": "cartera.99.cargas.2026-03",
+        "value": 231813,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!D12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.beneficiarios.2026-03": {
+        "id": "cartera.107.beneficiarios.2026-03",
+        "value": 458048,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!E13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.cotizantes.2026-03": {
+        "id": "cartera.107.cotizantes.2026-03",
+        "value": 295016,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!C13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.cargas.2026-03": {
+        "id": "cartera.107.cargas.2026-03",
+        "value": 163032,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!D13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.beneficiarios.2026-03": {
+        "id": "cartera.108.beneficiarios.2026-03",
+        "value": 54634,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!E14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.cotizantes.2026-03": {
+        "id": "cartera.108.cotizantes.2026-03",
+        "value": 32436,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!C14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.cargas.2026-03": {
+        "id": "cartera.108.cargas.2026-03",
+        "value": 22198,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!D14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.declarado.beneficiarios.2026-03": {
+        "id": "cartera.declarado.beneficiarios.2026-03",
+        "value": 2504837,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": "Marzo!E · Total Sistema",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "sistema.cotizantes.2026-03": {
+        "id": "sistema.cotizantes.2026-03",
+        "value": 1553560,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ cotizantes de los 10 códigos",
+        "inputs": [
+          "cartera.63.cotizantes.2026-03",
+          "cartera.67.cotizantes.2026-03",
+          "cartera.76.cotizantes.2026-03",
+          "cartera.78.cotizantes.2026-03",
+          "cartera.80.cotizantes.2026-03",
+          "cartera.81.cotizantes.2026-03",
+          "cartera.94.cotizantes.2026-03",
+          "cartera.99.cotizantes.2026-03",
+          "cartera.107.cotizantes.2026-03",
+          "cartera.108.cotizantes.2026-03"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.cargas.2026-03": {
+        "id": "sistema.cargas.2026-03",
+        "value": 951277,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ cargas de los 10 códigos",
+        "inputs": [
+          "cartera.63.cargas.2026-03",
+          "cartera.67.cargas.2026-03",
+          "cartera.76.cargas.2026-03",
+          "cartera.78.cargas.2026-03",
+          "cartera.80.cargas.2026-03",
+          "cartera.81.cargas.2026-03",
+          "cartera.94.cargas.2026-03",
+          "cartera.99.cargas.2026-03",
+          "cartera.107.cargas.2026-03",
+          "cartera.108.cargas.2026-03"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.2026-03": {
+        "id": "sistema.beneficiarios.2026-03",
+        "value": 2504837,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ beneficiarios de los 10 códigos",
+        "inputs": [
+          "cartera.63.beneficiarios.2026-03",
+          "cartera.67.beneficiarios.2026-03",
+          "cartera.76.beneficiarios.2026-03",
+          "cartera.78.beneficiarios.2026-03",
+          "cartera.80.beneficiarios.2026-03",
+          "cartera.81.beneficiarios.2026-03",
+          "cartera.94.beneficiarios.2026-03",
+          "cartera.99.beneficiarios.2026-03",
+          "cartera.107.beneficiarios.2026-03",
+          "cartera.108.beneficiarios.2026-03"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "abiertas.beneficiarios.2026-03": {
+        "id": "abiertas.beneficiarios.2026-03",
+        "value": 2436966,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ beneficiarios de las 7 Isapres abiertas",
+        "inputs": [
+          "cartera.67.beneficiarios.2026-03",
+          "cartera.78.beneficiarios.2026-03",
+          "cartera.80.beneficiarios.2026-03",
+          "cartera.81.beneficiarios.2026-03",
+          "cartera.99.beneficiarios.2026-03",
+          "cartera.107.beneficiarios.2026-03",
+          "cartera.108.beneficiarios.2026-03"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "cartera.63.beneficiarios.2026-04": {
+        "id": "cartera.63.beneficiarios.2026-04",
+        "value": 40331,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!E16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.63.cotizantes.2026-04": {
+        "id": "cartera.63.cotizantes.2026-04",
+        "value": 20016,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!C16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.63.cargas.2026-04": {
+        "id": "cartera.63.cargas.2026-04",
+        "value": 20315,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!D16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.beneficiarios.2026-04": {
+        "id": "cartera.67.beneficiarios.2026-04",
+        "value": 566503,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!E8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.cotizantes.2026-04": {
+        "id": "cartera.67.cotizantes.2026-04",
+        "value": 363480,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!C8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.cargas.2026-04": {
+        "id": "cartera.67.cargas.2026-04",
+        "value": 203023,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!D8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.beneficiarios.2026-04": {
+        "id": "cartera.76.beneficiarios.2026-04",
+        "value": 26311,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!E17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.cotizantes.2026-04": {
+        "id": "cartera.76.cotizantes.2026-04",
+        "value": 15956,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!C17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.cargas.2026-04": {
+        "id": "cartera.76.cargas.2026-04",
+        "value": 10355,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!D17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.beneficiarios.2026-04": {
+        "id": "cartera.78.beneficiarios.2026-04",
+        "value": 359602,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!E9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.cotizantes.2026-04": {
+        "id": "cartera.78.cotizantes.2026-04",
+        "value": 225255,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!C9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.cargas.2026-04": {
+        "id": "cartera.78.cargas.2026-04",
+        "value": 134347,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!D9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.beneficiarios.2026-04": {
+        "id": "cartera.80.beneficiarios.2026-04",
+        "value": 140324,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!E10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.cotizantes.2026-04": {
+        "id": "cartera.80.cotizantes.2026-04",
+        "value": 80263,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!C10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.cargas.2026-04": {
+        "id": "cartera.80.cargas.2026-04",
+        "value": 60061,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!D10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.beneficiarios.2026-04": {
+        "id": "cartera.81.beneficiarios.2026-04",
+        "value": 293704,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!E11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.cotizantes.2026-04": {
+        "id": "cartera.81.cotizantes.2026-04",
+        "value": 190320,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!C11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.cargas.2026-04": {
+        "id": "cartera.81.cargas.2026-04",
+        "value": 103384,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!D11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.beneficiarios.2026-04": {
+        "id": "cartera.94.beneficiarios.2026-04",
+        "value": 1122,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!E18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.cotizantes.2026-04": {
+        "id": "cartera.94.cotizantes.2026-04",
+        "value": 523,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!C18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.cargas.2026-04": {
+        "id": "cartera.94.cargas.2026-04",
+        "value": 599,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!D18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.beneficiarios.2026-04": {
+        "id": "cartera.99.beneficiarios.2026-04",
+        "value": 557276,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!E12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.cotizantes.2026-04": {
+        "id": "cartera.99.cotizantes.2026-04",
+        "value": 326948,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!C12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.cargas.2026-04": {
+        "id": "cartera.99.cargas.2026-04",
+        "value": 230328,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!D12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.beneficiarios.2026-04": {
+        "id": "cartera.107.beneficiarios.2026-04",
+        "value": 457791,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!E13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.cotizantes.2026-04": {
+        "id": "cartera.107.cotizantes.2026-04",
+        "value": 295029,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!C13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.cargas.2026-04": {
+        "id": "cartera.107.cargas.2026-04",
+        "value": 162762,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!D13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.beneficiarios.2026-04": {
+        "id": "cartera.108.beneficiarios.2026-04",
+        "value": 55685,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!E14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.cotizantes.2026-04": {
+        "id": "cartera.108.cotizantes.2026-04",
+        "value": 33101,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!C14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.cargas.2026-04": {
+        "id": "cartera.108.cargas.2026-04",
+        "value": 22584,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!D14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.declarado.beneficiarios.2026-04": {
+        "id": "cartera.declarado.beneficiarios.2026-04",
+        "value": 2498649,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": "Abril!E · Total Sistema",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "sistema.cotizantes.2026-04": {
+        "id": "sistema.cotizantes.2026-04",
+        "value": 1550891,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ cotizantes de los 10 códigos",
+        "inputs": [
+          "cartera.63.cotizantes.2026-04",
+          "cartera.67.cotizantes.2026-04",
+          "cartera.76.cotizantes.2026-04",
+          "cartera.78.cotizantes.2026-04",
+          "cartera.80.cotizantes.2026-04",
+          "cartera.81.cotizantes.2026-04",
+          "cartera.94.cotizantes.2026-04",
+          "cartera.99.cotizantes.2026-04",
+          "cartera.107.cotizantes.2026-04",
+          "cartera.108.cotizantes.2026-04"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.cargas.2026-04": {
+        "id": "sistema.cargas.2026-04",
+        "value": 947758,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ cargas de los 10 códigos",
+        "inputs": [
+          "cartera.63.cargas.2026-04",
+          "cartera.67.cargas.2026-04",
+          "cartera.76.cargas.2026-04",
+          "cartera.78.cargas.2026-04",
+          "cartera.80.cargas.2026-04",
+          "cartera.81.cargas.2026-04",
+          "cartera.94.cargas.2026-04",
+          "cartera.99.cargas.2026-04",
+          "cartera.107.cargas.2026-04",
+          "cartera.108.cargas.2026-04"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.2026-04": {
+        "id": "sistema.beneficiarios.2026-04",
+        "value": 2498649,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ beneficiarios de los 10 códigos",
+        "inputs": [
+          "cartera.63.beneficiarios.2026-04",
+          "cartera.67.beneficiarios.2026-04",
+          "cartera.76.beneficiarios.2026-04",
+          "cartera.78.beneficiarios.2026-04",
+          "cartera.80.beneficiarios.2026-04",
+          "cartera.81.beneficiarios.2026-04",
+          "cartera.94.beneficiarios.2026-04",
+          "cartera.99.beneficiarios.2026-04",
+          "cartera.107.beneficiarios.2026-04",
+          "cartera.108.beneficiarios.2026-04"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "abiertas.beneficiarios.2026-04": {
+        "id": "abiertas.beneficiarios.2026-04",
+        "value": 2430885,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ beneficiarios de las 7 Isapres abiertas",
+        "inputs": [
+          "cartera.67.beneficiarios.2026-04",
+          "cartera.78.beneficiarios.2026-04",
+          "cartera.80.beneficiarios.2026-04",
+          "cartera.81.beneficiarios.2026-04",
+          "cartera.99.beneficiarios.2026-04",
+          "cartera.107.beneficiarios.2026-04",
+          "cartera.108.beneficiarios.2026-04"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "cartera.63.beneficiarios.2026-05": {
+        "id": "cartera.63.beneficiarios.2026-05",
+        "value": 40255,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!E16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.63.cotizantes.2026-05": {
+        "id": "cartera.63.cotizantes.2026-05",
+        "value": 19933,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!C16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.63.cargas.2026-05": {
+        "id": "cartera.63.cargas.2026-05",
+        "value": 20322,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!D16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.beneficiarios.2026-05": {
+        "id": "cartera.67.beneficiarios.2026-05",
+        "value": 565489,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!E8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.cotizantes.2026-05": {
+        "id": "cartera.67.cotizantes.2026-05",
+        "value": 363338,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!C8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.cargas.2026-05": {
+        "id": "cartera.67.cargas.2026-05",
+        "value": 202151,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!D8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.beneficiarios.2026-05": {
+        "id": "cartera.76.beneficiarios.2026-05",
+        "value": 26304,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!E17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.cotizantes.2026-05": {
+        "id": "cartera.76.cotizantes.2026-05",
+        "value": 15959,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!C17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.cargas.2026-05": {
+        "id": "cartera.76.cargas.2026-05",
+        "value": 10345,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!D17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.beneficiarios.2026-05": {
+        "id": "cartera.78.beneficiarios.2026-05",
+        "value": 357950,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!E9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.cotizantes.2026-05": {
+        "id": "cartera.78.cotizantes.2026-05",
+        "value": 224646,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!C9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.cargas.2026-05": {
+        "id": "cartera.78.cargas.2026-05",
+        "value": 133304,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!D9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.beneficiarios.2026-05": {
+        "id": "cartera.80.beneficiarios.2026-05",
+        "value": 140219,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!E10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.cotizantes.2026-05": {
+        "id": "cartera.80.cotizantes.2026-05",
+        "value": 80305,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!C10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.cargas.2026-05": {
+        "id": "cartera.80.cargas.2026-05",
+        "value": 59914,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!D10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.beneficiarios.2026-05": {
+        "id": "cartera.81.beneficiarios.2026-05",
+        "value": 294447,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!E11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.cotizantes.2026-05": {
+        "id": "cartera.81.cotizantes.2026-05",
+        "value": 191018,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!C11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.cargas.2026-05": {
+        "id": "cartera.81.cargas.2026-05",
+        "value": 103429,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!D11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.beneficiarios.2026-05": {
+        "id": "cartera.94.beneficiarios.2026-05",
+        "value": 1110,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!E18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.cotizantes.2026-05": {
+        "id": "cartera.94.cotizantes.2026-05",
+        "value": 519,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!C18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.cargas.2026-05": {
+        "id": "cartera.94.cargas.2026-05",
+        "value": 591,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!D18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.beneficiarios.2026-05": {
+        "id": "cartera.99.beneficiarios.2026-05",
+        "value": 553855,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!E12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.cotizantes.2026-05": {
+        "id": "cartera.99.cotizantes.2026-05",
+        "value": 325434,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!C12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.cargas.2026-05": {
+        "id": "cartera.99.cargas.2026-05",
+        "value": 228421,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!D12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.beneficiarios.2026-05": {
+        "id": "cartera.107.beneficiarios.2026-05",
+        "value": 457395,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!E13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.cotizantes.2026-05": {
+        "id": "cartera.107.cotizantes.2026-05",
+        "value": 294982,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!C13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.cargas.2026-05": {
+        "id": "cartera.107.cargas.2026-05",
+        "value": 162413,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!D13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.beneficiarios.2026-05": {
+        "id": "cartera.108.beneficiarios.2026-05",
+        "value": 56660,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!E14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.cotizantes.2026-05": {
+        "id": "cartera.108.cotizantes.2026-05",
+        "value": 33706,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!C14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.cargas.2026-05": {
+        "id": "cartera.108.cargas.2026-05",
+        "value": 22954,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!D14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.declarado.beneficiarios.2026-05": {
+        "id": "cartera.declarado.beneficiarios.2026-05",
+        "value": 2493684,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": "Mayo!E · Total Sistema",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "sistema.cotizantes.2026-05": {
+        "id": "sistema.cotizantes.2026-05",
+        "value": 1549840,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ cotizantes de los 10 códigos",
+        "inputs": [
+          "cartera.63.cotizantes.2026-05",
+          "cartera.67.cotizantes.2026-05",
+          "cartera.76.cotizantes.2026-05",
+          "cartera.78.cotizantes.2026-05",
+          "cartera.80.cotizantes.2026-05",
+          "cartera.81.cotizantes.2026-05",
+          "cartera.94.cotizantes.2026-05",
+          "cartera.99.cotizantes.2026-05",
+          "cartera.107.cotizantes.2026-05",
+          "cartera.108.cotizantes.2026-05"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.cargas.2026-05": {
+        "id": "sistema.cargas.2026-05",
+        "value": 943844,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ cargas de los 10 códigos",
+        "inputs": [
+          "cartera.63.cargas.2026-05",
+          "cartera.67.cargas.2026-05",
+          "cartera.76.cargas.2026-05",
+          "cartera.78.cargas.2026-05",
+          "cartera.80.cargas.2026-05",
+          "cartera.81.cargas.2026-05",
+          "cartera.94.cargas.2026-05",
+          "cartera.99.cargas.2026-05",
+          "cartera.107.cargas.2026-05",
+          "cartera.108.cargas.2026-05"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.2026-05": {
+        "id": "sistema.beneficiarios.2026-05",
+        "value": 2493684,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ beneficiarios de los 10 códigos",
+        "inputs": [
+          "cartera.63.beneficiarios.2026-05",
+          "cartera.67.beneficiarios.2026-05",
+          "cartera.76.beneficiarios.2026-05",
+          "cartera.78.beneficiarios.2026-05",
+          "cartera.80.beneficiarios.2026-05",
+          "cartera.81.beneficiarios.2026-05",
+          "cartera.94.beneficiarios.2026-05",
+          "cartera.99.beneficiarios.2026-05",
+          "cartera.107.beneficiarios.2026-05",
+          "cartera.108.beneficiarios.2026-05"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "abiertas.beneficiarios.2026-05": {
+        "id": "abiertas.beneficiarios.2026-05",
+        "value": 2426015,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ beneficiarios de las 7 Isapres abiertas",
+        "inputs": [
+          "cartera.67.beneficiarios.2026-05",
+          "cartera.78.beneficiarios.2026-05",
+          "cartera.80.beneficiarios.2026-05",
+          "cartera.81.beneficiarios.2026-05",
+          "cartera.99.beneficiarios.2026-05",
+          "cartera.107.beneficiarios.2026-05",
+          "cartera.108.beneficiarios.2026-05"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "cartera.63.beneficiarios.2026-06": {
+        "id": "cartera.63.beneficiarios.2026-06",
+        "value": 39557,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!E16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.63.cotizantes.2026-06": {
+        "id": "cartera.63.cotizantes.2026-06",
+        "value": 19840,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!C16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.63.cargas.2026-06": {
+        "id": "cartera.63.cargas.2026-06",
+        "value": 19717,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!D16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.beneficiarios.2026-06": {
+        "id": "cartera.67.beneficiarios.2026-06",
+        "value": 564435,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!E8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.cotizantes.2026-06": {
+        "id": "cartera.67.cotizantes.2026-06",
+        "value": 363119,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!C8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.cargas.2026-06": {
+        "id": "cartera.67.cargas.2026-06",
+        "value": 201316,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!D8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.beneficiarios.2026-06": {
+        "id": "cartera.76.beneficiarios.2026-06",
+        "value": 26301,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!E17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.cotizantes.2026-06": {
+        "id": "cartera.76.cotizantes.2026-06",
+        "value": 15981,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!C17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.cargas.2026-06": {
+        "id": "cartera.76.cargas.2026-06",
+        "value": 10320,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!D17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.beneficiarios.2026-06": {
+        "id": "cartera.78.beneficiarios.2026-06",
+        "value": 355950,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!E9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.cotizantes.2026-06": {
+        "id": "cartera.78.cotizantes.2026-06",
+        "value": 223729,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!C9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.cargas.2026-06": {
+        "id": "cartera.78.cargas.2026-06",
+        "value": 132221,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!D9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.beneficiarios.2026-06": {
+        "id": "cartera.80.beneficiarios.2026-06",
+        "value": 140003,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!E10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.cotizantes.2026-06": {
+        "id": "cartera.80.cotizantes.2026-06",
+        "value": 80249,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!C10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.cargas.2026-06": {
+        "id": "cartera.80.cargas.2026-06",
+        "value": 59754,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!D10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.beneficiarios.2026-06": {
+        "id": "cartera.81.beneficiarios.2026-06",
+        "value": 296440,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!E11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.cotizantes.2026-06": {
+        "id": "cartera.81.cotizantes.2026-06",
+        "value": 192633,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!C11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.cargas.2026-06": {
+        "id": "cartera.81.cargas.2026-06",
+        "value": 103807,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!D11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.beneficiarios.2026-06": {
+        "id": "cartera.94.beneficiarios.2026-06",
+        "value": 1065,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!E18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.cotizantes.2026-06": {
+        "id": "cartera.94.cotizantes.2026-06",
+        "value": 510,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!C18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.cargas.2026-06": {
+        "id": "cartera.94.cargas.2026-06",
+        "value": 555,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!D18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.beneficiarios.2026-06": {
+        "id": "cartera.99.beneficiarios.2026-06",
+        "value": 549572,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!E12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.cotizantes.2026-06": {
+        "id": "cartera.99.cotizantes.2026-06",
+        "value": 323401,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!C12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.cargas.2026-06": {
+        "id": "cartera.99.cargas.2026-06",
+        "value": 226171,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!D12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.beneficiarios.2026-06": {
+        "id": "cartera.107.beneficiarios.2026-06",
+        "value": 458320,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!E13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.cotizantes.2026-06": {
+        "id": "cartera.107.cotizantes.2026-06",
+        "value": 295647,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!C13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.cargas.2026-06": {
+        "id": "cartera.107.cargas.2026-06",
+        "value": 162673,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!D13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.beneficiarios.2026-06": {
+        "id": "cartera.108.beneficiarios.2026-06",
+        "value": 57615,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!E14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.cotizantes.2026-06": {
+        "id": "cartera.108.cotizantes.2026-06",
+        "value": 34289,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!C14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.cargas.2026-06": {
+        "id": "cartera.108.cargas.2026-06",
+        "value": 23326,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!D14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.declarado.beneficiarios.2026-06": {
+        "id": "cartera.declarado.beneficiarios.2026-06",
+        "value": 2489258,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": "Junio!E · Total Sistema",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "sistema.cotizantes.2026-06": {
+        "id": "sistema.cotizantes.2026-06",
+        "value": 1549398,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ cotizantes de los 10 códigos",
+        "inputs": [
+          "cartera.63.cotizantes.2026-06",
+          "cartera.67.cotizantes.2026-06",
+          "cartera.76.cotizantes.2026-06",
+          "cartera.78.cotizantes.2026-06",
+          "cartera.80.cotizantes.2026-06",
+          "cartera.81.cotizantes.2026-06",
+          "cartera.94.cotizantes.2026-06",
+          "cartera.99.cotizantes.2026-06",
+          "cartera.107.cotizantes.2026-06",
+          "cartera.108.cotizantes.2026-06"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.cargas.2026-06": {
+        "id": "sistema.cargas.2026-06",
+        "value": 939860,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ cargas de los 10 códigos",
+        "inputs": [
+          "cartera.63.cargas.2026-06",
+          "cartera.67.cargas.2026-06",
+          "cartera.76.cargas.2026-06",
+          "cartera.78.cargas.2026-06",
+          "cartera.80.cargas.2026-06",
+          "cartera.81.cargas.2026-06",
+          "cartera.94.cargas.2026-06",
+          "cartera.99.cargas.2026-06",
+          "cartera.107.cargas.2026-06",
+          "cartera.108.cargas.2026-06"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.2026-06": {
+        "id": "sistema.beneficiarios.2026-06",
+        "value": 2489258,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ beneficiarios de los 10 códigos",
+        "inputs": [
+          "cartera.63.beneficiarios.2026-06",
+          "cartera.67.beneficiarios.2026-06",
+          "cartera.76.beneficiarios.2026-06",
+          "cartera.78.beneficiarios.2026-06",
+          "cartera.80.beneficiarios.2026-06",
+          "cartera.81.beneficiarios.2026-06",
+          "cartera.94.beneficiarios.2026-06",
+          "cartera.99.beneficiarios.2026-06",
+          "cartera.107.beneficiarios.2026-06",
+          "cartera.108.beneficiarios.2026-06"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "abiertas.beneficiarios.2026-06": {
+        "id": "abiertas.beneficiarios.2026-06",
+        "value": 2422335,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ beneficiarios de las 7 Isapres abiertas",
+        "inputs": [
+          "cartera.67.beneficiarios.2026-06",
+          "cartera.78.beneficiarios.2026-06",
+          "cartera.80.beneficiarios.2026-06",
+          "cartera.81.beneficiarios.2026-06",
+          "cartera.99.beneficiarios.2026-06",
+          "cartera.107.beneficiarios.2026-06",
+          "cartera.108.beneficiarios.2026-06"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "cartera.63.beneficiarios.2026-07": {
+        "id": "cartera.63.beneficiarios.2026-07",
+        "value": 39579,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!E16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.63.cotizantes.2026-07": {
+        "id": "cartera.63.cotizantes.2026-07",
+        "value": 19800,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!C16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.63.cargas.2026-07": {
+        "id": "cartera.63.cargas.2026-07",
+        "value": 19779,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!D16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.beneficiarios.2026-07": {
+        "id": "cartera.67.beneficiarios.2026-07",
+        "value": 564564,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!E8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.cotizantes.2026-07": {
+        "id": "cartera.67.cotizantes.2026-07",
+        "value": 363526,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!C8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.cargas.2026-07": {
+        "id": "cartera.67.cargas.2026-07",
+        "value": 201038,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!D8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.beneficiarios.2026-07": {
+        "id": "cartera.76.beneficiarios.2026-07",
+        "value": 26267,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!E17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.cotizantes.2026-07": {
+        "id": "cartera.76.cotizantes.2026-07",
+        "value": 15970,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!C17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.cargas.2026-07": {
+        "id": "cartera.76.cargas.2026-07",
+        "value": 10297,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!D17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.beneficiarios.2026-07": {
+        "id": "cartera.78.beneficiarios.2026-07",
+        "value": 354402,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!E9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.cotizantes.2026-07": {
+        "id": "cartera.78.cotizantes.2026-07",
+        "value": 223084,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!C9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.cargas.2026-07": {
+        "id": "cartera.78.cargas.2026-07",
+        "value": 131318,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!D9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.beneficiarios.2026-07": {
+        "id": "cartera.80.beneficiarios.2026-07",
+        "value": 139842,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!E10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.cotizantes.2026-07": {
+        "id": "cartera.80.cotizantes.2026-07",
+        "value": 80285,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!C10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.cargas.2026-07": {
+        "id": "cartera.80.cargas.2026-07",
+        "value": 59557,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!D10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.beneficiarios.2026-07": {
+        "id": "cartera.81.beneficiarios.2026-07",
+        "value": 297708,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!E11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.cotizantes.2026-07": {
+        "id": "cartera.81.cotizantes.2026-07",
+        "value": 193635,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!C11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.cargas.2026-07": {
+        "id": "cartera.81.cargas.2026-07",
+        "value": 104073,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!D11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.beneficiarios.2026-07": {
+        "id": "cartera.94.beneficiarios.2026-07",
+        "value": 1067,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!E18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.cotizantes.2026-07": {
+        "id": "cartera.94.cotizantes.2026-07",
+        "value": 511,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!C18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.cargas.2026-07": {
+        "id": "cartera.94.cargas.2026-07",
+        "value": 556,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!D18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.beneficiarios.2026-07": {
+        "id": "cartera.99.beneficiarios.2026-07",
+        "value": 546932,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!E12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.cotizantes.2026-07": {
+        "id": "cartera.99.cotizantes.2026-07",
+        "value": 322333,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!C12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.cargas.2026-07": {
+        "id": "cartera.99.cargas.2026-07",
+        "value": 224599,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!D12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.beneficiarios.2026-07": {
+        "id": "cartera.107.beneficiarios.2026-07",
+        "value": 458551,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!E13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.cotizantes.2026-07": {
+        "id": "cartera.107.cotizantes.2026-07",
+        "value": 295872,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!C13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.cargas.2026-07": {
+        "id": "cartera.107.cargas.2026-07",
+        "value": 162679,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!D13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.beneficiarios.2026-07": {
+        "id": "cartera.108.beneficiarios.2026-07",
+        "value": 58585,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!E14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.cotizantes.2026-07": {
+        "id": "cartera.108.cotizantes.2026-07",
+        "value": 34857,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!C14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.cargas.2026-07": {
+        "id": "cartera.108.cargas.2026-07",
+        "value": 23728,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!D14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.declarado.beneficiarios.2026-07": {
+        "id": "cartera.declarado.beneficiarios.2026-07",
+        "value": 2487497,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": "Julio!E · Total Sistema",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "sistema.cotizantes.2026-07": {
+        "id": "sistema.cotizantes.2026-07",
+        "value": 1549873,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ cotizantes de los 10 códigos",
+        "inputs": [
+          "cartera.63.cotizantes.2026-07",
+          "cartera.67.cotizantes.2026-07",
+          "cartera.76.cotizantes.2026-07",
+          "cartera.78.cotizantes.2026-07",
+          "cartera.80.cotizantes.2026-07",
+          "cartera.81.cotizantes.2026-07",
+          "cartera.94.cotizantes.2026-07",
+          "cartera.99.cotizantes.2026-07",
+          "cartera.107.cotizantes.2026-07",
+          "cartera.108.cotizantes.2026-07"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.cargas.2026-07": {
+        "id": "sistema.cargas.2026-07",
+        "value": 937624,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ cargas de los 10 códigos",
+        "inputs": [
+          "cartera.63.cargas.2026-07",
+          "cartera.67.cargas.2026-07",
+          "cartera.76.cargas.2026-07",
+          "cartera.78.cargas.2026-07",
+          "cartera.80.cargas.2026-07",
+          "cartera.81.cargas.2026-07",
+          "cartera.94.cargas.2026-07",
+          "cartera.99.cargas.2026-07",
+          "cartera.107.cargas.2026-07",
+          "cartera.108.cargas.2026-07"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.2026-07": {
+        "id": "sistema.beneficiarios.2026-07",
+        "value": 2487497,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ beneficiarios de los 10 códigos",
+        "inputs": [
+          "cartera.63.beneficiarios.2026-07",
+          "cartera.67.beneficiarios.2026-07",
+          "cartera.76.beneficiarios.2026-07",
+          "cartera.78.beneficiarios.2026-07",
+          "cartera.80.beneficiarios.2026-07",
+          "cartera.81.beneficiarios.2026-07",
+          "cartera.94.beneficiarios.2026-07",
+          "cartera.99.beneficiarios.2026-07",
+          "cartera.107.beneficiarios.2026-07",
+          "cartera.108.beneficiarios.2026-07"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "abiertas.beneficiarios.2026-07": {
+        "id": "abiertas.beneficiarios.2026-07",
+        "value": 2420584,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ beneficiarios de las 7 Isapres abiertas",
+        "inputs": [
+          "cartera.67.beneficiarios.2026-07",
+          "cartera.78.beneficiarios.2026-07",
+          "cartera.80.beneficiarios.2026-07",
+          "cartera.81.beneficiarios.2026-07",
+          "cartera.99.beneficiarios.2026-07",
+          "cartera.107.beneficiarios.2026-07",
+          "cartera.108.beneficiarios.2026-07"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "cartera.63.beneficiarios.2026-08": {
+        "id": "cartera.63.beneficiarios.2026-08",
+        "value": 39434,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!E16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.63.cotizantes.2026-08": {
+        "id": "cartera.63.cotizantes.2026-08",
+        "value": 19717,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!C16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.63.cargas.2026-08": {
+        "id": "cartera.63.cargas.2026-08",
+        "value": 19717,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!D16",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.beneficiarios.2026-08": {
+        "id": "cartera.67.beneficiarios.2026-08",
+        "value": 564721,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!E8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.cotizantes.2026-08": {
+        "id": "cartera.67.cotizantes.2026-08",
+        "value": 363995,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!C8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.67.cargas.2026-08": {
+        "id": "cartera.67.cargas.2026-08",
+        "value": 200726,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!D8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.beneficiarios.2026-08": {
+        "id": "cartera.76.beneficiarios.2026-08",
+        "value": 26203,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!E17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.cotizantes.2026-08": {
+        "id": "cartera.76.cotizantes.2026-08",
+        "value": 15955,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!C17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.76.cargas.2026-08": {
+        "id": "cartera.76.cargas.2026-08",
+        "value": 10248,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!D17",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.beneficiarios.2026-08": {
+        "id": "cartera.78.beneficiarios.2026-08",
+        "value": 352662,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!E9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.cotizantes.2026-08": {
+        "id": "cartera.78.cotizantes.2026-08",
+        "value": 222292,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!C9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.78.cargas.2026-08": {
+        "id": "cartera.78.cargas.2026-08",
+        "value": 130370,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!D9",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.beneficiarios.2026-08": {
+        "id": "cartera.80.beneficiarios.2026-08",
+        "value": 139784,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!E10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.cotizantes.2026-08": {
+        "id": "cartera.80.cotizantes.2026-08",
+        "value": 80324,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!C10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.80.cargas.2026-08": {
+        "id": "cartera.80.cargas.2026-08",
+        "value": 59460,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!D10",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.beneficiarios.2026-08": {
+        "id": "cartera.81.beneficiarios.2026-08",
+        "value": 299429,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!E11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.cotizantes.2026-08": {
+        "id": "cartera.81.cotizantes.2026-08",
+        "value": 194939,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!C11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.81.cargas.2026-08": {
+        "id": "cartera.81.cargas.2026-08",
+        "value": 104490,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!D11",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.beneficiarios.2026-08": {
+        "id": "cartera.94.beneficiarios.2026-08",
+        "value": 1060,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!E18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.cotizantes.2026-08": {
+        "id": "cartera.94.cotizantes.2026-08",
+        "value": 508,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!C18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.94.cargas.2026-08": {
+        "id": "cartera.94.cargas.2026-08",
+        "value": 552,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!D18",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.beneficiarios.2026-08": {
+        "id": "cartera.99.beneficiarios.2026-08",
+        "value": 544533,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!E12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.cotizantes.2026-08": {
+        "id": "cartera.99.cotizantes.2026-08",
+        "value": 321419,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!C12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.99.cargas.2026-08": {
+        "id": "cartera.99.cargas.2026-08",
+        "value": 223114,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!D12",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.beneficiarios.2026-08": {
+        "id": "cartera.107.beneficiarios.2026-08",
+        "value": 458968,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!E13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.cotizantes.2026-08": {
+        "id": "cartera.107.cotizantes.2026-08",
+        "value": 296343,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!C13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.107.cargas.2026-08": {
+        "id": "cartera.107.cargas.2026-08",
+        "value": 162625,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!D13",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.beneficiarios.2026-08": {
+        "id": "cartera.108.beneficiarios.2026-08",
+        "value": 59889,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!E14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.cotizantes.2026-08": {
+        "id": "cartera.108.cotizantes.2026-08",
+        "value": 35677,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!C14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.108.cargas.2026-08": {
+        "id": "cartera.108.cargas.2026-08",
+        "value": 24212,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!D14",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "cartera.declarado.beneficiarios.2026-08": {
+        "id": "cartera.declarado.beneficiarios.2026-08",
+        "value": 2486683,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": "Agosto!E · Total Sistema",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "sistema.cotizantes.2026-08": {
+        "id": "sistema.cotizantes.2026-08",
+        "value": 1551169,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ cotizantes de los 10 códigos",
+        "inputs": [
+          "cartera.63.cotizantes.2026-08",
+          "cartera.67.cotizantes.2026-08",
+          "cartera.76.cotizantes.2026-08",
+          "cartera.78.cotizantes.2026-08",
+          "cartera.80.cotizantes.2026-08",
+          "cartera.81.cotizantes.2026-08",
+          "cartera.94.cotizantes.2026-08",
+          "cartera.99.cotizantes.2026-08",
+          "cartera.107.cotizantes.2026-08",
+          "cartera.108.cotizantes.2026-08"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.cargas.2026-08": {
+        "id": "sistema.cargas.2026-08",
+        "value": 935514,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ cargas de los 10 códigos",
+        "inputs": [
+          "cartera.63.cargas.2026-08",
+          "cartera.67.cargas.2026-08",
+          "cartera.76.cargas.2026-08",
+          "cartera.78.cargas.2026-08",
+          "cartera.80.cargas.2026-08",
+          "cartera.81.cargas.2026-08",
+          "cartera.94.cargas.2026-08",
+          "cartera.99.cargas.2026-08",
+          "cartera.107.cargas.2026-08",
+          "cartera.108.cargas.2026-08"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.2026-08": {
+        "id": "sistema.beneficiarios.2026-08",
+        "value": 2486683,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ beneficiarios de los 10 códigos",
+        "inputs": [
+          "cartera.63.beneficiarios.2026-08",
+          "cartera.67.beneficiarios.2026-08",
+          "cartera.76.beneficiarios.2026-08",
+          "cartera.78.beneficiarios.2026-08",
+          "cartera.80.beneficiarios.2026-08",
+          "cartera.81.beneficiarios.2026-08",
+          "cartera.94.beneficiarios.2026-08",
+          "cartera.99.beneficiarios.2026-08",
+          "cartera.107.beneficiarios.2026-08",
+          "cartera.108.beneficiarios.2026-08"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "abiertas.beneficiarios.2026-08": {
+        "id": "abiertas.beneficiarios.2026-08",
+        "value": 2419986,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ beneficiarios de las 7 Isapres abiertas",
+        "inputs": [
+          "cartera.67.beneficiarios.2026-08",
+          "cartera.78.beneficiarios.2026-08",
+          "cartera.80.beneficiarios.2026-08",
+          "cartera.81.beneficiarios.2026-08",
+          "cartera.99.beneficiarios.2026-08",
+          "cartera.107.beneficiarios.2026-08",
+          "cartera.108.beneficiarios.2026-08"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.mm.2026-02": {
+        "id": "sistema.beneficiarios.mm.2026-02",
+        "value": -3653,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(t) − stock(t−1)",
+        "inputs": [
+          "sistema.beneficiarios.2026-02",
+          "sistema.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.mm.2026-03": {
+        "id": "sistema.beneficiarios.mm.2026-03",
+        "value": -5548,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(t) − stock(t−1)",
+        "inputs": [
+          "sistema.beneficiarios.2026-03",
+          "sistema.beneficiarios.2026-02"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.mm.2026-04": {
+        "id": "sistema.beneficiarios.mm.2026-04",
+        "value": -6188,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(t) − stock(t−1)",
+        "inputs": [
+          "sistema.beneficiarios.2026-04",
+          "sistema.beneficiarios.2026-03"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.mm.2026-05": {
+        "id": "sistema.beneficiarios.mm.2026-05",
+        "value": -4965,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(t) − stock(t−1)",
+        "inputs": [
+          "sistema.beneficiarios.2026-05",
+          "sistema.beneficiarios.2026-04"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.mm.2026-06": {
+        "id": "sistema.beneficiarios.mm.2026-06",
+        "value": -4426,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(t) − stock(t−1)",
+        "inputs": [
+          "sistema.beneficiarios.2026-06",
+          "sistema.beneficiarios.2026-05"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.mm.2026-07": {
+        "id": "sistema.beneficiarios.mm.2026-07",
+        "value": -1761,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(t) − stock(t−1)",
+        "inputs": [
+          "sistema.beneficiarios.2026-07",
+          "sistema.beneficiarios.2026-06"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.mm.2026-08": {
+        "id": "sistema.beneficiarios.mm.2026-08",
+        "value": -814,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(t) − stock(t−1)",
+        "inputs": [
+          "sistema.beneficiarios.2026-08",
+          "sistema.beneficiarios.2026-07"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.cotizantes.mm.2026-02": {
+        "id": "sistema.cotizantes.mm.2026-02",
+        "value": -1313,
+        "unit": "personas",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(t) − stock(t−1)",
+        "inputs": [
+          "sistema.cotizantes.2026-02",
+          "sistema.cotizantes.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.cotizantes.mm.2026-03": {
+        "id": "sistema.cotizantes.mm.2026-03",
+        "value": -2191,
+        "unit": "personas",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(t) − stock(t−1)",
+        "inputs": [
+          "sistema.cotizantes.2026-03",
+          "sistema.cotizantes.2026-02"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.cotizantes.mm.2026-04": {
+        "id": "sistema.cotizantes.mm.2026-04",
+        "value": -2669,
+        "unit": "personas",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(t) − stock(t−1)",
+        "inputs": [
+          "sistema.cotizantes.2026-04",
+          "sistema.cotizantes.2026-03"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.cotizantes.mm.2026-05": {
+        "id": "sistema.cotizantes.mm.2026-05",
+        "value": -1051,
+        "unit": "personas",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(t) − stock(t−1)",
+        "inputs": [
+          "sistema.cotizantes.2026-05",
+          "sistema.cotizantes.2026-04"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.cotizantes.mm.2026-06": {
+        "id": "sistema.cotizantes.mm.2026-06",
+        "value": -442,
+        "unit": "personas",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(t) − stock(t−1)",
+        "inputs": [
+          "sistema.cotizantes.2026-06",
+          "sistema.cotizantes.2026-05"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.cotizantes.mm.2026-07": {
+        "id": "sistema.cotizantes.mm.2026-07",
+        "value": 475,
+        "unit": "personas",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(t) − stock(t−1)",
+        "inputs": [
+          "sistema.cotizantes.2026-07",
+          "sistema.cotizantes.2026-06"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.cotizantes.mm.2026-08": {
+        "id": "sistema.cotizantes.mm.2026-08",
+        "value": 1296,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(t) − stock(t−1)",
+        "inputs": [
+          "sistema.cotizantes.2026-08",
+          "sistema.cotizantes.2026-07"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.ytd": {
+        "id": "sistema.beneficiarios.ytd",
+        "value": -27355,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(2026-08) − stock(2026-01)",
+        "inputs": [
+          "sistema.beneficiarios.2026-08",
+          "sistema.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.ytd_pct": {
+        "id": "sistema.beneficiarios.ytd_pct",
+        "value": -1.0880901561551577,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δ / stock base × 100",
+        "inputs": [
+          "sistema.beneficiarios.ytd",
+          "sistema.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.beneficiarios.mm_pct": {
+        "id": "sistema.beneficiarios.mm_pct",
+        "value": -0.03272365755616992,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δ m/m / stock(t−1) × 100",
+        "inputs": [
+          "sistema.beneficiarios.mm.2026-08",
+          "sistema.beneficiarios.2026-07"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.cotizantes.ytd": {
+        "id": "sistema.cotizantes.ytd",
+        "value": -5895,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(2026-08) − stock(2026-01)",
+        "inputs": [
+          "sistema.cotizantes.2026-08",
+          "sistema.cotizantes.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "sistema.cargas.ytd": {
+        "id": "sistema.cargas.ytd",
+        "value": -21460,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(2026-08) − stock(2026-01)",
+        "inputs": [
+          "sistema.cargas.2026-08",
+          "sistema.cargas.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "mezcla.2026-01": {
+        "id": "mezcla.2026-01",
+        "value": 0.6146015834930356,
+        "unit": "ratio",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": null,
+        "formula": "cargas / cotizantes",
+        "inputs": [
+          "sistema.cargas.2026-01",
+          "sistema.cotizantes.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "mezcla.2026-02": {
+        "id": "mezcla.2026-02",
+        "value": 0.6136161892230826,
+        "unit": "ratio",
+        "period": "2026-02",
+        "source": "cartera",
+        "locator": null,
+        "formula": "cargas / cotizantes",
+        "inputs": [
+          "sistema.cargas.2026-02",
+          "sistema.cotizantes.2026-02"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "mezcla.2026-03": {
+        "id": "mezcla.2026-03",
+        "value": 0.6123207343134478,
+        "unit": "ratio",
+        "period": "2026-03",
+        "source": "cartera",
+        "locator": null,
+        "formula": "cargas / cotizantes",
+        "inputs": [
+          "sistema.cargas.2026-03",
+          "sistema.cotizantes.2026-03"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "mezcla.2026-04": {
+        "id": "mezcla.2026-04",
+        "value": 0.6111054871038648,
+        "unit": "ratio",
+        "period": "2026-04",
+        "source": "cartera",
+        "locator": null,
+        "formula": "cargas / cotizantes",
+        "inputs": [
+          "sistema.cargas.2026-04",
+          "sistema.cotizantes.2026-04"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "mezcla.2026-05": {
+        "id": "mezcla.2026-05",
+        "value": 0.6089944768492231,
+        "unit": "ratio",
+        "period": "2026-05",
+        "source": "cartera",
+        "locator": null,
+        "formula": "cargas / cotizantes",
+        "inputs": [
+          "sistema.cargas.2026-05",
+          "sistema.cotizantes.2026-05"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "mezcla.2026-06": {
+        "id": "mezcla.2026-06",
+        "value": 0.6065968847255515,
+        "unit": "ratio",
+        "period": "2026-06",
+        "source": "cartera",
+        "locator": null,
+        "formula": "cargas / cotizantes",
+        "inputs": [
+          "sistema.cargas.2026-06",
+          "sistema.cotizantes.2026-06"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "mezcla.2026-07": {
+        "id": "mezcla.2026-07",
+        "value": 0.6049682780460076,
+        "unit": "ratio",
+        "period": "2026-07",
+        "source": "cartera",
+        "locator": null,
+        "formula": "cargas / cotizantes",
+        "inputs": [
+          "sistema.cargas.2026-07",
+          "sistema.cotizantes.2026-07"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "mezcla.2026-08": {
+        "id": "mezcla.2026-08",
+        "value": 0.6031025632925877,
+        "unit": "ratio",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "cargas / cotizantes",
+        "inputs": [
+          "sistema.cargas.2026-08",
+          "sistema.cotizantes.2026-08"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "mezcla.delta": {
+        "id": "mezcla.delta",
+        "value": -0.011499020200447907,
+        "unit": "ratio",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "mezcla(t) − mezcla(base)",
+        "inputs": [
+          "mezcla.2026-08",
+          "mezcla.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "mezcla.delta_shown": {
+        "id": "mezcla.delta_shown",
+        "value": -0.01200000000000001,
+        "unit": "ratio",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "redondeo(mezcla t, 3) − redondeo(mezcla base, 3)",
+        "inputs": [
+          "mezcla.delta"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.63.ytd": {
+        "id": "delta.63.ytd",
+        "value": -1056,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(2026-08) − stock(2026-01)",
+        "inputs": [
+          "cartera.63.beneficiarios.2026-08",
+          "cartera.63.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.63.ytd_pct": {
+        "id": "delta.63.ytd_pct",
+        "value": -2.608051370708817,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δ / stock base × 100",
+        "inputs": [
+          "delta.63.ytd",
+          "cartera.63.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.67.ytd": {
+        "id": "delta.67.ytd",
+        "value": -8876,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(2026-08) − stock(2026-01)",
+        "inputs": [
+          "cartera.67.beneficiarios.2026-08",
+          "cartera.67.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.67.ytd_pct": {
+        "id": "delta.67.ytd_pct",
+        "value": -1.5474278979841247,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δ / stock base × 100",
+        "inputs": [
+          "delta.67.ytd",
+          "cartera.67.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.67.2026-01": {
+        "id": "share.67.2026-01",
+        "value": 23.45129089074487,
+        "unit": "%",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": null,
+        "formula": "benef_i / Σ abiertas × 100",
+        "inputs": [
+          "cartera.67.beneficiarios.2026-01",
+          "abiertas.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.67.2026-08": {
+        "id": "share.67.2026-08",
+        "value": 23.33571351239222,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "benef_i / Σ abiertas × 100",
+        "inputs": [
+          "cartera.67.beneficiarios.2026-08",
+          "abiertas.beneficiarios.2026-08"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.67.delta_pp": {
+        "id": "share.67.delta_pp",
+        "value": -0.11557737835264703,
+        "unit": "pp",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "share(t) − share(base)",
+        "inputs": [
+          "share.67.2026-08",
+          "share.67.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.76.ytd": {
+        "id": "delta.76.ytd",
+        "value": -319,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(2026-08) − stock(2026-01)",
+        "inputs": [
+          "cartera.76.beneficiarios.2026-08",
+          "cartera.76.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.76.ytd_pct": {
+        "id": "delta.76.ytd_pct",
+        "value": -1.2027750546715934,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δ / stock base × 100",
+        "inputs": [
+          "delta.76.ytd",
+          "cartera.76.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.78.ytd": {
+        "id": "delta.78.ytd",
+        "value": -7981,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(2026-08) − stock(2026-01)",
+        "inputs": [
+          "cartera.78.beneficiarios.2026-08",
+          "cartera.78.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.78.ytd_pct": {
+        "id": "delta.78.ytd_pct",
+        "value": -2.212991795210222,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δ / stock base × 100",
+        "inputs": [
+          "delta.78.ytd",
+          "cartera.78.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.78.2026-01": {
+        "id": "share.78.2026-01",
+        "value": 14.74474918925814,
+        "unit": "%",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": null,
+        "formula": "benef_i / Σ abiertas × 100",
+        "inputs": [
+          "cartera.78.beneficiarios.2026-01",
+          "abiertas.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.78.2026-08": {
+        "id": "share.78.2026-08",
+        "value": 14.572894223355012,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "benef_i / Σ abiertas × 100",
+        "inputs": [
+          "cartera.78.beneficiarios.2026-08",
+          "abiertas.beneficiarios.2026-08"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.78.delta_pp": {
+        "id": "share.78.delta_pp",
+        "value": -0.17185496590312788,
+        "unit": "pp",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "share(t) − share(base)",
+        "inputs": [
+          "share.78.2026-08",
+          "share.78.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.80.ytd": {
+        "id": "delta.80.ytd",
+        "value": -991,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(2026-08) − stock(2026-01)",
+        "inputs": [
+          "cartera.80.beneficiarios.2026-08",
+          "cartera.80.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.80.ytd_pct": {
+        "id": "delta.80.ytd_pct",
+        "value": -0.7039602202095543,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δ / stock base × 100",
+        "inputs": [
+          "delta.80.ytd",
+          "cartera.80.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.80.2026-01": {
+        "id": "share.80.2026-01",
+        "value": 5.755531279181392,
+        "unit": "%",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": null,
+        "formula": "benef_i / Σ abiertas × 100",
+        "inputs": [
+          "cartera.80.beneficiarios.2026-01",
+          "abiertas.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.80.2026-08": {
+        "id": "share.80.2026-08",
+        "value": 5.776231763324251,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "benef_i / Σ abiertas × 100",
+        "inputs": [
+          "cartera.80.beneficiarios.2026-08",
+          "abiertas.beneficiarios.2026-08"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.80.delta_pp": {
+        "id": "share.80.delta_pp",
+        "value": 0.020700484142858855,
+        "unit": "pp",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "share(t) − share(base)",
+        "inputs": [
+          "share.80.2026-08",
+          "share.80.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.81.ytd": {
+        "id": "delta.81.ytd",
+        "value": 5461,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(2026-08) − stock(2026-01)",
+        "inputs": [
+          "cartera.81.beneficiarios.2026-08",
+          "cartera.81.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.81.ytd_pct": {
+        "id": "delta.81.ytd_pct",
+        "value": 1.8576851902247866,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δ / stock base × 100",
+        "inputs": [
+          "delta.81.ytd",
+          "cartera.81.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.81.2026-01": {
+        "id": "share.81.2026-01",
+        "value": 12.018767672373613,
+        "unit": "%",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": null,
+        "formula": "benef_i / Σ abiertas × 100",
+        "inputs": [
+          "cartera.81.beneficiarios.2026-01",
+          "abiertas.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.81.2026-08": {
+        "id": "share.81.2026-08",
+        "value": 12.373170753880395,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "benef_i / Σ abiertas × 100",
+        "inputs": [
+          "cartera.81.beneficiarios.2026-08",
+          "abiertas.beneficiarios.2026-08"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.81.delta_pp": {
+        "id": "share.81.delta_pp",
+        "value": 0.35440308150678135,
+        "unit": "pp",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "share(t) − share(base)",
+        "inputs": [
+          "share.81.2026-08",
+          "share.81.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.94.ytd": {
+        "id": "delta.94.ytd",
+        "value": -58,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(2026-08) − stock(2026-01)",
+        "inputs": [
+          "cartera.94.beneficiarios.2026-08",
+          "cartera.94.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.94.ytd_pct": {
+        "id": "delta.94.ytd_pct",
+        "value": -5.18783542039356,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δ / stock base × 100",
+        "inputs": [
+          "delta.94.ytd",
+          "cartera.94.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.99.ytd": {
+        "id": "delta.99.ytd",
+        "value": -20948,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(2026-08) − stock(2026-01)",
+        "inputs": [
+          "cartera.99.beneficiarios.2026-08",
+          "cartera.99.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.99.ytd_pct": {
+        "id": "delta.99.ytd_pct",
+        "value": -3.7044569136717236,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δ / stock base × 100",
+        "inputs": [
+          "delta.99.ytd",
+          "cartera.99.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.99.2026-01": {
+        "id": "share.99.2026-01",
+        "value": 23.119471378318398,
+        "unit": "%",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": null,
+        "formula": "benef_i / Σ abiertas × 100",
+        "inputs": [
+          "cartera.99.beneficiarios.2026-01",
+          "abiertas.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.99.2026-08": {
+        "id": "share.99.2026-08",
+        "value": 22.50149381029477,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "benef_i / Σ abiertas × 100",
+        "inputs": [
+          "cartera.99.beneficiarios.2026-08",
+          "abiertas.beneficiarios.2026-08"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.99.delta_pp": {
+        "id": "share.99.delta_pp",
+        "value": -0.6179775680236261,
+        "unit": "pp",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "share(t) − share(base)",
+        "inputs": [
+          "share.99.2026-08",
+          "share.99.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.107.ytd": {
+        "id": "delta.107.ytd",
+        "value": 397,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(2026-08) − stock(2026-01)",
+        "inputs": [
+          "cartera.107.beneficiarios.2026-08",
+          "cartera.107.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.107.ytd_pct": {
+        "id": "delta.107.ytd_pct",
+        "value": 0.08657328963235791,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δ / stock base × 100",
+        "inputs": [
+          "delta.107.ytd",
+          "cartera.107.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.107.2026-01": {
+        "id": "share.107.2026-01",
+        "value": 18.748497490502505,
+        "unit": "%",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": null,
+        "formula": "benef_i / Σ abiertas × 100",
+        "inputs": [
+          "cartera.107.beneficiarios.2026-01",
+          "abiertas.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.107.2026-08": {
+        "id": "share.107.2026-08",
+        "value": 18.965729553807336,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "benef_i / Σ abiertas × 100",
+        "inputs": [
+          "cartera.107.beneficiarios.2026-08",
+          "abiertas.beneficiarios.2026-08"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.107.delta_pp": {
+        "id": "share.107.delta_pp",
+        "value": 0.2172320633048308,
+        "unit": "pp",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "share(t) − share(base)",
+        "inputs": [
+          "share.107.2026-08",
+          "share.107.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.108.ytd": {
+        "id": "delta.108.ytd",
+        "value": 7016,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "stock(2026-08) − stock(2026-01)",
+        "inputs": [
+          "cartera.108.beneficiarios.2026-08",
+          "cartera.108.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.108.ytd_pct": {
+        "id": "delta.108.ytd_pct",
+        "value": 13.269532653717398,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δ / stock base × 100",
+        "inputs": [
+          "delta.108.ytd",
+          "cartera.108.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.108.2026-01": {
+        "id": "share.108.2026-01",
+        "value": 2.161692099621081,
+        "unit": "%",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": null,
+        "formula": "benef_i / Σ abiertas × 100",
+        "inputs": [
+          "cartera.108.beneficiarios.2026-01",
+          "abiertas.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.108.2026-08": {
+        "id": "share.108.2026-08",
+        "value": 2.474766382946017,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "benef_i / Σ abiertas × 100",
+        "inputs": [
+          "cartera.108.beneficiarios.2026-08",
+          "abiertas.beneficiarios.2026-08"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "share.108.delta_pp": {
+        "id": "share.108.delta_pp",
+        "value": 0.3130742833249358,
+        "unit": "pp",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "share(t) − share(base)",
+        "inputs": [
+          "share.108.2026-08",
+          "share.108.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "cerradas.beneficiarios.2026-01": {
+        "id": "cerradas.beneficiarios.2026-01",
+        "value": 68130,
+        "unit": "personas",
+        "period": "2026-01",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ beneficiarios de las 3 cerradas",
+        "inputs": [
+          "cartera.63.beneficiarios.2026-01",
+          "cartera.76.beneficiarios.2026-01",
+          "cartera.94.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.cerradas.ytd": {
+        "id": "delta.cerradas.ytd",
+        "value": -1433,
+        "unit": "personas",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Σ Δ de las 3 cerradas",
+        "inputs": [
+          "delta.63.ytd",
+          "delta.76.ytd",
+          "delta.94.ytd"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "delta.cerradas.ytd_pct": {
+        "id": "delta.cerradas.ytd_pct",
+        "value": -2.1033318655511524,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δ / stock base × 100",
+        "inputs": [
+          "delta.cerradas.ytd",
+          "cerradas.beneficiarios.2026-01"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "contrib.67": {
+        "id": "contrib.67",
+        "value": 32.44745019192104,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δbenef_i / Δbenef_sistema × 100",
+        "inputs": [
+          "delta.67.ytd",
+          "sistema.beneficiarios.ytd"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "contrib.78": {
+        "id": "contrib.78",
+        "value": 29.175653445439593,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δbenef_i / Δbenef_sistema × 100",
+        "inputs": [
+          "delta.78.ytd",
+          "sistema.beneficiarios.ytd"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "contrib.80": {
+        "id": "contrib.80",
+        "value": 3.6227380734783403,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δbenef_i / Δbenef_sistema × 100",
+        "inputs": [
+          "delta.80.ytd",
+          "sistema.beneficiarios.ytd"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "contrib.81": {
+        "id": "contrib.81",
+        "value": -19.963443611771154,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δbenef_i / Δbenef_sistema × 100",
+        "inputs": [
+          "delta.81.ytd",
+          "sistema.beneficiarios.ytd"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "contrib.99": {
+        "id": "contrib.99",
+        "value": 76.57832206178028,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δbenef_i / Δbenef_sistema × 100",
+        "inputs": [
+          "delta.99.ytd",
+          "sistema.beneficiarios.ytd"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "contrib.107": {
+        "id": "contrib.107",
+        "value": -1.4512886126850668,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δbenef_i / Δbenef_sistema × 100",
+        "inputs": [
+          "delta.107.ytd",
+          "sistema.beneficiarios.ytd"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "contrib.108": {
+        "id": "contrib.108",
+        "value": -25.647961981356243,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δbenef_i / Δbenef_sistema × 100",
+        "inputs": [
+          "delta.108.ytd",
+          "sistema.beneficiarios.ytd"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "cargas.contrib": {
+        "id": "cargas.contrib",
+        "value": 78.45000913909705,
+        "unit": "%",
+        "period": "2026-08",
+        "source": "cartera",
+        "locator": null,
+        "formula": "Δ cargas / Δ beneficiarios × 100",
+        "inputs": [
+          "sistema.cargas.ytd",
+          "sistema.beneficiarios.ytd"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "movilidad.salidas_intervalo": {
+        "id": "movilidad.salidas_intervalo",
+        "value": 109663,
+        "unit": "cotizantes",
+        "period": "2025-07→2026-07",
+        "source": "movilidad",
+        "locator": "Nacional!D19",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "movilidad.entradas_intervalo": {
+        "id": "movilidad.entradas_intervalo",
+        "value": 91963,
+        "unit": "cotizantes",
+        "period": "2025-07→2026-07",
+        "source": "movilidad",
+        "locator": "Nacional!D31",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "movilidad.diferencia_intervalo": {
+        "id": "movilidad.diferencia_intervalo",
+        "value": -17700,
+        "unit": "cotizantes",
+        "period": "2025-07→2026-07",
+        "source": "movilidad",
+        "locator": "Nacional!D43",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "suscripciones.contratos_suscritos.2026-07": {
+        "id": "suscripciones.contratos_suscritos.2026-07",
+        "value": 19716,
+        "unit": "contratos",
+        "period": "2026-07",
+        "source": "suscripciones",
+        "locator": "Julio!Total Sistema",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "suscripciones.desahucios_voluntarios.2026-07": {
+        "id": "suscripciones.desahucios_voluntarios.2026-07",
+        "value": 15172,
+        "unit": "contratos",
+        "period": "2026-07",
+        "source": "suscripciones",
+        "locator": "Julio!Total Sistema",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      }
+    },
+    "constants": [
+      0.25,
+      2.0,
+      0.005,
+      0.3,
+      5000,
+      50.0,
+      5000,
+      0.5,
+      7,
+      3,
+      10,
+      12,
+      2,
+      6,
+      2,
+      7
+    ],
+    "entity_codes": [
+      63,
+      67,
+      76,
+      78,
+      80,
+      81,
+      94,
+      99,
+      107,
+      108
+    ],
+    "release_key": "2026-08:b1dc62eb1a40b0f3",
+    "period": "2026-08"
+  }
+}
