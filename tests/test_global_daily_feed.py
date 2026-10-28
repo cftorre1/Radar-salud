@@ -335,6 +335,8 @@ def test_govuk_atom_feeds_parse_with_ogl_rights_and_routine_filters():
     # A summary over 300 characters is cut at a sentence end that fits, or a word boundary with an ellipsis.
     long = dhsc["Policy paper: Joint DHSC and NHS England written evidence for the NHSPRB: pay round 2027 to 2028"]
     assert len(long["description"]) <= 300 and long["description_truncated"] is True and long["description"].endswith("…")
+    assert long["description_basis"] == "publisher_feed_summary_excerpt"  # review 28-oct: a cut summary is not "verbatim"
+    assert funding["description_basis"] == "publisher_feed_summary_verbatim"
     # No summary published -> title only (never invented).
     assert dhsc["Press release: AI scribes rolled out across GP practices to free up clinicians' time"]["description"] is None
     mhra = {r["title"]: r for r in items if r["source"] == "uk_mhra"}
@@ -579,3 +581,18 @@ def test_rights_evidence_matches_what_was_checked():
         assert "feeds NOT fetched live" in feeds[fid]["rights"]["verified_how"]
     fda = feeds["fda"]["rights"]
     assert fda["website_policies_verified"] is False and "NOT verified" in fda["verified_how"]
+
+
+def test_truncated_summaries_are_labelled_excerpts_and_rights_basis_never_claims_unaltered():
+    """Review 28-oct (point 3): every cut summary is an excerpt; CC BY (ECDC, EC) and EMA bases say so."""
+    from radar_salud.global_daily_feed import _card
+    common = dict(item_id="x", source="ecdc", label="ECDC", attribution="ECDC", kind_es="", title="T", url="https://x",
+                  published_at="2026-10-27", segments=[], priority=0, bylines=[], rights_basis={}, as_of=AS_OF)
+    cut = _card(description="First part …", description_truncated=True, **common)
+    assert cut["description_truncated"] is True and cut["description_source"] == "publisher_feed_summary_excerpt"
+    whole = _card(description="Whole summary.", description_truncated=False, **common)
+    assert whole["description_source"] == "publisher_feed_summary_verbatim"
+    feeds = {f["id"]: f for f in CONFIG["feeds"]}
+    for source in ("ecdc", "ec_health", "ema"):
+        basis = feeds[source]["rights"]["description_basis"]
+        assert "unaltered" not in basis and "(extracto)" in basis, (source, basis)

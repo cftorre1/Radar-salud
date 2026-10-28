@@ -308,7 +308,9 @@ def parse_feed(raw: bytes, route: dict, feed: dict, as_of: date) -> list[dict]:
         # A route may withhold summaries (FDA MedWatch links to company recall notices: not public domain).
         if feed.get("store_description") and route.get("store_description", True) is not False:
             row["description"], row["description_truncated"] = publisher_summary(entry.get("summary"))
-            row["description_basis"] = "publisher_feed_summary_verbatim" if row["description"] else None
+            # A cut summary is an excerpt, not the unaltered summary (shown as "… (extracto)").
+            row["description_basis"] = (None if not row["description"] else "publisher_feed_summary_excerpt"
+                                        if row["description_truncated"] else "publisher_feed_summary_verbatim")
         rows.append(row)
     return rows
 

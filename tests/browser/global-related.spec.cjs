@@ -20,17 +20,17 @@ test('schema 2 ficha: verbatim description with "…", related sources from also
  const note=page.locator('#globalAttribution');await expect(note).toContainText('Contains public sector information licensed under the Open Government Licence v3.0.');
  await expect(note.locator('#globalFeedOgl a')).toHaveAttribute('href',OGL);
  await row.locator('.act-open').click();const body=page.locator('#globalDetailBody');await expect(page.locator('#globalDetail')).toBeVisible();
- await expect(body.locator('.ficha-h')).toHaveText(['Qué pasó','Fuentes']);
+ await expect(body.locator('.ficha-h')).toHaveText(['Resumen de la fuente','Fuentes']);
  // Plain text from _clean is escaped once: "<5" and ">65" are shown as written, nothing lost.
- await expect(body.locator('h3.ficha-h + p')).toHaveText('Children <5 years and adults >65 are at risk. The approval covers the first indication …');
+ await expect(body.locator('h3.ficha-h + p')).toHaveText('Children <5 years and adults >65 are at risk. The approval covers the first indication … (extracto)');
  await expect(body.locator('.ficha-sources a.lic')).toHaveAttribute('href',OGL);const links=await body.locator('.ficha-sources .source > a').evaluateAll(xs=>xs.map(a=>[a.getAttribute('href'),a.textContent.trim()]));
  expect(links).toEqual([['https://www.gov.uk/government/news/mhra-approves','MHRA (Reino Unido) · MHRA approves a new treatment for children ↗'],['https://www.gov.uk/drug-safety-update/x','MHRA · Ficha técnica ↗'],['https://www.gov.uk/government/news/dhsc-copy','DHSC <i>(Reino Unido)</i> ↗']]);
  await expect(body.locator('i')).toHaveCount(0);await expect(body).not.toContainText(/Insegura|Sin URL|JS ↗/);
  const attr=body.locator('.ficha-attr');await expect(attr).toHaveText('Contains public sector information licensed under the Open Government Licence v3.0.');await expect(attr.locator('a')).toHaveAttribute('href',OGL);
  await page.keyboard.press('Escape');
- // description null: title and meta only, no "Qué pasó", no OGL statement, only the source's own link.
+ // description null: title and meta only, no "Resumen de la fuente", no OGL statement, only the source's own link.
  await page.locator('#daily-fda1 .act-open').click();await expect(page.locator('#globalDetailTitle')).toHaveText('FDA approves a generic');
- await expect(body.locator('.ficha-h')).toHaveText(['Fuentes']);await expect(body).not.toContainText(/Qué pasó|Open Government Licence/);
+ await expect(body.locator('.ficha-h')).toHaveText(['Fuentes']);await expect(body).not.toContainText(/Qué pasó|Resumen de la fuente|Open Government Licence/);
  expect(await body.locator('a').evaluateAll(xs=>xs.map(a=>a.getAttribute('href')))).toEqual(['https://www.fda.gov/news-events/x']);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
 });

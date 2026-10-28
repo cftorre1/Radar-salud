@@ -81,7 +81,9 @@ def _card(*, item_id, source, label, attribution, kind_es, title, url, published
             "title": title, "url": url, "published_at": published_at, "segments": segments,
             # Publisher's own summary, verbatim (<= 300 chars) or None -> title only. Never generated.
             "description": description or None, "description_truncated": bool(description and description_truncated),
-            "description_source": "publisher_feed_summary_verbatim" if description else None,
+            # A cut summary is an excerpt (the UI shows "… (extracto)"), never claimed as the unaltered summary.
+            "description_source": (None if not description else "publisher_feed_summary_excerpt"
+                                   if description_truncated else "publisher_feed_summary_verbatim"),
             "tags_es": [SEGMENT_ES[s] for s in segments], "summary_es": summary_es(kind_es, segments),
             "summary_method": SUMMARY_METHOD, "ai_used": False, "priority": int(priority or 0),
             "kind": "headline", "content_use": "metadata_and_link_only", "body_stored": False,

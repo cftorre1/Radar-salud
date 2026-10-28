@@ -42,6 +42,6 @@ test('news ficha is lean on Chile and Global and carries the action set',async({
 test('a headline ficha with no captured description shows no Qué pasó and no invented source',async({page})=>{
  await page.route('**/data/global_feed.json',r=>r.fulfill({json:{schema_version:2,enabled:true,content_use:'metadata_and_link_only',window_days:90,freshness:{status:'fresh'},items:[{id:'only',source_label:'OMS',title:'OMS publica una guía',url:'https://www.who.int/news/item/only',published_at:'2026-10-11',summary_es:'Organismo multilateral. Relevante para: Regulación.',tags_es:['Regulación']}]}}));
  await page.goto('/global.html#daily-only');const body=page.locator('#globalDetailBody');await expect(page.locator('#globalDetailTitle')).toHaveText('OMS publica una guía');
- await expect(body.locator('.ficha-h')).toHaveText(['Fuentes']);await expect(body).not.toContainText(/Qué pasó|Organismo multilateral|Regulación/);
+ await expect(body.locator('.ficha-h')).toHaveText(['Fuentes']);await expect(body).not.toContainText(/Qué pasó|Resumen de la fuente|Organismo multilateral|Regulación/);
  expect(await body.locator('a').evaluateAll(xs=>xs.map(a=>a.href))).toEqual(['https://www.who.int/news/item/only']);
 });

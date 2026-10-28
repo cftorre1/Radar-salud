@@ -27,7 +27,7 @@ test('headlines and themes are one list, newest first, each row with Ver ficha �
  // Headline ficha: only captured data; no description was captured, so no "Qué pasó"; the only links are the source's.
  await d0.locator('.act-open').click();const dlg=page.locator('#globalDetail');await expect(dlg).toBeVisible();
  await expect(page.locator('#globalDetailTitle')).toHaveText('Headline number 0 about drug approval and coverage policy');
- const body=page.locator('#globalDetailBody');await expect(body).not.toContainText(/Qué pasó|Regulador\. Relevante|Por qué importa|Medicamentos y farma/);
+ const body=page.locator('#globalDetailBody');await expect(body).not.toContainText(/Qué pasó|Resumen de la fuente|Regulador\. Relevante|Por qué importa|Medicamentos y farma/);
  expect(await body.locator('a').evaluateAll(xs=>xs.map(a=>a.getAttribute('href')))).toEqual(['https://www.ema.europa.eu/en/news/item-0']);
  await expect(body).toContainText('Zoe Z, Al A, Mo M');await expect(body).toContainText('European Medicines Agency');
  expect(await page.locator('#globalDetailActs .act').evaluateAll(xs=>xs.map(a=>a.textContent.trim()))).toEqual(['Fuente original','Compartir']);

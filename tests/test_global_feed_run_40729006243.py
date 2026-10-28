@@ -187,7 +187,8 @@ SHOWN = [
     ("ecdc", "Multi-model assessment of the impact of newborn RSV immunisation on hospitalisation burden in the EU/EEA"),
     ("the_conversation", "AI chatbots can be a valuable health resource for older adults – if they embrace ‘informed skepticism’"),
     ("the_conversation", "Plans with cheaper premiums are risky business for Americans seeking lower healthcare costs"),
-    ("the_conversation", "1 in 4 Pennsylvanians say they paid out of pocket for their annual checkup. Why isn’t insurance covering these visits?"),
+    ("the_conversation", "1 in 4 Pennsylvanians say they paid out of pocket for their annual checkup. Why isn’t insurance covering these visits?"),    # Review 28-oct: private equity buying up care providers is a financing trend (was hidden).
+    ("the_conversation", "Private equity is buying up more methadone clinics – access to the lifesaving drug isn’t getting easier"),
 ]
 HIDDEN = [
     # EMA single-product EPARs (17 of the 29 cards were EMA; 6 were these): "report" is not a study.
@@ -204,7 +205,6 @@ HIDDEN = [
     ("ecdc", "Communicable disease threats report, 10 - 16 October, week 42"),
     ("ecdc", "ECDC to deploy experts as Ebola cases emerge in Kenya and Nigeria"),
     ("the_conversation", "I teach doctors how to interpret test results – and the labels ‘normal’ and ‘abnormal’ often hide what matters"),
-    ("the_conversation", "Private equity is buying up more methadone clinics – access to the lifesaving drug isn’t getting easier"),
     ("the_conversation", "When abortion and surrogacy law collide, contracts can’t answer the hardest questions"),
     ("kff_health_news", "Hospital Beds for the Nation’s Sickest Kids Are Disappearing"),
 ]

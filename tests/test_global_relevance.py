@@ -41,6 +41,16 @@ NOT_RELEVANT = [
     ("Disease Outbreak News: Marburg virus disease - Ethiopia", "who", "source_rule_exclusion"),
     ("Alerta epidemiológica: sarampión en la Región de las Américas", "paho", "source_rule_exclusion"),
     ("World Mental Health Day 2026: messages from the Director-General", "who", "source_rule_exclusion"),
+    # review 28-oct: a generic "law" without a health-system term is not a system reform
+    ("When abortion and surrogacy law collide, contracts can't answer the hardest questions", "the_conversation",
+     "no_global_interest_signal"),
+    # review 28-oct: one-off diplomatic or single-country items
+    ("Mexico and the EU kick off High-Level Dialogue on Health", "ec_health", "one_off_diplomatic_or_country"),
+    ("Country report: ECDC Public Health Emergency Preparedness Assessment for Norway", "ecdc",
+     "one_off_diplomatic_or_country"),
+    # a single private-equity acquisition of one provider is still a one-off transaction
+    ("Private equity firm buys methadone clinic in Ohio", None, "provider_transaction"),
+    ("Investor group bought a rural hospital in Kansas", None, "provider_transaction"),
 ]
 
 RELEVANT = [
@@ -62,6 +72,15 @@ RELEVANT = [
     ("How AI scribes are changing doctors' workload", "the_conversation"),
     ("EU pharmaceutical legislation: Council and Parliament reach deal", "ema"),
     ("Prevalence of long COVID among US adults, 2025", "cdc"),
+    # review 28-oct: private equity moving into care is a financing trend
+    ("Private equity is buying up more methadone clinics, raising concerns about care", "kff_health_news"),
+    # review 28-oct: a study/evidence finding (modelled impact) is an international study
+    ("As the cold season nears, immunisation of newborns against universal RSV could significantly reduce infant "
+     "hospitalisations", "ecdc"),
+    ("As the cold season nears, immunisation of newborns against universal RSV could significantly reduce infant hos…",
+     "ecdc"),
+    # a generic policy word next to a health-system term still passes
+    ("New law caps insulin out-of-pocket costs for insured patients", None),
 ]
 
 
@@ -97,3 +116,16 @@ def test_source_interest_never_overrides_a_global_exclusion():
 
 def test_vaccination_coverage_is_not_a_financing_signal():
     assert gate("Measles vaccination coverage among kindergartners", None)["relevant"] is False
+
+
+def test_policy_signal_requires_a_health_system_term():
+    assert gate("Parliament passes new surrogacy law")["relevant"] is False
+    result = gate("Parliament passes new law on health insurance reimbursement")
+    assert result["relevant"] is True and "policy_or_system_reform" in result["signals"]
+
+
+def test_private_equity_trend_signals_and_single_deal_exclusion():
+    trend = gate("Private equity is buying up more methadone clinics, raising concerns about care", "kff_health_news")
+    assert trend["signals"] == ["financing_and_payment"]
+    single = gate("Private equity firm acquires Lakeside Clinic")
+    assert single["relevant"] is False and single["category"] == "provider_transaction"
