@@ -54,6 +54,11 @@ def assert_conflict_deferred_without_analysis(raw, monkeypatch):
     for key in ('detected_at', 'attempts', 'ingestion_mode', 'canonical_url', 'visible_publication_date',
                 'possible_publication_days', 'publication_evidence', 'page_text', 'article_body_sha256',
                 'article_body_characters', 'html_sha256'):
+        if key == 'page_text' and raw.metadata.get('paywalled') is True:
+            # Premium section (Dirección 28-oct-2026): only the lead remains; the receipt proves the same body.
+            from radar_salud.source_rights import redacted_body_verified
+            assert redacted_body_verified(raw.metadata) and raw.metadata[key] == raw.metadata['public_teaser']
+            continue
         assert raw.metadata[key] == before[key]
 
 

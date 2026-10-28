@@ -20,6 +20,12 @@ from urllib.parse import urlparse
 SOURCE = "pulso_latercera"
 SCHEMA = "pulso_idempotence_v1"
 ROOT = Path(__file__).resolve().parents[1]
+# Historical evidence: audits redacted under the rights policy (Dirección 28-oct-2026)
+# are re-verified from their exact pinned git blobs, never from the redacted tree.
+import sys as _sys
+_sys.path.insert(0, str(ROOT / "src"))
+from radar_salud.pinned_evidence import install_original_audit_reader  # noqa: E402
+install_original_audit_reader(ROOT)
 DEFAULT_SELECTION = "data/audits/pulso_material_recovery_cohort_2026_10_11.json"
 DEFAULT_REPORT = "data/audits/pulso_runtime_2026_10_11.json"
 DEFAULT_QA = "data/audits/pulso_directed_processing_qa_2026_10_11.json"

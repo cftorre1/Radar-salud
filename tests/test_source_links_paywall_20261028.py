@@ -35,7 +35,8 @@ LOCKED = ("En la última década, las Isapres han sido objeto de miles de demand
     ("https://www.minsal.cl/?p=158873", "minsal_shortlink"),
     ("https://www.minsal.cl/2026/09/17/", "minsal_date_archive"),
     ("https://www.minsal.cl/category/noticias/", "minsal_listing"),
-    ("https://www.minsal.cl/sites/default/files/ResolucionExenta211.pdf", "minsal_retired_path"),
+    # Legacy Drupal documents are not presumed dead (only a verified failure withholds them).
+    ("https://www.minsal.cl/sites/default/files/ResolucionExenta211.pdf", None),
     ("https://www.minsal.cl/portal/url/item/abc.pdf", "minsal_retired_path"),
     ("https://www.minsal.cl/noticias/minsal-informa/", "minsal_retired_path"),
     ("https://www.minsal.cl/", "minsal_home"),
@@ -53,7 +54,8 @@ def test_repairable_urls_are_normalised_and_unrepairable_give_no_link():
     assert safe_source_url("https://www.minsal.cl/campana-2026/%20") == "https://www.minsal.cl/campana-2026/"
     assert safe_source_url("https://www.df.cl/https/www.df.cl/empresas/salud/x") == "https://www.df.cl/empresas/salud/x"
     assert normalize_source_url("https://repositoriodeis.minsal.cl/A/Año 2024.xlsx").endswith("/A/A%C3%B1o%202024.xlsx")
-    for dead in ("https://www.minsal.cl/?p=1", "https://www.minsal.cl/sites/default/files/x.pdf", "/relative/", "javascript:x"):
+    assert safe_source_url("https://www.minsal.cl/sites/default/files/x.pdf") == "https://www.minsal.cl/sites/default/files/x.pdf"
+    for dead in ("https://www.minsal.cl/?p=1", "/relative/", "javascript:x"):
         assert safe_source_url(dead) is None
 
 
@@ -84,7 +86,8 @@ def test_minsal_extraction_uses_publisher_canonical_and_clean_attachments():
     out = extract_minsal_detail(raw, html)
     assert out.url == "https://www.minsal.cl/subsecretario-coordina-avances-hospital-nuble/"
     assert out.metadata["requested_url"] == raw.url
-    assert [a["url"] for a in out.metadata["attachments"]] == ["https://www.minsal.cl/wp-content/uploads/2026/09/informe.pdf"]
+    assert [a["url"] for a in out.metadata["attachments"]] == ["https://www.minsal.cl/wp-content/uploads/2026/09/informe.pdf",
+                                                               "https://www.minsal.cl/sites/default/files/viejo.pdf"]
 
 
 def test_process_minsal_rejects_invalid_source_url_before_any_fetch(monkeypatch):
@@ -211,12 +214,11 @@ def test_redaction_and_link_migration_are_idempotent():
     rows = [{"title": "T", "source_name": "Diario Financiero", "source_url": DF_URL, "event_date": "2026-10-22",
              "what_happened": "Según DF, ocho fallos: seis favorables al SII.", "why_it_matters": "x",
              "key_points": ["seis favorables"], "editorial_assessment": {"score": 82, "reason": "r"}},
-            {"title": "M", "source_name": "Ministerio de Salud",
-             "source_url": "https://www.minsal.cl/sites/default/files/ResolucionExenta211.pdf"}]
+            {"title": "M", "source_name": "Ministerio de Salud", "source_url": "https://www.minsal.cl/?p=158873"}]
     report = {"links": [], "paywalled": []}
     assert mig.migrate_rows(rows, {DF_URL: DF_TEASER}, report, "t") == 2
     assert rows[0]["what_happened"] == DF_TEASER and excess_fields(rows[0]) == []
-    assert rows[1]["source_url"].endswith("ResolucionExenta211.pdf") and rows[1]["source_link_status"] == "invalid"
+    assert rows[1]["source_url"].endswith("?p=158873") and rows[1]["source_link_status"] == "invalid"
     once = copy.deepcopy(rows)
     assert mig.migrate_rows(rows, {DF_URL: DF_TEASER}, {"links": [], "paywalled": []}, "t") == 0
     assert rows == once

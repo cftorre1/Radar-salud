@@ -13,7 +13,7 @@ import pytest
 from radar_salud import beta_sources, llm_analysis, pulso_paid_revalidation as paid
 from radar_salud import pulso_followup_paid_revalidation as followup
 from radar_salud.models import RawItem
-from radar_salud.pending_queue import PendingQueue
+from radar_salud.pending_queue import persisted_items, PendingQueue
 from radar_salud.processing import DeferredProcessing
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -85,7 +85,8 @@ def test_all49_admit_once_preserving_bookkeeping_and_entire_v4_v5_paid_archive(t
         assert admission["producer_core_checkout"] == paid.PRODUCER_CODE
         assert admission["producer_runtime_fingerprint_sha256"] == paid.PRODUCER_FINGERPRINT
         assert admission["publication_approved"] is False
-    assert PendingQueue(queue.path).items == queue.items
+    # Persisted premium captures keep only lead + receipts (Dirección 28-oct-2026).
+    assert PendingQueue(queue.path).items == persisted_items(queue.items)
     before = deepcopy(queue.items)
     queue.discover("pulso_latercera", [fresh_primary(entry) for entry in entries.values()], now=NOW)
     assert queue.items == before

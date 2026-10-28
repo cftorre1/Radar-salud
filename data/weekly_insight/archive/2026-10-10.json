@@ -21,7 +21,7 @@
         "novelty_non_repetition": 95
       },
       "verdict": "PASS",
-      "reason": "Nueva evidencia Work3 antes del cierre. Suspensión por semanas y traslados concluidos10-oct: decisión inmediata de capacidad, derivación y reprogramación para prestador/aseguradores. Fuente oficial confirma restricción actual; no se conoce magnitud de camas/pacientes/pérdida. Supera a Cenabast por urgencia y accionabilidad, no por volumen mediático.",
+      "reason": "Nueva evidencia Work3 antes del cierre. Título y bajada públicos de DF (10-oct): cierre por semanas tras el aluvión, traslado completo de los pacientes hospitalizados y reapertura condicionada a limpieza y recuperación de las áreas afectadas. Decisión inmediata de capacidad, derivación y reprogramación para prestador/aseguradores (La Tercera, nota abierta: las atenciones agendadas se redistribuyen en la red UC Christus). Fuente oficial confirma restricción actual; no se conoce magnitud de camas/pacientes/pérdida. Supera a Cenabast por urgencia y accionabilidad, no por volumen mediático.",
       "provenance": {
         "discovered_by": "work3_adversarial_2026_10_11",
         "first_evidence_sha": "645781d2f310fea2bb6b6c7b5385a93ea538c879",
@@ -29,7 +29,16 @@
         "original_pages_checked": "2026-10-11",
         "independence": "DF y LT amplifican un mismo comunicado; UC confirma situación operativa. No tres hechos independientes."
       },
-      "rank": 1
+      "rank": 1,
+      "rights_review": {
+        "basis": "DF: sólo título y bajada públicos; La Tercera /nacional/ (abierta) y página oficial UC CHRISTUS. Contrastado con el cuerpo DF bloqueado: ningún hecho proviene sólo de él.",
+        "reviewer": "Claude (migración de derechos 28-oct-2026; pendiente QA independiente)",
+        "reviewed_at": "2026-10-28",
+        "fields": {
+          "reason": "40778162ed115aa60fe632a1263a9ece52c97ed86b11736acdbb4673475fe694"
+        }
+      },
+      "public_teaser": "UC Christus completó el traslado de todos los pacientes hospitalizados y condicionó la reapertura a los trabajos de limpieza, despeje y recuperación de las áreas afectadas."
     },
     {
       "title": "Cenabast / Ahumada: escala de acceso y dispensación cercana",
@@ -68,7 +77,7 @@
         "novelty_non_repetition": 90
       },
       "verdict": "PASS_ALTERNATIVE_RECOVERED",
-      "reason": "Reporte DF verificado del9-oct: incumplimiento de hito Selfix del30-sep y rezago de registros/ensayos con implicaciones de acceso e inversión. 1.501 pendientes/413d son diagnóstico a febrero2026;112 vs147 ensayos y pérdida estimada US$20m corresponden a2025 y atribución CIF. No son mediciones nuevas de octubre ni causalidad certificada. Urgencia inferior a capacidad clínica suspendida y evidencia inferior a fuente pública primaria.",
+      "reason": "Reporte DF del 9-oct; sólo título y bajada públicos: cae la inversión de laboratorios internacionales ante el rezago en aprobaciones del ISP y se redirigen estudios a Argentina y Brasil; los ensayos clínicos retrocedieron 20% en 2025 y el ajuste se anticipa peor este año en una actividad con inversión directa en torno a US$130 millones anuales. Implicaciones de acceso e inversión; cifra 2025 y atribución de la industria, no mediciones nuevas de octubre ni causalidad certificada. Urgencia inferior a capacidad clínica suspendida y evidencia inferior a fuente pública primaria.",
       "provenance": {
         "source_kind": "high_trust_press_single_family",
         "core_pipeline_status": "DF INTEGRATED_DEGRADED; publication accepted92, BACKFILL, publisher date verified",
@@ -81,7 +90,16 @@
         "source_record": "data/state/pending_queue.json",
         "publication_timestamp": "2026-10-09T13:22:21Z"
       },
-      "rank": 3
+      "rank": 3,
+      "rights_review": {
+        "basis": "DF: sólo título y bajada públicos (cifras 20%, 2025 y US$130 millones están en la bajada; 9-oct es la fecha de publicación).",
+        "reviewer": "Claude (migración de derechos 28-oct-2026; pendiente QA independiente)",
+        "reviewed_at": "2026-10-28",
+        "fields": {
+          "reason": "e22d48bf5433c00fddd14686c35a0ad8b52764582c1dd79f5839c5095674ec4d"
+        }
+      },
+      "public_teaser": "Tras el retroceso de 20% en el número de ensayos clínicos en 2025, el ajuste se anticipa peor para este año en una actividad que genera una inversión directa en torno a US$ 130 millones al año. La caída se atribuye al rezago en los procesos de aprobación del ISP."
     }
   ],
   "weekly_insight": {
@@ -156,7 +174,23 @@
       "api_call": false,
       "model": null,
       "note": "Sesión Work2, evidencia Work3 contrastada directamente; no ejecución TERRA ni segundo revisor del contenido final."
-    }
+    },
+    "rights_review": {
+      "basis": "Hechos de la página oficial UC CHRISTUS (contingencias) y de La Tercera /nacional/ (abierta; servicios de apoyo, redistribución de agendas); de DF sólo título y bajada públicos (cierre por semanas, traslado concluido). Contrastado con el cuerpo DF bloqueado: ningún hecho proviene sólo de él.",
+      "reviewer": "Claude (migración de derechos 28-oct-2026; pendiente QA independiente)",
+      "reviewed_at": "2026-10-28",
+      "fields": {
+        "summary": "c027c7db8c7bca40cc78cc1cb434692344469c97d6c2e3cf6860e6b825b0e825",
+        "insight_teaser": "4208f6f37bff2e949a53f71032fb538f65f5e65be7ab5d9dfad2ed5f13a00165",
+        "key_figures": "4bdd526e9e616b1de883dfe52958f2a4438fc928d6c49252575dd8dc0332bda3",
+        "actors": "88f6de3058e917cdc61d067c61bedfebdb6652b394aabc7a913897449be93085",
+        "insight_reading": "67956e479e8281c3f9a8f59ce771e34674cd0240eb58dc525a3b3d5be914d39a",
+        "decision_use": "85c2d6322a1242d5cff47400f2b3caf36613eecee5d75abd77d59cd1f250b032",
+        "what_to_watch": "09b7479d9f8faaad9be3993213f10f94f47fba807a1626413da90205fd7e6922",
+        "uncertainties": "a13ce0a1f0fb8cf1b94c3ababb766621dfd31f8fc373905bdebb87e61a4a470f"
+      }
+    },
+    "public_teaser": "UC Christus completó el traslado de todos los pacientes hospitalizados y condicionó la reapertura a los trabajos de limpieza, despeje y recuperación de las áreas afectadas."
   },
   "freshness_gate": {
     "eligible": true,

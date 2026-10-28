@@ -3,6 +3,7 @@
 Keep the original timestamps and discrepancies. dateModified and crawl dates
 are not publication dates. The date is expressed in the publisher's Chile zone.
 """
+import hashlib
 import json
 import re
 from html import unescape
@@ -47,6 +48,9 @@ class _Article(HTMLParser):
         self.media = []
         self.canonical = None
         self.primary_headline = []
+        # Explicit public lead (bajada) rendered before any lock marker.
+        self.lead = []
+        self.lock_seen = False
 
     def handle_starttag(self, tag, attrs):
         tag = tag.lower()
@@ -69,7 +73,11 @@ class _Article(HTMLParser):
             excluded = bool(re.search(r"\b(card|related|recommendations|newsletter|te-puede-interesar)\b", classes, re.I))
             publication_header=tag=='header' and bool(re.search(r'\benc-main\b',classes))
             publication_label=bool(re.search(r'\bauthor__date\b',classes))
-            self.stack.append((tag, primary, tag == "article" and not excluded, excluded, publication_header, publication_label))
+            if _LOCK.search(classes):
+                self.lock_seen = True
+            lead = (not self.lock_seen and not primary and bool(_LEAD.search(classes))
+                    and not any(entry[1] or entry[3] for entry in self.stack))
+            self.stack.append((tag, primary, tag == "article" and not excluded, excluded, publication_header, publication_label, lead))
 
     def handle_endtag(self, tag):
         tag = tag.lower()
@@ -94,6 +102,7 @@ class _Article(HTMLParser):
             return
         self.visible.append(value)
         if 'h1' in tags and any(entry[4] for entry in self.stack):self.primary_headline.append(value)
+        if not self.lock_seen and any(entry[6] for entry in self.stack):self.lead.append(value)
         if any(entry[4] for entry in self.stack) and any(entry[5] for entry in self.stack):
             self.publication_label.append(value)
         if any(entry[3] for entry in self.stack):
@@ -106,6 +115,23 @@ class _Article(HTMLParser):
             self.paragraphs.append(value)
         if "time" in tags:
             self.header.append(value)
+
+
+# Paywall containers: DF ships the locked story in #articleLock (display:none).
+_LOCK = re.compile(r"\b(articleLock|paywall|locked|premium-content|subscriber-only)\b", re.I)
+# Explicit public lead/bajada elements of the article header.
+_LEAD = re.compile(r"\b(bajada|article-lead|article__lead|lead|standfirst|epigrafe|article-summary)\b", re.I)
+
+
+def public_lead(meta, lead_parts, node):
+    """(lead, provenance) from explicitly public elements only; never from body text."""
+    for key, source in (("og:description", "og:description"), ("description", "meta:description")):
+        if meta.get(key, "").strip():
+            return unescape(meta[key]).strip(), source
+    lead = " ".join(lead_parts).strip()
+    if lead:
+        return lead, "public_lead_element"
+    return "", "title_only"
 
 
 def _news_nodes(value):
@@ -183,12 +209,16 @@ def parse_df_article(html, url):
     # cards also use <article>; never combine them with the story or fall back
     # to every paragraph on the page (newsletter/paywall pages have those too).
     body = node.get("articleBody") or " ".join(p.primary) or " ".join(p.article)
-    description = p.meta.get("og:description") or p.meta.get("description") or node.get("description") or ""
+    # The lead must come from og/meta description or an explicit public lead
+    # element before the lock marker. Body text is never a lead (Dirección 28-oct).
+    description, lead_source = public_lead(p.meta, p.lead, node)
     return {
         "event_date": chosen["day"] if chosen else None,
-        "raw_text": description or body[:1800],
+        "raw_text": description,
         "metadata": {
             "page_text": body,
+            "public_teaser": description,
+            "public_teaser_source": lead_source,
             "article_title": unescape(node.get("headline") or p.meta.get("og:title") or ""),
             "article_section": node.get("articleSection") or p.meta.get("article:section") or "",
             "publisher_canonical_url": urljoin(url,p.canonical) if p.canonical else None,
@@ -219,6 +249,7 @@ def bind_df_article(raw, html):
     raw.metadata.pop("fetch_error", None)
     body = evidence["metadata"].get("page_text") or ""
     raw.metadata["article_body_characters"] = len(body)
+    raw.metadata["article_body_sha256"] = hashlib.sha256(body.encode("utf-8")).hexdigest()
     # DF ships the locked story in the HTML (#articleLock). Only the public
     # bajada may be stored or analysed (rights policy, Dirección 28-oct-2026).
     from .source_rights import restrict_raw_to_public

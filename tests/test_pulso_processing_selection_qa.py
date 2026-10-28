@@ -16,6 +16,9 @@ qa = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(qa)
 
 
+PRE_REDACTION = "3aa26270bf6c78910b6aed24e1a91f1dfd48e75c"  # last commit with Pulso bodies in the queue
+
+
 @pytest.fixture
 def selection_evidence(tmp_path):
     cohort = json.loads((ROOT / qa.PROCESSING_COHORT_PATH).read_bytes())
@@ -25,7 +28,10 @@ def selection_evidence(tmp_path):
         path = tmp_path / reference["path"]
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes((ROOT / reference["path"]).read_bytes())
-    current = json.loads((ROOT / "data/state/pending_queue.json").read_text())
+    # The reviewed bodies predate the rights redaction (28-oct-2026): replay the queue as it was then.
+    import subprocess
+    current = json.loads(subprocess.run(["git", "show", PRE_REDACTION + ":data/state/pending_queue.json"],
+                                        cwd=ROOT, capture_output=True, check=True).stdout)
     queue, before = {}, []
     for original in cohort["items"]:
         key = original["queue_fingerprint"]

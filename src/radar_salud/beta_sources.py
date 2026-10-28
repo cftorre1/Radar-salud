@@ -144,6 +144,9 @@ class CuratedBetaSourceScout:
             out = discover_listing(html, self.cfg["page"], detail_loader, audit, set())
             if not out:
                 raise RuntimeError("Pulso / La Tercera has no verified, dated health articles: " + str(audit))
+            from .source_rights import restrict_raw_to_public
+            for item in out:
+                restrict_raw_to_public(item)  # premium sections: lead + receipt only (Dirección 28-oct)
             return sorted(out, key=lambda item: item.event_date, reverse=True)
         from .occupational_sources import SOURCES, discover_items
         if self.slug in SOURCES:
@@ -587,6 +590,10 @@ def process_curated_beta_source(raw, cfg):
     role = raw.metadata.get("market_role") or "provider"
     from .provider_assessment import assessed, prefilter_rejected
     if raw.source_slug == "pulso_latercera":
+        # Rights policy (Dirección 28-oct-2026): a premium-section raw keeps only its
+        # lead + body receipt from the first line of processing, whatever path follows.
+        from .source_rights import restrict_raw_to_public as _restrict_premium
+        _restrict_premium(raw)
         from .pulso_source import (ConflictingPublicationArticle, ExcludedArticle,
                                    SponsoredArticle, TextUnavailableArticle,
                                    article_body_evidence, article_url, complete_article_body,
@@ -657,6 +664,8 @@ def process_curated_beta_source(raw, cfg):
                                "deferred_sponsored_content_review" if isinstance(exc, SponsoredArticle) else
                                "excluded_publisher_opinion")
                     save_primary(exc.title, exc.body, exc.metadata, quality)
+                    from .source_rights import restrict_raw_to_public
+                    restrict_raw_to_public(raw)
                     if isinstance(exc, ExcludedArticle):
                         if not (str(exc) in {"publisher_opinion_taxonomy", "excluded_opinion_content"}
                                 and article_url(raw.url) == raw.metadata.get("canonical_url")
@@ -671,6 +680,9 @@ def process_curated_beta_source(raw, cfg):
                     defer_verified_publisher_limitation()
                     raise ValueError("unproven_publisher_limitation") from exc
                 save_primary(title, body, evidence, "passed")
+                # Rights policy: a premium-section capture keeps lead + body receipt only.
+                from .source_rights import restrict_raw_to_public
+                restrict_raw_to_public(raw)
             except DeferredProcessing:
                 raise
             except Exception as exc:
@@ -678,7 +690,8 @@ def process_curated_beta_source(raw, cfg):
                 raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": "article_verification_failed", "error_type": type(exc).__name__}
                 raise DeferredProcessing("Pulso article verification failed") from exc
         raw.metadata["article_body_complete"] = True
-        if raw.metadata.get("publisher_document_type") == "liveblog" and not verified_liveblog_temporal_evidence(raw.metadata):
+        if (raw.metadata.get("publisher_document_type") == "liveblog" and raw.metadata.get("paywalled") is not True
+                and not verified_liveblog_temporal_evidence(raw.metadata)):
             raw.metadata["editorial_assessment"] = {"decision": "pending", "reason": "publisher_liveblog_entry_dates_unverified"}
             raise DeferredProcessing("publisher_liveblog_entry_dates_unverified")
         # Complete publisher evidence must belong to this queue item. Binding
@@ -759,14 +772,14 @@ def process_curated_beta_source(raw, cfg):
     primary_body = raw.metadata.get("page_text") or raw.raw_text or ""
     # Rights policy (Dirección 28-oct-2026): premium press (Pulso, La Tercera PM,
     # isAccessibleForFree=false) is analysed only from its public lead.
-    from .source_rights import paywall_policy, teaser_from_raw, load_policy as rights_policy
+    from .source_rights import paywall_policy, restrict_raw_to_public, load_policy as rights_policy
     paywall = paywall_policy(raw.url, raw.metadata) if raw.source_slug == "pulso_latercera" else None
     min_body = 160
     if paywall:
-        teaser = teaser_from_raw({"title": raw.title, "raw_text": "", "metadata": raw.metadata})
-        raw.metadata.update(public_teaser=teaser, paywalled=True, paywall_source=paywall["id"],
-                            access_policy=rights_policy()["policy"])
-        primary_body = teaser
+        # Every new capture stores only the public lead plus a body receipt; the
+        # full body never reaches the queue, the model or the card.
+        restrict_raw_to_public(raw)
+        primary_body = raw.metadata.get("public_teaser") or ""
         min_body = int(rights_policy()["min_teaser_characters_for_analysis"])
     body, document_facts = primary_body, ""
     if scoped:
@@ -878,6 +891,8 @@ def process_curated_beta_source(raw, cfg):
             input_format = "full_primary_body_with_verified_liveblog_entry_timeline_v1"
             kind += ". Cobertura en vivo: usa las fechas verificadas de cada entrada, separadas de la fecha del documento; conserva condiciones y no sumes balances repetidos."
         request_input = news_analysis_input(title=raw.title, text=text, source_name=raw.source_name, full_text=True)
+        from . import pulso_paywall
+        prior_binding = pulso_paywall.prior_binding(raw.metadata)
         raw.metadata.update(analysis_base_article_body_sha256=hashlib.sha256(body.encode("utf-8")).hexdigest(),
                             analysis_base_article_body_characters=len(body), analysis_input_format=input_format,
                             analysis_input_body_sha256=hashlib.sha256(text.encode("utf-8")).hexdigest(),
@@ -893,7 +908,26 @@ def process_curated_beta_source(raw, cfg):
         from . import pulso_final_paid_revalidation as final_paid
         from . import pulso_followup_paid_revalidation as followup_paid
         from . import pulso_current_paid_revalidation as current_paid
-        if final_paid.has_claim(raw.metadata) or final_paid.known_original_candidate(raw):
+        paywall_outcome = None
+        if paywall:
+            # Premium section: the pinned full-body paid-revalidation paths cannot
+            # bind a teaser request. Decide once: reuse, one teaser re-analysis, or stop.
+            paywall_outcome = pulso_paywall.decide(raw, prior_binding, text=text, request_input=request_input)
+            if paywall_outcome["kind"] == "exhausted":
+                return reject(paywall_outcome["reason"], detail=paywall_outcome["detail"])
+            if paywall_outcome["kind"] in ("teaser", "reuse_full"):
+                ai = paywall_outcome["ai"]
+                if paywall_outcome["kind"] == "reuse_full":
+                    pulso_paywall.record_reuse(raw, prior_binding)
+            else:
+                if not pulso_paywall.capacity_available():
+                    raw.metadata["editorial_assessment"] = {"decision": "pending", "threshold": 72,
+                                                            "reason": "pulso_paywalled_reanalysis_budget_deferred"}
+                    raise DeferredProcessing("pulso_paywalled_reanalysis_budget_deferred")
+                pulso_paywall.mark_reanalysis(raw, paywall_outcome["detail"], text)
+                ai = analyze_news(title=raw.title, text=text, source_name=raw.source_name, kind=kind,
+                                  full_text=True, pulso_editorial_proof=True)
+        elif final_paid.has_claim(raw.metadata) or final_paid.known_original_candidate(raw):
             try:
                 final_paid_revalidation, _ = final_paid.verified_processing_mode(raw)
                 ai = final_paid.unchanged_output(raw)
@@ -961,15 +995,23 @@ def process_curated_beta_source(raw, cfg):
         raise DeferredProcessing("curated beta source pending assessment")
     if raw.source_slug == "pulso_latercera":
         from .pulso_editorial_proof import model_binding_matches, validate_pulso_editorial_proof
-        validation=validate_pulso_editorial_proof(ai,text)
-        validation.update(primary_article_body_sha256=raw.metadata["analysis_base_article_body_sha256"],
-                          request_input_sha256=raw.metadata["analysis_request_input_sha256"],
-                          model_response=ai.get("_pulso_analysis_meta") if isinstance(ai,dict) else None)
-        if not model_binding_matches(ai,source_name=raw.source_name,
-                                     input_text_sha256=raw.metadata["analysis_input_body_sha256"],
-                                     request_input_sha256=raw.metadata["analysis_request_input_sha256"]):
-            validation.update(decision="deferred",reason="pulso_editorial_model_binding_mismatch")
-        if final_paid_revalidation is not None:
+        if paywall_outcome is not None and paywall_outcome["kind"] == "reuse_full":
+            # The earlier terminal validation stands: it was bound to the body hash
+            # that the receipt still proves; no new request was made.
+            validation = dict(raw.metadata["pulso_editorial_proof_validation"],
+                              paywall_reuse=raw.metadata[pulso_paywall.REUSE])
+        else:
+            validation=validate_pulso_editorial_proof(ai,text)
+            validation.update(primary_article_body_sha256=raw.metadata["analysis_base_article_body_sha256"],
+                              request_input_sha256=raw.metadata["analysis_request_input_sha256"],
+                              model_response=ai.get("_pulso_analysis_meta") if isinstance(ai,dict) else None)
+            if not model_binding_matches(ai,source_name=raw.source_name,
+                                         input_text_sha256=raw.metadata["analysis_input_body_sha256"],
+                                         request_input_sha256=raw.metadata["analysis_request_input_sha256"]):
+                validation.update(decision="deferred",reason="pulso_editorial_model_binding_mismatch")
+        if paywall_outcome is not None:
+            pass  # premium sections never enter the pinned full-body paid-revalidation receipts
+        elif final_paid_revalidation is not None:
             try:
                 raw.metadata[final_paid.RECEIPT] = final_paid.revalidation_receipt(raw, ai, validation)
             except (OSError, ValueError, KeyError, TypeError, StopIteration) as exc:
@@ -1034,6 +1076,10 @@ def process_curated_beta_source(raw, cfg):
                 raise DeferredProcessing("pulso_paid_revalidation_evidence_unverified") from exc
         raw.metadata["pulso_editorial_proof_validation"]=validation
         raw.metadata["analysis_model_output"]=ai
+        if validation["decision"] == "deferred" and paywall_outcome is not None:
+            # The single teaser assessment is spent: terminal, never retried or re-paid.
+            return reject("paywalled_teaser_assessment_not_grounded", validation_reason=validation["reason"],
+                          proof_version=validation["version"])
         if validation["decision"] == "deferred":
             raw.metadata["editorial_assessment"]={"decision":"pending","reason":validation["reason"],
                                                   "threshold":72,"proof_version":validation["version"]}
