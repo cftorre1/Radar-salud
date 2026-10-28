@@ -255,7 +255,7 @@ def test_partial_overlap_redacts_only_the_overlapping_sentences_and_keeps_the_bo
     assert apply_overlap_policy(record, fps) is None and record == before
 
 
-def test_stored_fiestas_patrias_open_capture_is_paywalled_by_overlap():
+def test_stored_fiestas_patrias_open_capture_is_paid_and_redacted():
     queue = json.loads((ROOT / "data/state/pending_queue.json").read_text(encoding="utf-8"))
     rows = [item["raw"] for item in queue.values() if (item.get("raw") or {}).get("url", "").startswith(
         "https://www.latercera.com/sustentabilidad/noticia/fiestas-patrias-disparan")]
@@ -263,7 +263,8 @@ def test_stored_fiestas_patrias_open_capture_is_paywalled_by_overlap():
     for raw in rows:
         md = raw["metadata"]
         assert is_paywalled(raw["url"], md)
-        assert access_classification(raw["url"], md)["basis"] == "sentence_overlap"
+        # Overlap with its /pulso/ twin (76% of sentences) or, since policy 1.3.0, its metered section.
+        assert access_classification(raw["url"], md)["basis"] in ("sentence_overlap", "metered_section")
         assert md["body_redacted"] is True and len(md["page_text"]) <= 600
 
 
