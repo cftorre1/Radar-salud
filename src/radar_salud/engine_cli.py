@@ -156,6 +156,12 @@ def main():
         for plan in ("free","pro"):
             row["distribution_"+plan]=choose_distribution(signal.radar_score,signal.confidence_score,UserPlan(plan),signal.watch_tags,())
         row.update(signal_types=["Datos"],scopes=["Isapres"])
+        meta=raw.metadata or {}
+        if meta.get("release_key"):
+            # One durable history record per release of a rolling series (history.py key).
+            row["release_key"]=meta["release_key"]
+        if meta.get("listing_publication_date"):
+            row["listing_publication_date"]=meta["listing_publication_date"]
         return row
     specs=[
       ("superintendencia","superintendencia_salud",SuperintendenciaStatsScout().discover,stats),

@@ -67,4 +67,27 @@ def process_superintendencia_normativa(raw:RawItem,source_cfg):
     # Verbatim official subject from the regulator's listing (verifiable; used by minimal cards).
     if raw.raw_text and raw.raw_text.strip()!=raw.title.strip() and len(raw.raw_text)<=600:row["official_subject"]=raw.raw_text.strip()
     if (raw.metadata or {}).get("scope"):row["official_listing_scope"]=raw.metadata["scope"]
+    apply_official_relations(row,raw.raw_text if raw.raw_text and raw.raw_text.strip()!=raw.title.strip() else "",raw.title)
+    return row
+
+def apply_official_relations(row,official_subject,title):
+    """General-scope acts on a circular (suspende / modifica / confirma ...): the relation and
+    its target come verbatim from the regulator's listing subject, never from PDF analysis."""
+    from .normative_relations import extract_relations, relationship_text, ISSUER
+    rels=extract_relations(official_subject,title,ISSUER)
+    if not rels:return row
+    row["normative_relations"]=rels
+    ids=list(row.get("related_reference_ids") or []);contexts=[dict(x) for x in row.get("related_reference_contexts") or [] if isinstance(x,dict)]
+    from .normative_relations import target_key, issuer_prefix
+    actor_prefix=issuer_prefix(title)
+    for rel in reversed(rels):
+        text=relationship_text(rel)
+        same=[c for c in contexts if target_key(str(c.get("id") or ""),actor_prefix)==rel["target_key"]]
+        if same:
+            for c in same:c["relationship"]=text
+        else:
+            contexts.insert(0,{"id":rel["target_id"],"relationship":text})
+            ids.insert(0,rel["target_id"])
+    row["related_reference_ids"]=list(dict.fromkeys(ids))[:8];row["related_reference_contexts"]=contexts[:8]
+    row["normative_act_relation"]=rels[0]["relation"]
     return row

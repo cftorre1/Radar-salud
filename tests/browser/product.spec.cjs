@@ -456,7 +456,13 @@ test('persistent editorial contract is visible in feed and brief',async({page})=
  await page.locator('#filterDetails summary').click();await selectPeriod(page,'90');
  const pulse=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Pulso Isapre/})});
  await expect(pulse).toHaveCount(1);
- await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(0);
+ // A regional release published after the pulse's own release is new information the pulse does not
+ // cover (the pulse only claims releases up to its validation day), so it may appear once; older ones stay folded.
+ {const radar=await (await page.request.get('/data/radar_today.json')).json();
+  const pulseDay=radar.signals.find(s=>String(s.title).startsWith('Pulso Isapre')).publication_date;
+  const regional=radar.signals.filter(s=>String(s.title).includes('Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'));
+  const newer=regional.filter(s=>String(s.event_date||'')>pulseDay).length;
+  await expect(page.locator('article[data-card]').filter({hasText:'Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'})).toHaveCount(Math.min(newer,1));}
  const opaque=page.locator('article[data-card] h2').filter({hasText:/^(Circular|Resolución|Oficio|Decreto).*N°\d+$/});
  await expect(opaque).toHaveCount(0);
  const c533=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Circular IF\/N°533 · SIL: actualiza el inventario mensual/})});

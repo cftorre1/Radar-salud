@@ -33,7 +33,10 @@ def _release_family(item):
     return None
 
 
-def _official_releases(items):
+def _official_releases(items, not_after=None):
+    """Latest official release per family; with ``not_after`` (validation day) only the
+    releases the validated workbooks can belong to: a later monthly update of the same
+    rolling page is a new release, not evidence for this pulse."""
     selected={}
     for item in items or []:
         family=_release_family(item)
@@ -44,6 +47,7 @@ def _official_releases(items):
                 or item.get("source_url") != RELEASE_URLS[family]):
             continue
         published=date.fromisoformat(item["event_date"])
+        if not_after and published>not_after:continue
         candidate={"family":family,"title":item["title"],"source_name":item["source_name"],
                    "url":item["source_url"],"event_date":published.isoformat()}
         if family not in selected or published>date.fromisoformat(selected[family]["event_date"]):
@@ -72,9 +76,9 @@ def build_pulse(validation, releases=None):
         start=date.fromisoformat(m["period_start"]+"-01")
         end=date.fromisoformat(period+"-01")
         if start>=end:raise ValueError("Invalid mobility interval")
-        official=_official_releases(releases)
-        publication_date=max(date.fromisoformat(x["event_date"]) for x in official.values())
         validated_at=datetime.fromisoformat(validation["validated_at"].replace("Z","+00:00"))
+        official=_official_releases(releases,not_after=validated_at.date())
+        publication_date=max(date.fromisoformat(x["event_date"]) for x in official.values())
         today=date.today()
         if publication_date>today or validated_at.date()>today or validated_at.date()<publication_date:
             raise ValueError("Validation predates publication")
