@@ -74,12 +74,14 @@ jobs:
           # Drop unstaged publication edits from a failed job so the rebase below is clean.
           git stash push --keep-index --include-untracked -m weekly-insight-unstaged || true
           git commit -m "chore: insight semanal del lunes (formato A)"
+          pushed=false
           for attempt in 1 2 3; do
-            git pull --rebase origin staging && git push origin HEAD:staging && break
+            if git pull --rebase origin staging && git push origin HEAD:staging; then pushed=true; break; fi
             git rebase --abort 2>/dev/null || true
             sleep $((attempt * 20))
           done
-          git push --dry-run origin HEAD:staging
+          # Fail loudly if the publication never reached staging.
+          [ "$pushed" = true ] || { echo "push to staging failed after 3 attempts"; exit 1; }
       - name: Request checked staging preview
         if: success()
         env:
