@@ -21,7 +21,7 @@ from . import stats_fichas as sf
 from .stats_fichas import fmt_dec, fmt_int, fmt_signed, month_label, month_name, value
 
 FAMILY = "F1"
-BUILDER_VERSION = "f1_lectura_pool_v5"  # a new builder republishes the same release (no archive, no new paid Lectura)
+BUILDER_VERSION = "f1_lectura_scope_v6"  # a new builder republishes the same release (no archive, no new paid Lectura)
 METRIC_COL = {"cotizantes": "C", "cargas": "D", "beneficiarios": "E"}
 
 
@@ -323,54 +323,64 @@ def _lectura_material(package: dict, values: dict, *, t, base, prev, open_codes,
     """
     P = lambda vid, **kw: sf.pool_entry(values, vid, **kw) if vid in values else None  # noqa: E731
     ytd = [base, t]
-    pool = [P(f"sistema.beneficiarios.{t}", metric="beneficiarios", signed=False),
-            P("sistema.beneficiarios.ytd", metric="beneficiarios", periods=ytd),
-            P("sistema.beneficiarios.ytd_pct", periods=ytd),
-            P(f"sistema.cotizantes.{t}", metric="cotizantes", signed=False),
-            P("sistema.cotizantes.ytd", metric="cotizantes", periods=ytd),
-            P("sistema.cargas.ytd", metric="cargas", periods=ytd),
-            P(f"sistema.cargas.{t}", metric="cargas", signed=False),
-            P(f"mezcla.{t}", signed=False), P(f"mezcla.{base}", signed=False, requires_period=True),
-            P("mezcla.delta_shown", periods=ytd),
-            P(f"abiertas.beneficiarios.{t}", metric="beneficiarios", signed=False),
-            P("delta.cerradas.ytd", metric="beneficiarios", periods=ytd), P("delta.cerradas.ytd_pct", periods=ytd),
-            P("cargas.contrib", periods=ytd)]
+    # scope: who a figure may be credited to (system / open / closed / insurer:<code>, the default with an entity).
+    # period_kind: month (one month's change), ytd (since the base month), interval (between cuts), stock_at.
+    Y = {"periods": ytd, "period_kind": "ytd"}
+    pool = [P(f"sistema.beneficiarios.{t}", metric="beneficiarios", signed=False, scope="system"),
+            P("sistema.beneficiarios.ytd", metric="beneficiarios", scope="system", **Y),
+            P("sistema.beneficiarios.ytd_pct", scope="system", **Y),
+            P(f"sistema.cotizantes.{t}", metric="cotizantes", signed=False, scope="system"),
+            P("sistema.cotizantes.ytd", metric="cotizantes", scope="system", **Y),
+            P("sistema.cargas.ytd", metric="cargas", scope="system", **Y),
+            P(f"sistema.cargas.{t}", metric="cargas", signed=False, scope="system"),
+            P(f"mezcla.{t}", signed=False, scope="system"),
+            P(f"mezcla.{base}", signed=False, requires_period=True, scope="system"),
+            P("mezcla.delta_shown", scope="system", **Y),
+            P(f"abiertas.beneficiarios.{t}", metric="beneficiarios", signed=False, scope="open"),
+            P("delta.cerradas.ytd", metric="beneficiarios", scope="closed", **Y),
+            P("delta.cerradas.ytd_pct", scope="closed", **Y),
+            P("cargas.contrib", scope="system", **Y)]
     if prev:
-        pool += [P(f"sistema.beneficiarios.mm.{t}", metric="beneficiarios", periods=[prev, t]),
-                 P("sistema.beneficiarios.mm_pct", periods=[prev, t]),
-                 P(f"sistema.cotizantes.mm.{t}", metric="cotizantes", periods=[prev, t])]
+        M = {"periods": [prev, t], "period_kind": "month", "scope": "system"}
+        pool += [P(f"sistema.beneficiarios.mm.{t}", metric="beneficiarios", **M),
+                 P("sistema.beneficiarios.mm_pct", **M),
+                 P(f"sistema.cotizantes.mm.{t}", metric="cotizantes", **M)]
     for c in sorted(open_codes | closed_codes):
-        pool += [P(f"delta.{c}.ytd", entity=c, metric="beneficiarios", periods=ytd), P(f"delta.{c}.ytd_pct", entity=c, periods=ytd),
+        pool += [P(f"delta.{c}.ytd", entity=c, metric="beneficiarios", **Y), P(f"delta.{c}.ytd_pct", entity=c, **Y),
                  P(f"cartera.{c}.beneficiarios.{t}", entity=c, metric="beneficiarios", signed=False)]
         if c in open_codes:
             pool += [P(f"share.{c}.{t}", entity=c, signed=False), P(f"share.{c}.{base}", entity=c, signed=False, requires_period=True),
-                     P(f"share.{c}.delta_pp", entity=c, periods=ytd), P(f"contrib.{c}", entity=c, periods=ytd)]
+                     P(f"share.{c}.delta_pp", entity=c, **Y), P(f"contrib.{c}", entity=c, **Y)]
     for key, signed in (("entradas_intervalo", False), ("salidas_intervalo", False), ("diferencia_intervalo", True)):
-        pool.append(P(f"movilidad.{key}", metric="cotizantes", signed=signed))
+        pool.append(P(f"movilidad.{key}", metric="cotizantes", signed=signed, scope="system", period_kind="interval"))
     sub = (package.get("suscripciones") or {}).get("period")
     if sub:
-        pool += [P(f"suscripciones.contratos_suscritos.{sub}", metric="contratos", signed=False),
-                 P(f"suscripciones.desahucios_voluntarios.{sub}", metric="desahucios", signed=False)]
+        pool += [P(f"suscripciones.contratos_suscritos.{sub}", metric="contratos", signed=False, scope="system", period_kind="month"),
+                 P(f"suscripciones.desahucios_voluntarios.{sub}", metric="desahucios", signed=False, scope="system", period_kind="month")]
     package["lectura_pool"] = [e for e in pool if e]
 
     ratios: list[dict] = []
 
-    def ratio(rid, num, den, unit, formula, inputs, entity=None, periods=None):
+    def ratio(rid, num, den, unit, formula, inputs, entity=None, periods=None, scope=None, period_kind="ytd"):
         if den:
             ratios.append({"id": rid, "value": num / den, "unit": unit, "entity": entity, "signed": False,
-                           "periods": periods or [t], "requires_period": False, "formula": formula, "inputs": inputs})
+                           "periods": periods or [t], "requires_period": False, "formula": formula, "inputs": inputs,
+                           "scope": scope or (f"insurer:{entity}" if entity is not None else "system"),
+                           "period_kind": period_kind, "trivial": False})
 
     v = lambda vid: values[vid]["value"] if vid in values else None  # noqa: E731
     if v("movilidad.salidas_intervalo") and v("movilidad.entradas_intervalo"):
         ratio("ratio.salidas_por_entrada", v("movilidad.salidas_intervalo"), v("movilidad.entradas_intervalo"), "x",
               "salidas / entradas", ["movilidad.salidas_intervalo", "movilidad.entradas_intervalo"],
-              periods=values["movilidad.salidas_intervalo"]["period"].split("→"))
+              periods=values["movilidad.salidas_intervalo"]["period"].split("→"), period_kind="interval")
     if sub:
         ratio("ratio.suscritos_por_desahucio", v(f"suscripciones.contratos_suscritos.{sub}"), v(f"suscripciones.desahucios_voluntarios.{sub}"),
-              "x", "suscritos / desahucios", [f"suscripciones.contratos_suscritos.{sub}", f"suscripciones.desahucios_voluntarios.{sub}"], periods=[sub])
+              "x", "suscritos / desahucios", [f"suscripciones.contratos_suscritos.{sub}", f"suscripciones.desahucios_voluntarios.{sub}"], periods=[sub],
+              period_kind="month")
     if peak_month and declines.get(t):
         ratio("ratio.baja_maxima_vs_actual", declines[peak_month], declines[t], "x", "baja(mes pico) / baja(t)",
-              [f"sistema.beneficiarios.mm.{peak_month}", f"sistema.beneficiarios.mm.{t}"], periods=[peak_month, t])
+              [f"sistema.beneficiarios.mm.{peak_month}", f"sistema.beneficiarios.mm.{t}"], periods=[peak_month, t],
+              period_kind="interval")
     losers = sorted((c for c in open_codes if deltas[c] < 0), key=lambda c: deltas[c])
     gainers = sorted((c for c in open_codes if deltas[c] > 0), key=lambda c: -deltas[c])
     if losers and gainers:
@@ -390,27 +400,33 @@ def _lectura_material(package: dict, values: dict, *, t, base, prev, open_codes,
     if "cargas.contrib" in values:
         ratio("fraccion.cargas_en_la_baja", values["cargas.contrib"]["value"], 100, "share", "Δ cargas / Δ beneficiarios",
               ["cargas.contrib"], periods=[base, t])
-    for rid, n, inputs in (("conteo.abiertas", len(open_codes), []), ("conteo.cerradas", len(closed_codes), []),
-                           ("conteo.abiertas_crecen", len(gainers), [f"delta.{c}.ytd" for c in sorted(open_codes)]),
-                           ("conteo.abiertas_caen", len(losers), [f"delta.{c}.ytd" for c in sorted(open_codes)])):
+    # Entity counts are trivial: they never count as new information (Dirección 28-oct: aportar algo más).
+    for rid, n, inputs, scope in (("conteo.abiertas", len(open_codes), [], "open"), ("conteo.cerradas", len(closed_codes), [], "closed"),
+                                  ("conteo.abiertas_crecen", len(gainers), [f"delta.{c}.ytd" for c in sorted(open_codes)], "open"),
+                                  ("conteo.abiertas_caen", len(losers), [f"delta.{c}.ytd" for c in sorted(open_codes)], "open")):
         ratios.append({"id": rid, "value": n, "unit": "count", "entity": None, "signed": False, "periods": [base, t],
-                       "requires_period": False, "formula": "conteo", "inputs": inputs})
+                       "requires_period": False, "formula": "conteo", "inputs": inputs, "scope": scope,
+                       "period_kind": "ytd", "trivial": True})
     package["derived_ratios"] = ratios
 
     ranks: list[dict] = []
     size = sorted(open_codes, key=lambda c: -values[f"cartera.{c}.beneficiarios.{t}"]["value"])
     for i, c in enumerate(size, 1):
         ranks.append({"id": f"rank.tamano.{c}", "value": i, "unit": "rank", "entity": c, "signed": False, "periods": [t],
-                      "requires_period": False, "formula": "orden por beneficiarios (abiertas)"})
+                      "requires_period": False, "formula": "orden por beneficiarios (abiertas)", "ranking": "tamano",
+                      "scope": f"insurer:{c}", "period_kind": "stock_at"})
     for i, c in enumerate(losers, 1):
         ranks.append({"id": f"rank.baja.{c}", "value": i, "unit": "rank", "entity": c, "signed": False, "periods": [base, t],
-                      "requires_period": False, "formula": "orden por Δ beneficiarios negativo (abiertas)"})
+                      "requires_period": False, "formula": "orden por Δ beneficiarios negativo (abiertas)", "ranking": "baja",
+                      "scope": f"insurer:{c}", "period_kind": "ytd"})
     for i, c in enumerate(gainers, 1):
         ranks.append({"id": f"rank.alza.{c}", "value": i, "unit": "rank", "entity": c, "signed": False, "periods": [base, t],
-                      "requires_period": False, "formula": "orden por Δ beneficiarios positivo (abiertas)"})
+                      "requires_period": False, "formula": "orden por Δ beneficiarios positivo (abiertas)", "ranking": "alza",
+                      "scope": f"insurer:{c}", "period_kind": "ytd"})
     if cot_streak:
         ranks.append({"id": "rank.racha_cotizantes", "value": cot_streak, "unit": "rank", "entity": None, "signed": False,
-                      "periods": [t], "requires_period": False, "formula": "meses consecutivos con el mismo signo"})
+                      "periods": [t], "requires_period": False, "formula": "meses consecutivos con el mismo signo",
+                      "ranking": "racha", "scope": "system", "period_kind": "month"})
     package["ranks"] = ranks
 
 
@@ -518,10 +534,10 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     rows2.append({"label": "Cerradas (3)", "value": v["delta.cerradas.ytd"]["value"], "ref": "delta.cerradas.ytd",
                   "base": v[f"cerradas.beneficiarios.{base}"]["value"], "pct_ref": "delta.cerradas.ytd_pct"})
     rows2.sort(key=lambda r: r["value"])
-    gainers = [r for r in rows2 if r["value"] >= kp["participacion"]["threshold"]["min_persons"]]
-    c2_head = (f"Una Isapre concentra la {'baja' if ytd < 0 else 'variación'}" + (f"; {len(gainers)} crecen" if gainers else "")
+    # The count comes from the data (conteo.abiertas_crecen: every open Isapre with Δ > 0), never from a template.
+    n_up = next(int(r["value"]) for r in package["derived_ratios"] if r["id"] == "conteo.abiertas_crecen")
+    c2_head = (f"Una Isapre concentra la {'baja' if ytd < 0 else 'variación'}" + (f"; {sf.count_phrase(n_up, 'crece', 'crecen')}" if n_up else "")
                if conc else "Cambio de beneficiarios por Isapre")
-    c2_head = c2_head.replace("; 1 crecen", "; una crece").replace("; 2 crecen", "; dos crecen").replace("; 3 crecen", "; tres crecen")
     chart2 = {"id": "f1-isapres", "form": "diverging", "headline": c2_head,
               "subtitle": f"Cambio de beneficiarios entre {base_month} y {month}, por Isapre", "unit": "personas",
               "rows": [{**r, "emphasis": r["value"] > 0} for r in rows2],
@@ -734,11 +750,19 @@ def run(root: Path, *, today: date, registry: dict | None = None, llm: bool = Tr
                     "verification": {**(lect.get("verification") or {}), "verdict": "FAIL", "errors": again["errors"],
                                      "ficha_errors": with_lectura["errors"]}}
             ficha["lectura"] = lect
+        else:
+            # Second-model backstop after the deterministic gates (≤ 1 reviewer call per ficha).
+            lect = sf.with_review(lect, ficha, package, registry=registry, enabled=llm, model_call=model_call, budget=budget)
+            ficha["lectura"] = lect
     if lect.get("status") == "pass":
         ficha["machine_note"] += f" Costo de IA: USD {lect.get('cost_usd', 0):.4f}."
     else:
         ficha["machine_note"] += " Lectura Alicanto omitida (" + {"not_attempted": "sin modelo en esta corrida", "no_budget": "sin presupuesto",
-                                                                  "verifier_fail": "no pasó el verificador", "generation_error": "error del modelo"}.get(lect.get("status"), "no disponible") + ")."
+                                                                  "verifier_fail": "no pasó el verificador", "generation_error": "error del modelo",
+                                                                  "review_fail": "no pasó la revisión de un segundo modelo",
+                                                                  "review_no_budget": "sin presupuesto para la revisión",
+                                                                  "review_error": "error del revisor",
+                                                                  "review_not_run": "sin revisión de un segundo modelo"}.get(lect.get("status"), "no disponible") + ")."
     if retry_lectura:
         ficha["triggers"] = previous.get("triggers") or ficha["triggers"]
         ficha["featured"] = previous.get("featured", ficha["featured"])

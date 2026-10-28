@@ -31,8 +31,12 @@
     "route": "luna",
     "max_output_tokens": 400,
     "max_run_usd": 0.05,
+    "review_route": "luna",
+    "review_max_output_tokens": 200,
+    "review_rule": "Respaldo de un segundo modelo (revisión 28-oct): tras PASS del verificador determinista, una llamada del rol revisor (ruta más barata, mismo presupuesto, máximo 1 por ficha) contrasta la Lectura con el paquete de evidencia y devuelve PASS/FAIL con la afirmación objetada. FAIL o sin presupuesto: se omite la Lectura y la ficha se publica igual. El tope max_run_usd cubre redactor + revisor.",
     "figure_rule": "Dirección 28-oct 15:25: la Lectura puede tener cifras si no es redundante y aporta algo más. Cada cifra (dígitos o palabra numérica) debe calzar con lectura_pool (dígitos), derived_ratios o ranks (palabras) con unidad, signo, entidad y período (stats_fichas.verify_lectura / lectura_verifier). Cada frase debe citar una cifra no mostrada en titular, bajada, KPI, pestañas o hechos, o bien nombrar un actor o implicancia con Jaccard < 0,5 frente a toda frase mostrada.",
     "jaccard_max": 0.5,
+    "scope_rule": "Cada cifra del pool declara scope (system / open / closed / insurer:<código>) y period_kind (month / ytd / interval / stock_at). Una cifra del sistema solo se atribuye a 'el sistema' o 'las Isapres'; de las abiertas a 'las abiertas'; de las cerradas a 'las cerradas'; de una Isapre a esa Isapre. Un mes nombrado solo calza con month o stock_at de ese mes; ytd exige 'desde enero', 'en lo que va del año' o 'entre enero y <mes>'. 'Más de', 'menos de', 'casi', 'cerca de' se comprueban contra el valor verdadero. Los conteos de entidades (trivial) no cuentan como aporte, y toda frase con Jaccard ≥ 0,5 frente a una frase mostrada es una reformulación.",
     "implication_terms": [
       "asegurador",
       "isapre",
@@ -106,7 +110,20 @@
       "conduc\\w* al?",
       "conduj\\w* al?",
       "conduzc\\w* al?",
-      "(?:d(?:a|an|aba|aban|io|ieron|ara|aran|aria|arian|ado|ando|ar|e|en|iera|ieran)|ha dado|han dado) lugar al?"
+      "(?:d(?:a|an|aba|aban|io|ieron|ara|aran|aria|arian|ado|ando|ar|e|en|iera|ieran)|ha dado|han dado) lugar al?",
+      "por lo que",
+      "asi que",
+      "de modo que",
+      "de manera que",
+      "(?:lo que )?(?:hizo|hicieron|hace|hacen|hara|haran|haria|harian|habria hecho) que",
+      "lo que llev\\w* al?",
+      "nac(?:e|en|io|ieron|era|eran|eria|erian) del?",
+      "(?:pro)?vien(?:e|en) del?",
+      "(?:pro)?ven(?:ia|ian|dria|drian|dra|dran) del?",
+      "(?:pro)?vin(?:o|ieron) del?",
+      "en razon del?",
+      "por ende",
+      "en consecuencia"
     ],
     "pattern_syntax": "Expresiones regulares sobre el texto en minúsculas y sin tildes; cada una calza como palabra completa (\\w* final = cualquier conjugación).",
     "insurers": [
@@ -115,7 +132,12 @@
         "code": null,
         "names": [
           "Fonasa",
-          "Fondo Nacional de Salud"
+          "Fondo Nacional de Salud",
+          "seguro público",
+          "aseguradora estatal",
+          "asegurador estatal",
+          "asegurador público",
+          "aseguradora pública"
         ]
       },
       {
@@ -123,7 +145,10 @@
         "code": 99,
         "names": [
           "Banmédica",
-          "Banmedica"
+          "Banmedica",
+          "BMI",
+          "Banmédika",
+          "Banmedika"
         ]
       },
       {
@@ -145,7 +170,9 @@
         "key": "cruz_blanca",
         "code": 78,
         "names": [
-          "Cruz Blanca"
+          "Cruz Blanca",
+          "CB",
+          "CruzBlanca"
         ]
       },
       {
@@ -162,14 +189,16 @@
         "key": "vida_tres",
         "code": 80,
         "names": [
-          "Vida Tres"
+          "Vida Tres",
+          "Vida 3"
         ]
       },
       {
         "key": "esencial",
         "code": 108,
         "names": [
-          "Esencial"
+          "Esencial",
+          "Escencial"
         ]
       },
       {
@@ -195,7 +224,7 @@
         ]
       }
     ],
-    "insurers_rule": "Solo se pueden nombrar aseguradores del paquete (entity_codes) que además aparecen en 'Qué muestran los datos'. Fonasa no está en el paquete F1.",
+    "insurers_rule": "Solo se pueden nombrar aseguradores del paquete (entity_codes) que además aparecen en 'Qué muestran los datos'. Fonasa no está en el paquete F1. Detección: nombres y alias exactos (CB y BMI solo en mayúsculas), luego errores de tipeo (distancia de edición ≤ 2 en nombres de más de 5 letras, misma inicial; palabras comunes excluidas). 'Vida 3' y 'Vida Tres' son una Isapre y su '3' nunca se lee como cifra.",
     "max_words_note": "Dirección 28-oct 08:20: Lectura corta (el prompt pide ≤ 50 palabras; el verificador corta en 60, dentro del tope de 90 de la decisión 3)."
   },
   "families": {

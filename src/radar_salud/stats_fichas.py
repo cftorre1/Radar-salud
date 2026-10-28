@@ -129,13 +129,29 @@ def value(vid: str, val: float, *, unit: str, period: str, source: str | None, l
             "formula": formula, "inputs": inputs or [], "kind": kind, "revised": None}
 
 
+SCOPES = ("system", "open", "closed")
+PERIOD_KINDS = ("month", "ytd", "interval", "stock_at")
+
+
 def pool_entry(values: dict, vid: str, *, entity: int | None = None, metric: str | None = None,
-               signed: bool = True, periods: list[str] | None = None, requires_period: bool = False) -> dict:
-    """One figure the Lectura may cite: a package value with its unit, sign rule, entity and period(s)."""
+               signed: bool = True, periods: list[str] | None = None, requires_period: bool = False,
+               scope: str | None = None, period_kind: str = "stock_at", trivial: bool = False) -> dict:
+    """One figure the Lectura may cite: a package value with its unit, sign rule, scope and period.
+
+    ``scope`` is 'system', 'open', 'closed' or 'insurer:<code>' (the default when ``entity`` is set): who the figure
+    may be credited to. ``period_kind`` is 'month' (a change within one month), 'ytd' (since the base month),
+    'interval' (between two cuts) or 'stock_at' (a stock at the end of a month).
+    """
     v = values[vid]
     per = periods or [p for p in re.split(r"→", str(v.get("period") or "")) if p]
+    scope = scope or (f"insurer:{entity}" if entity is not None else "system")
+    if scope not in SCOPES and not re.fullmatch(r"insurer:\d+", scope):
+        raise ValueError(f"invalid_scope:{scope}")
+    if period_kind not in PERIOD_KINDS:
+        raise ValueError(f"invalid_period_kind:{period_kind}")
     return {"id": vid, "value": v["value"], "unit": v["unit"], "metric": metric, "entity": entity, "signed": signed,
-            "periods": per, "requires_period": requires_period}
+            "periods": per, "requires_period": requires_period, "scope": scope, "period_kind": period_kind,
+            "trivial": trivial}
 
 
 def number_pool(package: dict) -> list[float]:
@@ -282,8 +298,9 @@ def insurer_catalog(registry: dict | None = None, catalog: list[dict] | None = N
 
 
 def insurers_mentioned(text: str, catalog: list[dict]) -> set[str]:
-    folded = _fold(text)
-    return {e["key"] for e in catalog if any(len(_fold(n)) >= 4 and _name_rx(n).search(folded) for n in e["names"])}
+    """Keys of the insurers named in ``text``: names, aliases and misspellings (``lectura_verifier.insurer_spans``)."""
+    import unicodedata
+    return {k for _, _, k in lv.insurer_spans(unicodedata.normalize("NFKC", str(text or "")), catalog, _name_rx)}
 
 
 def isapres_mentioned(text: str, catalog: list[dict]) -> set[int]:
@@ -302,11 +319,8 @@ def lectura_parser(package: dict, cat: list[dict]):
     months = {(int(p[:4]), int(p[5:7])) for p in periods if re.match(r"\d{4}-\d{2}", str(p))}
     by_key = {e["key"]: e["code"] for e in cat}
 
-    def codes(text: str) -> set:
-        return {by_key[k] for k in insurers_mentioned(text, cat) if by_key.get(k) is not None}
-
     def parse(sentence: str) -> dict:
-        return lv.parse_sentence(sentence, catalog=cat, name_rx=_name_rx, insurers_in=codes, package_years=years,
+        return lv.parse_sentence(sentence, catalog=cat, name_rx=_name_rx, key_code=by_key, package_years=years,
                                  package_months=months)
     return parse
 
@@ -349,7 +363,7 @@ def verify_lectura(text: str, package: dict, *, registry: dict | None = None, ca
     refs = [r for k in (ficha or {}).get("kpis") or [] for r in k.get("refs") or []]
     shown = lv.shown_ids(displayed, refs, entries=pool + ratios + ranks, parse=parse)
     errors += lv.check(text, pool=pool, ratios=ratios, ranks=ranks, displayed=displayed, shown=shown, parse=parse,
-                       implication_terms=list(cfg.get("implication_terms") or AUDIENCE),
+                       implication_terms=audience_terms(registry),
                        jaccard_max=float(cfg.get("jaccard_max", 0.5)))
     if not package.get("causal_note"):
         folded = _fold(text)
@@ -366,9 +380,9 @@ def verify_lectura(text: str, package: dict, *, registry: dict | None = None, ca
             errors.append(f"insurer_not_in_package:{key}")
         elif key not in allowed:
             errors.append(f"insurer_not_in_facts:{key}")
-    if re.search(r"https?://|www\.", text):
+    if URL_RX.search(text):
         errors.append("url_in_lectura")
-    if not any(a in _fold(text) for a in AUDIENCE):
+    if not any(a in _fold(text) for a in audience_terms(registry)):
         errors.append("business_lens_no_audience")
     return {"verdict": "PASS" if not errors else "FAIL", "errors": errors, "words": words}
 
@@ -407,15 +421,22 @@ def lectura_prompt(ficha: dict, package: dict) -> str:
         "Reglas que se verifican de forma automática (si fallas, el texto se descarta):\n"
         "1. Breve: dos o tres frases, máximo 60 palabras, en español de Chile, sin títulos ni viñetas.\n"
         "2. Cifras: solo las de 'Material nuevo' (lectura_pool, razones y rankings), redondeadas como se muestran, con su "
-        "unidad (%, pp, beneficiarios, cotizantes, veces), su signo, la Isapre a la que pertenecen y su período. Una razón "
-        "puede escribirse en palabras (el doble, la mitad, uno de cada cuatro) solo si calza con una razón de la lista; un "
-        "ranking como ordinal (la segunda) solo con su Isapre. Ninguna otra cifra, año, trimestre ni palabra numérica.\n"
+        "unidad (%, pp, beneficiarios, cotizantes, veces), su signo, su ámbito y su período. Ámbito: una cifra de una "
+        "Isapre se atribuye a esa Isapre; una del sistema, a 'el sistema' o 'las Isapres'; una de las abiertas, a 'las "
+        "abiertas'; una de las cerradas, a 'las cerradas'. Período: 'mes' se escribe con su mes ('en agosto'); 'desde "
+        "enero' exige esas palabras ('desde enero', 'en lo que va del año'); 'entre cortes' no lleva un mes suelto. 'Más "
+        "de', 'menos de', 'casi' y 'cerca de' deben ser verdaderos para el valor exacto. Una razón puede escribirse en "
+        "palabras (el doble, la mitad, uno de cada cuatro) solo si calza con una razón de la lista; un ranking como "
+        "ordinal (la segunda) solo con su ranking y su Isapre. Los conteos marcados 'trivial' (cuántas Isapres hay) no "
+        "aportan nada. Ninguna otra cifra, año, trimestre ni palabra numérica.\n"
         "3. Cada frase aporta algo: o cita una cifra de 'Material nuevo', o dice en palabras propias qué implica para un "
         "actor (aseguradoras, Isapres, prestadores, inversionistas, regulador, competencia, precios, cartera). Una frase "
         "que solo repite una cifra ya mostrada se descarta.\n"
         "4. No afirmes causas: no uses 'debido a', 'explica', 'provoca', 'impulsa', 'genera', 'lleva a', 'se traduce', "
         "'responde a', 'porque', 'gracias a', 'producto de', 'se debe', 'conlleva', 'incide', 'influye', 'repercute', "
-        "'contribuye', 'gatilla', 'desencadena', 'propicia', 'conduce a', 'da lugar a' ni sus conjugaciones.\n"
+        "'contribuye', 'gatilla', 'desencadena', 'propicia', 'conduce a', 'da lugar a', 'por lo que', 'así que', "
+        "'de modo que', 'de manera que', 'hizo que', 'nace de', 'viene de', 'en razón de', 'por ende', 'en "
+        "consecuencia' ni sus conjugaciones.\n"
         f"5. Solo puedes nombrar estas Isapres: {', '.join(names)}. No nombres Fonasa ni otras Isapres; no uses las palabras "
         "'esencial' ni 'fundación' salvo como nombre de esas Isapres.\n"
         "6. No inventes hechos, fechas ni fuentes, ni enlaces.\n"
@@ -480,7 +501,8 @@ def generate_lectura(ficha: dict, package: dict, *, registry: dict | None = None
         worst = price_estimate(model, math.ceil(len(prompt) / 3.2), int(cfg["max_output_tokens"]))
     except Exception:
         worst = float(cfg.get("max_run_usd", 0.05))
-    if worst > float(cfg.get("max_run_usd", 0.05)):
+    # The run cap covers the writer and the reviewer together: never pay a draft that cannot be reviewed.
+    if worst + review_worst_usd(ficha, package, registry) > float(cfg.get("max_run_usd", 0.05)):
         return {"status": "no_budget", "reason": "run_cap_would_be_exceeded", "text": None, "cost_usd": 0.0}
     ok, reason = (budget or _default_budget)(worst)
     if not ok:
@@ -502,6 +524,108 @@ def generate_lectura(ficha: dict, package: dict, *, registry: dict | None = None
     if verification["verdict"] != "PASS":
         return {**base, "status": "verifier_fail", "text": None, "rejected_text": text}
     return {**base, "status": "pass", "text": text}
+
+
+# Second-model backstop (as in the weekly insight): after the deterministic verifier passes, one cheaper reviewer
+# call per ficha checks the Lectura against the evidence package. FAIL, no budget or an error omit the Lectura.
+
+
+def _sha(text: str) -> str:
+    import hashlib
+    return hashlib.sha256(str(text or "").encode("utf-8")).hexdigest()
+
+
+def review_prompt(ficha: dict, package: dict, text: str) -> str:
+    names = {e.get("code"): e.get("name") for e in package.get("entities") or []}
+    evidence = {"cifras": [lv.describe(e, names) for e in package.get("lectura_pool") or []],
+                "razones": [lv.describe(e, names) for e in package.get("derived_ratios") or []],
+                "rankings": [lv.describe(e, names) for e in package.get("ranks") or []]}
+    shown = shown_blocks(ficha)
+    return (
+        "Eres el revisor independiente de la 'Lectura Alicanto' de una ficha estadística de Alicanto Salud. No la "
+        "reescribas: decide si se publica.\n"
+        "FAIL si cualquiera de estas cosas ocurre:\n"
+        "1. Una cifra, comparación, orden o hecho no está respaldado por la evidencia (valor, unidad, signo, ámbito: "
+        "sistema, abiertas, cerradas o una Isapre, y período: mes, desde enero, entre cortes o stock al cierre).\n"
+        "2. Atribuye a una Isapre una cifra del sistema, de las abiertas o de las cerradas, o al revés.\n"
+        "3. 'Más de', 'menos de', 'casi', 'cerca de' no calzan con el valor verdadero.\n"
+        "4. Afirma una causa, una tendencia futura o un hecho que no está en la evidencia.\n"
+        "5. Solo repite lo que la ficha ya muestra, o aporta solo conteos triviales (cuántas Isapres hay).\n"
+        "6. Nombra una aseguradora, fuente, fecha o enlace que no está en la evidencia.\n"
+        "Si todo está respaldado y aporta algo nuevo, PASS.\n"
+        'Devuelve solo JSON: {"verdict": "PASS" | "FAIL", "claim": "la afirmación que objetas, textual, o vacío"}\n\n'
+        f"Lectura: {text}\n"
+        f"Ya mostrado en la ficha: {json.dumps(shown, ensure_ascii=False)}\n"
+        f"Evidencia: {json.dumps(evidence, ensure_ascii=False)}\n"
+        f"Período de la ficha: {package.get('period')}; base: {package.get('base_period')}\n"
+    )
+
+
+def review_worst_usd(ficha: dict, package: dict, registry: dict | None = None) -> float:
+    cfg = (registry or load_registry())["lectura"]
+    model = _route_model(cfg.get("review_route", "luna"))
+    try:
+        from .ai_pricing import estimate as price_estimate
+        # the prompt plus a 60-word Lectura (≈ 400 characters)
+        return price_estimate(model, math.ceil((len(review_prompt(ficha, package, "x" * 400))) / 3.2),
+                              int(cfg.get("review_max_output_tokens", 200)))
+    except Exception:
+        return float(cfg.get("max_run_usd", 0.05)) / 2
+
+
+def review_lectura(ficha: dict, package: dict, text: str, *, registry: dict | None = None,
+                   model_call: Callable[..., Any] | None = None,
+                   budget: Callable[[float], tuple[bool, str]] | None = None) -> dict:
+    """One reviewer call (route ``lectura.review_route``, same budget machinery). PASS/FAIL with the contested claim."""
+    registry = registry or load_registry()
+    cfg = registry["lectura"]
+    model = _route_model(cfg.get("review_route", "luna"))
+    prompt = review_prompt(ficha, package, text)
+    try:
+        from .ai_pricing import estimate as price_estimate
+        worst = price_estimate(model, math.ceil(len(prompt) / 3.2), int(cfg.get("review_max_output_tokens", 200)))
+    except Exception:
+        worst = float(cfg.get("max_run_usd", 0.05)) / 2
+    base = {"text_sha256": _sha(text), "route": cfg.get("review_route", "luna"), "cost_usd": 0.0}
+    if worst > float(cfg.get("max_run_usd", 0.05)):
+        return {**base, "verdict": "NO_BUDGET", "reason": "run_cap_would_be_exceeded"}
+    ok, reason = (budget or _default_budget)(worst)
+    if not ok:
+        return {**base, "verdict": "NO_BUDGET", "reason": reason}
+    try:
+        result = (model_call or _default_model_call)(prompt, feature="stats_ficha_lectura_review", preferred_model=model,
+                                                     allow_luna_fallback=False,
+                                                     max_output_tokens=int(cfg.get("review_max_output_tokens", 200)))
+    except Exception as exc:
+        _record(False)
+        return {**base, "verdict": "ERROR", "reason": f"{type(exc).__name__}:{exc}"[:200],
+                "cost_usd": float(getattr(exc, "estimated_cost_usd", 0) or 0)}
+    output = getattr(result, "output", None)
+    output = output if isinstance(output, dict) else {}
+    verdict = "PASS" if str(output.get("verdict") or "").strip().upper() == "PASS" else "FAIL"
+    _record(True)
+    return {**base, "verdict": verdict, "claim": str(output.get("claim") or "")[:300] or None,
+            "model": getattr(result, "model", model), "response_id": getattr(result, "response_id", None),
+            "cost_usd": round(float(getattr(result, "estimated_cost_usd", 0) or 0), 6)}
+
+
+def with_review(lect: dict, ficha: dict, package: dict, *, registry: dict | None = None, enabled: bool = True,
+                model_call: Callable[..., Any] | None = None,
+                budget: Callable[[float], tuple[bool, str]] | None = None) -> dict:
+    """Keep a deterministic-PASS Lectura only if the reviewer passes this exact text (≤ 1 reviewer call per ficha)."""
+    if lect.get("status") != "pass":
+        return lect
+    text = lect.get("text")
+    prior = lect.get("review") or {}
+    if prior.get("verdict") == "PASS" and prior.get("text_sha256") == _sha(text):
+        return lect  # already reviewed (same release, same text): never paid twice
+    review = (review_lectura(ficha, package, text, registry=registry, model_call=model_call, budget=budget) if enabled
+              else {"text_sha256": _sha(text), "verdict": "NOT_RUN", "reason": "sin modelo en esta corrida", "cost_usd": 0.0})
+    cost = round(float(lect.get("cost_usd") or 0) + float(review.get("cost_usd") or 0), 6)
+    if review["verdict"] == "PASS":
+        return {**lect, "review": review, "cost_usd": cost}
+    status = {"FAIL": "review_fail", "NO_BUDGET": "review_no_budget", "ERROR": "review_error"}.get(review["verdict"], "review_not_run")
+    return {**lect, "status": status, "text": None, "rejected_text": text, "review": review, "cost_usd": cost}
 
 
 # ---------------------------------------------------------------------------------------------
@@ -532,7 +656,26 @@ def displayed_texts(ficha: dict, include_lectura: bool = True) -> list[str]:
     return [str(x) for x in out if x]
 
 
-AUDIENCE = ("isapre", "asegurador", "prestador", "inversionista", "cotizante", "cartera", "ingreso", "competencia")
+def audience_terms(registry: dict | None = None) -> list[str]:
+    """One list for the audience/implication rule: the registry's ``lectura.implication_terms`` (folded)."""
+    terms = (registry or load_registry())["lectura"].get("implication_terms") or []
+    return [_fold(t) for t in terms]
+
+
+# Links and bare domains ('www.x.cl', 'superdesalud.gob.cl', 'example.com/x').
+URL_RX = re.compile(r"https?://|\bwww\.|\b[\w-]+(?:\.[\w-]+)*\.(?:cl|com|org|gob|gov|net|io|edu|info|es|ar|pe|co|mx|br|"
+                    r"uk|eu|int|app|ai|me|ly|us)\b(?!\.?\d)", re.I)
+
+
+COUNT_WORDS = {"dos": 2, "tres": 3, "cuatro": 4, "cinco": 5, "seis": 6, "siete": 7, "ocho": 8, "nueve": 9, "diez": 10}
+
+
+def count_phrase(n: int, singular: str, plural: str) -> str:
+    """'una crece', 'tres crecen': a count word derived from data, never hard-coded."""
+    if n == 1:
+        return f"una {singular}"
+    word = next((w for w, v in COUNT_WORDS.items() if v == n), str(n))
+    return f"{word} {plural}"
 
 
 def _sentences(text: str) -> list[str]:
@@ -598,10 +741,16 @@ def lens_checks(ficha: dict, package: dict) -> dict:
             out["ui"].append(f"chart_without_table_or_subtitle:{c.get('id')}")
         if any(len(str(r.get("label") or "")) > 18 for r in rows):
             out["ui"].append(f"chart_label_long:{c.get('id')}")
+    # A count word in a chart headline ('tres crecen') must equal a count the builder derived from the data.
+    counts = {float(e.get("value")) for e in package.get("derived_ratios") or [] if e.get("unit") == "count"}
+    for c in all_charts(ficha):
+        for w in re.findall(r"[a-z]+", _fold(c.get("headline"))):
+            if w in COUNT_WORDS and float(COUNT_WORDS[w]) not in counts:
+                out["data"].append(f"chart_headline_count_not_in_evidence:{c.get('id')}:{w}")
     watch = ficha.get("watch") or []
     if not 1 <= len(watch) <= 2:  # Dirección 28-oct 08:20: compact Qué mirar
         out["business"].append("watch_out_of_range")
-    if lect.get("status") == "pass" and not any(a in _fold(lect.get("text")) for a in AUDIENCE):
+    if lect.get("status") == "pass" and not any(a in _fold(lect.get("text")) for a in audience_terms()):
         out["business"].append("lectura_without_audience")
     return out
 

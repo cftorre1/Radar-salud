@@ -41,13 +41,19 @@ def save_portfolio(root, data):
     (root / INPUTS[0]).write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
 
 
-def fake_model(text, cost=0.0004):
+def fake_model(text, cost=0.0004, review="PASS", claim=""):
+    """Writer and reviewer fake: the reviewer call (feature *_review) answers ``review`` with ``claim``."""
     calls = []
 
     def call(prompt, **kw):
         calls.append({"prompt": prompt, **kw})
+        if str(kw.get("feature", "")).endswith("_review"):
+            return SimpleNamespace(output={"verdict": review, "claim": claim}, model="gpt-5.6-luna",
+                                   estimated_cost_usd=cost / 4, response_id="rv1")
         return SimpleNamespace(output={"lectura": text}, model="gpt-5.6-luna", estimated_cost_usd=cost, response_id="r1")
     call.calls = calls
+    call.writes = lambda: [c for c in calls if not c["feature"].endswith("_review")]
+    call.reviews = lambda: [c for c in calls if c["feature"].endswith("_review")]
     return call
 
 
@@ -263,9 +269,9 @@ def test_verifier_accepts_clean_text_and_rejects_violations(root):
     ("Para la competencia, Esencial cedió 0,6 pp de participación entre las abiertas desde enero.", "number_entity_mismatch"),
     ("Para la competencia, Banmédica tenía 22,5% de las abiertas en enero.", "number_period_mismatch"),
     # restated figures (already in headline, dek, KPIs, tabs or facts)
-    ("Banmédica concentra el 77% de la baja neta de la cartera.", "restates_shown"),
+    ("Banmédica concentra el 77% de la baja neta de la cartera desde enero.", "restates_shown"),
     ("La cartera perdió 814 beneficiarios.", "restates_shown"),
-    ("Para las Isapres, tres de cada cuatro beneficiarios perdidos vienen de Banmédica.", "restates_shown"),  # 77% in words
+    ("Para las Isapres, tres de cada cuatro beneficiarios perdidos desde enero son de Banmédica.", "restates_shown"),  # 77% in words
     ("Para la competencia, Banmédica perdió miles de beneficiarios desde enero.", "restates_shown"),
     # untraced figures and number words
     ("La cartera cayó 3% en el año.", "number_"),  # 3 % is only an Isapre figure, not the system
@@ -293,6 +299,146 @@ def test_lectura_figure_probes(root, text, error):
         assert r["verdict"] == "FAIL" and any(e.startswith(error) for e in r["errors"]), r
 
 
+# Third independent review (28-oct): every probe, negative and positive, as a class of failure.
+@pytest.mark.parametrize("text,error", [
+    # 1. scope: a system / open figure is never credited to an insurer
+    ("Para las Isapres, Esencial tiene 935.514 cargas en agosto.", "number_entity_mismatch"),
+    ("Para las Isapres, Banmédica tiene 2.419.986 beneficiarios.", "number_entity_mismatch"),
+    ("Para las Isapres, las cerradas tienen 2.419.986 beneficiarios.", "number_entity_mismatch"),
+    ("Para la competencia, Banmédica perdió 27.355 beneficiarios desde enero.", "number_entity_mismatch"),
+    # 2. period kind: a month named matches only that month's change or stock; YTD needs YTD wording
+    ("Para las Isapres, en agosto las Isapres cerradas perdieron 1.433 beneficiarios.", "number_period_mismatch"),
+    ("Para las Isapres, las cerradas perdieron 1.433 beneficiarios.", "number_period_mismatch"),
+    ("Para las Isapres, en julio el sistema perdió 814 beneficiarios.", "number_period_mismatch"),
+    ("Para las Isapres, desde enero el sistema perdió 814 beneficiarios.", "number_period_mismatch"),
+    ("Para las Isapres, en agosto salieron 109.663 cotizantes del sistema.", "number_period_mismatch"),
+    # 3. comparators against the true value
+    ("Para las Isapres, el sistema tiene más de 2,5 millones de beneficiarios.", "number_"),
+    ("Para las Isapres, las abiertas tienen menos de 2,4 millones de beneficiarios.", "number_"),
+    ("Para las Isapres, las abiertas tienen casi 2,4 millones de beneficiarios.", "number_"),
+    ("Para las Isapres, el sistema tiene más de 1 millón de beneficiarios.", "number_"),  # true, but no information
+    ("Para las Isapres, las abiertas tienen cerca de 2,6 millones de beneficiarios.", "number_"),
+    # 4. gaming 'adds something': trivial counts and restatements with a new id
+    ("Banmédica concentra el 77% de la baja neta, entre 7 Isapres abiertas.", "number_"),
+    ("Banmédica concentra el 77% de la baja neta desde enero, entre 7 Isapres abiertas.", "restates_shown"),
+    ("Para la competencia, Banmédica concentra el 77% de la baja desde enero y tres Isapres abiertas crecen.", "restates_shown"),
+    ("La cartera Isapre casi deja de caer: −814 beneficiarios en agosto, la menor baja del año, con 2.419.986 "
+     "beneficiarios en las abiertas.", "restates_shown_text"),
+    # 5. insurers: misspellings are insurers; Fonasa (any alias) is outside the package
+    ("Para las Isapres, el seguro público gana espacio frente a la cartera.", "insurer_not_in_package:fonasa"),
+    ("Para las Isapres, la aseguradora estatal gana espacio frente a la cartera.", "insurer_not_in_package:fonasa"),
+    ("Para la competencia, CB mantiene su cartera.", "insurer_not_in_facts:cruz_blanca"),
+    ("Para la competencia, Consalut mantiene su cartera.", "insurer_not_in_facts:consalud"),
+    ("Para la competencia, Colmenna mantiene su cartera.", "insurer_not_in_facts:colmena"),
+    ("Para la competencia, Banmédika tiene 2.419.986 beneficiarios.", "number_entity_mismatch"),
+    # 6. bare domains
+    ("Para la cartera, ver superdesalud.gob.cl.", "url_in_lectura"),
+    ("Para la cartera, ver example.com/informe.", "url_in_lectura"),
+    # 8. ordinals: right ranking, right period
+    ("Para la competencia, Nueva Masvida es la segunda Isapre con mayor baja desde enero.", "number_"),
+    ("Para la competencia, la segunda Isapre con mayor baja pierde cartera en agosto.", "number_period_mismatch"),
+])
+def test_third_review_probes_fail(root, text, error):
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    r = sf.verify_lectura(text, f1.build_package(root), ficha=fi)
+    assert r["verdict"] == "FAIL" and any(e.startswith(error) for e in r["errors"]), r
+
+
+# The reviewer's good sentences and three good Lecturas: figures that trace, add something and pass.
+GOOD_LECTURAS = [
+    "Para el mercado, los cotizantes subieron en 1.296 en agosto y el sistema sumó 1,3 contratos por cada desahucio "
+    "voluntario en julio: la base que paga cotización resiste mejor que las cargas.",
+    "Para la competencia, Banmédica pierde 2,4 veces lo que la segunda Isapre con mayor baja desde enero, y Esencial "
+    "gana 1,28 veces lo de Nueva Masvida.",
+    "Para inversionistas, las cerradas cayeron 2,1% desde enero, más que el 1,09% del sistema: el ajuste no se limita "
+    "a las abiertas.",
+]
+
+
+@pytest.mark.parametrize("text", GOOD_LECTURAS + [
+    "Para las Isapres, las abiertas tienen más de 2,4 millones de beneficiarios.",  # true 2.419.986
+    "Para las Isapres, las abiertas tienen menos de 2,5 millones de beneficiarios.",  # true 2.419.986
+    "Para las Isapres, las abiertas tienen cerca de 2,4 millones de beneficiarios.",
+    "Para el mercado, los cotizantes subieron en 1.296 en agosto, mientras las cerradas perdieron 1.433 desde enero.",
+    "Para las Isapres, el sistema anotó 1,3 contratos por cada desahucio voluntario en julio.",
+    "Para el mercado, Esencial crece 13,3% desde enero.",
+    "Para la competencia, Colmena es la segunda Isapre con mayor baja desde enero.".replace("Colmena", "Banmédica").replace(
+        "segunda", "primera"),
+    "Para las Isapres, por cada entrada al sistema hubo 1,19 salidas entre julio 2025 y julio 2026.",
+    "Para la competencia, Escencial gana cartera frente a Banmédica.",  # misspelling = Esencial, which is in the facts
+])
+def test_third_review_good_sentences_pass(root, text):
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    r = sf.verify_lectura(text, f1.build_package(root), ficha=fi)
+    assert r["verdict"] == "PASS", r
+
+
+def test_good_lecturas_publish_end_to_end(root):
+    for text in GOOD_LECTURAS:
+        shutil.rmtree(root / "data/stats_fichas", ignore_errors=True)
+        r = f1.run(root, today=TODAY, llm=True, model_call=fake_model(text), budget=ALLOW)
+        assert r["ficha"]["lectura"]["status"] == "pass", r["ficha"]["lectura"]
+        assert sf.public_ficha(r["ficha"])["lectura"]["text"] == text
+
+
+def test_pool_entries_declare_scope_period_kind_and_trivial(root):
+    p = f1.build_package(root)
+    by = {e["id"]: e for e in p["lectura_pool"] + p["derived_ratios"] + p["ranks"]}
+    assert by["sistema.cargas.2026-08"]["scope"] == "system" and by["sistema.cargas.2026-08"]["period_kind"] == "stock_at"
+    assert by["abiertas.beneficiarios.2026-08"]["scope"] == "open"
+    assert by["delta.cerradas.ytd"]["scope"] == "closed" and by["delta.cerradas.ytd"]["period_kind"] == "ytd"
+    assert by["delta.99.ytd"]["scope"] == "insurer:99"
+    assert by["sistema.beneficiarios.mm.2026-08"]["period_kind"] == "month"
+    assert by["movilidad.salidas_intervalo"]["period_kind"] == "interval"
+    assert by["conteo.abiertas"]["trivial"] is True and by["conteo.abiertas_crecen"]["trivial"] is True
+    assert by["rank.baja.67"]["ranking"] == "baja" and by["rank.tamano.99"]["ranking"] == "tamano"
+    for e in by.values():
+        assert e["scope"] in ("system", "open", "closed") or e["scope"].startswith("insurer:"), e
+        assert e["period_kind"] in ("month", "ytd", "interval", "stock_at"), e
+    with pytest.raises(ValueError):
+        sf.pool_entry(p["values"], "delta.99.ytd", scope="group")
+
+
+def test_vida_3_is_one_insurer_and_never_a_number(root):
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    p = f1.build_package(root)
+    for name in ("Vida 3", "Vida Tres", "VidaTres"):
+        r = sf.verify_lectura(f"Para la competencia, {name} mantiene su cartera.", p, ficha=fi)
+        assert r["errors"] == ["insurer_not_in_facts:vida_tres"], r  # never number_unmapped:3 or a traced 3
+    facts = {**fi["facts"], "paragraphs": [*fi["facts"]["paragraphs"], "Vida Tres registró −991 beneficiarios."]}
+    assert sf.verify_lectura("Para la competencia, Vida 3 mantiene su cartera.", p, ficha={**fi, "facts": facts})["verdict"] == "PASS"
+
+
+def test_insurer_fuzzy_matching_spares_common_words(root):
+    cat = sf.insurer_catalog()
+    assert sf.insurers_mentioned("Escencial y Banmédika", cat) == {"esencial", "banmedica"}
+    assert sf.insurers_mentioned("BMI y CB", cat) == {"banmedica", "cruz_blanca"}
+    assert sf.insurers_mentioned("bmi y cb", cat) == set()  # short acronyms only in upper case
+    assert sf.insurers_mentioned("Un caso especial de salud en la columna del seguro de vida.", cat) == set()
+
+
+def test_chart_headline_counts_match_the_data(root):
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    p = f1.build_package(root)
+    up = next(r["value"] for r in p["derived_ratios"] if r["id"] == "conteo.abiertas_crecen")
+    assert up == sum(1 for c in sf.load_registry()["families"]["F1"]["open_codes"] if p["kpis"]["deltas"][c] > 0) == 3
+    chart = next(c for c in sf.all_charts(fi) if c["id"] == "f1-isapres")
+    assert chart["headline"] == "Una Isapre concentra la baja; tres crecen"  # Consalud +397 grows too
+    shown_up = sum(1 for r in chart["rows"] if r["value"] > 0)
+    assert shown_up == up
+    wrong = json.loads(json.dumps(fi))
+    next(c for t in wrong["tabs"] for c in t.get("charts") or [] if c["id"] == "f1-isapres")["headline"] = "Una Isapre concentra la baja; dos crecen"
+    assert "data:chart_headline_count_not_in_evidence:f1-isapres:dos" in sf.verify_ficha(wrong, p)["errors"]
+    assert sf.count_phrase(1, "crece", "crecen") == "una crece" and sf.count_phrase(4, "crece", "crecen") == "cuatro crecen"
+
+
+def test_audience_terms_are_one_list(root):
+    p = f1.build_package(root)
+    r = sf.verify_lectura("Para el mercado, la señal es de estabilidad en la cartera.", p)
+    assert "business_lens_no_audience" not in r["errors"]
+    assert "mercado" in sf.audience_terms() and "competencia" in sf.audience_terms()
+
+
 def _with_ratio(p, rid, value, unit, entity=None):
     return {**p, "derived_ratios": [*p["derived_ratios"], {"id": rid, "value": value, "unit": unit, "entity": entity,
                                                           "signed": False, "periods": [p["period"]], "requires_period": False}]}
@@ -303,7 +449,6 @@ def _with_ratio(p, rid, value, unit, entity=None):
     ("Para la competencia, la baja de Banmédica es quíntuple que la de Esencial.", ("r.q", 4.9, "x", 99)),
     ("Para la competencia, uno de cada cinco beneficiarios perdidos por la cartera es de Banmédica.", ("r.f", 0.2, "share", 99)),
     ("Para la competencia, Banmédica cede la mitad de lo que pierde la cartera de las abiertas.", ("r.m", 0.49, "share", 99)),
-    ("Para inversionistas, un par de Isapres abiertas sostiene la cartera.", ("r.c", 2, "count", None)),
     ("Para la competencia, Banmédica cede medio punto de participación entre las abiertas.", ("r.pp", -0.5, "pp", 99)),
 ])
 def test_lectura_number_words_pass_only_with_a_precomputed_ratio(root, text, ratio):
@@ -313,6 +458,13 @@ def test_lectura_number_words_pass_only_with_a_precomputed_ratio(root, text, rat
     rid, value, unit, entity = ratio
     r = sf.verify_lectura(text, _with_ratio(p, rid, value, unit, entity), ficha=fi)
     assert r["verdict"] == "PASS", r
+
+
+def test_number_word_counts_trace_but_are_trivial(root):
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    p = _with_ratio(f1.build_package(root), "r.c", 2, "count")
+    r = sf.verify_lectura("Para inversionistas, un par de Isapres abiertas sostiene la cartera.", p, ficha=fi)
+    assert not any(e.startswith("number_") for e in r["errors"]) and any(e.startswith("restates_shown") for e in r["errors"]), r
 
 
 def test_lectura_ordinals_and_roman_numerals_trace_to_ranks_and_periods(root):
@@ -400,6 +552,14 @@ def test_registry_declares_the_figure_rule():
     "La ley condujo a salidas de la cartera.", "La ley conduce a salidas de la cartera.", "La ley conducirá a salidas.",
     "La ley dio lugar a salidas de la cartera.", "La ley da lugar a salidas de la cartera.",
     "La ley dará lugar a salidas de la cartera.", "La ley ha dado lugar a salidas.", "La ley puede dar lugar a salidas.",
+    # third review (28-oct): consecutive and origin connectors
+    "La cartera cae, por lo que las Isapres ajustan precios.", "La cartera cae, así que las Isapres ajustan.",
+    "La cartera cae, de modo que las Isapres ajustan.", "La cartera cae, de manera que las Isapres ajustan.",
+    "La cartera cae, lo que hizo que las Isapres ajusten.", "La cartera cae, lo que llevó a las Isapres a ajustar.",
+    "La baja de la cartera nace de los precios.", "La baja de la cartera viene de los precios.",
+    "La baja de la cartera viene del alza de precios.", "La baja de la cartera proviene de los precios.",
+    "La cartera cae en razón de los precios.", "La cartera cae; por ende, las Isapres ajustan.",
+    "La cartera cae; en consecuencia, las Isapres ajustan.",
 ])
 def test_causal_conjugations_rejected_without_note(root, text):
     p = f1.build_package(root)
@@ -411,7 +571,13 @@ def test_causal_conjugations_rejected_without_note(root, text):
 @pytest.mark.parametrize("text", ["Las Isapres crecen en general.", "La cartera muestra una generación de ingreso estable.",
                                   "La competencia entre Isapres se mantiene.", "Para la cartera, la duda es la rentabilidad.",
                                   "La incidencia de cargas en la cartera es estable.", "La contribución de Banmédica al cambio neto domina.",
-                                  "La conducta de la cartera es estable.", "El lugar de Banmédica en la cartera se mantiene."])
+                                  "La conducta de la cartera es estable.", "El lugar de Banmédica en la cartera se mantiene.",
+                                  # non-causal uses of the third review's connectors
+                                  "Por lo general la cartera es estable.", "Así queda la cartera de las Isapres.",
+                                  "La razón de cargas por cotizante baja en la cartera.",
+                                  "De la misma manera que en julio, la cartera es estable.",
+                                  "A su modo, la cartera se mantiene.", "Conviene mirar la cartera de las Isapres.",
+                                  "La cartera nacional de las Isapres es estable.", "Por endeudamiento no hay dato en la cartera."])
 def test_causal_patterns_do_not_flag_plain_words(root, text):
     assert not any(e.startswith("causal") for e in sf.verify_lectura(text, f1.build_package(root))["errors"])
 
@@ -481,7 +647,8 @@ def test_lectura_pass_is_published_and_not_paid_twice(root):
     assert sf.verify_ficha(r["ficha"], f1.build_package(root))["verdict"] == "PASS"
     sf.publish(r, root)
     again = f1.run(root, today=TODAY, llm=True, model_call=model, budget=ALLOW)
-    assert again["status"] == "no_change" and len(model.calls) == 1
+    assert again["status"] == "no_change" and len(model.calls) == 2  # one writer + one reviewer call, never repeated
+    assert r["ficha"]["lectura"]["review"]["verdict"] == "PASS"
 
 
 def test_lectura_omitted_on_verifier_fail_or_no_budget_ficha_still_publishes(root):
@@ -499,7 +666,66 @@ def test_lectura_omitted_on_verifier_fail_or_no_budget_ficha_still_publishes(roo
     assert nb["status"] == "pass" and nb["ficha"]["lectura"]["status"] == "no_budget" and blocked.calls == []
     sf.publish(nb, root)
     filled = f1.run(root, today=TODAY, llm=True, model_call=blocked, budget=ALLOW)
-    assert filled["status"] == "pass" and filled["ficha"]["lectura"]["status"] == "pass" and len(blocked.calls) == 1
+    assert filled["status"] == "pass" and filled["ficha"]["lectura"]["status"] == "pass"
+    assert len(blocked.writes()) == 1 and len(blocked.reviews()) == 1
+
+
+# Second-model backstop (third review, item 10): the reviewer is mocked; it never reaches a real model.
+
+
+def test_review_fail_omits_lectura_and_ficha_still_publishes(root):
+    model = fake_model(GOOD, review="FAIL", claim="Esencial y Nueva Masvida consoliden lo ganado")
+    r = f1.run(root, today=TODAY, llm=True, model_call=model, budget=ALLOW)
+    lect = r["ficha"]["lectura"]
+    assert r["status"] == "pass" and lect["status"] == "review_fail" and lect["text"] is None and lect["rejected_text"] == GOOD
+    assert lect["review"]["claim"] == "Esencial y Nueva Masvida consoliden lo ganado"
+    assert len(model.writes()) == 1 and len(model.reviews()) == 1  # capped at one reviewer call per ficha
+    review = model.reviews()[0]
+    assert review["allow_luna_fallback"] is False and review["max_output_tokens"] == 200
+    assert "Evidencia" in review["prompt"] and GOOD in review["prompt"] and "share.99.delta_pp" in review["prompt"]
+    assert sf.public_ficha(r["ficha"])["lectura"] is None and "segundo modelo" in r["ficha"]["machine_note"]
+    sf.publish(r, root)
+    again = fake_model(GOOD)
+    assert f1.run(root, today=TODAY, llm=True, model_call=again, budget=ALLOW)["status"] == "no_change" and again.calls == []
+
+
+def test_review_without_budget_or_with_error_omits_lectura(root):
+    seen = []
+
+    def writer_only(worst):  # the writer gets budget, the reviewer does not
+        seen.append(worst)
+        return (len(seen) == 1, "ok" if len(seen) == 1 else "budget_deferred")
+    model = fake_model(GOOD)
+    r = f1.run(root, today=TODAY, llm=True, model_call=model, budget=writer_only)
+    assert r["status"] == "pass" and r["ficha"]["lectura"]["status"] == "review_no_budget" and model.reviews() == []
+    assert r["ficha"]["lectura"]["review"]["reason"] == "budget_deferred"
+
+    def broken(prompt, **kw):
+        if kw["feature"].endswith("_review"):
+            raise RuntimeError("weekly_api_budget_exhausted")
+        return SimpleNamespace(output={"lectura": GOOD}, model="gpt-5.6-luna", estimated_cost_usd=0.0004, response_id="r")
+    shutil.rmtree(root / "data/stats_fichas", ignore_errors=True)
+    r = f1.run(root, today=TODAY, llm=True, model_call=broken, budget=ALLOW)
+    assert r["status"] == "pass" and r["ficha"]["lectura"]["status"] == "review_error"
+
+
+def test_reused_lectura_without_review_is_not_published_without_a_model(root):
+    first = f1.run(root, today=TODAY, llm=True, model_call=fake_model(GOOD), budget=ALLOW)
+    first["ficha"]["lectura"].pop("review")  # a Lectura from before the reviewer existed
+    first["ficha"]["builder_version"] = "old"
+    sf.publish(first, root)
+    r = f1.run(root, today=TODAY, llm=False)
+    assert r["ficha"]["lectura"]["status"] == "review_not_run" and sf.public_ficha(r["ficha"])["lectura"] is None
+
+
+def test_run_cap_covers_writer_and_reviewer(root):
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    p = f1.build_package(root)
+    reg = sf.load_registry()
+    reg["lectura"]["max_run_usd"] = sf.review_worst_usd(fi, p, reg) * 1.01  # room for the reviewer, not for both
+    model = fake_model(GOOD)
+    out = sf.generate_lectura(fi, p, registry=reg, model_call=model, budget=ALLOW)
+    assert out["status"] == "no_budget" and out["reason"] == "run_cap_would_be_exceeded" and model.calls == []
 
 
 def test_default_budget_respects_paced_monthly_budget(monkeypatch):

@@ -1,34 +1,47 @@
 """Lectura Alicanto figure verifier (Dirección 28-oct-2026 15:25: "puede tener cifras, solo que no caiga en ser
 redundantes, debe aportar algo más").
 
-1. Parse.   NFKC, insurer names masked (so 'Vida Tres' is not a number), then every figure mention becomes
-            (value, decimals, sign, unit, entity, period). Sign: +/− or the nearest direction word. Unit: %, pp,
-            persons (personas/beneficiarios/cotizantes/cargas/contratos/desahucios), 'veces', or none (ratio).
-            Entity: the insurers named in the same sentence. Period: the months/years named in the sentence.
+1. Parse.   NFKC; insurer names, aliases and misspellings (edit distance ≤ 2 on names longer than 5 letters) are
+            masked first, so 'Vida 3' or 'Vida Tres' is an insurer and never a number. Every figure mention becomes
+            (value, decimals, comparator, sign, unit, subject, period). Sign: +/− or the nearest direction word.
+            Unit: %, pp, persons (the metric noun after the figure, or before it in the same clause), 'veces' or
+            'N … por cada …' (ratio), entity counts ('7 Isapres'). Comparator: más de / superior a / sobre (true >
+            stated), menos de / inferior a / bajo (true < stated), casi (true < stated, within 5 %), cerca de /
+            alrededor de / unos / aproximadamente (within 5 %). Subject: the insurer, 'el sistema', 'las Isapres',
+            'las abiertas' or 'las cerradas' the clause credits the figure to. Period: the months named in the
+            clause (else the sentence) and YTD wording ('desde enero', 'en lo que va del año', 'entre enero y …').
 2. Trace.   Every digit mention must equal a ``lectura_pool`` entry (declared by the family builder, never the whole
-            package) rounded half-up to the shown precision, with matching unit, sign, entity and period. Years
-            are allowed only when they are package periods.
+            package) rounded half-up to the shown precision (or satisfy its comparator), with matching unit, sign,
+            scope (system / open / closed / insurer:<code>) and period kind (month / ytd / interval / stock_at).
+            Years are allowed only when they are package periods.
 3. Words.   A closed lexicon (doble, triple, quíntuple, mitad, tercio, cuarto, par, décima, centésimo, ordinals,
             Roman numerals, 'medio punto', 'uno de cada N', decenas/miles…) maps each number word to a value that
             must equal a ``derived_ratios`` or ``ranks`` entry within display tolerance (pp words and magnitudes
-            may also match ``lectura_pool``). Any other number-like token fails.
+            may also match ``lectura_pool``). An ordinal must trace to a rank of the ranking it names (size, decline,
+            growth, streak) in that ranking's period. Any other number-like token fails.
 4. Adds.    D = value ids traced from the headline, dek, KPIs, tab texts and facts. A sentence with figures must
-            cite at least one traced id outside D (else ``restates_shown``); a sentence without figures must have
-            content-word Jaccard < 0.5 against every displayed sentence and name an audience or implication.
+            cite at least one traced, non-trivial id outside D (entity counts such as the 7 open Isapres are
+            trivial); every sentence must have content-word Jaccard < 0.5 against every displayed sentence; a
+            sentence without figures must also name an audience or implication.
 """
 from __future__ import annotations
 
 import re
 import unicodedata
 from decimal import ROUND_HALF_UP, Decimal
+from functools import lru_cache
 from typing import Any
 
 MONTHS = ("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre",
           "noviembre", "diciembre")
+MONTH_RX = "|".join(MONTHS)
 PERSON_UNITS = {"personas", "cotizantes", "contratos", "beneficiarios", "cargas", "desahucios"}
 NOUNS = {"personas": None, "beneficiarios": "beneficiarios", "cotizantes": "cotizantes", "cargas": "cargas",
          "afiliados": None, "contratos": "contratos", "desahucios": "desahucios"}
+NOUN_RX = "personas|beneficiarios|cotizantes|cargas|afiliados|contratos|desahucios"
 WORD_TOL_REL = 0.05  # display tolerance of a multiple or fraction word ('doble' = 1,9–2,1)
+APPROX_TOL_REL = 0.05  # 'cerca de', 'alrededor de', 'unos', 'aproximadamente', 'casi'
+BOUND_TOL_REL = 0.10  # 'más de' / 'menos de': the stated bound must also be close (never 'más de 1')
 
 _ACC = str.maketrans("áéíóúüñàèìòù", "aeiouunaeiou")
 
@@ -81,14 +94,43 @@ ROMAN = re.compile(r"(?<![\w·])(?=[MDCLXVI])M{0,3}(?:CM|CD|D?C{0,3})(?:XC|XL|L?
 DIGIT_NUM = (r"(?P<sign>[+\-−–]\s?)?(?P<num>\d{1,3}(?:\.\d{3})+(?:,\d+)?|\d+(?:,\d+)?)")
 SUFFIX = (r"(?:\s*(?P<pct>%|por ciento)|\s*(?P<pp>pp\b|p\.p\.|puntos? porcentuales?\b|puntos?\b)"
           r"|\s+(?P<veces>veces)\b|\s+(?P<scale>mil|millon(?:es)?)\b)?"
-          r"(?:\s+(?:de\s+)?(?P<noun>personas|beneficiarios|cotizantes|cargas|afiliados|contratos|desahucios)\b)?")
+          r"(?:\s+(?:de\s+)?(?P<noun>" + NOUN_RX + r")\b|\s+(?P<cnoun>isapres|aseguradoras)\b)?")
 DIGIT_RX = re.compile(r"(?<![\w.,])" + DIGIT_NUM + r"(?![\w])" + SUFFIX)
 STOP = set("""a al algo ante antes aun bajo cada como con contra cual cuando de del desde donde dos durante e el ella
 ellas ello ellos en entre era es esa ese eso esta este esto estos estas fue ha han hasta hay la las le les lo los mas
 me mientras muy ni no nos o otra otro para pero poco por que quien se segun ser si sin sino sobre son su sus tambien
 tan tanto te tiene tienen todo todos tras u un una uno unos y ya""".split())
 
+# Comparators before a figure (folded). 'gt': true > stated; 'lt': true < stated; 'almost': true < stated and within
+# 5 %; 'approx': within 5 %.
+# Matched on lower-case text WITH accents, so the verb 'bajó' is never the comparator 'bajo'.
+COMPARATORS = [
+    (r"poco m[aá]s del?|m[aá]s del?|superior(?:es)? al?|por sobre|sobre|por encima del?", "gt"),
+    (r"poco menos del?|menos del?|inferior(?:es)? al?|por debajo del?|bajo", "lt"),
+    (r"casi|pr[aá]cticamente", "almost"),
+    (r"cerca del?|alrededor del?|unos|unas|aproximadamente|aprox\.?|en torno al?|del orden del?", "approx"),
+]
+COMPARATOR_RX = re.compile(r"(?<![a-záéíóúüñ0-9·])(?P<cmp>" + "|".join(f"(?:{p})" for p, _ in COMPARATORS) +
+                           r")\s+(?:(?:el|la|los|las)\s+)?$")
+YTD_GENERIC = re.compile(r"en lo que va (?:del ano|de 20\d\d)|desde (?:el )?(?:inicio|comienzo|principio)s? (?:del?|de) "
+                         r"ano|en el acumulado del ano|acumulad[oa]s? del ano|ano a la fecha")
+YTD_FROM = re.compile(r"(?:desde|entre|de) (?P<m>" + MONTH_RX + r")(?: de 20\d\d)?(?= y | a | hasta |\b)")
+GROUP_MARKERS = [  # subject phrases (folded); the order matters: 'las Isapres abiertas' is open, not system
+    (r"(?:las |los |a las |de las |entre las )?(?:isapres |aseguradoras )?abiertas", "open"),
+    (r"(?:las |los |a las |de las |entre las )?(?:isapres |aseguradoras )?cerradas", "closed"),
+    (r"(?:el|al|del) sistema(?: isapre)?|(?:las|a las|de las|entre las) isapres|la industria|el sector|"
+     r"la cartera(?! de)|(?:el|al|del) total", "system"),
+]
+RANKING_WORDS = [  # the ranking an ordinal names, from the words around it (folded)
+    ("baja", r"baj\w*|perd\w*|pierd\w*|ca(?:e|en|ida|idas|yo|yeron)|retroce\w*|cede\w*|cedi\w*|merm\w*|disminu\w*"),
+    ("alza", r"crec\w*|creci\w*|gan(?:a|an|o|aron|ancia\w*)|sub(?:e|en|io|ieron|ida)|alza\w*|aument\w*|avanz\w*"),
+    ("racha", r"mes|meses|consecutiv\w*|seguid\w*"),
+    ("tamano", r"grande\w*|tamano|cartera|beneficiarios|participacion|mercado"),
+]
+COPULA = r"(?:\s*,\s*|\s+)(?:(?:es|fue|era|sigue siendo|queda|quedo|se ubica como|se ubico como|como|ya es)\s+)?(?:el|la)\s+$"
 
+
+@lru_cache(maxsize=None)
 def _w(pat: str) -> re.Pattern:
     return re.compile(r"(?<![a-z0-9·])(?:" + pat + r")(?![a-z0-9·])")
 
@@ -110,10 +152,7 @@ def card_value(words: list[str]) -> int | None:
             continue
         if w in SCALE:
             cur = (cur or 1) * SCALE[w]
-            if SCALE[w] >= 1_000_000:
-                total, cur = total + cur, 0
-            else:
-                total, cur = total + cur, 0
+            total, cur = total + cur, 0
             seen = True
         elif w in CARD:
             cur += CARD[w]
@@ -124,6 +163,81 @@ def card_value(words: list[str]) -> int | None:
 
 
 # ---------------------------------------------------------------------------------------------
+# Insurer detection (exact names and aliases, then misspellings)
+
+# Common words one or two edits away from an insurer name: never an insurer.
+NOT_INSURERS = {"salud", "especial", "especiales", "esencia", "esenciales", "columna", "columnas", "colmenas",
+                "consulta", "consultas", "fundaciones", "fundador", "fundadora", "vidas", "consulado", "isapres",
+                "isapre", "fondos", "banca", "bancaria", "cruzada"}
+
+
+def _lev(a: str, b: str, cap: int) -> int:
+    """Levenshtein distance, stopping early once every path exceeds ``cap``."""
+    if abs(len(a) - len(b)) > cap:
+        return cap + 1
+    prev = list(range(len(b) + 1))
+    for i, ca in enumerate(a, 1):
+        cur = [i]
+        for j, cb in enumerate(b, 1):
+            cur.append(min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (ca != cb)))
+        if min(cur) > cap:
+            return cap + 1
+        prev = cur
+    return prev[-1]
+
+
+def _squash(name: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", fold(name))
+
+
+def insurer_spans(text: str, catalog: list[dict], name_rx) -> list[tuple[int, int, str]]:
+    """(start, end, key) of every insurer named in ``text`` (NFKC; positions are the same in ``fold(text)``).
+
+    Exact names and aliases first (spaces and hyphens optional; names of ≤ 3 characters such as 'CB' or 'BMI' only
+    in upper case), then misspellings: a run of 1–3 words whose letters are within edit distance 2 of a name longer
+    than 5 characters, with the same first letter, unless the run is a common word (``NOT_INSURERS``).
+    """
+    f = fold(text)
+    spans: list[tuple[int, int, str]] = []
+    names: list[tuple[str, str]] = []
+    for e in catalog:
+        for n in e["names"]:
+            sq = _squash(n)
+            if not sq:
+                continue
+            if len(sq) <= 3:
+                for mm in re.finditer(r"(?<![A-Za-z0-9])" + re.escape(n.strip()) + r"(?![A-Za-z0-9])", text):
+                    spans.append((mm.start(), mm.end(), e["key"]))
+                continue
+            for mm in name_rx(n).finditer(f):
+                spans.append((mm.start(), mm.end(), e["key"]))
+            if len(sq) > 5 and not any(ch.isdigit() for ch in sq):
+                names.append((sq, e["key"]))
+    toks = [(m.start(), m.end(), m.group()) for m in re.finditer(r"[a-z0-9]+", f)]
+    for i in range(len(toks)):
+        for k in (1, 2, 3):
+            if i + k > len(toks):
+                break
+            gap = f[toks[i + k - 2][1]:toks[i + k - 1][0]] if k > 1 else ""
+            if k > 1 and not re.fullmatch(r"[\s-]+", gap):
+                break
+            run = "".join(t[2] for t in toks[i:i + k])
+            if run in NOT_INSURERS or any(ch.isdigit() for ch in run) or len(run) < 5:
+                continue
+            for sq, key in names:
+                if run[0] == sq[0] and _lev(run, sq, 2) <= 2:
+                    spans.append((toks[i][0], toks[i + k - 1][1], key))
+                    break
+    spans.sort(key=lambda s: (s[0], -(s[1] - s[0])))
+    out: list[tuple[int, int, str]] = []
+    for s in spans:  # longest first at each start; drop overlaps
+        if out and s[0] < out[-1][1]:
+            continue
+        out.append(s)
+    return out
+
+
+# ---------------------------------------------------------------------------------------------
 # Pool entries
 
 
@@ -131,18 +245,59 @@ def entry_periods(e: dict) -> list[str]:
     return [p for p in (e.get("periods") or []) if p]
 
 
+def entry_scope(e: dict) -> str:
+    """system / open / closed / insurer:<code>; entries without a declared scope fall back to their entity."""
+    if e.get("scope"):
+        return str(e["scope"])
+    return f"insurer:{e['entity']}" if e.get("entity") is not None else "system"
+
+
+def is_trivial(e: dict) -> bool:
+    """Counts of entities (the 7 open Isapres, 3 that grow) and small integers add no information."""
+    return bool(e.get("trivial")) or (e.get("unit") == "count" and abs(float(e.get("value") or 0)) <= 10)
+
+
 def _entity_ok(e: dict, ents: set) -> bool:
     return e.get("entity") is None or e.get("entity") in ents
 
 
-def _period_ok(e: dict, months: set[int], years: set[int]) -> bool:
+def _month(p: str) -> int:
+    return int(p[5:7])
+
+
+def _year_ok(ps: list[str], years: set[int]) -> bool:
+    return not years or any(int(p[:4]) in years for p in ps)
+
+
+def _period_ok(e: dict, ctx: dict) -> bool:
+    months, years = ctx["months"], ctx["years"]
     ps = entry_periods(e)
-    if not months and not years:
+    kind = e.get("period_kind")
+    if kind is None:  # legacy entry: any named month/year must be one of its periods
+        if not months and not years:
+            return not e.get("requires_period")
+        return any((not months or _month(p) in months) and (not years or int(p[:4]) in years) for p in ps)
+    if not ps:
+        return False
+    pm = {_month(p) for p in ps}
+    if kind == "ytd":  # needs YTD wording that starts at the entry's base month
+        base = _month(ps[0])
+        ytd = base in ctx["ytd_from"] or (ctx["ytd_generic"] and base == 1)
+        return ytd and months <= pm and _year_ok(ps, years)
+    if not _year_ok(ps, years):
+        return False
+    if kind == "interval":  # between two cuts: no month, or both ends named
+        return not months or (months <= pm and (len(months) >= 2 or len(years) >= 2))
+    if ctx["ytd_from"] or ctx["ytd_generic"]:
+        if kind == "month":
+            return False  # a single month's change is not a year-to-date change
+    if not months:
         return not e.get("requires_period")
-    for p in ps:
-        y, m = int(p[:4]), int(p[5:7])
-        if (not months or m in months) and (not years or y in years):
-            return True
+    target = _month(ps[-1])
+    if kind == "month":  # 'en agosto' (the month) or 'entre julio y agosto' (its two stocks)
+        return target in months and months <= pm
+    if kind == "stock_at":
+        return target in months
     return False
 
 
@@ -166,7 +321,7 @@ def _unit_ok(m: dict, e: dict) -> bool:
             return False
         return not m.get("noun") or not e.get("metric") or e["metric"] == m["noun"]
     if u == "x":
-        return eu == "x"
+        return eu in ("x", "ratio")
     if u == "share":
         return eu in ("share", "%")
     if u == "count":
@@ -185,9 +340,29 @@ def _value_ok(m: dict, e: dict) -> bool:
     if m.get("range"):
         lo, hi = m["range"]
         return lo <= abs(v) < hi
+    true, stated = abs(v), abs(m["value"]) * m.get("scale", 1)
+    cmp = m.get("cmp")
+    if cmp == "gt":
+        return true > stated and true <= stated * (1 + BOUND_TOL_REL)
+    if cmp == "lt":
+        return true < stated and true >= stated * (1 - BOUND_TOL_REL)
+    if cmp == "almost":
+        return true < stated and stated - true <= APPROX_TOL_REL * stated + 1e-12
+    if cmp == "approx":
+        return abs(true - stated) <= max(APPROX_TOL_REL, m.get("tol_rel") or 0) * true + 1e-12
     if m.get("tol_rel") is not None:
-        return abs(abs(v) - m["value"]) <= m["tol_rel"] * m["value"] + 1e-12
+        return abs(true - m["value"]) <= m["tol_rel"] * m["value"] + 1e-12
     return abs(round_half_up(v / m.get("scale", 1), m["decimals"]) - m["value"]) < 1e-9
+
+
+def _scope_ok(m: dict, e: dict) -> bool:
+    """The figure is credited to the entry's own scope: an insurer's figure to that insurer, a system figure to
+    'el sistema' / 'las Isapres', an open-Isapres figure to 'las abiertas', a closed one to 'las cerradas'."""
+    if e.get("unit") == "count":
+        return True  # a count of entities is bound by its noun ('7 Isapres abiertas'), and is trivial anyway
+    if m["unit"] == "rank" and not m.get("bound"):
+        return True  # 'la segunda Isapre con mayor baja' describes an Isapre; it does not credit a named one
+    return entry_scope(e) in (m.get("subject") or set())
 
 
 def trace(m: dict, entries: list[dict], ctx: dict) -> tuple[list[str], str | None]:
@@ -195,17 +370,17 @@ def trace(m: dict, entries: list[dict], ctx: dict) -> tuple[list[str], str | Non
     cands = [e for e in entries if _value_ok(m, e)]
     if not cands:
         return [], "not_in_pool"
-    def entity_ok(e):
-        if m["unit"] == "approx":  # a magnitude word is fuzzy: it must name exactly whose figure it is
-            return e.get("entity") in ctx["entities"] if ctx["entities"] else e.get("entity") is None
-        return _entity_ok(e, ctx["entities"])
+    mctx = m.get("period_ctx") or ctx
 
     def sign_ok(e):
         if m["unit"] == "approx" and m.get("sign") is not None and not e.get("signed", True):
             return False  # 'perdió miles' is a change, never a stock level
         return _sign_ok(m, e)
-    checks = (("unit", lambda e: _unit_ok(m, e)), ("sign", sign_ok), ("entity", entity_ok),
-              ("period", lambda e: _period_ok(e, ctx["months"], ctx["years"])))
+
+    def rank_ok(e):
+        return not e.get("ranking") or m.get("rank_kind") == e["ranking"]
+    checks = (("unit", lambda e: _unit_ok(m, e)), ("sign", sign_ok), ("rank", rank_ok), ("entity", lambda e: _scope_ok(m, e)),
+              ("period", lambda e: _period_ok(e, mctx)))
     for name, ok in checks:
         nxt = [e for e in cands if ok(e)]
         if not nxt:
@@ -218,21 +393,26 @@ def trace(m: dict, entries: list[dict], ctx: dict) -> tuple[list[str], str | Non
 # Parsing
 
 
-def _mask(text: str, catalog: list[dict], name_rx) -> str:
-    folded = fold(text)
-    out = list(text)
-    for e in catalog:
-        for n in e["names"]:
-            if len(fold(n)) < 4:
-                continue
-            for mm in name_rx(n).finditer(folded):
-                for i in range(mm.start(), mm.end()):
-                    out[i] = "·" if not out[i].isspace() else out[i]
-    return "".join(out)
-
-
 def sentences(text: str) -> list[str]:
     return [s.strip() for s in re.split(r"(?<=[.;!?])\s+", str(text or "")) if s.strip()]
+
+
+CLAUSE_BREAK = re.compile(r",(?!\d)|[;:()—]|\s(?:pero|mientras|aunque)\s|\sy\s(?!(?:" + MONTH_RX + r")\b)")
+
+
+def _clauses(f: str) -> list[tuple[int, int]]:
+    cuts = [0] + [m.end() for m in CLAUSE_BREAK.finditer(f)] + [len(f) + 1]
+    return [(a, b) for a, b in zip(cuts, cuts[1:])]
+
+
+def _clause_of(clauses: list[tuple[int, int]], pos: int) -> tuple[int, int]:
+    return next((c for c in clauses if c[0] <= pos < c[1]), (0, 10**9))
+
+
+def _period_ctx(f: str) -> dict:
+    return {"months": {i + 1 for i, mo in enumerate(MONTHS) if _w(mo).search(f)},
+            "ytd_from": {MONTHS.index(m.group("m")) + 1 for m in YTD_FROM.finditer(f)},
+            "ytd_generic": bool(YTD_GENERIC.search(f))}
 
 
 def _direction(f: str, start: int, end: int) -> int | None:
@@ -254,19 +434,82 @@ def _direction(f: str, start: int, end: int) -> int | None:
     return None
 
 
-def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, insurers_in, package_years: set[int],
+def _comparator(low: str, start: int) -> tuple[str | None, int]:
+    """Comparator right before a figure ('más de 2,4 millones') and where it starts (``low``: lower case, accents kept)."""
+    mm = COMPARATOR_RX.search(low[max(0, start - 40):start])
+    if not mm:
+        return None, start
+    word = mm.group("cmp")
+    kind = next(k for p, k in COMPARATORS if re.fullmatch(p, word))
+    return kind, max(0, start - 40) + mm.start()
+
+
+def _rank_kind(f: str, start: int, end: int) -> str | None:
+    after = re.findall(r"[a-z]+", f[end:end + 60])[:6]
+    before = list(reversed(re.findall(r"[a-z]+", f[max(0, start - 50):start])[-6:]))
+    for words in (after, before):
+        for w in words:
+            for kind, rx in RANKING_WORDS:
+                if re.fullmatch(rx, w):
+                    return kind
+    return None
+
+
+def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, key_code: dict, package_years: set[int],
                    package_months: set[tuple[int, int]]) -> dict:
     """Mentions, period context and unmapped number-like tokens of one sentence."""
     text = unicodedata.normalize("NFKC", sentence)
-    ents = insurers_in(text)
-    masked = _mask(text, catalog, name_rx)
+    spans = insurer_spans(text, catalog, name_rx)
+    out = list(text)
+    for a, b, _ in spans:
+        for i in range(a, b):
+            out[i] = "·" if not out[i].isspace() else out[i]
+    masked = "".join(out)
+    ents = {key_code.get(k) for _, _, k in spans} - {None}
     f = fold(masked)
+    low = "".join((c.lower()[:1] or c) for c in masked)
     used = [False] * len(f)
     mentions: list[dict] = []
     unmapped: list[str] = []
-    months: set[int] = {i + 1 for i, mo in enumerate(MONTHS) if _w(mo).search(f)}
     years: set[int] = set()
     errors: list[str] = []
+    clauses = _clauses(f)
+    # Subjects: insurers (masked spans) and group phrases, with their positions.
+    markers: list[tuple[int, int, str]] = [(a, b, f"insurer:{key_code.get(k) if key_code.get(k) is not None else k}")
+                                           for a, b, k in spans]
+    taken = [False] * len(f)
+    for rx, scope in GROUP_MARKERS:
+        for mm in _w(rx).finditer(f):
+            if any(taken[mm.start():mm.end()]):
+                continue
+            for i in range(mm.start(), mm.end()):
+                taken[i] = True
+            markers.append((mm.start(), mm.end(), scope))
+    markers.sort()
+
+    def subject(a: int, b: int) -> set[str]:
+        ca, cb = _clause_of(clauses, a)
+        before = [mk for mk in markers if ca <= mk[0] and mk[1] <= a]
+        if before:
+            return {before[-1][2]}
+        after = [mk for mk in markers if b <= mk[0] < cb]
+        if after:
+            ins = {mk[2] for mk in after if mk[2].startswith("insurer:")}
+            return ins or {after[0][2]}
+        before = [mk for mk in markers if mk[1] <= a]
+        if before:
+            return {before[-1][2]}
+        # No subject named ('los cotizantes subieron en 1.296'): the system, never an insurer.
+        return {"system"}
+
+    sentence_ctx = _period_ctx(f)
+
+    def period_ctx(a: int) -> dict:
+        ca, cb = _clause_of(clauses, a)
+        local = _period_ctx(f[ca:cb])
+        if local["months"] or local["ytd_from"] or local["ytd_generic"]:
+            return local
+        return sentence_ctx
 
     def take(a: int, b: int) -> bool:
         if any(used[a:b]):
@@ -275,8 +518,14 @@ def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, insurers_in, 
             used[i] = True
         return True
 
-    def add(tok, **kw):
-        mentions.append({"text": tok, "sign": None, "explicit_sign": None, "decimals": 0, "scale": 1, **kw})
+    def add(tok, a, b, **kw):
+        cmp, cstart = _comparator(low, a)
+        m = {"text": tok, "sign": None, "explicit_sign": None, "decimals": 0, "scale": 1, "cmp": cmp,
+             "subject": subject(a, b), "period_ctx": period_ctx(a), **kw}
+        if cmp and m["explicit_sign"] is None and m["unit"] not in ("rank", "count", "roman"):
+            m["sign"] = _direction(f, cstart, b)  # 'menos de' / 'bajo' are comparators, not a direction
+        mentions.append(m)
+        return m
 
     # Quarters/halves: 'IV trimestre', 'cuarto trimestre', 'primer semestre' are period mentions.
     for mm in re.finditer(r"(?<![\w·])(?P<r>[ivx]+|primer[oa]?|segund[oa]|tercer[oa]?|cuart[oa]|[1-4])\s+(?P<k>trimestre|semestre)\b", f):
@@ -294,7 +543,7 @@ def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, insurers_in, 
         if n > (4 if size == 3 else 2) or not any(m in span for _, m in package_months):
             errors.append(f"period_not_in_package:{masked[mm.start():mm.end()]}")
         else:
-            months |= set(m for _, m in package_months if m in span)
+            sentence_ctx["months"] |= set(m for _, m in package_months if m in span)
 
     def word_mentions(rx: str, build):
         for mm in re.finditer(r"(?<![a-z0-9·])(?:" + rx + r")(?![a-z0-9·])", f):
@@ -307,7 +556,7 @@ def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, insurers_in, 
                 continue
             if built.get("unit") in ("pp", "approx"):
                 built.setdefault("sign", _direction(f, mm.start(), mm.end()))
-            add(masked[mm.start():mm.end()], kind="word", **built)
+            add(masked[mm.start():mm.end()], mm.start(), mm.end(), kind="word", **built)
 
     num_word = r"(?:\d+|" + CARD_ANY + r")"
 
@@ -325,7 +574,7 @@ def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, insurers_in, 
             continue
         value, dec = parse_num(num)
         tok = masked[mm.start():mm.end()].strip()
-        unit_given = any(mm.group(g) for g in ("pct", "pp", "veces", "scale", "noun"))
+        unit_given = any(mm.group(g) for g in ("pct", "pp", "veces", "scale", "noun", "cnoun"))
         if not unit_given and not mm.group("sign") and dec == 0 and re.fullmatch(r"(19|20)\d\d", num):
             if int(num) in package_years:
                 years.add(int(num))
@@ -335,13 +584,24 @@ def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, insurers_in, 
         sign_txt = (mm.group("sign") or "").strip()
         explicit = -1 if sign_txt in ("-", "−", "–") else 1 if sign_txt == "+" else None
         unit = "%" if mm.group("pct") else "pp" if mm.group("pp") else "x" if mm.group("veces") else (
-            "persons" if mm.group("noun") or mm.group("scale") else "none")
+            "count" if mm.group("cnoun") else "persons" if mm.group("noun") or mm.group("scale") else "none")
         scale = SCALE.get(mm.group("scale") or "", 1)
         noun = NOUNS.get(mm.group("noun") or "") if mm.group("noun") else None
-        if mm.group("scale") and not mm.group("noun"):
-            unit = "persons"
+        if unit in ("persons", "none") and re.match(r"\s+por cada\b", f[mm.end():]):
+            unit, noun = "x", None  # '1,3 contratos por cada desahucio' is a ratio
+        elif unit == "none" and dec == 0:
+            # 'los cotizantes subieron en 1.296': a metric noun earlier in the clause binds the unit.
+            ca, _ = _clause_of(clauses, mm.start())
+            lead = f[ca:mm.start()]
+            if not re.search(r"\d", lead):
+                nouns = re.findall(r"(?<![a-z])(" + NOUN_RX + r")(?![a-z])", lead)
+                if nouns:
+                    unit, noun = "persons", NOUNS.get(nouns[-1])
+                elif value >= 100:  # 'las cerradas perdieron 1.433': a head count of whatever metric traces
+                    unit = "persons"
         sign = explicit if explicit is not None else _direction(f, mm.start(), mm.end())
-        add(tok, value=value, decimals=dec, scale=scale, unit=unit, noun=noun, sign=sign, explicit_sign=explicit, kind="digit")
+        add(tok, mm.start(), mm.end(), value=value, decimals=dec, scale=scale, unit=unit, noun=noun, sign=sign,
+            explicit_sign=explicit, kind="digit")
 
     # 'medio punto', 'una décima (de punto)', 'dos décimas', 'un punto (porcentual)', 'tres puntos'
     word_mentions(r"medio punto(?: porcentual)?", lambda mm: {"value": 0.5, "decimals": 1, "unit": "pp"})
@@ -366,12 +626,30 @@ def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, insurers_in, 
     word_mentions(r"(?<!la )(?:un )?par(?= de| (?:mas|menos))", lambda mm: {"value": 2.0, "unit": "count"})
     # Magnitudes ('decenas de miles de beneficiarios')
     for pat, lo, hi in MAGNITUDES:
-        word_mentions(pat + r"(?: de (?P<noun>personas|beneficiarios|cotizantes|cargas|afiliados|contratos|desahucios))?",
+        word_mentions(pat + r"(?: de (?P<noun>" + NOUN_RX + r"))?",
                       lambda mm, lo=lo, hi=hi: {"value": float(lo), "range": (lo, hi), "unit": "approx",
                                                 "noun": NOUNS.get(mm.group("noun") or "")})
-    # Ordinals → ranks
+    # Ordinals → ranks of the ranking they name; bound to an insurer only through a copula ('Colmena es la segunda').
     for pat, n in ORDINALS:
-        word_mentions(pat, lambda mm, n=n: {"value": float(n), "unit": "rank"})
+        def build_rank(mm, n=n):
+            bound = None
+            for a, b, scope in markers:
+                if b <= mm.start() and scope.startswith("insurer:") and re.fullmatch(COPULA, f[b:mm.start()]):
+                    bound = scope
+            tail = f[mm.end():mm.end() + 70]
+            m2 = re.match(r"[^,;:.]*?\s(?:es|fue|son)\s+(?=·)", tail)
+            if bound is None and m2:
+                after = [mk for mk in markers if mk[0] == mm.end() + m2.end()]
+                if after and after[0][2].startswith("insurer:"):
+                    bound = after[0][2]
+            return {"value": float(n), "unit": "rank", "rank_kind": _rank_kind(f, mm.start(), mm.end()),
+                    "bound": bound is not None, "subject_override": {bound} if bound else None}
+        word_mentions(pat, build_rank)
+    for m in mentions:
+        if m.get("subject_override"):
+            m["subject"] = m.pop("subject_override")
+        else:
+            m.pop("subject_override", None)
     # Cardinal runs ('veinte mil beneficiarios', 'siete Isapres')
     run = rf"(?:{CARD_RX}|mil|millon(?:es)?)(?:(?: y | )(?:{CARD_ANY}|mil|millon(?:es)?))*"
     for mm in re.finditer(r"(?<![a-z0-9·])" + run + r"(?![a-z0-9·])" + SUFFIX.replace("(?P<scale>mil|millon(?:es)?)", "(?P<scale>xx_never)"), f):
@@ -390,20 +668,20 @@ def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, insurers_in, 
         take(mm.start(), mm.end())
         tok = masked[mm.start():mm.end()]
         if mm.group("pct"):
-            add(tok, value=float(val), unit="%", kind="word", sign=_direction(f, mm.start(), mm.end()))
+            add(tok, mm.start(), mm.end(), value=float(val), unit="%", kind="word", sign=_direction(f, mm.start(), mm.end()))
         elif mm.group("pp"):
-            add(tok, value=float(val), unit="pp", kind="word", sign=_direction(f, mm.start(), mm.end()))
+            add(tok, mm.start(), mm.end(), value=float(val), unit="pp", kind="word", sign=_direction(f, mm.start(), mm.end()))
         elif mm.group("noun"):
-            add(tok, value=float(val), unit="persons", noun=NOUNS.get(mm.group("noun")), kind="word",
+            add(tok, mm.start(), mm.end(), value=float(val), unit="persons", noun=NOUNS.get(mm.group("noun")), kind="word",
                 sign=_direction(f, mm.start(), mm.end()))
         else:
-            add(tok, value=float(val), unit="count", kind="word")
+            add(tok, mm.start(), mm.end(), value=float(val), unit="count", kind="word")
     # Roman numerals outside 'IV trimestre' ('siglo XXI' → 21, must be a rank or count)
     for mm in ROMAN.finditer(masked):
         if not mm.group(0) or any(used[mm.start():mm.end()]):
             continue
         take(mm.start(), mm.end())
-        add(mm.group(0), value=float(_roman(mm.group(0))), unit="roman", kind="word")
+        add(mm.group(0), mm.start(), mm.end(), value=float(_roman(mm.group(0))), unit="roman", kind="word")
     # Leftovers: any digit, Unicode numeric character or number word not consumed above.
     for i, ch in enumerate(masked):
         if used[i] or ch == "·":
@@ -415,8 +693,11 @@ def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, insurers_in, 
     for mm in _w(NUMBERISH).finditer(f):
         if not any(used[mm.start():mm.end()]):
             unmapped.append(masked[mm.start():mm.end()])
-    return {"mentions": mentions, "unmapped": unmapped, "errors": errors,
-            "ctx": {"entities": ents, "months": months, "years": years}}
+    ctx = {"entities": ents, "months": sentence_ctx["months"], "years": years, "ytd_from": sentence_ctx["ytd_from"],
+           "ytd_generic": sentence_ctx["ytd_generic"]}
+    for m in mentions:
+        m["period_ctx"] = {**m["period_ctx"], "years": years}
+    return {"mentions": mentions, "unmapped": unmapped, "errors": errors, "ctx": ctx, "insurer_spans": spans}
 
 
 def _roman(s: str) -> int:
@@ -442,7 +723,7 @@ def jaccard(a: set[str], b: set[str]) -> float:
 
 def entries_for(m: dict, pool: list[dict], ratios: list[dict], ranks: list[dict]) -> list[dict]:
     if m["kind"] == "digit":
-        return pool + (ratios if m["unit"] in ("x", "none") else [])
+        return pool + (ratios if m["unit"] in ("x", "none", "count") else [])
     if m["unit"] in ("pp", "approx", "persons", "%"):
         return pool + ratios
     if m["unit"] == "rank":
@@ -453,7 +734,7 @@ def entries_for(m: dict, pool: list[dict], ratios: list[dict], ranks: list[dict]
 
 
 def shown_ids(texts: list[str], refs: list[str], *, entries: list[dict], parse) -> set[str]:
-    """D: ids traced from the displayed blocks (loose: sign and period ignored; unit-less figures match any unit)."""
+    """D: ids traced from the displayed blocks (loose: sign, scope and period ignored; unit-less figures match any unit)."""
     d = set(refs)
     for text in texts:
         for s in sentences(text):
@@ -465,7 +746,7 @@ def shown_ids(texts: list[str], refs: list[str], *, entries: list[dict], parse) 
                     if m["unit"] == "roman":
                         continue
                     unit_ok = m["unit"] == "none" or _unit_ok(m, e) or (m["unit"] == "count" and e.get("unit") == "rank")
-                    probe = dict(m, unit=m["unit"] if m["unit"] != "none" else e.get("unit"))
+                    probe = dict(m, unit=m["unit"] if m["unit"] != "none" else e.get("unit"), cmp=None)
                     if unit_ok and _value_ok(probe, e):
                         d.add(e["id"])
     # A derived entry that only re-expresses one shown value (77% → 'tres de cada cuatro') is shown too.
@@ -479,6 +760,7 @@ def check(text: str, *, pool: list[dict], ratios: list[dict], ranks: list[dict],
           shown: set[str], parse, implication_terms: list[str], jaccard_max: float = 0.5) -> list[str]:
     errors: list[str] = []
     disp_stems = [content_stems(s) for t in displayed for s in sentences(t)]
+    by_id = {e["id"]: e for e in pool + ratios + ranks}
     for s in sentences(text):
         parsed = parse(s)
         errors += parsed["errors"]
@@ -489,25 +771,40 @@ def check(text: str, *, pool: list[dict], ratios: list[dict], ranks: list[dict],
             if why:
                 errors.append(f"number_{why}:{m['text']}")
             cited |= set(ids)
-        if parsed["mentions"]:
-            if cited and not (cited - shown):
-                errors.append(f"restates_shown:{s[:40]}")
-            continue
+        # A restatement in other words fails even when it carries a new figure.
         stems = content_stems(s)
         if any(jaccard(stems, d) >= jaccard_max for d in disp_stems):
             errors.append(f"restates_shown_text:{s[:40]}")
+        if parsed["mentions"]:
+            new = {i for i in cited - shown if not is_trivial(by_id.get(i, {}))}
+            if cited and not new:
+                errors.append(f"restates_shown:{s[:40]}")
+            continue
         if not any(fold(t) in fold(s) for t in implication_terms):
             errors.append(f"no_implication:{s[:40]}")
     return errors
 
 
+PERIOD_KIND_ES = {"month": "mes", "ytd": "desde enero (acumulado del año)", "interval": "entre cortes", "stock_at": "stock al cierre"}
+SCOPE_ES = {"system": "el sistema (todas las Isapres)", "open": "las Isapres abiertas", "closed": "las Isapres cerradas"}
+
+
 def describe(entry: dict, names: dict[Any, str]) -> dict:
-    """Prompt line for a pool entry: id, value, unit, entity and period, never more."""
+    """Prompt line for a pool entry: id, value, unit, scope and period, never more."""
     out = {"id": entry["id"], "valor": entry["value"], "unidad": entry.get("unit")}
     if entry.get("metric"):
         out["métrica"] = entry["metric"]
-    if entry.get("entity") is not None:
-        out["entidad"] = names.get(entry["entity"], entry["entity"])
+    scope = entry_scope(entry)
+    if scope.startswith("insurer:"):
+        out["entidad"] = names.get(entry.get("entity"), entry.get("entity"))
+    else:
+        out["ámbito"] = SCOPE_ES.get(scope, scope)
+    if entry.get("ranking"):
+        out["ranking"] = entry["ranking"]
     if entry.get("periods"):
         out["período"] = " → ".join(entry["periods"])
+    if entry.get("period_kind"):
+        out["tipo_período"] = PERIOD_KIND_ES.get(entry["period_kind"], entry["period_kind"])
+    if is_trivial(entry):
+        out["trivial"] = True
     return out
