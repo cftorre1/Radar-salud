@@ -45,6 +45,8 @@ TERMS_POLICY = "public_institutional_news_title_link_and_bounded_excerpt"
 # Rights (review of 955a1461): only title, date, URL and a display excerpt are stored; the article
 # text used to score relevance is fetched again at processing time and never persisted.
 EXCERPT_MAX = 600
+UNSCORED = "sis_news_relevance_unscored"
+ARTICLE_FAILURE_LIMIT = 3  # consecutive runs before an article URL is skipped
 LEAD_MAX = 400
 DETAIL_WINDOW_DAYS = 30  # article pages fetched only for entries that can still be processed
 CHILE = ZoneInfo("America/Santiago")
@@ -133,8 +135,11 @@ class SuperintendenciaNoticiasScout:
     SOURCE_NAME = SOURCE_NAME
     SOURCE_TYPE = "official"
 
-    def __init__(self, fetch: Callable[[str], str] | None = None, today: date | None = None, robots=None):
+    def __init__(self, fetch: Callable[[str], str] | None = None, today: date | None = None, robots=None,
+                 state_path=None):
         self.fetch = fetch or (lambda u: fetch_html(u))
+        self.state_path = state_path
+        self.discovery_audit = []
         self.today = today
         self.robots = robots or (lambda url: robots_allows(url, self.fetch))
         self.surface_results = []
@@ -156,6 +161,7 @@ class SuperintendenciaNoticiasScout:
             entries.extend(found)
         if not entries:
             raise RuntimeError("SIS newsroom listing has no article entries")
+        failures = self._load_failures()
         out = []
         for entry in entries:
             listed = entry["listing_date"]
@@ -171,6 +177,11 @@ class SuperintendenciaNoticiasScout:
                     "listing_title": entry["listing_title"], "listing_date": listed,
                     "terms_policy": TERMS_POLICY}
             title = entry["listing_title"]
+            record = failures.get(entry["url"]) or {}
+            if record.get("skipped"):
+                self.discovery_audit.append({"url": entry["url"], "status": "article_skipped",
+                                             "reason": record.get("last_error"), "failures": record.get("failures")})
+                continue
             try:
                 if not self.robots(entry["url"]):
                     raise PermissionError("robots_disallowed")
@@ -178,8 +189,19 @@ class SuperintendenciaNoticiasScout:
             except Exception as exc:
                 # No article, no item: never published from the listing alone. Recording the error
                 # marks discovery partial, so the watermark stays and the entry is retried next run.
-                self.discovery_errors.append(f"{entry['url']}: {type(exc).__name__}")
+                # After ARTICLE_FAILURE_LIMIT consecutive failing runs the URL is skipped (diagnostics
+                # only), so one broken article cannot keep the source partial forever.
+                count = int(record.get("failures") or 0) + 1
+                failures[entry["url"]] = {"failures": count, "last_error": type(exc).__name__,
+                                          "last_at": datetime.now(CHILE).isoformat(),
+                                          "skipped": count >= ARTICLE_FAILURE_LIMIT}
+                if count >= ARTICLE_FAILURE_LIMIT:
+                    self.discovery_audit.append({"url": entry["url"], "status": "article_skipped",
+                                                 "reason": type(exc).__name__, "failures": count})
+                else:
+                    self.discovery_errors.append(f"{entry['url']}: {type(exc).__name__}")
                 continue
+            failures.pop(entry["url"], None)
             page_date = article["published"] or article["visible_date"]
             if article["title"]:
                 if _norm(article["title"]) != _norm(title):
@@ -197,21 +219,61 @@ class SuperintendenciaNoticiasScout:
             meta["mentioned_acts"] = mentioned_acts(" ".join([title, lead]))
             out.append(RawItem(SLUG, title, entry["url"], SOURCE_NAME, self.SOURCE_TYPE,
                                event_date=event_date, raw_text=excerpt, metadata=meta))
+        self._save_failures(failures)
         out.sort(key=lambda r: r.event_date or "", reverse=True)
         return out
+
+    def _failures_path(self):
+        if self.state_path is not None:
+            return self.state_path
+        from .paths import project_root
+        return project_root() / "data/state/superintendencia_noticias_article_failures.json"
+
+    def _load_failures(self) -> dict:
+        import json
+        path = self._failures_path()
+        try:
+            return dict(json.loads(path.read_text(encoding="utf-8"))) if path.exists() else {}
+        except (OSError, ValueError, TypeError):
+            return {}
+
+    def _save_failures(self, failures: dict) -> None:
+        from .pending_queue import atomic_json
+        try:
+            atomic_json(self._failures_path(), failures)
+        except OSError as exc:
+            print("SIS news failure ledger not written:", type(exc).__name__)
 
 
 _MATERIAL = re.compile(
     r"\b(?:isapres?|fonasa|ges|auge|caec|circular(?:es)?|resoluci[oó]n|licencias?\s+m[eé]dicas?|prestador(?:es)?|"
     r"acreditaci[oó]n|multas?|sanci[oó]n(?:es)?|cobertura|ley\s+n?[°º]?\s*\d|precios?|tabla\s+de\s+factores|"
     r"restituci[oó]n|deuda|utilidades|p[eé]rdidas|planes?\s+de\s+salud|cotizantes|beneficiarios|garant[ií]as)\b", re.I)
-# Deterministic positive signal in the title/lead: names an act, or a market-moving regulatory topic.
-_STRONG = re.compile(
-    r"\b(?:isapres?|fonasa|ges|auge|caec|multas?|sanci[oó]n(?:es)?|tabla\s+de\s+factores|restituci[oó]n|"
-    r"circular(?:es)?|alza\s+de\s+precios?|precio\s+base|deuda)\b", re.I)
-_NOISE = re.compile(r"\b(?:seminario|ceremonia|visita|punto\s+de\s+vacunaci[oó]n|celebra|conmemora|participa|"
-                    r"asume\s+como|es\s+nombrad[oa]|subrogante)\b", re.I)
-_NOISE_EXEMPT = re.compile(r"\b(?:isapres?|ges|multas?)\b", re.I)
+# Agenda/institutional items: never published on a deterministic fallback (AI score only).
+_NOISE = re.compile(
+    r"\b(?:seminarios?|se\s+re[uú]nen?|reuni[oó]n|exponen?|expuso|ceremonias?|aniversario|ferias?|convenios?|"
+    r"firman?|firm[oó]|visitas?|visit[oó]|participan?|particip[oó]|charlas?|jornadas?|conmemora|celebra|"
+    r"inaugura|lanza|asume\s+como|es\s+nombrad[oa]|subrogante|punto\s+de\s+vacunaci[oó]n)\b", re.I)
+# Deterministic fallback (no AI score): a topic word and an action verb in the same clause.
+_TOPIC = re.compile(
+    r"\b(?:isapres?|fonasa|ges|auge|caec|prestador(?:es)?|cl[ií]nicas?|licencias?\s+m[eé]dicas?|planes?\s+de\s+salud|"
+    r"precio\s+base|tabla\s+de\s+factores|circular(?:es)?|resoluci[oó]n(?:es)?|cobertura|cotizantes|beneficiarios)\b", re.I)
+_ACTION = re.compile(
+    r"\b(?:sanciona|multa\s+a|aplica\s+(?:una\s+)?multa|instruye|fija|dicta|ordena|suspende|"
+    r"publica\s+(?:una\s+|la\s+|nueva\s+)?(?:circular|resoluci[oó]n)|informa\s+(?:los\s+|las\s+)?(?:resultados|estad[ií]sticas))\b", re.I)
+
+
+def deterministic_signal(title: str, lead: str = "", mentioned=()) -> str | None:
+    """Why an unscored item may still publish, or None (then it stays pending)."""
+    head = f"{title}. {lead}"
+    if _NOISE.search(head):
+        return None
+    if mentioned:
+        return "names_specific_act"
+    for clause in re.split(r"[.;:]\s+|\n", head):
+        if _TOPIC.search(clause) and _ACTION.search(clause):
+            return "topic_and_action_in_clause"
+    return None
 
 
 def _transient_article_text(url: str) -> str:
@@ -222,8 +284,9 @@ def _transient_article_text(url: str) -> str:
 
 
 def process_superintendencia_noticias(raw, cfg):
-    """Editorial gate for SIS news: materiality, then a real AI relevance score >= 65, or a
-    deterministic positive signal in the title/lead; without either the item stays pending."""
+    """Editorial gate for SIS news: materiality, then a real AI relevance score >= 65; without a
+    score, only a deterministic signal (a named act, or topic + action verb in one clause, never
+    on agenda/institutional items) publishes; otherwise the item stays pending."""
     from .llm_analysis import analyze_official_news
     from .pipeline import build_signal
     from .processing import DeferredProcessing, RejectedProcessing
@@ -234,8 +297,6 @@ def process_superintendencia_noticias(raw, cfg):
     if raw.metadata.get("listing_title_mismatch") and raw.metadata.get("publication_date_source") == "listing_date":
         raise DeferredProcessing("sis_news_listing_identity_mismatch_without_article_date")
     head = f"{raw.title} {raw.metadata.get('lead') or ''}"
-    if _NOISE.search(raw.title) and not _NOISE_EXEMPT.search(raw.title):
-        raise RejectedProcessing("institutional_agenda_not_market_signal")
     try:
         body = _transient_article_text(raw.url)
     except Exception as exc:
@@ -248,10 +309,13 @@ def process_superintendencia_noticias(raw, cfg):
         score, basis = int(score), "ai_relevance"
         if score < 65:
             raise RejectedProcessing("editorial_relevance_below_threshold")
-    elif raw.metadata.get("mentioned_acts") or _STRONG.search(head):
-        score, basis = 70, "deterministic_title_signal"
+    elif deterministic_signal(raw.title, raw.metadata.get("lead") or "", raw.metadata.get("mentioned_acts") or ()):
+        score, basis = 70, "deterministic_" + deterministic_signal(raw.title, raw.metadata.get("lead") or "",
+                                                                  raw.metadata.get("mentioned_acts") or ())
     else:
-        raise DeferredProcessing("sis_news_relevance_unscored")
+        # Agenda items and unspecific news need a real AI score: kept pending, revived later
+        # (PendingQueue.revive_unscored_sis_news) when the AI budget is available again.
+        raise DeferredProcessing(UNSCORED)
     low = f"{head} {body[:4000]}".lower()
     scopes = []
     if re.search(r"\bisapres?\b", low):

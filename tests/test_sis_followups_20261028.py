@@ -17,6 +17,12 @@ from radar_salud.sis_news import (SuperintendenciaNoticiasScout, fold_news_into_
                                   parse_listing, process_superintendencia_noticias, robots_allows)
 
 FIX = Path(__file__).parent / "fixtures" / "sis"
+
+
+@pytest.fixture(autouse=True)
+def _isolated_failure_ledger(tmp_path, monkeypatch):
+    # Never write the article-failure ledger into the repository's data/state.
+    monkeypatch.setattr(SuperintendenciaNoticiasScout, "_failures_path", lambda self: self.state_path or tmp_path / "news_failures.json")
 SIS = "Superintendencia de Salud"
 SUSPENSION_534 = ("Ha lugar a la suspensión de los efectos de la Circular IF/Nº534, de fecha 14 de septiembre de 2026, "
                   "hasta que se resuelvan los recursos de reposición de que conoce esta Intendencia.")
@@ -172,12 +178,17 @@ def test_editorial_gate(monkeypatch):
     monkeypatch.setattr(sis_news, "_transient_article_text", lambda url: "Las isapres y Fonasa registran casos GES acumulados.")
     cfg = {"slug": "superintendencia_noticias", "name": SIS, "source_type": "official", "base_confidence": 100,
            "default_category": "Regulación & Legal"}
+    with pytest.raises(DeferredProcessing):  # no AI score and no deterministic signal: pending
+        process_superintendencia_noticias(_news("Más de 62 millones de casos GES desde 2005",
+                                                "Las isapres y Fonasa registran casos GES acumulados."), cfg)
+    with pytest.raises(DeferredProcessing):  # agenda item: AI score only
+        process_superintendencia_noticias(_news("Superintendencia de Salud realizó Seminario de Entidades Acreditadoras",
+                                                "Seminario con el ISP."), cfg)
+    monkeypatch.setattr(llm, "analyze_official_news", lambda **k: {"relevance_score": 78})
     row = process_superintendencia_noticias(_news("Más de 62 millones de casos GES desde 2005",
                                                   "Las isapres y Fonasa registran casos GES acumulados."), cfg)
     assert row["signal_types"] == ["Noticias"] and set(row["scopes"]) == {"Isapres", "Fonasa"}
-    with pytest.raises(RejectedProcessing):
-        process_superintendencia_noticias(_news("Superintendencia de Salud realizó Seminario de Entidades Acreditadoras",
-                                                "Seminario con el ISP."), cfg)
+    monkeypatch.setattr(llm, "analyze_official_news", lambda **k: None)
     with pytest.raises(DeferredProcessing):
         process_superintendencia_noticias(RawItem("superintendencia_noticias", "Isapres", "https://www.superdesalud.gob.cl/noticias/2026/10/y/",
                                                   SIS, "official", event_date=None), cfg)
@@ -269,7 +280,7 @@ def _gate_cfg():
             "default_category": "Regulación & Legal"}
 
 
-def test_gestion_is_not_ges_and_agenda_news_is_rejected(monkeypatch):
+def test_gestion_is_not_ges_and_agenda_news_is_not_published(monkeypatch):
     import radar_salud.llm_analysis as llm
     monkeypatch.setattr(llm, "analyze_official_news", lambda **k: None)
     monkeypatch.setattr(sis_news, "_transient_article_text", lambda url: "Se abordó la gestión hospitalaria y la gestión clínica.")
@@ -285,8 +296,11 @@ def test_unscored_news_stays_pending_without_deterministic_signal(monkeypatch):
     monkeypatch.setattr(sis_news, "_transient_article_text", lambda url: "Informe sobre beneficiarios del sistema de salud.")
     with pytest.raises(DeferredProcessing):
         process_superintendencia_noticias(_news("Nuevo informe sobre beneficiarios", "Informe."), _gate_cfg())
-    row = process_superintendencia_noticias(_news("Isapres deberán restituir cobros por Tabla de Factores", "Isapres."), _gate_cfg())
-    assert row["relevance_basis"] == "deterministic_title_signal"
+    with pytest.raises(DeferredProcessing):  # topic without an action verb
+        process_superintendencia_noticias(_news("Isapres deberán restituir cobros por Tabla de Factores", "Isapres."), _gate_cfg())
+    row = process_superintendencia_noticias(_news("Superintendencia ordena a isapres restituir cobros por Tabla de Factores",
+                                                  "Isapres."), _gate_cfg())
+    assert row["relevance_basis"] == "deterministic_topic_and_action_in_clause"
     monkeypatch.setattr(llm, "analyze_official_news", lambda **k: {"relevance_score": 81, "what_happened": "x" * 50})
     row = process_superintendencia_noticias(_news("Nuevo informe sobre beneficiarios", "Informe."), _gate_cfg())
     assert row["relevance_basis"] == "ai_relevance" and row["editorial_relevance"] == 81
@@ -356,3 +370,100 @@ def test_ui_links_require_https_and_backlink_has_aria_label():
     js = Path("web/app.js").read_text(encoding="utf-8")
     assert "x.url&&x.verified&&/^https:\\/\\//.test(x.url)" in js
     assert 'aria-label="${esc(\'Ver \'+(x.by||' in js
+
+
+# --- Re-review of 753368f5 ------------------------------------------------------------------------
+
+@pytest.mark.parametrize("title", [
+    "Superintendente se reúne con gerentes de isapres en seminario",
+    "Superintendencia realiza seminario sobre GES en regiones",
+    "Superintendente expone ante gremio de isapres",
+    "Fonasa y Superintendencia firman convenio de colaboración",
+    "Ceremonia de aniversario de la Superintendencia: multas récord",
+    "Isapres y Fonasa en la jornada anual del sector",
+])
+def test_agenda_titles_never_use_the_deterministic_fallback(title, monkeypatch):
+    import radar_salud.llm_analysis as llm
+    monkeypatch.setattr(llm, "analyze_official_news", lambda **k: None)
+    monkeypatch.setattr(sis_news, "_transient_article_text", lambda url: "Las isapres y Fonasa; cobertura GES y multas.")
+    assert sis_news.deterministic_signal(title, "", ["circular-if-534"]) is None  # agenda wins even over a named act
+    with pytest.raises(DeferredProcessing):
+        process_superintendencia_noticias(_news(title, "Isapres y Fonasa."), _gate_cfg())
+    # With a real AI score the item is judged on that score alone.
+    monkeypatch.setattr(llm, "analyze_official_news", lambda **k: {"relevance_score": 50})
+    with pytest.raises(RejectedProcessing):
+        process_superintendencia_noticias(_news(title, "Isapres y Fonasa."), _gate_cfg())
+
+
+@pytest.mark.parametrize("title,lead,basis", [
+    ("Superintendencia de Salud sanciona a Isapre X con multa de 500 UF", "", "deterministic_topic_and_action_in_clause"),
+    ("Superintendencia publica circular que modifica la cobertura CAEC", "", "deterministic_topic_and_action_in_clause"),
+    ("Nuevas instrucciones a las aseguradoras", "La Circular IF/N°540 regula la cobertura.", "deterministic_names_specific_act"),
+])
+def test_deterministic_fallback_positives(title, lead, basis, monkeypatch):
+    import radar_salud.llm_analysis as llm
+    monkeypatch.setattr(llm, "analyze_official_news", lambda **k: None)
+    monkeypatch.setattr(sis_news, "_transient_article_text", lambda url: "Isapres y cobertura.")
+    acts = mentioned_acts(f"{title} {lead}")
+    raw = _news(title, lead or "Isapres.", mentioned_acts=acts)
+    raw.metadata["lead"] = lead
+    row = process_superintendencia_noticias(raw, _gate_cfg())
+    assert row["relevance_basis"] == basis
+
+
+def test_topic_and_action_must_share_a_clause():
+    assert sis_news.deterministic_signal("Isapres: balance anual. La Superintendencia sanciona prácticas") is None
+    assert sis_news.deterministic_signal("Informe de cotizantes") is None
+
+
+def test_article_failing_three_runs_is_skipped_and_source_not_partial(tmp_path):
+    ledger = tmp_path / "ledger.json"
+    pages = {"https://www.superdesalud.gob.cl/noticias/2026/": LISTING}
+
+    def fetch(url):
+        if url == sis_news.ROBOTS:
+            return "User-agent: *\nAllow: /\n"
+        if url in pages:
+            return pages[url]
+        raise TimeoutError("read timeout")
+    for run in (1, 2):
+        scout = SuperintendenciaNoticiasScout(fetch=fetch, today=date(2026, 10, 28), state_path=ledger)
+        scout.discover()
+        assert any(GES_URL in e for e in scout.discovery_errors)  # partial: watermark held, retried
+    scout = SuperintendenciaNoticiasScout(fetch=fetch, today=date(2026, 10, 28), state_path=ledger)
+    scout.discover()
+    assert scout.discovery_errors == []  # third failure: skipped, source no longer partial
+    assert {"url": GES_URL, "status": "article_skipped", "reason": "TimeoutError", "failures": 3} in scout.discovery_audit
+    assert json.loads(ledger.read_text())[GES_URL]["skipped"] is True
+    later = SuperintendenciaNoticiasScout(fetch=fetch, today=date(2026, 10, 28), state_path=ledger)
+    later.discover()
+    assert later.discovery_errors == [] and later.discovery_audit[0]["status"] == "article_skipped"
+
+
+def test_a_success_resets_the_failure_count(tmp_path):
+    ledger = tmp_path / "ledger.json"
+    ledger.write_text(json.dumps({GES_URL: {"failures": 2, "skipped": False}}), encoding="utf-8")
+    pages = {"https://www.superdesalud.gob.cl/noticias/2026/": LISTING,
+             GES_URL: _article("Más de 62 millones de casos GES desde 2005", "2026-10-14T10:00:00-03:00")}
+    SuperintendenciaNoticiasScout(fetch=_fetcher(pages), today=date(2026, 10, 28), state_path=ledger).discover()
+    assert GES_URL not in json.loads(ledger.read_text())
+
+
+def test_unscored_news_revived_once_when_ai_budget_returns(tmp_path):
+    from datetime import datetime, timezone
+    from radar_salud.pending_queue import PendingQueue
+    now = datetime(2026, 10, 28, 12, tzinfo=timezone.utc)
+    q = PendingQueue(tmp_path / "q.json")
+    def item(day, **extra):
+        raw = {"source_slug": "superintendencia_noticias", "title": "t", "url": f"https://www.superdesalud.gob.cl/noticias/{day}",
+               "source_name": SIS, "source_type": "official", "event_date": day, "raw_text": "", "metadata": {}}
+        return {"source": "superintendencia_noticias", "status": "deferred", "lane": "LIVE", "attempts": 4,
+                "reason": "retry_exhausted:sis_news_relevance_unscored", "detected_at": now.isoformat(), "raw": raw, **extra}
+    q.items = {"recent": item("2026-10-20"), "old": item("2026-09-01"),
+               "other": dict(item("2026-10-20"), reason="retry_exhausted:other")}
+    assert q.revive_unscored_sis_news(now, ai_available=False) == 0
+    assert q.revive_unscored_sis_news(now, ai_available=True, max_attempts=4) == 1
+    assert q.items["recent"]["status"] == "retry" and q.items["recent"]["attempts"] == 2  # two more tries
+    assert q.items["old"]["status"] == "deferred" and q.items["other"]["status"] == "deferred"
+    q.items["recent"].update(status="deferred", reason="retry_exhausted:sis_news_relevance_unscored", attempts=4)
+    assert q.revive_unscored_sis_news(now, ai_available=True) == 0  # never a second revival
