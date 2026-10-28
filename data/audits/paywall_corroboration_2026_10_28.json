@@ -1,0 +1,163 @@
+{
+  "generated_for": "Dirección 28-oct-2026 15:16 (corroboración de prensa con muro de pago)",
+  "inputs": [
+    "web/data/radar_today.json",
+    "data/history/superintendencia_signals.json",
+    "data/state/pending_queue.json",
+    "data/market/cmf_events.json"
+  ],
+  "corpus_documents": 810,
+  "corpus_by_source": {
+    "sis": 504,
+    "minsal": 69,
+    "suseso": 117,
+    "diario_oficial": 100,
+    "company_press_rooms": 15,
+    "cmf": 5
+  },
+  "corpus_excluded": {
+    "derived_from_paywalled_press": 1
+  },
+  "paywalled_items": 556,
+  "summary": {
+    "lead_ok/corroborated": 2,
+    "lead_ok/none": 290,
+    "thin/borderline_review": 1,
+    "thin/corroborated": 1,
+    "thin/none": 216,
+    "title_only/none": 46
+  },
+  "note": "Sólo se listan piezas con corroboración o caso limítrofe; el resto queda título + bajada.",
+  "items": [
+    {
+      "title": "Clínica Las Condes finaliza aumento de capital y recauda $80 mil millones",
+      "url": "https://www.latercera.com/pulso/noticia/clinica-las-condes-finaliza-aumento-de-capital-y-recauda-80-mil-millones/",
+      "event_date": "2026-08-05",
+      "tier": "lead_ok",
+      "origin": "web/data/radar_today.json",
+      "status": "corroborated",
+      "what_rendered": "Según la CMF (hecho esencial): CLC terminó la suscripción del 100% de 8.000.000 acciones nuevas y reportó CLP 80.119.759.016 recaudados.",
+      "related_sources": [
+        {
+          "title": "CLINICA LAS CONDES S.A.: hecho esencial",
+          "source_name": "Comisión para el Mercado Financiero (CMF)",
+          "url": "https://www.cmfchile.cl/sitio/aplic/serdoc/ver_sgd.php?s567=dbb3a8353a96381a497ab5c71220c11dVFdwQmVVNXFRVFJOUkZWNFRXcFZNRTlSUFQwPQ==&secuencia=-1&t=1793187472",
+          "event_date": "2026-08-05",
+          "score": 0.7667,
+          "day_gap": 0,
+          "matched_on": {
+            "entities": [
+              "cl:org:clinica-las-condes"
+            ],
+            "acts": [],
+            "terms": [
+              "recau"
+            ],
+            "amounts": [
+              "$8e+10",
+              "%100"
+            ]
+          }
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "title": "Indisa acuerda venta de su participación en laboratorios Bionet a la Achs",
+      "url": "https://www.latercera.com/pulso/noticia/indisa-acuerda-venta-de-su-participacion-en-laboratorios-bionet-a-la-achs/",
+      "event_date": "2026-09-02",
+      "tier": "lead_ok",
+      "origin": "data/state/pending_queue.json:archived",
+      "status": "corroborated",
+      "what_rendered": "Según la CMF (hecho esencial): INDISA aceptó oferta no vinculante de ACHS por su 50% de Bionet a UF457.668; compraventa y contrato de laboratorio sujetos a condiciones.",
+      "related_sources": [
+        {
+          "title": "INSTITUTO DE DIAGNOSTICO S.A.: hecho esencial",
+          "source_name": "Comisión para el Mercado Financiero (CMF)",
+          "url": "https://www.cmfchile.cl/sitio/aplic/serdoc/ver_sgd.php?s567=7b3c1bf11bd606f31ca8567835476b64VFdwQmVVNXFRVFZOUkZVelRYcEpkMDFuUFQwPQ==&secuencia=-1&t=1793187509",
+          "event_date": "2026-09-02",
+          "score": 0.7667,
+          "day_gap": 0,
+          "matched_on": {
+            "entities": [
+              "cl:org:achs",
+              "cl:org:indisa"
+            ],
+            "acts": [],
+            "terms": [
+              "bione"
+            ],
+            "amounts": [
+              "uf457668"
+            ]
+          }
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "title": "¿Efecto de más fiscalización? Licencias médicas por salud mental se desploman y lideran caída de reposos",
+      "url": "https://www.df.cl/economia-y-politica/laboral-personas/efecto-de-mas-fiscalizacion-licencias-medicas-por-salud-mental-se",
+      "event_date": "2026-10-28",
+      "tier": "thin",
+      "origin": "web/data/radar_today.json",
+      "status": "corroborated",
+      "what_rendered": "Según la Superintendencia de Seguridad Social (SUSESO): La SUSESO informó que entre enero y septiembre de 2026 se emitieron 5.155.495 licencias médicas electrónicas, un 12,3% menos que en igual período de 2025. La caída alcanzó tanto a Fonasa (-13,4%) como a Isapres (-12,2%), mientras que las licencias por trastornos mentales disminuyeron 24,3%.",
+      "related_sources": [
+        {
+          "title": "Emisión de licencias médicas disminuyó un 12,3% entre enero y septiembre de 2026",
+          "source_name": "Superintendencia de Seguridad Social (SUSESO)",
+          "url": "https://www.suseso.gob.cl/605/w3-article-792643.html",
+          "event_date": "2026-10-23",
+          "score": 0.7,
+          "day_gap": 5,
+          "matched_on": {
+            "entities": [
+              "src:suseso"
+            ],
+            "acts": [],
+            "terms": [
+              "caida",
+              "menta"
+            ],
+            "amounts": [
+              "%12.3"
+            ]
+          }
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "title": "La activa expansión de clínica RedSalud Vitacura: terapia de punta contra el cáncer y nueva hospitalización psiquiátrica",
+      "url": "https://www.df.cl/empresas/salud/la-activa-expansion-de-red-salud-vitacura-terapias-de-punta-contra-el",
+      "event_date": "2026-08-28",
+      "tier": "thin",
+      "origin": "web/data/radar_today.json",
+      "status": "borderline_review",
+      "what_rendered": null,
+      "related_sources": [],
+      "candidates": [
+        {
+          "title": "Nueva Unidad de Trasplante de Médula Ósea: Alta Complejidad y Nueva Vida",
+          "source_name": "RedSalud",
+          "url": "https://www.redsalud.cl/noticias/nueva-unidad-trasplante-medula-osea",
+          "event_date": "2026-09-04",
+          "score": 0.5917,
+          "day_gap": 7,
+          "matched_on": {
+            "entities": [
+              "cl:org:redsalud-ilc"
+            ],
+            "acts": [],
+            "terms": [
+              "terap",
+              "vitac"
+            ],
+            "amounts": []
+          }
+        }
+      ]
+    }
+  ]
+}

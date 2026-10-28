@@ -92,6 +92,9 @@ function miniShare(targetId,title){return AlicantoBar.miniShare(targetId,title)}
 function sourceLink(url){return AlicantoBar.sourceLink(url)}
 // Dirección 28-oct-2026: a row without a valid original URL shows no link, never a broken one.
 function originalLink(s){if(!s||s.source_link_status==='invalid')return '';const u=String(s.source_link||s.source_url||'');return /^https:\/\/[^\s\/?#]+\.[^\s\/?#]+(\/\S*)?$/.test(u)?u:''}
+// Dirección 28-oct-2026 15:16: a thin paywalled piece borrows "Qué pasó" only from authorized open sources,
+// every sentence attributed and linked; the paywalled piece stays as "Fuente original". Nothing else is shown.
+function corroborationBlock(s){const c=s&&s.paywalled===true?s.corroboration:null;if(!c||!['corroborated','related_only'].includes(c.status))return'';const ok=u=>/^https:\/\/[^\s\/?#]+\.[^\s\/?#]+(\/\S*)?$/.test(String(u||''));const what=arr(c.what).filter(w=>w&&w.text&&w.attribution&&ok(w.source_url));const groups=[];for(const w of what){const g=groups[groups.length-1];if(g&&g.a===w.attribution&&g.u===w.source_url)g.t.push(w.text);else groups.push({a:w.attribution,u:w.source_url,t:[w.text]})}const rel=arr(c.related_sources).filter(x=>x&&ok(x.url));if(!groups.length&&!rel.length)return'';return `<section class="corroboration"><h3>Qué pasó</h3>${groups.map(g=>`<p>Según ${esc(g.a)}: ${esc(g.t.join(' '))} <a href="${esc(g.u)}" target="_blank" rel="noopener">Ver fuente ↗</a></p>`).join('')}<p class="source">${esc(c.original_label||'Fuente original: contenido para suscriptores')}</p>${rel.length?`<div class="related-sources"><h4>Fuentes relacionadas</h4><ul>${rel.map(x=>`<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.source_name||'Fuente')} · ${esc(x.title||'Ver publicación')} ↗</a>${x.event_date?` <span class="related-desc">${fmtDate(x.event_date)}</span>`:''}</li>`).join('')}</ul></div>`:''}</section>`}
 function paywallNote(s){return s&&s.paywalled===true?`<p class="paywall-note">${esc(s.paywall_label||'Contenido para suscriptores')}. Mostramos sólo el titular y la bajada pública.</p>`:''}
 function readAction(read){return `${read?unreadIcon:checkIcon}<span class="read-label">${read?'Leído':'No leído'}</span>`}
 // Global teaser copy (Dirección 28-oct, punto 8): an invitation to the premium section, never a limit.
@@ -180,6 +183,7 @@ function detailHtml(s){
   const texts=[s.card_what||s.what_happened,s.card_why_optional?null:s.card_why||s.why_it_matters,s.normative_context,...arr(s.key_points),...arr(s.key_facts)].filter(fresh);
   body=texts.map(x=>`<p>${esc(x)}</p>`).join('');
   if(!texts.length)body='<p>La fuente disponible no aporta más detalle verificado para esta ficha histórica.</p>';
+  body+=corroborationBlock(s);
   body+=summaryTableBlock(s)+insightBlock(s);
   body+=arr(s.risk_notes).filter(fresh).map(x=>`<p>${esc(x)}</p>`).join('');
  }

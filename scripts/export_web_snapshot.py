@@ -766,6 +766,14 @@ def main():
     from radar_salud.source_rights import redact_signal
     from radar_salud.source_urls import sanitize_card_links
     cards=[sanitize_card_links(redact_signal(card)) for card in cards]
+    # Dirección 28-oct-2026 15:16: thin paywalled cards borrow "Qué pasó" from authorized
+    # open sources already in our corpus (config/corroboration_sources.json). Deterministic;
+    # a failure leaves the cards exactly as redacted (title + public lead).
+    try:
+        from radar_salud import paywall_corroboration
+        cards=paywall_corroboration.apply(cards,history=signals)
+    except Exception as exc:
+        print(f"paywall_corroboration: omitted ({type(exc).__name__}: {exc})")
     payload={"date":(args.as_of or date.today()).isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"entities":entity_watch.public_catalog(),"signals":cards}
     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
     health=Path("data/source_health.json")
