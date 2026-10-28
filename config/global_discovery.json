@@ -167,10 +167,11 @@
         "verified_how": "syndication and rss-feeds pages read via web fetch 27-oct; robots.txt enforced at runtime (fail closed)"
       },
       "daily_feed": {
-        "display": true,
+        "display": false,
         "label": "KFF Health News",
         "kind_es": "Periodismo de política sanitaria (EE. UU.)",
-        "show_byline": true
+        "show_byline": true,
+        "display_note": "Dirección 28-oct-2026: KFF Health News queda fuera de Global (PREMIUM) por ahora; sigue como descubrimiento sin publicación."
       }
     },
     {
@@ -214,7 +215,8 @@
           "EMA information should not be displayed alongside advertising"
         ],
         "verified_on": "2026-10-27",
-        "verified_how": "legal notice and RSS page read via web fetch 27-oct; robots.txt enforced at runtime (fail closed)"
+        "verified_how": "legal notice and RSS page read via web fetch 27-oct; robots.txt enforced at runtime (fail closed)",
+        "paid_tier_requires_publisher_confirmation": false
       },
       "daily_feed": {
         "display": true,
@@ -255,7 +257,8 @@
           "third-party content excluded"
         ],
         "verified_on": "2026-10-27",
-        "verified_how": "RSS feed list page read via web fetch 27-oct; FDA website-policies page could not be fetched from this environment (legal basis is statutory); robots.txt enforced at runtime (fail closed)"
+        "verified_how": "RSS feed list page read via web fetch 27-oct; FDA website-policies page could not be fetched from this environment (legal basis is statutory); robots.txt enforced at runtime (fail closed)",
+        "paid_tier_requires_publisher_confirmation": false
       },
       "daily_feed": {
         "display": true,
@@ -292,7 +295,7 @@
         ],
         "permitted_use": "metadata_title_link_byline_only",
         "automated_access": "public_domain_government_feed",
-        "attribution": "Source: CDC, with link; use does not imply endorsement by CDC/HHS",
+        "attribution": "Source: CDC, with link; use does not imply endorsement by CDC, HHS or the U.S. Government (stated on the page)",
         "restrictions": [
           "no logo",
           "no implied endorsement (disclaimer shown on the page)",
@@ -300,7 +303,8 @@
           "third-party content excluded"
         ],
         "verified_on": "2026-10-28",
-        "verified_how": "agencymaterials page read via web fetch 28-oct; feed URLs from a public feed directory (feeder.co); not fetched live (sandbox has no route); robots.txt enforced at runtime (fail closed)"
+        "verified_how": "agencymaterials page read via web fetch 28-oct; feed URLs from a public feed directory (feeder.co); not fetched live (sandbox has no route); robots.txt enforced at runtime (fail closed)",
+        "paid_tier_requires_publisher_confirmation": false
       },
       "daily_feed": {
         "display": true,
@@ -326,7 +330,7 @@
       ],
       "rights": {
         "basis": "us_federal_government_work_17_usc_105",
-        "license": "Works of NIH employees may be used for any purpose; third-party images excluded",
+        "license": "US government work, not subject to copyright (17 U.S.C. §105): works of NIH employees may be used for any purpose; third-party images excluded",
         "evidence_urls": [
           "https://www.nih.gov/node/24846"
         ],
@@ -338,19 +342,20 @@
           "third-party images excluded"
         ],
         "verified_on": "2026-10-28",
-        "verified_how": "NIH copyright page read via web fetch 28-oct; feed structure confirmed on a public mirror of nih.gov/news-releases/feed.xml, not fetched live; robots.txt enforced at runtime"
+        "verified_how": "NIH copyright page read via web fetch 28-oct; feed structure confirmed on a public mirror of nih.gov/news-releases/feed.xml, not fetched live; robots.txt enforced at runtime",
+        "paid_tier_requires_publisher_confirmation": false
       },
       "daily_feed": {
         "display": true,
         "label": "NIH",
         "kind_es": "Institutos Nacionales de Salud de EE. UU.",
-        "min_segment_matches": 1
+        "min_segment_matches": 2
       }
     },
     {
       "id": "federal_register_cms",
       "name": "Federal Register (CMS documents)",
-      "enabled": true,
+      "enabled": false,
       "attribution": "Federal Register / Centers for Medicare & Medicaid Services (CMS)",
       "allowed_link_hosts": [
         "www.federalregister.gov"
@@ -365,24 +370,27 @@
       ],
       "rights": {
         "basis": "us_federal_government_work_17_usc_105",
-        "license": "Federal Register documents are US government works (public domain)",
+        "license": "US government works are not subject to copyright (17 U.S.C. §105); FederalRegister.gov is not the official legal edition",
         "evidence_urls": [
-          "https://feeder.co/discover/4bc3124b2e/federalregister-gov-api-v1-documents-rss-conditions-agencies-centers-for-medicare-medicaid-services-order-newest"
+          "https://www.federalregister.gov/reader-aids/developer-resources/rest-api"
         ],
         "permitted_use": "metadata_title_link_byline_only",
         "automated_access": "public_domain_government_feed",
         "attribution": "Source: Federal Register (CMS), with link",
         "restrictions": [
-          "official legal text is the published Federal Register/govinfo edition"
+          "no NARA/OFR logos or seals",
+          "not the official legal edition (link to it, verify against govinfo)"
         ],
         "verified_on": "2026-10-28",
-        "verified_how": "Legal basis is statutory (17 U.S.C. §105, US government works); no FederalRegister.gov terms page was retrieved. Feed URL and cadence (~3/week, last item 21-oct) confirmed on a public feed directory 28-oct; not fetched live; robots.txt enforced at runtime (fail closed if /api is disallowed)"
+        "verified_how": "Statutory basis 17 U.S.C. §105. FR developer page read via web fetch 28-oct: 'No API keys are needed'; 'Republishers of Federal Register material are not permitted to use official NARA or OFR logos or seals'; it does not mention the documents.rss endpoint; not fetched live; robots for /api/ unverified -> feed disabled",
+        "paid_tier_requires_publisher_confirmation": false
       },
       "daily_feed": {
         "display": true,
         "label": "CMS · Federal Register",
         "kind_es": "Normativa del pagador público de EE. UU. (Medicare/Medicaid)"
-      }
+      },
+      "disabled_reason": "robots.txt for www.federalregister.gov/api/ could not be verified from this environment (proxy/allowlist) on 2026-10-28; kept off (fail closed) until a probe confirms /api/ is allowed for automated clients"
     },
     {
       "id": "ecdc",
@@ -413,13 +421,16 @@
         ],
         "permitted_use": "metadata_title_link_byline_only",
         "automated_access": "reuse_permitted_with_acknowledgement",
-        "attribution": "Source: ECDC, CC BY 4.0, with link; titles unmodified",
+        "attribution": "Source: ECDC, CC BY 4.0 (link to the licence), with link; titles unmodified",
         "restrictions": [
           "no logo",
           "third-party content excluded"
         ],
         "verified_on": "2026-10-28",
-        "verified_how": "copyright page read via web fetch 28-oct; feed URLs from a public feed directory; not fetched live; robots.txt enforced at runtime"
+        "verified_how": "copyright page read via web fetch 28-oct; feed URLs from a public feed directory; not fetched live; robots.txt enforced at runtime",
+        "paid_tier_requires_publisher_confirmation": false,
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0"
       },
       "daily_feed": {
         "display": true,
@@ -448,17 +459,21 @@
         "basis": "commission_legal_notice_cc_by_4_0_decision_2011_833",
         "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
         "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
           "https://commission.europa.eu/legal-notice_en"
         ],
         "permitted_use": "metadata_title_link_byline_only",
         "automated_access": "reuse_permitted_with_acknowledgement",
-        "attribution": "Source: European Commission, CC BY 4.0, with link",
+        "attribution": "Source: European Commission, CC BY 4.0 (link to the licence), with link",
         "restrictions": [
           "no logo/emblem",
           "third-party content excluded"
         ],
         "verified_on": "2026-10-28",
-        "verified_how": "legal notice read via web fetch 28-oct; feed URL and cadence (~5/week) from a public feed directory; not fetched live; robots.txt enforced at runtime"
+        "verified_how": "health.ec.europa.eu uses the Europa legal notice; the health.ec.europa.eu/legal-notice_en page could not be fetched from this environment (allowlist), the Commission legal notice (CC BY 4.0, Decision 2011/833/EU) was read via web fetch 28-oct; feed URL and cadence (~5/week) from a public feed directory; not fetched live; robots.txt enforced at runtime",
+        "paid_tier_requires_publisher_confirmation": false,
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0"
       },
       "daily_feed": {
         "display": true,
@@ -497,7 +512,8 @@
           "no body/excerpt"
         ],
         "verified_on": "2026-10-28",
-        "verified_how": "republishing guidelines read via web fetch 28-oct; feed URL from public feed directories (feedspot); not fetched live; robots.txt enforced at runtime"
+        "verified_how": "republishing guidelines read via web fetch 28-oct; feed URL from public feed directories (feedspot); not fetched live; robots.txt enforced at runtime",
+        "paid_tier_requires_publisher_confirmation": false
       },
       "daily_feed": {
         "display": true,
@@ -589,15 +605,15 @@
   ],
   "daily_feed": {
     "enabled": true,
-    "authorized_by": null,
-    "authorization_note": "Mostrar titulares (metadatos + enlace) en Global es una decisión de publicación (CLAUDE.md §3): queda apagado hasta que Dirección registre aquí su autorización (authorized_by + authorized_at). Propuesto por Claude (líder Global) el 28-oct-2026 en respuesta a la pregunta de Dirección de las 03:49.",
-    "authorized_at": null,
+    "authorized_by": "Dirección (cftorre1)",
+    "authorization_note": "Dirección 28-oct-2026, respuesta a la pregunta del coordinador sobre encender \"Al día afuera\": \"Sí, encender\". Decidió dejar KFF fuera por ahora. Mostrar titulares (metadatos + enlace) es una decisión de publicación (CLAUDE.md §3); este registro es esa autorización.",
+    "authorized_at": "2026-10-28",
     "window_days": 14,
     "retention_days": 45,
     "max_per_source_per_day": 6,
     "stale_after_days": 2,
-    "include_paid_tier_hold_items": false,
     "card_contract": "publisher title verbatim + link + date + attribution (+ byline when the licence asks) + deterministic Spanish relevance line; never body/excerpt/photos; never an Alicanto analysis or Chile effect",
-    "ai_policy": "paid_ai_calls=0. Optional future: Spanish translation of titles only for CC BY / public-domain feeds (not KFF, not The Conversation: NoDerivatives), cheap model inside the USD 10/month cap, requires Dirección OK."
+    "ai_policy": "paid_ai_calls=0. Optional future: Spanish translation of titles only for CC BY / public-domain feeds (not KFF, not The Conversation: NoDerivatives), cheap model inside the USD 10/month cap, requires Dirección OK.",
+    "kff_decision": "Dirección 28-oct-2026: KFF Health News queda fuera de Global (PREMIUM) por ahora; sigue como descubrimiento sin publicación."
   }
 }

@@ -58,7 +58,9 @@ def _day(value) -> date | None:
 def summary_es(kind_es: str, segments: list[str]) -> str:
     """One deterministic Spanish line: who publishes + why a Chilean health executive may care."""
     tags = [SEGMENT_ES[s] for s in segments if s in SEGMENT_ES]
-    return f"{kind_es}. Relevante para: {', '.join(tags)}." if tags else f"{kind_es}."
+    # A label ending in an abbreviation ("EE. UU.") already carries its period: never print "EE. UU..".
+    head = kind_es.rstrip() if kind_es.rstrip().endswith(".") else kind_es.rstrip() + "."
+    return f"{head} Relevante para: {', '.join(tags)}." if tags else head
 
 
 def _card(*, item_id, source, label, attribution, kind_es, title, url, published_at, segments, priority, bylines, rights_basis, as_of):
@@ -71,9 +73,29 @@ def _card(*, item_id, source, label, attribution, kind_es, title, url, published
             "chile_transfer": "hypothesis_only", "rights_basis": rights_basis, "first_seen_on": as_of.isoformat()}
 
 
+def paid_tier_eligible(feed: dict | None) -> bool:
+    """PREMIUM eligibility comes from the feed's rights in config, never from a row default (fail closed)."""
+    rights = (feed or {}).get("rights") or {}
+    if not rights:
+        return False
+    if rights.get("paid_tier_requires_publisher_confirmation") is False:
+        return True
+    if rights.get("paid_tier_requires_publisher_confirmation"):
+        return bool(str(rights.get("paid_tier_confirmation") or "").strip())
+    return False
+
+
+def authorization(policy: dict) -> tuple[bool, str | None]:
+    """Recorded Dirección authorization: non-blank authorized_by and a valid, non-future authorized_at."""
+    by = str(policy.get("authorized_by") or "").strip()
+    at = _day(policy.get("authorized_at"))
+    if not policy.get("enabled") or not by or at is None or str(policy.get("authorized_at")).strip() != at.isoformat() or at > date.today():
+        return False, None
+    return True, by
+
+
 def feed_cards(feed_payload: dict, config: dict, as_of: date) -> tuple[list[dict], Counter]:
     """Cards from licensed feeds. Every gate is recorded in ``held`` with its reason."""
-    policy = config.get("daily_feed") or {}
     feeds = {f["id"]: f for f in config.get("feeds", [])}
     held, cards = Counter(), []
     for row in feed_payload.get("items", []):
@@ -89,7 +111,7 @@ def feed_cards(feed_payload: dict, config: dict, as_of: date) -> tuple[list[dict
             held["not_relevant_or_undated"] += 1; continue
         if (urlsplit(row["url"]).hostname or "") not in set(feed["allowed_link_hosts"]):
             held["link_outside_licensed_hosts"] += 1; continue
-        if not row.get("paid_tier_eligible", True) and not policy.get("include_paid_tier_hold_items", False):
+        if not paid_tier_eligible(feed):
             # Global is PREMIUM: a NonCommercial licence (KFF) stays out until the publisher confirms in writing.
             held["paid_tier_hold_" + row["source"]] += 1; continue
         matched = [s for s in classification.get("segments", []) if s in SEGMENTS]
@@ -99,7 +121,8 @@ def feed_cards(feed_payload: dict, config: dict, as_of: date) -> tuple[list[dict
                            attribution=feed["attribution"], kind_es=display.get("kind_es") or feed["name"], title=row["title"],
                            url=row["url"], published_at=row["published_at"], segments=matched,
                            priority=classification.get("priority"), bylines=row.get("bylines", []) if display.get("show_byline") else [],
-                           rights_basis={"license": rights.get("license"), "evidence_urls": rights.get("evidence_urls", []),
+                           rights_basis={"license": rights.get("license"), "license_url": rights.get("license_url"), "license_label": rights.get("license_label"),
+                                         "evidence_urls": rights.get("evidence_urls", []),
                                          "verified_on": rights.get("verified_on")}, as_of=as_of))
     return cards, held
 
@@ -154,7 +177,7 @@ def build(feed_payload: dict, discovery: dict, config: dict, previous: dict | No
     retention = int(policy.get("retention_days", 45))
     window = int(policy.get("window_days", 14))
     # Showing headlines is a publication decision (CLAUDE.md §3): it needs a recorded Dirección authorization.
-    enabled = bool(policy.get("enabled")) and bool(policy.get("authorized_by"))
+    enabled, authorized_by = authorization(policy)
     new, held = [], Counter()
     if enabled:
         a, held_a = feed_cards(feed_payload or {}, config, as_of)
@@ -164,7 +187,9 @@ def build(feed_payload: dict, discovery: dict, config: dict, previous: dict | No
         held["daily_feed_awaiting_direccion_authorization"] += 1
     by_id = {}
     # Keep earlier cards (history), but only while their source is still authorized for display.
-    authorized = {f["id"] for f in config.get("feeds", []) if f.get("enabled") and (f.get("daily_feed") or {}).get("display")}
+    # History is re-gated with today's config: display, rights and PREMIUM eligibility (a KFF card never survives).
+    authorized = {f["id"] for f in config.get("feeds", []) if f.get("enabled") and (f.get("daily_feed") or {}).get("display")
+                  and (f.get("rights") or {}).get("permitted_use") == PERMITTED_USE and paid_tier_eligible(f)}
     authorized |= {s for s in OFFICIAL_SOURCES if ((discovery or {}).get("source_health") or {}).get(s, {}).get("publication_activation")
                    or any(c["source"] == s for c in new)}
     for card in (previous or {}).get("items", []) if enabled else []:
@@ -185,7 +210,7 @@ def build(feed_payload: dict, discovery: dict, config: dict, previous: dict | No
     segments7 = Counter(s for c in last7 for s in c["segments"])
     return {"schema_version": SCHEMA_VERSION, "as_of": as_of.isoformat(),
             "generated_at": generated_at or datetime.now(timezone.utc).isoformat(), "enabled": enabled,
-            "authorized_by": policy.get("authorized_by") if enabled else None,
+            "authorized_by": authorized_by, "authorized_at": policy.get("authorized_at") if enabled else None,
             "access_tier": "PREMIUM", "kind": "global_daily_headlines", "content_use": "metadata_and_link_only",
             "body_stored": False, "paid_ai_calls": 0, "summary_method": SUMMARY_METHOD,
             "editorial_status": "headline_index_not_editorial_analysis", "chile_transfer": "hypothesis_only",

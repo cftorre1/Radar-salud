@@ -99,6 +99,9 @@ The Global daily step now requires `daily_collection_enabled: true`; the deliver
 (`src/radar_salud/global_daily_feed.py`; rebuild offline with `scripts/export_global_feed.py`).
 Cards are publisher title verbatim + link + date + attribution (+ byline where the licence asks)
 and a fixed-template Spanish relevance line; no body, no AI. Gates: `daily_feed.enabled` and a
-recorded `daily_feed.authorized_by` (Dirección), per-feed `daily_feed.display` and rights basis,
-KFF held out of PREMIUM until KFF confirms in writing, WHO/PAHO only while `publication_activation`
-is on and the title carries an executive keyword. History is kept `retention_days` (45).
+recorded authorization (non-blank `daily_feed.authorized_by` + valid `authorized_at`; Dirección
+"Sí, encender", 28-oct), per-feed `daily_feed.display` and rights basis, PREMIUM eligibility read
+from each feed's `rights` (fail closed; KFF out by Dirección decision 28-oct and until KFF confirms in
+writing), WHO/PAHO only while `publication_activation` is on and the title carries an executive
+keyword. History (45 days) is re-gated with the current config. Federal Register (CMS) stays
+disabled until robots.txt for /api/ is verified.

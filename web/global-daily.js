@@ -7,14 +7,18 @@
  const esc=(s='')=>String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
  const day=raw=>new Intl.DateTimeFormat('es-CL',{day:'2-digit',month:'short',year:'numeric',timeZone:'America/Santiago'}).format(new Date(`${String(raw).slice(0,10)}T12:00:00Z`));
  const tick='<svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"></path></svg>';
- const SHOW=8;let items=[],expanded=false,payload=null;
+ const SHOW=4;let items=[],expanded=false,payload=null;
  const key=id=>`global-feed:${id}`,isRead=x=>AlicantoRead.readSet.has(key(x.id));
  function today(){const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/Santiago',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).map(x=>[x.type,x.value]));return Date.parse(`${p.year}-${p.month}-${p.day}T00:00:00Z`)}
  function age(raw){return Math.floor((today()-Date.parse(String(raw).slice(0,10)+'T00:00:00Z'))/86400000)}
  function safeUrl(u){try{const x=new URL(u);return x.protocol==='https:'?x.href:''}catch{return''}}
- function source(x){return x.bylines?.length?`${x.source_label} (${x.bylines.slice(0,2).join(', ')})`:x.source_label}
+ // Authors in feed order; more than two -> the first two + "y otros" (full list in the link's accessible name).
+ function authors(x){const b=(x.bylines||[]).filter(Boolean);return b.length>2?`${b.slice(0,2).join(', ')} y otros`:b.join(', ')}
+ function source(x){const a=authors(x);return a?`${x.source_label} (${a})`:x.source_label}
+ function license(x){const u=safeUrl(x.rights_basis?.license_url||'');return u?` · <a class="lic" href="${esc(u)}" target="_blank" rel="noopener license">${esc(x.rights_basis.license_label||'Licencia')}</a>`:''}
+ function accessibleName(x){const b=(x.bylines||[]).filter(Boolean);return `${x.title}. ${x.source_label}${b.length?`, autores: ${b.join(', ')}`:''}. Abre en otra pestaña.`}
  function row(x){const read=isRead(x),label=read?'Marcar como no leído':'Marcar como leído',url=safeUrl(x.url);
-  return `<article class="signal item daily-item ${read?'read':''}" id="daily-${esc(x.id)}" data-daily="${esc(x.id)}"><button type="button" class="dotbtn ${read?'done':''}" data-daily-read="${esc(x.id)}" aria-label="${label}: ${esc(x.title)}" title="${label}">${read?tick:'<span class="unread-dot"></span>'}</button><div class="item-body"><h2><a class="title-open" href="${esc(url)}" target="_blank" rel="noopener" data-daily-open="${esc(x.id)}" title="${esc(x.summary_es||'')}">${esc(x.title)} <span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (abre ${esc(x.source_label)} en otra pestaña)</span></a></h2><div class="card-meta"><span class="meta-text"><span class="eyebrow">Titular</span> · ${esc(source(x))} · ${day(x.published_at)}${x.tags_es?.length?` · ${esc(x.tags_es.join(' · '))}`:''}</span></div></div></article>`}
+  return `<article class="signal item daily-item ${read?'read':''}" id="daily-${esc(x.id)}" data-daily="${esc(x.id)}"><button type="button" class="dotbtn ${read?'done':''}" data-daily-read="${esc(x.id)}" aria-label="${label}: ${esc(x.title)}" title="${label}">${read?tick:'<span class="unread-dot"></span>'}</button><div class="item-body"><h2><a class="title-open" href="${esc(url)}" target="_blank" rel="noopener" data-daily-open="${esc(x.id)}" title="${esc(x.summary_es||'')}" aria-label="${esc(accessibleName(x))}">${esc(x.title)} <span class="ext" aria-hidden="true">↗</span></a></h2><div class="card-meta"><span class="meta-text"><span class="eyebrow">Titular</span> · ${esc(source(x))} · ${day(x.published_at)}${x.tags_es?.length?` · ${esc(x.tags_es.join(' · '))}`:''}${license(x)}</span></div></div></article>`}
  function render(){
   const unread=items.filter(x=>!isRead(x)).length,shown=expanded?items:items.slice(0,SHOW),f=payload.freshness||{};
   document.getElementById('globalDailyMetrics').textContent=`${items.length} titulares en ${payload.window_days||14} días · no leídos ${unread}${f.status==='stale'&&f.newest_published_at?` · sin titulares nuevos desde ${day(f.newest_published_at)}`:''}`;

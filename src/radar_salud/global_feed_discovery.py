@@ -137,7 +137,7 @@ def parse_feed(raw: bytes, route: dict, feed: dict, as_of: date) -> list[dict]:
     for entry in entries:
         title = _clean(entry["title"])
         row = {"source": feed["id"], "section": route["section"], "feed_url": route["url"], "title": title,
-               "attribution": feed["attribution"], "bylines": sorted({b for b in entry["bylines"] if b}),
+               "attribution": feed["attribution"], "bylines": list(dict.fromkeys(b for b in entry["bylines"] if b)),
                "categories": sorted({c for c in entry["categories"] if c}), "guid": _clean(entry["guid"]) or None,
                "raw_publication_dates": [entry["date"]] if entry["date"] else [], "publication_date_basis": "publisher_feed_declared_date",
                "content_use": "metadata_and_link_only", "body_stored": False}
@@ -160,18 +160,22 @@ def parse_feed(raw: bytes, route: dict, feed: dict, as_of: date) -> list[dict]:
 # publisher's title/categories only; no summary, no paid model (paid_ai_calls=0).
 SEGMENT_RULES = {
     "payers": r"\binsur|\bpayer|medicare|medicaid|health plans?\b|premium|coverage|reimburs|affordable care act|\baca\b|obamacare|prior authori|\bpbm|pharmacy benefit|copay|deductible|out-of-pocket|uninsured|medical debt|isapre|fonasa|seguro|aseguradora|cobertura",
-    "providers": r"hospital|clinic|health system|physician|doctor|nurs|nursing home|workforce|emergency room|private equity|merger|acquisition|rural health|staffing|billing|price transparency|long-term care|primary care|clinica|prestador|medicos?\b|enfermer",
+    "providers": r"hospital|\bclinics?\b|\bclinicas?\b|health system|physician|doctor|nurs|nursing home|workforce|emergency room|private equity|merger|acquisition|rural health|staffing|billing|price transparency|long-term care|primary care|prestador|medicos?\b|enfermer",
     "pharma": r"\bdrug|pharma|medicine|vaccin|biosimilar|generic|glp-1|ozempic|wegovy|semaglutide|tirzepatide|prescription|\b340b\b|clinical trial|marketing authori[sz]ation|\bchmp\b|orphan|biologic|therap|insulin|antibiotic|antimicrobial|medicament|farmac|vacuna",
-    "regulation": r"\bfda\b|\bema\b|\bcms\b|regulat|\brule\b|\blaw\b|legislat|policy|guidance|guideline|approv|recall|warning letter|\bban\b|court|lawsuit|antitrust|ruling|executive order|tariff|authori[sz]ation|safety communication|referral|consultation|normativ|regulac|\bley\b",
-    "healthtech": r"telehealth|telemedicine|digital health|health tech|\bapps?\b|wearable|electronic health record|\behr\b|cybersecur|ransomware|data breach|medical device|\bdevices?\b|software|interoperab|digital|telesalud",
+    "regulation": r"\bfda\b|\bema\b|\bcms\b|regulat|\brule\b|\blaw\b|legislat|policy|guidance|guideline|approv|recall|warning letter|\bban\b|court|lawsuit|antitrust|ruling|executive order|tariff|authori[sz]ation|safety communication|referral|consultation|normativ|regulac|\bley\b|authori[sz]e[sd]?\b|authori[sz]ing",
+    "healthtech": r"telehealth|telemedicine|digital health|health data|data space|\behds\b|health tech|\bapps?\b|wearable|electronic health record|\behr\b|cybersecur|ransomware|data breach|medical device|\bdevices?\b|software|interoperab|digital|telesalud",
     "ai_in_health": r"artificial intelligence|\bai\b|machine learning|algorithm|chatbot|large language model|\bllm|generative|inteligencia artificial|\bia\b",
 }
 EXCLUSION_RULES = (
     ("podcast_or_multimedia", r"podcast|what the health\?|an arm and a leg|^watch:|^listen:|\bvideo:|^kff health news'"),
     ("newsletter_digest", r"morning briefing|^first edition|readers and tweeters|letters? to the editor|^in case you missed"),
     ("institutional_routine", r"\b(appointed|appointment|anniversary|webinar|training|celebrates|congratulates|obituar|honou?rs?|award(?:s|ed)?|career|vacanc|procurement|tender)\b"),
+    ("preclinical_animal_study", r"\bin (mice|mouse|rats?)\b|\bmice\b|\bmouse\b|fruit fl(y|ies)|zebrafish"),
+    ("advisory_panel_meeting", r"advisory (committee|panel|board|council)s?\b.*\bmeeting|\bmeeting\b.*\badvisory (committee|panel|board|council)|notice of (a )?(public )?meeting|\bpanel meeting\b"),
     ("out_of_scope_consumer_product", r"\b(food|foods|infant formula|tobacco|cigarette|vape|vaping|e-cigarette|cosmetic|tattoo|pet food|veterinar|animal)\b"),
 )
+# Immunization coverage is epidemiology, not insurance coverage (payers).
+VACCINE_COVERAGE = r"(vaccin\w*|immuni[sz]ation|vacunacion|inmunizacion)\s+(rate\s+)?coverage|coverage\s+(of|for|with)\s+(\w+\s+){0,2}(vaccin\w*|immuni[sz]ation|doses?)|cobertura\s+(de\s+)?(vacunacion|inmunizacion|vacunas?)"
 ROUTINE_REGULATOR_EVENTS = r"^(event|agenda|minutes)\b|^meeting (agenda|minutes)\b|\bevents?\b.*\b(registration|stakeholder)\b"
 
 
@@ -190,7 +194,8 @@ def classify_relevance(title: str, categories=(), *, default_segments=()) -> dic
         return {"materiality": "excluded", "relevant": False, "segments": [], "priority": 0, "category": "institutional_routine",
                 "reason": "irrelevant_for_chilean_health_executives:institutional_routine", "method": "deterministic_rules_v1",
                 "ai_gate": {"invoked": False, "reason": "paid_ai_calls_contract_0"}}
-    matched = [segment for segment in SEGMENTS if re.search(SEGMENT_RULES[segment], text)]
+    matched = [segment for segment in SEGMENTS
+               if re.search(SEGMENT_RULES[segment], re.sub(VACCINE_COVERAGE, " ", text) if segment == "payers" else text)]
     segments = matched or [s for s in default_segments if s in SEGMENTS]
     if not segments:
         return {"materiality": "excluded", "relevant": False, "segments": [], "priority": 0, "category": "no_segment_match",

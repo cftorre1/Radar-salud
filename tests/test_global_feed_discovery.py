@@ -99,7 +99,7 @@ def test_kff_wordpress_rss_keeps_title_link_date_byline_and_never_the_body():
     assert first["body_stored"] is False
     serialized = json.dumps(list(rows.values()))
     assert "must never be stored" not in serialized and "Excerpt." not in serialized
-    assert rows["https://kffhealthnews.org/?p=2000002"]["bylines"] == ["Ann Poe", "John Roe"]
+    assert rows["https://kffhealthnews.org/?p=2000002"]["bylines"] == ["John Roe", "Ann Poe"]  # feed order
     # Publisher's own offset day is kept (08:00 -0400 stays 21 Oct).
     assert rows["https://kffhealthnews.org/?p=2000006"]["published_at"] == "2026-10-21"
     assert rows["https://kffhealthnews.org/?p=2000008"]["published_at"] is None
