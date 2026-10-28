@@ -9,16 +9,22 @@ redundantes, debe aportar algo más").
             stated), menos de / inferior a / bajo (true < stated), casi (true < stated, within 5 %), cerca de /
             alrededor de / unos / aproximadamente (within 5 %). Subject: the insurer, 'el sistema', 'las Isapres',
             'las abiertas' or 'las cerradas' the clause credits the figure to. Period: the months named in the
-            clause (else the sentence) and YTD wording ('desde enero', 'en lo que va del año', 'entre enero y …').
+            clause (else the sentence), YTD wording ('desde enero', 'en lo que va del año', 'en el año', 'entre enero
+            y …') and a 12-month window ('en doce meses', 'últimos 12 meses'), which is a period, never a figure.
 2. Trace.   Every digit mention must equal a ``lectura_pool`` entry (declared by the family builder, never the whole
             package) rounded half-up to the shown precision (or satisfy its comparator), with matching unit, sign,
             scope (system / open / closed / insurer:<code>) and period kind (month / ytd / interval / stock_at).
-            Years are allowed only when they are package periods.
+            Years are allowed only when they are package periods. Base: a share or rate entry declares its
+            denominator (``base``: 'abiertas', 'sistema', 'variacion_sistema', …). A required base must be named in
+            the clause (else the sentence): an open-only share credited to 'del mercado' / 'del sistema' fails as
+            ``share_base_mismatch``, one that names no base fails as ``share_base_unstated``.
 3. Words.   A closed lexicon (doble, triple, quíntuple, mitad, tercio, cuarto, par, décima, centésimo, ordinals,
             Roman numerals, 'medio punto', 'uno de cada N', decenas/miles…) maps each number word to a value that
             must equal a ``derived_ratios`` or ``ranks`` entry within display tolerance (pp words and magnitudes
             may also match ``lectura_pool``). An ordinal must trace to a rank of the ranking it names (size, decline,
-            growth, streak) in that ranking's period. Any other number-like token fails.
+            growth, streak) in that ranking's period. A figure-free superlative ('es la Isapre que más crece', 'la
+            mayor baja', 'la más grande') is a rank too: rank 1 (or the last rank for 'que menos') of the ranking it
+            names, credited to the Isapre in the clause. Any other number-like token fails.
 4. Adds.    D = value ids traced from the headline, dek, KPIs, tab texts and facts. A sentence with figures must
             cite at least one traced, non-trivial id outside D (entity counts such as the 7 open Isapres are
             trivial); every sentence must have content-word Jaccard < 0.5 against every displayed sentence; a
@@ -113,7 +119,11 @@ COMPARATORS = [
 COMPARATOR_RX = re.compile(r"(?<![a-záéíóúüñ0-9·])(?P<cmp>" + "|".join(f"(?:{p})" for p, _ in COMPARATORS) +
                            r")\s+(?:(?:el|la|los|las)\s+)?$")
 YTD_GENERIC = re.compile(r"en lo que va (?:del ano|de 20\d\d)|desde (?:el )?(?:inicio|comienzo|principio)s? (?:del?|de) "
-                         r"ano|en el acumulado del ano|acumulad[oa]s? del ano|ano a la fecha")
+                         r"ano|en el acumulado del ano|acumulad[oa]s? del ano|ano a la fecha|"
+                         r"(?:en|durante) el (?:presente |actual )?ano(?! (?:pasado|anterior|movil))")
+# A 12-month window is a period phrase, never a figure ('en doce meses', 'en los últimos 12 meses'); a streak
+# ('doce meses consecutivos') stays a figure.
+WINDOW_RX = re.compile(r"(?<![a-z0-9·])(?P<n>12|doce) meses(?! (?:consecutiv|seguid|de (?:alza|baja|caida|crecimiento)))")
 YTD_FROM = re.compile(r"(?:desde|entre|de) (?P<m>" + MONTH_RX + r")(?: de 20\d\d)?(?= y | a | hasta |\b)")
 GROUP_MARKERS = [  # subject phrases (folded); the order matters: 'las Isapres abiertas' is open, not system
     (r"(?:las |los |a las |de las |entre las )?(?:isapres |aseguradoras )?abiertas", "open"),
@@ -127,6 +137,54 @@ RANKING_WORDS = [  # the ranking an ordinal names, from the words around it (fol
     ("racha", r"mes|meses|consecutiv\w*|seguid\w*"),
     ("tamano", r"grande\w*|tamano|cartera|beneficiarios|participacion|mercado"),
 ]
+# Figure-free superlatives (folded): 'que más crece', 'la mayor baja', 'la más grande', 'lidera el crecimiento'.
+SUPERLATIVE_RX = re.compile(
+    r"(?<![a-z])(?:(?:que|quien|quienes) (?P<q>mas|menos) (?P<w>[a-z]+)"
+    r"|(?P<q2>mayor|menor) (?P<w2>[a-z]+)"
+    r"|(?:la|el|las|los)(?: isapres?| aseguradoras?)? (?P<q3>mas) (?P<w3>grandes?|chicas?|pequenas?)"
+    r"|lider\w* (?:(?:en|el|la|del|de la|de) )*(?P<w4>[a-z]+))")
+SUPERLATIVE_KINDS = [  # the ranking the superlative word names
+    ("alza", r"crec\w*|creci\w*|gan(?:a|an|o|aron|ancia\w*)|sub(?:e|en|io|ieron|ida)|alza\w*|aument\w*|avanz\w*|avance"),
+    ("baja", r"baj\w*|perd\w*|pierd\w*|ca(?:e|en|ida|idas|yo|yeron)|retroce\w*|cede\w*|cedi\w*|merm\w*|disminu\w*|contrac\w*"),
+    ("tamano", r"grandes?|chicas?|pequenas?|cartera|tamano|mercado"),
+]
+# Denominators of share and rate entries. ``accept``: phrases that name the base; ``reject``: phrases that name a
+# different base. A ``required`` base must be named next to the figure (its clause, else its sentence).
+BASES = {
+    "abiertas": {
+        "short": "participación entre Isapres abiertas",
+        "es": "participación entre las Isapres abiertas (beneficiarios de la Isapre / Σ beneficiarios de las abiertas); "
+              "no es participación del sistema ni del mercado Isapre: escribe 'entre las abiertas'",
+        "required": True,
+        "accept": r"(?:entre|de|del total de) (?:las |los )?(?:isapres |aseguradoras )?abiert[oa]s"
+                  r"|(?:mercado|segmento|grupo) (?:de (?:las )?(?:isapres |aseguradoras )?)?abiert[oa]s?",
+        "reject": r"(?<!para )(?:del|de|el|al|en el) mercado|(?:del|el|al|en el) sistema|(?:de|en) la industria|del total"
+                  r"|(?:de|entre) (?:todas )?las (?:isapres|aseguradoras)|(?:de|entre) las (?:isapres |aseguradoras )?cerradas",
+    },
+    "sistema": {
+        "short": "participación en el sistema Isapre",
+        "es": "participación en el sistema Isapre (abiertas y cerradas): escribe 'del sistema'",
+        "required": True,
+        "accept": r"(?<!para )(?:del|de|el|al|en el) (?:mercado|sistema)(?: isapre)?|(?:de|entre) (?:todas )?las isapres"
+                  r"|(?:de|en) la industria|del total",
+        "reject": r"abiert[oa]s|cerrad[oa]s",
+    },
+    "variacion_sistema": {
+        "short": "parte de la variación neta del sistema",
+        "es": "parte de la variación neta de beneficiarios del sistema (Δ de la Isapre / Δ del sistema); no es "
+              "participación de mercado: escribe 'de la baja' o 'de la variación'",
+        "required": True,
+        "accept": r"baj\w*|caid\w*|cae\w*|perdid\w*|pierd\w*|perdi\w*|variacion\w*|cambio\w*|alza\w*|aument\w*"
+                  r"|ganancia\w*|disminu\w*|retroce\w*|saldo|contracci\w*|merma\w*|descens\w*|crecimiento|net[oa]",
+        "reject": r"(?<!para )(?:del|de|el|al) mercado|participacion",
+    },
+    "stock_base": {"short": "variación sobre su stock del mes base", "es": "variación sobre su propio stock del mes base",
+                   "required": False},
+    "stock_mes_anterior": {"short": "variación sobre el stock del mes anterior",
+                           "es": "variación sobre el stock del mes anterior", "required": False},
+    "cotizantes": {"short": "cargas por cotizante", "es": "cargas por cotizante (no es un porcentaje)", "required": False},
+}
+
 COPULA = r"(?:\s*,\s*|\s+)(?:(?:es|fue|era|sigue siendo|queda|quedo|se ubica como|se ubico como|como|ya es)\s+)?(?:el|la)\s+$"
 
 
@@ -280,6 +338,12 @@ def _period_ok(e: dict, ctx: dict) -> bool:
     if not ps:
         return False
     pm = {_month(p) for p in ps}
+    if ctx.get("window"):  # 'en doce meses': only an entry that spans exactly that window
+        if kind in (None, "stock_at") or len(ps) < 2:
+            return False
+        a, b = ps[0], ps[-1]
+        span = (int(b[:4]) - int(a[:4])) * 12 + _month(b) - _month(a)
+        return span == ctx["window"] and (not months or months <= pm) and _year_ok(ps, years)
     if kind == "ytd":  # needs YTD wording that starts at the entry's base month
         base = _month(ps[0])
         ytd = base in ctx["ytd_from"] or (ctx["ytd_generic"] and base == 1)
@@ -365,6 +429,23 @@ def _scope_ok(m: dict, e: dict) -> bool:
     return entry_scope(e) in (m.get("subject") or set())
 
 
+def base_status(m: dict, e: dict) -> str | None:
+    """None when the entry's denominator is named (or needs no naming); else 'mismatch' or 'unstated'."""
+    spec = BASES.get(e.get("base") or "")
+    if not spec or not spec.get("required"):
+        return None
+    for text in m.get("base_texts") or ():
+        acc = list(re.finditer(spec["accept"], text))
+        masked = text
+        for mm in acc:
+            masked = masked[:mm.start()] + " " * (mm.end() - mm.start()) + masked[mm.end():]
+        if re.search(spec["reject"], masked):
+            return "mismatch"
+        if acc:
+            return None
+    return "unstated"
+
+
 def trace(m: dict, entries: list[dict], ctx: dict) -> tuple[list[str], str | None]:
     """Ids the mention traces to; or the first failing aspect among value-equal candidates."""
     cands = [e for e in entries if _value_ok(m, e)]
@@ -386,7 +467,10 @@ def trace(m: dict, entries: list[dict], ctx: dict) -> tuple[list[str], str | Non
         if not nxt:
             return [], f"{name}_mismatch"
         cands = nxt
-    return [e["id"] for e in cands], None
+    status = [base_status(m, e) for e in cands]
+    if None not in status:  # every candidate is a share or rate whose denominator the text misstates or omits
+        return [], "share_base_mismatch" if "mismatch" in status else "share_base_unstated"
+    return [e["id"] for e, st in zip(cands, status) if st is None], None
 
 
 # ---------------------------------------------------------------------------------------------
@@ -412,7 +496,7 @@ def _clause_of(clauses: list[tuple[int, int]], pos: int) -> tuple[int, int]:
 def _period_ctx(f: str) -> dict:
     return {"months": {i + 1 for i, mo in enumerate(MONTHS) if _w(mo).search(f)},
             "ytd_from": {MONTHS.index(m.group("m")) + 1 for m in YTD_FROM.finditer(f)},
-            "ytd_generic": bool(YTD_GENERIC.search(f))}
+            "ytd_generic": bool(YTD_GENERIC.search(f)), "window": 12 if WINDOW_RX.search(f) else None}
 
 
 def _direction(f: str, start: int, end: int) -> int | None:
@@ -487,12 +571,24 @@ def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, key_code: dic
             markers.append((mm.start(), mm.end(), scope))
     markers.sort()
 
+    def is_base_phrase(mk) -> bool:
+        """'entre las abiertas' / 'de participación … de las abiertas' names a denominator, not who the figure is of."""
+        if mk[2].startswith("insurer:"):
+            return False
+        return f[mk[0]:mk[1]].startswith("entre ") or bool(re.search(r"participacion\W+(?:\w+\W+){0,3}$", f[max(0, mk[0] - 40):mk[0]]))
+
     def subject(a: int, b: int) -> set[str]:
         ca, cb = _clause_of(clauses, a)
-        before = [mk for mk in markers if ca <= mk[0] and mk[1] <= a]
+        if any(ca <= mk[0] < cb and mk[2].startswith("insurer:") for mk in markers):
+            # An Isapre named in the clause owns its share figures: 'la participación de Nueva Masvida entre las
+            # abiertas subió 0,3 puntos' credits Nueva Masvida, not the open group.
+            ins = [mk for mk in markers if ca <= mk[0] < cb and not is_base_phrase(mk)]
+        else:
+            ins = markers
+        before = [mk for mk in ins if ca <= mk[0] and mk[1] <= a]
         if before:
             return {before[-1][2]}
-        after = [mk for mk in markers if b <= mk[0] < cb]
+        after = [mk for mk in ins if b <= mk[0] < cb]
         if after:
             ins = {mk[2] for mk in after if mk[2].startswith("insurer:")}
             return ins or {after[0][2]}
@@ -507,7 +603,7 @@ def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, key_code: dic
     def period_ctx(a: int) -> dict:
         ca, cb = _clause_of(clauses, a)
         local = _period_ctx(f[ca:cb])
-        if local["months"] or local["ytd_from"] or local["ytd_generic"]:
+        if local["months"] or local["ytd_from"] or local["ytd_generic"] or local["window"]:
             return local
         return sentence_ctx
 
@@ -520,8 +616,9 @@ def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, key_code: dic
 
     def add(tok, a, b, **kw):
         cmp, cstart = _comparator(low, a)
+        ca, cb = _clause_of(clauses, a)
         m = {"text": tok, "sign": None, "explicit_sign": None, "decimals": 0, "scale": 1, "cmp": cmp,
-             "subject": subject(a, b), "period_ctx": period_ctx(a), **kw}
+             "subject": subject(a, b), "period_ctx": period_ctx(a), "base_texts": (f[ca:cb], f), **kw}
         if cmp and m["explicit_sign"] is None and m["unit"] not in ("rank", "count", "roman"):
             m["sign"] = _direction(f, cstart, b)  # 'menos de' / 'bajo' are comparators, not a direction
         mentions.append(m)
@@ -544,6 +641,9 @@ def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, key_code: dic
             errors.append(f"period_not_in_package:{masked[mm.start():mm.end()]}")
         else:
             sentence_ctx["months"] |= set(m for _, m in package_months if m in span)
+    # 'en doce meses', 'últimos 12 meses': a period window (read by ``_period_ctx``), never a figure.
+    for mm in WINDOW_RX.finditer(f):
+        take(mm.start("n"), mm.end("n"))
 
     def word_mentions(rx: str, build):
         for mm in re.finditer(r"(?<![a-z0-9·])(?:" + rx + r")(?![a-z0-9·])", f):
@@ -693,11 +793,56 @@ def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, key_code: dic
     for mm in _w(NUMBERISH).finditer(f):
         if not any(used[mm.start():mm.end()]):
             unmapped.append(masked[mm.start():mm.end()])
+    # Figure-free superlatives ('Esencial es la Isapre que más crece'): a rank claim about the Isapre in the clause.
+    superlatives: list[dict] = []
+    for mm in SUPERLATIVE_RX.finditer(f):
+        word = mm.group("w") or mm.group("w2") or mm.group("w3") or mm.group("w4")
+        qw = mm.group("q") or mm.group("q2") or mm.group("q3") or "mas"
+        kind = next((k for k, rx in SUPERLATIVE_KINDS if re.fullmatch(rx, word)), None)
+        if kind is None:
+            continue
+        lead = f[max(0, mm.start() - 50):mm.start()]
+        if re.search(r"(?<![a-z])(?:" + "|".join(p for p, _ in ORDINALS) + r")\s+(?:[a-z·]+\s+){0,3}$", lead):
+            continue  # 'la segunda Isapre con mayor baja': the ordinal is the claim, checked above
+        if re.match(r"\s+(?:del (?:ano|mes|periodo)|de la serie|en \w+ meses)", f[mm.end():]):
+            continue  # 'la menor baja del año': a claim about months, not a ranking of Isapres
+        ca, cb = _clause_of(clauses, mm.start())
+        ins = [mk for mk in markers if mk[2].startswith("insurer:")]
+        bound = ([mk for mk in ins if ca <= mk[0] and mk[1] <= mm.start()][-1:] or
+                 [mk for mk in ins if mm.end() <= mk[0] < cb][:1] or [mk for mk in ins if mk[1] <= mm.start()][-1:])
+        if not bound:
+            continue  # no Isapre named: nothing to rank
+        q = "min" if qw in ("menos", "menor") or re.fullmatch(r"chicas?|pequenas?", word) else "max"
+        if (re.search(r"(?:una|uno) de (?:las|los)\s+(?:[a-z·]+\s+){0,2}$", lead)
+                or re.search(r"(?<![a-z])(?:las|los|son)\s+(?:(?:isapres|aseguradoras)\s+)?$", lead)):
+            q = "any"  # 'una de las que más crece', 'son las que más crecen': in the ranking at all
+        superlatives.append({"text": masked[mm.start():mm.end()], "rank_kind": kind, "q": q, "subject": {bound[0][2]},
+                             "period_ctx": period_ctx(mm.start())})
     ctx = {"entities": ents, "months": sentence_ctx["months"], "years": years, "ytd_from": sentence_ctx["ytd_from"],
-           "ytd_generic": sentence_ctx["ytd_generic"]}
-    for m in mentions:
+           "ytd_generic": sentence_ctx["ytd_generic"], "window": sentence_ctx["window"]}
+    for m in mentions + superlatives:
         m["period_ctx"] = {**m["period_ctx"], "years": years}
-    return {"mentions": mentions, "unmapped": unmapped, "errors": errors, "ctx": ctx, "insurer_spans": spans}
+    return {"mentions": mentions, "unmapped": unmapped, "errors": errors, "ctx": ctx, "insurer_spans": spans,
+            "superlatives": superlatives}
+
+
+def check_superlative(sp: dict, ranks: list[dict]) -> str | None:
+    """None when the superlative matches ``ranks`` (rank 1, the last rank for 'que menos', any rank for 'una de las');
+    else the failing aspect."""
+    rk = [r for r in ranks if r.get("ranking") == sp["rank_kind"]]
+    if not rk:
+        return "not_in_pool"
+    values = sorted({float(r["value"]) for r in rk})
+    wanted = values if sp["q"] == "any" else [values[-1]] if sp["q"] == "min" else [1.0]
+    why = None
+    for v in wanted:
+        m = {"text": sp["text"], "value": v, "decimals": 0, "scale": 1, "cmp": None, "sign": None, "explicit_sign": None,
+             "unit": "rank", "rank_kind": sp["rank_kind"], "bound": True, "subject": sp["subject"],
+             "period_ctx": sp["period_ctx"], "kind": "word"}
+        _, why = trace(m, ranks, sp["period_ctx"])
+        if why is None:
+            return None
+    return why
 
 
 def _roman(s: str) -> int:
@@ -769,8 +914,12 @@ def check(text: str, *, pool: list[dict], ratios: list[dict], ranks: list[dict],
         for m in parsed["mentions"]:
             ids, why = trace(m, entries_for(m, pool, ratios, ranks), parsed["ctx"])
             if why:
-                errors.append(f"number_{why}:{m['text']}")
+                errors.append(f"{why}:{m['text']}" if why.startswith("share_base") else f"number_{why}:{m['text']}")
             cited |= set(ids)
+        for sp in parsed.get("superlatives") or []:
+            why = check_superlative(sp, ranks)
+            if why:
+                errors.append(f"superlative_{why}:{sp['text']}")
         # A restatement in other words fails even when it carries a new figure.
         stems = content_stems(s)
         if any(jaccard(stems, d) >= jaccard_max for d in disp_stems):
@@ -790,8 +939,12 @@ SCOPE_ES = {"system": "el sistema (todas las Isapres)", "open": "las Isapres abi
 
 
 def describe(entry: dict, names: dict[Any, str]) -> dict:
-    """Prompt line for a pool entry: id, value, unit, scope and period, never more."""
+    """Prompt line for a pool entry: id, value, unit, denominator, scope and period, never more."""
     out = {"id": entry["id"], "valor": entry["value"], "unidad": entry.get("unit")}
+    base = BASES.get(entry.get("base") or "")
+    if base:  # '%' alone hides the denominator: '23,3 %' among the open Isapres is not 23,3 % of the market
+        out["unidad"] = f"{entry.get('unit')} ({base['short']})"
+        out["denominador"] = base["es"]
     if entry.get("metric"):
         out["métrica"] = entry["metric"]
     scope = entry_scope(entry)

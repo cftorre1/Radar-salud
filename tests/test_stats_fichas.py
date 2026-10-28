@@ -373,6 +373,89 @@ def test_third_review_good_sentences_pass(root, text):
     assert r["verdict"] == "PASS", r
 
 
+# Fourth independent review (28-oct): the share.<code>.* figures are shares among the OPEN Isapres only
+# (benef_i / Σ abiertas). Credited to 'el mercado' / 'el sistema' they are false (Nueva Masvida is 12,4 % of the
+# open Isapres but 299.429 / 2.486.683 = 12,0 % of the system; Esencial 2,5 % vs 2,4 %).
+@pytest.mark.parametrize("text,error", [
+    ("Para la competencia, Nueva Masvida ya tiene 12,4% del mercado Isapre en agosto.", "share_base_mismatch"),
+    ("Para la competencia, Esencial ya tiene 2,5% de participación de mercado en agosto.", "share_base_mismatch"),
+    ("Para la competencia, Nueva Masvida ya tiene 12,4% del sistema en agosto.", "share_base_mismatch"),
+    ("Para la competencia, Esencial ya tiene 2,5% en agosto.", "share_base_unstated"),
+    ("Para la competencia, Esencial ya tiene 2,5% de participación en agosto.", "share_base_unstated"),
+    ("Para la competencia, Esencial sumó 0,3 puntos de participación de mercado desde enero.", "share_base_mismatch"),
+    ("Para la competencia, Banmédica explica el 77% del mercado desde enero.", "share_base_mismatch"),  # contribution
+    # 'puntos entre las abiertas' belongs to the Isapre named in the clause; with none named it is the open group's
+    ("Para la competencia, las abiertas sumaron 0,3 puntos de participación desde enero.", "number_entity_mismatch"),
+    # 'doce meses' / '12 meses' is a period window, never a figure: no 12-month entry exists in this package
+    ("Para la competencia, Nueva Masvida crece 1,9% en doce meses.", "number_period_mismatch"),
+    ("Para la competencia, Nueva Masvida crece 1,9% en los últimos 12 meses.", "number_period_mismatch"),
+    # figure-free superlatives are rank claims (rank.alza: Esencial 1, Nueva Masvida 2; rank.baja: Banmédica 1)
+    ("Para la competencia, Nueva Masvida es la Isapre que más crece desde enero.", "superlative_entity_mismatch"),
+    ("Para la competencia, Banmédica es la Isapre que más crece desde enero.", "superlative_entity_mismatch"),
+    ("Para la competencia, Nueva Masvida lidera la caída desde enero.", "superlative_entity_mismatch"),
+    ("Para la competencia, Banmédica es la Isapre más grande.", "superlative_entity_mismatch"),  # Colmena is
+])
+def test_fourth_review_probes_fail(root, text, error):
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    r = sf.verify_lectura(text, f1.build_package(root), ficha=fi)
+    assert r["verdict"] == "FAIL" and any(e.startswith(error) for e in r["errors"]), r
+    assert not any(e.startswith("number_") and e.split(":", 1)[1] in ("12", "doce") for e in r["errors"]), r
+
+
+@pytest.mark.parametrize("text", [
+    "Para la competencia, Nueva Masvida ya tiene 12,4% de los beneficiarios entre las Isapres abiertas en agosto.",
+    "Para la competencia, Esencial ya tiene 2,5% de participación entre las abiertas en agosto.",
+    "Para la competencia, Esencial ya tiene 2,5% de participación entre las Isapres abiertas en agosto.",
+    "Para el mercado, Esencial ya tiene 2,5% de participación, entre las abiertas.",  # the audience is not a base
+    "Para la competencia, la participación de Esencial entre las abiertas subió 0,3 puntos desde enero.",
+    "Para la competencia, Esencial sumó 0,3 puntos de participación entre las abiertas desde enero.",
+    "Para la competencia, Nueva Masvida crece 1,9% en el año.",  # 'en el año' is YTD wording
+    "Para la competencia, Esencial es la Isapre que más crece desde enero.",
+    "Para la competencia, Banmédica es la Isapre que más cae desde enero.",
+    "Para la competencia, Banmédica lidera la caída desde enero.",
+    "Para la competencia, Esencial y Nueva Masvida son las que más crecen desde enero.",
+    "Para la competencia, Esencial es la que más crece en el año.",
+])
+def test_fourth_review_good_sentences_pass(root, text):
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    r = sf.verify_lectura(text, f1.build_package(root), ficha=fi)
+    assert r["verdict"] == "PASS", r
+
+
+def test_twelve_month_window_traces_only_a_twelve_month_entry(root):
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    p = f1.build_package(root)
+    yoy = {"id": "x.81.12m", "value": 1.9, "unit": "%", "entity": 81, "signed": True, "periods": ["2025-08", "2026-08"],
+           "requires_period": False, "scope": "insurer:81", "period_kind": "interval", "base": "stock_base"}
+    p12 = {**p, "lectura_pool": [*p["lectura_pool"], yoy], "periods": ["2025-08", *p["periods"]]}
+    for text in ("Para la competencia, Nueva Masvida crece 1,9% en doce meses.",
+                 "Para la competencia, Nueva Masvida crece 1,9% en los últimos 12 meses."):
+        assert sf.verify_lectura(text, p12, ficha=fi)["verdict"] == "PASS", text
+    # A streak stays a figure: 'doce meses consecutivos' must trace to the streak rank (2 here), and does not.
+    r = sf.verify_lectura("Para la competencia, los cotizantes suben por doce meses consecutivos.", p, ficha=fi)
+    assert any(e.startswith("number_") for e in r["errors"]), r
+
+
+def test_share_and_rate_entries_declare_their_denominator(root):
+    p = f1.build_package(root)
+    by = {e["id"]: e for e in p["lectura_pool"] + p["derived_ratios"]}
+    for e in by.values():
+        if e["unit"] in ("%", "pp", "share"):
+            assert e.get("base"), e
+    assert by["share.81.2026-08"]["base"] == by["share.108.delta_pp"]["base"] == "abiertas"
+    assert by["contrib.99"]["base"] == by["cargas.contrib"]["base"] == "variacion_sistema"
+    assert by["delta.81.ytd_pct"]["base"] == "stock_base"
+    line = sf.lv.describe(by["share.81.2026-08"], {81: "Nueva Masvida"})
+    assert "participación entre Isapres abiertas" in line["unidad"] and "abiertas" in line["denominador"]
+    with pytest.raises(ValueError):
+        sf.pool_entry(p["values"], "share.81.2026-08", entity=81)  # a share without a denominator
+    with pytest.raises(ValueError):
+        sf.pool_entry(p["values"], "share.81.2026-08", entity=81, base="mercado")
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    for prompt in (sf.lectura_prompt(fi, p), sf.review_prompt(fi, p, "x")):
+        assert "participación entre Isapres abiertas" in prompt and "denominador" in prompt
+
+
 def test_good_lecturas_publish_end_to_end(root):
     for text in GOOD_LECTURAS:
         shutil.rmtree(root / "data/stats_fichas", ignore_errors=True)

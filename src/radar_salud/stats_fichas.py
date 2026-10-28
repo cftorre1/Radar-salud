@@ -135,12 +135,14 @@ PERIOD_KINDS = ("month", "ytd", "interval", "stock_at")
 
 def pool_entry(values: dict, vid: str, *, entity: int | None = None, metric: str | None = None,
                signed: bool = True, periods: list[str] | None = None, requires_period: bool = False,
-               scope: str | None = None, period_kind: str = "stock_at", trivial: bool = False) -> dict:
+               scope: str | None = None, period_kind: str = "stock_at", trivial: bool = False,
+               base: str | None = None) -> dict:
     """One figure the Lectura may cite: a package value with its unit, sign rule, scope and period.
 
     ``scope`` is 'system', 'open', 'closed' or 'insurer:<code>' (the default when ``entity`` is set): who the figure
     may be credited to. ``period_kind`` is 'month' (a change within one month), 'ytd' (since the base month),
-    'interval' (between two cuts) or 'stock_at' (a stock at the end of a month).
+    'interval' (between two cuts) or 'stock_at' (a stock at the end of a month). ``base`` is the denominator of a
+    share or rate ('abiertas', 'sistema', 'variacion_sistema', 'stock_base', …; ``lectura_verifier.BASES``).
     """
     v = values[vid]
     per = periods or [p for p in re.split(r"→", str(v.get("period") or "")) if p]
@@ -149,9 +151,13 @@ def pool_entry(values: dict, vid: str, *, entity: int | None = None, metric: str
         raise ValueError(f"invalid_scope:{scope}")
     if period_kind not in PERIOD_KINDS:
         raise ValueError(f"invalid_period_kind:{period_kind}")
+    if base is not None and base not in lv.BASES:
+        raise ValueError(f"invalid_base:{base}")
+    if base is None and v["unit"] in ("%", "pp"):
+        raise ValueError(f"share_or_rate_without_base:{vid}")
     return {"id": vid, "value": v["value"], "unit": v["unit"], "metric": metric, "entity": entity, "signed": signed,
             "periods": per, "requires_period": requires_period, "scope": scope, "period_kind": period_kind,
-            "trivial": trivial}
+            "trivial": trivial, "base": base}
 
 
 def number_pool(package: dict) -> list[float]:
@@ -421,7 +427,9 @@ def lectura_prompt(ficha: dict, package: dict) -> str:
         "Reglas que se verifican de forma automática (si fallas, el texto se descarta):\n"
         "1. Breve: dos o tres frases, máximo 60 palabras, en español de Chile, sin títulos ni viñetas.\n"
         "2. Cifras: solo las de 'Material nuevo' (lectura_pool, razones y rankings), redondeadas como se muestran, con su "
-        "unidad (%, pp, beneficiarios, cotizantes, veces), su signo, su ámbito y su período. Ámbito: una cifra de una "
+        "unidad (%, pp, beneficiarios, cotizantes, veces), su signo, su ámbito, su denominador y su período. Denominador: "
+        "una participación o tasa nombra su base junto a la cifra, la del campo 'denominador' (una participación entre "
+        "abiertas se escribe 'entre las abiertas', nunca 'del mercado' ni 'del sistema'). Ámbito: una cifra de una "
         "Isapre se atribuye a esa Isapre; una del sistema, a 'el sistema' o 'las Isapres'; una de las abiertas, a 'las "
         "abiertas'; una de las cerradas, a 'las cerradas'. Período: 'mes' se escribe con su mes ('en agosto'); 'desde "
         "enero' exige esas palabras ('desde enero', 'en lo que va del año'); 'entre cortes' no lleva un mes suelto. 'Más "
@@ -547,6 +555,9 @@ def review_prompt(ficha: dict, package: dict, text: str) -> str:
         "FAIL si cualquiera de estas cosas ocurre:\n"
         "1. Una cifra, comparación, orden o hecho no está respaldado por la evidencia (valor, unidad, signo, ámbito: "
         "sistema, abiertas, cerradas o una Isapre, y período: mes, desde enero, entre cortes o stock al cierre).\n"
+        "1b. Una participación o tasa se presenta con otro denominador que el del campo 'denominador' (p. ej. una "
+        "participación entre Isapres abiertas escrita como 'del mercado' o 'del sistema'), o sin nombrarlo.\n"
+        "1c. Un superlativo ('la que más crece', 'la mayor baja') no calza con el ranking de la evidencia.\n"
         "2. Atribuye a una Isapre una cifra del sistema, de las abiertas o de las cerradas, o al revés.\n"
         "3. 'Más de', 'menos de', 'casi', 'cerca de' no calzan con el valor verdadero.\n"
         "4. Afirma una causa, una tendencia futura o un hecho que no está en la evidencia.\n"

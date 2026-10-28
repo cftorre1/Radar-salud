@@ -328,29 +328,32 @@ def _lectura_material(package: dict, values: dict, *, t, base, prev, open_codes,
     Y = {"periods": ytd, "period_kind": "ytd"}
     pool = [P(f"sistema.beneficiarios.{t}", metric="beneficiarios", signed=False, scope="system"),
             P("sistema.beneficiarios.ytd", metric="beneficiarios", scope="system", **Y),
-            P("sistema.beneficiarios.ytd_pct", scope="system", **Y),
+            P("sistema.beneficiarios.ytd_pct", scope="system", base="stock_base", **Y),
             P(f"sistema.cotizantes.{t}", metric="cotizantes", signed=False, scope="system"),
             P("sistema.cotizantes.ytd", metric="cotizantes", scope="system", **Y),
             P("sistema.cargas.ytd", metric="cargas", scope="system", **Y),
             P(f"sistema.cargas.{t}", metric="cargas", signed=False, scope="system"),
-            P(f"mezcla.{t}", signed=False, scope="system"),
-            P(f"mezcla.{base}", signed=False, requires_period=True, scope="system"),
-            P("mezcla.delta_shown", scope="system", **Y),
+            P(f"mezcla.{t}", signed=False, scope="system", base="cotizantes"),
+            P(f"mezcla.{base}", signed=False, requires_period=True, scope="system", base="cotizantes"),
+            P("mezcla.delta_shown", scope="system", base="cotizantes", **Y),
             P(f"abiertas.beneficiarios.{t}", metric="beneficiarios", signed=False, scope="open"),
             P("delta.cerradas.ytd", metric="beneficiarios", scope="closed", **Y),
-            P("delta.cerradas.ytd_pct", scope="closed", **Y),
-            P("cargas.contrib", scope="system", **Y)]
+            P("delta.cerradas.ytd_pct", scope="closed", base="stock_base", **Y),
+            P("cargas.contrib", scope="system", base="variacion_sistema", **Y)]
     if prev:
         M = {"periods": [prev, t], "period_kind": "month", "scope": "system"}
         pool += [P(f"sistema.beneficiarios.mm.{t}", metric="beneficiarios", **M),
-                 P("sistema.beneficiarios.mm_pct", **M),
+                 P("sistema.beneficiarios.mm_pct", base="stock_mes_anterior", **M),
                  P(f"sistema.cotizantes.mm.{t}", metric="cotizantes", **M)]
     for c in sorted(open_codes | closed_codes):
-        pool += [P(f"delta.{c}.ytd", entity=c, metric="beneficiarios", **Y), P(f"delta.{c}.ytd_pct", entity=c, **Y),
+        pool += [P(f"delta.{c}.ytd", entity=c, metric="beneficiarios", **Y), P(f"delta.{c}.ytd_pct", entity=c, base="stock_base", **Y),
                  P(f"cartera.{c}.beneficiarios.{t}", entity=c, metric="beneficiarios", signed=False)]
         if c in open_codes:
-            pool += [P(f"share.{c}.{t}", entity=c, signed=False), P(f"share.{c}.{base}", entity=c, signed=False, requires_period=True),
-                     P(f"share.{c}.delta_pp", entity=c, **Y), P(f"contrib.{c}", entity=c, **Y)]
+            # Shares are among the OPEN Isapres only (benef_i / Σ abiertas): never 'del mercado' or 'del sistema'.
+            pool += [P(f"share.{c}.{t}", entity=c, signed=False, base="abiertas"),
+                     P(f"share.{c}.{base}", entity=c, signed=False, requires_period=True, base="abiertas"),
+                     P(f"share.{c}.delta_pp", entity=c, base="abiertas", **Y),
+                     P(f"contrib.{c}", entity=c, base="variacion_sistema", **Y)]
     for key, signed in (("entradas_intervalo", False), ("salidas_intervalo", False), ("diferencia_intervalo", True)):
         pool.append(P(f"movilidad.{key}", metric="cotizantes", signed=signed, scope="system", period_kind="interval"))
     sub = (package.get("suscripciones") or {}).get("period")
@@ -361,12 +364,12 @@ def _lectura_material(package: dict, values: dict, *, t, base, prev, open_codes,
 
     ratios: list[dict] = []
 
-    def ratio(rid, num, den, unit, formula, inputs, entity=None, periods=None, scope=None, period_kind="ytd"):
+    def ratio(rid, num, den, unit, formula, inputs, entity=None, periods=None, scope=None, period_kind="ytd", base=None):
         if den:
             ratios.append({"id": rid, "value": num / den, "unit": unit, "entity": entity, "signed": False,
                            "periods": periods or [t], "requires_period": False, "formula": formula, "inputs": inputs,
                            "scope": scope or (f"insurer:{entity}" if entity is not None else "system"),
-                           "period_kind": period_kind, "trivial": False})
+                           "period_kind": period_kind, "trivial": False, "base": base})
 
     v = lambda vid: values[vid]["value"] if vid in values else None  # noqa: E731
     if v("movilidad.salidas_intervalo") and v("movilidad.entradas_intervalo"):
@@ -396,10 +399,10 @@ def _lectura_material(package: dict, values: dict, *, t, base, prev, open_codes,
     if contributions:
         top = max(contributions, key=contributions.get)
         ratio("fraccion.contribucion_mayor", contributions[top], 100, "share", "contrib / 100", [f"contrib.{top}"],
-              entity=top, periods=[base, t])
+              entity=top, periods=[base, t], base="variacion_sistema")
     if "cargas.contrib" in values:
         ratio("fraccion.cargas_en_la_baja", values["cargas.contrib"]["value"], 100, "share", "Δ cargas / Δ beneficiarios",
-              ["cargas.contrib"], periods=[base, t])
+              ["cargas.contrib"], periods=[base, t], base="variacion_sistema")
     # Entity counts are trivial: they never count as new information (Dirección 28-oct: aportar algo más).
     for rid, n, inputs, scope in (("conteo.abiertas", len(open_codes), [], "open"), ("conteo.cerradas", len(closed_codes), [], "closed"),
                                   ("conteo.abiertas_crecen", len(gainers), [f"delta.{c}.ytd" for c in sorted(open_codes)], "open"),
