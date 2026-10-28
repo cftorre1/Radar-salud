@@ -706,8 +706,14 @@ class PendingQueue:
         self.items[key].update(status="processing", attempts=self.items[key]["attempts"] + 1)
         self.save()
 
-    def finish(self, key, status, reason=None, now=None):
+    def finish(self, key, status, reason=None, now=None, counted=True):
+        """``counted=False``: the run deferred the item without attempting it (per-run cap,
+        backoff, budget); ``start``'s increment is undone so only real attempts count
+        toward ``defer_exhausted``."""
         item = self.items[key]
+        if not counted:
+            item["attempts"] = max(0, int(item.get("attempts") or 0) - 1)
+            item["uncounted_deferrals"] = int(item.get("uncounted_deferrals") or 0) + 1
         item.update(status=status, reason=reason, updated_at=(now or now_utc()).isoformat())
         item["retry_at"] = ((now or now_utc()) + timedelta(hours=min(24, 2 ** min(item["attempts"], 5)))).isoformat() if status == "retry" else None
         self.save()

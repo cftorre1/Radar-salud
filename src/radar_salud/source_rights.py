@@ -1022,21 +1022,33 @@ def _field_sha(value) -> str:
     return sha256_text(value if isinstance(value, str) else json.dumps(value, ensure_ascii=False, sort_keys=True))
 
 
-def rights_review_entry(node: dict, fields: list[str], basis: str, reviewer: str) -> dict:
+def rights_review_entry(node: dict, fields: list[str], basis: str, reviewer: str, implemented_by: str) -> dict:
     """Pin a rights review of ``fields`` to their exact current text (any edit voids it).
 
     The entry starts ``qa_status: pending``: it bypasses nothing until an independent
-    QA records ``qa_status: approved`` and ``qa_by`` (see ``review_qa_approved``).
+    QA records ``qa_status: approved`` and a ``qa_by`` distinct from both the
+    implementer and the reviewer (see ``review_qa_approved``). Each role carries its
+    own identity: ``implemented_by`` wrote the text, ``reviewer`` wrote the basis.
     """
-    return {"basis": basis, "reviewer": reviewer, "reviewed_at": _REDACTED_AT, "qa_status": "pending",
-            "fields": {f: _field_sha(node[f]) for f in fields if f in node}}
+    return {"basis": basis, "implemented_by": implemented_by, "reviewer": reviewer, "reviewed_at": _REDACTED_AT,
+            "qa_status": "pending", "fields": {f: _field_sha(node[f]) for f in fields if f in node}}
+
+
+def _identity(value) -> str:
+    return " ".join(str(value or "").split()).casefold()
 
 
 def review_qa_approved(review) -> bool:
-    """A rights review counts only after an independent QA: ``qa_status: approved`` and ``qa_by``."""
-    return (isinstance(review, dict) and review.get("qa_status") == "approved"
-            and isinstance(review.get("qa_by"), str) and bool(review["qa_by"].strip())
-            and review["qa_by"].strip() != str(review.get("reviewer") or "").strip())
+    """A rights review counts only after an independent QA.
+
+    ``qa_status: approved``, and ``qa_by``, ``implemented_by`` and ``reviewer`` all
+    present and pairwise distinct: the QA may be neither the implementer nor the
+    reviewer (a self-QA under another name for the same role does not count).
+    """
+    if not isinstance(review, dict) or review.get("qa_status") != "approved":
+        return False
+    qa, implementer, reviewer = (_identity(review.get(k)) for k in ("qa_by", "implemented_by", "reviewer"))
+    return bool(qa and implementer and reviewer) and len({qa, implementer, reviewer}) == 3
 
 
 def _reviewed(node: dict, key: str) -> bool:
@@ -1044,6 +1056,160 @@ def _reviewed(node: dict, key: str) -> bool:
     review = node.get("rights_review")
     return (review_qa_approved(review) and isinstance(review.get("fields"), dict)
             and review["fields"].get(key) == _field_sha(node.get(key)))
+
+
+# --- Fact traces (story groups, candidates citing several sources) -------------
+#
+# ``fact_trace`` = {"sources": {url: {"basis", "source_name", "title", "published",
+# "excerpt", "stored_in"}}, "fields": {field: [url, ...] | [[url, ...], ...]}}.
+# A traced text passes when every number and named actor it states is in the
+# allowed text of the sources it cites: the stored excerpt of an open/official
+# page, or -- for paywalled press -- only its public title + lead. A text citing a
+# paywalled source must also pass the full public-text check against that text.
+
+OPEN_TRACE_BASES = {"open_official", "open_source"}
+PUBLIC_LEAD_BASIS = "public_lead"
+STORY_TEXT_KEYS = ("title", "display_title") + EDITORIAL_TEXT_KEYS
+
+
+def _norm_url(url) -> str:
+    return str(url or "").strip().rstrip("/")
+
+
+def _trace_source_text(url: str, src, teasers: dict) -> tuple[str | None, str]:
+    """(allowed text, problem) for one cited source."""
+    if not isinstance(src, dict):
+        return None, f"untraced_source:{url}"
+    head = " ".join(str(src.get(k) or "") for k in ("source_name", "title")) + " " + public_date_text(src.get("published"))
+    if is_paywalled(url):
+        if src.get("basis") != PUBLIC_LEAD_BASIS:
+            return None, f"paywalled_source_cited_as_{src.get('basis') or 'open'}:{url}"
+        known = teasers.get(_norm_url(url))
+        lead = clean_teaser(src.get("excerpt"))
+        if known is not None and lead and lead not in clean_teaser(known):
+            return None, f"public_lead_mismatch:{url}"
+        return f"{head} {known if known is not None else lead}", ""
+    if src.get("basis") not in OPEN_TRACE_BASES and src.get("basis") != PUBLIC_LEAD_BASIS:
+        return None, f"unknown_basis:{url}"
+    return f"{head} {src.get('excerpt') or ''}", ""
+
+
+def _text_traced(text, urls, sources: dict, teasers: dict) -> list[str]:
+    if not isinstance(text, str):
+        return ["<non_text>"]
+    if not isinstance(urls, list) or not urls:
+        return ["untraced"]
+    allowed, paid, problems = [], False, []
+    for url in urls:
+        got, problem = _trace_source_text(url, sources.get(url) or sources.get(_norm_url(url)), teasers)
+        if problem:
+            problems.append(problem)
+            continue
+        allowed.append(got)
+        paid = paid or is_paywalled(url)
+    if problems:
+        return problems
+    public = " ".join(allowed)
+    if paid:
+        return public_text_supported(text, public)[1]
+    available = _claims(public) | {"#" + re.sub(r"[.,]", "", n) for n in re.findall(r"\d[\d.,]*", public)}
+    folded = _fold(public)
+    return sorted(c for c in _claims(text) if c not in available and (c.startswith("#") or c not in folded))
+
+
+def traced_field_problems(node: dict, key: str, teasers: dict | None = None) -> list[str] | None:
+    """None when ``key`` has no fact trace; otherwise the problems found ([] = every fact traced)."""
+    trace = node.get("fact_trace")
+    if not isinstance(trace, dict) or key not in (trace.get("fields") or {}):
+        return None
+    sources = {_norm_url(u): v for u, v in (trace.get("sources") or {}).items()}
+    teasers = teasers or {}
+    value, urls = node.get(key), trace["fields"][key]
+    if isinstance(value, list):
+        if not isinstance(urls, list) or len(urls) != len(value):
+            return ["trace_length_mismatch"]
+        return [f"{key}[{i}]:{p}" for i, (t, u) in enumerate(zip(value, urls))
+                for p in _text_traced(t, [_norm_url(x) for x in u or []], sources, teasers)]
+    return [f"{key}:{p}" for p in _text_traced(value, [_norm_url(x) for x in urls or []], sources, teasers)]
+
+
+def story_group_sources(card: dict, member_urls=()) -> list[str]:
+    """Every source a synthesis rests on: members, alternatives, open documents and traced sources."""
+    urls = list(member_urls or [])
+    urls += [a.get("url") for a in card.get("source_alternatives") or [] if isinstance(a, dict)]
+    urls += list(card.get("source_documents_open") or [])
+    basis = card.get("rights_basis") if isinstance(card.get("rights_basis"), dict) else {}
+    urls += list(basis.get("paywalled_members_public_text_only") or [])
+    urls += list(((card.get("fact_trace") or {}).get("sources") or {}).keys())
+    urls.append(card.get("source_url"))
+    seen, out = set(), []
+    for u in urls:
+        if isinstance(u, str) and u and _norm_url(u) not in seen:
+            seen.add(_norm_url(u)); out.append(u)
+    return out
+
+
+def _is_story_card(node: dict) -> bool:
+    return node.get("derived_from") == "editorial_story_group" or node.get("event_type") == "STORY_SUMMARY"
+
+
+def story_group_problems(card: dict, member_urls=(), teasers: dict | None = None) -> list[str]:
+    """Rights check of a synthesis by its member and cited sources, not by its own ``source_url``.
+
+    When any of them is paywalled, every visible text must trace (``fact_trace``) to
+    allowed sources, or be supported by the public titles + leads of the paywalled
+    members. A paywalled source listed as an open document always fails.
+    """
+    teasers = teasers or {}
+    sources = story_group_sources(card, member_urls)
+    paid = [u for u in sources if is_paywalled(u)]
+    if not paid:
+        return []
+    problems = [f"paywalled_open_document:{u}" for u in card.get("source_documents_open") or [] if is_paywalled(u)]
+    titles = {_norm_url(a.get("url")): a.get("title") or "" for a in card.get("source_alternatives") or []
+              if isinstance(a, dict)}
+    public = " ".join(f"{titles.get(_norm_url(u), '')} {teasers.get(_norm_url(u), '')}" for u in paid)
+    for key in STORY_TEXT_KEYS:
+        value = card.get(key)
+        if value in (None, "", [], {}):
+            continue
+        traced = traced_field_problems(card, key, teasers)
+        if traced is None and key in ("display_title", "card_what", "card_why"):
+            twin = {"display_title": "title", "card_what": "what_happened", "card_why": "why_it_matters"}[key]
+            if value == card.get(twin):
+                traced = traced_field_problems(card, twin, teasers)
+        if traced is not None:
+            problems += traced
+            continue
+        texts = value if isinstance(value, list) else [value]
+        for t in texts:
+            ok, missing = public_text_supported(t, public)
+            if not ok:
+                problems.append(f"{key}:untraced:{','.join(missing[:5])}")
+    return problems
+
+
+def redact_story_card(card: dict, member_urls=(), teasers: dict | None = None) -> dict:
+    """A synthesis failing ``story_group_problems`` loses every failing text (receipts kept) and is hidden.
+
+    Only syntheses (``member_urls`` given, or a story-group card) are judged here;
+    any other row is returned unchanged (``redact_signal`` handles it).
+    """
+    if not member_urls and not _is_story_card(card):
+        return card
+    problems = story_group_problems(card, member_urls, teasers)
+    if not problems:
+        return card
+    out = dict(card)
+    failing = {p.split(":", 1)[0].split("[", 1)[0] for p in problems}
+    receipts = list(out.get("rights_redactions") or [])
+    for key in STORY_TEXT_KEYS:
+        if key in failing and out.get(key) not in (None, "", [], {}):
+            receipts.append(receipt(out[key], key, "story_group_fact_not_traced_to_allowed_source"))
+            out[key] = [] if isinstance(out[key], list) else ""
+    out.update(rights_redactions=_dedupe(receipts), rights_review_required=True, feed_visibility=False,
+               rights_problems=problems[:50], access_policy=load_policy()["policy"])
+    return out
 
 
 def redact_public_payload(payload, teasers: dict | None = None, stats: dict | None = None):
@@ -1071,6 +1237,18 @@ def redact_public_payload(payload, teasers: dict | None = None, stats: dict | No
             return node
         children = {k: walk(v) for k, v in node.items()}
         out = node if all(children[k] is node[k] for k in node) else children
+        # A story group is judged by its members and cited sources, not its card's link.
+        if isinstance(out.get("card"), dict) and out.get("member_urls"):
+            card = redact_story_card(out["card"], out["member_urls"], teasers)
+            if card is not out["card"]:
+                stats["fields"] += 1
+                out = {**out, "card": card}
+            return out
+        if _is_story_card(out):
+            card = redact_story_card(out, (), teasers)
+            if card is not out:
+                stats["fields"] += 1
+            return card
         url = out.get("source_url") or out.get("url")
         if not isinstance(url, str) or not url:
             # A committee/evidence block without its own URL inherits the paywalled
@@ -1092,7 +1270,7 @@ def redact_public_payload(payload, teasers: dict | None = None, stats: dict | No
         flagged = False
         for key in EDITORIAL_TEXT_KEYS:
             value = res.get(key)
-            if value in (None, "", [], {}) or _reviewed(res, key):
+            if value in (None, "", [], {}) or _reviewed(res, key) or traced_field_problems(res, key, teasers) == []:
                 continue
             texts = value if isinstance(value, list) else [value]
             if all(isinstance(t, str) and public_text_supported(t, public)[0] for t in texts):

@@ -1,5 +1,5 @@
 {
-  "status": "candidate_wow",
+  "status": "hold",
   "anchor_date": "2026-11-02",
   "expires_on": "2026-11-09",
   "topic_choice": {
@@ -16,7 +16,12 @@
     "headline": "El gasto de Fonasa en cáncer GES subió 89% real en seis años, el doble que el presupuesto de Salud; 2027 suma más a derivar que a detectar",
     "dek": "Entre 2018 y 2024, el financiamiento GES del cáncer en Fonasa pasó de $185.472 millones a $350.778 millones en pesos de 2026. Cada prestación cuesta cerca de 37% más en términos reales.",
     "dek_emphasis": "$350.778 millones",
-    "key_figures": [],
+    "key_figures": [
+      "Proyecto de Presupuesto 2027, Partida 16: crece 4,7%, es 22,7% del gasto público y suma $829 mil millones adicionales; aprobado en la Tercera Subcomisión Mixta (Minsal, 19 y 21 oct).",
+      "Proyecto 2027: $52.846 millones adicionales para derivaciones oncológicas y $5.387 millones para detectar a tiempo el cáncer cervicouterino, colorrectal y gástrico (Minsal, 19 oct).",
+      "Proyecto 2027: $23.501 millones para renovar equipos del Plan Nacional del Cáncer (Minsal, 19 oct: \"23.501 millones de pesos para renovar equipos del Plan Nacional del Cáncer\").",
+      "Financiamiento hospitalario ligado a actividad asistencial valorizada: de 58,7% a 81,9% en 2027 (Minsal, 21 oct)."
+    ],
     "estimates": [
       {
         "id": "veces_presupuesto",
@@ -280,7 +285,57 @@
     ],
     "paywalled": true,
     "rights_review_required": true,
-    "access_policy": "public_teaser_only"
+    "access_policy": "public_teaser_only",
+    "fact_trace": {
+      "sources": {
+        "https://www.minsal.cl/ministra-chomali-y-presupuesto-2027-este-es-el-primer-paso-para-la-sostenibilidad-financiera-del-sistema/": {
+          "basis": "open_official",
+          "source_name": "Minsal",
+          "title": "Ministra Chomali y Presupuesto 2027: “Este es el primer paso para la sostenibilidad financiera del sistema”",
+          "published": "2026-10-19",
+          "excerpt": "Durante el inicio de la discusión parlamentaria del proyecto de Ley de Presupuestos 2027, correspondiente al sector, la autoridad destacó que los recursos destinados a Salud representan el 22,7% del erario nacional, lo que significa un crecimiento de un 4,7%. Ante la Tercera Subcomisión Mixta de Presupuestos, la ministra de Salud, May Chomali, destacó que la Partida 16 pretende disminuir progresivamente la brecha existente entre el gasto y el presupuesto. El proyecto de Ley de Presupuestos 2027 contempla 52.846 millones de pesos adicionales para derivaciones oncológicas y 23.501 millones de pesos para renovar equipos del Plan Nacional del Cáncer. Asimismo, se proponen 5.387 millones de pesos para detectar a tiempo el cáncer cervicouterino, colorrectal y gástrico desde la atención primaria.",
+          "stored_in": "data/state/pending_queue.json#724a970f4402eca42997cc8229499b204d132c9a1644bd01c54bcc18cf894fc5/raw/metadata/page_text"
+        },
+        "https://www.minsal.cl/tercera-subcomision-mixta-de-presupuestos-aprueba-partida-del-ministerio-de-salud-para-2027-recursos-aumentan-47-y-superan-los-183-billones/": {
+          "basis": "open_official",
+          "source_name": "Minsal",
+          "title": "Tercera Subcomisión Mixta de Presupuestos aprueba partida del Ministerio de Salud para 2027: recursos aumentan 4,7% y superan los $18,3 billones",
+          "published": "2026-10-21",
+          "excerpt": "El presupuesto contempla $829 mil millones adicionales para fortalecer la atención primaria, reducir los tiempos de espera, aumentar la capacidad de los hospitales y avanzar en infraestructura sanitaria. La Tercera Subcomisión Mixta de Presupuestos aprobó la partida del Ministerio de Salud correspondiente al Proyecto de Ley de Presupuestos 2027, que contempla recursos por más de $18,3 billones, lo que representa un crecimiento de 4,7% respecto de 2026, equivalente a $829.568 millones adicionales. Con esta aprobación, el Ministerio de Salud avanza en la tramitación de un presupuesto que representa el 22,7% del gasto público considerado en el proyecto Como parte de este proceso, la proporción del financiamiento hospitalario vinculada a actividad asistencial valorizada aumentará de 58,7% a 81,9%, fortaleciendo la relación entre los recursos asignados y las prestaciones realizadas.",
+          "stored_in": "data/state/pending_queue.json#a7c50d5d56f3f9edb85c2f195412bdcfcf74cedaecb710843736594dbc69e937/raw/metadata/page_text"
+        }
+      },
+      "fields": {
+        "key_figures": [
+          [
+            "https://www.minsal.cl/ministra-chomali-y-presupuesto-2027-este-es-el-primer-paso-para-la-sostenibilidad-financiera-del-sistema/",
+            "https://www.minsal.cl/tercera-subcomision-mixta-de-presupuestos-aprueba-partida-del-ministerio-de-salud-para-2027-recursos-aumentan-47-y-superan-los-183-billones/"
+          ],
+          [
+            "https://www.minsal.cl/ministra-chomali-y-presupuesto-2027-este-es-el-primer-paso-para-la-sostenibilidad-financiera-del-sistema/"
+          ],
+          [
+            "https://www.minsal.cl/ministra-chomali-y-presupuesto-2027-este-es-el-primer-paso-para-la-sostenibilidad-financiera-del-sistema/"
+          ],
+          [
+            "https://www.minsal.cl/tercera-subcomision-mixta-de-presupuestos-aprueba-partida-del-ministerio-de-salud-para-2027-recursos-aumentan-47-y-superan-los-183-billones/"
+          ]
+        ]
+      }
+    },
+    "rights_restorations": [
+      {
+        "field": "key_figures",
+        "restored_at": "2026-10-28",
+        "items": 4,
+        "basis": "Cifras del Minsal trazadas a páginas abiertas almacenadas (page_text en data/state/pending_queue.json); fact_trace por ítem.",
+        "receipt_of_removed_list": "8877657bc9a718f7a27bd876fea8fe4bba0a2c2da5d62afee9e9c4b5fb4c1039",
+        "not_restored": [
+          "5 cifras del estudio CIPS-UDD (fuente: cuerpo de La Tercera y G5noticias; sin traza abierta almacenada)",
+          "2 cifras del informe Glosa 06 del Minsal (II trimestre): el PDF no está almacenado; sólo citas en 2026-11-02-wow-review.md"
+        ]
+      }
+    ]
   },
   "verification": {
     "verdict": "PASS",
@@ -329,5 +384,11 @@
       "format": "weekly_insight_a_v1"
     }
   },
-  "evidence_numbers_count": 42
+  "evidence_numbers_count": 42,
+  "hold": {
+    "reason": "rights_traceability_failed_after_metered_policy",
+    "date": "2026-10-28",
+    "previous_status": "candidate_wow",
+    "detail": "La noticia ancla (La Tercera /nacional/, 21-oct) es pagada desde la política 1.3.0 (Dirección 28-oct); las cifras del estudio CIPS-UDD no se trazan a una fuente abierta almacenada. No se publica."
+  }
 }

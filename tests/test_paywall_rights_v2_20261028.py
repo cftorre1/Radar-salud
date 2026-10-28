@@ -331,7 +331,7 @@ def test_public_payload_redacts_unreviewed_body_derived_text_and_keeps_reviewed_
     ok = dict(pick, reason="Retroceso de 20% en ensayos clínicos en 2025 (bajada pública).")
     assert redact_public_payload({"top3": [ok]}, {DF_URL: lead})["top3"][0]["reason"] == ok["reason"]
     reviewed = dict(pick, reason="Reporte del 9-oct; retroceso de 20% en 2025.")
-    reviewed["rights_review"] = rights_review_entry(reviewed, ["reason"], "bajada pública", "test")
+    reviewed["rights_review"] = rights_review_entry(reviewed, ["reason"], "bajada pública", "test-reviewer", "test-implementer")
     # Review 3: a review bypasses nothing until an independent QA is recorded.
     assert redact_public_payload({"top3": [reviewed]}, {DF_URL: lead})["top3"][0]["reason"] == ""
     reviewed["rights_review"].update(qa_status="approved", qa_by="independent-qa-agent")
@@ -358,7 +358,7 @@ def test_weekly_outputs_carry_only_public_or_reviewed_text(path):
     assert stats["fields"] == 0, path
     latest = json.loads(Path("data/weekly_insight/latest.json").read_text(encoding="utf-8"))
     # Visible text only: review pins and receipts are hex digests that may contain "413" by chance.
-    visible = [{k: v for k, v in pick.items() if k not in ("rights_review", "rights_redactions")}
+    visible = [{k: v for k, v in pick.items() if k not in ("rights_review", "rights_redactions", "rights_review_revoked")}
                for pick in latest["top3"]]
     text = json.dumps(visible, ensure_ascii=False)
     assert "1.501" not in text and "413" not in text and "Selfix" not in text

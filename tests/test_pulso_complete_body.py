@@ -89,8 +89,12 @@ def test_real_senior_housing_premium_pulso_body_never_reaches_model(monkeypatch)
     # Rights policy: the locked body is never model input; only title + public lead.
     assert all(body[-500:] not in request['input'] and body[:2000] not in request['input'] for request in requests)
     if requests:
-        assert raw.metadata['analysis_input_format'] == 'public_teaser_only_paywalled'
-        assert raw.metadata['analysis_input_characters'] == len(raw.metadata['public_teaser'])
+        # The teaser request's binding is recorded apart; it replaces the paid binding only
+        # after a successful answer (review 4), so read it from the re-analysis record.
+        from radar_salud import pulso_paywall
+        binding = raw.metadata[pulso_paywall.STATE]['request_binding']
+        assert binding['analysis_input_format'] == 'public_teaser_only_paywalled'
+        assert binding['analysis_input_characters'] == len(raw.metadata['public_teaser'])
         assert requests[0]['input'].split('Contenido:\n', 1)[1] == raw.metadata['public_teaser']
     else:
         assert raw.metadata['rejection_reason'] in {'media_materiality_prefilter', 'paywalled_without_public_teaser'}

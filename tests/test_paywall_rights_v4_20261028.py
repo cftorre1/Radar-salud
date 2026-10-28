@@ -318,7 +318,8 @@ def _reviewed_node(**review):
     ({"qa_status": "pending"}, False),
     ({"qa_status": "approved"}, False),                                   # no qa_by
     ({"qa_status": "approved", "qa_by": "Claude (migración)"}, False),     # not independent
-    ({"qa_status": "approved", "qa_by": "independent-qa-agent"}, True),
+    ({"qa_status": "approved", "qa_by": "independent-qa-agent"}, False),  # no implemented_by (review 4)
+    ({"qa_status": "approved", "qa_by": "independent-qa-agent", "implemented_by": "Claude (implementación)"}, True),
 ])
 def test_rights_review_bypasses_the_public_text_check_only_after_independent_qa(review, kept):
     node = _reviewed_node(**review)
@@ -333,7 +334,8 @@ def test_weekly_rights_reviews_record_independent_qa_and_evidence():
         nodes = [doc["top3"][0], doc["top3"][2], doc["weekly_insight"]]
         for node in nodes:
             review = node["rights_review"]
-            assert review_qa_approved(review) and review["qa_by"] == "independent-qa-agent"
+            # Review 4: the self-QA ("independent-qa-agent") was revoked; the QA is the independent reviewer's.
+            assert review_qa_approved(review) and review["qa_by"] == "independent-reviewer-4th-review"
             assert review["qa_evidence_urls"] and "qa_unverified" in review
             assert "pendiente QA" not in review["reviewer"]
             for field, sha in review["fields"].items():

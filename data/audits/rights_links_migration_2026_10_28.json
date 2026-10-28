@@ -2005,6 +2005,28 @@
       ]
     },
     {
+      "set": "history",
+      "source_url": "https://www.latercera.com/nacional/noticia/chile-contra-el-sarampion-minsal-logra-vacunar-a-44-mil-ninos-pero-persisten-mas-de-140-mil-con-esquema-pendiente/",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.analysis_reason",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
+      "set": "web_snapshot",
+      "source_url": "https://www.latercera.com/nacional/noticia/chile-contra-el-sarampion-minsal-logra-vacunar-a-44-mil-ninos-pero-persisten-mas-de-140-mil-con-esquema-pendiente/",
+      "has_public_teaser": true,
+      "redacted_fields": [
+        "editorial_assessment.analysis_reason",
+        "editorial_committee.what_happened",
+        "editorial_committee.why_it_matters",
+        "what_happened",
+        "why_it_matters"
+      ]
+    },
+    {
       "set": "web_snapshot",
       "source_url": "https://www.df.cl/empresas/salud/compra-de-empresas-banmedica-enfrenta-reves-regulatorio-en-colombia-y",
       "has_public_teaser": true,
@@ -4699,34 +4721,33 @@
     "queue": {
       "items_scanned": 2515,
       "nested_records_redacted": 3351,
-      "body_characters_removed": 22841201,
-      "fingerprint_strings": 3451,
-      "fingerprint_characters": 696368,
+      "body_characters_removed": 22842549,
+      "fingerprint_strings": 3453,
+      "fingerprint_characters": 696878,
       "items_changed": 2515
     },
     "paid_model_outputs_with_redacted_quotes": {
       "records": 409,
       "top_level_items": 298,
       "original_digest_unknown": 0,
-      "quote_receipts": 1341
+      "quote_receipts": 1342
     },
     "paid_reuse_simulation": {
       "paid_premium_items": 438,
       "reusable_without_new_call": 0,
       "reasons": {
-        "displayed_what_happened_not_supported_by_public_text": 415,
-        "prior_validation_not_terminal": 23
+        "displayed_what_happened_not_supported_by_public_text": 416,
+        "prior_validation_not_terminal": 22
       },
       "by_queue_status": {
         "deferred:prior_validation_not_terminal": 22,
-        "published:displayed_what_happened_not_supported_by_public_text": 93,
-        "rejected:displayed_what_happened_not_supported_by_public_text": 322,
-        "retry:prior_validation_not_terminal": 1
+        "published:displayed_what_happened_not_supported_by_public_text": 94,
+        "rejected:displayed_what_happened_not_supported_by_public_text": 322
       }
     },
     "pulso_discovery_cache": {
-      "entries_redacted": 13962,
-      "body_characters_removed": 17205378,
+      "entries_redacted": 0,
+      "body_characters_removed": 0,
       "fingerprint_strings": 0
     },
     "la_tercera_access": {
@@ -4743,33 +4764,17 @@
         "total": 13962
       }
     },
-    "history_rows_changed": 191,
-    "snapshot_cards_changed": 107,
+    "history_rows_changed": 192,
+    "snapshot_cards_changed": 108,
     "snapshot_link_problems_after": 0,
     "design_snapshot_cards_changed": 0,
     "files": {
-      "changed": {
-        "data/audits/pulso_editorial_originals_independent_review_2026_10_11.json": {
-          "strings": 1,
-          "characters": 174,
-          "public_payload_fields": 0
-        },
-        "data/audits/pulso_expanded_editorial_originals_independent_review_2026_10_11.json": {
-          "strings": 1,
-          "characters": 240,
-          "public_payload_fields": 0
-        },
-        "web/data/product.json": {
-          "strings": 674,
-          "characters": 332587,
-          "public_payload_fields": 0
-        }
-      },
+      "changed": {},
       "open_context_matches": 0
     },
     "fingerprint_segments": 119419,
     "link_problem_rows": 3,
-    "paywalled_rows": 404,
+    "paywalled_rows": 406,
     "remaining_fingerprinted": {
       "files_scanned": 3962,
       "characters": 76035,

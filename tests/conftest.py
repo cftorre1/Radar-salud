@@ -33,7 +33,8 @@ def _fresh_paywall_run_counter():
 # Rights tests (CURRENT_POLICY_MODULES or ``@pytest.mark.current_rights_policy``) and
 # tests/test_paywall_metered_20261028.py assert the current, host-wide policy.
 CURRENT_POLICY_MODULES = {"test_paywall_rights_v2_20261028", "test_paywall_rights_v3_20261028",
-                          "test_paywall_rights_v4_20261028", "test_paywall_metered_20261028",
+                          "test_paywall_rights_v4_20261028", "test_paywall_rights_v5_20261028",
+                          "test_paywall_metered_20261028",
                           "test_source_links_paywall_20261028", "test_web_snapshot"}
 
 

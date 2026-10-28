@@ -729,7 +729,12 @@ def curate(signals,resolve_external=True,as_of=None):
     # One card per story (Dirección, punto II): same-event coverage folds into a lead card;
     # long running stories become one reviewed synthesis. Members stay in history.
     from radar_salud.story_groups import apply_story_groups, load_groups
+    from radar_salud.source_rights import public_teaser_index, story_group_problems
+    story_teasers=public_teaser_index(normalized)
     def story_gate(card):
+        # Rights (28-oct): a synthesis is judged by its member and cited sources; one whose
+        # facts do not trace to allowed text is rejected, so its members stay (redacted).
+        if story_group_problems(card,teasers=story_teasers):return False
         ok,reason,score=publication_ready(card)
         if not ok:return False
         card["publication_gate_reason"]=reason;card["publication_ready_score"]=score
@@ -780,9 +785,11 @@ def main():
     entity_watch.apply(cards,history=signals)
     # Dirección 28-oct-2026: paywalled press shows only title + public lead; every
     # rendered link must be a valid absolute URL or no link at all.
-    from radar_salud.source_rights import redact_signal
+    from radar_salud.source_rights import public_teaser_index, redact_signal, redact_story_card
     from radar_salud.source_urls import sanitize_card_links
-    cards=[sanitize_card_links(redact_signal(card)) for card in cards]
+    teasers=public_teaser_index(signals)
+    cards=[sanitize_card_links(redact_story_card(redact_signal(card),teasers=teasers)) for card in cards]
+    cards=[c for c in cards if not (c.get("derived_from")=="editorial_story_group" and c.get("rights_review_required"))]
     payload={"date":(args.as_of or date.today()).isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"entities":entity_watch.public_catalog(),"signals":cards}
     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
     health=Path("data/source_health.json")

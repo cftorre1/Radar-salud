@@ -162,6 +162,16 @@ def decide(raw, prior: dict, *, text: str, request_input: str, now: datetime | N
     return {"kind": "reanalyse", "detail": why}
 
 
+def apply_teaser_binding(raw, binding: dict) -> None:
+    """Bind the item to its teaser request, only once a teaser answer exists.
+
+    Called after a successful teaser re-analysis (or when a stored answer is already
+    bound to this teaser request). On any deferral the paid full-body binding stays
+    in place, so later reuse (``full_body_output``) and archiving still bind to it.
+    """
+    raw.metadata.update({k: binding[k] for k in BINDING_FIELDS if k in binding})
+
+
 def record_reuse(raw, prior: dict) -> dict:
     """Restore the paid request's own binding and record why it stands without a new call."""
     md = raw.metadata
@@ -270,6 +280,63 @@ def revive(raw, reason: str) -> dict:
     state["revived_at"] = datetime.now(timezone.utc).isoformat()
     state.setdefault("revivals", []).append({"at": state["revived_at"], "reason": reason})
     return state
+
+
+# Deferrals that are not attempts: nothing was tried for the item in this run.
+NOT_ATTEMPTED_REASONS = frozenset({
+    "pulso_paywalled_reanalysis_run_cap_deferred",
+    "pulso_paywalled_reanalysis_budget_deferred",
+    "pulso_paywalled_reanalysis_unbilled_backoff",
+    "pulso_paywalled_reanalysis_unbilled_attempts_deferred",
+})
+REVIVE_ENV = "RADAR_PAYWALL_REVIVE_PER_RUN"
+REVIVE_DEFAULT = 5
+REVIVE_AFTER_HOURS = 24
+
+
+def revive_cap() -> int:
+    try:
+        return max(0, int(os.environ.get(REVIVE_ENV, REVIVE_DEFAULT)))
+    except ValueError:
+        return REVIVE_DEFAULT
+
+
+class _Meta:
+    def __init__(self, metadata: dict):
+        self.metadata = metadata
+
+
+def revive_deferred(items: dict, *, now: datetime | None = None, limit: int | None = None) -> list[str]:
+    """Bounded revival, run before processing: re-open up to ``limit`` items whose
+    unbilled teaser attempts are used up (nothing billed) and whose last failure is
+    at least ``REVIVE_AFTER_HOURS`` old. History is kept; returns the revived keys."""
+    now = now or datetime.now(timezone.utc)
+    limit = revive_cap() if limit is None else limit
+    revived = []
+    for key, item in sorted(items.items(), key=lambda kv: str(kv[1].get("detected_at") or "")):
+        if len(revived) >= limit:
+            break
+        if item.get("source") != "pulso_latercera" or item.get("status") not in ("retry", "deferred"):
+            continue
+        md = (item.get("raw") or {}).get("metadata") or {}
+        state = md.get(STATE)
+        if not isinstance(state, dict):
+            continue
+        billed, unbilled = _attempts(state)
+        if billed or unbilled < MAX_UNBILLED_ATTEMPTS:
+            continue
+        failures = [h for h in state.get("history") or [] if h.get("outcome") == "failed_unbilled"]
+        try:
+            last = datetime.fromisoformat(str(failures[-1].get("requested_at")))
+        except (IndexError, ValueError):
+            continue
+        if now - last < timedelta(hours=REVIVE_AFTER_HOURS):
+            continue
+        revive(_Meta(md), "engine_run_bounded_revival")
+        if item.get("status") == "deferred":
+            item.update(status="retry", reason="pulso_paywalled_reanalysis_revived", retry_at=None)
+        revived.append(key)
+    return revived
 
 
 def archive_paid_output(raw, prior: dict, reason: str):

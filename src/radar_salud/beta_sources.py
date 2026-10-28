@@ -899,12 +899,17 @@ def process_curated_beta_source(raw, cfg):
         request_input = news_analysis_input(title=raw.title, text=text, source_name=raw.source_name, full_text=True)
         from . import pulso_paywall
         prior_binding = pulso_paywall.prior_binding(raw.metadata)
-        raw.metadata.update(analysis_base_article_body_sha256=hashlib.sha256(body.encode("utf-8")).hexdigest(),
-                            analysis_base_article_body_characters=len(body), analysis_input_format=input_format,
-                            analysis_input_body_sha256=hashlib.sha256(text.encode("utf-8")).hexdigest(),
-                            analysis_input_characters=len(text), analysis_input_complete=True,
-                            analysis_request_input_sha256=hashlib.sha256(request_input.encode("utf-8")).hexdigest(),
-                            analysis_request_input_characters=len(request_input))
+        request_binding = dict(
+            analysis_base_article_body_sha256=hashlib.sha256(body.encode("utf-8")).hexdigest(),
+            analysis_base_article_body_characters=len(body), analysis_input_format=input_format,
+            analysis_input_body_sha256=hashlib.sha256(text.encode("utf-8")).hexdigest(),
+            analysis_input_characters=len(text), analysis_input_complete=True,
+            analysis_request_input_sha256=hashlib.sha256(request_input.encode("utf-8")).hexdigest(),
+            analysis_request_input_characters=len(request_input))
+        if not paywall:
+            raw.metadata.update(request_binding)
+        # Premium: the teaser binding replaces the paid one only once a teaser answer
+        # is bound to it (pulso_paywall.apply_teaser_binding); a deferral keeps the paid binding.
         if raw.metadata.get("publisher_document_type") == "liveblog":
             raw.metadata["analysis_liveblog_entries_sha256"] = raw.metadata["liveblog_temporal_evidence"]["entries_sha256"]
         paid_revalidation = None
@@ -931,6 +936,8 @@ def process_curated_beta_source(raw, cfg):
                 ai = paywall_outcome["ai"]
                 if paywall_outcome["kind"] == "reuse_full":
                     pulso_paywall.record_reuse(raw, prior_binding)
+                else:
+                    pulso_paywall.apply_teaser_binding(raw, request_binding)
             else:
                 if not pulso_paywall.capacity_available():
                     raw.metadata["editorial_assessment"] = {"decision": "pending", "threshold": 72,
@@ -943,6 +950,8 @@ def process_curated_beta_source(raw, cfg):
                     raise DeferredProcessing("pulso_paywalled_reanalysis_run_cap_deferred")
                 from . import llm_analysis as _llm
                 pulso_paywall.mark_reanalysis(raw, paywall_outcome["detail"], text)
+                # The teaser request's binding is recorded apart; it replaces the paid one only on success.
+                raw.metadata[pulso_paywall.STATE]["request_binding"] = dict(request_binding)
                 # Rule 6: the paid output this call replaces (with its validation and
                 # rights record) is archived before the call, never overwritten.
                 pulso_paywall.archive_paid_output(raw, prior_binding, paywall_outcome["detail"])
@@ -950,6 +959,8 @@ def process_curated_beta_source(raw, cfg):
                 ai = analyze_news(title=raw.title, text=text, source_name=raw.source_name, kind=kind,
                                   full_text=True, pulso_editorial_proof=True)
                 outcome = pulso_paywall.record_outcome(raw, ai, _llm.last_call())
+                if ai:
+                    pulso_paywall.apply_teaser_binding(raw, request_binding)
                 if not ai and outcome == "failed_unbilled":
                     # Nothing was billed: keep the item for a bounded retry after backoff (pulso_paywall.decide).
                     raw.metadata["editorial_assessment"] = {"decision": "pending", "threshold": 72,
