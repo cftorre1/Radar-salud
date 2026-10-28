@@ -21,7 +21,7 @@
         "novelty_non_repetition": 95
       },
       "verdict": "PASS",
-      "reason": "Nueva evidencia Work3 antes del cierre. Título y bajada públicos de DF (10-oct): cierre por semanas tras el aluvión, traslado completo de los pacientes hospitalizados y reapertura condicionada a limpieza y recuperación de las áreas afectadas. Decisión inmediata de capacidad, derivación y reprogramación para prestador/aseguradores (La Tercera, nota abierta: las atenciones agendadas se redistribuyen en la red UC Christus). Fuente oficial confirma restricción actual; no se conoce magnitud de camas/pacientes/pérdida. Supera a Cenabast por urgencia y accionabilidad, no por volumen mediático.",
+      "reason": "Nueva evidencia Work3 antes del cierre. Título y bajada públicos de DF (10-oct): cierre por semanas tras el aluvión, traslado completo de los pacientes hospitalizados y reapertura condicionada a limpieza y recuperación de las áreas afectadas. Decisión inmediata de capacidad, derivación y reprogramación para prestador/aseguradores (La Tercera, nota abierta: las atenciones agendadas se redistribuyen en la red UC Christus). No se conoce magnitud de camas/pacientes/pérdida. Supera a Cenabast por urgencia y accionabilidad, no por volumen mediático.",
       "provenance": {
         "discovered_by": "work3_adversarial_2026_10_11",
         "first_evidence_sha": "645781d2f310fea2bb6b6c7b5385a93ea538c879",
@@ -32,13 +32,48 @@
       "rank": 1,
       "rights_review": {
         "basis": "DF: sólo título y bajada públicos; La Tercera /nacional/ (abierta) y página oficial UC CHRISTUS. Contrastado con el cuerpo DF bloqueado: ningún hecho proviene sólo de él.",
-        "reviewer": "Claude (migración de derechos 28-oct-2026; pendiente QA independiente)",
+        "reviewer": "Claude (migración de derechos 28-oct-2026; QA independiente registrado)",
         "reviewed_at": "2026-10-28",
         "fields": {
-          "reason": "40778162ed115aa60fe632a1263a9ece52c97ed86b11736acdbb4673475fe694"
-        }
+          "reason": "2d454ade942a2fdd2de82b5ea0f58e6704a36e6b9c095056ad129cfc9c4efab6"
+        },
+        "qa_status": "approved",
+        "qa_by": "independent-qa-agent",
+        "qa_at": "2026-10-28",
+        "qa_method": "Live WebFetch of every cited URL was refused by the session allowlist (28-oct). Claims were checked against stored open captures: La Tercera /nacional/ full body in data/state/pulso_discovery_cache.json (open section), DF headline + public lead in data/state/pending_queue.json (public_teaser_source), and the open bupa.cl / redsalud.cl records in the queue. The UC CHRISTUS page has no stored capture (only an 11-oct audit note): claims resting on it alone were removed.",
+        "qa_evidence_urls": [
+          "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+          "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/"
+        ],
+        "qa_verified_claims": [
+          "cierre por semanas (titular DF)",
+          "traslado completo de hospitalizados y reapertura condicionada a limpieza/recuperación (bajada DF)",
+          "redistribución de atenciones agendadas en la red UC Christus (LT abierta)",
+          "fecha 10-oct (DF/LT)"
+        ],
+        "qa_removed_claims": [
+          "'Fuente oficial confirma restricción actual': página UC CHRISTUS sin captura verificable"
+        ],
+        "qa_unverified": []
       },
-      "public_teaser": "UC Christus completó el traslado de todos los pacientes hospitalizados y condicionó la reapertura a los trabajos de limpieza, despeje y recuperación de las áreas afectadas."
+      "public_teaser": "UC Christus completó el traslado de todos los pacientes hospitalizados y condicionó la reapertura a los trabajos de limpieza, despeje y recuperación de las áreas afectadas.",
+      "rights_redactions": [
+        {
+          "field": "reason",
+          "sha256": "cb97eeb63f4496956453b9c421921a37e398c03fdd8bef01ac62ca790565bfd1",
+          "characters": 351,
+          "reason": "rewritten_to_public_text_only",
+          "redacted_at": "2026-10-28"
+        },
+        {
+          "field": "reason",
+          "sha256": "40778162ed115aa60fe632a1263a9ece52c97ed86b11736acdbb4673475fe694",
+          "characters": 593,
+          "reason": "independent_qa_unsupported_claim_removed",
+          "redacted_at": "2026-10-28"
+        }
+      ],
+      "rights_note": "28-oct: 'reason' reescrito sólo con título/bajada públicos y fuentes abiertas; el texto original queda como recibo (sha256 + longitud, blob git de staging dd94d38d)."
     },
     {
       "title": "Cenabast / Ahumada: escala de acceso y dispensación cercana",
@@ -93,13 +128,37 @@
       "rank": 3,
       "rights_review": {
         "basis": "DF: sólo título y bajada públicos (cifras 20%, 2025 y US$130 millones están en la bajada; 9-oct es la fecha de publicación).",
-        "reviewer": "Claude (migración de derechos 28-oct-2026; pendiente QA independiente)",
+        "reviewer": "Claude (migración de derechos 28-oct-2026; QA independiente registrado)",
         "reviewed_at": "2026-10-28",
         "fields": {
           "reason": "91804662d959b1fdccf98c5647c3fa3ef8b921870a080d17504808413df3dfa6"
-        }
+        },
+        "qa_status": "approved",
+        "qa_by": "independent-qa-agent",
+        "qa_at": "2026-10-28",
+        "qa_method": "Live WebFetch of every cited URL was refused by the session allowlist (28-oct). Claims were checked against stored open captures: La Tercera /nacional/ full body in data/state/pulso_discovery_cache.json (open section), DF headline + public lead in data/state/pending_queue.json (public_teaser_source), and the open bupa.cl / redsalud.cl records in the queue. The UC CHRISTUS page has no stored capture (only an 11-oct audit note): claims resting on it alone were removed.",
+        "qa_evidence_urls": [
+          "https://www.df.cl/senal-df/el-deal/cae-inversion-de-laboratorios-internacionales-en-chile-ante-fuerte-rezago"
+        ],
+        "qa_verified_claims": [
+          "cae inversión de laboratorios internacionales y se redirigen a Argentina y Brasil (titular DF)",
+          "retroceso de 20% de ensayos clínicos en 2025, ajuste peor este año, inversión directa en torno a US$130 millones anuales, rezago en aprobaciones del ISP (bajada DF)",
+          "fecha 9-oct (publicación DF)"
+        ],
+        "qa_removed_claims": [],
+        "qa_unverified": []
       },
-      "public_teaser": "Tras el retroceso de 20% en el número de ensayos clínicos en 2025, el ajuste se anticipa peor para este año en una actividad que genera una inversión directa en torno a US$ 130 millones al año. La caída se atribuye al rezago en los procesos de aprobación del ISP."
+      "public_teaser": "Tras el retroceso de 20% en el número de ensayos clínicos en 2025, el ajuste se anticipa peor para este año en una actividad que genera una inversión directa en torno a US$ 130 millones al año. La caída se atribuye al rezago en los procesos de aprobación del ISP.",
+      "rights_redactions": [
+        {
+          "field": "reason",
+          "sha256": "44e4c58792c8f0990df09c551df1d5a46aae9f04164be39258a4d6a1f1495f82",
+          "characters": 435,
+          "reason": "rewritten_to_public_text_only",
+          "redacted_at": "2026-10-28"
+        }
+      ],
+      "rights_note": "28-oct: 'reason' reescrito sólo con título/bajada públicos y fuentes abiertas; el texto original queda como recibo (sha256 + longitud, blob git de staging dd94d38d)."
     }
   ],
   "weekly_insight": {
@@ -117,7 +176,7 @@
     "insight_teaser": "La suspensión exige verificar reemplazos por prestación, reprogramar agendas y coordinar autorizaciones. El alcance financiero sigue sin cuantificarse.",
     "key_figures": [
       "8 de octubre: aluvión. 10 de octubre: comunicación de traslados concluidos y suspensión durante algunas semanas, según DF y La Tercera.",
-      "Dos recintos figuran sin atención ambulatoria ni de Urgencia en la página oficial consultada: Clínica San Carlos de Apoquindo y Centro Médico El Alba.",
+      "La Tercera (nota abierta) informa que las consultas, exámenes y procedimientos agendados en Clínica San Carlos de Apoquindo y Centro Médico El Alba se redistribuirán en otros centros de UC CHRISTUS.",
       "No se informan en estas fuentes cifras completas de pacientes trasladados, camas fuera de servicio, atenciones postergadas o pérdidas. No se estima un impacto económico sin esos datos."
     ],
     "actors": [
@@ -128,7 +187,7 @@
     "insight_reading": [
       "Hecho informado: la clínica suspendió operaciones porque sus servicios de apoyo no podían funcionar normalmente. La Tercera recoge que las atenciones agendadas se redistribuirán dentro de UC CHRISTUS.",
       "Inferencia editorial: el cuello de botella debe evaluarse por tipo de prestación y soporte operativo. Una alternativa sólo es útil cuando tiene cupo, coordinación clínica, autorización y condiciones de cobertura verificadas.",
-      "Conexión con el stock: las inversiones Bupa/Andes y el convenio RedSalud–Nueva Masvida describen oferta o acceso contractual. Este episodio añade la dimensión de disponibilidad efectiva; no demuestra que esas instituciones puedan absorber pacientes ni que hayan firmado acuerdos de contingencia."
+      "Conexión con el stock: la inversión anunciada por Bupa en el sector oriente y el convenio RedSalud–Nueva Masvida describen oferta o acceso contractual. Este episodio añade la dimensión de disponibilidad efectiva; no demuestra que esas instituciones puedan absorber pacientes ni que hayan firmado acuerdos de contingencia."
     ],
     "decision_use": [
       "Identificar agendas y derivaciones expuestas por prestación, prioridad definida por los equipos clínicos y fecha, con responsable de seguimiento.",
@@ -141,7 +200,7 @@
       "Duración de la interrupción y costos incrementales documentados; no atribuir automáticamente mayores ingresos a competidores."
     ],
     "uncertainties": [
-      "“Algunas semanas” no entrega fecha cierta de reapertura. La página operativa oficial no presenta una fecha de publicación verificable; se usa para confirmar estado al 11-oct, no para rejuvenecer el episodio.",
+      "“Algunas semanas” no entrega fecha cierta de reapertura.",
       "DF y La Tercera recogen el mismo comunicado institucional: no se cuentan como dos mediciones independientes del daño.",
       "No hay cifras suficientes para estimar pérdida de capacidad regional, impacto en siniestralidad, daño financiero o resultados clínicos.",
       "Las acciones propuestas son análisis de gestión de red; las decisiones clínicas, coberturas y destinos requieren verificación caso a caso."
@@ -177,20 +236,73 @@
     },
     "rights_review": {
       "basis": "Hechos de la página oficial UC CHRISTUS (contingencias) y de La Tercera /nacional/ (abierta; servicios de apoyo, redistribución de agendas); de DF sólo título y bajada públicos (cierre por semanas, traslado concluido). Contrastado con el cuerpo DF bloqueado: ningún hecho proviene sólo de él.",
-      "reviewer": "Claude (migración de derechos 28-oct-2026; pendiente QA independiente)",
+      "reviewer": "Claude (migración de derechos 28-oct-2026; QA independiente registrado)",
       "reviewed_at": "2026-10-28",
       "fields": {
         "summary": "c027c7db8c7bca40cc78cc1cb434692344469c97d6c2e3cf6860e6b825b0e825",
         "insight_teaser": "4208f6f37bff2e949a53f71032fb538f65f5e65be7ab5d9dfad2ed5f13a00165",
-        "key_figures": "4bdd526e9e616b1de883dfe52958f2a4438fc928d6c49252575dd8dc0332bda3",
+        "key_figures": "75b5c1cf2327d4ad6f7db27804bf1a2beeb06f3d5982d294cb35ed06dbdcd005",
         "actors": "88f6de3058e917cdc61d067c61bedfebdb6652b394aabc7a913897449be93085",
-        "insight_reading": "67956e479e8281c3f9a8f59ce771e34674cd0240eb58dc525a3b3d5be914d39a",
+        "insight_reading": "150dad0464ac5b0ea25bc9edc08047ba7da44df0f8ae971b948fb95f3ba99954",
         "decision_use": "85c2d6322a1242d5cff47400f2b3caf36613eecee5d75abd77d59cd1f250b032",
         "what_to_watch": "09b7479d9f8faaad9be3993213f10f94f47fba807a1626413da90205fd7e6922",
-        "uncertainties": "a13ce0a1f0fb8cf1b94c3ababb766621dfd31f8fc373905bdebb87e61a4a470f"
-      }
+        "uncertainties": "b1907196f38755533ef6b902b110d8b420baab2fb7f2bc09457da808bbb3a82b"
+      },
+      "qa_status": "approved",
+      "qa_by": "independent-qa-agent",
+      "qa_at": "2026-10-28",
+      "qa_method": "Live WebFetch of every cited URL was refused by the session allowlist (28-oct). Claims were checked against stored open captures: La Tercera /nacional/ full body in data/state/pulso_discovery_cache.json (open section), DF headline + public lead in data/state/pending_queue.json (public_teaser_source), and the open bupa.cl / redsalud.cl records in the queue. The UC CHRISTUS page has no stored capture (only an 11-oct audit note): claims resting on it alone were removed.",
+      "qa_evidence_urls": [
+        "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+        "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+        "https://www.bupa.cl/bupa-acelera-su-crecimiento-en-el-sector-oriente-de-santiago-con-inversion",
+        "https://www.redsalud.cl/noticias/redsalud-y-nueva-masvida-convenio"
+      ],
+      "qa_verified_claims": [
+        "suspensión por algunas semanas y traslado de todos los pacientes (LT abierta; bajada DF)",
+        "servicios de apoyo sin capacidad habitual como causa (LT abierta)",
+        "redistribución de consultas, exámenes y procedimientos de San Carlos y El Alba (LT abierta)",
+        "aluvión el 8-oct; balance del sábado 10-oct (LT abierta)",
+        "sin cifras de pacientes/camas/pérdidas en estas fuentes (LT abierta, bajada DF)",
+        "inversión de Bupa en el sector oriente (bupa.cl, título abierto)",
+        "convenio RedSalud–Nueva Masvida (redsalud.cl, abierta)"
+      ],
+      "qa_removed_claims": [
+        "key_figures[1]: estado de dos recintos 'en la página oficial consultada' (página UC sin captura) -> reescrito con la redistribución que informa La Tercera",
+        "uncertainties[0]: frase sobre la fecha/estado de la página operativa oficial (sin captura)",
+        "insight_reading[2]: 'inversiones Bupa/Andes' (Andes sin fuente abierta) -> 'inversión anunciada por Bupa en el sector oriente'"
+      ],
+      "qa_unverified": [
+        "UC CHRISTUS /contingencias: no alcanzable desde esta sesión ni capturada; ninguna afirmación depende ya de ella"
+      ],
+      "qa_unreachable_sources": [
+        "https://www.ucchristus.cl/contingencias"
+      ]
     },
-    "public_teaser": "UC Christus completó el traslado de todos los pacientes hospitalizados y condicionó la reapertura a los trabajos de limpieza, despeje y recuperación de las áreas afectadas."
+    "public_teaser": "UC Christus completó el traslado de todos los pacientes hospitalizados y condicionó la reapertura a los trabajos de limpieza, despeje y recuperación de las áreas afectadas.",
+    "rights_redactions": [
+      {
+        "field": "key_figures",
+        "sha256": "4bdd526e9e616b1de883dfe52958f2a4438fc928d6c49252575dd8dc0332bda3",
+        "characters": 481,
+        "reason": "independent_qa_unsupported_claim_removed",
+        "redacted_at": "2026-10-28"
+      },
+      {
+        "field": "uncertainties",
+        "sha256": "a13ce0a1f0fb8cf1b94c3ababb766621dfd31f8fc373905bdebb87e61a4a470f",
+        "characters": 613,
+        "reason": "independent_qa_unsupported_claim_removed",
+        "redacted_at": "2026-10-28"
+      },
+      {
+        "field": "insight_reading",
+        "sha256": "67956e479e8281c3f9a8f59ce771e34674cd0240eb58dc525a3b3d5be914d39a",
+        "characters": 731,
+        "reason": "independent_qa_unsupported_claim_removed",
+        "redacted_at": "2026-10-28"
+      }
+    ]
   },
   "freshness_gate": {
     "eligible": true,

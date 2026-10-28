@@ -772,7 +772,13 @@ def process_curated_beta_source(raw, cfg):
     primary_body = raw.metadata.get("page_text") or raw.raw_text or ""
     # Rights policy (Dirección 28-oct-2026): premium press (Pulso, La Tercera PM,
     # isAccessibleForFree=false) is analysed only from its public lead.
-    from .source_rights import paywall_policy, restrict_raw_to_public, load_policy as rights_policy
+    from .source_rights import (apply_overlap_policy_raw, paywall_policy, restrict_raw_to_public,
+                                load_policy as rights_policy)
+    if raw.source_slug == "pulso_latercera" and not paywall_policy(raw.url, raw.metadata):
+        # Review 3: an open path reproducing a known paywalled body is paywalled
+        # (or loses the overlapping sentences); per-article flags decide when present.
+        apply_overlap_policy_raw(raw)
+        primary_body = raw.metadata.get("page_text") or raw.raw_text or ""
     paywall = paywall_policy(raw.url, raw.metadata) if raw.source_slug == "pulso_latercera" else None
     min_body = 160
     if paywall:
@@ -915,6 +921,12 @@ def process_curated_beta_source(raw, cfg):
             paywall_outcome = pulso_paywall.decide(raw, prior_binding, text=text, request_input=request_input)
             if paywall_outcome["kind"] == "exhausted":
                 return reject(paywall_outcome["reason"], detail=paywall_outcome["detail"])
+            if paywall_outcome["kind"] in ("wait", "deferred_unbilled"):
+                # Nothing was ever billed: keep the item (backoff, or deferred until revived).
+                raw.metadata["editorial_assessment"] = {
+                    "decision": "pending", "threshold": 72, "reason": paywall_outcome["reason"],
+                    **{k: paywall_outcome[k] for k in ("retry_after", "unbilled_failures") if k in paywall_outcome}}
+                raise DeferredProcessing(paywall_outcome["reason"])
             if paywall_outcome["kind"] in ("teaser", "reuse_full"):
                 ai = paywall_outcome["ai"]
                 if paywall_outcome["kind"] == "reuse_full":
@@ -924,14 +936,22 @@ def process_curated_beta_source(raw, cfg):
                     raw.metadata["editorial_assessment"] = {"decision": "pending", "threshold": 72,
                                                             "reason": "pulso_paywalled_reanalysis_budget_deferred"}
                     raise DeferredProcessing("pulso_paywalled_reanalysis_budget_deferred")
+                if not pulso_paywall.take_run_slot():
+                    raw.metadata["editorial_assessment"] = {"decision": "pending", "threshold": 72,
+                                                            "reason": "pulso_paywalled_reanalysis_run_cap_deferred",
+                                                            "run_cap": pulso_paywall.run_cap()}
+                    raise DeferredProcessing("pulso_paywalled_reanalysis_run_cap_deferred")
                 from . import llm_analysis as _llm
                 pulso_paywall.mark_reanalysis(raw, paywall_outcome["detail"], text)
+                # Rule 6: the paid output this call replaces (with its validation and
+                # rights record) is archived before the call, never overwritten.
+                pulso_paywall.archive_paid_output(raw, prior_binding, paywall_outcome["detail"])
                 _llm.reset_last_call()
                 ai = analyze_news(title=raw.title, text=text, source_name=raw.source_name, kind=kind,
                                   full_text=True, pulso_editorial_proof=True)
                 outcome = pulso_paywall.record_outcome(raw, ai, _llm.last_call())
                 if not ai and outcome == "failed_unbilled":
-                    # Nothing was billed: keep the item for one bounded retry (pulso_paywall.decide).
+                    # Nothing was billed: keep the item for a bounded retry after backoff (pulso_paywall.decide).
                     raw.metadata["editorial_assessment"] = {"decision": "pending", "threshold": 72,
                                                             "reason": "pulso_paywalled_reanalysis_call_failed_unbilled"}
                     raise DeferredProcessing("pulso_paywalled_reanalysis_call_failed_unbilled")

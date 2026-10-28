@@ -328,6 +328,9 @@ def test_public_payload_redacts_unreviewed_body_derived_text_and_keeps_reviewed_
     assert redact_public_payload({"top3": [ok]}, {DF_URL: lead})["top3"][0]["reason"] == ok["reason"]
     reviewed = dict(pick, reason="Reporte del 9-oct; retroceso de 20% en 2025.")
     reviewed["rights_review"] = rights_review_entry(reviewed, ["reason"], "bajada pública", "test")
+    # Review 3: a review bypasses nothing until an independent QA is recorded.
+    assert redact_public_payload({"top3": [reviewed]}, {DF_URL: lead})["top3"][0]["reason"] == ""
+    reviewed["rights_review"].update(qa_status="approved", qa_by="independent-qa-agent")
     assert redact_public_payload({"top3": [reviewed]}, {DF_URL: lead})["top3"][0]["reason"] == reviewed["reason"]
     edited = dict(reviewed, reason=reviewed["reason"] + " 1.501 pendientes.")
     assert redact_public_payload({"top3": [edited]}, {DF_URL: lead})["top3"][0]["reason"] == ""

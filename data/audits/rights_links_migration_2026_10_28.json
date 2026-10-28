@@ -1,6 +1,6 @@
 {
   "migration": "rights_links_2026_10_28",
-  "version": 3,
+  "version": 4,
   "policy": "config/paywalled_press.json",
   "links": [
     {
@@ -2066,6 +2066,12 @@
   ],
   "counts": {
     "df_lead_provenance_established": {},
+    "la_tercera_sentence_overlap": {
+      "records_paywalled_by_overlap": 0,
+      "records_sentences_redacted": 0,
+      "paywalled_urls": [],
+      "sentence_redacted_urls": []
+    },
     "queue": {
       "items_scanned": 0,
       "nested_records_redacted": 0,
@@ -2075,10 +2081,10 @@
       "items_changed": 0
     },
     "paid_model_outputs_with_redacted_quotes": {
-      "records": 73,
-      "top_level_items": 53,
+      "records": 76,
+      "top_level_items": 55,
       "original_digest_unknown": 0,
-      "quote_receipts": 201
+      "quote_receipts": 204
     },
     "paid_reuse_simulation": {
       "paid_premium_items": 78,
@@ -2097,7 +2103,26 @@
     "pulso_discovery_cache": {
       "entries_redacted": 0,
       "body_characters_removed": 0,
-      "fingerprint_strings": 0
+      "fingerprint_strings": 0,
+      "open_sentence_strings": 0
+    },
+    "la_tercera_access": {
+      "queue": {
+        "open_by_open_path": 1692,
+        "open_by_path_only": 1692,
+        "paywalled_by_path_prefix": 344,
+        "paywalled_by_section": 1,
+        "paywalled_by_sentence_overlap": 1,
+        "total": 2038
+      },
+      "cache": {
+        "open_by_open_path": 11096,
+        "open_by_path_only": 11096,
+        "paywalled_by_path_prefix": 2796,
+        "paywalled_by_section": 3,
+        "paywalled_by_sentence_overlap": 1,
+        "total": 13896
+      }
     },
     "history_rows_changed": 0,
     "snapshot_cards_changed": 0,
@@ -2107,112 +2132,16 @@
       "changed": {},
       "open_context_matches": 0
     },
-    "fingerprint_segments": 40104,
+    "fingerprint_segments": 40115,
     "link_problem_rows": 3,
     "paywalled_rows": 188,
     "remaining_fingerprinted": {
-      "files_scanned": 3954,
-      "characters": 803730,
-      "strings": 220,
-      "open_context_characters": 803730,
-      "open_context_strings": 220,
-      "by_file": {
-        "data/audits/pulso_actual_v5_clinical_scope_repair_2026_10_11.json": {
-          "strings": 1,
-          "characters": 151,
-          "open_context_characters": 151
-        },
-        "data/audits/pulso_cross_source_three_duplicate_publications_independent_review_2026_10_11.json": {
-          "strings": 2,
-          "characters": 7383,
-          "open_context_characters": 7383
-        },
-        "data/audits/pulso_cross_source_two_duplicate_publications_independent_review_2026_10_11.json": {
-          "strings": 1,
-          "characters": 1584,
-          "open_context_characters": 1584
-        },
-        "data/audits/pulso_current12_paid_guard_revalidation_manifest_2026_10_11.json": {
-          "strings": 1,
-          "characters": 11785,
-          "open_context_characters": 11785
-        },
-        "data/audits/pulso_editorial_originals_independent_review_2026_10_11.json": {
-          "strings": 2,
-          "characters": 3274,
-          "open_context_characters": 3274
-        },
-        "data/audits/pulso_expanded_editorial_originals_independent_review_2026_10_11.json": {
-          "strings": 4,
-          "characters": 10364,
-          "open_context_characters": 10364
-        },
-        "data/audits/pulso_focus113_mixed49_outcome_matrix_2026_10_11.json": {
-          "strings": 4,
-          "characters": 604,
-          "open_context_characters": 604
-        },
-        "data/audits/pulso_focus113_v5_outcome_matrix_2026_10_11.json": {
-          "strings": 2,
-          "characters": 302,
-          "open_context_characters": 302
-        },
-        "data/audits/pulso_idempotence_baseline_2026_10_11.json": {
-          "strings": 1,
-          "characters": 151,
-          "open_context_characters": 151
-        },
-        "data/audits/pulso_mixed25_first8_actual_semantic_review_2026_10_11.json": {
-          "strings": 2,
-          "characters": 302,
-          "open_context_characters": 302
-        },
-        "data/audits/pulso_mixed25_first8_actual_semantic_review_v2_2026_10_11.json": {
-          "strings": 6,
-          "characters": 9334,
-          "open_context_characters": 9334
-        },
-        "data/audits/pulso_mixed25_first8_four_publications_independent_peer_2026_10_11.json": {
-          "strings": 4,
-          "characters": 604,
-          "open_context_characters": 604
-        },
-        "data/audits/pulso_mixed49_actual_core_verification_2026_10_11.json": {
-          "strings": 1,
-          "characters": 151,
-          "open_context_characters": 151
-        },
-        "data/audits/pulso_primary_corpus_2026_10_11.json": {
-          "strings": 50,
-          "characters": 243163,
-          "open_context_characters": 243163
-        },
-        "data/audits/pulso_primary_corpus_union_2026_10_11.json": {
-          "strings": 50,
-          "characters": 243163,
-          "open_context_characters": 243163
-        },
-        "data/audits/pulso_v5_all24_nonfuture_holds_independent_review_2026_10_11.json": {
-          "strings": 2,
-          "characters": 302,
-          "open_context_characters": 302
-        },
-        "data/audits/pulso_v5_paid_guard_revalidation_manifest_2026_10_11.json": {
-          "strings": 2,
-          "characters": 302,
-          "open_context_characters": 302
-        },
-        "data/state/pending_queue.json": {
-          "strings": 19,
-          "characters": 36490,
-          "open_context_characters": 36490
-        },
-        "data/state/pulso_discovery_cache.json": {
-          "strings": 66,
-          "characters": 234321,
-          "open_context_characters": 234321
-        }
-      },
+      "files_scanned": 3956,
+      "characters": 0,
+      "strings": 0,
+      "open_context_characters": 0,
+      "open_context_strings": 0,
+      "by_file": {},
       "paywalled_context_characters": 0
     }
   },
@@ -3120,6 +3049,216 @@
           "open_context_characters": 234321
         }
       },
+      "paywalled_context_characters": 0
+    }
+  },
+  "v4_first_run_counts": {
+    "df_lead_provenance_established": {},
+    "la_tercera_sentence_overlap": {
+      "records_paywalled_by_overlap": 2,
+      "records_sentences_redacted": 45,
+      "paywalled_urls": [
+        "https://www.latercera.com/sustentabilidad/noticia/fiestas-patrias-disparan-la-generacion-de-residuos-y-activan-nuevas-estrategias-en-su-gestion"
+      ],
+      "sentence_redacted_urls": [
+        "https://www.latercera.com/branded/noticia/autoridades-expertos-y-principales-actores-del-sector-salud-debaten-en-torno-a-una-mirada-de-futuro-para-fonasa-en-encuentro-de-clinicas-de-chile-ag",
+        "https://www.latercera.com/interactivo/noticia/el-experto-responde-dejanos-tus-dudas-sobre-la-crisis-de-las-isapres-y-la-ley-corta/M77PCA4LPVCAFNVOROHGBMJR2A",
+        "https://www.latercera.com/nacional/noticia/7110-por-una-consulta-cuanto-pagaran-por-prestacion-los-beneficiarios-de-la-nueva-modalidad-voluntaria-de-fonasa",
+        "https://www.latercera.com/nacional/noticia/abogados-abandonan-la-batalla-judicial-contra-las-isapres-aseguran-que-impugnar-nuevas-alzas-no-tendria-exito",
+        "https://www.latercera.com/nacional/noticia/al-limite-12-hospitales-gastaron-mas-del-50-de-su-presupuesto-al-31-de-mayo/64K3KCA4KZGXHGX7M4522M3A3Q",
+        "https://www.latercera.com/nacional/noticia/boric-iniciara-cuarto-ano-de-gobierno-sin-bajas-en-listas-de-espera-hay-56650-cirugias-pendientes",
+        "https://www.latercera.com/nacional/noticia/como-afecta-en-el-corto-plazo-a-los-usuarios-de-banmedica-la-intencion-de-venta-anunciada-por-sus-controladores/BBMLBKD7G5EDDIUBWIAEDBGFLQ",
+        "https://www.latercera.com/nacional/noticia/como-la-ministra-aguilera-enfrentara-la-interpelacion-en-su-contra-por-listas-de-espera/SX2RYRCKVNGDBEHBSVTQZUFT6Y",
+        "https://www.latercera.com/nacional/noticia/como-la-modalidad-de-cobertura-complementaria-en-fonasa-paso-de-gran-apuesta-de-boric-a-un-fracaso-licitatorio",
+        "https://www.latercera.com/nacional/noticia/consejo-consultivo-de-isapres-asegura-que-la-superintendencia-de-salud-si-puede-fijar-una-cuota-minima-de-devolucion/JVXRJJERTFGEFMTLGHAZVC6CV4",
+        "https://www.latercera.com/nacional/noticia/el-complejo-escenario-financiero-de-la-red-asistencial/K2ELWRYNNFEGDNBV2XKOXVYHOE",
+        "https://www.latercera.com/nacional/noticia/eliminar-iva-a-remedios-o-reducir-la-espera-en-cancer-que-tan-factibles-son-las-propuestas-que-podrian-tomar-jara-y-kast",
+        "https://www.latercera.com/nacional/noticia/es-un-proceso-dinamico-super-de-salud-explica-como-deberia-progresar-el-pago-de-las-devoluciones-de-las-isapres/J5A3NCA6BVCBPDAIPA65CEVR2A",
+        "https://www.latercera.com/nacional/noticia/fallecidos-en-listas-de-espera-el-nuevo-dolor-de-cabeza-de-aguilera-comision-investigadora-y-posible-interpelacion/Y4VGVE7OF5GF7KBKRB2EQVUWNU",
+        "https://www.latercera.com/nacional/noticia/informe-revela-que-las-listas-de-espera-ges-aumentarian-un-40-si-se-termina-con-el-sistema-de-salud-mixto/5YDNXODSYBAQHNQ64EWPY7BIRM",
+        "https://www.latercera.com/nacional/noticia/isapres-se-reuniran-con-yarza-luego-que-la-ministra-aplazara-tres-veces-la-cita-el-pais-no-esta-preparado-para-un-cierre-de-golpe/ZEB7FYUVSBCMLENOMK6FOKTDP4",
+        "https://www.latercera.com/nacional/noticia/jueves-caotico-fonasa-reporta-caida-de-su-sistema-informatico-a-nivel-nacional",
+        "https://www.latercera.com/nacional/noticia/la-otra-lista-de-espera-del-minsal-541-mil-consultas-odontologicas-pendientes",
+        "https://www.latercera.com/nacional/noticia/las-alertas-desoidas-por-fonasa-y-su-director-camilo-cid-antes-del-fracaso-de-la-licitacion-por-seguro-complementario",
+        "https://www.latercera.com/nacional/noticia/las-razones-que-explican-por-que-las-listas-de-espera-en-el-sistema-de-salud-volvieron-a-aumentar/23WJWOXO5BB7NCZVP5W6NP4UPU",
+        "https://www.latercera.com/nacional/noticia/las-reflexiones-que-dejo-la-cumbre-de-salud-en-el-congreso-por-la-situacion-de-las-isapres/TKTEKOWA6FEQFCGFTSTUZ3RPQE",
+        "https://www.latercera.com/nacional/noticia/minsal-apuesta-por-aumentar-las-cirugias-ambulatorias-para-acortar-listas-de-espera/SOXY5FJVYZD5HBZAKL2TTPIKX4",
+        "https://www.latercera.com/nacional/noticia/minsal-reporta-que-38-mil-personas-fallecieron-estando-en-alguna-lista-de-espera-durante-2022/QWOOFP36PJCGREZXBITZKTBJ3A",
+        "https://www.latercera.com/nacional/noticia/nueva-modalidad-de-fonasa-el-dilema-del-gobierno-tras-el-rechazo-de-zurich-a-asumir-por-completo-el-mcc",
+        "https://www.latercera.com/nacional/noticia/oftalmologia-tiene-324144-atenciones-pendientes-y-es-la-especialidad-con-mas-retraso-en-las-listas-de-espera/CAF7L5YETZGNVGBHQIN6HUGZ7Y",
+        "https://www.latercera.com/nacional/noticia/oscar-arteaga-director-de-la-escuela-de-salud-publica-de-la-u-de-chile-la-propuesta-de-constitucion-reconoce-un-sistema-que-es-publico/SCB3563OURFVXJL5PLJUUBAZMA",
+        "https://www.latercera.com/nacional/noticia/pacientes-egresados-sin-ser-atendidos-y-falsos-fallecimientos-contraloria-detecta-graves-irregularidades-en-listas-de-espera/XX2EHXVINBF73MB6MSV64M7IOY",
+        "https://www.latercera.com/nacional/noticia/presidenta-del-colmed-tras-criticas-de-marcel-a-gestion-de-recursos-en-algunos-hospitales-si-conociera-esa-situacion-no-lo-diria-con-tal-ligereza/3ZFPYCWDLVCF7A6X3L6UQK7CF4",
+        "https://www.latercera.com/nacional/noticia/presupuesto-2027-alejandro-santana-senala-que-propuesta-de-reduccion-para-los-gobiernos-regionales-seria-del-6",
+        "https://www.latercera.com/nacional/noticia/radiografia-a-las-cifras-que-deja-boric-en-listas-de-espera-sin-lograr-su-meta-los-tiempos-se-redujeron-en-consultas-y-cirugias",
+        "https://www.latercera.com/nacional/noticia/registros-erroneos-y-prestaciones-posteriores-a-defunciones-controlaria-detecta-fallas-en-listas-de-espera-entre-2018-y-2021/YLRRJECF6NF3DBCTTO6Z2SD4OE",
+        "https://www.latercera.com/nacional/noticia/superintendencia-de-salud-cifra-en-us-1198-millones-la-deuda-definitiva-de-las-isapres/3VXBDZBWLVGKNGG2HKENVKMRWY",
+        "https://www.latercera.com/nacional/noticia/superintendencia-de-salud-corrige-por-primera-vez-cobros-del-ges-tras-verificar-primas-de-isapres",
+        "https://www.latercera.com/politica/noticia/abogado-de-hacienda-y-recurso-ante-el-tc-por-reposicion-de-servicios-basicos-ni-siquiera-es-una-norma-que-va-en-ayuda-de-zonas-ya-afectadas",
+        "https://www.latercera.com/politica/noticia/acuerdos-con-el-gobierno-en-pausa-la-arremetida-opositora-por-las-declaraciones-de-vallejo-sobre-las-isapres/QHANYTGQDNHKBMXN4TMK7QIQ2U",
+        "https://www.latercera.com/politica/noticia/macaya-udi-apela-a-empatia-de-quiroz-en-discusion-del-presupuesto-en-chile-hay-dolores-particularmente-en-regiones",
+        "https://www.latercera.com/politica/noticia/mas-de-600-programas-ministeriales-en-revision-y-ajuste-de-arriendos-de-oficinas-publicas-erario-de-kast-busca-reducir-gasto-fiscal",
+        "https://www.latercera.com/politica/noticia/presidente-del-senado-reprocha-pequenas-devoluciones-mensuales-de-isapres-es-insultante/BC7VNMTEYBCRJFEABTF24VIKPU",
+        "https://www.latercera.com/servicios/noticia/donde-poner-atencion-las-claves-de-hoy-jueves-5-de-diciembre-de-2024/PF2IHTT6YRBOBBCXQQZMAJIMR4",
+        "https://www.latercera.com/tendencias/noticia/lo-que-debes-saber-de-picmagluti-la-primera-version-generica-de-ozempic-que-aprobo-el-isp-en-chile"
+      ]
+    },
+    "queue": {
+      "items_scanned": 3,
+      "nested_records_redacted": 1,
+      "body_characters_removed": 9069,
+      "fingerprint_strings": 8,
+      "fingerprint_characters": 880,
+      "items_changed": 3
+    },
+    "paid_model_outputs_with_redacted_quotes": {
+      "records": 76,
+      "top_level_items": 55,
+      "original_digest_unknown": 0,
+      "quote_receipts": 204
+    },
+    "paid_reuse_simulation": {
+      "paid_premium_items": 78,
+      "reusable_without_new_call": 0,
+      "reasons": {
+        "displayed_what_happened_not_supported_by_public_text": 71,
+        "prior_validation_not_terminal": 7
+      },
+      "by_queue_status": {
+        "deferred:prior_validation_not_terminal": 6,
+        "published:displayed_what_happened_not_supported_by_public_text": 21,
+        "rejected:displayed_what_happened_not_supported_by_public_text": 50,
+        "retry:prior_validation_not_terminal": 1
+      }
+    },
+    "pulso_discovery_cache": {
+      "entries_redacted": 1,
+      "body_characters_removed": 7269,
+      "fingerprint_strings": 0,
+      "open_sentence_strings": 0
+    },
+    "la_tercera_access": {
+      "queue": {
+        "open_by_open_path": 1692,
+        "open_by_path_only": 1692,
+        "paywalled_by_path_prefix": 344,
+        "paywalled_by_section": 1,
+        "paywalled_by_sentence_overlap": 1,
+        "total": 2038
+      },
+      "cache": {
+        "open_by_open_path": 11096,
+        "open_by_path_only": 11096,
+        "paywalled_by_path_prefix": 2796,
+        "paywalled_by_section": 3,
+        "paywalled_by_sentence_overlap": 1,
+        "total": 13896
+      }
+    },
+    "history_rows_changed": 0,
+    "snapshot_cards_changed": 0,
+    "snapshot_link_problems_after": 0,
+    "design_snapshot_cards_changed": 0,
+    "files": {
+      "changed": {
+        "data/audits/pulso_actual_v5_clinical_scope_repair_2026_10_11.json": {
+          "strings": 1,
+          "characters": 63,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_cross_source_three_duplicate_publications_independent_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 6989,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_cross_source_two_duplicate_publications_independent_review_2026_10_11.json": {
+          "strings": 1,
+          "characters": 1576,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_current12_paid_guard_revalidation_manifest_2026_10_11.json": {
+          "strings": 1,
+          "characters": 7112,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_editorial_originals_independent_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 328,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_expanded_editorial_originals_independent_review_2026_10_11.json": {
+          "strings": 4,
+          "characters": 1172,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus113_mixed49_outcome_matrix_2026_10_11.json": {
+          "strings": 4,
+          "characters": 252,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_focus113_v5_outcome_matrix_2026_10_11.json": {
+          "strings": 2,
+          "characters": 126,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_idempotence_baseline_2026_10_11.json": {
+          "strings": 1,
+          "characters": 63,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed25_first8_actual_semantic_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 126,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed25_first8_actual_semantic_review_v2_2026_10_11.json": {
+          "strings": 6,
+          "characters": 7879,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed25_first8_four_publications_independent_peer_2026_10_11.json": {
+          "strings": 4,
+          "characters": 252,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_mixed49_actual_core_verification_2026_10_11.json": {
+          "strings": 1,
+          "characters": 63,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_primary_corpus_2026_10_11.json": {
+          "strings": 50,
+          "characters": 20151,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_primary_corpus_union_2026_10_11.json": {
+          "strings": 50,
+          "characters": 20151,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_v5_all24_nonfuture_holds_independent_review_2026_10_11.json": {
+          "strings": 2,
+          "characters": 126,
+          "public_payload_fields": 0
+        },
+        "data/audits/pulso_v5_paid_guard_revalidation_manifest_2026_10_11.json": {
+          "strings": 2,
+          "characters": 126,
+          "public_payload_fields": 0
+        }
+      },
+      "open_context_matches": 0
+    },
+    "fingerprint_segments": 40115,
+    "link_problem_rows": 3,
+    "paywalled_rows": 188,
+    "remaining_fingerprinted": {
+      "files_scanned": 3956,
+      "characters": 0,
+      "strings": 0,
+      "open_context_characters": 0,
+      "open_context_strings": 0,
+      "by_file": {},
       "paywalled_context_characters": 0
     }
   }

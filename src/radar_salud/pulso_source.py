@@ -100,10 +100,14 @@ def complete_article_body(metadata):
     Earlier caches retained only 18,000 characters while hashing the full
     article. Missing or inconsistent proof requires fresh original extraction.
     """
-    from .source_rights import redacted_body_verified
+    from .source_rights import redacted_body_verified, sentence_redacted_body_verified
     if redacted_body_verified(metadata):
         # Paywalled section (Dirección 28-oct-2026): the complete body was verified
         # at capture and only its sha256/length receipt is retained.
+        return True
+    if sentence_redacted_body_verified(metadata):
+        # Open piece whose sentences shared with a paywalled body became receipts
+        # (review 3): the capture hash still proves the complete original body.
         return True
     body, expected = metadata.get("page_text"), metadata.get("article_body_sha256")
     return (isinstance(body, str) and len(body.strip()) >= 160
@@ -949,6 +953,11 @@ def extract_article(html, expected_url):
                             publisher_date_convention=convention, publication_evidence=dated_evidence,
                             canonical_url=expected, primary_identity_verified=True,
                             publication_date_verified=not conflicting, article_verified=not conflicting)
+    # Per-article access flags (review 3, 28-oct): small booleans/tokens from the
+    # URL-bound JSON-LD node, meta tags and lock elements; never body text.
+    from .source_rights import publisher_access_flags
+    metadata.update(publisher_access_flags(liveblogs[0] if liveblogs and not articles else node,
+                                           parser.metas, html))
     if liveblogs:
         timeline = _liveblog_temporal_evidence(liveblogs[0], html, expected, metadata, body)
         metadata.update(publisher_document_type="liveblog", liveblog_temporal_evidence=timeline,
@@ -1235,9 +1244,16 @@ def parse_fulltext_rss(xml):
 
 def public_capture(result):
     """Apply the paywall policy to a detail/cache record in place (premium sections keep lead + receipt)."""
-    from .source_rights import is_paywalled, restrict_raw_to_public
+    from .source_rights import apply_overlap_policy, is_paywalled, restrict_raw_to_public
     metadata = result.get("metadata") if isinstance(result, dict) else None
-    if not isinstance(metadata, dict) or not is_paywalled(result.get("url", ""), metadata):
+    if not isinstance(metadata, dict):
+        return result
+    if not is_paywalled(result.get("url", ""), metadata):
+        # An open path whose body reproduces a known paywalled body is paywalled
+        # (or loses the overlapping sentences); unflagged pieces stay path-classified.
+        apply_overlap_policy(result)
+        metadata.setdefault("access_verified", False)
+    if not is_paywalled(result.get("url", ""), metadata):
         return result
     raw = RawItem("pulso_latercera", result.get("title") or "", result["url"], "Pulso / La Tercera",
                   "press_high_trust", raw_text=result.get("body") or "", metadata=metadata)
@@ -1907,8 +1923,9 @@ def discover_pulso(detail_loader=None, audit=None, *, cache_path=None, today=Non
                       duplicate_inventory_occurrences=inventory_discoveries - len(diagnosed)))
     # Rights policy (Dirección 28-oct-2026): premium sections leave discovery with
     # their public lead and a body receipt only.
-    from .source_rights import restrict_raw_to_public
+    from .source_rights import apply_overlap_policy_raw, restrict_raw_to_public
     for item in unique.values():
+        apply_overlap_policy_raw(item)
         restrict_raw_to_public(item)
     # Unknown publisher dates remain pending; they cannot be compared to ISO
     # dates or acquire a synthetic ingestion/publication day during sorting.

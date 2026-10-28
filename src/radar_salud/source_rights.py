@@ -54,7 +54,101 @@ def _article_flagged(metadata: dict | None) -> bool:
         return True
     if md.get("publisher_paywall") is True or str(md.get("content_tier") or "").lower() == "locked":
         return True
+    overlap = md.get(OVERLAP_KEY)
+    if isinstance(overlap, dict) and overlap.get("paywalled") is True:
+        # Its body reproduces a known paywalled body (same piece re-filed under an open path).
+        return True
     return False
+
+
+# --- Per-article access flags (captured as booleans/tokens; never body text) --
+OVERLAP_KEY = "paywall_overlap"
+ACCESS_RECORD = "publisher_access"
+# Lock elements La Tercera renders inside a locked article (observed in tests/fixtures/pulso_*).
+# ``lt-paywall-slot`` is page chrome on almost every page: kept as evidence, never a flag.
+_LOCK_ELEMENT = re.compile(r'(?:class|id)\s*=\s*"[^"]*?(?<![\w-])(article-body__teaser--locked|article-body__unlock-skeleton|'
+                           r'article-body__amp-paywall|articleLock|article-lock|content--locked|paywall-content)(?![\w-])',
+                           re.I)
+
+
+def _flag_bool(value):
+    if value is True or (isinstance(value, str) and value.strip().lower() == "true"):
+        return True
+    if value is False or (isinstance(value, str) and value.strip().lower() == "false"):
+        return False
+    return None
+
+
+def publisher_access_flags(node, metas: dict | None, html: str | None) -> dict:
+    """Small access flags from a captured page: JSON-LD, meta tags and lock elements.
+
+    ``node`` is the URL-bound article/liveblog JSON-LD node (an embedded VideoObject's
+    flag describes the video, not the article). Returns metadata to merge:
+    ``publisher_access`` (evidence record), ``access_verified`` (True only when the
+    page itself declares access: an explicit isAccessibleForFree, a locked hasPart,
+    a content tier or a lock element) and the flags ``_article_flagged`` reads.
+    """
+    node = node if isinstance(node, dict) else {}
+    metas = metas if isinstance(metas, dict) else {}
+    free = _flag_bool(node.get("isAccessibleForFree"))
+    parts = node.get("hasPart")
+    parts = parts if isinstance(parts, list) else [parts] if isinstance(parts, dict) else []
+    haspart_locked = any(isinstance(p, dict) and _flag_bool(p.get("isAccessibleForFree")) is False for p in parts)
+    tier = next((str(v).strip().lower()[:24] for k, v in metas.items()
+                 if isinstance(k, str) and k.lower().endswith("content_tier") and str(v or "").strip()), None)
+    part_of = node.get("isPartOf")
+    part_of = part_of if isinstance(part_of, list) else [part_of] if isinstance(part_of, dict) else []
+    product = any(isinstance(p, dict) and ("Product" in (p.get("@type") if isinstance(p.get("@type"), list)
+                                                          else [p.get("@type")]) or p.get("productID"))
+                  for p in part_of)
+    lock = sorted({m.lower() for m in _LOCK_ELEMENT.findall(html or "")})[:6]
+    record = {"jsonld_isAccessibleForFree": free, "jsonld_haspart_locked": haspart_locked,
+              "meta_content_tier": tier, "premium_marker": product or tier in ("locked", "premium"),
+              "lock_element": bool(lock), "lock_element_classes": lock,
+              "paywall_slot_present": "lt-paywall-slot" in (html or ""), "schema": 1}
+    out = {ACCESS_RECORD: record,
+           "access_verified": free is not None or haspart_locked or bool(lock) or tier is not None}
+    if free is not None:
+        out["isAccessibleForFree"] = free
+    if haspart_locked or lock or (tier == "locked"):
+        out["publisher_paywall"] = True
+    if tier:
+        out["content_tier"] = tier
+    return out
+
+
+def access_classification(url: str, metadata: dict | None = None) -> dict:
+    """How a stored item's access was decided: {paywalled, basis, access_verified}.
+
+    ``basis``: host | path_prefix | section | article_flag | sentence_overlap | open_path.
+    ``access_verified`` is True only when the capture stored an explicit per-article
+    access flag (``publisher_access_flags``); otherwise the path-based answer stands,
+    unverified.
+    """
+    md = metadata if isinstance(metadata, dict) else {}
+    host = _host(url)
+    try:
+        path = urlsplit(str(url or "").strip()).path if host else ""
+    except ValueError:
+        path = ""
+    verified = md.get("access_verified") is True
+    for rule in load_policy()["sources"]:
+        if host not in rule["hosts"]:
+            continue
+        if rule["scope"] == "host":
+            return {"paywalled": True, "basis": "host", "access_verified": True}
+        if any(path.startswith(p) for p in rule.get("path_prefixes", [])):
+            return {"paywalled": True, "basis": "path_prefix", "access_verified": verified}
+        overlap = md.get(OVERLAP_KEY)
+        if isinstance(overlap, dict) and overlap.get("paywalled") is True:
+            return {"paywalled": True, "basis": "sentence_overlap", "access_verified": verified}
+        if _article_flagged(md):
+            return {"paywalled": True, "basis": "article_flag", "access_verified": verified}
+        section = md.get("section")
+        if isinstance(section, str) and section.strip() in rule.get("sections", []):
+            return {"paywalled": True, "basis": "section", "access_verified": verified}
+        return {"paywalled": False, "basis": "open_path", "access_verified": verified}
+    return {"paywalled": False, "basis": "not_in_policy", "access_verified": False}
 
 
 def paywall_policy(url: str, metadata: dict | None = None, source_slug: str | None = None) -> dict | None:
@@ -199,6 +293,17 @@ def _redact_body_fields(md: dict, teaser: str, receipts: list[dict], prefix: str
             md.pop(key, None)
         md["body_redacted"] = True
     return removed
+
+
+def apply_overlap_policy_raw(raw, fingerprints=None) -> str | None:
+    """``apply_overlap_policy`` for a RawItem (page_text and raw_text); marks unflagged items unverified."""
+    record = {"url": raw.url, "metadata": raw.metadata, "raw_text": raw.raw_text}
+    outcome = apply_overlap_policy(record, fingerprints)
+    raw.raw_text = record["raw_text"]
+    if isinstance(raw.metadata, dict) and any(_host(raw.url) in r["hosts"] and r["scope"] != "host"
+                                              for r in load_policy()["sources"]):
+        raw.metadata.setdefault("access_verified", False)
+    return outcome
 
 
 def restrict_raw_to_public(raw) -> object:
@@ -487,6 +592,124 @@ def load_fingerprints(root: Path | None = None) -> set[str]:
         return set()
 
 
+@lru_cache(maxsize=1)
+def _runtime_fingerprints() -> frozenset:
+    return frozenset(load_fingerprints())
+
+
+# --- Open-path pieces that reproduce a paywalled body ----------------------------
+# Review 3 (28-oct): an open-section capture (/sustentabilidad/...) shared most of its
+# sentences with a body captured under the Pulso section. Sentence overlap with a
+# known paywalled body is treated as paywalled: above the ratio the whole piece is
+# paywalled (lead + receipt); below it, only the overlapping sentences are redacted.
+OVERLAP_PAYWALL_RATIO = 0.5
+SENTENCE_REDACTIONS = "rights_sentence_redactions"
+BODY_SENTENCE_PROOF = "article_body_sentence_redaction"
+OVERLAP_REASON = "sentence_overlap_with_paywalled_body"
+
+
+def _segment_spans(text: str):
+    """(start, end, normalised segment) for each sentence ``_segments`` would yield."""
+    start = 0
+    for match in list(_SPLIT.finditer(text)) + [None]:
+        end = match.start() if match else len(text)
+        part = text[start:end]
+        norm = " ".join(part.split()).casefold()
+        if len(norm) >= _MIN_SEGMENT:
+            lead = len(part) - len(part.lstrip())
+            yield start + lead, start + len(part.rstrip()), norm
+        if match:
+            start = match.end()
+
+
+def body_overlap(text, fingerprints) -> tuple[int, int]:
+    """(sentences matching a paywalled-body fingerprint, sentences) in ``text``."""
+    segments = list(_segments(text)) if isinstance(text, str) else []
+    return sum(1 for s in segments if _segment_hash(s) in fingerprints), len(segments)
+
+
+def redact_fingerprinted_sentences(text: str, fingerprints, field: str) -> tuple[str, list[dict]]:
+    """Replace only the sentences of ``text`` that reproduce a paywalled body by inline receipts."""
+    if not isinstance(text, str) or not fingerprints:
+        return text, []
+    out, receipts, cursor = [], [], 0
+    for start, end, norm in _segment_spans(text):
+        if _segment_hash(norm) not in fingerprints:
+            continue
+        sentence = text[start:end]
+        r = receipt(sentence, field, OVERLAP_REASON)
+        receipts.append(r)
+        out.append(text[cursor:start])
+        out.append(f"[redactado: muro de pago; sha256={r['sha256']}; caracteres={r['characters']}]")
+        cursor = end
+    if not receipts:
+        return text, []
+    out.append(text[cursor:])
+    return "".join(out), receipts
+
+
+def sentence_redacted_body_verified(md: dict) -> bool:
+    """The stored page_text is the verified capture body minus receipted overlapping sentences."""
+    proof = md.get(BODY_SENTENCE_PROOF)
+    body = md.get("page_text")
+    return (isinstance(proof, dict) and isinstance(body, str) and len(body.strip()) >= 160
+            and proof.get("original_sha256") == md.get("article_body_sha256")
+            and re.fullmatch(r"[0-9a-f]{64}", str(proof.get("original_sha256") or "")) is not None
+            and proof.get("page_text_sha256") == sha256_text(body)
+            and proof.get("page_text_characters") == len(body))
+
+
+def apply_overlap_policy(record: dict, fingerprints=None) -> str | None:
+    """Apply the overlap rule to a raw-like/cache record of an open path, in place.
+
+    Returns ``"paywalled"`` (flagged; the caller redacts it as paywalled),
+    ``"sentences"`` (overlapping sentences replaced by receipts) or None.
+    Idempotent: redacted sentences no longer match, a flagged record is paywalled.
+    """
+    md = record.get("metadata") if isinstance(record, dict) else None
+    url = record.get("url") if isinstance(record, dict) else None
+    if not isinstance(md, dict) or not isinstance(url, str) or paywall_policy(url, md):
+        return None
+    if not any(_host(url) in rule["hosts"] for rule in load_policy()["sources"]):
+        return None
+    fps = _runtime_fingerprints() if fingerprints is None else fingerprints
+    if not fps:
+        return None
+    fields = [("page_text", md), ("raw_text", record), ("body", record)]
+    best = max((body_overlap(holder.get(key), fps) for key, holder in fields), key=lambda hn: (hn[0] / hn[1]) if hn[1] else 0)
+    hits, total = best
+    if not hits:
+        return None
+    ratio = round(hits / total, 3) if total else 0.0
+    if ratio >= OVERLAP_PAYWALL_RATIO:
+        md[OVERLAP_KEY] = {"paywalled": True, "segments_matched": hits, "segments": total, "ratio": ratio,
+                           "basis": OVERLAP_REASON, "fingerprints": str(FINGERPRINTS_PATH),
+                           "threshold": OVERLAP_PAYWALL_RATIO}
+        return "paywalled"
+    receipts = list(md.get(SENTENCE_REDACTIONS) or [])
+    original_body = md.get("page_text")
+    body_verified = (isinstance(original_body, str) and md.get("article_body_sha256") == sha256_text(original_body))
+    changed = False
+    for key, holder in fields:
+        new, found = redact_fingerprinted_sentences(holder.get(key), fps, key if holder is md else f"record.{key}")
+        if found:
+            holder[key] = new
+            receipts.extend(found)
+            changed = True
+    if not changed:
+        return None
+    if body_verified and md.get("page_text") != original_body:
+        md[BODY_SENTENCE_PROOF] = {"original_sha256": md["article_body_sha256"],
+                                   "original_characters": len(original_body),
+                                   "page_text_sha256": sha256_text(md["page_text"]),
+                                   "page_text_characters": len(md["page_text"]), "reason": OVERLAP_REASON,
+                                   "redacted_at": _REDACTED_AT}
+    md[SENTENCE_REDACTIONS] = _dedupe(receipts)
+    md[OVERLAP_KEY] = {"paywalled": False, "segments_matched": hits, "segments": total, "ratio": ratio,
+                       "basis": OVERLAP_REASON, "sentences_redacted": True, "threshold": OVERLAP_PAYWALL_RATIO}
+    return "sentences"
+
+
 _URL_KEYS = ("url", "source_url", "canonical_url", "requested_url", "final_url", "raw_url")
 # Public by definition (title, lead with proven provenance, publisher description):
 # never fingerprint-redacted, or the lead would vanish and the next run would no
@@ -495,20 +718,33 @@ _PUBLIC_TEXT_KEYS = {"title", "article_title", "primary_header_title", "headline
                      "description", "og_description", "public_teaser", "label", "legacy_title", "source_title_full"}
 
 
+def _url_key(url) -> str:
+    return str(url or "").strip().rstrip("/")
+
+
 def scrub_fingerprinted(node, fingerprints: set, url_hint: str | None = None, force: bool = False,
-                        reason: str = "paywalled_press_public_teaser_only") -> tuple[int, int]:
+                        reason: str = "paywalled_press_public_teaser_only", *, open_sentences: bool = False,
+                        paywalled_urls: set | None = None) -> tuple[int, int]:
     """Replace strings that contain a paywalled body sentence by a receipt. Returns (strings, characters).
 
-    Outside a paywalled URL context (or ``force``) nothing is touched: an open
-    source quoting the same sentence keeps its own text. A paid model output met
-    on the way is redacted by ``redact_model_output`` (structure kept, original
-    digest recorded) before the rest of its record.
+    Outside a paywalled URL context (or ``force``) the string is kept; with
+    ``open_sentences`` only its overlapping sentences become inline receipts (an
+    open piece reproducing a paywalled body, review 3). ``paywalled_urls`` adds
+    URLs found paywalled by sentence overlap. A paid model output met on the way is
+    redacted by ``redact_model_output`` (structure kept, original digest recorded)
+    before the rest of its record.
     """
     count = chars = 0
+    extra = paywalled_urls or set()
+
+    def paywalled(url, md=None):
+        return is_paywalled(url, md) or (_url_key(url) in extra if extra else False)
+
     if isinstance(node, dict):
         url = next((node[k] for k in _URL_KEYS if isinstance(node.get(k), str) and node.get(k)), url_hint)
-        context = force or url is None or is_paywalled(url, node if isinstance(node, dict) else None)
-        if context and isinstance(node.get(MODEL_OUTPUT_KEY), dict):
+        context = force or url is None or paywalled(url, node if isinstance(node, dict) else None)
+        if (context or open_sentences) and isinstance(node.get(MODEL_OUTPUT_KEY), dict):
+            # A paid output keeps its structure and its original digest in either context.
             n, c = redact_model_output(node, fingerprints)
             count += n
             chars += c
@@ -518,26 +754,44 @@ def scrub_fingerprinted(node, fingerprints: set, url_hint: str | None = None, fo
             if isinstance(value, str):
                 if key in _PUBLIC_TEXT_KEYS or (lead and value == lead):
                     continue
-                if context and contains_fingerprinted(value, fingerprints):
+                if not contains_fingerprinted(value, fingerprints):
+                    continue
+                if context:
                     node[key] = {"redacted": True, **receipt(value, key, reason)}
                     count += 1
                     chars += len(value)
+                elif open_sentences:
+                    new, found = redact_fingerprinted_sentences(value, fingerprints, key)
+                    if found:
+                        node[key] = new
+                        count += 1
+                        chars += sum(r["characters"] for r in found)
             else:
                 child_url = key if isinstance(key, str) and re.match(r"https?://", key) else url
-                n, c = scrub_fingerprinted(value, fingerprints, child_url, force, reason)
+                n, c = scrub_fingerprinted(value, fingerprints, child_url, force, reason,
+                                           open_sentences=open_sentences, paywalled_urls=paywalled_urls)
                 count += n
                 chars += c
     elif isinstance(node, list):
         url = url_hint
-        context = force or url is None or is_paywalled(url)
+        context = force or url is None or paywalled(url)
         for i, value in enumerate(node):
             if isinstance(value, str):
-                if context and contains_fingerprinted(value, fingerprints):
+                if not contains_fingerprinted(value, fingerprints):
+                    continue
+                if context:
                     node[i] = {"redacted": True, **receipt(value, f"[{i}]", reason)}
                     count += 1
                     chars += len(value)
+                elif open_sentences:
+                    new, found = redact_fingerprinted_sentences(value, fingerprints, f"[{i}]")
+                    if found:
+                        node[i] = new
+                        count += 1
+                        chars += sum(r["characters"] for r in found)
             else:
-                n, c = scrub_fingerprinted(value, fingerprints, url_hint, force, reason)
+                n, c = scrub_fingerprinted(value, fingerprints, url_hint, force, reason,
+                                           open_sentences=open_sentences, paywalled_urls=paywalled_urls)
                 count += n
                 chars += c
     return count, chars
@@ -765,14 +1019,26 @@ def _field_sha(value) -> str:
 
 
 def rights_review_entry(node: dict, fields: list[str], basis: str, reviewer: str) -> dict:
-    """Pin a human rights review of ``fields`` to their exact current text (any edit voids it)."""
-    return {"basis": basis, "reviewer": reviewer, "reviewed_at": _REDACTED_AT,
+    """Pin a rights review of ``fields`` to their exact current text (any edit voids it).
+
+    The entry starts ``qa_status: pending``: it bypasses nothing until an independent
+    QA records ``qa_status: approved`` and ``qa_by`` (see ``review_qa_approved``).
+    """
+    return {"basis": basis, "reviewer": reviewer, "reviewed_at": _REDACTED_AT, "qa_status": "pending",
             "fields": {f: _field_sha(node[f]) for f in fields if f in node}}
 
 
+def review_qa_approved(review) -> bool:
+    """A rights review counts only after an independent QA: ``qa_status: approved`` and ``qa_by``."""
+    return (isinstance(review, dict) and review.get("qa_status") == "approved"
+            and isinstance(review.get("qa_by"), str) and bool(review["qa_by"].strip())
+            and review["qa_by"].strip() != str(review.get("reviewer") or "").strip())
+
+
 def _reviewed(node: dict, key: str) -> bool:
+    """``key`` may bypass the public-text check only under a QA-approved review pinned to its exact text."""
     review = node.get("rights_review")
-    return (isinstance(review, dict) and isinstance(review.get("fields"), dict)
+    return (review_qa_approved(review) and isinstance(review.get("fields"), dict)
             and review["fields"].get(key) == _field_sha(node.get(key)))
 
 

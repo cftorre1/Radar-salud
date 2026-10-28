@@ -27,6 +27,16 @@
    paywalled/no-URL context and open-URL context (open sections that publish the
    same sentence). The receipt also simulates the paid-output reuse decision.
 
+6. (v4, review 3) Open La Tercera paths: a stored capture whose body reproduces a
+   known paywalled body (sentence fingerprints) at >= 50% of its sentences is
+   paywalled (``paywall_overlap``) and redacted like a premium piece; below that only
+   the overlapping sentences become inline receipts (the capture hash stays provable,
+   ``article_body_sentence_redaction``). Matches under other open URLs in tracked
+   files are redacted sentence by sentence. Stored La Tercera items without a
+   per-article access flag keep their path classification, marked
+   ``access_verified: false``; ``counts.la_tercera_access`` reports how many are
+   "open by path only". Nothing is re-fetched.
+
 Idempotent: a second run changes nothing. No network access, no model calls.
 Usage: python scripts/migrate_source_rights_links_2026_10_28.py [--check]
 """
@@ -46,7 +56,78 @@ from radar_salud.source_rights import (BODY_KEYS, FINGERPRINTS_PATH, TITLE_ONLY,
                                        paywall_policy, public_teaser, public_teaser_index, redact_public_payload,
                                        redact_signal, scrub_fingerprinted, scrub_queue_item, teaser_from_raw,
                                        teaser_with_source)
+from radar_salud.source_rights import (OVERLAP_KEY, access_classification, apply_overlap_policy,  # noqa: E402
+                                       body_overlap)
 from radar_salud.source_urls import card_link_problems, sanitize_card_links, source_url_problem  # noqa: E402
+
+LT_HOSTS = {"latercera.com", "www.latercera.com"}
+
+
+def _lt(url):
+    from urllib.parse import urlsplit
+    try:
+        return (urlsplit(str(url or "")).hostname or "").lower() in LT_HOSTS
+    except ValueError:
+        return False
+
+
+def apply_overlap(queue, cache, fps):
+    """v4: overlap rule on every stored La Tercera capture (queue, nested history, Pulso cache)."""
+    stats = {"records_paywalled_by_overlap": 0, "records_sentences_redacted": 0, "paywalled_urls": [],
+             "sentence_redacted_urls": []}
+    flagged, partial = set(), set()
+    new_bodies = []
+
+    def run(record):
+        url = record.get("url")
+        md = record.get("metadata") or {}
+        texts = [md.get("page_text"), record.get("raw_text"), record.get("body")]
+        outcome = apply_overlap_policy(record, fps)
+        if outcome == "paywalled":
+            stats["records_paywalled_by_overlap"] += 1
+            flagged.add(_key(url))
+            new_bodies.extend((t, [record.get("title") or "", md.get("description") or ""]) for t in texts
+                              if isinstance(t, str) and len(t) >= 160)
+        elif outcome == "sentences":
+            stats["records_sentences_redacted"] += 1
+            partial.add(_key(url))
+
+    for item in queue.values():
+        for raw in list(_raws(item)):
+            if _lt(raw.get("url")):
+                run(raw)
+    for url, entry in (cache.get("articles") or {}).items():
+        if isinstance(entry, dict) and _lt(url):
+            entry.setdefault("url", url)
+            run(entry)
+    # Every sentence of a body now known to be paywalled is fingerprinted too.
+    for text, public in new_bodies:
+        fps |= body_fingerprints(text, public)
+    stats["paywalled_urls"] = sorted(flagged)
+    stats["sentence_redacted_urls"] = sorted(partial - flagged)
+    return stats, flagged
+
+
+def mark_access(queue, cache):
+    """v4: stored La Tercera items without a per-article flag stay path-classified, ``access_verified: false``."""
+    from collections import Counter
+    counts = {"queue": Counter(), "cache": Counter()}
+    for label, records in (("queue", [(item.get("raw") or {}) for item in queue.values()]),
+                           ("cache", [e for e in (cache.get("articles") or {}).values() if isinstance(e, dict)])):
+        for record in records:
+            md = record.get("metadata")
+            if not _lt(record.get("url")) or not isinstance(md, dict):
+                continue
+            if md.get("access_verified") is not True:
+                md["access_verified"] = False
+            c = access_classification(record["url"], md)
+            counts[label]["total"] += 1
+            counts[label][("paywalled_by_" if c["paywalled"] else "open_by_") + c["basis"]] += 1
+            if not c["paywalled"] and not c["access_verified"]:
+                counts[label]["open_by_path_only"] += 1
+            if c["access_verified"]:
+                counts[label]["access_verified"] += 1
+    return {k: dict(sorted(v.items())) for k, v in counts.items()}
 
 HISTORY = ROOT / "data/history/superintendencia_signals.json"
 QUEUE = ROOT / "data/state/pending_queue.json"
@@ -347,7 +428,7 @@ def _strings(node, url=None):
         yield node, url
 
 
-def remaining_fingerprinted(fps, files=None):
+def remaining_fingerprinted(fps, files=None, paywalled_urls=frozenset()):
     """Scan every tracked text file outside tests/fixtures for paywalled-body sentences.
 
     Truthful count: every string (JSON) or sentence (other text) containing a
@@ -381,7 +462,8 @@ def remaining_fingerprinted(fps, files=None):
             if payload is not None:
                 for value, url in _strings(payload):
                     if contains_fingerprinted(value, fps):
-                        hits.append((len(value), bool(url) and not is_paywalled(url)))
+                        hits.append((len(value), bool(url) and not is_paywalled(url)
+                                     and _key(url) not in paywalled_urls))
             else:
                 hits = [(len(seg), False) for seg in _segments(text) if _segment_hash(seg) in fps]
         else:
@@ -457,7 +539,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true", help="report only; write nothing")
     args = ap.parse_args()
-    report = {"migration": "rights_links_2026_10_28", "version": 3, "policy": "config/paywalled_press.json",
+    report = {"migration": "rights_links_2026_10_28", "version": 4, "policy": "config/paywalled_press.json",
               "links": [], "paywalled": [], "counts": {}, "not_migrated": [
                   "Git history keeps pre-redaction content; removing it requires a history rewrite (decision for Dirección).",
                   "tests/fixtures keep real publisher HTML/JSON used as parser regression inputs (see counts.fixtures_note).",
@@ -495,12 +577,23 @@ def main():
     snapshot_text, snapshot = _read(SNAPSHOT)
     fps = collect_fingerprints(queue, cache, audit_payloads, history["signals"] + snapshot["signals"])
     del audit_payloads
+    overlap_stats, overlap_urls = apply_overlap(queue, cache, fps)
+    report["counts"]["la_tercera_sentence_overlap"] = overlap_stats
+    for row in history["signals"] + snapshot["signals"]:
+        if _key(row.get("source_url")) in overlap_urls and not isinstance(row.get(OVERLAP_KEY), dict):
+            row[OVERLAP_KEY] = {"paywalled": True, "basis": "sentence_overlap_with_paywalled_body"}
 
     q = {"items_scanned": 0, "nested_records_redacted": 0, "body_characters_removed": 0,
          "fingerprint_strings": 0, "fingerprint_characters": 0, "items_changed": 0}
     for item in queue.values():
         before = json.dumps(item, ensure_ascii=False, sort_keys=True) if not args.check else None
         stats = scrub_queue_item(item, fps)
+        raw0 = item.get("raw") or {}
+        if _lt(raw0.get("url")) and not paywall_policy(raw0.get("url", ""), raw0.get("metadata")):
+            # Open piece: only sentences reproducing a paywalled body become receipts.
+            n, chars = scrub_fingerprinted(item, fps, open_sentences=True, paywalled_urls=overlap_urls)
+            stats["fingerprint_strings"] += n
+            stats["fingerprint_characters"] += chars
         if stats["records"] or stats["fingerprint_strings"] or stats["characters"]:
             q["items_scanned"] += 1
         q["nested_records_redacted"] += stats["records"]
@@ -527,6 +620,9 @@ def main():
     from radar_salud.pulso_source import public_capture
     c = {"entries_redacted": 0, "body_characters_removed": 0, "fingerprint_strings": 0}
     for url, entry in (cache.get("articles") or {}).items():
+        if isinstance(entry, dict) and not is_paywalled(url, entry.get("metadata")):
+            n, _ = scrub_fingerprinted(entry, fps, open_sentences=True, paywalled_urls=overlap_urls)
+            c["open_sentence_strings"] = c.get("open_sentence_strings", 0) + n
         if not isinstance(entry, dict) or not is_paywalled(url, entry.get("metadata")):
             continue
         before = json.dumps(entry, ensure_ascii=False, sort_keys=True)
@@ -539,6 +635,7 @@ def main():
             c["entries_redacted"] += 1
             c["body_characters_removed"] += chars
     report["counts"]["pulso_discovery_cache"] = c
+    report["counts"]["la_tercera_access"] = mark_access(queue, cache)
     writes[PULSO_CACHE] = (cache, cache_text)
 
     # 3. Public rows: history + snapshot.
@@ -564,7 +661,7 @@ def main():
             text, payload = _read(path)
         except (ValueError, OSError, UnicodeDecodeError):
             continue
-        n, chars = scrub_fingerprinted(payload, fps)
+        n, chars = scrub_fingerprinted(payload, fps, open_sentences=True, paywalled_urls=overlap_urls)
         stats = {"signals": 0, "fields": 0}
         redacted = redact_public_payload(payload, index, stats) if f in weekly else payload
         if n or redacted is not payload:
@@ -591,7 +688,7 @@ def main():
     report.pop("_decks", None)
 
     if args.check:
-        report["counts"]["remaining_fingerprinted_before_write"] = remaining_fingerprinted(fps)
+        report["counts"]["remaining_fingerprinted_before_write"] = remaining_fingerprinted(fps, None, overlap_urls)
         print(json.dumps(report["counts"], ensure_ascii=False, indent=2))
         return
     record_originals([p for p in [*writes, *csv_writes] if str(p.relative_to(ROOT)).startswith("data/audits/")
@@ -606,7 +703,7 @@ def main():
         "segment_rule": "split on sentence punctuation/newlines, whitespace-collapsed, casefolded, >= 60 chars; "
                         "sentences also present in the public title/lead are excluded",
         "segment_sha256_prefix20": sorted(fps)}, indent=0) + "\n", encoding="utf-8")
-    report["counts"]["remaining_fingerprinted"] = remaining_fingerprinted(fps)
+    report["counts"]["remaining_fingerprinted"] = remaining_fingerprinted(fps, None, overlap_urls)
     if RECEIPT.exists():
         previous = json.loads(RECEIPT.read_text(encoding="utf-8"))
         report["first_run_counts"] = previous.get("first_run_counts") or previous.get("counts")
@@ -616,6 +713,10 @@ def main():
         # prefixes/sections, CSV cells, strict public-text check, review verdicts kept.
         report["v3_first_run_counts"] = previous.get("v3_first_run_counts") or (
             previous.get("counts") if previous.get("version") == 3 else report["counts"])
+        # v4 (review 3, 28-oct): paid outputs archived before a teaser re-analysis, La
+        # Tercera access flags + "open by path only" report, sentence-overlap rule.
+        report["v4_first_run_counts"] = previous.get("v4_first_run_counts") or (
+            previous.get("counts") if previous.get("version") == 4 else report["counts"])
     _dump(RECEIPT, report)
     print(json.dumps(report["counts"], ensure_ascii=False, indent=2)[:4000])
 

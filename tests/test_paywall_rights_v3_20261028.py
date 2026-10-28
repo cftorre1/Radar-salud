@@ -263,20 +263,24 @@ def _reanalysis_raw():
     ({"sent": True, "response": True, "input_tokens": 900, "output_tokens": 0}, "failed_possibly_billed", "exhausted"),
     ({}, "failed_possibly_billed", "exhausted"),  # unknown: assume billed
 ])
-def test_failed_call_retries_once_only_when_nothing_was_billed(call, outcome, next_kind):
+def test_failed_call_retries_only_when_nothing_was_billed(call, outcome, next_kind):
+    from datetime import datetime, timedelta, timezone
+    later = datetime.now(timezone.utc) + timedelta(days=2)  # past every backoff
     raw = _reanalysis_raw()
     prior = pulso_paywall.prior_binding(raw.metadata)
     first = pulso_paywall.decide(raw, prior, text=TEASER, request_input="req")
     assert first["kind"] == "reanalyse"
     pulso_paywall.mark_reanalysis(raw, first["detail"], TEASER)
     assert pulso_paywall.record_outcome(raw, None, call) == outcome
-    second = pulso_paywall.decide(raw, prior, text=TEASER, request_input="req")
+    second = pulso_paywall.decide(raw, prior, text=TEASER, request_input="req", now=later)
     assert second["kind"] == next_kind
     if next_kind == "reanalyse":
-        # Bounded: a second unbilled failure is terminal.
-        pulso_paywall.mark_reanalysis(raw, second["detail"], TEASER)
-        pulso_paywall.record_outcome(raw, None, call)
-        assert pulso_paywall.decide(raw, prior, text=TEASER, request_input="req")["kind"] == "exhausted"
+        # Bounded: up to 3 unbilled failures across runs, then deferred (never rejected).
+        for _ in range(2):
+            pulso_paywall.mark_reanalysis(raw, second["detail"], TEASER)
+            pulso_paywall.record_outcome(raw, None, call)
+        third = pulso_paywall.decide(raw, prior, text=TEASER, request_input="req", now=later)
+        assert third["kind"] == "deferred_unbilled" and third["unbilled_failures"] == 3
 
 
 def test_crash_during_the_call_counts_as_paid():
@@ -286,8 +290,9 @@ def test_crash_during_the_call_counts_as_paid():
     assert pulso_paywall.decide(raw, prior, text=TEASER, request_input="req")["kind"] == "exhausted"
 
 
-@pytest.mark.parametrize("error_type,max_calls", [("APIConnectionError", 2), ("APITimeoutError", 1), (None, 1)])
-def test_processor_never_pays_twice_and_retries_unbilled_failures_once(monkeypatch, error_type, max_calls):
+@pytest.mark.parametrize("error_type,max_calls", [("APIConnectionError", 3), ("RateLimitError", 3),
+                                                  ("APITimeoutError", 1), (None, 1)])
+def test_processor_never_pays_twice_and_defers_after_three_unbilled_failures(monkeypatch, error_type, max_calls):
     from radar_salud import beta_sources, llm_analysis
     calls = []
 
@@ -301,18 +306,40 @@ def test_processor_never_pays_twice_and_retries_unbilled_failures_once(monkeypat
         return None
 
     monkeypatch.setattr(pulso_paywall, "capacity_available", lambda: True)
+    monkeypatch.setattr(pulso_paywall, "UNBILLED_BACKOFF_HOURS", (0, 0))  # every run is past the backoff
     monkeypatch.setattr(llm_analysis, "analyze_news", fake)
     raw = _reanalysis_raw()
     raw.metadata.update(market_role="media", primary_identity_verified=True, publication_date_verified=True,
                         publication_date="2026-10-20", article_body_complete=True)
     outcomes = []
-    for _ in range(4):
+    for _ in range(5):
+        pulso_paywall.reset_run_counter()  # one run each
         try:
             outcomes.append(beta_sources.process_curated_beta_source(
                 raw, {"slug": "pulso_latercera", "market_role": "media"}))
         except Exception as exc:  # DeferredProcessing between runs
-            outcomes.append(type(exc).__name__)
+            outcomes.append(str(exc))
     assert len(calls) == max_calls
     assert all(c["text"] == TEASER for c in calls)
     history = raw.metadata[pulso_paywall.STATE]["history"]
     assert sum(h["outcome"] != "failed_unbilled" for h in history) <= 1
+    if error_type in ("APIConnectionError", "RateLimitError"):
+        # Deferred, not rejected: no rejection reason, and a revival re-opens it.
+        assert outcomes[-1] == "pulso_paywalled_reanalysis_unbilled_attempts_deferred"
+        assert "rejection_reason" not in raw.metadata
+        pulso_paywall.revive(raw, "provider restored")
+        prior = pulso_paywall.prior_binding(raw.metadata)
+        assert pulso_paywall.decide(raw, prior, text=TEASER, request_input="req")["kind"] == "reanalyse"
+
+
+def test_unbilled_failure_waits_for_its_backoff():
+    from datetime import datetime, timedelta, timezone
+    raw = _reanalysis_raw()
+    prior = pulso_paywall.prior_binding(raw.metadata)
+    pulso_paywall.mark_reanalysis(raw, "x", TEASER)
+    pulso_paywall.record_outcome(raw, None, {"sent": True, "response": False, "error_type": "RateLimitError"})
+    now = datetime.now(timezone.utc)
+    soon = pulso_paywall.decide(raw, prior, text=TEASER, request_input="req", now=now)
+    assert soon["kind"] == "wait" and soon["unbilled_failures"] == 1
+    assert pulso_paywall.decide(raw, prior, text=TEASER, request_input="req",
+                                now=now + timedelta(hours=2))["kind"] == "reanalyse"
