@@ -8,7 +8,7 @@ test('row title opens the record without a Más info button; opening reads, the 
  await expect(page.getByRole('button',{name:'Más info',exact:true})).toHaveCount(0);
  await card.locator('.title-open').click();await expect(page.locator('#signalDetail')).toBeVisible();const body=await page.locator('#detailBody').textContent();await expect(card).toHaveClass(/read/);
  await expect(page.locator('#detailRead')).toHaveText('Marcar no leída');await page.keyboard.press('Escape');
- await expect(card).toHaveCount(0);await expect(page.locator('#undoBar')).toContainText('Marcada como leída');
+ await expect(card.locator('.row-undo')).toContainText('Leída');await expect(card).toHaveCount(0,{timeout:12000});
  await selectLane(page,'t');await expect(card).toHaveClass(/read/);
  await card.locator('.title-open').click();await expect(page.locator('#detailBody')).toHaveText(body);await page.keyboard.press('Escape');
  // Read rows carry no mark; the record's text control marks them unread again.

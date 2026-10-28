@@ -158,5 +158,7 @@ def test_global_beta_has_six_evidence_backed_themes_and_conversion_entry():
     assert all(theme["sources"] for theme in payload["themes"])
     html=Path("web/global.html").read_text(encoding="utf-8")
     assert "Ponte al día en Global Intelligence" in html
-    assert "Acceso anticipado" in html
+    # Conversion entry is the shared Premium dialog (conversion.js, homologated with Chile, Dirección 28-oct).
+    assert '<script src="conversion.js"></script>' in html
+    assert "acceso anticipado" in Path("web/conversion.js").read_text(encoding="utf-8").lower()
     assert "está en preparación" not in html
