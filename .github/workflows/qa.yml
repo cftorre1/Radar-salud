@@ -71,7 +71,7 @@ jobs:
         run: |
           rm -rf "$RUNNER_TEMP/fixture-web" && cp -R web "$RUNNER_TEMP/fixture-web"
           python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json --offline --as-of 2026-10-12 --output "$RUNNER_TEMP/fixture-web/data/radar_today.json"
-      - run: npm run test:browser
+      - run: npm run test:browser -- --reporter=line,github
         env:
           ALICANTO_BROWSER_WEB: ${{ runner.temp }}/fixture-web
           ALICANTO_FIXTURE_AS_OF: '2026-10-12'
