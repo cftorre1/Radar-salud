@@ -291,6 +291,10 @@ main{max-width:none;margin:0;padding:0 0 70px}
 .chip[aria-pressed="true"] small{color:rgba(255,255,255,.72)}
 .undo-bar{order:9}
 @media (max-width:300px){.interest-sheet .interest-grid{grid-template-columns:minmax(0,1fr)}}
+/* Zoomed or split-view widths: controls shrink or scroll inside the bar instead of widening the page. */
+.lanes{max-width:100%;overflow-x:auto;scrollbar-width:none}.period-pill{max-width:100%}.period-pill select{max-width:min(170px,100%)}
+@media (max-width:340px){.lane{padding:0 7px;font-size:12px}.brandbar .topnav a{padding:0 4px}.brandbar .premium-access{padding:0 8px}}
+@media (max-width:300px){.brandbar .topnav .header-newsletter{display:none!important}.filter-details>summary{max-width:100%}}
 
 /* Proposal A · status beside the title, tools below. Inactive counts stay for screen readers only. */
 .radar-unit[data-bar="a"] .radar-metrics,.radar-unit[data-bar="a"] .lane:not(.on) span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}

@@ -120,9 +120,13 @@ test('Home keeps period compact and exposes direct Global Intelligence navigatio
  assert.match(html,/class="header-premium" href="global\.html">Global · Internacional<\/a>/);
  const head=html.match(/<div class="radar-head">([\s\S]*?)<\/div>/)?.[1]||'';
  assert.doesNotMatch(head,/id="period"/);
- // Period and order live inside 'Filtrar u ordenar' (Dirección 25-oct).
+ // Dirección 27-oct 22:44 (punto 4) supersedes 25-oct: the period is its own small dropdown in the bar and
+ // never opens the filters; order stays inside the filters dropdown.
  const filters=html.match(/<details class="filter-details" id="filterDetails">([\s\S]*?)<\/details>/)?.[1]||'';
- assert.match(filters,/id="period"/);assert.match(filters,/id="sort"/);
+ assert.doesNotMatch(filters,/id="period"/);assert.match(filters,/id="sort"/);
+ assert.match(html,/<label class="period-pill" id="periodPill"[^>]*>[\s\S]*?<select id="period">/);
+ // Punto 1: the header names Chile, Global, Newsletter and PREMIUM; Newsletter opens the existing waitlist only.
+ assert.match(html,/data-short="Newsletter"/);assert.match(html,/class="header-newsletter" href="subscription\.html" data-open-newsletter/);
  assert.doesNotMatch(app,/tarjetas · no leídos \$\{unread\} · período/);
 });
 

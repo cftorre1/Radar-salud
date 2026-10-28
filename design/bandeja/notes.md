@@ -54,3 +54,29 @@ Sin desborde horizontal en ningún caso; sin errores de consola.
 
 Las piezas compartidas están en `web/` de la rama `claude/home-ux-round2-20261027`; la propuesta se elige con un
 solo atributo: `<section class="radar-unit" data-bar="a|b|c">`. Tras la decisión se borra el CSS de las otras dos.
+
+## Global (web/global.html) · qué tomaría homologarlo (NO hecho; después de la elección)
+
+Hoy Global es otra arquitectura: CSS inline en `global.html`, bandeja oscura (`.global-inbox`) con
+`#globalPeriod` (14/30/90/365/todo), `<details id="globalFilters">` con Fuente + Orden, lectura por
+fila (`.inbox-read`) y temas en tarjetas grandes (`.theme`); persistencia en `alicanto_global_filters`.
+
+1. **Encabezado** (S): reemplazar la `nav` por la del Home (Chile · Global · Newsletter · PREMIUM, `aria-current` en
+   Global) y cargar `home-inbox.css` para el `.brandbar` fijo de 52/56 px. Newsletter → `subscription.html`
+   (Global no tiene el diálogo; enlazar o mover el diálogo a un parcial compartido).
+2. **Barra «Tu bandeja»** (M): reutilizar el mismo marcado `.radar-unit[data-bar=X]` (título «Global», segmentado
+   Pendientes · Leídas · Todas, `<select>` de período con las opciones de Global, desplegable compacto con
+   «Todas las fuentes» (publisher) como multiselección + Orden, ✓✓). Extraer de `app.js` a un módulo compartido
+   (`inbox-bar.js`): `wireLanes`, `closeFilters`, cierre por clic fuera/Escape, `filterLabel`. Global hoy no tiene
+   estado Leídas/Todas ni «marcar todo»: añadir `laneMode` y `markAllRead` sobre `AlicantoRead` (ids `global:<theme_id>`,
+   los mismos que usa la fila dorada del Home, así leer en un lado marca en el otro).
+3. **Feed** (M): pasar de la bandeja oscura + tarjetas a filas densas como `#local .signal.item` (punto = alternar
+   leído, título que abre `#globalDetail`). La fila de Global en el Home ya usa el tono oro; en Global las filas son
+   neutras y el oro se reserva para destacados.
+4. **Datos** (S): `global_themes.json` ya trae fecha/publisher/score; los conteos por segmento y por fuente son
+   cálculos deterministas en el cliente. Migrar `alicanto_global_filters` (period/publisher/sort) sin perder valores.
+5. **Pruebas** (M): `tests/browser/*` que miran Global (`#globalPeriod`, `#globalFilters`, `.inbox-read`) se ajustan
+   como en el Home; añadir el mismo test de segmentado/desplegable para Global y medir parte del feed ≥55 %/≥60 %.
+
+Estimación: 1 rama, ~1 día de implementación + QA; riesgo principal = divergencia de CSS inline vs `home-inbox.css`
+(conviene mover el CSS de Global a un archivo y borrar reglas duplicadas).

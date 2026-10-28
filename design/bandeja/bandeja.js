@@ -321,7 +321,7 @@ document.querySelectorAll('[data-open-filters]').forEach(b=>b.onclick=openFilter
 wireLanes();
 document.addEventListener('pointerdown',e=>{const d=document.getElementById('filterDetails');if(d?.open&&!e.target.closest('#filterDetails'))d.open=false});
 document.getElementById('filterDone').onclick=()=>closeFilters(true);
-document.getElementById('filterDetails').addEventListener('keydown',e=>{if(e.key==='Escape'&&e.currentTarget.open){e.currentTarget.open=false;e.currentTarget.querySelector('summary').focus()}});
+document.addEventListener('keydown',e=>{const d=document.getElementById('filterDetails');if(e.key==='Escape'&&d?.open&&!document.querySelector('dialog[open]')){d.open=false;d.querySelector('summary').focus()}});
 // Footnote links stay inside the insight dialog and never rewrite the shared-link hash.
 document.getElementById('weeklyInsightBody').addEventListener('click',e=>{const a=e.target.closest?.('[data-note]');if(!a)return;e.preventDefault();const note=document.getElementById(`wi-note-${a.dataset.note}`);if(note){note.scrollIntoView({block:'center',behavior:motionBehavior()});note.focus({preventScroll:true})}});
 if(location.hash==='#premium')requestAnimationFrame(()=>openDialog('earlyAccessDialog'));
