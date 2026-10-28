@@ -820,6 +820,14 @@ def main():
     teasers=public_teaser_index(signals)
     cards=[sanitize_card_links(redact_story_card(redact_signal(card),teasers=teasers)) for card in cards]
     cards=[c for c in cards if not (c.get("derived_from")=="editorial_story_group" and c.get("rights_review_required"))]
+    # Dirección 28-oct-2026 15:16: thin paywalled cards borrow "Qué pasó" from authorized
+    # open sources already in our corpus (config/corroboration_sources.json). Deterministic;
+    # a failure leaves the cards exactly as redacted (title + public lead).
+    try:
+        from radar_salud import paywall_corroboration
+        cards=paywall_corroboration.apply(cards,history=signals)
+    except Exception as exc:
+        print(f"paywall_corroboration: omitted ({type(exc).__name__}: {exc})")
     payload={"date":(args.as_of or date.today()).isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"entities":entity_watch.public_catalog(),"signals":cards}
     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
     stats_fichas.write_share_pages(cards,out.parent)

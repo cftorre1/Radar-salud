@@ -92,6 +92,14 @@ function miniShare(targetId,title){return AlicantoBar.miniShare(targetId,title)}
 function sourceLink(url){return AlicantoBar.sourceLink(url)}
 // Dirección 28-oct-2026: a row without a valid original URL shows no link, never a broken one.
 function originalLink(s){if(!s||s.source_link_status==='invalid')return '';const u=String(s.source_link||s.source_url||'');return /^https:\/\/[^\s\/?#]+\.[^\s\/?#]+(\/\S*)?$/.test(u)?u:''}
+// Dirección 28-oct-2026 15:16: a thin paywalled piece borrows "Qué pasó" only from authorized open sources,
+// every sentence attributed and linked; the paywalled piece stays as "Fuente original". Nothing else is shown.
+function corroboration(s){const c=s&&s.paywalled===true?s.corroboration:null;return c&&['corroborated','related_only'].includes(c.status)?c:null}
+const corrUrlOk=u=>/^https:\/\/[^\s\/?#]+\.[^\s\/?#]+(\/\S*)?$/.test(String(u||''));
+// "Qué pasó" paragraphs: consecutive sentences from the same source are grouped, attributed and linked.
+function corroborationWhat(s){const c=corroboration(s);if(!c)return'';const groups=[];for(const w of arr(c.what).filter(w=>w&&w.text&&w.attribution&&corrUrlOk(w.source_url))){const g=groups[groups.length-1];if(g&&g.a===w.attribution&&g.u===w.source_url)g.t.push(w.text);else groups.push({a:w.attribution,u:w.source_url,t:[w.text]})}return groups.map(g=>`<p class="corroborated">Según ${esc(g.a)}: ${esc(g.t.join(' '))} <a href="${esc(g.u)}" target="_blank" rel="noopener">Ver fuente ↗</a></p>`).join('')}
+// "Fuentes relacionadas" sits in the ficha's Fuentes section; the paywalled piece keeps originalLink ("Fuente original") and paywallNote.
+function corroborationRelated(s){const c=corroboration(s);const rel=c?arr(c.related_sources).filter(x=>x&&corrUrlOk(x.url)):[];return rel.length?`<div class="related-sources"><h4>Fuentes relacionadas</h4><ul>${rel.map(x=>`<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.source_name||'Fuente')} · ${esc(x.title||'Ver publicación')} ↗</a>${x.event_date?` <span class="related-desc">${fmtDate(x.event_date)}</span>`:''}</li>`).join('')}</ul></div>`:''}
 function paywallNote(s){return s&&s.paywalled===true?`<p class="paywall-note">${esc(s.paywall_label||'Contenido para suscriptores')}. Mostramos sólo el titular y la bajada pública.</p>`:''}
 function readAction(read){return `${read?unreadIcon:checkIcon}<span class="read-label">${read?'Leído':'No leído'}</span>`}
 // Global teaser copy (Dirección 28-oct, punto 8): an invitation to the premium section, never a limit.
@@ -183,12 +191,14 @@ function detailHtml(s){
   // analysis and limits. Punto 5: a section without data is not rendered, and nothing fills it in.
   const analysis=Boolean(s.summary_table?.rows?.length||arr(s.data_insights).length||s.event_type==='DATA_PULSE');
   const texts=[s.card_what||s.what_happened,s.normative_context,...arr(s.key_points),...arr(s.key_facts)].filter(fresh);
-  body=texts.length?`<h3 class="ficha-h">Qué pasó</h3>${texts.map(x=>`<p>${esc(x)}</p>`).join('')}`:'';
+  // Paywall corroboration (Dirección 28-oct 15:16): attributed sentences from authorized open sources join "Qué pasó".
+  const corr=corroborationWhat(s);
+  body=texts.length||corr?`<h3 class="ficha-h">Qué pasó</h3>${texts.map(x=>`<p>${esc(x)}</p>`).join('')}${corr}`:'';
   if(analysis){body+=summaryTableBlock(s)+insightBlock(s);body+=arr(s.risk_notes).filter(fresh).map(x=>`<p>${esc(x)}</p>`).join('')}
  }
  const dates=[s.issued_on||s.emission_date?`Emisión: ${fmtDate(s.issued_on||s.emission_date)}`:null,s.inspection_date?`Fiscalización: ${fmtDate(s.inspection_date)}`:null,s.inspection_period?`Período de fiscalización: ${esc(s.inspection_period)}`:null,s.fact_period?`Período fiscalizado: ${esc(s.fact_period)}`:null].filter(Boolean).join(' · ');
  const docs=[...arr(s.source_documents),...(v3?arr(s.evidence).map(e=>({url:e.url,title:e.locator})):[])].map(x=>typeof x==='string'?{url:x,title:'Documento original'}:x).filter(x=>/^https:\/\//.test(x.url||x.document_url||''));
- const related=`${!v3?statusBlock(s)+contextBlock(arr(s.related_context))+(s.event_type==='STORY_SUMMARY'?sourceBlock(arr(s.source_alternatives),false,false,'Piezas incluidas en esta síntesis'):sourceBlock(arr(s.source_alternatives),Boolean(s.sanction_count)||s.event_type==='ACCREDITATION_PULSE',s.event_type==='DATA_PULSE'))+sourceBlock(arr(s.historical_sanction_context),false,false,'Suspensiones de oficios históricos')+enrichmentBlock(arr(s.editorial_enrichment),arr(s.historical_connections),s.historical_context_status):''}${docs.length?`<ul>${docs.map(x=>`<li><a href='${esc(x.url||x.document_url)}' target='_blank' rel='noopener'>${esc(x.title||x.label||'Documento original')} ↗</a></li>`).join('')}</ul>`:''}`,origin=originLine(s);
+ const related=`${!v3?corroborationRelated(s)+statusBlock(s)+contextBlock(arr(s.related_context))+(s.event_type==='STORY_SUMMARY'?sourceBlock(arr(s.source_alternatives),false,false,'Piezas incluidas en esta síntesis'):sourceBlock(arr(s.source_alternatives),Boolean(s.sanction_count)||s.event_type==='ACCREDITATION_PULSE',s.event_type==='DATA_PULSE'))+sourceBlock(arr(s.historical_sanction_context),false,false,'Suspensiones de oficios históricos')+enrichmentBlock(arr(s.editorial_enrichment),arr(s.historical_connections),s.historical_context_status):''}${docs.length?`<ul>${docs.map(x=>`<li><a href='${esc(x.url||x.document_url)}' target='_blank' rel='noopener'>${esc(x.title||x.label||'Documento original')} ↗</a></li>`).join('')}</ul>`:''}`,origin=originLine(s);
  // News fichas group the original source and related sources under one short heading; analysis fichas keep theirs.
  // The heading only appears when there is a source to show (a name, a captured link or related sources).
  const hasSource=Boolean(related||s.source_name||originalLink(s));
