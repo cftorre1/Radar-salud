@@ -9,16 +9,22 @@ Built after the daily discovery steps from two inputs that already exist:
   live runs, Dirección 27-oct).
 
 Each card keeps the publisher's own title verbatim, its link, date, attribution
-(and byline when the licence asks for it) plus a deterministic Spanish relevance
-line built from fixed templates. Nothing else from the publisher is stored. Cards
-are explicitly "titular de fuente", never an Alicanto analysis or a Chile effect.
+(and byline when the licence asks for it), the publisher's own short summary when
+the feed's rights allow it (verbatim, <= 300 characters; otherwise ``None`` and the
+card shows the title only) plus a deterministic Spanish relevance line built from
+fixed templates. Nothing else from the publisher is stored. Cards are explicitly
+"titular de fuente", never an Alicanto analysis or a Chile effect.
 
-The output keeps a rolling history (``retention_days``) so the 14/30-day views do
-not empty when a feed only exposes its latest entries.
+The output is one inbox ordered by date with a rolling 90-day history
+(``retention_days``), so the view does not empty when a feed only exposes its
+latest entries. The same announcement reaching us through two publishers or routes
+(same canonical URL, or the same headline within ``DUPLICATE_TITLE_DAYS``) is kept once.
 """
 from __future__ import annotations
 
 import json
+import re
+import unicodedata
 from hashlib import sha256
 from collections import Counter, defaultdict
 from datetime import date, datetime, timezone
@@ -27,7 +33,9 @@ from urllib.parse import urlsplit
 
 from .global_feed_discovery import PERMITTED_USE, SEGMENTS, classify_relevance
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
+DEFAULT_WINDOW_DAYS = 90
+DUPLICATE_TITLE_DAYS = 3
 SUMMARY_METHOD = "deterministic_template_v1"
 SEGMENT_ES = {
     "payers": "Aseguradores y financiamiento",
@@ -63,10 +71,14 @@ def summary_es(kind_es: str, segments: list[str]) -> str:
     return f"{head} Relevante para: {', '.join(tags)}." if tags else head
 
 
-def _card(*, item_id, source, label, attribution, kind_es, title, url, published_at, segments, priority, bylines, rights_basis, as_of):
+def _card(*, item_id, source, label, attribution, kind_es, title, url, published_at, segments, priority, bylines, rights_basis, as_of,
+          description=None, description_truncated=False):
     segments = [s for s in SEGMENTS if s in set(segments)]
     return {"id": item_id, "source": source, "source_label": label, "attribution": attribution, "bylines": bylines,
             "title": title, "url": url, "published_at": published_at, "segments": segments,
+            # Publisher's own summary, verbatim (<= 300 chars) or None -> title only. Never generated.
+            "description": description or None, "description_truncated": bool(description and description_truncated),
+            "description_source": "publisher_feed_summary_verbatim" if description else None,
             "tags_es": [SEGMENT_ES[s] for s in segments], "summary_es": summary_es(kind_es, segments),
             "summary_method": SUMMARY_METHOD, "ai_used": False, "priority": int(priority or 0),
             "kind": "headline", "content_use": "metadata_and_link_only", "body_stored": False,
@@ -121,6 +133,8 @@ def feed_cards(feed_payload: dict, config: dict, as_of: date) -> tuple[list[dict
                            attribution=feed["attribution"], kind_es=display.get("kind_es") or feed["name"], title=row["title"],
                            url=row["url"], published_at=row["published_at"], segments=matched,
                            priority=classification.get("priority"), bylines=row.get("bylines", []) if display.get("show_byline") else [],
+                           description=row.get("description") if feed.get("store_description") else None,
+                           description_truncated=row.get("description_truncated", False),
                            rights_basis={"license": rights.get("license"), "license_url": rights.get("license_url"), "license_label": rights.get("license_label"),
                                          "evidence_urls": rights.get("evidence_urls", []),
                                          "verified_on": rights.get("verified_on")}, as_of=as_of))
@@ -161,6 +175,36 @@ def official_cards(discovery: dict, as_of: date) -> tuple[list[dict], Counter]:
     return cards, held
 
 
+def _title_key(title: str) -> str:
+    text = "".join(c for c in unicodedata.normalize("NFKD", (title or "").casefold()) if not unicodedata.combining(c))
+    # GOV.UK prefixes the document type ("Press release: ..."); the headline itself identifies the story.
+    text = re.sub(r"^(press release|news story|guidance|policy paper|consultation outcome|open consultation|official statistics|research and analysis|speech|statement|notice)\s*:\s*", "", text)
+    return " ".join(re.sub(r"[^\w]+", " ", text).split())
+
+
+def dedupe(cards: list[dict]) -> tuple[list[dict], int]:
+    """One card per announcement across sources: same URL id, or same normalized headline within
+    DUPLICATE_TITLE_DAYS. Keeps the earliest-dated card (higher priority, then id, on ties) and
+    records the other publishers in ``also_reported_by``."""
+    kept, dropped = [], 0
+    by_title: dict[str, list[dict]] = defaultdict(list)
+    for card in sorted(cards, key=lambda c: (c["published_at"], -c["priority"], c["id"])):
+        key = _title_key(card["title"])
+        twin = next((k for k in by_title.get(key, []) if len(key) >= 20
+                     and abs((_day(card["published_at"]) - _day(k["published_at"])).days) <= DUPLICATE_TITLE_DAYS), None)
+        if twin is not None:
+            dropped += 1
+            if card["source"] != twin["source"]:
+                also = twin.setdefault("also_reported_by", [])
+                if not any(a["source"] == card["source"] for a in also):
+                    also.append({"source": card["source"], "source_label": card["source_label"], "url": card["url"]})
+            # Never borrow another publisher's summary: the kept card shows its own, or the title only.
+            continue
+        by_title[key].append(card)
+        kept.append(card)
+    return kept, dropped
+
+
 def _cap_per_source_day(cards: list[dict], cap: int) -> tuple[list[dict], int]:
     kept, count, dropped = [], defaultdict(int), 0
     for card in sorted(cards, key=lambda c: (-c["priority"], c["published_at"], c["id"]), reverse=False):
@@ -174,8 +218,9 @@ def _cap_per_source_day(cards: list[dict], cap: int) -> tuple[list[dict], int]:
 
 def build(feed_payload: dict, discovery: dict, config: dict, previous: dict | None, as_of: date, generated_at: str | None = None) -> dict:
     policy = config.get("daily_feed") or {}
-    retention = int(policy.get("retention_days", 45))
-    window = int(policy.get("window_days", 14))
+    window = int(policy.get("window_days", DEFAULT_WINDOW_DAYS))
+    # History must cover at least the visible window (90 days for the single Global inbox).
+    retention = max(int(policy.get("retention_days", window)), window)
     # Showing headlines is a publication decision (CLAUDE.md §3): it needs a recorded Dirección authorization.
     enabled, authorized_by = authorization(policy)
     new, held = [], Counter()
@@ -201,6 +246,10 @@ def build(feed_payload: dict, discovery: dict, config: dict, previous: dict | No
             card["first_seen_on"] = by_id[card["id"]].get("first_seen_on", card["first_seen_on"])
         by_id[card["id"]] = card
     cards = [c for c in by_id.values() if (d := _day(c["published_at"])) and 0 <= (as_of - d).days < retention]
+    for card in cards:
+        card.pop("also_reported_by", None)  # recomputed every run from the cards still present
+        card.setdefault("description", None)  # history cards from schema 1 carry no summary: title only
+    cards, duplicates = dedupe(cards)
     cards, capped = _cap_per_source_day(cards, int(policy.get("max_per_source_per_day", 6)))
     cards.sort(key=lambda c: (c["published_at"], c["priority"], c["id"]), reverse=True)
     ages = [(as_of - _day(c["published_at"])).days for c in cards]
@@ -219,7 +268,8 @@ def build(feed_payload: dict, discovery: dict, config: dict, previous: dict | No
                           "items_last_7_days": len(last7), "status": "fresh" if newest and (as_of - _day(newest)).days < stale_after else "stale",
                           "stale_after_days": stale_after},
             "sources": sorted({(c["source"], c["source_label"]) for c in cards}),
-            "held": dict(sorted(held.items())), "capped_per_source_day": capped,
+            "held": dict(sorted(held.items())), "capped_per_source_day": capped, "duplicates_merged": duplicates,
+            "description_policy": "publisher_summary_verbatim_max_300_chars_or_title_only",
             # Input for the weekly "Desde afuera" theme: the most active segments of the week, with their cards.
             "weekly_signal": [{"segment": s, "label_es": SEGMENT_ES[s], "count": n,
                                "item_ids": [c["id"] for c in sorted(last7, key=lambda c: -c["priority"]) if s in c["segments"]][:5]}

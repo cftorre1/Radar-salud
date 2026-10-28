@@ -24,7 +24,9 @@ HOSTS = {"www.who.int", "who.int", "www.paho.org", "paho.org", "iris.paho.org"}
 FEED_HOSTS = {"kffhealthnews.org", "www.kffhealthnews.org", "www.ema.europa.eu", "www.fda.gov",
               # 28-oct: CDC (feed host tools.cdc.gov, links www.cdc.gov), NIH, Federal Register, ECDC, EC health, The Conversation.
               "tools.cdc.gov", "www.cdc.gov", "www.nih.gov", "www.federalregister.gov", "www.ecdc.europa.eu",
-              "health.ec.europa.eu", "ec.europa.eu", "theconversation.com"}
+              "health.ec.europa.eu", "ec.europa.eu", "theconversation.com",
+              # 28-oct (global-sources-more): GOV.UK organisation Atom feeds (DHSC, MHRA), OGL v3.0.
+              "www.gov.uk"}
 MONTHS = {name.lower(): number for number, names in enumerate([
     ("January", "Jan", "enero"), ("February", "Feb", "febrero"), ("March", "Mar", "marzo"),
     ("April", "Apr", "abril"), ("May", "mayo"), ("June", "Jun", "junio"),

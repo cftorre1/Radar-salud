@@ -1,8 +1,13 @@
 """Licensed RSS/Atom metadata discovery for Global (no bodies, no AI, no publication).
 
 Each feed in ``config/global_discovery.json`` ``feeds`` declares a ``rights`` basis.
-Only the publisher's own title, link, date, byline and categories are kept; the
-description/content of an item is never stored, rewritten or republished.
+Only the publisher's own title, link, date, byline and categories are kept. The
+publisher's own short summary (RSS ``description`` / Atom ``summary``) is kept only
+when the feed's rights allow it (``store_description``: public domain, OGL, CC BY or
+an equivalent reuse notice), verbatim and capped at ``DESCRIPTION_MAX`` characters.
+``content:encoded`` / Atom ``content`` (the body) is never read, stored or rewritten,
+and a description that is really a body (longer than ``DESCRIPTION_BODY_LIMIT``) is
+dropped: the card then shows the title only. Nothing is ever invented.
 """
 from __future__ import annotations
 
@@ -24,6 +29,8 @@ NS = {
 }
 REQUIRED_RIGHTS = {"basis", "license", "evidence_urls", "permitted_use", "automated_access", "attribution", "verified_on"}
 PERMITTED_USE = "metadata_title_link_byline_only"
+DESCRIPTION_MAX = 300
+DESCRIPTION_BODY_LIMIT = 1200
 SEGMENTS = ("payers", "providers", "pharma", "regulation", "healthtech", "ai_in_health")
 
 
@@ -38,6 +45,24 @@ def _clean(text) -> str:
     return " ".join(value.split())
 
 
+def publisher_summary(raw) -> tuple[str | None, bool]:
+    """Publisher's own short summary, verbatim (markup/entities removed), at most DESCRIPTION_MAX chars.
+
+    Longer summaries are cut at the last sentence end that fits, else at a word boundary with an
+    ellipsis (flagged as truncated). Text longer than DESCRIPTION_BODY_LIMIT is a body, not a
+    summary: it is dropped (title only)."""
+    text = _clean(raw)
+    if not text or len(text) > DESCRIPTION_BODY_LIMIT:
+        return None, False
+    if len(text) <= DESCRIPTION_MAX:
+        return text, False
+    head = text[:DESCRIPTION_MAX]
+    ends = [m.end() for m in re.finditer(r"[.!?](?=\s)", head + " ")]
+    if ends and ends[-1] >= 80:
+        return head[:ends[-1]].strip(), True
+    return head[:DESCRIPTION_MAX - 1].rsplit(" ", 1)[0].rstrip(" ,;:-") + "…", True
+
+
 def validate_feed_config(feed: dict) -> None:
     rights = feed.get("rights") or {}
     missing = REQUIRED_RIGHTS - set(rights)
@@ -47,6 +72,11 @@ def validate_feed_config(feed: dict) -> None:
         raise ValueError("feed rights do not permit automated metadata+link use")
     if not feed.get("attribution") or not feed.get("allowed_link_hosts") or not feed.get("routes"):
         raise ValueError("feed attribution/hosts/routes missing")
+    if feed.get("store_description") and not rights.get("description_basis"):
+        # Keeping the publisher's summary needs its own recorded rights basis (fail closed).
+        raise ValueError("store_description without rights.description_basis")
+    for pattern in feed.get("exclude_title_patterns", []):
+        re.compile(pattern)
 
 
 def feed_day(raw: str | None, as_of: date) -> tuple[str | None, str | None]:
@@ -115,7 +145,7 @@ def parse_feed(raw: bytes, route: dict, feed: dict, as_of: date) -> list[dict]:
         for item in channel.findall("item"):
             entries.append({
                 "title": _text(item, "title"), "link": _text(item, "link") or (_text(item, "guid") if (item.find("guid") is not None and (item.find("guid").get("isPermaLink", "true").lower() == "true")) else ""),
-                "guid": _text(item, "guid"), "date": _text(item, "pubDate") or _text(item, "dc:date"),
+                "guid": _text(item, "guid"), "date": _text(item, "pubDate") or _text(item, "dc:date"), "summary": _text(item, "description"),
                 "bylines": [_clean(n.text) for n in item.findall("dc:creator", NS) if n.text] + [_clean(n.text) for n in item.findall("author") if n.text],
                 "categories": [_clean(n.text) for n in item.findall("category") if n.text] + [_clean(n.text) for n in item.findall("dc:subject", NS) if n.text]})
     elif tag == "feed":
@@ -123,13 +153,13 @@ def parse_feed(raw: bytes, route: dict, feed: dict, as_of: date) -> list[dict]:
             links = [l for l in item.findall("atom:link", NS) if l.get("href") and l.get("rel", "alternate") == "alternate"]
             entries.append({
                 "title": _text(item, "atom:title"), "link": links[0].get("href") if links else "", "guid": _text(item, "atom:id"),
-                "date": _text(item, "atom:published") or _text(item, "atom:updated"),
+                "date": _text(item, "atom:published") or _text(item, "atom:updated"), "summary": _text(item, "atom:summary"),
                 "bylines": [_clean(_text(a, "atom:name")) for a in item.findall("atom:author", NS) if _text(a, "atom:name")],
                 "categories": [_clean(c.get("term") or c.get("label")) for c in item.findall("atom:category", NS) if c.get("term") or c.get("label")]})
     elif tag == "rdf":
         for item in root.findall("rss1:item", NS):
             entries.append({"title": _text(item, "rss1:title"), "link": _text(item, "rss1:link"), "guid": item.get(f"{{{NS['rdf']}}}about", ""),
-                            "date": _text(item, "dc:date"), "bylines": [_clean(n.text) for n in item.findall("dc:creator", NS) if n.text],
+                            "date": _text(item, "dc:date"), "summary": _text(item, "rss1:description"), "bylines": [_clean(n.text) for n in item.findall("dc:creator", NS) if n.text],
                             "categories": [_clean(n.text) for n in item.findall("dc:subject", NS) if n.text]})
     else:
         raise ValueError("not_a_feed_document: " + tag[:40])
@@ -152,6 +182,9 @@ def parse_feed(raw: bytes, route: dict, feed: dict, as_of: date) -> list[dict]:
             rows.append(row)
             continue
         row["published_at"], row["publication_date_error"] = feed_day(entry["date"], as_of)
+        if feed.get("store_description"):
+            row["description"], row["description_truncated"] = publisher_summary(entry.get("summary"))
+            row["description_basis"] = "publisher_feed_summary_verbatim" if row["description"] else None
         rows.append(row)
     return rows
 
@@ -242,6 +275,10 @@ def collect_feeds(config: dict, client, as_of: date) -> tuple[list[dict], list[d
                     previous["sections"] = sorted(set(previous["sections"] + [route["section"]]))
                     previous["index_evidence"].append(evidence)
                     previous["categories"] = sorted(set(previous["categories"] + row["categories"]))
+                    # Same publisher, another route: may fill a missing summary. Never across publishers.
+                    if previous["source"] == row["source"] and not previous.get("description") and row.get("description"):
+                        previous.update(description=row["description"], description_truncated=row["description_truncated"],
+                                        description_basis=row["description_basis"])
                     if previous["published_at"] != row["published_at"]:
                         previous.update(published_at=None, publication_date_error="conflicting_feed_dates")
                     continue
@@ -250,9 +287,16 @@ def collect_feeds(config: dict, client, as_of: date) -> tuple[list[dict], list[d
                 items[identity] = row
     result = []
     defaults = {feed["id"]: feed.get("default_segments", []) for feed in config.get("feeds", [])}
+    title_exclusions = {feed["id"]: feed.get("exclude_title_patterns", []) for feed in config.get("feeds", [])}
     rights_by_feed = {feed["id"]: feed.get("rights") or {} for feed in config.get("feeds", [])}
     for row in items.values():
         row["classification"] = classify_relevance(row["title"], row["categories"], default_segments=defaults.get(row["source"], ()))
+        # Publisher-specific routine document types (e.g. GOV.UK "Transparency data:", "FOI release:").
+        if any(re.search(p, _fold(row["title"])) for p in title_exclusions.get(row["source"], [])):
+            row["classification"] = {"materiality": "excluded", "relevant": False, "segments": [], "priority": 0,
+                                     "category": "publisher_routine_document_type",
+                                     "reason": "irrelevant_for_chilean_health_executives:publisher_routine_document_type",
+                                     "method": "deterministic_rules_v1", "ai_gate": {"invoked": False, "reason": "paid_ai_calls_contract_0"}}
         row["publication_ready"] = False
         rights = rights_by_feed.get(row["source"], {})
         # Paid tiers need the publisher's written confirmation when the licence is NonCommercial (KFF).

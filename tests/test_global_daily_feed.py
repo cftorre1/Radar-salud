@@ -24,6 +24,9 @@ BODIES = {
     "https://www.nih.gov/news-releases/feed.xml": "nih_news.xml",
     "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed": "ecdc_news.xml",
     "https://health.ec.europa.eu/node/2/rss_en": "ec_health.xml",
+    "https://www.gov.uk/government/organisations/department-of-health-and-social-care.atom": "govuk_dhsc.atom",
+    "https://www.gov.uk/government/organisations/medicines-and-healthcare-products-regulatory-agency.atom": "govuk_mhra.atom",
+    "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/drugs/rss.xml": "fda_drugs.xml",
 }
 
 
@@ -93,7 +96,9 @@ def test_cards_are_headline_link_and_deterministic_spanish_line_only():
     assert ".." not in blob_of(build(feed_payload(), {}, CONFIG, None, AS_OF)) and fda["chile_transfer"] == "hypothesis_only"
     assert set(fda) >= {"title", "url", "published_at", "attribution", "tags_es", "rights_basis"}
     blob = json.dumps(payload)
-    assert "Body not stored" not in blob and "Body must never be stored" not in blob
+    assert "Body must never be stored" not in blob and "Excerpt." not in blob
+    # Public-domain FDA keeps its own short summary verbatim; nothing is generated.
+    assert fda["description"] == "Publisher summary kept verbatim for the fixture." and fda["description_source"] == "publisher_feed_summary_verbatim"
     # Noise and consumer items never reach the page.
     assert "FDA Warns Consumers Not to Use Certain Tattoo Inks" not in cards and "Why do we yawn? A doctor explains" not in cards
     # The Conversation (CC BY-ND) keeps its byline and verbatim headline; it needs two segment matches.
@@ -158,7 +163,9 @@ def test_history_is_kept_within_retention_and_freshness_is_measured():
     later = build({"items": []}, {}, authorized(), first, date(2026, 11, 3))
     assert {c["id"] for c in later["items"]} == {c["id"] for c in first["items"]}
     assert later["freshness"]["status"] == "stale" and first["freshness"]["status"] == "fresh"
-    gone = build({"items": []}, {}, authorized(), first, date(2026, 12, 20))
+    # 90-day inbox: still there after 53 days, gone after 90.
+    assert {c["id"] for c in build({"items": []}, {}, authorized(), first, date(2026, 12, 20))["items"]} == {c["id"] for c in first["items"]}
+    gone = build({"items": []}, {}, authorized(), first, date(2027, 1, 27))
     assert gone["items"] == []
     # A source whose display is withdrawn disappears from history too.
     config = authorized()
@@ -230,7 +237,8 @@ def test_new_feeds_parse_title_link_date_without_body(fid, fixture, expected):
     by_url = {r["url"]: r for r in rows}
     for url, day in expected.items():
         assert by_url[url]["published_at"] == day and by_url[url]["title"] and by_url[url]["body_stored"] is False
-    assert "Body not stored" not in json.dumps(rows)
+    # Only the publisher's own summary (RSS description) may be kept, verbatim and markup-free.
+    assert all(r.get("description") in (None, "Publisher summary kept verbatim for the fixture.") for r in rows)
 
 
 def test_new_feed_cards_on_the_page():
@@ -285,3 +293,89 @@ def test_conversation_bylines_keep_feed_order():
         b"<author><name>Zoe Z</name></author><author><name>Al A</name></author><author><name>Mo M</name></author>")
     rows = parse_feed(raw, conv["routes"][0], conv, AS_OF)
     assert rows[0]["bylines"] == ["Zoe Z", "Al A", "Mo M"]
+
+
+# --- 28-oct (global-sources-more): GOV.UK OGL feeds, publisher summaries, 90-day inbox, cross-source dedup ---
+
+def test_govuk_atom_feeds_parse_with_ogl_rights_and_routine_filters():
+    feeds = {f["id"]: f for f in CONFIG["feeds"]}
+    for fid in ("uk_dhsc", "uk_mhra"):
+        feed = feeds[fid]
+        assert feed["enabled"] and feed["allowed_link_hosts"] == ["www.gov.uk"] and feed["store_description"] is True
+        assert feed["rights"]["basis"] == "uk_open_government_licence_v3" and feed["rights"]["license_label"] == "OGL v3.0"
+        assert "https://www.gov.uk/robots.txt" in feed["rights"]["evidence_urls"] and "not fetched live" in feed["rights"]["verified_how"]
+        assert "/search/all" not in feed["routes"][0]["url"]  # disallowed by gov.uk robots.txt
+    items, failures, _ = collect_feeds(CONFIG, FeedClient(), AS_OF)
+    dhsc = {r["title"]: r for r in items if r["source"] == "uk_dhsc"}
+    assert dhsc["Guidance: DHSC public appointments: 2026 to 2027"]["classification"]["relevant"] is False
+    routine = dhsc["Transparency data: DHSC spending over £25,000: October 2026"]["classification"]
+    assert routine["category"] == "publisher_routine_document_type"
+    funding = dhsc["New NHS waiting list funding for hospitals to cut elective care backlog"]
+    assert funding["classification"]["relevant"] and "providers" in funding["classification"]["segments"]
+    assert funding["description"] == "Hospitals in England will receive new funding to expand elective capacity and reduce waiting times."
+    assert funding["published_at"] == "2026-10-27" and funding["url"].startswith("https://www.gov.uk/government/news/")
+    # A summary over 300 characters is cut at a sentence end that fits, or a word boundary with an ellipsis.
+    long = dhsc["Policy paper: Joint DHSC and NHS England written evidence for the NHSPRB: pay round 2027 to 2028"]
+    assert len(long["description"]) <= 300 and long["description_truncated"] is True and long["description"].endswith("…")
+    # No summary published -> title only (never invented).
+    assert dhsc["Press release: AI scribes rolled out across GP practices to free up clinicians' time"]["description"] is None
+    mhra = {r["title"]: r for r in items if r["source"] == "uk_mhra"}
+    assert mhra["IXCHIQ chikungunya vaccine: UK marketing authorisation withdrawn after safety review"]["description"] == "The marketing authorisation has been withdrawn."
+    assert mhra["Official Statistics: MHRA Performance Data"]["classification"]["relevant"] is False
+
+
+def test_nd_and_noncommercial_feeds_never_keep_a_summary():
+    feeds = {f["id"]: f for f in CONFIG["feeds"]}
+    assert feeds["the_conversation"]["store_description"] is False and feeds["kff_health_news"]["store_description"] is False
+    conv = feeds["the_conversation"]
+    rows = parse_feed((FIX / "conversation_health.atom").read_bytes(), conv["routes"][0], conv, AS_OF)
+    assert all("description" not in r for r in rows)
+    cards = build(feed_payload(), {}, CONFIG, None, AS_OF)["items"]
+    assert all(c["description"] is None for c in cards if c["source"] == "the_conversation")
+
+
+def test_store_description_requires_its_own_rights_basis():
+    from radar_salud.global_feed_discovery import validate_feed_config
+    feed = copy.deepcopy(next(f for f in CONFIG["feeds"] if f["id"] == "uk_dhsc"))
+    feed["rights"].pop("description_basis")
+    with pytest.raises(ValueError, match="description_basis"):
+        validate_feed_config(feed)
+
+
+def test_publisher_summary_rules():
+    from radar_salud.global_feed_discovery import publisher_summary
+    assert publisher_summary("") == (None, False) and publisher_summary(None) == (None, False)
+    assert publisher_summary("<p>Short &amp; plain.</p>") == ("Short & plain.", False)
+    assert publisher_summary("x " * 700) == (None, False)  # a body, not a summary
+    text = "First sentence is long enough to be kept as the summary of this item. " * 3 + "y" * 200
+    cut, truncated = publisher_summary(text)
+    assert truncated and len(cut) <= 300 and cut.endswith(".")
+
+
+def test_ninety_day_single_inbox_ordered_by_date_and_deduplicated_across_sources():
+    assert CONFIG["daily_feed"]["window_days"] == 90 and CONFIG["daily_feed"]["retention_days"] >= 90
+    payload = build(feed_payload(), {}, CONFIG, None, AS_OF)
+    assert payload["window_days"] == 90 and payload["retention_days"] == 90
+    days = [c["published_at"] for c in payload["items"]]
+    assert days == sorted(days, reverse=True)
+    titles = [c["title"] for c in payload["items"]]
+    # Same FDA URL in two routes -> one card; same GOV.UK story from DHSC and MHRA -> one card.
+    assert titles.count("FDA Approves First Biosimilar for Treatment of Rare Blood Disorder") == 1
+    scribes = [c for c in payload["items"] if "AI scribes rolled out across GP practices" in c["title"]]
+    assert len(scribes) == 1 and payload["duplicates_merged"] >= 1
+    assert {s["source"] for s in scribes[0].get("also_reported_by", [])} | {scribes[0]["source"]} == {"uk_dhsc", "uk_mhra"}
+    # Cards from both new GOV.UK publishers reach the inbox with their OGL licence link.
+    ogl = [c for c in payload["items"] if c["source"] in ("uk_dhsc", "uk_mhra")]
+    assert ogl and all(c["rights_basis"]["license_label"] == "OGL v3.0" for c in ogl)
+
+
+def test_title_dedup_needs_a_real_headline_and_a_short_gap():
+    from radar_salud.global_daily_feed import dedupe
+    def card(i, src, title, day):
+        return {"id": i, "source": src, "source_label": src, "title": title, "url": "https://x/" + i, "published_at": day, "priority": 70, "description": None}
+    same = card("a", "uk_dhsc", "Press release: New funding for NHS hospitals announced", "2026-10-20")
+    twin = card("b", "uk_mhra", "New funding for NHS hospitals announced", "2026-10-22")
+    late = card("c", "ema", "New funding for NHS hospitals announced", "2026-10-30")
+    short = [card("d", "fda", "Recall", "2026-10-20"), card("e", "cdc", "Recall", "2026-10-20")]
+    kept, dropped = dedupe([same, twin, late] + short)
+    assert [c["id"] for c in kept] == ["a", "d", "e", "c"] and dropped == 1

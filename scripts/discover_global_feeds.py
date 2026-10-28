@@ -1,4 +1,4 @@
-"""Licensed Global feed discovery (KFF Health News, EMA, FDA): metadata + link only.
+"""Licensed Global feed discovery (EMA, FDA, CDC, NIH, ECDC, EC, The Conversation, UK DHSC/MHRA; KFF discovery only): metadata + link only.
 
 No paid AI, no bodies, no publication. Runs after WHO/PAHO discovery with its own
 capture directory, budget and ledger, so it can never alter WHO/PAHO coverage contracts.

@@ -164,7 +164,8 @@
           "not used to create advertising"
         ],
         "verified_on": "2026-10-27",
-        "verified_how": "syndication and rss-feeds pages read via web fetch 27-oct; robots.txt enforced at runtime (fail closed)"
+        "verified_how": "syndication and rss-feeds pages read via web fetch 27-oct; robots.txt enforced at runtime (fail closed)",
+        "description_basis": null
       },
       "daily_feed": {
         "display": false,
@@ -172,7 +173,8 @@
         "kind_es": "Periodismo de política sanitaria (EE. UU.)",
         "show_byline": true,
         "display_note": "Dirección 28-oct-2026: KFF Health News queda fuera de Global (PREMIUM) por ahora; sigue como descubrimiento sin publicación."
-      }
+      },
+      "store_description": false
     },
     {
       "id": "ema",
@@ -216,17 +218,19 @@
         ],
         "verified_on": "2026-10-27",
         "verified_how": "legal notice and RSS page read via web fetch 27-oct; robots.txt enforced at runtime (fail closed)",
-        "paid_tier_requires_publisher_confirmation": false
+        "paid_tier_requires_publisher_confirmation": false,
+        "description_basis": "EMA legal notice: reproduction permitted with acknowledgement (summary kept verbatim, attributed, unaltered)"
       },
       "daily_feed": {
         "display": true,
         "label": "EMA",
         "kind_es": "Regulador de medicamentos de la Unión Europea"
-      }
+      },
+      "store_description": true
     },
     {
       "id": "fda",
-      "name": "US FDA (press releases)",
+      "name": "US FDA (press releases, What's New: Drugs/Biologics, MedWatch)",
       "enabled": true,
       "attribution": "U.S. Food and Drug Administration (FDA)",
       "allowed_link_hosts": [
@@ -239,6 +243,21 @@
         {
           "section": "press_releases",
           "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
+          "format": "rss"
+        },
+        {
+          "section": "whats_new_drugs",
+          "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/drugs/rss.xml",
+          "format": "rss"
+        },
+        {
+          "section": "whats_new_biologics",
+          "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/biologics/rss.xml",
+          "format": "rss"
+        },
+        {
+          "section": "medwatch_safety_alerts",
+          "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/medwatch/rss.xml",
           "format": "rss"
         }
       ],
@@ -257,14 +276,16 @@
           "third-party content excluded"
         ],
         "verified_on": "2026-10-27",
-        "verified_how": "RSS feed list page read via web fetch 27-oct; FDA website-policies page could not be fetched from this environment (legal basis is statutory); robots.txt enforced at runtime (fail closed)",
-        "paid_tier_requires_publisher_confirmation": false
+        "verified_how": "RSS feed list page read via web fetch 27-oct; FDA website-policies page could not be fetched from this environment (legal basis is statutory); robots.txt enforced at runtime (fail closed); 28-oct (global-sources-more): RSS list page re-read via web fetch, routes What's New: Drugs, What's New: Vaccines, Blood and Biologics and MedWatch Safety Alerts added (food/consumer feeds left out)",
+        "paid_tier_requires_publisher_confirmation": false,
+        "description_basis": "US federal government work, public domain (17 U.S.C. §105)"
       },
       "daily_feed": {
         "display": true,
         "label": "FDA",
         "kind_es": "Regulador de medicamentos y dispositivos de EE. UU."
-      }
+      },
+      "store_description": true
     },
     {
       "id": "cdc",
@@ -304,13 +325,15 @@
         ],
         "verified_on": "2026-10-28",
         "verified_how": "agencymaterials page read via web fetch 28-oct; feed URLs from a public feed directory (feeder.co); not fetched live (sandbox has no route); robots.txt enforced at runtime (fail closed)",
-        "paid_tier_requires_publisher_confirmation": false
+        "paid_tier_requires_publisher_confirmation": false,
+        "description_basis": "US federal government work, public domain (17 U.S.C. §105); summary kept verbatim (CDC asks not to alter substance)"
       },
       "daily_feed": {
         "display": true,
         "label": "CDC",
         "kind_es": "Agencia de salud pública de EE. UU."
-      }
+      },
+      "store_description": true
     },
     {
       "id": "nih",
@@ -343,14 +366,16 @@
         ],
         "verified_on": "2026-10-28",
         "verified_how": "NIH copyright page read via web fetch 28-oct; feed structure confirmed on a public mirror of nih.gov/news-releases/feed.xml, not fetched live; robots.txt enforced at runtime",
-        "paid_tier_requires_publisher_confirmation": false
+        "paid_tier_requires_publisher_confirmation": false,
+        "description_basis": "US federal government work, public domain (17 U.S.C. §105)"
       },
       "daily_feed": {
         "display": true,
         "label": "NIH",
         "kind_es": "Institutos Nacionales de Salud de EE. UU.",
         "min_segment_matches": 2
-      }
+      },
+      "store_description": true
     },
     {
       "id": "federal_register_cms",
@@ -383,14 +408,16 @@
         ],
         "verified_on": "2026-10-28",
         "verified_how": "Statutory basis 17 U.S.C. §105. FR developer page read via web fetch 28-oct: 'No API keys are needed'; 'Republishers of Federal Register material are not permitted to use official NARA or OFR logos or seals'; it does not mention the documents.rss endpoint; not fetched live; robots for /api/ unverified -> feed disabled",
-        "paid_tier_requires_publisher_confirmation": false
+        "paid_tier_requires_publisher_confirmation": false,
+        "description_basis": "US federal government work, public domain (17 U.S.C. §105)"
       },
       "daily_feed": {
         "display": true,
         "label": "CMS · Federal Register",
         "kind_es": "Normativa del pagador público de EE. UU. (Medicare/Medicaid)"
       },
-      "disabled_reason": "robots.txt for www.federalregister.gov/api/ could not be verified from this environment (proxy/allowlist) on 2026-10-28; kept off (fail closed) until a probe confirms /api/ is allowed for automated clients"
+      "disabled_reason": "robots.txt for www.federalregister.gov/api/ could not be verified from this environment (proxy/allowlist) on 2026-10-28; kept off (fail closed) until a probe confirms /api/ is allowed for automated clients",
+      "store_description": true
     },
     {
       "id": "ecdc",
@@ -430,13 +457,15 @@
         "verified_how": "copyright page read via web fetch 28-oct; feed URLs from a public feed directory; not fetched live; robots.txt enforced at runtime",
         "paid_tier_requires_publisher_confirmation": false,
         "license_url": "https://creativecommons.org/licenses/by/4.0/",
-        "license_label": "CC BY 4.0"
+        "license_label": "CC BY 4.0",
+        "description_basis": "CC BY 4.0 (ECDC copyright notice); summary verbatim with attribution"
       },
       "daily_feed": {
         "display": true,
         "label": "ECDC",
         "kind_es": "Agencia europea de control de enfermedades"
-      }
+      },
+      "store_description": true
     },
     {
       "id": "ec_health",
@@ -473,13 +502,15 @@
         "verified_how": "health.ec.europa.eu uses the Europa legal notice; the health.ec.europa.eu/legal-notice_en page could not be fetched from this environment (allowlist), the Commission legal notice (CC BY 4.0, Decision 2011/833/EU) was read via web fetch 28-oct; feed URL and cadence (~5/week) from a public feed directory; not fetched live; robots.txt enforced at runtime",
         "paid_tier_requires_publisher_confirmation": false,
         "license_url": "https://creativecommons.org/licenses/by/4.0/",
-        "license_label": "CC BY 4.0"
+        "license_label": "CC BY 4.0",
+        "description_basis": "CC BY 4.0 (Commission Decision 2011/833/EU); summary verbatim with attribution"
       },
       "daily_feed": {
         "display": true,
         "label": "Comisión Europea",
         "kind_es": "Política sanitaria de la Comisión Europea"
-      }
+      },
+      "store_description": true
     },
     {
       "id": "the_conversation",
@@ -513,7 +544,8 @@
         ],
         "verified_on": "2026-10-28",
         "verified_how": "republishing guidelines read via web fetch 28-oct; feed URL from public feed directories (feedspot); not fetched live; robots.txt enforced at runtime",
-        "paid_tier_requires_publisher_confirmation": false
+        "paid_tier_requires_publisher_confirmation": false,
+        "description_basis": null
       },
       "daily_feed": {
         "display": true,
@@ -521,6 +553,121 @@
         "kind_es": "Análisis de académicos (EE. UU.)",
         "show_byline": true,
         "min_segment_matches": 2
+      },
+      "store_description": false,
+      "description_note": "CC BY-ND: publisher summary not kept (a 300-character cut would be a derivative); title only."
+    },
+    {
+      "id": "uk_dhsc",
+      "name": "UK Department of Health and Social Care (GOV.UK activity)",
+      "enabled": true,
+      "attribution": "Department of Health and Social Care (UK), GOV.UK",
+      "allowed_link_hosts": [
+        "www.gov.uk"
+      ],
+      "default_segments": [],
+      "store_description": true,
+      "exclude_title_patterns": [
+        "^(transparency data|foi release|corporate information|form|correspondence|decision|notice|guidance: dhsc public appointments)\\b",
+        "\\b(public appointments?|board minutes|spending over|gifts and hospitality|senior officials|organogram|workforce management information|register of interests)\\b"
+      ],
+      "routes": [
+        {
+          "section": "organisation_activity",
+          "url": "https://www.gov.uk/government/organisations/department-of-health-and-social-care.atom",
+          "format": "atom"
+        }
+      ],
+      "rights": {
+        "basis": "uk_open_government_licence_v3",
+        "license": "Open Government Licence v3.0 (GOV.UK footer: 'All content is available under the Open Government Licence v3.0, except where otherwise stated'); commercial and non-commercial reuse permitted with attribution; logos, crests, personal data and third-party rights excluded",
+        "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+        "license_label": "OGL v3.0",
+        "evidence_urls": [
+          "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+          "https://www.gov.uk/government/organisations/department-of-health-and-social-care",
+          "https://www.gov.uk/robots.txt"
+        ],
+        "permitted_use": "metadata_title_link_byline_only",
+        "automated_access": "reuse_permitted_with_acknowledgement",
+        "attribution": "Contains public sector information licensed under the Open Government Licence v3.0 (Department of Health and Social Care, GOV.UK), with link",
+        "restrictions": [
+          "no logos/crests/Royal Arms",
+          "no implied official status or endorsement",
+          "third-party content and personal data excluded",
+          "titles and summaries verbatim"
+        ],
+        "description_basis": "OGL v3.0 permits copying and publishing the publisher's own summary with attribution",
+        "verified_on": "2026-10-28",
+        "verified_how": "OGL v3 text and the GOV.UK organisation page footer read via web fetch 28-oct; gov.uk robots.txt read via web fetch 28-oct (disallows only /*/print and /search/all* for all agents; organisation .atom feeds allowed); feed URL and cadence from a public feed directory (feeder.co); not fetched live (sandbox has no route); robots.txt enforced at runtime (fail closed)",
+        "paid_tier_requires_publisher_confirmation": false
+      },
+      "expected_items_per_week": {
+        "raw": 28,
+        "relevant_estimate": "8-12",
+        "basis": "feeder.co 28-oct: 28 posts in last 7 days"
+      },
+      "daily_feed": {
+        "display": true,
+        "label": "DHSC (Reino Unido)",
+        "kind_es": "Ministerio de Salud y Asistencia Social del Reino Unido (NHS)"
+      }
+    },
+    {
+      "id": "uk_mhra",
+      "name": "UK MHRA (GOV.UK activity)",
+      "enabled": true,
+      "attribution": "Medicines and Healthcare products Regulatory Agency (MHRA), GOV.UK",
+      "allowed_link_hosts": [
+        "www.gov.uk"
+      ],
+      "default_segments": [],
+      "store_description": true,
+      "exclude_title_patterns": [
+        "^(transparency data|foi release|corporate information|form|correspondence|decision|notice|guidance: dhsc public appointments)\\b",
+        "\\b(public appointments?|board minutes|spending over|gifts and hospitality|senior officials|organogram|workforce management information|register of interests)\\b",
+        "\\b(performance data|covid-19 test products)\\b"
+      ],
+      "routes": [
+        {
+          "section": "organisation_activity",
+          "url": "https://www.gov.uk/government/organisations/medicines-and-healthcare-products-regulatory-agency.atom",
+          "format": "atom"
+        }
+      ],
+      "rights": {
+        "basis": "uk_open_government_licence_v3",
+        "license": "Open Government Licence v3.0 (GOV.UK footer: 'All content is available under the Open Government Licence v3.0, except where otherwise stated'); commercial and non-commercial reuse permitted with attribution; logos, crests, personal data and third-party rights excluded",
+        "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+        "license_label": "OGL v3.0",
+        "evidence_urls": [
+          "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+          "https://www.gov.uk/government/organisations/medicines-and-healthcare-products-regulatory-agency",
+          "https://www.gov.uk/robots.txt"
+        ],
+        "permitted_use": "metadata_title_link_byline_only",
+        "automated_access": "reuse_permitted_with_acknowledgement",
+        "attribution": "Contains public sector information licensed under the Open Government Licence v3.0 (Medicines and Healthcare products Regulatory Agency, GOV.UK), with link",
+        "restrictions": [
+          "no logos/crests/Royal Arms",
+          "no implied official status or endorsement",
+          "third-party content and personal data excluded",
+          "titles and summaries verbatim"
+        ],
+        "description_basis": "OGL v3.0 permits copying and publishing the publisher's own summary with attribution",
+        "verified_on": "2026-10-28",
+        "verified_how": "OGL v3 text and the GOV.UK organisation page footer (DHSC and UKHSA pages) read via web fetch 28-oct; gov.uk robots.txt read via web fetch 28-oct (disallows only /*/print and /search/all* for all agents; organisation .atom feeds allowed); feed URL and cadence from a public feed directory (feeder.co); not fetched live (sandbox has no route); robots.txt enforced at runtime (fail closed)",
+        "paid_tier_requires_publisher_confirmation": false
+      },
+      "expected_items_per_week": {
+        "raw": 11,
+        "relevant_estimate": "5-8",
+        "basis": "feeder.co 28-oct: 11 posts in last 7 days"
+      },
+      "daily_feed": {
+        "display": true,
+        "label": "MHRA (Reino Unido)",
+        "kind_es": "Regulador de medicamentos y dispositivos del Reino Unido"
       }
     }
   ],
@@ -532,36 +679,8 @@
       "checked_on": "2026-10-27"
     },
     {
-      "name": "Fierce Healthcare (Questex)",
-      "reason": "Terms of use not retrievable/verified; no explicit RSS reuse grant found. Excluded until terms verified (fail closed).",
-      "checked_on": "2026-10-27"
-    },
-    {
       "name": "Modern Healthcare (Crain)",
       "reason": "Paywalled; Crain terms not retrievable from this environment. Excluded until verified.",
-      "checked_on": "2026-10-27"
-    },
-    {
-      "name": "Health Affairs (Forefront)",
-      "reason": "Terms of use page failed to load; no reuse grant verified. Excluded until verified.",
-      "evidence_url": "https://www.healthaffairs.org/terms-of-use",
-      "checked_on": "2026-10-27"
-    },
-    {
-      "name": "The Lancet (Elsevier)",
-      "reason": "No RSS reuse terms located; Elsevier content is copyrighted. Excluded until verified.",
-      "checked_on": "2026-10-27"
-    },
-    {
-      "name": "BMJ",
-      "reason": "RSS page invites displaying feeds on websites but states no license terms; not verified for commercial use. Deferred.",
-      "evidence_url": "https://ebm.bmj.com/pages/rss-feeds",
-      "checked_on": "2026-10-27"
-    },
-    {
-      "name": "OECD",
-      "reason": "Publications CC BY 4.0 since July 2024 (Open by Default), but no verified RSS/API route for health news located; deferred (candidate for an API route).",
-      "evidence_url": "https://www.oecd.org/en/about/oecd-open-by-default-policy.html",
       "checked_on": "2026-10-27"
     },
     {
@@ -588,11 +707,6 @@
       "checked_on": "2026-10-28"
     },
     {
-      "name": "CMS newsroom (cms.gov)",
-      "reason": "Public domain, but no current newsroom RSS URL verified (cms.gov/rss/33266 is an empty actuarial feed). Covered meanwhile by Federal Register CMS feed.",
-      "checked_on": "2026-10-28"
-    },
-    {
       "name": "Reuters, Financial Times, The Economist, WSJ, Bloomberg, STAT",
       "reason": "Paywalled/terms forbid automated collection; manual curation only (editor submits link + original description backed by primary evidence).",
       "checked_on": "2026-10-28"
@@ -601,6 +715,47 @@
       "name": "El País, Expansión, Diario Médico, ConSalud, Redacción Médica, Infobae, Valor Econômico",
       "reason": "All rights reserved press (Spain art. 32 LPI opt-out for press aggregation; LatAm terms reserve rights); no automated reuse grant found. Manual curation only.",
       "checked_on": "2026-10-28"
+    },
+    {
+      "name": "Commonwealth Fund",
+      "reason": "Terms: use encouraged for non-commercial purposes 'with appropriate citation and permission'; prohibited use (v) 'harvesting data from the Site to populate databases'. Excluded for a PREMIUM product.",
+      "evidence_url": "https://www.commonwealthfund.org/terms-use",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "NEJM (NEJM Group)",
+      "reason": "Terms §2/§4: personal noncommercial use only; no 'systematic retrieval of Content', no scraping/harvesting; all rights reserved incl. text and data mining. Excluded.",
+      "evidence_url": "https://www.nejmgroup.org/legal/terms-of-use.htm",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "MedPage Today",
+      "reason": "Terms: personal non-commercial use; prohibits robots/spiders/retrieval applications and use for data set creation; commercial use needs written permission. Excluded (manual curation only).",
+      "evidence_url": "https://tostracker.app/document/medpagetodaycom-tos",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "IHME",
+      "reason": "Site content CC BY-NC-ND 4.0 / data free for non-commercial use; commercial organisations must request a licence. Excluded for PREMIUM until a licence exists.",
+      "evidence_url": "https://www.healthdata.org/node/822",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "Health Canada / Public Health Agency of Canada (canada.ca)",
+      "reason": "Canada.ca terms: reproduction for non-commercial purposes only; 'you may not reproduce materials ... for the purposes of commercial redistribution' without prior permission. Excluded unless Health Canada grants permission (feeds exist on api.io.canada.ca).",
+      "evidence_url": "https://www.canada.ca/en/transparency/terms",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "World Bank blogs",
+      "reason": "Re-checked 28-oct: CC BY applies to the Open Knowledge Repository (publications/datasets), not to blogs/news pages, which fall under the site terms (non-commercial; commercial use needs written consent). Excluded.",
+      "evidence_url": "https://www.worldbank.org/ext/en/legal/terms-conditions/open-knowledge-repository",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "WHO news RSS / PAHO / OPS-OMS Spanish feeds",
+      "reason": "Not added as separate RSS feeds: WHO and PAHO (EN and ES routes) are already collected by the who_api/paho_html crawl under the 27-oct Dirección authorization; a second route would only duplicate cards.",
+      "checked_on": "2026-10-28"
     }
   ],
   "daily_feed": {
@@ -608,12 +763,81 @@
     "authorized_by": "Dirección (cftorre1)",
     "authorization_note": "Dirección 28-oct-2026, respuesta a la pregunta del coordinador sobre encender \"Al día afuera\": \"Sí, encender\". Decidió dejar KFF fuera por ahora. Mostrar titulares (metadatos + enlace) es una decisión de publicación (CLAUDE.md §3); este registro es esa autorización.",
     "authorized_at": "2026-10-28",
-    "window_days": 14,
-    "retention_days": 45,
+    "window_days": 90,
+    "retention_days": 90,
     "max_per_source_per_day": 6,
     "stale_after_days": 2,
-    "card_contract": "publisher title verbatim + link + date + attribution (+ byline when the licence asks) + deterministic Spanish relevance line; never body/excerpt/photos; never an Alicanto analysis or Chile effect",
+    "card_contract": "publisher title verbatim + link + date + attribution (+ byline when the licence asks) + the publisher's own short summary verbatim (<= 300 chars) only when the feed's rights allow it (store_description + rights.description_basis), otherwise title only + deterministic Spanish relevance line; never body/content:encoded/photos; never an Alicanto analysis or Chile effect; never an invented description",
     "ai_policy": "paid_ai_calls=0. Optional future: Spanish translation of titles only for CC BY / public-domain feeds (not KFF, not The Conversation: NoDerivatives), cheap model inside the USD 10/month cap, requires Dirección OK.",
-    "kff_decision": "Dirección 28-oct-2026: KFF Health News queda fuera de Global (PREMIUM) por ahora; sigue como descubrimiento sin publicación."
-  }
+    "kff_decision": "Dirección 28-oct-2026: KFF Health News queda fuera de Global (PREMIUM) por ahora; sigue como descubrimiento sin publicación.",
+    "window_note": "Dirección 28-oct-2026: Global es una sola bandeja ordenada por fecha con 90 días de visibilidad y novedades diarias.",
+    "dedup": "same canonical URL or same normalized headline within 3 days across sources -> one card (earliest), other publishers listed in also_reported_by"
+  },
+  "feed_candidates_pending_direccion": [
+    {
+      "name": "Health Affairs (Forefront)",
+      "status": "needs_direccion_decision",
+      "reason": "Terms of use page failed to load again 28-oct (client error); no reuse grant verified. Not enabled.",
+      "evidence_url": "https://www.healthaffairs.org/terms-of-use",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "BMJ / The Lancet news (headlines only)",
+      "status": "needs_direccion_decision",
+      "reason": "BMJ RSS page invites display of feeds but states no licence; Elsevier/Lancet RSS reuse terms not located. Ask the publishers or keep manual curation. Not enabled.",
+      "evidence_url": "https://ebm.bmj.com/pages/rss-feeds",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "Fierce Healthcare (Questex)",
+      "status": "needs_direccion_decision",
+      "reason": "Terms of use still not retrievable 28-oct; no RSS reuse grant found. Not enabled.",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "OECD (health)",
+      "status": "needs_direccion_decision",
+      "reason": "Content CC BY 4.0 (Open by Default, July 2024), but no working RSS/API route for health news: the oecd.org index.xml feeds no longer respond (feeder.co 28-oct). Needs an HTML listing parser and a robots check; not enabled.",
+      "evidence_url": "https://www.oecd.org/en/about/oecd-open-by-default-policy.html",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "CMS.gov newsroom",
+      "status": "needs_route",
+      "reason": "Public domain, but cms.gov newsroom pages offer only e-mail updates (no RSS link, checked 28-oct). Federal Register CMS feed stays disabled until /api/ robots is verified.",
+      "evidence_url": "https://cms.gov/newsroom/press-releases/medicaid-and-chip-release",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "NHS England news",
+      "status": "needs_verification",
+      "reason": "Feed https://www.england.nhs.uk/feed/ exists (about 1 post/week, feeder.co 28-oct) but england.nhs.uk robots.txt and licence page could not be fetched from this environment. NHS England is being merged into DHSC; DHSC's GOV.UK feed already carries joint announcements. Not enabled.",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "Australian Department of Health, Disability and Ageing",
+      "status": "needs_verification",
+      "reason": "Feed https://www.health.gov.au/news/rss.xml exists (4-5 posts/week, feeder.co 28-oct) but the copyright page returned robots_disallowed to our fetcher and the licence (CC BY 4.0 expected) could not be read. Not enabled until robots and licence are confirmed.",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "Ministerio de Sanidad (España)",
+      "status": "needs_route",
+      "reason": "Aviso legal permits commercial and non-commercial reuse with source citation, last-update date and no distortion (verified 28-oct, https://www.sanidad.gob.es/en/avisoLegal/home.htm), but the RSS manager (rss/cargar.do) lists no feed URL without a session; press-release feed URL unverified. Rights OK; route pending.",
+      "evidence_url": "https://www.sanidad.gob.es/en/avisoLegal/home.htm",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "AEMPS (España)",
+      "status": "needs_route",
+      "reason": "Communication page offers e-mail lists only (no RSS link found 28-oct); aviso legal not retrievable. Not enabled.",
+      "checked_on": "2026-10-28"
+    },
+    {
+      "name": "Argentina (Ministerio de Salud), Colombia (MinSalud, Supersalud), México (Cofepris, IMSS), Perú (SUSALUD), ISSA",
+      "status": "needs_route_and_terms",
+      "reason": "No RSS/Atom route found 28-oct (gob.pe, gob.mx, minsalud.gov.co offer HTML listings only) and site terms not verified (México LIBRE USO MX covers open datasets, not stated for gob.mx pages). Would need HTML listing parsers plus robots and terms checks. Not enabled.",
+      "checked_on": "2026-10-28"
+    }
+  ]
 }
