@@ -23,7 +23,6 @@
 /* Read rows keep publisher and date (Dirección 28-oct 03:49): only tone and weight change. */
 .global-feed .daily-item.read h2,.global-feed .theme.read h2{font-weight:400;color:var(--ink68)}
 .global-feed .daily-item.read .card-meta,.global-feed .theme.read .card-meta{color:var(--ink48)}
-.global-feed .daily-item .daily-desc{margin:3px 0 0;font:400 13.5px/1.45 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink68);overflow-wrap:anywhere}
 .global-feed .group-head{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink48);margin:0;padding:10px var(--gutter) 2px 40px}
 .global-feed .eyebrow{color:var(--accent-ink);font-weight:650}
 
@@ -53,6 +52,7 @@
 /* Headline rows (formerly "Al día afuera", one inbox since Dirección 28-oct 08:20): same anatomy as the themes. */
 .global-feed .daily-item a.lic{color:inherit;text-decoration:underline;text-underline-offset:2px}
 .global-foot{padding:0 0 12px}
+.global-detail .ficha-attr a,.global-foot .daily-note a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 .global-foot .daily-note{margin:4px 0 0;font-size:11.5px;line-height:1.45;color:var(--ink48)}
 
 /* Global Premium identity (opción B): a matte gold band under the header, gold rule on unread rows, gold dots. */

@@ -238,3 +238,26 @@ test('WATCH restored: following persists, never filters by itself, and Actores �
  const row=c.followRow(bupa);assert.match(row,/data-follow="cl:org:bupa" aria-pressed="true"[^>]*>[\s\S]*Siguiendo Bupa/);assert.match(c.followRow(isp),/aria-pressed="false"[\s\S]*Seguir ISP/);
  vm.runInContext("activeInterests.add('siguiendo')",c);assert.equal(vm.runInContext('interestMatch(bupa)',c),true);assert.equal(vm.runInContext('interestMatch(isp)',c),false);assert.equal(vm.runInContext("INTERESTS.find(x=>x.k==='siguiendo').group",c),'Actores');
  vm.runInContext('persistFilters()',c);assert.deepEqual(JSON.parse(saved.at(-1)[1]).entities,['cl:org:bupa'])});
+test('Global headline fichas follow the feed schema 2 contract: verbatim description, "…" when cut, also_reported_by, OGL attribution',()=>{
+ const c={AlicantoRead:{readSet:new Set()},localStorage:{getItem:()=>null,setItem:()=>{}},Date,Intl,Set,Map,URL};vm.createContext(c);vm.runInContext(fs.readFileSync('web/global.js','utf8').split('AlicantoRead.subscribe(')[0],c);
+ const base={id:'a1',title:'MHRA approves a new medicine',url:'https://www.gov.uk/government/news/x',published_at:'2026-10-27',source_label:'MHRA (Reino Unido)',bylines:[],tags_es:[]};
+ const ficha=x=>{c.input=x;vm.runInContext("themes=[];headlines=[input];buildEntries()",c);return c.headlineDetail(c.entryFor(`daily-${x.id}`))};
+ // description null -> title and meta only; no "Qué pasó", nothing invented from summary_es or a snippet.
+ const bare=ficha({...base,description:null,summary_es:'Regulador. Relevante para: Regulación.',snippet:'x'});assert.doesNotMatch(bare,/Qué pasó|Regulador|<p>x<\/p>/);assert.match(bare,/<h2 id="globalDetailTitle">MHRA approves a new medicine<\/h2>/);
+ assert.match(ficha({...base,description:'Short summary.'}),/<h3 class="ficha-h">Qué pasó<\/h3><p>Short summary\.<\/p>/);
+ assert.match(ficha({...base,description:'First sentence. Second sentence.',description_truncated:true}),/<p>First sentence\. Second sentence\. …<\/p>/);
+ assert.match(ficha({...base,description:'Already cut…',description_truncated:true}),/<p>Already cut…<\/p>/);
+ // _clean output for a double-escaped feed is plain text; the UI escapes it exactly once.
+ assert.match(ficha({...base,description:'Children <5 years and adults >65 are at risk.'}),/<p>Children &lt;5 years and adults &gt;65 are at risk\.<\/p>/);
+ // also_reported_by joins related_sources: https only, escaped, no duplicate of the item's own link.
+ const rel=ficha({...base,related_sources:[{title:'Comunicado',url:'https://www.gov.uk/government/news/r',source_label:'DHSC'}],also_reported_by:[{source:'uk_dhsc',source_label:'DHSC <b>(Reino Unido)</b>',url:'https://www.gov.uk/government/news/y'},{source:'x',source_label:'Insegura',url:'http://example.org/z'},{source:'j',source_label:'JS',url:'javascript:alert(1)'},{source:'self',source_label:'Mismo',url:'https://www.gov.uk/government/news/x'},{source:'dup',source_label:'Dup',url:'https://www.gov.uk/government/news/r'}]});
+ assert.match(rel,/href="https:\/\/www\.gov\.uk\/government\/news\/r"[^>]*>DHSC · Comunicado ↗/);assert.match(rel,/href="https:\/\/www\.gov\.uk\/government\/news\/y"[^>]*>DHSC &lt;b&gt;\(Reino Unido\)&lt;\/b&gt; ↗<\/a>/);
+ assert.doesNotMatch(rel,/Insegura|javascript:|Mismo|Dup ↗|<b>/);assert.equal((rel.match(/href=/g)||[]).length,3);
+ const ogl=ficha({...base,rights_basis:{basis:'uk_open_government_licence_v3',license_label:'OGL v3.0',attribution:'Contains public sector information … with link'}});
+ assert.match(ogl,/<p class="ficha-note ficha-attr">Contains public sector information licensed under the <a href="https:\/\/www\.nationalarchives\.gov\.uk\/doc\/open-government-licence\/version\/3\/"[^>]*>Open Government Licence v3\.0<\/a>\.<\/p>/);
+ assert.doesNotMatch(ficha({...base,rights_basis:{license_label:'CC BY 4.0',license_url:'https://creativecommons.org/licenses/by/4.0/'}}),/Open Government Licence/);
+ // Contract: schema 2 is read, an unknown newer schema is not; the window defaults to 90 days and never exceeds it.
+ const ok={enabled:true,content_use:'metadata_and_link_only'};assert.equal(c.feedAccepted({...ok,schema_version:2}),true);assert.equal(c.feedAccepted({...ok}),true);assert.equal(c.feedAccepted({...ok,schema_version:3}),false);assert.equal(c.feedAccepted({...ok,schema_version:2,enabled:false}),false);
+ assert.equal(c.feedWindow({}),90);assert.equal(c.feedWindow({window_days:30}),30);assert.equal(c.feedWindow({window_days:365}),90);
+ const html=fs.readFileSync('web/global.html','utf8');assert.match(html,/id="globalAttribution"[\s\S]*id="globalFeedOgl"/);assert.ok(!fs.existsSync('web/global-daily.js'));assert.doesNotMatch(html,/global-daily\.js/);
+});
