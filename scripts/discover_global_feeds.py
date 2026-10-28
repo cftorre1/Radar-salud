@@ -31,6 +31,13 @@ def mirror_feed_health(root: Path, health: dict) -> None:
         atomic_json(path, payload)
 
 
+# 28-oct run 40729006243: tools.cdc.gov answered HTTP 406 to the feed-only Accept header. A low-priority
+# */* keeps the feed types preferred while letting servers that label RSS differently (or robots.txt as
+# text/plain) answer; parse_feed still rejects any body that is not RSS/Atom/RDF.
+FEED_ACCEPT = "application/rss+xml,application/atom+xml,application/xml;q=0.9,text/xml;q=0.8,*/*;q=0.1"
+ROBOTS_ACCEPT = "text/plain,*/*;q=0.1"
+
+
 def run(root: Path, captures: Path, as_of: date, run_id: str, client=None) -> dict:
     config = json.loads((root / "config/global_discovery.json").read_text())
     if config["paid_ai_calls"] != 0 or config["content_use"] != "metadata_and_link_only" or config["reuters"]["enabled"]:
@@ -42,7 +49,7 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, client=None) -> di
             raise ValueError("feed host outside FEED_HOSTS allowlist")
     client = client or CaptureClient(captures / "feeds", cooldown_file=root / "data/global_intelligence/http_cooldowns.json",
                                      live_budget_seconds=config.get("feeds_live_capture_budget_seconds", 300), hosts=FEED_HOSTS,
-                                     accept="application/rss+xml,application/atom+xml,application/xml;q=0.9,text/xml;q=0.8")
+                                     accept=FEED_ACCEPT, robots_accept=ROBOTS_ACCEPT)
     items, failures, routes = collect_feeds(config, client, as_of)
     generated = datetime.now(timezone.utc).isoformat()
     health = {}

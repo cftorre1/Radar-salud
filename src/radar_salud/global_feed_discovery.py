@@ -11,7 +11,9 @@ dropped: the card then shows the title only. Nothing is ever invented.
 """
 from __future__ import annotations
 
+import base64
 import hashlib
+import json
 import re
 import unicodedata
 import xml.etree.ElementTree as ET
@@ -19,6 +21,7 @@ from datetime import date, datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from html import unescape
 from html.parser import HTMLParser
+from urllib.parse import parse_qsl, unquote, urljoin, urlsplit, urlunsplit
 
 from .global_discovery_common import canonical_url
 from .global_relevance import global_interest, source_rules, validate_rules
@@ -109,6 +112,62 @@ def publisher_summary(raw) -> tuple[str | None, bool]:
     return head.rsplit(" ", 1)[0].rstrip(" ,;:-") + "…", True
 
 
+# Redirect/click-tracking links (e.g. GovDelivery e-mail links) are NEVER fetched. A redirect link is
+# accepted only when the official target URL is written inside the link itself (query parameter,
+# GovDelivery /CL0/<encoded URL>/ path, or lnks.gd JWT payload) and that target is on the feed's own
+# allowed hosts; anything else (content.govdelivery.com bulletins, opaque short links) is rejected.
+REDIRECT_QUERY_KEYS = {"url", "u", "target", "redirect", "redirect_url", "dest", "destination"}
+
+
+def _embedded_target(link: str) -> str | None:
+    parts = urlsplit(link)
+    for key, value in parse_qsl(parts.query, keep_blank_values=True):
+        if key.lower() in REDIRECT_QUERY_KEYS and re.match(r"https?://", value, re.I):
+            return value
+    path = parts.path
+    match = re.match(r"^/CL0/(https?:[^/]+)", path, re.I)  # GovDelivery: the target is ONE percent-encoded segment
+    if match:
+        return unquote(match.group(1))
+    match = re.match(r"^/l/([A-Za-z0-9_-]+)\.([A-Za-z0-9_-]+)\.", path)  # lnks.gd JWT; the payload is read, never verified or fetched
+    if match:
+        try:
+            payload = json.loads(base64.urlsafe_b64decode(match.group(2) + "=" * (-len(match.group(2)) % 4)))
+        except (ValueError, TypeError):
+            return None
+        target = payload.get("url") if isinstance(payload, dict) else None
+        return target if isinstance(target, str) and re.match(r"https?://", target, re.I) else None
+    return None
+
+
+def _official_link(link: str, base: str, feed: dict, hosts: set) -> str:
+    """Absolute https URL on an allowed host. http is upgraded and configured host aliases
+    (e.g. fda.gov -> www.fda.gov) are mapped ONLY for the publisher's own hosts."""
+    parts = urlsplit(urljoin(base, link))
+    host = (parts.hostname or "").lower()
+    host = (feed.get("link_host_aliases") or {}).get(host, host)
+    if parts.scheme not in {"http", "https"} or host not in hosts:
+        raise ValueError("unapproved public URL")
+    netloc = host if parts.port in (None, 80, 443) and not (parts.username or parts.password) else parts.netloc
+    return canonical_url(urlunsplit(("https", netloc, parts.path, parts.query, "")), "", hosts)
+
+
+def resolve_feed_link(link: str, base: str, feed: dict, hosts: set) -> tuple[str, str | None]:
+    """(canonical official URL, redirect host it was decoded from or None). Raises ValueError otherwise."""
+    try:
+        return _official_link(link, base, feed, hosts), None
+    except ValueError:
+        pass
+    parts = urlsplit(urljoin(base, link))
+    redirect_hosts = set(feed.get("redirect_link_hosts") or [])
+    host = (parts.hostname or "").lower()
+    if parts.scheme == "https" and host in redirect_hosts:
+        target = _embedded_target(urljoin(base, link))
+        if target:
+            # One level only: the decoded target must itself be an official link, not another redirect.
+            return _official_link(target, "", feed, hosts), host
+    raise ValueError("unapproved public URL")
+
+
 def validate_feed_config(feed: dict) -> None:
     rights = feed.get("rights") or {}
     missing = REQUIRED_RIGHTS - set(rights)
@@ -126,6 +185,11 @@ def validate_feed_config(feed: dict) -> None:
         raise ValueError("include_title_patterns is not allowed (Dirección 28-oct 09:58)")
     for pattern in feed.get("exclude_title_patterns", []):
         re.compile(pattern)
+    hosts = set(feed["allowed_link_hosts"])
+    if not set((feed.get("link_host_aliases") or {}).values()) <= hosts:
+        raise ValueError("link_host_aliases must map onto allowed_link_hosts")
+    if set(feed.get("redirect_link_hosts") or []) & hosts:
+        raise ValueError("a redirect host cannot also be an allowed link host")
 
 
 def enabled_routes(feed: dict) -> list[dict]:
@@ -225,12 +289,17 @@ def parse_feed(raw: bytes, route: dict, feed: dict, as_of: date) -> list[dict]:
                "categories": sorted({c for c in entry["categories"] if c}), "guid": _clean(entry["guid"]) or None,
                "raw_publication_dates": [entry["date"]] if entry["date"] else [], "publication_date_basis": "publisher_feed_declared_date",
                "content_use": "metadata_and_link_only", "body_stored": False}
+        raw_link = _clean(entry["link"])
         try:
-            row["url"] = canonical_url(_clean(entry["link"]), route["url"], hosts)
+            row["url"], via = resolve_feed_link(raw_link, route["url"], feed, hosts)
         except ValueError:
-            row.update(url=None, status="rejected", reason="link_outside_licensed_publisher_hosts", raw_link=_clean(entry["link"])[:300])
+            raw_parts = urlsplit(urljoin(route["url"], raw_link))
+            row.update(url=None, status="rejected", reason="link_outside_licensed_publisher_hosts", raw_link=raw_link[:300],
+                       raw_link_scheme=raw_parts.scheme or None, raw_link_host=(raw_parts.hostname or None))
             rows.append(row)
             continue
+        if via:
+            row["link_resolution"] = {"method": "official_target_decoded_from_redirect_link_without_fetch", "redirect_host": via}
         if not title:
             row.update(status="rejected", reason="missing_publisher_title")
             rows.append(row)
@@ -306,11 +375,19 @@ def collect_feeds(config: dict, client, as_of: date) -> tuple[list[dict], list[d
             continue
         for route in enabled_routes(feed):
             key = feed["id"] + "/" + route["section"]
+            stage = "robots"
             try:
+                # robots.txt is checked first and separately so a failure says WHICH request failed
+                # (28-oct: CDC http_406 / NIH http_403 did not say whether robots.txt or the feed).
+                if hasattr(client, "check_robots"):
+                    client.check_robots(canonical_url(route["url"], "", getattr(client, "hosts", None)))
+                stage = "feed"
                 raw, capture = client.fetch(route["url"])
+                stage = "parse"
                 rows = parse_feed(raw, route, feed, as_of)
             except Exception as exc:
-                failures.append({"source": feed["id"], "section": route["section"], "url": route["url"], "error": type(exc).__name__ + ": " + str(exc)[:200]})
+                failures.append({"source": feed["id"], "section": route["section"], "url": route["url"], "stage": stage,
+                                 "error": type(exc).__name__ + ": " + str(exc)[:200]})
                 routes[key] = {"source": feed["id"], "section": route["section"], "url": route["url"], "status": "error", "entries": 0}
                 continue
             evidence = {"feed_url": route["url"], "body_sha256": capture["body_sha256"], "fetched_at": capture["fetched_at"],
@@ -321,7 +398,9 @@ def collect_feeds(config: dict, client, as_of: date) -> tuple[list[dict], list[d
                            "capture": evidence}
             for row in rows:
                 if row.get("status") == "rejected":
-                    failures.append({"source": feed["id"], "section": route["section"], "url": route["url"], "error": row["reason"], "rejected_entry": True})
+                    # The rejected link's scheme/host are recorded so the run data shows WHY (28-oct: FDA had none).
+                    failures.append({"source": feed["id"], "section": route["section"], "url": route["url"], "error": row["reason"], "rejected_entry": True,
+                                     "raw_link_scheme": row.get("raw_link_scheme"), "raw_link_host": row.get("raw_link_host")})
                     continue
                 if row["published_at"] and (as_of - date.fromisoformat(row["published_at"])).days >= window:
                     continue

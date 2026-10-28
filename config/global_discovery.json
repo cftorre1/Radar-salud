@@ -236,6 +236,15 @@
       "allowed_link_hosts": [
         "www.fda.gov"
       ],
+      "link_host_aliases": {
+        "fda.gov": "www.fda.gov"
+      },
+      "redirect_link_hosts": [
+        "links-1.govdelivery.com",
+        "links.govdelivery.com",
+        "lnks.gd"
+      ],
+      "link_policy_note": "28-oct run 40729006243: las 20 entradas de press releases se rechazaron (link_outside_licensed_publisher_hosts); la corrida no guardó el host. Se acepta http->https y fda.gov->www.fda.gov solo para hosts oficiales; enlaces GovDelivery/lnks.gd solo si el destino fda.gov está escrito en el propio enlace (nunca se siguen); content.govdelivery.com y cualquier otro host se rechazan.",
       "default_segments": [
         "regulation"
       ],
@@ -304,6 +313,9 @@
       "allowed_link_hosts": [
         "www.cdc.gov"
       ],
+      "link_host_aliases": {
+        "cdc.gov": "www.cdc.gov"
+      },
       "default_segments": [],
       "routes": [
         {
@@ -352,6 +364,9 @@
       "allowed_link_hosts": [
         "www.nih.gov"
       ],
+      "link_host_aliases": {
+        "nih.gov": "www.nih.gov"
+      },
       "default_segments": [],
       "routes": [
         {
@@ -382,7 +397,13 @@
         "display": true,
         "label": "NIH",
         "kind_es": "Institutos Nacionales de Salud de EE. UU.",
-        "min_segment_matches": 2
+        "min_segment_matches": 2,
+        "min_segment_matches_waived_for_signals": [
+          "ai_in_health",
+          "financing_and_payment",
+          "new_technology",
+          "workforce_trend"
+        ]
       },
       "store_description": true
     },
@@ -561,7 +582,13 @@
         "label": "The Conversation",
         "kind_es": "Análisis de académicos (EE. UU.)",
         "show_byline": true,
-        "min_segment_matches": 2
+        "min_segment_matches": 2,
+        "min_segment_matches_waived_for_signals": [
+          "ai_in_health",
+          "financing_and_payment",
+          "new_technology",
+          "workforce_trend"
+        ]
       },
       "store_description": false,
       "description_note": "CC BY-ND: publisher summary not kept (a 300-character cut would be a derivative); title only."
@@ -718,7 +745,8 @@
         "exclude_title_patterns": [
           "\\bmeeting highlights\\b",
           "^(chmp|prac|cat|comp|pdco)\\b",
-          "\\bshortage of\\b.{0,40}\\b(tablets?|injection|vials?)\\b"
+          "\\bshortage of\\b.{0,40}\\b(tablets?|injection|vials?)\\b",
+          "\\beuropean public assessment report\\b|\\(epar\\)"
         ],
         "interest_title_patterns": [
           "\\bpharmaceutical (legislation|reform|package)\\b",
@@ -726,7 +754,7 @@
           "\\bnetwork strategy\\b",
           "\\bcritical medicines\\b"
         ],
-        "note": "La ruta 'new human medicine' son aprobaciones individuales: quedan fuera salvo primera de su tipo. Se suman a las reglas globales de src/radar_salud/global_relevance.py; nunca anulan una exclusión global."
+        "note": "La ruta 'new human medicine' son aprobaciones individuales (EPAR de un producto): quedan fuera siempre; la palabra 'report' de 'public assessment report' no es un estudio (run 40729006243). Se suman a las reglas globales de src/radar_salud/global_relevance.py; nunca anulan una exclusión global."
       },
       "fda": {
         "exclude_title_patterns": [

@@ -68,12 +68,14 @@ INTEREST = (
     ("international_study_or_trend",
      r"\btrends?\b|\bstud(y|ies)\b|\bsurvey\b|\breport\b|\banalysis\b|meta-analysis|\bevidence\b|research (finds|shows)|"
      r"\bfinds\b|\bshows\b|data show|\brising\b|\bgrowing\b|increase in|decline in|\bglobal\b|worldwide|international|"
-     r"\bcountries\b|cross-country|burden of|forecast|outlook|projection|\bestimates?\b|statistics|life expectancy|"
+     r"\bcountries\b|cross-country|burden of|\bburden\b|multi-model|modell?ing (study|analysis)|impact assessment|"
+     r"assessment of the impact|forecast|outlook|projection|\bestimates?\b|statistics|life expectancy|"
      r"ageing|aging|obesity|chronic (disease|condition)s?|noncommunicable|non-communicable|mental health|"
      r"antimicrobial resistance|\bamr\b|tendencia|estudio|informe|encuesta|mundial|envejecimiento"),
     ("policy_or_system_reform",
      r"\breform|\bpolic(y|ies)\b|legislat|\blaw\b|\bbill\b|\brules?\b|\bregulation\b|regulatory (framework|reform|pathway|science)|"
-     r"framework|strategy|action plan|universal health coverage|\buhc\b|health systems?\b|primary (health )?care|"
+     r"framework|strategy|action plan|roadmap|\bpilots? (program|programme|scheme|project)s?\b|pilot becomes permanent|"
+     r"universal health coverage|\buhc\b|health systems?\b|primary (health )?care|"
      r"guideline|guidance|consultation|white paper|\bdirective\b|\bact\b|pharmaceutical (package|strategy|legislation)|"
      r"reforma|politica|ley\b|estrategia|sistema de salud|atencion primaria|cobertura universal"),
     ("financing_and_payment",
@@ -81,7 +83,11 @@ INTEREST = (
      r"bundled|capitation|insur|payer|\bcoverage\b|premium|medicare|medicaid|out-of-pocket|affordab|tariff|"
      r"health technology assessment|\bhta\b|cost-effective|financiamiento|\bcosto|\bpago|seguro|aseguradora|cobertura"),
     ("workforce_trend",
-     r"workforce|staffing|health ?care workers?|health workers?|\bnurs(e|es|ing)\b|physicians?|\bdoctors?\b|burnout|"
+     # A bare "doctors"/"nurses" is a subject, not a workforce trend ("I teach doctors how to read test results").
+     r"workforce|staffing|health ?care workers?|health workers?|burnout|"
+     r"\b(nurs(e|es|ing)|physicians?|doctors?|clinicians?)\b.{0,40}\b(shortages?|supply|pay|wages?|salar\w*|strikes?|unions?|"
+     r"workload|training|recruit\w*|retention|migration|licens\w*|scope)\b|"
+     r"\b(shortages?|supply|strikes?|pay|wages?) (of|for) (nurses|physicians|doctors|clinicians)\b|"
      r"\bwages?\b|\blabou?r\b|recruitment|retention|residency|task shifting|scope of practice|fuerza laboral|"
      r"recursos humanos|personal de salud|trabajadores de la salud|enfermer"),
 )

@@ -159,7 +159,12 @@ def feed_cards(feed_payload: dict, config: dict, as_of: date) -> tuple[list[dict
             # Global is PREMIUM: a NonCommercial licence (KFF) stays out until the publisher confirms in writing.
             held["paid_tier_hold_" + row["source"]] += 1; continue
         matched = [s for s in classification.get("segments", []) if s in SEGMENTS]
-        if classification.get("reason") == "segment_keyword_match" and len(matched) < int(display.get("min_segment_matches", 1)):
+        # A source's 2-segment floor (opinion/explainer feeds) is waived when the headline carries one of the
+        # strong Dirección 28-oct signals (AI, financing/payment, new technology, workforce): one segment suffices.
+        minimum = int(display.get("min_segment_matches", 1))
+        if set(interest.get("signals") or ()) & set(display.get("min_segment_matches_waived_for_signals") or ()):
+            minimum = 1
+        if classification.get("reason") == "segment_keyword_match" and len(matched) < minimum:
             held["below_min_segment_matches"] += 1; continue
         cards.append(_card(item_id=row["item_id"], source=row["source"], label=display.get("label") or feed["name"],
                            attribution=feed["attribution"], kind_es=display.get("kind_es") or feed["name"], title=row["title"],
