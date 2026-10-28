@@ -19,6 +19,14 @@
    fingerprints (hash prefixes, no text) persisted in
    data/audits/paywalled_body_fingerprints_2026_10_28.json.
 
+5. (v3) Paid model outputs are preserved: a verbatim body quote inside one becomes
+   an in-place receipt and the output's pre-redaction digest is recorded
+   (``analysis_model_output_rights``) so earlier validations still bind to it.
+   CSV audit cells are scrubbed too. ``remaining_fingerprinted`` scans every
+   tracked text file outside tests/fixtures and reports what is left, split into
+   paywalled/no-URL context and open-URL context (open sections that publish the
+   same sentence). The receipt also simulates the paid-output reuse decision.
+
 Idempotent: a second run changes nothing. No network access, no model calls.
 Usage: python scripts/migrate_source_rights_links_2026_10_28.py [--check]
 """
@@ -44,13 +52,19 @@ HISTORY = ROOT / "data/history/superintendencia_signals.json"
 QUEUE = ROOT / "data/state/pending_queue.json"
 PULSO_CACHE = ROOT / "data/state/pulso_discovery_cache.json"
 SNAPSHOT = ROOT / "web/data/radar_today.json"
+DESIGN_SNAPSHOT = ROOT / "design/bandeja/data/radar_today.json"  # prototype copy of the public feed
 RECEIPT = ROOT / "data/audits/rights_links_migration_2026_10_28.json"
 FINGERPRINTS = ROOT / FINGERPRINTS_PATH
 WEEKLY = [ROOT / "data/weekly_insight/latest.json", ROOT / "data/weekly_insight/editorial_approved.json"]
 SCAN_ROOTS = ("data/", "web/", "design/", "config/")
-SKIP = {str(p.relative_to(ROOT)) for p in (QUEUE, PULSO_CACHE, RECEIPT, FINGERPRINTS, HISTORY, SNAPSHOT)} | {
+SKIP = {str(p.relative_to(ROOT)) for p in (QUEUE, PULSO_CACHE, RECEIPT, FINGERPRINTS, HISTORY, SNAPSHOT,
+                                                      DESIGN_SNAPSHOT)} | {
     "data/audits/rights_redacted_originals_2026_10_28.json"}
-_BODYISH = re.compile(r"(body|page_text|raw_text|excerpt|paragraph|primary_text|full_text|article_text)", re.I)
+# Keys holding publisher text: the key ends with a body-like term ("page_text", "original_body",
+# "body_excerpt"). Reviewer prose such as "body_specific_independent_editorial_reason" is
+# Alicanto text and must not be fingerprinted as publisher body.
+_BODYISH = re.compile(r"(?:^|_)(?:body|page_text|raw_text|excerpt|paragraphs?|primary_text|full_text|article_text|"
+                      r"body_text|primary_body)$", re.I)
 
 
 def _key(url):
@@ -255,6 +269,9 @@ def collect_fingerprints(queue, cache, audit_payloads, public_rows=()):
             continue
         md = entry.get("metadata") or {}
         public.append(md.get("description") or "")
+        # The lead with proven provenance is public even when it differs from ``description``.
+        public.append(teaser_with_source({"title": entry.get("title"), "url": url,
+                                          "source_slug": "pulso_latercera", "metadata": md})[0])
         add_body(md.get("page_text"))
         add_body(entry.get("body"))
     for row in public_rows:
@@ -285,20 +302,149 @@ ORIGINALS = ROOT / "data/audits/rights_redacted_originals_2026_10_28.json"
 
 
 def record_originals(paths):
-    """Remember the pre-redaction git blob of each historical audit (QA replays read it from history)."""
+    """Remember the pre-redaction git blob of each redacted file (QA replays read it from history).
+
+    Covers historical audits and the queue/Pulso cache state as committed before
+    this migration redacted them (the bound editorial-review QA replays the queue
+    that review was applied to). Only an unredacted, committed original qualifies.
+    """
     import hashlib
     doc = json.loads(ORIGINALS.read_text(encoding="utf-8")) if ORIGINALS.exists() else {"files": {}}
     for path in paths:
         rel = str(path.relative_to(ROOT))
         if rel in doc["files"] or rel.endswith("rights_links_migration_2026_10_28.json"):
             continue
-        oid = subprocess.run(["git", "rev-parse", f"HEAD:{rel}"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
-        blob = subprocess.run(["git", "cat-file", "blob", oid], cwd=ROOT, capture_output=True).stdout if oid else b""
+        # The blob of the exact bytes about to be redacted, if git already stores it
+        # (i.e. it was committed: staging's version). Nothing is written to git here.
+        oid = subprocess.run(["git", "hash-object", "--", rel], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+        exists = oid and subprocess.run(["git", "cat-file", "-e", oid], cwd=ROOT, capture_output=True).returncode == 0
+        blob = subprocess.run(["git", "cat-file", "blob", oid], cwd=ROOT, capture_output=True).stdout if exists else b""
         if blob and blob == path.read_bytes():  # only an unredacted, committed original qualifies
             doc["files"][rel] = {"git_blob": oid, "sha256": hashlib.sha256(blob).hexdigest(),
                                  "characters": len(blob.decode("utf-8", "replace"))}
     doc["files"] = dict(sorted(doc["files"].items()))
     ORIGINALS.write_text(json.dumps(doc, indent=2, ensure_ascii=False), encoding="utf-8")
+
+
+_TEXT_SUFFIXES = (".json", ".json.gz", ".jsonl", ".md", ".html", ".htm", ".js", ".cjs", ".mjs", ".css", ".txt", ".csv",
+                  ".tsv", ".py", ".yml", ".yaml", ".xml", ".svg")
+CHECK_EXCLUDE_PREFIXES = ("tests/fixtures/",)
+CHECK_EXCLUDE = {str(FINGERPRINTS_PATH), "data/audits/rights_redacted_originals_2026_10_28.json"}
+
+
+def _strings(node, url=None):
+    """(string, url context) for every string in a JSON value (dict keys that are URLs give context)."""
+    if isinstance(node, dict):
+        url = next((node[k] for k in ("url", "source_url", "canonical_url", "requested_url", "final_url")
+                    if isinstance(node.get(k), str) and node.get(k)), url)
+        for key, value in node.items():
+            child = key if isinstance(key, str) and re.match(r"https?://", key) else url
+            yield from _strings(value, child)
+    elif isinstance(node, list):
+        for value in node:
+            yield from _strings(value, url)
+    elif isinstance(node, str):
+        yield node, url
+
+
+def remaining_fingerprinted(fps, files=None):
+    """Scan every tracked text file outside tests/fixtures for paywalled-body sentences.
+
+    Truthful count: every string (JSON) or sentence (other text) containing a
+    fingerprinted sentence is counted, whatever its context; matches sitting under
+    an open (non-paywalled) URL -- an open source quoting the same sentence -- are
+    reported separately from those under a paywalled URL or with no URL.
+    """
+    from radar_salud.source_rights import _segment_hash, _segments, contains_fingerprinted
+    if files is None:
+        out = subprocess.run(["git", "ls-files", "-z"], cwd=ROOT, capture_output=True, check=True).stdout.decode()
+        files = [f for f in out.split("\0") if f.endswith(_TEXT_SUFFIXES)
+                 and not f.startswith(CHECK_EXCLUDE_PREFIXES) and f not in CHECK_EXCLUDE]
+    result = {"files_scanned": 0, "characters": 0, "strings": 0, "open_context_characters": 0,
+              "open_context_strings": 0, "by_file": {}}
+    for f in files:
+        path = ROOT / f
+        try:
+            data = path.read_bytes()
+            if f.endswith(".gz"):
+                data = gzip.decompress(data)
+            text = data.decode("utf-8")
+        except (OSError, UnicodeDecodeError, EOFError):
+            continue
+        result["files_scanned"] += 1
+        hits = []
+        if f.endswith((".json", ".json.gz")):
+            try:
+                payload = json.loads(text)
+            except ValueError:
+                payload = None
+            if payload is not None:
+                for value, url in _strings(payload):
+                    if contains_fingerprinted(value, fps):
+                        hits.append((len(value), bool(url) and not is_paywalled(url)))
+            else:
+                hits = [(len(seg), False) for seg in _segments(text) if _segment_hash(seg) in fps]
+        else:
+            hits = [(len(seg), False) for seg in _segments(text) if _segment_hash(seg) in fps]
+        if hits:
+            chars = sum(n for n, _ in hits)
+            open_chars = sum(n for n, open_ in hits if open_)
+            result["by_file"][f] = {"strings": len(hits), "characters": chars, "open_context_characters": open_chars}
+            result["strings"] += len(hits)
+            result["characters"] += chars
+            result["open_context_strings"] += sum(1 for _, open_ in hits if open_)
+            result["open_context_characters"] += open_chars
+    result["paywalled_context_characters"] = result["characters"] - result["open_context_characters"]
+    return result
+
+
+def simulate_paid_reuse(queue):
+    """The reuse decision ``pulso_paywall.full_body_output`` would take for every paid premium Pulso item."""
+    from collections import Counter
+    from radar_salud.models import RawItem
+    from radar_salud import pulso_paywall
+    reasons, by_status = Counter(), Counter()
+    for item in queue.values():
+        raw = item.get("raw") or {}
+        md = raw.get("metadata") or {}
+        if raw.get("source_slug") != "pulso_latercera" or not paywall_policy(raw.get("url", ""), md):
+            continue
+        if pulso_paywall._meta(md.get("analysis_model_output")) is None:
+            continue
+        r = RawItem(**{k: raw.get(k) for k in ("source_slug", "title", "url", "source_name", "source_type",
+                                                 "event_date", "raw_text", "metadata")})
+        model, why = pulso_paywall.full_body_output(r.metadata, pulso_paywall.prior_binding(r.metadata),
+                                                    pulso_paywall.public_text_for(r.title, r.metadata, r.event_date))
+        reasons[why] += 1
+        by_status[f"{item.get('status')}:{why}"] += 1
+    return {"paid_premium_items": sum(reasons.values()), "reusable_without_new_call": reasons.get("reused", 0),
+            "reasons": dict(reasons.most_common()), "by_queue_status": dict(sorted(by_status.items()))}
+
+
+def _tracked(suffix):
+    out = subprocess.run(["git", "ls-files", "-z", "--", *SCAN_ROOTS], cwd=ROOT, capture_output=True, check=True)
+    return [f for f in out.stdout.decode().split("\0") if f.endswith(suffix) and f not in SKIP]
+
+
+def scrub_csv(text, fps):
+    """(new text, cells, characters): fingerprinted cells -> receipt strings; None-op otherwise."""
+    import csv
+    import io
+    from radar_salud.source_rights import contains_fingerprinted, sha256_text
+    rows = list(csv.reader(io.StringIO(text, newline="")))
+    term = "\r\n" if "\r\n" in text else "\n"
+    count = chars = 0
+    for row in rows:
+        for i, cell in enumerate(row):
+            if contains_fingerprinted(cell, fps):
+                row[i] = f"[redactado: muro de pago; sha256={sha256_text(cell)}; caracteres={len(cell)}]"
+                count += 1
+                chars += len(cell)
+    if not count:
+        return text, 0, 0
+    out = io.StringIO()
+    csv.writer(out, lineterminator=term).writerows(rows)
+    return out.getvalue(), count, chars
 
 
 def tracked_json_files():
@@ -311,13 +457,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true", help="report only; write nothing")
     args = ap.parse_args()
-    report = {"migration": "rights_links_2026_10_28", "version": 2, "policy": "config/paywalled_press.json",
+    report = {"migration": "rights_links_2026_10_28", "version": 3, "policy": "config/paywalled_press.json",
               "links": [], "paywalled": [], "counts": {}, "not_migrated": [
                   "Git history keeps pre-redaction content; removing it requires a history rewrite (decision for Dirección).",
                   "tests/fixtures keep real publisher HTML/JSON used as parser regression inputs (see counts.fixtures_note).",
                   "Non-premium latercera.com sections without an isAccessibleForFree=false flag are metered, "
                   "not paywalled under the policy (pending_decision in config/paywalled_press.json)."]}
     writes = {}
+    csv_writes = {}
 
     # 1. Queue: lead provenance, then every nested capture.
     queue_text, queue = _read(QUEUE)
@@ -363,6 +510,16 @@ def main():
         if before is not None and json.dumps(item, ensure_ascii=False, sort_keys=True) != before:
             q["items_changed"] += 1
     report["counts"]["queue"] = q
+    from radar_salud.source_rights import MODEL_OUTPUT_RIGHTS
+    records = [md for item in queue.values() for raw in _raws(item) for md in [raw["metadata"]]
+               if isinstance(md.get(MODEL_OUTPUT_RIGHTS), dict)]
+    report["counts"]["paid_model_outputs_with_redacted_quotes"] = {
+        "records": len(records),
+        "top_level_items": sum(1 for item in queue.values()
+                               if isinstance(((item.get("raw") or {}).get("metadata") or {}).get(MODEL_OUTPUT_RIGHTS), dict)),
+        "original_digest_unknown": sum(1 for md in records if not md[MODEL_OUTPUT_RIGHTS].get("original_model_output_sha256")),
+        "quote_receipts": sum(len(md[MODEL_OUTPUT_RIGHTS]["redactions"]) for md in records)}
+    report["counts"]["paid_reuse_simulation"] = simulate_paid_reuse(queue)
     teasers = teasers_from_queue(queue)
     writes[QUEUE] = (queue, queue_text)
 
@@ -390,6 +547,10 @@ def main():
     report["counts"]["snapshot_link_problems_after"] = sum(len(card_link_problems(c)) for c in snapshot["signals"])
     writes[HISTORY] = (history, history_text)
     writes[SNAPSHOT] = (snapshot, snapshot_text)
+    design_text, design = _read(DESIGN_SNAPSHOT)
+    report["counts"]["design_snapshot_cards_changed"] = migrate_rows(design["signals"], teasers, report, "design_snapshot")
+    scrub_fingerprinted(design, fps)
+    writes[DESIGN_SNAPSHOT] = (design, design_text)
     index = {**public_teaser_index(history["signals"], snapshot["signals"]), **teasers}
 
     # 4. Every other tracked JSON: verbatim body sentences -> receipts; weekly
@@ -412,6 +573,15 @@ def main():
             if new_text != json.dumps(json.loads(text), ensure_ascii=False, sort_keys=True):
                 files["changed"][f] = {"strings": n, "characters": chars, "public_payload_fields": stats["fields"]}
                 writes[path] = (payload, text)
+    # CSV audit matrices: a cell reproducing a paywalled body sentence becomes a receipt
+    # string (sha256 + length), rows and quoting otherwise byte-identical.
+    for f in _tracked(".csv"):
+        path = ROOT / f
+        text = path.read_text(encoding="utf-8")
+        new_text, n, chars = scrub_csv(text, fps)
+        if n:
+            files["changed"][f] = {"strings": n, "characters": chars, "public_payload_fields": 0}
+            csv_writes[path] = new_text
     report["counts"]["files"] = files
     report["counts"]["fingerprint_segments"] = len(fps)
     report["counts"]["link_problem_rows"] = len(report["links"])
@@ -421,22 +591,31 @@ def main():
     report.pop("_decks", None)
 
     if args.check:
+        report["counts"]["remaining_fingerprinted_before_write"] = remaining_fingerprinted(fps)
         print(json.dumps(report["counts"], ensure_ascii=False, indent=2))
         return
-    record_originals([p for p in writes if str(p.relative_to(ROOT)).startswith("data/audits/")])
+    record_originals([p for p in [*writes, *csv_writes] if str(p.relative_to(ROOT)).startswith("data/audits/")
+                      or p in (QUEUE, PULSO_CACHE)])
     for path, (payload, original_text) in writes.items():
         _dump(path, payload, original_text)
+    for path, new_text in csv_writes.items():
+        path.write_bytes(new_text.encode("utf-8"))
     FINGERPRINTS.write_text(json.dumps({
         "purpose": "Sentence fingerprints of paywalled publisher bodies (sha256 prefix, 20 hex) used to find and "
                    "redact verbatim copies. No text is stored; a hash cannot be read back.",
         "segment_rule": "split on sentence punctuation/newlines, whitespace-collapsed, casefolded, >= 60 chars; "
                         "sentences also present in the public title/lead are excluded",
         "segment_sha256_prefix20": sorted(fps)}, indent=0) + "\n", encoding="utf-8")
+    report["counts"]["remaining_fingerprinted"] = remaining_fingerprinted(fps)
     if RECEIPT.exists():
         previous = json.loads(RECEIPT.read_text(encoding="utf-8"))
         report["first_run_counts"] = previous.get("first_run_counts") or previous.get("counts")
         report["v2_first_run_counts"] = previous.get("v2_first_run_counts") or (
-            previous.get("counts") if previous.get("version") == 2 else report["counts"])
+            previous.get("counts") if previous.get("version") == 2 else None)
+        # v3 (review 2, 28-oct): paid outputs keep their original digest, new premium
+        # prefixes/sections, CSV cells, strict public-text check, review verdicts kept.
+        report["v3_first_run_counts"] = previous.get("v3_first_run_counts") or (
+            previous.get("counts") if previous.get("version") == 3 else report["counts"])
     _dump(RECEIPT, report)
     print(json.dumps(report["counts"], ensure_ascii=False, indent=2)[:4000])
 

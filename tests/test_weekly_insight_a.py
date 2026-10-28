@@ -222,7 +222,9 @@ def test_rule3_self_referencing_estimate_fails(pipeline):
 
 def test_rule3_estimate_may_use_an_earlier_estimate_but_not_a_later_one(pipeline):
     weekly, evidence = normalized(pipeline)
-    weekly["estimates"].append({"id": "chain", "label": "x", "value": 618.0, "formula": "309 * 2", "inputs": [],
+    # Factor 24 (comunas, open Desarrollo Social source). The former factor 2 only existed in the
+    # locked Pulso body, which the evidence no longer carries (rights policy, Dirección 28-oct-2026).
+    weekly["estimates"].append({"id": "chain", "label": "x", "value": 7416.0, "formula": "309 * 24", "inputs": [],
                                 "note_ref": "n2"})
     errors = gen.verify_candidate(weekly, evidence, ANCHOR)["errors"]
     assert not any(":chain:" in e for e in errors)  # 309 = earlier estimate comunas_actuales

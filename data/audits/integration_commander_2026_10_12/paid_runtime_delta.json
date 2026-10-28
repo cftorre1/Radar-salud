@@ -497,7 +497,7 @@
                   "field": "human_health_scope_quote",
                   "sha256": "a86b01e18e8ae0e6b2636310ac42a8eeb5e9661fd7994df2be5cb8af4c1f0b14",
                   "characters": 98,
-                  "reason": "paywalled_press_public_teaser_only",
+                  "reason": "paywalled_body_quote_in_paid_output",
                   "redacted_at": "2026-10-28"
                 },
                 "actor": "Nosotros",
@@ -508,7 +508,7 @@
                   "field": "actor_quote",
                   "sha256": "4754ead3a123764cd86559bbb79a6332a9985b07db574196230b94f68d96fc0c",
                   "characters": 203,
-                  "reason": "paywalled_press_public_teaser_only",
+                  "reason": "paywalled_body_quote_in_paid_output",
                   "redacted_at": "2026-10-28"
                 },
                 "action_quote": {
@@ -516,7 +516,7 @@
                   "field": "action_quote",
                   "sha256": "9e01573dd186248d22cdced9f1decb46ad11fc7e9c9b9c393f2b3f7124a2057e",
                   "characters": 155,
-                  "reason": "paywalled_press_public_teaser_only",
+                  "reason": "paywalled_body_quote_in_paid_output",
                   "redacted_at": "2026-10-28"
                 },
                 "consequence_quote": {
@@ -524,7 +524,7 @@
                   "field": "consequence_quote",
                   "sha256": "9e01573dd186248d22cdced9f1decb46ad11fc7e9c9b9c393f2b3f7124a2057e",
                   "characters": 155,
-                  "reason": "paywalled_press_public_teaser_only",
+                  "reason": "paywalled_body_quote_in_paid_output",
                   "redacted_at": "2026-10-28"
                 },
                 "event_status": "mixed_actual_and_future",
@@ -541,7 +541,7 @@
                       "field": "source_quote",
                       "sha256": "d81c3a735b7f6b11a3727543d01a5de682033de7acf79e2be71e78bcdd10e649",
                       "characters": 325,
-                      "reason": "paywalled_press_public_teaser_only",
+                      "reason": "paywalled_body_quote_in_paid_output",
                       "redacted_at": "2026-10-28"
                     }
                   },
@@ -553,7 +553,7 @@
                       "field": "source_quote",
                       "sha256": "d81c3a735b7f6b11a3727543d01a5de682033de7acf79e2be71e78bcdd10e649",
                       "characters": 325,
-                      "reason": "paywalled_press_public_teaser_only",
+                      "reason": "paywalled_body_quote_in_paid_output",
                       "redacted_at": "2026-10-28"
                     }
                   }
@@ -575,7 +575,47 @@
               "threshold": 72,
               "proof_version": "pulso_editorial_proof_v5"
             },
-            "editorial_hold": "pulso_editorial_future_copy_not_grounded"
+            "editorial_hold": "pulso_editorial_future_copy_not_grounded",
+            "analysis_model_output_rights": {
+              "original_model_output_sha256": "59a0d245af68e246a22f925f32452face1eddb2855ba8cfc136848c3a4e946a3",
+              "original_basis": "digest_of_the_stored_output_before_redaction",
+              "redacted_model_output_sha256": "417e9a1872192199c7bcb813892492f2fcffd142c9be8ba4b74bfd550b20a2f3",
+              "redactions": [
+                {
+                  "path": "pulso_editorial_proof.action_quote",
+                  "sha256": "9e01573dd186248d22cdced9f1decb46ad11fc7e9c9b9c393f2b3f7124a2057e",
+                  "characters": 155
+                },
+                {
+                  "path": "pulso_editorial_proof.actor_quote",
+                  "sha256": "4754ead3a123764cd86559bbb79a6332a9985b07db574196230b94f68d96fc0c",
+                  "characters": 203
+                },
+                {
+                  "path": "pulso_editorial_proof.consequence_quote",
+                  "sha256": "9e01573dd186248d22cdced9f1decb46ad11fc7e9c9b9c393f2b3f7124a2057e",
+                  "characters": 155
+                },
+                {
+                  "path": "pulso_editorial_proof.future_claims[0].source_quote",
+                  "sha256": "d81c3a735b7f6b11a3727543d01a5de682033de7acf79e2be71e78bcdd10e649",
+                  "characters": 325
+                },
+                {
+                  "path": "pulso_editorial_proof.future_claims[1].source_quote",
+                  "sha256": "d81c3a735b7f6b11a3727543d01a5de682033de7acf79e2be71e78bcdd10e649",
+                  "characters": 325
+                },
+                {
+                  "path": "pulso_editorial_proof.human_health_scope_quote",
+                  "sha256": "a86b01e18e8ae0e6b2636310ac42a8eeb5e9661fd7994df2be5cb8af4c1f0b14",
+                  "characters": 98
+                }
+              ],
+              "reason": "paywalled_body_quote_in_paid_output",
+              "redacted_at": "2026-10-28",
+              "note": "Paid output preserved; verbatim paywalled-body quotes kept only as sha256 + length receipts."
+            }
           }
         },
         "source": "pulso_latercera",

@@ -1,7 +1,10 @@
 {
-  "purpose": "Pre-redaction git blobs of historical audits whose paywalled text was replaced by receipts (Dirección 28-oct-2026). QA/replay tools read these exact bytes from git history via radar_salud.pinned_evidence; the runtime never does.",
-  "history_rewrite_note": "If Dirección rewrites git history, these blobs disappear and only receipts remain.",
   "files": {
+    "data/audits/df_independent_controls_2026_10_11.json": {
+      "git_blob": "46e96974d1e370426d59afe5f6c59416f046f58b",
+      "sha256": "755da457fa440199f1f43b0e9586087042f8cbd2827004ab08eed97a99bcfffb",
+      "characters": 112695
+    },
     "data/audits/df_original_capture_2026_10_11.json": {
       "git_blob": "4bdf66d3a6423b973c3c215a4a821e8c0ea5a2b6",
       "sha256": "095bd6b0e9d1ba9f812734d3fbf1eda08e10b898c94e268b4d20c2e443c157f2",
@@ -182,6 +185,11 @@
       "sha256": "41a8b40d8541dc5fc05d662be29ec70460653bbba021dcb8f5d73ba2d7f239af",
       "characters": 126374
     },
+    "data/audits/pulso_focus113_v5_outcome_matrix_2026_10_11.csv": {
+      "git_blob": "7eed4da55fa0907c956c9d20b76cc34c83c718d4",
+      "sha256": "30c8f4846c8bf35b861ea44f30015f6fd1012ce96c3e56225831e7b6e8d8d649",
+      "characters": 451735
+    },
     "data/audits/pulso_focus113_v5_outcome_matrix_2026_10_11.json": {
       "git_blob": "d88a47048fa41784a0baa91946a02d50aa612d06",
       "sha256": "78dbee2abdc94ad2c055a938f4a33d1d02a4969ebde8951186a8706634571f64",
@@ -341,6 +349,16 @@
       "git_blob": "8e332361dcc497c2b9c92d487ea4eef0eadb31f6",
       "sha256": "c801b96464edbe5d179ca72b6d7ca63c746d53e55d6c18ee64bf70d3343923df",
       "characters": 21460
+    },
+    "data/state/pending_queue.json": {
+      "git_blob": "4ed629fec8b6248da9f64dd7167638c31f058046",
+      "sha256": "8d520382eecc58c25deae1de88312f895cf7a2c42a8a61350dead8fa84e7f017",
+      "characters": 66205957
+    },
+    "data/state/pulso_discovery_cache.json": {
+      "git_blob": "b16c9cd16db61e41fa65e22f778c7946d418fc98",
+      "sha256": "b90c2fbc09d34d454f22b70d7ad61d24d459e0f89b5d2952c943b9311641bb78",
+      "characters": 67492348
     }
   }
 }

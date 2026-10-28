@@ -64,9 +64,26 @@ def news_analysis_input(*, title, text, source_name, full_text=False):
     return f"Fuente: {source_name}\nTítulo: {title}\nContenido:\n{content}"
 
 
+_LAST_CALL = {}
+
+
+def last_call():
+    """What the latest ``analyze_news`` call did: sent?, response?, tokens, error type (no content)."""
+    return dict(_LAST_CALL)
+
+
+def reset_last_call():
+    _LAST_CALL.clear()
+
+
+def _note_call(**fields):
+    _LAST_CALL.update(fields)
+
+
 def analyze_news(*,title,text,source_name,kind="sector",full_text=False,pulso_editorial_proof=False):
     if pulso_editorial_proof and not full_text:
         raise ValueError("Pulso editorial proof requires complete primary input")
+    _LAST_CALL.clear();_note_call(sent=False,response=False)
     c=_client()
     if not c or not allow_call("fast"):return None
     model=os.getenv("RADAR_FAST_MODEL","gpt-5.6-luna")
@@ -168,7 +185,11 @@ Mantén atribución de prensa: lo reportado sigue siendo media_reported.
 """
     try:
         request_input = news_analysis_input(title=title, text=text, source_name=source_name, full_text=full_text)
+        _note_call(sent=True)
         r=c.responses.create(model=model,instructions=instructions,input=request_input,text={"format":{"type":"json_schema","name":schema_name,"strict":True,"schema":schema}})
+        usage=getattr(r,"usage",None)
+        _note_call(response=True,response_id=getattr(r,"id",None),input_tokens=getattr(usage,"input_tokens",None),
+                   output_tokens=getattr(usage,"output_tokens",None))
         parsed=_parse_json(r.output_text)
         if pulso_editorial_proof and isinstance(parsed,dict):
             import hashlib
@@ -179,6 +200,7 @@ Mantén atribución de prensa: lo reportado sigue siendo media_reported.
                 "raw_model_output_sha256":hashlib.sha256(r.output_text.encode("utf-8")).hexdigest()}
         record_response("fast",model,r,bool(parsed),None if parsed else "invalid_json");record_result("fast",bool(parsed));return parsed
     except Exception as e:
+        _note_call(error_type=type(e).__name__)
         record_response("fast",model,None,False,type(e).__name__)
         record_result("fast",False);print(f"fast model error: {type(e).__name__}");return None
 

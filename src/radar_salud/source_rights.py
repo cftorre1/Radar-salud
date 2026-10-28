@@ -71,6 +71,11 @@ def paywall_policy(url: str, metadata: dict | None = None, source_slug: str | No
             return rule
         if any(path.startswith(prefix) for prefix in rule.get("path_prefixes", [])) or _article_flagged(metadata):
             return rule
+        # A premium-section piece published under another path (e.g. /nacional/ with
+        # the publisher's own section label "Pulso") is premium too.
+        section = (metadata or {}).get("section") if isinstance(metadata, dict) else None
+        if isinstance(section, str) and section.strip() in rule.get("sections", []):
+            return rule
     return None
 
 
@@ -179,9 +184,13 @@ def _redact_body_fields(md: dict, teaser: str, receipts: list[dict], prefix: str
         value = md.get(key)
         if value in (None, "", [], {}) or (isinstance(value, str) and clean_teaser(value) == teaser):
             continue
-        if key == "page_text" and isinstance(value, str) and not md.get("article_body_sha256"):
-            md["article_body_sha256"] = sha256_text(value)
-            md.setdefault("article_body_characters", len(value))
+        if key == "page_text" and isinstance(value, str):
+            if not md.get("article_body_sha256"):
+                md["article_body_sha256"] = sha256_text(value)
+                md.setdefault("article_body_characters", len(value))
+            elif md["article_body_sha256"] == sha256_text(value):
+                # The capture hash proves this exact body: its length is part of the receipt.
+                md.setdefault("article_body_characters", len(value))
         receipts.append(receipt(value, prefix + key))
         removed += len(value) if isinstance(value, str) else len(json.dumps(value, ensure_ascii=False))
         if key == "page_text":
@@ -244,10 +253,16 @@ def redact_signal(row: dict, teaser: str | None = None) -> dict:
     out = dict(row)
     teaser = clean_teaser(teaser if teaser is not None else out.get("public_teaser"))
     receipts = list(out.get("rights_redactions") or [])
+    review = out.get("editorial_review")
     for key in policy["redacted_signal_fields"]:
-        if out.get(key) not in (None, "", [], {}):
+        if out.get(key) not in (None, "", [], {}) and not (
+                key == "editorial_review" and isinstance(review, dict) and review_skeleton(review) == review):
             receipts.append(receipt(out[key], key))
         out.pop(key, None)
+    if isinstance(review, dict):
+        # An independent review's verdict (decision, file, hashes) is a publication
+        # contract: a withdrawn piece must stay withdrawn. Only its prose goes.
+        out["editorial_review"] = review_skeleton(review)
     committee = out.get("editorial_committee")
     if isinstance(committee, dict):
         # Keep the committee verdict (publication contract); its copy becomes public-only.
@@ -290,12 +305,35 @@ def redact_signal(row: dict, teaser: str | None = None) -> dict:
     return out
 
 
+def _is_token(value) -> bool:
+    return not isinstance(value, str) or (len(value) <= 120 and not re.search(r"\s", value))
+
+
+def review_skeleton(review):
+    """Keep the structural part of a review (ids, paths, hashes, dates, decisions, scores); drop prose."""
+    if isinstance(review, dict):
+        out = {}
+        for key, value in review.items():
+            if isinstance(value, (dict, list)):
+                kept = review_skeleton(value)
+                if kept not in ({}, []):
+                    out[key] = kept
+            elif _is_token(value):
+                out[key] = value
+        return out
+    if isinstance(review, list):
+        return [k for k in (review_skeleton(v) if isinstance(v, (dict, list)) else v for v in review)
+                if (isinstance(k, (dict, list)) and k) or (not isinstance(k, (dict, list)) and _is_token(k))]
+    return review if _is_token(review) else None
+
+
 def excess_fields(row: dict) -> list[str]:
     """Names of fields that a paywalled public row must not carry (for validators/tests)."""
     if not is_paywalled(row.get("source_url"), row):
         return []
     policy = load_policy()
-    bad = [k for k in policy["redacted_signal_fields"] if row.get(k) not in (None, "", [], {})]
+    bad = [k for k in policy["redacted_signal_fields"] if row.get(k) not in (None, "", [], {})
+           and not (k == "editorial_review" and isinstance(row[k], dict) and review_skeleton(row[k]) == row[k])]
     if row.get("why_it_matters"):
         bad.append("why_it_matters")
     committee = row.get("editorial_committee")
@@ -457,16 +495,23 @@ _PUBLIC_TEXT_KEYS = {"title", "article_title", "primary_header_title", "headline
                      "description", "og_description", "public_teaser", "label", "legacy_title", "source_title_full"}
 
 
-def scrub_fingerprinted(node, fingerprints: set, url_hint: str | None = None, force: bool = False) -> tuple[int, int]:
+def scrub_fingerprinted(node, fingerprints: set, url_hint: str | None = None, force: bool = False,
+                        reason: str = "paywalled_press_public_teaser_only") -> tuple[int, int]:
     """Replace strings that contain a paywalled body sentence by a receipt. Returns (strings, characters).
 
     Outside a paywalled URL context (or ``force``) nothing is touched: an open
-    source quoting the same sentence keeps its own text.
+    source quoting the same sentence keeps its own text. A paid model output met
+    on the way is redacted by ``redact_model_output`` (structure kept, original
+    digest recorded) before the rest of its record.
     """
     count = chars = 0
     if isinstance(node, dict):
         url = next((node[k] for k in _URL_KEYS if isinstance(node.get(k), str) and node.get(k)), url_hint)
         context = force or url is None or is_paywalled(url, node if isinstance(node, dict) else None)
+        if context and isinstance(node.get(MODEL_OUTPUT_KEY), dict):
+            n, c = redact_model_output(node, fingerprints)
+            count += n
+            chars += c
         lead = node.get("public_teaser") if isinstance(node.get("public_teaser"), str) else None
         for key in list(node):
             value = node[key]
@@ -474,12 +519,12 @@ def scrub_fingerprinted(node, fingerprints: set, url_hint: str | None = None, fo
                 if key in _PUBLIC_TEXT_KEYS or (lead and value == lead):
                     continue
                 if context and contains_fingerprinted(value, fingerprints):
-                    node[key] = {"redacted": True, **receipt(value, key)}
+                    node[key] = {"redacted": True, **receipt(value, key, reason)}
                     count += 1
                     chars += len(value)
             else:
                 child_url = key if isinstance(key, str) and re.match(r"https?://", key) else url
-                n, c = scrub_fingerprinted(value, fingerprints, child_url, force)
+                n, c = scrub_fingerprinted(value, fingerprints, child_url, force, reason)
                 count += n
                 chars += c
     elif isinstance(node, list):
@@ -488,14 +533,110 @@ def scrub_fingerprinted(node, fingerprints: set, url_hint: str | None = None, fo
         for i, value in enumerate(node):
             if isinstance(value, str):
                 if context and contains_fingerprinted(value, fingerprints):
-                    node[i] = {"redacted": True, **receipt(value, f"[{i}]")}
+                    node[i] = {"redacted": True, **receipt(value, f"[{i}]", reason)}
                     count += 1
                     chars += len(value)
             else:
-                n, c = scrub_fingerprinted(value, fingerprints, url_hint, force)
+                n, c = scrub_fingerprinted(value, fingerprints, url_hint, force, reason)
                 count += n
                 chars += c
     return count, chars
+
+
+# --- Paid model outputs (Alicanto work product; rule 6: preserve paid outputs) -----
+
+MODEL_OUTPUT_KEY = "analysis_model_output"
+MODEL_OUTPUT_RIGHTS = "analysis_model_output_rights"
+QUOTE_REASON = "paywalled_body_quote_in_paid_output"
+
+
+def model_output_digest(value) -> str:
+    """Canonical digest of a model output (same form as the validators' ``model_output_sha256``)."""
+    return sha256_text(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+
+
+def _output_receipts(node, path=""):
+    if isinstance(node, dict):
+        if node.get("redacted") is True and "sha256" in node:
+            yield {"path": path, "sha256": node["sha256"], "characters": node.get("characters")}
+            return
+        for key in sorted(node):
+            yield from _output_receipts(node[key], f"{path}.{key}" if path else key)
+    elif isinstance(node, list):
+        for i, value in enumerate(node):
+            yield from _output_receipts(value, f"{path}[{i}]")
+
+
+def redact_model_output(metadata: dict, fingerprints: set) -> tuple[int, int]:
+    """Replace verbatim paywalled-body quotes inside a paid output by receipts, keeping its structure.
+
+    The paid answer itself is preserved: only strings that reproduce a locked body
+    sentence become ``{"redacted": true, sha256, characters, reason}`` in place. The
+    digest of the output *before* any redaction is recorded as
+    ``original_model_output_sha256`` (the key every earlier validation was bound
+    to), with the redacted digest and the receipt list, so ``verified_model_output_digest``
+    can prove the stored output is that paid answer minus the listed quotes.
+    """
+    model = metadata.get(MODEL_OUTPUT_KEY)
+    if not isinstance(model, dict) or not fingerprints:
+        return 0, 0
+    before = model_output_digest(model)
+    had_receipts = next(_output_receipts(model), None) is not None
+    count = chars = 0
+    for key in list(model):
+        if key == "_pulso_analysis_meta":
+            continue  # hashes and ids only
+        value = model[key]
+        if isinstance(value, str):
+            if contains_fingerprinted(value, fingerprints):
+                model[key] = {"redacted": True, **receipt(value, key, QUOTE_REASON)}
+                count += 1
+                chars += len(value)
+        else:
+            n, c = scrub_fingerprinted(value, fingerprints, force=True, reason=QUOTE_REASON)
+            count += n
+            chars += c
+    if not count:
+        return 0, 0
+    record = metadata.get(MODEL_OUTPUT_RIGHTS)
+    if isinstance(record, dict) and record.get("redacted_model_output_sha256") == before:
+        original, basis = record.get("original_model_output_sha256"), "previous_record"
+    elif not had_receipts:
+        original, basis = before, "digest_of_the_stored_output_before_redaction"
+    else:
+        original, basis = None, "earlier_redaction_without_record"  # never guessed: reuse is refused
+    receipts = list(_output_receipts(model))
+    metadata[MODEL_OUTPUT_RIGHTS] = {
+        "original_model_output_sha256": original,
+        "original_basis": basis,
+        "redacted_model_output_sha256": model_output_digest(model),
+        "redactions": receipts,
+        "reason": QUOTE_REASON,
+        "redacted_at": _REDACTED_AT,
+        "note": "Paid output preserved; verbatim paywalled-body quotes kept only as sha256 + length receipts.",
+    }
+    return count, chars
+
+
+def verified_model_output_digest(metadata: dict) -> tuple[str | None, str]:
+    """(digest an earlier validation must match, basis) for the stored paid output.
+
+    Unredacted output: its own digest. Redacted output: the recorded original
+    digest, only if the stored output is exactly the recorded redacted form
+    (same digest, same receipts at the same paths). Otherwise ``None``.
+    """
+    model = metadata.get(MODEL_OUTPUT_KEY)
+    if not isinstance(model, dict):
+        return None, "no_paid_output"
+    receipts = list(_output_receipts(model))
+    record = metadata.get(MODEL_OUTPUT_RIGHTS)
+    if not receipts and record is None:
+        return model_output_digest(model), "unredacted_output"
+    if (not isinstance(record, dict) or record.get("redacted_model_output_sha256") != model_output_digest(model)
+            or record.get("redactions") != receipts
+            or not re.fullmatch(r"[0-9a-f]{64}", str(record.get("original_model_output_sha256") or ""))):
+        return None, "redacted_output_record_mismatch"
+    return record["original_model_output_sha256"], "redacted_output_verified"
 
 
 _LONG = 600
@@ -548,13 +689,66 @@ def _claims(text: str) -> set[str]:
     return claims
 
 
+# Function words and Alicanto's own framing vocabulary (hedges, attribution,
+# evaluation): they carry no publisher fact, so they need no support in the lead.
+_FUNCTION_WORDS = set("""
+a al algo algun alguna algunas alguno algunos ante antes aqui asi aun aunque bajo cada casi como con contra cual
+cuales cuando de del desde donde dos durante e el ella ellas ello ellos en entre era eran es esa esas ese eso esos
+esta estaba estado estan estar estas este esto estos fue fueron ha habia han hasta hay la las le les lo los mas
+me mientras muy ni no nos o otra otras otro otros para pero poco por porque pues que quien quienes se sea segun ser
+si sido sin sobre son su sus tal tambien tan tanto te todavia toda todas todo todos tras tu un una unas uno unos
+y ya ademas luego solo sola solamente mismo misma mismos mismas cuyo cuya cuyos cuyas tiene tienen tener podria
+podrian puede pueden poder debe deben deberia haber hace hacen hacer cual dicha dicho dichos dichas
+""".split())
+_FRAMING_WORDS = set("""
+plantea planteo propuesta senal senales medida medidas adoptada adoptado sectorial implica implican implicancia
+implicancias efecto efectos impacto riesgo riesgos decision aun todavia segun reporta reporto informa informo indica
+indico seria serian posible posibles eventual eventuales relevante relevantes clave importa importante importantes
+contexto lectura alicanto nota prensa reporte articulo pieza bajada titular titulo publica publico publicada
+publicado fuente fuentes atribucion atribuido dato datos cifra cifras confirma confirmar confirmado confirmada
+verificar verificado verificada oficial oficiales pendiente pendientes vigente vigentes ahora hoy fecha
+afirma afirmo senala senalo dijo dice sostiene sostuvo agrega agrego explica explico asegura aseguro declara declaro
+advierte advirtio
+""".split())
+_STEM = 5
+
+
+def _content_stems(folded: str) -> list[str]:
+    words = re.findall(r"[a-z][a-z'-]+", folded)
+    return [w[:_STEM] for w in words
+            if len(w) >= 4 and w not in _FUNCTION_WORDS and w not in _FRAMING_WORDS and w not in _STOP]
+
+
+_MONTHS = ("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre",
+           "noviembre", "diciembre")
+
+
+def public_date_text(iso) -> str:
+    """The publication date is a public field: "29 de septiembre de 2026" for the text check."""
+    m = re.fullmatch(r"(\d{4})-(\d{2})-(\d{2})", str(iso or "")[:10])
+    if not m or not 1 <= int(m.group(2)) <= 12:
+        return ""
+    return f"{int(m.group(3))} de {_MONTHS[int(m.group(2)) - 1]} de {m.group(1)}"
+
+
 def public_text_supported(text, public: str) -> tuple[bool, list[str]]:
-    """True when every number and named actor in ``text`` already appears in the public text."""
+    """True when ``text`` adds no fact beyond the public title + lead.
+
+    Every number and named actor must already appear in ``public``; so must every
+    content word (nouns, verbs, adjectives, compared by a 5-letter stem). Function
+    words and Alicanto's framing vocabulary (hedges, attribution) are exempt. So
+    "sin aumentar presupuesto" fails against a lead that never mentions a budget,
+    even though it carries no number or proper noun.
+    """
     if not isinstance(text, str):
         return False, ["<non_text>"]
     available = _claims(public) | {"#" + re.sub(r"[.,]", "", n) for n in re.findall(r"\d[\d.,]*", public)}
     folded = _fold(public)
     missing = sorted(c for c in _claims(text) if c not in available and (c.startswith("#") or c not in folded))
+    public_stems = set(_content_stems(folded))
+    for stem in _content_stems(_fold(text)):
+        if stem not in public_stems and "~" + stem not in missing:
+            missing.append("~" + stem)
     return not missing, missing
 
 
