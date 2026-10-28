@@ -593,6 +593,32 @@ class PendingQueue:
         if changed:self.save()
         return changed
 
+    def revive_unscored_sis_news(self, now=None, ai_available=False, max_attempts=4,
+                                 revive_attempts=2, max_age_days=30):
+        """SIS news deferred only for lack of an AI relevance score is revived once when the AI
+        budget is available again: inside the 30-day window, with ``revive_attempts`` more tries
+        before ``defer_exhausted`` defers it again (never a second revival)."""
+        if not ai_available:
+            return 0
+        from .daily_window import item_date
+        from .sis_news import UNSCORED
+        now = now or now_utc()
+        changed = 0
+        for item in self.items.values():
+            if (item.get("source") != "superintendencia_noticias" or item.get("status") != "deferred"
+                    or UNSCORED not in str(item.get("reason") or "") or item.get("unscored_revival")):
+                continue
+            day = item_date(item)
+            if day is None or not 0 <= (now.date() - day).days <= max_age_days:
+                continue
+            item["unscored_revival"] = {"at": now.isoformat(), "previous_reason": item.get("reason"),
+                                        "previous_attempts": item.get("attempts"), "revive_attempts": revive_attempts}
+            item.update(status="retry", reason=None, retry_at=None,
+                        attempts=max(0, int(max_attempts) - int(revive_attempts)))
+            changed += 1
+        if changed:self.save()
+        return changed
+
     def archive_sources(self, slugs, reason):
         """Pending items of sources retired by a recorded decision are kept, archived."""
         changed = 0
