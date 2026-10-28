@@ -269,7 +269,8 @@ test('review notes: newsletter dialog, focus-out close, touch areas and 320px ba
  await page.locator('#markAllRead').focus();await expect(page.locator('#filterDetails')).not.toHaveAttribute('open','');
  await page.setViewportSize({width:320,height:700});
  const bar=await page.evaluate(()=>({h:document.querySelector('.radar-unit').getBoundingClientRect().height,premium:document.querySelector('.premium-access').getBoundingClientRect().right,w:innerWidth}));
- expect(bar.premium).toBeLessThanOrEqual(bar.w);expect(bar.h).toBeLessThanOrEqual(100);
+ // Two lines with Inter; at most three with wider fallback fonts (CI runners have no Inter) — Dirección/review: 2 or 3 lines.
+ expect(bar.premium).toBeLessThanOrEqual(bar.w);expect(bar.h).toBeLessThanOrEqual(140);
 });
 test('source suggestion is visible, concise and fail-closed without provider',async({page})=>{
  let captured;

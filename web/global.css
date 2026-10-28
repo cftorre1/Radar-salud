@@ -7,6 +7,7 @@
 .global-intro h1{margin:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--ink68)}
 .global-intro .meta{text-transform:none}
 .brandbar .logo-link{display:block;flex:none;min-height:0}
+@media (max-width:360px){.brandbar .logo-link{flex:0 1 auto;min-width:48px}}
 
 /* Dense rows: same anatomy as #local .signal.item */
 .global-feed .theme{position:relative;margin:0;padding:9px var(--gutter) 9px 40px;border:0;border-bottom:1px solid var(--ink09);border-radius:0;background:transparent;scroll-margin-top:calc(var(--hdr) + 104px)}
