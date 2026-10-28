@@ -274,3 +274,58 @@ def process_fiscalizacion(raw,cfg):
             row[field] = raw.metadata[field]
     row["fiscalization_topic"]=topic;row["source_documents"]=raw.metadata.get("attachments",[])
     return row
+
+
+# A visible card title must say what the act does, never only its legal identity.
+BARE_ACT_TITLE_RE = re.compile(r"^(Circular|Resolución|Oficio|Decreto).*N°\s*\d+$", re.I)
+_ACT_LABEL_RE = re.compile(
+    r"\b(Resolución(?:\s+Exenta)?|Circular|Oficio(?:\s+Ord(?:inario)?)?|Decreto)\s+(?:(IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*([\d\.]+)", re.I)
+# Captured listing summaries state the infringement after "por": keep that clause verbatim.
+_GROUND_RE = re.compile(
+    r"\bpor\s+((?:haber\s+)?(?:infring|incumpl|vulner|transgred|no\s+haber)[^.]*?)(?=\.\s|\.$|\s*Fecha de emisi[oó]n|$)", re.I)
+_DATE_FRAGMENT_RE = re.compile(r",?\s*de\s+\d{1,2}\s+de\s+[a-záéíóú]+\s+de\s+\d{4}", re.I)
+
+
+def is_bare_act_title(title):
+    return bool(BARE_ACT_TITLE_RE.match(" ".join(str(title or "").split())))
+
+
+def sanction_card_title(r):
+    """Deterministic descriptive title for an individual sanction card.
+
+    Uses only captured fields: the act identity, sanctioned entity, amount and
+    either the reviewed topic or the infringement clause of the regulator's own
+    summary. Returns None when that data is missing; the caller must then hold
+    the card instead of publishing the bare act identity.
+    """
+    title = " ".join(str(r.get("title") or "").split())
+    m = _ACT_LABEL_RE.search(title)
+    entity = " ".join(str(r.get("regulated_entity") or "").split())
+    if not m or not entity:
+        return None
+    kind = " ".join(m.group(1).split())
+    prefix = (m.group(2) or "").upper()
+    label = f"{kind} {prefix + '/' if prefix else ''}N°{m.group(3)}"
+    event_type = str(r.get("event_type") or "")
+    amount, unit = r.get("sanction_amount"), str(r.get("sanction_unit") or "").strip()
+    if event_type == "SANCTION" and isinstance(amount, (int, float)) and not isinstance(amount, bool) and amount > 0 and unit:
+        action = f"Multa de {amount:g} {unit} a {entity}"
+    elif event_type == "SANCTION":
+        action = f"Sanción a {entity}"
+    elif event_type == "SANCTION_WARNING":
+        action = f"Amonestación a {entity}"
+    else:
+        return None  # amendments, revocations and substitutions need their own reviewed wording
+    topic = " ".join(str(r.get("fiscalization_topic") or "").split()).strip(" .")
+    if topic:
+        out = f"{label} · {action}: {topic}"
+    else:
+        g = _GROUND_RE.search(" ".join(str(r.get("what_happened") or "").split()))
+        if not g:
+            return None
+        ground = _DATE_FRAGMENT_RE.sub("", g.group(1))
+        ground = re.sub(r"\s+,", ",", re.sub(r",\s*,", ",", ground)).strip(" ,;:")
+        if not ground:
+            return None
+        out = f"{label} · {action} por {ground}"
+    return None if is_bare_act_title(out) else out

@@ -266,3 +266,35 @@ def test_native_engine_replay_routes_reviewed_normative_when_ai_budget_is_exhaus
     assert rejected['reason']=='related_normative_not_enforcement'
     engine_cli.main()
     assert len(json.loads((tmp_path/'data/history/superintendencia_signals.json').read_text())['signals'])==1
+
+
+def _qualis(**extra):
+    row = {'title': 'Resolución Exenta IP/N°7463', 'event_type': 'SANCTION', 'signal_types': ['Fiscalización'],
+        'regulated_entity': 'Qualis SpA', 'sanction_amount': 20.0, 'sanction_unit': 'UF', 'fiscalization_topic': None,
+        'what_happened': 'Sancionase a la Entidad Qualis SpA con una multa de 20 Unidades de Fomento por haber infringido el articulo 27 '
+            'del Reglamento, y la Circular IP/N°48, de 19 de agosto de 2020, en el procedimiento de Acreditación del prestador '
+            'Institucional Hospital Comunitario de Salud Familiar El Carmen. Fecha de emisión: 23 de septiembre de 2026.'}
+    row.update(extra)
+    return row
+
+
+def test_bare_ip_sanction_title_uses_captured_entity_amount_and_ground():
+    from radar_salud.superintendencia_fiscalizacion import sanction_card_title, is_bare_act_title
+    assert is_bare_act_title('Resolución Exenta IP/N°7463')
+    title = sanction_card_title(_qualis())
+    assert title == ('Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA por haber infringido el articulo 27 del Reglamento, '
+        'y la Circular IP/N°48, en el procedimiento de Acreditación del prestador Institucional Hospital Comunitario de Salud Familiar El Carmen')
+    assert not is_bare_act_title(title)
+    assert sanction_card_title(_qualis(fiscalization_topic='Acreditación')) == 'Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA: Acreditación'
+
+
+def test_bare_sanction_title_without_descriptive_data_is_held_not_invented():
+    from radar_salud.superintendencia_fiscalizacion import sanction_card_title
+    assert sanction_card_title(_qualis(regulated_entity=None)) is None
+    assert sanction_card_title(_qualis(what_happened='Resolución Exenta IP/N°7463.')) is None
+    assert sanction_card_title(_qualis(event_type='SANCTION_AMENDMENT')) is None
+    import sys; sys.path.insert(0, 'scripts')
+    from export_web_snapshot import _individual_sanction_titles
+    shown, held = _individual_sanction_titles([_qualis(), _qualis(regulated_entity=None)])
+    assert shown['display_title'].startswith('Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA')
+    assert held['feed_visibility'] is False and held['publication_gate_reason'] == 'fiscalization_title_needs_description'
