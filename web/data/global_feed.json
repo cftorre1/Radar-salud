@@ -1,0 +1,1072 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-10-28",
+  "generated_at": "2026-10-28T12:37:01.825598+00:00",
+  "enabled": true,
+  "authorized_by": "Dirección (cftorre1)",
+  "authorized_at": "2026-10-28",
+  "access_tier": "PREMIUM",
+  "kind": "global_daily_headlines",
+  "content_use": "metadata_and_link_only",
+  "body_stored": false,
+  "paid_ai_calls": 0,
+  "summary_method": "deterministic_template_v1",
+  "editorial_status": "headline_index_not_editorial_analysis",
+  "chile_transfer": "hypothesis_only",
+  "window_days": 14,
+  "retention_days": 45,
+  "freshness": {
+    "newest_published_at": "2026-10-28",
+    "items_last_2_days": 3,
+    "items_last_7_days": 6,
+    "status": "fresh",
+    "stale_after_days": 2
+  },
+  "sources": [
+    [
+      "ec_health",
+      "Comisión Europea"
+    ],
+    [
+      "ecdc",
+      "ECDC"
+    ],
+    [
+      "ema",
+      "EMA"
+    ]
+  ],
+  "held": {
+    "below_min_segment_matches": 8,
+    "feed_not_authorized_for_display": 17,
+    "not_relevant_or_undated": 56,
+    "publication_activation_pending_paho": 550,
+    "publication_activation_pending_who": 248
+  },
+  "capped_per_source_day": 0,
+  "weekly_signal": [
+    {
+      "segment": "regulation",
+      "label_es": "Regulación",
+      "count": 3,
+      "item_ids": [
+        "718f8cdb059d564a272c",
+        "1e2dda4154b36b712837",
+        "02931ac3579c63e2d47d"
+      ]
+    },
+    {
+      "segment": "providers",
+      "label_es": "Prestadores",
+      "count": 2,
+      "item_ids": [
+        "5bdb36cd4ca372a4d2e0",
+        "0acfc72ecc068e88b4a6"
+      ]
+    },
+    {
+      "segment": "healthtech",
+      "label_es": "Salud digital y dispositivos",
+      "count": 2,
+      "item_ids": [
+        "718f8cdb059d564a272c",
+        "93ba694c2e268873ff20"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": "02931ac3579c63e2d47d",
+      "source": "ecdc",
+      "source_label": "ECDC",
+      "attribution": "European Centre for Disease Prevention and Control (ECDC)",
+      "bylines": [],
+      "title": "Country report: ECDC Public Health Emergency Preparedness Assessment for Norway, 2025 - Under Article 8 of the Regulation (EU) 2022/2371",
+      "url": "https://www.ecdc.europa.eu/en/publications-data/country-report-ecdc-public-health-emergency-preparedness-assessment-norway-2025",
+      "published_at": "2026-10-28",
+      "segments": [
+        "regulation"
+      ],
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_es": "Agencia europea de control de enfermedades. Relevante para: Regulación.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 73,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "CC BY 4.0 (ECDC-owned web content, commercial or non-commercial); logo and third-party material excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "evidence_urls": [
+          "https://www.ecdc.europa.eu/en/copyright"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "5bdb36cd4ca372a4d2e0",
+      "source": "ecdc",
+      "source_label": "ECDC",
+      "attribution": "European Centre for Disease Prevention and Control (ECDC)",
+      "bylines": [],
+      "title": "Multi-model assessment of the impact of newborn RSV immunisation on hospitalisation burden in the EU/EEA",
+      "url": "https://www.ecdc.europa.eu/en/publications-data/multi-model-assessment-impact-newborn-rsv-immunisation-hospitalisation-burden",
+      "published_at": "2026-10-28",
+      "segments": [
+        "providers"
+      ],
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_es": "Agencia europea de control de enfermedades. Relevante para: Prestadores.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "CC BY 4.0 (ECDC-owned web content, commercial or non-commercial); logo and third-party material excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "evidence_urls": [
+          "https://www.ecdc.europa.eu/en/copyright"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "0acfc72ecc068e88b4a6",
+      "source": "ecdc",
+      "source_label": "ECDC",
+      "attribution": "European Centre for Disease Prevention and Control (ECDC)",
+      "bylines": [],
+      "title": "As the cold season nears, immunisation of newborns against universal RSV could significantly reduce infant hospitalisations across Europe",
+      "url": "https://www.ecdc.europa.eu/en/news-events/cold-season-nears-immunisation-newborns-against-universal-rsv-could-significantly",
+      "published_at": "2026-10-28",
+      "segments": [
+        "providers"
+      ],
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_es": "Agencia europea de control de enfermedades. Relevante para: Prestadores.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "CC BY 4.0 (ECDC-owned web content, commercial or non-commercial); logo and third-party material excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "evidence_urls": [
+          "https://www.ecdc.europa.eu/en/copyright"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "718f8cdb059d564a272c",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "Health Technology Assessment: Updated procedural guidance for joint scientific consultations to include the role of watcher",
+      "url": "https://health.ec.europa.eu/latest-updates/health-technology-assessment-updated-procedural-guidance-joint-scientific-consultations-include-role-2026-10-26_en",
+      "published_at": "2026-10-26",
+      "segments": [
+        "regulation",
+        "healthtech"
+      ],
+      "tags_es": [
+        "Regulación",
+        "Salud digital y dispositivos"
+      ],
+      "summary_es": "Política sanitaria de la Comisión Europea. Relevante para: Regulación, Salud digital y dispositivos.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 81,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "93ba694c2e268873ff20",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "Flash report - Member State Coordination Group on HTA (HTACG) (22 October 2026)",
+      "url": "https://health.ec.europa.eu/latest-updates/flash-report-member-state-coordination-group-hta-htacg-22-october-2026-2026-10-26_en",
+      "published_at": "2026-10-26",
+      "segments": [
+        "healthtech"
+      ],
+      "tags_es": [
+        "Salud digital y dispositivos"
+      ],
+      "summary_es": "Política sanitaria de la Comisión Europea. Relevante para: Salud digital y dispositivos.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "1e2dda4154b36b712837",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "AMA and EMA issue joint guidance on Ebola vaccine development",
+      "url": "https://www.ema.europa.eu/en/news/ama-ema-issue-joint-guidance-ebola-vaccine-development",
+      "published_at": "2026-10-23",
+      "segments": [
+        "pharma",
+        "regulation"
+      ],
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación"
+      ],
+      "summary_es": "Regulador de medicamentos de la Unión Europea. Relevante para: Medicamentos y farma, Regulación.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 81,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "075ea1273caa1acd719b",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "Commission welcomes PPPR resolution adopted by UN General Assembly",
+      "url": "https://health.ec.europa.eu/latest-updates/commission-welcomes-pppr-resolution-adopted-un-general-assembly-2026-10-16_en",
+      "published_at": "2026-10-16",
+      "segments": [
+        "regulation"
+      ],
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_es": "Política sanitaria de la Comisión Europea. Relevante para: Regulación.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 73,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "7bac110b5ff7c296adfa",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "Human medicines European public assessment report (EPAR): Fovlussea, ranibizumab, Ophthalmologicals, Status: Opinion",
+      "url": "https://www.ema.europa.eu/en/medicines/human/EPAR/fovlussea",
+      "published_at": "2026-10-16",
+      "segments": [
+        "pharma"
+      ],
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_es": "Regulador de medicamentos de la Unión Europea. Relevante para: Medicamentos y farma.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "73d1c6c255cd1c5a679c",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "Human medicines European public assessment report (EPAR): Foundayo, Orforglipron, Status: Opinion",
+      "url": "https://www.ema.europa.eu/en/medicines/human/EPAR/foundayo",
+      "published_at": "2026-10-16",
+      "segments": [
+        "pharma"
+      ],
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_es": "Regulador de medicamentos de la Unión Europea. Relevante para: Medicamentos y farma.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "731254eb723da0412c64",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "Meeting highlights from the Committee for Medicinal Products for Human Use (CHMP) 12-15 October 2026",
+      "url": "https://www.ema.europa.eu/en/news/meeting-highlights-committee-medicinal-products-human-use-chmp-12-15-october-2026",
+      "published_at": "2026-10-16",
+      "segments": [
+        "pharma"
+      ],
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_es": "Regulador de medicamentos de la Unión Europea. Relevante para: Medicamentos y farma.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "492c44545a86f194186b",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "Human medicines European public assessment report (EPAR): Neuzafy, filgrastim, Status: Opinion",
+      "url": "https://www.ema.europa.eu/en/medicines/human/EPAR/neuzafy",
+      "published_at": "2026-10-16",
+      "segments": [
+        "pharma"
+      ],
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_es": "Regulador de medicamentos de la Unión Europea. Relevante para: Medicamentos y farma.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "3307ed755d721f4e9a43",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "Human medicines European public assessment report (EPAR): Yuviwel, Navepegritide, Status: Opinion",
+      "url": "https://www.ema.europa.eu/en/medicines/human/EPAR/yuviwel",
+      "published_at": "2026-10-16",
+      "segments": [
+        "pharma"
+      ],
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_es": "Regulador de medicamentos de la Unión Europea. Relevante para: Medicamentos y farma.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "168882e2756a5c82cc30",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "Human medicines European public assessment report (EPAR): Kizfizo, temozolomide, Status: Opinion",
+      "url": "https://www.ema.europa.eu/en/medicines/human/EPAR/kizfizo-0",
+      "published_at": "2026-10-16",
+      "segments": [
+        "pharma"
+      ],
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_es": "Regulador de medicamentos de la Unión Europea. Relevante para: Medicamentos y farma.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "dcf6a449c6ff029f8158",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "Mexico and the EU kick off High-Level Dialogue on Health to advance common health priorities",
+      "url": "https://health.ec.europa.eu/latest-updates/mexico-and-eu-kick-high-level-dialogue-health-advance-common-health-priorities-2026-10-14_en",
+      "published_at": "2026-10-15",
+      "segments": [
+        "regulation"
+      ],
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_es": "Política sanitaria de la Comisión Europea. Relevante para: Regulación.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 73,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "8a54f7f52a086c5f324e",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "EMA recommends authorisation of Rasonque for metastatic pancreatic cancer",
+      "url": "https://www.ema.europa.eu/en/news/ema-recommends-authorisation-rasonque-metastatic-pancreatic-cancer",
+      "published_at": "2026-10-15",
+      "segments": [
+        "regulation"
+      ],
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_es": "Regulador de medicamentos de la Unión Europea. Relevante para: Regulación.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 73,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "05518be530da51b752cf",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "Summary report OECD/EUPHA - Long COVID Policy Dialogue",
+      "url": "https://health.ec.europa.eu/latest-updates/summary-report-oecdeupha-long-covid-policy-dialogue-2026-10-14_en",
+      "published_at": "2026-10-15",
+      "segments": [
+        "regulation"
+      ],
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_es": "Política sanitaria de la Comisión Europea. Relevante para: Regulación.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 73,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "f5de856c8f81badef317",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "Human medicines European public assessment report (EPAR): Rasonque, Daraxonrasib, Status: Opinion",
+      "url": "https://www.ema.europa.eu/en/medicines/human/EPAR/rasonque",
+      "published_at": "2026-10-15",
+      "segments": [
+        "pharma"
+      ],
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_es": "Regulador de medicamentos de la Unión Europea. Relevante para: Medicamentos y farma.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "81af49b1d200a3b8fd1f",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "Commission establishes the European Health Data Space Stakeholder Forum and Community",
+      "url": "https://health.ec.europa.eu/latest-updates/commission-establishes-european-health-data-space-stakeholder-forum-and-community-2026-10-13_en",
+      "published_at": "2026-10-13",
+      "segments": [
+        "healthtech"
+      ],
+      "tags_es": [
+        "Salud digital y dispositivos"
+      ],
+      "summary_es": "Política sanitaria de la Comisión Europea. Relevante para: Salud digital y dispositivos.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "e758e3ef04a5dfecc14a",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "Meeting highlights from the Committee for Veterinary Medicinal Products (CVMP) 6-8 October 2026",
+      "url": "https://www.ema.europa.eu/en/news/meeting-highlights-committee-veterinary-medicinal-products-cvmp-6-8-october-2026",
+      "published_at": "2026-10-09",
+      "segments": [
+        "pharma",
+        "regulation"
+      ],
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación"
+      ],
+      "summary_es": "Regulador de medicamentos de la Unión Europea. Relevante para: Medicamentos y farma, Regulación.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 60,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "4380c2b4d22a1571b97c",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "Clinical trial applications advice pilot becomes permanent",
+      "url": "https://www.ema.europa.eu/en/news/clinical-trial-applications-advice-pilot-becomes-permanent",
+      "published_at": "2026-10-08",
+      "segments": [
+        "pharma"
+      ],
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_es": "Regulador de medicamentos de la Unión Europea. Relevante para: Medicamentos y farma.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "7c3859b630ba1eec6d27",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "HTA Regulation - Commission selects first medical devices for joint clinical assessment",
+      "url": "https://ec.europa.eu/newsroom/sante/newsletter-archives/80023",
+      "published_at": "2026-10-06",
+      "segments": [
+        "regulation",
+        "healthtech"
+      ],
+      "tags_es": [
+        "Regulación",
+        "Salud digital y dispositivos"
+      ],
+      "summary_es": "Política sanitaria de la Comisión Europea. Relevante para: Regulación, Salud digital y dispositivos.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 81,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "61a1a0877a1ec801fe65",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "Meeting highlights from the Pharmacovigilance Risk Assessment Committee (PRAC) 28 September - 1 October",
+      "url": "https://www.ema.europa.eu/en/news/meeting-highlights-pharmacovigilance-risk-assessment-committee-prac-28-september-1-october",
+      "published_at": "2026-10-02",
+      "segments": [
+        "pharma"
+      ],
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_es": "Regulador de medicamentos de la Unión Europea. Relevante para: Medicamentos y farma.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "ce3dbd504d024e342517",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "Global regulators call for advancing alternatives to animal testing across the medicine lifecycle",
+      "url": "https://www.ema.europa.eu/en/news/global-regulators-call-advancing-alternatives-animal-testing-across-medicine-lifecycle",
+      "published_at": "2026-10-01",
+      "segments": [
+        "pharma",
+        "regulation"
+      ],
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación"
+      ],
+      "summary_es": "Regulador de medicamentos de la Unión Europea. Relevante para: Medicamentos y farma, Regulación.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 81,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "f3627b712f4961ce8503",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "EMA Management Board: highlights of September 2026 meeting",
+      "url": "https://www.ema.europa.eu/en/news/ema-management-board-highlights-september-2026-meeting",
+      "published_at": "2026-10-01",
+      "segments": [
+        "regulation"
+      ],
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_es": "Regulador de medicamentos de la Unión Europea. Relevante para: Regulación.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 73,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "ab0183697d78ad02a1ea",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "Executive Director speech at EMA women’s health multi-stakeholder workshop",
+      "url": "https://www.ema.europa.eu/en/news/executive-director-speech-ema-womens-health-multi-stakeholder-workshop",
+      "published_at": "2026-10-01",
+      "segments": [
+        "regulation"
+      ],
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_es": "Regulador de medicamentos de la Unión Europea. Relevante para: Regulación.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 73,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "8746fe07ed09de8f5f24",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "Advice on ‘end-of-year’ submission dates for type I variations in 2026",
+      "url": "https://www.ema.europa.eu/en/news/advice-end-year-submission-dates-type-i-variations-2026",
+      "published_at": "2026-10-01",
+      "segments": [
+        "pharma",
+        "regulation"
+      ],
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación"
+      ],
+      "summary_es": "Regulador de medicamentos de la Unión Europea. Relevante para: Medicamentos y farma, Regulación.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 60,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "ca0def6261c2f46f8b58",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "Women are missing from medicines development: EMA’s roadmap for change",
+      "url": "https://www.ema.europa.eu/en/news/women-are-missing-medicines-development-emas-roadmap-change",
+      "published_at": "2026-09-30",
+      "segments": [
+        "pharma",
+        "regulation"
+      ],
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación"
+      ],
+      "summary_es": "Regulador de medicamentos de la Unión Europea. Relevante para: Medicamentos y farma, Regulación.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 81,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "first_seen_on": "2026-10-28"
+    },
+    {
+      "id": "b815455cc86242be8f57",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "Expert decision and opinion (CECP-EMA/EX/0000171363) - Orthopaedics, traumatology, rehabilitation, rheumatology",
+      "url": "https://health.ec.europa.eu/latest-updates/expert-decision-and-opinion-cecp-emaex0000171363-orthopaedics-traumatology-rehabilitation-2026-09-29_en",
+      "published_at": "2026-09-29",
+      "segments": [
+        "regulation",
+        "healthtech"
+      ],
+      "tags_es": [
+        "Regulación",
+        "Salud digital y dispositivos"
+      ],
+      "summary_es": "Política sanitaria de la Comisión Europea. Relevante para: Regulación, Salud digital y dispositivos.",
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 81,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "first_seen_on": "2026-10-28"
+    }
+  ]
+}
