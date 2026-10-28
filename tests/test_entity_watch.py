@@ -83,6 +83,12 @@ def test_cmf_identities_come_only_from_repository_register():
     ('Compin e Isapres deberán rechazar las licencias', 'cl:org:compin'),
     ('Kast anuncia convenio entre Minsal, Fonasa y Caja Los Andes', 'cl:org:fonasa'),
     ('Clínicas de Chile y CENS realizan jornada', 'cl:org:clinicas-de-chile'),
+    # Review PR #75: sustained upper case in SIS registers.
+    ('CENTRO MEDICO Y DENTAL RED SALUD ALAMEDA', 'cl:org:redsalud-ilc'),
+    ('Imponer a la ISAPRE VIDA TRES S.A. una multa', 'cl:isapre:80'),
+    ('CLINICAS DE CHILE A.G. PRESENTA ESTUDIO', 'cl:org:clinicas-de-chile'),
+    ('Imponer a la ISAPRE ESENCIAL una multa', 'cl:isapre:108'),
+    ('RECURSO DE ESENCIAL S.A. CONTRA LA CIRCULAR', 'cl:isapre:108'),
 ])
 def test_true_positives(text, expected):
     assert expected in ids(text)
@@ -110,6 +116,15 @@ def test_true_positives(text, expected):
     ('la unidad está disponible para pacientes Fonasa e Isapre', 'cl:org:fonasa'),
     ('el 57% del gasto era financiado por Fonasa o isapres', 'cl:org:fonasa'),
     ('las clínicas de Chile enfrentan alzas de costos', 'cl:org:clinicas-de-chile'),
+    ('SERVICIO ESENCIAL PARA ISAPRES', 'cl:isapre:108'),
+    ('HOSPITAL CLINICO UC RED SALUD UC CHRISTUS', 'cl:org:redsalud-ilc'),
+    ('PROGRAMA RED SALUD MENTAL', 'cl:org:redsalud-ilc'),
+    # Fonasa as a population, not as the actor.
+    ('las licencias bajaron tanto en Fonasa (-14,4%) como en isapres (-13,5%)', 'cl:org:fonasa'),
+    ('La caída alcanzó tanto a Fonasa (-13,4%) como a Isapres (-12,2%)', 'cl:org:fonasa'),
+    ('se registraron 62.554.296 casos GES: 59.325.399 en Fonasa y 3.228.897 en isapres', 'cl:org:fonasa'),
+    ('para afiliados a Fonasa o isapres', 'cl:org:fonasa'),
+    ('beneficiarios de Fonasa e Isapres', 'cl:org:fonasa'),
 ])
 def test_false_positives_are_not_tagged(text, absent):
     assert absent not in ids(text)
@@ -122,6 +137,17 @@ def test_diario_oficial_capture_tags_only_its_own_act():
     assert ew.direct_ids(own)[0] == ['cl:org:isp']
     inherited = {'title': 'Instituto de Salud Pública Extracto de resolución exenta número 4.011 Ver PDF (CVE-2863854) Extracto de resolución exenta número 4.142, de 2026.- Aprueba Guía', 'source_name': 'Diario Oficial'}
     assert ew.direct_ids(inherited)[0] == ['cl:org:isp']
+
+
+def test_ist_newsroom_source_name_assigns_ist():
+    refs = ew.entity_refs({'title': 'Reporte de sostenibilidad 2025', 'source_name': 'Instituto de Seguridad del Trabajo (IST)'})
+    assert [(r['canonical_id'], r['basis']) for r in refs] == [('cl:org:ist', 'source')]
+
+
+def test_fonasa_actor_mentions_survive_population_exclusions():
+    for text in ('Buk arremete contra licitación de Fonasa', 'Histórica condena por megafraude a Fonasa',
+                 'tanto en Fonasa como en isapres; Fonasa además licitará la recaudación'):
+        assert 'cl:org:fonasa' in ids(text), text
 
 
 def test_newsroom_source_assigns_owner_and_aggregates_inherit_member_acts():

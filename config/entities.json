@@ -549,7 +549,7 @@
    ],
    "patterns": [
     {
-     "re": "\\bVida ?Tres\\b",
+     "re": "\\b(Vida ?Tres|VIDA ?TRES)\\b",
      "ci": false
     },
     {
@@ -586,7 +586,7 @@
      "ci": true
     },
     {
-     "re": "\\b(Esencial|ESENCIAL)\\b",
+     "re": "\\bEsencial\\b",
      "ci": false,
      "context": "\\bisapres?\\b|colmena|consalud|cruz ?blanca|masvida|vida ?tres|\\bcircular if\\b"
     }
@@ -596,7 +596,7 @@
     "sis_registry": "https://www.superdesalud.gob.cl/registro/isapres/"
    },
    "cmf": [],
-   "notes": "\"esencial\" es adjetivo; solo cuenta con mayúscula y contexto de isapres."
+   "notes": "\"esencial\" es adjetivo; solo cuenta \"Esencial\" (inicial mayúscula) con contexto de isapres. En mayúsculas sostenidas exige \"Isapre ESENCIAL\" o \"ESENCIAL S.A.\"."
   },
   {
    "id": "cl:isapre:76",
@@ -694,8 +694,10 @@
     }
    ],
    "exclude": [
-    "\\b(pacientes|beneficiarios|afiliados|usuarios|personas)( de)? fonasa(,| e| o| y) (las |los )?(isapres?|particulares)\\b",
-    "\\b(financiad[oa]s? por|cobertura de) fonasa (e|o|y) (las )?isapres?\\b"
+    "\\b(pacientes|beneficiarios|afiliados|usuarios|personas)( de| a)? fonasa(,| e| o| y) (a |de )?(las |los )?(isapres?|particulares)\\b",
+    "\\b(financiad[oa]s? por|cobertura de) fonasa (e|o|y) (las )?isapres?\\b",
+    "\\btanto (en|a|para) fonasa\\b[^.;]{0,60}?\\bcomo (en |a |para )?(las )?isapres?\\b",
+    "\\b[0-9][0-9.,]* [a-z ]{0,25}?en fonasa y [0-9][0-9.,]* [a-z ]{0,25}?en (las )?isapres?\\b"
    ],
    "urls": {
     "website": "https://www.fonasa.gob.cl",
@@ -799,6 +801,9 @@
      "ci": true
     }
    ],
+   "source_names": [
+    "Instituto de Seguridad del Trabajo (IST)"
+   ],
    "urls": {
     "website": "https://ist.cl",
     "sis_registry": null
@@ -850,7 +855,7 @@
      "ci": false
     },
     {
-     "re": "\\bREDSALUD\\b",
+     "re": "\\bRED ?SALUD\\b(?! MENTAL)",
      "ci": false
     },
     {
@@ -905,7 +910,7 @@
    ],
    "patterns": [
     {
-     "re": "\\bClinicas de Chile\\b",
+     "re": "\\b(Clinicas de Chile|CLINICAS DE CHILE)\\b",
      "ci": false
     },
     {
