@@ -347,7 +347,8 @@ document.getElementById('earlyAccessOpen').onclick=()=>openDialog('earlyAccessDi
 document.getElementById('newsletterOpen').onclick=()=>openDialog('newsletterDialog');
 document.getElementById('sourcesOpen').onclick=()=>openDialog('sourcesDialog');
 document.querySelectorAll('[data-open-sources]').forEach(b=>b.onclick=()=>openDialog('sourcesDialog'));
-document.querySelectorAll('[data-open-newsletter]').forEach(b=>b.onclick=()=>openDialog('newsletterDialog'));
+// The header Newsletter link opens the existing dialog; without JavaScript it still goes to subscription.html (review PR #80, nota 1).
+document.querySelectorAll('[data-open-newsletter]').forEach(b=>b.onclick=e=>{e.preventDefault();openDialog('newsletterDialog')});
 document.querySelectorAll('[data-open-filters]').forEach(b=>b.onclick=openFilters);
 wireLanes();
 filtersDropdown=AlicantoBar.dropdown(document.getElementById('filterDetails'));

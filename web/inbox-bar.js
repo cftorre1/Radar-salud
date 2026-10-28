@@ -5,12 +5,14 @@
  // Pendientes · Leídas · Todas: buttons [data-lane] inside `host`; counts go in their <span>.
  function syncLanes(host,mode,counts){if(!host)return;host.querySelectorAll('[data-lane]').forEach(b=>{const on=b.dataset.lane===mode;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));const n=b.querySelector('span');if(n&&counts)n.textContent=counts[b.dataset.lane]??''})}
  function wireLanes(host,getMode,setMode){if(!host)return;host.querySelectorAll('[data-lane]').forEach(b=>b.onclick=()=>{if(getMode()===b.dataset.lane)return;setMode(b.dataset.lane);b.focus()})}
- // The dropdown closes on a click outside, on Escape (unless a dialog is open) and through close().
+ // The dropdown closes on a click outside, on Escape (unless a dialog is open), when focus leaves it and through close().
  function dropdown(details){
   const close=focus=>{if(!details||!details.open)return;details.open=false;if(focus)details.querySelector('summary')?.focus()};
   if(details&&typeof document!=='undefined'){
    document.addEventListener('pointerdown',e=>{if(details.open&&!details.contains(e.target))details.open=false});
    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&details.open&&!document.querySelector('dialog[open]'))close(true)});
+   // Tab (or any focus move) out of the dropdown closes it; a re-render inside it (relatedTarget null) does not.
+   details.addEventListener('focusout',e=>{if(details.open&&e.relatedTarget&&!details.contains(e.relatedTarget))details.open=false});
   }
   return {close,open(){if(details)details.open=true}};
  }

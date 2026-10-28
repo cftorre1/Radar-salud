@@ -257,6 +257,20 @@ test('Global shares header, bar A and mark-all with the Home',async({page})=>{
  await page.locator('#undoRead').click();await expect(rows).toHaveCount(total);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
 });
+// Independent review of PR #80 (PASS_WITH_NOTES): header Newsletter opens the dialog, the dropdown closes when
+// focus leaves it, controls have 44px touch areas, and at 320px PREMIUM stays whole with a two-line bar.
+test('review notes: newsletter dialog, focus-out close, touch areas and 320px bar',async({page})=>{
+ await page.goto('/');await expect(page.locator('#local article[data-card]').first()).toBeVisible();
+ await page.locator('.topnav .header-newsletter').click();await expect(page.locator('#newsletterDialog')).toBeVisible();expect(page.url()).not.toContain('subscription.html');
+ await page.getByRole('button',{name:'Cerrar resumen semanal'}).click();
+ await page.locator('#filterDetails summary').click();await expect(page.locator('#filterDetails')).toHaveAttribute('open','');
+ const hit=await page.evaluate(()=>{const area=el=>{const r=el.getBoundingClientRect(),a=getComputedStyle(el,'::after'),b=getComputedStyle(el,'::before');const ext=p=>p.content&&p.content!=='none'&&p.position==='absolute'?Math.max(0,-parseFloat(p.top)||0)+Math.max(0,-parseFloat(p.bottom)||0):0;return r.height+Math.max(ext(a),ext(b))};return{period:area(document.querySelector('#period')),summary:area(document.querySelector('#filterDetails summary')),row:area(document.querySelector('#interestFilters .tog[data-interest]:not([data-interest=""])')),reset:area(document.querySelector('#resetFilters')),chip:area(document.querySelector('#typeFilters .chip')),done:area(document.querySelector('#filterDone'))}});
+ for(const [k,v] of Object.entries(hit))expect(v,k).toBeGreaterThanOrEqual(44);
+ await page.locator('#markAllRead').focus();await expect(page.locator('#filterDetails')).not.toHaveAttribute('open','');
+ await page.setViewportSize({width:320,height:700});
+ const bar=await page.evaluate(()=>({h:document.querySelector('.radar-unit').getBoundingClientRect().height,premium:document.querySelector('.premium-access').getBoundingClientRect().right,w:innerWidth}));
+ expect(bar.premium).toBeLessThanOrEqual(bar.w);expect(bar.h).toBeLessThanOrEqual(100);
+});
 test('source suggestion is visible, concise and fail-closed without provider',async({page})=>{
  let captured;
  await page.route('**/api/source-suggestions',async route=>{

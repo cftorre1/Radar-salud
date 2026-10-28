@@ -238,7 +238,7 @@ main{max-width:none;margin:0;padding:0 0 70px}
 /* Period and filters: two small pills */
 .period-pill,.filter-details>summary{position:relative;box-sizing:border-box;display:inline-flex;align-items:center;gap:5px;height:34px;min-height:34px!important;border:1px solid var(--ink12);border-radius:999px;background:#fff;color:var(--ink84);font-size:12.5px;font-weight:600;white-space:nowrap;cursor:pointer}
 .period-pill{order:4;padding:0}
-.period-pill select{all:unset;display:block;field-sizing:content;cursor:pointer;box-sizing:border-box;height:auto;min-height:0;line-height:16px;padding:8px 26px 8px 12px;font:inherit;color:inherit;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.period-pill select{all:unset;display:block;field-sizing:content;cursor:pointer;box-sizing:border-box;height:44px;min-height:44px;line-height:16px;padding:14px 26px 14px 12px;margin:-6px 0;font:inherit;color:inherit;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .period-pill .mini-icon{position:absolute;right:9px;width:13px;height:13px;pointer-events:none;color:var(--ink48)}
 .period-pill:focus-within{outline:2px solid #E3A24F;outline-offset:2px}
 .period-pill:hover,.filter-details>summary:hover{border-color:var(--ink18);color:var(--ink)}
@@ -246,6 +246,13 @@ main{max-width:none;margin:0;padding:0 0 70px}
 .filter-details>summary{list-style:none;padding:0 10px 0 10px;max-width:190px}
 .filter-details>summary::-webkit-details-marker{display:none}
 .filter-details>summary::after{content:none!important}
+/* Review PR #80 (nota 2): 44px touch areas without visual change. */
+.filter-details>summary::before{content:"";position:absolute;inset:-6px 0}
+.reset-filters{position:relative}.reset-filters::after{content:"";position:absolute;inset:-4px -4px}
+.sheet-done{position:relative}.sheet-done::after{content:"";position:absolute;inset:-2px 0}
+.facet>div{gap:14px 6px}.facet .chip::after{inset:-7px -3px}
+.filter-body .tog{position:relative}.filter-body .tog::after{content:"";position:absolute;inset:-4px 0}
+.interest-sheet .interest-grid,.entity-list{row-gap:8px!important}
 .filter-details>summary .mini-icon{width:15px;height:15px;flex:none;color:var(--ink68)}
 .filter-details>summary .filter-chev{width:13px;height:13px;color:var(--ink48)}
 .filter-label{overflow:hidden;text-overflow:ellipsis;min-width:0}
@@ -290,7 +297,20 @@ main{max-width:none;margin:0;padding:0 0 70px}
 @media (max-width:300px){.interest-sheet .interest-grid{grid-template-columns:minmax(0,1fr)}}
 /* Zoomed or split-view widths: controls shrink or scroll inside the bar instead of widening the page. */
 .lanes{max-width:100%;overflow-x:auto;scrollbar-width:none}.period-pill{max-width:100%}.period-pill select{max-width:min(170px,100%)}
-@media (max-width:340px){.lane{padding:0 7px;font-size:12px}.brandbar .topnav a{padding:0 4px}.brandbar .premium-access{padding:0 8px}}
+/* Review PR #80 (nota 6): at 320-360px PREMIUM stays whole and the bar keeps two lines. */
+@media (max-width:360px){
+ .brand-in{gap:8px}
+ .brandbar .topnav a{padding:0 4px}
+ .brandbar .topnav a[data-short]::before{font-size:12px}
+ .brandbar .premium-access,.brandbar .topnav a.premium-access{margin-left:2px;padding:0 8px;font-size:11px;letter-spacing:0}
+ .radar-unit .radar-head h2{font-size:16px}
+ .radar-unit{column-gap:4px}
+ .lane{padding:0 6px;font-size:11.5px;gap:3px}
+ .filter-details>summary{max-width:calc(100vw - 2 * var(--gutter) - 124px);padding:0 8px;gap:4px}
+ .period-pill select{padding-left:10px;padding-right:22px}
+ .period-pill .mini-icon{right:7px}
+ .mark-all{width:40px;margin-right:-6px}
+}
 @media (max-width:300px){.brandbar .topnav .header-newsletter{display:none!important}.filter-details>summary{max-width:100%}}
 
 /* Proposal A · status beside the title, tools below. On phones only the active count is shown;
