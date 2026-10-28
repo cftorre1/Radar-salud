@@ -24,6 +24,18 @@ class SourceDiscoveryError(RuntimeError):
         super().__init__(f"{code}: {url}" + (f" ({detail})" if detail else ""))
 
 
+# Sitefinity (achs.cl's CMS) renders an unfilled upgrade-notice template whose
+# H1 is literally "Upgraded to Sitefinity {{currentVersion}}". The 28-oct-2026
+# daily run captured it on five achs.cl article URLs (distinct bytes per URL)
+# with no usable article header or publication field. It is publisher CMS output, never
+# an article title, and never publication evidence.
+CMS_PLACEHOLDER_HEADING = re.compile(r"^upgraded to sitefinity\b", re.I)
+
+
+def is_cms_placeholder_heading(text):
+    return bool(CMS_PLACEHOLDER_HEADING.match(" ".join((text or "").split())))
+
+
 def assert_not_challenge(html, url):
     if re.search(r"_Incapsula_Resource|Request unsuccessful.*Incapsula|Incapsula incident ID", html, re.I | re.S):
         raise SourceDiscoveryError("external_waf_challenge", url, "Incapsula response; not newsroom content")
@@ -137,6 +149,7 @@ class Article(HTMLParser):
         self._elements = []
         self._publication_fields = []
         self.date_candidates = []
+        self.cms_placeholder = False
 
     def _date_candidate(self, kind, value):
         self.date_candidates.append({"kind": kind, "value": value or ""})
@@ -202,7 +215,11 @@ class Article(HTMLParser):
         if tag == self._heading:
             heading = " ".join(" ".join(self._heading_parts).split())
             self._heading = None
-            if tag == "h1" and not self.title:
+            if tag == "h1" and not self.title and is_cms_placeholder_heading(heading):
+                # Not the article: keep waiting for the real H1 so that its
+                # native header date can still be bound (or fail closed).
+                self.cms_placeholder = True
+            elif tag == "h1" and not self.title:
                 self.title, self._active = heading, True
             elif fold(heading) in self.STOP:
                 self._stopped = True
@@ -448,6 +465,16 @@ def discover_items(scout, html, detail_loader, *, as_of=None, max_items=None):
         decision["market_role"] = role
         scout.decisions.append(decision)
         if not published or len(title) < 18 or len(body) < 160:
+            if article.cms_placeholder and not published:
+                # External: the publisher served its CMS upgrade template
+                # instead of an article header. Explicit, never a success.
+                decision.update(status="pending", reason="publisher_cms_placeholder")
+                scout.diagnostics.append({"code": "publisher_cms_placeholder", "url": url,
+                                          "detail": "captured page carries the Sitefinity upgrade template "
+                                                    "('Upgraded to Sitefinity {{currentVersion}}') and no "
+                                                    "article publication field",
+                                          "date_evidence": evidence, "external": True})
+                continue
             decision.update(status="pending", reason=evidence if not published else "article_content_unrecognized")
             scout.diagnostics.append({"code": "detail_publication_evidence_missing" if not published else "article_content_unrecognized",
                                       "url": url, "detail": decision["reason"], "date_evidence": evidence})

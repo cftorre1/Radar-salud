@@ -323,7 +323,8 @@ def record(root:Path,slug:str,*,name:str,discovered:int,new:int,published:int,ro
             recent_items=inventory.get("metrics", {}), unique_items=inventory.get("metrics", {}).get("90", {}).get("expected_role", 0),
             material_items=sum(r.get("status") == "candidate" for r in inventory.get("rows", [])),
             technical_status="partial" if error and discovered else "error" if error else "ok",
-            technical_failures=inventory.get("errors", []) or ([error_detail] if error_detail else []),
+            technical_failures=(inventory.get("errors", []) or inventory.get("coverage_gaps", [])
+                                or ([error_detail] if error_detail else [])),
             coverage_status="complete" if complete else "partial", coverage_completeness=complete,
             recovery_outcome=outcome, status="ok" if outcome == "OPERATIVE_VALIDATED" else "warning" if discovered or not error else "error")
     if error_details:src[slug]["error_details"]=error_details

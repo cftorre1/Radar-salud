@@ -24,7 +24,12 @@ from .source_health import load_retired_sources, mark_retired_sources
 from .source_health import record as health_record
 from .superintendencia_fiscalizacion import SuperintendenciaFiscalizacionScout, process_fiscalizacion
 from .processing import DeferredProcessing, RejectedProcessing, OutsideBackfillHorizon
-from .public_source_evidence import failure_details, discovery_diagnostics, HOSTS as PUBLIC_DATA_SOURCES
+from .public_source_evidence import failure_details, discovery_diagnostics, HOSTS as _PUBLIC_HOSTS
+# Sources whose structured scout diagnostics (and exact failure cause) are
+# persisted in discovery_run/source_health. datos.gob.cl joined 27-oct-2026
+# as the FONASA substitute; without it a failure was recorded only as
+# "RuntimeError" (28-oct-2026 daily run).
+PUBLIC_DATA_SOURCES = frozenset(_PUBLIC_HOSTS) | {"datos_gob_cl"}
 from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
 from .occupational_sources import SOURCES as OCCUPATIONAL_SOURCES
 # Dirección 27-oct-2026: datos.gob.cl (FONASA/DEIS), CMF in the daily cycle and
@@ -227,7 +232,9 @@ def main():
             if name == "deis" and getattr(scout, "catalog", None) is not None:
                 atomic_json(root/"data/state/deis_catalog.json", scout.catalog)
             if name in PUBLIC_DATA_SOURCES:
-                discovery_details[name]={"diagnostics":discovery_diagnostics(scout,items)}
+                # datos.gob.cl dates are data releases, never news publications:
+                # do not count them (as zero) against publication coverage.
+                discovery_details[name]={"diagnostics":discovery_diagnostics(scout,None if name=="datos_gob_cl" else items)}
                 discovery_details[name]["diagnostics"]["poll_mode"]="daily_engine"
             original_dates[name]=max([raw.event_date for raw in items if raw.event_date] or ['']) or None
             partial_errors=getattr(getattr(discover,"__self__",None),"discovery_errors",[])
