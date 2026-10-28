@@ -77,8 +77,11 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await page.locator('#local .title-open').first().click();
  await expect(page.locator(`#local [data-card="${opened}"]`)).toHaveClass(/read/);
  await expect(page.locator('#signalDetail')).toBeVisible();await expect(page.locator('#closeDetail')).toBeFocused();await page.keyboard.press('Escape');
- // Opening counts as reading: the row leaves Pendientes with an undo.
- await expect(page.locator('#undoBar')).toContainText('Marcada como leída');await expect(page.locator(`#local [data-card="${opened}"]`)).toHaveCount(0);
+ // Opening counts as reading (Dirección 28-oct, punto 3): no bar under the filters; the row itself says
+ // "Leída · Deshacer" for a moment, then leaves Pendientes.
+ await expect(page.locator('.undo-bar,#undoBar')).toHaveCount(0);
+ await expect(page.locator(`#local [data-card="${opened}"] .row-undo`)).toContainText('Leída');await expect(page.locator(`#local [data-card="${opened}"] .row-undo button`)).toHaveText('Deshacer');
+ await expect(page.locator(`#local [data-card="${opened}"]`)).toHaveCount(0,{timeout:12000});
  await selectLane(page,'t');await expect(page.locator(`#local [data-card="${opened}"]`)).toHaveClass(/read/);
  const ids=await page.locator('article').evaluateAll(xs=>xs.map(x=>x.id));expect(new Set(ids).size).toBe(ids.length);
  // In Todas, marking read never reorders: the row folds in place.
@@ -89,16 +92,18 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('article').first().locator('.intel,.related')).toHaveCount(0);
  const withDepth=page.locator('article:has([data-detail])').first();await withDepth.locator('[data-detail]').first().click();
  await expect(page.locator('#signalDetail')).toBeVisible();await page.getByRole('button',{name:'Cerrar ficha'}).click();
- // Choosing a period closes the filters dropdown (Dirección 27-oct 22:44, punto 4): reopen it to pick a format.
+ // Choosing a period closes the filters dropdown (Dirección 27-oct 22:44, punto 4): reopen it to pick a topic.
+ // Dirección 28-oct (punto 4): only Actores and Temas filter; there is no Formato or Entidades facet.
  await page.locator('#filterDetails summary').click();
- await page.locator('#typeFilters').getByRole('button',{name:'Fiscalización',exact:true}).click();
+ await expect(page.locator('#typeFilters,#entitySearch')).toHaveCount(0);
+ await page.locator('#interestFilters [data-interest="normativa"]').click();
  await expect(page.locator('article').first()).toBeVisible();
  expect(await laneCount('t')).toBe(await page.locator('#local article[data-card]').count());
  expect(await laneCount('p')).toBe(await page.locator('#local article[data-card]:not(.read)').count());
  await page.reload();await expect(page.locator('#period')).toHaveValue('90');
  await page.locator('#filterDetails summary').click();
- await expect(page.locator('#typeFilters').getByRole('button',{name:'Fiscalización',exact:true})).toHaveClass(/active/);
- await page.locator('#typeFilters').getByRole('button',{name:'Todos',exact:true}).click();
+ await expect(page.locator('#interestFilters [data-interest="normativa"]')).toHaveAttribute('aria-pressed','true');
+ await page.locator('#interestFilters .tog-all').click();
  const noOverflow=await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1);expect(noOverflow).toBeTruthy();
  fs.writeFileSync(`artifacts/${test.info().project.name}-home-v2-triage.json`,JSON.stringify({visible_triage_rows:visibleTriage,filter_persisted:true,no_horizontal_overflow:noOverflow},null,2));
  expect(errors).toEqual([]);
@@ -112,12 +117,13 @@ test('Inbox shows every unread signal, supports direct read with undo and persis
  expect(initial).toBe(Number(await page.locator('[data-lane="p"] span').innerText()));expect(initial).toBeGreaterThan(4);
  await expect(page.locator('#local article.read')).toHaveCount(0);await expect(page.locator('#local article[data-special]')).toHaveCount(0);
  const first=await rows.first().getAttribute('data-card');
+ // Undo lives on the row (Dirección 28-oct, punto 3): it stays in place as read with "Leída · Deshacer".
  await rows.first().locator('[data-read]').click();
- await expect(page.locator('#undoBar')).toContainText('Marcada como leída');
- await expect(rows).toHaveCount(initial-1);
- expect(await page.evaluate(()=>document.activeElement?.hasAttribute('data-read'))).toBeTruthy();
- await page.locator('#undoRead').click();await expect(rows).toHaveCount(initial);await expect(page.locator(`#local [data-card="${first}"]`)).not.toHaveClass(/read/);
- await page.locator(`#local [data-card="${first}"] [data-read]`).click();await expect(rows).toHaveCount(initial-1);
+ const pill=page.locator(`#local [data-card="${first}"] .row-undo`);await expect(pill).toContainText('Leída');
+ await expect(page.locator(`#local [data-card="${first}"]`)).toHaveClass(/read/);await expect(rows).toHaveCount(initial);
+ await pill.getByRole('button',{name:'Deshacer'}).click();await expect(pill).toHaveCount(0);await expect(page.locator(`#local [data-card="${first}"]`)).not.toHaveClass(/read/);
+ await expect(page.locator(`#local [data-card="${first}"] .title-open`)).toBeFocused();
+ await page.locator(`#local [data-card="${first}"] [data-read]`).click();await page.mouse.move(0,0);await page.locator('#lanes .lane.on').focus();await expect(rows).toHaveCount(initial-1,{timeout:12000});
  await page.reload();await expect(page.locator('#meta')).toContainText('Última actualización:');
  await expect(rows).toHaveCount(initial-1);await expect(page.locator(`#local [data-card="${first}"]`)).toHaveCount(0);
  await selectLane(page,'l');await expect(page.locator(`#local [data-card="${first}"]`)).toHaveClass(/read/);
@@ -125,8 +131,8 @@ test('Inbox shows every unread signal, supports direct read with undo and persis
  await page.locator('#filterDetails summary').click();await selectPeriod(page,'90');
  const deep=await rows.count();expect(deep).toBeGreaterThan(4);
  await page.locator('#markAllRead').click();await expect(rows).toHaveCount(0);await expect(page.locator('#local')).toContainText('Estás al día');
- await expect(page.locator('#undoBar')).toContainText(`${deep} señales marcadas como leídas`);
- await page.locator('#undoRead').click();await expect(rows).toHaveCount(deep);
+ await expect(page.locator('#local .feed-undo')).toContainText(`${deep} señales marcadas como leídas`);
+ await page.locator('#local .feed-undo').getByRole('button',{name:'Deshacer'}).click();await expect(rows).toHaveCount(deep);
 });
 test('operations dashboard loads without inventing measurements',async({page})=>{
  await page.goto('/admin/product.html');await expect(page.locator('#status')).toContainText('Actualizado:');
@@ -248,13 +254,13 @@ test('Global read state is shared across Home and the research page',async({page
 // Dirección 27-oct 23:13: Global uses the Home header and bar A; mark-all works on the visible themes with undo.
 test('Global shares header, bar A and mark-all with the Home',async({page})=>{
  await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('all');
- for(const [name,href] of [['Chile','index.html'],['Global','global.html'],['Newsletter','subscription.html'],['PREMIUM','index.html#premium']])expect(await page.locator(`.topnav a[href="${href}"]`).evaluate(el=>(el.dataset.short||el.textContent).trim())).toBe(name);
+ for(const [name,href] of [['Chile','index.html'],['Global','global.html'],['Newsletter','subscription.html']])expect(await page.locator(`.topnav a[href="${href}"]`).evaluate(el=>(el.dataset.short||el.textContent).trim())).toBe(name);
  await expect(page.locator('.topnav a[aria-current="page"]')).toHaveAttribute('href','global.html');
  const rows=page.locator('#themes .theme');await expect(rows.first()).toBeVisible();const total=await rows.count();expect(total).toBeGreaterThan(2);
  await expect(page.locator('#globalLanes [data-lane="p"]')).toHaveAttribute('aria-pressed','true');
- await page.locator('#globalMarkAll').click();await expect(rows).toHaveCount(0);await expect(page.locator('#globalUndo')).toContainText(`${total} temas marcados como leídos`);
+ await page.locator('#globalMarkAll').click();await expect(rows).toHaveCount(0);await expect(page.locator('#themes .feed-undo')).toContainText(`${total} temas marcados como leídos`);
  await expect(page.locator('#themes')).toContainText('Estás al día');
- await page.locator('#undoRead').click();await expect(rows).toHaveCount(total);
+ await page.locator('#themes .feed-undo').getByRole('button',{name:'Deshacer'}).click();await expect(rows).toHaveCount(total);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
 });
 // Independent review of PR #80 (PASS_WITH_NOTES): header Newsletter opens the dialog, the dropdown closes when
@@ -264,7 +270,7 @@ test('review notes: newsletter dialog, focus-out close, touch areas and 320px ba
  await page.locator('.topnav .header-newsletter').click();await expect(page.locator('#newsletterDialog')).toBeVisible();expect(page.url()).not.toContain('subscription.html');
  await page.getByRole('button',{name:'Cerrar resumen semanal'}).click();
  await page.locator('#filterDetails summary').click();await expect(page.locator('#filterDetails')).toHaveAttribute('open','');
- const hit=await page.evaluate(()=>{const area=el=>{const r=el.getBoundingClientRect(),a=getComputedStyle(el,'::after'),b=getComputedStyle(el,'::before');const ext=p=>p.content&&p.content!=='none'&&p.position==='absolute'?Math.max(0,-parseFloat(p.top)||0)+Math.max(0,-parseFloat(p.bottom)||0):0;return r.height+Math.max(ext(a),ext(b))};return{period:area(document.querySelector('#period')),summary:area(document.querySelector('#filterDetails summary')),row:area(document.querySelector('#interestFilters .tog[data-interest]:not([data-interest=""])')),reset:area(document.querySelector('#resetFilters')),chip:area(document.querySelector('#typeFilters .chip')),done:area(document.querySelector('#filterDone'))}});
+ const hit=await page.evaluate(()=>{const area=el=>{const r=el.getBoundingClientRect(),a=getComputedStyle(el,'::after'),b=getComputedStyle(el,'::before');const ext=p=>p.content&&p.content!=='none'&&p.position==='absolute'?Math.max(0,-parseFloat(p.top)||0)+Math.max(0,-parseFloat(p.bottom)||0):0;return r.height+Math.max(ext(a),ext(b))};return{period:area(document.querySelector('#period')),summary:area(document.querySelector('#filterDetails summary')),row:area(document.querySelector('#interestFilters .tog[data-interest]:not([data-interest=""])')),reset:area(document.querySelector('#resetFilters')),done:area(document.querySelector('#filterDone'))}});
  for(const [k,v] of Object.entries(hit))expect(v,k).toBeGreaterThanOrEqual(44);
  await page.locator('#markAllRead').focus();await expect(page.locator('#filterDetails')).not.toHaveAttribute('open','');
  await page.setViewportSize({width:320,height:700});
@@ -726,8 +732,8 @@ test('a shared link is revealed once in a lane that shows it and never rewrites 
  await page.goto(`/#sig-${encodeURIComponent(id)}`);await page.reload();
  const card=page.locator(`[id="sig-${id}"]`);await expect(card).toBeVisible();await expect(card).toBeFocused();await expect(card).not.toHaveClass(/read/);
  await selectLane(page,'p');await expect(page.locator('[data-lane="p"]')).toHaveAttribute('aria-pressed','true');
- await card.locator('[data-read]').click();await expect(card).toHaveCount(0);
- await rows.first().locator('[data-read]').click();await expect(page.locator('#undoBar')).toBeVisible();
+ await card.locator('[data-read]').click();await expect(card.locator('.row-undo')).toBeVisible();await expect(card).toHaveCount(0,{timeout:12000});
+ await rows.first().locator('[data-read]').click();await expect(rows.first().locator('.row-undo')).toBeVisible();
  await expect(page.locator('[data-lane="p"]')).toHaveAttribute('aria-pressed','true');await expect(page.locator(`[id="sig-${id}"]`)).toHaveCount(0);
  expect(JSON.parse(await page.evaluate(()=>localStorage.getItem('alicanto_filters'))).lane).toBe('p');
 });
@@ -777,4 +783,43 @@ test('segmented read status, floating topics dropdown and toned weekly rows',asy
  await expect.poll(()=>page.locator('#bigThings .big-feature').evaluateAll(xs=>xs.map(x=>getComputedStyle(x).backgroundImage))).toEqual(fills);
  const lines=await page.locator('#local .signal.item .title-open').evaluateAll(xs=>xs.map(x=>Math.round(x.getBoundingClientRect().height/parseFloat(getComputedStyle(x).lineHeight))));
  expect(Math.max(...lines)).toBeLessThanOrEqual(2);
+});
+
+// Dirección 28-oct (puntos 5, 6 y 7): Premium and Suscribirse open the same dialogs in place on Chile and Global;
+// Global never sends the reader back to Chile.
+test('Premium and Suscribirse behave the same on Chile and Global and keep the reader in place',async({page})=>{
+ for(const path of ['/','/global.html']){
+  await page.goto(path);const url=page.url();
+  await page.locator('.topnav .premium-access').click();await expect(page.locator('#earlyAccessDialog')).toBeVisible();await expect(page.locator('#earlyAccessDialog')).toContainText('Ve más allá de la señal.');
+  expect(page.url()).toBe(url);await page.getByRole('button',{name:'Cerrar acceso Premium'}).click();await expect(page.locator('#earlyAccessDialog')).toBeHidden();
+  await page.locator('.topnav .header-newsletter').click();await expect(page.locator('#newsletterDialog')).toBeVisible();expect(page.url()).toBe(url);await page.keyboard.press('Escape');
+  const strip=page.locator('.newsletter-strip #newsletterOpen');await expect(strip).toHaveText('Suscríbete');await strip.scrollIntoViewIfNeeded();await strip.click();
+  await expect(page.locator('#newsletterDialog')).toBeVisible();expect(page.url()).toBe(url);await page.keyboard.press('Escape');
+  await expect(page.locator('a[href="index.html#premium"]')).toHaveCount(0);
+ }
+ await page.goto('/global.html#premium');await expect(page.locator('#earlyAccessDialog')).toBeVisible();expect(page.url()).toContain('global.html');
+});
+test('Global rows match Home rows: dot toggle, title opens the ficha, source and share, inline undo',async({page})=>{
+ await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('all');
+ const row=page.locator('#themes .theme:not(.read)').first();const id=await row.getAttribute('data-theme');const same=page.locator(`#theme-${id}`);
+ await expect(same.locator('.item-actions a[aria-label="Fuente original"]')).toHaveAttribute('target','_blank');await expect(same.locator('.item-actions [data-share]')).toBeVisible();
+ await expect(page.locator('#globalUndo,.undo-bar')).toHaveCount(0);
+ await same.locator('.title-open').click();await expect(page.locator('#globalDetail')).toBeVisible();
+ await expect(page.locator('#globalDetail .detail-top #closeGlobalDetail')).toHaveText('Volver');await expect(page.locator('#globalDetailBar [data-share]')).toBeVisible();
+ await page.keyboard.press('Escape');
+ await expect(same.locator('.row-undo')).toContainText('Leída');await same.locator('.row-undo button').click();await expect(same).not.toHaveClass(/read/);
+ await same.locator('[data-read]').click();await expect(same).toHaveClass(/read/);await page.mouse.move(0,0);await page.locator('#globalLanes .lane.on').focus();
+ await expect(same).toHaveCount(0,{timeout:12000});
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+});
+test('fichas read straight: why it matters follows what happened with no meta-label',async({page})=>{
+ await page.goto('/');await page.locator('#local .title-open').first().click();await expect(page.locator('#signalDetail')).toBeVisible();
+ await expect(page.locator('#detailBody')).not.toContainText(/Contexto editorial|Enriquecimiento editorial/);
+ expect(await page.locator('#detailBody > p').count()).toBeGreaterThanOrEqual(2);
+});
+test('the Global teaser in Chile invites to Global Premium without saying limitado',async({page})=>{
+ await page.goto('/');const g=page.locator('#bigThings .big-feature.global');await expect(g).toHaveCount(1);
+ await expect(g).toContainText('Global Premium');await g.locator('[data-special-toggle]').click();
+ await expect(g.locator('.big-invite')).toHaveText('El análisis completo, con sus fuentes, te espera en Global Premium.');await expect(g.locator('.big-cta')).toHaveText('Entrar a Global →');
+ await expect(g).not.toContainText(/limitad/i);
 });

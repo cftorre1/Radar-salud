@@ -16,14 +16,15 @@
 .global-feed .title-open{all:unset;cursor:pointer;color:inherit;font:inherit;text-align:left;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .global-feed .title-open:focus-visible{outline:2px solid #E3A24F;outline-offset:2px;border-radius:4px}
 .global-feed .card-meta{display:block;margin:3px 0 0;padding:0;border:0;font-size:12px;line-height:1.5;color:var(--ink68)}
+.global-feed .newsletter-strip{margin:0}
+/* Detail header shared with the Home (Volver + source, share, read): no floating close. */
+.global-detail .detail-top .detail-close{float:none}
 .global-feed .item-actions{display:inline-flex;align-items:center;margin-left:-4px;vertical-align:-4px;white-space:nowrap}
 /* Read rows keep publisher and date (Dirección 28-oct 03:49): only tone and weight change. */
 .global-feed .daily-item.read h2,.global-feed .theme.read h2{font-weight:400;color:var(--ink68)}
 .global-feed .daily-item.read .card-meta,.global-feed .theme.read .card-meta{color:var(--ink48)}
 .global-feed .group-head{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink48);margin:0;padding:10px var(--gutter) 2px 40px}
 .global-feed .eyebrow{color:var(--accent-ink);font-weight:650}
-.global-premium-strip{margin:0 calc(-1 * var(--gutter))}
-.global-premium-strip a.newsletter-open{text-decoration:none;display:inline-flex;align-items:center;min-height:32px}
 
 /* Research detail (moved from the inline style of global.html, scoped to the dialog) */
 .global-detail .theme-detail p,.global-detail .theme-detail li{font-size:13.5px;line-height:1.55}
@@ -44,12 +45,9 @@
  .global-feed .theme h2,.global-feed .daily-item h2{font-size:15.5px}
  .global-feed .theme .dotbtn,.global-feed .daily-item .dotbtn{width:28px}
  .global-feed .group-head{padding:8px 0 0 28px}
- .global-premium-strip{margin:0;padding:6px 8px 6px 28px}
+ .global-feed .newsletter-strip{margin:0;padding:6px 8px 6px 28px}
  .global-col{max-width:880px;margin:0 auto}
 }
-/* PREMIUM is a link here (no dialog on Global): keep the Home's pill. */
-.brandbar .topnav a.premium-access{position:relative;margin-left:6px;min-height:30px;height:30px;padding:0 11px;border-radius:999px;border:1px solid var(--accent);color:var(--accent-ink);font-size:11.5px;font-weight:750;letter-spacing:.02em}
-@media (max-width:360px){.brandbar .topnav a.premium-access{margin-left:2px;padding:0 8px;font-size:11px;letter-spacing:0}}
 
 /* Al día afuera (28-oct): daily headline rows from licensed/official feeds; same row anatomy as the themes. */
 .global-daily{margin-bottom:6px}

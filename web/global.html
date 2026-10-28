@@ -11,8 +11,8 @@
 <a href="index.html" class="logo-link"><img class="logo" src="assets/alicanto-logo-header.png" alt="Alicanto Salud"/></a>
 <p class="hero-purpose">Señales internacionales para entender antes qué puede importar en salud.</p>
 <nav class="topnav" aria-label="Navegación principal">
-<a class="header-premium" href="index.html" data-short="Chile">Radar · Chile</a><a data-short="Global" class="header-premium" href="global.html" aria-current="page">Global · Internacional</a><a class="header-newsletter" href="subscription.html" data-short="Newsletter">Newsletter semanal</a>
-<a class="header-premium premium-access" href="index.html#premium">PREMIUM</a>
+<a class="header-premium" href="index.html" data-short="Chile">Radar · Chile</a><a data-short="Global" class="header-premium" href="global.html" aria-current="page">Global · Internacional</a><a class="header-newsletter" href="subscription.html" data-open-newsletter data-short="Newsletter">Newsletter semanal</a>
+<button type="button" class="header-premium premium-access" id="earlyAccessOpen" data-open-premium><span class="wide-only">Acceso </span>PREMIUM</button>
 </nav>
 </div>
 </header>
@@ -45,10 +45,9 @@
 </div>
 </details>
 <button type="button" id="globalMarkAll" class="mark-all" aria-label="Marcar todos los temas visibles como leídos" title="Marcar todo como leído" hidden><svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M2 12.5 6 16.5 14 8.5M10 15.5l1 1 9-9"></path></svg><span class="sr-only">Marcar todo como leído</span></button>
-<div id="globalUndo" class="undo-bar" role="status" aria-live="polite" hidden></div>
 </section>
 <div id="themes" class="global-feed"><p class="inbox-empty">Cargando research verificado…</p></div>
-<div class="newsletter-strip global-premium-strip"><span>¿Quieres profundizar con PREMIUM? Inscríbete al acceso anticipado.</span><a class="newsletter-open" href="index.html#premium">Acceso anticipado</a></div>
+<div class="newsletter-strip"><span>Suscríbete para recibir en tu correo las señales más importantes y no perderte lo que está pasando.</span><button type="button" class="newsletter-open" id="newsletterOpen" data-open-newsletter>Suscríbete</button></div>
 <div class="feed-end"><span id="globalFeedCount"></span><a href="sources.html">Catálogo de fuentes</a></div>
 </div></div>
-<p class="read-status" id="readStatus" role="status" aria-live="polite"></p><dialog id="globalDetail" class="global-detail" aria-labelledby="globalDetailTitle"><button type="button" class="detail-close" id="closeGlobalDetail">Cerrar ×</button><div id="globalDetailBody"></div></dialog></main><button type="button" class="back-top" id="backTop">Volver arriba ↑</button><script src="read-state.js"></script><script src="inbox-bar.js"></script><script src="global.js"></script><script src="global-daily.js"></script></body></html>
+<p class="read-status" id="readStatus" role="status" aria-live="polite"></p><dialog id="globalDetail" class="global-detail" aria-labelledby="globalDetailTitle"><div class="detail-top"><button type="button" id="closeGlobalDetail" class="detail-close" aria-label="Cerrar ficha"><svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"></path></svg><span>Volver</span></button><div class="detail-bar" id="globalDetailBar"></div></div><div id="globalDetailBody"></div></dialog></main><button type="button" class="back-top" id="backTop">Volver arriba ↑</button><script src="read-state.js"></script><script src="inbox-bar.js"></script><script src="conversion.js"></script><script src="global.js"></script><script src="global-daily.js"></script></body></html>
