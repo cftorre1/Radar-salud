@@ -48,7 +48,10 @@ def _apply_persistent_editorial_decisions(signals):
         else:
             r.setdefault("editorial_decision","accept")
         r["editorial_committee"]=build_committee_artifact(r)
-        r["feed_visibility"]=False if r.get("editorial_decision")=="reject" else True
+        # A publication hold set earlier in curation (e.g. a sanction card without a descriptive
+        # title) must survive the editorial pass; only an explicit reject adds a new hold here.
+        held=r.get("feed_visibility") is False and r.get("publication_gate_reason")=="fiscalization_title_needs_description"
+        r["feed_visibility"]=False if held or r.get("editorial_decision")=="reject" else True
         out.append(r)
     return out
 
@@ -392,6 +395,33 @@ def _resolution_relation_titles(signals):
         out.append(r)
     return out
 
+def _individual_sanction_titles(signals):
+    """Sanctions left outside a sector pulse are shown one by one: their card title must say
+    what the act does. Build it from captured fields only; otherwise hold the card."""
+    from radar_salud.superintendencia_fiscalizacion import is_bare_act_title, sanction_card_title
+    out=[]
+    for s in signals:
+        r=dict(s)
+        if "Fiscalización" in (r.get("signal_types") or []) and not r.get("display_title") and is_bare_act_title(r.get("title")):
+            title=sanction_card_title(r)
+            if title:r["display_title"]=title
+            else:r["feed_visibility"]=False;r["publication_gate_reason"]="fiscalization_title_needs_description"
+        out.append(r)
+    return out
+
+def _normative_status(recent, universe):
+    """Instructions show the later acts that suspend/modify/confirm them (from any retained act,
+    even one older than the visible window), read from the regulator's listing subject."""
+    from radar_salud.normative_relations import apply_backlinks
+    linked={s.get("source_url"):s for s in apply_backlinks(list(universe)+[s for s in recent if s not in universe])
+            if s.get("normative_status_events") and s.get("source_url")}
+    out=[]
+    for s in recent:
+        r=dict(s);t=linked.get(r.get("source_url"))
+        if t:r.update(normative_status_events=t["normative_status_events"],normative_status=t["normative_status"])
+        out.append(r)
+    return out
+
 def _stat_family(s):
     if s.get("source_name")!="Superintendencia de Salud" or "Datos" not in (s.get("signal_types") or []):return None
     t=(s.get("title") or "").lower()
@@ -406,7 +436,9 @@ def _stat_family(s):
 
 def _latest_stats(signals):
     fam=defaultdict(list);other=[]
-    pulse_present=any(s.get("event_type")=="DATA_PULSE" and str(s.get("title") or "").startswith("Pulso Isapre") for s in signals)
+    pulses=[s for s in signals if s.get("event_type")=="DATA_PULSE" and str(s.get("title") or "").startswith("Pulso Isapre")]
+    pulse_present=bool(pulses)
+    pulse_day=max((_d(s.get("publication_date") or s.get("event_date")) or date.min for s in pulses),default=date.min)
     for s in signals:
         f=_stat_family(s)
         if f:fam[f].append(s)
@@ -415,8 +447,10 @@ def _latest_stats(signals):
         if pulse_present and family in {"cartera_total","cartera_regional","suscripciones","movilidad"}:
             # When the aggregate pulse already covers the same release period,
             # routine component cards are redundant unless they add a distinct,
-            # evidenced decision insight of their own.
-            candidates=[x for x in items if x.get("distinct_decision_value") is True or x.get("data_insights")]
+            # evidenced decision insight of their own. A release published after
+            # the pulse's own release is new information the pulse does not cover.
+            candidates=[x for x in items if x.get("distinct_decision_value") is True or x.get("data_insights")
+                        or (_d(x.get("event_date")) or date.min)>pulse_day]
             if not candidates:
                 continue
             items=candidates
@@ -680,7 +714,8 @@ def curate(signals,resolve_external=True,as_of=None):
     # -> central finding -> useful publication inventory.
     recent=_apply_statistical_analysis(recent)
     recent=[_statistical_value_ladder(s) for s in recent]
-    recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent,today=as_of);recent=_related_context(recent,resolve_external);recent=_resolution_relation_titles(recent)
+    recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent,today=as_of);recent=_related_context(recent,resolve_external);recent=_resolution_relation_titles(recent);recent=_individual_sanction_titles(recent)
+    recent=_normative_status(recent,normalized)
     # An explicitly reviewed DF corroboration yields to its official event when
     # that counterpart is present. Keep both source records in durable history.
     counterpart_urls={s.get('source_url') for s in recent}

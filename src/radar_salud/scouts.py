@@ -71,6 +71,51 @@ class SeenStore:
         atomic_json(self.path, sorted(self._seen))
 
 
+_LISTING_DATE = re.compile(r"\b(\d{1,2})/(\d{1,2})/(20\d{2})\b")
+# Series the regulator updates in place every month/quarter under one URL.
+_ROLLING = re.compile(r"\b(mensual|trimestral|semanal)\b.*\ba[ñn]o\s+20\d{2}\s*$", re.I)
+
+
+def rolling_statistic(title: str) -> bool:
+    return bool(_ROLLING.search(" ".join(str(title or "").split())))
+
+
+class _DatedAnchorParser(_AnchorParser):
+    """Anchors in document order, each with the last listing date seen before it."""
+
+    def __init__(self):
+        super().__init__()
+        self._last_date = None
+        self.links = []
+
+    def handle_data(self, data):
+        super().handle_data(data)
+        if self._href is None:
+            m = _LISTING_DATE.search(data)
+            if m:
+                day, month, year = (int(x) for x in m.groups())
+                try:
+                    from datetime import date as _d
+                    self._last_date = _d(year, month, day).isoformat()
+                except ValueError:
+                    pass
+
+    def handle_endtag(self, tag):
+        if tag.lower() == "a" and self._href is not None:
+            text = " ".join("".join(self._text).split())
+            href = self._href
+            self._href = None
+            self._text = []
+            dated = self._last_date
+            if "/biblioteca-digital/" in (href or "") and "/tax-biblioteca-digital/" not in (href or "") and text:
+                # A date belongs to one row: consume it at the row's title link.
+                if text and "descargar" not in text.lower():
+                    self._last_date = None
+                self.links.append((href, text, dated))
+            else:
+                self.links.append((href, text, None))
+
+
 class SuperintendenciaStatsScout:
     """V0 scout for Superintendencia de Salud statistics listing pages.
 
@@ -87,13 +132,20 @@ class SuperintendenciaStatsScout:
     DETAIL_RE = re.compile(r"/biblioteca-digital/", re.I)
 
     def discover_from_html(self, html: str, base_url: Optional[str] = None) -> List[RawItem]:
+        """Detail pages with the listing's own "Fecha de publicación".
+
+        Rows (table cells or stacked blocks) show the date before the linked
+        title. Rolling series ("Estadística Mensual ... año 2026") keep their URL
+        and are re-dated by the regulator on each monthly update, so the listing
+        date is also the release identity of that update (``release_key``).
+        """
         base_url = base_url or self.DEFAULT_URL
-        parser = _AnchorParser()
+        parser = _DatedAnchorParser()
         parser.feed(html)
 
         items = []
         dedup = set()
-        for href, text in parser.links:
+        for href, text, listed in parser.links:
             if not href or not text:
                 continue
             absolute = urljoin(base_url, href)
@@ -105,6 +157,11 @@ class SuperintendenciaStatsScout:
             if absolute in dedup:
                 continue
             dedup.add(absolute)
+            metadata = {"discovered_from": base_url}
+            if listed:
+                metadata.update(listing_publication_date=listed, event_date_basis="listing_publication")
+                if rolling_statistic(text):
+                    metadata["release_key"] = listed
             items.append(
                 RawItem(
                     source_slug=self.SOURCE_SLUG,
@@ -112,8 +169,9 @@ class SuperintendenciaStatsScout:
                     url=absolute,
                     source_name=self.SOURCE_NAME,
                     source_type=self.SOURCE_TYPE,
+                    event_date=listed,
                     raw_text="",
-                    metadata={"discovered_from": base_url},
+                    metadata=metadata,
                 )
             )
         return items

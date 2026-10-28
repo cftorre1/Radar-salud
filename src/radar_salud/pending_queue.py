@@ -26,6 +26,10 @@ def fingerprint(raw):
         identity = raw.metadata.get('source_record_id')
         suffix = f'|record:{identity}' if identity else ''
         return hashlib.sha256(f"{raw.source_slug}|{canonical_url(raw.url)}{suffix}".encode()).hexdigest()
+    release = (raw.metadata or {}).get('release_key')
+    if raw.source_slug == 'superintendencia_salud' and release:
+        # Rolling SIS statistics keep one URL; each re-dated listing is a new release.
+        return hashlib.sha256(f"{raw.source_slug}|{raw.url}|{raw.title}|release:{release}".encode()).hexdigest()
     return legacy_fingerprint(raw)
 
 def atomic_json(path, value):
@@ -503,6 +507,15 @@ class PendingQueue:
                         archived = item["lane"] == "BACKFILL" and beyond_backfill_horizon(raw, now)
                         item.update(status="archived" if archived else "pending",
                             reason="outside_90_day_backfill" if archived else None, retry_at=None)
+                if item['status'] == 'archived' and str(item.get('reason') or '').startswith('outside_daily_window_'):
+                    # Lagged SIS listing: the act became public inside the window (daily_window).
+                    from .daily_window import lagged_publication_date, requested_window_days
+                    public = lagged_publication_date(item['raw'])
+                    if public and (now.date() - public).days <= requested_window_days():
+                        item.setdefault('rediscovery_repairs', []).append({
+                            'at': now.isoformat(), 'previous_status': 'archived', 'previous_reason': item['reason'],
+                            'reason': 'listing_publication_inside_daily_window', 'listing_publication_date': public.isoformat()})
+                        item.update(status='pending', reason=None, retry_at=None)
                 if (item['status'] == 'archived' and item.get('reason') == 'outside_90_day_backfill'
                     and current_sanction_stock(raw, now)):
                     item.setdefault('rediscovery_repairs', []).append({

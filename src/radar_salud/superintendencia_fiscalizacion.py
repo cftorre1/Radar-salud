@@ -274,3 +274,164 @@ def process_fiscalizacion(raw,cfg):
             row[field] = raw.metadata[field]
     row["fiscalization_topic"]=topic;row["source_documents"]=raw.metadata.get("attachments",[])
     return row
+
+
+# A visible card title must say what the act does, never only its legal identity.
+_ACT_NUMBER = r"(?:\d{1,3}(?:\.\d{3})+|\d+)"
+_DATE_SUFFIX = (r"(?:\s*[-–,]?\s*(?:Emisi[oó]n\s*:?\s*)?(?:del?\s+)?"
+    r"(?:\d{1,2}[/\-.]\d{1,2}[/\-.]\d{4}|\d{1,2}\s+de\s+[a-záéíóú]+\s+de\s+\d{4}))?")
+# Bare = the whole title is only "<type> [Exenta] [<prefix>/]N°<num>", optionally followed by its date
+# (Dirección's rule: an ID plus an emission date still says nothing about what the act does).
+BARE_ACT_TITLE_RE = re.compile(
+    r"^(?:Circular|Resoluci[oó]n|Oficio(?:\s+Ord(?:inario)?\.?)?|Decreto)(?:\s+Exenta)?"
+    r"(?:\s+(?:IF|IP|SS)\s*/?)?\s*(?:N\s*[°º.]?\s*)?" + _ACT_NUMBER + _DATE_SUFFIX + r"\s*\.?$", re.I)
+_ACT_LABEL_RE = re.compile(
+    r"\b(Resolución(?:\s+Exenta)?|Circular|Oficio(?:\s+Ord(?:inario)?)?|Decreto)\s+(?:(IF|IP)\s*[/\-]?\s*)?(?:N\s*[°º]?\s*)?(" + _ACT_NUMBER + r")", re.I)
+# Captured listing summaries state the infringement after "por": keep that clause verbatim.
+_GROUND_START_RE = re.compile(r"\bpor\s+((?:haber\s+)?(?:infring|incumpl|vulner|transgred|no\s+haber))", re.I)
+_GROUND_STOP_RE = re.compile(r"\.|\s*,?\s*Fecha de emisi[oó]n", re.I)
+_ABBREVIATIONS = {"art", "arts", "inc", "incs", "n", "nº", "n°", "no", "núm", "num", "nro", "letra", "lit", "ord",
+    "ex", "exta", "res", "dto", "dfl", "ds", "sr", "sra", "sres", "pág", "págs", "cap", "tít", "etc", "cfr"}
+_DATE_FRAGMENT_RE = re.compile(r",?\s*de\s+\d{1,2}\s+de\s+[a-záéíóú]+\s+de\s+\d{4}", re.I)
+TITLE_MAX = 140
+
+
+def is_bare_act_title(title):
+    return bool(BARE_ACT_TITLE_RE.match(" ".join(str(title or "").split())))
+
+
+def _is_sentence_end(text, i):
+    """A dot ends the clause only at a real sentence end: not inside a dotted number
+    (20.584), not after an abbreviation (art., inc., N°, D.S.) and not before lowercase text."""
+    before, after = text[:i], text[i + 1:]
+    if before[-1:].isdigit() and after[:1].isdigit():
+        return False
+    if after and not after[:1].isspace():
+        return False
+    word = re.search(r"([^\s(]+)$", before)
+    word = (word.group(1) if word else "").casefold().rstrip("°º")
+    if word.replace(".", "") in _ABBREVIATIONS or re.fullmatch(r"(?:[a-z]\.)*[a-z]", word):
+        return False
+    nxt = after.lstrip()[:1]
+    return not nxt or not (nxt.islower() or nxt.isdigit())
+
+
+def _infringement_clause(text):
+    m = _GROUND_START_RE.search(text)
+    if not m:
+        return None
+    start = m.start(1)
+    end = len(text)
+    for stop in _GROUND_STOP_RE.finditer(text, start):
+        if stop.group(0) != "." or _is_sentence_end(text, stop.start()):
+            end = stop.start()
+            break
+    return text[start:end]
+
+
+_FINE_CHANGE_RE = re.compile(
+    r"\b(?:redujo|rebaj\w*|reduc\w*|modific\w*)\b[^.]{0,40}?\bde\s+(\d[\d.]*(?:,\d+)?)\s*(UF|UTM)?\s+a\s+(\d[\d.]*(?:,\d+)?)\s*(UF|UTM)\b", re.I)
+
+
+def _cl_number(text):
+    return float(text.replace(".", "").replace(",", "."))
+
+
+def _stated_fine_change(r):
+    """Previous fine of an amendment as stated verbatim in the captured summary ("redujo de 200 a
+    120 UF"), accepted only when the new value matches the captured sanction amount and unit."""
+    m = _FINE_CHANGE_RE.search(" ".join(str(r.get("what_happened") or "").split()))
+    amount, unit = r.get("sanction_amount"), str(r.get("sanction_unit") or "").upper()
+    if not m or not isinstance(amount, (int, float)) or isinstance(amount, bool):
+        return None, None
+    new_unit = m.group(4).upper()
+    if new_unit != unit or _cl_number(m.group(3)) != float(amount):
+        return None, None
+    return _cl_number(m.group(1)), (m.group(2) or new_unit).upper()
+
+
+def format_cl_amount(value):
+    """Chilean number style: 1.500.000 and 20,5 (never 1.5e+06)."""
+    value = float(value)
+    if value == int(value):
+        return f"{int(value):,}".replace(",", ".")
+    whole, dec = f"{value:,.4f}".rstrip("0").split(".")
+    return whole.replace(",", ".") + "," + dec
+
+
+def _cap_title(head, tail):
+    """Cap at TITLE_MAX: cut the descriptive tail at its last ", " or " en " boundary and add "…";
+    with no boundary fall back to "label · action"."""
+    out = head + tail
+    if len(out) <= TITLE_MAX:
+        return out
+    cuts = [m.start() for m in re.finditer(r", | en ", tail) if len(head) + m.start() + 1 <= TITLE_MAX]
+    if cuts:
+        return (head + tail[:cuts[-1]]).rstrip(" ,;:") + "…"
+    if len(head) <= TITLE_MAX:
+        return head
+    return head[:TITLE_MAX - 1].rsplit(" ", 1)[0].rstrip(" ,;:·") + "…"
+
+
+def sanction_card_title(r):
+    """Deterministic descriptive title for an individual sanction card.
+
+    Uses only captured fields: the act identity, sanctioned entity, amount and
+    either the reviewed topic or the infringement clause of the regulator's own
+    summary. Returns None when that data is missing; the caller must then hold
+    the card instead of publishing the bare act identity.
+    """
+    title = " ".join(str(r.get("title") or "").split())
+    m = _ACT_LABEL_RE.search(title)
+    entity = " ".join(str(r.get("regulated_entity") or "").split())
+    if not m or not entity:
+        return None
+    kind = " ".join(m.group(1).split())
+    prefix = (m.group(2) or "").upper()
+    label = f"{kind} {prefix + '/' if prefix else ''}N°{m.group(3)}"
+    if not is_bare_act_title(label):  # the identity part alone; the composed title may end in a cited norm ID
+        return None
+    event_type = str(r.get("event_type") or "")
+
+    def money(amount, unit):
+        unit = str(unit or "").strip()
+        if isinstance(amount, (int, float)) and not isinstance(amount, bool) and amount > 0 and unit:
+            return f"{format_cl_amount(amount)} {unit}"
+        return None
+
+    fine = money(r.get("sanction_amount"), r.get("sanction_unit"))
+    needs_ground = True
+    if event_type == "SANCTION":
+        action = f"Multa de {fine} a {entity}" if fine else f"Sanción a {entity}"
+    elif event_type == "SANCTION_WARNING":
+        action = f"Amonestación a {entity}"
+    elif event_type == "SANCTION_REVOCATION":
+        action, needs_ground = f"Revocación de sanción a {entity}", False
+    elif event_type == "SANCTION_SUBSTITUTION":
+        action, needs_ground = f"Sustitución de sanción a {entity}", False
+    elif event_type == "REGISTRATION_CANCELLATION":
+        action, needs_ground = f"Cancelación de registro de {entity}", False
+    elif event_type == "SANCTION_AMENDMENT":
+        # Only when both the previous and the new fine are captured; otherwise the changed field is unknown.
+        old_amount, old_unit = r.get("replaced_fine_amount"), r.get("replaced_fine_unit")
+        if old_amount is None:
+            old_amount, old_unit = _stated_fine_change(r)
+        old = money(old_amount, old_unit)
+        if not (old and fine):
+            return None
+        verb = "Rebaja" if str(old_unit).upper() == str(r.get("sanction_unit")).upper() and old_amount > r["sanction_amount"] else "Modificación"
+        action, needs_ground = f"{verb} de multa a {entity}: de {old} a {fine}", False
+    else:
+        return None
+    head = f"{label} · {action}"
+    topic = " ".join(str(r.get("fiscalization_topic") or "").split()).strip(" .")
+    if topic and ":" not in action:
+        return _cap_title(head, f": {topic}")
+    clause = _infringement_clause(" ".join(str(r.get("what_happened") or "").split()))
+    ground = ""
+    if clause:
+        ground = _DATE_FRAGMENT_RE.sub("", clause)
+        ground = re.sub(r"\s+,", ",", re.sub(r",\s*,", ",", ground)).strip(" ,;:")
+    if ground:
+        return _cap_title(head, f" por {ground}")
+    return None if needs_ground else _cap_title(head, "")

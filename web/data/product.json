@@ -699181,7 +699181,7 @@
     },
     "global_who": {
       "name": "WHO",
-      "checked_at": "2026-10-28T02:38:40.466564+00:00",
+      "checked_at": "2026-10-28T17:46:11.276931+00:00",
       "status": "ok",
       "technical_status": "ok",
       "coverage_status": "complete",
@@ -699195,14 +699195,14 @@
       "next_cadence_validation_not_before": null,
       "coverage_completeness": "complete",
       "coverage_window_days": 90,
-      "coverage_from": "2026-07-30",
-      "coverage_to": "2026-10-27",
+      "coverage_from": "2026-07-31",
+      "coverage_to": "2026-10-28",
       "pages_checked": 7,
-      "recent_items": 105,
+      "recent_items": 110,
       "discovery_recall_30": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 105,
-        "detected": 105,
+        "inventory_url_count": 110,
+        "detected": 110,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
@@ -699222,11 +699222,11 @@
       "unique_language_urls_90": 251,
       "unique_items": 251,
       "counts": {
-        "30": 105,
+        "30": 110,
         "90": 251
       },
       "indexed_counts": {
-        "30": 105,
+        "30": 110,
         "90": 251
       },
       "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
@@ -699237,7 +699237,7 @@
       "pending_date_items": 0,
       "technical_failures": [],
       "discovered": 251,
-      "new": 0,
+      "new": 3,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
         "news",
@@ -699261,44 +699261,58 @@
           "pages": 1
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/40615579188/inventory.json",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/40729006243/inventory.json",
       "source_quality_disposition": "pass_data",
       "publication_activation": false,
       "content_freshness": "recent",
-      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
+      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review",
+      "publication_activation_decision": {
+        "rule": "two_consecutive_successful_daily_live_runs",
+        "authorized": true,
+        "authorized_by": "Dirección (autorizado 27-oct-2026)",
+        "activated": false,
+        "evidence_run_ids": [],
+        "reason": "failed_live_run_since_previous_daily_success",
+        "publication_still_requires": [
+          "editorial_approval",
+          "rights_review"
+        ],
+        "earned_at": null,
+        "earned_evidence_run_ids": []
+      }
     },
     "global_paho": {
       "name": "PAHO",
-      "checked_at": "2026-10-28T03:01:57.093400+00:00",
-      "status": "warning",
+      "checked_at": "2026-10-28T18:11:20.296352+00:00",
+      "status": "ok",
       "technical_status": "ok",
       "coverage_status": "complete",
       "outcome": "READY_FOR_INTEGRATION",
       "operation_mode": "isolated_qualification",
       "discovery_scope": "global_intelligence",
-      "recurrent_operation_proven": false,
+      "recurrent_operation_proven": true,
       "cadence_seconds": 86400,
-      "cadence_validation_pending": true,
+      "cadence_validation_pending": false,
       "coverage_contract_id": "10f7a75d3b571eaf9952dfe456fc75ac6b1cbd6e78c391c9618edc2ea343fa1e",
-      "next_cadence_validation_not_before": "2026-10-29T03:01:57.093400+00:00",
+      "next_cadence_validation_not_before": null,
       "coverage_completeness": "complete",
       "coverage_window_days": 90,
-      "coverage_from": "2026-07-30",
-      "coverage_to": "2026-10-27",
-      "pages_checked": 130,
-      "recent_items": 209,
+      "coverage_from": "2026-07-31",
+      "coverage_to": "2026-10-28",
+      "pages_checked": 135,
+      "recent_items": 196,
       "discovery_recall_30": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 257,
-        "detected": 257,
+        "inventory_url_count": 240,
+        "detected": 240,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
       },
       "discovery_recall_90": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 680,
-        "detected": 680,
+        "inventory_url_count": 677,
+        "detected": 677,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
@@ -699307,24 +699321,24 @@
         "30": "complete_on_declared_surfaces",
         "90": "complete_on_declared_surfaces"
       },
-      "unique_language_urls_90": 680,
-      "unique_items": 547,
+      "unique_language_urls_90": 677,
+      "unique_items": 545,
       "counts": {
-        "30": 209,
-        "90": 547
+        "30": 196,
+        "90": 545
       },
       "indexed_counts": {
-        "30": 209,
-        "90": 547
+        "30": 196,
+        "90": 545
       },
       "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
-      "material_items": 221,
+      "material_items": 220,
       "published": 0,
       "rejected": 15,
-      "deferred": 532,
+      "deferred": 530,
       "pending_date_items": 0,
       "technical_failures": [],
-      "discovered": 547,
+      "discovered": 545,
       "new": 1,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
@@ -699344,7 +699358,7 @@
         {
           "section": "regional_news_es",
           "stop": "verified_date_partition_coverage",
-          "pages": 82
+          "pages": 87
         },
         {
           "section": "chile_news",
@@ -699367,11 +699381,25 @@
           "pages": 1
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/40615579188/inventory.json",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/40729006243/inventory.json",
       "source_quality_disposition": "pass_data",
       "publication_activation": false,
       "content_freshness": "recent",
-      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
+      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review",
+      "publication_activation_decision": {
+        "rule": "two_consecutive_successful_daily_live_runs",
+        "authorized": true,
+        "authorized_by": "Dirección (autorizado 27-oct-2026)",
+        "activated": false,
+        "evidence_run_ids": [],
+        "reason": "failed_live_run_since_previous_daily_success",
+        "publication_still_requires": [
+          "editorial_approval",
+          "rights_review"
+        ],
+        "earned_at": null,
+        "earned_evidence_run_ids": []
+      }
     },
     "global_reuters": {
       "name": "Reuters",
@@ -699413,6 +699441,489 @@
       "reason": "Reuters prohibits automated collection of content/data/information without prior written consent; no authorized contracted route is configured or documented for Alicanto.",
       "publication_activation": false,
       "editorial_outcome": "rights_hold"
+    },
+    "global_kff_health_news": {
+      "name": "KFF Health News",
+      "discovery_scope": "global_intelligence",
+      "checked_at": "2026-10-28T18:11:39.551601+00:00",
+      "status": "warning",
+      "technical_status": "ok",
+      "operation_mode": "licensed_feed_metadata_only",
+      "coverage_status": "feed_window_only",
+      "coverage_completeness": "feed_window_only_not_archive",
+      "coverage_window_days": 90,
+      "outcome": "FEED_METADATA_CAPTURED",
+      "recurrent_operation_proven": false,
+      "cadence_validation_pending": true,
+      "counts": {
+        "30": 17,
+        "90": 17
+      },
+      "recent_items": 17,
+      "unique_items": 17,
+      "material_items": 14,
+      "relevant_items": 14,
+      "excluded_items": 3,
+      "rejected": 3,
+      "deferred": 14,
+      "discovered": 17,
+      "new": 0,
+      "published": 0,
+      "pages_checked": 2,
+      "parser_routes": [
+        "all",
+        "health_industry"
+      ],
+      "technical_failures": [],
+      "rights": {
+        "basis": "headline + link only; CC BY-NC-ND 4.0 covers attribution; ask KFF before paid/commercial use",
+        "basis_code": "publisher_license_and_rss_syndication_offer",
+        "paid_tier_requires_publisher_confirmation": true,
+        "paid_tier_confirmation": null,
+        "paid_tier_note": "CC BY-NC-ND 4.0 is NonCommercial: KFF items stay out of paid tiers until KFF confirms in writing (record the confirmation here).",
+        "license": "CC BY-NC-ND 4.0",
+        "evidence_urls": [
+          "https://kffhealthnews.org/syndication/",
+          "https://kffhealthnews.org/rss-feeds"
+        ],
+        "permitted_use": "metadata_title_link_byline_only",
+        "automated_access": "rss_offered_by_publisher",
+        "attribution": "Byline 'KFF Health News' plus reporter name (dc:creator) and link to the original story",
+        "restrictions": [
+          "no body/excerpt storage or republication",
+          "headline kept verbatim (changes require KFF permission)",
+          "no photos (wire/freelance rights)",
+          "items marked 'All Rights Reserved' not republished",
+          "not used to create advertising"
+        ],
+        "verified_on": "2026-10-27",
+        "verified_how": "syndication and rss-feeds pages read via web fetch 27-oct; robots.txt enforced at runtime (fail closed)"
+      },
+      "attribution": "KFF Health News",
+      "content_use": "metadata_and_link_only",
+      "publication_activation": false,
+      "publication_activation_basis": "not_authorized_by_direccion_feed_sources_are_discovery_only",
+      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
+    },
+    "global_ema": {
+      "name": "EMA (European Medicines Agency)",
+      "discovery_scope": "global_intelligence",
+      "checked_at": "2026-10-28T18:11:43.684346+00:00",
+      "status": "warning",
+      "technical_status": "ok",
+      "operation_mode": "licensed_feed_metadata_only",
+      "coverage_status": "feed_window_only",
+      "coverage_completeness": "feed_window_only_not_archive",
+      "coverage_window_days": 90,
+      "outcome": "FEED_METADATA_CAPTURED",
+      "recurrent_operation_proven": false,
+      "cadence_validation_pending": true,
+      "counts": {
+        "30": 17,
+        "90": 17
+      },
+      "recent_items": 17,
+      "unique_items": 17,
+      "material_items": 17,
+      "relevant_items": 17,
+      "excluded_items": 0,
+      "rejected": 0,
+      "deferred": 17,
+      "discovered": 17,
+      "new": 0,
+      "published": 0,
+      "pages_checked": 2,
+      "parser_routes": [
+        "news",
+        "new_human_medicines"
+      ],
+      "technical_failures": [],
+      "rights": {
+        "basis": "ema_legal_notice_reuse_with_acknowledgement",
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "permitted_use": "metadata_title_link_byline_only",
+        "automated_access": "reuse_permitted_with_acknowledgement",
+        "attribution": "Source: European Medicines Agency (EMA), with link",
+        "restrictions": [
+          "no logo",
+          "no third-party content",
+          "links must not alter information or imply endorsement",
+          "EMA information should not be displayed alongside advertising"
+        ],
+        "verified_on": "2026-10-27",
+        "verified_how": "legal notice and RSS page read via web fetch 27-oct; robots.txt enforced at runtime (fail closed)",
+        "paid_tier_requires_publisher_confirmation": false
+      },
+      "attribution": "European Medicines Agency (EMA)",
+      "content_use": "metadata_and_link_only",
+      "publication_activation": false,
+      "publication_activation_basis": "not_authorized_by_direccion_feed_sources_are_discovery_only",
+      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
+    },
+    "global_fda": {
+      "name": "US FDA (press releases)",
+      "discovery_scope": "global_intelligence",
+      "checked_at": "2026-10-28T18:11:45.852853+00:00",
+      "status": "warning",
+      "technical_status": "ok",
+      "operation_mode": "licensed_feed_metadata_only",
+      "coverage_status": "feed_window_only",
+      "coverage_completeness": "feed_window_only_not_archive",
+      "coverage_window_days": 90,
+      "outcome": "FEED_METADATA_CAPTURED",
+      "recurrent_operation_proven": false,
+      "cadence_validation_pending": true,
+      "counts": {
+        "30": 0,
+        "90": 0
+      },
+      "recent_items": 0,
+      "unique_items": 0,
+      "material_items": 0,
+      "relevant_items": 0,
+      "excluded_items": 0,
+      "rejected": 0,
+      "deferred": 0,
+      "discovered": 0,
+      "new": 0,
+      "published": 0,
+      "pages_checked": 1,
+      "parser_routes": [
+        "press_releases"
+      ],
+      "technical_failures": [],
+      "rights": {
+        "basis": "us_federal_government_work_17_usc_105",
+        "license": "US federal government works are not subject to copyright (17 U.S.C. §105); third-party material on fda.gov excluded",
+        "evidence_urls": [
+          "https://fda.gov/AboutFDA/ContactFDA/StayInformed/RSSFeeds/default.htm",
+          "https://www.fda.gov/about-fda/about-website/website-policies"
+        ],
+        "permitted_use": "metadata_title_link_byline_only",
+        "automated_access": "public_domain_government_feed",
+        "attribution": "Source: U.S. FDA, with link; no implied endorsement",
+        "restrictions": [
+          "no FDA logo/endorsement implication",
+          "third-party content excluded"
+        ],
+        "verified_on": "2026-10-27",
+        "verified_how": "RSS feed list page read via web fetch 27-oct; FDA website-policies page could not be fetched from this environment (legal basis is statutory); robots.txt enforced at runtime (fail closed)",
+        "paid_tier_requires_publisher_confirmation": false
+      },
+      "attribution": "U.S. Food and Drug Administration (FDA)",
+      "content_use": "metadata_and_link_only",
+      "publication_activation": false,
+      "publication_activation_basis": "not_authorized_by_direccion_feed_sources_are_discovery_only",
+      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
+    },
+    "global_cdc": {
+      "name": "US CDC (newsroom + MMWR)",
+      "discovery_scope": "global_intelligence",
+      "checked_at": null,
+      "status": "error",
+      "technical_status": "error",
+      "operation_mode": "licensed_feed_metadata_only",
+      "coverage_status": "feed_window_only",
+      "coverage_completeness": "feed_window_only_not_archive",
+      "coverage_window_days": 90,
+      "outcome": "FEED_TECHNICAL_HOLD",
+      "recurrent_operation_proven": false,
+      "cadence_validation_pending": true,
+      "counts": {
+        "30": 0,
+        "90": 0
+      },
+      "recent_items": 0,
+      "unique_items": 0,
+      "material_items": 0,
+      "relevant_items": 0,
+      "excluded_items": 0,
+      "rejected": 0,
+      "deferred": 0,
+      "discovered": 0,
+      "new": 0,
+      "published": 0,
+      "pages_checked": 2,
+      "parser_routes": [
+        "newsroom",
+        "mmwr"
+      ],
+      "technical_failures": [
+        {
+          "source": "cdc",
+          "section": "newsroom",
+          "url": "https://tools.cdc.gov/api/v2/resources/media/132608.rss",
+          "error": "ValueError: http_406"
+        },
+        {
+          "source": "cdc",
+          "section": "mmwr",
+          "url": "https://tools.cdc.gov/api/v2/resources/media/342778.rss",
+          "error": "ValueError: http_406"
+        }
+      ],
+      "rights": {
+        "basis": "us_federal_government_work_17_usc_105",
+        "license": "Public domain (most CDC content); third-party/contractor material and logos excluded",
+        "evidence_urls": [
+          "https://cdc.gov/other/agencymaterials.html"
+        ],
+        "permitted_use": "metadata_title_link_byline_only",
+        "automated_access": "public_domain_government_feed",
+        "attribution": "Source: CDC, with link; use does not imply endorsement by CDC, HHS or the U.S. Government (stated on the page)",
+        "restrictions": [
+          "no logo",
+          "no implied endorsement (disclaimer shown on the page)",
+          "do not alter substance (titles verbatim)",
+          "third-party content excluded"
+        ],
+        "verified_on": "2026-10-28",
+        "verified_how": "agencymaterials page read via web fetch 28-oct; feed URLs from a public feed directory (feeder.co); not fetched live (sandbox has no route); robots.txt enforced at runtime (fail closed)",
+        "paid_tier_requires_publisher_confirmation": false
+      },
+      "attribution": "U.S. Centers for Disease Control and Prevention (CDC)",
+      "content_use": "metadata_and_link_only",
+      "publication_activation": false,
+      "publication_activation_basis": "not_authorized_by_direccion_feed_sources_are_discovery_only",
+      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
+    },
+    "global_nih": {
+      "name": "US NIH (news releases)",
+      "discovery_scope": "global_intelligence",
+      "checked_at": null,
+      "status": "error",
+      "technical_status": "error",
+      "operation_mode": "licensed_feed_metadata_only",
+      "coverage_status": "feed_window_only",
+      "coverage_completeness": "feed_window_only_not_archive",
+      "coverage_window_days": 90,
+      "outcome": "FEED_TECHNICAL_HOLD",
+      "recurrent_operation_proven": false,
+      "cadence_validation_pending": true,
+      "counts": {
+        "30": 0,
+        "90": 0
+      },
+      "recent_items": 0,
+      "unique_items": 0,
+      "material_items": 0,
+      "relevant_items": 0,
+      "excluded_items": 0,
+      "rejected": 0,
+      "deferred": 0,
+      "discovered": 0,
+      "new": 0,
+      "published": 0,
+      "pages_checked": 1,
+      "parser_routes": [
+        "news_releases"
+      ],
+      "technical_failures": [
+        {
+          "source": "nih",
+          "section": "news_releases",
+          "url": "https://www.nih.gov/news-releases/feed.xml",
+          "error": "ValueError: http_403"
+        }
+      ],
+      "rights": {
+        "basis": "us_federal_government_work_17_usc_105",
+        "license": "US government work, not subject to copyright (17 U.S.C. §105): works of NIH employees may be used for any purpose; third-party images excluded",
+        "evidence_urls": [
+          "https://www.nih.gov/node/24846"
+        ],
+        "permitted_use": "metadata_title_link_byline_only",
+        "automated_access": "public_domain_government_feed",
+        "attribution": "Source: NIH, with link",
+        "restrictions": [
+          "no logo",
+          "third-party images excluded"
+        ],
+        "verified_on": "2026-10-28",
+        "verified_how": "NIH copyright page read via web fetch 28-oct; feed structure confirmed on a public mirror of nih.gov/news-releases/feed.xml, not fetched live; robots.txt enforced at runtime",
+        "paid_tier_requires_publisher_confirmation": false
+      },
+      "attribution": "U.S. National Institutes of Health (NIH)",
+      "content_use": "metadata_and_link_only",
+      "publication_activation": false,
+      "publication_activation_basis": "not_authorized_by_direccion_feed_sources_are_discovery_only",
+      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
+    },
+    "global_ecdc": {
+      "name": "ECDC",
+      "discovery_scope": "global_intelligence",
+      "checked_at": "2026-10-28T18:11:51.838661+00:00",
+      "status": "warning",
+      "technical_status": "ok",
+      "operation_mode": "licensed_feed_metadata_only",
+      "coverage_status": "feed_window_only",
+      "coverage_completeness": "feed_window_only_not_archive",
+      "coverage_window_days": 90,
+      "outcome": "FEED_METADATA_CAPTURED",
+      "recurrent_operation_proven": false,
+      "cadence_validation_pending": true,
+      "counts": {
+        "30": 20,
+        "90": 20
+      },
+      "recent_items": 20,
+      "unique_items": 20,
+      "material_items": 3,
+      "relevant_items": 3,
+      "excluded_items": 17,
+      "rejected": 17,
+      "deferred": 3,
+      "discovered": 20,
+      "new": 0,
+      "published": 0,
+      "pages_checked": 2,
+      "parser_routes": [
+        "news",
+        "publications"
+      ],
+      "technical_failures": [],
+      "rights": {
+        "basis": "ecdc_intellectual_property_notice_cc_by_4_0",
+        "license": "CC BY 4.0 (ECDC-owned web content, commercial or non-commercial); logo and third-party material excluded",
+        "evidence_urls": [
+          "https://www.ecdc.europa.eu/en/copyright"
+        ],
+        "permitted_use": "metadata_title_link_byline_only",
+        "automated_access": "reuse_permitted_with_acknowledgement",
+        "attribution": "Source: ECDC, CC BY 4.0 (link to the licence), with link; titles unmodified",
+        "restrictions": [
+          "no logo",
+          "third-party content excluded"
+        ],
+        "verified_on": "2026-10-28",
+        "verified_how": "copyright page read via web fetch 28-oct; feed URLs from a public feed directory; not fetched live; robots.txt enforced at runtime",
+        "paid_tier_requires_publisher_confirmation": false,
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0"
+      },
+      "attribution": "European Centre for Disease Prevention and Control (ECDC)",
+      "content_use": "metadata_and_link_only",
+      "publication_activation": false,
+      "publication_activation_basis": "not_authorized_by_direccion_feed_sources_are_discovery_only",
+      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
+    },
+    "global_ec_health": {
+      "name": "European Commission (Public Health)",
+      "discovery_scope": "global_intelligence",
+      "checked_at": "2026-10-28T18:11:54.289882+00:00",
+      "status": "warning",
+      "technical_status": "ok",
+      "operation_mode": "licensed_feed_metadata_only",
+      "coverage_status": "feed_window_only",
+      "coverage_completeness": "feed_window_only_not_archive",
+      "coverage_window_days": 90,
+      "outcome": "FEED_METADATA_CAPTURED",
+      "recurrent_operation_proven": false,
+      "cadence_validation_pending": true,
+      "counts": {
+        "30": 30,
+        "90": 30
+      },
+      "recent_items": 30,
+      "unique_items": 30,
+      "material_items": 7,
+      "relevant_items": 7,
+      "excluded_items": 23,
+      "rejected": 23,
+      "deferred": 7,
+      "discovered": 30,
+      "new": 0,
+      "published": 0,
+      "pages_checked": 1,
+      "parser_routes": [
+        "latest_updates"
+      ],
+      "technical_failures": [],
+      "rights": {
+        "basis": "commission_legal_notice_cc_by_4_0_decision_2011_833",
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "permitted_use": "metadata_title_link_byline_only",
+        "automated_access": "reuse_permitted_with_acknowledgement",
+        "attribution": "Source: European Commission, CC BY 4.0 (link to the licence), with link",
+        "restrictions": [
+          "no logo/emblem",
+          "third-party content excluded"
+        ],
+        "verified_on": "2026-10-28",
+        "verified_how": "health.ec.europa.eu uses the Europa legal notice; the health.ec.europa.eu/legal-notice_en page could not be fetched from this environment (allowlist), the Commission legal notice (CC BY 4.0, Decision 2011/833/EU) was read via web fetch 28-oct; feed URL and cadence (~5/week) from a public feed directory; not fetched live; robots.txt enforced at runtime",
+        "paid_tier_requires_publisher_confirmation": false,
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0"
+      },
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "content_use": "metadata_and_link_only",
+      "publication_activation": false,
+      "publication_activation_basis": "not_authorized_by_direccion_feed_sources_are_discovery_only",
+      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
+    },
+    "global_the_conversation": {
+      "name": "The Conversation (Health, US)",
+      "discovery_scope": "global_intelligence",
+      "checked_at": "2026-10-28T18:11:56.612170+00:00",
+      "status": "warning",
+      "technical_status": "ok",
+      "operation_mode": "licensed_feed_metadata_only",
+      "coverage_status": "feed_window_only",
+      "coverage_completeness": "feed_window_only_not_archive",
+      "coverage_window_days": 90,
+      "outcome": "FEED_METADATA_CAPTURED",
+      "recurrent_operation_proven": false,
+      "cadence_validation_pending": true,
+      "counts": {
+        "30": 25,
+        "90": 25
+      },
+      "recent_items": 25,
+      "unique_items": 25,
+      "material_items": 10,
+      "relevant_items": 10,
+      "excluded_items": 15,
+      "rejected": 15,
+      "deferred": 10,
+      "discovered": 25,
+      "new": 0,
+      "published": 0,
+      "pages_checked": 1,
+      "parser_routes": [
+        "health_us"
+      ],
+      "technical_failures": [],
+      "rights": {
+        "basis": "publisher_cc_by_nd_republishing_guidelines",
+        "license": "CC BY-ND 4.0; commercial pages (ads/paywall) allowed, selling the material on its own is not",
+        "evidence_urls": [
+          "https://theconversation.com/republishing-guidelines"
+        ],
+        "permitted_use": "metadata_title_link_byline_only",
+        "automated_access": "rss_offered_by_publisher",
+        "attribution": "Author(s) + 'The Conversation' + link to the article",
+        "restrictions": [
+          "NoDerivatives: headline verbatim, never translated or reworded",
+          "credit authors",
+          "no body/excerpt"
+        ],
+        "verified_on": "2026-10-28",
+        "verified_how": "republishing guidelines read via web fetch 28-oct; feed URL from public feed directories (feedspot); not fetched live; robots.txt enforced at runtime",
+        "paid_tier_requires_publisher_confirmation": false
+      },
+      "attribution": "The Conversation",
+      "content_use": "metadata_and_link_only",
+      "publication_activation": false,
+      "publication_activation_basis": "not_authorized_by_direccion_feed_sources_are_discovery_only",
+      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
     }
   },
   "iterations": [],

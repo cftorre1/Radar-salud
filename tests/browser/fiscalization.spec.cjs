@@ -113,7 +113,9 @@ test('recovered registers retain offices, actors, effects and issuance dates in 
  const agentCard=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:agents.title,exact:true})});
  await agentCard.locator('[data-detail]').first().click();await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(recentAgents.length);
  await page.getByRole('button',{name:'Cerrar ficha'}).click();
- const report=radar.signals.find(s=>s.event_type==='FISCALIZATION_REPORT'&&s.source_url.includes('superdesalud'));
+ // Pin the GES-oportunidad report (30-abr-2026): newer SIS reports arrive with each data refresh.
+ const report=radar.signals.find(s=>s.event_type==='FISCALIZATION_REPORT'&&s.source_url.includes('superdesalud')&&s.source_url.includes('reporte-al-30-de-abril-de-2026'));
+ expect(report,'GES oportunidad report (30-abr-2026) missing from snapshot').toBeTruthy();
  expect(report.what_happened).toContain('93.070');expect(report.fact_period).toContain('30 de abril de 2026');
  expect(errors).toEqual([]);
 });

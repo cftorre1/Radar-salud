@@ -20,9 +20,32 @@ def eligible_daily_item(item, *, today=None, days=None):
     return today - timedelta(days=days) <= published <= today
 
 
+FISCALIZATION_PUBLICATION_LAG_MAX_DAYS = 60
+
+
+def lagged_publication_date(raw):
+    """SIS lists sanctions days or weeks after their emission (IP/7463-7464: emitted 23-sep,
+    listed 13-oct). The act became public on the listing day, so the processing window uses
+    that day; a gap beyond 60 days is a bulk re-dating of old listings, never news."""
+    if not str(raw.get('source_slug') or '').endswith('fiscalizacion'):
+        return None
+    meta = raw.get('metadata') or {}
+    try:
+        emitted = date.fromisoformat(str(raw.get('event_date'))[:10])
+        published = date.fromisoformat(str(meta.get('publication_date'))[:10])
+    except (ValueError, TypeError):
+        return None
+    if meta.get('date_conflicts'):
+        return None
+    return published if 0 < (published - emitted).days <= FISCALIZATION_PUBLICATION_LAG_MAX_DAYS else None
+
+
 def item_date(item):
     """Publication date; items whose source gives no date use the day they were first detected
     (Dirección 27-oct-2026: undated items were left pending forever)."""
+    lagged = lagged_publication_date(item.get('raw', {}))
+    if lagged:
+        return lagged
     for value in (item.get('raw', {}).get('event_date'), item.get('detected_at')):
         try:
             return date.fromisoformat(str(value)[:10])

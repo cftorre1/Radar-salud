@@ -2,7 +2,7 @@
   "sources": {
     "who": {
       "name": "WHO",
-      "checked_at": "2026-10-28T02:38:40.466564+00:00",
+      "checked_at": "2026-10-28T17:46:11.276931+00:00",
       "status": "ok",
       "technical_status": "ok",
       "coverage_status": "complete",
@@ -16,14 +16,14 @@
       "next_cadence_validation_not_before": null,
       "coverage_completeness": "complete",
       "coverage_window_days": 90,
-      "coverage_from": "2026-07-30",
-      "coverage_to": "2026-10-27",
+      "coverage_from": "2026-07-31",
+      "coverage_to": "2026-10-28",
       "pages_checked": 7,
-      "recent_items": 105,
+      "recent_items": 110,
       "discovery_recall_30": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 105,
-        "detected": 105,
+        "inventory_url_count": 110,
+        "detected": 110,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
@@ -43,11 +43,11 @@
       "unique_language_urls_90": 251,
       "unique_items": 251,
       "counts": {
-        "30": 105,
+        "30": 110,
         "90": 251
       },
       "indexed_counts": {
-        "30": 105,
+        "30": 110,
         "90": 251
       },
       "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
@@ -58,7 +58,7 @@
       "pending_date_items": 0,
       "technical_failures": [],
       "discovered": 251,
-      "new": 0,
+      "new": 3,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
         "news",
@@ -82,44 +82,58 @@
           "pages": 1
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/40615579188/inventory.json",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/40729006243/inventory.json",
       "source_quality_disposition": "pass_data",
       "publication_activation": false,
       "content_freshness": "recent",
-      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
+      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review",
+      "publication_activation_decision": {
+        "rule": "two_consecutive_successful_daily_live_runs",
+        "authorized": true,
+        "authorized_by": "Dirección (autorizado 27-oct-2026)",
+        "activated": false,
+        "evidence_run_ids": [],
+        "reason": "failed_live_run_since_previous_daily_success",
+        "publication_still_requires": [
+          "editorial_approval",
+          "rights_review"
+        ],
+        "earned_at": null,
+        "earned_evidence_run_ids": []
+      }
     },
     "paho": {
       "name": "PAHO",
-      "checked_at": "2026-10-28T03:01:57.093400+00:00",
-      "status": "warning",
+      "checked_at": "2026-10-28T18:11:20.296352+00:00",
+      "status": "ok",
       "technical_status": "ok",
       "coverage_status": "complete",
       "outcome": "READY_FOR_INTEGRATION",
       "operation_mode": "isolated_qualification",
       "discovery_scope": "global_intelligence",
-      "recurrent_operation_proven": false,
+      "recurrent_operation_proven": true,
       "cadence_seconds": 86400,
-      "cadence_validation_pending": true,
+      "cadence_validation_pending": false,
       "coverage_contract_id": "10f7a75d3b571eaf9952dfe456fc75ac6b1cbd6e78c391c9618edc2ea343fa1e",
-      "next_cadence_validation_not_before": "2026-10-29T03:01:57.093400+00:00",
+      "next_cadence_validation_not_before": null,
       "coverage_completeness": "complete",
       "coverage_window_days": 90,
-      "coverage_from": "2026-07-30",
-      "coverage_to": "2026-10-27",
-      "pages_checked": 130,
-      "recent_items": 209,
+      "coverage_from": "2026-07-31",
+      "coverage_to": "2026-10-28",
+      "pages_checked": 135,
+      "recent_items": 196,
       "discovery_recall_30": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 257,
-        "detected": 257,
+        "inventory_url_count": 240,
+        "detected": 240,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
       },
       "discovery_recall_90": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 680,
-        "detected": 680,
+        "inventory_url_count": 677,
+        "detected": 677,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
@@ -128,24 +142,24 @@
         "30": "complete_on_declared_surfaces",
         "90": "complete_on_declared_surfaces"
       },
-      "unique_language_urls_90": 680,
-      "unique_items": 547,
+      "unique_language_urls_90": 677,
+      "unique_items": 545,
       "counts": {
-        "30": 209,
-        "90": 547
+        "30": 196,
+        "90": 545
       },
       "indexed_counts": {
-        "30": 209,
-        "90": 547
+        "30": 196,
+        "90": 545
       },
       "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
-      "material_items": 221,
+      "material_items": 220,
       "published": 0,
       "rejected": 15,
-      "deferred": 532,
+      "deferred": 530,
       "pending_date_items": 0,
       "technical_failures": [],
-      "discovered": 547,
+      "discovered": 545,
       "new": 1,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
@@ -165,7 +179,7 @@
         {
           "section": "regional_news_es",
           "stop": "verified_date_partition_coverage",
-          "pages": 82
+          "pages": 87
         },
         {
           "section": "chile_news",
@@ -188,11 +202,25 @@
           "pages": 1
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/40615579188/inventory.json",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/40729006243/inventory.json",
       "source_quality_disposition": "pass_data",
       "publication_activation": false,
       "content_freshness": "recent",
-      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
+      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review",
+      "publication_activation_decision": {
+        "rule": "two_consecutive_successful_daily_live_runs",
+        "authorized": true,
+        "authorized_by": "Dirección (autorizado 27-oct-2026)",
+        "activated": false,
+        "evidence_run_ids": [],
+        "reason": "failed_live_run_since_previous_daily_success",
+        "publication_still_requires": [
+          "editorial_approval",
+          "rights_review"
+        ],
+        "earned_at": null,
+        "earned_evidence_run_ids": []
+      }
     },
     "reuters": {
       "name": "Reuters",
