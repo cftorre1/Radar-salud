@@ -7,8 +7,8 @@
 // Feed contract (schema_version 2, 28-oct): 90-day window; description (publisher's own summary, verbatim, or null),
 // description_truncated (ends with "…"), also_reported_by [{source,source_label,url}] and rights_basis
 // {basis,attribution,license_label}; OGL v3.0 items carry the licence's attribution statement.
-// Translation (Dirección 29-oct): title_es/description_es are shown only for translation.status 'translated' (verified,
-// rights allow it) and only as a whole (a summary without its translation -> the original for both). The original
+// Translation (Dirección 29-oct): title_es/description_es are shown only for translation.status 'translated' (verified by the
+// deterministic check and an independent second-model review, rights allow it) and only as a whole (a summary without its translation -> the original for both). The original
 // title, links, attribution and read keys never change; the ficha shows "Título original" and the notice.
 // Alicanto summary (Dirección 29-oct): where the source does not allow translation (EMA, WHO, PAHO, KFF, The Conversation),
 // translation.kind 'summary' + status 'summarized' + verified carries summary_es, Alicanto's own 1-2 sentence Spanish summary
@@ -46,7 +46,7 @@ function themeEntry(t){return {kind:'theme',id:t.id,dom:`theme-${t.id}`,key:glob
 function str(v){return typeof v==='string'?v.trim():''}
 function translated(x){const t=x?.translation;return Boolean(t&&t.status==='translated'&&t.verified===true&&str(x.title_es)&&(!str(x.description)||str(x.description_es)))}
 function summarized(x){const t=x?.translation;return Boolean(t&&t.status==='summarized'&&t.kind==='summary'&&t.verified===true&&str(x.summary_es))&&!translated(x)}
-const SUMMARY_NOTICE='Resumen de Alicanto (la fuente no permite traducir)',CHECK_NOTE='Control automático de cifras, fechas, siglas y nombres frente al original; puede contener errores';
+const SUMMARY_NOTICE='Resumen de Alicanto (la fuente no permite traducir)',ROW_NOTE='Traducido por Alicanto',CHECK_NOTE='Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores';
 function shownTitle(x){return translated(x)?str(x.title_es):x.title}
 function headlineEntry(x){return {kind:'headline',id:x.id,dom:`daily-${x.id}`,key:feedKey(x.id),date:String(x.published_at).slice(0,10),seen:String(x.first_seen_on||'').slice(0,10),title:shownTitle(x),publishers:[x.source_label].filter(Boolean),url:httpsUrl(x.url),priority:Number(x.priority)||0,x}}
 function buildEntries(){entries=[...themes.map(themeEntry),...headlines.map(headlineEntry)]}
@@ -64,8 +64,9 @@ function periodLabel(){return periodMode==='last'?'desde última visita':`${peri
 // Headline attribution, as captured: source label, authors (first two + "y otros"), license link.
 function authors(x){const b=(x.bylines||[]).filter(Boolean);return b.length>2?`${b.slice(0,2).join(', ')} y otros`:b.join(', ')}
 function license(x){const u=httpsUrl(x.rights_basis?.license_url);return u?` · <a class="lic" href="${esc(u)}" target="_blank" rel="noopener license">${esc(x.rights_basis.license_label||'Licencia')}</a>`:''}
-// A CC BY/OGL translation indicates the change next to the licence; a source whose licence forbids translation says so.
-function langNote(x){const t=x.translation||{};if(translated(x))return str(t.change_notice_es)?` · <span class="tr-note">${esc(t.change_notice_es)}</span>`:'';if(summarized(x))return ` · <span class="tr-note">${esc(str(t.notice_es)||SUMMARY_NOTICE)}</span>`;return t.status==='not_allowed'&&str(t.note_es)?` · <span class="tr-note">${esc(t.note_es)}</span>`:''}
+// Every machine translation is marked on its row ("Traducido por Alicanto"), public-domain sources included; this also
+// indicates the change for CC BY/OGL. A source whose licence forbids translation says so.
+function langNote(x){const t=x.translation||{};if(translated(x))return ` · <span class="tr-note">${esc(str(t.row_note_es)||ROW_NOTE)}</span>`;if(summarized(x))return ` · <span class="tr-note">${esc(str(t.notice_es)||SUMMARY_NOTICE)}</span>`;return t.status==='not_allowed'&&str(t.note_es)?` · <span class="tr-note">${esc(t.note_es)}</span>`:''}
 function metaFor(e){if(e.kind==='theme')return `${esc(e.publishers.join(' + '))} · ${dateText(e.date)}`;const x=e.x,a=authors(x);return `<span class="eyebrow">Titular</span> · ${esc(x.source_label)}${a?` (${esc(a)})`:''} · ${dateText(e.date)}${license(x)}${langNote(x)}`}
 function row(e){const read=isRead(e),attr=e.kind==='theme'?`data-theme="${esc(e.id)}"`:`data-daily="${esc(e.id)}"`;return `<article class="${e.kind==='theme'?'theme':'daily-item'} signal item ${read?'read':''}" id="${esc(e.dom)}" tabindex="-1" ${attr}>${AlicantoBar.dotButton('data-read',e.dom,read,e.title)}<div class="item-body"><h2><button type="button" class="title-open" data-open="${esc(e.dom)}">${esc(e.title)}</button></h2><div class="card-meta"><span class="meta-text">${metaFor(e)}</span></div>${AlicantoBar.rowActions(`data-open="${esc(e.dom)}"`,e.url,e.dom,e.title)}</div></article>`}
 // A headline ficha holds only verified data: title, the publisher's own description if one was captured (verbatim;

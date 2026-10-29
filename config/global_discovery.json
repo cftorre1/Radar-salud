@@ -858,6 +858,8 @@
       "target": "español neutro latinoamericano (Chile)",
       "cache_path": "data/global_intelligence/translations.json",
       "notice_es": "Traducción automática de Alicanto",
+      "row_note_es": "Traducido por Alicanto",
+      "verification": "Two layers, both must pass (second review 29-oct): A) deterministic floor global_translation.verify (numbers incl. spelled-out and scale words, letter codes, dates, acronyms, names both directions, disease/organ/drug/population terms 1:1, negation, antonyms, direction order, added conjunction/clause/sentence, Spanish text, length); B) independent second-model review (own prompt, no access to the translator prompt) returning strict JSON {faithful, issues}; publish only if faithful and no issues. Failure or malformed verdict -> original shown, failure cached. max_new_per_run counts calls (a translated item = 2).",
       "summary": {
         "enabled": true,
         "authorized_by": "Dirección (cftorre1)",
@@ -871,8 +873,8 @@
         ],
         "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
         "max_words": 45,
-        "budget": "shared with translations: ai_budget.allow_call('fast'), same model, same max_new_per_run, cached by content hash, no key -> nothing generated, no model fallback",
-        "verification": "verify_summary: every number, date, percentage, code, acronym and proper name in the summary must be in the source title/description (or a glossary/place/acronym Spanish form of a source term); no added negation or reversed direction; no 6-word copied run; <= 2 sentences and 45 words; failure -> original only",
+        "budget": "shared with translations: ai_budget.allow_call('fast') per call (summary + independent review = 2 calls), same model, same max_new_per_run (counts calls), cached by content hash, no key -> nothing generated, no model fallback",
+        "verification": "Two layers (second review 29-oct). A) verify_summary: every number (incl. spelled-out and scale words), date, percentage, code, letter variant, acronym, proper name and drug in the summary must be in the source title/description (or a glossary/place/acronym Spanish form of a source term); no added negation, antonym or reordered direction; no 6-word copied run; Spanish by stopword ratio; <= 2 sentences and 45 words. B) independent second-model review with its own prompt (strict JSON faithful/issues, incl. copied_phrasing). Any failure or malformed verdict -> original only, failure cached",
         "excluded_sources": {
           "the_conversation": "Feed stores no description; a summary would be a paraphrase of a CC BY-ND headline. Original shown (Claude orchestrator, 29-oct-2026)."
         }

@@ -287,7 +287,12 @@ test('Global translation (Dirección 29-oct): Spanish row and ficha, original ti
   translation:{status:'translated',verified:true,notice_es:'Traducción automática de Alicanto',change_notice_es:'Traducción de Alicanto'}};
  load([base]);const e=c.entryFor('daily-e1');
  assert.equal(e.title,'Los casos de sarampión suben 12% en la UE/EEE');assert.equal(e.key,'global-feed:e1');assert.equal(e.dom,'daily-e1');assert.equal(e.url,'https://www.ecdc.europa.eu/en/news/1');
- assert.match(c.metaFor(e),/CC BY 4\.0<\/a> · <span class="tr-note">Traducción de Alicanto<\/span>/);
+ assert.match(c.metaFor(e),/CC BY 4\.0<\/a> · <span class="tr-note">Traducido por Alicanto<\/span>/);
+ // Public-domain sources (no change notice) are marked too; the marker is escaped and never repeated.
+ load([{...base,id:'pd1',source:'cdc',rights_basis:{},translation:{status:'translated',verified:true,notice_es:'Traducción automática de Alicanto'}}]);
+ assert.match(c.metaFor(c.entryFor('daily-pd1')),/ · <span class="tr-note">Traducido por Alicanto<\/span>$/);
+ load([{...base,id:'pd2',translation:{...base.translation,row_note_es:'<b>x</b>'}}]);assert.match(c.metaFor(c.entryFor('daily-pd2')),/&lt;b&gt;x&lt;\/b&gt;/);
+ load([base]);
  const html=c.headlineDetail(e);
  assert.match(html,/<h2 id="globalDetailTitle">Los casos de sarampión suben 12% en la UE\/EEE<\/h2><p class="orig-title"><span>Título original<\/span> Measles cases rise 12% in the EU\/EEA<\/p>/);
  assert.match(html,/<h3 class="ficha-h">Resumen de la fuente<\/h3><p>El ECDC informa 1\.200 casos\.<\/p>/);assert.doesNotMatch(html,/ECDC reports 1,200/);
@@ -323,5 +328,5 @@ test('Global Alicanto summary (Dirección 29-oct): sources without translation r
   load([{...base,...bad}]);const h=c.headlineDetail(c.entryFor('daily-m1'));assert.doesNotMatch(h,/Resumen de Alicanto|propuso autorizar/)}
  // A translation's ficha says what the automatic check covers, not more.
  load([{...base,id:'t1',source:'cdc',summary_es:undefined,title:'CDC reports 3 cases',title_es:'Los CDC informan 3 casos',description:null,translation:{status:'translated',kind:'translation',verified:true,notice_es:'Traducción automática de Alicanto'}}]);
- const th=c.headlineDetail(c.entryFor('daily-t1'));assert.match(th,/Traducción automática de Alicanto\. Control automático de cifras, fechas, siglas y nombres frente al original; puede contener errores\./);assert.doesNotMatch(th,/verificada/);
+ const th=c.headlineDetail(c.entryFor('daily-t1'));assert.match(th,/Traducción automática de Alicanto\. Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores\./);assert.doesNotMatch(th,/verificada/);
 });
