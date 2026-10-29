@@ -271,3 +271,10 @@ test('Global headline fichas follow the feed schema 2 contract: verbatim descrip
  assert.equal(c.feedWindow({}),90);assert.equal(c.feedWindow({window_days:30}),30);assert.equal(c.feedWindow({window_days:365}),90);
  const html=fs.readFileSync('web/global.html','utf8');assert.match(html,/id="globalAttribution"[\s\S]*id="globalFeedOgl"/);assert.ok(!fs.existsSync('web/global-daily.js'));assert.doesNotMatch(html,/global-daily\.js/);
 });
+test('paywall corroboration renders inside the option-B ficha (Qué pasó + Fuentes)',()=>{const c=context();const s={title:'Isapre X anuncia alza',paywalled:true,source_name:'Diario Financiero',source_url:'https://www.df.cl/x',what_happened:'Bajada pública.',corroboration:{status:'corroborated',what:[{text:'La SIS autorizó el plan.',attribution:'Superintendencia de Salud',source_url:'https://www.superdesalud.gob.cl/n/1'}],related_sources:[{url:'https://www.superdesalud.gob.cl/n/1',source_name:'SIS',title:'Comunicado'},{url:'javascript:alert(1)',title:'bad'}]}};
+ const h=c.detailHtml(s);const qp=h.indexOf('Qué pasó'),fu=h.indexOf('ficha-sources');
+ assert.ok(qp>=0&&fu>qp);assert.ok(h.indexOf('Según Superintendencia de Salud')>qp&&h.indexOf('Según Superintendencia de Salud')<fu);
+ assert.ok(h.indexOf('Fuentes relacionadas')>fu);assert.match(h,/Fuente original ↗/);assert.match(h,/paywall-note/);assert.doesNotMatch(h,/javascript:/);
+ assert.doesNotMatch(c.detailHtml({...s,paywalled:false}),/Fuentes relacionadas|Según Superintendencia/);
+ assert.doesNotMatch(c.detailHtml({...s,corroboration:{...s.corroboration,status:'rejected'}}),/Fuentes relacionadas|Según Superintendencia/);
+});

@@ -324,5 +324,31 @@
     "default_category": "Datos sectoriales",
     "force_category": true,
     "note": "Dirección 27-oct-2026: sin fecha de publicación; se publica con fecha de primera detección rotulada."
+  },
+  {
+    "slug": "fne_competencia",
+    "name": "Fiscalía Nacional Económica (FNE)",
+    "source_type": "official",
+    "system_domain": "PROVIDERS",
+    "base_confidence": 100,
+    "cadence": "daily",
+    "method": "official_news_listing_title_date_link",
+    "max_new_items_per_run": 10,
+    "default_category": "Mercado",
+    "force_category": true,
+    "note": "Dirección 28-oct-2026 17:08 (\"Avanza con FNE y Congreso\"): fusiones y libre competencia sólo del sector salud. Listado oficial https://www.fne.gob.cl/comunicaciones/noticias-2/; sólo título, fecha, enlace y etapa/partes derivadas del título (pie del sitio: 'Todos los derechos reservados'). robots.txt respetado. Sin IA."
+  },
+  {
+    "slug": "congreso_tramitacion",
+    "name": "Congreso Nacional · Tramitación (Senado, datos abiertos)",
+    "source_type": "official",
+    "system_domain": "HEALTH",
+    "base_confidence": 100,
+    "cadence": "daily",
+    "method": "senado_wspublico_tramitacion_by_date",
+    "max_new_items_per_run": 10,
+    "default_category": "Regulación & Legal",
+    "force_category": true,
+    "note": "Dirección 28-oct-2026 17:08: proyectos de ley de salud y sus hitos (ingreso, informes de comisión, aprobación en general/particular, comisión mixta, despacho, publicación) desde https://tramitacion.senado.cl/wspublico/tramitacion.php?fecha=; cuentas, urgencias y citaciones se descartan. robots.txt respetado. Sin IA."
   }
 ]

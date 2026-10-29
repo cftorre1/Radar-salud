@@ -30,7 +30,7 @@ from .public_source_evidence import failure_details, discovery_diagnostics, HOST
 # persisted in discovery_run/source_health. datos.gob.cl joined 27-oct-2026
 # as the FONASA substitute; without it a failure was recorded only as
 # "RuntimeError" (28-oct-2026 daily run).
-PUBLIC_DATA_SOURCES = frozenset(_PUBLIC_HOSTS) | {"datos_gob_cl"}
+PUBLIC_DATA_SOURCES = frozenset(_PUBLIC_HOSTS) | {"datos_gob_cl", "fne_competencia", "congreso_tramitacion"}
 from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
 from .occupational_sources import SOURCES as OCCUPATIONAL_SOURCES
 # Dirección 27-oct-2026: datos.gob.cl (FONASA/DEIS), CMF in the daily cycle and
@@ -38,7 +38,13 @@ from .occupational_sources import SOURCES as OCCUPATIONAL_SOURCES
 from .datos_gob_sources import DatosGobScout, process_datos_gob
 from .cmf_daily import CmfDailyScout, process_cmf_event
 from .beta_sources import PrestadoresDailyScout, process_prestadores_bulletin
-DETERMINISTIC_SOURCES = ("datos_gob_cl", "cmf_health_ecosystem", "prestadores_data")
+# Dirección 28-oct-2026 17:08 ("Avanza con FNE y Congreso"): open official sources,
+# deterministic, health-sector only, through the editorial gate. No AI.
+from .fne_sources import FneScout, process_fne
+from .congreso_sources import CongresoScout, process_congreso
+DETERMINISTIC_SOURCES = ("datos_gob_cl", "cmf_health_ecosystem", "prestadores_data", "fne_competencia",
+                         "congreso_tramitacion")
+NEW_ITEM_CAPPED_SOURCES = ("fne_competencia", "congreso_tramitacion")
 FIRST_DETECTED_SOURCES = ("bupa_chile", "clinicas_chile", "prestadores_data")
 from .date_basis import BASELINE_SOURCES as FIRST_DETECTION_BASELINE_SOURCES
 
@@ -110,6 +116,8 @@ _SLUG_URL_PREFIXES={
     "suseso_fiscalizacion":("https://www.suseso.gob.cl/609/",),
     "minsal":("https://www.minsal.cl/",),
     "diario_oficial":("https://www.diariooficial.interior.gob.cl/",),
+    "fne_competencia":("https://www.fne.gob.cl/",),
+    "congreso_tramitacion":("https://tramitacion.senado.cl/",),
 }
 
 def _history_last_signal(history,slug,today=None):
@@ -194,7 +202,9 @@ def main():
       ("diario_oficial","diario_oficial",lambda:DiarioOficialHealthScout().discover(days_back=10),process_diario_oficial),
       ("datos_gob_cl","datos_gob_cl",DatosGobScout().discover,process_datos_gob),
       ("cmf_health_ecosystem","cmf_health_ecosystem",CmfDailyScout().discover,process_cmf_event),
-      ("prestadores_data","prestadores_data",PrestadoresDailyScout().discover,process_prestadores_bulletin)]
+      ("prestadores_data","prestadores_data",PrestadoresDailyScout().discover,process_prestadores_bulletin),
+      ("fne_competencia","fne_competencia",FneScout().discover,process_fne),
+      ("congreso_tramitacion","congreso_tramitacion",CongresoScout().discover,process_congreso)]
     specs += [(slug,slug,CuratedBetaSourceScout(slug).discover,process_curated_beta_source)
               for slug in sorted(OCCUPATIONAL_SOURCES) if not selected_sources or slug in selected_sources]
     specs.extend((slug,slug,CuratedBetaSourceScout(slug).discover,process_curated_beta_source)
@@ -256,6 +266,14 @@ def main():
                 (name in FISCALIZATION_SOURCES and (store.is_seen(legacy_fingerprint(raw)) or
                     (not raw.metadata.get('source_record_id') and canonical_url(raw.url) in published_urls) or
                     (canonical_url(raw.url), raw.metadata.get('source_record_id')) in published_records))}
+            if name in NEW_ITEM_CAPPED_SOURCES:
+                # Review 28-oct-2026: at most max_new_items_per_run new FNE/Congreso items per run.
+                from .official_open import DEFAULT_MAX_NEW_PER_RUN, cap_new_items
+                cap=int(cfgs[name].get("max_new_items_per_run",DEFAULT_MAX_NEW_PER_RUN))
+                items,deferred=cap_new_items(items,seen|set(queue.items),cap,fingerprint)
+                if name in discovery_details:
+                    discovery_details[name]["diagnostics"]["per_run_cap"]={"cap":cap,"deferred":len(deferred),
+                        "deferred_urls":[raw.url for raw in deferred]}
             checked_at=datetime.now(timezone.utc).isoformat()
             added=queue.discover(name,items,seen,last_discovered_at=watermarks.get(name),
                                  published_urls=published_history_urls(history))

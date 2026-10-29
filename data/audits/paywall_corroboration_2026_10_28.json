@@ -1,0 +1,346 @@
+{
+  "generated_for": "Dirección 28-oct-2026 15:16 (corroboración de prensa con muro de pago)",
+  "inputs": [
+    "web/data/radar_today.json",
+    "data/history/superintendencia_signals.json",
+    "data/state/pending_queue.json",
+    "data/market/cmf_events.json"
+  ],
+  "corpus_documents": 823,
+  "corpus_by_source": {
+    "sis": 514,
+    "minsal": 70,
+    "suseso": 119,
+    "diario_oficial": 100,
+    "company_press_rooms": 15,
+    "cmf": 5
+  },
+  "corpus_excluded": {
+    "derived_from_paywalled_press": 1
+  },
+  "paywalled_items": 1825,
+  "summary": {
+    "lead_ok/corroborated": 5,
+    "lead_ok/none": 1115,
+    "thin/corroborated": 3,
+    "thin/none": 631,
+    "title_only/corroborated": 1,
+    "title_only/none": 70
+  },
+  "note": "Sólo se listan piezas con corroboración o caso limítrofe; el resto queda título + bajada.",
+  "items": [
+    {
+      "title": "Clínica Las Condes finaliza aumento de capital y recauda $80 mil millones",
+      "url": "https://www.latercera.com/pulso/noticia/clinica-las-condes-finaliza-aumento-de-capital-y-recauda-80-mil-millones/",
+      "event_date": "2026-08-05",
+      "tier": "lead_ok",
+      "origin": "web/data/radar_today.json",
+      "status": "corroborated",
+      "what_rendered": "Según la CMF (hecho esencial): CLC terminó la suscripción del 100% de 8.000.000 acciones nuevas y reportó CLP 80.119.759.016 recaudados.",
+      "related_sources": [
+        {
+          "title": "CLINICA LAS CONDES S.A.: hecho esencial",
+          "source_name": "Comisión para el Mercado Financiero (CMF)",
+          "url": "https://www.cmfchile.cl/sitio/aplic/serdoc/ver_sgd.php?s567=dbb3a8353a96381a497ab5c71220c11dVFdwQmVVNXFRVFJOUkZWNFRXcFZNRTlSUFQwPQ==&secuencia=-1&t=1793222947",
+          "event_date": "2026-08-05",
+          "score": 0.825,
+          "day_gap": 0,
+          "matched_on": {
+            "entities": [
+              "cl:org:clinica-las-condes"
+            ],
+            "acts": [],
+            "terms": [
+              "recau"
+            ],
+            "amounts": [
+              "$8e+10",
+              "%100"
+            ],
+            "places": []
+          }
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "title": "Excelencia clínica e innovación: RedSalud lanzó nueva Unidad de Trasplante de Médula Ósea y Terapia Celular",
+      "url": "https://www.latercera.com/sociales/noticia/excelencia-clinica-e-innovacion-redsalud-lanzo-nueva-unidad-de-trasplante-de-medula-osea-y-terapia-celular/",
+      "event_date": "2026-08-31",
+      "tier": "title_only",
+      "origin": "data/state/pending_queue.json:archived",
+      "status": "corroborated",
+      "what_rendered": "Según RedSalud (comunicado): RedSalud inauguró en el Instituto del Cáncer de Clínica RedSalud Vitacura una unidad de trasplante de progenitores hematopoyéticos, disponible para pacientes Fonasa e Isapre.",
+      "related_sources": [
+        {
+          "title": "Nueva Unidad de Trasplante de Médula Ósea: Alta Complejidad y Nueva Vida",
+          "source_name": "RedSalud",
+          "url": "https://www.redsalud.cl/noticias/nueva-unidad-trasplante-medula-osea",
+          "event_date": "2026-09-04",
+          "score": 0.7687,
+          "day_gap": 4,
+          "matched_on": {
+            "entities": [
+              "cl:org:redsalud-ilc"
+            ],
+            "acts": [],
+            "terms": [
+              "celul",
+              "medul",
+              "osea",
+              "terap",
+              "trasp"
+            ],
+            "amounts": [],
+            "places": []
+          }
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "title": "Indisa acuerda venta de su participación en laboratorios Bionet a la Achs",
+      "url": "https://www.latercera.com/pulso/noticia/indisa-acuerda-venta-de-su-participacion-en-laboratorios-bionet-a-la-achs/",
+      "event_date": "2026-09-02",
+      "tier": "lead_ok",
+      "origin": "data/state/pending_queue.json:archived",
+      "status": "corroborated",
+      "what_rendered": "Según la CMF (hecho esencial): INDISA aceptó oferta no vinculante de ACHS por su 50% de Bionet a UF457.668; compraventa y contrato de laboratorio sujetos a condiciones.",
+      "related_sources": [
+        {
+          "title": "INSTITUTO DE DIAGNOSTICO S.A.: hecho esencial",
+          "source_name": "Comisión para el Mercado Financiero (CMF)",
+          "url": "https://www.cmfchile.cl/sitio/aplic/serdoc/ver_sgd.php?s567=7b3c1bf11bd606f31ca8567835476b64VFdwQmVVNXFRVFZOUkZVelRYcEpkMDFuUFQwPQ==&secuencia=-1&t=1793222988",
+          "event_date": "2026-09-02",
+          "score": 0.825,
+          "day_gap": 0,
+          "matched_on": {
+            "entities": [
+              "cl:org:achs",
+              "cl:org:indisa"
+            ],
+            "acts": [],
+            "terms": [
+              "bione"
+            ],
+            "amounts": [
+              "uf457668"
+            ],
+            "places": []
+          }
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "title": "Minsal emite alerta alimentaria por presencia de Listeria en queso mantecoso laminado",
+      "url": "https://www.latercera.com/nacional/noticia/minsal-emite-alerta-alimentaria-por-presencia-de-listeria-en-queso-mantecoso-laminado/",
+      "event_date": "2026-09-16",
+      "tier": "thin",
+      "origin": "data/state/pending_queue.json:archived",
+      "status": "corroborated",
+      "what_rendered": "Según el Ministerio de Salud: El Ministerio de Salud emitió una alerta alimentaria por detección de Listeria en queso mantecoso laminado de la marca MATTHEI.",
+      "related_sources": [
+        {
+          "title": "MINSAL emite Alerta Alimentaria por Listeria en Queso mantecoso laminado marca MATTHEI",
+          "source_name": "Ministerio de Salud",
+          "url": "https://www.minsal.cl/minsal-emite-alerta-alimentaria-por-listeria-en-queso-mantecoso-laminado-marca-matthei/",
+          "event_date": "2026-09-16",
+          "score": 1.0,
+          "day_gap": 0,
+          "matched_on": {
+            "entities": [
+              "src:minsal"
+            ],
+            "acts": [],
+            "terms": [
+              "alert",
+              "alime",
+              "emite",
+              "lamin",
+              "liste",
+              "queso"
+            ],
+            "amounts": [],
+            "places": []
+          }
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "title": "“Cambios estructurales, no maquillajes”: gobierno lanza plan para agilizar proceso de certificación de discapacidad",
+      "url": "https://www.latercera.com/nacional/noticia/cambios-estructurales-no-maquillajes-gobierno-lanza-plan-para-agilizar-proceso-de-certificacion-de-discapacidad/",
+      "event_date": "2026-10-06",
+      "tier": "thin",
+      "origin": "web/data/radar_today.json",
+      "status": "corroborated",
+      "what_rendered": "Según el Ministerio de Salud: El Presidente Kast, el Ministerio de Salud y el Ministerio de Desarrollo Social anunciaron un plan para modernizar y agilizar el proceso de certificación de discapacidad en Chile.",
+      "related_sources": [
+        {
+          "title": "Presidente Kast, Minsal y Desarrollo Social lanzan plan que moderniza y agiliza certificación de discapacidad",
+          "source_name": "Ministerio de Salud",
+          "url": "https://www.minsal.cl/presidente-kast-minsal-y-desarrollo-social-lanzan-plan-que-moderniza-y-agiliza-certificacion-de-discapacidad/",
+          "event_date": "2026-10-06",
+          "score": 0.8,
+          "day_gap": 0,
+          "matched_on": {
+            "entities": [
+              "src:minsal"
+            ],
+            "acts": [],
+            "terms": [
+              "agili",
+              "disca",
+              "lanza"
+            ],
+            "amounts": [],
+            "places": []
+          }
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "title": "Minsal ingresa proyecto de ley que otorga a padres un permiso para cuidar a sus hijos tras hospitalización por intento de suicidio",
+      "url": "https://www.latercera.com/nacional/noticia/minsal-ingresa-proyecto-de-ley-que-otorga-a-padres-un-permiso-para-cuidar-a-sus-hijos-tras-hospitalizacion-por-intento-de-suicidio/",
+      "event_date": "2026-10-15",
+      "tier": "lead_ok",
+      "origin": "web/data/radar_today.json",
+      "status": "corroborated",
+      "what_rendered": "Según el Ministerio de Salud: El Ministerio de Salud ingresó al Congreso un proyecto que complementa la Ley Sanna y permitiría a madres, padres y cuidadores legales afiliados al seguro obtener una licencia laboral para acompañar a hijos de entre 5 y 17 años después de una hospitalización por intento de suicidio.",
+      "related_sources": [
+        {
+          "title": "Minsal ingresa proyecto de ley que otorga a padres un permiso para cuidar a sus hijos tras hospitalización por intento de suicidio",
+          "source_name": "Ministerio de Salud",
+          "url": "https://www.minsal.cl/minsal-ingresa-proyecto-de-ley-que-otorga-a-padres-un-permiso-para-cuidar-a-sus-hijos-tras-hospitalizacion-por-intento-de-suicidio/",
+          "event_date": "2026-10-15",
+          "score": 1.0,
+          "day_gap": 0,
+          "matched_on": {
+            "entities": [
+              "src:minsal"
+            ],
+            "acts": [],
+            "terms": [
+              "cuida",
+              "hijos",
+              "ingre",
+              "inten",
+              "padre",
+              "permi",
+              "suici"
+            ],
+            "amounts": [],
+            "places": []
+          }
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "title": "Búsqueda activa para la detección precoz: Minsal anuncia nueva estrategia contra el cáncer de mama",
+      "url": "https://www.latercera.com/nacional/noticia/busqueda-activa-para-la-deteccion-precoz-minsal-anuncia-nueva-estrategia-contra-el-cancer-de-mama/",
+      "event_date": "2026-10-20",
+      "tier": "lead_ok",
+      "origin": "data/state/pending_queue.json:deferred",
+      "status": "corroborated",
+      "what_rendered": "Según el Ministerio de Salud: El Ministerio de Salud presentó una estrategia para el período 2027-2030 enfocada en la detección precoz de cáncer de mama en mujeres con alto riesgo y en el asesoramiento genético.",
+      "related_sources": [
+        {
+          "title": "Minsal presenta estrategia para abordaje de cáncer de mama con foco en detección precoz en casos de alto riesgo y asesoramiento genético",
+          "source_name": "Ministerio de Salud",
+          "url": "https://www.minsal.cl/minsal-presenta-estrategia-para-abordaje-de-cancer-de-mama-con-foco-en-deteccion-precoz-en-casos-de-alto-riesgo-y-asesoramiento-genetico/",
+          "event_date": "2026-10-20",
+          "score": 0.9417,
+          "day_gap": 0,
+          "matched_on": {
+            "entities": [
+              "src:minsal"
+            ],
+            "acts": [],
+            "terms": [
+              "activ",
+              "detec",
+              "estra",
+              "mama",
+              "preco"
+            ],
+            "amounts": [],
+            "places": []
+          }
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "title": "“Chile contra el sarampión”: Minsal logra vacunar a 44 mil niños, pero persisten más de 140 mil con esquema pendiente",
+      "url": "https://www.latercera.com/nacional/noticia/chile-contra-el-sarampion-minsal-logra-vacunar-a-44-mil-ninos-pero-persisten-mas-de-140-mil-con-esquema-pendiente/",
+      "event_date": "2026-10-28",
+      "tier": "lead_ok",
+      "origin": "web/data/radar_today.json",
+      "status": "corroborated",
+      "what_rendered": "Según el Ministerio de Salud: El Minsal informó que, desde julio, vacunó contra el sarampión a 44.386 niños y niñas de hasta 6 años que tenían una dosis o ninguna. Aún quedan más de 140.000 menores con el esquema incompleto; cerca de 62.000 viven en la Región Metropolitana.",
+      "related_sources": [
+        {
+          "title": "Minsal buscó y vacunó a más de 44 mil niños y niñas contra el sarampión y llama a vacunar a más de 140 mil con su esquema pendiente",
+          "source_name": "Ministerio de Salud",
+          "url": "https://www.minsal.cl/minsal-busco-y-vacuno-a-mas-de-44-mil-ninos-y-ninas-contra-el-sarampion-y-llama-a-vacunar-a-mas-de-140-mil-con-su-esquema-pendiente/",
+          "event_date": "2026-10-28",
+          "score": 0.8687,
+          "day_gap": 0,
+          "matched_on": {
+            "entities": [
+              "src:minsal"
+            ],
+            "acts": [],
+            "terms": [
+              "esque",
+              "ninos",
+              "pendi",
+              "saram",
+              "vacun"
+            ],
+            "amounts": [],
+            "places": []
+          }
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "title": "¿Efecto de más fiscalización? Licencias médicas por salud mental se desploman y lideran caída de reposos",
+      "url": "https://www.df.cl/economia-y-politica/laboral-personas/efecto-de-mas-fiscalizacion-licencias-medicas-por-salud-mental-se",
+      "event_date": "2026-10-28",
+      "tier": "thin",
+      "origin": "web/data/radar_today.json",
+      "status": "corroborated",
+      "what_rendered": "Según la Superintendencia de Seguridad Social (SUSESO): La SUSESO informó que entre enero y septiembre de 2026 se emitieron 5.155.495 licencias médicas electrónicas, un 12,3% menos que en igual período de 2025. La caída alcanzó tanto a Fonasa (-13,4%) como a Isapres (-12,2%), mientras que las licencias por trastornos mentales disminuyeron 24,3%.",
+      "related_sources": [
+        {
+          "title": "Emisión de licencias médicas disminuyó un 12,3% entre enero y septiembre de 2026",
+          "source_name": "Superintendencia de Seguridad Social (SUSESO)",
+          "url": "https://www.suseso.gob.cl/605/w3-article-792643.html",
+          "event_date": "2026-10-23",
+          "score": 0.735,
+          "day_gap": 5,
+          "matched_on": {
+            "entities": [
+              "src:suseso"
+            ],
+            "acts": [],
+            "terms": [
+              "caida",
+              "menta"
+            ],
+            "amounts": [
+              "%12.3"
+            ],
+            "places": []
+          }
+        }
+      ],
+      "candidates": []
+    }
+  ]
+}

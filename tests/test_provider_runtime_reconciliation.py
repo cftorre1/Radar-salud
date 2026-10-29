@@ -29,7 +29,7 @@ def test_provider_sources_enter_daily_durable_queue_without_ai(tmp_path, monkeyp
                  "SuperintendenciaFiscalizacionScout", "MinsalNewsScout", "SusesoNormativeScout",
                  "SusesoNewsScout", "SusesoFiscalizacionScout", "DfHealthScout", "FonasaDataHubScout",
                  "FonasaNewsScout", "IspSurveillanceScout", "IspAnamedAlertScout", "ClinicasChileScout",
-                 "DeisDocumentScout", "DiarioOficialHealthScout", "CorporateNewsroomScout"):
+                 "DeisDocumentScout", "DiarioOficialHealthScout", "CorporateNewsroomScout", "FneScout", "CongresoScout"):
         monkeypatch.setattr(engine_cli, name, Empty)
     monkeypatch.setattr(engine_cli, "CuratedBetaSourceScout", Provider)
     monkeypatch.setattr(engine_cli, "load_sources", lambda path: configs)

@@ -18,6 +18,8 @@ CATALOG={
  'suseso_news':('Organismos públicos y reguladores','https://www.suseso.cl/','Noticias institucionales.'),
  'suseso_fiscalizacion':('Organismos públicos y reguladores','https://www.suseso.cl/','Fiscalización de seguridad social.'),
  'diario_oficial':('Organismos públicos y reguladores','https://www.diariooficial.interior.gob.cl/','Publicaciones oficiales.'),
+ 'fne_competencia':('Organismos públicos y reguladores','https://www.fne.gob.cl/comunicaciones/noticias-2/','Fusiones y libre competencia del sector salud.'),
+ 'congreso_tramitacion':('Organismos públicos y reguladores','https://tramitacion.senado.cl/','Proyectos de ley de salud y sus hitos de tramitación.'),
  'diario_financiero':('Noticias y mercado','https://www.df.cl/empresas/salud','Textos públicos verificables; cobertura parcial.'),
  'pulso_latercera':('Noticias y mercado','https://www.latercera.com/pulso/','Noticias públicas del sector.'),
  'redsalud':('Prestadores e industria','https://www.redsalud.cl/','Noticias institucionales.'),
@@ -33,7 +35,7 @@ CATALOG={
 SHORT_NAMES={'deis':'DEIS · Minsal','suseso':'SUSESO','suseso_news':'SUSESO','suseso_fiscalizacion':'SUSESO',
  'prestadores_data':'Intendencia de Prestadores','superintendencia':'Superintendencia de Salud',
  'superintendencia_normativa':'Superintendencia de Salud','superintendencia_fiscalizacion':'Superintendencia de Salud','superintendencia_noticias':'Superintendencia de Salud',
- 'global_who':'OMS','global_paho':'OPS','minsal':'Minsal'}
+ 'global_who':'OMS','global_paho':'OPS','minsal':'Minsal','fne_competencia':'FNE','congreso_tramitacion':'Congreso'}
 
 TRIAL_MODES={'isolated_qualification','manual_curated_only'}
 
