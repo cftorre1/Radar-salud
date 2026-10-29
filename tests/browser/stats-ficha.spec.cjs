@@ -36,8 +36,27 @@ test('F1 ficha opens as an index and walks its topics',async({page})=>{
  expect(await row.locator('.row-acts .act').evaluateAll(xs=>xs.map(a=>a.textContent.trim()))).toEqual(['Ver ficha','Fuente original','Compartir']);
  await expect(row.locator('.act-share')).toHaveAttribute('data-share-url',card.share_url);
  await row.locator('[data-detail]').first().click();
- expect(await page.locator('#detailActs .act').evaluateAll(xs=>xs.map(a=>a.textContent.trim()))).toEqual(['Fuente original']);
  const body=page.locator('#detailBody'),dialog=page.locator('#signalDetail');
+ // Header and chrome as in the approved mockup (Dirección 29-oct): the top bar holds only '← Volver' and the round share
+ // icon; 'Fuente original ↗' and the read toggle are at the foot, after Notas y fuentes; no 'Seguir <entidad>' chips.
+ await expect(page.locator('#detailActs .act')).toHaveCount(0);
+ await expect(dialog.locator('.follow-row, .follow-chip')).toHaveCount(0);await expect(dialog).not.toContainText('Seguir ');
+ const share=dialog.locator('.detail-top .sf-share');
+ await expect(share).toHaveAttribute('aria-label','Compartir informe');await expect(body.locator('.sf-share, .sf-actions')).toHaveCount(0);
+ expect(await dialog.locator('.detail-top').locator('a,button').evaluateAll(xs=>xs.map(x=>x.id||x.className))).toEqual(['closeDetail','sf-share']);
+ const foot=body.locator('#detailFoot');
+ await expect(foot.locator('#detailRead')).toHaveText('Marcar no leída');
+ expect(await foot.locator('a,button').evaluateAll(xs=>xs.map(x=>x.textContent.trim()))).toEqual(['Fuente original ↗','Marcar no leída']);
+ await expect(foot.locator('a')).toHaveAttribute('href',/^https:\/\//);
+ expect(await page.evaluate(()=>{const n=document.querySelector('#detailBody .sf-notes'),f=document.getElementById('detailFoot');return Boolean(n.compareDocumentPosition(f)&Node.DOCUMENT_POSITION_FOLLOWING)})).toBe(true);
+ // Kicker + 'Destacada' on one line; the two-line meta list under the headline; the headline and dek are the builder's.
+ await expect(body.locator('.sf-kicker')).toHaveText('Cartera y movilidadDestacada');
+ expect(await body.locator('.sf-meta li').allTextContents()).toEqual(['Datos a agosto 2026','Publicado por la SIS el 2 oct 2026']);
+ await expect(body.locator('.sf-dek')).toHaveText(card.stats_ficha.dek);
+ // The share icon sits at the right end of the bar, on the same line as Volver.
+ const bar=await page.evaluate(()=>{const r=e=>document.querySelector(e).getBoundingClientRect(),d=r('#signalDetail'),s=r('#signalDetail .sf-share'),b=r('#closeDetail');
+  return {right:d.right-s.right,line:Math.abs((s.top+s.height/2)-(b.top+b.height/2)),w:s.width,h:s.height}});
+ expect(bar.right).toBeLessThan(40);expect(bar.line).toBeLessThan(4);expect(bar.w).toBeGreaterThanOrEqual(44);expect(bar.h).toBeGreaterThanOrEqual(44);
  await expect(body.locator('.sf-headline')).toHaveText(card.stats_ficha.headline);
  // Index: 5 topics, each with its one-line reading and a sparkline (Regional pending); no topic open yet.
  const index=body.locator('.sf-index'),topic=body.locator('.sf-topic');
@@ -51,10 +70,10 @@ test('F1 ficha opens as an index and walks its topics',async({page})=>{
  for(const r of await labelsFit(page))expect(r.bad,r.chart).toEqual([]);
  expect(await noOverflow(page)).toBeTruthy();
  const box=await body.locator('.sf-row').first().boundingBox();expect(box.height).toBeGreaterThanOrEqual(44);
- await body.locator('.sf-share').click();
- await expect(body.locator('.sf-share-status')).toHaveText('Enlace copiado.');
+ await share.click();
+ await expect(dialog.locator('.sf-share-status')).toHaveText('Enlace copiado.');
  expect(await page.evaluate(()=>window.__copied[0])).toMatch(/\/data\/fichas\/f1_cartera\.html$/);
- await body.locator('.sf-share-status').evaluate(e=>{e.textContent=''});
+ await dialog.locator('.sf-share-status').evaluate(e=>{e.textContent=''});
  await shot(page,`stats-ficha-f1-index-${test.info().project.name}`);
  // Index → topic pushes a history entry: #sig-<id>&tema=total, the picker reads 'Cartera total 1/5', the stock line comes first.
  const len0=await page.evaluate(()=>history.length);
@@ -66,10 +85,12 @@ test('F1 ficha opens as an index and walks its topics',async({page})=>{
  expect(await panel.locator('.sf-chart').evaluateAll(xs=>xs.map(x=>x.dataset.chart))).toEqual(['f1-stock','f1-mm']);
  await expect(panel.locator('.sf-tdek')).toHaveCount(0);await expect(panel.locator('.sf-kpi')).toHaveCount(0);
  await expect(panel.locator('svg[role=img]').nth(1)).toHaveAttribute('aria-label',/Ago −814/);
- await expect(page.locator('#closeDetail')).toContainText('Todos los temas');
- // The picker pins under the dialog's top and the hero chart starts right below it.
- const pinned=async()=>{const pick=await body.locator('.sf-sticky').boundingBox(),dtop=(await dialog.boundingBox()).y,hero=await panel.locator('.sf-hero').boundingBox();
-  return Math.abs(pick.y-dtop)<4&&hero.y-(pick.y+pick.height)<40&&hero.y>pick.y+pick.height-1};
+ // In topic mode the top bar's left button reads '← Todos los temas' (mockup .mk-bar.topic).
+ await expect(page.locator('#closeDetail')).toContainText('Todos los temas');await expect(page.locator('#closeDetail')).toHaveAttribute('aria-label','Volver a todos los temas');
+ await expect(dialog.locator('.detail-top')).toHaveClass(/sf-bar-topic/);
+ // The picker pins right under the sticky top bar and the hero chart starts right below it.
+ const pinned=()=>page.evaluate(()=>{const r=e=>document.querySelector(e).getBoundingClientRect(),bar=r('#signalDetail .detail-top'),pick=r('#detailBody .sf-sticky'),hero=r('#detailBody .sf-tpanel:not([hidden]) .sf-hero');
+  return Math.abs(pick.top-bar.bottom)<3&&bar.top>=r('#signalDetail').top-1&&hero.top-pick.bottom<40&&hero.top>pick.bottom-1});
  await expect.poll(pinned,{timeout:3000}).toBe(true);  // after the smooth scroll
  for(const r of await labelsFit(page)){expect(r.bad,r.chart).toEqual([]);expect(r.overlap,r.chart).toBeFalsy()}
  for(const loc of [body.locator('.sf-pick'),body.locator('.sf-step').last()]){const b=await loc.boundingBox();expect(b.height).toBeGreaterThanOrEqual(44)}
@@ -115,7 +136,7 @@ test('F1 ficha opens as an index and walks its topics',async({page})=>{
  await expect(index).toBeVisible();await expect(topic).toBeHidden();await expect(dialog).toBeVisible();
  expect(page.url()).not.toContain('tema=');
  const last=body.locator('.sf-row').filter({hasText:'Cotizantes y cargas'});await expect(last).toHaveClass(/sf-last/);await expect(last).toBeFocused();
- await expect(page.locator('#closeDetail')).toContainText('Volver');
+ await expect(page.locator('#closeDetail')).toContainText('Volver');await expect(page.locator('#closeDetail')).toHaveAttribute('aria-label','Cerrar ficha');
  // The foot's 'Siguiente tema' and 'Todos los temas', and the dialog's back button in topic mode, also lead back.
  await body.locator('.sf-row').filter({hasText:'Movilidad y desahucios'}).click();
  await expect(panel.locator('.sf-tdek')).toHaveCount(0);await expect(panel.locator('.sf-kpi')).toHaveCount(0);
@@ -246,4 +267,62 @@ test('the withdrawn GES finding shows a dated public correction',async({page})=>
  await row.locator('[data-detail]').first().click();
  await expect(page.locator('#detailBody .stat-correction')).toContainText('Corregido el 28 oct:');
  await expect(page.locator('#detailBody')).not.toContainText('21 presenta');
+});
+
+// Dirección 29-oct, compact header at 390×844 with CI's fallback font: in the index view the first two topic rows show
+// whole without scrolling; in topic mode the top half of the hero chart shows under the sticky selector, also with the
+// ficha scrolled to its top. Measured in one page.evaluate, with motion reduced (instant scroll, no smooth-scroll race).
+const fold=(page,sel)=>page.evaluate(sel=>{const d=document.getElementById('signalDetail'),r=d.getBoundingClientRect(),bottom=Math.min(innerHeight,r.bottom-parseFloat(getComputedStyle(d).borderBottomWidth||0));
+ const els=[...document.querySelectorAll(sel)].filter(e=>e.offsetParent).map(e=>{const b=e.getBoundingClientRect();return {top:b.top,bottom:b.bottom,mid:b.top+b.height/2}});
+ const st=document.querySelector('#detailBody .sf-topic:not([hidden]) .sf-sticky');return {bottom,top:r.top,scroll:d.scrollTop,els,sticky:st?st.getBoundingClientRect().bottom:null}},sel);
+test('F1 compact header: index rows and the hero chart show above the fold at 390×844',async({page})=>{
+ test.skip(test.info().project.name!=='mobile','390×844 runs once, in the mobile project');
+ await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});
+ const row=await openF1(page,f1Card());
+ await page.addStyleTag({content:'*,svg text{font-family:"DejaVu Sans",sans-serif!important}'});
+ await row.locator('[data-detail]').first().click();
+ const body=page.locator('#detailBody');await expect(body.locator('.sf-index')).toBeVisible();
+ // The bar is a single row; the kicker is a single line.
+ expect(await page.evaluate(()=>document.querySelector('#signalDetail .detail-top').getBoundingClientRect().height)).toBeLessThanOrEqual(52);
+ expect(await body.locator('.sf-kicker').evaluate(e=>e.getBoundingClientRect().height)).toBeLessThan(24);
+ const ix=await fold(page,'#detailBody .sf-row');
+ expect(ix.scroll).toBe(0);expect(ix.els.length).toBe(5);
+ // As in the mockup at 390×844: every topic row of the index (at least the first two, Dirección's target) is above the fold.
+ for(const r of ix.els)expect(r.bottom,'index row above the fold').toBeLessThanOrEqual(ix.bottom);
+ await shot(page,'stats-ficha-f1-fold-index-390x844');
+ // Topic mode on 'Por Isapre': the hero chart's top half shows under the sticky selector.
+ await body.locator('.sf-row').filter({hasText:'Por Isapre'}).click();
+ await expect(body.locator('.sf-pick-label')).toHaveText('Por Isapre');
+ const hero=body.locator('.sf-tpanel:not([hidden]) .sf-hero .sf-chart');await expect(hero).toBeVisible();
+ await expect.poll(async()=>{const t=await fold(page,'#detailBody .sf-tpanel:not([hidden]) .sf-hero .sf-chart');const h=t.els[0];return h.top>=t.sticky-1&&h.mid<=t.bottom},{timeout:3000}).toBe(true);
+ await shot(page,'stats-ficha-f1-fold-isapres-390x844');
+ // Even with the ficha scrolled back to its top (header in view), the hero's top half is above the fold.
+ await page.evaluate(()=>{document.getElementById('signalDetail').scrollTop=0});
+ const t0=await fold(page,'#detailBody .sf-tpanel:not([hidden]) .sf-hero .sf-chart');
+ expect(t0.scroll).toBe(0);expect(t0.els[0].mid,'hero top half above the fold').toBeLessThanOrEqual(t0.bottom);
+ // '← Todos los temas' in the sticky top bar, right above the sticky picker, stays in view while scrolling and returns
+ // to the index.
+ await page.evaluate(()=>{const d=document.getElementById('signalDetail');d.scrollTop=d.scrollHeight});
+ const topAll=page.locator('#closeDetail');await expect(topAll).toContainText('Todos los temas');
+ const inView=await topAll.evaluate(e=>{const b=e.getBoundingClientRect(),d=document.getElementById('signalDetail').getBoundingClientRect(),p=document.querySelector('#detailBody .sf-sticky').getBoundingClientRect();return b.top>=d.top-1&&b.bottom<=p.top+1&&b.height>=44});
+ expect(inView).toBeTruthy();
+ await topAll.click();
+ await expect(body.locator('.sf-index')).toBeVisible();await expect(body.locator('.sf-topic')).toBeHidden();
+ await expect.poll(()=>page.url()).not.toContain('tema=');
+ await expect(body.locator('.sf-row').filter({hasText:'Por Isapre'})).toHaveClass(/sf-last/);
+});
+
+// The top bar's '← Todos los temas' pops the entry the topic pushed, like Back: the URL keeps the ficha's hash only.
+test('the top "Todos los temas" button returns to the index like Back',async({page})=>{
+ const row=await openF1(page,f1Card());
+ await row.locator('[data-detail]').first().click();
+ const body=page.locator('#detailBody');
+ const len0=await page.evaluate(()=>history.length);
+ await body.locator('.sf-row').nth(2).click();await expect(page).toHaveURL(/#sig-[^&]+&tema=mezcla$/);
+ await body.locator('[data-sf-step="1"]').click();await expect(page).toHaveURL(/#sig-[^&]+&tema=movilidad$/);
+ await expect(page.locator('#closeDetail')).toContainText('Todos los temas');await page.locator('#closeDetail').click();
+ await expect(body.locator('.sf-index')).toBeVisible();await expect(page.locator('#signalDetail')).toBeVisible();
+ await expect.poll(()=>page.url()).not.toContain('tema=');expect(await page.evaluate(()=>history.length)).toBe(len0+1);
+ await expect(body.locator('.sf-row').filter({hasText:'Movilidad y desahucios'})).toBeFocused();
+ await expect(page.locator('#closeDetail')).toHaveText('Volver');
 });

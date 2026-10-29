@@ -80,12 +80,23 @@
  function chart(c,i){const svg=(FORMS[c.form]||columns)(c);if(!svg)return'';return`<figure class="sf-chart" data-chart="${esc(c.id||i)}"><h3>${esc(c.headline)}</h3>${c.subtitle?`<p class="sf-sub">${esc(c.subtitle)}</p>`:''}${svg}<details class="sf-data"><summary>Ver datos del gráfico</summary>${table(c.table)}</details>${c.source?`<p class="sf-src">${esc(c.source)}</p>`:''}</figure>`}
  const PROV={C:'Capturada por Alicanto: archivo y hash en el repositorio'};
  function kpi(k){return`<div class="sf-kpi"><p class="sf-lab">${esc(k.label)}</p><p class="sf-val">${esc(k.value)}${k.prov?`<span class="sf-prov" title="${esc(PROV[k.prov]||k.prov)}" aria-label="${esc(PROV[k.prov]||k.prov)}">${esc(k.prov)}</span>`:''}</p>${arr(k.lines).map(x=>`<p class="sf-delta">${esc(x)}</p>`).join('')}${k.badge?`<span class="sf-badge ${k.badge_kind==='crossed'?'':'muted'}">${esc(k.badge)}</span>`:''}</div>`}
+ // Header as in the approved mockup (Dirección 29-oct, option C→B): the kicker is the family label (+ 'Destacada'); under
+ // the headline a small meta list of two short lines, the builder's own words: 'Datos a agosto 2026' and 'Publicado por
+ // la SIS el 2 oct 2026' (the year from published_at). Any other meta clause ('se actualiza cada mes') goes to Notas.
+ const cap=x=>x?x[0].toUpperCase()+x.slice(1):'';
+ function metaLines(f){
+  const parts=String(f.kicker_meta||'').split(' · ').map(x=>x.trim()).filter(Boolean),y=/^(\d{4})-\d{2}-\d{2}/.exec(String(f.published_at||''));
+  const data=parts.find(x=>/^datos\b/i.test(x)),pub=parts.find(x=>/^publicad[oa]\b/i.test(x));
+  const pubLine=pub&&y&&/ el \d{1,2} \p{L}+\.?$/u.test(pub)?`${pub} ${y[1]}`:pub;
+  return{lines:[data,pubLine].filter(Boolean).map(cap),rest:parts.filter(x=>x!==data&&x!==pub).map(cap)};
+ }
  function dek(f){let d=esc(f.dek||'');if(f.dek_emphasis&&String(f.dek).includes(f.dek_emphasis))d=d.replace(esc(f.dek_emphasis),`<strong>${esc(f.dek_emphasis)}</strong>`);return d}
 
  // ---- Index → topic (C→B) ------------------------------------------------------------------------------------
  const ico=(d,w=18)=>`<svg width="${w}" height="${w}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${d}</svg>`;
  const I={chev:'<svg class="sf-pick-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg>',
   left:ico('<path d="m15 6-6 6 6 6"/>'),right:ico('<path d="m9 6 6 6-6 6"/>'),
+  share:ico('<path d="M12 3.5v11"/><path d="M7.8 7.6 12 3.5l4.2 4.1"/><path d="M5.5 11.5v7a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-7"/>',20),
   grid:ico('<rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/>',16)};
  const SPARK={line:'line',columns:'columns',diverging:'diverging',bars:'bars'};
  const HERO_SPARK={line:'line',columns_signed:'columns',diverging:'diverging',bars:'bars',dots:'bars'};
@@ -138,11 +149,17 @@
    `<div class="sf-tpanels" aria-live="polite">${ts.map((t,i)=>`<section class="sf-tpanel" id="${base}-p${i}" data-sf-topic="${i}" data-sf-id="${esc(ids[i])}" role="region" aria-label="${esc(t.label)}" hidden>${topicBody(t,i,ts)}</section>`).join('')}</div></section>`;
   return index+topic;
  }
+ // "Compartir informe" lives in the dialog's top bar (Dirección 29-oct): a compact icon button at its right edge, with
+ // its status as a small note under it. app.js places it; shareFicha() below wires it.
+ function shareButton(f,opts={}){
+  if(!f||!opts.shareId||!f.headline)return'';
+  return`<span class="sf-share-wrap"><button type="button" class="sf-share" data-ficha-share="${esc(opts.shareId)}" data-share-url="${esc(opts.shareUrl||'')}" data-share-title="${esc(f.headline)}" aria-label="Compartir informe" title="Compartir informe">${I.share}</button><span class="sf-share-status" role="status" aria-live="polite"></span></span>`;
+ }
  function render(f,opts={}){
   if(!f||f.status!=='PASS'||!f.headline)return'<p>Ficha no disponible.</p>';
   const lect=f.lectura&&f.lectura.status==='pass'&&f.lectura.text?f.lectura.text:null;
   const sources=arr(f.sources).filter(s=>https(s.url));
-  const share=opts.shareId?`<p class="sf-actions"><button type="button" class="sf-share" data-ficha-share="${esc(opts.shareId)}" data-share-url="${esc(opts.shareUrl||'')}" data-share-title="${esc(f.headline)}">Compartir informe</button><span class="sf-share-status" role="status" aria-live="polite"></span></p>`:'';
+  const mt=metaLines(f);
   const ts=arr(f.tabs).filter(t=>t&&t.label);
   // With topics, KPI cards live inside each topic (only when they add something its charts do not show) and the
   // ficha has no 'Qué mirar' block (Dirección 29-oct, option C→B). A ficha without topics keeps the KPI strip.
@@ -152,11 +169,12 @@
    (f.facts?.rendered_in_tabs||!arr(f.facts?.paragraphs).length?'':`<section class="sf-facts"><h3>${esc(f.facts?.heading||'Qué muestran los datos')}</h3>${arr(f.facts?.paragraphs).map(p=>`<p>${esc(p)}</p>`).join('')}</section>`)+
    (arr(f.watch).length?`<aside class="sf-watch"><h3>Qué mirar</h3><ol>${arr(f.watch).slice(0,2).map(w=>`<li><strong>${esc(w.headline)}</strong> ${esc(w.explanation)}</li>`).join('')}</ol></aside>`:'');
   return`<article class="sf${ts.length?' sf-cb':''}"${opts.shareId?` data-sf-sig="${esc(opts.shareId)}"`:''} data-family="${esc(f.family)}" data-period="${esc(f.period)}">`+
-   `<p class="sf-kicker">${esc(f.kicker)}${f.kicker_meta?` · <span>${esc(f.kicker_meta)}</span>`:''}${f.featured?' <span class="sf-featured">Destacada</span>':''}</p>`+
+   `<p class="sf-kicker"><span class="sf-kick">${esc(f.kicker)}</span>${f.featured?'<span class="sf-featured">Destacada</span>':''}</p>`+
    `<h2 id="detailTitle" class="sf-headline">${esc(f.headline)}</h2>`+
-   `<p class="sf-dek">${dek(f)}</p>${share}`+body+
+   (mt.lines.length?`<ul class="sf-meta" aria-label="Datos de la publicación">${mt.lines.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'')+
+   `<p class="sf-dek">${dek(f)}</p>`+body+
    (lect?`<section class="sf-reading"><h3>Lectura Alicanto</h3><p>${esc(lect)}</p></section>`:'')+
-   `<details class="sf-notes"><summary>Notas y fuentes</summary>${arr(f.notes).length?`<h3>Notas sobre la evidencia</h3><ol>${arr(f.notes).map(n=>`<li>${esc(n.text)}</li>`).join('')}</ol>`:''}`+
+   `<details class="sf-notes"><summary>Notas y fuentes</summary>${mt.rest.length?`<p class="sf-cadence">${esc(mt.rest.join(' · '))}.</p>`:''}${arr(f.notes).length?`<h3>Notas sobre la evidencia</h3><ol>${arr(f.notes).map(n=>`<li>${esc(n.text)}</li>`).join('')}</ol>`:''}`+
    `<h3>Fuentes</h3><ul>${sources.map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a> <span class="sf-role">· ${esc(s.role||'')}</span><br><code>sha256 ${esc(String(s.sha256||'').slice(0,12))}… · ${esc(s.locator||'')}${s.fetched_at?` · capturado ${fmtDay(String(s.fetched_at).slice(0,10))}`:''}</code></li>`).join('')}</ul>`+
    (f.machine_note?`<p class="sf-machine">${esc(f.machine_note)}</p>`:'')+`</details></article>`;
  }
@@ -173,7 +191,7 @@
    btn=$('.sf-pick'),list=$('.sf-list'),optEls=[...list.querySelectorAll('[role=option]')],panels=[...host.querySelectorAll('[data-sf-topic]')],
    ids=panels.map(p=>p.dataset.sfId),N=panels.length,scroller=dialog||doc.scrollingElement||doc.documentElement;
   const reduce=!!(root.matchMedia&&root.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  const back=dialog&&dialog.querySelector('.detail-close'),backTxt=back&&back.querySelector('span'),orig=back?{t:backTxt?backTxt.textContent:'',a:back.getAttribute('aria-label')}:null;
+  const back=dialog&&dialog.querySelector('.detail-close'),bar=back&&back.closest('.detail-top'),backTxt=back&&back.querySelector('span'),orig=back?{t:backTxt?backTxt.textContent:'',a:back.getAttribute('aria-label')}:null;
   const parse=()=>{const m=TEMA.exec(loc.hash);return m?ids.indexOf(m[1]):-1};
   const home=loc.pathname+loc.search+loc.hash.replace(/^#tema=[^&]*$/,'').replace(/&tema=[^&]*$/,'');
   // The ficha's signal anchor (from its render, else from a '#sig-…' already in the URL) stays in every topic URL.
@@ -181,12 +199,15 @@
   const sig=host.dataset.sfSig||sigOf();
   let cur=-1,last=0,entered=false,act=0;
   const url=i=>i<0?home:temaHash(sig,ids[i]);
-  const top0=()=>dialog?dialog.getBoundingClientRect().top:0;
+  // The dialog's top bar is sticky too (mockup .mk-bar): the picker pins right under it.
+  const barH=()=>bar&&root.getComputedStyle&&root.getComputedStyle(bar).position==='sticky'?bar.getBoundingClientRect().height:0;
+  const top0=()=>(dialog?dialog.getBoundingClientRect().top+(dialog.clientTop||0):0)+barH();
   const offset=el=>el.getBoundingClientRect().top-top0();
   const go=y=>{try{scroller.scrollTo({top:Math.max(0,y),behavior:reduce?'auto':'smooth'})}catch{scroller.scrollTop=Math.max(0,y)}};
   const anim=(el,cls)=>{if(reduce)return;el.classList.remove('sf-in','sf-from-left','sf-from-right');void el.offsetWidth;el.classList.add(cls)};
-  const onScroll=()=>sticky.classList.toggle('stuck',!topic.hidden&&sticky.getBoundingClientRect().top<=top0()+1);
-  function backLabel(on){if(!back)return;if(backTxt)backTxt.textContent=on?'Todos los temas':orig.t;if(on)back.setAttribute('aria-label','Volver a todos los temas');else if(orig.a===null)back.removeAttribute('aria-label');else back.setAttribute('aria-label',orig.a)}
+  const onScroll=()=>{sticky.classList.toggle('stuck',!topic.hidden&&sticky.getBoundingClientRect().top<=top0()+1);if(bar)bar.classList.toggle('sf-scrolled',scroller.scrollTop>8)};
+  // In topic mode the sticky top bar's back button reads '← Todos los temas' and returns to the index (mockup .mk-bar.topic).
+  function backLabel(on){if(!back)return;bar&&bar.classList.toggle('sf-bar-topic',on);if(backTxt)backTxt.textContent=on?'Todos los temas':orig.t;if(on)back.setAttribute('aria-label','Volver a todos los temas');else if(orig.a===null)back.removeAttribute('aria-label');else back.setAttribute('aria-label',orig.a)}
   function show(i,{scroll=true,dir=0}={}){
    const from=cur;cur=i;
    if(i<0){
@@ -242,7 +263,7 @@
   function unmount(){
    root.removeEventListener('popstate',onPop);doc.removeEventListener('click',onDocClick);doc.removeEventListener('keydown',onKey);scroller.removeEventListener('scroll',onScroll);
    if(dialog){dialog.removeEventListener('click',onBack,true);dialog.removeEventListener('close',onClose)}
-   backLabel(false);if(active===unmount)active=null;
+   backLabel(false);if(bar)bar.classList.remove('sf-scrolled');if(active===unmount)active=null;
   }
   // Closing the ficha in topic mode leaves the URL as it was before (the pushed topic entry is popped).
   // An unknown '&tema=' (stale or mistyped link) is stripped too.
@@ -274,5 +295,5 @@
  const MON=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
  function correctionLabel(c){if(c.label)return c.label;const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(String(c.corrected_at||''));return m?`${Number(m[3])} ${MON[Number(m[2])-1]}`:''}
  function correctionTag(s){const c=s&&s.statistical_view&&s.statistical_view.correction;if(!c||!c.corrected_at)return'';const label=correctionLabel(c);return label?` <span class="tag correction-tag" title="${esc(c.text||'')}">Corregido el ${esc(label)}</span>`:''}
- root.AlicantoFicha={render,mount,shareFicha,correctionTag,correctionLabel};
+ root.AlicantoFicha={render,shareButton,metaLines,mount,shareFicha,correctionTag,correctionLabel};
 })(typeof window!=='undefined'?window:globalThis);
