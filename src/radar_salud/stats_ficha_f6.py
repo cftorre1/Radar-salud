@@ -118,8 +118,9 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
                            "checks": ["un PDF por tema (acreditación, mediación, reclamos, RNPI) del mismo boletín y período",
                                       "cada documento capturado con SHA-256 y formato PDF",
                                       "cada cifra viene de la lectura independiente y aparece en el texto del PDF capturado, en una página citada: "
-                                      "junto a su palabra de contexto (80 caracteres) o, en acreditación (versión 2), en la "
-                                      "misma oración o en una fila 'Total' cuya tabla la nombra y cuya suma cuadra",
+                                      "junto a su palabra de contexto (80 caracteres) o, en acreditación (versión 2), como la "
+                                      "cifra que rige su frase en una misma oración, o como última celda de una fila 'Total' "
+                                      "de 3 o más cifras que suma las demás, bajo un encabezado que nombra la tramitación",
                                       "un documento revisado con una versión nueva del verificador conserva su SHA-256",
                                       "privadas + públicas = solicitudes en tramitación",
                                       "con observaciones ≤ acreditados",

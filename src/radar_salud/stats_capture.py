@@ -198,27 +198,37 @@ def present_in(text: str, n: int | float, context: tuple[str, ...] = GENERIC_CON
 # same-sentence rule and the 'Total' row rule below; the context window is unchanged.
 CHECKER_VERSIONS = {"acreditacion": 2}
 DEFAULT_CHECKER_VERSION = 1
-HEADING_MAX_LINES = 3  # non-table lines read above a table as its caption / heading
+HEADING_MAX_LINES = 3  # at most this many text lines above a table body form its heading
+SENTENCE_MAX_CHARS = 300  # a longer 'sentence' is rejected (extraction joined unrelated text)
+GOVERN_MAX_WORDS = 6  # content words allowed between a figure and the keyword it governs
+_MONTHS_RE = "|".join(MONTHS)
 _INT_CELL = r"\d{1,3}(?:\.\d{3})+|\d+"
-_TRAILING_CELLS = re.compile(r"(?:^|\s)((?:(?:" + _INT_CELL + r")\s+)*(?:" + _INT_CELL + r"))\s*$")
-_TOTAL_ROW = re.compile(r"^\s*(total(?:\s+general)?)\s+((?:(?:" + _INT_CELL + r")\s+)*(?:" + _INT_CELL + r"))\s*$")
-# Sentence boundary: '.' (not a thousands separator between digits), ';', ':' or a blank line. A single line break
-# inside a sentence does not end it.
-_SENTENCE_END = re.compile(r"[;:]|\.(?!\d)|(?<!\d)\.|\n[ \t]*\n")
+_NUM_TOKEN = re.compile(r"(?<![\w.,])\d[\d.,]*%?")
+_DATE_EXPR = re.compile(r"\b\d{1,2}\s+de\s+(?:" + _MONTHS_RE + r")(?:\s+(?:de|del)\s+\d{4})?\b|\b(?:" + _MONTHS_RE
+                        + r")\s+(?:de\s+|del\s+)?\d{4}\b")
+_TOTAL_ROW = re.compile(r"^\s*total(?:\s+general)?\s+((?:(?:" + _INT_CELL + r")\s+)*(?:" + _INT_CELL + r"))\s*$")
+_TOTAL_START = re.compile(r"^\s*total\b")
+_CAPTION = re.compile(r"^\s*(?:cuadro|tabla|grafico)\s+(?:n\s*[°ºo.]?\s*)?\d")
+_SENTENCE_END = re.compile(r"[;:?!]|\.(?!\d)|(?<!\d)\.")
+_BULLET = "•-–—*·▪○◦"
+# Function words not counted between a figure and its keyword (articles, contractions, de/en/y/o).
+_STOPWORDS = frozenset({"el", "la", "los", "las", "lo", "un", "una", "unos", "unas", "de", "del", "al", "a", "en", "y",
+                        "o", "e"})
+_PENDING = r"\btramit(?:e|es|acion|aciones)\b"
+# Checker v2 keyword requirements (folded, whole words). 'kw' must follow the figure in its sentence (the figure
+# governs it); 'needs' must also appear in the same sentence; 'not_before' must not be among the 3 words before 'kw'.
+V2_RULES = {
+    "accredited_providers": {"kw": r"\bacreditad[oa]s?\b"},
+    "with_observations": {"kw": r"\bcon\s+observacion(?:es)?\b", "not_before": "sin"},
+    "pending_applications": {"kw": _PENDING},
+    "private_pending": {"kw": r"\bprivad[oa]s?\b", "needs": _PENDING},
+    "public_pending": {"kw": r"\bpublic[oa]s?\b", "needs": _PENDING},
+}
+_KEY_BY_CONTEXT = {METRIC_CONTEXT[k]: k for k in V2_RULES}
 
 
 def checker_version(topic: str | None) -> int:
     return CHECKER_VERSIONS.get(str(topic or ""), DEFAULT_CHECKER_VERSION)
-
-
-def _cell_value(token: str) -> int:
-    return int(token.replace(".", ""))
-
-
-def _trailing_cells(line: str) -> list[int]:
-    """Integer cells at the end of a line ('Region de Aysen 4 12 16' → [4, 12, 16]); [] if the line ends in a word."""
-    m = _TRAILING_CELLS.search(line)
-    return [_cell_value(t) for t in m[1].split()] if m else []
 
 
 def _number_spans(folded: str, n: int | float):
@@ -227,84 +237,144 @@ def _number_spans(folded: str, n: int | float):
             yield m.start(), m.end()
 
 
-def _is_table_cell(folded: str, start: int, end: int) -> bool:
-    """The number is one of >= 2 trailing integer cells of its line (a table row, not prose)."""
-    line_start = folded.rfind("\n", 0, start) + 1
-    line_end = folded.find("\n", end)
-    line = folded[line_start: len(folded) if line_end < 0 else line_end]
-    m = _TRAILING_CELLS.search(line)
-    return bool(m) and len(m[1].split()) >= 2 and line_start + m.start(1) <= start
+def is_table_like(line: str) -> bool:
+    """A line that looks like a table row: starts with 'Total', ends in a number or a percentage, or carries >= 2
+    numeric tokens (date expressions such as '30 de junio' or 'junio de 2026' are not counted as tokens)."""
+    f = _fold(line).strip()
+    if not f:
+        return False
+    if _TOTAL_START.match(f) or re.search(r"\d\s*%?$", f):
+        return True
+    return len(_NUM_TOKEN.findall(_DATE_EXPR.sub(" ", f))) >= 2
 
 
-def in_same_sentence(text: str, n: int | float, context: tuple[str, ...]) -> bool:
-    """Rule (a): the figure and one of its metric keywords in the same sentence (bounded by . ; : or a blank line; a
-    single line break does not end it). A figure printed as a table cell (one of >= 2 trailing integer cells of its
-    line) never counts here: tables are judged by rule (b) only."""
-    folded = _fold(text)
-    bounds = [0] + [m.end() for m in _SENTENCE_END.finditer(folded)] + [len(folded)]
-    for start, end in _number_spans(folded, n):
-        if _is_table_cell(folded, start, end):
+def _continues(prev: str, nxt: str) -> bool:
+    """A single line break continues a sentence only when the previous line ends in a lowercase letter or a comma and
+    the next line starts with a lowercase letter (an uppercase letter, digit or bullet starts a new sentence)."""
+    p, q = prev.rstrip(), nxt.lstrip()
+    return bool(p and q) and (p[-1].islower() or p[-1] == ",") and q[0].islower() and q[0] not in _BULLET
+
+
+def sentences(text: str) -> list[str]:
+    """Prose sentences of a page (original case). Table-like lines and blank lines are hard boundaries and never part
+    of a sentence; . ; : ? ! end a sentence (a dot between digits does not)."""
+    groups, cur = [], []
+    for line in str(text or "").split("\n"):
+        if not line.strip() or is_table_like(line):
+            if cur:
+                groups.append(" ".join(cur))
+            cur = []
             continue
-        lo = max(b for b in bounds if b <= start)
-        hi = min(b for b in bounds if b >= end)
-        if any(word in folded[lo:hi] for word in context):
-            return True
+        if cur and not _continues(cur[-1], line):
+            groups.append(" ".join(cur))
+            cur = []
+        cur.append(line.strip())
+    if cur:
+        groups.append(" ".join(cur))
+    out = []
+    for g in groups:
+        out += [x.strip() for x in _SENTENCE_END.split(g) if x.strip()]
+    return out
+
+
+def _governs(folded: str, end: int, kw: re.Match) -> bool:
+    between = folded[end: kw.start()]
+    if re.search(r"\d", between):
+        return False
+    words = [w for w in re.findall(r"[a-z]+", between) if w not in _STOPWORDS]
+    return len(words) <= GOVERN_MAX_WORDS
+
+
+def in_same_sentence(text: str, n: int | float, key: str) -> bool:
+    """Rule (a), checker v2: the figure directly governs its metric keyword in one prose sentence (see V2_RULES)."""
+    spec = V2_RULES.get(key)
+    if not spec:
+        return False
+    for sent in sentences(text):
+        if len(sent) > SENTENCE_MAX_CHARS:
+            continue
+        f = _fold(sent)
+        if spec.get("needs") and not re.search(spec["needs"], f):
+            continue
+        for _, end in _number_spans(f, n):
+            kw = re.compile(spec["kw"]).search(f, end)  # only the first keyword after the figure can be governed by it
+            if not kw:
+                continue
+            if spec.get("not_before") and spec["not_before"] in re.findall(r"[a-z]+", f[:kw.start()])[-3:]:
+                continue
+            if _governs(f, end, kw):
+                return True
     return False
 
 
-def total_row_match(text: str, n: int | float, context: tuple[str, ...]) -> dict | None:
-    """Rule (b): the figure is a cell of a row starting with 'Total' / 'Total general' (only integer cells after the
-    label), and the table's caption / heading contains a metric keyword. The heading is the nearest block of up to
-    HEADING_MAX_LINES non-empty, non-table lines directly above the table body (the contiguous table rows above the
-    Total row; a table row ends in >= 2 integer cells, or >= 1 when the Total row has a single cell). Sum check: when
-    the row has >= 3 cells, the figure must equal the sum of the other cells (e.g. 367 + 217 = 584); with 1-2 cells
-    the row structure does not allow it ('not_applicable'). Returns the evidence, or None."""
+def _row_cells(line: str) -> list[int] | None:
+    m = _TOTAL_ROW.match(line)
+    if not m:
+        return None
+    toks = m[1].split()
+    if any(len(t) > 1 and t[0] == "0" for t in toks):
+        return None  # '1 000' split into cells: ambiguous
+    return [int(t.replace(".", "")) for t in toks]
+
+
+def _body_cells(line: str) -> int:
+    """Trailing integer cells of a 'label n n n' row (0 if the line does not end in integer cells)."""
+    m = re.search(r"(?:^|\s)((?:(?:" + _INT_CELL + r")\s+)*(?:" + _INT_CELL + r"))\s*$", line)
+    return len(m[1].split()) if m else 0
+
+
+def total_row_match(text: str, n: int | float, key: str) -> dict | None:
+    """Rule (b), checker v2: the figure is the LAST cell of a 'Total' / 'Total general' row with >= 3 integer cells
+    and equals the sum of the other cells. The table body (>= 1 row) is the run of lines directly above whose number of
+    trailing integer cells equals the Total row's. The heading is the block of text lines directly above the body (at
+    most HEADING_MAX_LINES); the walk stops at a blank line, another 'Total' line or any line ending in a number that is
+    not a body row. A caption line ('Cuadro' / 'Tabla' / 'Gráfico' N) met in the walk is the heading on its own. The
+    heading must contain the metric keyword and 'tramitación' / 'trámite' (whole words)."""
+    spec = V2_RULES.get(key)
+    if not spec:
+        return None
     lines = _fold(text).split("\n")
     for i, line in enumerate(lines):
-        m = _TOTAL_ROW.match(line)
-        if not m:
+        cells = _row_cells(line)
+        if not cells or len(cells) < 3 or cells[-1] != int(n) or sum(cells[:-1]) != int(n):
             continue
-        cells = [_cell_value(t) for t in m[2].split()]
-        if int(n) not in cells:
-            continue
-        others = list(cells)
-        others.remove(int(n))
-        if len(cells) >= 3:
-            if sum(others) != int(n):
-                continue
-            sum_check = " + ".join(str(c) for c in others) + f" = {int(n)}"
-        else:
-            sum_check = "not_applicable"
-        need = 2 if len(cells) >= 2 else 1
         j = i - 1
-        while j >= 0 and (not lines[j].strip() or len(_trailing_cells(lines[j])) >= need):
-            j -= 1  # table body (blank lines inside the table are skipped)
+        while j >= 0 and lines[j].strip() and not _TOTAL_START.match(lines[j]) and _body_cells(lines[j]) == len(cells):
+            j -= 1
+        if j == i - 1:
+            continue  # no body rows
         heading = []
         while j >= 0 and len(heading) < HEADING_MAX_LINES:
-            if lines[j].strip():
-                if len(_trailing_cells(lines[j])) >= need:
-                    break  # another table: no heading in between
-                heading.insert(0, lines[j].strip())
+            ln = lines[j].strip()
+            if _CAPTION.match(ln):
+                heading = [ln]
+                break
+            if not ln or _TOTAL_START.match(ln) or re.search(r"\d\s*%?$", ln):
+                break
+            heading.insert(0, ln)
             j -= 1
         head = " ".join(heading)
-        if any(word in head for word in context):
-            return {"row": line.strip(), "heading": head, "sum_check": sum_check}
+        if re.search(spec["kw"], head) and re.search(_PENDING, head):
+            return {"row": line.strip(), "heading": head,
+                    "sum_check": " + ".join(str(c) for c in cells[:-1]) + f" = {cells[-1]}"}
     return None
 
 
 def figure_evidence(pages: list[str], cited: list[int], n: int | float, context: tuple[str, ...],
-                    version: int = DEFAULT_CHECKER_VERSION) -> dict | None:
-    """Which rule places the figure on a cited page: 'context_window' (v1+), then 'sentence' and 'total_row' (v2+)."""
+                    version: int = DEFAULT_CHECKER_VERSION, key: str | None = None) -> dict | None:
+    """Which rule places the figure on a cited page: 'context_window' (v1+), then 'sentence' and 'total_row' (v2+,
+    only for metrics with V2_RULES; ``key`` defaults to the metric whose context tuple is ``context``)."""
     for p in cited:
         if present_in(pages[p - 1], n, context):
             return {"rule": "context_window", "page": p}
-    if version < 2:
+    key = key or _KEY_BY_CONTEXT.get(tuple(context))
+    if version < 2 or key not in V2_RULES:
         return None
     for p in cited:
-        if in_same_sentence(pages[p - 1], n, context):
+        if in_same_sentence(pages[p - 1], n, key):
             return {"rule": "sentence", "page": p}
     for p in cited:
-        hit = total_row_match(pages[p - 1], n, context)
+        hit = total_row_match(pages[p - 1], n, key)
         if hit:
             return {"rule": "total_row", "page": p, **hit}
     return None
@@ -338,7 +408,7 @@ def parse_boletin_pdf(data: bytes, metrics: dict | None, pages_1based: list[int]
            "text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(), "checker_version": version}
     if metrics:
         cited = [p for p in (pages_1based or []) if isinstance(p, int) and 1 <= p <= len(pages)]
-        evidence = {k: figure_evidence(pages, cited, v, METRIC_CONTEXT.get(k, GENERIC_CONTEXT), version)
+        evidence = {k: figure_evidence(pages, cited, v, METRIC_CONTEXT.get(k, GENERIC_CONTEXT), version, k)
                     for k, v in metrics.items() if isinstance(v, (int, float))}
         present = {k: e is not None for k, e in evidence.items()}
         out.update(status="verified" if present and all(present.values()) else "verified_figure_missing",
@@ -485,8 +555,8 @@ def _recheck_doc(prev: dict, *, fetch: Callable[[str], bytes], parse: Callable[[
     except Exception as exc:
         return {**prev, "recheck": {"status": "parse_failed", "error": f"{type(exc).__name__}:{exc}"[:160],
                                     "attempts": attempts, "at": _now()}}
-    rest = {k: v for k, v in prev.items() if k != "recheck"}
-    return {**rest, "status": "captured", "parse": parsed, "rechecked_at": _now(),
+    rest = {k: v for k, v in prev.items() if k not in ("recheck", "previous_parse")}
+    return {**rest, "status": "captured", "parse": parsed, "previous_parse": prev.get("parse"), "rechecked_at": _now(),
             "rechecked_from_checker_version": int((prev.get("parse") or {}).get("checker_version") or DEFAULT_CHECKER_VERSION)}
 
 

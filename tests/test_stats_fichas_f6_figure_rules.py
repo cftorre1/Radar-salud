@@ -2,10 +2,11 @@
 
 A verified figure counts as present on a cited page when ANY of these holds:
 - context window (v1, unchanged): a metric keyword within 80 characters;
-- (a) sentence (v2): the figure and a metric keyword in the same sentence (bounded by . ; : or a blank line; a single
-  line break does not end it); a figure printed as a table cell never counts by sentence;
-- (b) Total row (v2): the figure is a cell of a 'Total' / 'Total general' row whose table caption / heading contains
-  the keyword, and (>= 3 cells) equals the sum of the other cells.
+- (a) sentence (v2): in one prose sentence (<= 300 chars; table-like lines excluded), the figure directly governs its
+  metric keyword (whole words; <= 6 content words, no other number in between; metric-specific phrases);
+- (b) Total row (v2): the figure is the LAST cell of a 'Total' row with >= 3 cells and equals the sum of the others;
+  the heading directly above a uniform table body names the metric and 'tramitación'.
+The reviewer's probes are in ``test_stats_fichas_f6_review_probes.py``.
 
 Synthetic text reproduces the two real layouts of boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf (sha256
 8b7f7c7a385e…): 101 on p.2 split by a line break 82 characters from 'observaciones', and 584 only in Total rows
@@ -99,8 +100,8 @@ def test_101_passes_by_sentence_and_584_by_total_row_with_caption():
     assert tot["row"] == "total general 367 217 584" and tot["sum_check"] == "367 + 217 = 584"
     assert "tramitacion" in tot["heading"]
     # The single line break does not end the sentence; the p.7 Total row fails its sum check on its own.
-    assert cap.in_same_sentence(text_of(doc(), 2), 101, OBS)
-    assert cap.total_row_match(text_of(doc(), 7), 584, TRA) is None
+    assert cap.in_same_sentence(text_of(doc(), 2), 101, "with_observations")
+    assert cap.total_row_match(text_of(doc(), 7), 584, "pending_applications") is None
 
 
 def test_number_in_another_sentence_is_not_accepted():
@@ -109,11 +110,13 @@ def test_number_in_another_sentence_is_not_accepted():
     res = cap.parse_boletin_pdf(pdf, M, [1, 2, 7, 8], "acreditacion")
     assert res["status"] == "verified_figure_missing" and res["verified_present"]["with_observations"] is False
     # ';', ':' and a blank line end a sentence too; a single line break does not.
-    assert not cap.in_same_sentence("101 prestadores; con observaciones", 101, OBS)
-    assert not cap.in_same_sentence("101 prestadores: con observaciones", 101, OBS)
-    assert not cap.in_same_sentence("101 prestadores\n\ncon observaciones", 101, OBS)
-    assert cap.in_same_sentence("101 prestadores\ncon observaciones", 101, OBS)
-    assert cap.in_same_sentence("1.004.982 titulos", 1004982, ("titulo",))  # thousands dots do not end a sentence
+    W = "with_observations"
+    assert not cap.in_same_sentence("101 prestadores; con observaciones", 101, W)
+    assert not cap.in_same_sentence("101 prestadores: con observaciones", 101, W)
+    assert not cap.in_same_sentence("101 prestadores\n\ncon observaciones", 101, W)
+    assert cap.in_same_sentence("101 prestadores\ncon observaciones", 101, W)
+    assert not cap.in_same_sentence("101 prestadores\nCon observaciones", 101, W)  # uppercase starts a new sentence
+    assert cap.in_same_sentence("Hay 1.004 prestadores acreditados.", 1004, "accredited_providers")  # thousands dot
 
 
 def test_total_row_whose_caption_lacks_the_keyword_is_not_accepted():
@@ -123,7 +126,7 @@ def test_total_row_whose_caption_lacks_the_keyword_is_not_accepted():
     # The keyword in prose far above another table's heading does not count: only the nearest heading is read.
     text = "\n".join(["Solicitudes en tramitacion", "Otra tabla 1 2", "Distribucion por region",
                       "Region Privado Publico Total general", "Norte 367 217 584", "Total general 367 217 584"])
-    assert cap.total_row_match(text, 584, TRA) is None
+    assert cap.total_row_match(text, 584, "pending_applications") is None
 
 
 def test_number_on_an_uncited_page_is_not_accepted():
@@ -138,10 +141,10 @@ def test_total_row_whose_sum_does_not_match_is_not_accepted():
     res = cap.parse_boletin_pdf(pdf, M, [1, 2, 7, 8], "acreditacion")
     assert res["status"] == "verified_figure_missing" and res["figure_rules"]["pending_applications"] is None
     # A table cell never passes by the sentence rule, even with the caption in the same 'sentence'.
-    assert not cap.in_same_sentence("solicitudes en tramitacion\nTotal general 367 216 584", 584, TRA)
-    # Rows with 1-2 cells: the structure allows no sum check ('not_applicable'); the caption is still required.
-    assert cap.total_row_match("Solicitudes en tramitacion\nRegion Total\nNorte 584\nTotal 584", 584, TRA)["sum_check"] \
-        == "not_applicable"
+    assert not cap.in_same_sentence("solicitudes en tramitacion\nTotal general 367 216 584", 584, "pending_applications")
+    # Rows with 1-2 numbers are never accepted (the sum cannot be checked).
+    assert cap.total_row_match("Solicitudes en tramitacion\nRegion Total\nNorte 584\nTotal 584", 584,
+                               "pending_applications") is None
 
 
 # --- re-check on a checker version bump -------------------------------------------------------------------------
@@ -181,6 +184,7 @@ def test_version_bump_rechecks_the_captured_document_once_and_lifts_the_hold(tmp
     assert d["status"] == "captured" and d["sha256"] == sha and d["fetched_at"] == fetched_at
     assert d["parse"]["checker_version"] == 2 and d["parse"]["status"] == "verified"
     assert d["rechecked_from_checker_version"] == 1 and d["rechecked_at"]
+    assert d["previous_parse"]["checker_version"] == 1 and d["previous_parse"]["status"] == "verified_figure_missing"
     assert d["parse"]["figure_rules"]["with_observations"]["rule"] == "sentence"
     assert d["parse"]["figure_rules"]["pending_applications"]["rule"] == "total_row"
     pkg = f6.build_package(r, sf.load_registry())
