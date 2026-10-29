@@ -1,0 +1,40 @@
+{
+  "status": "hold",
+  "family": "F4",
+  "period": "2026-06",
+  "generated_at": "2026-10-29T14:21:35.789520+00:00",
+  "decision": {
+    "decision": "HOLD",
+    "holds": [
+      "HOLD_RECONCILIATION:latest_release_not_valid:2026-06:HOLD_GES_SCHEMA_NOT_VALIDATED",
+      "HOLD_MISSING_HASH"
+    ],
+    "triggers": [
+      "new_period"
+    ],
+    "featured": false,
+    "late_release": null,
+    "material_revisions": []
+  },
+  "verification": null,
+  "errors": [
+    "HOLD_RECONCILIATION:latest_release_not_valid:2026-06:HOLD_GES_SCHEMA_NOT_VALIDATED",
+    "HOLD_MISSING_HASH"
+  ],
+  "candidate": {
+    "reconciliation": {
+      "ok": false,
+      "failures": [
+        "latest_release_not_valid:2026-06:HOLD_GES_SCHEMA_NOT_VALIDATED"
+      ],
+      "checks": [
+        "hoja del año del corte fijada (nunca otra hoja)",
+        "Σ filas por problema = total declarado, Fonasa e Isapre",
+        "medida declarada por el encabezado de la fuente o confirmada por un revisor",
+        "cortes acumulados del mismo año nunca bajan",
+        "un solo archivo y hash por release",
+        "trimestre derivable del último corte"
+      ]
+    }
+  }
+}
