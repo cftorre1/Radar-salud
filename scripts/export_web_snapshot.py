@@ -741,6 +741,9 @@ def curate(signals,resolve_external=True,as_of=None):
         and s.get('df_duplicate_of') in counterpart_urls)]
     recent=_apply_persistent_editorial_decisions(recent)
     recent=[_normative_contract(s) if s.get("event_type")=="REGULATION" or "Normativa" in (s.get("signal_types") or []) else s for s in recent]
+    # Official acts (Diario Oficial etc.): short deterministic row title; full title kept.
+    from radar_salud.official_titles import apply_short_title
+    recent=[apply_short_title(s) for s in recent]
     recent=[s for s in recent if s.get("feed_visibility") is not False]
     from radar_salud.normative_minimal import strip_interpretation
     recent=[strip_interpretation(dict(s)) for s in recent]
