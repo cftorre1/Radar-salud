@@ -14,7 +14,12 @@ test('F1 ficha opens with tabs, readable charts and a share link',async({page})=
  const row=page.locator('article[data-card]').filter({hasText:card.title});
  await expect(row).toHaveCount(1);
  await expect(row).toContainText('Datos a 2026-08');
+ // Opción B on the stats row: Ver ficha · Fuente original (only with a source link) · Compartir (share page deep link).
+ expect(await row.locator('.row-acts .act').evaluateAll(xs=>xs.map(a=>a.textContent.trim()))).toEqual(['Ver ficha','Fuente original','Compartir']);
+ await expect(row.locator('.act-share')).toHaveAttribute('data-share-url',card.share_url);
  await row.locator('[data-detail]').first().click();
+ // In the ficha its own 'Compartir informe' is the share action; the header keeps only the source link.
+ expect(await page.locator('#detailActs .act').evaluateAll(xs=>xs.map(a=>a.textContent.trim()))).toEqual(['Fuente original']);
  const body=page.locator('#detailBody');
  await expect(body.locator('.sf-headline')).toHaveText(card.stats_ficha.headline);
  await expect(body.locator('.sf-kpi')).toHaveCount(4);

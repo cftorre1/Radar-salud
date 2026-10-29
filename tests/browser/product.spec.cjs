@@ -1,4 +1,4 @@
-const {test,expect,selectPeriod,selectLane}=require('./fixtures.cjs');
+const {test,expect,selectPeriod,selectLane,FIXTURE_AS_OF}=require('./fixtures.cjs');
 const fs=require('node:fs');fs.mkdirSync('artifacts',{recursive:true});
 const path=require('node:path');
 const STATISTICAL_URLS={
@@ -7,6 +7,8 @@ const STATISTICAL_URLS={
  bulletin:'https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/',
 };
 let historicalSignals;
+// Global is one inbox with a 90-day window since Dirección 28-oct 08:20; themes older than that are not listed.
+function globalInWindow(t){const d=(t.sources||[]).map(s=>s.published_at).filter(Boolean).sort().at(-1)||'1900-01-01',age=(Date.parse(FIXTURE_AS_OF+'T00:00:00Z')-Date.parse(d+'T00:00:00Z'))/86400000;return age>=0&&age<90}
 function knownHistoricalSignal(predicate){
  historicalSignals ||= JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../data/history/superintendencia_signals.json'),'utf8')).signals;
  const signal=historicalSignals.find(predicate);
@@ -214,7 +216,7 @@ test('Feed-only share uses Web Share and clipboard fallback without analytics',a
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await expect(page.locator('#brief [data-share]')).toHaveCount(0);
  const share=page.locator('#local [data-share]').first();await expect(share).toBeVisible();await expect(share).toHaveAttribute('aria-label',/Compartir:/);
- await expect(share.locator('xpath=ancestor::div[contains(@class,"card-meta")]')).toHaveCount(1);await expect(share.locator('xpath=ancestor::article[1]').locator('[data-read]')).toHaveCount(1);await expect(page.locator('.card-actions [data-share]')).toHaveCount(0);
+ await expect(share.locator('xpath=ancestor::div[contains(@class,"row-acts")]')).toHaveCount(1);await expect(share.locator('xpath=ancestor::article[1]').locator('[data-read]')).toHaveCount(1);await expect(page.locator('.card-actions [data-share]')).toHaveCount(0);
  const targetSize=await share.evaluate(button=>({width:button.getBoundingClientRect().width,height:button.getBoundingClientRect().height}));expect(targetSize.width).toBeGreaterThanOrEqual(44);expect(targetSize.height).toBeGreaterThanOrEqual(44);
  await share.click();const shared=(await page.evaluate(()=>window.__shared))[0];expect(shared.url).toContain('#');await expect(share.locator('xpath=following-sibling::*[1]')).toHaveText('Compartido');
  await page.evaluate(()=>{delete navigator.share;window.__copied=[];Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:value=>{window.__copied.push(value);return Promise.resolve()}}})});
@@ -224,12 +226,12 @@ test('Feed-only share uses Web Share and clipboard fallback without analytics',a
  await page.goto('/#%E0%A4%A');await expect(page.locator('#meta')).toContainText('Última actualización:');await expect(page.locator('article').first()).toBeVisible();
 });
 test('Global read state is shared across Home and the research page',async({page})=>{
- const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,visibleCount=themeCount;
+ const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8'));globalData.themes=globalData.themes.filter(globalInWindow);
  await page.goto('/');await expect(page.locator('#bigThings .big-feature.global')).toHaveCount(1);
  const free=await (await page.request.get('/data/free_value.json')).json(),teaserId=free.global_teaser.theme_id;
  await page.locator('#bigThings .big-feature.global .title-open[data-special-open]').first().click();
  await expect(page).toHaveURL(/global\.html#theme-/);await expect(page.locator('#globalDetail')).toBeVisible();await page.keyboard.press('Escape');
- await page.locator('#globalPeriod').selectOption('all');
+ await page.locator('#globalPeriod').selectOption('90');
  // Filter its publisher to verify read-state persistence independently of rank.
  const teaser=globalData.themes.find(t=>t.id===teaserId);
  const publisher=teaser.sources.map(s=>s.publisher).sort((a,b)=>globalData.themes.filter(t=>t.sources.some(s=>s.publisher===a)).length-globalData.themes.filter(t=>t.sources.some(s=>s.publisher===b)).length)[0];
@@ -253,12 +255,13 @@ test('Global read state is shared across Home and the research page',async({page
 });
 // Dirección 27-oct 23:13: Global uses the Home header and bar A; mark-all works on the visible themes with undo.
 test('Global shares header, bar A and mark-all with the Home',async({page})=>{
- await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('all');
+ await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('90');
  for(const [name,href] of [['Chile','index.html'],['Global','global.html'],['Newsletter','subscription.html']])expect(await page.locator(`.topnav a[href="${href}"]`).evaluate(el=>(el.dataset.short||el.textContent).trim())).toBe(name);
  await expect(page.locator('.topnav a[aria-current="page"]')).toHaveAttribute('href','global.html');
- const rows=page.locator('#themes .theme');await expect(rows.first()).toBeVisible();const total=await rows.count();expect(total).toBeGreaterThan(2);
+ // One inbox (Dirección 28-oct 08:20, punto 2): mark-all covers every visible row, themes and headlines alike.
+ const rows=page.locator('#themes article.item');await expect(rows.first()).toBeVisible();const total=await rows.count();expect(total).toBeGreaterThan(2);
  await expect(page.locator('#globalLanes [data-lane="p"]')).toHaveAttribute('aria-pressed','true');
- await page.locator('#globalMarkAll').click();await expect(rows).toHaveCount(0);await expect(page.locator('#themes .feed-undo')).toContainText(`${total} temas marcados como leídos`);
+ await page.locator('#globalMarkAll').click();await expect(rows).toHaveCount(0);await expect(page.locator('#themes .feed-undo')).toContainText(`${total} señales marcadas como leídas`);
  await expect(page.locator('#themes')).toContainText('Estás al día');
  await page.locator('#themes .feed-undo').getByRole('button',{name:'Deshacer'}).click();await expect(rows).toHaveCount(total);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
@@ -335,6 +338,8 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  // publisher headline and public lead only; the editorial rewrite built on the locked body is gone.
  const bupa=page.locator('article').filter({has:page.getByRole('heading',{name:/Bupa acelera inversiones/})});
  await bupa.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('La Dehesa');await expect(page.locator('#detailBody')).toContainText('Clínicas Huinganal');await expect(page.locator('#detailBody')).toContainText('Mindplace en San Damián');
+ // Dirección 28-oct 08:20 (punto 4): the news ficha no longer carries the why-it-matters paragraph.
+ await expect(page.locator('#detailBody')).not.toContainText('No es solo expansión física');
  await expect(page.locator('#detailBody')).toContainText('Mostramos sólo el titular y la bajada pública');
  await expect(bupa).not.toContainText('…');
  await expect(bupa.locator('.card-meta')).toContainText(/\d{1,2} \p{L}+\.? 2026/u);
@@ -376,7 +381,7 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await page.screenshot({path:`artifacts/${test.info().project.name}-cards-v2.png`,fullPage:true});
 });
 test('Global Intelligence mirrors Home while keeping global facts and Chile hypotheses distinct',async({page})=>{
- const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.length,visibleCount=themeCount;
+ const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8')),themeCount=globalData.themes.filter(globalInWindow).length,visibleCount=themeCount;
  await page.goto('/');
  await expect(page.locator('#bigThings .big-feature.global .title-open[data-special-open]')).toBeVisible();
  await page.locator('#bigThings .big-feature.global .title-open[data-special-open]').first().click();
@@ -385,20 +390,25 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await expect(page.locator('#globalPeriod')).toHaveValue('30');
  await page.locator('#globalFilters summary').click();
  await expect(page.locator('#globalPublisher')).toBeVisible();
- await expect(page.locator('#globalSort')).toBeVisible();
- await page.locator('#globalPeriod').selectOption('all');await expect(page.locator('#globalFilters')).not.toHaveAttribute('open','');
+ // Dirección 28-oct 08:20: one inbox ordered by date like Chile; no relevance sort, Chile's period options.
+ await expect(page.locator('#globalSort')).toHaveCount(0);
+ expect(await page.locator('#globalPeriod option').evaluateAll(xs=>xs.map(x=>x.value))).toEqual(['last','7','14','30','60','90']);
+ await page.locator('#globalPeriod').selectOption('90');await expect(page.locator('#globalFilters')).not.toHaveAttribute('open','');
  // Bar A on Global (Dirección 27-oct 23:13): Todas shows every theme; Pendientes only the unread ones.
  await page.locator('#globalLanes [data-lane="t"]').click();
  await expect(page.locator('.theme')).toHaveCount(visibleCount);
- const initialUnread=visibleCount-await page.locator('.theme.read').count();
- await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${initialUnread}`);
+ // "N pendientes" counts the whole inbox (themes and headlines share one list since Dirección 28-oct 08:20).
+ const initialUnread=await page.locator('#themes article.item').count()-await page.locator('#themes article.item.read').count();
+ await expect(page.locator('#globalMetrics')).toHaveText(`${initialUnread} pendientes`);
  // Open an unread theme that is not under the BCBSA editorial HOLD (its record carries no local-evidence block).
  await page.locator('.theme:not(.read):not(#theme-global-ai-coding-payer-cost-2026) [data-open]').first().click();
- await expect(page.locator('#globalMetrics')).toHaveText(`${visibleCount} temas · no leídos ${initialUnread-1}`);
+ await expect(page.locator('#globalMetrics')).toHaveText(`${initialUnread-1} pendientes`);
  const opened=page.locator('#globalDetail');await expect(opened).toBeVisible();await expect(opened).toContainText('Fuentes y evidencia');await expect(opened).not.toContainText(/Qué encontró:|Lectura estratégica|Qué mirar en Chile/);await expect(opened).toContainText('evidencia local');await page.keyboard.press('Escape');
- await page.reload();await expect(page.locator('#globalPeriod')).toHaveValue('all');await expect(page.locator('#globalLanes [data-lane="t"]')).toHaveAttribute('aria-pressed','true');
+ await page.reload();await expect(page.locator('#globalPeriod')).toHaveValue('90');await expect(page.locator('#globalLanes [data-lane="t"]')).toHaveAttribute('aria-pressed','true');
  await expect(page.locator('.theme')).toHaveCount(visibleCount);
  const visibleIds=await page.locator('.theme').evaluateAll(nodes=>nodes.map(n=>n.id.replace(/^theme-/,'')));expect(visibleIds.length).toBe(themeCount);
+ // Newest first, like Chile.
+ const dates=visibleIds.map(id=>globalData.themes.find(t=>t.id===id).sources.map(x=>x.published_at).sort().at(-1));expect(dates).toEqual([...dates].sort().reverse());
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);
  await page.screenshot({path:`artifacts/${test.info().project.name}-global-intelligence.png`,fullPage:true});
 });
@@ -770,13 +780,13 @@ test('in Todas a read row keeps source, date and buttons, and the dot toggles ba
  const dot=same.locator('[data-read]');await dot.click();await expect(same).toHaveClass(/read/);
  await expect(dot).toBeVisible();await expect(dot).toBeFocused();await expect(dot).toHaveAttribute('aria-label',/^Marcar como no leído/);
  await expect(same.locator('.card-meta')).toBeVisible();await expect(same.locator('.meta-text')).toHaveText(meta);
- await expect(same.locator('.item-actions a[aria-label="Fuente original"]')).toBeVisible();await expect(same.locator('.item-actions [data-share]')).toBeVisible();
+ await expect(same.locator('.row-acts .act-src')).toBeVisible();await expect(same.locator('.row-acts [data-share]')).toBeVisible();await expect(same.locator('.row-acts .act-open')).toBeVisible();
  const size=await same.locator('h2').evaluate(el=>getComputedStyle(el).fontSize);expect(size).toBe(await page.locator('#local article[data-card]:not(.read) h2').first().evaluate(el=>getComputedStyle(el).fontSize));
  await page.reload();await expect(same).toHaveClass(/read/);await expect(same.locator('.meta-text')).toHaveText(meta);await expect(same.locator('[data-read]')).toBeVisible();
  await same.locator('[data-read]').click();await expect(same).not.toHaveClass(/read/);await expect(same.locator('[data-read]')).toHaveAttribute('aria-label',/^Marcar como leído/);
 });
 test('Global read rows keep publisher and date',async({page})=>{
- await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('all');await page.locator('#globalLanes [data-lane="t"]').click();
+ await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('90');await page.locator('#globalLanes [data-lane="t"]').click();
  const row=page.locator('#themes .theme:not(.read)').first();const id=await row.getAttribute('data-theme');const same=page.locator(`#theme-${id}`);
  const meta=await same.locator('.meta-text').innerText();
  await same.locator('[data-read]').click();await expect(same).toHaveClass(/read/);
@@ -784,7 +794,7 @@ test('Global read rows keep publisher and date',async({page})=>{
 });
 // Dirección 27-oct 22:44 (puntos 2, 3 y 5) supersede the lanes menu of PR #72 review N1: read status is an
 // always-visible segmented control; topics are one compact multi-select dropdown floating over the feed;
-// Insight/Global keep their silver/gold tone after reading. Feed titles still clamp to two lines (review N2).
+// Insight/Global keep their silver/gold tone after reading. Feed titles clamp to three lines (Dirección 28-oct 21:49).
 test('segmented read status, floating topics dropdown and toned weekly rows',async({page})=>{
  await page.goto('/');const rows=page.locator('#local article[data-card]');await expect(rows.first()).toBeVisible();
  for(const k of ['p','l','t'])await expect(page.locator(`#lanes [data-lane="${k}"]`)).toBeVisible();
@@ -806,7 +816,8 @@ test('segmented read status, floating topics dropdown and toned weekly rows',asy
  for(let i=0;i<specialsCount;i++){await page.locator('#bigThings .big-feature:not(.read) [data-special-read]').first().click();await expect(page.locator('#bigThings .big-feature.read')).toHaveCount(i+1)}
  await expect.poll(()=>page.locator('#bigThings .big-feature').evaluateAll(xs=>xs.map(x=>getComputedStyle(x).backgroundImage))).toEqual(fills);
  const lines=await page.locator('#local .signal.item .title-open').evaluateAll(xs=>xs.map(x=>Math.round(x.getBoundingClientRect().height/parseFloat(getComputedStyle(x).lineHeight))));
- expect(Math.max(...lines)).toBeLessThanOrEqual(2);
+ // Dirección 28-oct 21:49 (punto 3) supersedes review N2's two lines: row titles clamp to three.
+ expect(Math.max(...lines)).toBeLessThanOrEqual(3);
 });
 
 // Dirección 28-oct (puntos 5, 6 y 7): Premium and Suscribirse open the same dialogs in place on Chile and Global;
@@ -824,22 +835,22 @@ test('Premium and Suscribirse behave the same on Chile and Global and keep the r
  await page.goto('/global.html#premium');await expect(page.locator('#earlyAccessDialog')).toBeVisible();expect(page.url()).toContain('global.html');
 });
 test('Global rows match Home rows: dot toggle, title opens the ficha, source and share, inline undo',async({page})=>{
- await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('all');
+ await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('90');
  const row=page.locator('#themes .theme:not(.read)').first();const id=await row.getAttribute('data-theme');const same=page.locator(`#theme-${id}`);
- await expect(same.locator('.item-actions a[aria-label="Fuente original"]')).toHaveAttribute('target','_blank');await expect(same.locator('.item-actions [data-share]')).toBeVisible();
+ await expect(same.locator('.row-acts .act-src')).toHaveAttribute('target','_blank');await expect(same.locator('.row-acts [data-share]')).toBeVisible();
  await expect(page.locator('#globalUndo,.undo-bar')).toHaveCount(0);
  await same.locator('.title-open').click();await expect(page.locator('#globalDetail')).toBeVisible();
- await expect(page.locator('#globalDetail .detail-top #closeGlobalDetail')).toHaveText('Volver');await expect(page.locator('#globalDetailBar [data-share]')).toBeVisible();
+ await expect(page.locator('#globalDetail .detail-top #closeGlobalDetail')).toHaveText('Volver');await expect(page.locator('#globalDetailActs [data-share]')).toBeVisible();
  await page.keyboard.press('Escape');
  await expect(same.locator('.row-undo')).toContainText('Leída');await same.locator('.row-undo button').click();await expect(same).not.toHaveClass(/read/);
  await same.locator('[data-read]').click();await expect(same).toHaveClass(/read/);await page.mouse.move(0,0);await page.locator('#globalLanes .lane.on').focus();
  await expect(same).toHaveCount(0,{timeout:12000});
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
 });
-test('fichas read straight: why it matters follows what happened with no meta-label',async({page})=>{
+test('news fichas are lean: headline, Qué pasó and sources, never why it matters (Dirección 28-oct 08:20)',async({page})=>{
  await page.goto('/');await page.locator('#local .title-open').first().click();await expect(page.locator('#signalDetail')).toBeVisible();
- await expect(page.locator('#detailBody')).not.toContainText(/Contexto editorial|Enriquecimiento editorial/);
- expect(await page.locator('#detailBody > p').count()).toBeGreaterThanOrEqual(2);
+ await expect(page.locator('#detailBody')).not.toContainText(/Contexto editorial|Enriquecimiento editorial|Por qué importa/);
+ await expect(page.locator('#detailBody .ficha-h').first()).toHaveText(/Qué pasó/i);expect(await page.locator('#detailBody > p').count()).toBeGreaterThanOrEqual(1);
 });
 test('the Global teaser in Chile invites to Global Premium without saying limitado',async({page})=>{
  await page.goto('/');const g=page.locator('#bigThings .big-feature.global');await expect(g).toHaveCount(1);
@@ -852,6 +863,6 @@ test('the Global teaser in Chile invites to Global Premium without saying limita
 test('ficha titles share the same font on Chile and Global',async({page})=>{
  const style=sel=>page.locator(sel).evaluate(el=>{const c=getComputedStyle(el);return [c.fontFamily,c.fontWeight,c.fontSize,c.lineHeight].join('|')});
  await page.goto('/');await page.locator('#local .title-open').first().click();await expect(page.locator('#detailTitle')).toBeVisible();const chile=await style('#detailTitle');
- await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('all');await page.locator('#themes .title-open').first().click();await expect(page.locator('#globalDetailTitle')).toBeVisible();
+ await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('90');await page.locator('#themes .title-open').first().click();await expect(page.locator('#globalDetailTitle')).toBeVisible();
  expect(await style('#globalDetailTitle')).toBe(chile);expect(chile).toMatch(/Georgia/);
 });

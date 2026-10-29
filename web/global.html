@@ -16,15 +16,10 @@
 </nav>
 </div>
 </header>
+<div class="premium-band" role="note"><span>Global Premium</span><em>Inteligencia internacional seleccionada para decidir antes en Chile</em></div>
 <div class="page"><div class="col global-col">
 <section class="week global-intro" aria-labelledby="globalPageTitle">
 <div class="week-label"><h1 id="globalPageTitle">Global Intelligence</h1><span class="meta" id="updated"></span></div>
-</section>
-<section id="globalDaily" class="global-daily" aria-labelledby="globalDailyTitle" hidden>
-<div class="radar-head"><h2 id="globalDailyTitle">Al día afuera</h2><span class="radar-metrics" id="globalDailyMetrics" role="status"></span></div>
-<div id="globalDailyRows" class="global-feed"></div>
-<button type="button" id="globalDailyMore" class="linkbtn daily-more" aria-controls="globalDailyRows" hidden></button>
-<p class="daily-note">Titulares y enlaces de fuentes oficiales o con licencia, sin análisis de Alicanto. Citarlas no implica respaldo de CDC, HHS, el Gobierno de EE. UU. ni otras instituciones.</p>
 </section>
 <section id="globalInbox" class="radar-unit" aria-labelledby="globalInboxTitle">
 <div class="radar-head">
@@ -33,21 +28,21 @@
 </div>
 <div id="globalLanes" class="lanes" role="group" aria-label="Estado de lectura"><button type="button" class="lane on" data-lane="p" aria-pressed="true">Pendientes <span></span></button><button type="button" class="lane" data-lane="l" aria-pressed="false">Leídas <span></span></button><button type="button" class="lane" data-lane="t" aria-pressed="false">Todas <span></span></button></div>
 <span class="bar-break" aria-hidden="true"></span>
-<label class="period-pill" title="Período"><span class="sr-only">Período</span><select id="globalPeriod"><option value="14">14 días</option><option value="30" selected>30 días</option><option value="90">90 días</option><option value="365">1 año</option><option value="all">Todo el histórico</option></select><svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></label>
+<label class="period-pill" title="Período"><span class="sr-only">Período</span><select id="globalPeriod"><option value="last">Desde mi última visita</option><option value="7">7 días</option><option value="14">14 días</option><option value="30" selected>30 días</option><option value="60">60 días</option><option value="90">90 días</option></select><svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></label>
 <details class="filter-details" id="globalFilters">
-<summary title="Fuentes y orden"><svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"></path><circle cx="16" cy="6" r="2"></circle><circle cx="10" cy="12" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg><span class="filter-label" id="globalFilterLabel">Todas las fuentes</span><span class="sr-only">: filtrar por fuente y ordenar</span><span class="filter-dot" id="globalFilterDot" hidden></span><svg class="mini-icon filter-chev" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<summary title="Fuentes"><svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"></path><circle cx="16" cy="6" r="2"></circle><circle cx="10" cy="12" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg><span class="filter-label" id="globalFilterLabel">Todas las fuentes</span><span class="sr-only">: filtrar por fuente</span><span class="filter-dot" id="globalFilterDot" hidden></span><svg class="mini-icon filter-chev" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></summary>
 <div class="filter-body">
 <div class="filter-head"><p class="sheet-title">Fuentes <small>elige una o varias</small></p><button type="button" class="reset-filters" id="globalReset">Restablecer</button></div>
 <div id="globalPublisher" class="interest-sheet" role="group" aria-label="Fuentes"></div>
-<div class="select-grid"><label>Orden <select id="globalSort"><option value="score">Relevancia estratégica</option><option value="date">Más recientes</option></select></label></div>
-<div class="sheet-foot"><a class="linkbtn" href="sources.html">Catálogo de fuentes</a><button type="button" class="sheet-done" id="globalDone">Ver temas</button></div>
+<div class="sheet-foot"><a class="linkbtn" href="sources.html">Catálogo de fuentes</a><button type="button" class="sheet-done" id="globalDone">Ver señales</button></div>
 <p class="filter-persist">Tus filtros se guardan automáticamente en este dispositivo.</p>
 </div>
 </details>
-<button type="button" id="globalMarkAll" class="mark-all" aria-label="Marcar todos los temas visibles como leídos" title="Marcar todo como leído" hidden><svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M2 12.5 6 16.5 14 8.5M10 15.5l1 1 9-9"></path></svg><span class="sr-only">Marcar todo como leído</span></button>
+<button type="button" id="globalMarkAll" class="mark-all" aria-label="Marcar todas las señales visibles como leídas" title="Marcar todo como leído" hidden><svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M2 12.5 6 16.5 14 8.5M10 15.5l1 1 9-9"></path></svg><span class="sr-only">Marcar todo como leído</span></button>
 </section>
-<div id="themes" class="global-feed"><p class="inbox-empty">Cargando research verificado…</p></div>
+<div id="themes" class="global-feed"><p class="inbox-empty">Cargando Global…</p></div>
 <div class="newsletter-strip"><span>Suscríbete para recibir en tu correo las señales más importantes y no perderte lo que está pasando.</span><button type="button" class="newsletter-open" id="newsletterOpen" data-open-newsletter>Suscríbete</button></div>
 <div class="feed-end"><span id="globalFeedCount"></span><a href="sources.html">Catálogo de fuentes</a></div>
+<footer class="global-foot"><p class="daily-note" id="globalAttribution" hidden>Los titulares marcados «Titular» son títulos y enlaces de fuentes oficiales o con licencia, sin análisis de Alicanto. Citarlas no implica respaldo de CDC, HHS, el Gobierno de EE. UU. ni otras instituciones.<span id="globalFeedStale"></span></p></footer>
 </div></div>
-<p class="read-status" id="readStatus" role="status" aria-live="polite"></p><dialog id="globalDetail" class="global-detail" aria-labelledby="globalDetailTitle"><div class="detail-top"><button type="button" id="closeGlobalDetail" class="detail-close" aria-label="Cerrar ficha"><svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"></path></svg><span>Volver</span></button><div class="detail-bar" id="globalDetailBar"></div></div><div id="globalDetailBody"></div></dialog></main><button type="button" class="back-top" id="backTop">Volver arriba ↑</button><script src="read-state.js"></script><script src="inbox-bar.js"></script><script src="conversion.js"></script><script src="global.js"></script><script src="global-daily.js"></script></body></html>
+<p class="read-status" id="readStatus" role="status" aria-live="polite"></p><dialog id="globalDetail" class="global-detail" aria-labelledby="globalDetailTitle"><div class="detail-top"><button type="button" id="closeGlobalDetail" class="detail-close" aria-label="Cerrar ficha"><svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"></path></svg><span>Volver</span></button><div class="detail-bar" id="globalDetailBar"></div></div><div class="ficha-acts-host" id="globalDetailActs"></div><div id="globalDetailBody"></div></dialog></main><button type="button" class="back-top" id="backTop">Volver arriba ↑</button><script src="read-state.js"></script><script src="inbox-bar.js"></script><script src="conversion.js"></script><script src="global.js"></script></body></html>
