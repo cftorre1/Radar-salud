@@ -69,16 +69,22 @@ def ges_workbook(period: str, rows: dict, *, header: str | None = None, extra=("
     return out.getvalue()
 
 
-def pdf_with_text(lines: list[str]) -> bytes:
-    """A minimal valid PDF (Helvetica text) that pypdf can read."""
+def pdf_with_text(lines: list[str], *, pages: list[list[str]] | None = None) -> bytes:
+    """A minimal valid PDF (Helvetica text) that pypdf can read: one page of ``lines``, or one page per ``pages``."""
     def esc(s: str) -> str:
         return s.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)")
-    content = "BT /F1 11 Tf 50 780 Td 14 TL " + " ".join(f"({esc(x)}) '" for x in lines) + " ET"
-    stream = content.encode("latin-1")
-    objs = [b"<< /Type /Catalog /Pages 2 0 R >>", b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
-            b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>",
-            b"<< /Length " + str(len(stream)).encode() + b" >>\nstream\n" + stream + b"\nendstream",
-            b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>"]
+    pages = pages if pages is not None else [lines]
+    n = len(pages)
+    kids = " ".join(f"{3 + 2 * i} 0 R" for i in range(n))
+    font = 3 + 2 * n
+    objs = [b"<< /Type /Catalog /Pages 2 0 R >>", f"<< /Type /Pages /Kids [{kids}] /Count {n} >>".encode()]
+    for i, page in enumerate(pages):
+        content = "BT /F1 11 Tf 50 780 Td 14 TL " + " ".join(f"({esc(x)}) '" for x in page) + " ET"
+        stream = content.encode("latin-1")
+        objs.append(f"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents {4 + 2 * i} 0 R "
+                    f"/Resources << /Font << /F1 {font} 0 R >> >> >>".encode())
+        objs.append(b"<< /Length " + str(len(stream)).encode() + b" >>\nstream\n" + stream + b"\nendstream")
+    objs.append(b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>")
     out = BytesIO()
     out.write(b"%PDF-1.4\n")
     offsets = []
@@ -93,12 +99,27 @@ def pdf_with_text(lines: list[str]) -> bytes:
     return out.getvalue()
 
 
+# Spanish wording next to each verified figure, as in the SIS bulletins (the capture requires a context word nearby).
+LABELS = {"accredited_providers": "Prestadores acreditados", "with_observations": "Acreditados con observaciones",
+          "pending_applications": "Solicitudes en tramite", "private_pending": "Solicitudes de prestadores privados",
+          "public_pending": "Solicitudes de prestadores publicos", "registered_mediators": "Mediadores inscritos",
+          "cumulative_requests_2019_to_june2026": "Solicitudes de mediacion acumuladas",
+          "monthly_average_2026": "Promedio mensual de reclamos 2026", "monthly_average_2025": "Promedio mensual de reclamos 2025",
+          "reported_growth_percent_rounded": "Aumento de reclamos (%)", "registered_titles": "Titulos inscritos",
+          "records_without_birth_date": "Registros sin fecha de nacimiento"}
+
+
+def figure_line(key: str, v) -> str:
+    return f"{LABELS.get(key, 'Reclamos acreditados titulos')}: {f'{int(v):,}'.replace(',', '.')}"
+
+
 def boletin_pdf(url: str, root: Path) -> bytes:
-    metrics = (cap.verified_metrics(root).get(url) or {}).get("metrics") or {}
-    lines = [f"Boletin fixture {url.rsplit('/', 1)[-1]}"]
-    for key, v in metrics.items():
-        lines.append(f"{key}: {f'{int(v):,}'.replace(',', '.')}")
-    return pdf_with_text(lines)
+    """Figures on the first page cited by the verified reading (earlier pages carry only a page number)."""
+    info = cap.verified_metrics(root).get(url) or {}
+    metrics = info.get("metrics") or {}
+    first = min(info.get("pages_1based") or [1])
+    body = [f"Boletin fixture {url.rsplit('/', 1)[-1]}", *(figure_line(k, v) for k, v in metrics.items())]
+    return pdf_with_text([], pages=[[f"Pagina {i}"] for i in range(1, first)] + [body])
 
 
 def ges_signals() -> list[dict]:
@@ -143,6 +164,15 @@ def fetcher(root: Path, books: dict[str, bytes] | None = None, *, fail: set[str]
     return fetch
 
 
+def confirmed_registry(registry: dict | None = None, by: str = "revisor de prueba") -> dict:
+    """Registry copy with the F4 measure confirmed by a (test) reviewer: F4 HOLDs without it."""
+    import copy
+    from radar_salud import stats_fichas as sf
+    reg = copy.deepcopy(registry or sf.load_registry())
+    reg["families"]["F4"]["measure"].update(confirmed=True, confirmed_by=by)
+    return reg
+
+
 def capture_all(root: Path, fetch) -> None:
     for _ in range(8):  # bounded per run: several runs capture everything
         cap.capture(root, fetch=fetch)
@@ -157,7 +187,7 @@ def write_fixtures() -> None:
         capture_all(root, fetcher(root))
         FIXTURE_DIR.mkdir(parents=True, exist_ok=True)
         for fam, mod in (("F4", f4), ("F6", f6)):
-            out = mod.run(root, today=date(2026, 10, 29), registry=reg, llm=False)
+            out = mod.run(root, today=date(2026, 10, 29), registry=confirmed_registry(reg) if fam == "F4" else reg, llm=False)
             assert out["status"] == "pass", out.get("errors")
             ficha = out["ficha"]
             card = sf.ficha_card(ficha, reg["families"][fam])

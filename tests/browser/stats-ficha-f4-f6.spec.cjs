@@ -49,3 +49,34 @@ for(const [slug,tabs,kpis] of [['f4_ges',['Totales','Top problemas','Fonasa vs I
   await page.screenshot({path:path.join(SHOTS,`${slug}-${test.info().project.name}-tabs.png`),fullPage:false});
  });
 }
+
+// 320 px (smallest supported phone): every tab fits, SVG labels stay inside their viewBox and x-axis labels never overlap.
+for(const [slug,tabs] of [['f4_ges',['Totales','Top problemas','Fonasa vs Isapre','Tendencia trimestral']],
+                          ['f6_prestadores',['Acreditación','Mediación','Reclamos','RNPI']]]){
+ test(`${slug} ficha fits a 320 px screen`,async({page})=>{
+  test.skip(test.info().project.name!=='mobile','320 px runs once, in the mobile project');
+  await page.setViewportSize({width:320,height:700});
+  const card=JSON.parse(fs.readFileSync(`tests/fixtures/stats_fichas/${slug}.card.json`,'utf8'));
+  await page.clock.setFixedTime(new Date('2026-10-29T12:00:00-03:00'));
+  await page.route('**/data/radar_today.json',route=>route.fulfill({json:{date:'2026-10-29',generated_at:'2026-10-29T12:00:00Z',signals:[card]}}));
+  await page.goto('/');
+  await selectPeriod(page,'90');
+  const row=page.locator('article[data-card]').filter({hasText:card.title});
+  await expect(row).toHaveCount(1);
+  await row.locator('[data-detail]').first().click();
+  const body=page.locator('#detailBody');
+  await expect(body.locator('.sf-headline')).toHaveText(card.stats_ficha.headline);
+  const check=()=>page.evaluate(()=>[...document.querySelectorAll('#detailBody .sf-panel:not([hidden]) svg')].map(s=>{
+   const vb=s.viewBox.baseVal,texts=[...s.querySelectorAll('text')],inside=texts.every(t=>{const b=t.getBBox();return b.x>=-1&&b.x+b.width<=vb.width+1});
+   const xl=[...s.querySelectorAll('text.sf-xlab')].map(t=>t.getBBox()).sort((a,b)=>a.x-b.x);
+   return {inside,overlap:xl.some((b,i)=>i&&b.x<xl[i-1].x+xl[i-1].width)}}));
+  for(const name of tabs){
+   await body.getByRole('tab',{name}).click();await expect(body.locator('.sf-panel:not([hidden])')).toBeVisible();
+   for(const r of await check()){expect(r.inside,name).toBeTruthy();expect(r.overlap,name).toBeFalsy()}
+  }
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+  expect(await page.evaluate(()=>{const d=document.getElementById('signalDetail');return d.scrollWidth<=d.clientWidth+1})).toBeTruthy();
+  fs.mkdirSync(SHOTS,{recursive:true});
+  await page.screenshot({path:path.join(SHOTS,`${slug}-320.png`),fullPage:false});
+ });
+}

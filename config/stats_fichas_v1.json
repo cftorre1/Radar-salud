@@ -643,7 +643,7 @@
         "declared": "ytd",
         "confirmed": false,
         "confirmed_by": null,
-        "rule": "La hoja del año fijada se trata como casos acumulados desde enero solo si el encabezado de la planilla lo declara ('acumulado', 'enero a …') o si un revisor lo confirma aquí (confirmed: true, confirmed_by) tras abrir la planilla capturada. Sin eso: HOLD_RECONCILIATION measure_unconfirmed. 'Desde 2005' nunca se usa."
+        "rule": "Solo un revisor establece la medida: sin confirmed: true (y confirmed_by), tras abrir la planilla capturada, la ficha queda en HOLD_RECONCILIATION measure_unconfirmed, diga lo que diga el encabezado. El encabezado solo puede vetar: 'desde 2005', una medida distinta de la declarada ('acumulado del trimestre' es trimestre, no año) o ambas redacciones a la vez mantienen el HOLD."
       },
       "decree_changes": [],
       "decree_rule": "Cambios de decreto: la ficha marca los problemas presentes en un solo trimestre de la comparación a/a (detectado desde los datos). Las notas oficiales de decreto se agregan aquí ({'note': …}) solo con fuente; nunca se infieren.",

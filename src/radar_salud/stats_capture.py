@@ -18,11 +18,14 @@ import hashlib
 import io
 import json
 import re
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable
+from urllib.parse import urlsplit
 
 from . import data_insights
+from .datos_gob_sources import RobotsUnavailable, load_robots_policy
 
 SCHEMA = "stats_capture_v1"
 STORE = Path("data/stats_fichas/captures")
@@ -32,6 +35,14 @@ MONTHS = ("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agost
           "noviembre", "diciembre")
 TOPICS = ("acreditacion", "mediacion", "reclamos", "rnpi")
 MAX_ATTEMPTS = 3
+RETRY_AFTER_DAYS = 7
+# Network guard for the capture step (SIS only, robots.txt honoured, bounded bytes and time).
+SIS_HOSTS = frozenset({"www.superdesalud.gob.cl", "superdesalud.gob.cl"})
+MAX_BYTES = 25 * 1024 * 1024
+MAX_ROBOTS_BYTES = 512 * 1024
+REQUEST_TIMEOUT_S = 30
+TIME_BUDGET_S = 8 * 60
+USER_AGENT = data_insights.USER_AGENT
 
 
 def _fold(text: str) -> str:
@@ -148,35 +159,161 @@ def number_forms(n: int | float) -> list[str]:
     return list(dict.fromkeys([dotted, str(v), dotted.replace(".", " ")]))
 
 
-def present_in(text: str, n: int | float) -> bool:
+# Words that must appear near a verified figure (same page, within CONTEXT_CHARS) for it to count as present.
+# Folded (no accents). Small numbers such as 30, 101 or 175 never match on their own (page numbers, dates, codes).
+GENERIC_CONTEXT = ("acreditad", "tramite", "tramitacion", "mediador", "mediacion", "reclamo", "titulo")
+METRIC_CONTEXT = {
+    "accredited_providers": ("acreditad",),
+    "with_observations": ("observacion",),
+    "pending_applications": ("tramite", "tramitacion"),
+    "private_pending": ("privad",),
+    "public_pending": ("public",),
+    "registered_mediators": ("mediador",),
+    "cumulative_requests_2019_to_june2026": ("solicitud", "mediacion"),
+    "monthly_average_2026": ("reclamo",),
+    "monthly_average_2025": ("reclamo",),
+    "reported_growth_percent_rounded": ("reclamo", "aument", "variacion", "increment"),
+    "registered_titles": ("titulo",),
+    "records_without_birth_date": ("nacimiento",),
+}
+CONTEXT_CHARS = 80
+
+
+def present_in(text: str, n: int | float, context: tuple[str, ...] = GENERIC_CONTEXT, window: int = CONTEXT_CHARS) -> bool:
+    """The number, printed in one of its SIS forms, with one of the context words within ``window`` characters."""
+    folded = _fold(text)
     for form in number_forms(n):
-        if re.search(r"(?<![\d.,])" + re.escape(form) + r"(?![\d]|[.,]\d)", text):
-            return True
+        for m in re.finditer(r"(?<![\d.,])" + re.escape(form) + r"(?![\d]|[.,]\d)", folded):
+            near = folded[max(0, m.start() - window): m.end() + window]
+            if any(word in near for word in context):
+                return True
     return False
 
 
-def pdf_text(data: bytes) -> tuple[str, int]:
+def pdf_pages(data: bytes) -> list[str]:
     from pypdf import PdfReader
     reader = PdfReader(io.BytesIO(data))
-    return "\n".join((page.extract_text() or "") for page in reader.pages), len(reader.pages)
+    return [(page.extract_text() or "") for page in reader.pages]
 
 
-def parse_boletin_pdf(data: bytes, metrics: dict | None) -> dict:
-    """Hash-bound check of verified figures; no figure is read from the PDF by guesswork."""
+def pdf_text(data: bytes) -> tuple[str, int]:
+    pages = pdf_pages(data)
+    return "\n".join(pages), len(pages)
+
+
+def parse_boletin_pdf(data: bytes, metrics: dict | None, pages_1based: list[int] | None = None) -> dict:
+    """Hash-bound check of verified figures; no figure is read from the PDF by guesswork.
+
+    A figure counts as present only on the pages cited by the independent reading (``pages_1based``) and next to a
+    context word of its metric; without cited pages nothing is verified (fail closed)."""
     try:
-        text, pages = pdf_text(data)
+        pages = pdf_pages(data)
     except Exception as exc:  # unreadable PDF: captured hash, no verification
         return {"status": "pdf_unreadable", "error": f"{type(exc).__name__}"[:80]}
-    out = {"status": "no_verified_metrics", "pages": pages,
+    text = "\n".join(pages)
+    out = {"status": "no_verified_metrics", "pages": len(pages),
            "text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest()}
     if metrics:
-        present = {k: present_in(text, v) for k, v in metrics.items() if isinstance(v, (int, float))}
-        out.update(status="verified" if all(present.values()) else "verified_figure_missing", verified_present=present)
+        cited = [p for p in (pages_1based or []) if isinstance(p, int) and 1 <= p <= len(pages)]
+        present = {k: any(present_in(pages[p - 1], v, METRIC_CONTEXT.get(k, GENERIC_CONTEXT)) for p in cited)
+                   for k, v in metrics.items() if isinstance(v, (int, float))}
+        out.update(status="verified" if present and all(present.values()) else "verified_figure_missing",
+                   verified_present=present, pages_checked=cited)
     return out
 
 
+def sis_url_ok(url: str) -> bool:
+    """HTTPS on an allowlisted SIS host, default port, no credentials."""
+    try:
+        u = urlsplit(str(url))
+        return (u.scheme == "https" and (u.hostname or "") in SIS_HOSTS and u.port in (None, 443)
+                and not u.username and not u.password)
+    except (TypeError, ValueError):
+        return False
+
+
+def sis_redirect_handler():
+    from urllib.request import HTTPRedirectHandler
+
+    class SisOnlyRedirect(HTTPRedirectHandler):
+        """Follow a redirect only to another allowlisted SIS HTTPS URL."""
+
+        def redirect_request(self, req, fp, code, msg, headers, newurl):
+            if not sis_url_ok(newurl):
+                raise PermissionError(f"redirect_off_allowlist: {urlsplit(str(newurl)).hostname}")
+            return super().redirect_request(req, fp, code, msg, headers, newurl)
+    return SisOnlyRedirect()
+
+
+def read_capped(response, max_bytes: int) -> bytes:
+    """Read in chunks; abort as soon as the body passes ``max_bytes`` (declared length checked first)."""
+    declared = (getattr(response, "headers", None) or {}).get("Content-Length")
+    if declared and str(declared).isdigit() and int(declared) > max_bytes:
+        raise ValueError(f"response_too_large: declared {declared} > {max_bytes}")
+    chunks, size = [], 0
+    while True:
+        chunk = response.read(64 * 1024)
+        if not chunk:
+            break
+        size += len(chunk)
+        if size > max_bytes:
+            raise ValueError(f"response_too_large: > {max_bytes} bytes")
+        chunks.append(chunk)
+    return b"".join(chunks)
+
+
+class SisFetcher:
+    """GET for SIS documents: allowlisted hosts (redirects included), robots.txt per host (shared policy of
+    ``datos_gob_sources.load_robots_policy``: 401/403/429/5xx/network fail closed, 404 allowed), a byte cap and a
+    per-request timeout bounded by the capture deadline. ``opener`` is injectable so tests never touch the network."""
+
+    def __init__(self, *, opener=None, deadline: float | None = None, clock: Callable[[], float] = time.monotonic,
+                 timeout: float = REQUEST_TIMEOUT_S, max_bytes: int = MAX_BYTES):
+        from urllib.request import build_opener
+        self.opener = opener or build_opener(sis_redirect_handler())
+        self.deadline, self.clock, self.timeout, self.max_bytes = deadline, clock, timeout, max_bytes
+        self.robots: dict[str, object] = {}
+
+    def _timeout(self) -> float:
+        if self.deadline is None:
+            return self.timeout
+        left = self.deadline - self.clock()
+        if left <= 0:
+            raise TimeoutError("capture_time_budget_exhausted")
+        return max(1.0, min(self.timeout, left))
+
+    def _get(self, url: str, max_bytes: int) -> bytes:
+        from urllib.request import Request
+        if not sis_url_ok(url):
+            raise PermissionError(f"host_not_allowlisted: {urlsplit(str(url)).hostname}")
+        req = Request(url, headers={"User-Agent": USER_AGENT})
+        with self.opener.open(req, timeout=self._timeout()) as response:
+            final = response.geturl() if hasattr(response, "geturl") else url
+            if not sis_url_ok(final):
+                raise PermissionError(f"redirect_off_allowlist: {urlsplit(str(final)).hostname}")
+            return read_capped(response, max_bytes)
+
+    def _policy(self, host: str):
+        if host not in self.robots:
+            try:
+                self.robots[host] = load_robots_policy(lambda u: self._get(u, MAX_ROBOTS_BYTES), f"https://{host}/robots.txt")[0]
+            except RobotsUnavailable as exc:
+                self.robots[host] = exc
+        policy = self.robots[host]
+        if isinstance(policy, Exception):
+            raise policy
+        return policy
+
+    def __call__(self, url: str) -> bytes:
+        if not sis_url_ok(url):
+            raise PermissionError(f"host_not_allowlisted: {urlsplit(str(url)).hostname}")
+        if not self._policy(urlsplit(url).hostname).can_fetch(USER_AGENT, url):
+            raise PermissionError(f"robots_disallowed: {urlsplit(url).path}")
+        return self._get(url, self.max_bytes)
+
+
 def default_fetch(url: str) -> bytes:
-    return data_insights._download(url, timeout=60)
+    return SisFetcher()(url)
 
 
 def _capture_doc(doc: dict, *, fetch: Callable[[str], bytes], parse: Callable[[bytes], dict], expected: str) -> dict:
@@ -190,29 +327,49 @@ def _capture_doc(doc: dict, *, fetch: Callable[[str], bytes], parse: Callable[[b
            "sha256": hashlib.sha256(data).hexdigest(), "bytes": len(data), "format": fmt, "fetched_at": _now()}
     if fmt != expected:
         return {**rec, "status": "unexpected_format", "parse": None}
-    return {**rec, "status": "captured", "parse": parse(data)}
+    try:
+        parsed = parse(data)
+    except Exception as exc:  # one bad file never aborts the capture; recorded and retried after RETRY_AFTER_DAYS
+        return {**rec, "status": "parse_failed", "parse": None, "error": f"{type(exc).__name__}:{exc}"[:160],
+                "attempts": int(doc.get("attempts") or 0) + 1}
+    return {**rec, "status": "captured", "parse": parsed}
 
 
-def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new: int = 6) -> dict:
+def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new: int = 6,
+            time_budget_s: float = TIME_BUDGET_S, clock: Callable[[], float] = time.monotonic) -> dict:
     """Download each listed document once (at most ``max_new`` per kind and run, newest release first); store hashes
-    and parsed values, never binaries. A failed download is retried up to MAX_ATTEMPTS times, then once a week."""
+    and parsed values, never binaries. A failed download is retried up to MAX_ATTEMPTS times, then once a week; a file
+    that downloads but fails to parse is retried after RETRY_AFTER_DAYS. The whole step stops starting downloads once
+    ``time_budget_s`` has elapsed (documents left for the next run stay 'not_fetched')."""
     root = Path(root)
-    fetch = fetch or default_fetch
+    deadline = clock() + time_budget_s
+    fetch = fetch or SisFetcher(deadline=deadline, clock=clock)
     budget = {"left": max_new}
-    summary: dict = {}
+    summary: dict = {"time_budget_s": time_budget_s, "time_budget_exhausted": False}
+
+    def has_time() -> bool:
+        if clock() >= deadline:
+            summary["time_budget_exhausted"] = True
+            return False
+        return True
+
+    def days_since(old: dict) -> float:
+        try:
+            last = datetime.fromisoformat(str(old.get("fetched_at")))
+        except ValueError:
+            return float("inf")
+        return (datetime.now(timezone.utc) - last).total_seconds() / 86400
 
     def needs(old: dict | None) -> bool:
         if not old or old.get("status") == "not_fetched":
             return True
+        if old.get("status") == "parse_failed":
+            return days_since(old) >= RETRY_AFTER_DAYS
         if old.get("status") != "fetch_failed":
             return False
         if int(old.get("attempts") or 0) < MAX_ATTEMPTS:
             return True
-        try:
-            last = datetime.fromisoformat(str(old.get("fetched_at")))
-        except ValueError:
-            return True
-        return (datetime.now(timezone.utc) - last).days >= 7
+        return days_since(old) >= RETRY_AFTER_DAYS
 
     # GES
     path = root / STORE / "ges_quarterly.json"
@@ -223,7 +380,7 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
         old_doc = (old or {}).get("document")
         if old_doc and old_doc.get("url") != rel["documents"][0]["url"]:
             old_doc = None  # a new file for the same period: capture it (the revision is detected downstream)
-        if needs(old_doc) and budget["left"] > 0:
+        if needs(old_doc) and budget["left"] > 0 and has_time():
             budget["left"] -= 1
             title = rel["title"]
             doc = _capture_doc({**(old_doc or {}), "url": rel["documents"][0]["url"]}, fetch=fetch, expected="xlsx",
@@ -250,11 +407,12 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
         docs = []
         for d in rel["documents"]:
             prev = old_docs.get(d["url"])
-            if needs(prev) and budget["left"] > 0:
+            if needs(prev) and budget["left"] > 0 and has_time():
                 budget["left"] -= 1
-                metrics = (verified.get(d["url"]) or {}).get("metrics")
+                info = verified.get(d["url"]) or {}
                 docs.append(_capture_doc({**(prev or {}), **d}, fetch=fetch, expected="pdf",
-                                         parse=lambda b, m=metrics: parse_boletin_pdf(b, m)))
+                                         parse=lambda b, m=info.get("metrics"), pg=info.get("pages_1based"):
+                                         parse_boletin_pdf(b, m, pg)))
             else:
                 docs.append(prev or {**d, "status": "not_fetched"})
         known[rel["period"]] = {k: rel[k] for k in ("period", "number", "title", "release_url", "published_at")} | {"documents": docs}

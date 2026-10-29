@@ -337,7 +337,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                     ["Variación", fmt_dec(V("rec.pct"), 1, signed=True) + "%"]]},
                  "source": "SIS, Boletín IP, reclamos. Promedios mensuales de un flujo; la SIS informa la variación redondeada."}
         rec_text = [f"Entre enero y {month} ingresaron en promedio {fmt_int(V(f'rec.promedio.{y}'))} reclamos al mes, frente a "
-                    f"{fmt_int(V(f'rec.promedio.{y - 1}'))} en {y - 1}: {fmt_int(V('rec.delta'))} más al mes."]
+                    f"{fmt_int(V(f'rec.promedio.{y - 1}'))} en {y - 1}: {fmt_int(abs(V('rec.delta')))} "
+                    f"{'más' if V('rec.delta') >= 0 else 'menos'} al mes."]
         if "rec.pct_informado" in v:
             rec_text.append(f"La SIS informa la variación redondeada ({fmt_int(V('rec.pct_informado'))}%); Alicanto la recalcula "
                             f"con los promedios publicados ({fmt_dec(V('rec.pct'), 1, signed=True)}%).")

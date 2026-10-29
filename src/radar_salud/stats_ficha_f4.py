@@ -87,20 +87,44 @@ def short_label(label: str, n: int = 18) -> str:
     return label if len(label) <= n else label[: n - 1].rstrip(" ,;-") + "…"
 
 
-def measure_of(parse: dict, cfg: dict) -> tuple[str | None, str]:
-    """('ytd' | 'quarter' | None, how it was established). Never guessed: the header text or a reviewer declares it."""
+SINCE_2005 = re.compile(r"desde (?:julio )?(?:de )?2005|2005\s*[-–a]\s*20\d\d|desde el inicio")
+# 'acumulado del trimestre' / 'casos del trimestre' declare a quarter, never a year-to-date count.
+QUARTER_HEAD = re.compile(r"\btrimestr|\btrim\b")
+YTD_HEAD = re.compile(r"acumulad[oa]s?\s+(?:en\s+el\s+|del\s+|al\s+)?(?:ano|anual)\b|acumulad[oa]s?\s+(?:desde\s+)?enero"
+                      r"|desde\s+enero|\benero\s*(?:a|al|-|–|hasta)\s*[a-z]{3,}|\bene\w*\s*[-–]\s*[a-z]{3}|year\s*to\s*date|\bytd\b")
+
+
+def header_measure(parse: dict) -> str | None:
+    """What the captured header text declares: 'since_2005' | 'ytd' | 'quarter' | 'ambiguous' | None (silent).
+
+    A bare 'acumulado' declares nothing (it can be cumulative within the quarter); 'acumulado del trimestre' is a
+    quarter. Both a year-to-date and a quarter wording → 'ambiguous'."""
     head = parse.get("header") or {}
     text = _fold(" ".join([head.get("fonasa") or "", head.get("isapre") or "", *(head.get("above") or [])]))
-    if re.search(r"desde (?:julio )?(?:de )?2005|2005\s*[-–a]\s*20\d\d|desde el inicio", text):
-        return None, "source_declares_since_2005"
-    if re.search(r"acumulad|enero\s*(?:a|-|–|al)\s*[a-z]+|ene\w*\s*[-–]\s*[a-z]{3}", text):
-        return "ytd", "declared_by_source_header"
-    if re.search(r"\btrimestr|\btrim\b", text):
-        return "quarter", "declared_by_source_header"
+    if SINCE_2005.search(text):
+        return "since_2005"
+    q, y = bool(QUARTER_HEAD.search(text)), bool(YTD_HEAD.search(text))
+    return "ambiguous" if q and y else "quarter" if q else "ytd" if y else None
+
+
+def measure_of(parse: dict, cfg: dict) -> tuple[str | None, str]:
+    """('ytd' | 'quarter' | None, how it was established).
+
+    Only a reviewer establishes the measure: without ``measure.confirmed is True`` (registry F4) the ficha HOLDs,
+    whatever the header says. The header can only veto: a header declaring 'since 2005', another measure or both
+    wordings keeps the HOLD."""
     m = cfg.get("measure") or {}
-    if m.get("confirmed") is True and m.get("declared") in ("ytd", "quarter"):
-        return m["declared"], f"confirmed_by_reviewer:{m.get('confirmed_by') or 'registro'}"
-    return None, "unconfirmed"
+    if m.get("confirmed") is not True or m.get("declared") not in ("ytd", "quarter"):
+        return None, "unconfirmed"
+    head = header_measure(parse)
+    if head == "since_2005":
+        return None, "source_declares_since_2005"
+    if head == "ambiguous":
+        return None, "header_ambiguous"
+    if head and head != m["declared"]:
+        return None, f"header_contradicts_reviewer:{head}"
+    how = f"confirmed_by_reviewer:{m.get('confirmed_by') or 'registro'}"
+    return m["declared"], how + (";header_agrees" if head else ";header_silent")
 
 
 def _portfolio_isapre(root: Path) -> dict:
@@ -326,12 +350,28 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
     cur = quarters[(ty, tq)]
     tp = kpcfg["top_problemas"]["threshold"]
     problems = []
+    def problem_inputs(flow: dict, k: str) -> list[str]:
+        """Captured problem rows (sheet!row) the quarter flow of problem ``k`` is computed from."""
+        ids = []
+        for c in flow["cuts"]:
+            cut = valid[c]
+            o = cut["rows"][k]
+            for ins in ("fonasa", "isapre"):
+                vid = f"ges.cut.{c}.p.{k}.{ins}"
+                values[vid] = value(vid, o[ins], unit="casos", period=c, source=src_key(cut),
+                                    locator=f"{cut['sheet']}!fila {o.get('row')} ({o['label']}) · {ins.capitalize()}")
+                ids.append(vid)
+        return ids
+
+    p_formula = lambda flow: ("Fonasa + Isapre del problema: corte(t) − corte(t−1) del mismo año"  # noqa: E731
+                              if len(flow["cuts"]) == 2 else "Fonasa + Isapre del problema")
     for k, (label, f, i) in cur["rows"].items():
-        derived(f"ges.p.{k}.{t_key}", f + i, "Fonasa + Isapre del problema", [], "casos", t)
+        derived(f"ges.p.{k}.{t_key}", f + i, p_formula(cur), problem_inputs(cur, k), "casos", t)
         row = {"key": k, "label": label, "t": f + i}
         if has_yoy and k in quarters[(by, bq)]["rows"]:
-            _, bf, bi = quarters[(by, bq)]["rows"][k]
-            derived(f"ges.p.{k}.{b_key}", bf + bi, "Fonasa + Isapre del problema", [], "casos", qend(by, bq))
+            base_flow = quarters[(by, bq)]
+            _, bf, bi = base_flow["rows"][k]
+            derived(f"ges.p.{k}.{b_key}", bf + bi, p_formula(base_flow), problem_inputs(base_flow, k), "casos", qend(by, bq))
             row["base"] = bf + bi
             if bf + bi >= tp["min_cases"]:
                 # rounded to one decimal: the chart shows exactly this value
@@ -342,6 +382,7 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
     ranked = sorted((r for r in problems if "pct" in r), key=lambda r: (-r["pct"], r["label"]))
     crossing = [r for r in ranked if r["pct"] >= tp["pct"]]
     derived("conteo.problemas_sobre_umbral", len(crossing), "problemas con Δ a/a ≥ umbral y base ≥ mínimo", [], "count", t)
+    derived("conteo.problemas_bajan", sum(1 for r in ranked if r["pct"] < 0), "problemas comparables con Δ a/a < 0", [], "count", t)
     if crossing:
         findings.append({"type": "problem_growth", "kpi": "top_problemas", "crossed": True, "strength": len(crossing)})
 
@@ -433,6 +474,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     pct = lambda vid: fmt_dec(val(vid), 1, signed=True) + "%"  # noqa: E731
     yoy = k["has_yoy"]
     list_changed = bool(k["added"] or k["dropped"])
+    yoy_th = fmt_dec(cfg["kpis"]["casos_ges"]["threshold"]["yoy_pct"], 0)  # registry threshold, never hard-coded
 
     head_type = "yoy" if yoy else "no_yoy"
     headline = tpl["headline"][head_type].format(qlabel=qlabel(ty, tq), total=fmt_int(total),
@@ -444,7 +486,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     kpis = [{"id": "casos", "label": "Casos GES", "value": fmt_int(total), "prov": "C",
              "lines": ([f"{pct('ges.yoy.total_pct')} vs. {qshort(by, bq)}"] if yoy else ["a/a no disponible"])
              + ([f"{pct('ges.yoy.total_comparable_pct')} solo problemas comparables"] if yoy and list_changed else []),
-             "badge": ("Cruza umbral (5% a/a)" if any(f["kpi"] == "casos_ges" for f in package["findings"]) else "Sin umbral cruzado")
+             "badge": (f"Cruza umbral ({yoy_th}% a/a)" if any(f["kpi"] == "casos_ges" for f in package["findings"]) else "Sin umbral cruzado")
              if yoy else "Sin base a/a capturada", "badge_kind": "crossed" if any(f["kpi"] == "casos_ges" for f in package["findings"]) else "muted",
              "refs": [f"ges.q.{tk}.total"] + (["ges.yoy.total_pct"] if yoy else [])},
             {"id": "fonasa", "label": "Fonasa", "value": fmt_int(fon), "prov": "C",
@@ -494,22 +536,29 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
 
     # Tab 2 · Top problemas
     tp = cfg["kpis"]["top_problemas"]["threshold"]
-    ranked = k["ranked"][:MAX_PROBLEM_ROWS]
+    # The 'crecen' ranking shows growth only: a decline is never drawn as a positive bar (it is counted in the text).
+    growing = [r for r in k["ranked"] if r["pct"] > 0]
+    declining = [r for r in k["ranked"] if r["pct"] < 0]
+    ranked = growing[:MAX_PROBLEM_ROWS]
     if ranked:
         n = len(k["crossing"])
         # The count word comes from the data (conteo.problemas_sobre_umbral), never from a template.
         phrase = "Un problema supera" if n == 1 else sf.count_phrase(n, "", "problemas superan").strip().capitalize()
         head = f"{phrase} {fmt_dec(tp['pct'], 0)}% a/a" if n else "Ningún problema supera el umbral de crecimiento"
         c_top = {"id": "f4-top", "form": "bars", "unit": "%", "digits": 1, "headline": head,
-                 "subtitle": f"Variación a/a de casos por problema · base ≥ {fmt_int(tp['min_cases'])} casos en el {qshort(by, bq)}",
+                 "subtitle": f"Problemas que crecen: variación a/a de casos · base ≥ {fmt_int(tp['min_cases'])} casos en el {qshort(by, bq)}",
                  "rows": [{"label": short_label(r["label"]), "value": r["pct"], "ref": f"ges.p.{r['key']}.yoy_pct",
                            "emphasis": r["pct"] >= tp["pct"]} for r in ranked],
                  "table": {"columns": ["Problema de salud", qshort(by, bq), qshort(ty, tq), "a/a"],
                            "rows": [[r["label"], fmt_int(r["base"]), fmt_int(r["t"]), fmt_dec(r["pct"], 1, signed=True) + "%"] for r in ranked]},
                  "source": "SIS, casos GES por problema (Fonasa + Isapre). Solo problemas presentes en ambos trimestres.",
                  "legend": f"Acento = {fmt_dec(tp['pct'], 0)}% o más"}
-        top_text = [f"Se ordenan los problemas con al menos {fmt_int(tp['min_cases'])} casos en el {qlabel(by, bq)}; "
+        top_text = [f"Se ordenan los problemas que crecen, con al menos {fmt_int(tp['min_cases'])} casos en el {qlabel(by, bq)}; "
                     f"cruzan el umbral los que crecen {fmt_dec(tp['pct'], 0)}% o más."]
+        if declining:
+            top_text.append(("Un problema comparable bajó" if len(declining) == 1 else
+                             sf.count_phrase(len(declining), "", "problemas comparables bajaron").strip().capitalize())
+                            + f" frente al {qshort(by, bq)}; no se grafican en este ranking de crecimiento.")
     else:
         biggest = sorted(k["problems"], key=lambda r: (-r["t"], r["label"]))[:MAX_PROBLEM_ROWS]
         c_top = {"id": "f4-top", "form": "bars", "unit": "casos", "headline": "Problemas con más casos en el trimestre",
@@ -580,7 +629,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     watch = [{"headline": f"Casos GES a {sf.month_label(qend(ny, nq))}: publicación atrasada." if late else
               f"Casos GES a {sf.month_label(qend(ny, nq))} (la SIS la publicaría hacia el {sf.day_label(expected)}).",
               "explanation": (f"Lleva {late['days_late']} días de atraso según el calendario histórico." if late else
-                              "Una variación de 5% o más frente al mismo trimestre del año anterior marca la ficha como destacada.")}]
+                              f"Una variación de {yoy_th}% o más frente al mismo trimestre del año anterior marca la ficha como destacada.")}]
     if k["crossing"]:
         r = k["crossing"][0]
         watch.append({"headline": f"{short_label(r['label'], 60)}: {fmt_dec(r['pct'], 1, signed=True)}% a/a.",

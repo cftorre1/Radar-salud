@@ -92,6 +92,39 @@ def _fetch(url, *, timeout=30, max_bytes=12 * 1024 * 1024):
                   "captured_at": datetime.now(timezone.utc).isoformat()}
 
 
+class RobotsUnavailable(PermissionError):
+    """robots.txt could not be read (429, 5xx, network): the policy is unknown, so crawling fails closed."""
+
+    def __init__(self, cause):
+        self.cause = str(cause)
+        super().__init__(f"robots_unavailable: {cause}"[:200])
+
+
+def load_robots_policy(fetch_bytes, robots_url):
+    """Read a robots.txt following RFC 9309 status rules; returns ``(RobotFileParser, status)``.
+
+    A 4xx other than 401/403/429 (e.g. 404) means "no robots file": crawling is allowed (the same rule as
+    ``RobotFileParser.read``). 401/403 disallow all. A 429, a 5xx or a network error leaves the policy unknown and
+    raises ``RobotsUnavailable`` (fail closed). Shared by the datos.gob.cl lane and the SIS stats capture.
+    """
+    from urllib.error import HTTPError
+    parser = RobotFileParser()
+    try:
+        body = fetch_bytes(robots_url)
+        parser.parse(body.decode("utf-8", errors="replace").splitlines())
+        status = "parsed"
+    except HTTPError as exc:
+        if exc.code in (401, 403):
+            parser.disallow_all, status = True, f"http_{exc.code}_disallow_all"
+        elif 400 <= exc.code < 500 and exc.code != 429:
+            parser.allow_all, status = True, f"http_{exc.code}_no_robots_file"
+        else:
+            raise RobotsUnavailable(f"HTTP {exc.code}") from exc
+    except Exception as exc:
+        raise RobotsUnavailable(f"{type(exc).__name__}: {exc}") from exc
+    return parser, status
+
+
 def parse_package_search(payload, organization, *, api_url, today, window_days, capture=None):
     """CKAN package_search -> (RawItems inside the window, per-surface report)."""
     publisher = PUBLISHERS[organization]
@@ -197,34 +230,18 @@ class DatosGobScout:
         self.diagnostics = {}
 
     def _robots_policy(self):
-        """Fetch robots.txt once per run, following RFC 9309 status rules.
+        """Fetch robots.txt once per run (``load_robots_policy``, RFC 9309 status rules).
 
-        A 4xx other than 401/403/429 means "no robots file": crawling is
-        allowed (the same rule as ``RobotFileParser.read``). 401/403 disallow
-        all. A 429, a 5xx or a network error leaves the policy unknown, so
-        discovery fails closed and says so (``robots_unavailable``). That
-        outcome is cached for the run too: robots.txt is requested once, not
-        once per publisher.
+        The outcome is cached for the run, failures included: robots.txt is requested once, not once per publisher.
         """
-        from urllib.error import HTTPError
         if getattr(self, "_robots_failure", None) is not None:
             raise PermissionError(self._robots_failure)
         if getattr(self, "_robots", None) is not None:
             return self._robots
-        parser = RobotFileParser()
         try:
-            body, _ = self.fetch(ROBOTS)
-            parser.parse(body.decode("utf-8", errors="replace").splitlines())
-            status = "parsed"
-        except HTTPError as exc:
-            if exc.code in (401, 403):
-                parser.disallow_all, status = True, f"http_{exc.code}_disallow_all"
-            elif 400 <= exc.code < 500 and exc.code != 429:
-                parser.allow_all, status = True, f"http_{exc.code}_no_robots_file"
-            else:
-                self._robots_unavailable(f"HTTP {exc.code}")
-        except Exception as exc:
-            self._robots_unavailable(f"{type(exc).__name__}: {exc}")
+            parser, status = load_robots_policy(lambda url: self.fetch(url)[0], ROBOTS)
+        except RobotsUnavailable as exc:
+            self._robots_unavailable(exc.cause)
         self._robots, self.robots_status = parser, status
         return parser
 
