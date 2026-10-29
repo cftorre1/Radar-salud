@@ -7,9 +7,23 @@ from typing import Any
 ISAPRES=("banmédica","banmedica","colmena","consalud","cruz blanca","nueva masvida","masvida","esencial","isalud","fundación","fundacion")
 MONTHS={"ene":1,"feb":2,"mar":3,"abr":4,"may":5,"jun":6,"jul":7,"ago":8,"sep":9,"oct":10,"nov":11,"dic":12}
 
-def _download(url:str,timeout:int=45)->bytes:
-    req=Request(url,headers={"User-Agent":"AlicantoSaludBot/0.8.5.1 (+public-source-monitor)"})
-    with urlopen(req,timeout=timeout) as r:return r.read()
+USER_AGENT="AlicantoSaludBot/0.8.5.1 (+public-source-monitor)"
+MAX_DOWNLOAD_BYTES=25*1024*1024
+
+def _download(url:str,timeout:int=30,max_bytes:int=MAX_DOWNLOAD_BYTES)->bytes:
+    """Legacy one-shot download (superintendencia_pipeline). Read in chunks and abort past ``max_bytes``.
+    The F4/F6 capture does not use it: ``stats_capture.SisFetcher`` adds robots.txt, the SIS host allowlist
+    (redirects included) and a time budget."""
+    req=Request(url,headers={"User-Agent":USER_AGENT})
+    with urlopen(req,timeout=timeout) as r:
+        chunks,size=[],0
+        while True:
+            chunk=r.read(64*1024)
+            if not chunk:break
+            size+=len(chunk)
+            if size>max_bytes:raise ValueError(f"download exceeds {max_bytes} bytes")
+            chunks.append(chunk)
+        return b"".join(chunks)
 
 def _norm(v:Any)->str:
     return " ".join(str(v or "").replace("\n"," ").split()).strip()
@@ -115,6 +129,10 @@ def parse_ges_workbook(book_bytes:bytes,title:str)->dict:
         return {
             "family":"ges","status":"validated","parser":GES_PARSER,"sheet":ws.title,"period":period,
             "rows":len(observations),"reconciliation":reconciliation,
+            # F4 ficha (stats_ficha_f4): every reconciled row and the header texts that declare the measure.
+            "observations":observations,
+            "header":{"label":_norm(rows[hi][name_col]),"fonasa":_norm(rows[hi][fonasa]),"isapre":_norm(rows[hi][isapre]),
+                      "above":[_norm(v) for r in rows[max(0,hi-3):hi] for v in r if _norm(v)][:12]},
             "insights":[f"{largest['label']} registra el mayor número de casos GES informados por Fonasa e Isapres en la hoja {ws.title} del corte {period}; no se infiere prevalencia ni causalidad."],
             "evidence":{"header_row":hi+1,"fonasa_column":fonasa+1,"isapre_column":isapre+1,"label_column":name_col+1,
                         "aggregation":"rows reconciled to declared total","largest_row":largest["row"]},

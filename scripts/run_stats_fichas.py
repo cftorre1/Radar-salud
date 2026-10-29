@@ -16,9 +16,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from radar_salud import stats_ficha_f1, stats_fichas  # noqa: E402
+from radar_salud import stats_capture, stats_ficha_f1, stats_ficha_f4, stats_ficha_f6, stats_fichas  # noqa: E402
 
-BUILDERS = {"F1": stats_ficha_f1.run}
+BUILDERS = {"F1": stats_ficha_f1.run, "F4": stats_ficha_f4.run, "F6": stats_ficha_f6.run}
+CAPTURED = {"F4", "F6"}  # families whose documents are captured here (F1 reads the market lane's capture)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -27,6 +28,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--as-of", type=date.fromisoformat, default=None)
     ap.add_argument("--no-llm", action="store_true", help="Skip the Lectura Alicanto model call")
     ap.add_argument("--family", action="append", choices=sorted(BUILDERS), help="Default: every active family")
+    ap.add_argument("--no-capture", action="store_true", help="Do not download new F4/F6 documents (offline runs, tests)")
     args = ap.parse_args(argv)
     from radar_salud.weekly_freshness import chile_today
     today = args.as_of or chile_today()
@@ -34,6 +36,11 @@ def main(argv: list[str] | None = None) -> int:
     families = args.family or [f for f, c in registry["families"].items() if c.get("status") == "active" and f in BUILDERS]
     llm = not args.no_llm and bool(os.getenv("OPENAI_API_KEY"))
     summary = {}
+    if not args.no_capture and CAPTURED & set(families):
+        try:  # bounded: each listed SIS document is downloaded once; failures are recorded and retried later
+            summary["capture"] = stats_capture.capture(args.root)
+        except Exception as exc:  # a capture failure never blocks the other families
+            summary["capture"] = {"error": f"{type(exc).__name__}:{exc}"[:200]}
     for fam in families:
         result = BUILDERS[fam](args.root, today=today, registry=registry, llm=llm)
         written = stats_fichas.publish(result, args.root)

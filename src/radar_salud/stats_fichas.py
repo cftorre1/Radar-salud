@@ -129,8 +129,9 @@ def value(vid: str, val: float, *, unit: str, period: str, source: str | None, l
             "formula": formula, "inputs": inputs or [], "kind": kind, "revised": None}
 
 
-SCOPES = ("system", "open", "closed")
-PERIOD_KINDS = ("month", "ytd", "interval", "stock_at")
+SCOPES = ("system", "open", "closed", "isapres", "public", "private")  # F4: 'isapres' = the Isapre segment; F6: sectors
+PERIOD_KINDS = ("month", "ytd", "interval", "stock_at", "quarter", "quarter_yoy")
+SCOPE_RX = re.compile(r"insurer:(?:\d+|fonasa)")
 
 
 def pool_entry(values: dict, vid: str, *, entity: int | None = None, metric: str | None = None,
@@ -147,7 +148,7 @@ def pool_entry(values: dict, vid: str, *, entity: int | None = None, metric: str
     v = values[vid]
     per = periods or [p for p in re.split(r"→", str(v.get("period") or "")) if p]
     scope = scope or (f"insurer:{entity}" if entity is not None else "system")
-    if scope not in SCOPES and not re.fullmatch(r"insurer:\d+", scope):
+    if scope not in SCOPES and not SCOPE_RX.fullmatch(scope):
         raise ValueError(f"invalid_scope:{scope}")
     if period_kind not in PERIOD_KINDS:
         raise ValueError(f"invalid_period_kind:{period_kind}")
@@ -324,10 +325,12 @@ def lectura_parser(package: dict, cat: list[dict]):
     years = {int(p[:4]) for p in periods if re.match(r"\d{4}", str(p))}
     months = {(int(p[:4]), int(p[5:7])) for p in periods if re.match(r"\d{4}-\d{2}", str(p))}
     by_key = {e["key"]: e["code"] for e in cat}
+    # A family may declare its own subject phrases (F4: 'las Isapres' is the Isapre segment, not the system).
+    markers = [tuple(m) for m in package.get("group_markers") or []] or None
 
     def parse(sentence: str) -> dict:
         return lv.parse_sentence(sentence, catalog=cat, name_rx=_name_rx, key_code=by_key, package_years=years,
-                                 package_months=months)
+                                 package_months=months, group_markers=markers)
     return parse
 
 
@@ -378,11 +381,12 @@ def verify_lectura(text: str, package: dict, *, registry: dict | None = None, ca
             if m:
                 errors.append(f"causal_without_note:{m.group(0)}")
     in_package = {int(c) for c in package.get("entity_codes") or []}
+    keys_in_package = set(package.get("entity_keys") or [])  # insurers without an Isapre code (F4: Fonasa)
     facts = " ".join(((ficha or {}).get("facts") or {}).get("paragraphs") or [])
-    allowed = {e["key"] for e in cat if e["code"] in in_package} & insurers_mentioned(facts, cat)
+    allowed = ({e["key"] for e in cat if e["code"] in in_package} | keys_in_package) & insurers_mentioned(facts, cat)
     for key in sorted(insurers_mentioned(text, cat)):
         entry = next(e for e in cat if e["key"] == key)
-        if entry["code"] not in in_package:
+        if entry["code"] not in in_package and key not in keys_in_package:
             errors.append(f"insurer_not_in_package:{key}")
         elif key not in allowed:
             errors.append(f"insurer_not_in_facts:{key}")
@@ -413,7 +417,8 @@ def lectura_prompt(ficha: dict, package: dict) -> str:
     facts_cat = insurer_catalog()
     named = insurers_mentioned(facts, facts_cat)
     names = sorted({e.get("name") for e in package.get("entities") or [] if e.get("name")
-                    and any(c["key"] in named and c["code"] == e.get("code") for c in facts_cat)})
+                    and any(c["key"] in named and (c["code"] == e.get("code") if e.get("code") is not None else c["key"] == e.get("key"))
+                            for c in facts_cat)})
     material = lectura_material(ficha, package)
     return (
         "Escribe la 'Lectura Alicanto' de una ficha estadística de Alicanto Salud (inteligencia de negocios de salud en Chile). "
@@ -445,8 +450,10 @@ def lectura_prompt(ficha: dict, package: dict) -> str:
         "'contribuye', 'gatilla', 'desencadena', 'propicia', 'conduce a', 'da lugar a', 'por lo que', 'así que', "
         "'de modo que', 'de manera que', 'hizo que', 'nace de', 'viene de', 'en razón de', 'por ende', 'en "
         "consecuencia' ni sus conjugaciones.\n"
-        f"5. Solo puedes nombrar estas Isapres: {', '.join(names)}. No nombres Fonasa ni otras Isapres; no uses las palabras "
-        "'esencial' ni 'fundación' salvo como nombre de esas Isapres.\n"
+        + (f"5. Solo puedes nombrar estas Isapres: {', '.join(names)}. No nombres Fonasa ni otras Isapres; no uses las palabras "
+           "'esencial' ni 'fundación' salvo como nombre de esas Isapres.\n" if not package.get("prompt_rules") else
+           f"5. Solo puedes nombrar estos aseguradores: {', '.join(names) or 'ninguno'}; ninguna Isapre por su nombre. "
+           f"{package['prompt_rules']}\n") +
         "6. No inventes hechos, fechas ni fuentes, ni enlaces.\n"
         'Devuelve solo JSON: {"lectura": "..."}\n\n'
         f"Ya mostrado — Titular: {ficha.get('headline')}\nBajada: {ficha.get('dek')}\nQué muestran los datos: {facts}\n"
@@ -885,13 +892,14 @@ def ficha_card(ficha: dict, cfg: dict) -> dict:
     card = {
         "piece_id": f"stats-ficha:{ficha['family']}:{ficha['period']}",
         "title": ficha["headline"], "display_title": ficha["headline"],
-        "source_name": "Superintendencia de Salud", "source_type": "official",
+        "source_name": cfg.get("source_name") or "Superintendencia de Salud", "source_type": "official",
             # Only a captured source (URL + SHA-256 in the evidence package) may back the card link.
         "source_url": (ficha.get("sources") or [{}])[0].get("url"),
         "event_date": ficha["published_at"], "publication_date": ficha["published_at"],
         "validation_date": str(ficha.get("generated_at") or "")[:10] or None,
         "data_period": ficha["period"], "event_type": "DATA_PULSE", "category": "Datos sectoriales",
-        "signal_types": ["Datos"], "scopes": ["Isapres"], "ingestion_mode": "BACKFILL", "distribution": "archive",
+        "signal_types": ["Datos"], "scopes": list(cfg.get("scopes") or ["Isapres"]), "ingestion_mode": "BACKFILL",
+        "distribution": "archive",
         "radar_score": 86 if ficha.get("featured") else 72, "confidence_score": 100,
         "what_happened": ficha["dek"], "card_what": ficha["dek"], "card_why_optional": True, "why_it_matters": "",
         "statistical_value_level": "stats_ficha", "feed_visibility": True, "editorial_decision": "accept",
@@ -916,6 +924,10 @@ def _stat_family(s: dict) -> str | None:
         return "cartera_total"
     if "suscripciones" in t or "desahucios" in t:
         return "suscripciones"
+    if "casos ges" in t:  # F4: 'Estadística Trimestral de Casos GES (AUGE) … – a junio 2026'
+        return "ges"
+    if "boletín estadístico informativo ip" in t or "boletin estadistico informativo ip" in t:  # F6
+        return "boletin_ip"
     return None
 
 
@@ -927,7 +939,7 @@ def loose_card_period(card: dict) -> str | None:
             return card["data_period"]
         except ValueError:
             pass
-    m = re.search(r"[–-]\s*([a-záéíóú]+)\s+(20\d{2})\s*$", _fold(card.get("title")))
+    m = re.search(r"[–-]\s*(?:a\s+)?([a-záéíóú]+)\s+(20\d{2})\s*$", _fold(card.get("title")))
     if m and m[1] in MONTHS_ES:
         return f"{m[2]}-{MONTHS_ES.index(m[1]) + 1:02d}"
     return None
@@ -1091,3 +1103,81 @@ def sanitize_ges_signal(signal: dict, *, corrected_at: str = GES_CORRECTION_DATE
 
 def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+
+# ---------------------------------------------------------------------------------------------
+# Generic family run (F4, F6): same publication contract as F1's run
+
+
+LECTURA_OMITTED = {"not_attempted": "sin modelo en esta corrida", "no_budget": "sin presupuesto",
+                   "verifier_fail": "no pasó el verificador", "generation_error": "error del modelo",
+                   "review_fail": "no pasó la revisión de un segundo modelo",
+                   "review_no_budget": "sin presupuesto para la revisión", "review_error": "error del revisor",
+                   "review_not_run": "sin revisión de un segundo modelo"}
+
+
+def run_family(family: str, *, builder_version: str, build_package: Callable[..., dict], compose: Callable[..., dict],
+               root: Path, today: date, registry: dict | None = None, llm: bool = True,
+               model_call: Callable[..., Any] | None = None,
+               budget: Callable[[float], tuple[bool, str]] | None = None) -> dict:
+    """Package → triggers → HOLD or compose → deterministic verification → Lectura (verifier + reviewer) → PASS.
+
+    HOLD never publishes (reconciliation, hash, older period, verification). A new builder version republishes the
+    same release without a new paid Lectura; a paid attempt for one release is never repeated automatically.
+    """
+    registry = registry or load_registry()
+    cfg = registry["families"][family]
+    previous = load_live(root, cfg["slug"])
+    generated = now_iso()
+    base = {"family": family, "slug": cfg["slug"], "generated_at": generated}
+    try:
+        package = build_package(root, registry, previous)
+    except (ValueError, KeyError, TypeError, ZeroDivisionError) as exc:
+        return {**base, "status": "hold", "period": None, "errors": [f"package_error:{type(exc).__name__}:{exc}"[:200]]}
+    decision = evaluate_triggers(package, previous, today=today, calendar=cfg["calendar"])
+    base.update(period=package.get("period"), decision=decision)
+    if decision["decision"] == "HOLD":
+        return {**base, "status": "hold", "errors": decision["holds"],
+                "candidate": {"reconciliation": package.get("reconciliation")}}
+    if decision["decision"] == "NO_CHANGE" and previous and previous.get("builder_version") != builder_version:
+        decision = {**decision, "decision": "PUBLISH", "triggers": list(dict.fromkeys([*(previous.get("triggers") or []), "format_update"]))}
+        base["decision"] = decision
+    retry = (decision["decision"] == "NO_CHANGE" and previous and llm
+             and (previous.get("lectura") or {}).get("status") in {"not_attempted", "no_budget"})
+    if decision["decision"] == "NO_CHANGE" and not retry:
+        return {**base, "status": "no_change"}
+    if decision.get("late_release"):
+        package["constants"].append(decision["late_release"]["days_late"])
+    ficha = compose(package, registry, today=today, decision=decision)
+    verification = verify_ficha(ficha, package)
+    if verification["verdict"] != "PASS":
+        return {**base, "status": "hold", "verification": verification, "errors": verification["errors"], "candidate": ficha}
+    same = previous and previous.get("release_key") == package["release_key"]
+    prev_lect = (previous or {}).get("lectura") or {}
+    if same and prev_lect.get("status") not in {"not_attempted", "no_budget", None}:
+        lect = prev_lect  # never pay twice for one release
+    else:
+        lect = generate_lectura(ficha, package, registry=registry, enabled=llm, model_call=model_call, budget=budget)
+    ficha["lectura"] = lect
+    if lect.get("status") == "pass":
+        again = verify_lectura(lect.get("text"), package, registry=registry, ficha=ficha)
+        with_lectura = verify_ficha(ficha, package)
+        if with_lectura["verdict"] != "PASS" or again["verdict"] != "PASS":
+            lect = {**lect, "status": "verifier_fail", "rejected_text": lect.get("text"), "text": None,
+                    "verification": {**(lect.get("verification") or {}), "verdict": "FAIL", "errors": again["errors"],
+                                     "ficha_errors": with_lectura["errors"]}}
+        else:
+            lect = with_review(lect, ficha, package, registry=registry, enabled=llm, model_call=model_call, budget=budget)
+        ficha["lectura"] = lect
+    if lect.get("status") == "pass":
+        ficha["machine_note"] += f" Costo de IA: USD {lect.get('cost_usd', 0):.4f}."
+    else:
+        ficha["machine_note"] += " Lectura Alicanto omitida (" + LECTURA_OMITTED.get(lect.get("status"), "no disponible") + ")."
+    if retry:
+        ficha["triggers"] = previous.get("triggers") or ficha["triggers"]
+        ficha["featured"] = previous.get("featured", ficha["featured"])
+    ficha.update(status="PASS", generated_at=generated, builder_version=builder_version, verification=verification,
+                 reconciliation=package["reconciliation"],
+                 evidence={k: package.get(k) for k in ("values", "constants", "entity_codes", "entity_keys", "release_key",
+                                                        "period", "lectura_pool", "derived_ratios", "ranks")})
+    return {**base, "status": "pass", "ficha": ficha}

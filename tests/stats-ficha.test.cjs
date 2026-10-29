@@ -53,3 +53,54 @@ test('GES correction: the row tag and the detail note use the same date label',(
  assert.equal(F.correctionLabel({corrected_at:'2026-10-28'}),'28 oct');assert.equal(F.correctionTag({}),'');
  assert.match(fs.readFileSync('web/app.js','utf8'),/AlicantoFicha\.correctionTag\(s\)/);
 });
+
+// F4 (GES) and F6 (Boletín IP) fichas: fixture cards built by tests/stats_ficha_fixtures.py (fixture hashes; F4 values
+// are synthetic, F6 values are the verified N°2-2026 reading). Layout only: every number comes from the package.
+for(const [slug,tabs,charts,kpis] of [['f4_ges',['Totales','Top problemas','Fonasa vs Isapre','Tendencia trimestral'],5,4],
+                                      ['f6_prestadores',['Acreditación','Mediación','Reclamos','RNPI'],3,4]]){
+ test(`${slug}: themed tabs, KPI strip, collapsed notes and Option-B share`,()=>{
+  const card=JSON.parse(fs.readFileSync(`tests/fixtures/stats_fichas/${slug}.card.json`,'utf8'));const f=card.stats_ficha;
+  assert.equal(f.evidence,undefined);assert.equal(f.status,'PASS');
+  const html=load().render(f,{shareId:`sig-${card.piece_id}`,shareUrl:card.share_url});
+  const order=['sf-kicker','sf-headline','sf-dek','sf-share','sf-kpis','sf-tabs','sf-watch','sf-notes'];
+  const at=order.map(k=>html.indexOf(k));assert.ok(at.every(i=>i>=0),JSON.stringify(at));assert.deepEqual([...at].sort((a,b)=>a-b),at);
+  assert.deepEqual([...html.matchAll(/role="tab"[^>]*>([^<]+)/g)].map(m=>m[1]),tabs);
+  assert.equal((html.match(/<figure class="sf-chart"/g)||[]).length,charts);
+  assert.equal((html.match(/class="sf-kpi"/g)||[]).length,kpis);
+  assert.match(html,/<details class="sf-notes"><summary>Notas y fuentes<\/summary>/);assert.doesNotMatch(html,/<details class="sf-notes" open/);
+  assert.doesNotMatch(html,/Por qué importa/);assert.doesNotMatch(html,/class="sf-facts"/);
+  assert.match(html,new RegExp(`data-share-url="data/fichas/${slug}\\.html"`));assert.match(html,/sha256 [0-9a-f]{12}…/);
+  assert.equal(card.share_url,`data/fichas/${slug}.html`);
+ });
+}
+test('F4 shows tasa bruta, Fonasa rate not available and percent bars with one decimal',()=>{
+ const f=JSON.parse(fs.readFileSync('tests/fixtures/stats_fichas/f4_ges.card.json','utf8')).stats_ficha;const html=load().render(f);
+ assert.match(html,/Tasa bruta Isapre/);assert.match(html,/tasa no disponible/);
+ assert.match(html,/aria-label="Problemas que crecen: variación a\/a de casos[^"]*Cáncer de mama en… 35,5%/);
+ assert.match(html,/Dos problemas superan 15% a\/a/);assert.match(html,/posible cambio de decreto GES/);
+});
+test('F6 keeps stocks and titles labelled and shows the claims change',()=>{
+ const f=JSON.parse(fs.readFileSync('tests/fixtures/stats_fichas/f6_prestadores.card.json','utf8')).stats_ficha;const html=load().render(f);
+ assert.match(html,/971/);assert.match(html,/1\.004\.982/);assert.match(html,/no profesionales únicos/);assert.match(html,/\+30,5%/);
+ assert.match(html,/nunca se suman entre boletines/);
+});
+test('line axis labels thin out for many quarters; F1 monthly labels keep every position',()=>{
+ const F=load();const xs=svg=>[...svg.matchAll(/<text class="sf-xlab" x="([\d.]+)"[^>]*>([^<]+)</g)].map(m=>[Number(m[1]),m[2]]);
+ const cx=svg=>[...svg.matchAll(/<circle cx="([\d.]+)"/g)].map(m=>Number(m[1]));
+ // F1: every month labelled, each label under its point (unchanged layout).
+ const f1=F.render(pub);const stock=f1.slice(f1.indexOf('data-chart="f1-stock"'));const svg1=stock.slice(0,stock.indexOf('</svg>'));
+ const l1=xs(svg1);assert.equal(l1.length,cx(svg1).length);assert.deepEqual(l1.map(l=>l[0]),cx(svg1));
+ // 12 quarters 'T1 2024'…'T4 2026': every 2nd label, counted back from the last one (always shown).
+ const rows=[];for(const y of [2024,2025,2026])for(const q of [1,2,3,4])rows.push({label:`T${q} ${y}`,value:1000+rows.length*7});
+ const html=F.render({...pub,tabs:[{id:'t',label:'T',charts:[{id:'f4-trend',form:'line',digits:0,headline:'Casos',rows}],text:[]}]});
+ const svg=html.slice(html.indexOf('<svg'),html.indexOf('</svg>'));const labs=xs(svg);
+ assert.deepEqual(labs.map(l=>l[1]),['T2 2024','T4 2024','T2 2025','T4 2025','T2 2026','T4 2026']);
+ for(let i=1;i<labs.length;i++)assert.ok(labs[i][0]-labs[i-1][0]>=7*6.6,`labels ${i} collide`);
+ // 4 quarters fit: all labelled.
+ const h4=F.render({...pub,tabs:[{id:'t',label:'T',charts:[{id:'x',form:'line',rows:rows.slice(-4)}],text:[]}]});
+ assert.equal(xs(h4.slice(h4.indexOf('<svg'))).length,4);
+});
+test('bars never draw a negative value as a positive bar',()=>{
+ const F=load();const html=F.render({...pub,tabs:[{id:'t',label:'T',charts:[{id:'b',form:'bars',unit:'%',digits:1,headline:'x',rows:[{label:'A',value:12.5},{label:'B',value:-8.1}]}],text:[]}]});
+ assert.match(html,/−8,1|−8/);assert.doesNotMatch(html,/<title>B: 8,1%<\/title>/);
+});

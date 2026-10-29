@@ -1,0 +1,599 @@
+{
+ "piece_id": "stats-ficha:F4:2026-06",
+ "title": "Casos GES del segundo trimestre de 2026: 50.515, +12,6% frente al mismo trimestre del año anterior",
+ "display_title": "Casos GES del segundo trimestre de 2026: 50.515, +12,6% frente al mismo trimestre del año anterior",
+ "source_name": "Superintendencia de Salud",
+ "source_type": "official",
+ "source_url": "https://www.superdesalud.gob.cl/app/uploads/fixture/ges-2025-03.xlsx",
+ "event_date": "2026-10-14",
+ "publication_date": "2026-10-14",
+ "validation_date": "2026-10-29",
+ "data_period": "2026-06",
+ "event_type": "DATA_PULSE",
+ "category": "Datos sectoriales",
+ "signal_types": [
+  "Datos"
+ ],
+ "scopes": [
+  "Isapres",
+  "Fonasa"
+ ],
+ "ingestion_mode": "BACKFILL",
+ "distribution": "archive",
+ "radar_score": 86,
+ "confidence_score": 100,
+ "what_happened": "Fonasa informó 44.250 casos y las Isapres 6.265, el 12,4% de los casos de ambos seguros. La tasa bruta Isapre fue 2,5 casos por 1.000 beneficiarios; la de Fonasa no está disponible.",
+ "card_what": "Fonasa informó 44.250 casos y las Isapres 6.265, el 12,4% de los casos de ambos seguros. La tasa bruta Isapre fue 2,5 casos por 1.000 beneficiarios; la de Fonasa no está disponible.",
+ "card_why_optional": true,
+ "why_it_matters": "",
+ "statistical_value_level": "stats_ficha",
+ "feed_visibility": true,
+ "editorial_decision": "accept",
+ "publication_gate_reason": "stats_ficha_pass",
+ "publication_ready_score": 100,
+ "stats_ficha": {
+  "schema_version": "stats_ficha_v1",
+  "id": "stats-ficha:F4:2026-06",
+  "family": "F4",
+  "family_label": "Casos GES",
+  "period": "2026-06",
+  "published_at": "2026-10-14",
+  "generated_at": "2026-10-29T08:05:49.478691+00:00",
+  "release_key": "2026-06:13cc3f26a6ec6692",
+  "featured": true,
+  "triggers": [
+   "new_period",
+   "threshold_crossed"
+  ],
+  "kicker": "Casos GES",
+  "kicker_meta": "datos del segundo trimestre de 2026 · publicado por la SIS el 14 oct · se actualiza cada trimestre",
+  "headline": "Casos GES del segundo trimestre de 2026: 50.515, +12,6% frente al mismo trimestre del año anterior",
+  "headline_type": "yoy",
+  "dek": "Fonasa informó 44.250 casos y las Isapres 6.265, el 12,4% de los casos de ambos seguros. La tasa bruta Isapre fue 2,5 casos por 1.000 beneficiarios; la de Fonasa no está disponible.",
+  "dek_emphasis": "44.250 casos",
+  "kpis": [
+   {
+    "id": "casos",
+    "label": "Casos GES",
+    "value": "50.515",
+    "prov": "C",
+    "lines": [
+     "+12,6% vs. T2 2025",
+     "+10,8% solo problemas comparables"
+    ],
+    "badge": "Cruza umbral (5% a/a)",
+    "badge_kind": "crossed",
+    "refs": [
+     "ges.q.2026T2.total",
+     "ges.yoy.total_pct"
+    ]
+   },
+   {
+    "id": "fonasa",
+    "label": "Fonasa",
+    "value": "44.250",
+    "prov": "C",
+    "lines": [
+     "+11,9% vs. T2 2025",
+     "tasa no disponible (sin beneficiarios capturados)"
+    ],
+    "refs": [
+     "ges.q.2026T2.fonasa"
+    ]
+   },
+   {
+    "id": "isapre",
+    "label": "Isapres",
+    "value": "6.265",
+    "prov": "C",
+    "lines": [
+     "+17,5% vs. T2 2025",
+     "12,4% de los casos de ambos seguros"
+    ],
+    "refs": [
+     "ges.q.2026T2.isapre",
+     "ges.q.2026T2.isapre_share"
+    ]
+   },
+   {
+    "id": "tasa",
+    "label": "Tasa bruta Isapre",
+    "value": "2,5",
+    "prov": "C",
+    "lines": [
+     "casos por 1.000 beneficiarios Isapre",
+     "tasa a/a no disponible"
+    ],
+    "refs": [
+     "ges.q.2026T2.isapre_rate"
+    ]
+   }
+  ],
+  "tabs": [
+   {
+    "id": "totales",
+    "label": "Totales",
+    "charts": [
+     {
+      "id": "f4-totales",
+      "form": "dots",
+      "digits": 0,
+      "unit": "casos",
+      "headline": "Casos del T2 2026 frente al T2 2025",
+      "subtitle": "Casos GES por seguro · punto = T2 2026, aro = T2 2025",
+      "rows": [
+       {
+        "label": "Total",
+        "value": 50515,
+        "ref": "ges.q.2026T2.total",
+        "base": 44880,
+        "base_ref": "ges.q.2025T2.total"
+       },
+       {
+        "label": "Fonasa",
+        "value": 44250,
+        "ref": "ges.q.2026T2.fonasa",
+        "base": 39550,
+        "base_ref": "ges.q.2025T2.fonasa"
+       },
+       {
+        "label": "Isapres",
+        "value": 6265,
+        "ref": "ges.q.2026T2.isapre",
+        "base": 5330,
+        "base_ref": "ges.q.2025T2.isapre"
+       }
+      ],
+      "table": {
+       "columns": [
+        "Seguro",
+        "T2 2025",
+        "T2 2026",
+        "a/a"
+       ],
+       "rows": [
+        [
+         "Total",
+         "44.880",
+         "50.515",
+         "+12,6%"
+        ],
+        [
+         "Fonasa",
+         "39.550",
+         "44.250",
+         "+11,9%"
+        ],
+        [
+         "Isapres",
+         "5.330",
+         "6.265",
+         "+17,5%"
+        ]
+       ]
+      },
+      "source": "SIS, casos GES por trimestre: diferencia entre cortes acumulados del mismo año."
+     }
+    ],
+    "text": [
+     "En el segundo trimestre de 2026 Fonasa e Isapres informaron 50.515 casos GES, 5.635 más que en el segundo trimestre de 2025 (+12,6%).",
+     "Con solo los problemas presentes en ambos trimestres la variación es +10,8%: la lista de problemas cambió entre ambos trimestres (posible cambio de decreto GES)."
+    ]
+   },
+   {
+    "id": "problemas",
+    "label": "Top problemas",
+    "charts": [
+     {
+      "id": "f4-top",
+      "form": "bars",
+      "unit": "%",
+      "digits": 1,
+      "headline": "Dos problemas superan 15% a/a",
+      "subtitle": "Problemas que crecen: variación a/a de casos · base ≥ 500 casos en el T2 2025",
+      "rows": [
+       {
+        "label": "Cáncer de mama en…",
+        "value": 35.5,
+        "ref": "ges.p.cancer_de_mama_en_personas_de_15_anos_y_mas.yoy_pct",
+        "emphasis": true
+       },
+       {
+        "label": "Depresión en pers…",
+        "value": 18.3,
+        "ref": "ges.p.depresion_en_personas_de_15_anos_y_mas.yoy_pct",
+        "emphasis": true
+       },
+       {
+        "label": "Hipoacusia bilate…",
+        "value": 14.8,
+        "ref": "ges.p.hipoacusia_bilateral_en_personas_de_65_anos_y_ma.yoy_pct",
+        "emphasis": false
+       },
+       {
+        "label": "Diabetes Mellitus…",
+        "value": 13.6,
+        "ref": "ges.p.diabetes_mellitus_tipo_2.yoy_pct",
+        "emphasis": false
+       },
+       {
+        "label": "Hipertensión arte…",
+        "value": 5.2,
+        "ref": "ges.p.hipertension_arterial_en_personas_de_15_anos_y_m.yoy_pct",
+        "emphasis": false
+       }
+      ],
+      "table": {
+       "columns": [
+        "Problema de salud",
+        "T2 2025",
+        "T2 2026",
+        "a/a"
+       ],
+       "rows": [
+        [
+         "Cáncer de mama en personas de 15 años y más",
+         "1.550",
+         "2.100",
+         "+35,5%"
+        ],
+        [
+         "Depresión en personas de 15 años y más",
+         "7.100",
+         "8.400",
+         "+18,3%"
+        ],
+        [
+         "Hipoacusia bilateral en personas de 65 años y más",
+         "710",
+         "815",
+         "+14,8%"
+        ],
+        [
+         "Diabetes Mellitus Tipo 2",
+         "12.100",
+         "13.750",
+         "+13,6%"
+        ],
+        [
+         "Hipertensión arterial en personas de 15 años y más",
+         "23.100",
+         "24.300",
+         "+5,2%"
+        ]
+       ]
+      },
+      "source": "SIS, casos GES por problema (Fonasa + Isapre). Solo problemas presentes en ambos trimestres.",
+      "legend": "Acento = 15% o más"
+     }
+    ],
+    "text": [
+     "Se ordenan los problemas que crecen, con al menos 500 casos en el segundo trimestre de 2025; cruzan el umbral los que crecen 15% o más.",
+     "La lista de problemas cambió entre el T2 2025 y el T2 2026 (posible cambio de decreto GES). Problemas sin base comparable: 1; que ya no aparecen: 1. No entran al ranking."
+    ]
+   },
+   {
+    "id": "seguros",
+    "label": "Fonasa vs Isapre",
+    "charts": [
+     {
+      "id": "f4-share",
+      "form": "line",
+      "unit": "%",
+      "digits": 1,
+      "headline": "Parte Isapre de los casos GES",
+      "subtitle": "% de los casos informados por Fonasa e Isapres, por trimestre; eje sin partir de cero",
+      "rows": [
+       {
+        "label": "T1 2025",
+        "value": 11.870074038691188,
+        "ref": "ges.q.2025T1.isapre_share",
+        "emphasis": false
+       },
+       {
+        "label": "T2 2025",
+        "value": 11.876114081996434,
+        "ref": "ges.q.2025T2.isapre_share",
+        "emphasis": false
+       },
+       {
+        "label": "T1 2026",
+        "value": 12.397761515281964,
+        "ref": "ges.q.2026T1.isapre_share",
+        "emphasis": false
+       },
+       {
+        "label": "T2 2026",
+        "value": 12.402256755419181,
+        "ref": "ges.q.2026T2.isapre_share",
+        "emphasis": true
+       }
+      ],
+      "table": {
+       "columns": [
+        "Trimestre",
+        "Fonasa",
+        "Isapres",
+        "% Isapre"
+       ],
+       "rows": [
+        [
+         "T1 2025",
+         "36.900",
+         "4.970",
+         "11,9%"
+        ],
+        [
+         "T2 2025",
+         "39.550",
+         "5.330",
+         "11,9%"
+        ],
+        [
+         "T1 2026",
+         "40.700",
+         "5.760",
+         "12,4%"
+        ],
+        [
+         "T2 2026",
+         "44.250",
+         "6.265",
+         "12,4%"
+        ]
+       ]
+      },
+      "source": "Denominador: casos de ambos seguros del mismo trimestre. No es participación de beneficiarios."
+     },
+     {
+      "id": "f4-tasa",
+      "form": "bars",
+      "unit": "por 1.000",
+      "digits": 1,
+      "headline": "Tasa bruta Isapre por trimestre",
+      "subtitle": "Casos Isapre por 1.000 beneficiarios Isapre (promedio de los 3 cierres de mes)",
+      "rows": [
+       {
+        "label": "T1 2026",
+        "value": 2.2950462595261687,
+        "ref": "ges.q.2026T1.isapre_rate",
+        "emphasis": false
+       },
+       {
+        "label": "T2 2026",
+        "value": 2.512166195666136,
+        "ref": "ges.q.2026T2.isapre_rate",
+        "emphasis": true
+       }
+      ],
+      "table": {
+       "columns": [
+        "Trimestre",
+        "Casos Isapre",
+        "Beneficiarios promedio",
+        "Tasa bruta"
+       ],
+       "rows": [
+        [
+         "T1 2026",
+         "5.760",
+         "2.509.753",
+         "2,3"
+        ],
+        [
+         "T2 2026",
+         "6.265",
+         "2.493.864",
+         "2,5"
+        ]
+       ]
+      },
+      "source": "Beneficiarios: cartera mensual Isapre (ficha F1). Tasa bruta: sin ajuste por edad ni sexo."
+     }
+    ],
+    "text": [
+     "Las Isapres informaron el 12,4% de los casos del segundo trimestre de 2026; es una parte de los casos, no de la población.",
+     "Tasa bruta Isapre del trimestre: 2,5 casos por 1.000 beneficiarios Isapre. Fonasa: tasa no disponible, porque Alicanto no tiene capturados sus beneficiarios."
+    ]
+   },
+   {
+    "id": "tendencia",
+    "label": "Tendencia trimestral",
+    "charts": [
+     {
+      "id": "f4-trend",
+      "form": "line",
+      "unit": "casos",
+      "digits": 0,
+      "headline": "Casos GES por trimestre",
+      "subtitle": "Fonasa + Isapre; eje sin partir de cero",
+      "rows": [
+       {
+        "label": "T1 2025",
+        "value": 41870,
+        "ref": "ges.q.2025T1.total",
+        "emphasis": false
+       },
+       {
+        "label": "T2 2025",
+        "value": 44880,
+        "ref": "ges.q.2025T2.total",
+        "emphasis": false
+       },
+       {
+        "label": "T1 2026",
+        "value": 46460,
+        "ref": "ges.q.2026T1.total",
+        "emphasis": false
+       },
+       {
+        "label": "T2 2026",
+        "value": 50515,
+        "ref": "ges.q.2026T2.total",
+        "emphasis": true
+       }
+      ],
+      "table": {
+       "columns": [
+        "Trimestre",
+        "Casos",
+        "Cortes usados"
+       ],
+       "rows": [
+        [
+         "T1 2025",
+         "41.870",
+         "marzo 2025"
+        ],
+        [
+         "T2 2025",
+         "44.880",
+         "junio 2025 − marzo 2025"
+        ],
+        [
+         "T1 2026",
+         "46.460",
+         "marzo 2026"
+        ],
+        [
+         "T2 2026",
+         "50.515",
+         "junio 2026 − marzo 2026"
+        ]
+       ]
+      },
+      "source": "Cada trimestre es un flujo; los cortes acumulados no se suman."
+     }
+    ],
+    "text": [
+     "La serie tiene 4 trimestres derivables de los cortes capturados."
+    ]
+   }
+  ],
+  "facts": {
+   "heading": "Qué muestran los datos",
+   "paragraphs": [
+    "En el segundo trimestre de 2026 Fonasa e Isapres informaron 50.515 casos GES, 5.635 más que en el segundo trimestre de 2025 (+12,6%).",
+    "Las Isapres informaron el 12,4% de los casos del segundo trimestre de 2026; es una parte de los casos, no de la población.",
+    "Se ordenan los problemas que crecen, con al menos 500 casos en el segundo trimestre de 2025; cruzan el umbral los que crecen 15% o más."
+   ],
+   "rendered_in_tabs": true
+  },
+  "lectura": null,
+  "watch": [
+   {
+    "headline": "Casos GES a septiembre 2026 (la SIS la publicaría hacia el 14 ene).",
+    "explanation": "Una variación de 5% o más frente al mismo trimestre del año anterior marca la ficha como destacada."
+   },
+   {
+    "headline": "Cáncer de mama en personas de 15 años y más: +35,5% a/a.",
+    "explanation": "Un salto en un problema puede venir de un cambio de decreto o de registro; la ficha no infiere la causa."
+   }
+  ],
+  "notes": [
+   {
+    "id": "n1",
+    "text": "Los casos GES son un flujo, no un stock: la hoja del año del corte (fijada; nunca la de otro año) acumula casos desde enero, y el trimestre es la diferencia entre dos cortes del mismo año. Los cortes no se suman."
+   },
+   {
+    "id": "n2",
+    "text": "Tasa bruta: casos del seguro / beneficiarios promedio del mismo seguro en el trimestre × 1.000. El denominador Isapre viene de la cartera mensual (F1); Fonasa no tiene denominador capturado y su tasa no está disponible. Sin ajuste por edad: no compara riesgo entre seguros."
+   },
+   {
+    "id": "n3",
+    "text": "Top problemas: variación frente al mismo trimestre del año anterior; entran los problemas con al menos 500 casos en la base y cruzan el umbral los que crecen 15% o más."
+   },
+   {
+    "id": "n4",
+    "text": "Ningún dato de esta ficha establece por qué cambian los casos (demanda, decreto, registro o acceso)."
+   }
+  ],
+  "sources": [
+   {
+    "url": "https://www.superdesalud.gob.cl/app/uploads/fixture/ges-2025-03.xlsx",
+    "sha256": "e6decf007c49147a7cb685df1abad23eee401170d38c0f22cf479d7fde0484bd",
+    "published_at": "2025-10-03",
+    "fetched_at": "2026-10-29T08:05:48.783071+00:00",
+    "label": "SIS · Casos GES de Fonasa e Isapres a marzo 2025 (xlsx)",
+    "role": "casos acumulados del año por problema y seguro",
+    "locator": "Año 2025!fila Total 10",
+    "key": "ges_2025-03"
+   },
+   {
+    "url": "https://www.superdesalud.gob.cl/app/uploads/fixture/ges-2025-06.xlsx",
+    "sha256": "60b7b64e69ba617679a762c5dbbed6f36d53a5e14827fe139ed2f9638d6cd79e",
+    "published_at": "2025-10-03",
+    "fetched_at": "2026-10-29T08:05:48.779751+00:00",
+    "label": "SIS · Casos GES de Fonasa e Isapres a junio 2025 (xlsx)",
+    "role": "casos acumulados del año por problema y seguro",
+    "locator": "Año 2025!fila Total 10",
+    "key": "ges_2025-06"
+   },
+   {
+    "url": "https://www.superdesalud.gob.cl/app/uploads/fixture/ges-2026-03.xlsx",
+    "sha256": "1888ba74fdec36d79e0b5c64b72363b6752e21fd645fcf79a158dd269065432f",
+    "published_at": "2026-07-10",
+    "fetched_at": "2026-10-29T08:05:48.776658+00:00",
+    "label": "SIS · Casos GES de Fonasa e Isapres a marzo 2026 (xlsx)",
+    "role": "casos acumulados del año por problema y seguro",
+    "locator": "Año 2026!fila Total 10",
+    "key": "ges_2026-03"
+   },
+   {
+    "url": "https://www.superdesalud.gob.cl/app/uploads/fixture/ges-2026-06.xlsx",
+    "sha256": "13cc3f26a6ec669211196815b1a79bed2c1724d6a00f6189e779fef76bc3bc12",
+    "published_at": "2026-10-14",
+    "fetched_at": "2026-10-29T08:05:48.771768+00:00",
+    "label": "SIS · Casos GES de Fonasa e Isapres a junio 2026 (xlsx)",
+    "role": "casos acumulados del año por problema y seguro",
+    "locator": "Año 2026!fila Total 10",
+    "key": "ges_2026-06"
+   },
+   {
+    "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
+    "sha256": "b1dc62eb1a40b0f34452f67e7fdecefb91adc175235ffc046b60a6e5e0c7e4ee",
+    "published_at": "2026-10-02",
+    "fetched_at": "2026-10-28T21:30:21.243658+00:00",
+    "label": "SIS · Cartera mensual de beneficiarios Isapre (xlsx), ficha F1",
+    "role": "denominador de la tasa Isapre: beneficiarios al cierre de cada mes",
+    "locator": "fila Total Sistema",
+    "key": "cartera"
+   }
+  ],
+  "machine_note": "Ficha generada por la regla \"nuevo período\" (release del 14 oct). Las cifras las calcula el código desde el paquete de evidencia; solo la Lectura Alicanto puede escribirla un modelo, y pasa por un verificador. Lectura Alicanto omitida (sin modelo en esta corrida).",
+  "status": "PASS",
+  "late_release": null,
+  "revisions": []
+ },
+ "share_url": "data/fichas/f4_ges.html",
+ "editorial_committee": {
+  "check_kind": "structured_check",
+  "independent_review": false,
+  "committee_version": "1.0",
+  "signal_type": "Datos",
+  "members": [
+   "editorial_intelligence",
+   "health_business",
+   "data_analytics",
+   "decision_intelligence",
+   "evidence_research"
+  ],
+  "materiality_decision": "accept",
+  "public_title": "Casos GES del segundo trimestre de 2026: 50.515, +12,6% frente al mismo trimestre del año anterior",
+  "what_happened": "Fonasa informó 44.250 casos y las Isapres 6.265, el 12,4% de los casos de ambos seguros. La tasa bruta Isapre fue 2,5 casos por 1.000 beneficiarios; la de Fonasa no está disponible.",
+  "why_it_matters": "",
+  "evidence_map": [
+   {
+    "source": "Superintendencia de Salud",
+    "url": "https://www.superdesalud.gob.cl/app/uploads/fixture/ges-2025-03.xlsx"
+   }
+  ],
+  "uncertainties": [],
+  "value_level": "stats_ficha",
+  "publication_decision": "accept",
+  "critical_objections": [],
+  "verdict": "PASS",
+  "parser_or_research_debt_if_any": null
+ },
+ "fixture_note": "Fixture de prueba: hashes de bytes de prueba, cifras GES sintéticas"
+}
