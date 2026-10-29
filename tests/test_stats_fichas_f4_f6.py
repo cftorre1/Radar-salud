@@ -558,6 +558,18 @@ def test_f6_claims_wording_follows_the_sign(root):
     fi = f6.compose(p, reg(), today=TODAY)
     text = " ".join(next(t for t in fi["tabs"] if t["id"] == "reclamos")["text"])
     assert "466 menos al mes" in text and "más al mes" not in text
+    # The dek too: a fall reads "3,2% menos", never "−3,2% menos" (review 29-oct).
+    p["values"]["rec.pct"]["value"] = -3.2
+    fi = f6.compose(p, reg(), today=TODAY)
+    assert "3,2% menos que el promedio" in fi["dek"] and "−3,2% menos" not in fi["dek"] and "-3,2% menos" not in fi["dek"]
+
+
+def test_read_capped_stops_at_the_capture_deadline():
+    from radar_salud.stats_capture import read_capped
+    ticks = iter([0.0, 5.0, 11.0, 12.0])
+    resp = FakeResponse("https://www.superdesalud.gob.cl/x.xlsx", b"a" * (64 * 1024 * 4))
+    with pytest.raises(TimeoutError):
+        read_capped(resp, 10**9, deadline=10.0, clock=lambda: next(ticks))
 
 
 # ---------------------------------------------------------------------------------------------

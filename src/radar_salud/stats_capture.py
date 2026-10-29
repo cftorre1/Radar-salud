@@ -245,8 +245,10 @@ def sis_redirect_handler():
     return SisOnlyRedirect()
 
 
-def read_capped(response, max_bytes: int) -> bytes:
-    """Read in chunks; abort as soon as the body passes ``max_bytes`` (declared length checked first)."""
+def read_capped(response, max_bytes: int, deadline: float | None = None,
+                clock: Callable[[], float] = time.monotonic) -> bytes:
+    """Read in chunks; abort as soon as the body passes ``max_bytes`` (declared length checked first) or, when a
+    deadline is given, as soon as it passes (a server trickling bytes cannot outlast the capture budget)."""
     declared = (getattr(response, "headers", None) or {}).get("Content-Length")
     if declared and str(declared).isdigit() and int(declared) > max_bytes:
         raise ValueError(f"response_too_large: declared {declared} > {max_bytes}")
@@ -255,6 +257,8 @@ def read_capped(response, max_bytes: int) -> bytes:
         chunk = response.read(64 * 1024)
         if not chunk:
             break
+        if deadline is not None and clock() >= deadline:
+            raise TimeoutError("capture_time_budget_exhausted")
         size += len(chunk)
         if size > max_bytes:
             raise ValueError(f"response_too_large: > {max_bytes} bytes")
@@ -291,7 +295,7 @@ class SisFetcher:
             final = response.geturl() if hasattr(response, "geturl") else url
             if not sis_url_ok(final):
                 raise PermissionError(f"redirect_off_allowlist: {urlsplit(str(final)).hostname}")
-            return read_capped(response, max_bytes)
+            return read_capped(response, max_bytes, self.deadline, self.clock)
 
     def _policy(self, host: str):
         if host not in self.robots:

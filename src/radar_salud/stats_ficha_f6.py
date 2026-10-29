@@ -267,7 +267,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     obs_pct, priv_pct = V("acr.observaciones_pct"), V("acr.privadas_pct")
     headline = tpl["headline"]["default"].format(month_label=mlabel, acreditados=fmt_int(acc), tramite=fmt_int(tram))
     rec_clause = (f"Los reclamos promediaron {fmt_int(V(f'rec.promedio.{y}'))} al mes entre enero y {month}, "
-                  f"{fmt_dec(V('rec.pct'), 1)}% {'más' if V('rec.delta') >= 0 else 'menos'} que el promedio mensual de {y - 1}."
+                  f"{fmt_dec(abs(V('rec.pct')), 1)}% {'más' if V('rec.delta') >= 0 else 'menos'} que el promedio mensual de {y - 1}."
                   if k["has_rec"] else "")
     dek = tpl["dek"].format(rec_clause=rec_clause, titulos=fmt_int(V("rnpi.titulos"))).strip()
     qoq = k["comparisons"]
