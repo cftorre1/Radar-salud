@@ -341,9 +341,40 @@ def shown_blocks(ficha: dict | None) -> list[str]:
     for k in fi.get("kpis") or []:
         out += [k.get("value"), *(k.get("lines") or [])]
     for tab in fi.get("tabs") or []:
-        out += list(tab.get("text") or [])
+        out += list(tab.get("text") or []) + topic_texts(tab)
     out += list((fi.get("facts") or {}).get("paragraphs") or [])
     return [str(x) for x in out if x]
+
+
+# Index → topic layout (Dirección 29-oct, option C→B): every topic carries an index line and a sparkline; a topic dek
+# and topic KPI cards only when they add something its charts do not show. ``dek: None`` means "no text"; a builder
+# that does not set ``dek`` falls back to the tab text in the renderer.
+SPARK_FORMS = {"line": "line", "columns_signed": "columns", "diverging": "diverging", "bars": "bars", "dots": "bars"}
+INDEX_LINE_MAX = 64
+
+
+def topic_texts(tab: dict) -> list[str]:
+    """Index line, topic dek and topic KPI cards: everything the topic layout shows besides charts and tab text."""
+    out = [tab.get("index_line"), tab.get("dek")]
+    for k in tab.get("kpis") or []:
+        out += [k.get("value"), *(k.get("lines") or [])]
+    return [str(x) for x in out if x]
+
+
+def topic_fields(tab: dict, index_line: str | None = None, kpis: list[dict] | None = None) -> dict:
+    """Generic index fields for a family builder: the sparkline mirrors the topic's first chart (its own evidence rows)
+    and the index line is the builder's phrase, else the first clause of the tab text, else the first chart headline."""
+    charts = tab.get("charts") or []
+    hero = charts[0] if charts else None
+    tab["spark"] = ({"chart": hero["id"], "form": SPARK_FORMS.get(hero.get("form"), "bars")}
+                    if hero and len(hero.get("rows") or []) >= 2 else None)
+    if not index_line:
+        first = re.split(r"(?<=[.;:])\s+", str((tab.get("text") or [""])[0]).strip())[0].rstrip(".;:")
+        index_line = first if 0 < len(first) <= INDEX_LINE_MAX else (hero or {}).get("headline")
+    tab["index_line"] = index_line
+    if kpis is not None:
+        tab["kpis"] = kpis
+    return tab
 
 
 def verify_lectura(text: str, package: dict, *, registry: dict | None = None, catalog: list[dict] | None = None,
@@ -662,7 +693,7 @@ def displayed_texts(ficha: dict, include_lectura: bool = True) -> list[str]:
     for w in ficha.get("watch") or []:
         out += [w.get("headline"), w.get("explanation")]
     for tab in ficha.get("tabs") or []:
-        out += [tab.get("label"), *(tab.get("text") or [])]
+        out += [tab.get("label"), *(tab.get("text") or []), *topic_texts(tab)]
     for c in all_charts(ficha):
         out += [c.get("headline"), c.get("subtitle"), c.get("legend"), c.get("source")]
         for row in (c.get("table") or {}).get("rows") or []:
@@ -686,6 +717,9 @@ URL_RX = re.compile(r"https?://|\bwww\.|\b[\w-]+(?:\.[\w-]+)*\.(?:cl|com|org|gob
 
 
 COUNT_WORDS = {"dos": 2, "tres": 3, "cuatro": 4, "cinco": 5, "seis": 6, "siete": 7, "ocho": 8, "nueve": 9, "diez": 10}
+
+
+COUNT_CLAIM = re.compile(r"\b(\d+|una?|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez) isapres? (crecen?|caen?)\b")
 
 
 def count_phrase(n: int, singular: str, plural: str) -> str:
@@ -726,7 +760,7 @@ def lens_checks(ficha: dict, package: dict) -> dict:
         out["editorial"].append("dek_over_40_words")
     facts = (ficha.get("facts") or {})
     blocks = [ficha.get("dek"), *([] if facts.get("rendered_in_tabs") else (facts.get("paragraphs") or [])),
-              *[x for tab in ficha.get("tabs") or [] for x in tab.get("text") or []],
+              *[x for tab in ficha.get("tabs") or [] for x in [*(tab.get("text") or []), tab.get("dek")] if x],
               *[n.get("text") for n in ficha.get("notes") or []]]
     lect = ficha.get("lectura") or {}
     if lect.get("status") == "pass":
@@ -749,6 +783,12 @@ def lens_checks(ficha: dict, package: dict) -> dict:
             out["ui"].append(f"tab_label_long:{tab.get('id')}")
         if not tab.get("charts") and not tab.get("text"):
             out["ui"].append(f"tab_empty:{tab.get('id')}")
+        if len(str(tab.get("index_line") or "")) > INDEX_LINE_MAX:
+            out["ui"].append(f"index_line_long:{tab.get('id')}")
+        if len(str(tab.get("dek") or "").split()) > 30:
+            out["editorial"].append(f"topic_dek_over_30_words:{tab.get('id')}")
+        if len(tab.get("kpis") or []) > 2:
+            out["ui"].append(f"topic_over_2_kpis:{tab.get('id')}")
     if len(all_charts(ficha)) < 2:
         out["ui"].append("charts_under_2")
     for c in all_charts(ficha):
@@ -779,11 +819,38 @@ def verify_ficha(ficha: dict, package: dict) -> dict:
         if not ficha.get(key):
             errors.append(f"missing:{key}")
     pool = number_pool(package)
+    # Counts the builder derived from the data ('3 Isapres crecen') trace like values; never a template constant.
+    counts = sorted({abs(float(e["value"])) for e in package.get("derived_ratios") or [] if e.get("unit") == "count"})
     # The Lectura's figures are traced by verify_lectura (pool, unit, sign, entity, period), not by value alone.
     for text in displayed_texts(ficha, include_lectura=False):
-        for tok in text_numbers_trace(text, pool):
+        for tok in text_numbers_trace(text, sorted({*pool, *counts})):
             errors.append(f"number_not_in_evidence:{tok}")
     values = package.get("values") or {}
+    # Topic KPI cards: every figure on a card traces to the values that card cites (not to any value of the package),
+    # and the sparkline draws one of the topic's own charts.
+    for tab in ficha.get("tabs") or []:
+        for k in tab.get("kpis") or []:
+            refs = k.get("refs") or []
+            missing = [r for r in refs if r not in values]
+            if not refs or missing:
+                errors.append(f"topic_kpi_ref_missing:{tab.get('id')}:{k.get('id')}")
+                continue
+            own = sorted({abs(float(values[r]["value"])) for r in refs})
+            for text in [k.get("value"), *(k.get("lines") or [])]:
+                for tok in text_numbers_trace(str(text or ""), own):
+                    errors.append(f"topic_kpi_number_not_in_refs:{tab.get('id')}:{k.get('id')}:{tok}")
+        # A count of entities in a topic line ('3 Isapres crecen') must equal the count the builder derived for it.
+        derived_counts = {e["id"]: e["value"] for e in package.get("derived_ratios") or [] if e.get("unit") == "count"}
+        for text in (tab.get("index_line"), tab.get("dek")):
+            for n, verb in COUNT_CLAIM.findall(_fold(text or "")):
+                want = derived_counts.get(f"conteo.abiertas_{'crecen' if verb.startswith('crece') else 'caen'}")
+                got = int(n) if n.isdigit() else (1 if n in {"una", "un"} else COUNT_WORDS.get(n))
+                if want is None or got != want:
+                    errors.append(f"count_not_in_evidence:{tab.get('id')}:{n} {verb}")
+        spark = tab.get("spark")
+        if spark and (spark.get("chart") not in {c.get("id") for c in tab.get("charts") or []}
+                      or spark.get("form") not in set(SPARK_FORMS.values())):
+            errors.append(f"spark_not_a_topic_chart:{tab.get('id')}")
     for chart in all_charts(ficha):
         for row in chart.get("rows") or []:
             for key, ref_key in (("value", "ref"), ("base", "base_ref")):

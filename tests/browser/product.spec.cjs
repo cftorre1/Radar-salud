@@ -353,8 +353,8 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(isapre.locator('.card-meta')).toContainText('Publicado 02 oct 2026');
  await isapre.locator('[data-detail]').first().click();
  await expect(page.locator('#detailBody .sf-kicker')).toContainText('datos a agosto 2026');
- await expect(page.locator('#detailBody .sf-kpis')).toContainText('2.486.683');
- await expect(page.locator('#detailBody [role=tab]')).toHaveCount(5);
+ await expect(page.locator('#detailBody .sf-dek')).toContainText('2.486.683');
+ await expect(page.locator('#detailBody .sf-row')).toHaveCount(5);  // Dirección 29-oct: index of 5 topics
  await expect(page.locator('#detailBody .sf-notes')).toContainText('denominador solo las 7 Isapres abiertas');
  await expect(page.locator('#detailBody .sf-notes a').first()).toHaveAttribute('href',/superdesalud\.gob\.cl/);
  await page.getByRole('button',{name:'Cerrar ficha'}).click();
@@ -511,16 +511,16 @@ test('F1 ficha presents stock KPIs with separate contracts and mobility views',a
      if(await card.count()){await card.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText(copy);await page.keyboard.press('Escape');}
    }
  }
- // F1 ficha: stock KPIs, contracts and mobility live in their own tab (between cuts, never monthly).
+ // F1 ficha: contracts and mobility live in their own topic (between cuts, never monthly).
  const ficha=page.locator('article[data-card]').filter({hasText:'Datos a 2026-08'});
  await expect(ficha).toHaveCount(1);await ficha.locator('[data-detail]').first().click();
  const detail=page.locator('#detailBody');
- await expect(detail.locator('.sf-kpis')).toContainText('2.486.683');
- await detail.getByRole('tab',{name:'Movilidad y desahucios'}).click();
- const panel=detail.locator('.sf-panel:not([hidden])');
+ await expect(detail.locator('.sf-dek')).toContainText('2.486.683');
+ await detail.locator('.sf-row').filter({hasText:'Movilidad y desahucios'}).click();
+ const panel=detail.locator('.sf-tpanel:not([hidden])');
  await expect(panel).toContainText('Contratos suscritos y desahucios voluntarios');
  await expect(panel).toContainText('91.963');await expect(panel).toContainText('109.663');
- await expect(panel).toContainText('la diferencia no es el cambio neto');
+ await expect(detail.locator('.sf-notes')).toContainText('suscripciones menos desahucios');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
 });
 

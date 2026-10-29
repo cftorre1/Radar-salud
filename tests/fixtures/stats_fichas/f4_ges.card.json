@@ -38,8 +38,8 @@
   "family_label": "Casos GES",
   "period": "2026-06",
   "published_at": "2026-10-14",
-  "generated_at": "2026-10-29T08:05:49.478691+00:00",
-  "release_key": "2026-06:13cc3f26a6ec6692",
+  "generated_at": "2026-10-29T12:14:48.184420+00:00",
+  "release_key": "2026-06:2f34bbd3c272ad7b",
   "featured": true,
   "triggers": [
    "new_period",
@@ -178,7 +178,12 @@
     "text": [
      "En el segundo trimestre de 2026 Fonasa e Isapres informaron 50.515 casos GES, 5.635 más que en el segundo trimestre de 2025 (+12,6%).",
      "Con solo los problemas presentes en ambos trimestres la variación es +10,8%: la lista de problemas cambió entre ambos trimestres (posible cambio de decreto GES)."
-    ]
+    ],
+    "spark": {
+     "chart": "f4-totales",
+     "form": "bars"
+    },
+    "index_line": "Casos del T2 2026 frente al T2 2025"
    },
    {
     "id": "problemas",
@@ -263,14 +268,18 @@
         ]
        ]
       },
-      "source": "SIS, casos GES por problema (Fonasa + Isapre). Solo problemas presentes en ambos trimestres.",
-      "legend": "Acento = 15% o más"
+      "source": "SIS, casos GES por problema (Fonasa + Isapre). Solo problemas presentes en ambos trimestres."
      }
     ],
     "text": [
      "Se ordenan los problemas que crecen, con al menos 500 casos en el segundo trimestre de 2025; cruzan el umbral los que crecen 15% o más.",
      "La lista de problemas cambió entre el T2 2025 y el T2 2026 (posible cambio de decreto GES). Problemas sin base comparable: 1; que ya no aparecen: 1. No entran al ranking."
-    ]
+    ],
+    "spark": {
+     "chart": "f4-top",
+     "form": "bars"
+    },
+    "index_line": "Dos problemas superan 15% a/a"
    },
    {
     "id": "seguros",
@@ -282,7 +291,7 @@
       "unit": "%",
       "digits": 1,
       "headline": "Parte Isapre de los casos GES",
-      "subtitle": "% de los casos informados por Fonasa e Isapres, por trimestre; eje sin partir de cero",
+      "subtitle": "% de los casos informados por Fonasa e Isapres, por trimestre",
       "rows": [
        {
         "label": "T1 2025",
@@ -394,7 +403,12 @@
     "text": [
      "Las Isapres informaron el 12,4% de los casos del segundo trimestre de 2026; es una parte de los casos, no de la población.",
      "Tasa bruta Isapre del trimestre: 2,5 casos por 1.000 beneficiarios Isapre. Fonasa: tasa no disponible, porque Alicanto no tiene capturados sus beneficiarios."
-    ]
+    ],
+    "spark": {
+     "chart": "f4-share",
+     "form": "line"
+    },
+    "index_line": "Parte Isapre de los casos GES"
    },
    {
     "id": "tendencia",
@@ -406,7 +420,7 @@
       "unit": "casos",
       "digits": 0,
       "headline": "Casos GES por trimestre",
-      "subtitle": "Fonasa + Isapre; eje sin partir de cero",
+      "subtitle": "Fonasa + Isapre, casos de cada trimestre",
       "rows": [
        {
         "label": "T1 2025",
@@ -462,12 +476,17 @@
         ]
        ]
       },
-      "source": "Cada trimestre es un flujo; los cortes acumulados no se suman."
+      "source": "SIS, casos GES. Alicanto calcula cada trimestre desde los cortes acumulados."
      }
     ],
     "text": [
      "La serie tiene 4 trimestres derivables de los cortes capturados."
-    ]
+    ],
+    "spark": {
+     "chart": "f4-trend",
+     "form": "line"
+    },
+    "index_line": "La serie tiene 4 trimestres derivables de los cortes capturados"
    }
   ],
   "facts": {
@@ -511,9 +530,9 @@
   "sources": [
    {
     "url": "https://www.superdesalud.gob.cl/app/uploads/fixture/ges-2025-03.xlsx",
-    "sha256": "e6decf007c49147a7cb685df1abad23eee401170d38c0f22cf479d7fde0484bd",
+    "sha256": "1e1364e60967bf4355036254c6716e5b6f672a3052dcdb8d857880f8f68d029a",
     "published_at": "2025-10-03",
-    "fetched_at": "2026-10-29T08:05:48.783071+00:00",
+    "fetched_at": "2026-10-29T12:14:47.577003+00:00",
     "label": "SIS · Casos GES de Fonasa e Isapres a marzo 2025 (xlsx)",
     "role": "casos acumulados del año por problema y seguro",
     "locator": "Año 2025!fila Total 10",
@@ -521,9 +540,9 @@
    },
    {
     "url": "https://www.superdesalud.gob.cl/app/uploads/fixture/ges-2025-06.xlsx",
-    "sha256": "60b7b64e69ba617679a762c5dbbed6f36d53a5e14827fe139ed2f9638d6cd79e",
+    "sha256": "1396236309695abe3f16023815ba0af114aefaf8956bfb60f7996aea08a61440",
     "published_at": "2025-10-03",
-    "fetched_at": "2026-10-29T08:05:48.779751+00:00",
+    "fetched_at": "2026-10-29T12:14:47.573864+00:00",
     "label": "SIS · Casos GES de Fonasa e Isapres a junio 2025 (xlsx)",
     "role": "casos acumulados del año por problema y seguro",
     "locator": "Año 2025!fila Total 10",
@@ -531,9 +550,9 @@
    },
    {
     "url": "https://www.superdesalud.gob.cl/app/uploads/fixture/ges-2026-03.xlsx",
-    "sha256": "1888ba74fdec36d79e0b5c64b72363b6752e21fd645fcf79a158dd269065432f",
+    "sha256": "c18c168635cf91dd2fbe9f5bc70e81b534148de9b71b32aa096db0e80cd5547b",
     "published_at": "2026-07-10",
-    "fetched_at": "2026-10-29T08:05:48.776658+00:00",
+    "fetched_at": "2026-10-29T12:14:47.571194+00:00",
     "label": "SIS · Casos GES de Fonasa e Isapres a marzo 2026 (xlsx)",
     "role": "casos acumulados del año por problema y seguro",
     "locator": "Año 2026!fila Total 10",
@@ -541,9 +560,9 @@
    },
    {
     "url": "https://www.superdesalud.gob.cl/app/uploads/fixture/ges-2026-06.xlsx",
-    "sha256": "13cc3f26a6ec669211196815b1a79bed2c1724d6a00f6189e779fef76bc3bc12",
+    "sha256": "2f34bbd3c272ad7b44793a837d4a0664fa8214666a85f617af1d01f43079d681",
     "published_at": "2026-10-14",
-    "fetched_at": "2026-10-29T08:05:48.771768+00:00",
+    "fetched_at": "2026-10-29T12:14:47.566860+00:00",
     "label": "SIS · Casos GES de Fonasa e Isapres a junio 2026 (xlsx)",
     "role": "casos acumulados del año por problema y seguro",
     "locator": "Año 2026!fila Total 10",

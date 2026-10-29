@@ -28,7 +28,7 @@ from .stats_fichas import fmt_dec, fmt_int, fmt_signed, value
 from .weekly_freshness import numbers_in
 
 FAMILY = "F4"
-BUILDER_VERSION = "f4_ges_v1"
+BUILDER_VERSION = "f4_index_topic_v2"
 CAPTURE = Path("data/stats_fichas/captures/ges_quarterly.json")
 PORTFOLIO = Path("data/market/isapre_portfolio.json")
 QWORD = {1: "primer", 2: "segundo", 3: "tercer", 4: "cuarto"}
@@ -551,8 +551,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                            "emphasis": r["pct"] >= tp["pct"]} for r in ranked],
                  "table": {"columns": ["Problema de salud", qshort(by, bq), qshort(ty, tq), "a/a"],
                            "rows": [[r["label"], fmt_int(r["base"]), fmt_int(r["t"]), fmt_dec(r["pct"], 1, signed=True) + "%"] for r in ranked]},
-                 "source": "SIS, casos GES por problema (Fonasa + Isapre). Solo problemas presentes en ambos trimestres.",
-                 "legend": f"Acento = {fmt_dec(tp['pct'], 0)}% o más"}
+                 "source": "SIS, casos GES por problema (Fonasa + Isapre). Solo problemas presentes en ambos trimestres."}
         top_text = [f"Se ordenan los problemas que crecen, con al menos {fmt_int(tp['min_cases'])} casos en el {qlabel(by, bq)}; "
                     f"cruzan el umbral los que crecen {fmt_dec(tp['pct'], 0)}% o más."]
         if declining:
@@ -577,7 +576,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     # Tab 3 · Fonasa vs Isapre
     qs = k["quarters"]
     c_share = {"id": "f4-share", "form": "line", "unit": "%", "digits": 1, "headline": "Parte Isapre de los casos GES",
-               "subtitle": "% de los casos informados por Fonasa e Isapres, por trimestre; eje sin partir de cero",
+               "subtitle": "% de los casos informados por Fonasa e Isapres, por trimestre",
                "rows": [{"label": qshort(y, q), "value": val(f"ges.q.{qid(y, q)}.isapre_share"), "ref": f"ges.q.{qid(y, q)}.isapre_share",
                          "emphasis": (y, q) == (ty, tq)} for (y, q) in qs[-12:]],
                "table": {"columns": ["Trimestre", "Fonasa", "Isapres", "% Isapre"],
@@ -605,13 +604,13 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
 
     # Tab 4 · Tendencia trimestral
     c_trend = {"id": "f4-trend", "form": "line", "unit": "casos", "digits": 0, "headline": "Casos GES por trimestre",
-               "subtitle": "Fonasa + Isapre; eje sin partir de cero",
+               "subtitle": "Fonasa + Isapre, casos de cada trimestre",
                "rows": [{"label": qshort(y, q), "value": val(f"ges.q.{qid(y, q)}.total"), "ref": f"ges.q.{qid(y, q)}.total",
                          "emphasis": (y, q) == (ty, tq)} for (y, q) in qs[-12:]],
                "table": {"columns": ["Trimestre", "Casos", "Cortes usados"],
                          "rows": [[qshort(y, q), fmt_int(val(f"ges.q.{qid(y, q)}.total")),
                                    " − ".join(sf.month_label(c) for c in reversed(_cuts_of(v, qid(y, q))))] for (y, q) in qs[-12:]]},
-               "source": "Cada trimestre es un flujo; los cortes acumulados no se suman."}
+               "source": "SIS, casos GES. Alicanto calcula cada trimestre desde los cortes acumulados."}
     trend_text = [f"La serie tiene {fmt_int(len(qs))} trimestres derivables de los cortes capturados."
                   + (" Faltan cortes para completar el resto." if k["invalid"] else "")]
     tabs.append({"id": "tendencia", "label": "Tendencia trimestral", "charts": [c_trend] if len(qs) >= 2 else [],
@@ -619,6 +618,9 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     if len(qs) < 2:  # a one-point trend is not a chart
         tabs[-1]["text"].append("La tendencia se dibuja desde el segundo trimestre capturado.")
 
+    # Index → topic layout (Dirección 29-oct): generic index fields; the topic dek falls back to the tab text.
+    for tab in tabs:
+        sf.topic_fields(tab)
     paragraphs = [tot_text[0], ins_text[0], top_text[0]]
 
     # Qué mirar

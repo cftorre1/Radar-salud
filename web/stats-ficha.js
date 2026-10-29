@@ -1,6 +1,8 @@
-// Statistics ficha (Dirección 28-oct-2026), mirrors Insight format A: kicker → headline → dek → KPI strip →
-// tabs (charts + their own analysis) → Lectura Alicanto → Qué mirar (≤ 2) → 'Notas y fuentes' (collapsed).
-// Every number arrives formatted or as a value from the evidence package; this file only lays out.
+// Statistics ficha. Dirección 29-oct-2026 approved option "C→B": the ficha opens as an index of its topics (label,
+// one-line reading, sparkline); a topic opens in topic mode: sticky "Ver: <tema> n/N ▾" picker with ‹ ›, the hero chart
+// first, then that topic's dek, KPI cards and other charts, and "Siguiente tema" / "Todos los temas" at the foot.
+// Deep links: #tema=<id>. Entering a topic from the index pushes a history entry, switching topics replaces it, and Back
+// returns to the index. Every number arrives formatted or as a value from the evidence package; this file only lays out.
 (function(root){
  const C={ink:'#1D3345',ink70:'#4F6170',ink50:'#6B7884',axis:'#B9B3A6',accent:'#C37C37'};
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -35,7 +37,7 @@
   return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`${c.subtitle||c.headline}: ${desc}.`)}">${s}${c.legend?`<text x="1.5" y="${H-4}" font-size="11" fill="${C.ink50}">${esc(c.legend)}</text>`:''}</svg>`;
  }
  const dec=(v,d)=>Number(v).toLocaleString('es-CL',{minimumFractionDigits:d,maximumFractionDigits:d}).replace(/^-/,'−');
- // Line for stocks and ratios: the axis does not start at zero (stated in the subtitle); last point in accent.
+ // Line for stocks and ratios: the axis does not start at zero; last point in accent.
  function line(c){
   const rows=arr(c.rows).filter(r=>Number.isFinite(Number(r.value)));if(rows.length<2)return'';const d=Number.isInteger(c.digits)?c.digits:0;
   const vals=rows.map(r=>Number(r.value)),lo=Math.min(...vals),hi=Math.max(...vals),pad=(hi-lo)*.15||Math.abs(hi)*.01||1,min=lo-pad,max=hi+pad,W=360,top=24,H=130,x=i=>20+i*(W-40)/(rows.length-1),y=v=>top+(max-v)/(max-min)*H;
@@ -44,7 +46,11 @@
   // Axis labels thin out when they would collide (e.g. 12 quarters 'T2 2026' at 390 px): every 2nd, 3rd, 4th or 6th,
   // counted back from the last point so the latest period is always labelled. Short monthly labels (F1) all fit: unchanged.
   const lw=Math.max(...rows.map(r=>String(r.label).length))*6.6+6,slot=(W-40)/(rows.length-1),step=[1,2,3,4,6,12].find(k=>slot*k>=lw)||Math.ceil(lw/slot),shown=i=>(rows.length-1-i)%step===0;
-  rows.forEach((r,i)=>{const v=Number(r.value),last=i===rows.length-1,first=i===0;s+=`<g class="sf-mark"><title>${esc(r.label)}: ${dec(v,d)}</title><circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="${last?5:3.5}" fill="${last?C.accent:C.ink}"/></g>`;if(shown(i))s+=`<text class="sf-xlab" x="${x(i).toFixed(1)}" y="${top+H+22}" font-size="11.5" text-anchor="${first&&rows.length>1&&String(r.label).length>4?'start':last&&String(r.label).length>4?'end':'middle'}" fill="${C.ink70}">${esc(r.label)}</text>`;if(first||last)s+=`<text x="${x(i).toFixed(1)}" y="${(y(v)-10).toFixed(1)}" font-size="${last?13:12}" font-weight="${last?700:500}" text-anchor="${first?'start':'end'}" fill="${C.ink}">${dec(v,d)}</text>`});
+  rows.forEach((r,i)=>{const v=Number(r.value),last=i===rows.length-1,first=i===0;s+=`<g class="sf-mark"><title>${esc(r.label)}: ${dec(v,d)}</title><circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="${last?5:3.5}" fill="${last?C.accent:C.ink}"/></g>`;if(shown(i))s+=`<text class="sf-xlab" x="${x(i).toFixed(1)}" y="${top+H+22}" font-size="11.5" text-anchor="${first&&rows.length>1&&String(r.label).length>4?'start':last&&String(r.label).length>4?'end':'middle'}" fill="${C.ink70}">${esc(r.label)}</text>`;
+   // Dirección 29-oct: when the series descends into the last point, its label goes below the point, so it never
+   // sits on the line ('0,603').
+   const down=last&&i>0&&v<Number(rows[i-1].value);
+   if(first||last)s+=`<text class="${last?'sf-lastlab':'sf-firstlab'}" x="${x(i).toFixed(1)}" y="${(down?y(v)+20:y(v)-10).toFixed(1)}" font-size="${last?13:12}" font-weight="${last?700:500}" text-anchor="${first?'start':'end'}" fill="${C.ink}">${dec(v,d)}</text>`});
   return`<svg viewBox="0 0 ${W} ${top+H+30}" role="img" aria-label="${esc(`${c.subtitle||c.headline}: ${rows.map(r=>`${r.label} ${dec(r.value,d)}`).join(', ')}.`)}">${s}</svg>`;
  }
  // Dot plot vs. the base period: dot = current, ring = base.
@@ -74,37 +80,174 @@
  const PROV={C:'Capturada por Alicanto: archivo y hash en el repositorio'};
  function kpi(k){return`<div class="sf-kpi"><p class="sf-lab">${esc(k.label)}</p><p class="sf-val">${esc(k.value)}${k.prov?`<span class="sf-prov" title="${esc(PROV[k.prov]||k.prov)}" aria-label="${esc(PROV[k.prov]||k.prov)}">${esc(k.prov)}</span>`:''}</p>${arr(k.lines).map(x=>`<p class="sf-delta">${esc(x)}</p>`).join('')}${k.badge?`<span class="sf-badge ${k.badge_kind==='crossed'?'':'muted'}">${esc(k.badge)}</span>`:''}</div>`}
  function dek(f){let d=esc(f.dek||'');if(f.dek_emphasis&&String(f.dek).includes(f.dek_emphasis))d=d.replace(esc(f.dek_emphasis),`<strong>${esc(f.dek_emphasis)}</strong>`);return d}
- // Tabs (Dirección 28-oct 04:59): one theme per panel; arrow keys move between tabs (WAI-ARIA tabs pattern).
- let seq=0;
- function tabs(f){
-  const ts=arr(f.tabs).filter(t=>t&&t.label);
-  if(!ts.length)return arr(f.charts).length?`<section class="sf-charts" aria-label="Gráficos">${arr(f.charts).map(chart).join('')}</section>`:'';
-  const base=`sf${++seq}`;
-  const list=ts.map((t,i)=>`<button type="button" role="tab" class="sf-tab" id="${base}-t${i}" aria-controls="${base}-p${i}" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-sf-tab="${i}">${esc(t.label)}${t.status==='pendiente'?' <span class="sf-pending">pendiente</span>':''}</button>`).join('');
-  const panels=ts.map((t,i)=>`<section role="tabpanel" class="sf-panel" id="${base}-p${i}" aria-labelledby="${base}-t${i}" tabindex="0" ${i===0?'':'hidden'}>${arr(t.text).map(x=>`<p class="sf-tab-text">${esc(x)}</p>`).join('')}${arr(t.charts).length?`<div class="sf-charts">${arr(t.charts).map(chart).join('')}</div>`:''}${arr(t.links).filter(l=>https(l.url)).length?`<ul class="sf-links">${arr(t.links).filter(l=>https(l.url)).map(l=>`<li><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a></li>`).join('')}</ul>`:''}</section>`).join('');
-  return`<section class="sf-tabs" aria-label="Temas de la ficha"><div class="sf-tablist" role="tablist" aria-label="Temas">${list}</div>${panels}</section>`;
+
+ // ---- Index → topic (C→B) ------------------------------------------------------------------------------------
+ const ico=(d,w=18)=>`<svg width="${w}" height="${w}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${d}</svg>`;
+ const I={chev:'<svg class="sf-pick-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg>',
+  left:ico('<path d="m15 6-6 6 6 6"/>'),right:ico('<path d="m9 6 6 6-6 6"/>'),
+  grid:ico('<rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/>',16)};
+ const SPARK={line:'line',columns:'columns',diverging:'diverging',bars:'bars'};
+ const HERO_SPARK={line:'line',columns_signed:'columns',diverging:'diverging',bars:'bars',dots:'bars'};
+ // The builder names the sparkline (chart + form); a builder that does not falls back to the topic's first chart.
+ function sparkOf(t){
+  if(t.spark===null)return null;const charts=arr(t.charts);
+  if(t.spark&&t.spark.chart){const c=charts.find(x=>x.id===t.spark.chart);return c&&SPARK[t.spark.form]?{c,form:t.spark.form}:null}
+  const c=charts[0];return c&&HERO_SPARK[c.form]?{c,form:HERO_SPARK[c.form]}:null;
  }
- function selectTab(btn,focus){const list=btn.closest('[role=tablist]'),host=list.parentElement;list.querySelectorAll('[role=tab]').forEach(b=>{const on=b===btn;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;const p=host.querySelector('#'+CSS.escape(b.getAttribute('aria-controls')));if(p)p.hidden=!on});if(focus)btn.focus()}
+ // Mini chart from the chart's own evidence rows; no figure under it (Dirección 29-oct).
+ function spark(t){
+  const sp=sparkOf(t),pend=t.status==='pendiente';
+  const rows=sp?arr(sp.c.rows).filter(r=>Number.isFinite(Number(r.value))):[];
+  if(!sp||rows.length<2)return`<span class="sf-spark">${pend?'<span class="sf-spark-pend">pendiente</span>':''}</span>`;
+  const v=rows.map(r=>Number(r.value)),W=96,H=28;let g='';
+  if(sp.form==='line'){const lo=Math.min(...v),hi=Math.max(...v),x=i=>2+i*(W-6)/(v.length-1),y=a=>3+(hi-a)/((hi-lo)||1)*(H-6);
+   g=`<polyline points="${v.map((a,i)=>`${x(i).toFixed(1)},${y(a).toFixed(1)}`).join(' ')}" fill="none" stroke="${C.ink}" stroke-width="1.6"/><circle cx="${x(v.length-1).toFixed(1)}" cy="${y(v[v.length-1]).toFixed(1)}" r="2.8" fill="${C.accent}"/>`}
+  else{const hi=Math.max(0,...v),lo=Math.min(0,...v),k=(H-4)/((hi-lo)||1),z=2+hi*k,bw=Math.min(v.length<=3?20:9,(W-4)/v.length-2),gap=(W-4-v.length*bw)/Math.max(1,v.length-1);
+   g=`<line x1="0" x2="${W}" y1="${z.toFixed(1)}" y2="${z.toFixed(1)}" stroke="${C.axis}"/>`+v.map((a,i)=>{const h=Math.max(Math.abs(a)*k,1.2),x=2+i*(bw+gap),fill=sp.form==='diverging'?(a<0?C.ink:C.accent):(i===v.length-1?C.accent:C.ink);return`<rect x="${x.toFixed(1)}" y="${(a<0?z:z-h).toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="1" fill="${fill}"/>`}).join('')}
+  return`<span class="sf-spark"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(sp.c.headline)}">${g}</svg></span>`;
+ }
+ // The index line: from the builder; else the first clause of the tab text; else the first chart's headline.
+ function indexLine(t){if(t.index_line)return t.index_line;const x=String(arr(t.text)[0]||'').split(/(?<=[.;:])\s/)[0].replace(/[.;:]$/,'');return x&&x.length<=64?x:(arr(t.charts)[0]||{}).headline||''}
+ // Topic text: the builder's dek (null = none); a builder without a 'dek' field falls back to the tab text.
+ function topicText(t){return Object.prototype.hasOwnProperty.call(t,'dek')?(t.dek?[t.dek]:[]):arr(t.text)}
+ function links(t){const ls=arr(t.links).filter(l=>https(l.url));return ls.length?`<ul class="sf-links">${ls.map(l=>`<li><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a></li>`).join('')}</ul>`:''}
+ function topicBody(t,i,ts){
+  const ch=arr(t.charts).map(chart).filter(Boolean),kp=arr(t.kpis),txt=topicText(t);
+  const nx=i<ts.length-1?`<button type="button" class="sf-next" data-sf-go="${i+1}"><span>Siguiente tema</span><b>${esc(ts[i+1].label)}</b>${I.right}</button>`:'';
+  return(ch.length?`<div class="sf-hero">${ch[0]}</div>`:'')+txt.map(x=>`<p class="sf-tdek">${esc(x)}</p>`).join('')+
+   (kp.length?`<section class="sf-kpis sf-tkpis" aria-label="Indicadores · ${esc(t.label)}">${kp.map(kpi).join('')}</section>`:'')+
+   (ch.length>1?`<div class="sf-charts">${ch.slice(1).join('')}</div>`:'')+links(t)+
+   nx+`<button type="button" class="sf-all" data-sf-index>${I.grid}<span>Todos los temas</span></button>`;
+ }
+ let seq=0;
+ function topics(f){
+  const ts=arr(f.tabs).filter(t=>t&&t.label),N=ts.length,base=`sf${++seq}`;
+  const pend=t=>t.status==='pendiente'?'<span class="sf-pending">pendiente</span>':'';
+  const ids=ts.map((t,i)=>String(t.id||i));
+  const index=`<section class="sf-index" data-sf-view="index" aria-label="Temas de la ficha"><div class="sf-index-h">En esta ficha <span>${N} temas · toca para abrir</span></div>`+
+   ts.map((t,i)=>`<div class="sf-item"><a class="sf-row" href="#tema=${esc(ids[i])}" data-sf-row="${i}"><span class="sf-row-txt"><span class="sf-row-label">${esc(t.label)}${pend(t)}</span><span class="sf-row-line">${esc(indexLine(t))}</span></span>${spark(t)}<span class="sf-go">${I.right}</span></a></div>`).join('')+`</section>`;
+  const opts=`<li role="option" id="${base}-o-all" class="sf-opt sf-opt-all" data-sf-opt="-1" aria-selected="false"><span class="sf-opt-n">${I.grid}</span><span class="sf-opt-txt"><span class="sf-opt-label">Todos los temas</span><span class="sf-opt-line">Volver al índice de la ficha</span></span></li>`+
+   ts.map((t,i)=>`<li role="option" id="${base}-o${i}" class="sf-opt" data-sf-opt="${i}" aria-selected="${i===0}"><span class="sf-opt-n">${i+1}</span><span class="sf-opt-txt"><span class="sf-opt-label">${esc(t.label)}${pend(t)}</span><span class="sf-opt-line">${esc(indexLine(t))}</span></span></li>`).join('');
+  const topic=`<section class="sf-topic" data-sf-view="topic" aria-label="Tema de la ficha" hidden><div class="sf-sticky"><div class="sf-picker">`+
+   `<button type="button" class="sf-pick" aria-haspopup="listbox" aria-expanded="false" aria-controls="${base}-list"><span class="sf-pick-ver">Ver:</span><span class="sf-pick-label">${esc(ts[0].label)}</span><span class="sf-pick-count">1/${N}</span>${I.chev}</button>`+
+   `<button type="button" class="sf-step" data-sf-step="-1" aria-label="Tema anterior" disabled>${I.left}</button><button type="button" class="sf-step" data-sf-step="1" aria-label="Tema siguiente"${N<2?' disabled':''}>${I.right}</button>`+
+   `<ul id="${base}-list" class="sf-list" role="listbox" tabindex="-1" aria-label="Temas de la ficha" hidden>${opts}</ul></div></div>`+
+   `<div class="sf-tpanels" aria-live="polite">${ts.map((t,i)=>`<section class="sf-tpanel" id="${base}-p${i}" data-sf-topic="${i}" data-sf-id="${esc(ids[i])}" role="region" aria-label="${esc(t.label)}" hidden>${topicBody(t,i,ts)}</section>`).join('')}</div></section>`;
+  return index+topic;
+ }
  function render(f,opts={}){
   if(!f||f.status!=='PASS'||!f.headline)return'<p>Ficha no disponible.</p>';
   const lect=f.lectura&&f.lectura.status==='pass'&&f.lectura.text?f.lectura.text:null;
   const sources=arr(f.sources).filter(s=>https(s.url));
   const share=opts.shareId?`<p class="sf-actions"><button type="button" class="sf-share" data-ficha-share="${esc(opts.shareId)}" data-share-url="${esc(opts.shareUrl||'')}" data-share-title="${esc(f.headline)}">Compartir informe</button><span class="sf-share-status" role="status" aria-live="polite"></span></p>`:'';
-  return`<article class="sf" data-family="${esc(f.family)}" data-period="${esc(f.period)}">`+
+  const ts=arr(f.tabs).filter(t=>t&&t.label);
+  // With topics, KPI cards live inside each topic (only when they add something its charts do not show) and the
+  // ficha has no 'Qué mirar' block (Dirección 29-oct, option C→B). A ficha without topics keeps the KPI strip.
+  const body=ts.length?topics(f):
+   `<section class="sf-kpis" aria-label="Indicadores clave">${arr(f.kpis).map(kpi).join('')}</section>`+
+   (arr(f.charts).length?`<section class="sf-charts" aria-label="Gráficos">${arr(f.charts).map(chart).join('')}</section>`:'')+
+   (f.facts?.rendered_in_tabs||!arr(f.facts?.paragraphs).length?'':`<section class="sf-facts"><h3>${esc(f.facts?.heading||'Qué muestran los datos')}</h3>${arr(f.facts?.paragraphs).map(p=>`<p>${esc(p)}</p>`).join('')}</section>`)+
+   (arr(f.watch).length?`<aside class="sf-watch"><h3>Qué mirar</h3><ol>${arr(f.watch).slice(0,2).map(w=>`<li><strong>${esc(w.headline)}</strong> ${esc(w.explanation)}</li>`).join('')}</ol></aside>`:'');
+  return`<article class="sf${ts.length?' sf-cb':''}" data-family="${esc(f.family)}" data-period="${esc(f.period)}">`+
    `<p class="sf-kicker">${esc(f.kicker)}${f.kicker_meta?` · <span>${esc(f.kicker_meta)}</span>`:''}${f.featured?' <span class="sf-featured">Destacada</span>':''}</p>`+
    `<h2 id="detailTitle" class="sf-headline">${esc(f.headline)}</h2>`+
-   `<p class="sf-dek">${dek(f)}</p>${share}`+
-   `<section class="sf-kpis" aria-label="Indicadores clave">${arr(f.kpis).map(kpi).join('')}</section>`+
-   tabs(f)+
-   // Dirección 28-oct 08:20: each tab carries its own analysis, so 'Qué muestran los datos' is not a separate
-   // section unless the ficha predates that layout; notes, sources and the machine note sit behind one toggle.
-   (f.facts?.rendered_in_tabs||!arr(f.facts?.paragraphs).length?'':`<section class="sf-facts"><h3>${esc(f.facts?.heading||'Qué muestran los datos')}</h3>${arr(f.facts?.paragraphs).map(p=>`<p>${esc(p)}</p>`).join('')}</section>`)+
+   `<p class="sf-dek">${dek(f)}</p>${share}`+body+
    (lect?`<section class="sf-reading"><h3>Lectura Alicanto</h3><p>${esc(lect)}</p></section>`:'')+
-   (arr(f.watch).length?`<aside class="sf-watch"><h3>Qué mirar</h3><ol>${arr(f.watch).slice(0,2).map(w=>`<li><strong>${esc(w.headline)}</strong> ${esc(w.explanation)}</li>`).join('')}</ol></aside>`:'')+
    `<details class="sf-notes"><summary>Notas y fuentes</summary>${arr(f.notes).length?`<h3>Notas sobre la evidencia</h3><ol>${arr(f.notes).map(n=>`<li>${esc(n.text)}</li>`).join('')}</ol>`:''}`+
    `<h3>Fuentes</h3><ul>${sources.map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a> <span class="sf-role">· ${esc(s.role||'')}</span><br><code>sha256 ${esc(String(s.sha256||'').slice(0,12))}… · ${esc(s.locator||'')}${s.fetched_at?` · capturado ${fmtDay(String(s.fetched_at).slice(0,10))}`:''}</code></li>`).join('')}</ul>`+
    (f.machine_note?`<p class="sf-machine">${esc(f.machine_note)}</p>`:'')+`</details></article>`;
  }
+
+ // Behaviour of the index → topic layout inside the ficha detail (dialog). One ficha is mounted at a time; closing the
+ // dialog unmounts it and leaves the URL as it was before the ficha opened a topic.
+ let active=null;
+ const TEMA=/(?:^#|&)tema=([\w-]+)$/;
+ function mount(container){
+  if(active){active();active=null}
+  const host=container&&container.querySelector?container.querySelector('.sf-cb'):null;if(!host||!root.document)return null;
+  const doc=root.document,loc=root.location,hist=root.history,dialog=host.closest('dialog');
+  const $=s=>host.querySelector(s),index=$('[data-sf-view=index]'),topic=$('[data-sf-view=topic]'),sticky=$('.sf-sticky'),
+   btn=$('.sf-pick'),list=$('.sf-list'),optEls=[...list.querySelectorAll('[role=option]')],panels=[...host.querySelectorAll('[data-sf-topic]')],
+   ids=panels.map(p=>p.dataset.sfId),N=panels.length,scroller=dialog||doc.scrollingElement||doc.documentElement;
+  const reduce=!!(root.matchMedia&&root.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const back=dialog&&dialog.querySelector('.detail-close'),backTxt=back&&back.querySelector('span'),orig=back?{t:backTxt?backTxt.textContent:'',a:back.getAttribute('aria-label')}:null;
+  const parse=()=>{const m=TEMA.exec(loc.hash);return m?ids.indexOf(m[1]):-1};
+  const home=loc.pathname+loc.search+loc.hash.replace(/^#tema=[\w-]+$/,'').replace(/&tema=[\w-]+$/,'');
+  let cur=-1,last=0,entered=false,act=0;
+  const url=i=>i<0?home:'#tema='+ids[i];
+  const top0=()=>dialog?dialog.getBoundingClientRect().top:0;
+  const offset=el=>el.getBoundingClientRect().top-top0();
+  const go=y=>{try{scroller.scrollTo({top:Math.max(0,y),behavior:reduce?'auto':'smooth'})}catch{scroller.scrollTop=Math.max(0,y)}};
+  const anim=(el,cls)=>{if(reduce)return;el.classList.remove('sf-in','sf-from-left','sf-from-right');void el.offsetWidth;el.classList.add(cls)};
+  const onScroll=()=>sticky.classList.toggle('stuck',!topic.hidden&&sticky.getBoundingClientRect().top<=top0()+1);
+  function backLabel(on){if(!back)return;if(backTxt)backTxt.textContent=on?'Todos los temas':orig.t;if(on)back.setAttribute('aria-label','Volver a todos los temas');else if(orig.a===null)back.removeAttribute('aria-label');else back.setAttribute('aria-label',orig.a)}
+  function show(i,{scroll=true,dir=0}={}){
+   const from=cur;cur=i;
+   if(i<0){
+    topic.hidden=true;index.hidden=false;backLabel(false);
+    host.querySelectorAll('.sf-row').forEach((r,j)=>r.classList.toggle('sf-last',j===last&&from>=0));
+    anim(index,'sf-in');
+    // Back on the index: the last topic's row is in view, highlighted and focused.
+    if(scroll&&from>=0){const r=host.querySelector(`[data-sf-row="${last}"]`);if(r){go(scroller.scrollTop+offset(r)-Math.max(0,scroller.clientHeight-r.offsetHeight-24));r.focus({preventScroll:true})}}
+    onScroll();return;
+   }
+   last=i;index.hidden=true;topic.hidden=false;backLabel(true);
+   panels.forEach((p,j)=>{p.hidden=j!==i});
+   $('.sf-pick-label').textContent=panels[i].getAttribute('aria-label');$('.sf-pick-count').textContent=`${i+1}/${N}`;
+   optEls.forEach(o=>o.setAttribute('aria-selected',String(Number(o.dataset.sfOpt)===i)));
+   host.querySelectorAll('[data-sf-step]').forEach(b=>{b.disabled=(b.dataset.sfStep==='-1'&&i===0)||(b.dataset.sfStep==='1'&&i===N-1)});
+   anim(panels[i],dir>0?'sf-from-right':dir<0?'sf-from-left':'sf-in');
+   // The picker pins at the top of the ficha; the hero chart starts right below it.
+   if(scroll)go(scroller.scrollTop+offset(topic));
+   onScroll();
+  }
+  // Navigation: index → topic pushes; topic → topic replaces; "Todos los temas" pops when we pushed.
+  function openTopic(i,focus){if(i<0||i>=N)return;if(cur<0){entered=true;try{hist.pushState({sfTopic:ids[i]},'',url(i))}catch{}show(i);if(focus)btn.focus({preventScroll:true})}else if(i!==cur){const d=Math.sign(i-cur);try{hist.replaceState(hist.state,'',url(i))}catch{}show(i,{dir:d})}}
+  function toIndex(){if(cur<0)return;if(entered&&parse()>=0){hist.back()}else{try{hist.replaceState(null,'',url(-1))}catch{}show(-1)}}
+  const onPop=()=>{if(!host.isConnected)return;const i=parse();if(i<0)entered=false;show(i)};
+  // Listbox (select-only combobox) with "Todos los temas" as its first option.
+  const setAct=k=>{act=(k+optEls.length)%optEls.length;optEls.forEach((o,j)=>o.classList.toggle('active',j===act));list.setAttribute('aria-activedescendant',optEls[act].id)};
+  const open=()=>{list.hidden=false;btn.setAttribute('aria-expanded','true');setAct(cur+1);list.focus({preventScroll:true})};
+  const close=(f=true)=>{if(list.hidden)return;list.hidden=true;btn.setAttribute('aria-expanded','false');if(f)btn.focus({preventScroll:true})};
+  const pickOpt=o=>{const i=Number(o.dataset.sfOpt);close(i>=0);if(i<0)toIndex();else openTopic(i)};
+  btn.addEventListener('click',()=>list.hidden?open():close());
+  btn.addEventListener('keydown',e=>{if(['ArrowDown','ArrowUp','Enter',' '].includes(e.key)){e.preventDefault();open()}});
+  list.addEventListener('keydown',e=>{const k=e.key;if(k==='ArrowDown'){e.preventDefault();setAct(act+1)}else if(k==='ArrowUp'){e.preventDefault();setAct(act-1)}else if(k==='Home'){e.preventDefault();setAct(0)}else if(k==='End'){e.preventDefault();setAct(optEls.length-1)}else if(k==='Enter'||k===' '){e.preventDefault();pickOpt(optEls[act])}else if(k==='Escape'){e.preventDefault();e.stopPropagation();close()}else if(k==='Tab')close(false)});
+  list.addEventListener('click',e=>{const o=e.target.closest('[role=option]');if(o)pickOpt(o)});
+  const onDocClick=e=>{if(!e.target.closest||!e.target.closest('.sf-picker'))close(false)};
+  // ←/→ change topic in topic mode, unless the focus is in a field, the listbox or a data-table toggle.
+  const onKey=e=>{if(cur<0||e.altKey||e.ctrlKey||e.metaKey||!host.isConnected||(dialog&&!dialog.open))return;const t=e.target;if(t&&t.closest&&(t.closest('input,textarea,select,[role=listbox],summary')||(dialog&&!dialog.contains(t)&&t!==doc.body)))return;
+   if(e.key==='ArrowRight'&&cur<N-1){e.preventDefault();openTopic(cur+1)}else if(e.key==='ArrowLeft'&&cur>0){e.preventDefault();openTopic(cur-1)}};
+  host.addEventListener('click',e=>{
+   const row=e.target.closest('[data-sf-row]');if(row){e.preventDefault();openTopic(Number(row.dataset.sfRow),e.detail===0);return}
+   const s=e.target.closest('[data-sf-step]');if(s){openTopic(cur+Number(s.dataset.sfStep));return}
+   const g=e.target.closest('[data-sf-go]');if(g){openTopic(Number(g.dataset.sfGo));return}
+   if(e.target.closest('[data-sf-index]'))toIndex();
+  });
+  // In topic mode the dialog's back button reads "Todos los temas" and returns to the index instead of closing.
+  const onBack=e=>{if(cur>=0&&back&&e.target.closest&&e.target.closest('.detail-close')===back){e.preventDefault();e.stopPropagation();toIndex()}};
+  // Swipe between topics on phones.
+  const tp=$('.sf-tpanels');let sx=null,sy=0;
+  const onTs=e=>{const t=e.touches[0];sx=t.clientX;sy=t.clientY};
+  const onTe=e=>{if(sx===null)return;const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;sx=null;if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.6){if(dx<0&&cur<N-1)openTopic(cur+1);if(dx>0&&cur>0)openTopic(cur-1)}};
+  tp.addEventListener('touchstart',onTs,{passive:true});tp.addEventListener('touchend',onTe,{passive:true});
+  root.addEventListener('popstate',onPop);doc.addEventListener('click',onDocClick);doc.addEventListener('keydown',onKey);scroller.addEventListener('scroll',onScroll,{passive:true});
+  if(dialog)dialog.addEventListener('click',onBack,true);
+  function unmount(){
+   root.removeEventListener('popstate',onPop);doc.removeEventListener('click',onDocClick);doc.removeEventListener('keydown',onKey);scroller.removeEventListener('scroll',onScroll);
+   if(dialog){dialog.removeEventListener('click',onBack,true);dialog.removeEventListener('close',onClose)}
+   backLabel(false);if(active===unmount)active=null;
+  }
+  // Closing the ficha in topic mode leaves the URL as it was before (the pushed topic entry is popped).
+  function onClose(){const inTopic=parse()>=0;unmount();if(inTopic){if(entered)hist.back();else try{hist.replaceState(null,'',url(-1))}catch{}}}
+  if(dialog)dialog.addEventListener('close',onClose);
+  active=unmount;
+  // Deep link (#tema=<id>, or #sig-<id>&tema=<id> from a shared link): open that topic directly; Back then leaves.
+  const i0=parse();show(i0,{scroll:false});
+  if(i0>=0)(root.requestAnimationFrame||setTimeout)(()=>{scroller.scrollTop+=offset(topic)});
+  return{show,openTopic,toIndex,unmount,current:()=>cur};
+ }
+
  // "Compartir informe": stable deep link back to Alicanto; Web Share API with copy-link fallback. No email.
  async function shareFicha(button){
   const status=button.parentElement?.querySelector('.sf-share-status');const say=m=>{if(status)status.textContent=m};
@@ -115,13 +258,12 @@
   try{await root.navigator.clipboard.writeText(url.href);say('Enlace copiado.')}catch{say(`Copia este enlace: ${url.href}`)}
  }
  if(root.document){
-  root.document.addEventListener('click',e=>{const b=e.target.closest?.('[data-ficha-share]');if(b){e.preventDefault();shareFicha(b);return}const t=e.target.closest?.('[data-sf-tab]');if(t)selectTab(t,false)});
-  root.document.addEventListener('keydown',e=>{const t=e.target.closest?.('[data-sf-tab]');if(!t||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;const all=[...t.parentElement.querySelectorAll('[data-sf-tab]')],i=all.indexOf(t);const n=e.key==='Home'?0:e.key==='End'?all.length-1:(i+(e.key==='ArrowRight'?1:-1)+all.length)%all.length;e.preventDefault();selectTab(all[n],true)});
+  root.document.addEventListener('click',e=>{const b=e.target.closest?.('[data-ficha-share]');if(b){e.preventDefault();shareFicha(b)}});
  }
  // Public correction (CLAUDE.md rule 6): a short dated mark on the row ("Corregido el 28 oct"), the same date label as
  // the detail note; the export writes it as correction.label.
  const MON=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
  function correctionLabel(c){if(c.label)return c.label;const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(String(c.corrected_at||''));return m?`${Number(m[3])} ${MON[Number(m[2])-1]}`:''}
  function correctionTag(s){const c=s&&s.statistical_view&&s.statistical_view.correction;if(!c||!c.corrected_at)return'';const label=correctionLabel(c);return label?` <span class="tag correction-tag" title="${esc(c.text||'')}">Corregido el ${esc(label)}</span>`:''}
- root.AlicantoFicha={render,shareFicha,correctionTag,correctionLabel};
+ root.AlicantoFicha={render,mount,shareFicha,correctionTag,correctionLabel};
 })(typeof window!=='undefined'?window:globalThis);

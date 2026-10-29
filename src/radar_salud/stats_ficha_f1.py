@@ -21,7 +21,7 @@ from . import stats_fichas as sf
 from .stats_fichas import fmt_dec, fmt_int, fmt_signed, month_label, month_name, value
 
 FAMILY = "F1"
-BUILDER_VERSION = "f1_lectura_scope_v6"  # a new builder republishes the same release (no archive, no new paid Lectura)
+BUILDER_VERSION = "f1_index_topic_v7"  # a new builder republishes the same release (no archive, no new paid Lectura)
 METRIC_COL = {"cotizantes": "C", "cargas": "D", "beneficiarios": "E"}
 
 
@@ -186,6 +186,9 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
                      [f"sistema.beneficiarios.mm.{t}", f"sistema.beneficiarios.{prev}"], unit="%") if prev else None
     cot_ytd = derived("sistema.cotizantes.ytd", C[t] - C[base], f"stock({t}) − stock({base})", [f"sistema.cotizantes.{t}", f"sistema.cotizantes.{base}"])
     cargas_ytd = derived("sistema.cargas.ytd", K[t] - K[base], f"stock({t}) − stock({base})", [f"sistema.cargas.{t}", f"sistema.cargas.{base}"])
+    # Topic KPI cards (Dirección 29-oct): cotizantes and cargas since the base month, with their own % change.
+    derived("sistema.cotizantes.ytd_pct", cot_ytd / C[base] * 100, "Δ / stock base × 100", ["sistema.cotizantes.ytd", f"sistema.cotizantes.{base}"], unit="%")
+    derived("sistema.cargas.ytd_pct", cargas_ytd / K[base] * 100, "Δ / stock base × 100", ["sistema.cargas.ytd", f"sistema.cargas.{base}"], unit="%")
     for p in periods:
         derived(f"mezcla.{p}", K[p] / C[p], "cargas / cotizantes", [f"sistema.cargas.{p}", f"sistema.cotizantes.{p}"], unit="ratio", period=p)
     mix_t = derived(f"mezcla.{t}", K[t] / C[t], "cargas / cotizantes", [f"sistema.cargas.{t}", f"sistema.cotizantes.{t}"], unit="ratio")
@@ -242,6 +245,12 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
         b0, b1 = grid[(base, c)]["beneficiarios"]["value"], grid[(t, c)]["beneficiarios"]["value"]
         deltas[c] = derived(f"delta.{c}.ytd", b1 - b0, f"stock({t}) − stock({base})", [f"cartera.{c}.beneficiarios.{t}", f"cartera.{c}.beneficiarios.{base}"])
         derived(f"delta.{c}.ytd_pct", (b1 - b0) / b0 * 100, "Δ / stock base × 100", [f"delta.{c}.ytd", f"cartera.{c}.beneficiarios.{base}"], unit="%")
+        # The by-Isapre table splits each change into cotizantes and cargas (Dirección 29-oct); both parts must add
+        # up to the beneficiary change, from the same captured cells.
+        parts = {m: derived(f"delta.{c}.{m}.ytd", grid[(t, c)][m]["value"] - grid[(base, c)][m]["value"], f"stock({t}) − stock({base})",
+                            [f"cartera.{c}.{m}.{t}", f"cartera.{c}.{m}.{base}"]) for m in ("cotizantes", "cargas")}
+        if parts["cotizantes"] + parts["cargas"] != b1 - b0:
+            raise ValueError(f"cot_plus_cargas_delta_{c}")
         if c in open_codes:
             s0 = derived(f"share.{c}.{base}", b0 / den_b * 100, "benef_i / Σ abiertas × 100", [f"cartera.{c}.beneficiarios.{base}", f"abiertas.beneficiarios.{base}"], unit="%", period=base)
             s1 = derived(f"share.{c}.{t}", b1 / den_t * 100, "benef_i / Σ abiertas × 100", [f"cartera.{c}.beneficiarios.{t}", f"abiertas.beneficiarios.{t}"], unit="%")
@@ -251,6 +260,13 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
     closed_b0 = sum(grid[(base, c)]["beneficiarios"]["value"] for c in closed_codes)
     derived(f"cerradas.beneficiarios.{base}", closed_b0, "Σ beneficiarios de las 3 cerradas", [f"cartera.{c}.beneficiarios.{base}" for c in sorted(closed_codes)], period=base)
     derived("delta.cerradas.ytd", sum(deltas[c] for c in closed_codes), "Σ Δ de las 3 cerradas", [f"delta.{c}.ytd" for c in sorted(closed_codes)])
+    for m in ("cotizantes", "cargas"):
+        derived(f"delta.cerradas.{m}.ytd", sum(values[f"delta.{c}.{m}.ytd"]["value"] for c in closed_codes), f"Σ Δ {m} de las 3 cerradas",
+                [f"delta.{c}.{m}.ytd" for c in sorted(closed_codes)])
+    if values["delta.cerradas.cotizantes.ytd"]["value"] + values["delta.cerradas.cargas.ytd"]["value"] != values["delta.cerradas.ytd"]["value"]:
+        raise ValueError("cot_plus_cargas_delta_cerradas")
+    if cot_ytd + cargas_ytd != ytd:
+        raise ValueError("cot_plus_cargas_delta_sistema")
     derived("delta.cerradas.ytd_pct", sum(deltas[c] for c in closed_codes) / closed_b0 * 100, "Δ / stock base × 100", ["delta.cerradas.ytd", f"cerradas.beneficiarios.{base}"], unit="%")
     # Contribution to the net change (not computed when |Δ system| < min_system_delta).
     contributions = {}
@@ -530,12 +546,16 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
               "table": {"columns": ["Mes", "Cambio", "Stock final"],
                         "rows": [[sf.month_short(base), "—", fmt_int(k["B"][base])]] +
                                 [[sf.month_short(p), fmt_signed(k["mm"][p]), fmt_int(k["B"][p])] for p in months]},
-              "source": "SIS, estadística mensual de cartera (datos provisionales). Stock al cierre de cada mes; la diferencia la calcula Alicanto.",
-              "legend": f"Columna más corta = baja menor · {month} en acento"}
+              "source": "SIS, estadística mensual de cartera (datos provisionales). La diferencia mensual la calcula Alicanto."}
     rows2 = [{"label": names[c], "value": k["deltas"][c], "ref": f"delta.{c}.ytd", "base": v[f"cartera.{c}.beneficiarios.{base}"]["value"],
-              "pct_ref": f"delta.{c}.ytd_pct"} for c in package["entity_codes"] if c in set(cfg["open_codes"])]
-    rows2.append({"label": "Cerradas (3)", "value": v["delta.cerradas.ytd"]["value"], "ref": "delta.cerradas.ytd",
-                  "base": v[f"cerradas.beneficiarios.{base}"]["value"], "pct_ref": "delta.cerradas.ytd_pct"})
+              "pct_ref": f"delta.{c}.ytd_pct", "cot_ref": f"delta.{c}.cotizantes.ytd", "car_ref": f"delta.{c}.cargas.ytd"}
+             for c in package["entity_codes"] if c in set(cfg["open_codes"])]
+    rows2.append({"label": f"Cerradas ({len(cfg['closed_codes'])})", "value": v["delta.cerradas.ytd"]["value"], "ref": "delta.cerradas.ytd",
+                  "base": v[f"cerradas.beneficiarios.{base}"]["value"], "pct_ref": "delta.cerradas.ytd_pct",
+                  "cot_ref": "delta.cerradas.cotizantes.ytd", "car_ref": "delta.cerradas.cargas.ytd"})
+    for r in rows2:  # Cotizantes + Cargas = Cambio on every row of the table (Dirección 29-oct)
+        if v[r["cot_ref"]]["value"] + v[r["car_ref"]]["value"] != r["value"]:
+            raise ValueError(f"table_cot_plus_cargas:{r['label']}")
     rows2.sort(key=lambda r: r["value"])
     # The count comes from the data (conteo.abiertas_crecen: every open Isapre with Δ > 0), never from a template.
     n_up = next(int(r["value"]) for r in package["derived_ratios"] if r["id"] == "conteo.abiertas_crecen")
@@ -544,11 +564,12 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     chart2 = {"id": "f1-isapres", "form": "diverging", "headline": c2_head,
               "subtitle": f"Cambio de beneficiarios entre {base_month} y {month}, por Isapre", "unit": "personas",
               "rows": [{**r, "emphasis": r["value"] > 0} for r in rows2],
-              "table": {"columns": ["Isapre", "Cambio", base_month.capitalize(), "%"],
-                        "rows": [[r["label"], fmt_signed(r["value"]), fmt_int(r["base"]), fmt_dec(v[r["pct_ref"]]["value"], 2, signed=True) + "%"] for r in rows2]
-                                + [["Sistema", fmt_signed(ytd), fmt_int(k["B"][base]), fmt_dec(ytd_pct, 2, signed=True) + "%"]]},
-              "source": "SIS, cartera por Isapre. Las cerradas (Isalud, Fundación, Cruz del Norte) van agrupadas.",
-              "legend": "Tinta = pierde · acento = gana · negrita = 5.000 personas o más"}
+              "table": {"columns": ["Isapre", "Cambio", "Cotizantes", "Cargas", f"% vs. {base_month}"],
+                        "rows": [[r["label"], fmt_signed(r["value"]), fmt_signed(v[r["cot_ref"]]["value"]), fmt_signed(v[r["car_ref"]]["value"]),
+                                  fmt_dec(v[r["pct_ref"]]["value"], 2, signed=True) + "%"] for r in rows2]
+                                + [["Sistema", fmt_signed(ytd), fmt_signed(v["sistema.cotizantes.ytd"]["value"]), fmt_signed(v["sistema.cargas.ytd"]["value"]),
+                                    fmt_dec(ytd_pct, 2, signed=True) + "%"]]},
+              "source": "SIS, cartera por Isapre. Las cerradas (Isalud, Fundación, Cruz del Norte) van agrupadas."}
 
     # Qué muestran los datos (3 sentences)
     ftpl = tpl["facts"]
@@ -577,14 +598,12 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
 
     # Tabs (Dirección 28-oct 04:59): each theme gets its own charts, table and a short reading of the data.
     periods_all = package["periods"]
-    smax = max(periods_all, key=lambda p: k["B"][p])
-    smin = min(periods_all, key=lambda p: k["B"][p])
-    chart_stock = {"id": "f1-stock", "form": "line", "headline": "Stock de beneficiarios al cierre de cada mes",
-                   "subtitle": "Personas; eje sin partir de cero para mostrar la trayectoria", "unit": "personas", "digits": 0,
+    chart_stock = {"id": "f1-stock", "form": "line", "headline": f"Beneficiarios Isapre, {base_month} a {month}",
+                   "subtitle": "Personas al cierre de cada mes", "unit": "personas", "digits": 0,
                    "rows": [{"label": sf.month_short(p), "period": p, "value": k["B"][p], "ref": f"sistema.beneficiarios.{p}", "emphasis": p == t} for p in periods_all],
                    "table": {"columns": ["Mes", "Beneficiarios", "Cotizantes", "Cargas"],
                              "rows": [[sf.month_short(p), fmt_int(k["B"][p]), fmt_int(k["C"][p]), fmt_int(k["K"][p])] for p in periods_all]},
-                   "source": "SIS, estadística mensual de cartera. Cada mes es un stock: no se suman."}
+                   "source": "SIS, estadística mensual de cartera."}
     open_rows = sorted(cfg["open_codes"], key=lambda c: -v[f"share.{c}.{t}"]["value"])
     chart_share = {"id": "f1-share", "form": "dots", "headline": "Participación entre las Isapres abiertas",
                    "subtitle": f"% de beneficiarios de las 7 abiertas · punto = {month}, aro = {base_month}", "unit": "%", "digits": 1,
@@ -596,26 +615,49 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                        (fmt_dec(k["contributions"][c], 0) + "%") if c in k["contributions"] else "no calculado"] for c in open_rows]},
                    "source": "Denominador: solo las 7 Isapres abiertas. El aporte al cambio neto no se calcula si el sistema varía menos de 5.000 personas."}
     chart_cot = {"id": "f1-cot", "form": "columns_signed", "headline": "Cotizantes: cambio mensual",
-                 "subtitle": "Personas que cotizan; diferencia entre stocks de meses consecutivos", "unit": "personas",
+                 "subtitle": "Personas que cotizan", "unit": "personas",
                  "rows": [{"label": sf.month_short(p), "period": p, "value": cmm[p], "ref": f"sistema.cotizantes.mm.{p}", "emphasis": p == t} for p in months],
                  "table": {"columns": ["Mes", "Cambio", "Cotizantes"], "rows": [[sf.month_short(p), fmt_signed(cmm[p]), fmt_int(k["C"][p])] for p in months]},
-                 "source": "SIS, estadística mensual de cartera.", "legend": f"{month} en acento"}
+                 "source": "SIS, estadística mensual de cartera."}
     chart_mix = {"id": "f1-mix", "form": "line", "headline": "Cargas por cotizante", "subtitle": "Razón cargas / cotizantes del mismo mes",
                  "unit": "razón", "digits": 3,
                  "rows": [{"label": sf.month_short(p), "period": p, "value": v[f"mezcla.{p}"]["value"], "ref": f"mezcla.{p}", "emphasis": p == t} for p in periods_all],
                  "table": {"columns": ["Mes", "Cargas por cotizante"], "rows": [[sf.month_short(p), fmt_dec(v[f"mezcla.{p}"]["value"], 3)] for p in periods_all]},
                  "source": "Denominador: cotizantes del mismo mes."}
+    # Index → topic layout (Dirección 29-oct, option C→B). Each topic carries its index line and sparkline; a topic
+    # dek or KPI card appears only when it adds something its charts do not show (dek None = no text in topic mode).
+    year = sf.period_parts(t)[0]
+    whole_year = base == f"{year}-01"
+    span = "del año" if whole_year else f"desde {base_month}"
+    record_low = htype in {"record_low_decline", "record_low_decline_moderate"} or (
+        mm_t < 0 and len(k["declines"]) >= 3 and k["declines"][t] == min(k["declines"].values()))
+    total_line = f"{fmt_int(k['B'][t])} beneficiarios · " + (f"menor baja {span}" if record_low and whole_year else f"{fmt_signed(mm_t)} en {month}")
+    if conc:
+        isapres_line = (f"{names[conc['entity']]}: {fmt_dec(k['contributions'][conc['entity']], 0)}% de la {'baja' if ytd < 0 else 'variación'}"
+                        + (f" · {n_up} {'Isapre crece' if n_up == 1 else 'Isapres crecen'}" if n_up else ""))
+    else:
+        isapres_line = f"Cambio por Isapre desde {base_month}"
+    mezcla_line = (f"Cotizantes {'suben' if cot_up else 'bajan'} por {sf.ordinal(k['cot_streak'])} mes" if k["cot_sustained"]
+                   else f"Cotizantes {fmt_signed(v['sistema.cotizantes.ytd']['value'])} desde {base_month}")
+    mezcla_dek, mezcla_kpis = None, []
+    contrib_cargas = v.get("cargas.contrib", {}).get("value")
+    if contrib_cargas is not None and 0 < contrib_cargas <= 100 and ytd < 0:
+        mezcla_dek = f"Las cargas explican el {fmt_dec(contrib_cargas, 0)}% de la baja {span}."
+    for metric, label in (("cotizantes", "Cotizantes"), ("cargas", "Cargas")):
+        d, pct = v[f"sistema.{metric}.ytd"]["value"], v[f"sistema.{metric}.ytd_pct"]["value"]
+        mezcla_kpis.append({"id": f"tema-{metric}", "label": label, "value": fmt_int(v[f"sistema.{metric}.{t}"]["value"]), "prov": "C",
+                            "lines": [f"{fmt_signed(d)} desde {base_month} ({fmt_dec(pct, 2, signed=True)}%)"],
+                            "refs": [f"sistema.{metric}.{t}", f"sistema.{metric}.ytd", f"sistema.{metric}.ytd_pct"]})
     tabs = [
-        {"id": "total", "label": "Cartera total", "charts": [chart1, chart_stock],
-         "text": [paragraphs[0], f"El stock más alto del período fue en {month_name(smax)} ({fmt_int(k['B'][smax])}) y el más bajo en {month_name(smin)} ({fmt_int(k['B'][smin])})."]},
-        {"id": "isapres", "label": "Por Isapre", "charts": [chart2, chart_share],
-         "text": [paragraphs[-1]] + ([f"{names[conc['entity']]} aporta el {fmt_dec(k['contributions'][conc['entity']], 0)}% del cambio neto del sistema desde {base_month}, medido sobre la variación total de la cartera."]
-                  if conc else ["Ninguna Isapre abierta concentra la mitad del cambio neto del sistema."])},
-        {"id": "mezcla", "label": "Cotizantes y cargas", "charts": [chart_cot, chart_mix],
-         "text": ([paragraphs[1]] if len(paragraphs) == 3 else []) + [f"La razón de cargas por cotizante pasó de {fmt_dec(mix['base'], 3)} a {fmt_dec(mix['t'], 3)}. Una razón menor no implica menos ingreso: la cotización la paga el cotizante."]},
+        {"id": "total", "label": "Cartera total", "charts": [chart_stock, chart1], "text": [],
+         "index_line": total_line, "spark": {"chart": "f1-stock", "form": "line"}, "dek": None, "kpis": []},
+        {"id": "isapres", "label": "Por Isapre", "charts": [chart2, chart_share], "text": [],
+         "index_line": isapres_line, "spark": {"chart": "f1-isapres", "form": "diverging"}, "dek": None, "kpis": []},
+        {"id": "mezcla", "label": "Cotizantes y cargas", "charts": [chart_cot, chart_mix], "text": [],
+         "index_line": mezcla_line, "spark": {"chart": "f1-cot", "form": "columns"}, "dek": mezcla_dek, "kpis": mezcla_kpis},
     ]
     if "movilidad.diferencia_intervalo" in v or package.get("suscripciones"):
-        mov_charts, mov_text = [], []
+        mov_charts = []
         if "movilidad.diferencia_intervalo" in v:
             mob = package["movilidad"]
             mov_charts.append({"id": "f1-mob", "form": "diverging", "headline": "Entradas y salidas del sistema entre cortes",
@@ -626,9 +668,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                "table": {"columns": ["Concepto", "Cotizantes"], "rows": [["Entradas", fmt_int(v["movilidad.entradas_intervalo"]["value"])],
                                                                                           ["Salidas", fmt_int(v["movilidad.salidas_intervalo"]["value"])],
                                                                                           ["Neto", fmt_signed(v["movilidad.diferencia_intervalo"]["value"])]]},
-                               "source": "SIS, movilidad de cotizantes (hoja Nacional). Comparación entre dos cortes.",
-                               "legend": "Salidas a la izquierda · entradas en acento"})
-            mov_text.append(f"Entre los cortes de {month_label(mob['period_start'])} y {month_label(mob['period_end'])} salieron {fmt_int(v['movilidad.salidas_intervalo']['value'])} cotizantes y entraron {fmt_int(v['movilidad.entradas_intervalo']['value'])}; la tasa sobre el corte inicial queda pendiente.")
+                               "source": "SIS, movilidad de cotizantes (hoja Nacional). Comparación entre dos cortes."})
         if package.get("suscripciones"):
             sp = package["suscripciones"]["period"]
             con, des = v[f"suscripciones.contratos_suscritos.{sp}"]["value"], v[f"suscripciones.desahucios_voluntarios.{sp}"]["value"]
@@ -638,10 +678,19 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                         {"label": "Desahucios vol.", "value": des, "ref": f"suscripciones.desahucios_voluntarios.{sp}"}],
                                "table": {"columns": ["Concepto", "Contratos"], "rows": [["Contratos suscritos", fmt_int(con)], ["Desahucios voluntarios", fmt_int(des)]]},
                                "source": "SIS, suscripciones y desahucios. Los desahucios voluntarios no son todas las terminaciones."})
-            mov_text.append(f"En {month_label(sp)} se suscribieron {fmt_int(con)} contratos y hubo {fmt_int(des)} desahucios voluntarios; la diferencia no es el cambio neto, porque incluye cambios entre Isapres.")
-        tabs.append({"id": "movilidad", "label": "Movilidad y desahucios", "charts": mov_charts, "text": mov_text})
+        if "movilidad.diferencia_intervalo" in v:
+            mob = package["movilidad"]
+            out_more = v["movilidad.salidas_intervalo"]["value"] > v["movilidad.entradas_intervalo"]["value"]
+            mov_line = ("Salen más de los que entran" if out_more else "Entran más de los que salen") + (
+                f" · dato a {month_name(mob['period_end'])}" if mob["period_end"] < t else "")
+        else:
+            mov_line = "Contratos suscritos y desahucios voluntarios"
+        tabs.append({"id": "movilidad", "label": "Movilidad y desahucios", "charts": mov_charts, "text": [],
+                     "index_line": mov_line, "spark": {"chart": mov_charts[0]["id"], "form": "diverging" if mov_charts[0]["form"] == "diverging" else "bars"},
+                     "dek": None, "kpis": []})
     reg = package.get("regional")
-    tabs.append({"id": "regional", "label": "Regional", "charts": [], "status": "pendiente",
+    tabs.append({"id": "regional", "label": "Regional", "charts": [], "status": "pendiente", "spark": None,
+                 "index_line": ("Enlace a la SIS · cifras aún no extraídas" if reg else "Cifras aún no extraídas"),
                  "text": ["Alicanto aún no extrae las cifras regionales: la publicación queda enlazada y su ficha suelta se absorbe aquí."],
                  "links": ([{"label": reg["title"], "url": reg["url"]}] + [{"label": "Planilla regional (xlsx)", "url": u} for u in reg["documents"]]) if reg else []})
 
@@ -670,6 +719,11 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     ]
     if "movilidad.diferencia_intervalo" in v:
         notes.append({"id": "n3", "text": "La movilidad compara dos cortes; no equivale a la suma de los movimientos intermedios ni a suscripciones menos desahucios, que incluyen cambios entre Isapres."})
+    # Moved from the topic text (Dirección 29-oct: topic text only where it adds to the chart): a method caveat.
+    notes.append({"id": "n3b", "text": "Una razón de cargas por cotizante menor no implica menos ingreso: la cotización la paga el cotizante."})
+    if record_low and whole_year:
+        notes.append({"id": "n4", "text": f"'Menor baja del año' compara los cambios mensuales de {month_name(package['periods'][1])} a {month}; "
+                                          f"el de {base_month} no se calcula porque la serie capturada parte en {base_month}."})
     notes.append({"id": "n5", "text": "Ningún dato de esta ficha establece por qué cambia la cartera (precio, ley corta o calidad de servicio)."})
     for i, r in enumerate(sorted(package.get("revisions") or [], key=lambda x: -abs(x["pct"]))[:4], 6):
         parts = r["id"].split(".")

@@ -22,7 +22,7 @@ from . import stats_fichas as sf
 from .stats_fichas import fmt_dec, fmt_int, value
 
 FAMILY = "F6"
-BUILDER_VERSION = "f6_boletin_ip_v1"
+BUILDER_VERSION = "f6_index_topic_v2"
 CAPTURE = Path("data/stats_fichas/captures/boletin_ip.json")
 MONTH_EN = {m: i for i, m in enumerate(("january", "february", "march", "april", "may", "june", "july", "august", "september",
                                          "october", "november", "december"), 1)}
@@ -349,6 +349,20 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         rnpi_text.append(f"{fmt_int(V('rnpi.sin_fecha_nacimiento'))} registros no tienen fecha de nacimiento.")
     tabs.append({"id": "rnpi", "label": "RNPI", "charts": [], "text": rnpi_text})
 
+    # Index → topic layout (Dirección 29-oct): index line per topic; the dek falls back to the tab text. A topic KPI card
+    # only when it adds the comparison with the previous bulletin (the tab text and charts already give the stock).
+    by_id = {kk["id"]: kk for kk in kpis}
+    lines = {"acreditacion": f"{fmt_int(acc)} prestadores acreditados · {fmt_int(tram)} solicitudes en trámite",
+             "mediacion": f"{fmt_int(V('med.mediadores'))} mediadores inscritos",
+             "reclamos": (f"{fmt_int(V(f'rec.promedio.{y}'))} reclamos al mes · {fmt_dec(V('rec.pct'), 1, signed=True)}% vs. {y - 1}"
+                          if k["has_rec"] else None),
+             "rnpi": f"{fmt_int(V('rnpi.titulos'))} títulos inscritos"}
+    with_qoq = {"acreditacion": [("acreditados", "acr.acreditados"), ("tramite", "acr.tramite")], "rnpi": [("rnpi", "rnpi.titulos")]}
+    for tab in tabs:
+        pairs = [(kid, vid) for kid, vid in with_qoq.get(tab["id"], []) if vid in qoq and kid in by_id]
+        sf.topic_fields(tab, lines.get(tab["id"]), kpis=[{"id": f"tema-{kid}", "label": by_id[kid]["label"], "value": by_id[kid]["value"],
+                                                          "prov": "C", "lines": [qoq_line(vid)], "refs": [vid, f"{vid}.qoq"]}
+                                                         for kid, vid in pairs])
     paragraphs = [tabs[0]["text"][0], tabs[0]["text"][1], rnpi_text[0]]
     published = date.fromisoformat(package["published_at"][:10])
     expected = date.fromordinal(published.toordinal() + int(cfg["calendar"]["expected_release_interval_days"]))
