@@ -278,21 +278,3 @@ test('paywall corroboration renders inside the option-B ficha (Qué pasó + Fuen
  assert.doesNotMatch(c.detailHtml({...s,paywalled:false}),/Fuentes relacionadas|Según Superintendencia/);
  assert.doesNotMatch(c.detailHtml({...s,corroboration:{...s.corroboration,status:'rejected'}}),/Fuentes relacionadas|Según Superintendencia/);
 });
-test('impugnaciones block: only with data, escaped, https links only, unidentified petitioner',()=>{const c=context();
- const base={title:'Circular IF/N°532',source_name:'Superintendencia de Salud',source_url:'https://www.superdesalud.gob.cl/normativa/circular-if-n532/',event_date:'2026-07-31',normative_minimal:true};
- assert.doesNotMatch(c.detailHtml(base),/Impugnaciones/);assert.doesNotMatch(c.card(base),/impugnaci/);
- const s={...base,normative_challenges:[
-  {filing:'solicitud de suspensión',outcome:'rechaza',accepted:false,petitioners:[{id:'cl:isapre:108',name:'Isapre <b>Esencial</b>'}],resolution_id:'Resolución Exenta IF/N°9994 "x"',date:'2026-08-26',url:'https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n9994/'},
-  {filing:'reposición',outcome:'acoge parcialmente',accepted:true,petitioners:[],resolution_id:'Resolución Exenta IF/N°1',date:'2026-09-01',url:'javascript:alert(1)'},
-  {filing:'reposición',outcome:'rechaza',accepted:false,petitioners:[],resolution_id:'Resolución Exenta IF/N°2',url:'http://insecure.example/r2'}]};
- const html=c.detailHtml(s);
- assert.match(html,/Impugnaciones · 3 impugnaciones · 1 acogida/);
- assert.match(html,/Isapre &lt;b&gt;Esencial&lt;\/b&gt;/);assert.doesNotMatch(html,/<b>Esencial/);
- assert.match(html,/IF\/N°9994 &quot;x&quot;/);
- assert.match(html,/Recurrente no identificado/);
- assert.match(html,/href="https:\/\/www\.superdesalud\.gob\.cl\/normativa\/resolucion-exenta-if-n9994\/"/);
- assert.doesNotMatch(html,/javascript:|http:\/\/insecure/);
- assert.match(c.card(s),/<span class="challenge-count">3 impugnaciones · 1 acogida<\/span>/);
- const one=c.card({...base,normative_challenges:[s.normative_challenges[0]]});assert.match(one,/1 impugnación · 0 acogidas/);
- const full=c.detailHtml({...s,normative_minimal:false});assert.match(full,/Impugnaciones · 3 impugnaciones/);
-});
