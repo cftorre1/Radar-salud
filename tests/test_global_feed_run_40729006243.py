@@ -185,10 +185,6 @@ SHOWN = [
     ("ec_health", "Summary report OECD/EUPHA - Long COVID Policy Dialogue"),
     ("ec_health", "Health Technology Assessment: Updated procedural guidance for joint scientific consultations to include the role of patients"),
     ("ecdc", "Multi-model assessment of the impact of newborn RSV immunisation on hospitalisation burden in the EU/EEA"),
-    ("the_conversation", "AI chatbots can be a valuable health resource for older adults – if they embrace ‘informed skepticism’"),
-    ("the_conversation", "Plans with cheaper premiums are risky business for Americans seeking lower healthcare costs"),
-    ("the_conversation", "1 in 4 Pennsylvanians say they paid out of pocket for their annual checkup. Why isn’t insurance covering these visits?"),    # Review 28-oct: private equity buying up care providers is a financing trend (was hidden).
-    ("the_conversation", "Private equity is buying up more methadone clinics – access to the lifesaving drug isn’t getting easier"),
 ]
 HIDDEN = [
     # EMA single-product EPARs (17 of the 29 cards were EMA; 6 were these): "report" is not a study.
@@ -218,3 +214,18 @@ def test_trend_headlines_from_the_run_are_shown(source, title):
 @pytest.mark.parametrize("source,title", HIDDEN)
 def test_routine_headlines_from_the_run_are_not_shown(source, title):
     assert _cards(source, title) == [], title
+
+
+# Dirección 29-oct-2026: The Conversation is out of Global (CC BY-ND, title-only feed: it cannot be shown in Spanish).
+# Its trend headlines from that run, which used to show, now show nothing.
+DROPPED_CONVERSATION = [
+    ("the_conversation", "AI chatbots can be a valuable health resource for older adults – if they embrace ‘informed skepticism’"),
+    ("the_conversation", "Plans with cheaper premiums are risky business for Americans seeking lower healthcare costs"),
+    ("the_conversation", "1 in 4 Pennsylvanians say they paid out of pocket for their annual checkup. Why isn’t insurance covering these visits?"),    # Review 28-oct: private equity buying up care providers is a financing trend (was hidden).
+    ("the_conversation", "Private equity is buying up more methadone clinics – access to the lifesaving drug isn’t getting easier"),
+]
+
+
+@pytest.mark.parametrize("source,title", DROPPED_CONVERSATION)
+def test_the_conversation_is_no_longer_shown(source, title):
+    assert FEEDS[source].get("enabled") is False

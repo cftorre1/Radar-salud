@@ -115,8 +115,13 @@ def test_cards_are_headline_link_and_deterministic_spanish_line_only():
     assert fda["description"] == "Publisher summary kept verbatim for the fixture." and fda["description_source"] == "publisher_feed_summary_verbatim"
     # Noise and consumer items never reach the page.
     assert "FDA Warns Consumers Not to Use Certain Tattoo Inks" not in cards and "Why do we yawn? A doctor explains" not in cards
-    # The Conversation (CC BY-ND) keeps its byline and verbatim headline; it needs two segment matches.
-    conv = cards["Medicare Advantage insurers use AI to deny coverage – what the data shows"]
+    # The Conversation is out of Global (Dirección 29-oct): its cards no longer show.
+    assert not any(c["source"] == "the_conversation" for c in payload["items"])
+    # Were it re-enabled, it keeps its byline and verbatim headline; it needs two segment matches.
+    on = authorized()
+    next(f for f in on["feeds"] if f["id"] == "the_conversation")["enabled"] = True
+    conv = {c["title"]: c for c in build(feed_payload(on), who_discovery(), on, None, AS_OF)["items"]}[
+        "Medicare Advantage insurers use AI to deny coverage – what the data shows"]
     assert conv["bylines"] == ["Ana Researcher, University of Somewhere"] and conv["source_label"] == "The Conversation"
     assert {"payers", "ai_in_health"} <= set(conv["segments"])
     # Federal Register stays off until robots for /api/ is verified (fail closed).
