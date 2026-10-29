@@ -7,7 +7,7 @@ import pytest
 
 from radar_salud.official_titles import (
     ABBREVIATION_WORDS, ELLIPSIS, EXTENDED_MAX_CHARS, FORBIDDEN_END, MAX_CHARS,
-    apply_short_title, numbers, operative_part, short_official_title,
+    apply_short_title, numbers, operative_part, required_numbers, short_official_title,
 )
 
 HISTORY = Path(__file__).resolve().parents[1] / "data" / "history" / "superintendencia_signals.json"
@@ -86,8 +86,10 @@ HISTORY_TITLES = _history_titles()
 
 def _assert_faithful(title, short):
     body = operative_part(title)
-    # (a) every ID, number and year of the operative part survives (with multiplicity)
-    assert not (numbers(body) - numbers(short)), (short, numbers(body) - numbers(short))
+    # (a) every ID, number and year of the operative part survives (with multiplicity);
+    # only a legal-basis clause ("de acuerdo a / conforme a ...") may be omitted
+    missing = required_numbers(title) - numbers(short)
+    assert not missing, (short, missing)
     # (b) no invented words
     assert _words(short) <= _words(title) | ABBREVIATION_WORDS, _words(short) - _words(title)
     # (c) never ends on a verb, article, preposition, conjunction or "de"
@@ -114,11 +116,16 @@ def test_keeps_law_number_45():
     assert s == "Decreto exento 45/2026 · Aprueba prestadores de salud del Sistema de Protección Financiera de la ley N° 20.850"
 
 
-def test_keeps_cited_decree_69_and_does_not_delete_tail_by_rule():
-    s = short_official_title(D69)
-    assert "decreto N° 8/2013" in s and "N° 264" in s and len(s) <= EXTENDED_MAX_CHARS
-    assert s.endswith(ELLIPSIS)  # trailing "sobre certificación…" is cut by fitting, not erased by a rule
-    assert "Ministerios" not in s
+def test_69_omits_legal_basis_citation_only():
+    # "de acuerdo al artículo segundo del decreto N° 8, de 2013 …" is the legal basis, not the operative act
+    assert short_official_title(D69) == (
+        "Decreto exento 69/2026 · Aprueba Norma Técnica N° 264: requisitos de especialidades médicas y odontológicas")
+    assert required_numbers(D69) == numbers("264")
+
+
+def test_legal_basis_clause_never_hides_operative_ids():
+    assert required_numbers(D45)["20.850"] == 1
+    assert required_numbers(R732)["2027"] == 1
 
 
 def test_keeps_year_range_17665():
@@ -148,7 +155,7 @@ def test_subrogancia_not_reduced_to_pone_termino(number):
     (D65, ["decreto exento N° 4/2026", "año 2026"], "vacunación obligatoria contra influenza"),
     (D50, ["decreto exento N° 59/2024"], "Comisión de Enfermedades Raras"),
     (D58, ["decreto N° 28/2023"], "zoonóticas"),
-    (R895, ["N° 403/2013", "N° 151"], "Comités Ético Científicos"),
+    (R895, ["N° 403", "2013", "N° 151"], "Estándares de Acreditación de los Comités Ético Científicos"),
     (R846, [], "virus respiratorios en la Región de Aysén"),
 ])
 def test_modifica_keeps_topic(title, ids, topic):
@@ -156,8 +163,22 @@ def test_modifica_keeps_topic(title, ids, topic):
     assert topic in s, s
     for i in ids:
         assert i in s, (i, s)
-    assert len(s) <= EXTENDED_MAX_CHARS
+    assert len(s) <= EXTENDED_MAX_CHARS or ELLIPSIS not in s  # else full title, uncut
     assert not re.search(r"N° [\d\.]+/\d{4}" + re.escape(ELLIPSIS), s)  # not cut right after the ID
+
+
+def test_895_keeps_estandares_full_title_when_140_is_not_enough():
+    s = short_official_title(R895)
+    assert "Norma General Técnica N° 151 sobre Estándares de Acreditación" in s
+    # the faithful compact form needs 147 chars (> 140), so the full operative title is used
+    assert s == "Res. exenta 895/2026 · " + operative_part(R895)
+
+
+def test_named_document_not_cut_when_it_fits_140():
+    t = ("Extracto de resolución exenta número 4.794, de 2026.- Aprueba Guía técnica de metrología: Directrices "
+         "para el buen uso de balanzas de laboratorio")
+    assert short_official_title(t) == ("Extracto res. exenta 4.794/2026 · Aprueba Guía técnica de metrología: "
+                                       "Directrices para el buen uso de balanzas de laboratorio")
 
 
 # 4. No mid-phrase cuts; the health service is kept.

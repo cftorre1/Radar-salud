@@ -43,8 +43,16 @@ _CITED_ID = re.compile(
 _CITED_VERBS = ("dispone|establece|aprueba|constituye|decreta|determina|declara|crea|fija|"
                 "autoriza|regula|otorga")
 
-# Stage 1 — boilerplate only (never touches IDs, numbers or topic words).
+# Legal-basis clause ("…, de acuerdo al artículo segundo del decreto N° 8, de 2013, …"):
+# it cites the enabling norm, not the operative act, so it may be omitted with its IDs.
+_LEGAL_BASIS = re.compile(r",?\s+(?:de acuerdo (?:al?|con)|conforme (?:al?|con))\b.*$", re.I | re.S)
+# Titles that approve a named document: its name is not cut while 140 chars allow it.
+_NAMED_DOC = re.compile(
+    r"^Aprueba (?:la |el )?(?:Guía|Norma|Manual|Protocolo|Política|Plan|Programa|Reglamento)\b", re.I)
+
+# Stage 1 — boilerplate only (never touches operative IDs, numbers or topic words).
 BOILERPLATE: list[tuple[str, str]] = [
+    (_LEGAL_BASIS.pattern, ""),
     (r"\bN[º°]\s?", "N° "),
     (r",?\s+en la forma que (?:se )?indica,?", ""),
     (r"\s+por (?:el )?período que señala\b", ""),
@@ -54,7 +62,6 @@ BOILERPLATE: list[tuple[str, str]] = [
     (r"\s+en su composición", ""),
     (r",?\s+de los Ministerios de [^,]*", ""),
     (r"\s+generales y específic[oa]s\b", ""),
-    (r"\bde acuerdo al artículo \w+ del (decreto|resolución|ley)\b", r"de acuerdo al \1"),
     (r"\s+y otorga facultades extraordinarias\b", ""),
     # word-level compression of fixed phrases
     (r"\bNorma Técnica Operativa\b", "Norma Técnica"),
@@ -83,9 +90,7 @@ COMPRESSION: list[tuple[str, str]] = [
     (r"\bpara (?:los )?establecimientos de (Atención Primaria) pertenecientes a la jurisdicción del\b",
      r"de \1 del"),
     (r"\b(atención) para las entidades administradoras de (salud municipal)\b", r"\1 de \2"),
-    (r",? de acuerdo al ((?:decreto|resolución|ley) (?:exent[oa] )?" + _ID + r"),?", r" (\1),"),
     (r"^(Designa a .+?) en el cargo de\b", r"\1"),
-    (r"\bsobre Estándares de (Acreditación)\b", r"sobre \1"),
     (r"\s+-\s+", "-"),
 ]
 ABBREVIATION_WORDS = {"res", "con", "médicas", "odontológicas", "n°", "de", "del"}
@@ -230,6 +235,12 @@ def operative_part(title: str | None) -> str | None:
     return parsed[1] if parsed else None
 
 
+def required_numbers(title: str | None) -> Counter:
+    """Numbers that must survive: those of the operative part, minus any legal-basis clause."""
+    body = operative_part(title)
+    return numbers(_LEGAL_BASIS.sub("", body)) if body else Counter()
+
+
 def short_official_title(title: str | None, limit: int = MAX_CHARS,
                          extended_limit: int = EXTENDED_MAX_CHARS) -> str | None:
     """Return a short display title for an official act, or None if not an act title."""
@@ -237,7 +248,7 @@ def short_official_title(title: str | None, limit: int = MAX_CHARS,
     if not parsed:
         return None
     label, raw = parsed
-    required = numbers(raw)
+    required = numbers(_LEGAL_BASIS.sub("", raw))
     plain = _apply(BOILERPLATE, raw)
     compact = _apply(COMPRESSION, plain)
     head = label + SEP
@@ -250,6 +261,8 @@ def short_official_title(title: str | None, limit: int = MAX_CHARS,
         for body in bodies:
             if len(body) <= room and ok(body):
                 return head + body
+        if max_len == limit and _NAMED_DOC.match(compact) and len(compact) <= extended_limit - len(head):
+            continue  # do not cut a document name that fits in the extended budget
         for body in _truncations(compact):
             if len(body) <= room and ok(body):
                 return head + body
