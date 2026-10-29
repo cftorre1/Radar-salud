@@ -1,0 +1,1301 @@
+{
+  "at": "2026-10-29T17:01:51.166152+00:00",
+  "kind": "worker_result",
+  "operation_id": "12778bbe50a244b8b748c5f96d3fe1b5",
+  "report": {
+    "acceptance_proof": [],
+    "after_hash": "7ad5b5367587b39e372a435ee5cf17ed780fca6d1047ededb2ff053431dd3173",
+    "audit_fingerprint": "67eca5b45f1de2bafedd24c4fe84effe7a3cfed2c6877357e7a200850b83f5ba",
+    "before_hash": "7ad5b5367587b39e372a435ee5cf17ed780fca6d1047ededb2ff053431dd3173",
+    "blocker": {
+      "evidence": [
+        {
+          "failure_log_path": "/home/runner/work/Radar-salud/Radar-salud/candidate/artifacts/autonomy/demonstrated-failure.log"
+        }
+      ],
+      "fingerprint": "45f4fc7412d3aa5f587f9a967c0459c089e2d1a93ca785e1376b62ad75ff8f72",
+      "human_required": false,
+      "kind": "technical",
+      "reason": "Failed workflow log is missing, unsafe or exceeds bounded input size",
+      "source_urls": []
+    },
+    "blockers": [
+      {
+        "evidence": [
+          {
+            "failure_log_path": "/home/runner/work/Radar-salud/Radar-salud/candidate/artifacts/autonomy/demonstrated-failure.log"
+          }
+        ],
+        "fingerprint": "45f4fc7412d3aa5f587f9a967c0459c089e2d1a93ca785e1376b62ad75ff8f72",
+        "human_required": false,
+        "kind": "technical",
+        "reason": "Failed workflow log is missing, unsafe or exceeds bounded input size",
+        "source_urls": []
+      },
+      {
+        "evidence": [
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q",
+              "-rs",
+              "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+              "-m",
+              "not integration",
+              "tests"
+            ],
+            "failure_hash": "0026bab0424e8949e07a572844aa4ba5a07f5090daf69f4df0fc1d9fb269298a",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+            "log_sha256": "da2f33cdebba9227e6b9cc451a21b5c2ff484cf085ce6c3226ddea2b5e1551bb",
+            "name": "targeted_deterministic_tests",
+            "pytest": {
+              "cases": [],
+              "collected": 0,
+              "failed": 0,
+              "passed": 0,
+              "proof": false,
+              "skipped": 0
+            },
+            "returncode": 124,
+            "status": "FAIL"
+          },
+          {
+            "blocker": "Failure is infrastructure/unclassified; no demonstrated test failure to repair",
+            "changed_paths": [],
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q"
+                ],
+                "output": "Validation command unavailable or timed out: TimeoutExpired",
+                "returncode": 124
+              }
+            ],
+            "failure_sha256": "da2f33cdebba9227e6b9cc451a21b5c2ff484cf085ce6c3226ddea2b5e1551bb",
+            "material_progress": false,
+            "signature": null,
+            "source_run_id": null,
+            "status": "BLOCKED",
+            "validated": false
+          }
+        ],
+        "fingerprint": "0b5fdc14fe0503741a33ddf3f4c1b77eaa0bf555cfd98de241c6ca504be44792",
+        "human_required": false,
+        "kind": "technical",
+        "reason": "Targeted deterministic gate failed; no validated repair candidate",
+        "source_urls": []
+      },
+      {
+        "evidence": [
+          {
+            "browser_proof": {
+              "cases": [
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 21,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 80
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  78 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  79 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 80 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  81 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  82 |  await card.locator('[data-detail]').first().click();\n  83 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:80:21"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 33,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 13
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-0\u001b[7m9\u001b[27m-1\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m1\u001b[27m0-1\u001b[7m3\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 21,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 80
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  78 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  79 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 80 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  81 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  82 |  await card.locator('[data-detail]').first().click();\n  83 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:80:21"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 33,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 13
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-0\u001b[7m9\u001b[27m-1\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m1\u001b[27m0-1\u001b[7m3\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 32,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 670
+                          },
+                          "message": "Error: Boletín Estadístico Informativo IP missing\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  668 |      continue;\n  669 |    }\n> 670 |    expect(s,needle+' missing').toBeTruthy();\n      |                                ^\n  671 |    expect((s.data_insights||[]).length,needle+' repeated insight list').toBe(0);\n  672 |    expect(s.summary_table?.rows?.length||0,needle+' table').toBeGreaterThanOrEqual(minRows);\n  673 |    expect(s.methodology_visibility).toBe('collapsed');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:670:32"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "priority statistical releases use compact tables and collapsed traceability"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 51,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 507
+                          },
+                          "message": "Error: Boletín Estadístico Informativo IP missing from snapshot\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  505 |      continue;\n  506 |    }\n> 507 |    expect(signal,needle+' missing from snapshot').toBeTruthy();\n      |                                                   ^\n  508 |    expect(signal.summary_table?.rows?.length||0,needle+' table').toBeGreaterThan(0);\n  509 |    const card=page.locator('article[data-card]').filter({hasText:needle});\n  510 |    if(signal.feed_visibility!==false&&String(signal.editorial_committee?.verdict||'PASS').toUpperCase()==='PASS'){\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:507:51"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "F1 ficha presents stock KPIs with separate contracts and mobility views"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 90,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 736
+                          },
+                          "message": "Error: 8760 must leave the feed when its actual publication date expires\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeUndefined\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m{\"actionability_score\": 90, \"additional_sources\": [], \"affected_processes\": [], \"category\": \"Regulación & Legal\", \"confidence_score\": 100, \"connection_keys\": [], \"corroboration_status\": \"unknown\", \"country\": \"CL\", \"data_insights\": [], \"detected_at\": null, \"display_language\": \"es\", \"display_title\": \"Resolución Exenta IF/N°8760 · CAEC: suspende Circular IF/N°529; pausa reglas de derivación urgente hasta resolver los recursos\", \"distribution\": \"archive\", \"economic_impact_score\": 55, \"editorial_business_review\": \"La suspensión modifica temporalmente el marco CAEC y debe distinguirse del resultado de fondo.\", \"editorial_committee\": {\"check_kind\": \"structured_check\", \"committee_version\": \"1.0\", \"critical_objections\": [], \"evidence_map\": [{\"source\": \"Superintendencia de Salud\", \"url\": \"https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/\"}], \"independent_review\": false, \"materiality_decision\": \"accept\", \"members\": [\"editorial_intelligence\", \"health_business\", \"regulatory_legal\", \"evidence_research\", \"regulatory_business_editor\"], \"parser_or_research_debt_if_any\": null, \"public_title\": \"Resolución Exenta IF/N°8760 sobre Circular IF/N°529, de 10 de julio de 2026: suspende temporalmente sus instrucciones y cambia la operación CAEC\", \"publication_decision\": \"accept\", \"signal_type\": \"Normativa\", \"uncertainties\": [\"Identificar los procedimientos de derivación a la Red CAEC que fueron implementados en aplicación de la Circular IF/N°529 y ajustar su aplicación a la suspensión decretada.\", \"Monitorear la resolución de los recursos de reposición contra la Circular IF/N°529, ya que determinará el término de la suspensión.\", \"Verificar el tratamiento operativo de hospitalizaciones de urgencia en prestadores ajenos a la Red CAEC durante la suspensión, particularmente cuando no exista solicitud formal de derivación.\"], \"value_level\": \"regulatory_obligation\", \"verdict\": \"PASS\", \"what_happened\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"why_it_matters\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}, \"editorial_decision\": \"accept\", \"editorial_materiality_score\": 77, \"editorial_source_decision\": \"accept\", \"editorial_value_category\": \"regulatory_obligation\", \"entities\": [], \"entity_refs\": [], \"event_date\": \"2026-07-30\", \"event_type\": \"REGULATION\", \"feed_visibility\": true, \"geography\": [], \"institution_types\": [], \"key_facts\": [\"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\"], \"key_numbers\": [], \"key_points\": [\"Se suspenden los efectos de la Circular IF/N°529, de 10 de julio de 2026.\", \"La circular suspendida regulaba los efectos de la falta de derivación oportuna por la isapre a un prestador de la Red CAEC en casos de urgencia vital o secuela grave.\", \"También regulaba la obligación de derivar cuando la isapre tomara conocimiento de una hospitalización de urgencia en un prestador ajeno a la Red CAEC, aun sin solicitud formal.\"], \"legal_identity\": \"Resolución Exenta IF/N°8760\", \"legal_subtitle\": \"Circular IF/N°529\", \"normative_context\": \"Concede la suspensión de efectos de Circular IF/N°529 mientras se resuelven los recursos. La Circular regulaba derivación a Red CAEC desde urgencias; durante la suspensión sus nuevas instrucciones no producen efectos.\", \"normative_document_label\": \"Resolución Exenta IF/N°8760\", \"normative_document_number\": \"IF/N°8760\", \"normative_document_type\": \"Resolución Exenta\", \"normative_editorial\": {\"affected_actor\": [\"Isapres\", \"Prestadores\"], \"affected_rule\": [{\"id\": \"Circular IF/N°529, de 10 de julio de 2026\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"Ley N°19.880, artículo 57\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}], \"business_subject\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"editorial_state\": \"reviewed\", \"effective_date_or_status\": \"La suspensión de los efectos de la Circular IF/N°529 rige hasta que se resuelvan los recursos de reposición de que conoce la Intendencia.\", \"legal_action\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"legal_identity\": \"Resolución Exenta IF/N°8760\", \"legal_subtitle\": \"Circular IF/N°529\", \"plain_language_title\": \"Resolución Exenta IF/N°8760 · CAEC: suspende Circular IF/N°529; pausa reglas de derivación urgente hasta resolver los recursos\", \"required_change\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}, \"novelty_score\": 85, \"original_language\": \"es\", \"original_title\": null, \"original_what_happened\": null, \"original_why_it_matters\": null, \"people\": [], \"possible_implications\": [], \"primary_source_url\": null, \"prospective_evidence\": false, \"publication_gate_reason\": \"ok\", \"publication_ready_score\": 100, \"radar_score\": 82, \"regulatory_impact_score\": 95, \"related_context\": [{\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"Circular IF/N°529, de 10 de julio de 2026\", \"url\": null, \"verified\": false}, {\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"Ley N°19.880, artículo 57\", \"url\": null, \"verified\": false}, {\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"url\": null, \"verified\": false}], \"related_reference_contexts\": [{\"id\": \"Circular IF/N°529, de 10 de julio de 2026\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"Ley N°19.880, artículo 57\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}], \"related_reference_ids\": [\"Circular IF/N°529, de 10 de julio de 2026\", \"Ley N°19.880, artículo 57\", \"DFL N°1 de 2005, del Ministerio de Salud\"], \"risk_notes\": [\"Identificar los procedimientos de derivación a la Red CAEC que fueron implementados en aplicación de la Circular IF/N°529 y ajustar su aplicación a la suspensión decretada.\", \"Monitorear la resolución de los recursos de reposición contra la Circular IF/N°529, ya que determinará el término de la suspensión.\", \"Verificar el tratamiento operativo de hospitalizaciones de urgencia en prestadores ajenos a la Red CAEC durante la suspensión, particularmente cuando no exista solicitud formal de derivación.\"], \"scope_score\": 82, \"scopes\": [\"Isapres\", \"Prestadores\"], \"signal_types\": [\"Normativa\"], \"source_alternatives\": [], \"source_documents\": [{\"label\": \"PDF\", \"url\": \"https://www.superdesalud.gob.cl/app/uploads/2026/07/res-exenta-if-n8760-2026.pdf\"}], \"source_name\": \"Superintendencia de Salud\", \"source_quality_score\": 100, \"source_type\": \"official\", \"source_url\": \"https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/\", \"strategic_theme\": [], \"subcategory\": \"Acto regulatorio\", \"system_domain\": \"HEALTH\", \"title\": \"Resolución Exenta IF/N°8760\", \"topics\": [], \"translation_status\": \"not_required\", \"trend_keys\": [], \"validation_status\": \"automatic\", \"validity_text\": \"La suspensión de los efectos de la Circular IF/N°529 rige hasta que se resuelvan los recursos de reposición de que conoce la Intendencia.\", \"watch_tags\": [\"normativa\", \"isapres\", \"prestadores\", \"superintendencia de salud\"], \"what_happened\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"who_cares\": [], \"why_it_matters\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}\u001b[39m\n\n  734 |   const signal=radar.signals.find(x=>x.source_url?.endsWith('n'+number+'/')&&x.signal_types?.includes('Normativa'));\n  735 |   if(!withinSnapshotHorizon(radar,original)){\n> 736 |    expect(signal,number+' must leave the feed when its actual publication date expires').toBeUndefined();\n      |                                                                                          ^\n  737 |    continue;\n  738 |   }\n  739 |   expect(signal,number).toBeTruthy();\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:736:90"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Normative V2.1 puts document, subject and action in each current headline"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "column": 47,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 362
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  360 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  361 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 362 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  363 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  364 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  365 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:362:47"
+                        }
+                      ],
+                      "status": "timedOut"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 32,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 670
+                          },
+                          "message": "Error: Boletín Estadístico Informativo IP missing\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  668 |      continue;\n  669 |    }\n> 670 |    expect(s,needle+' missing').toBeTruthy();\n      |                                ^\n  671 |    expect((s.data_insights||[]).length,needle+' repeated insight list').toBe(0);\n  672 |    expect(s.summary_table?.rows?.length||0,needle+' table').toBeGreaterThanOrEqual(minRows);\n  673 |    expect(s.methodology_visibility).toBe('collapsed');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:670:32"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "priority statistical releases use compact tables and collapsed traceability"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 51,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 507
+                          },
+                          "message": "Error: Boletín Estadístico Informativo IP missing from snapshot\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  505 |      continue;\n  506 |    }\n> 507 |    expect(signal,needle+' missing from snapshot').toBeTruthy();\n      |                                                   ^\n  508 |    expect(signal.summary_table?.rows?.length||0,needle+' table').toBeGreaterThan(0);\n  509 |    const card=page.locator('article[data-card]').filter({hasText:needle});\n  510 |    if(signal.feed_visibility!==false&&String(signal.editorial_committee?.verdict||'PASS').toUpperCase()==='PASS'){\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:507:51"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "F1 ficha presents stock KPIs with separate contracts and mobility views"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 90,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 736
+                          },
+                          "message": "Error: 8760 must leave the feed when its actual publication date expires\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeUndefined\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m{\"actionability_score\": 90, \"additional_sources\": [], \"affected_processes\": [], \"category\": \"Regulación & Legal\", \"confidence_score\": 100, \"connection_keys\": [], \"corroboration_status\": \"unknown\", \"country\": \"CL\", \"data_insights\": [], \"detected_at\": null, \"display_language\": \"es\", \"display_title\": \"Resolución Exenta IF/N°8760 · CAEC: suspende Circular IF/N°529; pausa reglas de derivación urgente hasta resolver los recursos\", \"distribution\": \"archive\", \"economic_impact_score\": 55, \"editorial_business_review\": \"La suspensión modifica temporalmente el marco CAEC y debe distinguirse del resultado de fondo.\", \"editorial_committee\": {\"check_kind\": \"structured_check\", \"committee_version\": \"1.0\", \"critical_objections\": [], \"evidence_map\": [{\"source\": \"Superintendencia de Salud\", \"url\": \"https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/\"}], \"independent_review\": false, \"materiality_decision\": \"accept\", \"members\": [\"editorial_intelligence\", \"health_business\", \"regulatory_legal\", \"evidence_research\", \"regulatory_business_editor\"], \"parser_or_research_debt_if_any\": null, \"public_title\": \"Resolución Exenta IF/N°8760 sobre Circular IF/N°529, de 10 de julio de 2026: suspende temporalmente sus instrucciones y cambia la operación CAEC\", \"publication_decision\": \"accept\", \"signal_type\": \"Normativa\", \"uncertainties\": [\"Identificar los procedimientos de derivación a la Red CAEC que fueron implementados en aplicación de la Circular IF/N°529 y ajustar su aplicación a la suspensión decretada.\", \"Monitorear la resolución de los recursos de reposición contra la Circular IF/N°529, ya que determinará el término de la suspensión.\", \"Verificar el tratamiento operativo de hospitalizaciones de urgencia en prestadores ajenos a la Red CAEC durante la suspensión, particularmente cuando no exista solicitud formal de derivación.\"], \"value_level\": \"regulatory_obligation\", \"verdict\": \"PASS\", \"what_happened\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"why_it_matters\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}, \"editorial_decision\": \"accept\", \"editorial_materiality_score\": 77, \"editorial_source_decision\": \"accept\", \"editorial_value_category\": \"regulatory_obligation\", \"entities\": [], \"entity_refs\": [], \"event_date\": \"2026-07-30\", \"event_type\": \"REGULATION\", \"feed_visibility\": true, \"geography\": [], \"institution_types\": [], \"key_facts\": [\"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\"], \"key_numbers\": [], \"key_points\": [\"Se suspenden los efectos de la Circular IF/N°529, de 10 de julio de 2026.\", \"La circular suspendida regulaba los efectos de la falta de derivación oportuna por la isapre a un prestador de la Red CAEC en casos de urgencia vital o secuela grave.\", \"También regulaba la obligación de derivar cuando la isapre tomara conocimiento de una hospitalización de urgencia en un prestador ajeno a la Red CAEC, aun sin solicitud formal.\"], \"legal_identity\": \"Resolución Exenta IF/N°8760\", \"legal_subtitle\": \"Circular IF/N°529\", \"normative_context\": \"Concede la suspensión de efectos de Circular IF/N°529 mientras se resuelven los recursos. La Circular regulaba derivación a Red CAEC desde urgencias; durante la suspensión sus nuevas instrucciones no producen efectos.\", \"normative_document_label\": \"Resolución Exenta IF/N°8760\", \"normative_document_number\": \"IF/N°8760\", \"normative_document_type\": \"Resolución Exenta\", \"normative_editorial\": {\"affected_actor\": [\"Isapres\", \"Prestadores\"], \"affected_rule\": [{\"id\": \"Circular IF/N°529, de 10 de julio de 2026\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"Ley N°19.880, artículo 57\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}], \"business_subject\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"editorial_state\": \"reviewed\", \"effective_date_or_status\": \"La suspensión de los efectos de la Circular IF/N°529 rige hasta que se resuelvan los recursos de reposición de que conoce la Intendencia.\", \"legal_action\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"legal_identity\": \"Resolución Exenta IF/N°8760\", \"legal_subtitle\": \"Circular IF/N°529\", \"plain_language_title\": \"Resolución Exenta IF/N°8760 · CAEC: suspende Circular IF/N°529; pausa reglas de derivación urgente hasta resolver los recursos\", \"required_change\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}, \"novelty_score\": 85, \"original_language\": \"es\", \"original_title\": null, \"original_what_happened\": null, \"original_why_it_matters\": null, \"people\": [], \"possible_implications\": [], \"primary_source_url\": null, \"prospective_evidence\": false, \"publication_gate_reason\": \"ok\", \"publication_ready_score\": 100, \"radar_score\": 82, \"regulatory_impact_score\": 95, \"related_context\": [{\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"Circular IF/N°529, de 10 de julio de 2026\", \"url\": null, \"verified\": false}, {\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"Ley N°19.880, artículo 57\", \"url\": null, \"verified\": false}, {\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"url\": null, \"verified\": false}], \"related_reference_contexts\": [{\"id\": \"Circular IF/N°529, de 10 de julio de 2026\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"Ley N°19.880, artículo 57\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}], \"related_reference_ids\": [\"Circular IF/N°529, de 10 de julio de 2026\", \"Ley N°19.880, artículo 57\", \"DFL N°1 de 2005, del Ministerio de Salud\"], \"risk_notes\": [\"Identificar los procedimientos de derivación a la Red CAEC que fueron implementados en aplicación de la Circular IF/N°529 y ajustar su aplicación a la suspensión decretada.\", \"Monitorear la resolución de los recursos de reposición contra la Circular IF/N°529, ya que determinará el término de la suspensión.\", \"Verificar el tratamiento operativo de hospitalizaciones de urgencia en prestadores ajenos a la Red CAEC durante la suspensión, particularmente cuando no exista solicitud formal de derivación.\"], \"scope_score\": 82, \"scopes\": [\"Isapres\", \"Prestadores\"], \"signal_types\": [\"Normativa\"], \"source_alternatives\": [], \"source_documents\": [{\"label\": \"PDF\", \"url\": \"https://www.superdesalud.gob.cl/app/uploads/2026/07/res-exenta-if-n8760-2026.pdf\"}], \"source_name\": \"Superintendencia de Salud\", \"source_quality_score\": 100, \"source_type\": \"official\", \"source_url\": \"https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/\", \"strategic_theme\": [], \"subcategory\": \"Acto regulatorio\", \"system_domain\": \"HEALTH\", \"title\": \"Resolución Exenta IF/N°8760\", \"topics\": [], \"translation_status\": \"not_required\", \"trend_keys\": [], \"validation_status\": \"automatic\", \"validity_text\": \"La suspensión de los efectos de la Circular IF/N°529 rige hasta que se resuelvan los recursos de reposición de que conoce la Intendencia.\", \"watch_tags\": [\"normativa\", \"isapres\", \"prestadores\", \"superintendencia de salud\"], \"what_happened\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"who_cares\": [], \"why_it_matters\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}\u001b[39m\n\n  734 |   const signal=radar.signals.find(x=>x.source_url?.endsWith('n'+number+'/')&&x.signal_types?.includes('Normativa'));\n  735 |   if(!withinSnapshotHorizon(radar,original)){\n> 736 |    expect(signal,number+' must leave the feed when its actual publication date expires').toBeUndefined();\n      |                                                                                          ^\n  737 |    continue;\n  738 |   }\n  739 |   expect(signal,number).toBeTruthy();\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:736:90"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Normative V2.1 puts document, subject and action in each current headline"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "column": 47,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 362
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  360 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  361 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 362 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  363 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  364 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  365 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:362:47"
+                        }
+                      ],
+                      "status": "timedOut"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "stats-ficha.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 30,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/stats-ficha.spec.cjs",
+                            "line": 217
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m2\u001b[39m\nReceived:   \u001b[31m38\u001b[39m\n\n  215 |    // The picker keeps its label, count and both arrows on one line.\n  216 |    const [p,s]=await Promise.all([body.locator('.sf-pick').boundingBox(),body.locator('[data-sf-step=\"1\"]').boundingBox()]);\n> 217 |    expect(Math.abs(p.y-s.y)).toBeLessThan(2);\n      |                              ^\n  218 |   }\n  219 |   if(width===390)await shot(page,'stats-ficha-f1-390-dejavu');\n  220 |  });\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/stats-ficha.spec.cjs:217:30"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "F1 ficha fits 390 px with DejaVu Sans"
+                }
+              ],
+              "projects": [
+                "desktop",
+                "mobile"
+              ],
+              "stats": {
+                "duration": 236138.665,
+                "expected": 154,
+                "flaky": 0,
+                "skipped": 5,
+                "startTime": "2026-10-29T16:57:45.964Z",
+                "unexpected": 13
+              }
+            },
+            "command": [
+              "npm",
+              "run",
+              "test:browser"
+            ],
+            "failure_hash": "a8472ec8439b33a0f280521b5619f2f66a63e7f7d19f84505230a6534267cba2",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+            "log_sha256": "458d14e5feefd903f12428a4acbe3ee2daa3bdcbe62ed1aa5e56be6031d75837",
+            "name": "browser_desktop_and_mobile",
+            "returncode": 1,
+            "status": "FAIL"
+          }
+        ],
+        "fingerprint": "c463db36b9fbc5a313f427f2cb06769fe4c3572891350189a8f40d437e0102f9",
+        "human_required": false,
+        "kind": "technical",
+        "reason": "Independent candidate gate rejected or could not execute: browser_desktop_and_mobile",
+        "source_urls": []
+      },
+      {
+        "evidence": [
+          {
+            "diagnostics_are_acceptance": false,
+            "family": "staging_qa",
+            "task_id": "staging_qa_failed_run_40910098695"
+          }
+        ],
+        "fingerprint": "ea776714fa6a65e723e5d84213db18ddd5de6dc05e42adbc3747591a08198acd",
+        "human_required": false,
+        "kind": "acceptance",
+        "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+        "source_urls": []
+      }
+    ],
+    "changed_paths": [],
+    "evidence": [
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+          "-m",
+          "not integration",
+          "tests"
+        ],
+        "failure_hash": "0026bab0424e8949e07a572844aa4ba5a07f5090daf69f4df0fc1d9fb269298a",
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+        "log_sha256": "da2f33cdebba9227e6b9cc451a21b5c2ff484cf085ce6c3226ddea2b5e1551bb",
+        "name": "targeted_deterministic_tests",
+        "pytest": {
+          "cases": [],
+          "collected": 0,
+          "failed": 0,
+          "passed": 0,
+          "proof": false,
+          "skipped": 0
+        },
+        "returncode": 124,
+        "status": "FAIL"
+      },
+      {
+        "recovery_attempt": {
+          "blocker": "Failure is infrastructure/unclassified; no demonstrated test failure to repair",
+          "changed_paths": [],
+          "evidence": [
+            {
+              "command": [
+                "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                "-m",
+                "pytest",
+                "-q"
+              ],
+              "output": "Validation command unavailable or timed out: TimeoutExpired",
+              "returncode": 124
+            }
+          ],
+          "failure_sha256": "da2f33cdebba9227e6b9cc451a21b5c2ff484cf085ce6c3226ddea2b5e1551bb",
+          "material_progress": false,
+          "signature": null,
+          "source_run_id": null,
+          "status": "BLOCKED",
+          "validated": false
+        }
+      },
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "scripts/review_candidate.py",
+          "--web",
+          "web",
+          "--sha",
+          "6f52af10524df279716ecb554c0732abdca4b7c5",
+          "--output",
+          "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/reviewer.json"
+        ],
+        "failure_hash": null,
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/independent_reviewer.log",
+        "log_sha256": "b4988045a2a61ac55c9533a8a3207082d4fb2eafbb5a9ef15832a6ef1500046b",
+        "name": "independent_reviewer",
+        "returncode": 0,
+        "reviewer_proof": {
+          "candidate_sha": "6f52af10524df279716ecb554c0732abdca4b7c5",
+          "checks": {
+            "data": true,
+            "editorial": true,
+            "statistics": true,
+            "ux": true
+          },
+          "findings": [
+            {
+              "category": "data",
+              "code": "stale_non_daily_source",
+              "detail": "Non-daily source not polled within seven days",
+              "path": "data/source_health.json#sources/dipres_health_budget",
+              "severity": "warning"
+            }
+          ],
+          "limitations": [
+            "Semantic/legal accuracy is not certified by deterministic checks.",
+            "Browser evidence is required separately for desktop/mobile.",
+            "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+          ],
+          "reviewed_at": "2026-10-29T16:57:45.047372+00:00",
+          "reviewer": "deterministic-reviewer"
+        },
+        "status": "PASS"
+      },
+      {
+        "browser_proof": {
+          "cases": [
+            {
+              "expected_status": "passed",
+              "file": "fiscalization.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 21,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                        "line": 80
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  78 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  79 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 80 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  81 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  82 |  await card.locator('[data-detail]').first().click();\n  83 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:80:21"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+            },
+            {
+              "expected_status": "passed",
+              "file": "fiscalization.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 33,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                        "line": 13
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-0\u001b[7m9\u001b[27m-1\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m1\u001b[27m0-1\u001b[7m3\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+            },
+            {
+              "expected_status": "passed",
+              "file": "fiscalization.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 21,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                        "line": 80
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  78 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  79 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 80 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  81 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  82 |  await card.locator('[data-detail]').first().click();\n  83 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:80:21"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+            },
+            {
+              "expected_status": "passed",
+              "file": "fiscalization.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 33,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                        "line": 13
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-0\u001b[7m9\u001b[27m-1\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m1\u001b[27m0-1\u001b[7m3\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 32,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 670
+                      },
+                      "message": "Error: Boletín Estadístico Informativo IP missing\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  668 |      continue;\n  669 |    }\n> 670 |    expect(s,needle+' missing').toBeTruthy();\n      |                                ^\n  671 |    expect((s.data_insights||[]).length,needle+' repeated insight list').toBe(0);\n  672 |    expect(s.summary_table?.rows?.length||0,needle+' table').toBeGreaterThanOrEqual(minRows);\n  673 |    expect(s.methodology_visibility).toBe('collapsed');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:670:32"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "priority statistical releases use compact tables and collapsed traceability"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 51,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 507
+                      },
+                      "message": "Error: Boletín Estadístico Informativo IP missing from snapshot\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  505 |      continue;\n  506 |    }\n> 507 |    expect(signal,needle+' missing from snapshot').toBeTruthy();\n      |                                                   ^\n  508 |    expect(signal.summary_table?.rows?.length||0,needle+' table').toBeGreaterThan(0);\n  509 |    const card=page.locator('article[data-card]').filter({hasText:needle});\n  510 |    if(signal.feed_visibility!==false&&String(signal.editorial_committee?.verdict||'PASS').toUpperCase()==='PASS'){\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:507:51"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "F1 ficha presents stock KPIs with separate contracts and mobility views"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 90,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 736
+                      },
+                      "message": "Error: 8760 must leave the feed when its actual publication date expires\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeUndefined\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m{\"actionability_score\": 90, \"additional_sources\": [], \"affected_processes\": [], \"category\": \"Regulación & Legal\", \"confidence_score\": 100, \"connection_keys\": [], \"corroboration_status\": \"unknown\", \"country\": \"CL\", \"data_insights\": [], \"detected_at\": null, \"display_language\": \"es\", \"display_title\": \"Resolución Exenta IF/N°8760 · CAEC: suspende Circular IF/N°529; pausa reglas de derivación urgente hasta resolver los recursos\", \"distribution\": \"archive\", \"economic_impact_score\": 55, \"editorial_business_review\": \"La suspensión modifica temporalmente el marco CAEC y debe distinguirse del resultado de fondo.\", \"editorial_committee\": {\"check_kind\": \"structured_check\", \"committee_version\": \"1.0\", \"critical_objections\": [], \"evidence_map\": [{\"source\": \"Superintendencia de Salud\", \"url\": \"https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/\"}], \"independent_review\": false, \"materiality_decision\": \"accept\", \"members\": [\"editorial_intelligence\", \"health_business\", \"regulatory_legal\", \"evidence_research\", \"regulatory_business_editor\"], \"parser_or_research_debt_if_any\": null, \"public_title\": \"Resolución Exenta IF/N°8760 sobre Circular IF/N°529, de 10 de julio de 2026: suspende temporalmente sus instrucciones y cambia la operación CAEC\", \"publication_decision\": \"accept\", \"signal_type\": \"Normativa\", \"uncertainties\": [\"Identificar los procedimientos de derivación a la Red CAEC que fueron implementados en aplicación de la Circular IF/N°529 y ajustar su aplicación a la suspensión decretada.\", \"Monitorear la resolución de los recursos de reposición contra la Circular IF/N°529, ya que determinará el término de la suspensión.\", \"Verificar el tratamiento operativo de hospitalizaciones de urgencia en prestadores ajenos a la Red CAEC durante la suspensión, particularmente cuando no exista solicitud formal de derivación.\"], \"value_level\": \"regulatory_obligation\", \"verdict\": \"PASS\", \"what_happened\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"why_it_matters\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}, \"editorial_decision\": \"accept\", \"editorial_materiality_score\": 77, \"editorial_source_decision\": \"accept\", \"editorial_value_category\": \"regulatory_obligation\", \"entities\": [], \"entity_refs\": [], \"event_date\": \"2026-07-30\", \"event_type\": \"REGULATION\", \"feed_visibility\": true, \"geography\": [], \"institution_types\": [], \"key_facts\": [\"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\"], \"key_numbers\": [], \"key_points\": [\"Se suspenden los efectos de la Circular IF/N°529, de 10 de julio de 2026.\", \"La circular suspendida regulaba los efectos de la falta de derivación oportuna por la isapre a un prestador de la Red CAEC en casos de urgencia vital o secuela grave.\", \"También regulaba la obligación de derivar cuando la isapre tomara conocimiento de una hospitalización de urgencia en un prestador ajeno a la Red CAEC, aun sin solicitud formal.\"], \"legal_identity\": \"Resolución Exenta IF/N°8760\", \"legal_subtitle\": \"Circular IF/N°529\", \"normative_context\": \"Concede la suspensión de efectos de Circular IF/N°529 mientras se resuelven los recursos. La Circular regulaba derivación a Red CAEC desde urgencias; durante la suspensión sus nuevas instrucciones no producen efectos.\", \"normative_document_label\": \"Resolución Exenta IF/N°8760\", \"normative_document_number\": \"IF/N°8760\", \"normative_document_type\": \"Resolución Exenta\", \"normative_editorial\": {\"affected_actor\": [\"Isapres\", \"Prestadores\"], \"affected_rule\": [{\"id\": \"Circular IF/N°529, de 10 de julio de 2026\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"Ley N°19.880, artículo 57\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}], \"business_subject\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"editorial_state\": \"reviewed\", \"effective_date_or_status\": \"La suspensión de los efectos de la Circular IF/N°529 rige hasta que se resuelvan los recursos de reposición de que conoce la Intendencia.\", \"legal_action\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"legal_identity\": \"Resolución Exenta IF/N°8760\", \"legal_subtitle\": \"Circular IF/N°529\", \"plain_language_title\": \"Resolución Exenta IF/N°8760 · CAEC: suspende Circular IF/N°529; pausa reglas de derivación urgente hasta resolver los recursos\", \"required_change\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}, \"novelty_score\": 85, \"original_language\": \"es\", \"original_title\": null, \"original_what_happened\": null, \"original_why_it_matters\": null, \"people\": [], \"possible_implications\": [], \"primary_source_url\": null, \"prospective_evidence\": false, \"publication_gate_reason\": \"ok\", \"publication_ready_score\": 100, \"radar_score\": 82, \"regulatory_impact_score\": 95, \"related_context\": [{\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"Circular IF/N°529, de 10 de julio de 2026\", \"url\": null, \"verified\": false}, {\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"Ley N°19.880, artículo 57\", \"url\": null, \"verified\": false}, {\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"url\": null, \"verified\": false}], \"related_reference_contexts\": [{\"id\": \"Circular IF/N°529, de 10 de julio de 2026\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"Ley N°19.880, artículo 57\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}], \"related_reference_ids\": [\"Circular IF/N°529, de 10 de julio de 2026\", \"Ley N°19.880, artículo 57\", \"DFL N°1 de 2005, del Ministerio de Salud\"], \"risk_notes\": [\"Identificar los procedimientos de derivación a la Red CAEC que fueron implementados en aplicación de la Circular IF/N°529 y ajustar su aplicación a la suspensión decretada.\", \"Monitorear la resolución de los recursos de reposición contra la Circular IF/N°529, ya que determinará el término de la suspensión.\", \"Verificar el tratamiento operativo de hospitalizaciones de urgencia en prestadores ajenos a la Red CAEC durante la suspensión, particularmente cuando no exista solicitud formal de derivación.\"], \"scope_score\": 82, \"scopes\": [\"Isapres\", \"Prestadores\"], \"signal_types\": [\"Normativa\"], \"source_alternatives\": [], \"source_documents\": [{\"label\": \"PDF\", \"url\": \"https://www.superdesalud.gob.cl/app/uploads/2026/07/res-exenta-if-n8760-2026.pdf\"}], \"source_name\": \"Superintendencia de Salud\", \"source_quality_score\": 100, \"source_type\": \"official\", \"source_url\": \"https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/\", \"strategic_theme\": [], \"subcategory\": \"Acto regulatorio\", \"system_domain\": \"HEALTH\", \"title\": \"Resolución Exenta IF/N°8760\", \"topics\": [], \"translation_status\": \"not_required\", \"trend_keys\": [], \"validation_status\": \"automatic\", \"validity_text\": \"La suspensión de los efectos de la Circular IF/N°529 rige hasta que se resuelvan los recursos de reposición de que conoce la Intendencia.\", \"watch_tags\": [\"normativa\", \"isapres\", \"prestadores\", \"superintendencia de salud\"], \"what_happened\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"who_cares\": [], \"why_it_matters\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}\u001b[39m\n\n  734 |   const signal=radar.signals.find(x=>x.source_url?.endsWith('n'+number+'/')&&x.signal_types?.includes('Normativa'));\n  735 |   if(!withinSnapshotHorizon(radar,original)){\n> 736 |    expect(signal,number+' must leave the feed when its actual publication date expires').toBeUndefined();\n      |                                                                                          ^\n  737 |    continue;\n  738 |   }\n  739 |   expect(signal,number).toBeTruthy();\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:736:90"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Normative V2.1 puts document, subject and action in each current headline"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "column": 47,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 362
+                      },
+                      "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  360 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  361 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 362 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  363 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  364 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  365 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:362:47"
+                    }
+                  ],
+                  "status": "timedOut"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 32,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 670
+                      },
+                      "message": "Error: Boletín Estadístico Informativo IP missing\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  668 |      continue;\n  669 |    }\n> 670 |    expect(s,needle+' missing').toBeTruthy();\n      |                                ^\n  671 |    expect((s.data_insights||[]).length,needle+' repeated insight list').toBe(0);\n  672 |    expect(s.summary_table?.rows?.length||0,needle+' table').toBeGreaterThanOrEqual(minRows);\n  673 |    expect(s.methodology_visibility).toBe('collapsed');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:670:32"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "priority statistical releases use compact tables and collapsed traceability"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 51,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 507
+                      },
+                      "message": "Error: Boletín Estadístico Informativo IP missing from snapshot\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  505 |      continue;\n  506 |    }\n> 507 |    expect(signal,needle+' missing from snapshot').toBeTruthy();\n      |                                                   ^\n  508 |    expect(signal.summary_table?.rows?.length||0,needle+' table').toBeGreaterThan(0);\n  509 |    const card=page.locator('article[data-card]').filter({hasText:needle});\n  510 |    if(signal.feed_visibility!==false&&String(signal.editorial_committee?.verdict||'PASS').toUpperCase()==='PASS'){\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:507:51"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "F1 ficha presents stock KPIs with separate contracts and mobility views"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 90,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 736
+                      },
+                      "message": "Error: 8760 must leave the feed when its actual publication date expires\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeUndefined\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m{\"actionability_score\": 90, \"additional_sources\": [], \"affected_processes\": [], \"category\": \"Regulación & Legal\", \"confidence_score\": 100, \"connection_keys\": [], \"corroboration_status\": \"unknown\", \"country\": \"CL\", \"data_insights\": [], \"detected_at\": null, \"display_language\": \"es\", \"display_title\": \"Resolución Exenta IF/N°8760 · CAEC: suspende Circular IF/N°529; pausa reglas de derivación urgente hasta resolver los recursos\", \"distribution\": \"archive\", \"economic_impact_score\": 55, \"editorial_business_review\": \"La suspensión modifica temporalmente el marco CAEC y debe distinguirse del resultado de fondo.\", \"editorial_committee\": {\"check_kind\": \"structured_check\", \"committee_version\": \"1.0\", \"critical_objections\": [], \"evidence_map\": [{\"source\": \"Superintendencia de Salud\", \"url\": \"https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/\"}], \"independent_review\": false, \"materiality_decision\": \"accept\", \"members\": [\"editorial_intelligence\", \"health_business\", \"regulatory_legal\", \"evidence_research\", \"regulatory_business_editor\"], \"parser_or_research_debt_if_any\": null, \"public_title\": \"Resolución Exenta IF/N°8760 sobre Circular IF/N°529, de 10 de julio de 2026: suspende temporalmente sus instrucciones y cambia la operación CAEC\", \"publication_decision\": \"accept\", \"signal_type\": \"Normativa\", \"uncertainties\": [\"Identificar los procedimientos de derivación a la Red CAEC que fueron implementados en aplicación de la Circular IF/N°529 y ajustar su aplicación a la suspensión decretada.\", \"Monitorear la resolución de los recursos de reposición contra la Circular IF/N°529, ya que determinará el término de la suspensión.\", \"Verificar el tratamiento operativo de hospitalizaciones de urgencia en prestadores ajenos a la Red CAEC durante la suspensión, particularmente cuando no exista solicitud formal de derivación.\"], \"value_level\": \"regulatory_obligation\", \"verdict\": \"PASS\", \"what_happened\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"why_it_matters\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}, \"editorial_decision\": \"accept\", \"editorial_materiality_score\": 77, \"editorial_source_decision\": \"accept\", \"editorial_value_category\": \"regulatory_obligation\", \"entities\": [], \"entity_refs\": [], \"event_date\": \"2026-07-30\", \"event_type\": \"REGULATION\", \"feed_visibility\": true, \"geography\": [], \"institution_types\": [], \"key_facts\": [\"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\"], \"key_numbers\": [], \"key_points\": [\"Se suspenden los efectos de la Circular IF/N°529, de 10 de julio de 2026.\", \"La circular suspendida regulaba los efectos de la falta de derivación oportuna por la isapre a un prestador de la Red CAEC en casos de urgencia vital o secuela grave.\", \"También regulaba la obligación de derivar cuando la isapre tomara conocimiento de una hospitalización de urgencia en un prestador ajeno a la Red CAEC, aun sin solicitud formal.\"], \"legal_identity\": \"Resolución Exenta IF/N°8760\", \"legal_subtitle\": \"Circular IF/N°529\", \"normative_context\": \"Concede la suspensión de efectos de Circular IF/N°529 mientras se resuelven los recursos. La Circular regulaba derivación a Red CAEC desde urgencias; durante la suspensión sus nuevas instrucciones no producen efectos.\", \"normative_document_label\": \"Resolución Exenta IF/N°8760\", \"normative_document_number\": \"IF/N°8760\", \"normative_document_type\": \"Resolución Exenta\", \"normative_editorial\": {\"affected_actor\": [\"Isapres\", \"Prestadores\"], \"affected_rule\": [{\"id\": \"Circular IF/N°529, de 10 de julio de 2026\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"Ley N°19.880, artículo 57\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}], \"business_subject\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"editorial_state\": \"reviewed\", \"effective_date_or_status\": \"La suspensión de los efectos de la Circular IF/N°529 rige hasta que se resuelvan los recursos de reposición de que conoce la Intendencia.\", \"legal_action\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"legal_identity\": \"Resolución Exenta IF/N°8760\", \"legal_subtitle\": \"Circular IF/N°529\", \"plain_language_title\": \"Resolución Exenta IF/N°8760 · CAEC: suspende Circular IF/N°529; pausa reglas de derivación urgente hasta resolver los recursos\", \"required_change\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}, \"novelty_score\": 85, \"original_language\": \"es\", \"original_title\": null, \"original_what_happened\": null, \"original_why_it_matters\": null, \"people\": [], \"possible_implications\": [], \"primary_source_url\": null, \"prospective_evidence\": false, \"publication_gate_reason\": \"ok\", \"publication_ready_score\": 100, \"radar_score\": 82, \"regulatory_impact_score\": 95, \"related_context\": [{\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"Circular IF/N°529, de 10 de julio de 2026\", \"url\": null, \"verified\": false}, {\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"Ley N°19.880, artículo 57\", \"url\": null, \"verified\": false}, {\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"url\": null, \"verified\": false}], \"related_reference_contexts\": [{\"id\": \"Circular IF/N°529, de 10 de julio de 2026\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"Ley N°19.880, artículo 57\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}], \"related_reference_ids\": [\"Circular IF/N°529, de 10 de julio de 2026\", \"Ley N°19.880, artículo 57\", \"DFL N°1 de 2005, del Ministerio de Salud\"], \"risk_notes\": [\"Identificar los procedimientos de derivación a la Red CAEC que fueron implementados en aplicación de la Circular IF/N°529 y ajustar su aplicación a la suspensión decretada.\", \"Monitorear la resolución de los recursos de reposición contra la Circular IF/N°529, ya que determinará el término de la suspensión.\", \"Verificar el tratamiento operativo de hospitalizaciones de urgencia en prestadores ajenos a la Red CAEC durante la suspensión, particularmente cuando no exista solicitud formal de derivación.\"], \"scope_score\": 82, \"scopes\": [\"Isapres\", \"Prestadores\"], \"signal_types\": [\"Normativa\"], \"source_alternatives\": [], \"source_documents\": [{\"label\": \"PDF\", \"url\": \"https://www.superdesalud.gob.cl/app/uploads/2026/07/res-exenta-if-n8760-2026.pdf\"}], \"source_name\": \"Superintendencia de Salud\", \"source_quality_score\": 100, \"source_type\": \"official\", \"source_url\": \"https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/\", \"strategic_theme\": [], \"subcategory\": \"Acto regulatorio\", \"system_domain\": \"HEALTH\", \"title\": \"Resolución Exenta IF/N°8760\", \"topics\": [], \"translation_status\": \"not_required\", \"trend_keys\": [], \"validation_status\": \"automatic\", \"validity_text\": \"La suspensión de los efectos de la Circular IF/N°529 rige hasta que se resuelvan los recursos de reposición de que conoce la Intendencia.\", \"watch_tags\": [\"normativa\", \"isapres\", \"prestadores\", \"superintendencia de salud\"], \"what_happened\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"who_cares\": [], \"why_it_matters\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}\u001b[39m\n\n  734 |   const signal=radar.signals.find(x=>x.source_url?.endsWith('n'+number+'/')&&x.signal_types?.includes('Normativa'));\n  735 |   if(!withinSnapshotHorizon(radar,original)){\n> 736 |    expect(signal,number+' must leave the feed when its actual publication date expires').toBeUndefined();\n      |                                                                                          ^\n  737 |    continue;\n  738 |   }\n  739 |   expect(signal,number).toBeTruthy();\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:736:90"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Normative V2.1 puts document, subject and action in each current headline"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "column": 47,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 362
+                      },
+                      "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  360 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  361 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 362 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  363 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  364 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  365 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:362:47"
+                    }
+                  ],
+                  "status": "timedOut"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+            },
+            {
+              "expected_status": "passed",
+              "file": "stats-ficha.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 30,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/stats-ficha.spec.cjs",
+                        "line": 217
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m2\u001b[39m\nReceived:   \u001b[31m38\u001b[39m\n\n  215 |    // The picker keeps its label, count and both arrows on one line.\n  216 |    const [p,s]=await Promise.all([body.locator('.sf-pick').boundingBox(),body.locator('[data-sf-step=\"1\"]').boundingBox()]);\n> 217 |    expect(Math.abs(p.y-s.y)).toBeLessThan(2);\n      |                              ^\n  218 |   }\n  219 |   if(width===390)await shot(page,'stats-ficha-f1-390-dejavu');\n  220 |  });\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/stats-ficha.spec.cjs:217:30"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "F1 ficha fits 390 px with DejaVu Sans"
+            }
+          ],
+          "projects": [
+            "desktop",
+            "mobile"
+          ],
+          "stats": {
+            "duration": 236138.665,
+            "expected": 154,
+            "flaky": 0,
+            "skipped": 5,
+            "startTime": "2026-10-29T16:57:45.964Z",
+            "unexpected": 13
+          }
+        },
+        "command": [
+          "npm",
+          "run",
+          "test:browser"
+        ],
+        "failure_hash": "a8472ec8439b33a0f280521b5619f2f66a63e7f7d19f84505230a6534267cba2",
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+        "log_sha256": "458d14e5feefd903f12428a4acbe3ee2daa3bdcbe62ed1aa5e56be6031d75837",
+        "name": "browser_desktop_and_mobile",
+        "returncode": 1,
+        "status": "FAIL"
+      }
+    ],
+    "evidence_revision": "9f3e682ede4e10edb33051fde7166123e614a078e3af0d17b014fe1f31eaa43a",
+    "family": "staging_qa",
+    "family_live_validated": false,
+    "gates": [
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+          "-m",
+          "not integration",
+          "tests"
+        ],
+        "failure_hash": "0026bab0424e8949e07a572844aa4ba5a07f5090daf69f4df0fc1d9fb269298a",
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+        "log_sha256": "da2f33cdebba9227e6b9cc451a21b5c2ff484cf085ce6c3226ddea2b5e1551bb",
+        "name": "targeted_deterministic_tests",
+        "pytest": {
+          "cases": [],
+          "collected": 0,
+          "failed": 0,
+          "passed": 0,
+          "proof": false,
+          "skipped": 0
+        },
+        "returncode": 124,
+        "status": "FAIL"
+      },
+      {
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "scripts/review_candidate.py",
+          "--web",
+          "web",
+          "--sha",
+          "6f52af10524df279716ecb554c0732abdca4b7c5",
+          "--output",
+          "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/reviewer.json"
+        ],
+        "failure_hash": null,
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/independent_reviewer.log",
+        "log_sha256": "b4988045a2a61ac55c9533a8a3207082d4fb2eafbb5a9ef15832a6ef1500046b",
+        "name": "independent_reviewer",
+        "returncode": 0,
+        "reviewer_proof": {
+          "candidate_sha": "6f52af10524df279716ecb554c0732abdca4b7c5",
+          "checks": {
+            "data": true,
+            "editorial": true,
+            "statistics": true,
+            "ux": true
+          },
+          "findings": [
+            {
+              "category": "data",
+              "code": "stale_non_daily_source",
+              "detail": "Non-daily source not polled within seven days",
+              "path": "data/source_health.json#sources/dipres_health_budget",
+              "severity": "warning"
+            }
+          ],
+          "limitations": [
+            "Semantic/legal accuracy is not certified by deterministic checks.",
+            "Browser evidence is required separately for desktop/mobile.",
+            "Statistics checks validate declared schema, units, denominators and traceability; they do not replace subject-matter validation of source publications."
+          ],
+          "reviewed_at": "2026-10-29T16:57:45.047372+00:00",
+          "reviewer": "deterministic-reviewer"
+        },
+        "status": "PASS"
+      },
+      {
+        "browser_proof": {
+          "cases": [
+            {
+              "expected_status": "passed",
+              "file": "fiscalization.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 21,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                        "line": 80
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  78 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  79 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 80 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  81 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  82 |  await card.locator('[data-detail]').first().click();\n  83 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:80:21"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+            },
+            {
+              "expected_status": "passed",
+              "file": "fiscalization.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 33,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                        "line": 13
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-0\u001b[7m9\u001b[27m-1\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m1\u001b[27m0-1\u001b[7m3\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+            },
+            {
+              "expected_status": "passed",
+              "file": "fiscalization.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 21,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                        "line": 80
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  78 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  79 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 80 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  81 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  82 |  await card.locator('[data-detail]').first().click();\n  83 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:80:21"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+            },
+            {
+              "expected_status": "passed",
+              "file": "fiscalization.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 33,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                        "line": 13
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-0\u001b[7m9\u001b[27m-1\u001b[7m5\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m1\u001b[27m0-1\u001b[7m3\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 32,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 670
+                      },
+                      "message": "Error: Boletín Estadístico Informativo IP missing\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  668 |      continue;\n  669 |    }\n> 670 |    expect(s,needle+' missing').toBeTruthy();\n      |                                ^\n  671 |    expect((s.data_insights||[]).length,needle+' repeated insight list').toBe(0);\n  672 |    expect(s.summary_table?.rows?.length||0,needle+' table').toBeGreaterThanOrEqual(minRows);\n  673 |    expect(s.methodology_visibility).toBe('collapsed');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:670:32"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "priority statistical releases use compact tables and collapsed traceability"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 51,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 507
+                      },
+                      "message": "Error: Boletín Estadístico Informativo IP missing from snapshot\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  505 |      continue;\n  506 |    }\n> 507 |    expect(signal,needle+' missing from snapshot').toBeTruthy();\n      |                                                   ^\n  508 |    expect(signal.summary_table?.rows?.length||0,needle+' table').toBeGreaterThan(0);\n  509 |    const card=page.locator('article[data-card]').filter({hasText:needle});\n  510 |    if(signal.feed_visibility!==false&&String(signal.editorial_committee?.verdict||'PASS').toUpperCase()==='PASS'){\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:507:51"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "F1 ficha presents stock KPIs with separate contracts and mobility views"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 90,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 736
+                      },
+                      "message": "Error: 8760 must leave the feed when its actual publication date expires\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeUndefined\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m{\"actionability_score\": 90, \"additional_sources\": [], \"affected_processes\": [], \"category\": \"Regulación & Legal\", \"confidence_score\": 100, \"connection_keys\": [], \"corroboration_status\": \"unknown\", \"country\": \"CL\", \"data_insights\": [], \"detected_at\": null, \"display_language\": \"es\", \"display_title\": \"Resolución Exenta IF/N°8760 · CAEC: suspende Circular IF/N°529; pausa reglas de derivación urgente hasta resolver los recursos\", \"distribution\": \"archive\", \"economic_impact_score\": 55, \"editorial_business_review\": \"La suspensión modifica temporalmente el marco CAEC y debe distinguirse del resultado de fondo.\", \"editorial_committee\": {\"check_kind\": \"structured_check\", \"committee_version\": \"1.0\", \"critical_objections\": [], \"evidence_map\": [{\"source\": \"Superintendencia de Salud\", \"url\": \"https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/\"}], \"independent_review\": false, \"materiality_decision\": \"accept\", \"members\": [\"editorial_intelligence\", \"health_business\", \"regulatory_legal\", \"evidence_research\", \"regulatory_business_editor\"], \"parser_or_research_debt_if_any\": null, \"public_title\": \"Resolución Exenta IF/N°8760 sobre Circular IF/N°529, de 10 de julio de 2026: suspende temporalmente sus instrucciones y cambia la operación CAEC\", \"publication_decision\": \"accept\", \"signal_type\": \"Normativa\", \"uncertainties\": [\"Identificar los procedimientos de derivación a la Red CAEC que fueron implementados en aplicación de la Circular IF/N°529 y ajustar su aplicación a la suspensión decretada.\", \"Monitorear la resolución de los recursos de reposición contra la Circular IF/N°529, ya que determinará el término de la suspensión.\", \"Verificar el tratamiento operativo de hospitalizaciones de urgencia en prestadores ajenos a la Red CAEC durante la suspensión, particularmente cuando no exista solicitud formal de derivación.\"], \"value_level\": \"regulatory_obligation\", \"verdict\": \"PASS\", \"what_happened\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"why_it_matters\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}, \"editorial_decision\": \"accept\", \"editorial_materiality_score\": 77, \"editorial_source_decision\": \"accept\", \"editorial_value_category\": \"regulatory_obligation\", \"entities\": [], \"entity_refs\": [], \"event_date\": \"2026-07-30\", \"event_type\": \"REGULATION\", \"feed_visibility\": true, \"geography\": [], \"institution_types\": [], \"key_facts\": [\"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\"], \"key_numbers\": [], \"key_points\": [\"Se suspenden los efectos de la Circular IF/N°529, de 10 de julio de 2026.\", \"La circular suspendida regulaba los efectos de la falta de derivación oportuna por la isapre a un prestador de la Red CAEC en casos de urgencia vital o secuela grave.\", \"También regulaba la obligación de derivar cuando la isapre tomara conocimiento de una hospitalización de urgencia en un prestador ajeno a la Red CAEC, aun sin solicitud formal.\"], \"legal_identity\": \"Resolución Exenta IF/N°8760\", \"legal_subtitle\": \"Circular IF/N°529\", \"normative_context\": \"Concede la suspensión de efectos de Circular IF/N°529 mientras se resuelven los recursos. La Circular regulaba derivación a Red CAEC desde urgencias; durante la suspensión sus nuevas instrucciones no producen efectos.\", \"normative_document_label\": \"Resolución Exenta IF/N°8760\", \"normative_document_number\": \"IF/N°8760\", \"normative_document_type\": \"Resolución Exenta\", \"normative_editorial\": {\"affected_actor\": [\"Isapres\", \"Prestadores\"], \"affected_rule\": [{\"id\": \"Circular IF/N°529, de 10 de julio de 2026\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"Ley N°19.880, artículo 57\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}], \"business_subject\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"editorial_state\": \"reviewed\", \"effective_date_or_status\": \"La suspensión de los efectos de la Circular IF/N°529 rige hasta que se resuelvan los recursos de reposición de que conoce la Intendencia.\", \"legal_action\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"legal_identity\": \"Resolución Exenta IF/N°8760\", \"legal_subtitle\": \"Circular IF/N°529\", \"plain_language_title\": \"Resolución Exenta IF/N°8760 · CAEC: suspende Circular IF/N°529; pausa reglas de derivación urgente hasta resolver los recursos\", \"required_change\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}, \"novelty_score\": 85, \"original_language\": \"es\", \"original_title\": null, \"original_what_happened\": null, \"original_why_it_matters\": null, \"people\": [], \"possible_implications\": [], \"primary_source_url\": null, \"prospective_evidence\": false, \"publication_gate_reason\": \"ok\", \"publication_ready_score\": 100, \"radar_score\": 82, \"regulatory_impact_score\": 95, \"related_context\": [{\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"Circular IF/N°529, de 10 de julio de 2026\", \"url\": null, \"verified\": false}, {\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"Ley N°19.880, artículo 57\", \"url\": null, \"verified\": false}, {\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"url\": null, \"verified\": false}], \"related_reference_contexts\": [{\"id\": \"Circular IF/N°529, de 10 de julio de 2026\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"Ley N°19.880, artículo 57\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}], \"related_reference_ids\": [\"Circular IF/N°529, de 10 de julio de 2026\", \"Ley N°19.880, artículo 57\", \"DFL N°1 de 2005, del Ministerio de Salud\"], \"risk_notes\": [\"Identificar los procedimientos de derivación a la Red CAEC que fueron implementados en aplicación de la Circular IF/N°529 y ajustar su aplicación a la suspensión decretada.\", \"Monitorear la resolución de los recursos de reposición contra la Circular IF/N°529, ya que determinará el término de la suspensión.\", \"Verificar el tratamiento operativo de hospitalizaciones de urgencia en prestadores ajenos a la Red CAEC durante la suspensión, particularmente cuando no exista solicitud formal de derivación.\"], \"scope_score\": 82, \"scopes\": [\"Isapres\", \"Prestadores\"], \"signal_types\": [\"Normativa\"], \"source_alternatives\": [], \"source_documents\": [{\"label\": \"PDF\", \"url\": \"https://www.superdesalud.gob.cl/app/uploads/2026/07/res-exenta-if-n8760-2026.pdf\"}], \"source_name\": \"Superintendencia de Salud\", \"source_quality_score\": 100, \"source_type\": \"official\", \"source_url\": \"https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/\", \"strategic_theme\": [], \"subcategory\": \"Acto regulatorio\", \"system_domain\": \"HEALTH\", \"title\": \"Resolución Exenta IF/N°8760\", \"topics\": [], \"translation_status\": \"not_required\", \"trend_keys\": [], \"validation_status\": \"automatic\", \"validity_text\": \"La suspensión de los efectos de la Circular IF/N°529 rige hasta que se resuelvan los recursos de reposición de que conoce la Intendencia.\", \"watch_tags\": [\"normativa\", \"isapres\", \"prestadores\", \"superintendencia de salud\"], \"what_happened\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"who_cares\": [], \"why_it_matters\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}\u001b[39m\n\n  734 |   const signal=radar.signals.find(x=>x.source_url?.endsWith('n'+number+'/')&&x.signal_types?.includes('Normativa'));\n  735 |   if(!withinSnapshotHorizon(radar,original)){\n> 736 |    expect(signal,number+' must leave the feed when its actual publication date expires').toBeUndefined();\n      |                                                                                          ^\n  737 |    continue;\n  738 |   }\n  739 |   expect(signal,number).toBeTruthy();\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:736:90"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Normative V2.1 puts document, subject and action in each current headline"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "desktop",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "column": 47,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 362
+                      },
+                      "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  360 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  361 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 362 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  363 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  364 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  365 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:362:47"
+                    }
+                  ],
+                  "status": "timedOut"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 32,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 670
+                      },
+                      "message": "Error: Boletín Estadístico Informativo IP missing\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  668 |      continue;\n  669 |    }\n> 670 |    expect(s,needle+' missing').toBeTruthy();\n      |                                ^\n  671 |    expect((s.data_insights||[]).length,needle+' repeated insight list').toBe(0);\n  672 |    expect(s.summary_table?.rows?.length||0,needle+' table').toBeGreaterThanOrEqual(minRows);\n  673 |    expect(s.methodology_visibility).toBe('collapsed');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:670:32"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "priority statistical releases use compact tables and collapsed traceability"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 51,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 507
+                      },
+                      "message": "Error: Boletín Estadístico Informativo IP missing from snapshot\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  505 |      continue;\n  506 |    }\n> 507 |    expect(signal,needle+' missing from snapshot').toBeTruthy();\n      |                                                   ^\n  508 |    expect(signal.summary_table?.rows?.length||0,needle+' table').toBeGreaterThan(0);\n  509 |    const card=page.locator('article[data-card]').filter({hasText:needle});\n  510 |    if(signal.feed_visibility!==false&&String(signal.editorial_committee?.verdict||'PASS').toUpperCase()==='PASS'){\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:507:51"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "F1 ficha presents stock KPIs with separate contracts and mobility views"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 90,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 736
+                      },
+                      "message": "Error: 8760 must leave the feed when its actual publication date expires\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeUndefined\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m{\"actionability_score\": 90, \"additional_sources\": [], \"affected_processes\": [], \"category\": \"Regulación & Legal\", \"confidence_score\": 100, \"connection_keys\": [], \"corroboration_status\": \"unknown\", \"country\": \"CL\", \"data_insights\": [], \"detected_at\": null, \"display_language\": \"es\", \"display_title\": \"Resolución Exenta IF/N°8760 · CAEC: suspende Circular IF/N°529; pausa reglas de derivación urgente hasta resolver los recursos\", \"distribution\": \"archive\", \"economic_impact_score\": 55, \"editorial_business_review\": \"La suspensión modifica temporalmente el marco CAEC y debe distinguirse del resultado de fondo.\", \"editorial_committee\": {\"check_kind\": \"structured_check\", \"committee_version\": \"1.0\", \"critical_objections\": [], \"evidence_map\": [{\"source\": \"Superintendencia de Salud\", \"url\": \"https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/\"}], \"independent_review\": false, \"materiality_decision\": \"accept\", \"members\": [\"editorial_intelligence\", \"health_business\", \"regulatory_legal\", \"evidence_research\", \"regulatory_business_editor\"], \"parser_or_research_debt_if_any\": null, \"public_title\": \"Resolución Exenta IF/N°8760 sobre Circular IF/N°529, de 10 de julio de 2026: suspende temporalmente sus instrucciones y cambia la operación CAEC\", \"publication_decision\": \"accept\", \"signal_type\": \"Normativa\", \"uncertainties\": [\"Identificar los procedimientos de derivación a la Red CAEC que fueron implementados en aplicación de la Circular IF/N°529 y ajustar su aplicación a la suspensión decretada.\", \"Monitorear la resolución de los recursos de reposición contra la Circular IF/N°529, ya que determinará el término de la suspensión.\", \"Verificar el tratamiento operativo de hospitalizaciones de urgencia en prestadores ajenos a la Red CAEC durante la suspensión, particularmente cuando no exista solicitud formal de derivación.\"], \"value_level\": \"regulatory_obligation\", \"verdict\": \"PASS\", \"what_happened\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"why_it_matters\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}, \"editorial_decision\": \"accept\", \"editorial_materiality_score\": 77, \"editorial_source_decision\": \"accept\", \"editorial_value_category\": \"regulatory_obligation\", \"entities\": [], \"entity_refs\": [], \"event_date\": \"2026-07-30\", \"event_type\": \"REGULATION\", \"feed_visibility\": true, \"geography\": [], \"institution_types\": [], \"key_facts\": [\"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\"], \"key_numbers\": [], \"key_points\": [\"Se suspenden los efectos de la Circular IF/N°529, de 10 de julio de 2026.\", \"La circular suspendida regulaba los efectos de la falta de derivación oportuna por la isapre a un prestador de la Red CAEC en casos de urgencia vital o secuela grave.\", \"También regulaba la obligación de derivar cuando la isapre tomara conocimiento de una hospitalización de urgencia en un prestador ajeno a la Red CAEC, aun sin solicitud formal.\"], \"legal_identity\": \"Resolución Exenta IF/N°8760\", \"legal_subtitle\": \"Circular IF/N°529\", \"normative_context\": \"Concede la suspensión de efectos de Circular IF/N°529 mientras se resuelven los recursos. La Circular regulaba derivación a Red CAEC desde urgencias; durante la suspensión sus nuevas instrucciones no producen efectos.\", \"normative_document_label\": \"Resolución Exenta IF/N°8760\", \"normative_document_number\": \"IF/N°8760\", \"normative_document_type\": \"Resolución Exenta\", \"normative_editorial\": {\"affected_actor\": [\"Isapres\", \"Prestadores\"], \"affected_rule\": [{\"id\": \"Circular IF/N°529, de 10 de julio de 2026\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"Ley N°19.880, artículo 57\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}], \"business_subject\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"editorial_state\": \"reviewed\", \"effective_date_or_status\": \"La suspensión de los efectos de la Circular IF/N°529 rige hasta que se resuelvan los recursos de reposición de que conoce la Intendencia.\", \"legal_action\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"legal_identity\": \"Resolución Exenta IF/N°8760\", \"legal_subtitle\": \"Circular IF/N°529\", \"plain_language_title\": \"Resolución Exenta IF/N°8760 · CAEC: suspende Circular IF/N°529; pausa reglas de derivación urgente hasta resolver los recursos\", \"required_change\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}, \"novelty_score\": 85, \"original_language\": \"es\", \"original_title\": null, \"original_what_happened\": null, \"original_why_it_matters\": null, \"people\": [], \"possible_implications\": [], \"primary_source_url\": null, \"prospective_evidence\": false, \"publication_gate_reason\": \"ok\", \"publication_ready_score\": 100, \"radar_score\": 82, \"regulatory_impact_score\": 95, \"related_context\": [{\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"Circular IF/N°529, de 10 de julio de 2026\", \"url\": null, \"verified\": false}, {\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"Ley N°19.880, artículo 57\", \"url\": null, \"verified\": false}, {\"event_date\": null, \"relationship\": \"Antecedente normativo citado por el documento actual.\", \"summary\": null, \"title\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"url\": null, \"verified\": false}], \"related_reference_contexts\": [{\"id\": \"Circular IF/N°529, de 10 de julio de 2026\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"Ley N°19.880, artículo 57\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}, {\"id\": \"DFL N°1 de 2005, del Ministerio de Salud\", \"relationship\": \"Antecedente normativo citado por el documento actual.\"}], \"related_reference_ids\": [\"Circular IF/N°529, de 10 de julio de 2026\", \"Ley N°19.880, artículo 57\", \"DFL N°1 de 2005, del Ministerio de Salud\"], \"risk_notes\": [\"Identificar los procedimientos de derivación a la Red CAEC que fueron implementados en aplicación de la Circular IF/N°529 y ajustar su aplicación a la suspensión decretada.\", \"Monitorear la resolución de los recursos de reposición contra la Circular IF/N°529, ya que determinará el término de la suspensión.\", \"Verificar el tratamiento operativo de hospitalizaciones de urgencia en prestadores ajenos a la Red CAEC durante la suspensión, particularmente cuando no exista solicitud formal de derivación.\"], \"scope_score\": 82, \"scopes\": [\"Isapres\", \"Prestadores\"], \"signal_types\": [\"Normativa\"], \"source_alternatives\": [], \"source_documents\": [{\"label\": \"PDF\", \"url\": \"https://www.superdesalud.gob.cl/app/uploads/2026/07/res-exenta-if-n8760-2026.pdf\"}], \"source_name\": \"Superintendencia de Salud\", \"source_quality_score\": 100, \"source_type\": \"official\", \"source_url\": \"https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n8760/\", \"strategic_theme\": [], \"subcategory\": \"Acto regulatorio\", \"system_domain\": \"HEALTH\", \"title\": \"Resolución Exenta IF/N°8760\", \"topics\": [], \"translation_status\": \"not_required\", \"trend_keys\": [], \"validation_status\": \"automatic\", \"validity_text\": \"La suspensión de los efectos de la Circular IF/N°529 rige hasta que se resuelvan los recursos de reposición de que conoce la Intendencia.\", \"watch_tags\": [\"normativa\", \"isapres\", \"prestadores\", \"superintendencia de salud\"], \"what_happened\": \"La resolución suspende los efectos de la Circular IF/N°529, que impartía instrucciones a las isapres sobre derivación a prestadores de la Red CAEC en situaciones de urgencia vital o secuela grave. La medida se adopta mientras se resuelven los recursos de reposición presentados contra dicha circular.\", \"who_cares\": [], \"why_it_matters\": \"Durante la suspensión, las instrucciones de la Circular IF/N°529 no producen efectos. Esto afecta transitoriamente el marco operativo aplicable a las derivaciones hacia la Red CAEC en los casos regulados por esa circular, hasta que exista decisión sobre los recursos.\"}\u001b[39m\n\n  734 |   const signal=radar.signals.find(x=>x.source_url?.endsWith('n'+number+'/')&&x.signal_types?.includes('Normativa'));\n  735 |   if(!withinSnapshotHorizon(radar,original)){\n> 736 |    expect(signal,number+' must leave the feed when its actual publication date expires').toBeUndefined();\n      |                                                                                          ^\n  737 |    continue;\n  738 |   }\n  739 |   expect(signal,number).toBeTruthy();\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:736:90"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Normative V2.1 puts document, subject and action in each current headline"
+            },
+            {
+              "expected_status": "passed",
+              "file": "product.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "column": 47,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                        "line": 362
+                      },
+                      "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  360 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  361 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 362 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  363 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  364 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  365 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:362:47"
+                    }
+                  ],
+                  "status": "timedOut"
+                }
+              ],
+              "status": "unexpected",
+              "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+            },
+            {
+              "expected_status": "passed",
+              "file": "stats-ficha.spec.cjs",
+              "project": "mobile",
+              "results": [
+                {
+                  "errors": [
+                    {
+                      "location": {
+                        "column": 30,
+                        "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/stats-ficha.spec.cjs",
+                        "line": 217
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m2\u001b[39m\nReceived:   \u001b[31m38\u001b[39m\n\n  215 |    // The picker keeps its label, count and both arrows on one line.\n  216 |    const [p,s]=await Promise.all([body.locator('.sf-pick').boundingBox(),body.locator('[data-sf-step=\"1\"]').boundingBox()]);\n> 217 |    expect(Math.abs(p.y-s.y)).toBeLessThan(2);\n      |                              ^\n  218 |   }\n  219 |   if(width===390)await shot(page,'stats-ficha-f1-390-dejavu');\n  220 |  });\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/stats-ficha.spec.cjs:217:30"
+                    }
+                  ],
+                  "status": "failed"
+                }
+              ],
+              "status": "unexpected",
+              "title": "F1 ficha fits 390 px with DejaVu Sans"
+            }
+          ],
+          "projects": [
+            "desktop",
+            "mobile"
+          ],
+          "stats": {
+            "duration": 236138.665,
+            "expected": 154,
+            "flaky": 0,
+            "skipped": 5,
+            "startTime": "2026-10-29T16:57:45.964Z",
+            "unexpected": 13
+          }
+        },
+        "command": [
+          "npm",
+          "run",
+          "test:browser"
+        ],
+        "failure_hash": "a8472ec8439b33a0f280521b5619f2f66a63e7f7d19f84505230a6534267cba2",
+        "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+        "log_sha256": "458d14e5feefd903f12428a4acbe3ee2daa3bdcbe62ed1aa5e56be6031d75837",
+        "name": "browser_desktop_and_mobile",
+        "returncode": 1,
+        "status": "FAIL"
+      }
+    ],
+    "generated_at": "2026-10-29T16:49:07.809358+00:00",
+    "ignored_observation_paths": [],
+    "input_sha": "6f52af10524df279716ecb554c0732abdca4b7c5",
+    "live_validated": false,
+    "material_progress": {
+      "blocker_candidate": true,
+      "mutation_candidate": false,
+      "requires_durable_comparison": true,
+      "verified_closure": false,
+      "workflow_success": false
+    },
+    "raw_after_hash": "bb7d38dd4ca8223a693b29fec17037feb82007658947aef9cd05e6dcf1d2086a",
+    "raw_before_hash": "bb7d38dd4ca8223a693b29fec17037feb82007658947aef9cd05e6dcf1d2086a",
+    "raw_changed_paths": [],
+    "recovery": {
+      "blocker": "Failure is infrastructure/unclassified; no demonstrated test failure to repair",
+      "changed_paths": [],
+      "evidence": [
+        {
+          "command": [
+            "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "-q"
+          ],
+          "output": "Validation command unavailable or timed out: TimeoutExpired",
+          "returncode": 124
+        }
+      ],
+      "failure_sha256": "da2f33cdebba9227e6b9cc451a21b5c2ff484cf085ce6c3226ddea2b5e1551bb",
+      "material_progress": false,
+      "signature": null,
+      "source_run_id": null,
+      "status": "BLOCKED",
+      "validated": false
+    },
+    "run_id": "40914917618-1-staging_qa",
+    "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/40914917618",
+    "semantic_hash": "143230899eddb5a7ea02a552be7eaab487382ef36adefcba463d4e576440e20e",
+    "semantic_noop": false,
+    "semantic_unknown_paths": [],
+    "source_results": [],
+    "status": "BLOCKED",
+    "targeted_validated": false,
+    "task_id": "staging_qa_failed_run_40910098695",
+    "validated": false,
+    "version": 1,
+    "workflow_success_is_progress": false
+  }
+}
