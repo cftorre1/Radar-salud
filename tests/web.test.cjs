@@ -278,3 +278,29 @@ test('paywall corroboration renders inside the option-B ficha (Qué pasó + Fuen
  assert.doesNotMatch(c.detailHtml({...s,paywalled:false}),/Fuentes relacionadas|Según Superintendencia/);
  assert.doesNotMatch(c.detailHtml({...s,corroboration:{...s.corroboration,status:'rejected'}}),/Fuentes relacionadas|Según Superintendencia/);
 });
+test('Global translation (Dirección 29-oct): Spanish row and ficha, original title kept, links, attribution and read keys unchanged',()=>{
+ const c={AlicantoRead:{readSet:new Set()},localStorage:{getItem:()=>null,setItem:()=>{}},Date,Intl,Set,Map,URL};vm.createContext(c);vm.runInContext(fs.readFileSync('web/global.js','utf8').split('AlicantoRead.subscribe(')[0],c);
+ const load=xs=>{c.input=xs;vm.runInContext("themes=[];headlines=input;buildEntries()",c)};
+ const base={id:'e1',source:'ecdc',source_label:'ECDC',attribution:'Source: ECDC, CC BY 4.0',bylines:[],url:'https://www.ecdc.europa.eu/en/news/1',published_at:'2026-10-27',
+  rights_basis:{license_label:'CC BY 4.0',license_url:'https://creativecommons.org/licenses/by/4.0/'},title:'Measles cases rise 12% in the EU/EEA',description:'ECDC reports 1,200 cases.',
+  title_es:'Los casos de sarampión suben 12% en la UE/EEE',description_es:'El ECDC informa 1.200 casos.',
+  translation:{status:'translated',verified:true,notice_es:'Traducción automática de Alicanto',change_notice_es:'Traducción de Alicanto'}};
+ load([base]);const e=c.entryFor('daily-e1');
+ assert.equal(e.title,'Los casos de sarampión suben 12% en la UE/EEE');assert.equal(e.key,'global-feed:e1');assert.equal(e.dom,'daily-e1');assert.equal(e.url,'https://www.ecdc.europa.eu/en/news/1');
+ assert.match(c.metaFor(e),/CC BY 4\.0<\/a> · <span class="tr-note">Traducción de Alicanto<\/span>/);
+ const html=c.headlineDetail(e);
+ assert.match(html,/<h2 id="globalDetailTitle">Los casos de sarampión suben 12% en la UE\/EEE<\/h2><p class="orig-title"><span>Título original<\/span> Measles cases rise 12% in the EU\/EEA<\/p>/);
+ assert.match(html,/<h3 class="ficha-h">Resumen de la fuente<\/h3><p>El ECDC informa 1\.200 casos\.<\/p>/);assert.doesNotMatch(html,/ECDC reports 1,200/);
+ assert.match(html,/Traducción automática de Alicanto · Traducción de Alicanto\./);
+ // The source link and attribution stay as captured: publisher's own title on the link.
+ assert.match(html,/href="https:\/\/www\.ecdc\.europa\.eu\/en\/news\/1"[^>]*>ECDC · Measles cases rise 12% in the EU\/EEA ↗<\/a>/);assert.match(html,/Source: ECDC, CC BY 4\.0/);
+ // Unverified, pending, or a summary without its translation -> the original only, never a partial translation.
+ for(const bad of [{translation:{status:'pending',reason:'no_api_key'}},{translation:{status:'translated'}},{description_es:''},{translation:{status:'verification_failed'}}]){
+  load([{...base,...bad}]);const b=c.entryFor('daily-e1'),h=c.headlineDetail(b);
+  assert.equal(b.title,base.title);assert.doesNotMatch(h,/Título original|Traducción automática|sarampión|1\.200 casos/);assert.match(h,/<p>ECDC reports 1,200 cases\.<\/p>/)}
+ // CC BY-ND: English kept with the note, in the row and the ficha.
+ load([{id:'n1',source:'the_conversation',source_label:'The Conversation',bylines:['Ana A'],url:'https://theconversation.com/x-1',published_at:'2026-10-27',title:'Insurers use AI',
+  translation:{status:'not_allowed',note_es:'Contenido en inglés (licencia no permite traducción)'},title_es:'Ignorado'}]);
+ const n=c.entryFor('daily-n1');assert.equal(n.title,'Insurers use AI');assert.match(c.metaFor(n),/Contenido en inglés \(licencia no permite traducción\)/);
+ const nh=c.headlineDetail(n);assert.match(nh,/<h2 id="globalDetailTitle">Insurers use AI<\/h2>/);assert.match(nh,/<p class="ficha-note">Contenido en inglés \(licencia no permite traducción\)\.<\/p>/);assert.doesNotMatch(nh,/Ignorado|Título original/);
+});

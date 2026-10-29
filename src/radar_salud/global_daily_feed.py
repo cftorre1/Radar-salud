@@ -1,4 +1,4 @@
-"""Daily Global feed: headline + link cards from licensed/public sources (no bodies, no AI).
+"""Daily Global feed: headline + link cards from licensed/public sources (no bodies; AI only to translate).
 
 Built after the daily discovery steps from two inputs that already exist:
 
@@ -12,7 +12,8 @@ Each card keeps the publisher's own title verbatim, its link, date, attribution
 (and byline when the licence asks for it), the publisher's own short summary when
 the feed's rights allow it (verbatim, <= 300 characters; otherwise ``None`` and the
 card shows the title only) plus a deterministic Spanish relevance line built from
-fixed templates. Nothing else from the publisher is stored. Cards are explicitly
+fixed templates. Nothing else from the publisher is stored. ``export`` then adds a verified Spanish translation
+of the title and summary where the source's rights allow it (``global_translation``, Dirección 29-oct). Cards are explicitly
 "titular de fuente", never an Alicanto analysis or a Chile effect.
 
 The output is one inbox ordered by date with a rolling 90-day history
@@ -359,8 +360,11 @@ def _read(path: Path, default):
     return json.loads(path.read_text()) if path.exists() else default
 
 
-def export(root: Path, as_of: date) -> dict:
-    """Read the discovery outputs, write ``web/data/global_feed.json`` atomically."""
+def export(root: Path, as_of: date, translate: bool = True, **translate_kwargs) -> dict:
+    """Read the discovery outputs, write ``web/data/global_feed.json`` atomically.
+
+    Dirección 29-oct: Spanish title/summary where the source's rights allow it (``global_translation``);
+    the original text and the card ids are never changed."""
     from .pending_queue import atomic_json
     config = json.loads((root / "config/global_discovery.json").read_text())
     target = root / "web/data/global_feed.json"
@@ -368,5 +372,8 @@ def export(root: Path, as_of: date) -> dict:
                     config, _read(target, None), as_of)
     from .source_rights import redact_public_payload
     payload = redact_public_payload(payload)  # paywalled press: title + public lead only
+    if translate and payload.get("enabled"):
+        from .global_translation import translate_export
+        payload = translate_export(root, payload, config, **translate_kwargs)
     atomic_json(target, payload)
     return payload
